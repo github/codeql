@@ -1,6 +1,6 @@
 private import javascript
 
-signature module ResolvePathsSig {
+signature module PathResolverSig {
   /**
    * Holds if `path` should be resolved to a file or folder, relative to `base`.
    */
@@ -17,7 +17,7 @@ signature module ResolvePathsSig {
  *
  * Absolute paths are not handled.
  */
-module ResolvePaths<ResolvePathsSig Config> {
+module PathResolver<PathResolverSig Config> {
   private import Config
 
   private string getPathSegment(string path, int n) {
@@ -117,7 +117,7 @@ module PathResolution {
 
     /** Gets the file referred to by the `extends` property. */
     File getExtendedFile() {
-      result = TSConfigResolve::resolve(this.getFolder(), this.getExtendsPath())
+      result = TSConfigResolver::resolve(this.getFolder(), this.getExtendsPath())
     }
 
     /** Gets the `TSConfig` file referred to by the `extends` property. */
@@ -128,7 +128,7 @@ module PathResolution {
 
     /** Gets the folder referred to by the `baseUrl` property in this file, not taking `extends` into account. */
     Folder getOwnBaseUrlFolder() {
-      result = TSConfigResolve::resolve(this.getFolder(), this.getBaseUrlPath())
+      result = TSConfigResolver::resolve(this.getFolder(), this.getBaseUrlPath())
     }
 
     /** Gets the effective baseUrl folder for this tsconfig file. */
@@ -152,7 +152,7 @@ module PathResolution {
      * Does not include all the files within includes directories.
      */
     Container getAnIncludedBaseContainer() {
-      result = TSConfigResolve::resolve(this.getFolder(), this.getAnIncludePath())
+      result = TSConfigResolver::resolve(this.getFolder(), this.getAnIncludePath())
       or
       result = this.getExtendedTSConfig().getAnIncludedBaseContainer()
     }
@@ -185,7 +185,7 @@ module PathResolution {
     }
   }
 
-  private module TSConfigResolveConfig implements ResolvePathsSig {
+  private module TSConfigResolverConfig implements PathResolverSig {
     predicate shouldResolve(Container base, string path) {
       exists(TSConfig cfg |
         base = cfg.getFolder() and
@@ -194,9 +194,9 @@ module PathResolution {
     }
   }
 
-  private module TSConfigResolve = ResolvePaths<TSConfigResolveConfig>;
+  private module TSConfigResolver = PathResolver<TSConfigResolverConfig>;
 
-  private module ResolvePathMappingConfig implements ResolvePathsSig {
+  private module ResolvePathMappingConfig implements PathResolverSig {
     additional predicate shouldResolve(TSConfig cfg, Container base, string path) {
       (cfg.hasExactPathMapping(_, path) or cfg.hasPrefixPathMapping(_, path)) and
       if isRelativePath(path)
@@ -207,7 +207,7 @@ module PathResolution {
     predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
   }
 
-  private module ResolvePathMapping = ResolvePaths<ResolvePathMappingConfig>;
+  private module ResolvePathMapping = PathResolver<ResolvePathMappingConfig>;
 
   private Container resolvePathMapping(TSConfig cfg, string path) {
     exists(Container base |
@@ -244,7 +244,7 @@ module PathResolution {
     getAPartOfExportsSection(pkg, matchedPath + "*").getStringValue() = path + "*"
   }
 
-  private module ResolvePackageExportsConfig implements ResolvePathsSig {
+  private module PackageExportsResolverConfig implements PathResolverSig {
     additional predicate shouldResolve(
       PackageJson pkg, string matchedPath, Container base, string path
     ) {
@@ -265,19 +265,19 @@ module PathResolution {
     }
   }
 
-  private module ResolvePackageExports = ResolvePaths<ResolvePackageExportsConfig>;
+  private module PackageExportsResolver = PathResolver<PackageExportsResolverConfig>;
 
   private Container resolvePackageExactExport(PackageJson pkg, string matchedPath) {
     exists(string path |
       packageHasExactExport(pkg, matchedPath, path) and
-      result = ResolvePackageExports::resolve(pkg.getJsonFile().getParentContainer(), path)
+      result = PackageExportsResolver::resolve(pkg.getJsonFile().getParentContainer(), path)
     )
   }
 
   private Container resolvePackagePrefixExport(PackageJson pkg, string matchedPath) {
     exists(string path |
       packageHasPrefixExport(pkg, matchedPath, path) and
-      result = ResolvePackageExports::resolve(pkg.getJsonFile().getParentContainer(), path)
+      result = PackageExportsResolver::resolve(pkg.getJsonFile().getParentContainer(), path)
     )
   }
 
@@ -363,7 +363,7 @@ module PathResolution {
     )
   }
 
-  private module ResolvePathExprConfig implements ResolvePathsSig {
+  private module PathExprResolverConfig implements PathResolverSig {
     additional predicate shouldResolve(PathExpr expr, Container base, string path) {
       isRelevantPathExpr(expr) and
       (
@@ -389,17 +389,17 @@ module PathResolution {
     }
   }
 
-  private module ResolvePathExpr = ResolvePaths<ResolvePathExprConfig>;
+  private module PathExprResolver = PathResolver<PathExprResolverConfig>;
 
   private Container resolvePathExpr1(PathExpr expr) {
     exists(Container base, string path |
-      ResolvePathExprConfig::shouldResolve(expr, base, path) and
-      result = ResolvePathExpr::resolve(base, path)
+      PathExprResolverConfig::shouldResolve(expr, base, path) and
+      result = PathExprResolver::resolve(base, path)
     )
   }
 
   /** Resolves `main` and `module` paths in a package.json file */
-  private module ResolvePackageJsonPaths implements ResolvePathsSig {
+  private module ResolvePackageJsonPaths implements PathResolverSig {
     additional predicate shouldResolve(PackageJson pkg, Container base, string path, string kind) {
       base = pkg.getJsonFile().getParentContainer() and
       (
@@ -420,7 +420,7 @@ module PathResolution {
     }
   }
 
-  private module ResolvePackageMain = ResolvePaths<ResolvePackageJsonPaths>;
+  private module ResolvePackageMain = PathResolver<ResolvePackageJsonPaths>;
 
   private Container resolvePackageMain(PackageJson pkg) {
     exists(Container base, string path |
