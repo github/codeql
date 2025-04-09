@@ -13,7 +13,7 @@
   }
 }
 {
-  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
+  "markdownMessage": "Analyzed a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
   "severity": "warning",
   "source": {
     "extractorName": "java",
