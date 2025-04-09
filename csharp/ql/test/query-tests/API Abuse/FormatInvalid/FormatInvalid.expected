@@ -51,30 +51,32 @@
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | this | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | this |
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | format string | FormatMissingArgument.cs:15:34:15:34 | (...) ... | this supplied value |
 | FormatMissingArgument.cs:15:9:15:38 | call to method Format | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | The $@ ignores $@. | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | format string | FormatMissingArgument.cs:15:37:15:37 | (...) ... | this supplied value |
-| FormatMissingArgument.cs:29:9:29:32 | call to method Format | FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | FormatMissingArgument.cs:29:23:29:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:23:16:23:20 | "{1}" | this | FormatMissingArgument.cs:23:16:23:20 | "{1}" | this |
-| FormatMissingArgument.cs:29:9:29:32 | call to method Format | FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | FormatMissingArgument.cs:29:23:29:28 | access to parameter format | The $@ ignores $@. | FormatMissingArgument.cs:23:16:23:20 | "{1}" | format string | FormatMissingArgument.cs:29:31:29:31 | (...) ... | this supplied value |
-| FormatMissingArgument.cs:43:9:43:48 | call to method Format<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:43:37:43:43 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this |
-| FormatMissingArgument.cs:43:9:43:48 | call to method Format<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:43:37:43:43 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | format string | FormatMissingArgument.cs:43:46:43:47 | "" | this supplied value |
-| FormatMissingArgument.cs:49:9:49:61 | call to method Format<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:49:9:49:61 | call to method Format<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:49:9:49:61 | call to method Format<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:49:55:49:56 | "" | this supplied value |
-| FormatMissingArgument.cs:49:9:49:61 | call to method Format<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:49:59:49:60 | "" | this supplied value |
-| FormatMissingArgument.cs:57:9:57:42 | call to method AppendFormat<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:57:31:57:37 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this |
-| FormatMissingArgument.cs:57:9:57:42 | call to method AppendFormat<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:57:31:57:37 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | format string | FormatMissingArgument.cs:57:40:57:41 | "" | this supplied value |
-| FormatMissingArgument.cs:58:9:58:50 | call to method AppendFormat<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:58:39:58:45 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this |
-| FormatMissingArgument.cs:58:9:58:50 | call to method AppendFormat<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:58:39:58:45 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | format string | FormatMissingArgument.cs:58:48:58:49 | "" | this supplied value |
-| FormatMissingArgument.cs:64:9:64:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:64:9:64:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:64:9:64:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:64:57:64:58 | "" | this supplied value |
-| FormatMissingArgument.cs:64:9:64:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:64:61:64:62 | "" | this supplied value |
-| FormatMissingArgument.cs:74:9:74:47 | call to method TryWrite<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:74:29:74:35 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this |
-| FormatMissingArgument.cs:74:9:74:47 | call to method TryWrite<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:74:29:74:35 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | format string | FormatMissingArgument.cs:74:45:74:46 | "" | this supplied value |
-| FormatMissingArgument.cs:75:9:75:55 | call to method TryWrite<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:75:37:75:43 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this | FormatMissingArgument.cs:35:45:35:49 | "{1}" | this |
-| FormatMissingArgument.cs:75:9:75:55 | call to method TryWrite<String> | FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:75:37:75:43 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:35:45:35:49 | "{1}" | format string | FormatMissingArgument.cs:75:53:75:54 | "" | this supplied value |
-| FormatMissingArgument.cs:81:9:81:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:81:9:81:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | this |
-| FormatMissingArgument.cs:81:9:81:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:81:62:81:63 | "" | this supplied value |
-| FormatMissingArgument.cs:81:9:81:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | format string | FormatMissingArgument.cs:81:66:81:67 | "" | this supplied value |
+| FormatMissingArgument.cs:21:9:21:47 | call to method Format | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this |
+| FormatMissingArgument.cs:21:9:21:47 | call to method Format | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this | FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | this |
+| FormatMissingArgument.cs:32:9:32:32 | call to method Format | FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:26:16:26:20 | "{1}" | this | FormatMissingArgument.cs:26:16:26:20 | "{1}" | this |
+| FormatMissingArgument.cs:32:9:32:32 | call to method Format | FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | The $@ ignores $@. | FormatMissingArgument.cs:26:16:26:20 | "{1}" | format string | FormatMissingArgument.cs:32:31:32:31 | (...) ... | this supplied value |
+| FormatMissingArgument.cs:46:9:46:48 | call to method Format<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:46:37:46:43 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
+| FormatMissingArgument.cs:46:9:46:48 | call to method Format<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:46:37:46:43 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | format string | FormatMissingArgument.cs:46:46:46:47 | "" | this supplied value |
+| FormatMissingArgument.cs:52:9:52:61 | call to method Format<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:52:9:52:61 | call to method Format<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:52:9:52:61 | call to method Format<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:52:55:52:56 | "" | this supplied value |
+| FormatMissingArgument.cs:52:9:52:61 | call to method Format<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:52:59:52:60 | "" | this supplied value |
+| FormatMissingArgument.cs:60:9:60:42 | call to method AppendFormat<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:60:31:60:37 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
+| FormatMissingArgument.cs:60:9:60:42 | call to method AppendFormat<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:60:31:60:37 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | format string | FormatMissingArgument.cs:60:40:60:41 | "" | this supplied value |
+| FormatMissingArgument.cs:61:9:61:50 | call to method AppendFormat<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:61:39:61:45 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
+| FormatMissingArgument.cs:61:9:61:50 | call to method AppendFormat<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:61:39:61:45 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | format string | FormatMissingArgument.cs:61:48:61:49 | "" | this supplied value |
+| FormatMissingArgument.cs:67:9:67:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:67:9:67:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:67:9:67:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:67:57:67:58 | "" | this supplied value |
+| FormatMissingArgument.cs:67:9:67:63 | call to method AppendFormat<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:67:61:67:62 | "" | this supplied value |
+| FormatMissingArgument.cs:77:9:77:47 | call to method TryWrite<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:77:29:77:35 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
+| FormatMissingArgument.cs:77:9:77:47 | call to method TryWrite<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:77:29:77:35 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | format string | FormatMissingArgument.cs:77:45:77:46 | "" | this supplied value |
+| FormatMissingArgument.cs:78:9:78:55 | call to method TryWrite<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:78:37:78:43 | access to local variable format1 | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this | FormatMissingArgument.cs:38:45:38:49 | "{1}" | this |
+| FormatMissingArgument.cs:78:9:78:55 | call to method TryWrite<String> | FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:78:37:78:43 | access to local variable format1 | The $@ ignores $@. | FormatMissingArgument.cs:38:45:38:49 | "{1}" | format string | FormatMissingArgument.cs:78:53:78:54 | "" | this supplied value |
+| FormatMissingArgument.cs:84:9:84:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:84:9:84:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | Argument '{3}' has not been supplied to $@ format string. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | this |
+| FormatMissingArgument.cs:84:9:84:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:84:62:84:63 | "" | this supplied value |
+| FormatMissingArgument.cs:84:9:84:68 | call to method TryWrite<String,String> | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | The $@ ignores $@. | FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | format string | FormatMissingArgument.cs:84:66:84:67 | "" | this supplied value |
 | FormatMissingArgumentBad.cs:7:9:7:49 | call to method WriteLine | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | Argument '{1}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | this |
 | FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | Argument '{2}' has not been supplied to $@ format string. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | this |
 | FormatMissingArgumentBad.cs:8:9:8:55 | call to method WriteLine | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | The $@ ignores $@. | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | format string | FormatMissingArgumentBad.cs:8:44:8:48 | access to parameter first | this supplied value |
@@ -116,34 +118,34 @@ edges
 | FormatInvalid.cs:140:13:140:18 | access to local variable format : CompositeFormat | FormatInvalid.cs:157:53:157:58 | access to local variable format | provenance |  |
 | FormatInvalid.cs:140:22:140:47 | call to method Parse : CompositeFormat | FormatInvalid.cs:140:13:140:18 | access to local variable format : CompositeFormat | provenance |  |
 | FormatInvalid.cs:140:44:140:46 | "}" : String | FormatInvalid.cs:140:22:140:47 | call to method Parse : CompositeFormat | provenance | Config |
-| FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | FormatMissingArgument.cs:26:24:26:29 | format : String | provenance |  |
-| FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | FormatMissingArgument.cs:26:24:26:29 | format : String | provenance |  |
-| FormatMissingArgument.cs:26:24:26:29 | format : String | FormatMissingArgument.cs:29:23:29:28 | access to parameter format | provenance |  |
-| FormatMissingArgument.cs:26:24:26:29 | format : String | FormatMissingArgument.cs:29:23:29:28 | access to parameter format | provenance |  |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:40:37:40:43 | access to local variable format0 | provenance |  |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:53:31:53:37 | access to local variable format0 | provenance |  |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:54:39:54:45 | access to local variable format0 | provenance |  |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:70:29:70:35 | access to local variable format0 | provenance |  |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:71:37:71:43 | access to local variable format0 | provenance |  |
-| FormatMissingArgument.cs:34:23:34:50 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | provenance |  |
-| FormatMissingArgument.cs:34:45:34:49 | "{0}" : String | FormatMissingArgument.cs:34:23:34:50 | call to method Parse : CompositeFormat | provenance | Config |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:43:37:43:43 | access to local variable format1 | provenance |  |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:57:31:57:37 | access to local variable format1 | provenance |  |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:58:39:58:45 | access to local variable format1 | provenance |  |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:74:29:74:35 | access to local variable format1 | provenance |  |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:75:37:75:43 | access to local variable format1 | provenance |  |
-| FormatMissingArgument.cs:35:23:35:50 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | provenance |  |
-| FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | FormatMissingArgument.cs:35:23:35:50 | call to method Parse : CompositeFormat | provenance | Config |
-| FormatMissingArgument.cs:36:13:36:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:46:45:46:52 | access to local variable format01 | provenance |  |
-| FormatMissingArgument.cs:36:13:36:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:61:47:61:54 | access to local variable format01 | provenance |  |
-| FormatMissingArgument.cs:36:13:36:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:78:45:78:52 | access to local variable format01 | provenance |  |
-| FormatMissingArgument.cs:36:24:36:54 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:36:13:36:20 | access to local variable format01 : CompositeFormat | provenance |  |
-| FormatMissingArgument.cs:36:46:36:53 | "{0}{1}" : String | FormatMissingArgument.cs:36:24:36:54 | call to method Parse : CompositeFormat | provenance | Config |
-| FormatMissingArgument.cs:37:13:37:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | provenance |  |
-| FormatMissingArgument.cs:37:13:37:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | provenance |  |
-| FormatMissingArgument.cs:37:13:37:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | provenance |  |
-| FormatMissingArgument.cs:37:24:37:54 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:37:13:37:20 | access to local variable format23 : CompositeFormat | provenance |  |
-| FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | FormatMissingArgument.cs:37:24:37:54 | call to method Parse : CompositeFormat | provenance | Config |
+| FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:29:24:29:29 | format : String | provenance |  |
+| FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | FormatMissingArgument.cs:29:24:29:29 | format : String | provenance |  |
+| FormatMissingArgument.cs:29:24:29:29 | format : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | provenance |  |
+| FormatMissingArgument.cs:29:24:29:29 | format : String | FormatMissingArgument.cs:32:23:32:28 | access to parameter format | provenance |  |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:43:37:43:43 | access to local variable format0 | provenance |  |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:56:31:56:37 | access to local variable format0 | provenance |  |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:57:39:57:45 | access to local variable format0 | provenance |  |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:73:29:73:35 | access to local variable format0 | provenance |  |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | FormatMissingArgument.cs:74:37:74:43 | access to local variable format0 | provenance |  |
+| FormatMissingArgument.cs:37:23:37:50 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | provenance |  |
+| FormatMissingArgument.cs:37:45:37:49 | "{0}" : String | FormatMissingArgument.cs:37:23:37:50 | call to method Parse : CompositeFormat | provenance | Config |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:46:37:46:43 | access to local variable format1 | provenance |  |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:60:31:60:37 | access to local variable format1 | provenance |  |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:61:39:61:45 | access to local variable format1 | provenance |  |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:77:29:77:35 | access to local variable format1 | provenance |  |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | FormatMissingArgument.cs:78:37:78:43 | access to local variable format1 | provenance |  |
+| FormatMissingArgument.cs:38:23:38:50 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | provenance |  |
+| FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | FormatMissingArgument.cs:38:23:38:50 | call to method Parse : CompositeFormat | provenance | Config |
+| FormatMissingArgument.cs:39:13:39:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:49:45:49:52 | access to local variable format01 | provenance |  |
+| FormatMissingArgument.cs:39:13:39:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:64:47:64:54 | access to local variable format01 | provenance |  |
+| FormatMissingArgument.cs:39:13:39:20 | access to local variable format01 : CompositeFormat | FormatMissingArgument.cs:81:45:81:52 | access to local variable format01 | provenance |  |
+| FormatMissingArgument.cs:39:24:39:54 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:39:13:39:20 | access to local variable format01 : CompositeFormat | provenance |  |
+| FormatMissingArgument.cs:39:46:39:53 | "{0}{1}" : String | FormatMissingArgument.cs:39:24:39:54 | call to method Parse : CompositeFormat | provenance | Config |
+| FormatMissingArgument.cs:40:13:40:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | provenance |  |
+| FormatMissingArgument.cs:40:13:40:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | provenance |  |
+| FormatMissingArgument.cs:40:13:40:20 | access to local variable format23 : CompositeFormat | FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | provenance |  |
+| FormatMissingArgument.cs:40:24:40:54 | call to method Parse : CompositeFormat | FormatMissingArgument.cs:40:13:40:20 | access to local variable format23 : CompositeFormat | provenance |  |
+| FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | FormatMissingArgument.cs:40:24:40:54 | call to method Parse : CompositeFormat | provenance | Config |
 | FormatUnusedArgument.cs:48:13:48:18 | access to local variable format : CompositeFormat | FormatUnusedArgument.cs:53:37:53:42 | access to local variable format | provenance |  |
 | FormatUnusedArgument.cs:48:13:48:18 | access to local variable format : CompositeFormat | FormatUnusedArgument.cs:62:31:62:36 | access to local variable format | provenance |  |
 | FormatUnusedArgument.cs:48:13:48:18 | access to local variable format : CompositeFormat | FormatUnusedArgument.cs:63:39:63:44 | access to local variable format | provenance |  |
@@ -297,46 +299,48 @@ nodes
 | FormatMissingArgument.cs:15:23:15:31 | "{2} {3}" | semmle.label | "{2} {3}" |
 | FormatMissingArgument.cs:18:23:18:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
 | FormatMissingArgument.cs:18:23:18:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
-| FormatMissingArgument.cs:21:23:21:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
-| FormatMissingArgument.cs:21:23:21:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
-| FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | semmle.label | "{1}" : String |
-| FormatMissingArgument.cs:23:16:23:20 | "{1}" : String | semmle.label | "{1}" : String |
-| FormatMissingArgument.cs:26:24:26:29 | format : String | semmle.label | format : String |
-| FormatMissingArgument.cs:26:24:26:29 | format : String | semmle.label | format : String |
-| FormatMissingArgument.cs:29:23:29:28 | access to parameter format | semmle.label | access to parameter format |
-| FormatMissingArgument.cs:29:23:29:28 | access to parameter format | semmle.label | access to parameter format |
-| FormatMissingArgument.cs:34:13:34:19 | access to local variable format0 : CompositeFormat | semmle.label | access to local variable format0 : CompositeFormat |
-| FormatMissingArgument.cs:34:23:34:50 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
-| FormatMissingArgument.cs:34:45:34:49 | "{0}" | semmle.label | "{0}" |
-| FormatMissingArgument.cs:34:45:34:49 | "{0}" : String | semmle.label | "{0}" : String |
-| FormatMissingArgument.cs:35:13:35:19 | access to local variable format1 : CompositeFormat | semmle.label | access to local variable format1 : CompositeFormat |
-| FormatMissingArgument.cs:35:23:35:50 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
-| FormatMissingArgument.cs:35:45:35:49 | "{1}" | semmle.label | "{1}" |
-| FormatMissingArgument.cs:35:45:35:49 | "{1}" : String | semmle.label | "{1}" : String |
-| FormatMissingArgument.cs:36:13:36:20 | access to local variable format01 : CompositeFormat | semmle.label | access to local variable format01 : CompositeFormat |
-| FormatMissingArgument.cs:36:24:36:54 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
-| FormatMissingArgument.cs:36:46:36:53 | "{0}{1}" | semmle.label | "{0}{1}" |
-| FormatMissingArgument.cs:36:46:36:53 | "{0}{1}" : String | semmle.label | "{0}{1}" : String |
-| FormatMissingArgument.cs:37:13:37:20 | access to local variable format23 : CompositeFormat | semmle.label | access to local variable format23 : CompositeFormat |
-| FormatMissingArgument.cs:37:24:37:54 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
-| FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" | semmle.label | "{2}{3}" |
-| FormatMissingArgument.cs:37:46:37:53 | "{2}{3}" : String | semmle.label | "{2}{3}" : String |
-| FormatMissingArgument.cs:40:37:40:43 | access to local variable format0 | semmle.label | access to local variable format0 |
-| FormatMissingArgument.cs:43:37:43:43 | access to local variable format1 | semmle.label | access to local variable format1 |
-| FormatMissingArgument.cs:46:45:46:52 | access to local variable format01 | semmle.label | access to local variable format01 |
-| FormatMissingArgument.cs:49:45:49:52 | access to local variable format23 | semmle.label | access to local variable format23 |
-| FormatMissingArgument.cs:53:31:53:37 | access to local variable format0 | semmle.label | access to local variable format0 |
-| FormatMissingArgument.cs:54:39:54:45 | access to local variable format0 | semmle.label | access to local variable format0 |
-| FormatMissingArgument.cs:57:31:57:37 | access to local variable format1 | semmle.label | access to local variable format1 |
-| FormatMissingArgument.cs:58:39:58:45 | access to local variable format1 | semmle.label | access to local variable format1 |
-| FormatMissingArgument.cs:61:47:61:54 | access to local variable format01 | semmle.label | access to local variable format01 |
-| FormatMissingArgument.cs:64:47:64:54 | access to local variable format23 | semmle.label | access to local variable format23 |
-| FormatMissingArgument.cs:70:29:70:35 | access to local variable format0 | semmle.label | access to local variable format0 |
-| FormatMissingArgument.cs:71:37:71:43 | access to local variable format0 | semmle.label | access to local variable format0 |
-| FormatMissingArgument.cs:74:29:74:35 | access to local variable format1 | semmle.label | access to local variable format1 |
-| FormatMissingArgument.cs:75:37:75:43 | access to local variable format1 | semmle.label | access to local variable format1 |
-| FormatMissingArgument.cs:78:45:78:52 | access to local variable format01 | semmle.label | access to local variable format01 |
-| FormatMissingArgument.cs:81:45:81:52 | access to local variable format23 | semmle.label | access to local variable format23 |
+| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
+| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | semmle.label | "{0} {1} {2}" |
+| FormatMissingArgument.cs:24:23:24:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
+| FormatMissingArgument.cs:24:23:24:39 | "{0} {1} {2} {3}" | semmle.label | "{0} {1} {2} {3}" |
+| FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | semmle.label | "{1}" : String |
+| FormatMissingArgument.cs:26:16:26:20 | "{1}" : String | semmle.label | "{1}" : String |
+| FormatMissingArgument.cs:29:24:29:29 | format : String | semmle.label | format : String |
+| FormatMissingArgument.cs:29:24:29:29 | format : String | semmle.label | format : String |
+| FormatMissingArgument.cs:32:23:32:28 | access to parameter format | semmle.label | access to parameter format |
+| FormatMissingArgument.cs:32:23:32:28 | access to parameter format | semmle.label | access to parameter format |
+| FormatMissingArgument.cs:37:13:37:19 | access to local variable format0 : CompositeFormat | semmle.label | access to local variable format0 : CompositeFormat |
+| FormatMissingArgument.cs:37:23:37:50 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
+| FormatMissingArgument.cs:37:45:37:49 | "{0}" | semmle.label | "{0}" |
+| FormatMissingArgument.cs:37:45:37:49 | "{0}" : String | semmle.label | "{0}" : String |
+| FormatMissingArgument.cs:38:13:38:19 | access to local variable format1 : CompositeFormat | semmle.label | access to local variable format1 : CompositeFormat |
+| FormatMissingArgument.cs:38:23:38:50 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
+| FormatMissingArgument.cs:38:45:38:49 | "{1}" | semmle.label | "{1}" |
+| FormatMissingArgument.cs:38:45:38:49 | "{1}" : String | semmle.label | "{1}" : String |
+| FormatMissingArgument.cs:39:13:39:20 | access to local variable format01 : CompositeFormat | semmle.label | access to local variable format01 : CompositeFormat |
+| FormatMissingArgument.cs:39:24:39:54 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
+| FormatMissingArgument.cs:39:46:39:53 | "{0}{1}" | semmle.label | "{0}{1}" |
+| FormatMissingArgument.cs:39:46:39:53 | "{0}{1}" : String | semmle.label | "{0}{1}" : String |
+| FormatMissingArgument.cs:40:13:40:20 | access to local variable format23 : CompositeFormat | semmle.label | access to local variable format23 : CompositeFormat |
+| FormatMissingArgument.cs:40:24:40:54 | call to method Parse : CompositeFormat | semmle.label | call to method Parse : CompositeFormat |
+| FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" | semmle.label | "{2}{3}" |
+| FormatMissingArgument.cs:40:46:40:53 | "{2}{3}" : String | semmle.label | "{2}{3}" : String |
+| FormatMissingArgument.cs:43:37:43:43 | access to local variable format0 | semmle.label | access to local variable format0 |
+| FormatMissingArgument.cs:46:37:46:43 | access to local variable format1 | semmle.label | access to local variable format1 |
+| FormatMissingArgument.cs:49:45:49:52 | access to local variable format01 | semmle.label | access to local variable format01 |
+| FormatMissingArgument.cs:52:45:52:52 | access to local variable format23 | semmle.label | access to local variable format23 |
+| FormatMissingArgument.cs:56:31:56:37 | access to local variable format0 | semmle.label | access to local variable format0 |
+| FormatMissingArgument.cs:57:39:57:45 | access to local variable format0 | semmle.label | access to local variable format0 |
+| FormatMissingArgument.cs:60:31:60:37 | access to local variable format1 | semmle.label | access to local variable format1 |
+| FormatMissingArgument.cs:61:39:61:45 | access to local variable format1 | semmle.label | access to local variable format1 |
+| FormatMissingArgument.cs:64:47:64:54 | access to local variable format01 | semmle.label | access to local variable format01 |
+| FormatMissingArgument.cs:67:47:67:54 | access to local variable format23 | semmle.label | access to local variable format23 |
+| FormatMissingArgument.cs:73:29:73:35 | access to local variable format0 | semmle.label | access to local variable format0 |
+| FormatMissingArgument.cs:74:37:74:43 | access to local variable format0 | semmle.label | access to local variable format0 |
+| FormatMissingArgument.cs:77:29:77:35 | access to local variable format1 | semmle.label | access to local variable format1 |
+| FormatMissingArgument.cs:78:37:78:43 | access to local variable format1 | semmle.label | access to local variable format1 |
+| FormatMissingArgument.cs:81:45:81:52 | access to local variable format01 | semmle.label | access to local variable format01 |
+| FormatMissingArgument.cs:84:45:84:52 | access to local variable format23 | semmle.label | access to local variable format23 |
 | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
 | FormatMissingArgumentBad.cs:7:27:7:41 | "Hello {0} {1}" | semmle.label | "Hello {0} {1}" |
 | FormatMissingArgumentBad.cs:8:27:8:41 | "Hello {1} {2}" | semmle.label | "Hello {1} {2}" |
@@ -397,3 +401,7 @@ nodes
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
 subpaths
+testFailures
+| FormatMissingArgument.cs:21:9:21:47 | FormatMissingArgument.cs:21:23:21:35 | Unexpected result: Alert |
+| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Unexpected result: Alert |
+| FormatMissingArgument.cs:21:23:21:35 | "{0} {1} {2}" | Unexpected result: Sink |
