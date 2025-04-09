@@ -544,6 +544,10 @@ class TypeNameNode extends ExprNode {
 
   predicate isQualified() { n.isQualified() }
 
+  predicate hasQualifiedName(string namespace, string typename) {
+    n.hasQualifiedName(namespace, typename)
+  }
+
   string getNamespace() { result = n.getNamespace() }
 
   string getPossiblyQualifiedName() { result = n.getPossiblyQualifiedName() }
@@ -554,4 +558,13 @@ class QualifiedTypeNameNode extends TypeNameNode {
   override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode n;
 
   final override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode getExprNode() { result = n }
+}
+
+/** A use of an automatic variable, viewed as a node in a data flow graph. */
+class AutomaticVariableNode extends ExprNode {
+  override CfgNodes::ExprNodes::AutomaticVariableCfgNode n;
+
+  final override CfgNodes::ExprNodes::AutomaticVariableCfgNode getExprNode() { result = n }
+
+  string getName() { result = n.getName() }
 }

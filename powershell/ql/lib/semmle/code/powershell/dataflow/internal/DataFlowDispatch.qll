@@ -242,6 +242,12 @@ class AdditionalCallTarget extends Unit {
   abstract DataFlowCallable viableTarget(CfgNodes::ExprNodes::CallExprCfgNode call);
 }
 
+DataFlowCallable viableSourceCallable(DataFlowCall call) {
+  result.asCfgScope() = getTargetInstance(call.asCall())
+  or
+  result = any(AdditionalCallTarget t).viableTarget(call.asCall())
+}
+
 /** Holds if `call` may resolve to the returned summarized library method. */
 DataFlowCallable viableLibraryCallable(DataFlowCall call) {
   exists(LibraryCallable callable |
@@ -269,13 +275,13 @@ private module Cached {
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result.asCfgScope() = getTargetInstance(call.asCall())
+    result = viableSourceCallable(call)
     or
-    result = any(AdditionalCallTarget t).viableTarget(call.asCall())
+    result = viableLibraryCallable(call)
   }
 
   cached
-  CfgScope getTarget(DataFlowCall call) { result = viableCallable(call).asCfgScope() }
+  CfgScope getTarget(DataFlowCall call) { result = viableSourceCallable(call).asCfgScope() }
 
   cached
   newtype TArgumentPosition =

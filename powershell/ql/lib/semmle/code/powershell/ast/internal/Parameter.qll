@@ -34,23 +34,49 @@ class Parameter extends Variable instanceof ParameterImpl {
 
 class ThisParameter extends Parameter instanceof ThisParameterImpl { }
 
-class PipelineParameter extends Parameter {
-  PipelineParameter() { any(Synthesis s).isPipelineParameter(this) }
+/** The pipeline parameter of a function. */
+class PipelineParameter extends Parameter instanceof PipelineParameterImpl {
+  ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
 }
 
-class PipelineByPropertyNameParameter extends Parameter {
-  PipelineByPropertyNameParameter() {
-    exists(NamedAttributeArgument namedAttribute |
-      this.getAnAttribute().(Attribute).getANamedArgument() = namedAttribute and
-      namedAttribute.getName().toLowerCase() = "valuefrompipelinebypropertyname"
-    |
-      namedAttribute.getValue().getValue().asBoolean() = true
-      or
-      not exists(namedAttribute.getValue().getValue().asBoolean())
-    )
-  }
+/**
+ * The iterator variable associated with a pipeline parameter.
+ * 
+ * This is the variable that is bound to the current element in the pipeline.
+ */
+class PipelineIteratorVariable extends Variable instanceof PipelineIteratorVariableImpl {
+  ProcessBlock getProcessBlock() { result = super.getProcessBlock() }
+}
 
-  string getPropertyName() { result = this.getName() }
+/**
+ * A pipeline-by-property-name parameter of a function.
+ */
+class PipelineByPropertyNameParameter extends Parameter instanceof PipelineByPropertyNameParameterImpl
+{
+  ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
 
+  string getPropertyName() { result = super.getName() }
+
+  /**
+   * Gets the iterator variable that is used to iterate over the elements in the pipeline.
+   */
   PipelineByPropertyNameIteratorVariable getIteratorVariable() { result.getParameter() = this }
+}
+
+/**
+ * The iterator variable associated with a pipeline-by-property-name parameter.
+ * 
+ * This is the variable that is bound to the current element in the pipeline.
+ */
+class PipelineByPropertyNameIteratorVariable extends Variable instanceof PipelineByPropertyNameIteratorVariableImpl
+{
+  ProcessBlock getProcessBlock() { result = super.getProcessBlock() }
+
+  string getPropertyName() { result = super.getPropertyName() }
+
+  /**
+   * Gets the pipeline-by-property-name parameter that this variable
+   * iterates over.
+   */
+  PipelineByPropertyNameParameter getParameter() { result = super.getParameter() }
 }

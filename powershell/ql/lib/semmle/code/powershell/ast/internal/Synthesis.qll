@@ -23,7 +23,6 @@ private import AutomaticVariable
 newtype VarKind =
   ThisVarKind() or
   ParamVarRealKind() or
-  ParamVarPipelineKind() or
   PipelineIteratorKind() or
   PipelineByPropertyNameIteratorKind(string name) {
     exists(Raw::ProcessBlock pb |
@@ -78,9 +77,7 @@ class Synthesis extends TSynthesis {
 
   predicate parameterStaticType(Parameter p, string type) { none() }
 
-  predicate isPipelineParameter(Parameter p) { none() }
-
-  predicate pipelineParameterHasIndex(ScriptBlock s, int i) { none() }
+  predicate pipelineParameterHasIndex(Raw::ScriptBlock s, int i) { none() }
 
   predicate functionName(FunctionBase f, string name) { none() }
 
@@ -167,33 +164,28 @@ private module SetVariableAssignment {
   }
 }
 
+/** Gets the pipeline parameter associated with `s`. */
+TVariable getPipelineParameter(Raw::ScriptBlock s) {
+  exists(ChildIndex i |
+    any(ParameterSynth::ParameterSynth ps).isPipelineParameterChild(s, _, i, _, _) and
+    result = TVariableSynth(s, i)
+  )
+}
+
 /**
  * Syntesize parameters from parameter blocks and function definitions
  * so that they have a uniform API.
  */
 private module ParameterSynth {
-  private class ParameterSynth extends Synthesis {
+  class ParameterSynth extends Synthesis {
     final override predicate isRelevant(Raw::Ast a) { a = any(Scope::Range r).getAParameter() }
 
-    private predicate parameter(
-      Raw::Ast parent, ChildIndex i, Raw::Parameter p, Child child, boolean isPipelineParameter
-    ) {
+    private predicate parameter(Raw::Ast parent, ChildIndex i, Raw::Parameter p, Child child) {
       exists(Scope::Range r, int index |
         p = r.getParameter(index) and
         parent = r and
         i = funParam(index) and
-        child = SynthChild(VarSynthKind(ParamVarRealKind())) and
-        if p instanceof Raw::PipelineParameter
-        then isPipelineParameter = true
-        else isPipelineParameter = false
-      )
-    }
-
-    final override predicate isPipelineParameter(Parameter p) {
-      exists(Raw::Ast parent, ChildIndex i |
-        parent = getRawAst(p.getFunction().getBody()) and
-        this.isPipelineParameterChild(parent, _, i) and
-        p = TVariableSynth(parent, i)
+        child = SynthChild(VarSynthKind(ParamVarRealKind()))
       )
     }
 
@@ -205,47 +197,49 @@ private module ParameterSynth {
     }
 
     final override predicate variableSynthName(VariableSynth v, string name) {
-      exists(Raw::Ast parent, int i, Raw::Parameter p |
-        this.parameter(parent, FunParam(i), p, _, false) and
-        v = TVariableSynth(parent, FunParam(i)) and
-        name = p.getName()
-      )
-      or
-      exists(Raw::Ast parent |
-        this.child(parent, PipelineParamVar(), _) and
-        v = TVariableSynth(parent, PipelineParamVar()) and
+      exists(Raw::Ast parent, ChildIndex i | v = TVariableSynth(parent, i) |
+        exists(Raw::Parameter p |
+          this.parameter(parent, i, p, _) and
+          name = p.getName()
+        )
+        or
+        this.isPipelineParameterChild(parent, _, i, _, true) and
         name = "[synth] pipeline"
       )
     }
 
-    private predicate isPipelineParameterChild(Raw::Ast parent, int index, ChildIndex i) {
-      exists(Scope::Range r | parent = r and i = PipelineParamVar() |
-        r.getParameter(index) instanceof Raw::PipelineParameter
+    predicate isPipelineParameterChild(
+      Raw::Ast parent, int index, ChildIndex i, Child child, boolean synthesized
+    ) {
+      exists(Scope::Range r |
+        parent = r and
+        i = funParam(index) and
+        child = SynthChild(VarSynthKind(ParamVarRealKind()))
+      |
+        r.getParameter(index) instanceof Raw::PipelineParameter and
+        synthesized = false
         or
         not r.getAParameter() instanceof Raw::PipelineParameter and
-        index = synthPipelineParameterChildIndex(r)
+        index = synthPipelineParameterChildIndex(r) and
+        synthesized = true
       )
     }
 
-    final override predicate pipelineParameterHasIndex(ScriptBlock s, int i) {
-      exists(Raw::ScriptBlock scriptBlock |
-        s = TScriptBlock(scriptBlock) and
-        this.isPipelineParameterChild(scriptBlock, i, _)
-      )
+    final override predicate pipelineParameterHasIndex(Raw::ScriptBlock s, int i) {
+      this.isPipelineParameterChild(s, i, _, _, _)
     }
 
     final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
       // Synthesize parameters
-      this.parameter(parent, i, _, child, false)
+      this.parameter(parent, i, _, child)
       or
-      // Synthesize pipeline parameter
-      child = SynthChild(VarSynthKind(ParamVarPipelineKind())) and
-      this.isPipelineParameterChild(parent, _, i)
+      // Synthesize implicit pipeline parameter, if necessary
+      this.isPipelineParameterChild(parent, _, i, child, true)
       or
       // Synthesize default values
       exists(Raw::Parameter q |
         parent = q and
-        this.parameter(_, _, q, _, _)
+        this.parameter(_, _, q, _)
       |
         i = paramDefaultVal() and
         child = childRef(getResultAst(q.getDefaultValue()))
@@ -258,30 +252,30 @@ private module ParameterSynth {
     }
 
     final override Parameter getResultAstImpl(Raw::Ast r) {
-      exists(Raw::Ast parent, int i |
-        this.parameter(parent, FunParam(i), r, _, false) and
-        result = TVariableSynth(parent, FunParam(i))
-      )
-      or
-      exists(Scope::Range scope, int i, ChildIndex index |
-        scope.getParameter(i) = r and
-        this.isPipelineParameterChild(scope, i, index) and
-        result = TVariableSynth(scope, index)
+      exists(Raw::Ast parent, ChildIndex i |
+        this.parameter(parent, i, r, _) and
+        result = TVariableSynth(parent, i)
       )
     }
 
     final override Location getLocation(Ast n) {
-      exists(Raw::Ast parent, Raw::Parameter p, int i |
-        this.parameter(parent, _, p, _, _) and
-        n = TVariableSynth(parent, FunParam(i)) and
-        result = p.getLocation()
+      exists(Raw::Ast parent, ChildIndex i | n = TVariableSynth(parent, i) |
+        exists(Raw::Parameter p |
+          this.parameter(parent, i, p, _) and
+          result = p.getLocation()
+        )
+        or
+        this.isPipelineParameterChild(parent, _, i, _, true) and
+        result = parent.getLocation()
       )
     }
 
     final override predicate parameterStaticType(Parameter n, string type) {
-      exists(Raw::Ast parent, int i, Raw::Parameter p |
-        this.parameter(parent, FunParam(i), p, _, false) and
-        n = TVariableSynth(parent, FunParam(i)) and
+      exists(Raw::Ast parent, Raw::Parameter p, ChildIndex i |
+        // No need to consider the synthesized pipeline parameter as it never
+        // has a static type.
+        this.parameter(parent, i, p, _) and
+        n = TVariableSynth(parent, i) and
         type = p.getStaticType()
       )
     }
@@ -439,6 +433,11 @@ private module FunctionSynth {
       exists(Raw::FunctionDefinitionStmt fundefStmt |
         n = TFunctionSynth(fundefStmt, _) and
         result = fundefStmt.getLocation()
+      )
+      or
+      exists(Raw::TopLevelScriptBlock topLevelScriptBlock |
+        n = TTopLevelFunction(topLevelScriptBlock) and
+        result = topLevelScriptBlock.getLocation()
       )
     }
   }
@@ -857,8 +856,10 @@ private module IteratorAccessSynth {
         result = cmdExpr.getLocation()
       )
       or
-      exists(Raw::Ast parent |
-        n = TVariableSynth(parent, _) and
+      exists(Raw::Ast parent, ChildIndex i |
+        i instanceof PipelineIteratorVar or i instanceof PipelineByPropertyNameIteratorVar
+      |
+        n = TVariableSynth(parent, i) and
         result = parent.getLocation()
       )
     }
@@ -870,12 +871,12 @@ private module PipelineAccess {
     final override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
       exists(Raw::ProcessBlock pb | parent = pb |
         i = processBlockPipelineVarReadAccess() and
-        exists(PipelineVariable pipelineVar |
-          pipelineVar = TVariableSynth(pb.getScriptBlock(), PipelineParamVar()) and
+        exists(PipelineParameter pipelineVar |
+          pipelineVar = getPipelineParameter(pb.getScriptBlock()) and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )
         or
-        exists(PipelineByPropertyNameVariable pipelineVar, Raw::PipelineByPropertyNameParameter p |
+        exists(PipelineByPropertyNameParameter pipelineVar, Raw::PipelineByPropertyNameParameter p |
           i = processBlockPipelineByPropertyNameVarReadAccess(p.getName()) and
           getResultAst(p) = pipelineVar and
           child = SynthChild(VarAccessSynthKind(pipelineVar))

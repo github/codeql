@@ -32,8 +32,6 @@ newtype ChildIndex =
     // hasMemberInType(_, _, i, _)
   } or
   ThisVar() or
-  PipelineParamVar() or
-  PipelineByPropertyNameVar(Raw::PipelineByPropertyNameParameter p) or
   PipelineIteratorVar() or
   PipelineByPropertyNameIteratorVar(Raw::PipelineByPropertyNameParameter p) or
   RealVar(string name) { name = variableNameInScope(_, _) } or
@@ -84,9 +82,6 @@ string stringOfChildIndex(ChildIndex i) {
   or
   i = ThisVar() and
   result = "ThisVar"
-  or
-  i = PipelineParamVar() and
-  result = "PipelineParamVar"
   or
   i = PipelineIteratorVar() and
   result = "PipelineIteratorVar"

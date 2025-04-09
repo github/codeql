@@ -6,9 +6,9 @@
 | conditionals.ps1:1:18:9:1 | [synth] pipeline | conditionals.ps1:2:5:8:13 | {...} |  |
 | conditionals.ps1:1:18:9:1 | enter {...} | conditionals.ps1:1:18:9:1 | {...} |  |
 | conditionals.ps1:1:18:9:1 | exit {...} (normal) | conditionals.ps1:1:18:9:1 | exit {...} |  |
-| conditionals.ps1:1:18:9:1 | myBool | conditionals.ps1:1:18:9:1 | [synth] pipeline |  |
-| conditionals.ps1:1:18:9:1 | {...} | conditionals.ps1:1:18:9:1 | myBool |  |
+| conditionals.ps1:1:18:9:1 | {...} | conditionals.ps1:2:11:2:17 | myBool |  |
 | conditionals.ps1:2:5:8:13 | {...} | conditionals.ps1:4:5:7:5 | [Stmt] if (...) {...} |  |
+| conditionals.ps1:2:11:2:17 | myBool | conditionals.ps1:1:18:9:1 | [synth] pipeline |  |
 | conditionals.ps1:4:5:7:5 | [Stmt] if (...) {...} | conditionals.ps1:4:8:4:14 | myBool |  |
 | conditionals.ps1:4:5:7:5 | if (...) {...} | conditionals.ps1:8:5:8:13 | return ... |  |
 | conditionals.ps1:4:8:4:14 | myBool | conditionals.ps1:4:5:7:5 | if (...) {...} | false |
@@ -22,9 +22,9 @@
 | conditionals.ps1:11:23:22:1 | [synth] pipeline | conditionals.ps1:12:5:21:5 | {...} |  |
 | conditionals.ps1:11:23:22:1 | enter {...} | conditionals.ps1:11:23:22:1 | {...} |  |
 | conditionals.ps1:11:23:22:1 | exit {...} (normal) | conditionals.ps1:11:23:22:1 | exit {...} |  |
-| conditionals.ps1:11:23:22:1 | myBool | conditionals.ps1:11:23:22:1 | [synth] pipeline |  |
-| conditionals.ps1:11:23:22:1 | {...} | conditionals.ps1:11:23:22:1 | myBool |  |
+| conditionals.ps1:11:23:22:1 | {...} | conditionals.ps1:12:11:12:17 | myBool |  |
 | conditionals.ps1:12:5:21:5 | {...} | conditionals.ps1:14:5:21:5 | [Stmt] if (...) {...} else {...} |  |
+| conditionals.ps1:12:11:12:17 | myBool | conditionals.ps1:11:23:22:1 | [synth] pipeline |  |
 | conditionals.ps1:14:5:21:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:14:8:14:14 | myBool |  |
 | conditionals.ps1:14:5:21:5 | if (...) {...} else {...} | conditionals.ps1:11:23:22:1 | exit {...} (normal) |  |
 | conditionals.ps1:14:8:14:14 | myBool | conditionals.ps1:15:5:17:5 | {...} | true |
@@ -39,10 +39,10 @@
 | conditionals.ps1:24:23:32:1 | [synth] pipeline | conditionals.ps1:25:5:31:13 | {...} |  |
 | conditionals.ps1:24:23:32:1 | enter {...} | conditionals.ps1:24:23:32:1 | {...} |  |
 | conditionals.ps1:24:23:32:1 | exit {...} (normal) | conditionals.ps1:24:23:32:1 | exit {...} |  |
-| conditionals.ps1:24:23:32:1 | myBool1 | conditionals.ps1:24:23:32:1 | myBool2 |  |
-| conditionals.ps1:24:23:32:1 | myBool2 | conditionals.ps1:24:23:32:1 | [synth] pipeline |  |
-| conditionals.ps1:24:23:32:1 | {...} | conditionals.ps1:24:23:32:1 | myBool1 |  |
+| conditionals.ps1:24:23:32:1 | {...} | conditionals.ps1:25:11:25:18 | myBool1 |  |
 | conditionals.ps1:25:5:31:13 | {...} | conditionals.ps1:27:5:30:5 | [Stmt] if (...) {...} |  |
+| conditionals.ps1:25:11:25:18 | myBool1 | conditionals.ps1:25:21:25:28 | myBool2 |  |
+| conditionals.ps1:25:21:25:28 | myBool2 | conditionals.ps1:24:23:32:1 | [synth] pipeline |  |
 | conditionals.ps1:27:5:30:5 | [Stmt] if (...) {...} | conditionals.ps1:27:8:27:15 | myBool1 |  |
 | conditionals.ps1:27:5:30:5 | if (...) {...} | conditionals.ps1:31:5:31:13 | return ... |  |
 | conditionals.ps1:27:8:27:15 | myBool1 | conditionals.ps1:27:22:27:29 | myBool2 | false, true |
@@ -59,10 +59,10 @@
 | conditionals.ps1:34:28:45:1 | [synth] pipeline | conditionals.ps1:35:5:44:5 | {...} |  |
 | conditionals.ps1:34:28:45:1 | enter {...} | conditionals.ps1:34:28:45:1 | {...} |  |
 | conditionals.ps1:34:28:45:1 | exit {...} (normal) | conditionals.ps1:34:28:45:1 | exit {...} |  |
-| conditionals.ps1:34:28:45:1 | myBool1 | conditionals.ps1:34:28:45:1 | myBool2 |  |
-| conditionals.ps1:34:28:45:1 | myBool2 | conditionals.ps1:34:28:45:1 | [synth] pipeline |  |
-| conditionals.ps1:34:28:45:1 | {...} | conditionals.ps1:34:28:45:1 | myBool1 |  |
+| conditionals.ps1:34:28:45:1 | {...} | conditionals.ps1:35:11:35:18 | myBool1 |  |
 | conditionals.ps1:35:5:44:5 | {...} | conditionals.ps1:37:5:44:5 | [Stmt] if (...) {...} else {...} |  |
+| conditionals.ps1:35:11:35:18 | myBool1 | conditionals.ps1:35:21:35:28 | myBool2 |  |
+| conditionals.ps1:35:21:35:28 | myBool2 | conditionals.ps1:34:28:45:1 | [synth] pipeline |  |
 | conditionals.ps1:37:5:44:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:37:8:37:15 | myBool1 |  |
 | conditionals.ps1:37:5:44:5 | if (...) {...} else {...} | conditionals.ps1:34:28:45:1 | exit {...} (normal) |  |
 | conditionals.ps1:37:8:37:15 | myBool1 | conditionals.ps1:37:22:37:29 | myBool2 | false, true |
@@ -80,10 +80,10 @@
 | conditionals.ps1:47:23:55:1 | [synth] pipeline | conditionals.ps1:48:5:54:13 | {...} |  |
 | conditionals.ps1:47:23:55:1 | enter {...} | conditionals.ps1:47:23:55:1 | {...} |  |
 | conditionals.ps1:47:23:55:1 | exit {...} (normal) | conditionals.ps1:47:23:55:1 | exit {...} |  |
-| conditionals.ps1:47:23:55:1 | myBool1 | conditionals.ps1:47:23:55:1 | myBool2 |  |
-| conditionals.ps1:47:23:55:1 | myBool2 | conditionals.ps1:47:23:55:1 | [synth] pipeline |  |
-| conditionals.ps1:47:23:55:1 | {...} | conditionals.ps1:47:23:55:1 | myBool1 |  |
+| conditionals.ps1:47:23:55:1 | {...} | conditionals.ps1:48:11:48:18 | myBool1 |  |
 | conditionals.ps1:48:5:54:13 | {...} | conditionals.ps1:50:5:53:5 | [Stmt] if (...) {...} |  |
+| conditionals.ps1:48:11:48:18 | myBool1 | conditionals.ps1:48:21:48:28 | myBool2 |  |
+| conditionals.ps1:48:21:48:28 | myBool2 | conditionals.ps1:47:23:55:1 | [synth] pipeline |  |
 | conditionals.ps1:50:5:53:5 | [Stmt] if (...) {...} | conditionals.ps1:50:8:50:15 | myBool1 |  |
 | conditionals.ps1:50:5:53:5 | if (...) {...} | conditionals.ps1:54:5:54:13 | return ... |  |
 | conditionals.ps1:50:8:50:15 | myBool1 | conditionals.ps1:50:21:50:28 | myBool2 | false, true |
@@ -100,10 +100,10 @@
 | conditionals.ps1:57:28:68:1 | [synth] pipeline | conditionals.ps1:58:5:67:5 | {...} |  |
 | conditionals.ps1:57:28:68:1 | enter {...} | conditionals.ps1:57:28:68:1 | {...} |  |
 | conditionals.ps1:57:28:68:1 | exit {...} (normal) | conditionals.ps1:57:28:68:1 | exit {...} |  |
-| conditionals.ps1:57:28:68:1 | myBool1 | conditionals.ps1:57:28:68:1 | myBool2 |  |
-| conditionals.ps1:57:28:68:1 | myBool2 | conditionals.ps1:57:28:68:1 | [synth] pipeline |  |
-| conditionals.ps1:57:28:68:1 | {...} | conditionals.ps1:57:28:68:1 | myBool1 |  |
+| conditionals.ps1:57:28:68:1 | {...} | conditionals.ps1:58:11:58:18 | myBool1 |  |
 | conditionals.ps1:58:5:67:5 | {...} | conditionals.ps1:60:5:67:5 | [Stmt] if (...) {...} else {...} |  |
+| conditionals.ps1:58:11:58:18 | myBool1 | conditionals.ps1:58:21:58:28 | myBool2 |  |
+| conditionals.ps1:58:21:58:28 | myBool2 | conditionals.ps1:57:28:68:1 | [synth] pipeline |  |
 | conditionals.ps1:60:5:67:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:60:8:60:15 | myBool1 |  |
 | conditionals.ps1:60:5:67:5 | if (...) {...} else {...} | conditionals.ps1:57:28:68:1 | exit {...} (normal) |  |
 | conditionals.ps1:60:8:60:15 | myBool1 | conditionals.ps1:60:21:60:28 | myBool2 | false, true |
@@ -121,10 +121,10 @@
 | conditionals.ps1:70:23:82:1 | [synth] pipeline | conditionals.ps1:71:5:81:13 | {...} |  |
 | conditionals.ps1:70:23:82:1 | enter {...} | conditionals.ps1:70:23:82:1 | {...} |  |
 | conditionals.ps1:70:23:82:1 | exit {...} (normal) | conditionals.ps1:70:23:82:1 | exit {...} |  |
-| conditionals.ps1:70:23:82:1 | myBool1 | conditionals.ps1:70:23:82:1 | myBool2 |  |
-| conditionals.ps1:70:23:82:1 | myBool2 | conditionals.ps1:70:23:82:1 | [synth] pipeline |  |
-| conditionals.ps1:70:23:82:1 | {...} | conditionals.ps1:70:23:82:1 | myBool1 |  |
+| conditionals.ps1:70:23:82:1 | {...} | conditionals.ps1:71:11:71:18 | myBool1 |  |
 | conditionals.ps1:71:5:81:13 | {...} | conditionals.ps1:73:5:80:5 | [Stmt] if (...) {...} |  |
+| conditionals.ps1:71:11:71:18 | myBool1 | conditionals.ps1:71:21:71:28 | myBool2 |  |
+| conditionals.ps1:71:21:71:28 | myBool2 | conditionals.ps1:70:23:82:1 | [synth] pipeline |  |
 | conditionals.ps1:73:5:80:5 | [Stmt] if (...) {...} | conditionals.ps1:73:8:73:15 | myBool1 |  |
 | conditionals.ps1:73:5:80:5 | if (...) {...} | conditionals.ps1:81:5:81:13 | return ... |  |
 | conditionals.ps1:73:8:73:15 | myBool1 | conditionals.ps1:73:5:80:5 | if (...) {...} | false |
@@ -138,10 +138,10 @@
 | conditionals.ps1:84:28:99:1 | [synth] pipeline | conditionals.ps1:85:5:98:5 | {...} |  |
 | conditionals.ps1:84:28:99:1 | enter {...} | conditionals.ps1:84:28:99:1 | {...} |  |
 | conditionals.ps1:84:28:99:1 | exit {...} (normal) | conditionals.ps1:84:28:99:1 | exit {...} |  |
-| conditionals.ps1:84:28:99:1 | myBool1 | conditionals.ps1:84:28:99:1 | myBool2 |  |
-| conditionals.ps1:84:28:99:1 | myBool2 | conditionals.ps1:84:28:99:1 | [synth] pipeline |  |
-| conditionals.ps1:84:28:99:1 | {...} | conditionals.ps1:84:28:99:1 | myBool1 |  |
+| conditionals.ps1:84:28:99:1 | {...} | conditionals.ps1:85:11:85:18 | myBool1 |  |
 | conditionals.ps1:85:5:98:5 | {...} | conditionals.ps1:87:5:98:5 | [Stmt] if (...) {...} else {...} |  |
+| conditionals.ps1:85:11:85:18 | myBool1 | conditionals.ps1:85:21:85:28 | myBool2 |  |
+| conditionals.ps1:85:21:85:28 | myBool2 | conditionals.ps1:84:28:99:1 | [synth] pipeline |  |
 | conditionals.ps1:87:5:98:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:87:8:87:15 | myBool1 |  |
 | conditionals.ps1:87:5:98:5 | if (...) {...} else {...} | conditionals.ps1:84:28:99:1 | exit {...} (normal) |  |
 | conditionals.ps1:87:8:87:15 | myBool1 | conditionals.ps1:88:5:90:5 | {...} | true |
@@ -153,11 +153,11 @@
 | conditionals.ps1:97:9:97:17 | return ... | conditionals.ps1:97:16:97:17 | 12 |  |
 | conditionals.ps1:97:16:97:17 | 12 | conditionals.ps1:87:5:98:5 | if (...) {...} else {...} |  |
 | conditionals.ps1:101:1:108:1 | def of test-switch | conditionals.ps1:110:1:121:1 | def of test-switch-default |  |
+| conditionals.ps1:101:22:101:23 | n | conditionals.ps1:101:26:108:1 | [synth] pipeline |  |
 | conditionals.ps1:101:26:108:1 | [synth] pipeline | conditionals.ps1:102:5:107:5 | {...} |  |
 | conditionals.ps1:101:26:108:1 | enter {...} | conditionals.ps1:101:26:108:1 | {...} |  |
 | conditionals.ps1:101:26:108:1 | exit {...} (normal) | conditionals.ps1:101:26:108:1 | exit {...} |  |
-| conditionals.ps1:101:26:108:1 | n | conditionals.ps1:101:26:108:1 | [synth] pipeline |  |
-| conditionals.ps1:101:26:108:1 | {...} | conditionals.ps1:101:26:108:1 | n |  |
+| conditionals.ps1:101:26:108:1 | {...} | conditionals.ps1:101:22:101:23 | n |  |
 | conditionals.ps1:102:5:107:5 | switch(...) {...} | conditionals.ps1:102:12:102:13 | n |  |
 | conditionals.ps1:102:5:107:5 | {...} | conditionals.ps1:102:5:107:5 | switch(...) {...} |  |
 | conditionals.ps1:102:12:102:13 | n | conditionals.ps1:104:9:104:10 | 0: |  |
@@ -177,11 +177,11 @@
 | conditionals.ps1:106:14:106:21 | return ... | conditionals.ps1:106:21:106:21 | 2 |  |
 | conditionals.ps1:106:21:106:21 | 2 | conditionals.ps1:101:26:108:1 | exit {...} (normal) |  |
 | conditionals.ps1:110:1:121:1 | def of test-switch-default | conditionals.ps1:123:1:129:1 | def of test-switch-assign |  |
+| conditionals.ps1:110:30:110:31 | n | conditionals.ps1:110:34:121:1 | [synth] pipeline |  |
 | conditionals.ps1:110:34:121:1 | [synth] pipeline | conditionals.ps1:111:5:120:5 | {...} |  |
 | conditionals.ps1:110:34:121:1 | enter {...} | conditionals.ps1:110:34:121:1 | {...} |  |
 | conditionals.ps1:110:34:121:1 | exit {...} (normal) | conditionals.ps1:110:34:121:1 | exit {...} |  |
-| conditionals.ps1:110:34:121:1 | n | conditionals.ps1:110:34:121:1 | [synth] pipeline |  |
-| conditionals.ps1:110:34:121:1 | {...} | conditionals.ps1:110:34:121:1 | n |  |
+| conditionals.ps1:110:34:121:1 | {...} | conditionals.ps1:110:30:110:31 | n |  |
 | conditionals.ps1:111:5:120:5 | switch(...) {...} | conditionals.ps1:111:12:111:13 | n |  |
 | conditionals.ps1:111:5:120:5 | {...} | conditionals.ps1:111:5:120:5 | switch(...) {...} |  |
 | conditionals.ps1:111:12:111:13 | n | conditionals.ps1:113:9:113:10 | 0: |  |
@@ -210,11 +210,11 @@
 | conditionals.ps1:118:13:118:20 | return ... | conditionals.ps1:118:20:118:20 | 3 |  |
 | conditionals.ps1:118:20:118:20 | 3 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
 | conditionals.ps1:123:1:129:1 | def of test-switch-assign | conditionals.ps1:1:1:129:1 | exit {...} (normal) |  |
+| conditionals.ps1:123:29:123:30 | n | conditionals.ps1:123:33:129:1 | [synth] pipeline |  |
 | conditionals.ps1:123:33:129:1 | [synth] pipeline | conditionals.ps1:124:5:128:5 | {...} |  |
 | conditionals.ps1:123:33:129:1 | enter {...} | conditionals.ps1:123:33:129:1 | {...} |  |
 | conditionals.ps1:123:33:129:1 | exit {...} (normal) | conditionals.ps1:123:33:129:1 | exit {...} |  |
-| conditionals.ps1:123:33:129:1 | n | conditionals.ps1:123:33:129:1 | [synth] pipeline |  |
-| conditionals.ps1:123:33:129:1 | {...} | conditionals.ps1:123:33:129:1 | n |  |
+| conditionals.ps1:123:33:129:1 | {...} | conditionals.ps1:123:29:123:30 | n |  |
 | conditionals.ps1:124:5:124:6 | a | conditionals.ps1:123:33:129:1 | exit {...} (normal) |  |
 | conditionals.ps1:124:5:128:5 | ...=... | conditionals.ps1:124:5:124:6 | a |  |
 | conditionals.ps1:124:5:128:5 | {...} | conditionals.ps1:124:5:128:5 | ...=... |  |
@@ -226,37 +226,37 @@
 | functions.ps1:1:32:9:1 | [synth] pipeline | functions.ps1:3:5:8:23 | {...} |  |
 | functions.ps1:1:32:9:1 | enter {...} | functions.ps1:1:32:9:1 | {...} |  |
 | functions.ps1:1:32:9:1 | exit {...} (normal) | functions.ps1:1:32:9:1 | exit {...} |  |
-| functions.ps1:1:32:9:1 | number1 | functions.ps1:1:32:9:1 | number2 |  |
-| functions.ps1:1:32:9:1 | number2 | functions.ps1:1:32:9:1 | [synth] pipeline |  |
-| functions.ps1:1:32:9:1 | {...} | functions.ps1:1:32:9:1 | number1 |  |
+| functions.ps1:1:32:9:1 | {...} | functions.ps1:4:9:4:22 | number1 |  |
 | functions.ps1:3:5:8:23 | {...} | functions.ps1:8:5:8:23 | [Stmt] ...+... |  |
+| functions.ps1:4:9:4:22 | number1 | functions.ps1:5:9:5:22 | number2 |  |
+| functions.ps1:5:9:5:22 | number2 | functions.ps1:1:32:9:1 | [synth] pipeline |  |
 | functions.ps1:8:5:8:12 | number1 | functions.ps1:8:16:8:23 | number2 |  |
 | functions.ps1:8:5:8:23 | ...+... | functions.ps1:1:32:9:1 | exit {...} (normal) |  |
 | functions.ps1:8:5:8:23 | [Stmt] ...+... | functions.ps1:8:5:8:12 | number1 |  |
 | functions.ps1:8:16:8:23 | number2 | functions.ps1:8:5:8:23 | ...+... |  |
 | functions.ps1:11:1:11:28 | def of foo | functions.ps1:13:1:20:1 | def of Default-Arguments |  |
 | functions.ps1:11:16:11:28 | [synth] pipeline | functions.ps1:11:18:11:26 | {...} |  |
-| functions.ps1:11:16:11:28 | a | functions.ps1:11:16:11:28 | [synth] pipeline |  |
 | functions.ps1:11:16:11:28 | enter {...} | functions.ps1:11:16:11:28 | {...} |  |
 | functions.ps1:11:16:11:28 | exit {...} (normal) | functions.ps1:11:16:11:28 | exit {...} |  |
-| functions.ps1:11:16:11:28 | {...} | functions.ps1:11:16:11:28 | a |  |
+| functions.ps1:11:16:11:28 | {...} | functions.ps1:11:24:11:25 | a |  |
 | functions.ps1:11:18:11:26 | {...} | functions.ps1:11:16:11:28 | exit {...} (normal) |  |
+| functions.ps1:11:24:11:25 | a | functions.ps1:11:16:11:28 | [synth] pipeline |  |
 | functions.ps1:13:1:20:1 | def of Default-Arguments | functions.ps1:22:1:34:1 | def of Add-Numbers-From-Array |  |
 | functions.ps1:13:28:20:1 | [synth] pipeline | functions.ps1:14:5:19:18 | {...} |  |
 | functions.ps1:13:28:20:1 | enter {...} | functions.ps1:13:28:20:1 | {...} |  |
 | functions.ps1:13:28:20:1 | exit {...} (normal) | functions.ps1:13:28:20:1 | exit {...} |  |
-| functions.ps1:13:28:20:1 | name0 | functions.ps1:13:28:20:1 | name1 |  |
-| functions.ps1:13:28:20:1 | name1 | functions.ps1:13:28:20:1 | name2 |  |
-| functions.ps1:13:28:20:1 | name1 | functions.ps1:16:24:16:24 | 0 |  |
-| functions.ps1:13:28:20:1 | name2 | functions.ps1:13:28:20:1 | [synth] pipeline |  |
-| functions.ps1:13:28:20:1 | name2 | functions.ps1:17:24:17:29 | name1 |  |
 | functions.ps1:13:28:20:1 | {...} | functions.ps1:16:24:16:24 | 0 |  |
 | functions.ps1:14:5:19:18 | {...} | functions.ps1:19:5:19:18 | [Stmt] ...+... |  |
-| functions.ps1:16:24:16:24 | 0 | functions.ps1:13:28:20:1 | name2 |  |
+| functions.ps1:15:9:15:20 | name0 | functions.ps1:16:9:16:24 | name1 |  |
+| functions.ps1:16:9:16:24 | name1 | functions.ps1:16:24:16:24 | 0 |  |
+| functions.ps1:16:9:16:24 | name1 | functions.ps1:17:9:17:33 | name2 |  |
+| functions.ps1:16:24:16:24 | 0 | functions.ps1:17:9:17:33 | name2 |  |
 | functions.ps1:16:24:16:24 | 0 | functions.ps1:17:24:17:29 | name1 |  |
+| functions.ps1:17:9:17:33 | name2 | functions.ps1:13:28:20:1 | [synth] pipeline |  |
+| functions.ps1:17:9:17:33 | name2 | functions.ps1:17:24:17:29 | name1 |  |
 | functions.ps1:17:24:17:29 | name1 | functions.ps1:17:33:17:33 | 1 |  |
 | functions.ps1:17:24:17:33 | ...+... | functions.ps1:13:28:20:1 | [synth] pipeline |  |
-| functions.ps1:17:24:17:33 | ...+... | functions.ps1:13:28:20:1 | name0 |  |
+| functions.ps1:17:24:17:33 | ...+... | functions.ps1:15:9:15:20 | name0 |  |
 | functions.ps1:17:33:17:33 | 1 | functions.ps1:17:24:17:33 | ...+... |  |
 | functions.ps1:19:5:19:18 | ...+... | functions.ps1:13:28:20:1 | exit {...} (normal) |  |
 | functions.ps1:19:5:19:18 | [Stmt] ...+... | functions.ps1:19:13:19:18 | name2 |  |
@@ -265,9 +265,9 @@
 | functions.ps1:22:33:34:1 | [synth] pipeline | functions.ps1:24:5:33:8 | {...} |  |
 | functions.ps1:22:33:34:1 | enter {...} | functions.ps1:22:33:34:1 | {...} |  |
 | functions.ps1:22:33:34:1 | exit {...} (normal) | functions.ps1:22:33:34:1 | exit {...} |  |
-| functions.ps1:22:33:34:1 | numbers | functions.ps1:22:33:34:1 | [synth] pipeline |  |
-| functions.ps1:22:33:34:1 | {...} | functions.ps1:22:33:34:1 | numbers |  |
+| functions.ps1:22:33:34:1 | {...} | functions.ps1:25:9:25:24 | numbers |  |
 | functions.ps1:24:5:33:8 | {...} | functions.ps1:28:5:28:12 | ...=... |  |
+| functions.ps1:25:9:25:24 | numbers | functions.ps1:22:33:34:1 | [synth] pipeline |  |
 | functions.ps1:28:5:28:8 | sum | functions.ps1:28:12:28:12 | 0 |  |
 | functions.ps1:28:5:28:12 | ...=... | functions.ps1:28:5:28:8 | sum |  |
 | functions.ps1:28:12:28:12 | 0 | functions.ps1:29:25:29:32 | numbers |  |
@@ -285,8 +285,8 @@
 | functions.ps1:36:36:52:1 | [synth] pipeline | functions.ps1:41:5:43:5 | {...} |  |
 | functions.ps1:36:36:52:1 | enter {...} | functions.ps1:36:36:52:1 | {...} |  |
 | functions.ps1:36:36:52:1 | exit {...} (normal) | functions.ps1:36:36:52:1 | exit {...} |  |
-| functions.ps1:36:36:52:1 | numbers | functions.ps1:36:36:52:1 | [synth] pipeline |  |
-| functions.ps1:36:36:52:1 | {...} | functions.ps1:36:36:52:1 | numbers |  |
+| functions.ps1:36:36:52:1 | {...} | functions.ps1:39:9:39:24 | numbers |  |
+| functions.ps1:39:9:39:24 | numbers | functions.ps1:36:36:52:1 | [synth] pipeline |  |
 | functions.ps1:41:5:43:5 | {...} | functions.ps1:42:9:42:16 | ...=... |  |
 | functions.ps1:42:9:42:12 | sum | functions.ps1:42:16:42:16 | 0 |  |
 | functions.ps1:42:9:42:16 | ...=... | functions.ps1:42:9:42:12 | sum |  |
@@ -506,11 +506,11 @@
 | try.ps1:7:5:7:12 | return ... | try.ps1:7:12:7:12 | 1 |  |
 | try.ps1:7:12:7:12 | 1 | try.ps1:1:25:8:1 | exit {...} (normal) |  |
 | try.ps1:10:1:19:1 | def of test-try-with-throw-catch | try.ps1:21:1:30:1 | def of test-try-with-throw-catch-with-throw |  |
+| try.ps1:10:36:10:37 | b | try.ps1:10:40:19:1 | [synth] pipeline |  |
 | try.ps1:10:40:19:1 | [synth] pipeline | try.ps1:11:5:18:12 | {...} |  |
-| try.ps1:10:40:19:1 | b | try.ps1:10:40:19:1 | [synth] pipeline |  |
 | try.ps1:10:40:19:1 | enter {...} | try.ps1:10:40:19:1 | {...} |  |
 | try.ps1:10:40:19:1 | exit {...} (normal) | try.ps1:10:40:19:1 | exit {...} |  |
-| try.ps1:10:40:19:1 | {...} | try.ps1:10:40:19:1 | b |  |
+| try.ps1:10:40:19:1 | {...} | try.ps1:10:36:10:37 | b |  |
 | try.ps1:11:5:17:5 | try {...} | try.ps1:11:9:15:5 | {...} |  |
 | try.ps1:11:5:18:12 | {...} | try.ps1:11:5:17:5 | try {...} |  |
 | try.ps1:11:9:15:5 | {...} | try.ps1:12:9:14:9 | [Stmt] if (...) {...} |  |
@@ -524,11 +524,11 @@
 | try.ps1:18:5:18:12 | return ... | try.ps1:18:12:18:12 | 1 |  |
 | try.ps1:18:12:18:12 | 1 | try.ps1:10:40:19:1 | exit {...} (normal) |  |
 | try.ps1:21:1:30:1 | def of test-try-with-throw-catch-with-throw | try.ps1:32:1:41:1 | def of test-try-with-throw-catch-with-rethrow |  |
+| try.ps1:21:47:21:48 | b | try.ps1:21:51:30:1 | [synth] pipeline |  |
 | try.ps1:21:51:30:1 | [synth] pipeline | try.ps1:22:5:29:12 | {...} |  |
-| try.ps1:21:51:30:1 | b | try.ps1:21:51:30:1 | [synth] pipeline |  |
 | try.ps1:21:51:30:1 | enter {...} | try.ps1:21:51:30:1 | {...} |  |
 | try.ps1:21:51:30:1 | exit {...} (normal) | try.ps1:21:51:30:1 | exit {...} |  |
-| try.ps1:21:51:30:1 | {...} | try.ps1:21:51:30:1 | b |  |
+| try.ps1:21:51:30:1 | {...} | try.ps1:21:47:21:48 | b |  |
 | try.ps1:22:5:28:5 | try {...} | try.ps1:22:9:26:5 | {...} |  |
 | try.ps1:22:5:29:12 | {...} | try.ps1:22:5:28:5 | try {...} |  |
 | try.ps1:22:9:26:5 | {...} | try.ps1:23:9:25:9 | [Stmt] if (...) {...} |  |
@@ -542,11 +542,11 @@
 | try.ps1:29:5:29:12 | return ... | try.ps1:29:12:29:12 | 1 |  |
 | try.ps1:29:12:29:12 | 1 | try.ps1:21:51:30:1 | exit {...} (normal) |  |
 | try.ps1:32:1:41:1 | def of test-try-with-throw-catch-with-rethrow | try.ps1:43:1:50:1 | def of test-try-catch-specific-1 |  |
+| try.ps1:32:49:32:50 | b | try.ps1:32:53:41:1 | [synth] pipeline |  |
 | try.ps1:32:53:41:1 | [synth] pipeline | try.ps1:33:5:40:12 | {...} |  |
-| try.ps1:32:53:41:1 | b | try.ps1:32:53:41:1 | [synth] pipeline |  |
 | try.ps1:32:53:41:1 | enter {...} | try.ps1:32:53:41:1 | {...} |  |
 | try.ps1:32:53:41:1 | exit {...} (normal) | try.ps1:32:53:41:1 | exit {...} |  |
-| try.ps1:32:53:41:1 | {...} | try.ps1:32:53:41:1 | b |  |
+| try.ps1:32:53:41:1 | {...} | try.ps1:32:49:32:50 | b |  |
 | try.ps1:33:5:39:5 | try {...} | try.ps1:33:9:37:5 | {...} |  |
 | try.ps1:33:5:40:12 | {...} | try.ps1:33:5:39:5 | try {...} |  |
 | try.ps1:33:9:37:5 | {...} | try.ps1:34:9:36:9 | [Stmt] if (...) {...} |  |

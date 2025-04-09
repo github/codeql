@@ -88,12 +88,7 @@ class ScriptBlock extends Ast, TScriptBlock {
     )
   }
 
-  Parameter getParameter(int i) {
-    synthChild(getRawAst(this), funParam(i), result)
-    or
-    any(Synthesis s).pipelineParameterHasIndex(this, i) and
-    synthChild(getRawAst(this), PipelineParamVar(), result)
-  }
+  Parameter getParameter(int i) { synthChild(getRawAst(this), funParam(i), result) }
 
   Parameter getThisParameter() { synthChild(getRawAst(this), ThisVar(), result) }
 
