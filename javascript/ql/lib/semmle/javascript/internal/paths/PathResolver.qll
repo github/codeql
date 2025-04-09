@@ -18,6 +18,11 @@ signature module PathResolverSig {
    * Holds if `component` may be treated as `.` if it does not match a child.
    */
   default predicate isOptionalPathComponent(string component) { none() }
+
+  /**
+   * Holds if `*` matches any child, and `**` matches any child recursively.
+   */
+  default predicate allowGlobs() { none() }
 }
 
 /**
@@ -35,6 +40,12 @@ module PathResolver<PathResolverSig Config> {
     result = strictcount(int n | exists(getPathSegment(path, n)))
   }
 
+  private Container getChild(Container base, string name) {
+    result = base.(Folder).getChildContainer(name)
+    or
+    result = getAnAdditionalChild(base, name)
+  }
+
   private Container resolve(Container base, string path, int n) {
     shouldResolve(base, path) and n = 0 and result = base
     or
@@ -42,9 +53,7 @@ module PathResolver<PathResolverSig Config> {
       cur = resolve(base, path, n - 1) and
       segment = getPathSegment(path, n - 1)
     |
-      result = cur.(Folder).getChildContainer(segment)
-      or
-      result = getAnAdditionalChild(cur, segment)
+      result = getChild(cur, segment)
       or
       segment = [".", ""] and
       result = cur
@@ -53,9 +62,26 @@ module PathResolver<PathResolverSig Config> {
       result = cur.getParentContainer()
       or
       isOptionalPathComponent(segment) and
-      not exists(cur.(Folder).getChildContainer(segment)) and
-      not exists(getAnAdditionalChild(cur, segment)) and
+      not exists(getChild(cur, segment)) and
       result = cur
+      or
+      allowGlobs() and
+      segment = "*" and
+      result = getChild(cur, _)
+      or
+      allowGlobs() and
+      segment = "**" and
+      result = cur
+    )
+    or
+    exists(Container cur, string segment |
+      cur = resolve(base, path, n) and
+      segment = getPathSegment(path, n)
+    |
+      // Follow child without advancing 'n'
+      allowGlobs() and
+      segment = "**" and
+      result = getChild(cur, _)
     )
   }
 

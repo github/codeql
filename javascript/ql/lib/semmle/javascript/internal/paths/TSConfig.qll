@@ -113,6 +113,8 @@ private module ResolverConfig implements PathResolverSig {
       path = [cfg.getExtendsPath(), cfg.getBaseUrlPath(), cfg.getAnIncludePath()]
     )
   }
+
+  predicate allowGlobs() { any() }
 }
 
 private module Resolver = PathResolver<ResolverConfig>;
