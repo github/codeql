@@ -44,10 +44,12 @@ final class DataFlowCallable extends TDataFlowCallable {
   /**
    * Gets the underlying library callable, if any.
    */
-  LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
+  SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   /** Gets a textual representation of this callable. */
-  string toString() { result = [this.asCfgScope().toString(), this.asLibraryCallable().toString()] }
+  string toString() {
+    result = [this.asCfgScope().toString(), this.asSummarizedCallable().toString()]
+  }
 
   /** Gets the location of this callable. */
   Location getLocation() { result = this.asCfgScope().getLocation() }
@@ -68,12 +70,9 @@ final class DataFlowCall extends TDataFlowCall {
   }
 
   DataFlowCallable getEnclosingCallable() {
-    result = TCfgScope(this.asCallBaseExprCfgNode().getExpr().getEnclosingCfgScope())
+    result.asCfgScope() = this.asCallBaseExprCfgNode().getExpr().getEnclosingCfgScope()
     or
-    exists(FlowSummaryImpl::Public::SummarizedCallable c |
-      this.isSummaryCall(c, _) and
-      result = TLibraryCallable(c)
-    )
+    this.isSummaryCall(result.asSummarizedCallable(), _)
   }
 
   string toString() {
@@ -419,9 +418,13 @@ module RustDataFlow implements InputSig<Location> {
 
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result.asCfgScope() = call.asCallBaseExprCfgNode().getCallExprBase().getStaticTarget()
-    or
-    result.asLibraryCallable().getACall() = call.asCallBaseExprCfgNode().getCallExprBase()
+    exists(Callable target |
+      target = call.asCallBaseExprCfgNode().getCallExprBase().getStaticTarget()
+    |
+      target = result.asCfgScope()
+      or
+      target = result.asSummarizedCallable()
+    )
   }
 
   /**
@@ -769,7 +772,7 @@ module RustDataFlow implements InputSig<Location> {
   predicate allowParameterReturnInSelf(ParameterNode p) {
     exists(DataFlowCallable c, ParameterPosition pos |
       p.isParameterOf(c, pos) and
-      FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
+      FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
     )
     or
     VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(ClosureParameterNode)
@@ -980,7 +983,7 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TCfgScope(CfgScope scope) or
-    TLibraryCallable(LibraryCallable c)
+    TSummarizedCallable(SummarizedCallable c)
 
   /** This is the local flow predicate that is exposed. */
   cached
