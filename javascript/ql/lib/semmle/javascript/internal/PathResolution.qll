@@ -74,16 +74,6 @@ private module AutomaticFileExtensions {
 
 module PathResolution {
   /**
-   * Provides an extension point for mapping build directories to corresonding source directories.
-   */
-  class AdditionalBuildPathMapping extends Unit {
-    /**
-     * Gets a source directory whose contents are compiled to `base/buildDir`.
-     */
-    Container getSourceFromBuildTarget(Container base, string buildDir) { none() }
-  }
-
-  /**
    * Holds if `path` is a relative path, in the sense that it must be resolved relative to
    * its enclosing directory.
    */
@@ -465,8 +455,6 @@ module PathResolution {
           result = folder
         )
       )
-      or
-      result = any(AdditionalBuildPathMapping b).getSourceFromBuildTarget(base, name)
     }
   }
 
