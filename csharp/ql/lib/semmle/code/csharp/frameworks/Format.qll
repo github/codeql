@@ -250,10 +250,22 @@ class FormatCall extends MethodCall {
   /** Holds if this call has one or more insertions. */
   predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
 
-  /** Holds if the arguments are supplied in an array, not individually. */
-  predicate hasArrayExpr() {
+  /**
+   * DEPRECATED: use `hasCollectionExpr` instead.
+   *
+   * Holds if the arguments are supplied in an array, not individually.
+   */
+  deprecated predicate hasArrayExpr() {
     this.getNumberOfArguments() = this.getFirstArgument() + 1 and
     this.getArgument(this.getFirstArgument()).getType() instanceof ArrayType
+  }
+
+  /**
+   * Holds if the arguments are supplied in a collection, not individually.
+   */
+  predicate hasCollectionExpr() {
+    this.getNumberOfArguments() = this.getFirstArgument() + 1 and
+    this.getArgument(this.getFirstArgument()).getType() instanceof ParamsCollectionType
   }
 
   /**
@@ -262,7 +274,7 @@ class FormatCall extends MethodCall {
    * in which case we generally can't assess the size of the array.
    */
   int getSuppliedArguments() {
-    not this.hasArrayExpr() and
+    not this.hasCollectionExpr() and
     result = this.getNumberOfArguments() - this.getFirstArgument()
   }
 
