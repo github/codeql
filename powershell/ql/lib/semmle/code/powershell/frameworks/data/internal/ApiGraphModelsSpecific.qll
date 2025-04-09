@@ -69,12 +69,23 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
 }
 
 /** Gets a Powershell-specific interpretation of the given `type`. */
-API::Node getExtraNodeFromType(string type) {
-  exists(string consts, string suffix | parseRelevantType(type, consts, suffix) |
-    none() // TODO
+API::Node getExtraNodeFromType(string rawType) {
+  exists(
+    string type, string suffix, DataFlow::QualifiedTypeNameNode qualifiedTypeName, string namespace,
+    string typename
+  |
+    parseRelevantType(rawType, type, suffix) and
+    qualifiedTypeName.hasQualifiedName(namespace, typename) and
+    namespace + "." + typename = type
+  |
+    suffix = "!" and
+    result = qualifiedTypeName.(DataFlow::LocalSourceNode).track()
+    or
+    suffix = "" and
+    result = qualifiedTypeName.(DataFlow::LocalSourceNode).track().getInstance()
   )
   or
-  type = "" and
+  rawType = "" and
   result = API::root()
 }
 

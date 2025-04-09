@@ -38,7 +38,7 @@ module Private {
 
     override string getNameImpl() { any(Synthesis s).variableSynthName(this, result) }
 
-    override Location getLocationImpl() { result = scope.getLocation() }
+    override Location getLocationImpl() { result = any(Synthesis s).getLocation(this) }
 
     override Scope::Range getDeclaringScopeImpl() { result = scope }
   }
@@ -46,7 +46,6 @@ module Private {
   class ParameterImpl extends VariableSynth {
     ParameterImpl() {
       i instanceof FunParam or
-      i instanceof PipelineParamVar or
       i instanceof ThisVar
     }
   }
@@ -55,14 +54,21 @@ module Private {
     override ThisVar i;
   }
 
-  class PipelineVariableImpl extends ParameterImpl {
-    override PipelineParamVar i;
+  class PipelineParameterImpl extends ParameterImpl {
+    override FunParam i;
+
+    PipelineParameterImpl() {
+      exists(int index |
+        i = FunParam(index) and
+        any(Synthesis s).pipelineParameterHasIndex(super.getDeclaringScopeImpl(), index)
+      )
+    }
 
     ScriptBlock getScriptBlock() { this = TVariableSynth(getRawAst(result), _) }
   }
 
-  class PipelineByPropertyNameVariableImpl extends ParameterImpl {
-    PipelineByPropertyNameVariableImpl() {
+  class PipelineByPropertyNameParameterImpl extends ParameterImpl {
+    PipelineByPropertyNameParameterImpl() {
       getRawAst(this) instanceof Raw::PipelineByPropertyNameParameter
     }
 
@@ -166,28 +172,6 @@ module Public {
 
   class VarReadAccess extends VarAccess {
     VarReadAccess() { not this instanceof VarWriteAccess }
-  }
-
-  class PipelineByPropertyNameIteratorVariable extends Variable instanceof PipelineByPropertyNameIteratorVariableImpl
-  {
-    ProcessBlock getProcessBlock() { result = super.getProcessBlock() }
-
-    string getPropertyName() { result = super.getPropertyName() }
-
-    PipelineByPropertyNameParameter getParameter() { result = super.getParameter() }
-  }
-
-  class PipelineVariable extends Variable instanceof PipelineVariableImpl {
-    ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
-  }
-
-  class PipelineByPropertyNameVariable extends Variable instanceof PipelineByPropertyNameVariableImpl
-  {
-    ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
-  }
-
-  class PipelineIteratorVariable extends Variable instanceof PipelineIteratorVariableImpl {
-    ProcessBlock getProcessBlock() { result = super.getProcessBlock() }
   }
 }
 
