@@ -32,9 +32,17 @@ fn i64_clone() {
 mod my_clone {
     use super::{sink, source};
 
-    #[derive(Clone)]
+    // TODO: Replace manual implementation below with `#[derive(Clone)]`,
+    // once the extractor expands the `#[derive]` attributes.
+    // #[derive(Clone)]
     struct Wrapper {
         n: i64,
+    }
+
+    impl Clone for Wrapper {
+        fn clone(&self) -> Self {
+            Wrapper { n: self.n }
+        }
     }
 
     pub fn wrapper_clone() {

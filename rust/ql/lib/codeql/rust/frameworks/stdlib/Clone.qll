@@ -6,13 +6,8 @@ private import codeql.rust.dataflow.FlowSummary
 /** A `clone` method. */
 final class CloneCallable extends SummarizedCallable::Range {
   CloneCallable() {
-    // NOTE: The function target may not exist in the database, so we base this
-    // on method calls.
-    exists(MethodCallExpr c |
-      c.getIdentifier().getText() = "clone" and
-      c.getArgList().getNumberOfArgs() = 0 and
-      this = c.getResolvedCrateOrigin() + "::_::" + c.getResolvedPath()
-    )
+    this.getParamList().getNumberOfParams() = 1 and
+    this.getName().getText() = "clone"
   }
 
   final override predicate propagatesFlow(
