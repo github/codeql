@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 
 app.get('/makedir', (req, res) => {
-    const file = req.query.file; // $ MISSING: Source
+    const file = req.query.file; // $ Source
 
-    makeDirectory(file); // $ MISSING: Alert
-    makeDirectorySync(file); // $ MISSING: Alert
+    makeDirectory(file); // $ Alert
+    makeDirectorySync(file); // $ Alert
 });
