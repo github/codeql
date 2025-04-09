@@ -39,7 +39,7 @@ function test() {
         return function (a) { return String.fromCharCode.apply(null, a); };
     })();
 
-    sink(typedArrayToString(y)); // NOT OK -- Should be flagged but it is not.
+    sink(typedArrayToString(y)); // NOT OK
 
     let str = '';
     for (let i = 0; i < y.length; i++) 

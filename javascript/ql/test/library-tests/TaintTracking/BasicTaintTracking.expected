@@ -40,6 +40,7 @@ legacyDataFlowDifference
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:42:10:42:30 | typedAr ... ring(y) | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:48:10:48:12 | str | only flow with NEW data flow library |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:52:10:52:13 | str2 | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
@@ -51,7 +52,6 @@ consistencyIssue
 | typed-arrays.js:28 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
 | typed-arrays.js:32 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
 | typed-arrays.js:36 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
-| typed-arrays.js:42 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
@@ -342,6 +342,7 @@ flow
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:42:10:42:30 | typedAr ... ring(y) |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:48:10:48:12 | str |
 | typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:52:10:52:13 | str2 |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
