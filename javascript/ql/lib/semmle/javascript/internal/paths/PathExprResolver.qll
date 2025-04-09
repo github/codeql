@@ -264,6 +264,8 @@ module Debug {
   query File resolvePathExpr_(PathExprToDebug expr) { result = resolvePathExpr(expr) }
 
   // Some predicates that are usually small enough that they don't need restriction
+  query File getPackageMainFile(PackageJsonEx pkg) { result = pkg.getMainFile() }
+
   query predicate guessPackageJsonMain1_ = guessPackageJsonMain1/1;
 
   query predicate guessPackageJsonMain2_ = guessPackageJsonMain2/1;
