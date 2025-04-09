@@ -84,7 +84,7 @@ rust_library(
     }),
     version = "0.2.1",
     deps = [
-        "@vendor__fs-err-2.11.0//:fs_err",
-        "@vendor__os_str_bytes-7.0.0//:os_str_bytes",
+        "@vendor_ts__fs-err-2.11.0//:fs_err",
+        "@vendor_ts__os_str_bytes-7.0.0//:os_str_bytes",
     ],
 )

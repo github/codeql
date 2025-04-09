@@ -26,7 +26,7 @@ app.get('/form', function (req, res) {
   res.render('send', { csrfToken: req.csrfToken() })
 })
 
-app.post('/process', function (req, res) { // OK
+app.post('/process', function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('csrf was required to get here')
 })

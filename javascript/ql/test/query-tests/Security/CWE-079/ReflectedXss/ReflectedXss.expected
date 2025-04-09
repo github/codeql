@@ -1,41 +1,101 @@
+#select
+| ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | ReflectedXss.js:7:33:7:45 | req.params.id | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:7:33:7:45 | req.params.id | user-provided value |
+| ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | ReflectedXss.js:16:31:16:39 | params.id | ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:16:31:16:39 | params.id | user-provided value |
+| ReflectedXss.js:21:12:21:19 | req.body | ReflectedXss.js:21:12:21:19 | req.body | ReflectedXss.js:21:12:21:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:21:12:21:19 | req.body | user-provided value |
+| ReflectedXss.js:22:12:22:27 | marked(req.body) | ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:22:19:22:26 | req.body | user-provided value |
+| ReflectedXss.js:28:12:28:19 | req.body | ReflectedXss.js:28:12:28:19 | req.body | ReflectedXss.js:28:12:28:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:28:12:28:19 | req.body | user-provided value |
+| ReflectedXss.js:33:12:33:18 | mytable | ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:33:12:33:18 | mytable | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:31:14:31:21 | req.body | user-provided value |
+| ReflectedXss.js:40:12:40:19 | req.body | ReflectedXss.js:40:12:40:19 | req.body | ReflectedXss.js:40:12:40:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:40:12:40:19 | req.body | user-provided value |
+| ReflectedXss.js:41:12:41:39 | convert ... q.body) | ReflectedXss.js:41:31:41:38 | req.body | ReflectedXss.js:41:12:41:39 | convert ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:41:31:41:38 | req.body | user-provided value |
+| ReflectedXss.js:55:12:55:19 | req.body | ReflectedXss.js:55:12:55:19 | req.body | ReflectedXss.js:55:12:55:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:55:12:55:19 | req.body | user-provided value |
+| ReflectedXss.js:64:16:64:19 | file | ReflectedXss.js:63:14:63:21 | req.body | ReflectedXss.js:64:16:64:19 | file | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:63:14:63:21 | req.body | user-provided value |
+| ReflectedXss.js:67:12:67:52 | remark( ... tring() | ReflectedXss.js:67:33:67:40 | req.body | ReflectedXss.js:67:12:67:52 | remark( ... tring() | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:67:33:67:40 | req.body | user-provided value |
+| ReflectedXss.js:71:12:71:65 | unified ... oString | ReflectedXss.js:71:48:71:55 | req.body | ReflectedXss.js:71:12:71:65 | unified ... oString | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:71:48:71:55 | req.body | user-provided value |
+| ReflectedXss.js:74:14:74:14 | f | ReflectedXss.js:73:20:73:27 | req.body | ReflectedXss.js:74:14:74:14 | f | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:73:20:73:27 | req.body | user-provided value |
+| ReflectedXss.js:82:12:82:19 | req.body | ReflectedXss.js:82:12:82:19 | req.body | ReflectedXss.js:82:12:82:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:82:12:82:19 | req.body | user-provided value |
+| ReflectedXss.js:83:12:83:30 | snarkdown(req.body) | ReflectedXss.js:83:22:83:29 | req.body | ReflectedXss.js:83:12:83:30 | snarkdown(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:83:22:83:29 | req.body | user-provided value |
+| ReflectedXss.js:84:12:84:31 | snarkdown2(req.body) | ReflectedXss.js:84:23:84:30 | req.body | ReflectedXss.js:84:12:84:31 | snarkdown2(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:84:23:84:30 | req.body | user-provided value |
+| ReflectedXss.js:96:12:96:19 | req.body | ReflectedXss.js:96:12:96:19 | req.body | ReflectedXss.js:96:12:96:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:96:12:96:19 | req.body | user-provided value |
+| ReflectedXss.js:97:12:97:38 | markdow ... q.body) | ReflectedXss.js:97:30:97:37 | req.body | ReflectedXss.js:97:12:97:38 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:97:30:97:37 | req.body | user-provided value |
+| ReflectedXss.js:99:12:99:39 | markdow ... q.body) | ReflectedXss.js:99:31:99:38 | req.body | ReflectedXss.js:99:12:99:39 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:99:31:99:38 | req.body | user-provided value |
+| ReflectedXss.js:102:12:102:84 | markdow ... q.body) | ReflectedXss.js:102:76:102:83 | req.body | ReflectedXss.js:102:12:102:84 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:102:76:102:83 | req.body | user-provided value |
+| ReflectedXss.js:109:16:109:30 | request.query.p | ReflectedXss.js:109:16:109:30 | request.query.p | ReflectedXss.js:109:16:109:30 | request.query.p | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:109:16:109:30 | request.query.p | user-provided value |
+| ReflectedXss.js:121:30:121:73 | `${inva ... telist` | ReflectedXss.js:113:13:113:27 | keys: queryKeys | ReflectedXss.js:121:30:121:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:113:13:113:27 | keys: queryKeys | user-provided value |
+| ReflectedXss.js:121:30:121:73 | `${inva ... telist` | ReflectedXss.js:115:31:115:45 | paramKeys?.keys | ReflectedXss.js:121:30:121:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:115:31:115:45 | paramKeys?.keys | user-provided value |
+| ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |
+| ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | user-provided value |
+| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to a $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
+| etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to a $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
+| formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
+| live-server.js:6:13:6:50 | `<html> ... /html>` | live-server.js:4:21:4:27 | req.url | live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to a $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
+| live-server.js:12:13:12:50 | `<html> ... /html>` | live-server.js:10:21:10:27 | req.url | live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to a $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
+| pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
+| pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
+| pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to a $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |
+| partial.js:10:14:10:18 | x + y | partial.js:13:42:13:48 | req.url | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:13:42:13:48 | req.url | user-provided value |
+| partial.js:19:14:19:18 | x + y | partial.js:22:51:22:57 | req.url | partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:22:51:22:57 | req.url | user-provided value |
+| partial.js:28:14:28:18 | x + y | partial.js:31:47:31:53 | req.url | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:31:47:31:53 | req.url | user-provided value |
+| partial.js:37:14:37:18 | x + y | partial.js:40:43:40:49 | req.url | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:40:43:40:49 | req.url | user-provided value |
+| promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to a $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
+| tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:6:9:6:9 | p | user-provided value |
+| tst2.js:8:12:8:12 | r | tst2.js:6:12:6:15 | q: r | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to a $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
+| tst2.js:18:12:18:12 | p | tst2.js:14:9:14:9 | p | tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:21:14:21:14 | p | tst2.js:14:9:14:9 | p | tst2.js:21:14:21:14 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:36:12:36:12 | p | tst2.js:30:9:30:9 | p | tst2.js:36:12:36:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:30:9:30:9 | p | user-provided value |
+| tst2.js:37:12:37:18 | other.p | tst2.js:30:9:30:9 | p | tst2.js:37:12:37:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:30:9:30:9 | p | user-provided value |
+| tst2.js:51:12:51:17 | unsafe | tst2.js:43:9:43:9 | p | tst2.js:51:12:51:17 | unsafe | Cross-site scripting vulnerability due to a $@. | tst2.js:43:9:43:9 | p | user-provided value |
+| tst2.js:63:12:63:12 | p | tst2.js:57:9:57:9 | p | tst2.js:63:12:63:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:64:12:64:18 | other.p | tst2.js:57:9:57:9 | p | tst2.js:64:12:64:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:57:9:57:9 | p | user-provided value |
+| tst2.js:75:12:75:12 | p | tst2.js:69:9:69:9 | p | tst2.js:75:12:75:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:76:12:76:18 | other.p | tst2.js:69:9:69:9 | p | tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:69:9:69:9 | p | user-provided value |
+| tst2.js:88:12:88:12 | p | tst2.js:82:9:82:9 | p | tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst2.js:89:12:89:18 | other.p | tst2.js:82:9:82:9 | p | tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
+| tst3.js:6:12:6:12 | p | tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to a $@. | tst3.js:5:9:5:9 | p | user-provided value |
+| tst3.js:12:12:12:15 | code | tst3.js:11:32:11:39 | reg.body | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to a $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |
 edges
-| ReflectedXss.js:8:33:8:45 | req.params.id | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | provenance |  |
-| ReflectedXss.js:17:31:17:39 | params.id | ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | provenance |  |
-| ReflectedXss.js:23:19:23:26 | req.body | ReflectedXss.js:23:12:23:27 | marked(req.body) | provenance |  |
-| ReflectedXss.js:42:31:42:38 | req.body | ReflectedXss.js:42:12:42:39 | convert ... q.body) | provenance |  |
-| ReflectedXss.js:64:14:64:21 | req.body | ReflectedXss.js:64:39:64:42 | file | provenance |  |
-| ReflectedXss.js:64:39:64:42 | file | ReflectedXss.js:65:16:65:19 | file | provenance |  |
-| ReflectedXss.js:68:12:68:41 | remark( ... q.body) | ReflectedXss.js:68:12:68:52 | remark( ... tring() | provenance |  |
-| ReflectedXss.js:68:33:68:40 | req.body | ReflectedXss.js:68:12:68:41 | remark( ... q.body) | provenance |  |
-| ReflectedXss.js:72:12:72:56 | unified ... q.body) | ReflectedXss.js:72:12:72:65 | unified ... oString | provenance |  |
-| ReflectedXss.js:72:48:72:55 | req.body | ReflectedXss.js:72:12:72:56 | unified ... q.body) | provenance |  |
-| ReflectedXss.js:74:20:74:27 | req.body | ReflectedXss.js:74:34:74:34 | f | provenance |  |
-| ReflectedXss.js:74:34:74:34 | f | ReflectedXss.js:75:14:75:14 | f | provenance |  |
-| ReflectedXss.js:84:22:84:29 | req.body | ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | provenance |  |
-| ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | provenance |  |
-| ReflectedXss.js:98:30:98:37 | req.body | ReflectedXss.js:98:12:98:38 | markdow ... q.body) | provenance |  |
-| ReflectedXss.js:100:31:100:38 | req.body | ReflectedXss.js:100:12:100:39 | markdow ... q.body) | provenance |  |
-| ReflectedXss.js:103:76:103:83 | req.body | ReflectedXss.js:103:12:103:84 | markdow ... q.body) | provenance |  |
-| ReflectedXss.js:114:11:114:41 | queryKeys | ReflectedXss.js:116:18:116:26 | queryKeys | provenance |  |
-| ReflectedXss.js:114:13:114:27 | keys: queryKeys | ReflectedXss.js:114:11:114:41 | queryKeys | provenance |  |
-| ReflectedXss.js:116:11:116:45 | keys | ReflectedXss.js:118:50:118:53 | keys | provenance |  |
-| ReflectedXss.js:116:11:116:45 | keys | ReflectedXss.js:118:58:118:61 | keys | provenance |  |
-| ReflectedXss.js:116:18:116:26 | queryKeys | ReflectedXss.js:116:11:116:45 | keys | provenance |  |
-| ReflectedXss.js:116:31:116:45 | paramKeys?.keys | ReflectedXss.js:116:11:116:45 | keys | provenance |  |
-| ReflectedXss.js:118:11:118:61 | keyArray | ReflectedXss.js:119:25:119:32 | keyArray | provenance |  |
-| ReflectedXss.js:118:11:118:61 | keyArray [0] | ReflectedXss.js:119:25:119:32 | keyArray [0] | provenance |  |
-| ReflectedXss.js:118:49:118:54 | [keys] [0] | ReflectedXss.js:118:11:118:61 | keyArray [0] | provenance |  |
-| ReflectedXss.js:118:50:118:53 | keys | ReflectedXss.js:118:49:118:54 | [keys] [0] | provenance |  |
-| ReflectedXss.js:118:58:118:61 | keys | ReflectedXss.js:118:11:118:61 | keyArray | provenance |  |
-| ReflectedXss.js:119:11:119:72 | invalidKeys | ReflectedXss.js:122:33:122:43 | invalidKeys | provenance |  |
-| ReflectedXss.js:119:11:119:72 | invalidKeys [0] | ReflectedXss.js:122:33:122:43 | invalidKeys [0] | provenance |  |
-| ReflectedXss.js:119:25:119:32 | keyArray | ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) | provenance |  |
-| ReflectedXss.js:119:25:119:32 | keyArray [0] | ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) [0] | provenance |  |
-| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) | ReflectedXss.js:119:11:119:72 | invalidKeys | provenance |  |
-| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) [0] | ReflectedXss.js:119:11:119:72 | invalidKeys [0] | provenance |  |
-| ReflectedXss.js:122:33:122:43 | invalidKeys | ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | provenance |  |
-| ReflectedXss.js:122:33:122:43 | invalidKeys [0] | ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | provenance |  |
-| ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | ReflectedXss.js:122:30:122:73 | `${inva ... telist` | provenance |  |
+| ReflectedXss.js:7:33:7:45 | req.params.id | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | provenance |  |
+| ReflectedXss.js:16:31:16:39 | params.id | ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | provenance |  |
+| ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | provenance |  |
+| ReflectedXss.js:29:7:32:4 | mytable | ReflectedXss.js:33:12:33:18 | mytable | provenance |  |
+| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | ReflectedXss.js:29:7:32:4 | mytable | provenance |  |
+| ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | provenance |  |
+| ReflectedXss.js:41:31:41:38 | req.body | ReflectedXss.js:41:12:41:39 | convert ... q.body) | provenance |  |
+| ReflectedXss.js:63:14:63:21 | req.body | ReflectedXss.js:63:39:63:42 | file | provenance |  |
+| ReflectedXss.js:63:39:63:42 | file | ReflectedXss.js:64:16:64:19 | file | provenance |  |
+| ReflectedXss.js:67:12:67:41 | remark( ... q.body) | ReflectedXss.js:67:12:67:52 | remark( ... tring() | provenance |  |
+| ReflectedXss.js:67:33:67:40 | req.body | ReflectedXss.js:67:12:67:41 | remark( ... q.body) | provenance |  |
+| ReflectedXss.js:71:12:71:56 | unified ... q.body) | ReflectedXss.js:71:12:71:65 | unified ... oString | provenance |  |
+| ReflectedXss.js:71:48:71:55 | req.body | ReflectedXss.js:71:12:71:56 | unified ... q.body) | provenance |  |
+| ReflectedXss.js:73:20:73:27 | req.body | ReflectedXss.js:73:34:73:34 | f | provenance |  |
+| ReflectedXss.js:73:34:73:34 | f | ReflectedXss.js:74:14:74:14 | f | provenance |  |
+| ReflectedXss.js:83:22:83:29 | req.body | ReflectedXss.js:83:12:83:30 | snarkdown(req.body) | provenance |  |
+| ReflectedXss.js:84:23:84:30 | req.body | ReflectedXss.js:84:12:84:31 | snarkdown2(req.body) | provenance |  |
+| ReflectedXss.js:97:30:97:37 | req.body | ReflectedXss.js:97:12:97:38 | markdow ... q.body) | provenance |  |
+| ReflectedXss.js:99:31:99:38 | req.body | ReflectedXss.js:99:12:99:39 | markdow ... q.body) | provenance |  |
+| ReflectedXss.js:102:76:102:83 | req.body | ReflectedXss.js:102:12:102:84 | markdow ... q.body) | provenance |  |
+| ReflectedXss.js:113:11:113:41 | queryKeys | ReflectedXss.js:115:18:115:26 | queryKeys | provenance |  |
+| ReflectedXss.js:113:13:113:27 | keys: queryKeys | ReflectedXss.js:113:11:113:41 | queryKeys | provenance |  |
+| ReflectedXss.js:115:11:115:45 | keys | ReflectedXss.js:117:50:117:53 | keys | provenance |  |
+| ReflectedXss.js:115:11:115:45 | keys | ReflectedXss.js:117:58:117:61 | keys | provenance |  |
+| ReflectedXss.js:115:18:115:26 | queryKeys | ReflectedXss.js:115:11:115:45 | keys | provenance |  |
+| ReflectedXss.js:115:31:115:45 | paramKeys?.keys | ReflectedXss.js:115:11:115:45 | keys | provenance |  |
+| ReflectedXss.js:117:11:117:61 | keyArray | ReflectedXss.js:118:25:118:32 | keyArray | provenance |  |
+| ReflectedXss.js:117:11:117:61 | keyArray [0] | ReflectedXss.js:118:25:118:32 | keyArray [0] | provenance |  |
+| ReflectedXss.js:117:49:117:54 | [keys] [0] | ReflectedXss.js:117:11:117:61 | keyArray [0] | provenance |  |
+| ReflectedXss.js:117:50:117:53 | keys | ReflectedXss.js:117:49:117:54 | [keys] [0] | provenance |  |
+| ReflectedXss.js:117:58:117:61 | keys | ReflectedXss.js:117:11:117:61 | keyArray | provenance |  |
+| ReflectedXss.js:118:11:118:72 | invalidKeys | ReflectedXss.js:121:33:121:43 | invalidKeys | provenance |  |
+| ReflectedXss.js:118:11:118:72 | invalidKeys [0] | ReflectedXss.js:121:33:121:43 | invalidKeys [0] | provenance |  |
+| ReflectedXss.js:118:25:118:32 | keyArray | ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | provenance |  |
+| ReflectedXss.js:118:25:118:32 | keyArray [0] | ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | provenance |  |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | ReflectedXss.js:118:11:118:72 | invalidKeys | provenance |  |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | ReflectedXss.js:118:11:118:72 | invalidKeys [0] | provenance |  |
+| ReflectedXss.js:121:33:121:43 | invalidKeys | ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | provenance |  |
+| ReflectedXss.js:121:33:121:43 | invalidKeys [0] | ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | provenance |  |
+| ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | ReflectedXss.js:121:30:121:73 | `${inva ... telist` | provenance |  |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | provenance |  |
 | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | provenance |  |
 | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | provenance |  |
@@ -144,63 +204,67 @@ edges
 | tst3.js:11:16:11:74 | prettie ... bel" }) | tst3.js:11:9:11:74 | code | provenance |  |
 | tst3.js:11:32:11:39 | reg.body | tst3.js:11:16:11:74 | prettie ... bel" }) | provenance |  |
 nodes
-| ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
-| ReflectedXss.js:8:33:8:45 | req.params.id | semmle.label | req.params.id |
-| ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
-| ReflectedXss.js:17:31:17:39 | params.id | semmle.label | params.id |
-| ReflectedXss.js:22:12:22:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:23:12:23:27 | marked(req.body) | semmle.label | marked(req.body) |
-| ReflectedXss.js:23:19:23:26 | req.body | semmle.label | req.body |
-| ReflectedXss.js:29:12:29:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:41:12:41:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:42:12:42:39 | convert ... q.body) | semmle.label | convert ... q.body) |
-| ReflectedXss.js:42:31:42:38 | req.body | semmle.label | req.body |
-| ReflectedXss.js:56:12:56:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:64:14:64:21 | req.body | semmle.label | req.body |
-| ReflectedXss.js:64:39:64:42 | file | semmle.label | file |
-| ReflectedXss.js:65:16:65:19 | file | semmle.label | file |
-| ReflectedXss.js:68:12:68:41 | remark( ... q.body) | semmle.label | remark( ... q.body) |
-| ReflectedXss.js:68:12:68:52 | remark( ... tring() | semmle.label | remark( ... tring() |
-| ReflectedXss.js:68:33:68:40 | req.body | semmle.label | req.body |
-| ReflectedXss.js:72:12:72:56 | unified ... q.body) | semmle.label | unified ... q.body) |
-| ReflectedXss.js:72:12:72:65 | unified ... oString | semmle.label | unified ... oString |
-| ReflectedXss.js:72:48:72:55 | req.body | semmle.label | req.body |
-| ReflectedXss.js:74:20:74:27 | req.body | semmle.label | req.body |
-| ReflectedXss.js:74:34:74:34 | f | semmle.label | f |
-| ReflectedXss.js:75:14:75:14 | f | semmle.label | f |
-| ReflectedXss.js:83:12:83:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | semmle.label | snarkdown(req.body) |
-| ReflectedXss.js:84:22:84:29 | req.body | semmle.label | req.body |
-| ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | semmle.label | snarkdown2(req.body) |
-| ReflectedXss.js:85:23:85:30 | req.body | semmle.label | req.body |
-| ReflectedXss.js:97:12:97:19 | req.body | semmle.label | req.body |
-| ReflectedXss.js:98:12:98:38 | markdow ... q.body) | semmle.label | markdow ... q.body) |
-| ReflectedXss.js:98:30:98:37 | req.body | semmle.label | req.body |
-| ReflectedXss.js:100:12:100:39 | markdow ... q.body) | semmle.label | markdow ... q.body) |
-| ReflectedXss.js:100:31:100:38 | req.body | semmle.label | req.body |
-| ReflectedXss.js:103:12:103:84 | markdow ... q.body) | semmle.label | markdow ... q.body) |
-| ReflectedXss.js:103:76:103:83 | req.body | semmle.label | req.body |
-| ReflectedXss.js:110:16:110:30 | request.query.p | semmle.label | request.query.p |
-| ReflectedXss.js:114:11:114:41 | queryKeys | semmle.label | queryKeys |
-| ReflectedXss.js:114:13:114:27 | keys: queryKeys | semmle.label | keys: queryKeys |
-| ReflectedXss.js:116:11:116:45 | keys | semmle.label | keys |
-| ReflectedXss.js:116:18:116:26 | queryKeys | semmle.label | queryKeys |
-| ReflectedXss.js:116:31:116:45 | paramKeys?.keys | semmle.label | paramKeys?.keys |
-| ReflectedXss.js:118:11:118:61 | keyArray | semmle.label | keyArray |
-| ReflectedXss.js:118:11:118:61 | keyArray [0] | semmle.label | keyArray [0] |
-| ReflectedXss.js:118:49:118:54 | [keys] [0] | semmle.label | [keys] [0] |
-| ReflectedXss.js:118:50:118:53 | keys | semmle.label | keys |
-| ReflectedXss.js:118:58:118:61 | keys | semmle.label | keys |
-| ReflectedXss.js:119:11:119:72 | invalidKeys | semmle.label | invalidKeys |
-| ReflectedXss.js:119:11:119:72 | invalidKeys [0] | semmle.label | invalidKeys [0] |
-| ReflectedXss.js:119:25:119:32 | keyArray | semmle.label | keyArray |
-| ReflectedXss.js:119:25:119:32 | keyArray [0] | semmle.label | keyArray [0] |
-| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) | semmle.label | keyArra ... s(key)) |
-| ReflectedXss.js:119:25:119:72 | keyArra ... s(key)) [0] | semmle.label | keyArra ... s(key)) [0] |
-| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | semmle.label | `${inva ... telist` |
-| ReflectedXss.js:122:33:122:43 | invalidKeys | semmle.label | invalidKeys |
-| ReflectedXss.js:122:33:122:43 | invalidKeys [0] | semmle.label | invalidKeys [0] |
-| ReflectedXss.js:122:33:122:54 | invalid ... n(', ') | semmle.label | invalid ... n(', ') |
+| ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
+| ReflectedXss.js:7:33:7:45 | req.params.id | semmle.label | req.params.id |
+| ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
+| ReflectedXss.js:16:31:16:39 | params.id | semmle.label | params.id |
+| ReflectedXss.js:21:12:21:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:22:12:22:27 | marked(req.body) | semmle.label | marked(req.body) |
+| ReflectedXss.js:22:19:22:26 | req.body | semmle.label | req.body |
+| ReflectedXss.js:28:12:28:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:29:7:32:4 | mytable | semmle.label | mytable |
+| ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | semmle.label | table([ ... ce\\n  ]) |
+| ReflectedXss.js:31:14:31:21 | req.body | semmle.label | req.body |
+| ReflectedXss.js:33:12:33:18 | mytable | semmle.label | mytable |
+| ReflectedXss.js:40:12:40:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:41:12:41:39 | convert ... q.body) | semmle.label | convert ... q.body) |
+| ReflectedXss.js:41:31:41:38 | req.body | semmle.label | req.body |
+| ReflectedXss.js:55:12:55:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:63:14:63:21 | req.body | semmle.label | req.body |
+| ReflectedXss.js:63:39:63:42 | file | semmle.label | file |
+| ReflectedXss.js:64:16:64:19 | file | semmle.label | file |
+| ReflectedXss.js:67:12:67:41 | remark( ... q.body) | semmle.label | remark( ... q.body) |
+| ReflectedXss.js:67:12:67:52 | remark( ... tring() | semmle.label | remark( ... tring() |
+| ReflectedXss.js:67:33:67:40 | req.body | semmle.label | req.body |
+| ReflectedXss.js:71:12:71:56 | unified ... q.body) | semmle.label | unified ... q.body) |
+| ReflectedXss.js:71:12:71:65 | unified ... oString | semmle.label | unified ... oString |
+| ReflectedXss.js:71:48:71:55 | req.body | semmle.label | req.body |
+| ReflectedXss.js:73:20:73:27 | req.body | semmle.label | req.body |
+| ReflectedXss.js:73:34:73:34 | f | semmle.label | f |
+| ReflectedXss.js:74:14:74:14 | f | semmle.label | f |
+| ReflectedXss.js:82:12:82:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:83:12:83:30 | snarkdown(req.body) | semmle.label | snarkdown(req.body) |
+| ReflectedXss.js:83:22:83:29 | req.body | semmle.label | req.body |
+| ReflectedXss.js:84:12:84:31 | snarkdown2(req.body) | semmle.label | snarkdown2(req.body) |
+| ReflectedXss.js:84:23:84:30 | req.body | semmle.label | req.body |
+| ReflectedXss.js:96:12:96:19 | req.body | semmle.label | req.body |
+| ReflectedXss.js:97:12:97:38 | markdow ... q.body) | semmle.label | markdow ... q.body) |
+| ReflectedXss.js:97:30:97:37 | req.body | semmle.label | req.body |
+| ReflectedXss.js:99:12:99:39 | markdow ... q.body) | semmle.label | markdow ... q.body) |
+| ReflectedXss.js:99:31:99:38 | req.body | semmle.label | req.body |
+| ReflectedXss.js:102:12:102:84 | markdow ... q.body) | semmle.label | markdow ... q.body) |
+| ReflectedXss.js:102:76:102:83 | req.body | semmle.label | req.body |
+| ReflectedXss.js:109:16:109:30 | request.query.p | semmle.label | request.query.p |
+| ReflectedXss.js:113:11:113:41 | queryKeys | semmle.label | queryKeys |
+| ReflectedXss.js:113:13:113:27 | keys: queryKeys | semmle.label | keys: queryKeys |
+| ReflectedXss.js:115:11:115:45 | keys | semmle.label | keys |
+| ReflectedXss.js:115:18:115:26 | queryKeys | semmle.label | queryKeys |
+| ReflectedXss.js:115:31:115:45 | paramKeys?.keys | semmle.label | paramKeys?.keys |
+| ReflectedXss.js:117:11:117:61 | keyArray | semmle.label | keyArray |
+| ReflectedXss.js:117:11:117:61 | keyArray [0] | semmle.label | keyArray [0] |
+| ReflectedXss.js:117:49:117:54 | [keys] [0] | semmle.label | [keys] [0] |
+| ReflectedXss.js:117:50:117:53 | keys | semmle.label | keys |
+| ReflectedXss.js:117:58:117:61 | keys | semmle.label | keys |
+| ReflectedXss.js:118:11:118:72 | invalidKeys | semmle.label | invalidKeys |
+| ReflectedXss.js:118:11:118:72 | invalidKeys [0] | semmle.label | invalidKeys [0] |
+| ReflectedXss.js:118:25:118:32 | keyArray | semmle.label | keyArray |
+| ReflectedXss.js:118:25:118:32 | keyArray [0] | semmle.label | keyArray [0] |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) | semmle.label | keyArra ... s(key)) |
+| ReflectedXss.js:118:25:118:72 | keyArra ... s(key)) [0] | semmle.label | keyArra ... s(key)) [0] |
+| ReflectedXss.js:121:30:121:73 | `${inva ... telist` | semmle.label | `${inva ... telist` |
+| ReflectedXss.js:121:33:121:43 | invalidKeys | semmle.label | invalidKeys |
+| ReflectedXss.js:121:33:121:43 | invalidKeys [0] | semmle.label | invalidKeys [0] |
+| ReflectedXss.js:121:33:121:54 | invalid ... n(', ') | semmle.label | invalid ... n(', ') |
 | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | semmle.label | "FOO: " ... rams.id |
 | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | semmle.label | req.params.id |
 | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | semmle.label | "FOO: " ... rams.id |
@@ -334,59 +398,3 @@ nodes
 | tst3.js:12:12:12:15 | code | semmle.label | code |
 subpaths
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |
-#select
-| ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | ReflectedXss.js:8:33:8:45 | req.params.id | ReflectedXss.js:8:14:8:45 | "Unknow ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:8:33:8:45 | req.params.id | user-provided value |
-| ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | ReflectedXss.js:17:31:17:39 | params.id | ReflectedXss.js:17:12:17:39 | "Unknow ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:17:31:17:39 | params.id | user-provided value |
-| ReflectedXss.js:22:12:22:19 | req.body | ReflectedXss.js:22:12:22:19 | req.body | ReflectedXss.js:22:12:22:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:22:12:22:19 | req.body | user-provided value |
-| ReflectedXss.js:23:12:23:27 | marked(req.body) | ReflectedXss.js:23:19:23:26 | req.body | ReflectedXss.js:23:12:23:27 | marked(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:23:19:23:26 | req.body | user-provided value |
-| ReflectedXss.js:29:12:29:19 | req.body | ReflectedXss.js:29:12:29:19 | req.body | ReflectedXss.js:29:12:29:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:29:12:29:19 | req.body | user-provided value |
-| ReflectedXss.js:41:12:41:19 | req.body | ReflectedXss.js:41:12:41:19 | req.body | ReflectedXss.js:41:12:41:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:41:12:41:19 | req.body | user-provided value |
-| ReflectedXss.js:42:12:42:39 | convert ... q.body) | ReflectedXss.js:42:31:42:38 | req.body | ReflectedXss.js:42:12:42:39 | convert ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:42:31:42:38 | req.body | user-provided value |
-| ReflectedXss.js:56:12:56:19 | req.body | ReflectedXss.js:56:12:56:19 | req.body | ReflectedXss.js:56:12:56:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:56:12:56:19 | req.body | user-provided value |
-| ReflectedXss.js:65:16:65:19 | file | ReflectedXss.js:64:14:64:21 | req.body | ReflectedXss.js:65:16:65:19 | file | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:64:14:64:21 | req.body | user-provided value |
-| ReflectedXss.js:68:12:68:52 | remark( ... tring() | ReflectedXss.js:68:33:68:40 | req.body | ReflectedXss.js:68:12:68:52 | remark( ... tring() | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:68:33:68:40 | req.body | user-provided value |
-| ReflectedXss.js:72:12:72:65 | unified ... oString | ReflectedXss.js:72:48:72:55 | req.body | ReflectedXss.js:72:12:72:65 | unified ... oString | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:72:48:72:55 | req.body | user-provided value |
-| ReflectedXss.js:75:14:75:14 | f | ReflectedXss.js:74:20:74:27 | req.body | ReflectedXss.js:75:14:75:14 | f | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:74:20:74:27 | req.body | user-provided value |
-| ReflectedXss.js:83:12:83:19 | req.body | ReflectedXss.js:83:12:83:19 | req.body | ReflectedXss.js:83:12:83:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:83:12:83:19 | req.body | user-provided value |
-| ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | ReflectedXss.js:84:22:84:29 | req.body | ReflectedXss.js:84:12:84:30 | snarkdown(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:84:22:84:29 | req.body | user-provided value |
-| ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | ReflectedXss.js:85:23:85:30 | req.body | ReflectedXss.js:85:12:85:31 | snarkdown2(req.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:85:23:85:30 | req.body | user-provided value |
-| ReflectedXss.js:97:12:97:19 | req.body | ReflectedXss.js:97:12:97:19 | req.body | ReflectedXss.js:97:12:97:19 | req.body | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:97:12:97:19 | req.body | user-provided value |
-| ReflectedXss.js:98:12:98:38 | markdow ... q.body) | ReflectedXss.js:98:30:98:37 | req.body | ReflectedXss.js:98:12:98:38 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:98:30:98:37 | req.body | user-provided value |
-| ReflectedXss.js:100:12:100:39 | markdow ... q.body) | ReflectedXss.js:100:31:100:38 | req.body | ReflectedXss.js:100:12:100:39 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:100:31:100:38 | req.body | user-provided value |
-| ReflectedXss.js:103:12:103:84 | markdow ... q.body) | ReflectedXss.js:103:76:103:83 | req.body | ReflectedXss.js:103:12:103:84 | markdow ... q.body) | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:103:76:103:83 | req.body | user-provided value |
-| ReflectedXss.js:110:16:110:30 | request.query.p | ReflectedXss.js:110:16:110:30 | request.query.p | ReflectedXss.js:110:16:110:30 | request.query.p | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:110:16:110:30 | request.query.p | user-provided value |
-| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | ReflectedXss.js:114:13:114:27 | keys: queryKeys | ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:114:13:114:27 | keys: queryKeys | user-provided value |
-| ReflectedXss.js:122:30:122:73 | `${inva ... telist` | ReflectedXss.js:116:31:116:45 | paramKeys?.keys | ReflectedXss.js:122:30:122:73 | `${inva ... telist` | Cross-site scripting vulnerability due to a $@. | ReflectedXss.js:116:31:116:45 | paramKeys?.keys | user-provided value |
-| ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | ReflectedXssContentTypes.js:10:14:10:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:10:24:10:36 | req.params.id | user-provided value |
-| ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | ReflectedXssContentTypes.js:20:14:20:36 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:20:24:20:36 | req.params.id | user-provided value |
-| ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |
-| ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | user-provided value |
-| ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to a $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
-| etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to a $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
-| formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
-| formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
-| live-server.js:6:13:6:50 | `<html> ... /html>` | live-server.js:4:21:4:27 | req.url | live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to a $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
-| live-server.js:12:13:12:50 | `<html> ... /html>` | live-server.js:10:21:10:27 | req.url | live-server.js:12:13:12:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to a $@. | live-server.js:10:21:10:27 | req.url | user-provided value |
-| pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | pages/Next.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | pages/Next.jsx:8:13:8:19 | req.url | user-provided value |
-| pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | pages/Next.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | pages/Next.jsx:15:13:15:19 | req.url | user-provided value |
-| pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | pages/api/myapi.js:2:14:2:20 | req.url | Cross-site scripting vulnerability due to a $@. | pages/api/myapi.js:2:14:2:20 | req.url | user-provided value |
-| partial.js:10:14:10:18 | x + y | partial.js:13:42:13:48 | req.url | partial.js:10:14:10:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:13:42:13:48 | req.url | user-provided value |
-| partial.js:19:14:19:18 | x + y | partial.js:22:51:22:57 | req.url | partial.js:19:14:19:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:22:51:22:57 | req.url | user-provided value |
-| partial.js:28:14:28:18 | x + y | partial.js:31:47:31:53 | req.url | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:31:47:31:53 | req.url | user-provided value |
-| partial.js:37:14:37:18 | x + y | partial.js:40:43:40:49 | req.url | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:40:43:40:49 | req.url | user-provided value |
-| promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to a $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
-| tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:6:9:6:9 | p | user-provided value |
-| tst2.js:8:12:8:12 | r | tst2.js:6:12:6:15 | q: r | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to a $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
-| tst2.js:18:12:18:12 | p | tst2.js:14:9:14:9 | p | tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
-| tst2.js:21:14:21:14 | p | tst2.js:14:9:14:9 | p | tst2.js:21:14:21:14 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
-| tst2.js:36:12:36:12 | p | tst2.js:30:9:30:9 | p | tst2.js:36:12:36:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:30:9:30:9 | p | user-provided value |
-| tst2.js:37:12:37:18 | other.p | tst2.js:30:9:30:9 | p | tst2.js:37:12:37:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:30:9:30:9 | p | user-provided value |
-| tst2.js:51:12:51:17 | unsafe | tst2.js:43:9:43:9 | p | tst2.js:51:12:51:17 | unsafe | Cross-site scripting vulnerability due to a $@. | tst2.js:43:9:43:9 | p | user-provided value |
-| tst2.js:63:12:63:12 | p | tst2.js:57:9:57:9 | p | tst2.js:63:12:63:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:57:9:57:9 | p | user-provided value |
-| tst2.js:64:12:64:18 | other.p | tst2.js:57:9:57:9 | p | tst2.js:64:12:64:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:57:9:57:9 | p | user-provided value |
-| tst2.js:75:12:75:12 | p | tst2.js:69:9:69:9 | p | tst2.js:75:12:75:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:69:9:69:9 | p | user-provided value |
-| tst2.js:76:12:76:18 | other.p | tst2.js:69:9:69:9 | p | tst2.js:76:12:76:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:69:9:69:9 | p | user-provided value |
-| tst2.js:88:12:88:12 | p | tst2.js:82:9:82:9 | p | tst2.js:88:12:88:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
-| tst2.js:89:12:89:18 | other.p | tst2.js:82:9:82:9 | p | tst2.js:89:12:89:18 | other.p | Cross-site scripting vulnerability due to a $@. | tst2.js:82:9:82:9 | p | user-provided value |
-| tst3.js:6:12:6:12 | p | tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to a $@. | tst3.js:5:9:5:9 | p | user-provided value |
-| tst3.js:12:12:12:15 | code | tst3.js:11:32:11:39 | reg.body | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to a $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |

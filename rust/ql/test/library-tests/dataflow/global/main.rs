@@ -18,6 +18,33 @@ fn data_out_of_call() {
     sink(a); // $ hasValueFlow=n
 }
 
+struct MyStruct {
+    data: i64,
+}
+
+impl MyStruct {
+    fn set_data(&mut self, n: i64) {
+        (*self).data = n // todo: implicit deref not yet supported
+    }
+
+    fn get_data(&self) -> i64 {
+        (*self).data // todo: implicit deref not yet supported
+    }
+}
+
+fn data_out_of_call_side_effect1() {
+    let mut a = MyStruct { data: 0 };
+    sink(a.get_data());
+    (&mut a).set_data(source(8));
+    sink(a.get_data()); // $ hasValueFlow=8
+}
+
+fn data_out_of_call_side_effect2() {
+    let mut a = MyStruct { data: 0 };
+    ({ 42; &mut a}).set_data(source(9));
+    sink(a.get_data()); // $ hasValueFlow=9
+}
+
 fn data_in(n: i64) {
     sink(n); // $ hasValueFlow=3
 }
@@ -64,11 +91,11 @@ struct MyFlag {
 }
 
 impl MyFlag {
-    fn data_in(&self, n: i64) {
+    fn data_in(self, n: i64) {
         sink(n); // $ hasValueFlow=1 hasValueFlow=8
     }
 
-    fn get_data(&self) -> i64 {
+    fn get_data(self) -> i64 {
         if self.flag {
             0
         } else {
@@ -76,7 +103,7 @@ impl MyFlag {
         }
     }
 
-    fn data_through(&self, n: i64) -> i64 {
+    fn data_through(self, n: i64) -> i64 {
         if self.flag {
             0
         } else {
@@ -107,13 +134,13 @@ fn data_through_method() {
 fn data_in_to_method_called_as_function() {
     let mn = MyFlag { flag: true };
     let a = source(8);
-    MyFlag::data_in(&mn, a);
+    MyFlag::data_in(mn, a);
 }
 
 fn data_through_method_called_as_function() {
     let mn = MyFlag { flag: true };
     let a = source(12);
-    let b = MyFlag::data_through(&mn, a);
+    let b = MyFlag::data_through(mn, a);
     sink(b); // $ hasValueFlow=12
 }
 
@@ -159,8 +186,7 @@ fn test_operator_overloading() {
     let a = MyInt { value: source(7) };
     let b = MyInt { value: 2 };
     let d = a.add(b);
-    sink(d.value); // $ MISSING: hasValueFlow=7
-
+    sink(d.value); // $ hasValueFlow=7
 }
 
 trait MyTrait {
@@ -185,12 +211,12 @@ fn data_through_trait_method_called_as_function() {
     let a = MyInt { value: source(8) };
     let b = MyInt { value: 2 };
     let MyInt { value: c } = MyTrait::take_self(a, b);
-    sink(c); // $ hasValueFlow=8
+    sink(c); // $ MISSING: hasValueFlow=8
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(37) };
     let MyInt { value: c } = MyTrait::take_second(a, b);
-    sink(c); // $ hasValueFlow=37
+    sink(c); // $ MISSING: hasValueFlow=37
 
     let a = MyInt { value: 0 };
     let b = MyInt { value: source(38) };
@@ -223,31 +249,10 @@ fn test_async_await() {
     futures::executor::block_on(test_async_await_async_part());
 }
 
-// Flow out of mutable parameters.
-
-fn set_int(n: &mut i64, c: i64) {
-    *n = c;
-}
-
-fn mutates_argument_1() {
-    // Passing an already borrowed value to a function and then reading from the same borrow.
-    let mut n = 0;
-    let m = &mut n;
-    sink(*m);
-    set_int(m, source(37));
-    sink(*m); // $ hasValueFlow=37
-}
-
-fn mutates_argument_2() {
-    // Borrowing at the call and then reading from the unborrowed variable.
-    let mut n = 0;
-    sink(n);
-    set_int(&mut n, source(88));
-    sink(n); // $ MISSING: hasValueFlow=88
-}
-
 fn main() {
     data_out_of_call();
+    data_out_of_call_side_effect1();
+    data_out_of_call_side_effect2();
     data_in_to_call();
     data_through_call();
     data_through_nested_function();
@@ -258,6 +263,4 @@ fn main() {
 
     test_operator_overloading();
     test_async_await();
-    mutates_argument_1();
-    mutates_argument_2();
 }

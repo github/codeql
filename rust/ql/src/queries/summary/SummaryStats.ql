@@ -14,9 +14,18 @@ import codeql.rust.Diagnostics
 import Stats
 import TaintReach
 
+class CrateElement extends Element {
+  CrateElement() {
+    this instanceof Crate or
+    this instanceof NamedCrate or
+    this.(AstNode).getParentNode*() = any(Crate c).getModule()
+  }
+}
+
 from string key, int value
 where
-  key = "Elements extracted" and value = count(Element e | not e instanceof Unextracted)
+  key = "Elements extracted" and
+  value = count(Element e | not e instanceof Unextracted and not e instanceof CrateElement)
   or
   key = "Elements unextracted" and value = count(Unextracted e)
   or
@@ -45,6 +54,8 @@ where
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
   or
   key = "Inconsistencies - AST" and value = getTotalAstInconsistencies()
+  or
+  key = "Inconsistencies - Path resolution" and value = getTotalPathResolutionInconsistencies()
   or
   key = "Inconsistencies - CFG" and value = getTotalCfgInconsistencies()
   or

@@ -9,9 +9,9 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', (req, res) => {
-    yauzl.fromFd(req.files.zipFile.data)
-    yauzl.fromBuffer(req.files.zipFile.data)
-    yauzl.fromRandomAccessReader(req.files.zipFile.data)
+    yauzl.fromFd(req.files.zipFile.data) // $ Alert
+    yauzl.fromBuffer(req.files.zipFile.data) // $ Alert
+    yauzl.fromRandomAccessReader(req.files.zipFile.data) // $ Alert
     // Safe
     yauzl.open(req.query.filePath, { lazyEntries: true }, function (err, zipfile) {
         if (err) throw err;
@@ -34,13 +34,13 @@ app.post('/upload', (req, res) => {
         });
     });
     // Unsafe
-    yauzl.open(req.query.filePath, { lazyEntries: true }, function (err, zipfile) {
+    yauzl.open(req.query.filePath, { lazyEntries: true }, function (err, zipfile) { // $ Source
         if (err) throw err;
-        zipfile.readEntry();
+        zipfile.readEntry(); // $ Alert
         zipfile.on("entry", function (entry) {
-            zipfile.openReadStream(entry, async function (err, readStream) {
+            zipfile.openReadStream(entry, async function (err, readStream) { // $ Alert
                 readStream.on("end", function () {
-                    zipfile.readEntry();
+                    zipfile.readEntry(); // $ Alert
                 });
                 const outputFile = fs.createWriteStream('testiness');
                 await pipeline(

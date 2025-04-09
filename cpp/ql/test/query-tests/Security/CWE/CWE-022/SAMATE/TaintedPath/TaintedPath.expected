@@ -1,7 +1,13 @@
 edges
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:62:25:62:46 | ... = ... | provenance |  |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:69:21:69:40 | ... = ... | provenance |  |
 | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | provenance |  |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:62:25:62:46 | ... = ... | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | provenance |  |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:69:21:69:40 | ... = ... | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | provenance |  |
 nodes
 | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:55:27:55:38 | fgets output argument | semmle.label | fgets output argument |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:62:25:62:46 | ... = ... | semmle.label | ... = ... |
+| CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:69:21:69:40 | ... = ... | semmle.label | ... = ... |
 | CWE23_Relative_Path_Traversal__char_console_fopen_11.cpp:77:23:77:26 | *data | semmle.label | *data |
 subpaths
 #select

@@ -4,3 +4,8 @@ extensions:
       extensible: threatModelConfiguration
     data:
       - ["database", true, 0]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/nonexistent/sources", "", False, "Source", "", "", "ReturnValue", "database", "manual"]

@@ -11,6 +11,6 @@ module Impl {
       )
     }
 
-    override string toString() { result = "do { ... } catch { ... }" }
+    override string toStringImpl() { result = "do { ... } catch { ... }" }
   }
 }

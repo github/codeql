@@ -81,10 +81,10 @@ rust_library(
     }),
     version = "0.15.15",
     deps = [
-        "@vendor__countme-3.0.1//:countme",
-        "@vendor__hashbrown-0.14.5//:hashbrown",
-        "@vendor__memoffset-0.9.1//:memoffset",
-        "@vendor__rustc-hash-1.1.0//:rustc_hash",
-        "@vendor__text-size-1.1.1//:text_size",
+        "@vendor_ts__countme-3.0.1//:countme",
+        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
+        "@vendor_ts__memoffset-0.9.1//:memoffset",
+        "@vendor_ts__rustc-hash-1.1.0//:rustc_hash",
+        "@vendor_ts__text-size-1.1.1//:text_size",
     ],
 )

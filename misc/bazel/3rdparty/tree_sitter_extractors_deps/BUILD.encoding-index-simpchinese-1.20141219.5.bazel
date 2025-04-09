@@ -81,6 +81,6 @@ rust_library(
     }),
     version = "1.20141219.5",
     deps = [
-        "@vendor__encoding_index_tests-0.1.4//:encoding_index_tests",
+        "@vendor_ts__encoding_index_tests-0.1.4//:encoding_index_tests",
     ],
 )

@@ -10,8 +10,9 @@
 
 import rust
 import codeql.rust.dataflow.DataFlow
+import codeql.rust.Concepts
 import Stats
 
 from string kind, int num
-where num = strictcount(DataFlow::Node n | getAQuerySinkKind(n) = kind)
+where num = strictcount(QuerySink s | s.getSinkType() = kind)
 select kind, num

@@ -212,9 +212,7 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrierOut2(DataFlow::Node node) {
-    node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
-  }
+  predicate isBarrierOut2(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
 
   predicate isAdditionalFlowStep2(
     DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2

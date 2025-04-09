@@ -203,7 +203,6 @@ edges
 | test.rs:99:15:99:39 | let ... = ... | test.rs:99:29:99:32 | iter |  |
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:9:103:9 | while ... { ... } | no-match |
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | x | match |
-| test.rs:99:24:99:24 | x | test.rs:99:9:103:9 | while ... { ... } | no-match |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | x | test.rs:100:17:100:17 | x | match |
 | test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next(...) |  |
@@ -317,7 +316,6 @@ edges
 | test.rs:146:16:146:22 | Some(...) | test.rs:149:13:149:13 | 0 | no-match |
 | test.rs:146:21:146:21 | n | test.rs:146:21:146:21 | n |  |
 | test.rs:146:21:146:21 | n | test.rs:147:13:147:13 | n | match |
-| test.rs:146:21:146:21 | n | test.rs:149:13:149:13 | 0 | no-match |
 | test.rs:146:26:146:26 | a | test.rs:146:16:146:22 | Some(...) |  |
 | test.rs:146:28:148:9 | { ... } | test.rs:146:9:150:9 | if ... {...} else {...} |  |
 | test.rs:147:13:147:13 | n | test.rs:146:28:148:9 | { ... } |  |
@@ -334,7 +332,6 @@ edges
 | test.rs:154:12:154:26 | let ... = a | test.rs:154:26:154:26 | a |  |
 | test.rs:154:16:154:22 | Some(...) | test.rs:154:9:156:9 | if ... {...} | no-match |
 | test.rs:154:16:154:22 | Some(...) | test.rs:154:21:154:21 | n | match |
-| test.rs:154:21:154:21 | n | test.rs:154:9:156:9 | if ... {...} | no-match |
 | test.rs:154:21:154:21 | n | test.rs:154:21:154:21 | n |  |
 | test.rs:154:21:154:21 | n | test.rs:155:13:155:21 | ExprStmt | match |
 | test.rs:154:26:154:26 | a | test.rs:154:16:154:22 | Some(...) |  |
@@ -802,7 +799,6 @@ edges
 | test.rs:328:13:328:27 | ...::Some(...) | test.rs:329:13:329:27 | ...::Some(...) | no-match |
 | test.rs:328:26:328:26 | x | test.rs:328:26:328:26 | x |  |
 | test.rs:328:26:328:26 | x | test.rs:328:32:328:32 | x | match |
-| test.rs:328:26:328:26 | x | test.rs:329:13:329:27 | ...::Some(...) | no-match |
 | test.rs:328:32:328:32 | x | test.rs:328:36:328:37 | 10 |  |
 | test.rs:328:32:328:37 | ... < ... | test.rs:328:42:328:42 | x | true |
 | test.rs:328:32:328:37 | ... < ... | test.rs:329:13:329:27 | ...::Some(...) | false |
@@ -814,7 +810,6 @@ edges
 | test.rs:329:13:329:27 | ...::Some(...) | test.rs:330:13:330:24 | ...::None | no-match |
 | test.rs:329:26:329:26 | x | test.rs:329:26:329:26 | x |  |
 | test.rs:329:26:329:26 | x | test.rs:329:32:329:32 | x | match |
-| test.rs:329:26:329:26 | x | test.rs:330:13:330:24 | ...::None | no-match |
 | test.rs:329:32:329:32 | x | test.rs:327:9:331:9 | match maybe_digit { ... } |  |
 | test.rs:330:13:330:24 | ...::None | test.rs:330:29:330:29 | 5 | match |
 | test.rs:330:29:330:29 | 5 | test.rs:327:9:331:9 | match maybe_digit { ... } |  |
@@ -841,7 +836,6 @@ edges
 | test.rs:340:13:340:27 | ...::Some(...) | test.rs:341:13:341:24 | ...::None | no-match |
 | test.rs:340:26:340:26 | x | test.rs:340:26:340:26 | x |  |
 | test.rs:340:26:340:26 | x | test.rs:340:32:340:32 | x | match |
-| test.rs:340:26:340:26 | x | test.rs:341:13:341:24 | ...::None | no-match |
 | test.rs:340:32:340:32 | x | test.rs:340:36:340:36 | 5 |  |
 | test.rs:340:32:340:36 | ... + ... | test.rs:335:9:342:9 | match ... { ... } |  |
 | test.rs:340:36:340:36 | 5 | test.rs:340:32:340:36 | ... + ... |  |
@@ -864,7 +858,6 @@ edges
 | test.rs:347:13:347:19 | Some(...) | test.rs:348:13:348:13 | _ | no-match |
 | test.rs:347:18:347:18 | a | test.rs:347:18:347:18 | a |  |
 | test.rs:347:18:347:18 | a | test.rs:347:24:347:24 | a | match |
-| test.rs:347:18:347:18 | a | test.rs:348:13:348:13 | _ | no-match |
 | test.rs:347:24:347:24 | a | test.rs:346:10:349:9 | [boolean(false)] match r { ... } | false |
 | test.rs:347:24:347:24 | a | test.rs:346:10:349:9 | [boolean(true)] match r { ... } | true |
 | test.rs:348:13:348:13 | _ | test.rs:348:18:348:22 | false | match |
@@ -882,7 +875,6 @@ edges
 | test.rs:354:13:354:21 | Ok(...) | test.rs:355:13:355:22 | Err(...) | no-match |
 | test.rs:354:16:354:20 | value | test.rs:354:16:354:20 | value |  |
 | test.rs:354:16:354:20 | value | test.rs:354:26:354:30 | value | match |
-| test.rs:354:16:354:20 | value | test.rs:355:13:355:22 | Err(...) | no-match |
 | test.rs:354:26:354:30 | value | test.rs:353:9:356:9 | match r { ... } |  |
 | test.rs:355:13:355:22 | Err(...) | test.rs:355:17:355:21 | never | match |
 | test.rs:355:17:355:21 | never | test.rs:355:17:355:21 | never |  |
@@ -899,7 +891,6 @@ edges
 | test.rs:363:13:363:19 | Some(...) | test.rs:363:18:363:18 | n | match |
 | test.rs:363:13:363:19 | Some(...) | test.rs:363:39:363:53 | MacroStmts | no-match |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | n |  |
-| test.rs:363:18:363:18 | n | test.rs:363:39:363:53 | MacroStmts | no-match |
 | test.rs:363:18:363:18 | n | test.rs:364:9:364:9 | n | match |
 | test.rs:363:23:363:23 | a | test.rs:363:13:363:19 | Some(...) |  |
 | test.rs:363:32:363:54 | ...::panic_fmt | test.rs:363:39:363:53 | "Expected some" |  |
@@ -932,7 +923,6 @@ edges
 | test.rs:369:13:369:21 | Some(...) | test.rs:370:13:370:16 | None | no-match |
 | test.rs:369:18:369:20 | ret | test.rs:369:18:369:20 | ret |  |
 | test.rs:369:18:369:20 | ret | test.rs:369:26:369:28 | ret | match |
-| test.rs:369:18:369:20 | ret | test.rs:370:13:370:16 | None | no-match |
 | test.rs:369:26:369:28 | ret | test.rs:368:19:371:9 | match m { ... } |  |
 | test.rs:370:13:370:16 | None | test.rs:370:13:370:16 | None |  |
 | test.rs:370:13:370:16 | None | test.rs:370:28:370:32 | false | match |
@@ -1158,7 +1148,6 @@ edges
 | test.rs:462:14:462:35 | TuplePat | test.rs:462:15:462:15 | n | match |
 | test.rs:462:15:462:15 | n | test.rs:462:15:462:15 | n |  |
 | test.rs:462:15:462:15 | n | test.rs:462:18:462:34 | MyStruct {...} | match |
-| test.rs:462:15:462:15 | n | test.rs:463:13:463:13 | _ | no-match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:462:32:462:32 | _ | match |
 | test.rs:462:18:462:34 | MyStruct {...} | test.rs:463:13:463:13 | _ | no-match |
 | test.rs:462:32:462:32 | _ | test.rs:462:40:462:40 | n | match |
@@ -1409,7 +1398,6 @@ edges
 | test.rs:587:13:587:19 | Some(...) | test.rs:587:18:587:18 | y | match |
 | test.rs:587:13:587:19 | Some(...) | test.rs:588:13:588:27 | ExprStmt | no-match |
 | test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | y |  |
-| test.rs:587:18:587:18 | y | test.rs:588:13:588:27 | ExprStmt | no-match |
 | test.rs:587:18:587:18 | y | test.rs:590:9:590:9 | 0 | match |
 | test.rs:587:23:587:23 | x | test.rs:587:13:587:19 | Some(...) |  |
 | test.rs:588:13:588:26 | break ''block 1 | test.rs:585:18:591:5 | 'block: { ... } | break |

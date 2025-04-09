@@ -44,7 +44,7 @@
 	/^https:\/\/[a-z]*.example.com$/; // $ Alert
 	RegExp('^protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)'); // $ Alert
 
-	/^(example.dev|example.com)/; // OK
+	/^(example.dev|example.com)/;
 
 	new RegExp('^http://localhost:8000|' + '^https?://.+.example\\.com/'); // $ Alert
 
@@ -55,8 +55,8 @@
 
 	new RegExp('^http://test\.example.com'); // $ Alert
 
-	/^http:\/\/(..|...)\.example\.com\/index\.html/; // OK, wildcards are intentional
-	/^http:\/\/.\.example\.com\/index\.html/; // OK, the wildcard is intentional
+	/^http:\/\/(..|...)\.example\.com\/index\.html/; // OK - wildcards are intentional
+	/^http:\/\/.\.example\.com\/index\.html/; // OK - the wildcard is intentional
 	/^(foo.example\.com|whatever)$/; // $ Alert (but kinda OK - one disjunction doesn't even look like a hostname)
 
 	if (s.matchAll("^http://test.example.com")) {} // $ Alert

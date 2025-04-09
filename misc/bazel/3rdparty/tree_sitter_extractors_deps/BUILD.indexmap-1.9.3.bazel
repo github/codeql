@@ -82,8 +82,8 @@ rust_library(
     }),
     version = "1.9.3",
     deps = [
-        "@vendor__hashbrown-0.12.3//:hashbrown",
-        "@vendor__indexmap-1.9.3//:build_script_build",
+        "@vendor_ts__hashbrown-0.12.3//:hashbrown",
+        "@vendor_ts__indexmap-1.9.3//:build_script_build",
     ],
 )
 
@@ -135,7 +135,7 @@ cargo_build_script(
     version = "1.9.3",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__autocfg-1.4.0//:autocfg",
+        "@vendor_ts__autocfg-1.4.0//:autocfg",
     ],
 )
 
