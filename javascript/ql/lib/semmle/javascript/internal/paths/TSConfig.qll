@@ -1,5 +1,5 @@
 private import javascript
-private import semmle.javascript.internal.PathResolution
+private import semmle.javascript.internal.paths.PathExprResolver
 private import semmle.javascript.internal.paths.PathResolver
 
 class TSConfig extends JsonObject {
@@ -69,7 +69,6 @@ class TSConfig extends JsonObject {
   predicate hasPathMapping(string pattern, string newPath) {
     this.getPathMappings().getPropStringValue(pattern) = newPath
     or
-    // TODO: track priority
     this.getPathMappings().getPropValue(pattern).(JsonArray).getElementStringValue(_) = newPath
   }
 

@@ -1,6 +1,6 @@
 private import javascript
 private import semmle.javascript.internal.paths.PathResolver
-private import semmle.javascript.internal.PathResolution
+private import semmle.javascript.internal.paths.PathExprResolver
 
 class PackageJsonEx extends PackageJson {
   private JsonValue getAPartOfExportsSection(string pattern) {
@@ -69,11 +69,7 @@ private module ResolverConfig implements PathResolverSig {
 
   predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
 
-  Container getAnAdditionalChild(Container base, string name) {
-    result = AutomaticFileExtensions::getAnAdditionalChild(base, name)
-    or
-    result = ReverseBuildDir::getAnAdditionalChild(base, name)
-  }
+  predicate getAnAdditionalChild = JSPaths::getAnAdditionalChild/2;
 }
 
 private module Resolver = PathResolver<ResolverConfig>;
