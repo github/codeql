@@ -6,7 +6,7 @@ github.com/appleboy/gin-jwt/v2
 github.com/cristalhq/jwt/v3
 # github.com/go-kit/kit v0.12.0
 ## explicit
-github.com/go-kit/kit
+github.com/go-kit/kit/auth/jwt
 # github.com/gogf/gf-jwt/v2 v2.0.1
 ## explicit
 github.com/gogf/gf-jwt/v2
@@ -18,13 +18,13 @@ github.com/golang-jwt/jwt/v4
 github.com/iris-contrib/middleware/jwt
 # github.com/kataras/iris/v12 v12.2.0
 ## explicit
-github.com/kataras/iris/v12
+github.com/kataras/iris/v12/middleware/jwt
 # github.com/kataras/jwt v0.1.8
 ## explicit
 github.com/kataras/jwt
 # github.com/lestrrat/go-jwx v0.9.1
 ## explicit
-github.com/lestrrat/go-jwx
+github.com/lestrrat/go-jwx/jwk
 # github.com/square/go-jose/v3 v3.0.0-20200630053402-0a67ce9b0693
 ## explicit
 github.com/square/go-jose/v3
