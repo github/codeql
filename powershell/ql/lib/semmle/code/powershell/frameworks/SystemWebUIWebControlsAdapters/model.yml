@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Web.UI.WebControls.Menu", "System.Web.UI.WebControls.Adapters.MenuAdapter", "Property[Control]"]
-    - ["System.Web.UI.WebControls.WebControl", "System.Web.UI.WebControls.Adapters.WebControlAdapter", "Property[Control]"]
-    - ["System.Web.UI.WebControls.DataBoundControl", "System.Web.UI.WebControls.Adapters.DataBoundControlAdapter", "Property[Control]"]
-    - ["System.Web.UI.WebControls.HierarchicalDataBoundControl", "System.Web.UI.WebControls.Adapters.HierarchicalDataBoundControlAdapter", "Property[Control]"]
-    - ["System.Boolean", "System.Web.UI.WebControls.Adapters.WebControlAdapter", "Property[IsEnabled]"]
-    - ["System.Object", "System.Web.UI.WebControls.Adapters.MenuAdapter", "Method[SaveAdapterControlState].ReturnValue"]
+    - ["system.web.ui.webcontrols.menu", "system.web.ui.webcontrols.adapters.menuadapter", "Property[control]"]
+    - ["system.web.ui.webcontrols.webcontrol", "system.web.ui.webcontrols.adapters.webcontroladapter", "Property[control]"]
+    - ["system.web.ui.webcontrols.databoundcontrol", "system.web.ui.webcontrols.adapters.databoundcontroladapter", "Property[control]"]
+    - ["system.web.ui.webcontrols.hierarchicaldataboundcontrol", "system.web.ui.webcontrols.adapters.hierarchicaldataboundcontroladapter", "Property[control]"]
+    - ["system.boolean", "system.web.ui.webcontrols.adapters.webcontroladapter", "Property[isenabled]"]
+    - ["system.object", "system.web.ui.webcontrols.adapters.menuadapter", "Method[saveadaptercontrolstate].ReturnValue"]

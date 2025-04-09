@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Media.SoundPlayer", "Property[IsLoadCompleted]"]
-    - ["System.String", "System.Media.SoundPlayer", "Property[SoundLocation]"]
-    - ["System.Int32", "System.Media.SoundPlayer", "Property[LoadTimeout]"]
-    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Beep]"]
-    - ["System.Object", "System.Media.SoundPlayer", "Property[Tag]"]
-    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Exclamation]"]
-    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Asterisk]"]
-    - ["System.IO.Stream", "System.Media.SoundPlayer", "Property[Stream]"]
-    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Hand]"]
-    - ["System.Media.SystemSound", "System.Media.SystemSounds!", "Property[Question]"]
+    - ["system.boolean", "system.media.soundplayer", "Property[isloadcompleted]"]
+    - ["system.string", "system.media.soundplayer", "Property[soundlocation]"]
+    - ["system.int32", "system.media.soundplayer", "Property[loadtimeout]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Property[beep]"]
+    - ["system.object", "system.media.soundplayer", "Property[tag]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Property[exclamation]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Property[asterisk]"]
+    - ["system.io.stream", "system.media.soundplayer", "Property[stream]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Property[hand]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Property[question]"]

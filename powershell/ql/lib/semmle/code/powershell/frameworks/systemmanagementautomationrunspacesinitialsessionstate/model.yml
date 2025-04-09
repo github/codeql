@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_assemblies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_commands]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_environmentvariables]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_formats]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_modules]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_providers]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_startupscripts]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_types]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[get_variables]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[importpsmodule]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.runspaces.initialsessionstate", "Method[importpssnapin]", "Argument[0]", "ReturnValue", "taint"]
+      

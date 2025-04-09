@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Type", "System.Runtime.DesignerServices.WindowsRuntimeDesignerContext", "Method[GetType].ReturnValue"]
-    - ["System.Reflection.Assembly", "System.Runtime.DesignerServices.WindowsRuntimeDesignerContext", "Method[GetAssembly].ReturnValue"]
-    - ["System.String", "System.Runtime.DesignerServices.WindowsRuntimeDesignerContext", "Property[Name]"]
+    - ["system.type", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[gettype].ReturnValue"]
+    - ["system.reflection.assembly", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[getassembly].ReturnValue"]
+    - ["system.string", "system.runtime.designerservices.windowsruntimedesignercontext", "Property[name]"]

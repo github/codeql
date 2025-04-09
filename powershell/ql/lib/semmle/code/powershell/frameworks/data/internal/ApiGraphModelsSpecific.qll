@@ -68,6 +68,16 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
   )
 }
 
+/**
+ * Gets a string that represents a module that is always implicitly
+ * imported in any powershell script.
+ */
+string getAnImplicitImport() {
+  result = "microsoft.powershell.management!"
+  or
+  result = "microsoft.powershell.utility!"
+}
+
 /** Gets a Powershell-specific interpretation of the given `type`. */
 API::Node getExtraNodeFromType(string rawType) {
   exists(
@@ -76,7 +86,7 @@ API::Node getExtraNodeFromType(string rawType) {
   |
     parseRelevantType(rawType, type, suffix) and
     qualifiedTypeName.hasQualifiedName(namespace, typename) and
-    namespace + "." + typename = type
+    (namespace + "." + typename).toLowerCase() = type
   |
     suffix = "!" and
     result = qualifiedTypeName.(DataFlow::LocalSourceNode).track()
@@ -85,7 +95,7 @@ API::Node getExtraNodeFromType(string rawType) {
     result = qualifiedTypeName.(DataFlow::LocalSourceNode).track().getInstance()
   )
   or
-  rawType = "" and
+  (rawType = ["", getAnImplicitImport()]) and
   result = API::root()
 }
 

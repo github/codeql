@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Collections.Generic.CollectionExtensions!", "Method[Remove<TKey,TValue>].ReturnValue"]
-    - ["System.Collections.Generic.KeyValuePair<TKey,TValue>", "System.Collections.Generic.KeyValuePair!", "Method[Create<TKey,TValue>].ReturnValue"]
-    - ["TValue", "System.Collections.Generic.CollectionExtensions!", "Method[GetValueOrDefault<TKey,TValue>].ReturnValue"]
-    - ["System.Boolean", "System.Collections.Generic.CollectionExtensions!", "Method[TryAdd<TKey,TValue>].ReturnValue"]
-    - ["System.Collections.ObjectModel.ReadOnlyDictionary<TKey,TValue>", "System.Collections.Generic.CollectionExtensions!", "Method[AsReadOnly<TKey,TValue>].ReturnValue"]
-    - ["System.Int32", "System.Collections.Generic.ReferenceEqualityComparer", "Method[GetHashCode].ReturnValue"]
-    - ["System.Boolean", "System.Collections.Generic.ReferenceEqualityComparer", "Method[Equals].ReturnValue"]
-    - ["System.Collections.ObjectModel.ReadOnlyCollection<T>", "System.Collections.Generic.CollectionExtensions!", "Method[AsReadOnly<T>].ReturnValue"]
-    - ["System.Collections.Generic.ReferenceEqualityComparer", "System.Collections.Generic.ReferenceEqualityComparer!", "Property[Instance]"]
+    - ["system.boolean", "system.collections.generic.collectionextensions!", "Method[remove<tkey,tvalue>].ReturnValue"]
+    - ["system.collections.generic.keyvaluepair<tkey,tvalue>", "system.collections.generic.keyvaluepair!", "Method[create<tkey,tvalue>].ReturnValue"]
+    - ["tvalue", "system.collections.generic.collectionextensions!", "Method[GetValueOrDefault<TKey,tvalue>].ReturnValue"]
+    - ["system.boolean", "system.collections.generic.collectionextensions!", "Method[tryadd<tkey,tvalue>].ReturnValue"]
+    - ["system.collections.objectmodel.readonlydictionary<tkey,tvalue>", "system.collections.generic.collectionextensions!", "Method[asreadonly<tkey,tvalue>].ReturnValue"]
+    - ["system.int32", "system.collections.generic.referenceequalitycomparer", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "system.collections.generic.referenceequalitycomparer", "Method[equals].ReturnValue"]
+    - ["system.collections.objectmodel.readonlycollection<t>", "system.collections.generic.collectionextensions!", "Method[asreadonly<t>].ReturnValue"]
+    - ["system.collections.generic.referenceequalitycomparer", "system.collections.generic.referenceequalitycomparer!", "Property[instance]"]

@@ -3,4 +3,75 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["Microsoft.PowerShell.Utility!", "Method[Read-Host].ReturnValue", "stdin"]
+      - ["microsoft.powershell.utility!", "Method[Read-Host].ReturnValue", "stdin"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+      - ["system.datetime", "microsoft.powershell.utility!", "Method[get-date].ReturnValue"]
+      - ["system.object", "microsoft.powershell.utility!", "Method[convertfrom-clixmlreference].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[convertFrom-json].ReturnValue"]
+      - ["system.management.automation.hashtable", "microsoft.powershell.utility!", "Method[convertFrom-json].ReturnValue"]
+      - ["microsoft.powershell.markdownrender.markdownInfo", "microsoft.powershell.utility!", "Method[convertfrom-markdown].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[convertfrom-sddlstring].ReturnValue"]
+      - ["system.collections.hashtable", "microsoft.powershell.utility!", "Method[convertfrom-stringdata].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[convertto-clixml].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[convertto-csv].ReturnValue"]
+      - ["system.string[]", "microsoft.powershell.utility!", "Method[convertto-csv].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[convertto-html].ReturnValue"]
+      - ["system.string[]", "microsoft.powershell.utility!", "Method[convertto-html].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[convertto-json].ReturnValue"]
+      - ["system.string[]", "microsoft.powershell.utility!", "Method[convertto-json].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[convertto-xml].ReturnValue"]
+      - ["system.string[]", "microsoft.powershell.utility!", "Method[convertto-xml].ReturnValue"]
+
+      - ["system.string", "microsoft.powershell.utility!", "Method[out-string].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[select-object].ReturnValue"]
+      - ["microsoft.powerShell.commands.matchinfo", "microsoft.powershell.utility!", "Method[select-string].ReturnValue"]
+      - ["system.boolean", "microsoft.powershell.utility!", "Method[select-string].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[select-string].ReturnValue"]
+      - ["microsoft.powerShell.commands.selectxmlinfo", "microsoft.powershell.utility!", "Method[select-xml].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[sort-object].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[tee-object].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[write-output].ReturnValue"]
+      - ["microsoft.powershell.commands.internal.format", "microsoft.powershell.utility!", "Method[format-custom].ReturnValue"]
+      - ["microsoft.powershell.commands.bytecollection", "microsoft.powershell.utility!", "Method[format-hex].ReturnValue"]
+      - ["microsoft.powershell.commands.internal.format", "microsoft.powershell.utility!", "Method[format-list].ReturnValue"]
+      - ["microsoft.powershell.commands.internal.format", "microsoft.powershell.utility!", "Method[format-table].ReturnValue"]
+      - ["microsoft.powershell.commands.internal.format", "microsoft.powershell.utility!", "Method[format-wide].ReturnValue"]
+      - ["pscustomobject", "microsoft.powershell.utility!", "Method[get-unique].ReturnValue"]
+      - ["system.string", "microsoft.powershell.utility!", "Method[join-string].ReturnValue"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.utility!", "Method[convertfrom-clixmlreference]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertfrom-csv]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertfrom-json]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertfrom-markdown]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertfrom-sddlstring]", "Argument[-sddl,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertfrom-stringdata]", "Argument[-stringdata,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertto-clixml]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertto-csv]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertto-html]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertto-json]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[convertto-xml]", "Argument[-inputobject,0,pipeline]", "ReturnValue", "taint"]
+
+      - ["microsoft.powershell.utility!", "Method[out-string]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[select-object]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[select-string]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[select-xml]", "Argument[-content,-path,-xml]", "ReturnValue", "taint"] # TODO: Source of user input?
+      - ["microsoft.powershell.utility!", "Method[sort-object]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[tee-object]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[write-output]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[format-custom]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[format-hex]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"] # Source of user input?
+      - ["microsoft.powershell.utility!", "Method[format-list]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[format-table]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[format-wide]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[get-unique]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[get-unique]", "Argument[-inputobject,pipeline].Element[?]", "ReturnValue.Element[?]", "value"]
+      - ["microsoft.powershell.utility!", "Method[join-string]", "Argument[-inputobject,pipeline]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.utility!", "Method[join-string]", "Argument[-inputobject,pipeline].Element[?]", "ReturnValue", "taint"]

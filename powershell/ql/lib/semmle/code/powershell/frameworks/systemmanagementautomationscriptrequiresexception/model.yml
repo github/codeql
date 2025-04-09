@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.scriptrequiresexception", "Method[get_commandname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptrequiresexception", "Method[get_missingpssnapins]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptrequiresexception", "Method[get_requirespsversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptrequiresexception", "Method[get_requiresshellid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptrequiresexception", "Method[get_requiresshellpath]", "Argument[this]", "ReturnValue", "taint"]
+      

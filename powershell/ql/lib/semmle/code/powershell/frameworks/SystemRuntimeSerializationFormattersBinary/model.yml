@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Object", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Method[DeserializeMethodResponse].ReturnValue"]
-    - ["System.Runtime.Serialization.StreamingContext", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[Context]"]
-    - ["System.Runtime.Serialization.ISurrogateSelector", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[SurrogateSelector]"]
-    - ["System.Runtime.Serialization.Formatters.FormatterAssemblyStyle", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[AssemblyFormat]"]
-    - ["System.Object", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Method[Deserialize].ReturnValue"]
-    - ["System.Runtime.Serialization.Formatters.TypeFilterLevel", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[FilterLevel]"]
-    - ["System.Object", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Method[UnsafeDeserializeMethodResponse].ReturnValue"]
-    - ["System.Runtime.Serialization.Formatters.FormatterTypeStyle", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[TypeFormat]"]
-    - ["System.Object", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Method[UnsafeDeserialize].ReturnValue"]
-    - ["System.Runtime.Serialization.SerializationBinder", "System.Runtime.Serialization.Formatters.Binary.BinaryFormatter", "Property[Binder]"]
+    - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[deserializemethodresponse].ReturnValue"]
+    - ["system.runtime.serialization.streamingcontext", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[context]"]
+    - ["system.runtime.serialization.isurrogateselector", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[surrogateselector]"]
+    - ["system.runtime.serialization.formatters.formatterassemblystyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[assemblyformat]"]
+    - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[deserialize].ReturnValue"]
+    - ["system.runtime.serialization.formatters.typefilterlevel", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[filterlevel]"]
+    - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[unsafedeserializemethodresponse].ReturnValue"]
+    - ["system.runtime.serialization.formatters.formattertypestyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[typeformat]"]
+    - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[unsafedeserialize].ReturnValue"]
+    - ["system.runtime.serialization.serializationbinder", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[binder]"]

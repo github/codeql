@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Runtime.Remoting.ObjectHandle", "System.Runtime.Hosting.ApplicationActivator!", "Method[CreateInstanceHelper].ReturnValue"]
-    - ["System.Runtime.Remoting.ObjectHandle", "System.Runtime.Hosting.ApplicationActivator", "Method[CreateInstance].ReturnValue"]
-    - ["System.String[]", "System.Runtime.Hosting.ActivationArguments", "Property[ActivationData]"]
-    - ["System.ApplicationIdentity", "System.Runtime.Hosting.ActivationArguments", "Property[ApplicationIdentity]"]
-    - ["System.ActivationContext", "System.Runtime.Hosting.ActivationArguments", "Property[ActivationContext]"]
-    - ["System.Security.Policy.EvidenceBase", "System.Runtime.Hosting.ActivationArguments", "Method[Clone].ReturnValue"]
+    - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator!", "Method[createinstancehelper].ReturnValue"]
+    - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator", "Method[createinstance].ReturnValue"]
+    - ["system.string[]", "system.runtime.hosting.activationarguments", "Property[activationdata]"]
+    - ["system.applicationidentity", "system.runtime.hosting.activationarguments", "Property[applicationidentity]"]
+    - ["system.activationcontext", "system.runtime.hosting.activationarguments", "Property[activationcontext]"]
+    - ["system.security.policy.evidencebase", "system.runtime.hosting.activationarguments", "Method[clone].ReturnValue"]

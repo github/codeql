@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Redis.RedisCache", "Method[RefreshAsync].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.Caching.Redis.RedisCacheOptions", "Property[InstanceName]"]
-    - ["Microsoft.Extensions.Caching.Redis.RedisCacheOptions", "Microsoft.Extensions.Caching.Redis.RedisCacheOptions", "Property[Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Redis.RedisCacheOptions>.Value]"]
-    - ["System.Threading.Tasks.Task<System.Byte[]>", "Microsoft.Extensions.Caching.Redis.RedisCache", "Method[GetAsync].ReturnValue"]
-    - ["System.Byte[]", "Microsoft.Extensions.Caching.Redis.RedisCache", "Method[Get].ReturnValue"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Redis.RedisCache", "Method[RemoveAsync].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.Caching.Redis.RedisCacheOptions", "Property[Configuration]"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Caching.Redis.RedisCache", "Method[SetAsync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[refreshasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.redis.rediscacheoptions", "Property[instancename]"]
+    - ["microsoft.extensions.caching.redis.rediscacheoptions", "microsoft.extensions.caching.redis.rediscacheoptions", "Property[Microsoft.Extensions.Options.IOptions<microsoft.extensions.caching.redis.rediscacheoptions>.Value]"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.redis.rediscache", "Method[getasync].ReturnValue"]
+    - ["system.byte[]", "microsoft.extensions.caching.redis.rediscache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[removeasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.redis.rediscacheoptions", "Property[configuration]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[setasync].ReturnValue"]

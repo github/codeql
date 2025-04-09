@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "System.Windows.Resources.ContentTypes!", "Field[XamlContentType]"]
-    - ["System.String", "System.Windows.Resources.AssemblyAssociatedContentFileAttribute", "Property[RelativeContentFilePath]"]
-    - ["System.IO.Stream", "System.Windows.Resources.StreamResourceInfo", "Property[Stream]"]
-    - ["System.String", "System.Windows.Resources.StreamResourceInfo", "Property[ContentType]"]
+    - ["system.string", "system.windows.resources.contenttypes!", "Field[xamlcontenttype]"]
+    - ["system.string", "system.windows.resources.assemblyassociatedcontentfileattribute", "Property[relativecontentfilepath]"]
+    - ["system.io.stream", "system.windows.resources.streamresourceinfo", "Property[stream]"]
+    - ["system.string", "system.windows.resources.streamresourceinfo", "Property[contenttype]"]

@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "System.Diagnostics.Contracts.Internal.ContractHelper!", "Method[RaiseContractFailedEvent].ReturnValue"]
+    - ["system.string", "system.diagnostics.contracts.internal.contracthelper!", "Method[raisecontractfailedevent].ReturnValue"]

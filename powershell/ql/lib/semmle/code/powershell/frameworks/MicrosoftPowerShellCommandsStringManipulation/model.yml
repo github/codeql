@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String[]", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[TemplateFile]"]
-    - ["System.String[]", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[PropertyNames]"]
-    - ["System.Collections.Generic.List<System.Management.Automation.PSObject>", "Microsoft.PowerShell.Commands.StringManipulation.ConvertStringCommand", "Property[Example]"]
-    - ["System.String", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[InputObject]"]
-    - ["System.String[]", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[TemplateContent]"]
-    - ["System.String", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[Delimiter]"]
-    - ["System.String", "Microsoft.PowerShell.Commands.StringManipulation.ConvertStringCommand", "Property[InputObject]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[UpdateTemplate]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.StringManipulation.ConvertFromStringCommand", "Property[IncludeExtent]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[templatefile]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[propertynames]"]
+    - ["system.collections.generic.list<system.management.automation.psobject>", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Property[example]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[inputobject]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[templatecontent]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[delimiter]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Property[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[updatetemplate]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Property[includeextent]"]

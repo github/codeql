@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psmemberinfo", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmemberinfo", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmemberinfo", "Method[get_typenameofvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmemberinfo", "Method[setmembername]", "Argument[0]", "Argument[this]", "taint"]
+      

@@ -4,3 +4,17 @@ extensions:
       extensible: sinkModel
     data:
       - ["System.Management.Automation.ScriptBlock!", "Method[Create].Argument[0]", "command-injection"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.scriptblock", "Method[get_ast]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_id]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_module]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_startposition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[getnewclosure]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[getpowershell]", "Argument[0].Element", "Argument[1].Element", "taint"]
+      - ["system.management.automation.scriptblock", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

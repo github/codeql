@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.Generic.IDictionary<System.Xml.Linq.XName,System.Object>", "System.Activities.Persistence.PersistenceParticipant", "Method[MapValues].ReturnValue"]
-    - ["System.IAsyncResult", "System.Activities.Persistence.PersistenceIOParticipant", "Method[BeginOnSave].ReturnValue"]
-    - ["System.IAsyncResult", "System.Activities.Persistence.PersistenceIOParticipant", "Method[BeginOnLoad].ReturnValue"]
+    - ["system.collections.generic.idictionary<system.xml.linq.xname,system.object>", "system.activities.persistence.persistenceparticipant", "Method[mapvalues].ReturnValue"]
+    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonsave].ReturnValue"]
+    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonload].ReturnValue"]

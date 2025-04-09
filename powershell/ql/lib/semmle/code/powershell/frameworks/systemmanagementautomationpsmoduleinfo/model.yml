@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psmoduleinfo", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_compatiblepseditions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_definition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exportedaliases]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exportedcmdlets]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exportedcommands]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exporteddscresources]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exportedfunctions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_exportedvariables]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_filelist]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_modulelist]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_requiredassemblies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_scripts]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[get_tags]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[getexportedtypedefinitions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[invoke]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[newboundscriptblock]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[newboundscriptblock]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[psmoduleinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psmoduleinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

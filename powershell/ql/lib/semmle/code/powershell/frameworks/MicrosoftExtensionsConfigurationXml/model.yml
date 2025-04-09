@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor", "Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor!", "Field[Instance]"]
-    - ["Microsoft.Extensions.Configuration.IConfigurationProvider", "Microsoft.Extensions.Configuration.Xml.XmlConfigurationSource", "Method[Build].ReturnValue"]
-    - ["System.Collections.Generic.IDictionary<System.String,System.String>", "Microsoft.Extensions.Configuration.Xml.XmlStreamConfigurationProvider!", "Method[Read].ReturnValue"]
-    - ["System.Xml.XmlReader", "Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor", "Method[CreateDecryptingXmlReader].ReturnValue"]
-    - ["Microsoft.Extensions.Configuration.IConfigurationProvider", "Microsoft.Extensions.Configuration.Xml.XmlStreamConfigurationSource", "Method[Build].ReturnValue"]
-    - ["System.Xml.XmlReader", "Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor", "Method[DecryptDocumentAndCreateXmlReader].ReturnValue"]
+    - ["microsoft.extensions.configuration.xml.xmldocumentdecryptor", "microsoft.extensions.configuration.xml.xmldocumentdecryptor!", "Field[instance]"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.xml.xmlconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.collections.generic.idictionary<system.string,system.string>", "microsoft.extensions.configuration.xml.xmlstreamconfigurationprovider!", "Method[read].ReturnValue"]
+    - ["system.xml.xmlreader", "microsoft.extensions.configuration.xml.xmldocumentdecryptor", "Method[createdecryptingxmlreader].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.xml.xmlstreamconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.xml.xmlreader", "microsoft.extensions.configuration.xml.xmldocumentdecryptor", "Method[decryptdocumentandcreatexmlreader].ReturnValue"]

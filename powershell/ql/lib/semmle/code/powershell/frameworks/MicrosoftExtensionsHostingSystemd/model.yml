@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Hosting.Systemd.ServiceState", "Microsoft.Extensions.Hosting.Systemd.ServiceState!", "Field[Ready]"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Systemd.SystemdLifetime", "Method[StopAsync].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.Hosting.Systemd.SystemdHelpers!", "Method[IsSystemdService].ReturnValue"]
-    - ["System.Threading.Tasks.Task", "Microsoft.Extensions.Hosting.Systemd.SystemdLifetime", "Method[WaitForStartAsync].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.Hosting.Systemd.ISystemdNotifier", "Property[IsEnabled]"]
-    - ["System.String", "Microsoft.Extensions.Hosting.Systemd.ServiceState", "Method[ToString].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.Hosting.Systemd.SystemdNotifier", "Property[IsEnabled]"]
-    - ["Microsoft.Extensions.Hosting.Systemd.ServiceState", "Microsoft.Extensions.Hosting.Systemd.ServiceState!", "Field[Stopping]"]
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Field[ready]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[stopasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdhelpers!", "Method[issystemdservice].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.isystemdnotifier", "Property[isenabled]"]
+    - ["system.string", "microsoft.extensions.hosting.systemd.servicestate", "Method[tostring].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdnotifier", "Property[isenabled]"]
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Field[stopping]"]

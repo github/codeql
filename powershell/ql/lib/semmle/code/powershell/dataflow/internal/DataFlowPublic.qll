@@ -534,6 +534,13 @@ class CallOperatorNode extends CallNode {
   Node getCommand() { result.asExpr() = call.getCommand() } // TODO: Alternatively, we could remap calls to & as command expressions.
 }
 
+/**
+ * A call to `ToString`, viewed as a node in a data flow graph.
+ */
+class ToStringCallNode extends CallNode {
+  override CfgNodes::ExprNodes::ToStringCallCfgNode call;
+}
+
 /** A use of a type name, viewed as a node in a data flow graph. */
 class TypeNameNode extends ExprNode {
   override CfgNodes::ExprNodes::TypeNameExprCfgNode n;

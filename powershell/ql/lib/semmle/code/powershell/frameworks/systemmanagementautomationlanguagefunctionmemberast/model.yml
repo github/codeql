@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[2]", "Argument[1]", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[get_body]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.functionmemberast", "Method[get_parameters]", "Argument[this]", "ReturnValue", "taint"]
+      

@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Workflow.Activities.Rules.Design.RuleSetDialog", "Method[ProcessCmdKey].ReturnValue"]
-    - ["System.Workflow.Activities.Rules.RuleSet", "System.Workflow.Activities.Rules.Design.RuleSetDialog", "Property[RuleSet]"]
-    - ["System.CodeDom.CodeExpression", "System.Workflow.Activities.Rules.Design.RuleConditionDialog", "Property[Expression]"]
+    - ["system.boolean", "system.workflow.activities.rules.design.rulesetdialog", "Method[processcmdkey].ReturnValue"]
+    - ["system.workflow.activities.rules.ruleset", "system.workflow.activities.rules.design.rulesetdialog", "Property[ruleset]"]
+    - ["system.codedom.codeexpression", "system.workflow.activities.rules.design.ruleconditiondialog", "Property[expression]"]

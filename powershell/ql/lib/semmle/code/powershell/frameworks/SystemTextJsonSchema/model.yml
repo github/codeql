@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Func<System.Text.Json.Schema.JsonSchemaExporterContext,System.Text.Json.Nodes.JsonNode,System.Text.Json.Nodes.JsonNode>", "System.Text.Json.Schema.JsonSchemaExporterOptions", "Property[TransformSchemaNode]"]
-    - ["System.Boolean", "System.Text.Json.Schema.JsonSchemaExporterOptions", "Property[TreatNullObliviousAsNonNullable]"]
-    - ["System.String", "System.Text.Json.Schema.JsonSchemaExporterContext", "Property[Path]"]
-    - ["System.Text.Json.Serialization.Metadata.JsonTypeInfo", "System.Text.Json.Schema.JsonSchemaExporterContext", "Property[TypeInfo]"]
-    - ["System.Text.Json.Nodes.JsonNode", "System.Text.Json.Schema.JsonSchemaExporter!", "Method[GetJsonSchemaAsNode].ReturnValue"]
-    - ["System.Text.Json.Serialization.Metadata.JsonPropertyInfo", "System.Text.Json.Schema.JsonSchemaExporterContext", "Property[PropertyInfo]"]
-    - ["System.Text.Json.Serialization.Metadata.JsonTypeInfo", "System.Text.Json.Schema.JsonSchemaExporterContext", "Property[BaseTypeInfo]"]
-    - ["System.Text.Json.Schema.JsonSchemaExporterOptions", "System.Text.Json.Schema.JsonSchemaExporterOptions!", "Property[Default]"]
+    - ["system.func<system.text.json.schema.jsonschemaexportercontext,system.text.json.nodes.jsonnode,system.text.json.nodes.jsonnode>", "system.text.json.schema.jsonschemaexporteroptions", "Property[transformschemanode]"]
+    - ["system.boolean", "system.text.json.schema.jsonschemaexporteroptions", "Property[treatnullobliviousasnonnullable]"]
+    - ["system.string", "system.text.json.schema.jsonschemaexportercontext", "Property[path]"]
+    - ["system.text.json.serialization.metadata.jsontypeinfo", "system.text.json.schema.jsonschemaexportercontext", "Property[typeinfo]"]
+    - ["system.text.json.nodes.jsonnode", "system.text.json.schema.jsonschemaexporter!", "Method[getjsonschemaasnode].ReturnValue"]
+    - ["system.text.json.serialization.metadata.jsonpropertyinfo", "system.text.json.schema.jsonschemaexportercontext", "Property[propertyinfo]"]
+    - ["system.text.json.serialization.metadata.jsontypeinfo", "system.text.json.schema.jsonschemaexportercontext", "Property[basetypeinfo]"]
+    - ["system.text.json.schema.jsonschemaexporteroptions", "system.text.json.schema.jsonschemaexporteroptions!", "Property[default]"]

@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Int32", "IEHost.Execute.IEExecuteRemote", "Method[ExecuteAsDll].ReturnValue"]
-    - ["System.IO.Stream", "IEHost.Execute.IEExecuteRemote", "Property[Exception]"]
-    - ["System.Object", "IEHost.Execute.IEExecuteRemote", "Method[InitializeLifetimeService].ReturnValue"]
-    - ["System.Int32", "IEHost.Execute.IEExecuteRemote", "Method[ExecuteAsAssembly].ReturnValue"]
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasdll].ReturnValue"]
+    - ["system.io.stream", "iehost.execute.ieexecuteremote", "Property[exception]"]
+    - ["system.object", "iehost.execute.ieexecuteremote", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasassembly].ReturnValue"]

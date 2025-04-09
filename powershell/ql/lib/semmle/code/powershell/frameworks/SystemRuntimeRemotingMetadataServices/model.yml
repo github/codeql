@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.IDictionary", "System.Runtime.Remoting.MetadataServices.SdlChannelSink", "Property[Properties]"]
-    - ["System.Runtime.Remoting.Channels.IServerChannelSink", "System.Runtime.Remoting.MetadataServices.SdlChannelSink", "Property[NextChannelSink]"]
-    - ["System.Runtime.Remoting.Channels.IServerChannelSinkProvider", "System.Runtime.Remoting.MetadataServices.SdlChannelSinkProvider", "Property[Next]"]
-    - ["System.String", "System.Runtime.Remoting.MetadataServices.ServiceType", "Property[Url]"]
-    - ["System.Runtime.Remoting.MetadataServices.SdlType", "System.Runtime.Remoting.MetadataServices.SdlType!", "Field[Sdl]"]
-    - ["System.Runtime.Remoting.Channels.ServerProcessing", "System.Runtime.Remoting.MetadataServices.SdlChannelSink", "Method[ProcessMessage].ReturnValue"]
-    - ["System.Runtime.Remoting.Channels.IServerChannelSink", "System.Runtime.Remoting.MetadataServices.SdlChannelSinkProvider", "Method[CreateSink].ReturnValue"]
-    - ["System.IO.Stream", "System.Runtime.Remoting.MetadataServices.SdlChannelSink", "Method[GetResponseStream].ReturnValue"]
-    - ["System.Type", "System.Runtime.Remoting.MetadataServices.ServiceType", "Property[ObjectType]"]
-    - ["System.Runtime.Remoting.MetadataServices.SdlType", "System.Runtime.Remoting.MetadataServices.SdlType!", "Field[Wsdl]"]
+    - ["system.collections.idictionary", "system.runtime.remoting.metadataservices.sdlchannelsink", "Property[properties]"]
+    - ["system.runtime.remoting.channels.iserverchannelsink", "system.runtime.remoting.metadataservices.sdlchannelsink", "Property[nextchannelsink]"]
+    - ["system.runtime.remoting.channels.iserverchannelsinkprovider", "system.runtime.remoting.metadataservices.sdlchannelsinkprovider", "Property[next]"]
+    - ["system.string", "system.runtime.remoting.metadataservices.servicetype", "Property[url]"]
+    - ["system.runtime.remoting.metadataservices.sdltype", "system.runtime.remoting.metadataservices.sdltype!", "Field[sdl]"]
+    - ["system.runtime.remoting.channels.serverprocessing", "system.runtime.remoting.metadataservices.sdlchannelsink", "Method[processmessage].ReturnValue"]
+    - ["system.runtime.remoting.channels.iserverchannelsink", "system.runtime.remoting.metadataservices.sdlchannelsinkprovider", "Method[createsink].ReturnValue"]
+    - ["system.io.stream", "system.runtime.remoting.metadataservices.sdlchannelsink", "Method[getresponsestream].ReturnValue"]
+    - ["system.type", "system.runtime.remoting.metadataservices.servicetype", "Property[objecttype]"]
+    - ["system.runtime.remoting.metadataservices.sdltype", "system.runtime.remoting.metadataservices.sdltype!", "Field[wsdl]"]

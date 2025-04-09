@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Double", "System.Data.Mapping.StorageMappingItemCollection", "Property[MappingVersion]"]
-    - ["System.Type", "System.Data.Mapping.EntityViewGenerationAttribute", "Property[ViewGenerationType]"]
-    - ["System.String", "System.Data.Mapping.EntityViewContainer", "Property[HashOverMappingClosure]"]
-    - ["System.String", "System.Data.Mapping.EntityViewContainer", "Property[HashOverAllExtentViews]"]
-    - ["System.String", "System.Data.Mapping.EntityViewContainer", "Property[StoreEntityContainerName]"]
-    - ["System.String", "System.Data.Mapping.EntityViewContainer", "Property[EdmEntityContainerName]"]
-    - ["System.Int32", "System.Data.Mapping.EntityViewContainer", "Property[ViewCount]"]
-    - ["System.Collections.Generic.KeyValuePair<System.String,System.String>", "System.Data.Mapping.EntityViewContainer", "Method[GetViewAt].ReturnValue"]
+    - ["system.double", "system.data.mapping.storagemappingitemcollection", "Property[mappingversion]"]
+    - ["system.type", "system.data.mapping.entityviewgenerationattribute", "Property[viewgenerationtype]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Property[hashovermappingclosure]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Property[hashoverallextentviews]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Property[storeentitycontainername]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Property[edmentitycontainername]"]
+    - ["system.int32", "system.data.mapping.entityviewcontainer", "Property[viewcount]"]
+    - ["system.collections.generic.keyvaluepair<system.string,system.string>", "system.data.mapping.entityviewcontainer", "Method[getviewat].ReturnValue"]

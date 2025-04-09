@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Data.Common.CommandTrees.DbLambda", "System.Data.Common.EntitySql.FunctionDefinition", "Property[Lambda]"]
-    - ["System.Data.Common.CommandTrees.DbLambda", "System.Data.Common.EntitySql.EntitySqlParser", "Method[ParseLambda].ReturnValue"]
-    - ["System.Data.Common.EntitySql.ParseResult", "System.Data.Common.EntitySql.EntitySqlParser", "Method[Parse].ReturnValue"]
-    - ["System.Collections.ObjectModel.ReadOnlyCollection<System.Data.Common.EntitySql.FunctionDefinition>", "System.Data.Common.EntitySql.ParseResult", "Property[FunctionDefinitions]"]
-    - ["System.String", "System.Data.Common.EntitySql.FunctionDefinition", "Property[Name]"]
-    - ["System.Int32", "System.Data.Common.EntitySql.FunctionDefinition", "Property[StartPosition]"]
-    - ["System.Int32", "System.Data.Common.EntitySql.FunctionDefinition", "Property[EndPosition]"]
-    - ["System.Data.Common.CommandTrees.DbCommandTree", "System.Data.Common.EntitySql.ParseResult", "Property[CommandTree]"]
+    - ["system.data.common.commandtrees.dblambda", "system.data.common.entitysql.functiondefinition", "Property[lambda]"]
+    - ["system.data.common.commandtrees.dblambda", "system.data.common.entitysql.entitysqlparser", "Method[parselambda].ReturnValue"]
+    - ["system.data.common.entitysql.parseresult", "system.data.common.entitysql.entitysqlparser", "Method[parse].ReturnValue"]
+    - ["system.collections.objectmodel.readonlycollection<system.data.common.entitysql.functiondefinition>", "system.data.common.entitysql.parseresult", "Property[functiondefinitions]"]
+    - ["system.string", "system.data.common.entitysql.functiondefinition", "Property[name]"]
+    - ["system.int32", "system.data.common.entitysql.functiondefinition", "Property[startposition]"]
+    - ["system.int32", "system.data.common.entitysql.functiondefinition", "Property[endposition]"]
+    - ["system.data.common.commandtrees.dbcommandtree", "system.data.common.entitysql.parseresult", "Property[commandtree]"]

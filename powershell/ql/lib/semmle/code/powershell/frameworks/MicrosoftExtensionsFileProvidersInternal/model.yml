@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.IEnumerator", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Method[System.Collections.IEnumerable.GetEnumerator].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Property[Exists]"]
-    - ["System.Collections.Generic.IEnumerator<Microsoft.Extensions.FileProviders.IFileInfo>", "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents", "Method[GetEnumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Property[exists]"]
+    - ["system.collections.generic.ienumerator<microsoft.extensions.fileproviders.ifileinfo>", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Method[getenumerator].ReturnValue"]

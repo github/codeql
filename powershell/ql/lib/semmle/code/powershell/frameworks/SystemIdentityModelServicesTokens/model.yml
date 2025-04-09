@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Web.Security.MembershipProvider", "System.IdentityModel.Services.Tokens.MembershipUserNameSecurityTokenHandler", "Property[MembershipProvider]"]
-    - ["System.Collections.ObjectModel.ReadOnlyCollection<System.Security.Claims.ClaimsIdentity>", "System.IdentityModel.Services.Tokens.MembershipUserNameSecurityTokenHandler", "Method[ValidateToken].ReturnValue"]
-    - ["System.Boolean", "System.IdentityModel.Services.Tokens.MembershipUserNameSecurityTokenHandler", "Property[CanValidateToken]"]
+    - ["system.web.security.membershipprovider", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Property[membershipprovider]"]
+    - ["system.collections.objectmodel.readonlycollection<system.security.claims.claimsidentity>", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Method[validatetoken].ReturnValue"]
+    - ["system.boolean", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Property[canvalidatetoken]"]

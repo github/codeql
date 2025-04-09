@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.moduleintrinsics!", "Method[getmodulepath]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.moduleintrinsics!", "Method[getmodulepath]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.moduleintrinsics!", "Method[getmodulepath]", "Argument[2]", "ReturnValue", "taint"]
+      

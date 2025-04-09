@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.switchstatementast", "Method[switchstatementast]", "Argument[1]", "Argument[2]", "taint"]
+      - ["system.management.automation.language.switchstatementast", "Method[switchstatementast]", "Argument[5]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.switchstatementast", "Method[switchstatementast]", "Argument[this]", "Argument[5]", "taint"]
+      

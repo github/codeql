@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Web.Compilation.BuildProviderResultFlags", "System.Data.Entity.Design.AspNet.EntityModelBuildProvider", "Method[GetResultFlags].ReturnValue"]
-    - ["System.Web.Compilation.BuildProviderResultFlags", "System.Data.Entity.Design.AspNet.MappingModelBuildProvider", "Method[GetResultFlags].ReturnValue"]
-    - ["System.Web.Compilation.BuildProviderResultFlags", "System.Data.Entity.Design.AspNet.StorageModelBuildProvider", "Method[GetResultFlags].ReturnValue"]
-    - ["System.Web.Compilation.BuildProviderResultFlags", "System.Data.Entity.Design.AspNet.EntityDesignerBuildProvider", "Method[GetResultFlags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.entitymodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.mappingmodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.storagemodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.entitydesignerbuildprovider", "Method[getresultflags].ReturnValue"]
