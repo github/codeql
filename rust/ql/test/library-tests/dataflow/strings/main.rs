@@ -48,34 +48,34 @@ fn string_add_reference() {
 }
 
 fn string_from() {
-	let s1 = source_slice(36);
-	let s2 = String::from(s1);
-	sink(s2); // $ hasValueFlow=36
+    let s1 = source_slice(36);
+    let s2 = String::from(s1);
+    sink(s2); // $ MISSING: hasValueFlow=36 - we need to extract builtins
 }
 
 fn string_to_string() {
-	let s1 = source_slice(22);
-	let s2 = s1.to_string();
-	sink(s2); // $ hasTaintFlow=22
+    let s1 = source_slice(22);
+    let s2 = s1.to_string();
+    sink(s2); // $ MISSING: hasTaintFlow=22 - we need to extract builtins
 }
 
 fn as_str() {
     let s = source(67);
-    sink_slice(s.as_str()); // $ hasValueFlow=67
+    sink_slice(s.as_str()); // $ MISSING: hasValueFlow=67 - we need to extract builtins
 }
 
 fn format_args_built_in() {
     let s = source(88);
 
     let formatted1 = fmt::format(format_args!("Hello {}!", s));
-    sink(formatted1); // $ hasTaintFlow=88
+    sink(formatted1); // $ MISSING: hasTaintFlow=88 - we need to extract builtins
 
     let formatted2 = fmt::format(format_args!("Hello {s}!"));
-    sink(formatted2); // $ hasTaintFlow=88
+    sink(formatted2); // $ MISSING: hasTaintFlow=88 - we need to extract builtins
 
     let width = source_usize(10);
     let formatted3 = fmt::format(format_args!("Hello {:width$}!", "World"));
-    sink(formatted3); // $ hasTaintFlow=10
+    sink(formatted3); // $ MISSING: hasTaintFlow=10 - we need to extract builtins
 }
 
 fn format_macro() {
