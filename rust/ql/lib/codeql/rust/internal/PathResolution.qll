@@ -784,6 +784,10 @@ private predicate crateDependencyEdge(ModuleLikeNode m, string name, CrateItemNo
     // entry/transitive source file
     m = c.getASourceFile()
   )
+  or
+  // paths inside the crate graph use the name of the crate itself as prefix,
+  // although that is not valid in Rust
+  dep = any(Crate c | name = c.getName() and m = c.getModule())
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
