@@ -13,6 +13,11 @@ signature module PathResolverSig {
    * Gets an additional file or folder to consider a child of `base`.
    */
   default Container getAnAdditionalChild(Container base, string name) { none() }
+
+  /**
+   * Holds if `component` may be treated as `.` if it does not match a child.
+   */
+  default predicate isOptionalPathComponent(string component) { none() }
 }
 
 /**
@@ -46,6 +51,11 @@ module PathResolver<PathResolverSig Config> {
       or
       segment = ".." and
       result = cur.getParentContainer()
+      or
+      isOptionalPathComponent(segment) and
+      not exists(cur.(Folder).getChildContainer(segment)) and
+      not exists(getAnAdditionalChild(cur, segment)) and
+      result = cur
     )
   }
 

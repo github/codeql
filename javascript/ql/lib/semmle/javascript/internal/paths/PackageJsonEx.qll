@@ -79,6 +79,8 @@ private module ResolverConfig implements PathResolverSig {
   predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
 
   predicate getAnAdditionalChild = JSPaths::getAnAdditionalChild/2;
+
+  predicate isOptionalPathComponent(string segment) { segment = ["cjs", "mjs", "js"] }
 }
 
 private module Resolver = PathResolver<ResolverConfig>;
