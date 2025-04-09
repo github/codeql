@@ -209,7 +209,6 @@ private File guessPackageJsonMain1(PackageJsonEx pkg) {
             .getChildContainer(getASrcFolderName())
             .(Folder)
             .getChildContainer(getASrcFolderName())
-    ) and
     )
   |
     result = subfolder.getJavaScriptFile("index")
