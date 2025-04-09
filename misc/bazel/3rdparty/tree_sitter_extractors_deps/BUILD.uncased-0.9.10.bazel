@@ -86,7 +86,7 @@ rust_library(
     }),
     version = "0.9.10",
     deps = [
-        "@vendor__uncased-0.9.10//:build_script_build",
+        "@vendor_ts__uncased-0.9.10//:build_script_build",
     ],
 )
 
@@ -142,7 +142,7 @@ cargo_build_script(
     version = "0.9.10",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__version_check-0.9.5//:version_check",
+        "@vendor_ts__version_check-0.9.5//:version_check",
     ],
 )
 

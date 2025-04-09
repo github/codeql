@@ -37,12 +37,19 @@ def _get_type(t: str, add_or_none_except: typing.Optional[str] = None) -> str:
     return t
 
 
+def _get_trap_name(cls: schema.Class, p: schema.Property) -> str | None:
+    if p.is_single:
+        return None
+    overridden_trap_name = p.pragmas.get("ql_db_table_name")
+    if overridden_trap_name:
+        return inflection.camelize(overridden_trap_name)
+    trap_name = inflection.camelize(f"{cls.name}_{p.name}")
+    if p.is_predicate:
+        return trap_name
+    return inflection.pluralize(trap_name)
+
+
 def _get_field(cls: schema.Class, p: schema.Property, add_or_none_except: typing.Optional[str] = None) -> cpp.Field:
-    trap_name = None
-    if not p.is_single:
-        trap_name = inflection.camelize(f"{cls.name}_{p.name}")
-        if not p.is_predicate:
-            trap_name = inflection.pluralize(trap_name)
     args = dict(
         field_name=p.name + ("_" if p.name in cpp.cpp_keywords else ""),
         base_type=_get_type(p.type, add_or_none_except),
@@ -50,7 +57,7 @@ def _get_field(cls: schema.Class, p: schema.Property, add_or_none_except: typing
         is_repeated=p.is_repeated,
         is_predicate=p.is_predicate,
         is_unordered=p.is_unordered,
-        trap_name=trap_name,
+        trap_name=_get_trap_name(cls, p),
     )
     args.update(cpp.get_field_override(p.name))
     return cpp.Field(**args)

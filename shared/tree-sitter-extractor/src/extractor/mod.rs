@@ -7,13 +7,13 @@ use std::collections::BTreeSet as Set;
 use std::env;
 use std::path::Path;
 
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Layer;
 use tracing_subscriber::filter::Filtered;
 use tracing_subscriber::fmt::format::DefaultFields;
 use tracing_subscriber::fmt::format::Format;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
-use tracing_subscriber::EnvFilter;
-use tracing_subscriber::Layer;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
@@ -591,11 +591,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid {
-            Some(args)
-        } else {
-            None
-        }
+        if is_valid { Some(args) } else { None }
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
@@ -615,7 +611,7 @@ impl<'a> Visitor<'a> {
             }
 
             node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
-                return !tp.named && int_mapping.contains_key(&tp.kind)
+                return !tp.named && int_mapping.contains_key(&tp.kind);
             }
         }
         false

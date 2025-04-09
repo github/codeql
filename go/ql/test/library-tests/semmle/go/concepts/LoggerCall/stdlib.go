@@ -17,6 +17,11 @@ func stdlib() {
 	logger.Printf(fmt, text) // $ logger=fmt logger=text
 	logger.Println(text)     // $ logger=text
 
+	// components corresponding to the format specifier "%T" are not considered vulnerable
+	logger.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
+	logger.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
+	logger.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
+
 	log.SetPrefix("prefix: ")
 	log.Fatal(text)       // $ logger=text
 	log.Fatalf(fmt, text) // $ logger=fmt logger=text
@@ -27,4 +32,9 @@ func stdlib() {
 	log.Print(text)       // $ logger=text
 	log.Printf(fmt, text) // $ logger=fmt logger=text
 	log.Println(text)     // $ logger=text
+
+	// components corresponding to the format specifier "%T" are not considered vulnerable
+	log.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
+	log.Panicf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
+	log.Printf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
 }

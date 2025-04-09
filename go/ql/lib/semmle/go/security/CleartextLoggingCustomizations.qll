@@ -40,7 +40,7 @@ module CleartextLogging {
    * An argument to a logging mechanism.
    */
   class LoggerSink extends Sink {
-    LoggerSink() { this = any(LoggerCall log).getAMessageComponent() }
+    LoggerSink() { this = any(LoggerCall log).getAValueFormattedMessageComponent() }
   }
 
   /**

@@ -11,7 +11,7 @@ load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "a
 ra_ap_syntax_workspace, _, _ = str(ra_ap_syntax_label).partition("//")
 
 alias(
-    name = "ungram",
+    name = "rust.ungram",
     actual = "%s//:rust.ungram" % ra_ap_syntax_workspace,
     visibility = ["//rust/codegen:__pkg__"],
 )
@@ -45,9 +45,9 @@ codeql_rust_binary(
         exclude = ["src/codegen/**"],
     ) + [":codegen"],
     aliases = aliases(),
-    args = ["$(rlocationpath :ungram)"],
+    args = ["$(rlocationpath :rust.ungram)"],
     compile_data = glob(["src/templates/*.mustache"]),
-    data = [":ungram"],
+    data = [":rust.ungram"],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -69,7 +69,10 @@ write_file(
         # using cat instead of cp to honor default umask
         # (also, macOS does not support `cp --no-preserve=mode`)
         'cat "$(rlocation "$%s")" > "$DST_DIR/%s"' % item
-        for item in enumerate(_codegen_outs, 2)
+        for item in enumerate(
+            ["rust.ungram"] + _codegen_outs,
+            2,
+        )
     ],
     is_executable = True,
 )
@@ -77,8 +80,14 @@ write_file(
 sh_binary(
     name = "inject-sources",
     srcs = [":update"],
-    args = ["$(rlocationpath Cargo.toml)"] + ["$(rlocationpath %s)" % f for f in _codegen_outs],
-    data = ["Cargo.toml"] + _codegen_outs,
+    args = ["$(rlocationpath %s)" % f for f in [
+        "Cargo.toml",
+        ":rust.ungram",
+    ] + _codegen_outs],
+    data = [
+        "Cargo.toml",
+        ":rust.ungram",
+    ] + _codegen_outs,
     deps = ["//misc/bazel:sh_runfiles"],
 )
 

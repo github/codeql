@@ -9,28 +9,28 @@ namespace ConstantWhileCondition
 
         public void Foo()
         {
-            while (ZERO == 1 - 1)
-            { // BAD
+            while (ZERO == 1 - 1) // $ Alert
+            {
                 break;
             }
-            while (false)
-            { // GOOD
+            while (false) // $ Alert
+            {
                 break;
             }
-            while (true)
-            { // GOOD
+            while (true) // GOOD
+            {
                 break;
             }
-            while (" " == " ")
-            { // BAD
+            while (" " == " ") // $ Alert
+            {
                 break;
             }
-            while (" "[0] == ' ')
-            { // BAD: but not flagged
+            while (" "[0] == ' ') // Missing Alert
+            {
                 break;
             }
-            while (Bar() == 0)
-            { // GOOD
+            while (Bar() == 0) // GOOD
+            {
                 break;
             }
         }

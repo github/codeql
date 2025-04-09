@@ -42,15 +42,16 @@ module Generated {
     final predicate hasQualifier() { exists(this.getQualifier()) }
 
     /**
-     * Gets the part of this path, if it exists.
+     * Gets the last segment of this path, if it exists.
      */
-    PathSegment getPart() {
-      result = Synth::convertPathSegmentFromRaw(Synth::convertPathToRaw(this).(Raw::Path).getPart())
+    PathSegment getSegment() {
+      result =
+        Synth::convertPathSegmentFromRaw(Synth::convertPathToRaw(this).(Raw::Path).getSegment())
     }
 
     /**
-     * Holds if `getPart()` exists.
+     * Holds if `getSegment()` exists.
      */
-    final predicate hasPart() { exists(this.getPart()) }
+    final predicate hasSegment() { exists(this.getSegment()) }
   }
 }

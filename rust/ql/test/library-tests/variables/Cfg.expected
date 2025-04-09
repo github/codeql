@@ -221,7 +221,6 @@ edges
 | main.rs:87:8:88:12 | let ... = s1 | main.rs:88:11:88:12 | s1 |  |
 | main.rs:87:12:87:23 | Some(...) | main.rs:87:5:90:5 | if ... {...} | no-match |
 | main.rs:87:12:87:23 | Some(...) | main.rs:87:21:87:22 | s2 | match |
-| main.rs:87:17:87:22 | ref s2 | main.rs:87:5:90:5 | if ... {...} | no-match |
 | main.rs:87:17:87:22 | ref s2 | main.rs:89:9:89:22 | ExprStmt | match |
 | main.rs:87:21:87:22 | s2 | main.rs:87:17:87:22 | ref s2 |  |
 | main.rs:88:11:88:12 | s1 | main.rs:87:12:87:23 | Some(...) |  |
@@ -237,7 +236,6 @@ edges
 | main.rs:94:9:94:16 | Some(...) | main.rs:94:14:94:15 | x5 | match |
 | main.rs:94:9:94:16 | Some(...) | main.rs:96:13:96:19 | MacroStmts | no-match |
 | main.rs:94:14:94:15 | x5 | main.rs:94:14:94:15 | x5 |  |
-| main.rs:94:14:94:15 | x5 | main.rs:96:13:96:19 | MacroStmts | no-match |
 | main.rs:94:14:94:15 | x5 | main.rs:98:5:98:18 | ExprStmt | match |
 | main.rs:94:34:94:37 | Some | main.rs:94:39:94:42 | "x5" |  |
 | main.rs:94:34:94:43 | Some(...) | main.rs:94:9:94:16 | Some(...) |  |
@@ -267,7 +265,6 @@ edges
 | main.rs:104:11:105:12 | let ... = s1 | main.rs:105:11:105:12 | s1 |  |
 | main.rs:104:15:104:26 | Some(...) | main.rs:104:5:107:5 | while ... { ... } | no-match |
 | main.rs:104:15:104:26 | Some(...) | main.rs:104:24:104:25 | s2 | match |
-| main.rs:104:20:104:25 | ref s2 | main.rs:104:5:107:5 | while ... { ... } | no-match |
 | main.rs:104:20:104:25 | ref s2 | main.rs:106:9:106:22 | ExprStmt | match |
 | main.rs:104:24:104:25 | s2 | main.rs:104:20:104:25 | ref s2 |  |
 | main.rs:105:11:105:12 | s1 | main.rs:104:15:104:26 | Some(...) |  |
@@ -304,7 +301,6 @@ edges
 | main.rs:116:9:116:16 | Some(...) | main.rs:121:9:121:12 | None | no-match |
 | main.rs:116:14:116:15 | y1 | main.rs:116:14:116:15 | y1 |  |
 | main.rs:116:14:116:15 | y1 | main.rs:119:13:119:21 | print_i64 | match |
-| main.rs:116:14:116:15 | y1 | main.rs:121:9:121:12 | None | no-match |
 | main.rs:118:9:120:9 | { ... } | main.rs:114:5:122:5 | match x6 { ... } |  |
 | main.rs:119:13:119:21 | print_i64 | main.rs:119:23:119:24 | y1 |  |
 | main.rs:119:13:119:25 | print_i64(...) | main.rs:118:9:120:9 | { ... } |  |
@@ -457,7 +453,6 @@ edges
 | main.rs:191:9:191:44 | ... \| ... | main.rs:192:16:192:24 | print_i64 | match |
 | main.rs:191:22:191:23 | a3 | main.rs:191:9:191:44 | ... \| ... | match |
 | main.rs:191:22:191:23 | a3 | main.rs:191:22:191:23 | a3 |  |
-| main.rs:191:22:191:23 | a3 | main.rs:191:28:191:44 | ...::Right(...) | no-match |
 | main.rs:191:28:191:44 | ...::Right(...) | main.rs:191:42:191:43 | a3 | match |
 | main.rs:191:42:191:43 | a3 | main.rs:191:9:191:44 | ... \| ... | match |
 | main.rs:191:42:191:43 | a3 | main.rs:191:42:191:43 | a3 |  |
@@ -481,12 +476,10 @@ edges
 | main.rs:205:9:205:81 | ... \| ... \| ... | main.rs:206:16:206:24 | print_i64 | match |
 | main.rs:205:28:205:29 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:28:205:29 | a4 | main.rs:205:28:205:29 | a4 |  |
-| main.rs:205:28:205:29 | a4 | main.rs:205:34:205:56 | ...::Second(...) | no-match |
 | main.rs:205:34:205:56 | ...::Second(...) | main.rs:205:54:205:55 | a4 | match |
 | main.rs:205:34:205:56 | ...::Second(...) | main.rs:205:60:205:81 | ...::Third(...) | no-match |
 | main.rs:205:54:205:55 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:54:205:55 | a4 | main.rs:205:54:205:55 | a4 |  |
-| main.rs:205:54:205:55 | a4 | main.rs:205:60:205:81 | ...::Third(...) | no-match |
 | main.rs:205:60:205:81 | ...::Third(...) | main.rs:205:79:205:80 | a4 | match |
 | main.rs:205:79:205:80 | a4 | main.rs:205:9:205:81 | ... \| ... \| ... | match |
 | main.rs:205:79:205:80 | a4 | main.rs:205:79:205:80 | a4 |  |
@@ -503,10 +496,8 @@ edges
 | main.rs:209:10:209:57 | [match(true)] ... \| ... | main.rs:209:9:209:83 | ... \| ... | match |
 | main.rs:209:29:209:30 | a5 | main.rs:209:10:209:57 | [match(true)] ... \| ... | match |
 | main.rs:209:29:209:30 | a5 | main.rs:209:29:209:30 | a5 |  |
-| main.rs:209:29:209:30 | a5 | main.rs:209:35:209:57 | ...::Second(...) | no-match |
 | main.rs:209:35:209:57 | ...::Second(...) | main.rs:209:10:209:57 | [match(false)] ... \| ... | no-match |
 | main.rs:209:35:209:57 | ...::Second(...) | main.rs:209:55:209:56 | a5 | match |
-| main.rs:209:55:209:56 | a5 | main.rs:209:10:209:57 | [match(false)] ... \| ... | no-match |
 | main.rs:209:55:209:56 | a5 | main.rs:209:10:209:57 | [match(true)] ... \| ... | match |
 | main.rs:209:55:209:56 | a5 | main.rs:209:55:209:56 | a5 |  |
 | main.rs:209:62:209:83 | ...::Third(...) | main.rs:209:81:209:82 | a5 | match |
@@ -522,13 +513,11 @@ edges
 | main.rs:213:9:213:83 | ... \| ... | main.rs:214:16:214:24 | print_i64 | match |
 | main.rs:213:28:213:29 | a6 | main.rs:213:9:213:83 | ... \| ... | match |
 | main.rs:213:28:213:29 | a6 | main.rs:213:28:213:29 | a6 |  |
-| main.rs:213:28:213:29 | a6 | main.rs:213:35:213:57 | ...::Second(...) | no-match |
 | main.rs:213:35:213:57 | ...::Second(...) | main.rs:213:55:213:56 | a6 | match |
 | main.rs:213:35:213:57 | ...::Second(...) | main.rs:213:61:213:82 | ...::Third(...) | no-match |
 | main.rs:213:35:213:82 | ... \| ... | main.rs:213:9:213:83 | ... \| ... | match |
 | main.rs:213:55:213:56 | a6 | main.rs:213:35:213:82 | ... \| ... | match |
 | main.rs:213:55:213:56 | a6 | main.rs:213:55:213:56 | a6 |  |
-| main.rs:213:55:213:56 | a6 | main.rs:213:61:213:82 | ...::Third(...) | no-match |
 | main.rs:213:61:213:82 | ...::Third(...) | main.rs:213:80:213:81 | a6 | match |
 | main.rs:213:80:213:81 | a6 | main.rs:213:35:213:82 | ... \| ... | match |
 | main.rs:213:80:213:81 | a6 | main.rs:213:80:213:81 | a6 |  |
@@ -552,10 +541,8 @@ edges
 | main.rs:221:9:221:44 | [match(true)] ... \| ... | main.rs:222:16:222:17 | a7 | match |
 | main.rs:221:22:221:23 | a7 | main.rs:221:9:221:44 | [match(true)] ... \| ... | match |
 | main.rs:221:22:221:23 | a7 | main.rs:221:22:221:23 | a7 |  |
-| main.rs:221:22:221:23 | a7 | main.rs:221:28:221:44 | ...::Right(...) | no-match |
 | main.rs:221:28:221:44 | ...::Right(...) | main.rs:221:9:221:44 | [match(false)] ... \| ... | no-match |
 | main.rs:221:28:221:44 | ...::Right(...) | main.rs:221:42:221:43 | a7 | match |
-| main.rs:221:42:221:43 | a7 | main.rs:221:9:221:44 | [match(false)] ... \| ... | no-match |
 | main.rs:221:42:221:43 | a7 | main.rs:221:9:221:44 | [match(true)] ... \| ... | match |
 | main.rs:221:42:221:43 | a7 | main.rs:221:42:221:43 | a7 |  |
 | main.rs:222:16:222:17 | a7 | main.rs:222:21:222:21 | 0 |  |
@@ -586,10 +573,8 @@ edges
 | main.rs:233:14:233:51 | [match(true)] ... \| ... | main.rs:232:13:232:13 | e | match |
 | main.rs:233:27:233:29 | a11 | main.rs:233:14:233:51 | [match(true)] ... \| ... | match |
 | main.rs:233:27:233:29 | a11 | main.rs:233:27:233:29 | a11 |  |
-| main.rs:233:27:233:29 | a11 | main.rs:233:34:233:51 | ...::Right(...) | no-match |
 | main.rs:233:34:233:51 | ...::Right(...) | main.rs:233:14:233:51 | [match(false)] ... \| ... | no-match |
 | main.rs:233:34:233:51 | ...::Right(...) | main.rs:233:48:233:50 | a11 | match |
-| main.rs:233:48:233:50 | a11 | main.rs:233:14:233:51 | [match(false)] ... \| ... | no-match |
 | main.rs:233:48:233:50 | a11 | main.rs:233:14:233:51 | [match(true)] ... \| ... | match |
 | main.rs:233:48:233:50 | a11 | main.rs:233:48:233:50 | a11 |  |
 | main.rs:234:12:240:9 | { ... } | main.rs:231:5:242:5 | match either { ... } |  |
@@ -601,7 +586,6 @@ edges
 | main.rs:236:16:237:15 | let ... = e | main.rs:237:15:237:15 | e |  |
 | main.rs:236:20:236:36 | ...::Left(...) | main.rs:236:13:239:13 | if ... {...} | no-match |
 | main.rs:236:20:236:36 | ...::Left(...) | main.rs:236:33:236:35 | a12 | match |
-| main.rs:236:33:236:35 | a12 | main.rs:236:13:239:13 | if ... {...} | no-match |
 | main.rs:236:33:236:35 | a12 | main.rs:236:33:236:35 | a12 |  |
 | main.rs:236:33:236:35 | a12 | main.rs:238:17:238:32 | ExprStmt | match |
 | main.rs:237:15:237:15 | e | main.rs:236:20:236:36 | ...::Left(...) |  |
@@ -629,17 +613,14 @@ edges
 | main.rs:255:9:255:109 | ... \| ... \| ... | main.rs:256:16:256:24 | print_i64 | match |
 | main.rs:255:27:255:29 | a13 | main.rs:255:9:255:109 | ... \| ... \| ... | match |
 | main.rs:255:27:255:29 | a13 | main.rs:255:27:255:29 | a13 |  |
-| main.rs:255:27:255:29 | a13 | main.rs:255:35:255:57 | ...::Second(...) | no-match |
 | main.rs:255:35:255:57 | ...::Second(...) | main.rs:255:54:255:56 | a13 | match |
 | main.rs:255:35:255:57 | ...::Second(...) | main.rs:255:61:255:82 | ...::Third(...) | no-match |
 | main.rs:255:35:255:82 | [match(false)] ... \| ... | main.rs:255:87:255:109 | ...::Fourth(...) | no-match |
 | main.rs:255:35:255:82 | [match(true)] ... \| ... | main.rs:255:9:255:109 | ... \| ... \| ... | match |
 | main.rs:255:54:255:56 | a13 | main.rs:255:35:255:82 | [match(true)] ... \| ... | match |
 | main.rs:255:54:255:56 | a13 | main.rs:255:54:255:56 | a13 |  |
-| main.rs:255:54:255:56 | a13 | main.rs:255:61:255:82 | ...::Third(...) | no-match |
 | main.rs:255:61:255:82 | ...::Third(...) | main.rs:255:35:255:82 | [match(false)] ... \| ... | no-match |
 | main.rs:255:61:255:82 | ...::Third(...) | main.rs:255:79:255:81 | a13 | match |
-| main.rs:255:79:255:81 | a13 | main.rs:255:35:255:82 | [match(false)] ... \| ... | no-match |
 | main.rs:255:79:255:81 | a13 | main.rs:255:35:255:82 | [match(true)] ... \| ... | match |
 | main.rs:255:79:255:81 | a13 | main.rs:255:79:255:81 | a13 |  |
 | main.rs:255:87:255:109 | ...::Fourth(...) | main.rs:255:106:255:108 | a13 | match |
@@ -680,7 +661,6 @@ edges
 | main.rs:272:6:272:41 | ... \| ... | main.rs:272:5:272:50 | ...: Either | match |
 | main.rs:272:19:272:20 | a9 | main.rs:272:6:272:41 | ... \| ... | match |
 | main.rs:272:19:272:20 | a9 | main.rs:272:19:272:20 | a9 |  |
-| main.rs:272:19:272:20 | a9 | main.rs:272:25:272:41 | ...::Right(...) | no-match |
 | main.rs:272:25:272:41 | ...::Right(...) | main.rs:272:39:272:40 | a9 | match |
 | main.rs:272:39:272:40 | a9 | main.rs:272:6:272:41 | ... \| ... | match |
 | main.rs:272:39:272:40 | a9 | main.rs:272:39:272:40 | a9 |  |

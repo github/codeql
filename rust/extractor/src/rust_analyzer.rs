@@ -1,13 +1,13 @@
 use itertools::Itertools;
-use ra_ap_base_db::SourceDatabase;
+use ra_ap_base_db::{EditionedFileId, RootQueryDb, SourceDatabase};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig};
+use ra_ap_load_cargo::{LoadCargoConfig, load_workspace_at};
 use ra_ap_paths::{AbsPath, Utf8PathBuf};
 use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::{CargoConfig, ManifestPath};
 use ra_ap_span::Edition;
-use ra_ap_span::EditionedFileId;
+use ra_ap_span::EditionedFileId as SpanEditionedFileId;
 use ra_ap_span::TextRange;
 use ra_ap_span::TextSize;
 use ra_ap_syntax::SourceFile;
@@ -73,7 +73,10 @@ impl<'a> RustAnalyzer<'a> {
                 if let Some(file_id) = path_to_file_id(path, vfs) {
                     if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
                     {
-                        let file_id = EditionedFileId::current_edition(file_id);
+                        let file_id = EditionedFileId::new(
+                            semantics.db,
+                            SpanEditionedFileId::current_edition(file_id),
+                        );
                         let source_file = semantics.parse(file_id);
                         let errors = semantics
                             .db
@@ -84,7 +87,7 @@ impl<'a> RustAnalyzer<'a> {
 
                         return ParseResult {
                             ast: source_file,
-                            text: input,
+                            text: input.text(semantics.db),
                             errors,
                             semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
                         };
@@ -297,4 +300,5 @@ pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
         .and_then(|x| AbsPathBuf::try_from(x).ok())
         .map(VfsPath::from)
         .and_then(|x| vfs.file_id(&x))
+        .map(|(id, _excluded)| id)
 }

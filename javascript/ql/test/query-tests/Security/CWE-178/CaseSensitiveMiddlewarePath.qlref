@@ -1,1 +1,2 @@
-Security/CWE-178/CaseSensitiveMiddlewarePath.ql
+query: Security/CWE-178/CaseSensitiveMiddlewarePath.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

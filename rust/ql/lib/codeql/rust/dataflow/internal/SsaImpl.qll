@@ -47,26 +47,7 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  /**
-   * A variable amenable to SSA construction.
-   *
-   * All immutable variables are amenable. Mutable variables are restricted to
-   * those that are not borrowed (either explicitly using `& mut`, or
-   * (potentially) implicit as borrowed receivers in a method call).
-   */
-  class SourceVariable extends Variable {
-    SourceVariable() {
-      this.isMutable()
-      implies
-      not exists(VariableAccess va | va = this.getAnAccess() |
-        va = any(RefExpr re | re.isMut()).getExpr()
-        or
-        // receivers can be borrowed implicitly, cf.
-        // https://doc.rust-lang.org/reference/expressions/method-call-expr.html
-        va = any(MethodCallExpr mce).getReceiver()
-      )
-    }
-  }
+  class SourceVariable = Variable;
 
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     (
@@ -76,7 +57,12 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
     ) and
     certain = true
     or
-    capturedCallWrite(_, bb, i, v) and certain = false
+    (
+      capturedCallWrite(_, bb, i, v)
+      or
+      mutablyBorrows(bb.getNode(i).getAstNode(), v)
+    ) and
+    certain = false
   }
 
   predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -113,12 +99,6 @@ class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 class PhiDefinition = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
-
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
 
 /** Holds if `v` is read at index `i` in basic block `bb`. */
 private predicate variableReadActual(BasicBlock bb, int i, Variable v) {
@@ -229,6 +209,15 @@ predicate capturedCallWrite(Expr call, BasicBlock bb, int i, Variable v) {
   )
 }
 
+/** Holds if `v` may be mutably borrowed in `e`. */
+private predicate mutablyBorrows(Expr e, Variable v) {
+  e = any(MethodCallExpr mc).getReceiver() and
+  e.(VariableAccess).getVariable() = v and
+  v.isMutable()
+  or
+  exists(RefExpr re | re = e and re.isMut() and re.getExpr().(VariableAccess).getVariable() = v)
+}
+
 /**
  * Holds if a pseudo read of captured variable `v` should be inserted
  * at index `i` in exit block `bb`.
@@ -309,13 +298,15 @@ private module Cached {
     import DataFlowIntegrationImpl
 
     cached
-    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    predicate localFlowStep(
+      SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+    ) {
+      DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
     }
 
     cached
-    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    predicate localMustFlowStep(SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
     signature predicate guardChecksSig(CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
@@ -340,70 +331,57 @@ private module Cached {
 import Cached
 private import codeql.rust.dataflow.Ssa
 
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  CfgNode getARead() { result = getARead(this) }
-
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
-
-  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
-}
-
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
+  private import codeql.rust.dataflow.internal.DataFlowImpl as DataFlowImpl
+
   class Expr extends CfgNodes::AstCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  /** Holds if SSA definition `def` assigns `value` to the underlying variable. */
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    none() // handled in `DataFlowImpl.qll` instead
+  predicate ssaDefHasSource(WriteDefinition def) { none() } // handled in `DataFlowImpl.qll` instead
+
+  private predicate isArg(CfgNodes::CallExprBaseCfgNode call, CfgNodes::ExprCfgNode e) {
+    call.getArgument(_) = e
+    or
+    call.(CfgNodes::MethodCallExprCfgNode).getReceiver() = e
+    or
+    exists(CfgNodes::ExprCfgNode mid |
+      isArg(call, mid) and
+      e = DataFlowImpl::getPostUpdateReverseStep(mid, _)
+    )
   }
 
-  class Parameter = CfgNodes::ParamBaseCfgNode;
-
-  /** Holds if SSA definition `def` initializes parameter `p` at function entry. */
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
-    none() // handled in `DataFlowImpl.qll` instead
+  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
+    exists(CfgNodes::CallExprBaseCfgNode call, Variable v, BasicBlock bb, int i |
+      def.definesAt(v, bb, i) and
+      mutablyBorrows(bb.getNode(i).getAstNode(), v) and
+      isArg(call, bb.getNode(i))
+    )
   }
 
   class Guard extends CfgNodes::AstCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      exists(Cfg::ConditionalSuccessor s |
+        this = bb1.getANode() and
+        bb2 = bb1.getASuccessor(s) and
+        s.getValue() = branch
+      )
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     exists(ConditionBasicBlock conditionBlock, ConditionalSuccessor s |
       guard = conditionBlock.getLastNode() and
       s.getValue() = branch and
       conditionBlock.edgeDominates(bb, s)
-    )
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
-    exists(Cfg::ConditionalSuccessor s |
-      result = bb.getASuccessor(s) and
-      s.getValue() = branch
     )
   }
 }

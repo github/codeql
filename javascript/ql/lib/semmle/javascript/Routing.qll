@@ -188,25 +188,33 @@ module Routing {
       )
     }
 
-    /**
-     * Gets the path prefix needed to reach this node from the given ancestor, that is, the concatenation
-     * of all relative paths between this node and the ancestor.
-     *
-     * To restrict the size of the predicate, this is only available for the ancestors that are "fork" nodes,
-     * that is, a node that has siblings (i.e. multiple children).
-     */
-    private string getPathFromFork(Node fork) {
+    private string getPathFromForkInternal(Node fork) {
       this.isFork() and
       this = fork and
       result = ""
       or
       exists(Node parent | parent = this.getParent() |
         not exists(parent.getRelativePath()) and
-        result = parent.getPathFromFork(fork)
+        result = parent.getPathFromForkInternal(fork)
         or
-        result = parent.getPathFromFork(fork) + parent.getRelativePath() and
+        result = parent.getPathFromForkInternal(fork) + parent.getRelativePath() and
         result.length() < 100
       )
+    }
+
+    /**
+     * Gets the path prefix needed to reach this node from the given ancestor, that is, the concatenation
+     * of all relative paths between this node and the ancestor.
+     *
+     * To restrict the size of the predicate, this is only available for the ancestors that are "fork" nodes,
+     * that is, a node that has siblings (i.e. multiple children).
+     * And only a single (shortest) path is returned, even if there are multiple paths
+     * leading to this node.
+     */
+    pragma[nomagic]
+    private string getPathFromFork(Node fork) {
+      result =
+        min(string res | res = this.getPathFromForkInternal(fork) | res order by res.length(), res)
     }
 
     /**

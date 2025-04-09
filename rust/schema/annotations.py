@@ -87,6 +87,7 @@ class _:
     foo::bar;
     ```
     """
+    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -406,20 +407,20 @@ class _:
     """
 
 
-@annotate(RecordExprField)
+@annotate(StructExprField)
 class _:
     """
-    A field in a record expression. For example `a: 1` in:
+    A field in a struct expression. For example `a: 1` in:
     ```rust
     Foo { a: 1, b: 2 };
     ```
     """
 
 
-@annotate(RecordExpr, add_bases=(PathAstNode,), cfg=True)
+@annotate(StructExpr, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record expression. For example:
+    A struct expression. For example:
     ```rust
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
@@ -710,20 +711,20 @@ class _:
     """
 
 
-@annotate(RecordPatField)
+@annotate(StructPatField)
 class _:
     """
-    A field in a record pattern. For example `a: 1` in:
+    A field in a struct pattern. For example `a: 1` in:
     ```rust
     let Foo { a: 1, b: 2 } = foo;
     ```
     """
 
 
-@annotate(RecordPat, add_bases=(PathAstNode,), cfg=True)
+@annotate(StructPat, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record pattern. For example:
+    A struct pattern. For example:
     ```rust
     match x {
         Foo { a: 1, b: 2 } => "ok",
@@ -1031,10 +1032,11 @@ class _:
     """
 
 
+# @annotate(VariantFieldList)
 @annotate(FieldList)
 class _:
     """
-    A FieldList. For example:
+    A field of a variant. For example:
     ```rust
     todo!()
     ```
@@ -1122,9 +1124,12 @@ class _:
 @annotate(GenericParamList)
 class _:
     """
-    A GenericParamList. For example:
+    A list of generic parameters. For example:
     ```rust
-    todo!()
+    fn f<A, B>(a: A, b: B) {}
+    //  ^^^^^^
+    type Foo<T1, T2> = (T1, T2);
+    //      ^^^^^^^^
     ```
     """
 
@@ -1464,40 +1469,40 @@ class _:
     """
 
 
-@annotate(RecordExprFieldList)
+@annotate(StructExprFieldList)
 class _:
     """
-    A RecordExprFieldList. For example:
+    A StructExprFieldList. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordField)
+@annotate(StructField)
 class _:
     """
-    A RecordField. For example:
+    A StructField. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordFieldList)
+@annotate(StructFieldList)
 class _:
     """
-    A RecordFieldList. For example:
+    A field list of a struct expression. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordPatFieldList)
+@annotate(StructPatFieldList)
 class _:
     """
-    A RecordPatFieldList. For example:
+    A StructPatFieldList. For example:
     ```rust
     todo!()
     ```
@@ -1622,6 +1627,7 @@ class _:
     todo!()
     ```
     """
+    field_list: _ | ql.db_table_name("struct_field_lists_")
 
 
 @annotate(TokenTree)
@@ -1704,9 +1710,14 @@ class _:
 @annotate(TypeAlias)
 class _:
     """
-    A TypeAlias. For example:
+    A type alias. For example:
     ```rust
-    todo!()
+    type Point = (u8, u8);
+
+    trait Trait {
+        type Output;
+    //  ^^^^^^^^^^^
+    }
     ```
     """
 
@@ -1794,7 +1805,7 @@ class _:
     """
 
 
-@annotate(Variant, replace_bases={AstNode: Addressable})
+@annotate(Variant, add_bases=(Addressable,))
 class _:
     """
     A Variant. For example:

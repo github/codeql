@@ -1,1 +1,2 @@
-Declarations/UnstableCyclicImport.ql
+query: Declarations/UnstableCyclicImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

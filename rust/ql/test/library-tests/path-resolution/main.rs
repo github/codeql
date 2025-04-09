@@ -184,11 +184,11 @@ mod m8 {
         > // $ MISSING: item=52
         ::f(&x); // $ MISSING: item=I53
         let x = MyStruct {}; // $ item=I50
-        x.f(); // $ MISSING: item=I53
+        x.f(); // $ item=I53
         let x = MyStruct {}; // $ item=I50
-        x.g(); // $ MISSING: item=I54
+        x.g(); // $ item=I54
         MyStruct::h(&x); // $ item=I74
-        x.h(); // $ MISSING: item=I74
+        x.h(); // $ item=I74
     } // I55
 } // I46
 
@@ -304,7 +304,7 @@ mod m15 {
         fn f(&self) {
             println!("m15::Trait2::f");
             Self::g(self); // $ item=I80
-            self.g(); // $ MISSING: item=I80
+            self.g(); // $ item=I80
         }
     } // I82
 
@@ -316,7 +316,7 @@ mod m15 {
         fn f(&self) {
             println!("m15::<S as Trait1>::f");
             Self::g(self); // $ item=I77
-            self.g(); // $ MISSING: item=I77
+            self.g(); // $ item=I77
         } // I76
 
         fn g(&self) {
@@ -343,7 +343,7 @@ mod m15 {
           as Trait2 // $ item=I82
         >::f(&x); // $ MISSING: item=I78
         S::g(&x); // $ item=I77
-        x.g(); // $ MISSING: item=I77
+        x.g(); // $ item=I77
     } // I75
 }
 
@@ -359,7 +359,7 @@ mod m16 {
 
         fn h(&self) -> T { // $ item=I84
             Self::g(&self); // $ item=I85
-            self.g() // $ MISSING: item=I85
+            self.g() // $ item=I85
         } // I96
 
         const c: T // $ item=I84
@@ -376,7 +376,7 @@ mod m16 {
         fn f(&self) -> T { // $ item=I87
             println!("m16::Trait2::f");
             Self::g(self); // $ item=I85
-            self.g(); // $ MISSING: item=I85
+            self.g(); // $ item=I85
             Self::c // $ item=I94
         }
     } // I89
@@ -391,7 +391,7 @@ mod m16 {
         fn f(&self) -> S { // $ item=I90
             println!("m16::<S as Trait1<S>>::f");
             Self::g(self); // $ item=I92
-            self.g() // $ MISSING: item=I92
+            self.g() // $ item=I92
         } // I91
 
         fn g(&self) -> S { // $ item=I90
@@ -429,9 +429,9 @@ mod m16 {
           > // $ item=I89
         >::f(&x); // $ MISSING: item=I93
         S::g(&x); // $ item=I92
-        x.g(); // $ MISSING: item=I92
+        x.g(); // $ item=I92
         S::h(&x); // $ item=I96
-        x.h(); // $ MISSING: item=I96
+        x.h(); // $ item=I96
         S::c; // $ item=I95
         <S // $ item=I90
           as Trait1<
@@ -460,7 +460,7 @@ mod m17 {
     fn g<T: // I5
       MyTrait // $ item=I2
     >(x: T) { // $ item=I5
-        x.f(); // $ MISSING: item=I1
+        x.f(); // $ item=I1
         T::f(&x); // $ item=I1
         MyTrait::f(&x); // $ item=I1
     } // I6
@@ -495,4 +495,7 @@ fn main() {
     m15::f(); // $ item=I75
     m16::f(); // $ item=I83
     m17::f(); // $ item=I99
+    nested6::f(); // $ item=I116
+    nested8::f(); // $ item=I119
+    my3::f(); // $ item=I200
 }

@@ -85,47 +85,47 @@ rust_library(
     version = "0.1.61",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
+            "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
+            "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
+            "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
-            "@vendor__js-sys-0.3.76//:js_sys",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
-            "@vendor__wasm-bindgen-0.2.99//:wasm_bindgen",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
+            "@vendor_ts__js-sys-0.3.76//:js_sys",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
+            "@vendor_ts__wasm-bindgen-0.2.99//:wasm_bindgen",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
+            "@vendor_ts__core-foundation-sys-0.8.7//:core_foundation_sys",  # cfg(any(target_os = "macos", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
-            "@vendor__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
+            "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.52.0//:windows_core",  # cfg(target_os = "windows")
         ],
         "//conditions:default": [],
     }),

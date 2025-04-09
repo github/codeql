@@ -86,8 +86,8 @@ rust_library(
     }),
     version = "1.1.9",
     deps = [
-        "@vendor__camino-1.1.9//:build_script_build",
-        "@vendor__serde-1.0.217//:serde",
+        "@vendor_ts__camino-1.1.9//:build_script_build",
+        "@vendor_ts__serde-1.0.219//:serde",
     ],
 )
 

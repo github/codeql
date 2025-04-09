@@ -81,7 +81,7 @@ module ConditionalCompletionSplitting {
       (
         child = parent.(BinaryLogicalOperation).getAnOperand()
         or
-        parent = any(IfExpr ie | child = [ie.getThen(), ie.getElse()])
+        child = parent.(IfExpr).getABranch()
         or
         child = parent.(MatchExpr).getAnArm().getExpr()
         or

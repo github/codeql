@@ -7,6 +7,7 @@ private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.FlowSummary
+private import Content
 
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
@@ -46,7 +47,7 @@ module Input implements InputSig<Location, RustDataFlow> {
   private class MethodCallExprNameRef extends SourceBase, SinkBase {
     private MethodCallExpr call;
 
-    MethodCallExprNameRef() { this = call.getNameRef() }
+    MethodCallExprNameRef() { this = call.getIdentifier() }
 
     override MethodCallExpr getCall() { result = call }
   }
@@ -57,7 +58,9 @@ module Input implements InputSig<Location, RustDataFlow> {
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
-  predicate encodeArgumentPosition = encodeParameterPosition/1;
+  string encodeArgumentPosition(RustDataFlow::ArgumentPosition pos) {
+    result = encodeParameterPosition(pos)
+  }
 
   string encodeContent(ContentSet cs, string arg) {
     exists(Content c | cs = TSingletonContentSet(c) |
@@ -76,9 +79,9 @@ module Input implements InputSig<Location, RustDataFlow> {
           // TODO: calculate in QL
           arg = a.getExtendedCanonicalPath() + "::" + field
         |
-          c.(RecordFieldContent).isStructField(a, field)
+          c.(StructFieldContent).isStructField(a, field)
           or
-          c.(RecordFieldContent).isVariantField(a, field)
+          c.(StructFieldContent).isVariantField(a, field)
         )
         or
         c =
@@ -104,6 +107,10 @@ module Input implements InputSig<Location, RustDataFlow> {
       c = TFutureContent() and
       arg = ""
     )
+    or
+    cs = TOptionalStep(arg) and result = "OptionalStep"
+    or
+    cs = TOptionalBarrier(arg) and result = "OptionalBarrier"
   }
 
   string encodeReturn(ReturnKind rk, string arg) { none() }
@@ -145,17 +152,21 @@ private module StepsInput implements Impl::Private::StepsInputSig {
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
     sc = Impl::Private::SummaryComponent::return(_) and
     result.asExpr().getExpr() = source.getCall()
+    or
+    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
+      result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() = arg and
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      call = source.getCall() and
+      arg = pos.getArgument(call)
+    )
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {
-    exists(CallExprBase call, Expr arg, ParameterPosition pos |
+    exists(CallExprBase call, Expr arg, ArgumentPosition pos |
       result.asExpr().getExpr() = arg and
       sc = Impl::Private::SummaryComponent::argument(pos) and
-      call = sink.getCall()
-    |
-      arg = call.getArgList().getArg(pos.getPosition())
-      or
-      arg = call.(MethodCallExpr).getReceiver() and pos.isSelf()
+      call = sink.getCall() and
+      arg = pos.getArgument(call)
     )
   }
 }

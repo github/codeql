@@ -8,7 +8,7 @@ module Impl {
    * This QL class is the root of the Swift type hierarchy.
    */
   class Type extends Generated::Type {
-    override string toString() { result = this.getFullName() }
+    override string toStringImpl() { result = this.getFullName() }
 
     /**
      * Gets the name of this type.

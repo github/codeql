@@ -15,7 +15,7 @@ crates_vendor(
         "//shared/tree-sitter-extractor:Cargo.toml",
     ],
     mode = "remote",
-    repository_name = "vendor",
+    repository_name = "vendor_ts",
     tags = ["manual"],
     vendor_path = "tree_sitter_extractors_deps",
 )

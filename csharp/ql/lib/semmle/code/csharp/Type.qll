@@ -1214,6 +1214,8 @@ class ArglistType extends Type, @arglist_type {
 class UnknownType extends Type, @unknown_type {
   /** Holds if this is the canonical unknown type, and not a type that failed to extract properly. */
   predicate isCanonical() { types(this, _, "<unknown type>") }
+
+  override string getAPrimaryQlClass() { result = "UnknownType" }
 }
 
 /**
