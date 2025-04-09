@@ -100,11 +100,27 @@ module SQL {
       }
     }
 
+    /** A string that might identify package `go/bigquery` */
+    string gobigquery() { result = "cloud.google.com/go/bigquery.Client" }
+
     /** A string that might identify package `go-pg/pg` or a specific version of it. */
     private string gopg() { result = package("github.com/go-pg/pg", "") }
 
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
     private string gopgorm() { result = package("github.com/go-pg/pg", "orm") }
+
+    /**
+     * A string argument to an api of `go/bigquery` that is directly interpreted as SQL
+     * without taking syntactic structure in account
+     */
+    class BigQueryString extends Range {
+      BigQueryString() {
+        exists(Function f |
+          f.hasQualifiedName(gobigquery(), "Query") and
+          this = f.getACall().getArgument(0)
+        )
+      }
+    }
 
     /**
      * A string argument to an API of `go-pg/pg` that is directly interpreted as SQL without
