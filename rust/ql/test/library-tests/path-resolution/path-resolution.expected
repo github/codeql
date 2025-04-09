@@ -30,6 +30,7 @@ mod
 | main.rs:523:1:548:1 | mod m23 |
 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:12:1:12:12 | mod my3 |
+| my2/mod.rs:14:1:15:10 | mod mymod |
 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | my2/nested2.rs:13:1:19:1 | mod nested5 |
@@ -306,12 +307,14 @@ resolvePath
 | my2/mod.rs:10:9:10:24 | ...::nested7 | my2/nested2.rs:21:1:27:1 | mod nested7 |
 | my2/mod.rs:10:9:10:33 | ...::nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
 | my2/mod.rs:10:37:10:40 | self | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| my2/mod.rs:17:5:17:9 | mymod | my2/mod.rs:14:1:15:10 | mod mymod |
+| my2/mod.rs:17:5:17:12 | ...::f | my2/renamed.rs:1:1:1:13 | fn f |
 | my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
 | my2/my3/mod.rs:4:5:4:5 | h | main.rs:50:1:69:1 | fn h |
-| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:17:30 | SourceFile |
 | my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:578:2 | SourceFile |
 | my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:50:1:69:1 | fn h |
-| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:12:13 | SourceFile |
+| my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:17:30 | SourceFile |
 | my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
 | my.rs:3:5:3:10 | nested | my.rs:1:1:1:15 | mod nested |
 | my.rs:3:5:3:13 | ...::g | my/nested.rs:19:1:22:1 | fn g |
