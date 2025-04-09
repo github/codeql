@@ -37,11 +37,11 @@ class BufferTypedArray extends DataFlow::AdditionalFlowStep {
   }
 }
 
-class SetLike extends SummarizedCallable {
-  SetLike() { this = "TypedArray#set" }
+class TypedArraySet extends SummarizedCallable {
+  TypedArraySet() { this = "TypedArray#set" }
 
   override InstanceCall getACall() {
-    result = typedArrayConstructorRef().getAnInstantiation().getReturn().getMember("set").getACall()
+    result = typedArrayConstructorRef().getInstance().getMember("set").getACall()
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -51,13 +51,10 @@ class SetLike extends SummarizedCallable {
   }
 }
 
-class SubArrayLike extends SummarizedCallable {
-  SubArrayLike() { this = "TypedArray#subarray" }
+class TypedArraySubarray extends SummarizedCallable {
+  TypedArraySubarray() { this = "TypedArray#subarray" }
 
-  override InstanceCall getACall() {
-    result =
-      typedArrayConstructorRef().getAnInstantiation().getReturn().getMember("subarray").getACall()
-  }
+  override InstanceCall getACall() { result.getMethodName() = "subarray" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and
@@ -95,12 +92,7 @@ class TransferLike extends SummarizedCallable {
   TransferLike() { this = "ArrayBuffer#transfer" }
 
   override InstanceCall getACall() {
-    result =
-      arrayBufferConstructorRef()
-          .getAnInstantiation()
-          .getReturn()
-          .getMember(["transfer", "transferToFixedLength"])
-          .getACall()
+    result.getMethodName() = ["transfer", "transferToFixedLength"]
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {

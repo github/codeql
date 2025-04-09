@@ -17,8 +17,7 @@ class DecodeLike extends SummarizedCallable {
   DecodeLike() { this = "TextDecoder#decode" }
 
   override InstanceCall getACall() {
-    result =
-      textDecoderConstructorRef().getAnInstantiation().getReturn().getMember("decode").getACall()
+    result = textDecoderConstructorRef().getInstance().getMember("decode").getACall()
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
