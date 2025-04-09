@@ -159,23 +159,20 @@ private predicate shouldResolve(RelevantPathExpr expr, Container base, string pa
   or
   resolveViaPathMapping(expr, base, path)
   or
-  not resolveViaPathMapping(expr, _, _) and
-  (
-    // Resolve from baseUrl of relevant tsconfig.json file
-    path = expr.getValue() and
-    not isRelativePath(path) and
-    base = getTSConfigFromPathExpr(expr).getBaseUrlFolder()
-    or
-    // If the path starts with the name of a package, but did not match any path mapping,
-    // resolve relative to the enclosing directory of that package.
-    // Note that `getFileFromFolderImport` may subsequently redirect this to the package's "main",
-    // so we don't have to deal with that here.
-    exists(PackageJson pkg, string packageName |
-      packageName = getPackagePrefixFromPathExpr(expr) and
-      pkg.getDeclaredPackageName() = packageName and
-      path = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "") and
-      base = pkg.getJsonFile().getParentContainer()
-    )
+  // Resolve from baseUrl of relevant tsconfig.json file
+  path = expr.getValue() and
+  not isRelativePath(path) and
+  base = getTSConfigFromPathExpr(expr).getBaseUrlFolder()
+  or
+  // If the path starts with the name of a package, but did not match any path mapping,
+  // resolve relative to the enclosing directory of that package.
+  // Note that `getFileFromFolderImport` may subsequently redirect this to the package's "main",
+  // so we don't have to deal with that here.
+  exists(PackageJson pkg, string packageName |
+    packageName = getPackagePrefixFromPathExpr(expr) and
+    pkg.getDeclaredPackageName() = packageName and
+    path = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "") and
+    base = pkg.getJsonFile().getParentContainer()
   )
 }
 
