@@ -191,6 +191,12 @@ private Container resolvePathExpr1(RelevantPathExpr expr) {
   )
 }
 
+/**
+ * Removes the scope from a package name, e.g. `@foo/bar` -> `bar`.
+ */
+bindingset[name]
+private string stripPackageScope(string name) { result = name.regexpReplaceAll("^@[^/]+/", "") }
+
 private File guessPackageJsonMain1(PackageJsonEx pkg) {
   not exists(pkg.getMainFile()) and
   exists(Folder folder, Folder subfolder |
@@ -204,7 +210,11 @@ private File guessPackageJsonMain1(PackageJsonEx pkg) {
             .(Folder)
             .getChildContainer(getASrcFolderName())
     ) and
+    )
+  |
     result = subfolder.getJavaScriptFile("index")
+    or
+    result = subfolder.getJavaScriptFile(stripPackageScope(pkg.getDeclaredPackageName()))
   )
 }
 
