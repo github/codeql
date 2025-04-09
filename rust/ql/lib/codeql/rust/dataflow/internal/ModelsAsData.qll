@@ -47,6 +47,7 @@ private import rust
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 /**
  * Holds if in a call to the function with canonical path `path`, defined in the
@@ -114,13 +115,30 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   )
 }
 
+private predicate sdf(CallExprBase call, Function f) {
+  CallExprBaseImpl::getCallResolvable(call).getResolvedPath() = "<crate::option::Option>::unwrap" and
+  // CallExprBaseImpl::getCallResolvable(call).getResolvedCrateOrigin() = "lang:core" and
+  f = call.getStaticTarget()
+}
+
+private predicate sdf2(CallExprBase call) {
+  CallExprBaseImpl::getCallResolvable(call).getResolvedPath() = "<crate::option::Option>::unwrap"
+  // CallExprBaseImpl::getCallResolvable(call).getResolvedCrateOrigin() = "lang:core" and
+  // f = call.getStaticTarget()
+}
+
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   private string crate;
   private string path;
 
   SummarizedCallableFromModel() {
     summaryModel(crate, path, _, _, _, _, _) and
-    this = crate + "::_::" + path
+    exists(CallExprBase call, Resolvable r |
+      call.getStaticTarget() = this and
+      r = CallExprBaseImpl::getCallResolvable(call) and
+      r.getResolvedPath() = path and
+      r.getResolvedCrateOrigin() = crate
+    )
   }
 
   override predicate propagatesFlow(

@@ -2,7 +2,6 @@
 
 private import rust
 private import internal.FlowSummaryImpl as Impl
-private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 // import all instances below
 private module Summaries {
@@ -10,34 +9,10 @@ private module Summaries {
   private import codeql.rust.dataflow.internal.ModelsAsData
 }
 
-/** Provides the `Range` class used to define the extent of `LibraryCallable`. */
-module LibraryCallable {
-  /** A callable defined in library code, identified by a unique string. */
-  abstract class Range extends string {
-    bindingset[this]
-    Range() { any() }
-
-    /** Gets a call to this library callable. */
-    CallExprBase getACall() {
-      exists(Resolvable r, string crate |
-        r = CallExprBaseImpl::getCallResolvable(result) and
-        this = crate + r.getResolvedPath()
-      |
-        crate = r.getResolvedCrateOrigin() + "::_::"
-        or
-        not r.hasResolvedCrateOrigin() and
-        crate = ""
-      )
-    }
-  }
-}
-
-final class LibraryCallable = LibraryCallable::Range;
-
 /** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
 module SummarizedCallable {
   /** A callable with a flow summary, identified by a unique string. */
-  abstract class Range extends LibraryCallable::Range, Impl::Public::SummarizedCallable {
+  abstract class Range extends Impl::Public::SummarizedCallable {
     bindingset[this]
     Range() { any() }
 

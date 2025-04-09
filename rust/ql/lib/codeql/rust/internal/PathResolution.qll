@@ -1180,3 +1180,21 @@ private module Debug {
     fileImport(m, f)
   }
 }
+
+private predicate sdfs(Impl impl, string s) {
+  impl.toString() = "impl ...::Option { ... }" and
+  s = impl.getSelfTy().(PathTypeRepr).getPath().toStringDebug()
+}
+
+private predicate sdfs2(Impl impl, RelevantPath path, RelevantPath q, string p, ItemNode i) {
+  impl.toString() = "impl ...::Option { ... }" and
+  path = impl.getSelfTy().(PathTypeRepr).getPath() and
+  q = path.getQualifier*() and
+  p = path.toStringDebug() and
+  // parent = i.getImmediateParent().getImmediateParent() and
+  // rootHasCratePathTc(encl, i) and
+  // crate = encl.getASuccessor(name)
+  // crate = encl.getASuccessor(name)
+  i = resolvePath(q)
+  // unqualifiedPathLookup(q, name, ns, encl)
+}

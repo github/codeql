@@ -1,0 +1,9 @@
+| test.rs:36:20:36:36 | //... | Missing result: hasTaintFlow |
+| test.rs:37:17:37:33 | //... | Missing result: hasTaintFlow |
+| test.rs:38:17:38:33 | //... | Missing result: hasTaintFlow |
+| test.rs:39:17:39:33 | //... | Missing result: hasTaintFlow |
+| test.rs:40:17:40:33 | //... | Missing result: hasTaintFlow |
+| test.rs:63:27:63:57 | //... | Missing result: hasTaintFlow="example.com" |
+| test.rs:66:27:66:57 | //... | Missing result: hasTaintFlow="example.com" |
+| test.rs:69:27:69:57 | //... | Missing result: hasTaintFlow="example.com" |
+| test.rs:72:27:72:57 | //... | Missing result: hasTaintFlow="example.com" |
