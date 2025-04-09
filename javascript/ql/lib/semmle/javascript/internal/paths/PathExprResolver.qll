@@ -222,8 +222,6 @@ private File getFileFromFolderImport(Folder folder) {
   exists(PackageJsonEx pkg | pkg.getFolder() = folder |
     result = pkg.getMainFile()
     or
-    result = pkg.getMainFile().(Folder).getJavaScriptFile("index")
-    or
     result = guessPackageJsonMain1(pkg)
     or
     result = guessPackageJsonMain2(pkg)

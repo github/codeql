@@ -45,7 +45,13 @@ class PackageJsonEx extends PackageJson {
 
   string getMainPath() { result = this.getPropStringValue(["main", "module"]) }
 
-  Container getMainFile() { result = Resolver::resolve(this.getFolder(), this.getMainPath()) }
+  File getMainFile() {
+    exists(Container main | main = Resolver::resolve(this.getFolder(), this.getMainPath()) |
+      result = main
+      or
+      result = main.(Folder).getJavaScriptFile("index")
+    )
+  }
 
   string getAPathInFilesArray() {
     result = this.getPropValue("files").(JsonArray).getElementStringValue(_)
@@ -58,7 +64,7 @@ class PackageJsonEx extends PackageJson {
 
 private module ResolverConfig implements PathResolverSig {
   additional predicate shouldResolve(PackageJsonEx pkg, Container base, string path) {
-    base = pkg.getJsonFile().getParentContainer() and
+    base = pkg.getFolder() and
     (
       pkg.hasExactPathMapping(_, path)
       or
