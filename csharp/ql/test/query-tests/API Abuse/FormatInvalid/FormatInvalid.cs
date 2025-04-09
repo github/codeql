@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 
 class FormatInvalid
@@ -132,6 +133,28 @@ class FormatInvalid
         System.Diagnostics.Trace.TraceInformation("{0}"); // GOOD
         System.Diagnostics.Trace.TraceWarning("{0}"); // GOOD
         ts.TraceInformation("{0}"); // GOOD
+    }
+
+    void CompositeFormatMethods()
+    {
+        var format = CompositeFormat.Parse("}"); // $ Alert
+
+        // GOOD: Format is invalid and this flagged during parsing.
+        String.Format<string>(null, format, "");
+        String.Format<string, string>(null, format, "", "");
+        String.Format<string, string, string>(null, format, "", "", "");
+
+        sb.AppendFormat(null, format, "");
+        sb.AppendFormat<string>(null, format, "");
+        sb.AppendFormat<string, string>(null, format, "", "");
+        sb.AppendFormat<string, string, string>(null, format, "", "", "");
+
+
+        var span = new Span<char>();
+        span.TryWrite(null, format, out _);
+        span.TryWrite<object>(null, format, out _, new object());
+        span.TryWrite<object, object>(null, format, out _, new object(), new object());
+        span.TryWrite<object, object, object>(null, format, out _, "", "", "");
     }
 
     System.IO.StringWriter sw;
