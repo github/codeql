@@ -1,5 +1,8 @@
 private import javascript
 
+/**
+ * Signature for modules to pass to `PathResolver`.
+ */
 signature module PathResolverSig {
   /**
    * Holds if `path` should be resolved to a file or folder, relative to `base`.
@@ -13,9 +16,7 @@ signature module PathResolverSig {
 }
 
 /**
- * Provides a mechanism for resolving relative file paths.
- *
- * Absolute paths are not handled.
+ * Provides a mechanism for resolving file paths relative to a given directory.
  */
 module PathResolver<PathResolverSig Config> {
   private import Config
@@ -51,7 +52,7 @@ module PathResolver<PathResolverSig Config> {
   /**
    * Gets the file or folder that `path` resolves to when resolved from `base`.
    *
-   * Only has results for the `base`, `path` pairs provided by `shouldResolve`
+   * Only has results for the `(base, path)` pairs provided by `shouldResolve`
    * in the instantiation of this module.
    */
   Container resolve(Container base, string path) {

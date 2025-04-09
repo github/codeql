@@ -2,6 +2,9 @@ private import javascript
 private import semmle.javascript.internal.paths.PathResolver
 private import semmle.javascript.internal.paths.PathExprResolver
 
+/**
+ * Extension of `PackageJson` with some internal path-resolution predicates.
+ */
 class PackageJsonEx extends PackageJson {
   private JsonValue getAPartOfExportsSection(string pattern) {
     result = this.getPropValue("exports") and
