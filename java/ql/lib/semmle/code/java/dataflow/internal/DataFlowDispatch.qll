@@ -213,6 +213,7 @@ private module DispatchImpl {
   }
 
   /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  overlay[caller]
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 }
