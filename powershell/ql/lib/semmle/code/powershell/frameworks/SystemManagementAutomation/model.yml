@@ -1820,3 +1820,9 @@ extensions:
     - ["System.Collections.ObjectModel.ReadOnlyCollection<System.Management.Automation.PSTypeName>", "System.Management.Automation.FunctionInfo", "Property[OutputType]"]
     - ["System.Management.Automation.Language.ParseError[]", "System.Management.Automation.ParseException", "Property[Errors]"]
     - ["System.Management.Automation.DSCResourceRunAsCredential", "System.Management.Automation.DscResourceAttribute", "Property[RunAsCredential]"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+    - ["System.Management.Automation.Language.CodeGeneration!", "Method[escapesinglequotedstringcontent]", "Argument[0]", "ReturnValue", "taint"]
