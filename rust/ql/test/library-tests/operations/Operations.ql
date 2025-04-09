@@ -2,6 +2,8 @@ import rust
 import utils.test.InlineExpectationsTest
 
 string describe(Expr op) {
+  op instanceof Operation and result = "Operation"
+  or
   op instanceof PrefixExpr and result = "PrefixExpr"
   or
   op instanceof BinaryExpr and result = "BinaryExpr"

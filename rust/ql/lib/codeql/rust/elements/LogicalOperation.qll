@@ -1,11 +1,12 @@
 private import codeql.rust.elements.Expr
 private import codeql.rust.elements.BinaryExpr
 private import codeql.rust.elements.PrefixExpr
+private import codeql.rust.elements.Operation
 
 /**
  * A logical operation, such as `&&`, `||` or `!`.
  */
-abstract private class LogicalOperationImpl extends Expr {
+abstract private class LogicalOperationImpl extends Operation {
   abstract Expr getAnOperand();
 }
 
