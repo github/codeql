@@ -883,19 +883,23 @@ private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
   doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
 
 pragma[nomagic]
+private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace ns, ItemNode encl) {
+  unqualifiedPathLookup(p, name, ns, encl)
+  or
+  // For `($)crate`, jump directly to the root module
+  exists(ItemNode i | p.isCratePath(name, i) |
+    encl.(ModuleLikeNode).isRoot() and
+    encl = i
+    or
+    rootHasCratePathTc(encl, i)
+  )
+}
+
+pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
   exists(ItemNode encl, string name |
-    result = getASuccessor(encl, pragma[only_bind_into](name), ns)
-  |
-    unqualifiedPathLookup(path, name, ns, encl)
-    or
-    // For `($)crate`, jump directly to the root module
-    exists(ItemNode i | path.isCratePath(pragma[only_bind_into](name), i) |
-      encl.(ModuleLikeNode).isRoot() and
-      encl = i
-      or
-      rootHasCratePathTc(encl, i)
-    )
+    result = getASuccessor(encl, name, ns) and
+    unqualifiedPathLookup1(path, name, ns, encl)
   )
 }
 
@@ -916,8 +920,7 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = q.getASuccessor(name) and
-    ns = result.getNamespace()
+    result = getASuccessor(q, name, ns)
   )
   or
   result = resolveUseTreeListItem(_, _, path) and
@@ -978,6 +981,11 @@ private ItemNode resolvePathPrivate(
   )
 }
 
+pragma[nomagic]
+private predicate isItemParent(ModuleLikeNode itemParent) {
+  exists(resolvePathPrivate(_, itemParent, _))
+}
+
 /**
  * Gets a module that has access to private items defined inside `itemParent`.
  *
@@ -988,7 +996,7 @@ private ItemNode resolvePathPrivate(
  */
 pragma[nomagic]
 private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _)) and
+  isItemParent(itemParent) and
   result.getImmediateParentModule*() = itemParent
 }
 
