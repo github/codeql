@@ -70,10 +70,35 @@ module ClientWebSocket {
   /**
    * A class that can be used to instantiate a WebSocket instance.
    */
-  class SocketClass extends API::Node {
+  deprecated class SocketClass extends DataFlow::SourceNode {
     LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
 
     SocketClass() {
+      this = DataFlow::globalVarRef("WebSocket") and library = websocket()
+      or
+      this = DataFlow::moduleImport("ws") and library = ws()
+      or
+      // the sockjs-client library:https://www.npmjs.com/package/sockjs-client
+      library = sockjs() and
+      (
+        this = DataFlow::moduleImport("sockjs-client") or
+        this = DataFlow::globalVarRef("SockJS")
+      )
+    }
+
+    /**
+     * Gets the WebSocket library name.
+     */
+    LibraryName getLibrary() { result = library }
+  }
+
+  /**
+   * A class that can be used to instantiate a WebSocket instance.
+   */
+  class WebSocketClass extends API::Node {
+    LibraryName library; // the name of the WebSocket library. Can be one of the libraries defined in `LibraryNames`.
+
+    WebSocketClass() {
       this = any(WebSocketEntryPoint e).getANode() and library = websocket()
       or
       this = API::moduleImport("ws") and library = ws()
@@ -96,7 +121,7 @@ module ClientWebSocket {
    * A client WebSocket instance.
    */
   class ClientSocket extends EventEmitter::Range, API::NewNode, ClientRequest::Range {
-    SocketClass socketClass;
+    WebSocketClass socketClass;
 
     ClientSocket() { this = socketClass.getAnInvocation() }
 
@@ -212,7 +237,18 @@ module ServerWebSocket {
   /**
    * Gets a server created by a library named `library`.
    */
-  API::InvokeNode getAServer(LibraryName library) {
+  deprecated DataFlow::SourceNode getAServer(LibraryName library) {
+    library = ws() and
+    result = DataFlow::moduleImport("ws").getAConstructorInvocation("Server")
+    or
+    library = sockjs() and
+    result = DataFlow::moduleImport("sockjs").getAMemberCall("createServer")
+  }
+
+  /**
+   * Gets a server created by a library named `library`.
+   */
+  API::InvokeNode getAServerInvocation(LibraryName library) {
     library = ws() and
     result = API::moduleImport("ws").getMember("Server").getAnInvocation()
     or
@@ -224,7 +260,7 @@ module ServerWebSocket {
    * Gets a `socket.on("connection", (msg, req) => {})` call.
    */
   private DataFlow::CallNode getAConnectionCall(LibraryName library) {
-    result = getAServer(library).getReturn().getMember(EventEmitter::on()).getACall() and
+    result = getAServerInvocation(library).getReturn().getMember(EventEmitter::on()).getACall() and
     result.getArgument(0).mayHaveStringValue("connection")
   }
 
