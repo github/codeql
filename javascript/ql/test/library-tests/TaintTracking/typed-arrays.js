@@ -17,21 +17,23 @@ function test() {
     const sub = y.subarray(1, 3)
     sink(sub); // NOT OK
 
-    const buffer = new ArrayBuffer(x);
+    const buffer = new ArrayBuffer(8);
     const view = new Uint8Array(buffer);
-    sink(view); // NOT OK
+    view.set(x, 3);
+    sink(buffer); // NOT OK -- Should be flagged but it is not.
 
-    const sharedBuffer = new SharedArrayBuffer(x);
+    const sharedBuffer = new SharedArrayBuffer(8);
     const view1 = new Uint8Array(sharedBuffer);
-    sink(view1); // NOT OK
+    view1.set(x, 3);
+    sink(sharedBuffer); // NOT OK -- Should be flagged but it is not.
 
     const transfered = buffer.transfer();
     const transferedView = new Uint8Array(transfered);
-    sink(transferedView); // NOT OK
+    sink(transferedView); // NOT OK -- Should be flagged but it is not.
 
     const transfered2 = buffer.transferToFixedLength();
     const transferedView2 = new Uint8Array(transfered2);
-    sink(transferedView2); // NOT OK
+    sink(transferedView2); // NOT OK -- Should be flagged but it is not.
 
     var typedArrayToString = (function () {
         return function (a) { return String.fromCharCode.apply(null, a); };

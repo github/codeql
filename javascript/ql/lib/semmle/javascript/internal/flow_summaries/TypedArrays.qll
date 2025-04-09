@@ -74,20 +74,6 @@ private class ArrayBufferEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node arrayBufferConstructorRef() { result = any(ArrayBufferEntryPoint a).getANode() }
 
-class ArrayBufferConstructorSummary extends SummarizedCallable {
-  ArrayBufferConstructorSummary() { this = "ArrayBuffer constructor" }
-
-  override DataFlow::InvokeNode getACall() {
-    result = arrayBufferConstructorRef().getAnInstantiation()
-  }
-
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    preservesValue = true and
-    input = "Argument[0].ArrayElement" and
-    output = "ReturnValue.ArrayElement"
-  }
-}
-
 class TransferLike extends SummarizedCallable {
   TransferLike() { this = "ArrayBuffer#transfer" }
 
