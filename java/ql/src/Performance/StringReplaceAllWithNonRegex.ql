@@ -6,8 +6,9 @@
  * @kind problem
  * @precision very-high
  * @problem.severity recommendation
- * @tags performance
- *       quality
+ * @tags quality
+ *       reliability
+ *       performance
  *       external/cwe/cwe-1176
  */
 
