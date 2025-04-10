@@ -459,10 +459,23 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 }
 
 newtype TPosition =
-  TDirectPosition(int argumentIndex) { exists(any(CallInstruction c).getArgument(argumentIndex)) } or
+  TDirectPosition(int argumentIndex) {
+    exists(any(CallInstruction c).getArgument(argumentIndex))
+    or
+    // Handle the rare case where the is a function definition but no call to
+    // the function.
+    exists(any(Cpp::Function f).getParameter(argumentIndex))
+  } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
     Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
+    or
+    // Handle the rare case where the is a function definition but no call to
+    // the function.
+    exists(Cpp::Function f, Cpp::Parameter p |
+      p = f.getParameter(argumentIndex) and
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+    )
   }
 
 private newtype TReturnKind =
