@@ -113,7 +113,7 @@ private module ResolverConfig implements PathResolverSig {
     )
   }
 
-  predicate allowGlobs() { any() }
+  predicate allowGlobs() { any() } // "include" can use globs
 }
 
 private module Resolver = PathResolver<ResolverConfig>;
