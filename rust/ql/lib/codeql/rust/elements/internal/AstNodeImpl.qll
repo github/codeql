@@ -33,6 +33,7 @@ module Impl {
      * Gets the nearest enclosing parent of this node, which is also an `AstNode`,
      * if any.
      */
+    cached
     AstNode getParentNode() { result = getParentOfAstStep*(getImmediateParent(this)) }
 
     /** Gets the immediately enclosing callable of this node, if any. */

@@ -846,9 +846,11 @@ module RustDataFlow implements InputSig<Location> {
 
 /** Provides logic related to captured variables. */
 module VariableCapture {
+  private import codeql.rust.internal.CachedStages
   private import codeql.dataflow.VariableCapture as SharedVariableCapture
 
   private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
+    Stages::DataFlowStage::ref() and
     e1 = getALastEvalNode(e2)
     or
     exists(Ssa::Definition def |

@@ -384,7 +384,9 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   }
 
   /** Gets a `Self` path that refers to this item. */
+  cached
   Path getASelfPath() {
+    Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
     this = unqualifiedPathLookup(result, _)
   }
@@ -578,7 +580,7 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+class TypeParamItemNode extends ItemNode instanceof TypeParam {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -598,8 +600,9 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
    * impl<T> Foo<T> where T: Trait { ... } // has trait bound
    * ```
    */
-  pragma[nomagic]
+  cached
   predicate hasTraitBound() {
+    Stages::PathResolutionStage::ref() and
     exists(this.getABoundPath())
     or
     exists(ItemNode declaringItem, WherePred wp |
