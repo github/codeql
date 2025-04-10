@@ -21,3 +21,8 @@ class FunctionBase extends Ast, TFunctionBase {
 
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 }
+
+/**
+ * The implicit function that represents the entire script block in a file.
+ */
+class TopLevelFunction extends FunctionBase, TTopLevelFunction { }
