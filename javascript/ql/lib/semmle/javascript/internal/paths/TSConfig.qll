@@ -18,15 +18,6 @@ class TSConfig extends JsonObject {
   /** Gets the file referred to by the `extends` property. */
   File getExtendedFile() { result = Resolver::resolve(this.getFolder(), this.getExtendsPath()) }
 
-  string getAReferencedPath() {
-    result =
-      this.getPropValue("references")
-          .(JsonArray)
-          .getElementValue(_)
-          .getPropValue("path")
-          .getStringValue()
-  }
-
   /** Gets the `TSConfig` file referred to by the `extends` property. */
   TSConfig getExtendedTSConfig() { result.getJsonFile() = this.getExtendedFile() }
 
