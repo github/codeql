@@ -55,11 +55,8 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
      */
     Callable getAsExprEnclosingCallable();
 
-    /**
-     * Gets the parameter corresponding to this node, if any.
-     */
-    Parameter asParameter();
-  }
+  /** Gets the parameter corresponding to this node, if any. */
+  Parameter asParameter(NodeExtended n);
 
   /**
    * A class of callables that are potentially relevant for generating summary or
@@ -390,7 +387,7 @@ module MakeModelGenerator<
    * Gets the MaD string representation of the parameter node `p`.
    */
   string parameterNodeAsInput(DataFlow::ParameterNode p) {
-    result = parameterAccess(p.(NodeExtended).asParameter())
+    result = parameterAccess(asParameter(p))
     or
     result = qualifierString() and p instanceof InstanceParameterNode
   }
@@ -613,7 +610,7 @@ module MakeModelGenerator<
      * when used in content flow.
      */
     private string parameterNodeAsContentInput(DataFlow::ParameterNode p) {
-      result = parameterContentAccess(p.(NodeExtended).asParameter())
+      result = parameterContentAccess(asParameter(p))
       or
       result = qualifierString() and p instanceof InstanceParameterNode
     }
