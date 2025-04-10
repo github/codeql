@@ -319,6 +319,13 @@ resolvePath
 | my.rs:18:9:18:11 | my4 | my.rs:14:1:16:1 | mod my4 |
 | my.rs:18:9:18:16 | ...::my5 | my.rs:15:5:15:16 | mod my5 |
 | my.rs:18:9:18:19 | ...::f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
+| my.rs:22:5:22:9 | std | file:///Users/arthur/.rustup/toolchains/1.85-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/lib.rs:0:0:0:0 | Crate(std@0.0.0) |
+| my.rs:22:5:22:17 | ...::result | file://:0:0:0:0 | mod result |
+| my.rs:22:5:25:1 | ...::Result::<...> | file://:0:0:0:0 | enum Result |
+| my.rs:23:5:23:5 | T | my.rs:21:5:21:5 | T |
+| my.rs:30:6:30:16 | Result::<...> | my.rs:20:1:25:2 | type Result<...> |
+| my.rs:33:16:33:18 | Err | file://:0:0:0:0 | Err |
+| my.rs:35:5:35:6 | Ok | file://:0:0:0:0 | Ok |
 | my/nested.rs:9:13:9:13 | f | my/nested.rs:3:9:5:9 | fn f |
 | my/nested.rs:15:9:15:15 | nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
 | my/nested.rs:15:9:15:18 | ...::f | my/nested.rs:3:9:5:9 | fn f |
