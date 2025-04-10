@@ -133,9 +133,10 @@ private predicate resolveViaPathMapping(RelevantPathExpr expr, Container base, s
   |
     config.hasExactPathMapping(value, newPath)
     or
-    exists(string pattern |
-      config.hasPrefixPathMapping(pattern, newPath) and
-      value = pattern + newPath
+    exists(string pattern, string suffix, string mappedPath |
+      config.hasPrefixPathMapping(pattern, mappedPath) and
+      value = pattern + suffix and
+      newPath = mappedPath + suffix
     )
   )
   or
