@@ -687,7 +687,7 @@ module MakeModelGenerator<
       private DataFlow::ParameterNode parameter;
 
       ContentDataFlowSummaryTargetApi() {
-        count(string input, string output |
+        strictcount(string input, string output |
           exists(
             PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
             PropagateContentFlow::AccessPath stores
