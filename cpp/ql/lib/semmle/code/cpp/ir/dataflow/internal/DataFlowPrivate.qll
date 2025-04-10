@@ -1614,8 +1614,6 @@ predicate validParameterAliasStep(Node node1, Node node2) {
   )
 }
 
-private predicate isTopLevel(Cpp::Stmt s) { any(Function f).getBlock().getAStmt() = s }
-
 private Cpp::Stmt getAChainedBranch(Cpp::IfStmt s) {
   result = s.getThen()
   or
@@ -1646,11 +1644,9 @@ private Instruction getAnInstruction(Node n) {
 }
 
 private newtype TDataFlowSecondLevelScope =
-  TTopLevelIfBranch(Cpp::Stmt s) {
-    exists(Cpp::IfStmt ifstmt | s = getAChainedBranch(ifstmt) and isTopLevel(ifstmt))
-  } or
+  TTopLevelIfBranch(Cpp::Stmt s) { exists(Cpp::IfStmt ifstmt | s = getAChainedBranch(ifstmt)) } or
   TTopLevelSwitchCase(Cpp::SwitchCase s) {
-    exists(Cpp::SwitchStmt switchstmt | s = switchstmt.getASwitchCase() and isTopLevel(switchstmt))
+    exists(Cpp::SwitchStmt switchstmt | s = switchstmt.getASwitchCase())
   }
 
 /**
