@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft-sdl/powershell-all
-      extensible: sourceModel
-    data:
-      - ["system.console", "Method[Read].ReturnValue", "stdin"]
-      - ["system.console", "Method[ReadKey].ReturnValue", "stdin"]
-      - ["system.console", "Method[ReadLine].ReturnValue", "stdin"]
