@@ -8,8 +8,10 @@ class TSConfig extends JsonObject {
     this.isTopLevel()
   }
 
+  /** Gets the folder containing this file. */
   Folder getFolder() { result = this.getJsonFile().getParentContainer() }
 
+  /** Gets the `compilerOptions` object. */
   JsonObject getCompilerOptions() { result = this.getPropValue("compilerOptions") }
 
   /** Gets the string value in the `extends` property. */
@@ -64,7 +66,7 @@ class TSConfig extends JsonObject {
     result = this.getAnAffectedFile().getAChildContainer()
   }
 
-  JsonObject getPathMappings() { result = this.getCompilerOptions().getPropValue("paths") }
+  private JsonObject getPathMappings() { result = this.getCompilerOptions().getPropValue("paths") }
 
   predicate hasPathMapping(string pattern, string newPath) {
     this.getPathMappings().getPropStringValue(pattern) = newPath
