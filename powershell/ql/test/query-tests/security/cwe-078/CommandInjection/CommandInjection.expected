@@ -1,8 +1,12 @@
 edges
 | test.ps1:1:8:1:9 | x | test.ps1:3:28:3:47 | Get-Process -Id $x | provenance |  |
+| test.ps1:5:10:5:20 | my_var | test.ps1:7:3:7:19 | $code --enabled | provenance |  |
 nodes
 | test.ps1:1:8:1:9 | x | semmle.label | x |
 | test.ps1:3:28:3:47 | Get-Process -Id $x | semmle.label | Get-Process -Id $x |
+| test.ps1:5:10:5:20 | my_var | semmle.label | my_var |
+| test.ps1:7:3:7:19 | $code --enabled | semmle.label | $code --enabled |
 subpaths
 #select
 | test.ps1:3:28:3:47 | Get-Process -Id $x | test.ps1:1:8:1:9 | x | test.ps1:3:28:3:47 | Get-Process -Id $x | This command depends on a $@. | test.ps1:1:8:1:9 | x | user-provided value |
+| test.ps1:7:3:7:19 | $code --enabled | test.ps1:5:10:5:20 | my_var | test.ps1:7:3:7:19 | $code --enabled | This command depends on a $@. | test.ps1:5:10:5:20 | my_var | user-provided value |
