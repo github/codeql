@@ -20,7 +20,12 @@ signature module PathResolverSig {
   default predicate isOptionalPathComponent(string component) { none() }
 
   /**
-   * Holds if `*` matches any child, and `**` matches any child recursively.
+   * Holds if globs should be interpreted in the paths being resolved.
+   *
+   * The following types of globs are supported:
+   * - `*` (matches any child)
+   * - `**` (matches any child recursively)
+   * - Complex patterns like `foo-*.txt` are also supported
    */
   default predicate allowGlobs() { none() }
 }
@@ -34,6 +39,15 @@ module PathResolver<PathResolverSig Config> {
   private string getPathSegment(string path, int n) {
     shouldResolve(_, path) and
     result = path.replaceAll("\\", "/").splitAt("/", n)
+  }
+
+  pragma[nomagic]
+  private string getPathSegmentAsGlobRegexp(string segment) {
+    allowGlobs() and
+    segment = getPathSegment(_, _) and
+    segment.matches("%*%") and
+    not segment = ["*", "**"] and // these are special-cased
+    result = segment.regexpReplaceAll("[^a-zA-Z0-9*]", "\\\\$0").replaceAll("*", ".*")
   }
 
   private int getNumPathSegment(string path) {
@@ -66,12 +80,18 @@ module PathResolver<PathResolverSig Config> {
       result = current
       or
       allowGlobs() and
-      segment = "*" and
-      result = getChild(current, _)
-      or
-      allowGlobs() and
-      segment = "**" and
-      result = current
+      (
+        segment = "*" and
+        result = getChild(current, _)
+        or
+        segment = "**" and // allow empty match
+        result = current
+        or
+        exists(string name |
+          result = getChild(current, name) and
+          name.regexpMatch(getPathSegmentAsGlobRegexp(segment))
+        )
+      )
     )
     or
     exists(Container current, string segment |
