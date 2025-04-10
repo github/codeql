@@ -2,3 +2,5 @@
 | src/.github/actions/action-name/action.yml:1:1:11:32 | name: ' ... action' |
 | src/.github/workflows/workflow.yml:1:1:12:33 | name: A workflow |
 | src/action.yml:1:1:11:32 | name: ' ... action' |
+| src/excluded/action.yml:1:1:11:32 | name: ' ... action' |
+| src/included/action.yml:1:1:11:32 | name: ' ... action' |
