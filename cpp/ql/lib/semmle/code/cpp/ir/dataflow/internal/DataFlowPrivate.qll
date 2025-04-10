@@ -371,7 +371,7 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+    op = call.getArgumentOperand(pos.(DirectPosition).getArgumentIndex())
   }
 }
 
@@ -410,8 +410,16 @@ class ParameterPosition = Position;
 class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
+  /** Gets a textual representation of this position. */
   abstract string toString();
 
+  /**
+   * Gets the argument index of this position. The qualifier of a call has
+   * argument index `-1`.
+   */
+  abstract int getArgumentIndex();
+
+  /** Gets the indirection index of this position. */
   abstract int getIndirectionIndex();
 }
 
@@ -428,7 +436,7 @@ class DirectPosition extends Position, TDirectPosition {
     result = index.toString()
   }
 
-  int getIndex() { result = index }
+  override int getArgumentIndex() { result = index }
 
   final override int getIndirectionIndex() { result = 0 }
 }
@@ -445,7 +453,7 @@ class IndirectionPosition extends Position, TIndirectionPosition {
     else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
-  int getArgumentIndex() { result = argumentIndex }
+  override int getArgumentIndex() { result = argumentIndex }
 
   final override int getIndirectionIndex() { result = indirectionIndex }
 }
