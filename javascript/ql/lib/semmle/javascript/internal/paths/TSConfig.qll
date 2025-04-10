@@ -47,23 +47,25 @@ class TSConfig extends JsonObject {
   }
 
   /**
-   * Gets a file or folder mentioned in the `include` property.
+   * Gets a file or folder refenced by a path the `include` property, possibly
+   * inherited from an extended tsconfig file.
    *
-   * Does not include all the files within includes directories.
+   * Does not include all the files within includes directories, use `getAnIncludedContainer` for that.
    */
-  Container getAnIncludedBaseContainer() {
+  Container getAnIncludePathTarget() {
     result = Resolver::resolve(this.getFolder(), this.getAnIncludePath())
     or
-    result = this.getExtendedTSConfig().getAnIncludedBaseContainer()
+    not exists(this.getPropValue("include")) and
+    result = this.getExtendedTSConfig().getAnIncludePathTarget()
   }
 
   /**
    * Gets a file or folder inside the directory tree mentioned in the `include` property.
    */
-  Container getAnAffectedFile() {
-    result = this.getAnIncludedBaseContainer()
+  Container getAnIncludedContainer() {
+    result = this.getAnIncludePathTarget()
     or
-    result = this.getAnAffectedFile().getAChildContainer()
+    result = this.getAnIncludedContainer().getAChildContainer()
   }
 
   private JsonObject getPathMappings() { result = this.getCompilerOptions().getPropValue("paths") }
