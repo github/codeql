@@ -675,8 +675,11 @@ private module LiteralSynth {
         s = "null" and
         child = SynthChild(NullLiteralKind())
         or
-        Raw::isEnvVariableAccess(va, s) and
-        child = SynthChild(EnvVariableKind(s))
+        exists(string s0 |
+          s = "env:" + s0 and
+          Raw::isEnvVariableAccess(va, s0) and
+          child = SynthChild(EnvVariableKind(s0))
+        )
         or
         isAutomaticVariableAccess(va, s) and
         child = SynthChild(AutomaticVariableKind(s))
