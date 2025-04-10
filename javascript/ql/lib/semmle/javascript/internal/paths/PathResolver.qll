@@ -49,39 +49,39 @@ module PathResolver<PathResolverSig Config> {
   private Container resolve(Container base, string path, int n) {
     shouldResolve(base, path) and n = 0 and result = base
     or
-    exists(Container cur, string segment |
-      cur = resolve(base, path, n - 1) and
+    exists(Container current, string segment |
+      current = resolve(base, path, n - 1) and
       segment = getPathSegment(path, n - 1)
     |
-      result = getChild(cur, segment)
+      result = getChild(current, segment)
       or
       segment = [".", ""] and
-      result = cur
+      result = current
       or
       segment = ".." and
-      result = cur.getParentContainer()
+      result = current.getParentContainer()
       or
       isOptionalPathComponent(segment) and
-      not exists(getChild(cur, segment)) and
-      result = cur
+      not exists(getChild(current, segment)) and
+      result = current
       or
       allowGlobs() and
       segment = "*" and
-      result = getChild(cur, _)
+      result = getChild(current, _)
       or
       allowGlobs() and
       segment = "**" and
-      result = cur
+      result = current
     )
     or
-    exists(Container cur, string segment |
-      cur = resolve(base, path, n) and
+    exists(Container current, string segment |
+      current = resolve(base, path, n) and
       segment = getPathSegment(path, n)
     |
       // Follow child without advancing 'n'
       allowGlobs() and
       segment = "**" and
-      result = getChild(cur, _)
+      result = getChild(current, _)
     )
   }
 
