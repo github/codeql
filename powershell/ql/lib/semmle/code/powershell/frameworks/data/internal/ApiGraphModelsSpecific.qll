@@ -95,7 +95,7 @@ API::Node getExtraNodeFromType(string rawType) {
     result = qualifiedTypeName.(DataFlow::LocalSourceNode).track().getInstance()
   )
   or
-  (rawType = ["", getAnImplicitImport()]) and
+  rawType = ["", getAnImplicitImport()] and
   result = API::root()
 }
 
