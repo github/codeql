@@ -22,11 +22,11 @@ To capture the value of a loop variable at the time the closure is created, use 
 </recommendation>
 <example>
 <p>
-In the following (BAD) example, a `tasks` list is created, but each task captures the loop variable <code>i</code>, and reads the same value when run.
+In the following (BAD) example, a <code>tasks</code> list is created, but each task captures the loop variable <code>i</code>, and reads the same value when run.
  </p>
 <sample src="examples/bad.py" />
 <p>
-In the following (GOOD) example, each closure has an `i` default parameter, shadowing the outer <code>i</code> variable, the default value of which is determined as the value of the loop variable <code>i</code> at the time the closure is created.
+In the following (GOOD) example, each closure has an <code>i</code> default parameter, shadowing the outer <code>i</code> variable, the default value of which is determined as the value of the loop variable <code>i</code> at the time the closure is created.
 </p>
 <sample src="examples/good.py" />
 <p>
