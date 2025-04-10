@@ -1,6 +1,6 @@
 /**
  * @name Loop variable capture
- * @description Capture of a loop variable is not the same as capturing the value of a loop variable, and may be erroneous.
+ * @description Capturing a loop variable is not the same as capturing its value, and can lead to unexpected behavior or bugs.
  * @kind path-problem
  * @tags correctness
  *       quality
