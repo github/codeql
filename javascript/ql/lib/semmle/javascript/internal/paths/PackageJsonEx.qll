@@ -49,7 +49,7 @@ class PackageJsonEx extends PackageJson {
     exists(Container main | main = Resolver::resolve(this.getFolder(), this.getMainPath()) |
       result = main
       or
-      result = main.(Folder).getJavaScriptFile("index")
+      result = main.(Folder).getJavaScriptFileOrTypings("index")
     )
   }
 

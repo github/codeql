@@ -52,11 +52,11 @@ module JSPaths {
    */
   Container getAnAdditionalChild(Container base, string name) {
     // Automatically fill in file extensions
-    result = base.(Folder).getJavaScriptFile(name)
+    result = base.(Folder).getJavaScriptFileOrTypings(name)
     or
     // When importing a .js file, map to the original file that compiles to the .js file.
     exists(string stem |
-      result = base.(Folder).getJavaScriptFile(stem) and
+      result = base.(Folder).getJavaScriptFileOrTypings(stem) and
       name = stem + ".js"
     )
     or
@@ -211,9 +211,9 @@ private File guessPackageJsonMain1(PackageJsonEx pkg) {
             .getChildContainer(getASrcFolderName())
     )
   |
-    result = subfolder.getJavaScriptFile("index")
+    result = subfolder.getJavaScriptFileOrTypings("index")
     or
-    result = subfolder.getJavaScriptFile(stripPackageScope(pkg.getDeclaredPackageName()))
+    result = subfolder.getJavaScriptFileOrTypings(stripPackageScope(pkg.getDeclaredPackageName()))
   )
 }
 
@@ -224,7 +224,7 @@ private File guessPackageJsonMain2(PackageJsonEx pkg) {
 }
 
 private File getFileFromFolderImport(Folder folder) {
-  result = folder.getJavaScriptFile("index")
+  result = folder.getJavaScriptFileOrTypings("index")
   or
   // Note that unlike "exports" paths, "main" and "module" also take effect when the package
   // is imported via a relative path, e.g. `require("..")` targeting a folder with a package.json file.
@@ -245,7 +245,7 @@ File resolvePathExpr(PathExpr expr) {
 
 module Debug {
   class PathExprToDebug extends RelevantPathExpr {
-    PathExprToDebug() { this.getValue() = "ai" }
+    PathExprToDebug() { this.getValue() = "vs/nls" }
   }
 
   query PathExprToDebug pathExprs() { any() }
