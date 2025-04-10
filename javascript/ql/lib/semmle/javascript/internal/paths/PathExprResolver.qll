@@ -10,11 +10,28 @@ private class RelevantPathExpr extends FinalPathExpr {
 }
 
 /**
+ * Gets a tsconfig file to use as fallback for handling paths in `c`.
+ *
+ * This holds for files and folders where no tsconfig seems to include it,
+ * but it has one or more tsconfig files in parent directories.
+ */
+private TSConfig getFallbackTSConfig(Container c) {
+  not c = any(TSConfig t).getAnIncludedContainer() and
+  (
+    c = result.getFolder()
+    or
+    result = getFallbackTSConfig(c.getParentContainer())
+  )
+}
+
+/**
  * Gets the TSConfig file relevant for resolving `expr`.
  */
 pragma[nomagic]
 private TSConfig getTSConfigFromPathExpr(RelevantPathExpr expr) {
-  result.getAnAffectedFile() = expr.getFile()
+  result.getAnIncludedContainer() = expr.getFile()
+  or
+  result = getFallbackTSConfig(expr.getFile())
 }
 
 /**
@@ -64,11 +81,15 @@ module JSPaths {
     //
     //   { include: ["foo"], compilerOptions: { outDir: "./bar" }}
     //
-    exists(TSConfig tsconfig |
+    exists(TSConfig tsconfig, Container includeTarget |
       name =
         tsconfig.getCompilerOptions().getPropStringValue("outDir").regexpReplaceAll("^\\./", "") and
       base = tsconfig.getFolder() and
-      result = tsconfig.getAnIncludedBaseContainer()
+      includeTarget = tsconfig.getAnIncludePathTarget()
+    |
+      result = includeTarget.(Folder)
+      or
+      result = includeTarget.(File).getParentContainer()
     )
     or
     // Heuristic version of the above based on commonly used source and build folder names
