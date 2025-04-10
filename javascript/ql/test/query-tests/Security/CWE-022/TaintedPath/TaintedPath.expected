@@ -52,6 +52,8 @@
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on a $@. | handlebars.js:29:46:29:60 | req.params.path | user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on a $@. | handlebars.js:43:15:43:29 | req.params.path | user-provided value |
 | hapi.js:15:44:15:51 | filepath | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:15:44:15:51 | filepath | This path depends on a $@. | hapi.js:14:30:14:51 | request ... ilepath | user-provided value |
+| make-dir.js:9:25:9:28 | file | make-dir.js:7:18:7:31 | req.query.file | make-dir.js:9:25:9:28 | file | This path depends on a $@. | make-dir.js:7:18:7:31 | req.query.file | user-provided value |
+| make-dir.js:10:23:10:26 | file | make-dir.js:7:18:7:31 | req.query.file | make-dir.js:10:23:10:26 | file | This path depends on a $@. | make-dir.js:7:18:7:31 | req.query.file | user-provided value |
 | mkdirp.js:11:12:11:18 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:11:12:11:18 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
 | mkdirp.js:12:17:12:23 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:12:17:12:23 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
 | mkdirp.js:13:23:13:29 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:13:23:13:29 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
@@ -403,6 +405,9 @@ edges
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath | provenance |  |
 | hapi.js:14:19:14:51 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
 | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:51 | filepath | provenance |  |
+| make-dir.js:7:11:7:31 | file | make-dir.js:9:25:9:28 | file | provenance |  |
+| make-dir.js:7:11:7:31 | file | make-dir.js:10:23:10:26 | file | provenance |  |
+| make-dir.js:7:18:7:31 | req.query.file | make-dir.js:7:11:7:31 | file | provenance |  |
 | mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:11:12:11:18 | dirPath | provenance |  |
 | mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:12:17:12:23 | dirPath | provenance |  |
 | mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:13:23:13:29 | dirPath | provenance |  |
@@ -949,6 +954,10 @@ nodes
 | hapi.js:14:19:14:51 | filepath | semmle.label | filepath |
 | hapi.js:14:30:14:51 | request ... ilepath | semmle.label | request ... ilepath |
 | hapi.js:15:44:15:51 | filepath | semmle.label | filepath |
+| make-dir.js:7:11:7:31 | file | semmle.label | file |
+| make-dir.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
+| make-dir.js:9:25:9:28 | file | semmle.label | file |
+| make-dir.js:10:23:10:26 | file | semmle.label | file |
 | mkdirp.js:9:11:9:76 | dirPath | semmle.label | dirPath |
 | mkdirp.js:9:21:9:76 | path.jo ... ltDir') | semmle.label | path.jo ... ltDir') |
 | mkdirp.js:9:42:9:59 | req.query.filename | semmle.label | req.query.filename |
