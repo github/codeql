@@ -122,9 +122,15 @@ private module Resolver = PathResolver<ResolverConfig>;
 private module PathMappingResolverConfig implements PathResolverSig {
   additional predicate shouldResolve(TSConfig cfg, Container base, string path) {
     (cfg.hasExactPathMapping(_, path) or cfg.hasPrefixPathMapping(_, path)) and
-    if isRelativePath(path)
-    then base = cfg.getFolder() // relative paths are resolved relative to tsconfig.json
-    else base = cfg.getBaseUrlFolder() // non-relative paths are resolved relative to the baseUrl
+    (
+      base = cfg.getBaseUrlFolder()
+      or
+      // If there is no baseUrl, and the path is relative, it should be resolved from tsconfig.json
+      // relative paths are resolved relative to tsconfig.json. It's error if the path is not
+      // relative so we don't need to explicitly check for it.
+      not exists(cfg.getBaseUrlFolder()) and
+      base = cfg.getFolder()
+    )
   }
 
   predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }

@@ -1,10 +1,11 @@
 {
     "include": ["."],
     "compilerOptions": {
-        // Imports with a non-relative path are resolved relative to baseUrl
-        "baseUrl": "./",
+        // Path mappings are resolved relative to baseUrl
+        "baseUrl": "./base",
         "paths": {
             "@/*": ["lib/*"],
+            "#/*": ["./lib/*"], // relative paths here are also resolved from the base url
             "@/*.xyz": ["lib/*"],
             "@": ["lib/nostar.ts"]
         }

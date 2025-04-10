@@ -1,24 +1,31 @@
-| BaseUrl/src/main.ts:2:1:2:21 | import  ... /file"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:3:1:3:24 | import  ... le.ts"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:4:1:4:24 | import  ... le.js"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:5:1:5:16 | import "../lib"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:6:1:6:22 | import  ... index"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:7:1:7:25 | import  ... ex.ts"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:8:1:8:25 | import  ... ex.js"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:11:1:11:18 | import "lib/file"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:12:1:12:21 | import  ... le.ts"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:13:1:13:21 | import  ... le.js"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:14:1:14:13 | import "lib"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:15:1:15:19 | import "lib/index"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:16:1:16:22 | import  ... ex.ts"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:17:1:17:22 | import  ... ex.js"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:20:1:20:16 | import "@/file"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:21:1:21:19 | import "@/file.ts"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:22:1:22:19 | import "@/file.js"; | BaseUrl/lib/file.ts |
-| BaseUrl/src/main.ts:23:1:23:11 | import "@"; | BaseUrl/lib/nostar.ts |
-| BaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | BaseUrl/lib/index.ts |
-| BaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | BaseUrl/lib/index.ts |
+importTarget
+| BaseUrl/src/main.ts:2:1:2:26 | import  ... /file"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:3:1:3:29 | import  ... le.ts"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:4:1:4:29 | import  ... le.js"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:5:1:5:21 | import  ... e/lib"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:6:1:6:27 | import  ... index"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:7:1:7:30 | import  ... ex.ts"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:8:1:8:30 | import  ... ex.js"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:11:1:11:18 | import "lib/file"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:12:1:12:21 | import  ... le.ts"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:13:1:13:21 | import  ... le.js"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:14:1:14:13 | import "lib"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:15:1:15:19 | import "lib/index"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:16:1:16:22 | import  ... ex.ts"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:17:1:17:22 | import  ... ex.js"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:20:1:20:16 | import "@/file"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:21:1:21:19 | import "@/file.ts"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:22:1:22:19 | import "@/file.js"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:23:1:23:11 | import "@"; | BaseUrl/base/lib/nostar.ts |
+| BaseUrl/src/main.ts:24:1:24:17 | import "@/index"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:25:1:25:20 | import "@/index.ts"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:26:1:26:20 | import "@/index.js"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:29:1:29:16 | import "#/file"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:30:1:30:19 | import "#/file.ts"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:31:1:31:19 | import "#/file.js"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:33:1:33:17 | import "#/index"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:34:1:34:20 | import "#/index.ts"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:35:1:35:20 | import "#/index.js"; | BaseUrl/base/lib/index.ts |
 | Basic/Subdir/sub.ts:1:1:1:12 | import '..'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:2:1:2:13 | import '../'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:3:1:3:14 | import './..'; | Basic/index.ts |
@@ -92,3 +99,5 @@
 | import-packages.ts:28:1:28:24 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:29:1:29:33 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:31:1:31:27 | import  ... nsSrc'; | DistContainsSrc/src/foo.ts |
+testFailures
+| BaseUrl/src/main.ts:32:13:32:56 | // $ im ... star.ts | Missing result: importTarget=BaseUrl/base/lib/nostar.ts |
