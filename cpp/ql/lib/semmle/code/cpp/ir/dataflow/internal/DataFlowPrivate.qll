@@ -509,6 +509,15 @@ class ReturnKind extends TReturnKind {
 
   /** Gets a textual representation of this return kind. */
   abstract string toString();
+
+  /** Holds if this `ReturnKind` is generated from a `return` statement. */
+  abstract predicate isNormalReturn();
+
+  /**
+   * Holds if this `ReturnKind` is generated from a write to the parameter with
+   * index `argumentIndex`
+   */
+  abstract predicate isIndirectReturn(int argumentIndex);
 }
 
 /**
@@ -522,6 +531,10 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect return" }
+
+  override predicate isNormalReturn() { any() }
+
+  override predicate isIndirectReturn(int argumentIndex) { none() }
 }
 
 /**
@@ -536,6 +549,10 @@ private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
+
+  override predicate isNormalReturn() { none() }
+
+  override predicate isIndirectReturn(int argumentIndex_) { argumentIndex_ = argumentIndex }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
