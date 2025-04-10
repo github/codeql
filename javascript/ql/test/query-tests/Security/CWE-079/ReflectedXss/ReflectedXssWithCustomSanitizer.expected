@@ -30,6 +30,10 @@
 | app/api/route.ts:13:18:13:21 | body | Cross-site scripting vulnerability due to $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
 | app/api/route.ts:25:18:25:21 | body | Cross-site scripting vulnerability due to $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
 | app/api/route.ts:29:25:29:28 | body | Cross-site scripting vulnerability due to $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:7:20:7:23 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | live-server.js:6:13:6:50 | `<html> ... /html>` | Cross-site scripting vulnerability due to $@. | live-server.js:4:21:4:27 | req.url | user-provided value |
