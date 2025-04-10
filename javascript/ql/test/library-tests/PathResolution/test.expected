@@ -1,4 +1,3 @@
-importTarget
 | BaseUrl/src/main.ts:2:1:2:26 | import  ... /file"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:3:1:3:29 | import  ... le.ts"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:4:1:4:29 | import  ... le.js"; | BaseUrl/base/lib/file.ts |
@@ -23,9 +22,11 @@ importTarget
 | BaseUrl/src/main.ts:29:1:29:16 | import "#/file"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:30:1:30:19 | import "#/file.ts"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:31:1:31:19 | import "#/file.js"; | BaseUrl/base/lib/file.ts |
-| BaseUrl/src/main.ts:33:1:33:17 | import "#/index"; | BaseUrl/base/lib/index.ts |
-| BaseUrl/src/main.ts:34:1:34:20 | import "#/index.ts"; | BaseUrl/base/lib/index.ts |
-| BaseUrl/src/main.ts:35:1:35:20 | import "#/index.js"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:32:1:32:17 | import "#/index"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:33:1:33:20 | import "#/index.ts"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:34:1:34:20 | import "#/index.js"; | BaseUrl/base/lib/index.ts |
+| BaseUrl/src/main.ts:37:1:37:19 | import "^lib/file"; | BaseUrl/base/lib/file.ts |
+| BaseUrl/src/main.ts:38:1:38:20 | import "^lib2/file"; | BaseUrl/base/lib2/file.ts |
 | Basic/Subdir/sub.ts:1:1:1:12 | import '..'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:2:1:2:13 | import '../'; | Basic/index.ts |
 | Basic/Subdir/sub.ts:3:1:3:14 | import './..'; | Basic/index.ts |
@@ -99,5 +100,3 @@ importTarget
 | import-packages.ts:28:1:28:24 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:29:1:29:33 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:31:1:31:27 | import  ... nsSrc'; | DistContainsSrc/src/foo.ts |
-testFailures
-| BaseUrl/src/main.ts:32:13:32:56 | // $ im ... star.ts | Missing result: importTarget=BaseUrl/base/lib/nostar.ts |

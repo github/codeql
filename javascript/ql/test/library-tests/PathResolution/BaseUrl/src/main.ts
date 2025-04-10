@@ -33,6 +33,10 @@ import "#/index"; // $ importTarget=BaseUrl/base/lib/index.ts
 import "#/index.ts"; // $ importTarget=BaseUrl/base/lib/index.ts
 import "#/index.js"; // $ importTarget=BaseUrl/base/lib/index.ts
 
+// Import matching "^lib*" path mapping
+import "^lib/file"; // $ importTarget=BaseUrl/base/lib/file.ts
+import "^lib2/file"; // $ importTarget=BaseUrl/base/lib2/file.ts
+
 // Import matching "@/*.xyz" path mapping. Note that this is not actually supported by TypeScript.
 import "@/file.xyz";
 import "@/file.ts.xyz";
