@@ -36,6 +36,7 @@ signature module PathResolverSig {
 module PathResolver<PathResolverSig Config> {
   private import Config
 
+  pragma[nomagic]
   private string getPathSegment(string path, int n) {
     shouldResolve(_, path) and
     result = path.replaceAll("\\", "/").splitAt("/", n)
@@ -50,6 +51,7 @@ module PathResolver<PathResolverSig Config> {
     result = segment.regexpReplaceAll("[^a-zA-Z0-9*]", "\\\\$0").replaceAll("*", ".*")
   }
 
+  pragma[nomagic]
   private int getNumPathSegment(string path) {
     result = strictcount(int n | exists(getPathSegment(path, n)))
   }
@@ -60,6 +62,7 @@ module PathResolver<PathResolverSig Config> {
     result = getAnAdditionalChild(base, name)
   }
 
+  pragma[nomagic]
   private Container resolve(Container base, string path, int n) {
     shouldResolve(base, path) and n = 0 and result = base
     or
@@ -111,6 +114,7 @@ module PathResolver<PathResolverSig Config> {
    * Only has results for the `(base, path)` pairs provided by `shouldResolve`
    * in the instantiation of this module.
    */
+  pragma[nomagic]
   Container resolve(Container base, string path) {
     result = resolve(base, path, getNumPathSegment(path))
   }

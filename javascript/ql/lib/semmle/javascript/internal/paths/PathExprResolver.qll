@@ -6,6 +6,7 @@ private import semmle.javascript.internal.paths.PackageJsonEx
 final private class FinalPathExpr = PathExpr;
 
 private class RelevantPathExpr extends FinalPathExpr {
+  pragma[nomagic]
   RelevantPathExpr() { this = any(Import imprt).getImportedPath() }
 }
 
@@ -38,6 +39,7 @@ private TSConfig getTSConfigFromPathExpr(RelevantPathExpr expr) {
  * Holds if `path` is relative, in the sense that it should be resolved relative to its enclosing folder.
  */
 bindingset[path]
+pragma[inline_late]
 predicate isRelativePath(string path) { path.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
 
 /**
@@ -106,14 +108,11 @@ module JSPaths {
   }
 }
 
-/**
- * Gets an access to `__dirname`.
- */
-private VarAccess dirname() { result.getName() = "__dirname" }
+private Variable dirname() { result.getName() = "__dirname" }
 
 /** Holds if `add` is a relevant path expression of form `__dirname + expr`. */
 private predicate prefixedByDirname(PathExpr expr) {
-  expr = dirname()
+  expr = dirname().getAnAccess()
   or
   prefixedByDirname(expr.(AddExpr).getLeftOperand())
   or
@@ -163,15 +162,24 @@ private predicate resolveViaPathMapping(RelevantPathExpr expr, Container base, s
   )
 }
 
+pragma[noopt]
+private predicate relativePathExpr(RelevantPathExpr expr, Container base, string path) {
+  expr instanceof RelevantPathExpr and
+  path = expr.getValue() and
+  isRelativePath(path) and
+  exists(File file |
+    file = expr.getFile() and
+    base = file.getParentContainer()
+  )
+}
+
 /**
  * Holds if `expr` should be resolved as `path` relative to `base`.
  */
 pragma[nomagic]
 private predicate shouldResolve(RelevantPathExpr expr, Container base, string path) {
   // Relative paths are resolved from their enclosing folder
-  path = expr.getValue() and
-  isRelativePath(path) and
-  base = expr.getFile().getParentContainer()
+  relativePathExpr(expr, base, path)
   or
   // Paths prefixed by __dirname should be resolved from the root dir, because __dirname
   // currently has a getValue() that returns its absolute path.
@@ -194,7 +202,7 @@ private predicate shouldResolve(RelevantPathExpr expr, Container base, string pa
     packageName = getPackagePrefixFromPathExpr(expr) and
     pkg.getDeclaredPackageName() = packageName and
     path = expr.getValue().suffix(packageName.length()).regexpReplaceAll("^[/\\\\]", "") and
-    base = pkg.getJsonFile().getParentContainer()
+    base = pkg.getFolder()
   )
 }
 
