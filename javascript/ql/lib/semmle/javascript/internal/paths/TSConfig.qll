@@ -86,6 +86,8 @@ class TSConfig extends JsonObject {
       this.hasExactPathMapping(pattern, newPath) and
       target = resolvePathMapping(this, newPath)
     )
+    or
+    this.getExtendedTSConfig().hasExactPathMappingTo(pattern, target)
   }
 
   predicate hasPrefixPathMappingTo(string pattern, Container target) {
@@ -93,6 +95,8 @@ class TSConfig extends JsonObject {
       this.hasPrefixPathMapping(pattern, newPath) and
       target = resolvePathMapping(this, newPath)
     )
+    or
+    this.getExtendedTSConfig().hasPrefixPathMappingTo(pattern, target)
   }
 }
 
