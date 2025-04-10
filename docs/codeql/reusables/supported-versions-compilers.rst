@@ -25,6 +25,7 @@
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [9]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   Rust [13]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
    Swift [10]_,"Swift 5.4-6.0","Swift compiler","``.swift``"
    TypeScript [11]_,"2.6-5.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
@@ -42,3 +43,4 @@
     .. [10] Support for the analysis of Swift requires macOS.
     .. [11] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
     .. [12] Support for GitHub Actions is in public preview.
+    .. [13] Support for Rust is in private preview and requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
