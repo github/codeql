@@ -39,6 +39,14 @@ class TSConfig extends JsonObject {
     result = this.getExtendedTSConfig().getBaseUrlFolder()
   }
 
+  /** Gets the effective baseUrl folder for this tsconfig file, or its enclosing folder if there is no baseUrl. */
+  Folder getBaseUrlFolderOrOwnFolder() {
+    result = this.getBaseUrlFolder()
+    or
+    not exists(this.getBaseUrlFolder()) and
+    result = this.getFolder()
+  }
+
   /** Gets a path mentioned in the `include` property. */
   string getAnIncludePath() {
     result = this.getPropStringValue("include")
@@ -84,24 +92,6 @@ class TSConfig extends JsonObject {
   predicate hasPrefixPathMapping(string pattern, string newPath) {
     this.hasPathMapping(pattern + "*", newPath + "*")
   }
-
-  predicate hasExactPathMappingTo(string pattern, Container target) {
-    exists(string newPath |
-      this.hasExactPathMapping(pattern, newPath) and
-      target = resolvePathMapping(this, newPath)
-    )
-    or
-    this.getExtendedTSConfig().hasExactPathMappingTo(pattern, target)
-  }
-
-  predicate hasPrefixPathMappingTo(string pattern, Container target) {
-    exists(string newPath |
-      this.hasPrefixPathMapping(pattern, newPath) and
-      target = resolvePathMapping(this, newPath)
-    )
-    or
-    this.getExtendedTSConfig().hasPrefixPathMappingTo(pattern, target)
-  }
 }
 
 /** For resolving paths in a tsconfig file, except `paths` mappings. */
@@ -117,30 +107,3 @@ private module ResolverConfig implements PathResolverSig {
 }
 
 private module Resolver = PathResolver<ResolverConfig>;
-
-/** For resolving `paths` mappings, since these require the baseURL to be resolved first. */
-private module PathMappingResolverConfig implements PathResolverSig {
-  additional predicate shouldResolve(TSConfig cfg, Container base, string path) {
-    (cfg.hasExactPathMapping(_, path) or cfg.hasPrefixPathMapping(_, path)) and
-    (
-      base = cfg.getBaseUrlFolder()
-      or
-      // If there is no baseUrl, and the path is relative, it should be resolved from tsconfig.json
-      // relative paths are resolved relative to tsconfig.json. It's error if the path is not
-      // relative so we don't need to explicitly check for it.
-      not exists(cfg.getBaseUrlFolder()) and
-      base = cfg.getFolder()
-    )
-  }
-
-  predicate shouldResolve(Container base, string path) { shouldResolve(_, base, path) }
-}
-
-private module PathMappingResolver = PathResolver<PathMappingResolverConfig>;
-
-private Container resolvePathMapping(TSConfig cfg, string path) {
-  exists(Container base |
-    PathMappingResolverConfig::shouldResolve(cfg, base, path) and
-    result = PathMappingResolver::resolve(base, path)
-  )
-}

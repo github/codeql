@@ -127,14 +127,14 @@ pragma[nomagic]
 private predicate resolveViaPathMapping(RelevantPathExpr expr, Container base, string newPath) {
   // Handle tsconfig mappings such as `{ "paths": { "@/*": "./src/*" }}`
   exists(TSConfig config, string value |
-    config = getTSConfigFromPathExpr(expr) and
-    value = expr.getValue()
+    config = getTSConfigFromPathExpr(expr).getExtendedTSConfig*() and
+    value = expr.getValue() and
+    base = config.getBaseUrlFolderOrOwnFolder()
   |
-    config.hasExactPathMappingTo(value, base) and
-    newPath = ""
+    config.hasExactPathMapping(value, newPath)
     or
     exists(string pattern |
-      config.hasPrefixPathMappingTo(pattern, base) and
+      config.hasPrefixPathMapping(pattern, newPath) and
       value = pattern + newPath
     )
   )
