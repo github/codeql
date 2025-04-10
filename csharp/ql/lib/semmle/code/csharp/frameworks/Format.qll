@@ -289,3 +289,31 @@ class FormatCall extends MethodCall {
     result = this.getArgument(this.getFirstArgument() + index)
   }
 }
+
+/**
+ * A method call to a method that parses a format string, for example a call
+ * to `string.Format()`.
+ */
+abstract private class FormatStringParseCallImpl extends MethodCall {
+  /**
+   * Gets the expression used as the format string.
+   */
+  abstract Expr getFormatExpr();
+}
+
+final class FormatStringParseCall = FormatStringParseCallImpl;
+
+private class OrdinaryFormatCall extends FormatStringParseCallImpl instanceof FormatCall {
+  override Expr getFormatExpr() { result = FormatCall.super.getFormatExpr() }
+}
+
+/**
+ * A method call to `System.Text.CompositeFormat.Parse`.
+ */
+class ParseFormatStringCall extends FormatStringParseCallImpl {
+  ParseFormatStringCall() {
+    this.getTarget() = any(SystemTextCompositeFormatClass x).getParseMethod()
+  }
+
+  override Expr getFormatExpr() { result = this.getArgument(0) }
+}

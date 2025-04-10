@@ -20,7 +20,7 @@ module FormatStringConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
+    sink.asExpr() = any(FormatStringParseCall call).getFormatExpr()
   }
 }
 
