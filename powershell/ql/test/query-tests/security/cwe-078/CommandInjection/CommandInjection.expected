@@ -1,4 +1,8 @@
 edges
+| test.ps1:1:8:1:9 | x | test.ps1:3:28:3:47 | Get-Process -Id $x | provenance |  |
 nodes
+| test.ps1:1:8:1:9 | x | semmle.label | x |
+| test.ps1:3:28:3:47 | Get-Process -Id $x | semmle.label | Get-Process -Id $x |
 subpaths
 #select
+| test.ps1:3:28:3:47 | Get-Process -Id $x | test.ps1:1:8:1:9 | x | test.ps1:3:28:3:47 | Get-Process -Id $x | This command depends on a $@. | test.ps1:1:8:1:9 | x | user-provided value |
