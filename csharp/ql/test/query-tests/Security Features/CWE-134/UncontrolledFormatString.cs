@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.IO;
 using System.Web;
 
@@ -22,6 +23,9 @@ public class TaintedPathHandler : IHttpHandler
 
         // GOOD: Not a formatting call
         Console.WriteLine(path);
+
+        // BAD: Uncontrolled format string.
+        CompositeFormat.Parse(path); // $ Alert
     }
 
     System.Windows.Forms.TextBox box1;
