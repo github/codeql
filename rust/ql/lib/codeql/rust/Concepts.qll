@@ -129,6 +129,32 @@ module FileSource {
 }
 
 /**
+ * A data flow source corresponding to standard input.
+ */
+final class StdInSource = StdInSource::Range;
+
+/**
+ * An externally modeled source for data from standard input.
+ */
+class ModeledStdInSourceSource extends StdInSource::Range {
+  ModeledStdInSourceSource() { sourceNode(this, "stdin") }
+}
+
+/**
+ * Provides a class for modeling new sources for standard input.
+ */
+module StdInSource {
+  /**
+   * A data flow source corresponding to standard input.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "stdin" }
+
+    override string getSourceType() { result = "StdInSource" }
+  }
+}
+
+/**
  * A data flow source corresponding to the program's database reads.
  */
 final class DatabaseSource = DatabaseSource::Range;

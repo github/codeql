@@ -240,29 +240,29 @@ fn test_io_fs() -> std::io::Result<()> {
 
     {
         let mut buffer = [0u8; 100];
-        let _bytes = std::io::stdin().read(&mut buffer)?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let _bytes = std::io::stdin().read(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = Vec::<u8>::new();
-        let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = String::new();
-        let _bytes = std::io::stdin().read_to_string(&mut buffer)?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let _bytes = std::io::stdin().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = [0; 100];
-        std::io::stdin().read_exact(&mut buffer)?; // $ MISSING: Alert[rust/summary/taint-sources]
+        std::io::stdin().read_exact(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
-    for byte in std::io::stdin().bytes() { // $ MISSING: Alert[rust/summary/taint-sources]
+    for byte in std::io::stdin().bytes() { // $ Alert[rust/summary/taint-sources]
         sink(byte); // $ MISSING: hasTaintFlow
     }
 
@@ -301,54 +301,54 @@ fn test_io_fs() -> std::io::Result<()> {
     // --- BufReader ---
 
     {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.fill_buf()?;
         sink(&data); // $ MISSING: hasTaintFlow
     }
 
     {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.buffer();
         sink(&data); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = String::new();
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_line(&mut buffer)?;
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = Vec::<u8>::new();
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_until(b',', &mut buffer)?;
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     {
         let mut buffer = Vec::<u8>::new();
-        let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
         while let Some(chunk) = reader_split.next() {
             sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
         }
     }
 
     {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         for line in reader.lines() {
             sink(line); // $ MISSING: Alert[rust/summary/taint-sources]
         }
     }
 
     {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let line = reader.lines().nth(1).unwrap();
         sink(line.unwrap().clone()); // $ MISSING: hasTaintFlow
     }
 
     {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let lines: Vec<_> = reader.lines().collect();
         sink(lines[1].as_ref().unwrap().clone()); // $ MISSING: hasTaintFlow
     }
@@ -374,7 +374,7 @@ fn test_io_fs() -> std::io::Result<()> {
 
     {
         let mut buffer = String::new();
-        let _bytes = std::io::stdin().lock().read_to_string(&mut buffer)?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let _bytes = std::io::stdin().lock().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
