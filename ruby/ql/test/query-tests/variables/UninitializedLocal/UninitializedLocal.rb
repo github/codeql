@@ -68,3 +68,10 @@ def test_loop
     end until a  # OK
     a  # OK - given previous until
 end
+
+def test_for
+    for i in 0..10  #$ SPURIOUS: Alert
+        i
+    end
+    i  #$ SPURIOUS: Alert
+end
