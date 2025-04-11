@@ -281,8 +281,12 @@ module NextJS {
    */
   class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
     NextAppRouteHandler() {
-      exists(Module mod | mod.getFile().getParentContainer() = apiFolder() |
-        this = mod.getAnExportedValue(any(Http::RequestMethodName m)).getAFunctionValue() and
+      exists(Module mod |
+        mod.getFile().getParentContainer() = apiFolder() or
+        mod.getFile().getBaseName() = ["middleware.ts", "middleware.js"]
+      |
+        this =
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue() and
         (
           this.getParameter(0).hasUnderlyingType("next/server", "NextRequest")
           or
