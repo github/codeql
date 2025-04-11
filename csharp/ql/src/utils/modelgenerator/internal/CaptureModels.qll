@@ -22,9 +22,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
 
   class Callable = CS::Callable;
 
-  class NodeExtended extends CS::DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
+  class NodeExtended = CS::DataFlow::Node;
+
+  Callable getAsExprEnclosingCallable(NodeExtended node) {
+    result = node.asExpr().getEnclosingCallable()
   }
+
+  Callable getEnclosingCallable(NodeExtended node) { result = node.getEnclosingCallable() }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   /**
    * Holds if any of the parameters of `api` are `System.Func<>`.
