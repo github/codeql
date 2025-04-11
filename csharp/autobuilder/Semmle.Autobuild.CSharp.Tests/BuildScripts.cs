@@ -424,8 +424,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return new CSharpAutobuilder(actions, options);
         }
 
-        [Fact]
-        public void TestDefaultCSharpAutoBuilder()
+        private void SetupActionForDotnet()
         {
             actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet clean C:\Project\test.csproj"] = 0;
@@ -438,18 +437,78 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
-            var xml = new XmlDocument();
-            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
+        }
 
-</Project>");
+        private void CreateAndVerifyDotnetScript(XmlDocument xml)
+        {
             actions.LoadXml[@"C:\Project\test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder(true);
             TestAutobuilderScript(autobuilder, 0, 4);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder1()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+            xml.LoadXml(
+            """
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>netcoreapp2.1</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """);
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder2()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Sdk Name="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder3()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+              <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
         }
 
         [Fact]
