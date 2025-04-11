@@ -22,6 +22,7 @@ private import codeql.rust.security.CleartextLoggingExtensions
 private import codeql.rust.security.CleartextTransmissionExtensions
 private import codeql.rust.security.SqlInjectionExtensions
 private import codeql.rust.security.TaintedPathExtensions
+private import codeql.rust.security.UncontrolledAllocationSizeExtensions
 private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 
 /**

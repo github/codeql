@@ -1,6 +1,32 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Alloc
+      - ["lang:alloc", "crate::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # Alloc
+      - ["lang:alloc", "crate::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "crate::alloc::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "crate::alloc::realloc", "Argument[2]", "alloc-size", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["lang:std", "<crate::alloc::System as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::global::GlobalAlloc>::alloc", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::global::GlobalAlloc>::alloc_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::allocate", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::allocate_zeroed", "Argument[0]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow", "Argument[2]", "alloc-layout", "manual"]
+      - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
       extensible: summaryModel
     data:
       # Fmt
@@ -9,9 +35,3 @@ extensions:
       - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:alloc", "<crate::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:alloc", "<_ as crate::string::ToString>::to_string", "Argument[self]", "ReturnValue", "taint", "manual"]
-  - addsTo:
-      pack: codeql/rust-all
-      extensible: sourceModel
-    data:
-      # Alloc
-      - ["lang:alloc", "crate::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
