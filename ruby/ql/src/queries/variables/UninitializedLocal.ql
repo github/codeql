@@ -37,23 +37,12 @@ predicate isGuarded(LocalVariableReadAccess read) {
     guard.getAstNode() = read.getVariable().getAnAccess() and
     branch = true
     or
-    // guard is `!var`
-    guard.getAstNode().(NotExpr).getOperand() = read.getVariable().getAnAccess() and
-    branch = false
-    or
     // guard is `var.nil?`
     exists(MethodCall c | guard.getAstNode() = c |
       c.getReceiver() = read.getVariable().getAnAccess() and
       c.getMethodName() = "nil?"
     ) and
     branch = false
-    or
-    // guard is `!var.nil?`
-    exists(MethodCall c | guard.getAstNode().(NotExpr).getOperand() = c |
-      c.getReceiver() = read.getVariable().getAnAccess() and
-      c.getMethodName() = "nil?"
-    ) and
-    branch = true
   )
 }
 
