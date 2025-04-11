@@ -237,7 +237,7 @@ module NestJS {
     CustomPipeClass() {
       exists(ClassDefinition cls |
         this = cls.flow() and
-        cls.getASuperInterface().hasQualifiedName("@nestjs/common", "PipeTransform")
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "PipeTransform")
       )
     }
 
