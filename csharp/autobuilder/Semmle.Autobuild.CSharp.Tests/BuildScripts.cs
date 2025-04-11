@@ -46,6 +46,11 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         public IList<string> RunProcessIn { get; } = new List<string>();
         public IDictionary<string, int> RunProcess { get; } = new Dictionary<string, int>();
+
+        /// <summary>
+        /// (process-exit code) pairs for commands that are executed during the assembly of the autobuild script.
+        /// </summary>
+        public IDictionary<string, int> RunProcessExecuteDuring { get; } = new Dictionary<string, int>();
         public IDictionary<string, string> RunProcessOut { get; } = new Dictionary<string, string>();
         public IDictionary<string, string> RunProcessWorkingDirectory { get; } = new Dictionary<string, string>();
         public HashSet<string> CreateDirectories { get; } = new HashSet<string>();
@@ -66,7 +71,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             if (wd != workingDirectory)
                 throw new ArgumentException($"Unexpected RunProcessWorkingDirectory, got {wd ?? "null"} expected {workingDirectory ?? "null"} in {pattern}");
 
-            if (!RunProcess.TryGetValue(pattern, out var ret))
+            if (!RunProcess.TryGetValue(pattern, out var ret) && !RunProcessExecuteDuring.TryGetValue(pattern, out ret))
                 throw new ArgumentException("Missing RunProcess " + pattern);
 
             return ret;
@@ -81,7 +86,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             if (wd != workingDirectory)
                 throw new ArgumentException($"Unexpected RunProcessWorkingDirectory, got {wd ?? "null"} expected {workingDirectory ?? "null"} in {pattern}");
 
-            if (!RunProcess.TryGetValue(pattern, out var ret))
+            if (!RunProcess.TryGetValue(pattern, out var ret) && !RunProcessExecuteDuring.TryGetValue(pattern, out ret))
                 throw new ArgumentException("Missing RunProcess " + pattern);
 
             return ret;
@@ -797,11 +802,32 @@ namespace Semmle.Autobuild.CSharp.Tests
         }
 
         [Fact]
-        public void TestDirsProjLinux()
+        public void TestDirsProjLinux_WithMono()
         {
+            actions.RunProcessExecuteDuring[@"mono --version"] = 0;
+
             actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"mono scratch/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
             actions.RunProcess[@"msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 3);
+        }
+
+        [Fact]
+        public void TestDirsProjLinux_WithoutMono()
+        {
+            actions.RunProcessExecuteDuring[@"mono --version"] = 1;
+
+            actions.RunProcess[@"dotnet msbuild /t:restore C:\Project/dirs.proj"] = 0;
+            actions.RunProcess[@"dotnet msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 2);
+        }
+
+        private CSharpAutobuilder TestDirsProjLinux()
+        {
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/a/test.csproj"] = true;
             actions.FileExists[@"C:\Project/dirs.proj"] = true;
@@ -830,8 +856,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 </Project>");
             actions.LoadXml[@"C:\Project/dirs.proj"] = dirsproj;
 
-            var autobuilder = CreateAutoBuilder(false);
-            TestAutobuilderScript(autobuilder, 0, 3);
+            return CreateAutoBuilder(false);
         }
 
         [Fact]
