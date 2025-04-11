@@ -9,7 +9,7 @@ private module InlineMadTestLang implements InlineMadTestLangSig {
   class Callable = MadRelevantFunction;
 
   /**
-   * Holds if `c` is the closest `Callable` that suceeds `comment` in the file.
+   * Holds if `c` is the closest `Callable` that succeeds `comment` in the file.
    */
   private predicate hasClosestCallable(CppStyleComment comment, Callable c) {
     c =
