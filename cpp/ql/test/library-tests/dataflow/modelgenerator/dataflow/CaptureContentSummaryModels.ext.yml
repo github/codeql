@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - [ "models", "ManuallyModelled", False, "hasSummary", "(void *)", "", "Argument[0]", "ReturnValue", "value", "manual"]

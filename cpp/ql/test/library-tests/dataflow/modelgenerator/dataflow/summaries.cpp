@@ -1,0 +1,130 @@
+using size_t = decltype(sizeof(int));
+
+size_t strlen(const char* str);
+char* strcpy(char* dest, const char* src);
+
+namespace Models {
+    struct BasicFlow {
+        int* tainted;
+
+        //No model as destructors are excluded from model generation.
+        ~BasicFlow() = default;
+
+        //summary=Models;BasicFlow;true;returnThis;(int *);;Argument[-1];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnThis;(int *);;Argument[-1];ReturnValue[*];value;dfc-generated
+        BasicFlow* returnThis(int* input) {
+            return this;
+        }
+
+        //summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[0];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[0];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[*0];ReturnValue[*];value;dfc-generated
+        int* returnParam0(int* input0, int* input1) {
+            return input0;
+        }
+
+        //summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[1];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[*1];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[1];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[*1];ReturnValue[*];value;dfc-generated
+        int* returnParam1(int* input0, int* input1) {
+            return input1;
+        }
+
+        //summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[1];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*1];ReturnValue[*];taint;df-generated
+        //summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[2];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*2];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[1];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*1];ReturnValue[*];value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[2];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*2];ReturnValue[*];value;dfc-generated
+        int* returnParamMultiple(bool b, int* input0, int* input1) {
+            return b ? input0 : input1;
+        }
+
+        //summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];Argument[*1];taint;df-generated
+        //summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];ReturnValue[*];taint;df-generated
+        //summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[1];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];Argument[*1];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];Argument[*1];taint;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];ReturnValue[*];taint;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];ReturnValue[*];value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[1];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];Argument[*1];value;dfc-generated
+        char* returnSubstring(const char* source, char* dest) {
+            return strcpy(dest, source + 1);
+        }
+
+        //summary=Models;BasicFlow;true;setField;(int *);;Argument[0];Argument[-1];taint;df-generated
+        //summary=Models;BasicFlow;true;setField;(int *);;Argument[*0];Argument[-1];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;setField;(int *);;Argument[0];Argument[-1].Field[*tainted];value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;setField;(int *);;Argument[*0];Argument[-1].Field[**tainted];value;dfc-generated
+        void setField(int* s) {
+            tainted = s;
+        }
+
+        //summary=Models;BasicFlow;true;returnField;();;Argument[-1];ReturnValue;taint;df-generated
+        //summary=Models;BasicFlow;true;returnField;();;Argument[-1];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;BasicFlow;true;returnField;();;Argument[-1].Field[*tainted];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;BasicFlow;true;returnField;();;Argument[-1].Field[**tainted];ReturnValue[*];value;dfc-generated
+        int* returnField() {
+            return tainted;
+        }
+    };
+
+    template<typename T>
+    struct TemplatedFlow {
+        T tainted;
+
+        //summary=Models;TemplatedFlow<T>;true;template_returnThis;(T);;Argument[-1];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnThis;(T);;Argument[-1];ReturnValue[*];value;dfc-generated
+        TemplatedFlow<T>* template_returnThis(T input) {
+            return this;
+        }
+
+        //summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[0];ReturnValue;taint;df-generated
+        //summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[0];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[*0];ReturnValue[*];value;dfc-generated
+        T* template_returnParam0(T* input0, T* input1) {
+            return input0;
+        }
+
+        //summary=Models;TemplatedFlow<T>;true;template_setField;(T);;Argument[0];Argument[-1];taint;df-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;template_setField;(T);;Argument[0];Argument[-1].Field[*tainted];value;dfc-generated
+        void template_setField(T s) {
+            tainted = s;
+        }
+
+        //summary=Models;TemplatedFlow<T>;true;template_returnField;();;Argument[-1];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnField;();;Argument[-1].Field[*tainted];ReturnValue[*];value;dfc-generated
+        T& template_returnField() {
+            return tainted;
+        }
+
+        //summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[0];ReturnValue;taint;df-generated
+        //summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[0];ReturnValue;value;dfc-generated
+        //contentbased-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[*0];ReturnValue[*];value;dfc-generated
+        template<typename U>
+        U* templated_function(U* u, T* t) {
+            return u;
+        }
+    };
+
+    void test_templated_flow() {
+        // Ensure that we have an instantiation of the templated class
+        TemplatedFlow<int> intFlow;
+        intFlow.template_returnThis(0);
+
+        intFlow.template_returnParam0(nullptr, nullptr);
+
+        intFlow.template_setField(0);
+        intFlow.template_returnField();
+
+        intFlow.templated_function<int>(nullptr, nullptr);
+    }
+}
