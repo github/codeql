@@ -8,7 +8,7 @@
  * @tags quality
  *       reliability
  *       correctness
- * @precision medium
+ * @precision high
  */
 
 import codeql.ruby.AST
