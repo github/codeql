@@ -20,7 +20,7 @@ module Impl {
    */
   class Lifetime extends Generated::Lifetime {
     override string toStringImpl() {
-      result = "'" + this.getText()
+      result = this.getText()
       or
       not this.hasText() and result = "'_"
     }
