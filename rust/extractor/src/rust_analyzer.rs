@@ -174,8 +174,10 @@ impl TomlReader {
 }
 
 fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: &AbsPath) -> bool {
-    members.iter().any(|p| {
-        glob::Pattern::new(workspace_dir.join(p).as_str()).is_ok_and(|p| p.matches(target.as_str()))
+    target.strip_prefix(workspace_dir).is_some_and(|rel_path| {
+        members
+            .iter()
+            .any(|p| glob::Pattern::new(p).is_ok_and(|p| p.matches(rel_path.as_str())))
     })
 }
 
