@@ -198,6 +198,40 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+use std::fs;
+
+fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
+    {
+        let buffer: Vec<u8> = std::fs::read("file.bin")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let buffer: Vec<u8> = fs::read("file.bin")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let buffer = fs::read_to_string("file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow
+    }
+
+    for entry in fs::read_dir("directory")? {
+        let e = entry?;
+        let path = e.path(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let file_name = e.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(path); // $ MISSING: hasTaintFlow
+        sink(file_name); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let target = fs::read_link("symlink.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(target); // $ MISSING: hasTaintFlow
+    }
+
+    Ok(())
+}
+
 use std::io::Read;
 use std::io::BufRead;
 
