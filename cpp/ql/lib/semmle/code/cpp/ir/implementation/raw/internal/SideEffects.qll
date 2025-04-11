@@ -16,6 +16,10 @@ private predicate isDeeplyConst(Type t) {
   or
   isDeeplyConst(t.(Decltype).getBaseType())
   or
+  isDeeplyConst(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConst(t.(IntrinsicTransformedType).getBaseType())
+  or
   isDeeplyConst(t.(ReferenceType).getBaseType())
   or
   exists(SpecifiedType specType | specType = t |
@@ -35,6 +39,10 @@ private predicate isDeeplyConstBelow(Type t) {
   t instanceof Enum
   or
   isDeeplyConstBelow(t.(Decltype).getBaseType())
+  or
+  isDeeplyConstBelow(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConstBelow(t.(IntrinsicTransformedType).getBaseType())
   or
   isDeeplyConst(t.(PointerType).getBaseType())
   or
