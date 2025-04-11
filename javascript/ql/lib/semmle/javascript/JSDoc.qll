@@ -33,6 +33,9 @@ class JSDoc extends @jsdoc, Locatable {
     result.getTitle() = title
   }
 
+  /** Gets the element to which this JSDoc comment is attached */
+  Documentable getDocumentedElement() { result.getDocumentation() = this }
+
   override string toString() { result = this.getComment().toString() }
 }
 
@@ -299,6 +302,41 @@ class JSDocIdentifierTypeExpr extends @jsdoc_identifier_type_expr, JSDocTypeExpr
   override predicate isRawFunction() { this.getName() = "Function" }
 }
 
+private AstNode getAncestorInScope(Documentable doc) {
+  any(JSDocLocalTypeAccess t).getJSDocComment() = doc.getDocumentation() and // restrict to cases where we need this
+  result = doc.getParent()
+  or
+  exists(AstNode mid |
+    mid = getAncestorInScope(doc) and
+    not mid = any(Scope s).getScopeElement() and
+    result = mid.getParent()
+  )
+}
+
+private Scope getScope(Documentable doc) { result.getScopeElement() = getAncestorInScope(doc) }
+
+pragma[nomagic]
+private predicate shouldResolveName(TopLevel top, string name) {
+  exists(JSDocLocalTypeAccess access |
+    access.getName() = name and
+    access.getTopLevel() = top
+  )
+}
+
+private LexicalName getOwnLocal(Scope scope, string name, DeclarationSpace space) {
+  scope = result.getScope() and
+  name = result.getName() and
+  space = result.getDeclarationSpace() and
+  shouldResolveName(scope.getScopeElement().getTopLevel(), name) // restrict size of predicate
+}
+
+private LexicalName resolveLocal(Scope scope, string name, DeclarationSpace space) {
+  result = getOwnLocal(scope, name, space)
+  or
+  result = resolveLocal(scope.getOuterScope(), name, space) and
+  not exists(getOwnLocal(scope, name, space))
+}
+
 /**
  * An unqualified identifier in a JSDoc type expression.
  *
@@ -311,6 +349,12 @@ class JSDocIdentifierTypeExpr extends @jsdoc_identifier_type_expr, JSDocTypeExpr
  */
 class JSDocLocalTypeAccess extends JSDocIdentifierTypeExpr {
   JSDocLocalTypeAccess() { not this = any(JSDocQualifiedTypeAccess a).getNameNode() }
+
+  /** Gets a variable, type-name, or namespace that this expression may resolve to. */
+  LexicalName getALexicalName() {
+    result =
+      resolveLocal(getScope(this.getJSDocComment().getDocumentedElement()), this.getName(), _)
+  }
 }
 
 /**
