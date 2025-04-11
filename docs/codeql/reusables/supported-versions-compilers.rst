@@ -43,4 +43,4 @@
     .. [10] Support for the analysis of Swift requires macOS.
     .. [11] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
     .. [12] Support for GitHub Actions is in public preview.
-    .. [13] Support for Rust is in private preview and requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
+    .. [13] Support for Rust is experimental and requires ``rustup`` and ``cargo`` to be installed, as well as `CODEQL_ENABLE_EXPERIMENTAL_FEATURES=true` set in the environment. Features from nightly toolchains are not supported.
