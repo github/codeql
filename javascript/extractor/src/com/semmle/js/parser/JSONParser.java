@@ -205,9 +205,6 @@ public class JSONParser {
         char c = peek();
         switch (c) {
           case ']':
-            if (!needsComma) {
-              raise("Omitted elements are not allowed in JSON.");
-            }
             next();
             break out;
           case ',':

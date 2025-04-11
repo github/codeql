@@ -384,7 +384,9 @@ abstract class ImplOrTraitItemNode extends ItemNode {
   }
 
   /** Gets a `Self` path that refers to this item. */
+  cached
   Path getASelfPath() {
+    Stages::PathResolutionStage::ref() and
     isUnqualifiedSelfPath(result) and
     this = unqualifiedPathLookup(result, _)
   }
@@ -578,7 +580,7 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class TypeParamItemNode extends ItemNode instanceof TypeParam {
+class TypeParamItemNode extends ItemNode instanceof TypeParam {
   pragma[nomagic]
   Path getABoundPath() {
     result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
@@ -598,8 +600,9 @@ private class TypeParamItemNode extends ItemNode instanceof TypeParam {
    * impl<T> Foo<T> where T: Trait { ... } // has trait bound
    * ```
    */
-  pragma[nomagic]
+  cached
   predicate hasTraitBound() {
+    Stages::PathResolutionStage::ref() and
     exists(this.getABoundPath())
     or
     exists(ItemNode declaringItem, WherePred wp |
@@ -656,6 +659,16 @@ private predicate fileModule(SourceFile f, string name, Folder folder) {
 }
 
 /**
+ * Gets the `Meta` of the module `m`'s [path attribute][1].
+ *
+ * [1]: https://doc.rust-lang.org/reference/items/modules.html#r-items.mod.outlined.path
+ */
+private Meta getPathAttrMeta(Module m) {
+  result = m.getAnAttr().getMeta() and
+  result.getPath().getText() = "path"
+}
+
+/**
  * Holds if `m` is a `mod name;` module declaration, where the corresponding
  * module file needs to be looked up in `lookup` or one of its descandants.
  */
@@ -663,12 +676,7 @@ private predicate modImport0(Module m, string name, Folder lookup) {
   exists(File f, Folder parent, string fileName |
     f = m.getFile() and
     not m.hasItemList() and
-    // TODO: handle
-    // ```
-    // #[path = "foo.rs"]
-    // mod bar;
-    // ```
-    not m.getAnAttr().getMeta().getPath().getText() = "path" and
+    not exists(getPathAttrMeta(m)) and
     name = m.getName().getText() and
     parent = f.getParentContainer() and
     fileName = f.getStem()
@@ -717,6 +725,16 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
   )
 }
 
+private predicate pathAttrImport(Folder f, Module m, string relativePath) {
+  exists(Meta meta |
+    f = m.getFile().getParentContainer() and
+    meta = getPathAttrMeta(m) and
+    relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
+  )
+}
+
+private predicate shouldAppend(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
+
 /** Holds if `m` is a `mod name;` item importing file `f`. */
 private predicate fileImport(Module m, SourceFile f) {
   exists(string name, Folder parent |
@@ -729,6 +747,11 @@ private predicate fileImport(Module m, SourceFile f) {
     or
     // `m` is inside a nested module
     modImportNestedLookup(m, m, parent)
+  )
+  or
+  exists(Folder folder, string relativePath |
+    pathAttrImport(folder, m, relativePath) and
+    f.getFile() = Folder::Append<shouldAppend/2>::append(folder, relativePath)
   )
 }
 
@@ -764,6 +787,10 @@ private predicate crateDependencyEdge(ModuleLikeNode m, string name, CrateItemNo
     // entry/transitive source file
     m = c.getASourceFile()
   )
+  or
+  // paths inside the crate graph use the name of the crate itself as prefix,
+  // although that is not valid in Rust
+  dep = any(Crate c | name = c.getName() and m = c.getModule())
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -883,19 +910,23 @@ private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
   doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
 
 pragma[nomagic]
+private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace ns, ItemNode encl) {
+  unqualifiedPathLookup(p, name, ns, encl)
+  or
+  // For `($)crate`, jump directly to the root module
+  exists(ItemNode i | p.isCratePath(name, i) |
+    encl.(ModuleLikeNode).isRoot() and
+    encl = i
+    or
+    rootHasCratePathTc(encl, i)
+  )
+}
+
+pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
   exists(ItemNode encl, string name |
-    result = getASuccessor(encl, pragma[only_bind_into](name), ns)
-  |
-    unqualifiedPathLookup(path, name, ns, encl)
-    or
-    // For `($)crate`, jump directly to the root module
-    exists(ItemNode i | path.isCratePath(pragma[only_bind_into](name), i) |
-      encl.(ModuleLikeNode).isRoot() and
-      encl = i
-      or
-      rootHasCratePathTc(encl, i)
-    )
+    result = getASuccessor(encl, name, ns) and
+    unqualifiedPathLookup1(path, name, ns, encl)
   )
 }
 
@@ -916,8 +947,7 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = q.getASuccessor(name) and
-    ns = result.getNamespace()
+    result = getASuccessor(q, name, ns)
   )
   or
   result = resolveUseTreeListItem(_, _, path) and
@@ -978,6 +1008,11 @@ private ItemNode resolvePathPrivate(
   )
 }
 
+pragma[nomagic]
+private predicate isItemParent(ModuleLikeNode itemParent) {
+  exists(resolvePathPrivate(_, itemParent, _))
+}
+
 /**
  * Gets a module that has access to private items defined inside `itemParent`.
  *
@@ -988,7 +1023,7 @@ private ItemNode resolvePathPrivate(
  */
 pragma[nomagic]
 private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _)) and
+  isItemParent(itemParent) and
   result.getImmediateParentModule*() = itemParent
 }
 

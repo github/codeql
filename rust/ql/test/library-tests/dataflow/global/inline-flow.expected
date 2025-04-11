@@ -1,4 +1,5 @@
 models
+| 1 | Summary: repo:https://github.com/rust-lang/futures-rs:futures-executor; crate::local_pool::block_on; Argument[0]; ReturnValue; value |
 edges
 | main.rs:12:28:14:1 | { ... } | main.rs:17:13:17:23 | get_data(...) | provenance |  |
 | main.rs:13:5:13:13 | source(...) | main.rs:12:28:14:1 | { ... } | provenance |  |
@@ -91,10 +92,15 @@ edges
 | main.rs:188:9:188:9 | d [MyInt] | main.rs:189:10:189:10 | d [MyInt] | provenance |  |
 | main.rs:188:13:188:20 | a.add(...) [MyInt] | main.rs:188:9:188:9 | d [MyInt] | provenance |  |
 | main.rs:189:10:189:10 | d [MyInt] | main.rs:189:10:189:16 | d.value | provenance |  |
+| main.rs:227:32:231:1 | { ... } | main.rs:246:41:246:54 | async_source(...) | provenance |  |
+| main.rs:228:9:228:9 | a | main.rs:227:32:231:1 | { ... } | provenance |  |
 | main.rs:228:9:228:9 | a | main.rs:229:10:229:10 | a | provenance |  |
 | main.rs:228:13:228:21 | source(...) | main.rs:228:9:228:9 | a | provenance |  |
 | main.rs:238:13:238:13 | c | main.rs:239:14:239:14 | c | provenance |  |
 | main.rs:238:17:238:25 | source(...) | main.rs:238:13:238:13 | c | provenance |  |
+| main.rs:246:9:246:9 | a | main.rs:247:10:247:10 | a | provenance |  |
+| main.rs:246:13:246:55 | ...::block_on(...) | main.rs:246:9:246:9 | a | provenance |  |
+| main.rs:246:41:246:54 | async_source(...) | main.rs:246:13:246:55 | ...::block_on(...) | provenance | MaD:1 |
 nodes
 | main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
 | main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
@@ -196,12 +202,17 @@ nodes
 | main.rs:188:13:188:20 | a.add(...) [MyInt] | semmle.label | a.add(...) [MyInt] |
 | main.rs:189:10:189:10 | d [MyInt] | semmle.label | d [MyInt] |
 | main.rs:189:10:189:16 | d.value | semmle.label | d.value |
+| main.rs:227:32:231:1 | { ... } | semmle.label | { ... } |
 | main.rs:228:9:228:9 | a | semmle.label | a |
 | main.rs:228:13:228:21 | source(...) | semmle.label | source(...) |
 | main.rs:229:10:229:10 | a | semmle.label | a |
 | main.rs:238:13:238:13 | c | semmle.label | c |
 | main.rs:238:17:238:25 | source(...) | semmle.label | source(...) |
 | main.rs:239:14:239:14 | c | semmle.label | c |
+| main.rs:246:9:246:9 | a | semmle.label | a |
+| main.rs:246:13:246:55 | ...::block_on(...) | semmle.label | ...::block_on(...) |
+| main.rs:246:41:246:54 | async_source(...) | semmle.label | async_source(...) |
+| main.rs:247:10:247:10 | a | semmle.label | a |
 subpaths
 | main.rs:38:23:38:31 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:6:38:11 | [post] &mut a [&ref, MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
@@ -232,3 +243,4 @@ testFailures
 | main.rs:189:10:189:16 | d.value | main.rs:186:28:186:36 | source(...) | main.rs:189:10:189:16 | d.value | $@ | main.rs:186:28:186:36 | source(...) | source(...) |
 | main.rs:229:10:229:10 | a | main.rs:228:13:228:21 | source(...) | main.rs:229:10:229:10 | a | $@ | main.rs:228:13:228:21 | source(...) | source(...) |
 | main.rs:239:14:239:14 | c | main.rs:238:17:238:25 | source(...) | main.rs:239:14:239:14 | c | $@ | main.rs:238:17:238:25 | source(...) | source(...) |
+| main.rs:247:10:247:10 | a | main.rs:228:13:228:21 | source(...) | main.rs:247:10:247:10 | a | $@ | main.rs:228:13:228:21 | source(...) | source(...) |

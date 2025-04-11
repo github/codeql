@@ -1468,6 +1468,58 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       inputRefs = count(BasicBlock bb, int i | AdjacentSsaRefs::adjacentRefPhi(bb, i, _, bbPhi, v)) and
       inputRefs < 2
     }
+
+    /**
+     * Gets counts of inconsistencies of each type.
+     */
+    int getInconsistencyCounts(string type) {
+      // total results from all the SSA consistency query predicates.
+      type = "Read can be reached from multiple definitions" and
+      result =
+        count(Definition def, SourceVariable v, BasicBlock bb, int i | nonUniqueDef(def, v, bb, i))
+      or
+      type = "Read cannot be reached from a definition" and
+      result = count(SourceVariable v, BasicBlock bb, int i | readWithoutDef(v, bb, i))
+      or
+      type = "Definition cannot reach a read" and
+      result = count(Definition def, SourceVariable v | deadDef(def, v))
+      or
+      type = "Read is not dominated by a definition" and
+      result =
+        count(Definition def, SourceVariable v, BasicBlock bb, int i |
+          notDominatedByDef(def, v, bb, i)
+        )
+      or
+      type = "End of a basic block can be reached by multiple definitions" and
+      result =
+        count(Definition def, SourceVariable v, BasicBlock bb |
+          nonUniqueDefReachesEndOfBlock(def, v, bb)
+        )
+      or
+      type = "Phi node has less than two inputs" and
+      result = count(PhiNode phi, int inputs | uselessPhiNode(phi, inputs))
+      or
+      type = "Read does not have a prior reference" and
+      result = count(SourceVariable v, BasicBlock bb, int i | readWithoutPriorRef(v, bb, i))
+      or
+      type = "Read has multiple prior references" and
+      result =
+        count(SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
+          readWithMultiplePriorRefs(v, bb1, i1, bb2, i2)
+        )
+      or
+      type = "Phi has less than 2 immediately prior references" and
+      result =
+        count(PhiNode phi, BasicBlock bbPhi, SourceVariable v, int inputRefs |
+          phiWithoutTwoPriorRefs(phi, bbPhi, v, inputRefs)
+        )
+      or
+      type = "Phi read has less than 2 immediately prior references" and
+      result =
+        count(BasicBlock bbPhi, SourceVariable v, int inputRefs |
+          phiReadWithoutTwoPriorRefs(bbPhi, v, inputRefs)
+        )
+    }
   }
 
   /** Provides the input to `DataFlowIntegration`. */

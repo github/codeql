@@ -123,6 +123,10 @@ module Stages {
       exists(any(ItemNode i).getASuccessor(_))
       or
       exists(any(ItemNode i).getASuccessorRec(_))
+      or
+      exists(any(ImplOrTraitItemNode i).getASelfPath())
+      or
+      any(TypeParamItemNode i).hasTraitBound()
     }
   }
 

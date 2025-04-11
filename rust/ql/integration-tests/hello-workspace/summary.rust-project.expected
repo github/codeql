@@ -7,6 +7,7 @@
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - Path resolution | 0 |
+| Inconsistencies - SSA | 0 |
 | Inconsistencies - data flow | 0 |
 | Lines of code extracted | 9 |
 | Lines of user code extracted | 9 |

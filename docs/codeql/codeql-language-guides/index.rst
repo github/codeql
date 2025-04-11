@@ -7,9 +7,9 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 .. toctree::
 
-   codeql-for-actions
    codeql-for-cpp
    codeql-for-csharp
+   codeql-for-actions
    codeql-for-go
    codeql-for-java
    codeql-for-javascript

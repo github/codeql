@@ -1,6 +1,6 @@
 .. _customizing-library-models-for-actions:
 
-Customizing Library Models for GitHub Actions
+Customizing library models for GitHub Actions
 =============================================
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
