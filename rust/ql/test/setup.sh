@@ -7,11 +7,12 @@ set -euo pipefail
 # parallel QL tests unless we do the setup prior to launching the tests.
 # We do this for each `rust-toolchain.toml` we use in the tests (and the root one in `rust` last, so it becomes the
 # default).
-# Notice that we do not need to explicitly add the rust-std component as it's listed in ql/rust/rust-toolchain.toml.
 
 cd "$(dirname "$0")"
 
 find . -name rust-toolchain.toml \
-  -execdir rustup install \;
+  -execdir rustup install \; \
+  -execdir rustup component add rust-src \;
 
+# no to install rust-src explicitly, it's listedin ql/rust/rust-toolchain.toml
 rustup install
