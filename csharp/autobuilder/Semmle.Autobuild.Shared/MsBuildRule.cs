@@ -10,15 +10,13 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Appends a call to msbuild.
         /// </summary>
-        /// <param name="cmdBuilder"></param>
-        /// <param name="builder"></param>
         /// <returns></returns>
-        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
+        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder, bool preferDotnet)
         {
             // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
             // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
             // perhaps we should do this on all platforms?
-            return builder.Actions.IsRunningOnAppleSilicon()
+            return builder.Actions.IsRunningOnAppleSilicon() || preferDotnet
                 ? cmdBuilder.RunCommand("dotnet").Argument("msbuild")
                 : cmdBuilder.RunCommand("msbuild");
         }
@@ -75,13 +73,21 @@ namespace Semmle.Autobuild.Shared
                         QuoteArgument(projectOrSolution.FullPath).
                         Argument("-DisableParallelProcessing").
                         Script;
+
+                BuildScript GetMonoVersionScript() => new CommandBuilder(builder.Actions).
+                    RunCommand("mono").
+                    Argument("--version").
+                    Script;
+
+                var preferDotnet = !builder.Actions.IsWindows() && GetMonoVersionScript().Run(builder.Actions, (_, _) => { }, (_, _, _) => { }) != 0;
+
                 var nugetRestore = GetNugetRestoreScript();
                 var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                    MsBuildCommand(builder).
+                    MsBuildCommand(builder, preferDotnet).
                     Argument("/t:restore").
                     QuoteArgument(projectOrSolution.FullPath);
 
-                if (builder.Actions.IsRunningOnAppleSilicon())
+                if (builder.Actions.IsRunningOnAppleSilicon() || preferDotnet)
                 {
                     // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
                     ret &= BuildScript.Try(msbuildRestoreCommand.Script);
@@ -119,7 +125,7 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                command.MsBuildCommand(builder);
+                command.MsBuildCommand(builder, preferDotnet);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 var target = "rebuild";
