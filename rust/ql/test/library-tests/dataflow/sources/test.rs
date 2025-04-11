@@ -241,7 +241,7 @@ fn test_io_fs() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = std::io::stdin().read(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
@@ -253,17 +253,17 @@ fn test_io_fs() -> std::io::Result<()> {
     {
         let mut buffer = String::new();
         let _bytes = std::io::stdin().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
         let mut buffer = [0; 100];
         std::io::stdin().read_exact(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     for byte in std::io::stdin().bytes() { // $ Alert[rust/summary/taint-sources]
-        sink(byte); // $ MISSING: hasTaintFlow
+        sink(byte); // $ hasTaintFlow
     }
 
     // --- file ---
@@ -273,29 +273,29 @@ fn test_io_fs() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = file.read(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = file.read_to_end(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = String::new();
         let _bytes = file.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = [0; 100];
         file.read_exact(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     for byte in file.bytes() {
-        sink(byte); // $ MISSING: hasTaintFlow
+        sink(byte); // $ hasTaintFlow="file.txt"
     }
 
     // --- BufReader ---
@@ -303,27 +303,27 @@ fn test_io_fs() -> std::io::Result<()> {
     {
         let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.fill_buf()?;
-        sink(&data); // $ MISSING: hasTaintFlow
+        sink(&data); // $ hasTaintFlow
     }
 
     {
         let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.buffer();
-        sink(&data); // $ MISSING: hasTaintFlow
+        sink(&data); // $ hasTaintFlow
     }
 
     {
         let mut buffer = String::new();
         let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_line(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_until(b',', &mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
@@ -337,7 +337,7 @@ fn test_io_fs() -> std::io::Result<()> {
     {
         let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
         for line in reader.lines() {
-            sink(line); // $ MISSING: Alert[rust/summary/taint-sources]
+            sink(line); // $ hasTaintFlow
         }
     }
 
@@ -361,7 +361,7 @@ fn test_io_fs() -> std::io::Result<()> {
         let mut file2 = std::fs::File::open("another_file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
     }
 
     {
@@ -369,13 +369,13 @@ fn test_io_fs() -> std::io::Result<()> {
         let mut file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = String::new();
         let _bytes = std::io::stdin().lock().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     Ok(())
