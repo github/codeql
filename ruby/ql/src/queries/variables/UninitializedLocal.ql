@@ -72,13 +72,24 @@ private predicate isNilChecked(LocalVariableReadAccess read) {
   )
 }
 
+/**
+ * Holds if `name` is the name of a method defined on `nil`.
+ * See https://ruby-doc.org/core-2.5.8/NilClass.html
+ */
+private predicate isNilMethodName(string name) {
+  name in [
+      "inspect", "instance_of?", "is_a?", "kind_of?", "method", "nil?", "rationalize", "to_a",
+      "to_c", "to_f", "to_h", "to_i", "to_r", "to_s"
+    ]
+}
+
 class RelevantLocalVariableReadAccess extends LocalVariableReadAccess instanceof TVariableAccessReal
 {
   RelevantLocalVariableReadAccess() {
     not isInBooleanContext(this) and
     not isNilChecked(this) and
     not isGuarded(this) and
-    this = any(MethodCall m).getReceiver()
+    this = any(MethodCall m | not isNilMethodName(m.getMethodName())).getReceiver()
   }
 }
 
