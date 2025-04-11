@@ -751,18 +751,14 @@ module API {
       MkModuleImport(string m) {
         imports(_, m)
         or
-        any(TypeAnnotation n).hasQualifiedName(m, _)
-        or
-        any(Type t).hasUnderlyingType(m, _)
+        any(TypeAnnotation n).hasUnderlyingType(m, _)
       } or
       MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
       MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasQualifiedName(moduleName, exportName)
-        or
-        any(Type t).hasUnderlyingType(moduleName, exportName)
+        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
       } or
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
