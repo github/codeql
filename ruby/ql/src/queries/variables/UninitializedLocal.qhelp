@@ -12,6 +12,8 @@ Consider the following example:
 
 <p>
 This will generate an alert on the last access to <code>m</code>, where it is not clear that the programmer intended to read from the local variable.
+In fact, the last access to <code>m</code> is a method call, and the value of the local variable is <code>nil</code>,
+so this will raise a <code>NoMethodError</code>.
 </p>
 
 </overview>
@@ -19,8 +21,7 @@ This will generate an alert on the last access to <code>m</code>, where it is no
 
 <p>
 Ensure that you check the control and data flow in the method carefully.
-Check that the variable reference is spelled correctly, perhaps the variable has been renamed and the reference needs to be updated.
-Another possibility is that an exception may be raised before the variable is assigned, in which case the read should be protected by a check for <code>nil</code>.
+Add a check for <code>nil</code> before the read, or rewrite the code to ensure that the variable is always initialized before being read.
 </p>
 
 </recommendation>
@@ -28,8 +29,8 @@ Another possibility is that an exception may be raised before the variable is as
 <references>
 
 
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Dead_store">Dead store</a>.</li>
-
+<li>https://www.rubyguides.com/: <a href="https://www.rubyguides.com/2018/01/ruby-nil/">Nil</a>.</li>
+<li>https://ruby-doc.org/: <a href="https://ruby-doc.org/core-2.6.5/NoMethodError.html">NoMethodError</a>.</li>
 
 
 </references>

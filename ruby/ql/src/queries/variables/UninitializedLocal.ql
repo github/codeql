@@ -77,7 +77,8 @@ class RelevantLocalVariableReadAccess extends LocalVariableReadAccess instanceof
   RelevantLocalVariableReadAccess() {
     not isInBooleanContext(this) and
     not isNilChecked(this) and
-    not isGuarded(this)
+    not isGuarded(this) and
+    this = any(MethodCall m).getReceiver()
   }
 }
 
