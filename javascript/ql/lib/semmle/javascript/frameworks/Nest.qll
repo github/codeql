@@ -5,6 +5,8 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.internal.NameResolution
+private import semmle.javascript.internal.TypeResolution
 
 /**
  * Provides classes and predicates for reasoning about [Nest](https://nestjs.com/).
@@ -133,7 +135,9 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(this.getParameter().getType().unfold())
+      // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
+      // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
+      TypeResolution::isSanitizingPrimitiveType(this.getParameter().getTypeAnnotation())
     }
   }
 
@@ -207,19 +211,6 @@ module NestJS {
     or
     hasGlobalValidationPipe(param.getFile().getParentContainer()) and
     dependsOnType = true
-  }
-
-  /**
-   * Holds if a parameter of type `t` is considered sanitized, provided it has been checked by `ValidationPipe`
-   * (which relies on metadata emitted by the TypeScript compiler).
-   */
-  private predicate isSanitizingType(Type t) {
-    t instanceof NumberType
-    or
-    t instanceof BooleanType
-    //
-    // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
-    // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
   }
 
   /**
