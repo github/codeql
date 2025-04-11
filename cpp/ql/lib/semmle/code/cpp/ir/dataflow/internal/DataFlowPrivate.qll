@@ -470,7 +470,7 @@ newtype TPosition =
     Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
     or
-    // Handle the rare case where the is a function definition but no call to
+    // Handle the rare case where there is a function definition but no call to
     // the function.
     exists(Cpp::Function f, Cpp::Parameter p |
       p = f.getParameter(argumentIndex) and
