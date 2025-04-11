@@ -623,7 +623,7 @@ mod function_trait_bounds_2 {
     where
         T1: Into<T2>,
     {
-        x.into()
+        x.into() // $ method=into
     }
 
     pub fn f() {
