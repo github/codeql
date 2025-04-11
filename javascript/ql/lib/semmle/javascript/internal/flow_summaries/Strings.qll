@@ -108,7 +108,7 @@ class StringFromCharCode extends SummarizedCallable {
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    preservesValue = true and
+    preservesValue = false and
     (
       input = "Argument[0..]" and
       output = "ReturnValue"
