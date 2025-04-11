@@ -97,7 +97,8 @@ private class ParamsConstructedCollectionTypes extends ParamsCollectionTypeImpl 
       unboundbase instanceof SystemCollectionsGenericIReadOnlyListTInterface or
       unboundbase instanceof SystemSpanStruct or
       unboundbase instanceof SystemReadOnlySpanStruct
-    )
+    ) and
+    not this instanceof SystemStringClass
   }
 
   override Type getElementType() { result = base.getTypeArgument(0) }

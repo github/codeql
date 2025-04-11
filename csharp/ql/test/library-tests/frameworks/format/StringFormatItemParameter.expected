@@ -17,6 +17,12 @@
 | Debug | Assert(bool, string, string, params Object[]) | args |
 | Debug | Print(string, params Object[]) | args |
 | Debug | WriteLine(string, params Object[]) | args |
+| MemoryExtensions | TryWrite(Span<char>, IFormatProvider, CompositeFormat, out int, params Object[]) | args |
+| MemoryExtensions | TryWrite(Span<char>, IFormatProvider, CompositeFormat, out int, params Object[]) | charsWritten |
+| MemoryExtensions | TryWrite(Span<char>, IFormatProvider, CompositeFormat, out int, params ReadOnlySpan<object>) | args |
+| MemoryExtensions | TryWrite(Span<char>, IFormatProvider, CompositeFormat, out int, params ReadOnlySpan<object>) | charsWritten |
+| StringBuilder | AppendFormat(IFormatProvider, CompositeFormat, params Object[]) | args |
+| StringBuilder | AppendFormat(IFormatProvider, CompositeFormat, params ReadOnlySpan<object>) | args |
 | StringBuilder | AppendFormat(IFormatProvider, string, object) | arg0 |
 | StringBuilder | AppendFormat(IFormatProvider, string, object, object) | arg0 |
 | StringBuilder | AppendFormat(IFormatProvider, string, object, object) | arg1 |
@@ -51,6 +57,8 @@
 | TextWriter | WriteLine(string, object, object, object) | arg2 |
 | TextWriter | WriteLine(string, params Object[]) | arg |
 | TextWriter | WriteLine(string, params ReadOnlySpan<object>) | arg |
+| string | Format(IFormatProvider, CompositeFormat, params Object[]) | args |
+| string | Format(IFormatProvider, CompositeFormat, params ReadOnlySpan<object>) | args |
 | string | Format(IFormatProvider, string, object) | arg0 |
 | string | Format(IFormatProvider, string, object, object) | arg0 |
 | string | Format(IFormatProvider, string, object, object) | arg1 |
