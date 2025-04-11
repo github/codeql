@@ -1017,3 +1017,26 @@ import Cached
  * Gets a type that `n` infers to, if any.
  */
 Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
+
+/** Provides predicates for debugging the type inference implementation. */
+private module Debug {
+  private Locatable getRelevantLocatable() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      filepath.matches("%/main.rs") and
+      startline = 13
+    )
+  }
+
+  Type debugInferType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    result = inferType(n, path)
+  }
+
+  EnumType debugInferTyp2(AstNode n, TypePath path, ImplItemNode impl) {
+    n = getRelevantLocatable() and
+    result = inferType(n, path) and
+    // exists(result.getMethod(name)) and
+    impl.resolveSelfTy() = result.asItemNode()
+  }
+}
