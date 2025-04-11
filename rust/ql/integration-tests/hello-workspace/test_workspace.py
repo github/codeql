@@ -1,6 +1,5 @@
 import pytest
 
-
 @pytest.mark.ql_test("steps.ql", expected=".cargo.expected")
 @pytest.mark.ql_test("summary.qlref", expected=".cargo.expected")
 def test_cargo(codeql, rust, cargo, check_source_archive, rust_check_diagnostics):
