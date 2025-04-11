@@ -462,7 +462,7 @@ newtype TPosition =
   TDirectPosition(int argumentIndex) {
     exists(any(CallInstruction c).getArgument(argumentIndex))
     or
-    // Handle the rare case where the is a function definition but no call to
+    // Handle the rare case where there is a function definition but no call to
     // the function.
     exists(any(Cpp::Function f).getParameter(argumentIndex))
   } or
