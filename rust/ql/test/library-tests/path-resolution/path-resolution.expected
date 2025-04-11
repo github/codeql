@@ -319,7 +319,7 @@ resolvePath
 | my.rs:18:9:18:11 | my4 | my.rs:14:1:16:1 | mod my4 |
 | my.rs:18:9:18:16 | ...::my5 | my.rs:15:5:15:16 | mod my5 |
 | my.rs:18:9:18:19 | ...::f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
-| my.rs:22:5:22:9 | std | file:///Users/arthur/.rustup/toolchains/1.85-aarch64-apple-darwin/lib/rustlib/src/rust/library/std/src/lib.rs:0:0:0:0 | Crate(std@0.0.0) |
+| my.rs:22:5:22:9 | std | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/std/src/lib.rs:0:0:0:0 | Crate(std@0.0.0) |
 | my.rs:22:5:22:17 | ...::result | file://:0:0:0:0 | mod result |
 | my.rs:22:5:25:1 | ...::Result::<...> | file://:0:0:0:0 | enum Result |
 | my.rs:23:5:23:5 | T | my.rs:21:5:21:5 | T |
