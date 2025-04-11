@@ -17,19 +17,37 @@ private import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.controlflow.internal.Guards as Guards
 import codeql.ruby.controlflow.CfgNodes
 
-predicate isInBooleanContext(Expr e) {
-  e = any(ConditionalExpr c).getCondition()
+private predicate isInBooleanContext(AstNode n) {
+  exists(ConditionalExpr i |
+    n = i.getCondition()
+    or
+    isInBooleanContext(i) and
+    n = i.getBranch(_)
+  )
   or
-  e = any(ConditionalLoop l).getCondition()
+  n = any(ConditionalLoop parent).getCondition()
   or
-  e = any(LogicalAndExpr n).getAnOperand()
+  n = any(InClause parent).getCondition()
   or
-  e = any(LogicalOrExpr n).getAnOperand()
+  n = any(LogicalAndExpr op).getAnOperand()
   or
-  e = any(NotExpr n).getOperand()
+  n = any(LogicalOrExpr op).getAnOperand()
+  or
+  n = any(NotExpr op).getOperand()
+  or
+  n = any(StmtSequence parent | isInBooleanContext(parent)).getLastStmt()
+  or
+  exists(CaseExpr c, WhenClause w |
+    not exists(c.getValue()) and
+    c.getABranch() = w
+  |
+    w.getPattern(_) = n
+    or
+    w = n
+  )
 }
 
-predicate isGuarded(LocalVariableReadAccess read) {
+private predicate isGuarded(LocalVariableReadAccess read) {
   exists(AstCfgNode guard, boolean branch |
     Guards::guardControlsBlock(guard, read.getAControlFlowNode().getBasicBlock(), branch)
   |
@@ -46,7 +64,7 @@ predicate isGuarded(LocalVariableReadAccess read) {
   )
 }
 
-predicate isNilChecked(LocalVariableReadAccess read) {
+private predicate isNilChecked(LocalVariableReadAccess read) {
   exists(MethodCall c | c.getReceiver() = read |
     c.getMethodName() = "nil?"
     or
