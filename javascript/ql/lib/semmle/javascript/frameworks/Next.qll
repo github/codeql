@@ -283,7 +283,7 @@ module NextJS {
     NextAppRouteHandler() {
       exists(Module mod |
         mod.getFile().getParentContainer() = apiFolder() or
-        mod.getFile().getBaseName() = ["middleware.ts", "middleware.js"]
+        mod.getFile().getStem() = "middleware"
       |
         this =
           mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue() and
