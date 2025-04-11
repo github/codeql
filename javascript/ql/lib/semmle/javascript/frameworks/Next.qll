@@ -286,12 +286,7 @@ module NextJS {
         mod.getFile().getStem() = "middleware"
       |
         this =
-          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue() and
-        (
-          this.getParameter(0).hasUnderlyingType("next/server", "NextRequest")
-          or
-          this.getParameter(0).hasUnderlyingType("Request")
-        )
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware"]).getAFunctionValue()
       )
     }
 
@@ -318,17 +313,16 @@ module NextJS {
       ) and
       kind = "body"
       or
-      (
-        this = handler.getRequest().getAPropertyRead(["url", "nextUrl"])
-        or
-        this =
-          handler
-              .getRequest()
-              .getAPropertyRead("nextUrl")
-              .getAPropertyRead("searchParams")
-              .getAMemberCall("get")
-      ) and
+      this = handler.getRequest().getAPropertyRead(["url", "nextUrl"]) and
       kind = "url"
+      or
+      this =
+        handler
+            .getRequest()
+            .getAPropertyRead("nextUrl")
+            .getAPropertyRead("searchParams")
+            .getAMemberCall("get") and
+      kind = "parameter"
       or
       this = handler.getRequest().getAPropertyRead("headers") and kind = "headers"
     }
