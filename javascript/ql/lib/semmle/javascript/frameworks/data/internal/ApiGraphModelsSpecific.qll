@@ -138,7 +138,7 @@ API::Node getExtraNodeFromType(string type) {
     parseRelevantTypeString(type, package, qualifiedName)
   |
     qualifiedName = "" and
-    result = [API::moduleImport(package), API::moduleExport(package)]
+    result = [API::Internal::getAModuleImportRaw(package), API::moduleExport(package)]
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)
