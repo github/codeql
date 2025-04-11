@@ -168,9 +168,9 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }
 
-  predicate isBarrierOut(DataFlow::Node node) { isSink(node, _) }
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) { isSink(node, state) }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
