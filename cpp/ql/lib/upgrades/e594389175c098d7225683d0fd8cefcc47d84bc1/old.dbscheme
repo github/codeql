@@ -743,17 +743,15 @@ typedefbase(
 );
 
 /**
- * An instance of the C++11 `decltype` operator or C23 `typeof`/`typeof_unqual`
- * operator taking an expression as its argument.  For example:
+ * An instance of the C++11 `decltype` operator.  For example:
  * ```
  * int a;
  * decltype(1+a) b;
- * typeof(1+a) c;
  * ```
  * Here `expr` is `1+a`.
  *
  * Sometimes an additional pair of parentheses around the expression
- * changes the semantics of the decltype, e.g.
+ * would change the semantics of this decltype, e.g.
  * ```
  * struct A { double x; };
  * const A* a = new A();
@@ -763,54 +761,13 @@ typedefbase(
  * (Please consult the C++11 standard for more details).
  * `parentheses_would_change_meaning` is `true` iff that is the case.
  */
-
-/*
-case @decltype.kind of
-|  0 = @decltype
-|  1 = @typeof // The frontend does not differentiate between typeof and typeof_unqual
-;
-*/
-
 #keyset[id, expr]
 decltypes(
     int id: @decltype,
     int expr: @expr ref,
-    int kind: int ref,
     int base_type: @type ref,
     boolean parentheses_would_change_meaning: boolean ref
 );
-
-/*
-case @type_operator.kind of
-|  0 = @typeof // The frontend does not differentiate between typeof and typeof_unqual
-|  1 = @underlying_type
-|  2 = @bases
-|  3 = @direct_bases
-|  4 = @add_lvalue_reference
-|  5 = @add_pointer
-|  6 = @add_rvalue_reference
-|  7 = @decay
-|  8 = @make_signed
-|  9 = @make_unsigned
-| 10 = @remove_all_extents
-| 11 = @remove_const
-| 12 = @remove_cv
-| 13 = @remove_cvref
-| 14 = @remove_extent
-| 15 = @remove_pointer
-| 16 = @remove_reference_t
-| 17 = @remove_restrict
-| 18 = @remove_volatile
-| 19 = @remove_reference
-;
-*/
-
-type_operators(
-    unique int id: @type_operator,
-    int arg_type: @type ref,
-    int kind: int ref,
-    int base_type: @type ref
-)
 
 /*
 case @usertype.kind of
@@ -1146,10 +1103,10 @@ stmtattributes(
 @type = @builtintype
       | @derivedtype
       | @usertype
+      /* TODO | @fixedpointtype */
       | @routinetype
       | @ptrtomember
-      | @decltype
-      | @type_operator;
+      | @decltype;
 
 unspecifiedtype(
     unique int type_id: @type ref,
