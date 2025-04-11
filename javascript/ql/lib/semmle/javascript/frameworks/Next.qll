@@ -318,7 +318,17 @@ module NextJS {
       ) and
       kind = "body"
       or
-      this = handler.getRequest().getAPropertyRead(["url", "nextUrl"]) and kind = "url"
+      (
+        this = handler.getRequest().getAPropertyRead(["url", "nextUrl"])
+        or
+        this =
+          handler
+              .getRequest()
+              .getAPropertyRead("nextUrl")
+              .getAPropertyRead("searchParams")
+              .getAMemberCall("get")
+      ) and
+      kind = "url"
       or
       this = handler.getRequest().getAPropertyRead("headers") and kind = "headers"
     }
