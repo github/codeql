@@ -13,6 +13,7 @@ private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
 private import semmle.javascript.dataflow.FlowSummary as FlowSummary
 private import semmle.javascript.dataflow.internal.BarrierGuards
+private import codeql.util.Boolean
 
 class DataFlowSecondLevelScope = Unit;
 
@@ -363,6 +364,8 @@ predicate postUpdatePair(Node pre, Node post) {
     pre.(FlowSummaryNode).getSummaryNode())
   or
   VariableCaptureOutput::capturePostUpdateNode(getClosureNode(post), getClosureNode(pre))
+  or
+  any(AdditionalFlowInternal f).postUpdate(pre, post)
 }
 
 class CastNode extends DataFlow::Node {
@@ -373,24 +376,47 @@ cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
   MkLibraryCallable(LibraryCallable callable) or
-  MkFileCallable(File file)
+  MkFileCallable(File file) or
+  MkClassHarnessCallable(Function f) {
+    // We only need a class harness for functions that act as classes (i.e. constructors),
+    // but since DataFlow::Node has not been materialised at this stage, we can't use DataFlow::ClassNode.
+    // Exclude arrow functions as they can't be called with 'new'.
+    not f instanceof ArrowFunctionExpr and
+    // We also don't need harnesses for externs
+    not f.getTopLevel().isExterns()
+  } or
+  /**
+   * A callable entity. This is a wrapper around either a `StmtContainer`, `LibraryCallable`, or `File`.
+   */
+  MkGenericSynthesizedCallable(AstNode node, string tag) {
+    any(AdditionalFlowInternal f).needsSynthesizedCallable(node, tag)
+  }
 
 /**
- * A callable entity. This is a wrapper around either a `StmtContainer`, `LibraryCallable`, or `File`.
+ * A callable entity.
  */
 class DataFlowCallable extends TDataFlowCallable {
   /** Gets a string representation of this callable. */
   string toString() {
     result = this.asSourceCallable().toString()
     or
-    result = this.asLibraryCallable()
+    result = this.asLibraryCallable().toString()
     or
     result = this.asFileCallable().toString()
+    or
+    this.isGenericSynthesizedCallable(_, result)
   }
 
   /** Gets the location of this callable, if it is present in the source code. */
   Location getLocation() {
-    result = this.asSourceCallable().getLocation() or result = this.asFileCallable().getLocation()
+    result = this.asSourceCallable().getLocation()
+    or
+    result = this.asFileCallable().getLocation()
+    or
+    exists(AstNode node |
+      this.isGenericSynthesizedCallable(node, _) and
+      result = node.getLocation()
+    )
   }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
@@ -398,6 +424,11 @@ class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets the corresponding `File` if this is a file representing a callable. */
   File asFileCallable() { this = MkFileCallable(result) }
+
+  /** Gets the class constructor for which this is a class harness. */
+  predicate isGenericSynthesizedCallable(AstNode node, string tag) {
+    this = MkGenericSynthesizedCallable(node, tag)
+  }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   pragma[nomagic]
@@ -527,6 +558,8 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
     n = TDynamicArgumentArrayNode(invoke) and
     pos.isDynamicArgumentArray()
   )
+  or
+  any(AdditionalFlowInternal f).argument(call, pos, n)
 }
 
 predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
@@ -774,7 +807,7 @@ ContentApprox getContentApprox(Content c) {
 }
 
 cached
-private newtype TDataFlowCall =
+newtype TDataFlowCall =
   MkOrdinaryCall(DataFlow::InvokeNode node) or
   MkPartialCall(DataFlow::PartialInvokeNode node, DataFlow::Node callback) {
     callback = node.getACallbackNode()
@@ -795,6 +828,9 @@ private newtype TDataFlowCall =
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  } or
+  MkGenericSynthesizedCall(AstNode node, string tag, DataFlowCallable container) {
+    any(AdditionalFlowInternal f).needsSynthesizedCall(node, tag, container)
   }
 
 private module TotalOrdering {
@@ -858,6 +894,10 @@ class DataFlowCall extends TDataFlowCall {
     FlowSummaryImpl::Private::SummaryNode receiver
   ) {
     this = MkSummaryCall(enclosingCallable, receiver)
+  }
+
+  predicate isGenericSynthesizedCall(AstNode node, string tag, DataFlowCallable container) {
+    this = MkGenericSynthesizedCall(node, tag, container)
   }
 
   Location getLocation() { none() } // Overridden in subclass
@@ -978,6 +1018,20 @@ private class ImpliedLambdaCall extends DataFlowCall, MkImpliedLambdaCall {
   }
 }
 
+class GenericSynthesizedCall extends DataFlowCall, MkGenericSynthesizedCall {
+  private AstNode node;
+  private string tag;
+  private DataFlowCallable container;
+
+  GenericSynthesizedCall() { this = MkGenericSynthesizedCall(node, tag, container) }
+
+  override string toString() { result = tag }
+
+  override Location getLocation() { result = node.getLocation() }
+
+  override DataFlowCallable getEnclosingCallable() { result = container }
+}
+
 private int getMaxArity() {
   // TODO: account for flow summaries
   result =
@@ -1075,6 +1129,8 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   )
   or
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
+  or
+  any(AdditionalFlowInternal f).viableCallable(node, result)
 }
 
 private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
