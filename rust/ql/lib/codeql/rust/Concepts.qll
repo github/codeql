@@ -103,6 +103,32 @@ class ModeledEnvironmentSource extends EnvironmentSource::Range {
 }
 
 /**
+ * A data flow source corresponding to a file access.
+ */
+final class FileSource = FileSource::Range;
+
+/**
+ * An externally modeled source for data from a file access.
+ */
+class ModeledFileSource extends FileSource::Range {
+  ModeledFileSource() { sourceNode(this, "file") }
+}
+
+/**
+ * Provides a class for modeling new sources for file accesses.
+ */
+module FileSource {
+  /**
+   * A data flow source corresponding to a file access.
+   */
+  abstract class Range extends ThreatModelSource::Range {
+    override string getThreatModel() { result = "file" }
+
+    override string getSourceType() { result = "FileSource" }
+  }
+}
+
+/**
  * A data flow source corresponding to the program's database reads.
  */
 final class DatabaseSource = DatabaseSource::Range;

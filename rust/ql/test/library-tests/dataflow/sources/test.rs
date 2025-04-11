@@ -202,31 +202,31 @@ use std::fs;
 
 fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
     {
-        let buffer: Vec<u8> = std::fs::read("file.bin")?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow
+        let buffer: Vec<u8> = std::fs::read("file.bin")?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.bin"
     }
 
     {
-        let buffer: Vec<u8> = fs::read("file.bin")?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow
+        let buffer: Vec<u8> = fs::read("file.bin")?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.bin"
     }
 
     {
-        let buffer = fs::read_to_string("file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow
+        let buffer = fs::read_to_string("file.txt")?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.txt"
     }
 
     for entry in fs::read_dir("directory")? {
         let e = entry?;
-        let path = e.path(); // $ MISSING: Alert[rust/summary/taint-sources]
-        let file_name = e.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(path); // $ MISSING: hasTaintFlow
-        sink(file_name); // $ MISSING: hasTaintFlow
+        let path = e.path(); // $ Alert[rust/summary/taint-sources]
+        let file_name = e.file_name(); // $ Alert[rust/summary/taint-sources]
+        sink(path); // $ hasTaintFlow
+        sink(file_name); // $ hasTaintFlow
     }
 
     {
-        let target = fs::read_link("symlink.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(target); // $ MISSING: hasTaintFlow
+        let target = fs::read_link("symlink.txt")?; // $ Alert[rust/summary/taint-sources]
+        sink(target); // $ hasTaintFlow="symlink.txt"
     }
 
     Ok(())
@@ -268,7 +268,7 @@ fn test_io_fs() -> std::io::Result<()> {
 
     // --- file ---
 
-    let mut file = std::fs::File::open("file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut file = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
 
     {
         let mut buffer = [0u8; 100];
@@ -357,8 +357,8 @@ fn test_io_fs() -> std::io::Result<()> {
 
     {
         let mut buffer = String::new();
-        let mut file1 = std::fs::File::open("file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
-        let mut file2 = std::fs::File::open("another_file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
+        let mut file2 = std::fs::File::open("another_file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer)?;
         sink(&buffer); // $ MISSING: hasTaintFlow
@@ -366,7 +366,7 @@ fn test_io_fs() -> std::io::Result<()> {
 
     {
         let mut buffer = String::new();
-        let mut file1 = std::fs::File::open("file.txt")?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer)?;
         sink(&buffer); // $ MISSING: hasTaintFlow
