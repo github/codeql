@@ -14,5 +14,5 @@ find . -name rust-toolchain.toml \
   -execdir rustup install \; \
   -execdir rustup component add rust-src \;
 
-# no to install rust-src explicitly, it's listedin ql/rust/rust-toolchain.toml
+# no to install rust-src explicitly, it's listed in ql/rust/rust-toolchain.toml
 rustup install
