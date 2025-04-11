@@ -18,6 +18,10 @@ class RelevantLocalVariableReadAccess extends LocalVariableReadAccess {
     not exists(MethodCall c |
       c.getReceiver() = this and
       c.getMethodName() = "nil?"
+    ) and
+    not exists(BinaryOperation b |
+      b.getLeftOperand() = this and
+      b.getOperator() = "||"
     )
   }
 }
