@@ -13,16 +13,16 @@ private class TextDecoderEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node textDecoderConstructorRef() { result = any(TextDecoderEntryPoint e).getANode() }
 
-class DecodeLike extends SummarizedCallable {
-  DecodeLike() { this = "TextDecoder#decode" }
+class Decode extends SummarizedCallable {
+  Decode() { this = "TextDecoder#decode" }
 
   override InstanceCall getACall() {
     result = textDecoderConstructorRef().getInstance().getMember("decode").getACall()
   }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-    preservesValue = true and
-    input = "Argument[0]" and
+    preservesValue = false and
+    input = "Argument[0].ArrayElement" and
     output = "ReturnValue"
   }
 }
