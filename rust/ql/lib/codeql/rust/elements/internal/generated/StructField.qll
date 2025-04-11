@@ -65,6 +65,11 @@ module Generated {
     final predicate hasDefault() { exists(this.getDefault()) }
 
     /**
+     * Holds if this struct field is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertStructFieldToRaw(this).(Raw::StructField).isUnsafe() }
+
+    /**
      * Gets the name of this struct field, if it exists.
      */
     Name getName() {

@@ -2612,6 +2612,7 @@ pub struct StructField {
     pub id: trap::TrapId<StructField>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub default: Option<trap::Label<Expr>>,
+    pub is_unsafe: bool,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2629,6 +2630,9 @@ impl trap::TrapEntry for StructField {
         }
         if let Some(v) = self.default {
             out.add_tuple("struct_field_defaults", vec![id.into(), v.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("struct_field_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("struct_field_names", vec![id.into(), v.into()]);

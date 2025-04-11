@@ -539,6 +539,7 @@ class StructExprFieldList(AstNode, ):
 class StructField(AstNode, ):
     attrs: list["Attr"] | child
     default: optional["Expr"] | child
+    is_unsafe: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child

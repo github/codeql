@@ -1850,6 +1850,7 @@ impl Translator<'_> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let default = node.expr().and_then(|x| self.emit_expr(x));
+        let is_unsafe = node.unsafe_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(x));
         let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
@@ -1857,6 +1858,7 @@ impl Translator<'_> {
             id: TrapId::Star,
             attrs,
             default,
+            is_unsafe,
             name,
             type_repr,
             visibility,
