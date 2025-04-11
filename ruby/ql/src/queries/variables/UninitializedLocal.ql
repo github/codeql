@@ -13,9 +13,9 @@
 
 import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
-private import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.controlflow.internal.Guards as Guards
 import codeql.ruby.controlflow.CfgNodes
+import codeql.ruby.ast.internal.Variable
 
 private predicate isInBooleanContext(AstNode n) {
   exists(ConditionalExpr i |
@@ -72,7 +72,8 @@ private predicate isNilChecked(LocalVariableReadAccess read) {
   )
 }
 
-class RelevantLocalVariableReadAccess extends LocalVariableReadAccess {
+class RelevantLocalVariableReadAccess extends LocalVariableReadAccess instanceof TVariableAccessReal
+{
   RelevantLocalVariableReadAccess() {
     not isInBooleanContext(this) and
     not isNilChecked(this) and

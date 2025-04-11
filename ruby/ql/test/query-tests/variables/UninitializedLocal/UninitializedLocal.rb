@@ -70,7 +70,7 @@ def test_loop
 end
 
 def test_for
-    for i in 0..10  #$ SPURIOUS: Alert
+    for i in 0..10  # OK - since 0..10 cannot raise
         i
     end
     i  #$ SPURIOUS: Alert
