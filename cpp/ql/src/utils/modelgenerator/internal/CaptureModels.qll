@@ -3,7 +3,6 @@
  */
 
 private import cpp
-private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
