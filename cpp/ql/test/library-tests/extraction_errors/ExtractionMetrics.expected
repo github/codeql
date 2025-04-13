@@ -1,4 +1,5 @@
 | #include directives | 2 |
+| build mode none | 0 |
 | calls | 2 |
 | calls with an explicit target | 1 |
 | compilations | 2 |
