@@ -225,6 +225,13 @@ module ControlFlow {
       result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
     }
 
+    /**
+     * Gets an immediate `match` predecessor, if any.
+     */
+    Node getAMatchPredecessor() {
+      result = this.getAPredecessorByType(any(MatchingSuccessor t | t.isMatch()))
+    }
+
     /** Gets the enclosing callable of this control flow node. */
     final Callable getEnclosingCallable() { result = Impl::getNodeCfgScope(this) }
   }
