@@ -95,6 +95,27 @@ class NonAliasPathMention extends PathMention {
       this = node.getASelfPath() and
       result = node.(ImplItemNode).getSelfPath().getSegment().getGenericArgList().getTypeArg(i)
     )
+    or
+    // If `this` is the trait of an `impl` block then any associated types
+    // defined in the `impl` block are type arguments to the trait.
+    //
+    // For instance, for a trait implementation like this
+    // ```rust
+    // impl MyTrait for MyType {
+    //      ^^^^^^^ this
+    //   type AssociatedType = i64
+    //                         ^^^ result
+    //   // ...
+    // }
+    // ```
+    // the rhs. of the type alias is a type argument to the trait.
+    exists(ImplItemNode impl, AssociatedTypeTypeParameter param, TypeAlias alias |
+      this = impl.getTraitPath() and
+      param.getTrait() = resolvePath(this) and
+      alias = impl.getASuccessor(param.getTypeAlias().getName().getText()) and
+      result = alias.getTypeRepr() and
+      param.getIndex() = i
+    )
   }
 
   override Type resolveType() {
@@ -113,7 +134,11 @@ class NonAliasPathMention extends PathMention {
       or
       result = TTypeParamTypeParameter(i)
       or
-      result = i.(TypeAlias).getTypeRepr().(TypeReprMention).resolveType()
+      exists(TypeAlias alias | alias = i |
+        result.(AssociatedTypeTypeParameter).getTypeAlias() = alias
+        or
+        result = alias.getTypeRepr().(TypeReprMention).resolveType()
+      )
     )
   }
 }
@@ -151,6 +176,17 @@ class TypeParamMention extends TypeMention, TypeParam {
   override TypeReprMention getTypeArgument(int i) { none() }
 
   override Type resolveType() { result = TTypeParamTypeParameter(this) }
+}
+
+// Used to represent implicit type arguments for associated types in traits.
+class TypeAliasMention extends TypeMention, TypeAlias {
+  private Type t;
+
+  TypeAliasMention() { t = TAssociatedTypeTypeParameter(this) }
+
+  override TypeReprMention getTypeArgument(int i) { none() }
+
+  override Type resolveType() { result = t }
 }
 
 /**
@@ -204,7 +240,11 @@ class ImplMention extends TypeMention, ImplItemNode {
 }
 
 class TraitMention extends TypeMention, TraitItemNode {
-  override TypeMention getTypeArgument(int i) { result = this.getTypeParam(i) }
+  override TypeMention getTypeArgument(int i) {
+    result = this.getTypeParam(i)
+    or
+    traitAliasIndex(this, i, result)
+  }
 
   override Type resolveType() { result = TTrait(this) }
 }

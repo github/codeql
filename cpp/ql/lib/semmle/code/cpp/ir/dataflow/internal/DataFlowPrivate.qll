@@ -371,7 +371,7 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+    op = call.getArgumentOperand(pos.(DirectPosition).getArgumentIndex())
   }
 }
 
@@ -410,8 +410,16 @@ class ParameterPosition = Position;
 class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
+  /** Gets a textual representation of this position. */
   abstract string toString();
 
+  /**
+   * Gets the argument index of this position. The qualifier of a call has
+   * argument index `-1`.
+   */
+  abstract int getArgumentIndex();
+
+  /** Gets the indirection index of this position. */
   abstract int getIndirectionIndex();
 }
 
@@ -428,7 +436,7 @@ class DirectPosition extends Position, TDirectPosition {
     result = index.toString()
   }
 
-  int getIndex() { result = index }
+  override int getArgumentIndex() { result = index }
 
   final override int getIndirectionIndex() { result = 0 }
 }
@@ -445,16 +453,29 @@ class IndirectionPosition extends Position, TIndirectionPosition {
     else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
-  int getArgumentIndex() { result = argumentIndex }
+  override int getArgumentIndex() { result = argumentIndex }
 
   final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
-  TDirectPosition(int argumentIndex) { exists(any(CallInstruction c).getArgument(argumentIndex)) } or
+  TDirectPosition(int argumentIndex) {
+    exists(any(CallInstruction c).getArgument(argumentIndex))
+    or
+    // Handle the rare case where there is a function definition but no call to
+    // the function.
+    exists(any(Cpp::Function f).getParameter(argumentIndex))
+  } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
     Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
+    or
+    // Handle the rare case where there is a function definition but no call to
+    // the function.
+    exists(Cpp::Function f, Cpp::Parameter p |
+      p = f.getParameter(argumentIndex) and
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+    )
   }
 
 private newtype TReturnKind =
@@ -501,6 +522,15 @@ class ReturnKind extends TReturnKind {
 
   /** Gets a textual representation of this return kind. */
   abstract string toString();
+
+  /** Holds if this `ReturnKind` is generated from a `return` statement. */
+  abstract predicate isNormalReturn();
+
+  /**
+   * Holds if this `ReturnKind` is generated from a write to the parameter with
+   * index `argumentIndex`
+   */
+  abstract predicate isIndirectReturn(int argumentIndex);
 }
 
 /**
@@ -514,6 +544,10 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect return" }
+
+  override predicate isNormalReturn() { any() }
+
+  override predicate isIndirectReturn(int argumentIndex) { none() }
 }
 
 /**
@@ -528,6 +562,10 @@ private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
+
+  override predicate isNormalReturn() { none() }
+
+  override predicate isIndirectReturn(int argumentIndex_) { argumentIndex_ = argumentIndex }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */

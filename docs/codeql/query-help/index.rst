@@ -29,9 +29,9 @@ For a full list of the CWEs covered by these queries, see ":doc:`CodeQL CWE cove
    :hidden:
    :titlesonly:
 
-   actions
    cpp
    csharp
+   actions
    go
    java
    javascript

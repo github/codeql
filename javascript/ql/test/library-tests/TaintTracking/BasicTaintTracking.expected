@@ -35,11 +35,23 @@ legacyDataFlowDifference
 | spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
 | spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
 | tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a | only flow with OLD data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:5:10:5:10 | y | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:7:10:7:17 | y.buffer | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:42:10:42:30 | typedAr ... ring(y) | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:48:10:48:12 | str | only flow with NEW data flow library |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:52:10:52:13 | str2 | only flow with NEW data flow library |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
 consistencyIssue
 | nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
 | stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
 | stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
+| typed-arrays.js:23 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
+| typed-arrays.js:28 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
+| typed-arrays.js:32 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
+| typed-arrays.js:36 | expected an alert, but found none | NOT OK -- Should be flagged but it is not. | Consistency |
 flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
@@ -325,6 +337,14 @@ flow
 | tst.js:87:22:87:29 | source() | tst.js:90:14:90:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:5:10:5:10 | y |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:7:10:7:17 | y.buffer |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:11:10:11:12 | arr |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:15:10:15:10 | z |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:18:10:18:12 | sub |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:42:10:42:30 | typedAr ... ring(y) |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:48:10:48:12 | str |
+| typed-arrays.js:2:13:2:20 | source() | typed-arrays.js:52:10:52:13 | str2 |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:8:10:8:17 | captured |
 | use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |
 | xml.js:5:18:5:25 | source() | xml.js:8:14:8:17 | text |

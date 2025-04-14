@@ -11,15 +11,20 @@
  */
 
 import codeql.ruby.AST
+import codeql.ruby.CFG
 import codeql.ruby.dataflow.SSA
 import codeql.ruby.ApiGraphs
+
+pragma[nomagic]
+private predicate hasErbResultCall(CfgScope scope) {
+  scope = API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope()
+}
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
   RelevantLocalVariableWriteAccess() {
     not this.getVariable().getName().charAt(0) = "_" and
     not this = any(Parameter p).getAVariable().getDefiningAccess() and
-    not API::getTopLevelMember("ERB").getInstance().getAMethodCall("result").asExpr().getScope() =
-      this.getCfgScope() and
+    not hasErbResultCall(this.getCfgScope()) and
     not exists(RetryStmt r | r.getCfgScope() = this.getCfgScope()) and
     not exists(MethodCall c |
       c.getReceiver() instanceof SelfVariableAccess and
