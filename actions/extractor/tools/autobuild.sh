@@ -17,10 +17,22 @@ include:**/action.yaml
 END
 )
 
-if [ -n "${LGTM_INDEX_INCLUDE:-}" ] || [ -n "${LGTM_INDEX_EXCLUDE:-}" ] || [ -n "${LGTM_INDEX_FILTERS:-}" ] ; then
-    echo "Path filters set. Passing them through to the JavaScript extractor."
+if [ -n "${LGTM_INDEX_FILTERS:-}" ]; then
+    echo "LGTM_INDEX_FILTERS set. Using the default filters together with the user-provided filters, and passing through to the JavaScript extractor."
+    # Begin with the default path inclusions only,
+    # followed by the user-provided filters.
+    # If the user provided `paths`, those patterns override the default inclusions
+    # (because `LGTM_INDEX_FILTERS` will begin with `exclude:**/*`).
+    # If the user provided `paths-ignore`, those patterns are excluded.
+    PATH_FILTERS="$(cat << END
+${DEFAULT_PATH_FILTERS}
+${LGTM_INDEX_FILTERS}
+END
+)"
+    LGTM_INDEX_FILTERS="${PATH_FILTERS}"
+    export LGTM_INDEX_FILTERS
 else
-    echo "No path filters set. Using the default filters."
+    echo "LGTM_INDEX_FILTERS not set. Using the default filters, and passing through to the JavaScript extractor."
     LGTM_INDEX_FILTERS="${DEFAULT_PATH_FILTERS}"
     export LGTM_INDEX_FILTERS
 fi
