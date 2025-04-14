@@ -335,7 +335,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::PackExpansionType, PackExpansionTypeTag)
   MAP(swift::PackElementType, PackElementTypeTag)
   MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
-  MAP(swift::ErrorUnionType, void)  // TODO swift 6.0
+  MAP(swift::ErrorUnionType, void)  // created during type checking and only used for constraint checking
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::ParenType, ParenTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
