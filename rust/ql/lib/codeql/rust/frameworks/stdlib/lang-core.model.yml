@@ -26,6 +26,8 @@ extensions:
       - ["lang:core", "crate::ptr::write_volatile", "Argument[1]", "Argument[0].Reference", "value", "manual"]
       # Str
       - ["lang:core", "<str>::parse", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<str>::trim", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
+      - ["lang:core", "<str>::as_bytes", "Argument[self]", "ReturnValue.Reference", "taint", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
