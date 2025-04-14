@@ -119,6 +119,7 @@ import codeql.swift.elements.expr.ExistentialMetatypeToObjectExpr
 import codeql.swift.elements.expr.ExplicitCastExpr
 import codeql.swift.elements.expr.ExplicitClosureExpr
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.expr.ExtractFunctionIsolationExpr
 import codeql.swift.elements.expr.FloatLiteralExpr
 import codeql.swift.elements.expr.ForceTryExpr
 import codeql.swift.elements.expr.ForceValueExpr

@@ -1348,6 +1348,27 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that extracts the function isolation of an expression with `@isolated(any)`
+   * function type.
+   *
+   * For example:
+   * ```
+   * func foo(x: @isolated(any) () -> ()) {
+   *     let isolation = x.isolation
+   * }
+   * ```
+   */
+  class ExtractFunctionIsolationExpr extends @extract_function_isolation_expr, Expr {
+    override string toString() { result = "ExtractFunctionIsolationExpr" }
+
+    /**
+     * Gets the function expression of this extract function isolation expression.
+     */
+    Expr getFunctionExpr() { extract_function_isolation_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class ForceValueExpr extends @force_value_expr, Expr {
     override string toString() { result = "ForceValueExpr" }

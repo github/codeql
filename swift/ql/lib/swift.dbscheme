@@ -786,6 +786,7 @@ arguments(  //dir=expr
 | @enum_is_case_expr
 | @error_expr
 | @explicit_cast_expr
+| @extract_function_isolation_expr
 | @force_value_expr
 | @identity_expr
 | @if_expr
@@ -992,6 +993,11 @@ error_exprs(  //dir=expr
 explicit_cast_exprs(  //dir=expr
   int id: @explicit_cast_expr ref,
   int sub_expr: @expr_or_none ref
+);
+
+extract_function_isolation_exprs(  //dir=expr
+  unique int id: @extract_function_isolation_expr,
+  int function_expr: @expr_or_none ref
 );
 
 force_value_exprs(  //dir=expr

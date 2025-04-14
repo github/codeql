@@ -1406,6 +1406,26 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfExtractFunctionIsolationExpr(
+    ExtractFunctionIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nFunctionExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nFunctionExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediateFunctionExpr() and
+        partialPredicateCall = "FunctionExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfForceValueExpr(
     ForceValueExpr e, int index, string partialPredicateCall
   ) {
@@ -5237,6 +5257,8 @@ private module Impl {
     result = getImmediateChildOfEnumIsCaseExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfErrorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExtractFunctionIsolationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfForceValueExpr(e, index, partialAccessor)
     or

@@ -397,6 +397,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TExtractFunctionIsolationExpr(Raw::ExtractFunctionIsolationExpr id) {
+      constructExtractFunctionIsolationExpr(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFloatLiteralExpr(Raw::FloatLiteralExpr id) { constructFloatLiteralExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1232,9 +1238,9 @@ module Synth {
         TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
         TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
         TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
-        TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
-        TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
-        TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
+        TExplicitCastExpr or TExtractFunctionIsolationExpr or TForceValueExpr or TIdentityExpr or
+        TIfExpr or TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or
+        TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
         TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
         TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
         TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
@@ -2016,6 +2022,14 @@ module Synth {
    */
   TExplicitClosureExpr convertExplicitClosureExprFromRaw(Raw::Element e) {
     result = TExplicitClosureExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TExtractFunctionIsolationExpr`, if possible.
+   */
+  TExtractFunctionIsolationExpr convertExtractFunctionIsolationExprFromRaw(Raw::Element e) {
+    result = TExtractFunctionIsolationExpr(e)
   }
 
   /**
@@ -3545,6 +3559,8 @@ module Synth {
     or
     result = convertExplicitCastExprFromRaw(e)
     or
+    result = convertExtractFunctionIsolationExprFromRaw(e)
+    or
     result = convertForceValueExprFromRaw(e)
     or
     result = convertIdentityExprFromRaw(e)
@@ -4688,6 +4704,14 @@ module Synth {
    */
   Raw::Element convertExplicitClosureExprToRaw(TExplicitClosureExpr e) {
     e = TExplicitClosureExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TExtractFunctionIsolationExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertExtractFunctionIsolationExprToRaw(TExtractFunctionIsolationExpr e) {
+    e = TExtractFunctionIsolationExpr(result)
   }
 
   /**
@@ -6214,6 +6238,8 @@ module Synth {
     result = convertErrorExprToRaw(e)
     or
     result = convertExplicitCastExprToRaw(e)
+    or
+    result = convertExtractFunctionIsolationExprToRaw(e)
     or
     result = convertForceValueExprToRaw(e)
     or

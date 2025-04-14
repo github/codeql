@@ -90,6 +90,7 @@ import codeql.swift.elements.expr.internal.ErasureExprConstructor
 import codeql.swift.elements.expr.internal.ErrorExprConstructor
 import codeql.swift.elements.expr.internal.ExistentialMetatypeToObjectExprConstructor
 import codeql.swift.elements.expr.internal.ExplicitClosureExprConstructor
+import codeql.swift.elements.expr.internal.ExtractFunctionIsolationExprConstructor
 import codeql.swift.elements.expr.internal.FloatLiteralExprConstructor
 import codeql.swift.elements.expr.internal.ForceTryExprConstructor
 import codeql.swift.elements.expr.internal.ForceValueExprConstructor

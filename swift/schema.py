@@ -1425,3 +1425,18 @@ class DiscardStmt(Stmt):
     ```
     """
     sub_expr: Expr | child
+
+
+class ExtractFunctionIsolationExpr(Expr):
+    """
+    An expression that extracts the function isolation of an expression with `@isolated(any)`
+    function type.
+
+    For example:
+    ```
+    func foo(x: @isolated(any) () -> ()) {
+        let isolation = x.isolation
+    }
+    ```
+    """
+    function_expr: Expr | child

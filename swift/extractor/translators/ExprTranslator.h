@@ -125,6 +125,8 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   codeql::CopyExpr translateCopyExpr(const swift::CopyExpr& expr);
   codeql::ConsumeExpr translateConsumeExpr(const swift::ConsumeExpr& expr);
   codeql::MaterializePackExpr translateMaterializePackExpr(const swift::MaterializePackExpr& expr);
+  codeql::ExtractFunctionIsolationExpr translateExtractFunctionIsolationExpr(
+      const swift::ExtractFunctionIsolationExpr& expr);
 
  private:
   void fillClosureExpr(const swift::AbstractClosureExpr& expr, codeql::ClosureExpr& entry);

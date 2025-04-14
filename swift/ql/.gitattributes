@@ -166,6 +166,7 @@
 /lib/codeql/swift/elements/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/Expr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceValueExpr.qll linguist-generated
@@ -313,6 +314,8 @@
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExplicitClosureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceTryExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceValueExprConstructor.qll linguist-generated
@@ -818,6 +821,7 @@
 /lib/codeql/swift/generated/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/Expr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceValueExpr.qll linguist-generated
@@ -1146,6 +1150,8 @@
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/ExplicitClosureExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/FloatLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceTryExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceValueExpr/MISSING_SOURCE.txt linguist-generated
