@@ -145,6 +145,7 @@
 /lib/codeql/swift/elements/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DerivedToBaseExpr.qll linguist-generated
@@ -287,6 +288,8 @@
 /lib/codeql/swift/elements/expr/internal/CovariantFunctionConversionExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DefaultArgumentExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DerivedToBaseExprConstructor.qll linguist-generated
@@ -799,6 +802,7 @@
 /lib/codeql/swift/generated/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DerivedToBaseExpr.qll linguist-generated

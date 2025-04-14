@@ -98,6 +98,7 @@ import codeql.swift.elements.expr.ConsumeExpr
 import codeql.swift.elements.expr.CopyExpr
 import codeql.swift.elements.expr.CovariantFunctionConversionExpr
 import codeql.swift.elements.expr.CovariantReturnConversionExpr
+import codeql.swift.elements.expr.CurrentContextIsolationExpr
 import codeql.swift.elements.expr.DeclRefExpr
 import codeql.swift.elements.expr.DefaultArgumentExpr
 import codeql.swift.elements.expr.DerivedToBaseExpr

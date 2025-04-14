@@ -203,7 +203,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::MaterializePackExpr, MaterializePackExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
   MAP(swift::ExtractFunctionIsolationExpr, ExtractFunctionIsolationExprTag)
-  MAP(swift::CurrentContextIsolationExpr, void)  // TODO swift 6.0
+  MAP(swift::CurrentContextIsolationExpr, CurrentContextIsolationExprTag)
 MAP(swift::Decl, DeclTag)
   MAP(swift::ValueDecl, ValueDeclTag)
     MAP(swift::TypeDecl, TypeDeclTag)

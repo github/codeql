@@ -678,4 +678,11 @@ codeql::ExtractFunctionIsolationExpr ExprTranslator::translateExtractFunctionIso
   return entry;
 }
 
+codeql::CurrentContextIsolationExpr ExprTranslator::translateCurrentContextIsolationExpr(
+    const swift::CurrentContextIsolationExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.actor = dispatcher.fetchLabel(expr.getActor());
+  return entry;
+}
+
 }  // namespace codeql

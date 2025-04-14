@@ -1217,6 +1217,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that extracts the actor isolation of the current context, of type `(any Actor)?`.
+   * This is synthesized by the type checker and does not have any way to be expressed explicitly in
+   * the source.
+   */
+  class CurrentContextIsolationExpr extends @current_context_isolation_expr, Expr {
+    override string toString() { result = "CurrentContextIsolationExpr" }
+
+    /**
+     * Gets the actor of this current context isolation expression.
+     */
+    Expr getActor() { current_context_isolation_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }

@@ -778,6 +778,7 @@ arguments(  //dir=expr
 | @collection_expr
 | @consume_expr
 | @copy_expr
+| @current_context_isolation_expr
 | @decl_ref_expr
 | @default_argument_expr
 | @discard_assignment_expr
@@ -913,6 +914,11 @@ consume_exprs(  //dir=expr
 copy_exprs(  //dir=expr
   unique int id: @copy_expr,
   int sub_expr: @expr_or_none ref
+);
+
+current_context_isolation_exprs(  //dir=expr
+  unique int id: @current_context_isolation_expr,
+  int actor: @expr_or_none ref
 );
 
 decl_ref_exprs(  //dir=expr

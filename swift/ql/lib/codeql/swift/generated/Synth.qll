@@ -313,6 +313,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TCurrentContextIsolationExpr(Raw::CurrentContextIsolationExpr id) {
+      constructCurrentContextIsolationExpr(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TDeclRefExpr(Raw::DeclRefExpr id) { constructDeclRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1236,15 +1242,15 @@ module Synth {
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
         TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
-        TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
-        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
-        TExplicitCastExpr or TExtractFunctionIsolationExpr or TForceValueExpr or TIdentityExpr or
-        TIfExpr or TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or
-        TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
-        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
-        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
-        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
-        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
+        TCurrentContextIsolationExpr or TDeclRefExpr or TDefaultArgumentExpr or
+        TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or
+        TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TExtractFunctionIsolationExpr or
+        TForceValueExpr or TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
+        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
+        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TMaterializePackExpr or
+        TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or
+        TOptionalEvaluationExpr or TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
+        TPackElementExpr or TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
         TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
         TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
@@ -1882,6 +1888,14 @@ module Synth {
    */
   TCovariantReturnConversionExpr convertCovariantReturnConversionExprFromRaw(Raw::Element e) {
     result = TCovariantReturnConversionExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCurrentContextIsolationExpr`, if possible.
+   */
+  TCurrentContextIsolationExpr convertCurrentContextIsolationExprFromRaw(Raw::Element e) {
+    result = TCurrentContextIsolationExpr(e)
   }
 
   /**
@@ -3543,6 +3557,8 @@ module Synth {
     or
     result = convertCopyExprFromRaw(e)
     or
+    result = convertCurrentContextIsolationExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -4564,6 +4580,14 @@ module Synth {
    */
   Raw::Element convertCovariantReturnConversionExprToRaw(TCovariantReturnConversionExpr e) {
     e = TCovariantReturnConversionExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCurrentContextIsolationExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertCurrentContextIsolationExprToRaw(TCurrentContextIsolationExpr e) {
+    e = TCurrentContextIsolationExpr(result)
   }
 
   /**
@@ -6222,6 +6246,8 @@ module Synth {
     result = convertConsumeExprToRaw(e)
     or
     result = convertCopyExprToRaw(e)
+    or
+    result = convertCurrentContextIsolationExprToRaw(e)
     or
     result = convertDeclRefExprToRaw(e)
     or

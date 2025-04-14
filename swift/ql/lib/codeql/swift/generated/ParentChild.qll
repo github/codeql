@@ -1267,6 +1267,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCurrentContextIsolationExpr(
+    CurrentContextIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -5243,6 +5258,8 @@ private module Impl {
     result = getImmediateChildOfConsumeExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCurrentContextIsolationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or

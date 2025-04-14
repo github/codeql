@@ -71,6 +71,7 @@ import codeql.swift.elements.expr.internal.ConsumeExprConstructor
 import codeql.swift.elements.expr.internal.CopyExprConstructor
 import codeql.swift.elements.expr.internal.CovariantFunctionConversionExprConstructor
 import codeql.swift.elements.expr.internal.CovariantReturnConversionExprConstructor
+import codeql.swift.elements.expr.internal.CurrentContextIsolationExprConstructor
 import codeql.swift.elements.expr.internal.DeclRefExprConstructor
 import codeql.swift.elements.expr.internal.DefaultArgumentExprConstructor
 import codeql.swift.elements.expr.internal.DerivedToBaseExprConstructor
