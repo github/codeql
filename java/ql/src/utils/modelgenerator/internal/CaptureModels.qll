@@ -32,9 +32,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
 
   class Callable = J::Callable;
 
-  class NodeExtended extends DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
+  class NodeExtended = DataFlow::Node;
+
+  Callable getAsExprEnclosingCallable(NodeExtended node) {
+    result = node.asExpr().getEnclosingCallable()
   }
+
+  Callable getEnclosingCallable(NodeExtended node) { result = node.getEnclosingCallable() }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
     cu.getPackage().getName().matches("javax.swing%") or
