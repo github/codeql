@@ -154,6 +154,7 @@ import codeql.swift.elements.expr.internal.TupleExprConstructor
 import codeql.swift.elements.expr.internal.TypeExprConstructor
 import codeql.swift.elements.expr.internal.UnderlyingToOpaqueExprConstructor
 import codeql.swift.elements.expr.internal.UnevaluatedInstanceExprConstructor
+import codeql.swift.elements.expr.internal.UnreachableExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedDeclRefExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedDotExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedMemberChainResultExprConstructor

@@ -176,7 +176,7 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::LinearToDifferentiableFunctionExpr, LinearToDifferentiableFunctionExprTag)
     MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
     MAP(swift::ActorIsolationErasureExpr, ActorIsolationErasureExprTag)
-    MAP(swift::UnreachableExpr, void)  // TODO swift 6.0
+    MAP(swift::UnreachableExpr, UnreachableExprTag)
   MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
     MAP(swift::CheckedCastExpr, CheckedCastExprTag)
       MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)

@@ -234,6 +234,7 @@
 /lib/codeql/swift/elements/expr/TypeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedMemberChainResultExpr.qll linguist-generated
@@ -412,6 +413,8 @@
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDotExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedMemberChainResultExprConstructor.qll linguist-generated
@@ -897,6 +900,7 @@
 /lib/codeql/swift/generated/expr/TypeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedMemberChainResultExpr.qll linguist-generated

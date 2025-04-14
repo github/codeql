@@ -2464,6 +2464,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A conversion from the uninhabited type to any other type. It's never evaluated.
+   */
+  class UnreachableExpr extends @unreachable_expr, ImplicitConversionExpr {
+    override string toString() { result = "UnreachableExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
     ErrorElement

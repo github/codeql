@@ -1065,6 +1065,7 @@ if_exprs(  //dir=expr
 | @string_to_pointer_expr
 | @underlying_to_opaque_expr
 | @unevaluated_instance_expr
+| @unreachable_expr
 | @unresolved_type_conversion_expr
 ;
 
@@ -1641,6 +1642,10 @@ underlying_to_opaque_exprs(  //dir=expr
 
 unevaluated_instance_exprs(  //dir=expr
   unique int id: @unevaluated_instance_expr
+);
+
+unreachable_exprs(  //dir=expr
+  unique int id: @unreachable_expr
 );
 
 unresolved_member_chain_result_exprs(  //dir=expr

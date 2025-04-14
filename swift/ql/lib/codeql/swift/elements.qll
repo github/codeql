@@ -187,6 +187,7 @@ import codeql.swift.elements.expr.TupleExpr
 import codeql.swift.elements.expr.TypeExpr
 import codeql.swift.elements.expr.UnderlyingToOpaqueExpr
 import codeql.swift.elements.expr.UnevaluatedInstanceExpr
+import codeql.swift.elements.expr.UnreachableExpr
 import codeql.swift.elements.expr.UnresolvedDeclRefExpr
 import codeql.swift.elements.expr.UnresolvedDotExpr
 import codeql.swift.elements.expr.UnresolvedMemberChainResultExpr

@@ -681,6 +681,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUnreachableExpr(Raw::UnreachableExpr id) { constructUnreachableExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TUnresolvedDeclRefExpr(Raw::UnresolvedDeclRefExpr id) { constructUnresolvedDeclRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1283,7 +1287,8 @@ module Synth {
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
         TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
-        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnresolvedTypeConversionExpr;
+        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnreachableExpr or
+        TUnresolvedTypeConversionExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -2493,6 +2498,12 @@ module Synth {
   TUnevaluatedInstanceExpr convertUnevaluatedInstanceExprFromRaw(Raw::Element e) {
     result = TUnevaluatedInstanceExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnreachableExpr`, if possible.
+   */
+  TUnreachableExpr convertUnreachableExprFromRaw(Raw::Element e) { result = TUnreachableExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3750,6 +3761,8 @@ module Synth {
     result = convertUnderlyingToOpaqueExprFromRaw(e)
     or
     result = convertUnevaluatedInstanceExprFromRaw(e)
+    or
+    result = convertUnreachableExprFromRaw(e)
     or
     result = convertUnresolvedTypeConversionExprFromRaw(e)
   }
@@ -5196,6 +5209,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TUnreachableExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnreachableExprToRaw(TUnreachableExpr e) { e = TUnreachableExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TUnresolvedDeclRefExpr` to a raw DB element, if possible.
    */
   Raw::Element convertUnresolvedDeclRefExprToRaw(TUnresolvedDeclRefExpr e) {
@@ -6450,6 +6469,8 @@ module Synth {
     result = convertUnderlyingToOpaqueExprToRaw(e)
     or
     result = convertUnevaluatedInstanceExprToRaw(e)
+    or
+    result = convertUnreachableExprToRaw(e)
     or
     result = convertUnresolvedTypeConversionExprToRaw(e)
   }
