@@ -1034,6 +1034,7 @@ if_exprs(  //dir=expr
 
 @implicit_conversion_expr =
   @abi_safe_conversion_expr
+| @actor_isolation_erasure_expr
 | @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
@@ -1316,6 +1317,10 @@ vararg_expansion_exprs(  //dir=expr
 
 abi_safe_conversion_exprs(  //dir=expr
   unique int id: @abi_safe_conversion_expr
+);
+
+actor_isolation_erasure_exprs(  //dir=expr
+  unique int id: @actor_isolation_erasure_expr
 );
 
 any_hashable_erasure_exprs(  //dir=expr

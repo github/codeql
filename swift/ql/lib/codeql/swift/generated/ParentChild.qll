@@ -2148,6 +2148,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfActorIsolationErasureExpr(
+    ActorIsolationErasureExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfAnyHashableErasureExpr(
     AnyHashableErasureExpr e, int index, string partialPredicateCall
   ) {
@@ -5344,6 +5361,8 @@ private module Impl {
     result = getImmediateChildOfVarargExpansionExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAbiSafeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfActorIsolationErasureExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAnyHashableErasureExpr(e, index, partialAccessor)
     or

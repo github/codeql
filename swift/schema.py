@@ -1450,3 +1450,10 @@ class CurrentContextIsolationExpr(Expr):
     the source.
     """
     actor: Expr
+
+
+class ActorIsolationErasureExpr(ImplicitConversionExpr):
+    """
+    A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+    type.
+    """

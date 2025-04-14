@@ -195,6 +195,12 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TActorIsolationErasureExpr(Raw::ActorIsolationErasureExpr id) {
+      constructActorIsolationErasureExpr(id)
+    } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TAnyHashableErasureExpr(Raw::AnyHashableErasureExpr id) { constructAnyHashableErasureExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1266,8 +1272,8 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TImplicitConversionExpr =
-    TAbiSafeConversionExpr or TAnyHashableErasureExpr or TArchetypeToSuperExpr or
-        TArrayToPointerExpr or TBridgeFromObjCExpr or TBridgeToObjCExpr or
+    TAbiSafeConversionExpr or TActorIsolationErasureExpr or TAnyHashableErasureExpr or
+        TArchetypeToSuperExpr or TArrayToPointerExpr or TBridgeFromObjCExpr or TBridgeToObjCExpr or
         TClassMetatypeToObjectExpr or TCollectionUpcastConversionExpr or
         TConditionalBridgeFromObjCExpr or TCovariantFunctionConversionExpr or
         TCovariantReturnConversionExpr or TDerivedToBaseExpr or TDestructureTupleExpr or
@@ -1708,6 +1714,14 @@ module Synth {
    */
   TAbiSafeConversionExpr convertAbiSafeConversionExprFromRaw(Raw::Element e) {
     result = TAbiSafeConversionExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TActorIsolationErasureExpr`, if possible.
+   */
+  TActorIsolationErasureExpr convertActorIsolationErasureExprFromRaw(Raw::Element e) {
+    result = TActorIsolationErasureExpr(e)
   }
 
   /**
@@ -3675,6 +3689,8 @@ module Synth {
   TImplicitConversionExpr convertImplicitConversionExprFromRaw(Raw::Element e) {
     result = convertAbiSafeConversionExprFromRaw(e)
     or
+    result = convertActorIsolationErasureExprFromRaw(e)
+    or
     result = convertAnyHashableErasureExprFromRaw(e)
     or
     result = convertArchetypeToSuperExprFromRaw(e)
@@ -4400,6 +4416,14 @@ module Synth {
    */
   Raw::Element convertAbiSafeConversionExprToRaw(TAbiSafeConversionExpr e) {
     e = TAbiSafeConversionExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TActorIsolationErasureExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertActorIsolationErasureExprToRaw(TActorIsolationErasureExpr e) {
+    e = TActorIsolationErasureExpr(result)
   }
 
   /**
@@ -6364,6 +6388,8 @@ module Synth {
    */
   Raw::Element convertImplicitConversionExprToRaw(TImplicitConversionExpr e) {
     result = convertAbiSafeConversionExprToRaw(e)
+    or
+    result = convertActorIsolationErasureExprToRaw(e)
     or
     result = convertAnyHashableErasureExprToRaw(e)
     or

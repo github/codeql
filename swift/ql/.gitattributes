@@ -113,6 +113,7 @@
 /lib/codeql/swift/elements/decl/internal/TopLevelCodeDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TypeAliasDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AppliedPropertyWrapperExpr.qll linguist-generated
@@ -243,6 +244,8 @@
 /lib/codeql/swift/elements/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyTryExprImpl.qll linguist-generated
@@ -770,6 +773,7 @@
 /lib/codeql/swift/generated/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/generated/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AppliedPropertyWrapperExpr.qll linguist-generated

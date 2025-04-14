@@ -1939,6 +1939,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+   * type.
+   */
+  class ActorIsolationErasureExpr extends @actor_isolation_erasure_expr, ImplicitConversionExpr {
+    override string toString() { result = "ActorIsolationErasureExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "AnyHashableErasureExpr" }

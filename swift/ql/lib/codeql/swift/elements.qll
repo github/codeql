@@ -66,6 +66,7 @@ import codeql.swift.elements.decl.TypeDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
 import codeql.swift.elements.expr.AbiSafeConversionExpr
+import codeql.swift.elements.expr.ActorIsolationErasureExpr
 import codeql.swift.elements.expr.AnyHashableErasureExpr
 import codeql.swift.elements.expr.AnyTryExpr
 import codeql.swift.elements.expr.AppliedPropertyWrapperExpr
