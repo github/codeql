@@ -64,8 +64,9 @@ Recommendations specific to particular frameworks supported by this query:
 <p></p>
 <p><b>SnakeYAML</b> - <code>org.yaml:snakeyaml</code></p>
     <ul>
-        <li><b>Secure by Default</b>: No</li>
-        <li><b>Recommendation</b>: Pass an instance of <code>org.yaml.snakeyaml.constructor.SafeConstructor</code> to  <code>org.yaml.snakeyaml.Yaml</code>'s constructor before using it to deserialize untrusted data.</li>
+        <li><b>Secure by Default</b>: Yes since version 2.0.</li>
+        <li><b>Recommendation</b>: Don't deserialize untrusted data with an instance of <code>org.yaml.snakeyaml.Yaml</code> with unsafe <code>org.yaml.snakeyaml.LoaderOptions</code>,
+        that is, using a <code>org.yaml.snakeyaml.inspector.TagInspector</code> that allows global tags with <code>isGlobalTagAllowed</code>.</li>
     </ul>
 <p></p>
 <p><b>XML Decoder</b> - <code>Standard Java Library</code></p>
