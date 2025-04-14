@@ -85,12 +85,18 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     }
   }
 
+  private predicate isFinalMemberFunction(MemberFunction mf) {
+    mf.isFinal()
+    or
+    mf.getDeclaringType().isFinal()
+  }
+
   /**
    * Holds if the summary generated for `c` should also apply to overrides
    * of `c`.
    */
   private string isExtensible(Callable c) {
-    if c instanceof MemberFunction then result = "true" else result = "false"
+    if isFinalMemberFunction(c) then result = "false" else result = "true"
   }
 
   /**
