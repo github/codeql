@@ -7,5 +7,6 @@ int* f() {
 	free(buff); // BAD: If new_buffer is assigned the same address as buff,
               // the memory allocator will free the new buffer memory region,
               // leading to use-after-free problems and memory corruption.
+			  
 	return new_buffer;
 }
