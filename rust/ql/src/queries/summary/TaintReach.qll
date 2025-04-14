@@ -15,6 +15,12 @@ private module TaintReachConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node node) { any() }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from reference content at the sink.
+    isSink(node) and
+    c.getAReadContent() instanceof DataFlow::ReferenceContent
+  }
 }
 
 private module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
