@@ -48,3 +48,4 @@
 | subtype.ts:7:13:7:15 | req | 'express'.Request |
 | subtype.ts:13:13:13:15 | req | 'express'.Request |
 | subtype.ts:19:13:19:15 | req | 'express'.Request |
+| varAssignment.ts:4:9:4:11 | req | 'express'.Request |

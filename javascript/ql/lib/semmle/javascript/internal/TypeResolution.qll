@@ -189,7 +189,12 @@ module TypeResolution {
     )
   }
 
-  private predicate contextualType(Node value, Node type) {
+  predicate contextualType(Node value, Node type) {
+    exists(LocalVariable v |
+      type = v.getADeclaration().getTypeAnnotation() and
+      value = v.getAnAssignedExpr()
+    )
+    or
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
       value = call.getArgument(i) and
@@ -227,6 +232,8 @@ module TypeResolution {
    */
   predicate valueHasType(Node value, Node type) {
     value.(BindingPattern).getTypeAnnotation() = type
+    or
+    value.(TypeAssertion).getTypeAnnotation() = type
     or
     exists(VarDecl decl |
       // ValueFlow::step is restricted to variables with at most one assignment. Allow the type annotation
