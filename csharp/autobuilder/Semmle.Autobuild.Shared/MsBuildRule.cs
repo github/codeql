@@ -74,12 +74,7 @@ namespace Semmle.Autobuild.Shared
                         Argument("-DisableParallelProcessing").
                         Script;
 
-                BuildScript GetMonoVersionScript() => new CommandBuilder(builder.Actions).
-                    RunCommand("mono").
-                    Argument("--version").
-                    Script;
-
-                var preferDotnet = !builder.Actions.IsWindows() && GetMonoVersionScript().Run(builder.Actions, (_, _) => { }, (_, _, _) => { }) != 0;
+                var preferDotnet = !builder.Actions.IsWindows() && !builder.Actions.IsMonoInstalled();
 
                 var nugetRestore = GetNugetRestoreScript();
                 var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
