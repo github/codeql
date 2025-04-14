@@ -1,1 +1,5 @@
-| ProfileController.cs:10:25:10:31 | Delete1 | This action is missing an authorization check. |
+#select
+| ProfileController.cs:12:25:12:31 | Delete1 | This action is missing an authorization check. |
+| ProfileController.cs:39:25:39:31 | Delete4 | This action is missing an authorization check. |
+testFailures
+| ProfileController.cs:39:25:39:31 | This action is missing an authorization check. | Unexpected result: Alert |

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
+public class RequirePermissionAttribute : AuthorizeAttribute { }
+
 public class ProfileController : Controller
 {
     private void doThings() { }
@@ -32,6 +34,13 @@ public class ProfileController : Controller
         return View();
     }
 
+    // GOOD: The RequirePermission attribute is used (which extends AuthorizeAttribute).
+    [RequirePermission]
+    public ActionResult Delete4(int id)
+    {
+        doThings();
+        return View();
+    }
 }
 
 [Authorize]
