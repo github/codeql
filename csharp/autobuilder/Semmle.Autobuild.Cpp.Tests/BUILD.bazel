@@ -1,0 +1,18 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_xunit_test",
+)
+
+codeql_xunit_test(
+    # short name as we run into long path limitations on Windows
+    name = "acpt",
+    srcs = glob([
+        "*.cs",
+    ]),
+    deps = [
+        "//csharp/autobuilder/Semmle.Autobuild.Cpp:bin/Semmle.Autobuild.Cpp",
+        "//csharp/autobuilder/Semmle.Autobuild.Shared",
+        "@paket.main//microsoft.net.test.sdk",
+        "@paket.main//system.io.filesystem",
+    ],
+)

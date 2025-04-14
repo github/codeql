@@ -1,0 +1,17 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_binary",
+)
+
+codeql_csharp_binary(
+    name = "Semmle.Extraction.CSharp.DependencyStubGenerator",
+    srcs = glob([
+        "*.cs",
+    ]),
+    visibility = ["//csharp:__pkg__"],
+    deps = [
+        "//csharp/extractor/Semmle.Extraction.CSharp.DependencyFetching",
+        "//csharp/extractor/Semmle.Extraction.CSharp.StubGenerator",
+        "//csharp/extractor/Semmle.Util",
+    ],
+)

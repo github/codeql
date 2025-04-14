@@ -42,9 +42,14 @@ module LdapInjection {
   abstract class FilterSanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A logging operation, considered as a flow sink.
@@ -61,15 +66,20 @@ module LdapInjection {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsDnSanitizerGuard extends DnSanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsDnSanitizerGuard extends DnSanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsDnSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsDnSanitizerGuard;
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsFilterSanitizerGuard extends FilterSanitizer, StringConstCompareBarrier {
-  }
+  class ConstCompareAsFilterSanitizerGuard extends FilterSanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsFilterSanitizerGuard instead. */
+  deprecated class StringConstCompareAsFilterSanitizerGuard = ConstCompareAsFilterSanitizerGuard;
 
   /**
    * A call to replace line breaks functions as a sanitizer.

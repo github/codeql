@@ -45,11 +45,20 @@ attribute is empty.
 </p>
 
 <p>
-Note, however, that many browsers accept backslash characters (<code>\</code>) as equivalent
-to forward slash characters (<code>/</code>) in URLs, but the <code>urlparse</code> function
-does not. To account for this, you can first replace all backslashes with forward slashes,
-as shown in the following example:
+Note, however, that some cases are not handled as we desire out-of-the-box by <code>urlparse</code>, so we need to adjust two things, as shown in the example below:
 </p>
+
+<ul>
+  <li>
+    Many browsers accept backslash characters (<code>\</code>) as equivalent
+    to forward slash characters (<code>/</code>) in URLs, but the <code>urlparse</code> function
+    does not.
+  </li>
+  <li>
+    Mistyped URLs such as <code>https:/example.com</code> or <code>https:///example.com</code> are parsed as having an empty <code>netloc</code> attribute, while browsers will still redirect to the correct site.
+  </li>
+</ul>
+
 
 <sample src="examples/redirect_good2.py"/>
 

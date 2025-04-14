@@ -15,12 +15,12 @@ class Blowfish
 
 protocol BlockMode { }
 
-struct ECB: BlockMode { 
+struct ECB: BlockMode {
 	init() { }
 }
 
-struct CBC: BlockMode { 
-	init() { }
+struct CBC: BlockMode {
+	init(iv: Array<UInt8>) { }
 }
 
 protocol PaddingProtocol { }
@@ -30,12 +30,17 @@ enum Padding: PaddingProtocol {
 }
 
 // Create some inter-procedural dependencies
+
+func getRandomArray() -> Array<UInt8> {
+	(0..<10).map({ _ in UInt8.random(in: 0...UInt8.max) })
+}
+
 func getECBBlockMode() -> BlockMode {
 	return ECB()
 }
 
 func getCBCBlockMode() ->  BlockMode {
-	return CBC()
+	return CBC(iv: getRandomArray())
 }
 
 // --- tests ---
@@ -43,7 +48,8 @@ func getCBCBlockMode() ->  BlockMode {
 func test1() {
 	let key: Array<UInt8> = [0x2a, 0x3a, 0x80, 0x05, 0xaf, 0x46, 0x58, 0x2d, 0x66, 0x52, 0x10, 0xae, 0x86, 0xd3, 0x8e, 0x8f]
 	let ecb = ECB()
-	let cbc = CBC()
+	let iv = getRandomArray()
+	let cbc = CBC(iv: iv)
 	let padding = Padding.noPadding
 
 	// AES test cases
@@ -56,8 +62,8 @@ func test1() {
 
 	let ag1 = AES(key: key, blockMode: cbc, padding: padding) // GOOD
 	let ag2 = AES(key: key, blockMode: cbc) // GOOD
-	let ag3 = AES(key: key, blockMode: CBC(), padding: padding) // GOOD
-	let ag4 = AES(key: key, blockMode: CBC()) // GOOD
+	let ag3 = AES(key: key, blockMode: CBC(iv: iv), padding: padding) // GOOD
+	let ag4 = AES(key: key, blockMode: CBC(iv: iv)) // GOOD
 	let ag5 = AES(key: key, blockMode: getCBCBlockMode(), padding: padding) // GOOD
 	let ag6 = AES(key: key, blockMode: getCBCBlockMode()) // GOOD
 
@@ -67,6 +73,6 @@ func test1() {
 	let bb3 = Blowfish(key: key, blockMode: getECBBlockMode(), padding: padding) // BAD
 
 	let bg1 = Blowfish(key: key, blockMode: cbc, padding: padding) // GOOD
-	let bg2 = Blowfish(key: key, blockMode: CBC(), padding: padding) // GOOD
+	let bg2 = Blowfish(key: key, blockMode: CBC(iv: iv), padding: padding) // GOOD
 	let bg3 = Blowfish(key: key, blockMode: getCBCBlockMode(), padding: padding) // GOOD
 }

@@ -1,22 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>Semmle.Extraction.CSharp.DependencyFetching</AssemblyName>
-    <RootNamespace>Semmle.Extraction.CSharp.DependencyFetching</RootNamespace>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-    <Nullable>enable</Nullable>
     <NoWarn>$(NoWarn);CA1822</NoWarn>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
-    <ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
-  </ItemGroup>
+    <ProjectReference Include="..\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj" />
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
+    <InternalsVisibleTo Include="Semmle.Extraction.Tests" />
   </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

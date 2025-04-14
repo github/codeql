@@ -1,12 +1,8 @@
+#select
+| Test.java:19:20:19:50 | getInstance(...) | Test.java:19:45:19:49 | "DES" | Test.java:19:45:19:49 | "DES" | Cryptographic algorithm $@ is insecure. It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. | Test.java:19:45:19:49 | "DES" | DES |
+| Test.java:42:14:42:38 | getInstance(...) | Test.java:42:33:42:37 | "RC2" | Test.java:42:33:42:37 | "RC2" | Cryptographic algorithm $@ is insecure. It is vulnerable to related-key attacks. Consider using AES instead. | Test.java:42:33:42:37 | "RC2" | RC2 |
 edges
-| WeakHashing.java:21:86:21:90 | "MD5" : String | WeakHashing.java:21:56:21:91 | getProperty(...) | provenance | MaD:43975 |
 nodes
 | Test.java:19:45:19:49 | "DES" | semmle.label | "DES" |
 | Test.java:42:33:42:37 | "RC2" | semmle.label | "RC2" |
-| WeakHashing.java:21:56:21:91 | getProperty(...) | semmle.label | getProperty(...) |
-| WeakHashing.java:21:86:21:90 | "MD5" : String | semmle.label | "MD5" : String |
 subpaths
-#select
-| Test.java:19:20:19:50 | getInstance(...) | Test.java:19:45:19:49 | "DES" | Test.java:19:45:19:49 | "DES" | Cryptographic algorithm $@ is weak and should not be used. | Test.java:19:45:19:49 | "DES" | DES |
-| Test.java:42:14:42:38 | getInstance(...) | Test.java:42:33:42:37 | "RC2" | Test.java:42:33:42:37 | "RC2" | Cryptographic algorithm $@ is weak and should not be used. | Test.java:42:33:42:37 | "RC2" | RC2 |
-| WeakHashing.java:21:30:21:92 | getInstance(...) | WeakHashing.java:21:86:21:90 | "MD5" : String | WeakHashing.java:21:56:21:91 | getProperty(...) | Cryptographic algorithm $@ is weak and should not be used. | WeakHashing.java:21:86:21:90 | "MD5" | MD5 |

@@ -1,0 +1,2 @@
+| gen_function.rs:3:1:4:38 | fn foo | gen_function.rs:4:4:4:6 | foo |
+| gen_function.rs:7:5:7:13 | fn bar | gen_function.rs:7:8:7:10 | bar |

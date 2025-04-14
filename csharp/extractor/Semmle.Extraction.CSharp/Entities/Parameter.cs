@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -99,7 +98,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 // This breaks our database constraints.
                 // Generate an impossible name to ensure that it doesn't conflict.
                 var conflictingCount = Symbol.ContainingSymbol.GetParameters().Count(p => p.Ordinal < Symbol.Ordinal && p.Name == Symbol.Name);
-                return conflictingCount > 0 ? Symbol.Name + "`" + conflictingCount : Symbol.Name;
+                return conflictingCount > 0 ? $"{Symbol.Name}`{conflictingCount}" : Symbol.Name;
             }
         }
 

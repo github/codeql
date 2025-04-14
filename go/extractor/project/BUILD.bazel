@@ -11,8 +11,7 @@ go_library(
         "//go/extractor/diagnostics",
         "//go/extractor/toolchain",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/mod/modfile",
-        "//go/extractor/vendor/golang.org/x/mod/semver",
+        "@org_golang_x_mod//modfile",
     ],
 )
 
@@ -20,5 +19,8 @@ go_test(
     name = "project_test",
     srcs = ["project_test.go"],
     embed = [":project"],
-    deps = ["//go/extractor/vendor/golang.org/x/mod/modfile"],
+    deps = [
+        "//go/extractor/util",
+        "@org_golang_x_mod//modfile",
+    ],
 )

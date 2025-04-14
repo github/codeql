@@ -281,6 +281,10 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
       result = this.getArgument(i - 1)
     else result = this.getArgument(i)
   }
+
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getQualifier().stripImplicit() else result = this
+  }
 }
 
 /**
@@ -528,7 +532,7 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   final override Callable getARuntimeTarget() {
     exists(ExplicitDelegateLikeDataFlowCall call |
       this = call.getCall() and
-      result = viableCallableLambda(call, _).asCallable()
+      result = viableCallableLambda(call, _).asCallable(_)
     )
   }
 

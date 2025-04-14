@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Requests, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Requests, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -26,6 +26,7 @@ namespace System
             public bool MutuallyAuthenticated { get => throw null; set { } }
             public string[] ProtectionRealm { get => throw null; set { } }
         }
+        public delegate System.Net.IPEndPoint BindIPEndPoint(System.Net.ServicePoint servicePoint, System.Net.IPEndPoint remoteEndPoint, int retryCount);
         namespace Cache
         {
             public enum HttpCacheAgeControl
@@ -313,6 +314,57 @@ namespace System
             public ProtocolViolationException(string message) => throw null;
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
             void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
+        }
+        [System.Flags]
+        public enum SecurityProtocolType
+        {
+            SystemDefault = 0,
+            Ssl3 = 48,
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072,
+            Tls13 = 12288,
+        }
+        public class ServicePoint
+        {
+            public System.Uri Address { get => throw null; }
+            public System.Net.BindIPEndPoint BindIPEndPointDelegate { get => throw null; set { } }
+            public System.Security.Cryptography.X509Certificates.X509Certificate Certificate { get => throw null; }
+            public System.Security.Cryptography.X509Certificates.X509Certificate ClientCertificate { get => throw null; }
+            public bool CloseConnectionGroup(string connectionGroupName) => throw null;
+            public int ConnectionLeaseTimeout { get => throw null; set { } }
+            public int ConnectionLimit { get => throw null; set { } }
+            public string ConnectionName { get => throw null; }
+            public int CurrentConnections { get => throw null; }
+            public bool Expect100Continue { get => throw null; set { } }
+            public System.DateTime IdleSince { get => throw null; }
+            public int MaxIdleTime { get => throw null; set { } }
+            public virtual System.Version ProtocolVersion { get => throw null; }
+            public int ReceiveBufferSize { get => throw null; set { } }
+            public void SetTcpKeepAlive(bool enabled, int keepAliveTime, int keepAliveInterval) => throw null;
+            public bool SupportsPipelining { get => throw null; }
+            public bool UseNagleAlgorithm { get => throw null; set { } }
+        }
+        public class ServicePointManager
+        {
+            public static bool CheckCertificateRevocationList { get => throw null; set { } }
+            public static int DefaultConnectionLimit { get => throw null; set { } }
+            public const int DefaultNonPersistentConnectionLimit = 4;
+            public const int DefaultPersistentConnectionLimit = 2;
+            public static int DnsRefreshTimeout { get => throw null; set { } }
+            public static bool EnableDnsRoundRobin { get => throw null; set { } }
+            public static System.Net.Security.EncryptionPolicy EncryptionPolicy { get => throw null; }
+            public static bool Expect100Continue { get => throw null; set { } }
+            public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(System.Uri address) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(System.Uri address, System.Net.IWebProxy proxy) => throw null;
+            public static int MaxServicePointIdleTime { get => throw null; set { } }
+            public static int MaxServicePoints { get => throw null; set { } }
+            public static bool ReusePort { get => throw null; set { } }
+            public static System.Net.SecurityProtocolType SecurityProtocol { get => throw null; set { } }
+            public static System.Net.Security.RemoteCertificateValidationCallback ServerCertificateValidationCallback { get => throw null; set { } }
+            public static void SetTcpKeepAlive(bool enabled, int keepAliveTime, int keepAliveInterval) => throw null;
+            public static bool UseNagleAlgorithm { get => throw null; set { } }
         }
         public class WebException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
         {

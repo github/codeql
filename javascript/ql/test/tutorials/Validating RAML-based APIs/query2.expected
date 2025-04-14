@@ -1,5 +1,5 @@
-WARNING: Unused method getMethod (query2.ql:31,14-23)
-WARNING: Unused method getResponse (query2.ql:45,13-24)
+WARNING: unused method 'getMethod' (query2.ql:31,14-23)
+WARNING: unused method 'getResponse' (query2.ql:45,13-24)
 | robonode/src/assets/raml/api.raml:8:3:72:14 | get: | /robots |
 | robonode/src/assets/raml/api.raml:15:5:72:14 | uriParameters: | /robots/{robotId} |
 | robonode/src/assets/raml/api.raml:24:7:54:4 | get: | /robots/{robotId}/commands |

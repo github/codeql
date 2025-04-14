@@ -3,7 +3,7 @@ import codeql.dataflow.internal.AccessPathSyntax
 import codeql.ruby.ast.internal.TreeSitter
 import codeql.ruby.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 import codeql.ruby.ApiGraphs
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 private predicate accessPathRange(string s) { hasExpectationWithValue(_, s) }
 

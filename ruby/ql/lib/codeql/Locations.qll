@@ -64,5 +64,5 @@ class Location extends @location_default {
 
 /** An entity representing an empty location. */
 class EmptyLocation extends Location {
-  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
+  EmptyLocation() { empty_location(this) }
 }

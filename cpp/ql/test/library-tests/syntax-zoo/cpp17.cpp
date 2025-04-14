@@ -1,4 +1,4 @@
-// semmle-extractor-options: --c++17
+// semmle-extractor-options: -std=c++17
 
 namespace std { typedef unsigned long size_t; }
 

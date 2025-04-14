@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         private VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Extraction.Entities.Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, AnnotatedTypeSymbol? type, TypeSyntax? optionalSyntax, Location exprLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
             var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, isCompilerGenerated: false, null));
             cx.Try(null, null, () =>

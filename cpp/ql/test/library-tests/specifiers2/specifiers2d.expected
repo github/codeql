@@ -1,3 +1,22 @@
+| cpp20.cpp:17:28:17:28 | (unnamed parameter 0) | file://:0:0:0:0 | const T | file://:0:0:0:0 | const |
+| cpp20.cpp:17:28:17:28 | (unnamed parameter 0) | file://:0:0:0:0 | const char | file://:0:0:0:0 | const |
+| cpp20.cpp:17:28:17:28 | (unnamed parameter 0) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:24:24:24:24 | (unnamed parameter 0) | file://:0:0:0:0 | const T | file://:0:0:0:0 | const |
+| cpp20.cpp:40:47:40:47 | (unnamed parameter 0) | file://:0:0:0:0 | const T | file://:0:0:0:0 | const |
+| cpp20.cpp:40:47:40:47 | (unnamed parameter 0) | file://:0:0:0:0 | const char | file://:0:0:0:0 | const |
+| cpp20.cpp:40:47:40:47 | (unnamed parameter 0) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:51:29:51:29 | (unnamed parameter 0) | file://:0:0:0:0 | const char | file://:0:0:0:0 | const |
+| cpp20.cpp:51:29:51:29 | (unnamed parameter 0) | file://:0:0:0:0 | const char | file://:0:0:0:0 | const |
+| cpp20.cpp:51:29:51:29 | (unnamed parameter 0) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:51:29:51:29 | (unnamed parameter 0) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:51:38:51:38 | (unnamed parameter 1) | file://:0:0:0:0 | const U | file://:0:0:0:0 | const |
+| cpp20.cpp:51:38:51:38 | (unnamed parameter 1) | file://:0:0:0:0 | const U | file://:0:0:0:0 | const |
+| cpp20.cpp:51:38:51:38 | (unnamed parameter 1) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:51:38:51:38 | (unnamed parameter 1) | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
+| cpp20.cpp:55:47:55:47 | (unnamed parameter 0) | file://:0:0:0:0 | const T | file://:0:0:0:0 | const |
+| cpp20.cpp:55:56:55:56 | (unnamed parameter 1) | file://:0:0:0:0 | const U | file://:0:0:0:0 | const |
+| cpp20.cpp:64:23:64:32 | (unnamed parameter 0) | file://:0:0:0:0 | const char | file://:0:0:0:0 | const |
+| file://:0:0:0:0 | (unnamed parameter 0) | file://:0:0:0:0 | const double | file://:0:0:0:0 | const |
 | specifiers2.c:18:21:18:23 | svi | file://:0:0:0:0 | volatile int | file://:0:0:0:0 | volatile |
 | specifiers2.c:19:11:19:12 | ci | file://:0:0:0:0 | const int | file://:0:0:0:0 | const |
 | specifiers2.c:21:34:21:34 | p | file://:0:0:0:0 | char *__restrict__ | file://:0:0:0:0 | restrict |

@@ -1,6 +1,7 @@
 import sys
 
 import pytest
+from misc.codegen.lib.schemadefs import optional
 
 from misc.codegen.test.utils import *
 from misc.codegen.lib import schemadefs as defs
@@ -100,7 +101,7 @@ def test_group():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', group="xxx"),
+        'A': schema.Class('A', pragmas={"group": "xxx"}),
     }
 
 
@@ -123,8 +124,8 @@ def test_group_is_inherited():
     assert data.classes == {
         'A': schema.Class('A', derived={'B', 'C'}),
         'B': schema.Class('B', bases=['A'], derived={'D'}),
-        'C': schema.Class('C', bases=['A'], derived={'D'}, group='xxx'),
-        'D': schema.Class('D', bases=['B', 'C'], group='xxx'),
+        'C': schema.Class('C', bases=['A'], derived={'D'}, pragmas={"group": "xxx"}),
+        'D': schema.Class('D', bases=['B', 'C'], pragmas={"group": "xxx"}),
     }
 
 
@@ -268,15 +269,21 @@ def test_builtin_predicate_and_set_children_not_allowed(spec):
                 x: spec | defs.child
 
 
-_pragmas = [(defs.qltest.skip, "qltest_skip"),
-            (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
-            (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
-            (defs.cpp.skip, "cpp_skip"),
-            (defs.ql.internal, "ql_internal"),
-            ]
+_class_pragmas = [
+    (defs.qltest.collapse_hierarchy, "qltest_collapse_hierarchy"),
+    (defs.qltest.uncollapse_hierarchy, "qltest_uncollapse_hierarchy"),
+    (defs.qltest.skip, "qltest_skip"),
+]
+
+_property_pragmas = [
+    (defs.cpp.skip, "cpp_skip"),
+    (defs.ql.internal, "ql_internal"),
+]
+
+_pragmas = _class_pragmas + _property_pragmas
 
 
-@pytest.mark.parametrize("pragma,expected", _pragmas)
+@pytest.mark.parametrize("pragma,expected", _property_pragmas)
 def test_property_with_pragma(pragma, expected):
     @load
     class data:
@@ -292,7 +299,7 @@ def test_property_with_pragma(pragma, expected):
 
 def test_property_with_pragmas():
     spec = defs.string
-    for pragma, _ in _pragmas:
+    for pragma, _ in _property_pragmas:
         spec |= pragma
 
     @load
@@ -302,7 +309,7 @@ def test_property_with_pragmas():
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
-            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _pragmas]),
+            schema.SingleProperty('x', 'string', pragmas=[expected for _, expected in _property_pragmas]),
         ]),
     }
 
@@ -348,8 +355,8 @@ def test_synth_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(from_class="A")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(from_class="A")}),
     }
 
 
@@ -364,7 +371,7 @@ def test_synth_from_class_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(from_class="B")),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(from_class="B")}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -389,8 +396,8 @@ def test_synth_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=True),
-        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": True}),
+        'B': schema.Class('B', bases=['A'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})}),
     }
 
 
@@ -408,7 +415,7 @@ def test_synth_class_on_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, pragmas={"synth": schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})}),
         'B': schema.Class('B', bases=['A']),
     }
 
@@ -447,10 +454,10 @@ def test_synth_class_hierarchy():
 
     assert data.classes == {
         'Root': schema.Class('Root', derived={'Base', 'C'}),
-        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, synth=True),
-        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, synth=True),
-        'A': schema.Class('A', bases=['Intermediate'], synth=schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})),
-        'B': schema.Class('B', bases=['Base'], synth=schema.SynthInfo(from_class='Base')),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, pragmas={"synth": True}),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, pragmas={"synth": True}),
+        'A': schema.Class('A', bases=['Intermediate'], pragmas={"synth": schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})}),
+        'B': schema.Class('B', bases=['Base'], pragmas={"synth": schema.SynthInfo(from_class='Base')}),
         'C': schema.Class('C', bases=['Root']),
     }
 
@@ -635,7 +642,18 @@ def test_class_default_doc_name():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', default_doc_name="b"),
+        'A': schema.Class('A', pragmas={"ql_default_doc_name": "b"}),
+    }
+
+
+def test_db_table_name():
+    @load
+    class data:
+        class A:
+            x: optional[int] | defs.ql.db_table_name("foo")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[schema.OptionalProperty("x", "int", pragmas={"ql_db_table_name": "foo"})]),
     }
 
 
@@ -719,11 +737,11 @@ def test_hideable():
             pass
 
     assert data.classes == {
-        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, hideable=True),
-        "A": schema.Class("A", bases=["Root"], derived={"B"}, hideable=True),
-        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, hideable=True),
-        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], hideable=True),
-        "NonHideable": schema.Class("NonHideable", bases=["Root"], hideable=False),
+        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, pragmas=["ql_hideable"]),
+        "A": schema.Class("A", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, pragmas=["ql_hideable"]),
+        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], pragmas=["ql_hideable"]),
+        "NonHideable": schema.Class("NonHideable", bases=["Root"]),
     }
 
 
@@ -747,12 +765,213 @@ def test_test_with():
         class D(Root):
             pass
 
+        class E(B):
+            pass
+
     assert data.classes == {
         "Root": schema.Class("Root", derived=set("ABCD")),
         "A": schema.Class("A", bases=["Root"]),
-        "B": schema.Class("B", bases=["Root"], test_with="A"),
-        "C": schema.Class("C", bases=["Root"], test_with="D"),
+        "B": schema.Class("B", bases=["Root"], pragmas={"qltest_test_with": "A"}, derived={'E'}),
+        "C": schema.Class("C", bases=["Root"], pragmas={"qltest_test_with": "D"}),
         "D": schema.Class("D", bases=["Root"]),
+        "E": schema.Class("E", bases=["B"], pragmas={"qltest_test_with": "A"}),
+    }
+
+
+def test_annotate_docstring():
+    @load
+    class data:
+        class Root:
+            """ old docstring """
+
+        class A(Root):
+            """ A docstring """
+
+        @defs.annotate(Root)
+        class _:
+            """
+            new
+            docstring
+            """
+
+        @defs.annotate(A)
+        class _:
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", doc=["new", "docstring"], derived={"A"}),
+        "A": schema.Class("A", bases=["Root"], doc=["A docstring"]),
+    }
+
+
+def test_annotate_decorations():
+    @load
+    class data:
+        @defs.qltest.skip
+        class Root:
+            pass
+
+        @defs.annotate(Root)
+        @defs.qltest.collapse_hierarchy
+        @defs.ql.hideable
+        @defs.cpp.skip
+        class _:
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", pragmas=["qltest_skip", "cpp_skip", "ql_hideable", "qltest_collapse_hierarchy"]),
+    }
+
+
+def test_annotate_fields():
+    @load
+    class data:
+        class Root:
+            x: defs.int
+            y: defs.optional["Root"] | defs.child
+
+        @defs.annotate(Root)
+        class _:
+            x: defs._ | defs.doc("foo")
+            y: defs._ | defs.ql.internal
+            z: defs.string
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int", doc="foo"),
+            schema.OptionalProperty("y", "Root", pragmas=["ql_internal"], is_child=True),
+            schema.SingleProperty("z", "string"),
+        ]),
+    }
+
+
+def test_annotate_fields_negations():
+    @load
+    class data:
+        class Root:
+            x: defs.int | defs.ql.internal
+            y: defs.optional["Root"] | defs.child | defs.desc("foo\nbar\n")
+            z: defs.string | defs.synth | defs.doc("foo")
+
+        @defs.annotate(Root)
+        class _:
+            x: defs._ | ~defs.ql.internal
+            y: defs._ | ~defs.child | ~defs.ql.internal | ~defs.desc
+            z: defs._ | ~defs.synth | ~defs.doc
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int"),
+            schema.OptionalProperty("y", "Root"),
+            schema.SingleProperty("z", "string"),
+        ]),
+    }
+
+
+def test_annotate_non_existing_field():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.annotate(Root)
+            class _:
+                x: defs._ | defs.doc("foo")
+
+
+def test_annotate_not_underscore():
+    with pytest.raises(schema.Error):
+        @load
+        class data:
+            class Root:
+                pass
+
+            @defs.annotate(Root)
+            class Something:
+                """
+                new
+                docstring
+                """
+
+
+def test_annotate_replace_bases():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        class B(Root):
+            pass
+
+        class C(B):
+            pass
+
+        class Derived(A, B):
+            pass
+
+        @defs.annotate(Derived, replace_bases={B: C})
+        class _:
+            pass
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "B"}),
+        "A": schema.Class("A", bases=["Root"], derived={"Derived"}),
+        "B": schema.Class("B", bases=["Root"], derived={"C"}),
+        "C": schema.Class("C", bases=["B"], derived={"Derived"}),
+        "Derived": schema.Class("Derived", bases=["A", "C"]),
+    }
+
+
+def test_annotate_add_bases():
+    @load
+    class data:
+        class Root:
+            pass
+
+        class A(Root):
+            pass
+
+        class B(Root):
+            pass
+
+        class C(Root):
+            pass
+
+        class Derived(A):
+            pass
+
+        @defs.annotate(Derived, add_bases=(B, C))
+        class _:
+            pass
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "B", "C"}),
+        "A": schema.Class("A", bases=["Root"], derived={"Derived"}),
+        "B": schema.Class("B", bases=["Root"], derived={"Derived"}),
+        "C": schema.Class("C", bases=["Root"], derived={"Derived"}),
+        "Derived": schema.Class("Derived", bases=["A", "B", "C"]),
+    }
+
+
+def test_annotate_drop_field():
+    @load
+    class data:
+        class Root:
+            x: defs.int
+            y: defs.string
+            z: defs.boolean
+
+        @defs.annotate(Root)
+        class _:
+            y: defs.drop
+
+    assert data.classes == {
+        "Root": schema.Class("Root", properties=[
+            schema.SingleProperty("x", "int"),
+            schema.SingleProperty("z", "boolean"),
+        ]),
     }
 
 

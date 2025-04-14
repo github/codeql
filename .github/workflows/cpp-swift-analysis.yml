@@ -19,7 +19,7 @@ on:
 jobs:
   CodeQL-Build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     permissions:
       contents: read
@@ -37,18 +37,16 @@ jobs:
       with:
         languages: cpp
         config-file: ./.github/codeql/codeql-config.yml
-  
-    - name: "[Ubuntu] Remove GCC 13 from runner image"
-      shell: bash
+
+    - name: Install dependencies
       run: |
-        sudo rm -f /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
         sudo apt-get update
-        sudo apt-get install -y --allow-downgrades libc6=2.35-* libc6-dev=2.35-* libstdc++6=12.3.0-* libgcc-s1=12.3.0-*
+        sudo apt-get install -y uuid-dev
 
     - name: "Build Swift extractor using Bazel"
       run: |
         bazel clean --expunge
-        bazel run //swift:create-extractor-pack --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results --spawn_strategy=local --features=-layering_check
+        bazel run //swift:install --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results --spawn_strategy=local
         bazel shutdown
 
     - name: Perform CodeQL Analysis

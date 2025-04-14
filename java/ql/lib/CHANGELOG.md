@@ -1,3 +1,253 @@
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* Java extraction is now able to download Maven 3.9.x if a Maven Enforcer Plugin configuration indicates it is necessary. Maven 3.8.x is still preferred if the enforcer-plugin configuration (if any) permits it.
+* Added a path injection sanitizer for calls to `java.lang.String.matches`, `java.lang.String.replace`, and `java.lang.String.replaceAll` that make sure '/', '\', '..' are not in the path.
+
+### Bug Fixes
+
+* In `build-mode: none` where the project has a Gradle build system, database creation no longer attempts to download some non-existent jar files relating to non-jar Maven artifacts, such as BOMs. This was harmless, but saves some time and reduces spurious warnings.
+* Java extraction no longer freezes for a long time or times out when using libraries that feature expanding cyclic generic types. For example, this was known to occur when using some classes from the Blazebit Persistence library.
+* Java build-mode `none` no longer fails when a required version of Gradle cannot be downloaded using the `gradle wrapper` command, such as due to a firewall. It will now attempt to use the system version of Gradle if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` no longer fails when a required version of Maven cannot be downloaded, such as due to a firewall. It will now attempt to use the system version of Maven if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` now correctly uses Maven dependency information on Windows platforms.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 24.
+
+### Minor Analysis Improvements
+
+* Added a path injection sanitizer for the `child` argument of a `java.io.File` constructor if that argument does not contain path traversal sequences.
+
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isLValue` and `isRValue` predicates from the `VarAccess` class, use `isVarWrite` and `isVarRead` respectively instead.
+* Deleted the deprecated `getRhs` predicate from the `VarWrite` class, use `getASource` instead.
+* Deleted the deprecated `LValue` and `RValue` classes, use `VarWrite` and `VarRead` respectively instead.
+* Deleted a lot of deprecated classes ending in "*Access", use the corresponding "*Call" classes instead.
+* Deleted a lot of deprecated predicates ending in "*Access", use the corresponding "*Call" predicates instead.
+* Deleted the deprecated `EnvInput` and `DatabaseInput` classes from `FlowSources.qll`, use the threat models feature instead.
+* Deleted some deprecated API predicates from `SensitiveApi.qll`, use the Sink classes from that file instead.
+
+### Minor Analysis Improvements
+
+* We now allow classes which don't have any JAX-RS annotations to inherit JAX-RS annotations from superclasses or interfaces. This is not allowed in the JAX-RS specification, but some implementations, like Apache CXF, allow it. This may lead to more alerts being found.
+
+## 6.1.0
+
+### New Features
+
+* The Java and Kotlin extractors now support `CODEQL_PATH_TRANSFORMER`. `SEMMLE_PATH_TRANSFORMER` is still supported, but deprecated.
+
+### Minor Analysis Improvements
+
+* `JavacTool`-based compiler interception no longer requires an `--add-opens` directive when `FileObject.toUri` is accessible.
+* `JavacTool`-based compiler interception no longer throws an exception visible to the program using `JavacTool` on failure to extract a file path from a passed `JavaFileObject`.
+* `JavacTool`-based compiler interception now supports files that don't simply wrap a `file://` URL, such as a source file inside a JAR, or an in-memory file, but which do implement `getCharContent`.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The class `ControlFlowNode` (and by extension `BasicBlock`) is no longer
+  directly equatable to `Expr` and `Stmt`. Any queries that have been
+  exploiting these equalities, for example by using casts, will need minor
+  updates in order to fix any compilation errors. Conversions can be inserted
+  in either direction depending on what is most convenient. Available
+  conversions include `Expr.getControlFlowNode()`, `Stmt.getControlFlowNode()`,
+  `ControlFlowNode.asExpr()`, `ControlFlowNode.asStmt()`, and
+  `ControlFlowNode.asCall()`. Exit nodes were until now modelled as a
+  `ControlFlowNode` equal to its enclosing `Callable`; these are now instead
+  modelled by the class `ControlFlow::ExitNode`.
+
+### Minor Analysis Improvements
+
+* Added `java.io.File.getName()` as a path injection sanitizer.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* Added a sink for "Server-side request forgery" (`java/ssrf`) for the third parameter to org.springframework.web.client.RestTemplate.getForObject, when we cannot statically determine that it does not affect the host in the URL.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Calling `coll.contains(x)` is now a taint sanitizer (for any query) for the value `x`, where `coll` is a collection of constants.
+
+## 4.2.1
+
+### Minor Analysis Improvements
+
+* In a switch statement with a constant switch expression, all non-matching cases were being marked as unreachable, including those that can be reached by falling through from the matching case. This has now been fixed.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Java: The generated JDK 17 models have been updated.
+
+### Minor Analysis Improvements
+
+* Java `build-mode=none` extraction now packages the Maven plugin used to examine project dependencies. This means that dependency identification is more likely to succeed, and therefore analysis quality may rise, in scenarios where Maven Central is not reachable.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The `Field.getSourceDeclaration()` predicate has been deprecated. The result was always the original field, so calls to it can simply be removed.
+* The `Field.isSourceDeclaration()` predicate has been deprecated. It always holds.
+* The `RefType.nestedName()` predicate has been deprecated, and `RefType.getNestedName()` added to replace it.
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 23.
+* Kotlin versions up to 2.1.0\ *x* are now supported.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ProcessBuilderConstructor`, `MethodProcessBuilderCommand`, and `MethodRuntimeExec` from `JDK.qll`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted the deprecated `getURI` predicate from `CamelJavaDslToDecl` and `SpringCamelXmlToElement`, use `getUri` instead.
+* Deleted the deprecated `ExecCallable` class from `ExternalProcess.qll`.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `PathCreation.qll` file.
+* Deleted the deprecated `WebviewDubuggingEnabledQuery.qll` file.
+
+### Major Analysis Improvements
+
+* A generated (Models as Data) summary model is no longer used, if there exists a source code alternative. This primarily affects the analysis, when the analysis includes generated models for the source code being analysed.
+
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Threat-model for `System.in` changed from `commandargs` to newly created `stdin` (both subgroups of `local`).
+
+### Bug Fixes
+
+* Fixed an issue where analysis in `build-mode: none` may very occasionally throw a `CoderMalfunctionError` while resolving dependencies provided by a build system (Maven or Gradle), which could cause some dependency resolution and consequently alerts to vary unpredictably from one run to another.
+* Fixed an issue where Java analysis in `build-mode: none` would fail to resolve dependencies using the `executable-war` Maven artifact type.
+* Fixed an issue where analysis in `build-mode: none` may fail to resolve dependencies of Gradle projects where the dependency uses a non-empty artifact classifier -- for example, `someproject-1.2.3-tests.jar`, which has the classifier `tests`.
+
+## 3.0.0
+
+### Breaking Changes
+
+* The Java and Kotlin extractors no longer support the `SOURCE_ARCHIVE` and `TRAP_FOLDER` legacy environment variable.
+
+### New Features
+
+* Java support for `build-mode: none` is now out of beta, and generally available.
+
+### Major Analysis Improvements
+
+* We previously considered reverse DNS resolutions (IP address -> domain name) as sources of untrusted data, since compromised/malicious DNS servers could potentially return malicious responses to arbitrary requests. We have now removed this source from the default set of untrusted sources and made a new threat model kind for them, called "reverse-dns". You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see [Analyzing your code with CodeQL queries](https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data>) and [Customizing your advanced setup for code scanning](https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models).
+
+### Minor Analysis Improvements
+
+* Added flow through some methods of the class `java.net.URL` by ensuring that the fields of a URL are tainted.
+* Added path-injection sinks for `org.apache.tools.ant.taskdefs.Property.setFile` and `org.apache.tools.ant.taskdefs.Property.setResource`.
+* Adds models for request handlers using the `org.lastaflute.web` web framework.
+
+## 2.0.0
+
+### Breaking Changes
+
+* The Java extractor no longer supports the `SEMMLE_DIST` legacy environment variable.
+
+### Deprecated APIs
+
+* The predicate `isAndroid` from the module `semmle.code.java.security.AndroidCertificatePinningQuery` has been deprecated. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication(File)` instead.
+
+### New Features
+
+* Kotlin support is now out of beta, and generally available
+* Kotlin versions up to 2.0.2*x* are now supported.
+
+### Minor Analysis Improvements
+
+* Added a path-injection sink for `hudson.FilePath.exists()`.
+* Added summary models for `org.apache.commons.io.IOUtils.toByteArray`.
+* Java build-mode `none` analyses now only report a warning on the CodeQL status page when there are significant analysis problems-- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * io.undertow.server.handlers.resource
+  * jakarta.faces.context
+  * javax.faces.context
+  * javax.servlet
+  * org.jboss.vfs
+  * org.springframework.core.io
+* A bug has been fixed in the heuristic identification of uncertain control
+  flow, which is used to filter data flow in order to improve performance and
+  reduce false positives. This fix means that slightly more code is identified
+  and hence pruned from data flow.
+* Excluded reverse DNS from the loopback address as a source of untrusted data.
+
+### Bug Fixes
+
+* Support for `codeql test run` for Kotlin sources has been fixed.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* The precision of virtual dispatch has been improved. This increases precision in general for all data flow queries. 
+
+### Minor Analysis Improvements
+
+* Support for Eclipse Compiler for Java (ecj) has been fixed to work with (a) runs that don't pass `-noExit` and (b) runs that use post-Java-9 command-line arguments.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* JDK version detection based on Gradle projects has been improved. Java extraction using build-modes `autobuild` or `none` is more likely to pick an appropriate JDK version, particularly when the Android Gradle Plugin or Spring Boot Plugin are in use.
+
 ## 0.11.0
 
 ### Breaking Changes

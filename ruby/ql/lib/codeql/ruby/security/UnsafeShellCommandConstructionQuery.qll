@@ -13,29 +13,6 @@ private import codeql.ruby.TaintTracking
 private import CommandInjectionCustomizations::CommandInjection as CommandInjection
 private import codeql.ruby.dataflow.BarrierGuards
 
-/**
- * A taint-tracking configuration for detecting shell command constructed from library input vulnerabilities.
- * DEPRECATED: Use `UnsafeShellCommandConstructionFlow`
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeShellCommandConstruction" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof CommandInjection::Sanitizer or // using all sanitizers from `rb/command-injection`
-    node instanceof StringConstCompareBarrier or
-    node instanceof StringConstArrayInclusionCallBarrier
-  }
-
-  // override to require the path doesn't have unmatched return steps
-  override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureHasSourceCallContext
-  }
-}
-
 private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -49,6 +26,16 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getStringConstruction().getLocation()
+    or
+    result = sink.(Sink).getCommandExecution().getLocation()
+  }
 }
 
 /**

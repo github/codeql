@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.Build.Construction;
 using System.Xml;
 using System.IO;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Cpp.Tests
 {
@@ -189,7 +190,7 @@ namespace Semmle.Autobuild.Cpp.Tests
                 throw new ArgumentException($"Missing CreateDirectory, {path}");
         }
 
-        public void DownloadFile(string address, string fileName)
+        public void DownloadFile(string address, string fileName, ILogger logger)
         {
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
@@ -200,9 +201,9 @@ namespace Semmle.Autobuild.Cpp.Tests
 
     internal class TestDiagnosticWriter : IDiagnosticsWriter
     {
-        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+        public IList<Semmle.Util.DiagnosticMessage> Diagnostics { get; } = new List<Semmle.Util.DiagnosticMessage>();
 
-        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+        public void AddEntry(Semmle.Util.DiagnosticMessage message) => this.Diagnostics.Add(message);
 
         public void Dispose() { }
     }

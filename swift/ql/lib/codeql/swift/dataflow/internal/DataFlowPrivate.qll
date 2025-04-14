@@ -111,10 +111,8 @@ private class CaptureNodeImpl extends CaptureNode, NodeImpl {
 }
 
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-  exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
-    def.definesAt(_, bb, i) and
-    def = nodeFrom.asDefinition()
-  )
+  next.(Ssa::PhiDefinition).getAPhiInput() = def and
+  def = nodeFrom.asDefinition()
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
@@ -886,15 +884,22 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
 
 private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import swift as S
+  private import codeql.swift.controlflow.ControlFlowGraph as Cfg
   private import codeql.swift.controlflow.BasicBlocks as B
 
   class BasicBlock instanceof B::BasicBlock {
     string toString() { result = super.toString() }
 
+    ControlFlowNode getNode(int i) { result = super.getNode(i) }
+
+    int length() { result = super.length() }
+
     Callable getEnclosingCallable() { result = super.getScope() }
 
     Location getLocation() { result = super.getLocation() }
   }
+
+  class ControlFlowNode = Cfg::ControlFlowNode;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
     result.(B::BasicBlock).immediatelyDominates(bb)
@@ -1303,14 +1308,10 @@ DataFlowType getNodeType(Node n) {
   any() // return the singleton DataFlowType until we support type pruning for Swift
 }
 
-/** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { none() }
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 abstract class PostUpdateNodeImpl extends Node {
@@ -1371,10 +1372,16 @@ class DataFlowExpr = Expr;
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::CollectionContent }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+}
+
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 newtype LambdaCallKind = TLambdaCallKind()
 

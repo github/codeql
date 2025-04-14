@@ -12,7 +12,7 @@ private import SemanticType
 private import codeql.rangeanalysis.RangeAnalysis
 private import ConstantAnalysis as ConstantAnalysis
 
-module Sem implements Semantic {
+module Sem implements Semantic<SemLocation> {
   class Expr = SemExpr;
 
   class ConstantIntegerExpr = ConstantAnalysis::SemConstantIntegerExpr;
@@ -104,7 +104,7 @@ module Sem implements Semantic {
   }
 }
 
-module SignAnalysis implements SignAnalysisSig<Sem> {
+module SignAnalysis implements SignAnalysisSig<SemLocation, Sem> {
   private import SignAnalysisCommon as SA
   import SA::SignAnalysis<FloatDelta>
 }
@@ -165,7 +165,7 @@ module AllBounds implements BoundSig<SemLocation, Sem, FloatDelta> {
   }
 }
 
-private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<Sem> {
+private module ModulusAnalysisInstantiated implements ModulusAnalysisSig<SemLocation, Sem> {
   class ModBound = AllBounds::SemBound;
 
   private import codeql.rangeanalysis.ModulusAnalysis as MA

@@ -44,7 +44,7 @@ namespace Semmle.Util
 
         public override string ToString()
         {
-            return "Total: " + Total + " Code: " + Code + " Comment: " + Comment;
+            return $"Total: {Total} Code: {Code} Comment: {Comment}";
         }
 
         #endregion

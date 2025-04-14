@@ -5,6 +5,19 @@
 import csharp
 private import semmle.code.csharp.commons.TargetFramework
 
+pragma[nomagic]
+private float getAssemblyVersion(Assembly a) {
+  result = a.getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1).toFloat() and
+  // This method is only accurate when we're looking at versions before 4.0.
+  result < 4.0
+}
+
+pragma[nomagic]
+private Version getTargetFrameworkVersion(TargetFrameworkAttribute tfa) {
+  tfa.isNetFramework() and
+  result = tfa.getFrameworkVersion()
+}
+
 /**
  * Holds if the type `t` is in an assembly that has been compiled against a .NET framework version
  * before the given version.
@@ -14,21 +27,16 @@ private predicate isNetFrameworkBefore(Type t, string version) {
   // For assemblies compiled against framework versions before 4 the TargetFrameworkAttribute
   // will not be present. In this case, we can revert back to the assembly version, which may not
   // contain full minor version information.
-  exists(string assemblyVersion |
-    assemblyVersion =
-      t.getALocation().(Assembly).getVersion().regexpCapture("([0-9]+\\.[0-9]+).*", 1)
-  |
-    assemblyVersion.toFloat() < version.toFloat() and
-    // This method is only accurate when we're looking at versions before 4.0.
-    assemblyVersion.toFloat() < 4.0
+  exists(float assemblyVersion |
+    assemblyVersion = getAssemblyVersion(t.getALocation()) and
+    assemblyVersion < version.toFloat()
   )
   or
   // For 4.0 and above the TargetFrameworkAttribute should be present to provide detailed version
   // information.
   exists(TargetFrameworkAttribute tfa |
     tfa.hasElement(t) and
-    tfa.isNetFramework() and
-    tfa.getFrameworkVersion().isEarlierThan(version)
+    getTargetFrameworkVersion(tfa).isEarlierThan(version)
   )
 }
 
@@ -142,8 +150,6 @@ module XmlSettings {
 
 /** Provides predicates related to `System.Xml.XmlReader`. */
 module XmlReader {
-  private import semmle.code.csharp.dataflow.DataFlow2
-
   private class InsecureXmlReaderCreate extends InsecureXmlProcessing, MethodCall {
     InsecureXmlReaderCreate() {
       this.getTarget().hasFullyQualifiedName("System.Xml.XmlReader", "Create")
@@ -173,7 +179,7 @@ module XmlReader {
       reason = "DTD processing is enabled by default in versions < 4.0" and
       evidence = this and
       not exists(this.getSettings()) and
-      isNetFrameworkBefore(this.(MethodCall).getTarget().getDeclaringType(), "4.0")
+      isNetFrameworkBefore(this.getTarget().getDeclaringType(), "4.0")
       or
       // bad settings flow here
       exists(ObjectCreation settings |

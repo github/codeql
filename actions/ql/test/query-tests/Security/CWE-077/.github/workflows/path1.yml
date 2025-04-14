@@ -1,0 +1,33 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - run: echo "${{ github.event.pull_request.title }}" >> $GITHUB_PATH
+      - env: 
+          PATHINJ: ${{ github.event.pull_request.title }}
+        run: echo $(echo "$PATHINJ") >> $GITHUB_PATH
+      - env: 
+          PATHINJ: ${{ github.event.pull_request.title }}
+        run: echo $PATHINJ >> $GITHUB_PATH
+      - env: 
+          PATHINJ: ${{ github.event.pull_request.title }}
+        run: echo ${PATHINJ} >> $GITHUB_PATH
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          name: artifact_name
+          path: foo
+      - run: echo "$(cat foo/bar)" >> $GITHUB_PATH
+      - env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+          PATHINJ: ${{ github.event.pull_request.title }}
+        run: echo "::add-path::$PATHINJ"
+
+
+
+

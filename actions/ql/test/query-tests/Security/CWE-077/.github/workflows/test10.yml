@@ -1,0 +1,28 @@
+name: Build and Dockerize
+
+on:
+  pull_request_target: 
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide Which 'ref' To Checkout
+        id: decide-ref
+        run: |
+          if [[ "${{github.event_name}}" == "pull_request_target" ]]; then
+            echo "ref=refs/pull/${{ github.event.pull_request.number }}/merge" >> $GITHUB_OUTPUT
+          else
+            echo "ref=${{github.ref}}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{steps.decide-ref.outputs.ref}}
+          path: "foo"
+
+      - name: Read Java Config
+        run: cat foo/.github/java-config.env >> $GITHUB_ENV
+  

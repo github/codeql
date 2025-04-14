@@ -1,5 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-automodel-queries
-      extensible: automodelCandidateFilter
-    data: []

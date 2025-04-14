@@ -390,6 +390,8 @@ namespace System.Web.Script.Serialization
         public JavaScriptSerializer() => throw null;
         public JavaScriptSerializer(System.Web.Script.Serialization.JavaScriptTypeResolver resolver) => throw null;
         public object DeserializeObject(string input) => throw null;
+        public T Deserialize<T> (string input) => throw null;
+        public object Deserialize(string input, Type targetType) => throw null;
     }
 
     // Generated from `System.Web.Script.Serialization.JavaScriptTypeResolver` in `System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35`

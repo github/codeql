@@ -5,7 +5,7 @@ int source();
 void sink(...);
 bool random();
 
-void test1() {
+void on_entry_test1() {
   int x = source();
   for (int i = 0; i < 10; i++) {
     x = 0;
@@ -13,7 +13,7 @@ void test1() {
   sink(x); // $ SPURIOUS: ir
 }
 
-void test2(int iterations) {
+void on_entry_test2(int iterations) {
   int x = source();
   for (int i = 0; i < iterations; i++) {
     x = 0;
@@ -21,7 +21,7 @@ void test2(int iterations) {
   sink(x); // $ ast,ir
 }
 
-void test3() {
+void on_entry_test3() {
   int x = 0;
   for (int i = 0; i < 10; i++) {
     x = source();
@@ -29,7 +29,7 @@ void test3() {
   sink(x); // $ ast,ir
 }
 
-void test4() {
+void on_entry_test4() {
   int x = source();
   for (int i = 0; i < 10; i++) {
     if (random())
@@ -39,7 +39,7 @@ void test4() {
   sink(x); // $ ast,ir
 }
 
-void test5() {
+void on_entry_test5() {
   int x = source();
   for (int i = 0; i < 10; i++) {
     if (random())
@@ -49,7 +49,7 @@ void test5() {
   sink(x); // $ ast,ir
 }
 
-void test6() {
+void on_entry_test6() {
   int y;
   int x = source();
   for (int i = 0; i < 10 && (y = 1); i++) {
@@ -57,7 +57,7 @@ void test6() {
   sink(x); // $ ast,ir
 }
 
-void test7() {
+void on_entry_test7() {
   int y;
   int x = source();
   for (int i = 0; i < 10 && (y = 1); i++) {
@@ -66,7 +66,7 @@ void test7() {
   sink(x); // $ SPURIOUS: ir
 }
 
-void test8() {
+void on_entry_test8() {
   int x = source();
   // It appears to the analysis that the condition can exit after `i < 10`
   // without having assigned to `x`. That is an effect of how the
@@ -78,7 +78,7 @@ void test8() {
   sink(x); // $ SPURIOUS: ast,ir
 }
 
-void test9() {
+void on_entry_test9() {
   int y;
   int x = source();
   for (int i = 0; (y = 1) && i < 10; i++) {
@@ -86,14 +86,14 @@ void test9() {
   sink(x); // $ ast,ir
 }
 
-void test10() {
+void on_entry_test10() {
   int x = source();
   for (int i = 0; (x = 1) && i < 10; i++) {
   }
   sink(x); // no flow
 }
 
-void test10(int b, int d) {
+void on_entry_test10(int b, int d) {
   int i = 0;
   int x = source();
   if (b)

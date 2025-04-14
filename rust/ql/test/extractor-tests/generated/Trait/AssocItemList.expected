@@ -1,0 +1,2 @@
+| gen_trait.rs:4:20:8:1 | AssocItemList | getNumberOfAssocItems: | 3 | getNumberOfAttrs: | 0 |
+| gen_trait.rs:10:56:10:57 | AssocItemList | getNumberOfAssocItems: | 0 | getNumberOfAttrs: | 0 |

@@ -86,8 +86,9 @@ def test2(request): # $ requestHandler
 def test3(ctx, req): # $ requestHandler 
     ensure_tainted(req) # $ tainted
     resp = req.response # $ HttpResponse mimetype=text/html
-    resp.set_cookie("hi", "there") # $ CookieWrite CookieName="hi" CookieValue="there"
-    resp.set_cookie(value="there", name="hi") # $ CookieWrite CookieName="hi" CookieValue="there"
+    resp.set_cookie("hi", "there") # $ CookieWrite CookieName="hi" CookieValue="there" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(value="there", name="hi") # $ CookieWrite CookieName="hi" CookieValue="there" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie("hi", "there", secure=True, httponly=True, samesite="Strict") # $ CookieWrite CookieName="hi" CookieValue="there" CookieSecure=true CookieHttpOnly=true CookieSameSite=Strict
     return "Ok" # $ HttpResponse responseBody="Ok" mimetype=text/html
 
 @view_config(route_name="test4", renderer="string") # $ routeSetup

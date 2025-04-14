@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/WyriHaximus/github-action-files-in-commit
+      - ["WyriHaximus/github-action-files-in-commit", "*", "output.files", "filename", "manual"]
+
+

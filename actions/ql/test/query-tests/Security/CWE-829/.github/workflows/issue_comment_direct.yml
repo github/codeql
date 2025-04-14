@@ -1,0 +1,46 @@
+name: Direct access
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request
+    steps:
+      - name: Unsafe Code Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.head_ref }} # Checkout the branch that made the PR or the comment's PR branch
+  test2:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && github.event.comment.body == '/trigger release'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/merge
+
+  test3:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && github.event.comment.body == '/trigger release'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ format('refs/pull/{0}/merge', github.event.issue.number) }}
+
+  test4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ (github.event_name == 'pull_request_review_comment') && format('refs/pull/{0}/merge',  github.event.pull_request.number) || '' }}
+
+  test5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'issue_comment' && format('refs/pull/{0}/merge',  github.event.issue.number) || '' }}

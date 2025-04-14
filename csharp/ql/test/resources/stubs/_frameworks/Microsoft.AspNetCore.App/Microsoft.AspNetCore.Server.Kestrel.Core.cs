@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -329,6 +329,8 @@ namespace Microsoft
                     public void Load() => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader LocalhostEndpoint(int port) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader LocalhostEndpoint(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader NamedPipeEndpoint(string pipeName) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader NamedPipeEndpoint(string pipeName, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions Options { get => throw null; }
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader UnixSocketEndpoint(string socketPath) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader UnixSocketEndpoint(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;

@@ -8,9 +8,9 @@ private import DataFlowPrivate
 private predicate isInterfaceCallReceiver(
   DataFlow::CallNode call, DataFlow::Node recv, InterfaceType tp, string m
 ) {
-  call.getReceiver() = recv and
+  pragma[only_bind_out](call).getReceiver() = recv and
   recv.getType().getUnderlyingType() = tp and
-  m = call.getACalleeIncludingExternals().asFunction().getName()
+  m = pragma[only_bind_out](call).getACalleeIncludingExternals().asFunction().getName()
 }
 
 /** Gets a data-flow node that may flow into the receiver value of `call`, which is an interface value. */

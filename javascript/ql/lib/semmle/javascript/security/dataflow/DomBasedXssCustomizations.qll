@@ -8,6 +8,7 @@ private import semmle.javascript.dataflow.InferredTypes
 
 module DomBasedXss {
   private import Xss::Shared as Shared
+  import semmle.javascript.security.CommonFlowState
 
   /** A data flow source for DOM-based XSS vulnerabilities. */
   abstract class Source extends Shared::Source { }
@@ -17,6 +18,41 @@ module DomBasedXss {
 
   /** A sanitizer for DOM-based XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
+
+  /**
+   * A barrier guard for any tainted value.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `state`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, FlowState state) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, FlowState::fromFlowLabel(label))
+    }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      BarrierGuard.super.sanitizes(outcome, e, label)
+    }
+  }
 
   /**
    * An expression whose value is interpreted as HTML
@@ -252,6 +288,20 @@ module DomBasedXss {
   }
 
   /**
+   * A write to the `innerHTML` or `outerHTML` property of a DOM element, viewed as an XSS sink.
+   *
+   * Uses the Angular Renderer2 API, instead of the default `Element.innerHTML` property.
+   */
+  class AngularRender2SetPropertyInnerHtmlSink2 extends Sink {
+    AngularRender2SetPropertyInnerHtmlSink2() {
+      exists(Angular2::AngularRenderer2AttributeDefinition attrDef |
+        attrDef.getName() = ["innerHTML", "outerHTML"] and
+        this = attrDef.getValueNode()
+      )
+    }
+  }
+
+  /**
    * A value being piped into the `safe` pipe in a template file,
    * disabling subsequent HTML escaping.
    */
@@ -293,6 +343,12 @@ module DomBasedXss {
    */
   deprecated predicate isOptionallySanitizedEdge = isOptionallySanitizedEdgeInternal/2;
 
+  bindingset[call]
+  pragma[inline_late]
+  private SsaVariable getSanitizedSsaVariable(HtmlSanitizerCall call) {
+    call.getAnArgument().asExpr().(VarAccess).getVariable() = result.getSourceVariable()
+  }
+
   private predicate isOptionallySanitizedEdgeInternal(DataFlow::Node pred, DataFlow::Node succ) {
     exists(HtmlSanitizerCall sanitizer |
       // sanitized = sanitize ? sanitizer(source) : source;
@@ -312,7 +368,7 @@ module DomBasedXss {
         count(phi.getAnInput()) = 2 and
         not a = b and
         sanitizer = DataFlow::valueNode(a.getDef().getSource()) and
-        sanitizer.getAnArgument().asExpr().(VarAccess).getVariable() = b.getSourceVariable()
+        getSanitizedSsaVariable(sanitizer) = b
       |
         pred = DataFlow::ssaDefinitionNode(b) and
         succ = DataFlow::ssaDefinitionNode(phi)
@@ -331,27 +387,33 @@ module DomBasedXss {
     isOptionallySanitizedEdgeInternal(_, node)
   }
 
-  /** A source of remote user input, considered as a flow source for DOM-based XSS. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
    */
-  abstract class PrefixString extends DataFlow::FlowLabel {
+  abstract deprecated class PrefixString extends DataFlow::FlowLabel {
     PrefixString() { this = "PrefixString" }
   }
 
   /** Gets the flow-label representing tainted values where the prefix is attacker controlled. */
-  PrefixString prefixLabel() { any() }
+  deprecated PrefixString prefixLabel() { any() }
 
   /**
    * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
    */
-  abstract class PrefixStringSanitizer extends TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith
-  {
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  abstract class PrefixStringSanitizer extends BarrierGuard instanceof StringOps::StartsWith {
+    override predicate blocksExpr(boolean outcome, Expr e, FlowState state) {
       e = super.getBaseString().asExpr() and
-      label = prefixLabel() and
+      state.isTaintedPrefix() and
       outcome = super.getPolarity()
     }
   }

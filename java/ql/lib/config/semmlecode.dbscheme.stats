@@ -17,14 +17,6 @@
             <v>1</v>
         </e>
         <e>
-            <k>@duplication</k>
-            <v>1</v>
-        </e>
-        <e>
-            <k>@similarity</k>
-            <v>1</v>
-        </e>
-        <e>
             <k>@file</k>
             <v>1291911</v>
         </e>
@@ -3966,17 +3958,6 @@
             </dependencies>
         </relation>
         <relation>
-            <name>snapshotDate</name>
-            <cardinality>1</cardinality>
-            <columnsizes>
-                <e>
-                    <k>snapshotDate</k>
-                    <v>1</v>
-                </e>
-            </columnsizes>
-            <dependencies/>
-        </relation>
-        <relation>
             <name>sourceLocationPrefix</name>
             <cardinality>569</cardinality>
             <columnsizes>
@@ -3988,58 +3969,22 @@
             <dependencies/>
         </relation>
         <relation>
-            <name>duplicateCode</name>
+            <name>databaseMetadata</name>
             <cardinality>1</cardinality>
             <columnsizes>
                 <e>
-                    <k>id</k>
+                    <k>metadataKey</k>
                     <v>1</v>
                 </e>
                 <e>
-                    <k>relativePath</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>equivClass</k>
+                    <k>value</k>
                     <v>1</v>
                 </e>
             </columnsizes>
             <dependencies>
                 <dep>
-                    <src>id</src>
-                    <trg>relativePath</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>1</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>equivClass</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>1</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>relativePath</src>
-                    <trg>id</trg>
+                    <src>metadataKey</src>
+                    <trg>value</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -4048,452 +3993,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>relativePath</src>
-                    <trg>equivClass</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>equivClass</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>equivClass</src>
-                    <trg>relativePath</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-            </dependencies>
-        </relation>
-        <relation>
-            <name>similarCode</name>
-            <cardinality>1</cardinality>
-            <columnsizes>
-                <e>
-                    <k>id</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>relativePath</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>equivClass</k>
-                    <v>1</v>
-                </e>
-            </columnsizes>
-            <dependencies>
-                <dep>
-                    <src>id</src>
-                    <trg>relativePath</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>1</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>equivClass</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>1</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>relativePath</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>relativePath</src>
-                    <trg>equivClass</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>equivClass</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>equivClass</src>
-                    <trg>relativePath</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-            </dependencies>
-        </relation>
-        <relation>
-            <name>tokens</name>
-            <cardinality>1</cardinality>
-            <columnsizes>
-                <e>
-                    <k>id</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>offset</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>beginLine</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>beginColumn</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>endLine</k>
-                    <v>1</v>
-                </e>
-                <e>
-                    <k>endColumn</k>
-                    <v>1</v>
-                </e>
-            </columnsizes>
-            <dependencies>
-                <dep>
-                    <src>id</src>
-                    <trg>offset</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>beginLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>beginColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>endLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>endColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>offset</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>offset</src>
-                    <trg>beginLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>offset</src>
-                    <trg>beginColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>offset</src>
-                    <trg>endLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>offset</src>
-                    <trg>endColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginLine</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginLine</src>
-                    <trg>offset</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginLine</src>
-                    <trg>beginColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginLine</src>
-                    <trg>endLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginLine</src>
-                    <trg>endColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginColumn</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginColumn</src>
-                    <trg>offset</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginColumn</src>
-                    <trg>beginLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginColumn</src>
-                    <trg>endLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>beginColumn</src>
-                    <trg>endColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endLine</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endLine</src>
-                    <trg>offset</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endLine</src>
-                    <trg>beginLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endLine</src>
-                    <trg>beginColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endLine</src>
-                    <trg>endColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endColumn</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endColumn</src>
-                    <trg>offset</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endColumn</src>
-                    <trg>beginLine</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endColumn</src>
-                    <trg>beginColumn</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs/>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>endColumn</src>
-                    <trg>endLine</trg>
+                    <src>value</src>
+                    <trg>metadataKey</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -9732,10 +9233,6 @@
                     <k>parentid</k>
                     <v>249278</v>
                 </e>
-                <e>
-                    <k>sourceid</k>
-                    <v>2886451</v>
-                </e>
             </columnsizes>
             <dependencies>
                 <dep>
@@ -9773,22 +9270,6 @@
                 <dep>
                     <src>id</src>
                     <trg>parentid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2886451</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>sourceid</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -9847,27 +9328,6 @@
                 <dep>
                     <src>nodeName</src>
                     <trg>parentid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2356342</v>
-                                </b>
-                                <b>
-                                    <a>2</a>
-                                    <b>302</b>
-                                    <v>152116</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>nodeName</src>
-                    <trg>sourceid</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -9979,42 +9439,6 @@
                                     <a>3</a>
                                     <b>679</b>
                                     <v>9820</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>typeid</src>
-                    <trg>sourceid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>124952</v>
-                                </b>
-                                <b>
-                                    <a>2</a>
-                                    <b>3</b>
-                                    <v>21104</v>
-                                </b>
-                                <b>
-                                    <a>3</a>
-                                    <b>4</b>
-                                    <v>10447</v>
-                                </b>
-                                <b>
-                                    <a>4</a>
-                                    <b>8</b>
-                                    <v>14835</v>
-                                </b>
-                                <b>
-                                    <a>8</a>
-                                    <b>9650</b>
-                                    <v>11283</v>
                                 </b>
                             </bs>
                         </hist>
@@ -10163,126 +9587,6 @@
                                     <a>7</a>
                                     <b>27</b>
                                     <v>4387</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>parentid</src>
-                    <trg>sourceid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>115132</v>
-                                </b>
-                                <b>
-                                    <a>2</a>
-                                    <b>3</b>
-                                    <v>25074</v>
-                                </b>
-                                <b>
-                                    <a>3</a>
-                                    <b>4</b>
-                                    <v>20477</v>
-                                </b>
-                                <b>
-                                    <a>4</a>
-                                    <b>5</b>
-                                    <v>15253</v>
-                                </b>
-                                <b>
-                                    <a>5</a>
-                                    <b>6</b>
-                                    <v>12328</v>
-                                </b>
-                                <b>
-                                    <a>6</a>
-                                    <b>8</b>
-                                    <v>18387</v>
-                                </b>
-                                <b>
-                                    <a>8</a>
-                                    <b>14</b>
-                                    <v>19641</v>
-                                </b>
-                                <b>
-                                    <a>14</a>
-                                    <b>93</b>
-                                    <v>18805</v>
-                                </b>
-                                <b>
-                                    <a>95</a>
-                                    <b>1772</b>
-                                    <v>4179</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>sourceid</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2886451</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>sourceid</src>
-                    <trg>nodeName</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2886451</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>sourceid</src>
-                    <trg>typeid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2886451</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>sourceid</src>
-                    <trg>parentid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>2886451</v>
                                 </b>
                             </bs>
                         </hist>
@@ -13511,10 +12815,6 @@
                     <v>1048</v>
                 </e>
                 <e>
-                    <k>kind</k>
-                    <v>262</v>
-                </e>
-                <e>
                     <k>parentid</k>
                     <v>612137</v>
                 </e>
@@ -13539,22 +12839,6 @@
                 <dep>
                     <src>id</src>
                     <trg>pos</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>864332</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>id</src>
-                    <trg>kind</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -13666,22 +12950,6 @@
                                     <a>4</a>
                                     <b>5</b>
                                     <v>262</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>nodeName</src>
-                    <trg>kind</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>11797</v>
                                 </b>
                             </bs>
                         </hist>
@@ -13807,22 +13075,6 @@
                 </dep>
                 <dep>
                     <src>pos</src>
-                    <trg>kind</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>1048</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>pos</src>
                     <trg>parentid</trg>
                     <val>
                         <hist>
@@ -13853,70 +13105,6 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>kind</src>
-                    <trg>id</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>3297</a>
-                                    <b>3298</b>
-                                    <v>262</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>kind</src>
-                    <trg>nodeName</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>45</a>
-                                    <b>46</b>
-                                    <v>262</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>kind</src>
-                    <trg>pos</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>4</a>
-                                    <b>5</b>
-                                    <v>262</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>kind</src>
-                    <trg>parentid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>2335</a>
-                                    <b>2336</b>
-                                    <v>262</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
                     <src>parentid</src>
                     <trg>id</trg>
                     <val>
@@ -13989,22 +13177,6 @@
                                     <a>3</a>
                                     <b>5</b>
                                     <v>23332</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>parentid</src>
-                    <trg>kind</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>612137</v>
                                 </b>
                             </bs>
                         </hist>
@@ -14706,99 +13878,6 @@
                 </e>
             </columnsizes>
             <dependencies/>
-        </relation>
-        <relation>
-            <name>erasure</name>
-            <cardinality>22246872</cardinality>
-            <columnsizes>
-                <e>
-                    <k>memberid</k>
-                    <v>22246872</v>
-                </e>
-                <e>
-                    <k>erasureid</k>
-                    <v>2976</v>
-                </e>
-            </columnsizes>
-            <dependencies>
-                <dep>
-                    <src>memberid</src>
-                    <trg>erasureid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>22246872</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-                <dep>
-                    <src>erasureid</src>
-                    <trg>memberid</trg>
-                    <val>
-                        <hist>
-                            <budget>12</budget>
-                            <bs>
-                                <b>
-                                    <a>1</a>
-                                    <b>2</b>
-                                    <v>184</v>
-                                </b>
-                                <b>
-                                    <a>2</a>
-                                    <b>3</b>
-                                    <v>456</v>
-                                </b>
-                                <b>
-                                    <a>3</a>
-                                    <b>5</b>
-                                    <v>260</v>
-                                </b>
-                                <b>
-                                    <a>5</a>
-                                    <b>6</b>
-                                    <v>734</v>
-                                </b>
-                                <b>
-                                    <a>6</a>
-                                    <b>9</b>
-                                    <v>236</v>
-                                </b>
-                                <b>
-                                    <a>9</a>
-                                    <b>23</b>
-                                    <v>254</v>
-                                </b>
-                                <b>
-                                    <a>23</a>
-                                    <b>98</b>
-                                    <v>225</v>
-                                </b>
-                                <b>
-                                    <a>101</a>
-                                    <b>288</b>
-                                    <v>225</v>
-                                </b>
-                                <b>
-                                    <a>345</a>
-                                    <b>2541</b>
-                                    <v>225</v>
-                                </b>
-                                <b>
-                                    <a>2940</a>
-                                    <b>448198</b>
-                                    <v>173</v>
-                                </b>
-                            </bs>
-                        </hist>
-                    </val>
-                </dep>
-            </dependencies>
         </relation>
         <relation>
             <name>isAnonymClass</name>

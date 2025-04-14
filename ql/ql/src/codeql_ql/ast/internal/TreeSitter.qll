@@ -1767,13 +1767,15 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
 
+  class UnderscoreValue extends @json_underscore_value, AstNode { }
+
   /** A class representing `array` nodes. */
   class Array extends @json_array, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Array" }
 
     /** Gets the `i`th child of this node. */
-    final Value getChild(int i) { json_array_child(this, i, result) }
+    final UnderscoreValue getChild(int i) { json_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { json_array_child(this, _, result) }
@@ -1791,10 +1793,16 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Document" }
 
     /** Gets the `i`th child of this node. */
-    final Value getChild(int i) { json_document_child(this, i, result) }
+    final UnderscoreValue getChild(int i) { json_document_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { json_document_child(this, _, result) }
+  }
+
+  /** A class representing `escape_sequence` tokens. */
+  class EscapeSequence extends @json_token_escape_sequence, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "EscapeSequence" }
   }
 
   /** A class representing `false` tokens. */
@@ -1833,10 +1841,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Pair" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey() { json_pair_def(this, result, _) }
+    final String getKey() { json_pair_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final Value getValue() { json_pair_def(this, _, result) }
+    final UnderscoreValue getValue() { json_pair_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -1849,11 +1857,11 @@ module JSON {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
 
-    /** Gets the child of this node. */
-    final StringContent getChild() { json_string_child(this, result) }
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { json_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_string_child(this, result) }
+    final override AstNode getAFieldOrChild() { json_string_child(this, _, result) }
   }
 
   /** A class representing `string_content` tokens. */
@@ -1867,6 +1875,4 @@ module JSON {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
   }
-
-  class Value extends @json_value, AstNode { }
 }

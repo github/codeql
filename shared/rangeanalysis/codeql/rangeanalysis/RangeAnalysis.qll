@@ -65,11 +65,13 @@
 
 private import codeql.util.Location
 
-signature module Semantic {
+signature module Semantic<LocationSig Location> {
   class Expr {
     string toString();
 
     BasicBlock getBasicBlock();
+
+    Location getLocation();
   }
 
   class ConstantIntegerExpr extends Expr {
@@ -294,7 +296,7 @@ signature module Semantic {
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
 
-signature module SignAnalysisSig<Semantic Sem> {
+signature module SignAnalysisSig<LocationSig Location, Semantic<Location> Sem> {
   /** Holds if `e` can be positive and cannot be negative. */
   predicate semPositive(Sem::Expr e);
 
@@ -320,7 +322,7 @@ signature module SignAnalysisSig<Semantic Sem> {
   predicate semMayBeNegative(Sem::Expr e);
 }
 
-signature module ModulusAnalysisSig<Semantic Sem> {
+signature module ModulusAnalysisSig<LocationSig Location, Semantic<Location> Sem> {
   class ModBound;
 
   predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
@@ -346,7 +348,7 @@ signature module DeltaSig {
   Delta fromFloat(float f);
 }
 
-signature module LangSig<Semantic Sem, DeltaSig D> {
+signature module LangSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
@@ -372,7 +374,7 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   default predicate includeRelativeBounds() { any() }
 }
 
-signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+signature module BoundSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   /**
    * A bound that the range analysis can infer for a variable. This includes
    * constant bounds represented by the abstract value zero, SSA bounds for when
@@ -409,14 +411,15 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   }
 }
 
-signature module OverflowSig<Semantic Sem, DeltaSig D> {
+signature module OverflowSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr);
 }
 
 module RangeStage<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
-  OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysisParam>
+  LocationSig Location, Semantic<Location> Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
+  OverflowSig<Location, Sem, D> OverflowParam, LangSig<Location, Sem, D> LangParam,
+  SignAnalysisSig<Location, Sem> SignAnalysis,
+  ModulusAnalysisSig<Location, Sem> ModulusAnalysisParam>
 {
   private import Bounds
   private import LangParam
@@ -424,7 +427,7 @@ module RangeStage<
   private import OverflowParam
   private import SignAnalysis
   private import ModulusAnalysisParam
-  private import internal.RangeUtils::MakeUtils<Sem, D>
+  private import internal.RangeUtils::MakeUtils<Location, Sem, D>
 
   /**
    * An expression that does conversion, boxing, or unboxing

@@ -63,8 +63,8 @@ C#
 
 *   The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
 *   :code:`PathSanitizer.qll` has been promoted from experimental to the main query pack. This sanitizer was originally `submitted as part of an experimental query by @luchua-bc <https://github.com/github/codeql/pull/7286>`__.
@@ -81,8 +81,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/webview-debugging-enabled`, to detect instances of WebView debugging being enabled in production builds.
 
@@ -103,8 +103,8 @@ Golang
 
 *   Added support for :code:`BeegoInput.RequestBody` as a source of untrusted data.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added external flow sources for the intents received in exported Android services.
 

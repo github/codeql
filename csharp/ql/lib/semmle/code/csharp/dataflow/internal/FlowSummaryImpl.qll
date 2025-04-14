@@ -14,7 +14,19 @@ private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = UnboundCallable;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
+
+  predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
+    interpretNeutral(c, kind, provenance) and
+    // isExact is not needed for C#.
+    isExact = false
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
 
@@ -40,7 +52,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
     result = "delegate-self"
   }
 
-  string encodeContent(ContentSet c, string arg) {
+  private string encodeCont(Content c, string arg) {
     c = TElementContent() and result = "Element" and arg = ""
     or
     exists(Field f, string qualifier, string name |
@@ -50,27 +62,34 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
       result = "Field"
     )
     or
-    exists(Property p, string qualifier, string name |
-      c = TPropertyContent(p) and
-      p.hasFullyQualifiedName(qualifier, name) and
-      arg = getQualifiedName(qualifier, name) and
-      result = "Property"
-    )
-    or
     exists(SyntheticField f |
       c = TSyntheticFieldContent(f) and result = "SyntheticField" and arg = f
     )
   }
 
+  string encodeContent(ContentSet c, string arg) {
+    exists(Content cont |
+      c.isSingleton(cont) and
+      result = encodeCont(cont, arg)
+    )
+    or
+    exists(Property p, string qualifier, string name |
+      c.isProperty(p) and
+      p.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Property"
+    )
+  }
+
   string encodeWithoutContent(ContentSet c, string arg) {
     result = "WithoutElement" and
-    c = TElementContent() and
+    c.isElement() and
     arg = ""
   }
 
   string encodeWithContent(ContentSet c, string arg) {
     result = "WithElement" and
-    c = TElementContent() and
+    c.isElement() and
     arg = ""
   }
 
@@ -97,16 +116,25 @@ private module TypesInput implements Impl::Private::TypesInputSig {
     result.asGvnType() = Gvn::getGlobalValueNumber(any(ObjectType t))
   }
 
-  DataFlowType getContentType(ContentSet c) {
+  private DataFlowType getContType(Content c) {
     exists(Type t | result.asGvnType() = Gvn::getGlobalValueNumber(t) |
       t = c.(FieldContent).getField().getType()
-      or
-      t = c.(PropertyContent).getProperty().getType()
       or
       t = c.(SyntheticFieldContent).getField().getType()
       or
       c instanceof ElementContent and
       t instanceof ObjectType // we don't know what the actual element type is
+    )
+  }
+
+  DataFlowType getContentType(ContentSet c) {
+    exists(Content cont |
+      c.isSingleton(cont) and
+      result = getContType(cont)
+    )
+    or
+    exists(Property p |
+      c.isProperty(p) and result.asGvnType() = Gvn::getGlobalValueNumber(p.getType())
     )
   }
 
@@ -154,12 +182,22 @@ private module TypesInput implements Impl::Private::TypesInputSig {
       result.asGvnType() = Gvn::getGlobalValueNumber(dt.getDelegateType().getReturnType())
     )
   }
+
+  DataFlowType getSourceType(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
+    none()
+  }
+
+  DataFlowType getSinkType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module SourceSinkInterpretationInput implements
@@ -305,17 +343,16 @@ module Private {
     }
 
     /** Gets a summary component that represents an element in a collection. */
-    SummaryComponent element() { result = content(any(DataFlow::ElementContent c)) }
+    SummaryComponent element() { result = content(any(ContentSet cs | cs.isElement())) }
 
     /** Gets a summary component for property `p`. */
     SummaryComponent property(Property p) {
-      result =
-        content(any(DataFlow::PropertyContent c | c.getProperty() = p.getUnboundDeclaration()))
+      result = content(any(DataFlow::ContentSet c | c.isProperty(p.getUnboundDeclaration())))
     }
 
     /** Gets a summary component for field `f`. */
     SummaryComponent field(Field f) {
-      result = content(any(DataFlow::FieldContent c | c.getField() = f.getUnboundDeclaration()))
+      result = content(any(DataFlow::ContentSet c | c.isField(f.getUnboundDeclaration())))
     }
 
     /** Gets a summary component that represents the return value of a call. */

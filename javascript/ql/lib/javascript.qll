@@ -81,6 +81,7 @@ import semmle.javascript.frameworks.Classnames
 import semmle.javascript.frameworks.ClassValidator
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary
+import semmle.javascript.frameworks.CommandLineArguments
 import semmle.javascript.frameworks.CookieLibraries
 import semmle.javascript.frameworks.Credentials
 import semmle.javascript.frameworks.CryptoLibraries
@@ -135,6 +136,7 @@ import semmle.javascript.frameworks.UriLibraries
 import semmle.javascript.frameworks.Vue
 import semmle.javascript.frameworks.Vuex
 import semmle.javascript.frameworks.Webix
+import semmle.javascript.frameworks.WebResponse
 import semmle.javascript.frameworks.WebSocket
 import semmle.javascript.frameworks.XmlParsers
 import semmle.javascript.frameworks.xUnit
@@ -142,3 +144,4 @@ import semmle.javascript.linters.ESLint
 import semmle.javascript.linters.JSLint
 import semmle.javascript.linters.Linting
 import semmle.javascript.security.dataflow.RemoteFlowSources
+import semmle.javascript.frameworks.UnderscoreDotString

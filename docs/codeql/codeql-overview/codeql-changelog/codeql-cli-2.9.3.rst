@@ -72,8 +72,8 @@ Golang
 
 *   Fixed sanitization by calls to :code:`strings.Replace` and :code:`strings.ReplaceAll` in queries :code:`go/log-injection` and :code:`go/unsafe-quoting`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/sensitive-log` has received several improvements.
 
@@ -91,8 +91,8 @@ Golang
 *   A new query *Log entries created from user input* (:code:`go/log-injection`) has been added. The query reports user-provided data reaching calls to logging methods.
 *   Added a new query, :code:`go/unexpected-nil-value`, to find calls to :code:`Wrap` from :code:`pkg/errors` where the error argument is always nil.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Two new queries "Inefficient regular expression" (:code:`java/redos`) and "Polynomial regular expression used on uncontrolled data" (:code:`java/polynomial-redos`) have been added.
     These queries help find instances of Regular Expression Denial of Service vulnerabilities.
@@ -146,8 +146,8 @@ Golang
 *   Fixed a bug where dataflow steps were ignored if both ends were inside the initialiser routine of a file-level variable.
 *   The method predicate :code:`getACalleeIncludingExternals` on :code:`DataFlow::CallNode` and the function :code:`viableCallable` in :code:`DataFlowDispatch` now also work for calls to functions via a variable, where the function can be determined using local flow.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a sanitizer of the query :code:`java/android/intent-redirection`. Now, for an intent to be considered safe against intent redirection, both its package name and class name must be checked.
 
@@ -175,8 +175,8 @@ Golang
 
 *   The :code:`codeql/go-upgrades` CodeQL pack has been removed. All database upgrade scripts have been merged into the :code:`codeql/go-all` CodeQL pack.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The QL class :code:`FloatingPointLiteral` has been renamed to :code:`FloatLiteral`.
 

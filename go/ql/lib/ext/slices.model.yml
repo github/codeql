@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      # All should be modeled when we have a way to model iterators
+      # AppendSec should be modeled when we have a way to model iterators
+      # Backward should be modeled when we have a way to model iterators
+      # Chunk should be modeled when we have a way to model iterators
+      - ["slices", "", False, "Clip", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Clone", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      # Collect should be modeled when we have a way to model iterators
+      - ["slices", "", False, "Compact", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "CompactFunc", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Concat", "", "", "Argument[0].ArrayElement.ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Delete", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "DeleteFunc", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Grow", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Insert", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Insert", "", "", "Argument[2].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Max", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["slices", "", False, "MaxFunc", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["slices", "", False, "Min", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["slices", "", False, "MinFunc", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["slices", "", False, "Repeat", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Replace", "", "", "Argument[0].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      - ["slices", "", False, "Replace", "", "", "Argument[3].ArrayElement", "ReturnValue.ArrayElement", "value", "manual"]
+      # Sorted should be modeled when we have a way to model iterators
+      # SortedFunc should be modeled when we have a way to model iterators
+      # SortedStableFunc should be modeled when we have a way to model iterators
+      # Values should be modeled when we have a way to model iterators

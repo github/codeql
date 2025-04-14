@@ -25,7 +25,7 @@ module DataFlow {
   private import semmle.go.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
   import DataFlowMake<Location, GoDataFlow>
-  import semmle.go.dataflow.internal.DataFlowImpl1
+  import Public
   import Properties
 }
 

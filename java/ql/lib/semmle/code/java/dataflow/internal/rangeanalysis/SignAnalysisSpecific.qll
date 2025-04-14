@@ -340,7 +340,7 @@ private module Impl {
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
+  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().asExpr() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce }
 }

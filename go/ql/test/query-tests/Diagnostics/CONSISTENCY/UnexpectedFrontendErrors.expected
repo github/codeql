@@ -1,8 +1,8 @@
 | -:0:0:0:0 | malformed import path "github.com/github/codeql-go/ql/test/query-tests/Diagnostics/invalid{": invalid char '{' |
-| -:0:0:0:0 | package ; expected main |
+| -:0:0:0:0 | package ; expected package main |
 | bad.go:3:1:3:1 | expected 'package', found avvu |
 | bad.go:3:1:3:1 | expected 'package', found avvu |
 | bad.go:3:5:3:5 | expected 'IDENT', found newline |
 | bad.go:5:1:5:1 | expected ';', found wnvwun |
 | badimport.go:6:2:6:2 | invalid import path (invalid character U+007B '{') |
-| type.go:11:9:11:9 | cannot use v (variable of type V) as T value in argument to takesT |
+| type.go:11:9:11:9 | cannot use v (variable of int type V) as T value in argument to takesT |

@@ -1,4 +1,4 @@
-/** Kdoc with no owner */
+/** Kdoc owned by CompilationUnit */
 package foo.bar
 
 /**

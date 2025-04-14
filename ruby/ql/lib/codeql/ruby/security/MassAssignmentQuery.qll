@@ -59,6 +59,8 @@ private module Config implements DataFlow::StateConfigSig {
       state2 instanceof FlowState::Permitted
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Taint tracking for reasoning about user input used for mass assignment. */

@@ -105,6 +105,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /**
+ * A node in the data flow graph which corresponds to an SSA variable definition.
  */
 class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   Ssa::Definition def;
@@ -248,11 +249,6 @@ module Content {
   class CollectionContent extends Content, TCollectionContent {
     override string toString() { result = "Collection element" }
   }
-
-  /**
-   * DEPRECATED: An element of a collection. This is an alias for the general CollectionContent.
-   */
-  deprecated class ArrayContent = CollectionContent;
 
   /** A captured variable. */
   class CapturedVariableContent extends Content, TCapturedVariableContent {

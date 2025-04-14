@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["newrelic/newrelic-java-agent/.github/workflows/X-Reusable-VerifyInstrumentation.yml", "*", "input.page", "code-injection", "generated"]
+     - ["newrelic/newrelic-java-agent/.github/workflows/GHA-Unit-Tests.yaml", "*", "input.agent-ref", "code-injection", "generated"]

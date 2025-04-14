@@ -362,7 +362,7 @@ extensions:
       - ["java.util", "SequencedMap", True, "sequencedValues", "", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "SequencedSet", True, "reversed", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Set", False, "copyOf", "(Collection)", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
-      - ["java.util", "Set", False, "clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
+      - ["java.util", "Set", True, "clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object,Object)", "", "Argument[0..1]", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Set", False, "of", "(Object,Object,Object)", "", "Argument[0..2]", "ReturnValue.Element", "value", "manual"]
@@ -428,7 +428,10 @@ extensions:
       - ["java.util", "Arrays", "toString", "(Object[])", "summary", "manual"]
       - ["java.util", "Calendar", "getInstance", "()", "summary", "manual"]
       - ["java.util", "Collection", "contains", "(Object)", "summary", "manual"]
+      - ["java.util", "Collection", "containsAll", "(Collection)", "summary", "manual"]
       - ["java.util", "Collection", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Collection", "remove", "(Object)", "summary", "manual"]
+      - ["java.util", "Collection", "removeIf", "(Predicate)", "summary", "manual"]
       - ["java.util", "Collection", "size", "()", "summary", "manual"]
       - ["java.util", "Collections", "emptyList", "()", "summary", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "summary", "manual"]
@@ -450,12 +453,14 @@ extensions:
       - ["java.util", "HashMap", "size", "()", "summary", "manual"]
       - ["java.util", "HashSet", "HashSet", "(int)", "summary", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "summary", "manual"]
+      - ["java.util", "Iterator", "remove", "()", "summary", "manual"]
       - ["java.util", "List", "contains", "(Object)", "summary", "manual"]
       - ["java.util", "List", "equals", "(Object)", "summary", "manual"]
       - ["java.util", "List", "hashCode", "()", "summary", "manual"]
       - ["java.util", "List", "indexOf", "(Object)", "summary", "manual"]
       - ["java.util", "List", "isEmpty", "()", "summary", "manual"]
       - ["java.util", "List", "of", "()", "summary", "manual"]
+      - ["java.util", "List", "remove", "(Object)", "summary", "manual"]
       - ["java.util", "List", "sort", "(Comparator)", "summary", "manual"]
       - ["java.util", "List", "size", "()", "summary", "manual"]
       - ["java.util", "Locale$Builder", "addUnicodeLocaleAttribute", "(String)", "summary", "df-manual"]
@@ -534,6 +539,8 @@ extensions:
       - ["java.util", "Scanner", "locale", "()", "summary", "df-manual"]
       - ["java.util", "Set", "contains", "(Object)", "summary", "manual"]
       - ["java.util", "Set", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Set", "remove", "(Object)", "summary", "manual"]
+      - ["java.util", "Set", "removeAll", "(Collection)", "summary", "manual"]
       - ["java.util", "Set", "size", "()", "summary", "manual"]
       - ["java.util", "TreeMap", "TreeMap", "(Comparator)", "summary", "df-manual"]
       - ["java.util", "TreeSet", "TreeSet", "(Comparator)", "summary", "df-manual"]
@@ -544,14 +551,8 @@ extensions:
       - ["java.util", "TimeZone", "getTimeZone", "(String)", "summary", "manual"]
       - ["java.util", "Vector", "size", "()", "summary", "manual"]
 
-      # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
-      # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[this].WithoutElement -> Argument[this]`.
-      - ["java.util", "Collection", "removeIf", "(Predicate)", "summary", "manual"]
-      - ["java.util", "Iterator", "remove", "()", "summary", "manual"]
-      - ["java.util", "List", "remove", "(Object)", "summary", "manual"]
+      # The below API is currently being stored as neutral models since `WithoutElement` does not yet have a counterpart for MapValue/MapKey.
       - ["java.util", "Map", "clear", "()", "summary", "manual"]
-      - ["java.util", "Set", "remove", "(Object)", "summary", "manual"]
-      - ["java.util", "Set", "removeAll", "(Collection)", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.

@@ -545,8 +545,8 @@ module ProductFlow {
     private predicate outImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       exists(ReturnKindExt returnKind |
-        succ1.getNode() = returnKind.getAnOutNode(call) and
-        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+        succ1.getNode() = getAnOutNodeExt(call, returnKind) and
+        returnKind = getParamReturnPosition(_, pred1.asParameterReturnNode()).getKind()
       )
     }
 
@@ -573,8 +573,8 @@ module ProductFlow {
     private predicate outImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       exists(ReturnKindExt returnKind |
-        succ2.getNode() = returnKind.getAnOutNode(call) and
-        pred2.getNode().(ReturnNodeExt).getKind() = returnKind
+        succ2.getNode() = getAnOutNodeExt(call, returnKind) and
+        returnKind = getParamReturnPosition(_, pred2.asParameterReturnNode()).getKind()
       )
     }
 
@@ -587,8 +587,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow1::PathNode pred1,
+      Flow1::PathNode succ1, TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       predDecl != succDecl and
@@ -607,8 +607,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow2::PathNode pred2,
+      Flow2::PathNode succ2, TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       predDecl != succDecl and
@@ -628,7 +628,7 @@ module ProductFlow {
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+      exists(DataFlowCallable predDecl, DataFlowCallable succDecl, TKind kind |
         interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
         interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )

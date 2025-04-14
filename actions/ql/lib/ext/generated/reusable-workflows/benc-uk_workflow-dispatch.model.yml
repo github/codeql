@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["benc-uk/workflow-dispatch/.github/workflows/echo-3.yaml", "*", "input.message", "code-injection", "generated"]

@@ -78,9 +78,7 @@ module Private {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.getSummarizedCallable().hasLocationInfo(fp, sl, sc, el, ec)
-    }
+    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
 
     override string toString() { result = this.getSummaryNode().toString() }
 
@@ -140,45 +138,38 @@ module Public {
     /** Gets a textual representation of this element. */
     string toString() { result = "data-flow node" } // overridden in subclasses
 
+    /** Gets the location of this node. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    }
-
-    /** Gets the location of this node. */
-    Location getLocation() {
-      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      )
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /** Gets the file in which this node appears. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /** Gets the start line of the location of this node. */
-    int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+    int getStartLine() { result = this.getLocation().getStartLine() }
 
     /** Gets the start column of the location of this node. */
-    int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+    int getStartColumn() { result = this.getLocation().getStartColumn() }
 
     /** Gets the end line of the location of this node. */
-    int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+    int getEndLine() { result = this.getLocation().getEndLine() }
 
     /** Gets the end column of the location of this node. */
-    int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+    int getEndColumn() { result = this.getLocation().getEndColumn() }
 
     /**
      * Gets an upper bound on the type of this node.
@@ -262,11 +253,7 @@ module Public {
 
     override string toString() { result = insn.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      insn.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = insn.getLocation() }
   }
 
   /**
@@ -312,11 +299,7 @@ module Public {
 
     override string toString() { result = ssa.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ssa.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ssa.getLocation() }
   }
 
   private module FunctionNode {
@@ -408,11 +391,7 @@ module Public {
 
     override string toString() { result = "function " + func.getName() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      func.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = func.getLocation() }
 
     override ResultNode getAResult() {
       result.getRoot() = this.getFunction().(DeclaredFunction).getFuncDecl()
@@ -464,11 +443,7 @@ module Public {
 
     override string toString() { result = "[]type{args}" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      call.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = call.getLocation() }
   }
 
   /**
@@ -525,6 +500,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /**
@@ -726,7 +702,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
@@ -841,11 +820,7 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        (
-          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
-          or
-          preupd = any(CallNode c).getAnImplicitVarargsArgument()
-        ) and
+        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
         mutableType(preupd.getType())
       ) and
       (
@@ -889,6 +864,21 @@ module Public {
      * Gets this argument's position.
      */
     int getPosition() { result = i }
+
+    /**
+     * Gets a data-flow node for a syntactic argument corresponding this this
+     * argument. If this argument is not an implicit varargs slice then this
+     * will just be the argument itself. If this argument is an implicit
+     * varargs slice then this will be a data-flow node that for an argument
+     * that is stored in the implicit varargs slice.
+     */
+    Node getACorrespondingSyntacticArgument() {
+      not this instanceof DataFlow::ImplicitVarargsSlice and
+      result = this
+      or
+      this instanceof DataFlow::ImplicitVarargsSlice and
+      result = c.getAnImplicitVarargsArgument()
+    }
   }
 
   /**
@@ -1062,11 +1052,7 @@ module Public {
 
     override string toString() { result = "slice element node" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      si.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = si.getLocation() }
 
     /** Gets the `SliceNode` which this node relates to. */
     SliceNode getSliceNode() { result = DataFlow::instructionNode(si) }

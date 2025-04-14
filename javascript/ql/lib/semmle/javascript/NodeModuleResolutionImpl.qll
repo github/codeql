@@ -197,9 +197,6 @@ class MainModulePath extends PathExpr, @json_string {
     not exists(getExportRelativePath(this)) and result = "."
   }
 
-  /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJson getPackageJSON() { result = this.getPackageJson() }
-
   override string getValue() { result = this.(JsonString).getValue() }
 
   override Folder getAdditionalSearchRoot(int priority) {
@@ -257,9 +254,6 @@ private class FilesPath extends PathExpr, @json_string {
 
   /** Gets the `package.json` file in which this path occurs. */
   PackageJson getPackageJson() { result = pkg }
-
-  /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJson getPackageJSON() { result = this.getPackageJson() }
 
   override string getValue() { result = this.(JsonString).getValue() }
 

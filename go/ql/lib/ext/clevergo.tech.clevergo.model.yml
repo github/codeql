@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["clever-go", "clevergo.tech/clevergo"]
+      - ["clever-go", "github.com/clevergo/clevergo"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:clever-go", "Context", True, "Redirect", "", "", "Argument[1]", "url-redirection[receiver]", "manual"]

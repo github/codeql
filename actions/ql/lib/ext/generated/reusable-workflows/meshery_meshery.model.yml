@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.adapter_version", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.sm_version", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.expected_resources_namespaces", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.expected_resources_types", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.expected_resources", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.adapter_name", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.patternfile_name", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.service_url", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.deployment_url", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adaptersv2.yaml", "*", "input.provider", "code-injection", "generated"]
+     - ["meshery/meshery/.github/workflows/test_adapters.yaml", "*", "input.adapter_version", "code-injection", "generated"]

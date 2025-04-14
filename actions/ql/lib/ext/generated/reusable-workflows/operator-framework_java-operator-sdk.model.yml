@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["operator-framework/java-operator-sdk/.github/workflows/integration-tests.yml", "*", "input.http-client", "code-injection", "generated"]
+     - ["operator-framework/java-operator-sdk/.github/workflows/integration-tests.yml", "*", "input.kube-version", "code-injection", "generated"]
+     - ["operator-framework/java-operator-sdk/.github/workflows/integration-tests.yml", "*", "input.java-version", "code-injection", "generated"]

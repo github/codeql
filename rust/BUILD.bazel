@@ -1,0 +1,61 @@
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load(
+    "//misc/bazel:pkg.bzl",
+    "codeql_pack",
+    "codeql_pkg_files",
+)
+
+package(default_visibility = ["//rust:__subpackages__"])
+
+filegroup(
+    name = "schema",
+    srcs = glob(["schema/*.py"]),
+)
+
+filegroup(
+    name = "schema-includes",
+    srcs = glob(["*.dbscheme"]),
+)
+
+filegroup(
+    name = "codegen-conf",
+    srcs = ["codegen.conf"],
+)
+
+codeql_pkg_files(
+    name = "tools-arch",
+    exes = [
+        "//rust/autobuild",
+        "//rust/extractor",
+    ],
+    prefix = "{CODEQL_PLATFORM}",
+)
+
+pkg_filegroup(
+    name = "tools",
+    srcs = [
+        ":tools-arch",
+        "//rust/tools",
+    ],
+    prefix = "tools",
+)
+
+codeql_pkg_files(
+    name = "root-files",
+    srcs = [
+        "codeql-extractor.yml",
+        "ql/lib/rust.dbscheme",
+        "ql/lib/rust.dbscheme.stats",
+        "//:LICENSE",
+    ],
+)
+
+codeql_pack(
+    name = "rust",
+    srcs = [
+        ":root-files",
+        ":tools",
+        "//rust/downgrades",
+    ],
+    experimental = True,
+)

@@ -81,8 +81,8 @@ Golang
 
 *   Taking a slice is now considered a sanitizer for :code:`SafeUrlFlow`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Changed some models of Spring's :code:`FileCopyUtils.copy` to be path injection sinks instead of summaries.
 *   Added models for the following packages:
@@ -101,8 +101,8 @@ Python
 Deprecated APIs
 ~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`sensitiveResultReceiver` predicate in :code:`SensitiveResultReceiverQuery.qll` has been deprecated and replaced with :code:`isSensitiveResultReceiver` in order to use the new dataflow API.
 

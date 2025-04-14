@@ -1,7 +1,7 @@
 import codeql.ruby.security.InsecureDownloadQuery
 import InsecureDownloadFlow::PathGraph
-import TestUtilities.InlineExpectationsTest
-import TestUtilities.InlineFlowTestUtil
+import utils.test.InlineExpectationsTest
+import utils.test.InlineFlowTestUtil
 
 module FlowTest implements TestSig {
   string getARelevantTag() { result = "BAD" }

@@ -6,12 +6,12 @@ edges
 | samples.py:9:18:9:47 | ControlFlowNode for escape() | samples.py:9:5:9:14 | ControlFlowNode for user_input | provenance |  |
 | samples.py:9:25:9:31 | ControlFlowNode for request | samples.py:9:25:9:36 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | samples.py:9:25:9:36 | ControlFlowNode for Attribute | samples.py:9:25:9:46 | ControlFlowNode for Attribute() | provenance | dict.get |
-| samples.py:9:25:9:46 | ControlFlowNode for Attribute() | samples.py:9:18:9:47 | ControlFlowNode for escape() | provenance |  |
+| samples.py:9:25:9:46 | ControlFlowNode for Attribute() | samples.py:9:18:9:47 | ControlFlowNode for escape() | provenance | Config |
 | samples.py:16:5:16:14 | ControlFlowNode for user_input | samples.py:20:62:20:71 | ControlFlowNode for user_input | provenance |  |
 | samples.py:16:18:16:47 | ControlFlowNode for escape() | samples.py:16:5:16:14 | ControlFlowNode for user_input | provenance |  |
 | samples.py:16:25:16:31 | ControlFlowNode for request | samples.py:16:25:16:36 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | samples.py:16:25:16:36 | ControlFlowNode for Attribute | samples.py:16:25:16:46 | ControlFlowNode for Attribute() | provenance | dict.get |
-| samples.py:16:25:16:46 | ControlFlowNode for Attribute() | samples.py:16:18:16:47 | ControlFlowNode for escape() | provenance |  |
+| samples.py:16:25:16:46 | ControlFlowNode for Attribute() | samples.py:16:18:16:47 | ControlFlowNode for escape() | provenance | Config |
 nodes
 | samples.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | samples.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

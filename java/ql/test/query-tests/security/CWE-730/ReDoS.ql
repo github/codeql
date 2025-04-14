@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBackTracking
 import semmle.code.java.regex.regex

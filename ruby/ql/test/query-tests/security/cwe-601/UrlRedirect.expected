@@ -1,8 +1,10 @@
 edges
 | UrlRedirect.rb:9:17:9:22 | call to params | UrlRedirect.rb:9:17:9:28 | ...[...] | provenance |  |
 | UrlRedirect.rb:14:17:14:22 | call to params | UrlRedirect.rb:14:17:14:43 | call to fetch | provenance |  |
+| UrlRedirect.rb:14:17:14:22 | call to params | UrlRedirect.rb:14:17:14:43 | call to fetch | provenance | Config |
 | UrlRedirect.rb:19:17:19:22 | call to params | UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash | provenance |  |
-| UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:24:17:24:37 | call to filter_params | provenance |  |
+| UrlRedirect.rb:19:17:19:22 | call to params | UrlRedirect.rb:19:17:19:37 | call to to_unsafe_hash | provenance | Config |
+| UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:24:17:24:37 | call to filter_params | provenance | Config |
 | UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:93:21:93:32 | input_params | provenance |  |
 | UrlRedirect.rb:34:20:34:25 | call to params | UrlRedirect.rb:34:20:34:31 | ...[...] | provenance |  |
 | UrlRedirect.rb:34:20:34:31 | ...[...] | UrlRedirect.rb:34:17:34:37 | "#{...}/foo" | provenance | AdditionalTaintStep |
@@ -11,7 +13,7 @@ edges
 | UrlRedirect.rb:68:38:68:43 | call to params | UrlRedirect.rb:68:38:68:49 | ...[...] | provenance |  |
 | UrlRedirect.rb:73:25:73:30 | call to params | UrlRedirect.rb:73:25:73:36 | ...[...] | provenance |  |
 | UrlRedirect.rb:93:21:93:32 | input_params | UrlRedirect.rb:94:5:94:16 | input_params | provenance |  |
-| UrlRedirect.rb:94:5:94:16 | input_params | UrlRedirect.rb:94:5:94:29 | call to permit | provenance |  |
+| UrlRedirect.rb:94:5:94:16 | input_params | UrlRedirect.rb:94:5:94:29 | call to permit | provenance | Config |
 nodes
 | UrlRedirect.rb:4:17:4:22 | call to params | semmle.label | call to params |
 | UrlRedirect.rb:9:17:9:22 | call to params | semmle.label | call to params |

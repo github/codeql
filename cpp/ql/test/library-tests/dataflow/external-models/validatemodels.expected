@@ -1,0 +1,80 @@
+| Dubious member name "operator BSTR" in summary model. |
+| Dubious member name "operator HKEY" in summary model. |
+| Dubious member name "operator LPCSTR" in summary model. |
+| Dubious member name "operator LPSAFEARRAY" in summary model. |
+| Dubious member name "operator LPSTR" in summary model. |
+| Dubious member name "operator LPWSTR" in summary model. |
+| Dubious member name "operator PCXSTR" in summary model. |
+| Dubious member name "operator PXSTR" in summary model. |
+| Dubious member name "operator&" in summary model. |
+| Dubious member name "operator*" in summary model. |
+| Dubious member name "operator+" in summary model. |
+| Dubious member name "operator+=" in summary model. |
+| Dubious member name "operator->" in summary model. |
+| Dubious member name "operator=" in summary model. |
+| Dubious member name "operator[]" in summary model. |
+| Dubious signature "(CAtlFile &)" in summary model. |
+| Dubious signature "(CComBSTR &&)" in summary model. |
+| Dubious signature "(CRegKey &)" in summary model. |
+| Dubious signature "(DWORD &,LPCTSTR)" in summary model. |
+| Dubious signature "(InputIterator,InputIterator,const Allocator &)" in summary model. |
+| Dubious signature "(LPCSTR,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(LPCTSTR,DWORD *,void *,ULONG *)" in summary model. |
+| Dubious signature "(LPCWSTR,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(LPTSTR,LPCTSTR,DWORD *)" in summary model. |
+| Dubious signature "(PCXSTR,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(PCXSTR,const CStringT &)" in summary model. |
+| Dubious signature "(XCHAR *,const XCHAR *,int)" in summary model. |
+| Dubious signature "(XCHAR *,size_t,const XCHAR *,int)" in summary model. |
+| Dubious signature "(char *)" in summary model. |
+| Dubious signature "(char,const CStringT &)" in summary model. |
+| Dubious signature "(const CComBSTR &)" in summary model. |
+| Dubious signature "(const CComSafeArray &)" in summary model. |
+| Dubious signature "(const CSimpleStringT &)" in summary model. |
+| Dubious signature "(const CStaticString &)" in summary model. |
+| Dubious signature "(const CStringT &)" in summary model. |
+| Dubious signature "(const CStringT &,PCXSTR)" in summary model. |
+| Dubious signature "(const CStringT &,char)" in summary model. |
+| Dubious signature "(const CStringT &,const CStringT &)" in summary model. |
+| Dubious signature "(const CStringT &,wchar_t)" in summary model. |
+| Dubious signature "(const SAFEARRAY &)" in summary model. |
+| Dubious signature "(const SAFEARRAY *)" in summary model. |
+| Dubious signature "(const T &,BOOL)" in summary model. |
+| Dubious signature "(const VARIANT &)" in summary model. |
+| Dubious signature "(const VARIANT &,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const XCHAR *)" in summary model. |
+| Dubious signature "(const XCHAR *,int)" in summary model. |
+| Dubious signature "(const XCHAR *,int,AtlStringMgr *)" in summary model. |
+| Dubious signature "(const XCHAR *,int,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const YCHAR *)" in summary model. |
+| Dubious signature "(const YCHAR *,int)" in summary model. |
+| Dubious signature "(const YCHAR *,int,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const deque &)" in summary model. |
+| Dubious signature "(const deque &,const Allocator &)" in summary model. |
+| Dubious signature "(const forward_list &)" in summary model. |
+| Dubious signature "(const forward_list &,const Allocator &)" in summary model. |
+| Dubious signature "(const list &)" in summary model. |
+| Dubious signature "(const list &,const Allocator &)" in summary model. |
+| Dubious signature "(const unsigned char *)" in summary model. |
+| Dubious signature "(const unsigned char *,IAtlStringMgr *)" in summary model. |
+| Dubious signature "(const vector &)" in summary model. |
+| Dubious signature "(const vector &,const Allocator &)" in summary model. |
+| Dubious signature "(const_iterator,T &&)" in summary model. |
+| Dubious signature "(const_iterator,const T &)" in summary model. |
+| Dubious signature "(const_iterator,size_type,const T &)" in summary model. |
+| Dubious signature "(deque &&)" in summary model. |
+| Dubious signature "(deque &&,const Allocator &)" in summary model. |
+| Dubious signature "(format_string,Args &&)" in summary model. |
+| Dubious signature "(forward_list &&)" in summary model. |
+| Dubious signature "(forward_list &&,const Allocator &)" in summary model. |
+| Dubious signature "(list &&)" in summary model. |
+| Dubious signature "(list &&,const Allocator &)" in summary model. |
+| Dubious signature "(size_type,const T &)" in summary model. |
+| Dubious signature "(size_type,const T &,const Allocator &)" in summary model. |
+| Dubious signature "(unsigned char *)" in summary model. |
+| Dubious signature "(unsigned char)" in summary model. |
+| Dubious signature "(vector &&)" in summary model. |
+| Dubious signature "(vector &&,const Allocator &)" in summary model. |
+| Dubious signature "(wchar_t *)" in summary model. |
+| Dubious signature "(wchar_t, const CStringT &)" in summary model. |
+| Dubious signature "(wchar_t,const CStringT &)" in summary model. |

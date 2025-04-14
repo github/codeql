@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+	<p>
+
+		A server can use <code>CORS</code> (Cross-Origin Resource Sharing) to relax the 
+        restrictions imposed by the <code>SOP</code> (Same-Origin Policy), allowing controlled, secure
+        cross-origin requests when necessary. 
+
+        A server with an overly permissive <code>CORS</code> configuration may inadvertently 
+        expose sensitive data or lead to <code>CSRF</code> which is an attack that allows attackers to trick
+        users into performing unwanted operations in websites they're authenticated to.
+
+	</p>
+
+</overview>
+
+<recommendation>
+	<p>
+
+		When the <code>origin</code> is set to <code>true</code>, it signifies that the server 
+        is accepting requests from <code>any</code> origin, potentially exposing the system to 
+        CSRF attacks. This can be fixed using <code>false</code> as origin value or using a whitelist.
+
+	</p>
+	<p>
+
+		On the other hand, if the <code>origin</code> is 
+        set to <code>null</code>, it can be exploited by an attacker to deceive a user into making 
+        requests from a <code>null</code> origin form, often hosted within a sandboxed iframe.
+
+	</p>
+
+    <p>
+
+		If the <code>origin</code> value is user controlled, make sure that the data
+        is properly sanitized.
+
+	</p>
+</recommendation>
+
+<example>
+	<p>
+
+		In the example below, the <code>server_1</code> accepts requests from any origin
+        since the value of <code>origin</code> is set to <code>true</code>. 
+		And <code>server_2</code>'s origin is user-controlled.
+
+	</p>
+
+	<sample src="examples/CorsPermissiveConfigurationBad.js"/>
+
+	<p>
+
+		In the example below, the <code>server_1</code> CORS is restrictive so it's not
+		vulnerable to CSRF attacks. And <code>server_2</code>'s is using properly sanitized
+		user-controlled data.
+
+	</p>
+
+	<sample src="examples/CorsPermissiveConfigurationGood.js"/>
+</example>
+
+<references>
+	<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">CORS, Access-Control-Allow-Origin</a>.</li>
+	<li>W3C: <a href="https://w3c.github.io/webappsec-cors-for-developers/#resources">CORS for developers, Advice for Resource Owners</a></li>
+</references>
+</qhelp>

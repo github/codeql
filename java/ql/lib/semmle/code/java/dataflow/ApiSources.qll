@@ -19,5 +19,6 @@ private module AllApiSources {
   private import semmle.code.java.security.InsecureTrustManager
   private import semmle.code.java.security.JWT
   private import semmle.code.java.security.StackTraceExposureQuery
+  private import semmle.code.java.security.SensitiveDataExposureThroughErrorMessageQuery
   private import semmle.code.java.security.ZipSlipQuery
 }

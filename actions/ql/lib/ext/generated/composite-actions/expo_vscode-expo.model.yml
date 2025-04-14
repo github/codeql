@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["expo/vscode-expo", "*", "input.command", "code-injection", "generated"]
+     - ["expo/vscode-expo", "*", "input.semver", "code-injection", "generated"]
+     - ["expo/vscode-expo", "*", "input.name", "code-injection", "generated"]

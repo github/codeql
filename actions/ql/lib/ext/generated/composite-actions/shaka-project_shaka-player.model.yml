@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shaka-project/shaka-player", "*", "input.state", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.context", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.job_name", "code-injection", "generated"]
+     - ["shaka-project/shaka-player", "*", "input.token", "code-injection", "generated"]

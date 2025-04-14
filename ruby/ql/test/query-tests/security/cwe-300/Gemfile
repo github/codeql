@@ -18,23 +18,23 @@ git_source(:j) { |name| "unknown://github.com/#{name}" } # GOOD
 
 git_source(:k) do |name|
     foo
-    "https://github.com/#{name}" } # GOOD
+    "https://github.com/#{name}" # GOOD
 end
 git_source(:l) do |name|
     foo
-    "http://github.com/#{name}" } # $result=BAD
+    "http://github.com/#{name}" # $result=BAD
 end
 git_source(:m) do |name|
     foo
-    "ftp://github.com/#{name}" } # $result=BAD
+    "ftp://github.com/#{name}" # $result=BAD
 end
 git_source(:n) do |name|
     foo
-    "ftps://github.com/#{name}" } # GOOD
+    "ftps://github.com/#{name}" # GOOD
 end
 git_source(:o) do |name|
     foo
-    "unknown://github.com/#{name}" } # GOOD
+    "unknown://github.com/#{name}" # GOOD
 end
 
 gem "jwt", "1.2.3", git: "https://github.com/jwt/ruby-jwt" # GOOD

@@ -1,1 +1,0 @@
-The wrapper downloading a Maven distribution multiple times in parallel is not safe.

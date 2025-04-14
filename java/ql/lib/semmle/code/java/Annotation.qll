@@ -255,7 +255,7 @@ class Annotatable extends Element {
    */
   predicate hasAnnotation(string package, string name) {
     exists(AnnotationType at | at = this.getAnAnnotation().getType() |
-      at.nestedName() = name and at.getPackage().getName() = package
+      at.getNestedName() = name and at.getPackage().getName() = package
     )
   }
 

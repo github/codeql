@@ -134,7 +134,30 @@ module Make<InlineExpectationsTestSig Impl> {
      * predicate for an active test will be ignored. This makes it possible to write multiple tests in
      * different `.ql` files that all query the same source code.
      */
+    bindingset[result]
     string getARelevantTag();
+
+    /**
+     * Holds if expected tag `expectedTag` matches actual tag `actualTag`.
+     *
+     * This is normally defined as `expectedTag = actualTag`.
+     */
+    bindingset[expectedTag, actualTag]
+    default predicate tagMatches(string expectedTag, string actualTag) { expectedTag = actualTag }
+
+    /** Holds if expectations marked with `expectedTag` are optional. */
+    bindingset[expectedTag]
+    default predicate tagIsOptional(string expectedTag) { none() }
+
+    /**
+     * Holds if expected value `expectedValue` matches actual value `actualValue`.
+     *
+     * This is normally defined as `expectedValue = actualValue`.
+     */
+    bindingset[expectedValue, actualValue]
+    default predicate valueMatches(string expectedValue, string actualValue) {
+      expectedValue = actualValue
+    }
 
     /**
      * Returns the actual results of the query that is being tested. Each result consist of the
@@ -177,7 +200,7 @@ module Make<InlineExpectationsTestSig Impl> {
         (
           exists(FalseNegativeTestExpectation falseNegative |
             falseNegative.matchesActualResult(actualResult) and
-            message = "Fixed missing result:" + falseNegative.getExpectationText()
+            message = "Fixed missing result: " + falseNegative.getExpectationText()
           )
           or
           not exists(ValidTestExpectation expectation |
@@ -200,13 +223,13 @@ module Make<InlineExpectationsTestSig Impl> {
         not exists(ActualTestResult actualResult | expectation.matchesActualResult(actualResult)) and
         expectation.getTag() = TestImpl::getARelevantTag() and
         element = expectation and
-        (
-          expectation instanceof GoodTestExpectation and
-          message = "Missing result:" + expectation.getExpectationText()
-          or
-          expectation instanceof FalsePositiveTestExpectation and
-          message = "Fixed spurious result:" + expectation.getExpectationText()
-        )
+        not expectation.isOptional()
+      |
+        expectation instanceof GoodTestExpectation and
+        message = "Missing result: " + expectation.getExpectationText()
+        or
+        expectation instanceof FalsePositiveTestExpectation and
+        message = "Fixed spurious result: " + expectation.getExpectationText()
       )
       or
       exists(InvalidTestExpectation expectation |
@@ -242,7 +265,13 @@ module Make<InlineExpectationsTestSig Impl> {
 
       Impl::Location getLocation() { none() }
 
-      final string getExpectationText() { result = this.getTag() + "=" + this.getValue() }
+      final string getExpectationText() {
+        exists(string suffix |
+          if this.getValue() = "" then suffix = "" else suffix = "=" + this.getValue()
+        |
+          result = this.getTag() + suffix
+        )
+      }
 
       string getTag() { none() }
 
@@ -305,9 +334,11 @@ module Make<InlineExpectationsTestSig Impl> {
 
       predicate matchesActualResult(ActualTestResult actualResult) {
         onSameLine(pragma[only_bind_into](this), actualResult) and
-        this.getTag() = actualResult.getTag() and
-        this.getValue() = actualResult.getValue()
+        TestImpl::tagMatches(this.getTag(), actualResult.getTag()) and
+        TestImpl::valueMatches(this.getValue(), actualResult.getValue())
       }
+
+      predicate isOptional() { TestImpl::tagIsOptional(tag) }
     }
 
     // Note: These next three classes correspond to all the possible values of type `TColumn`.
@@ -329,6 +360,18 @@ module Make<InlineExpectationsTestSig Impl> {
       InvalidTestExpectation() { this = TInvalidExpectation(comment, expectation) }
 
       string getExpectation() { result = expectation }
+    }
+
+    /**
+     * Gets a test expectation that matches the actual result at the given location.
+     */
+    ValidTestExpectation getAMatchingExpectation(
+      Impl::Location location, string element, string tag, string val, boolean optional
+    ) {
+      exists(ActualTestResult actualResult |
+        result.matchesActualResult(actualResult) and
+        actualResult = TActualResult(location, element, tag, val, optional)
+      )
     }
 
     query predicate testFailures(FailureLocatable element, string message) {
@@ -379,6 +422,7 @@ module Make<InlineExpectationsTestSig Impl> {
    * ```
    */
   module MergeTests<TestSig TestImpl1, TestSig TestImpl2> implements TestSig {
+    bindingset[result]
     string getARelevantTag() {
       result = TestImpl1::getARelevantTag() or result = TestImpl2::getARelevantTag()
     }
@@ -402,6 +446,7 @@ module Make<InlineExpectationsTestSig Impl> {
   module MergeTests3<TestSig TestImpl1, TestSig TestImpl2, TestSig TestImpl3> implements TestSig {
     private module M = MergeTests<MergeTests<TestImpl1, TestImpl2>, TestImpl3>;
 
+    bindingset[result]
     string getARelevantTag() { result = M::getARelevantTag() }
 
     predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
@@ -421,6 +466,7 @@ module Make<InlineExpectationsTestSig Impl> {
   {
     private module M = MergeTests<MergeTests3<TestImpl1, TestImpl2, TestImpl3>, TestImpl4>;
 
+    bindingset[result]
     string getARelevantTag() { result = M::getARelevantTag() }
 
     predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
@@ -442,6 +488,7 @@ module Make<InlineExpectationsTestSig Impl> {
     private module M =
       MergeTests<MergeTests4<TestImpl1, TestImpl2, TestImpl3, TestImpl4>, TestImpl5>;
 
+    bindingset[result]
     string getARelevantTag() { result = M::getARelevantTag() }
 
     predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
@@ -452,55 +499,6 @@ module Make<InlineExpectationsTestSig Impl> {
       M::hasOptionalResult(location, element, tag, value)
     }
   }
-
-  deprecated private module LegacyImpl implements TestSig {
-    string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
-
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasActualResult(location, element, tag, value)
-    }
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      any(InlineExpectationsTest t).hasOptionalResult(location, element, tag, value)
-    }
-  }
-
-  /**
-   * DEPRECATED: Use the InlineExpectationsTest module.
-   *
-   * The base class for tests with inline expectations. The test extends this class to provide the actual
-   * results of the query, which are then compared with the expected results in comments to produce a
-   * list of failure messages that point out where the actual results differ from the expected
-   * results.
-   */
-  abstract deprecated class InlineExpectationsTest extends string {
-    bindingset[this]
-    InlineExpectationsTest() { any() }
-
-    abstract string getARelevantTag();
-
-    abstract predicate hasActualResult(
-      Impl::Location location, string element, string tag, string value
-    );
-
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      none()
-    }
-  }
-
-  deprecated import MakeTest<LegacyImpl> as LegacyTest
-
-  deprecated query predicate failures = LegacyTest::testFailures/2;
-
-  deprecated class ActualResult = LegacyTest::ActualTestResult;
-
-  deprecated class GoodExpectation = LegacyTest::GoodTestExpectation;
-
-  deprecated class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
-
-  deprecated class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
-
-  deprecated class InvalidExpectation = LegacyTest::InvalidTestExpectation;
 
   /**
    * Holds if the expectation `tag=value` is found in one or more expectation comments.
@@ -583,4 +581,437 @@ private string expectationPattern() {
     value = "((?:[bru]*\"[^\"]*\"|[bru]*'[^']*'|\\S+)*)" and
     result = tags + "(?:=" + value + ")?"
   )
+}
+
+/** Gets the string `#select` or `problems`, which are equivalent result sets for a `problem` or `path-problem` query. */
+private string mainResultSet() { result = ["#select", "problems"] }
+
+/**
+ * Provides logic for creating a `@kind test-postprocess` query that checks
+ * inline test expectations using `$ Alert` markers.
+ *
+ * The postprocessing query works for queries of kind `problem` and `path-problem`,
+ * and each query result must have a matching `$ Alert` comment. It is possible to
+ * augment the comment with a query ID, in order to support cases where multiple
+ * `.qlref` tests share the same test code:
+ *
+ * ```rust
+ * var x = ""; // $ Alert[rust/unused-value]
+ * return;
+ * foo();      // $ Alert[rust/unreachable-code]
+ * ```
+ *
+ * In the example above, the `$ Alert[rust/unused-value]` commment is only taken
+ * into account in the test for the query with ID `rust/unused-value`, and vice
+ * versa for the `$ Alert[rust/unreachable-code]` comment.
+ *
+ * For `path-problem` queries, each source and sink must additionally be annotated
+ * (`$ Source` and `$ Sink`, respectively), except when their location coincides
+ * with the location of the alert itself, in which case only `$ Alert` is needed.
+ *
+ * Example:
+ *
+ * ```csharp
+ * var queryParam = Request.QueryString["param"]; // $ Source
+ * Write(Html.Raw(queryParam));                   // $ Alert
+ * ```
+ *
+ * Morover, it is possible to tag sources with a unique identifier:
+ *
+ * ```csharp
+ * var queryParam = Request.QueryString["param"]; // $ Source=source1
+ * Write(Html.Raw(queryParam));                   // $ Alert=source1
+ * ```
+ *
+ * In this case, the source and sink must have the same tag in order
+ * to be matched.
+ */
+module TestPostProcessing {
+  external predicate queryResults(string relation, int row, int column, string data);
+
+  external predicate queryRelations(string relation);
+
+  external predicate queryMetadata(string key, string value);
+
+  private string getQueryId() { queryMetadata("id", result) }
+
+  private string getQueryKind() { queryMetadata("kind", result) }
+
+  signature module InputSig<InlineExpectationsTestSig Input> {
+    string getRelativeUrl(Input::Location location);
+  }
+
+  module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
+    private import InlineExpectationsTest as InlineExpectationsTest
+
+    bindingset[loc]
+    private predicate parseLocationString(
+      string loc, string relativePath, int sl, int sc, int el, int ec
+    ) {
+      relativePath = loc.splitAt(":", 0) and
+      sl = loc.splitAt(":", 1).toInt() and
+      sc = loc.splitAt(":", 2).toInt() and
+      el = loc.splitAt(":", 3).toInt() and
+      ec = loc.splitAt(":", 4).toInt()
+    }
+
+    pragma[nomagic]
+    private string getRelativePathTo(string absolutePath) {
+      exists(Input::Location loc |
+        loc.hasLocationInfo(absolutePath, _, _, _, _) and
+        parseLocationString(Input2::getRelativeUrl(loc), result, _, _, _, _)
+      )
+    }
+
+    private newtype TTestLocation =
+      MkInputLocation(Input::Location loc) or
+      MkResultLocation(string relativePath, int sl, int sc, int el, int ec) {
+        exists(string data |
+          queryResults(_, _, _, data) and
+          parseLocationString(data, relativePath, sl, sc, el, ec) and
+          not Input2::getRelativeUrl(_) = data // avoid duplicate locations
+        )
+      }
+
+    /**
+     * A location that is either an `Input::Location` or a location from an alert.
+     *
+     * We use this location type to support queries that select a location that does not correspond
+     * to an instance of `Input::Location`.
+     */
+    abstract private class TestLocationImpl extends TTestLocation {
+      string getAbsoluteFile() { this.hasLocationInfo(result, _, _, _, _) }
+
+      int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+
+      int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+
+      int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+
+      int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+
+      abstract string getRelativeUrl();
+
+      final string toString() { result = this.getRelativeUrl() }
+
+      abstract predicate hasLocationInfo(string file, int sl, int sc, int el, int ec);
+    }
+
+    private class LocationFromResult extends TestLocationImpl, MkResultLocation {
+      override string getRelativeUrl() {
+        exists(string file, int sl, int sc, int el, int ec |
+          this = MkResultLocation(file, sl, sc, el, ec) and
+          result = file + ":" + sl + ":" + sc + ":" + el + ":" + ec
+        )
+      }
+
+      override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
+        this = MkResultLocation(getRelativePathTo(file), sl, sc, el, ec)
+      }
+    }
+
+    private class LocationFromInput extends TestLocationImpl, MkInputLocation {
+      private Input::Location loc;
+
+      LocationFromInput() { this = MkInputLocation(loc) }
+
+      override string getRelativeUrl() { result = Input2::getRelativeUrl(loc) }
+
+      override predicate hasLocationInfo(string file, int sl, int sc, int el, int ec) {
+        loc.hasLocationInfo(file, sl, sc, el, ec)
+      }
+    }
+
+    final class TestLocation = TestLocationImpl;
+
+    module TestImpl2 implements InlineExpectationsTestSig {
+      final class Location = TestLocation;
+
+      final private class ExpectationCommentFinal = Input::ExpectationComment;
+
+      class ExpectationComment extends ExpectationCommentFinal {
+        Location getLocation() { result = MkInputLocation(super.getLocation()) }
+      }
+    }
+
+    private import InlineExpectationsTest::Make<TestImpl2>
+
+    /** Holds if the given locations refer to the same lines, but possibly with different column numbers. */
+    bindingset[loc1, loc2]
+    pragma[inline_late]
+    private predicate sameLineInfo(TestLocation loc1, TestLocation loc2) {
+      exists(string file, int line1, int line2 |
+        loc1.hasLocationInfo(file, line1, _, line2, _) and
+        loc2.hasLocationInfo(file, line1, _, line2, _)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate mainQueryResult(int row, int column, TestLocation loc) {
+      queryResults(mainResultSet(), row, column, loc.getRelativeUrl())
+    }
+
+    /**
+     * Gets the tag to be used for the path-problem source at result row `row`.
+     *
+     * This is either `Source` or `Alert`, depending on whether the location
+     * of the source matches the location of the alert.
+     */
+    private string getSourceTag(int row) {
+      getQueryKind() = "path-problem" and
+      exists(TestLocation sourceLoc, TestLocation selectLoc |
+        mainQueryResult(row, 0, selectLoc) and
+        mainQueryResult(row, 2, sourceLoc) and
+        if sameLineInfo(selectLoc, sourceLoc) then result = "Alert" else result = "Source"
+      )
+    }
+
+    /**
+     * Gets the tag to be used for the path-problem sink at result row `row`.
+     *
+     * This is either `Sink` or `Alert`, depending on whether the location
+     * of the sink matches the location of the alert.
+     */
+    private string getSinkTag(int row) {
+      getQueryKind() = "path-problem" and
+      exists(string loc | queryResults(mainResultSet(), row, 4, loc) |
+        if queryResults(mainResultSet(), row, 0, loc) then result = "Alert" else result = "Sink"
+      )
+    }
+
+    bindingset[x, y]
+    private int exactDivide(int x, int y) { x % y = 0 and result = x / y }
+
+    /** Gets the `n`th related location selected in `row`. */
+    private TestLocation getRelatedLocation(int row, int n, string element) {
+      n >= 0 and
+      exists(int column |
+        mainQueryResult(row, column, result) and
+        queryResults(mainResultSet(), row, column + 1, element)
+      |
+        getQueryKind() = "path-problem" and
+        // Skip over `alert, source, sink, message`, counting entities as two columns (7 columns in total).
+        // Then pick the first column from each related location, which each is an `entity, message` pair (3 columns).
+        n = exactDivide(column - 7, 3)
+        or
+        // Like above, but only skip over `alert, message` initially (3 columns in total).
+        getQueryKind() = "problem" and
+        n = exactDivide(column - 3, 3)
+      )
+    }
+
+    private string getAnActiveTag() {
+      result = ["Alert", "RelatedLocation"]
+      or
+      getQueryKind() = "path-problem" and
+      result = ["Source", "Sink"]
+    }
+
+    private string getTagRegex() { result = "(" + concat(getAnActiveTag(), "|") + ")(\\[(.*)\\])?" }
+
+    /**
+     * A configuration for matching `// $ Source=foo` comments against actual
+     * path-problem sources.
+     *
+     * Whenever a source is tagged with a value, like `foo`, we will use that
+     * to define the expected tags at the sink and the alert.
+     */
+    private module PathProblemSourceTestInput implements TestSig {
+      string getARelevantTag() { result = getSourceTag(_) }
+
+      bindingset[expectedTag, actualTag]
+      predicate tagMatches(string expectedTag, string actualTag) {
+        actualTag = expectedTag.regexpCapture(getTagRegex(), 1) and
+        (
+          // expected tag is annotated with a query ID
+          getQueryId() = expectedTag.regexpCapture(getTagRegex(), 3)
+          or
+          // expected tag is not annotated with a query ID
+          not exists(expectedTag.regexpCapture(getTagRegex(), 3))
+        )
+      }
+
+      bindingset[expectedValue, actualValue]
+      predicate valueMatches(string expectedValue, string actualValue) {
+        exists(expectedValue) and
+        actualValue = ""
+      }
+
+      additional predicate hasPathProblemSource(
+        int row, TestLocation location, string element, string tag, string value
+      ) {
+        getQueryKind() = "path-problem" and
+        mainQueryResult(row, 2, location) and
+        queryResults(mainResultSet(), row, 3, element) and
+        tag = getSourceTag(row) and
+        value = ""
+      }
+
+      predicate hasActualResult(TestLocation location, string element, string tag, string value) {
+        hasPathProblemSource(_, location, element, tag, value)
+      }
+    }
+
+    private module PathProblemSourceTest = MakeTest<PathProblemSourceTestInput>;
+
+    private module TestInput implements TestSig {
+      bindingset[result]
+      string getARelevantTag() { any() }
+
+      bindingset[expectedTag, actualTag]
+      predicate tagMatches(string expectedTag, string actualTag) {
+        PathProblemSourceTestInput::tagMatches(expectedTag, actualTag)
+        or
+        not exists(getQueryKind()) and
+        expectedTag = actualTag
+      }
+
+      bindingset[expectedTag]
+      predicate tagIsOptional(string expectedTag) {
+        exists(getQueryKind()) and
+        (
+          // ignore irrelevant tags
+          not expectedTag.regexpMatch(getTagRegex())
+          or
+          // ignore tags annotated with a query ID that does not match the current query ID
+          exists(string queryId |
+            queryId = expectedTag.regexpCapture(getTagRegex(), 3) and
+            queryId != getQueryId()
+          )
+        )
+      }
+
+      private predicate hasPathProblemSource = PathProblemSourceTestInput::hasPathProblemSource/5;
+
+      private predicate hasPathProblemSink(
+        int row, TestLocation location, string element, string tag
+      ) {
+        getQueryKind() = "path-problem" and
+        mainQueryResult(row, 4, location) and
+        queryResults(mainResultSet(), row, 5, element) and
+        tag = getSinkTag(row)
+      }
+
+      private predicate hasAlert(int row, TestLocation location, string element, string tag) {
+        getQueryKind() = ["problem", "path-problem"] and
+        mainQueryResult(row, 0, location) and
+        queryResults(mainResultSet(), row, 2, element) and
+        tag = "Alert" and
+        not hasPathProblemSource(row, location, _, _, _) and
+        not hasPathProblemSink(row, location, _, _)
+      }
+
+      private predicate shouldReportRelatedLocations() {
+        exists(string tag |
+          hasExpectationWithValue(tag, _) and
+          PathProblemSourceTestInput::tagMatches(tag, "RelatedLocation")
+        )
+      }
+
+      private predicate hasRelatedLocation(
+        int row, TestLocation location, string element, string tag
+      ) {
+        getQueryKind() = ["problem", "path-problem"] and
+        location = getRelatedLocation(row, _, element) and
+        shouldReportRelatedLocations() and
+        tag = "RelatedLocation" and
+        not hasAlert(row, location, _, _) and
+        not hasPathProblemSource(row, location, _, _, _) and
+        not hasPathProblemSink(row, location, _, _)
+      }
+
+      /**
+       * Holds if a custom query predicate implies `tag=value` at the given `location`.
+       *
+       * Such query predicates are only allowed in kind-less queries, usually in the form
+       * of a `.ql` file in a test folder, with a same-named `.qlref` file to enable
+       * post-processing for that test.
+       */
+      private predicate hasCustomQueryPredicateResult(
+        int row, TestLocation location, string element, string tag, string value
+      ) {
+        not exists(getQueryKind()) and
+        queryResults(tag, row, 0, location.getRelativeUrl()) and
+        queryResults(tag, row, 1, element) and
+        (
+          queryResults(tag, row, 2, value) and
+          not queryResults(tag, row, 3, _) // ignore if arity is greater than expected
+          or
+          not queryResults(tag, row, 2, _) and
+          value = "" // allow value-less expectations for unary predicates
+        )
+      }
+
+      /**
+       * Gets the expected value for result row `row`, if any. This value must
+       * match the value at the corresponding path-problem source (if it is
+       * present).
+       */
+      private string getValue(int row) {
+        exists(TestLocation location, string element, string tag, string val |
+          hasPathProblemSource(row, location, element, tag, val) and
+          result =
+            PathProblemSourceTest::getAMatchingExpectation(location, element, tag, val, false)
+                .getValue()
+        )
+      }
+
+      predicate hasActualResult(TestLocation location, string element, string tag, string value) {
+        exists(int row |
+          hasPathProblemSource(row, location, element, tag, _)
+          or
+          hasPathProblemSink(row, location, element, tag)
+          or
+          hasAlert(row, location, element, tag)
+          or
+          hasRelatedLocation(row, location, element, tag)
+        |
+          not exists(getValue(row)) and value = ""
+          or
+          value = getValue(row)
+        )
+        or
+        hasCustomQueryPredicateResult(_, location, element, tag, value)
+      }
+    }
+
+    private module Test = MakeTest<TestInput>;
+
+    private newtype TTestFailure =
+      MkTestFailure(Test::FailureLocatable f, string message) { Test::testFailures(f, message) }
+
+    private predicate rankedTestFailures(int i, MkTestFailure f) {
+      f =
+        rank[i](MkTestFailure f0, Test::FailureLocatable fl, string message, string filename,
+          int startLine, int startColumn, int endLine, int endColumn |
+          f0 = MkTestFailure(fl, message) and
+          fl.getLocation().hasLocationInfo(filename, startLine, startColumn, endLine, endColumn)
+        |
+          f0 order by filename, startLine, startColumn, endLine, endColumn, message, fl.toString()
+        )
+    }
+
+    query predicate results(string relation, int row, int column, string data) {
+      queryResults(relation, row, column, data)
+      or
+      exists(MkTestFailure f, Test::FailureLocatable fl, string message |
+        relation = "testFailures" and
+        rankedTestFailures(row, f) and
+        f = MkTestFailure(fl, message)
+      |
+        column = 0 and data = fl.getLocation().getRelativeUrl()
+        or
+        column = 1 and data = fl.toString()
+        or
+        column = 2 and data = message
+      )
+    }
+
+    query predicate resultRelations(string relation) {
+      queryRelations(relation)
+      or
+      Test::testFailures(_, _) and
+      relation = "testFailures"
+    }
+  }
 }

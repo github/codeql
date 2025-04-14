@@ -17,12 +17,12 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.TaintedPathQuery
-import JFinalController
+deprecated import JFinalController
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "file-path-injection" }
 }
 
@@ -50,7 +50,7 @@ class NormalizedPathNode extends DataFlow::Node {
 }
 
 module InjectFilePathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink instanceof TaintedPathSink and
@@ -66,7 +66,13 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
 
 module InjectFilePathFlow = TaintTracking::Global<InjectFilePathConfig>;
 
-from InjectFilePathFlow::PathNode source, InjectFilePathFlow::PathNode sink
-where InjectFilePathFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "External control of file name or path due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, InjectFilePathFlow::PathNode source, InjectFilePathFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  InjectFilePathFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "External control of file name or path due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

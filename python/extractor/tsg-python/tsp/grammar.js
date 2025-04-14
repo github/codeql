@@ -309,7 +309,8 @@ module.exports = grammar({
     ),
 
     except_group_clause: $ => seq(
-      'except*',
+      'except',
+      '*',
       seq(
         field('type', $.expression),
         optional(seq(
@@ -589,23 +590,31 @@ module.exports = grammar({
 
     typevar_parameter: $ => seq(
       field('name', $.identifier),
-      optional($._type_bound)
+      optional($._type_bound),
+      optional($._type_param_default)
     ),
 
     typevartuple_parameter: $ => seq(
       '*',
       field('name', $.identifier),
+      optional($._type_param_default)
     ),
 
     paramspec_parameter: $ => seq(
       '**',
       field('name', $.identifier),
+      optional($._type_param_default),
     ),
 
     _type_parameter: $ => choice(
         $.typevar_parameter,
         $.typevartuple_parameter,
         $.paramspec_parameter,
+    ),
+
+    _type_param_default: $ => seq(
+      '=',
+      field('default', choice($.list_splat, $.expression))
     ),
 
     parenthesized_list_splat: $ => prec(PREC.parenthesized_list_splat, seq(
@@ -742,7 +751,6 @@ module.exports = grammar({
       $.comparison_operator,
       $.not_operator,
       $.boolean_operator,
-      $.await,
       $.lambda,
       $.primary_expression,
       $.conditional_expression,
@@ -750,6 +758,7 @@ module.exports = grammar({
     ),
 
     primary_expression: $ => choice(
+      $.await,
       $.binary_operator,
       $.identifier,
       $.keyword_identifier,
@@ -920,11 +929,18 @@ module.exports = grammar({
       field('attribute', $.identifier)
     )),
 
+    _index_expression: $ => choice(
+      $.list_splat,
+      $.expression,
+      $.slice
+    ),
+
+    index_expression_list: $ => open_sequence(field('element', $._index_expression)),
+
     subscript: $ => prec(PREC.call, seq(
       field('value', $.primary_expression),
       '[',
-      commaSep1(field('subscript', choice($.expression, $.slice))),
-      optional(','),
+      field('subscript', choice($._index_expression, $.index_expression_list)),
       ']'
     )),
 
@@ -955,7 +971,7 @@ module.exports = grammar({
       field('type', $.type)
     )),
 
-    type: $ => $.expression,
+    type: $ => choice($.list_splat, $.expression),
 
     keyword_argument: $ => seq(
       field('name', choice($.identifier, $.keyword_identifier)),
@@ -1193,7 +1209,7 @@ module.exports = grammar({
 
     await: $ => prec(PREC.unary, seq(
       'await',
-      $.expression
+      $.primary_expression
     )),
 
     comment: $ => token(seq('#', /.*/)),

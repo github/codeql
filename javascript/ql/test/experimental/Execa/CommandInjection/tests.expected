@@ -1,0 +1,22 @@
+passingPositiveTests
+| PASSED | CommandInjection | tests.js:11:46:11:70 | // test ... jection |
+| PASSED | CommandInjection | tests.js:12:43:12:67 | // test ... jection |
+| PASSED | CommandInjection | tests.js:13:63:13:87 | // test ... jection |
+| PASSED | CommandInjection | tests.js:14:62:14:86 | // test ... jection |
+| PASSED | CommandInjection | tests.js:15:60:15:84 | // test ... jection |
+| PASSED | CommandInjection | tests.js:17:45:17:69 | // test ... jection |
+| PASSED | CommandInjection | tests.js:18:42:18:66 | // test ... jection |
+| PASSED | CommandInjection | tests.js:19:62:19:86 | // test ... jection |
+| PASSED | CommandInjection | tests.js:20:63:20:87 | // test ... jection |
+| PASSED | CommandInjection | tests.js:21:60:21:84 | // test ... jection |
+| PASSED | CommandInjection | tests.js:23:43:23:67 | // test ... jection |
+| PASSED | CommandInjection | tests.js:24:40:24:64 | // test ... jection |
+| PASSED | CommandInjection | tests.js:25:40:25:64 | // test ... jection |
+| PASSED | CommandInjection | tests.js:26:60:26:84 | // test ... jection |
+| PASSED | CommandInjection | tests.js:28:41:28:65 | // test ... jection |
+| PASSED | CommandInjection | tests.js:29:58:29:82 | // test ... jection |
+| PASSED | CommandInjection | tests.js:31:51:31:75 | // test ... jection |
+| PASSED | CommandInjection | tests.js:32:68:32:92 | // test ... jection |
+| PASSED | CommandInjection | tests.js:34:49:34:73 | // test ... jection |
+| PASSED | CommandInjection | tests.js:35:66:35:90 | // test ... jection |
+failingPositiveTests

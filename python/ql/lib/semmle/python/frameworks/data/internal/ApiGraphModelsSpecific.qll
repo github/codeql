@@ -29,7 +29,11 @@ import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
 /**
  * Holds if models describing `type` may be relevant for the analysis of this database.
  */
-predicate isTypeUsed(string type) { API::moduleImportExists(type) }
+bindingset[type]
+predicate isTypeUsed(string type) {
+  // If `type` is a path, then it is the first component that should be imported.
+  API::moduleImportExists(type.splitAt(".", 0))
+}
 
 /**
  * Holds if `type` can be obtained from an instance of `otherType` due to
@@ -41,8 +45,59 @@ predicate hasImplicitTypeModel(string type, string otherType) { none() }
 bindingset[type, path]
 API::Node getExtraNodeFromPath(string type, AccessPath path, int n) { none() }
 
+/**
+ * Holds if `type` = `typePath`+`suffix` and `suffix` is either empty or "!".
+ */
+bindingset[type]
+private predicate parseType(string type, string typePath, string suffix) {
+  exists(string regexp |
+    regexp = "([^!]+)(!|)" and
+    typePath = type.regexpCapture(regexp, 1) and
+    suffix = type.regexpCapture(regexp, 2)
+  )
+}
+
+private predicate parseRelevantType(string type, string typePath, string suffix) {
+  isRelevantType(type) and
+  parseType(type, typePath, suffix)
+}
+
+pragma[nomagic]
+private string getTypePathComponent(string typePath, int n) {
+  parseRelevantType(_, typePath, _) and
+  result = typePath.splitAt(".", n)
+}
+
+private int getNumTypePathComponents(string typePath) {
+  result = strictcount(int n | exists(getTypePathComponent(typePath, n)))
+}
+
+private API::Node getNodeFromTypePath(string typePath, int n) {
+  n = 1 and
+  result = API::moduleImport(getTypePathComponent(typePath, 0))
+  or
+  result = getNodeFromTypePath(typePath, n - 1).getMember(getTypePathComponent(typePath, n - 1))
+}
+
+private API::Node getNodeFromTypePath(string typePath) {
+  result = getNodeFromTypePath(typePath, getNumTypePathComponents(typePath))
+}
+
 /** Gets a Python-specific interpretation of the given `type`. */
-API::Node getExtraNodeFromType(string type) { result = API::moduleImport(type) }
+API::Node getExtraNodeFromType(string type) {
+  result = API::moduleImport(type)
+  or
+  exists(string typePath, string suffix, API::Node node |
+    parseRelevantType(type, typePath, suffix) and
+    node = getNodeFromTypePath(typePath)
+  |
+    suffix = "!" and
+    result = node
+    or
+    suffix = "" and
+    result = node.getAnInstance()
+  )
+}
 
 /**
  * Gets a Python-specific API graph successor of `node` reachable by resolving `token`.
@@ -79,9 +134,25 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
     token.getAnArgument() = "any-named" and
     result = node.getKeywordParameter(_)
   )
+  or
+  // content based steps
+  //
+  // note: if we want to migrate to use `FlowSummaryImpl::Input::encodeContent` like
+  // they do in Ruby, be aware that we currently don't make
+  // `DataFlow::DictionaryElementContent` just from seeing a subscript read, so we would
+  // need to add that. (also need to handle things like `DictionaryElementAny` which
+  // doesn't have any value for .getAnArgument())
+  (
+    token.getName() = "DictionaryElement" and
+    result = node.getSubscript(token.getAnArgument())
+    or
+    token.getName() = "DictionaryElementAny" and
+    result = node.getASubscript() and
+    not exists(token.getAnArgument())
+    // TODO: ListElement/SetElement/TupleElement
+  )
   // Some features don't have MaD tokens yet, they would need to be added to API-graphs first.
   // - decorators ("DecoratedClass", "DecoratedMember", "DecoratedParameter")
-  // - Array/Map elements ("ArrayElement", "Element", "MapKey", "MapValue")
 }
 
 /**
@@ -187,7 +258,11 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node.getACall() }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Instance", "Awaited", "Call", "Method", "Subclass"]
+  name =
+    [
+      "Member", "Instance", "Awaited", "Call", "Method", "Subclass", "DictionaryElement",
+      "DictionaryElementAny"
+    ]
 }
 
 /**
@@ -195,7 +270,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
  * in an identifying access path.
  */
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = ["Instance", "Awaited", "Call", "Subclass"]
+  name = ["Instance", "Awaited", "Call", "Subclass", "DictionaryElementAny"]
 }
 
 /**
@@ -204,7 +279,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
  */
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
-  name = ["Member", "Method"] and
+  name = ["Member", "Method", "DictionaryElement"] and
   exists(argument)
   or
   name = ["Argument", "Parameter"] and

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.TemplateInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module TemplateInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasTemplateInjection" }

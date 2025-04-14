@@ -1,0 +1,247 @@
+models
+| 1 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 2 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 3 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 4 | Summary: java.util; Map; true; keySet; (); ; Argument[this].MapKey; ReturnValue.Element; value; manual |
+| 5 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 6 | Summary: org.springframework.cache; Cache$ValueRetrievalException; false; ValueRetrievalException; ; ; Argument[0]; Argument[this].MapKey; value; manual |
+| 7 | Summary: org.springframework.cache; Cache$ValueRetrievalException; false; getKey; ; ; Argument[this].MapKey; ReturnValue; value; manual |
+| 8 | Summary: org.springframework.cache; Cache$ValueWrapper; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 9 | Summary: org.springframework.cache; Cache; true; get; (Object); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
+| 10 | Summary: org.springframework.cache; Cache; true; get; (Object,Callable); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 11 | Summary: org.springframework.cache; Cache; true; get; (Object,Class); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 12 | Summary: org.springframework.cache; Cache; true; getNativeCache; ; ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
+| 13 | Summary: org.springframework.cache; Cache; true; getNativeCache; ; ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
+| 14 | Summary: org.springframework.cache; Cache; true; put; ; ; Argument[0]; Argument[this].MapKey; value; manual |
+| 15 | Summary: org.springframework.cache; Cache; true; put; ; ; Argument[1]; Argument[this].MapValue; value; manual |
+| 16 | Summary: org.springframework.cache; Cache; true; putIfAbsent; ; ; Argument[0]; Argument[this].MapKey; value; manual |
+| 17 | Summary: org.springframework.cache; Cache; true; putIfAbsent; ; ; Argument[1]; Argument[this].MapValue; value; manual |
+| 18 | Summary: org.springframework.cache; Cache; true; putIfAbsent; ; ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
+edges
+| Test.java:13:16:13:29 | element : Object | Test.java:15:19:15:25 | element : Object | provenance |  |
+| Test.java:15:4:15:7 | this [post update] : ValueWrapper [<map.value>] : Object | Test.java:13:3:13:14 | parameter this [Return] : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:15:19:15:25 | element : Object | Test.java:15:4:15:7 | this [post update] : ValueWrapper [<map.value>] : Object | provenance | MaD:5 |
+| Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | provenance | MaD:3 |
+| Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | provenance | MaD:3 |
+| Test.java:22:14:22:23 | key : Object | Test.java:23:13:23:15 | key : Object | provenance |  |
+| Test.java:22:26:22:37 | value : Object | Test.java:23:18:23:22 | value : Object | provenance |  |
+| Test.java:23:4:23:7 | this [post update] : DummyCache [<map.key>] : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.key>] : Object | provenance |  |
+| Test.java:23:4:23:7 | this [post update] : DummyCache [<map.value>] : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:23:13:23:15 | key : Object | Test.java:23:4:23:7 | this [post update] : DummyCache [<map.key>] : Object | provenance | MaD:14 |
+| Test.java:23:18:23:22 | value : Object | Test.java:23:4:23:7 | this [post update] : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:39:19:39:57 | container : ValueRetrievalException [<map.key>] : Object | Test.java:39:69:39:77 | container : ValueRetrievalException [<map.key>] : Object | provenance |  |
+| Test.java:39:69:39:77 | container : ValueRetrievalException [<map.key>] : Object | Test.java:39:69:39:86 | getKey(...) : Object | provenance | MaD:7 |
+| Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | Test.java:40:51:40:59 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:40:45:40:86 | keySet(...) : Set [<element>] : Object | Test.java:40:45:40:97 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
+| Test.java:40:45:40:97 | iterator(...) : Iterator [<element>] : Object | Test.java:40:45:40:104 | next(...) : Object | provenance | MaD:2 |
+| Test.java:40:46:40:76 | (...)... : Map [<map.key>] : Object | Test.java:40:45:40:86 | keySet(...) : Set [<element>] : Object | provenance | MaD:4 |
+| Test.java:40:51:40:59 | container : Cache [<map.key>] : Object | Test.java:40:51:40:76 | getNativeCache(...) : Object [<map.key>] : Object | provenance | MaD:12 |
+| Test.java:40:51:40:76 | getNativeCache(...) : Object [<map.key>] : Object | Test.java:40:46:40:76 | (...)... : Map [<map.key>] : Object | provenance |  |
+| Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | Test.java:41:47:41:55 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:41:47:41:55 | container : Cache [<map.value>] : Object | Test.java:41:47:41:78 | get(...) : Object | provenance | MaD:11 |
+| Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:3 |
+| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | provenance | MaD:8 |
+| Test.java:51:16:51:23 | source(...) : Object | Test.java:52:44:52:45 | in : Object | provenance |  |
+| Test.java:52:10:52:58 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | provenance |  |
+| Test.java:52:44:52:45 | in : Object | Test.java:52:10:52:58 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | provenance | MaD:6 |
+| Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | Test.java:39:19:39:57 | container : ValueRetrievalException [<map.key>] : Object | provenance |  |
+| Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | Test.java:53:9:53:22 | getMapKey(...) | provenance | MaD:7 |
+| Test.java:58:39:58:93 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | Test.java:59:10:59:11 | in : ValueRetrievalException [<map.key>] : Object | provenance |  |
+| Test.java:58:73:58:80 | source(...) : Object | Test.java:58:39:58:93 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | provenance | MaD:6 |
+| Test.java:59:10:59:11 | in : ValueRetrievalException [<map.key>] : Object | Test.java:59:10:59:20 | getKey(...) : Object | provenance | MaD:7 |
+| Test.java:59:10:59:20 | getKey(...) : Object | Test.java:60:9:60:11 | out | provenance |  |
+| Test.java:65:28:65:53 | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object | Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:65:45:65:52 | source(...) : Object | Test.java:13:16:13:29 | element : Object | provenance |  |
+| Test.java:65:45:65:52 | source(...) : Object | Test.java:65:28:65:53 | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object | provenance | MaD:5 |
+| Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | Test.java:66:10:66:17 | get(...) : Object | provenance | MaD:3 |
+| Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | Test.java:66:10:66:17 | get(...) : Object | provenance | MaD:8 |
+| Test.java:66:10:66:17 | get(...) : Object | Test.java:67:9:67:11 | out | provenance |  |
+| Test.java:72:15:72:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | Test.java:73:10:73:11 | in : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:72:36:72:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | provenance |  |
+| Test.java:72:36:72:43 | source(...) : Object | Test.java:72:15:72:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:73:10:73:11 | in : DummyCache [<map.value>] : Object | Test.java:73:10:73:21 | get(...) : ValueWrapper [<map.value>] : Object | provenance | MaD:9 |
+| Test.java:73:10:73:21 | get(...) : ValueWrapper [<map.value>] : Object | Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:74:9:74:24 | getMapValue(...) | provenance | MaD:3 |
+| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:74:9:74:24 | getMapValue(...) | provenance | MaD:8 |
+| Test.java:79:15:79:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | Test.java:80:10:80:11 | in : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:79:36:79:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | provenance |  |
+| Test.java:79:36:79:43 | source(...) : Object | Test.java:79:15:79:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:80:10:80:11 | in : DummyCache [<map.value>] : Object | Test.java:80:10:80:37 | get(...) : Object | provenance | MaD:10 |
+| Test.java:80:10:80:37 | get(...) : Object | Test.java:81:9:81:11 | out | provenance |  |
+| Test.java:86:15:86:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | Test.java:87:10:87:11 | in : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:86:36:86:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | provenance |  |
+| Test.java:86:36:86:43 | source(...) : Object | Test.java:86:15:86:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:87:10:87:11 | in : DummyCache [<map.value>] : Object | Test.java:87:10:87:34 | get(...) : Object | provenance | MaD:11 |
+| Test.java:87:10:87:34 | get(...) : Object | Test.java:88:9:88:11 | out | provenance |  |
+| Test.java:93:15:93:44 | new DummyCache(...) : DummyCache [<map.key>] : Object | Test.java:94:10:94:11 | in : DummyCache [<map.key>] : Object | provenance |  |
+| Test.java:93:30:93:37 | source(...) : Object | Test.java:22:14:22:23 | key : Object | provenance |  |
+| Test.java:93:30:93:37 | source(...) : Object | Test.java:93:15:93:44 | new DummyCache(...) : DummyCache [<map.key>] : Object | provenance | MaD:14 |
+| Test.java:94:10:94:11 | in : DummyCache [<map.key>] : Object | Test.java:94:10:94:28 | getNativeCache(...) : Object [<map.key>] : Object | provenance | MaD:12 |
+| Test.java:94:10:94:28 | getNativeCache(...) : Object [<map.key>] : Object | Test.java:95:19:95:28 | (...)... : Cache [<map.key>] : Object | provenance |  |
+| Test.java:95:19:95:28 | (...)... : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:95:19:95:28 | (...)... : Cache [<map.key>] : Object | Test.java:95:9:95:29 | getMapKey(...) | provenance | MaD:12 |
+| Test.java:100:15:100:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | Test.java:101:10:101:11 | in : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:100:36:100:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | provenance |  |
+| Test.java:100:36:100:43 | source(...) : Object | Test.java:100:15:100:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:101:10:101:11 | in : DummyCache [<map.value>] : Object | Test.java:101:10:101:28 | getNativeCache(...) : Object [<map.value>] : Object | provenance | MaD:13 |
+| Test.java:101:10:101:28 | getNativeCache(...) : Object [<map.value>] : Object | Test.java:102:21:102:30 | (...)... : Cache [<map.value>] : Object | provenance |  |
+| Test.java:102:21:102:30 | (...)... : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:102:21:102:30 | (...)... : Cache [<map.value>] : Object | Test.java:102:9:102:31 | getMapValue(...) | provenance | MaD:11 |
+| Test.java:107:16:107:23 | source(...) : Object | Test.java:108:12:108:13 | in : Object | provenance |  |
+| Test.java:108:4:108:6 | out [post update] : Cache [<map.key>] : Object | Test.java:109:19:109:21 | out : Cache [<map.key>] : Object | provenance |  |
+| Test.java:108:12:108:13 | in : Object | Test.java:108:4:108:6 | out [post update] : Cache [<map.key>] : Object | provenance | MaD:14 |
+| Test.java:109:19:109:21 | out : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:109:19:109:21 | out : Cache [<map.key>] : Object | Test.java:109:9:109:22 | getMapKey(...) | provenance | MaD:12 |
+| Test.java:114:16:114:23 | source(...) : Object | Test.java:115:18:115:19 | in : Object | provenance |  |
+| Test.java:115:4:115:6 | out [post update] : Cache [<map.value>] : Object | Test.java:116:21:116:23 | out : Cache [<map.value>] : Object | provenance |  |
+| Test.java:115:18:115:19 | in : Object | Test.java:115:4:115:6 | out [post update] : Cache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:116:21:116:23 | out : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:116:21:116:23 | out : Cache [<map.value>] : Object | Test.java:116:9:116:24 | getMapValue(...) | provenance | MaD:11 |
+| Test.java:121:16:121:23 | source(...) : Object | Test.java:122:20:122:21 | in : Object | provenance |  |
+| Test.java:122:4:122:6 | out [post update] : Cache [<map.key>] : Object | Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | provenance |  |
+| Test.java:122:20:122:21 | in : Object | Test.java:122:4:122:6 | out [post update] : Cache [<map.key>] : Object | provenance | MaD:16 |
+| Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | Test.java:123:9:123:22 | getMapKey(...) | provenance | MaD:12 |
+| Test.java:128:16:128:23 | source(...) : Object | Test.java:129:26:129:27 | in : Object | provenance |  |
+| Test.java:129:4:129:6 | out [post update] : Cache [<map.value>] : Object | Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | provenance |  |
+| Test.java:129:26:129:27 | in : Object | Test.java:129:4:129:6 | out [post update] : Cache [<map.value>] : Object | provenance | MaD:17 |
+| Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | Test.java:130:9:130:24 | getMapValue(...) | provenance | MaD:11 |
+| Test.java:135:15:135:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | Test.java:136:10:136:11 | in : DummyCache [<map.value>] : Object | provenance |  |
+| Test.java:135:36:135:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | provenance |  |
+| Test.java:135:36:135:43 | source(...) : Object | Test.java:135:15:135:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:136:10:136:11 | in : DummyCache [<map.value>] : Object | Test.java:136:10:136:35 | putIfAbsent(...) : ValueWrapper [<map.value>] : Object | provenance | MaD:18 |
+| Test.java:136:10:136:35 | putIfAbsent(...) : ValueWrapper [<map.value>] : Object | Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | provenance |  |
+| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:137:9:137:24 | getMapValue(...) | provenance | MaD:3 |
+| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:137:9:137:24 | getMapValue(...) | provenance | MaD:8 |
+nodes
+| Test.java:13:3:13:14 | parameter this [Return] : ValueWrapper [<map.value>] : Object | semmle.label | parameter this [Return] : ValueWrapper [<map.value>] : Object |
+| Test.java:13:16:13:29 | element : Object | semmle.label | element : Object |
+| Test.java:15:4:15:7 | this [post update] : ValueWrapper [<map.value>] : Object | semmle.label | this [post update] : ValueWrapper [<map.value>] : Object |
+| Test.java:15:19:15:25 | element : Object | semmle.label | element : Object |
+| Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | semmle.label | parameter this : ValueWrapper [<map.value>] : Object |
+| Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | semmle.label | parameter this : ValueWrapper [<map.value>] : Object |
+| Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | semmle.label | this : ValueWrapper [<map.value>] : Object |
+| Test.java:18:32:18:35 | this : ValueWrapper [<map.value>] : Object | semmle.label | this : ValueWrapper [<map.value>] : Object |
+| Test.java:18:32:18:45 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:18:32:18:45 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.key>] : Object | semmle.label | parameter this [Return] : DummyCache [<map.key>] : Object |
+| Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | semmle.label | parameter this [Return] : DummyCache [<map.value>] : Object |
+| Test.java:22:14:22:23 | key : Object | semmle.label | key : Object |
+| Test.java:22:26:22:37 | value : Object | semmle.label | value : Object |
+| Test.java:23:4:23:7 | this [post update] : DummyCache [<map.key>] : Object | semmle.label | this [post update] : DummyCache [<map.key>] : Object |
+| Test.java:23:4:23:7 | this [post update] : DummyCache [<map.value>] : Object | semmle.label | this [post update] : DummyCache [<map.value>] : Object |
+| Test.java:23:13:23:15 | key : Object | semmle.label | key : Object |
+| Test.java:23:18:23:22 | value : Object | semmle.label | value : Object |
+| Test.java:39:19:39:57 | container : ValueRetrievalException [<map.key>] : Object | semmle.label | container : ValueRetrievalException [<map.key>] : Object |
+| Test.java:39:69:39:77 | container : ValueRetrievalException [<map.key>] : Object | semmle.label | container : ValueRetrievalException [<map.key>] : Object |
+| Test.java:39:69:39:86 | getKey(...) : Object | semmle.label | getKey(...) : Object |
+| Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | semmle.label | container : Cache [<map.key>] : Object |
+| Test.java:40:45:40:86 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
+| Test.java:40:45:40:97 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:40:45:40:104 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:40:46:40:76 | (...)... : Map [<map.key>] : Object | semmle.label | (...)... : Map [<map.key>] : Object |
+| Test.java:40:51:40:59 | container : Cache [<map.key>] : Object | semmle.label | container : Cache [<map.key>] : Object |
+| Test.java:40:51:40:76 | getNativeCache(...) : Object [<map.key>] : Object | semmle.label | getNativeCache(...) : Object [<map.key>] : Object |
+| Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | semmle.label | container : Cache [<map.value>] : Object |
+| Test.java:41:47:41:55 | container : Cache [<map.value>] : Object | semmle.label | container : Cache [<map.value>] : Object |
+| Test.java:41:47:41:78 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | semmle.label | container : ValueWrapper [<map.value>] : Object |
+| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | semmle.label | container : ValueWrapper [<map.value>] : Object |
+| Test.java:42:60:42:74 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:51:16:51:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:52:10:52:58 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | semmle.label | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object |
+| Test.java:52:44:52:45 | in : Object | semmle.label | in : Object |
+| Test.java:53:9:53:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | semmle.label | out : ValueRetrievalException [<map.key>] : Object |
+| Test.java:58:39:58:93 | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object | semmle.label | new ValueRetrievalException(...) : ValueRetrievalException [<map.key>] : Object |
+| Test.java:58:73:58:80 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:59:10:59:11 | in : ValueRetrievalException [<map.key>] : Object | semmle.label | in : ValueRetrievalException [<map.key>] : Object |
+| Test.java:59:10:59:20 | getKey(...) : Object | semmle.label | getKey(...) : Object |
+| Test.java:60:9:60:11 | out | semmle.label | out |
+| Test.java:65:28:65:53 | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object | semmle.label | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object |
+| Test.java:65:45:65:52 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | semmle.label | in : ValueWrapper [<map.value>] : Object |
+| Test.java:66:10:66:17 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:67:9:67:11 | out | semmle.label | out |
+| Test.java:72:15:72:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:72:36:72:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:73:10:73:11 | in : DummyCache [<map.value>] : Object | semmle.label | in : DummyCache [<map.value>] : Object |
+| Test.java:73:10:73:21 | get(...) : ValueWrapper [<map.value>] : Object | semmle.label | get(...) : ValueWrapper [<map.value>] : Object |
+| Test.java:74:9:74:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | semmle.label | out : ValueWrapper [<map.value>] : Object |
+| Test.java:79:15:79:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:79:36:79:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:80:10:80:11 | in : DummyCache [<map.value>] : Object | semmle.label | in : DummyCache [<map.value>] : Object |
+| Test.java:80:10:80:37 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:81:9:81:11 | out | semmle.label | out |
+| Test.java:86:15:86:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:86:36:86:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:87:10:87:11 | in : DummyCache [<map.value>] : Object | semmle.label | in : DummyCache [<map.value>] : Object |
+| Test.java:87:10:87:34 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:88:9:88:11 | out | semmle.label | out |
+| Test.java:93:15:93:44 | new DummyCache(...) : DummyCache [<map.key>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.key>] : Object |
+| Test.java:93:30:93:37 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:94:10:94:11 | in : DummyCache [<map.key>] : Object | semmle.label | in : DummyCache [<map.key>] : Object |
+| Test.java:94:10:94:28 | getNativeCache(...) : Object [<map.key>] : Object | semmle.label | getNativeCache(...) : Object [<map.key>] : Object |
+| Test.java:95:9:95:29 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:95:19:95:28 | (...)... : Cache [<map.key>] : Object | semmle.label | (...)... : Cache [<map.key>] : Object |
+| Test.java:100:15:100:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:100:36:100:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:101:10:101:11 | in : DummyCache [<map.value>] : Object | semmle.label | in : DummyCache [<map.value>] : Object |
+| Test.java:101:10:101:28 | getNativeCache(...) : Object [<map.value>] : Object | semmle.label | getNativeCache(...) : Object [<map.value>] : Object |
+| Test.java:102:9:102:31 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:102:21:102:30 | (...)... : Cache [<map.value>] : Object | semmle.label | (...)... : Cache [<map.value>] : Object |
+| Test.java:107:16:107:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:108:4:108:6 | out [post update] : Cache [<map.key>] : Object | semmle.label | out [post update] : Cache [<map.key>] : Object |
+| Test.java:108:12:108:13 | in : Object | semmle.label | in : Object |
+| Test.java:109:9:109:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:109:19:109:21 | out : Cache [<map.key>] : Object | semmle.label | out : Cache [<map.key>] : Object |
+| Test.java:114:16:114:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:115:4:115:6 | out [post update] : Cache [<map.value>] : Object | semmle.label | out [post update] : Cache [<map.value>] : Object |
+| Test.java:115:18:115:19 | in : Object | semmle.label | in : Object |
+| Test.java:116:9:116:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:116:21:116:23 | out : Cache [<map.value>] : Object | semmle.label | out : Cache [<map.value>] : Object |
+| Test.java:121:16:121:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:122:4:122:6 | out [post update] : Cache [<map.key>] : Object | semmle.label | out [post update] : Cache [<map.key>] : Object |
+| Test.java:122:20:122:21 | in : Object | semmle.label | in : Object |
+| Test.java:123:9:123:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | semmle.label | out : Cache [<map.key>] : Object |
+| Test.java:128:16:128:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:129:4:129:6 | out [post update] : Cache [<map.value>] : Object | semmle.label | out [post update] : Cache [<map.value>] : Object |
+| Test.java:129:26:129:27 | in : Object | semmle.label | in : Object |
+| Test.java:130:9:130:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | semmle.label | out : Cache [<map.value>] : Object |
+| Test.java:135:15:135:44 | new DummyCache(...) : DummyCache [<map.value>] : Object | semmle.label | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:135:36:135:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:136:10:136:11 | in : DummyCache [<map.value>] : Object | semmle.label | in : DummyCache [<map.value>] : Object |
+| Test.java:136:10:136:35 | putIfAbsent(...) : ValueWrapper [<map.value>] : Object | semmle.label | putIfAbsent(...) : ValueWrapper [<map.value>] : Object |
+| Test.java:137:9:137:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | semmle.label | out : ValueWrapper [<map.value>] : Object |
+subpaths
+| Test.java:42:60:42:68 | container : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | Test.java:42:60:42:74 | get(...) : Object |
+| Test.java:53:19:53:21 | out : ValueRetrievalException [<map.key>] : Object | Test.java:39:19:39:57 | container : ValueRetrievalException [<map.key>] : Object | Test.java:39:69:39:86 | getKey(...) : Object | Test.java:53:9:53:22 | getMapKey(...) |
+| Test.java:65:45:65:52 | source(...) : Object | Test.java:13:16:13:29 | element : Object | Test.java:13:3:13:14 | parameter this [Return] : ValueWrapper [<map.value>] : Object | Test.java:65:28:65:53 | new ValueWrapper(...) : ValueWrapper [<map.value>] : Object |
+| Test.java:66:10:66:11 | in : ValueWrapper [<map.value>] : Object | Test.java:18:17:18:19 | parameter this : ValueWrapper [<map.value>] : Object | Test.java:18:32:18:45 | get(...) : Object | Test.java:66:10:66:17 | get(...) : Object |
+| Test.java:72:36:72:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:72:15:72:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:74:21:74:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:74:9:74:24 | getMapValue(...) |
+| Test.java:79:36:79:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:79:15:79:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:86:36:86:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:86:15:86:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:93:30:93:37 | source(...) : Object | Test.java:22:14:22:23 | key : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.key>] : Object | Test.java:93:15:93:44 | new DummyCache(...) : DummyCache [<map.key>] : Object |
+| Test.java:95:19:95:28 | (...)... : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | Test.java:40:45:40:104 | next(...) : Object | Test.java:95:9:95:29 | getMapKey(...) |
+| Test.java:100:36:100:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:100:15:100:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:102:21:102:30 | (...)... : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | Test.java:41:47:41:78 | get(...) : Object | Test.java:102:9:102:31 | getMapValue(...) |
+| Test.java:109:19:109:21 | out : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | Test.java:40:45:40:104 | next(...) : Object | Test.java:109:9:109:22 | getMapKey(...) |
+| Test.java:116:21:116:23 | out : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | Test.java:41:47:41:78 | get(...) : Object | Test.java:116:9:116:24 | getMapValue(...) |
+| Test.java:123:19:123:21 | out : Cache [<map.key>] : Object | Test.java:40:19:40:33 | container : Cache [<map.key>] : Object | Test.java:40:45:40:104 | next(...) : Object | Test.java:123:9:123:22 | getMapKey(...) |
+| Test.java:130:21:130:23 | out : Cache [<map.value>] : Object | Test.java:41:21:41:35 | container : Cache [<map.value>] : Object | Test.java:41:47:41:78 | get(...) : Object | Test.java:130:9:130:24 | getMapValue(...) |
+| Test.java:135:36:135:43 | source(...) : Object | Test.java:22:26:22:37 | value : Object | Test.java:22:3:22:12 | parameter this [Return] : DummyCache [<map.value>] : Object | Test.java:135:15:135:44 | new DummyCache(...) : DummyCache [<map.value>] : Object |
+| Test.java:137:21:137:23 | out : ValueWrapper [<map.value>] : Object | Test.java:42:21:42:48 | container : ValueWrapper [<map.value>] : Object | Test.java:42:60:42:74 | get(...) : Object | Test.java:137:9:137:24 | getMapValue(...) |
+testFailures

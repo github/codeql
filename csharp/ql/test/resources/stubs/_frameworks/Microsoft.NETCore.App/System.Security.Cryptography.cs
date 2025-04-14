@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Security.Cryptography, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Security.Cryptography, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -384,6 +384,9 @@ namespace System
                 None = 0,
                 MachineKey = 32,
                 OverwriteExistingKey = 128,
+                PreferVbs = 65536,
+                RequireVbs = 131072,
+                UsePerBootKey = 262144,
             }
             public sealed class CngKeyCreationParameters
             {
@@ -490,6 +493,24 @@ namespace System
             public static class CryptographicOperations
             {
                 public static bool FixedTimeEquals(System.ReadOnlySpan<byte> left, System.ReadOnlySpan<byte> right) => throw null;
+                public static byte[] HashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] source) => throw null;
+                public static byte[] HashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.IO.Stream source) => throw null;
+                public static int HashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.IO.Stream source, System.Span<byte> destination) => throw null;
+                public static byte[] HashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> source) => throw null;
+                public static int HashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
+                public static System.Threading.Tasks.ValueTask<int> HashDataAsync(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static byte[] HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] key, byte[] source) => throw null;
+                public static byte[] HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] key, System.IO.Stream source) => throw null;
+                public static byte[] HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key, System.IO.Stream source) => throw null;
+                public static int HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key, System.IO.Stream source, System.Span<byte> destination) => throw null;
+                public static byte[] HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source) => throw null;
+                public static int HmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HmacDataAsync(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<int> HmacDataAsync(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HmacDataAsync(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static bool TryHashData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
+                public static bool TryHmacData(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, out int bytesWritten) => throw null;
                 public static void ZeroMemory(System.Span<byte> buffer) => throw null;
             }
             public class CryptographicUnexpectedOperationException : System.Security.Cryptography.CryptographicException
@@ -1381,6 +1402,7 @@ namespace System
                 public void AppendData(byte[] data) => throw null;
                 public void AppendData(byte[] data, int offset, int count) => throw null;
                 public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.IncrementalHash Clone() => throw null;
                 public static System.Security.Cryptography.IncrementalHash CreateHash(System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
                 public static System.Security.Cryptography.IncrementalHash CreateHMAC(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] key) => throw null;
                 public static System.Security.Cryptography.IncrementalHash CreateHMAC(System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.ReadOnlySpan<byte> key) => throw null;
@@ -1413,6 +1435,98 @@ namespace System
                 public int MaxSize { get => throw null; }
                 public int MinSize { get => throw null; }
                 public int SkipSize { get => throw null; }
+            }
+            public sealed class Kmac128 : System.IDisposable
+            {
+                public void AppendData(byte[] data) => throw null;
+                public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.Kmac128 Clone() => throw null;
+                public Kmac128(byte[] key, byte[] customizationString = default(byte[])) => throw null;
+                public Kmac128(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public void Dispose() => throw null;
+                public byte[] GetCurrentHash(int outputLength) => throw null;
+                public void GetCurrentHash(System.Span<byte> destination) => throw null;
+                public byte[] GetHashAndReset(int outputLength) => throw null;
+                public void GetHashAndReset(System.Span<byte> destination) => throw null;
+                public static byte[] HashData(byte[] key, byte[] source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[]), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static bool IsSupported { get => throw null; }
+            }
+            public sealed class Kmac256 : System.IDisposable
+            {
+                public void AppendData(byte[] data) => throw null;
+                public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.Kmac256 Clone() => throw null;
+                public Kmac256(byte[] key, byte[] customizationString = default(byte[])) => throw null;
+                public Kmac256(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public void Dispose() => throw null;
+                public byte[] GetCurrentHash(int outputLength) => throw null;
+                public void GetCurrentHash(System.Span<byte> destination) => throw null;
+                public byte[] GetHashAndReset(int outputLength) => throw null;
+                public void GetHashAndReset(System.Span<byte> destination) => throw null;
+                public static byte[] HashData(byte[] key, byte[] source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[]), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static bool IsSupported { get => throw null; }
+            }
+            public sealed class KmacXof128 : System.IDisposable
+            {
+                public void AppendData(byte[] data) => throw null;
+                public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.KmacXof128 Clone() => throw null;
+                public KmacXof128(byte[] key, byte[] customizationString = default(byte[])) => throw null;
+                public KmacXof128(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public void Dispose() => throw null;
+                public byte[] GetCurrentHash(int outputLength) => throw null;
+                public void GetCurrentHash(System.Span<byte> destination) => throw null;
+                public byte[] GetHashAndReset(int outputLength) => throw null;
+                public void GetHashAndReset(System.Span<byte> destination) => throw null;
+                public static byte[] HashData(byte[] key, byte[] source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[]), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static bool IsSupported { get => throw null; }
+            }
+            public sealed class KmacXof256 : System.IDisposable
+            {
+                public void AppendData(byte[] data) => throw null;
+                public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.KmacXof256 Clone() => throw null;
+                public KmacXof256(byte[] key, byte[] customizationString = default(byte[])) => throw null;
+                public KmacXof256(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public void Dispose() => throw null;
+                public byte[] GetCurrentHash(int outputLength) => throw null;
+                public void GetCurrentHash(System.Span<byte> destination) => throw null;
+                public byte[] GetHashAndReset(int outputLength) => throw null;
+                public void GetHashAndReset(System.Span<byte> destination) => throw null;
+                public static byte[] HashData(byte[] key, byte[] source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[])) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.IO.Stream source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static byte[] HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, int outputLength, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static void HashData(System.ReadOnlySpan<byte> key, System.ReadOnlySpan<byte> source, System.Span<byte> destination, System.ReadOnlySpan<byte> customizationString = default(System.ReadOnlySpan<byte>)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(byte[] key, System.IO.Stream source, int outputLength, byte[] customizationString = default(byte[]), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, int outputLength, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static System.Threading.Tasks.ValueTask HashDataAsync(System.ReadOnlyMemory<byte> key, System.IO.Stream source, System.Memory<byte> destination, System.ReadOnlyMemory<byte> customizationString = default(System.ReadOnlyMemory<byte>), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public static bool IsSupported { get => throw null; }
             }
             public abstract class MaskGenerationMethod
             {
@@ -1910,6 +2024,7 @@ namespace System
                 public SafeEvpPKeyHandle(nint handle, bool ownsHandle) : base(default(nint), default(bool)) => throw null;
                 public System.Security.Cryptography.SafeEvpPKeyHandle DuplicateHandle() => throw null;
                 public override bool IsInvalid { get => throw null; }
+                public static System.Security.Cryptography.SafeEvpPKeyHandle OpenKeyFromProvider(string providerName, string keyUri) => throw null;
                 public static System.Security.Cryptography.SafeEvpPKeyHandle OpenPrivateKeyFromEngine(string engineName, string keyId) => throw null;
                 public static System.Security.Cryptography.SafeEvpPKeyHandle OpenPublicKeyFromEngine(string engineName, string keyId) => throw null;
                 public static long OpenSslVersion { get => throw null; }
@@ -2111,6 +2226,7 @@ namespace System
             {
                 public void AppendData(byte[] data) => throw null;
                 public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.Shake128 Clone() => throw null;
                 public Shake128() => throw null;
                 public void Dispose() => throw null;
                 public byte[] GetCurrentHash(int outputLength) => throw null;
@@ -2125,11 +2241,15 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, int outputLength, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static bool IsSupported { get => throw null; }
+                public byte[] Read(int outputLength) => throw null;
+                public void Read(System.Span<byte> destination) => throw null;
+                public void Reset() => throw null;
             }
             public sealed class Shake256 : System.IDisposable
             {
                 public void AppendData(byte[] data) => throw null;
                 public void AppendData(System.ReadOnlySpan<byte> data) => throw null;
+                public System.Security.Cryptography.Shake256 Clone() => throw null;
                 public Shake256() => throw null;
                 public void Dispose() => throw null;
                 public byte[] GetCurrentHash(int outputLength) => throw null;
@@ -2144,6 +2264,9 @@ namespace System
                 public static System.Threading.Tasks.ValueTask<byte[]> HashDataAsync(System.IO.Stream source, int outputLength, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.ValueTask HashDataAsync(System.IO.Stream source, System.Memory<byte> destination, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static bool IsSupported { get => throw null; }
+                public byte[] Read(int outputLength) => throw null;
+                public void Read(System.Span<byte> destination) => throw null;
+                public void Reset() => throw null;
             }
             public class SignatureDescription
             {
@@ -2377,6 +2500,30 @@ namespace System
                     MaxAllowed = 2,
                     OpenExistingOnly = 4,
                     IncludeArchived = 8,
+                }
+                public sealed class Pkcs12LoaderLimits
+                {
+                    public Pkcs12LoaderLimits() => throw null;
+                    public Pkcs12LoaderLimits(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits copyFrom) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits DangerousNoLimits { get => throw null; }
+                    public static System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits Defaults { get => throw null; }
+                    public bool IgnoreEncryptedAuthSafes { get => throw null; set { } }
+                    public bool IgnorePrivateKeys { get => throw null; set { } }
+                    public int? IndividualKdfIterationLimit { get => throw null; set { } }
+                    public bool IsReadOnly { get => throw null; }
+                    public int? MacIterationLimit { get => throw null; set { } }
+                    public void MakeReadOnly() => throw null;
+                    public int? MaxCertificates { get => throw null; set { } }
+                    public int? MaxKeys { get => throw null; set { } }
+                    public bool PreserveCertificateAlias { get => throw null; set { } }
+                    public bool PreserveKeyName { get => throw null; set { } }
+                    public bool PreserveStorageProvider { get => throw null; set { } }
+                    public bool PreserveUnknownAttributes { get => throw null; set { } }
+                    public int? TotalKdfIterationLimit { get => throw null; set { } }
+                }
+                public sealed class Pkcs12LoadLimitExceededException : System.Security.Cryptography.CryptographicException
+                {
+                    public Pkcs12LoadLimitExceededException(string propertyName) => throw null;
                 }
                 public sealed class PublicKey
                 {
@@ -2714,6 +2861,20 @@ namespace System
                         void System.Collections.IEnumerator.Reset() => throw null;
                     }
                 }
+                public static class X509CertificateLoader
+                {
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadCertificate(byte[] data) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadCertificate(System.ReadOnlySpan<byte> data) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadCertificateFromFile(string path) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadPkcs12(byte[] data, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadPkcs12(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2Collection LoadPkcs12Collection(byte[] data, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2Collection LoadPkcs12Collection(System.ReadOnlySpan<byte> data, System.ReadOnlySpan<char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2Collection LoadPkcs12CollectionFromFile(string path, System.ReadOnlySpan<char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2Collection LoadPkcs12CollectionFromFile(string path, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadPkcs12FromFile(string path, System.ReadOnlySpan<char> password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                    public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadPkcs12FromFile(string path, string password, System.Security.Cryptography.X509Certificates.X509KeyStorageFlags keyStorageFlags = default(System.Security.Cryptography.X509Certificates.X509KeyStorageFlags), System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits loaderLimits = default(System.Security.Cryptography.X509Certificates.Pkcs12LoaderLimits)) => throw null;
+                }
                 public class X509Chain : System.IDisposable
                 {
                     public bool Build(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) => throw null;
@@ -3021,6 +3182,12 @@ namespace System
                     Sha1 = 0,
                     ShortSha1 = 1,
                     CapiSha1 = 2,
+                    Sha256 = 3,
+                    Sha384 = 4,
+                    Sha512 = 5,
+                    ShortSha256 = 6,
+                    ShortSha384 = 7,
+                    ShortSha512 = 8,
                 }
                 [System.Flags]
                 public enum X509VerificationFlags

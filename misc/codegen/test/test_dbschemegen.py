@@ -56,7 +56,7 @@ def test_includes(input, opts, generate):
 
 def test_empty_final_class(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input),
+        schema.Class("Object", pragmas={"group": dir_param.input}),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
         includes=[],
@@ -74,7 +74,7 @@ def test_empty_final_class(generate, dir_param):
 
 def test_final_class_with_single_scalar_field(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.SingleProperty("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
@@ -94,7 +94,7 @@ def test_final_class_with_single_scalar_field(generate, dir_param):
 
 def test_final_class_with_single_class_field(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.SingleProperty("foo", "Bar"),
         ]),
     ]) == dbscheme.Scheme(
@@ -114,7 +114,7 @@ def test_final_class_with_single_class_field(generate, dir_param):
 
 def test_final_class_with_optional_field(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.OptionalProperty("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
@@ -142,7 +142,7 @@ def test_final_class_with_optional_field(generate, dir_param):
 @pytest.mark.parametrize("property_cls", [schema.RepeatedProperty, schema.RepeatedOptionalProperty])
 def test_final_class_with_repeated_field(generate, property_cls, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             property_cls("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
@@ -170,7 +170,7 @@ def test_final_class_with_repeated_field(generate, property_cls, dir_param):
 
 def test_final_class_with_repeated_unordered_field(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.RepeatedUnorderedProperty("foo", "bar"),
         ]),
     ]) == dbscheme.Scheme(
@@ -196,7 +196,7 @@ def test_final_class_with_repeated_unordered_field(generate, dir_param):
 
 def test_final_class_with_predicate_field(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.PredicateProperty("foo"),
         ]),
     ]) == dbscheme.Scheme(
@@ -222,7 +222,7 @@ def test_final_class_with_predicate_field(generate, dir_param):
 
 def test_final_class_with_more_fields(generate, dir_param):
     assert generate([
-        schema.Class("Object", group=dir_param.input, properties=[
+        schema.Class("Object", pragmas={"group": dir_param.input}, properties=[
             schema.SingleProperty("one", "x"),
             schema.SingleProperty("two", "y"),
             schema.OptionalProperty("three", "z"),
@@ -309,7 +309,7 @@ def test_class_with_derived_and_single_property(generate, dir_param):
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
-            group=dir_param.input,
+            pragmas={"group": dir_param.input},
             properties=[
                 schema.SingleProperty("single", "Prop"),
             ]),
@@ -349,7 +349,7 @@ def test_class_with_derived_and_optional_property(generate, dir_param):
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
-            group=dir_param.input,
+            pragmas={"group": dir_param.input},
             properties=[
                 schema.OptionalProperty("opt", "Prop"),
             ]),
@@ -388,7 +388,7 @@ def test_class_with_derived_and_repeated_property(generate, dir_param):
     assert generate([
         schema.Class(
             name="Base",
-            group=dir_param.input,
+            pragmas={"group": dir_param.input},
             derived={"Left", "Right"},
             properties=[
                 schema.RepeatedProperty("rep", "Prop"),
@@ -536,9 +536,9 @@ def test_null_class(generate):
 
 def test_synth_classes_ignored(generate):
     assert generate([
-        schema.Class(name="A", synth=schema.SynthInfo()),
-        schema.Class(name="B", synth=schema.SynthInfo(from_class="A")),
-        schema.Class(name="C", synth=schema.SynthInfo(on_arguments={"x": "A"})),
+        schema.Class(name="A", pragmas={"synth": schema.SynthInfo()}),
+        schema.Class(name="B", pragmas={"synth": schema.SynthInfo(from_class="A")}),
+        schema.Class(name="C", pragmas={"synth": schema.SynthInfo(on_arguments={"x": "A"})}),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
         includes=[],
@@ -549,7 +549,7 @@ def test_synth_classes_ignored(generate):
 def test_synth_derived_classes_ignored(generate):
     assert generate([
         schema.Class(name="A", derived={"B", "C"}),
-        schema.Class(name="B", bases=["A"], synth=schema.SynthInfo()),
+        schema.Class(name="B", bases=["A"], pragmas={"synth": schema.SynthInfo()}),
         schema.Class(name="C", bases=["A"]),
     ]) == dbscheme.Scheme(
         src=schema_file.name,
@@ -589,6 +589,79 @@ def test_synth_properties_ignored(generate):
                     dbscheme.Column("z", "c"),
                 ],
             )
+        ],
+    )
+
+
+def test_table_conflict(generate):
+    with pytest.raises(dbschemegen.Error):
+        generate([
+            schema.Class("Foo", properties=[
+                schema.OptionalProperty("bar", "FooBar"),
+            ]),
+            schema.Class("FooBar"),
+        ])
+
+
+def test_table_name_overrides(generate):
+    assert generate([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == dbscheme.Scheme(
+        src=schema_file.name,
+        includes=[],
+        declarations=[
+            dbscheme.Table(
+                name="objs",
+                columns=[
+                    dbscheme.Column("id", "@obj", binding=True),
+                ],
+            ),
+            dbscheme.Table(
+                name="foo",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("x", "a"),
+                ],
+            ),
+            dbscheme.Table(
+                name="bar",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("index", "int"),
+                    dbscheme.Column("y", "b"),
+                ],
+            ),
+            dbscheme.Table(
+                name="baz",
+                keyset=dbscheme.KeySet(["id", "index"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("index", "int"),
+                    dbscheme.Column("z", "c"),
+                ],
+            ),
+            dbscheme.Table(
+                name="hello",
+                keyset=dbscheme.KeySet(["id"]),
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                ],
+            ),
+            dbscheme.Table(
+                name="world",
+                columns=[
+                    dbscheme.Column("id", "@obj"),
+                    dbscheme.Column("q", "d"),
+                ],
+            ),
         ],
     )
 

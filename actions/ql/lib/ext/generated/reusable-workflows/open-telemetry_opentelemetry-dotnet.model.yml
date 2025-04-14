@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "input.project-name", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-dotnet/.github/workflows/Component.BuildTest.yml", "*", "input.project-build-commands", "code-injection", "generated"]

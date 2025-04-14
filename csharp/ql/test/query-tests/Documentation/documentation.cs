@@ -123,4 +123,23 @@ class Class2 : Class1
     // GOOD: Even if the overridden method is bad.
     /// <inheritdoc/>
     public override int method4<T>(int p1, int p2) { return p1; }
+
+    // GOOD: Has an attribute
+    [My1]
+    public void method5()
+    {
+    }
+
+    // BAD: Has only System.Runtime.CompilerServices attribute
+    [System.Runtime.CompilerServices.My2]
+    public void method6()
+    {
+    }
+}
+
+internal class My1Attribute : Attribute { }
+
+namespace System.Runtime.CompilerServices
+{
+    internal class My2Attribute : Attribute { }
 }

@@ -43,9 +43,9 @@ def m2()
     hash['b'] = 3
     sink(hash[0]) # $ hasValueFlow=2.1
     sink(hash[1])
-    sink(hash[:a]) # $ hasValueFlow=2.2
+    sink(hash[:a]) # $ hasValueFlow=2.2 $ SPURIOUS hasValueFlow=2.3
     sink(hash[:b])
-    sink(hash['a']) # $ hasValueFlow=2.3
+    sink(hash['a']) # $ hasValueFlow=2.3 $ SPURIOUS hasValueFlow=2.2
     sink(hash['b'])
 end
 

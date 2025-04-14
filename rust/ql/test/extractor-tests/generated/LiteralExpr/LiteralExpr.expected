@@ -1,0 +1,8 @@
+| gen_literal_expr.rs:5:5:5:6 | 42 | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:6:5:6:8 | 42.0 | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:7:5:7:19 | "Hello, world!" | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:8:5:8:20 | b"Hello, world!" | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:9:5:9:7 | 'x' | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:10:5:10:8 | b'x' | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:11:5:11:20 | r"Hello, world!" | getNumberOfAttrs: | 0 | hasTextValue: | yes |
+| gen_literal_expr.rs:12:5:12:8 | true | getNumberOfAttrs: | 0 | hasTextValue: | yes |

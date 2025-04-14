@@ -8,18 +8,18 @@ module Ssa {
 
   private module SsaInput implements SsaImplCommon::InputSig<Location> {
     private import internal.DataFlowPrivate
-    private import codeql.swift.controlflow.ControlFlowGraph
+    private import codeql.swift.controlflow.ControlFlowGraph as Cfg
     private import codeql.swift.controlflow.CfgNodes
 
     class BasicBlock = BasicBlocks::BasicBlock;
+
+    class ControlFlowNode = Cfg::ControlFlowNode;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
     }
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-    class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
     private newtype TSourceVariable =
       TNormalSourceVariable(VarDecl v) or
@@ -138,7 +138,7 @@ module Ssa {
   cached
   class Definition extends SsaImpl::Definition {
     cached
-    Location getLocation() { none() }
+    override Location getLocation() { none() }
 
     cached
     ControlFlowNode getARead() {
@@ -151,25 +151,24 @@ module Ssa {
 
     cached
     ControlFlowNode getAFirstRead() {
-      exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-        this.definesAt(_, bb1, i1) and
-        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
-        result = bb2.getNode(i2)
+      exists(SsaInput::BasicBlock bb, int i |
+        SsaImpl::firstUse(this, bb, i, true) and
+        result = bb.getNode(i)
       )
     }
 
     cached
     predicate adjacentReadPair(ControlFlowNode read1, ControlFlowNode read2) {
+      read1 = this.getARead() and
       exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
         read1 = bb1.getNode(i1) and
-        SsaInput::variableRead(bb1, i1, _, true) and
-        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
+        SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
         read2 = bb2.getNode(i2)
       )
     }
 
     cached
-    predicate lastRefRedef(SsaInput::BasicBlock bb, int i, Definition next) {
+    deprecated predicate lastRefRedef(SsaInput::BasicBlock bb, int i, Definition next) {
       SsaImpl::lastRefRedef(this, bb, i, next)
     }
   }

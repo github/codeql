@@ -85,6 +85,8 @@ private module KernelOpenConfig implements DataFlow::ConfigSig {
     node instanceof StringConstArrayInclusionCallBarrier or
     node instanceof Sanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

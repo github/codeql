@@ -16,27 +16,6 @@ import go
 module CommandInjection {
   import CommandInjectionCustomizations::CommandInjection
 
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
-   * with sinks which are not sanitized by `--`.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CommandInjection" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Sink s | sink = s | not s.doubleDashIsSanitizing())
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-  }
-
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -89,28 +68,6 @@ module CommandInjection {
           result = DataFlow::exprNode(this.asExpr().(ArrayOrSliceLit).getElement(sanitizedIndex))
         )
       )
-    }
-  }
-
-  /**
-   * DEPRECATED: Use `DoubleDashSanitizingFlow` instead.
-   *
-   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
-   * with sinks which are sanitized by `--`.
-   */
-  deprecated class DoubleDashSanitizingConfiguration extends TaintTracking::Configuration {
-    DoubleDashSanitizingConfiguration() { this = "CommandInjectionWithDoubleDashSanitizer" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Sink s | sink = s | s.doubleDashIsSanitizing())
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer or
-      node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
     }
   }
 

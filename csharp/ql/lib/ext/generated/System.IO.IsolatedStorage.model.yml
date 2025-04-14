@@ -7,11 +7,6 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorage", False, "get_ApplicationIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", False, "get_AssemblyIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorage", False, "get_DomainIdentity", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", False, "FlushAsync", "(System.Threading.CancellationToken)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", False, "FlushAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", False, "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", False, "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", False, "WriteAsync", "(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -73,7 +68,6 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorageFile", "get_MaximumSize", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFile", "get_UsedSize", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Dispose", "(System.Boolean)", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "DisposeAsync", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "EndRead", "(System.IAsyncResult)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "EndWrite", "(System.IAsyncResult)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Flush", "()", "summary", "df-generated"]
@@ -91,12 +85,9 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Seek", "(System.Int64,System.IO.SeekOrigin)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Unlock", "(System.Int64,System.Int64)", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Write", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "WriteByte", "(System.Byte)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanRead", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanSeek", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanWrite", "()", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_Handle", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_IsAsync", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_Length", "()", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_SafeFileHandle", "()", "summary", "df-generated"]

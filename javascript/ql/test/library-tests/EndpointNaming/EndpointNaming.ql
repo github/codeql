@@ -2,7 +2,7 @@ import javascript
 import semmle.javascript.RestrictedLocations
 import semmle.javascript.Lines
 import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
-import testUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import EndpointNaming::Debug
 
 private predicate isIgnored(DataFlow::FunctionNode function) {

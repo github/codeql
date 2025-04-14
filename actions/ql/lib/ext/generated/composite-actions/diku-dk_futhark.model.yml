@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["diku-dk/futhark", "*", "input.script", "code-injection", "generated"]
+     - ["diku-dk/futhark", "*", "input.slurm-options", "code-injection", "generated"]

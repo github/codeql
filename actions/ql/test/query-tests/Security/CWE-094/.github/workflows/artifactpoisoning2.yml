@@ -1,0 +1,23 @@
+name: Preview Deploy
+
+on:
+  workflow_run:
+    workflows: ["Preview Build"]
+    types:
+      - completed
+
+jobs:
+  success:
+    runs-on: ubuntu-latest
+    steps:
+      - id: pr
+        name: Download Artifact
+        uses: redhat-plumbers-in-action/download-artifact@main
+        with:
+          name: README
+
+      - name: upload surge service
+        id: deploy
+        run: |
+          echo ${{ steps.pr.outputs.id }}
+

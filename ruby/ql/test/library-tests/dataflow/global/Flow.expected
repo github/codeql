@@ -1,316 +1,370 @@
-testFailures
+models
 edges
 | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | provenance |  |
-| captured_variables.rb:9:24:9:24 | x | captured_variables.rb:11:5:11:6 | fn [captured x] | provenance |  |
-| captured_variables.rb:11:5:11:6 | fn [captured x] | captured_variables.rb:10:20:10:20 | x | provenance |  |
+| blocks.rb:17:10:17:10 | x | blocks.rb:18:11:18:11 | x | provenance |  |
+| blocks.rb:18:11:18:11 | x | blocks.rb:24:18:24:18 | x | provenance |  |
+| blocks.rb:24:3:24:11 | call to source | blocks.rb:17:10:17:10 | x | provenance |  |
+| blocks.rb:24:18:24:18 | x | blocks.rb:25:8:25:8 | x | provenance |  |
+| callbacks.rb:9:15:9:15 | x | callbacks.rb:10:12:10:12 | x | provenance |  |
+| callbacks.rb:10:12:10:12 | x | callbacks.rb:17:15:17:15 | x | provenance |  |
+| callbacks.rb:13:20:13:20 | x | callbacks.rb:14:14:14:14 | x | provenance |  |
+| callbacks.rb:14:14:14:14 | x | callbacks.rb:9:15:9:15 | x | provenance |  |
+| callbacks.rb:17:15:17:15 | x | callbacks.rb:17:25:17:25 | x | provenance |  |
+| callbacks.rb:17:31:17:38 | call to taint | callbacks.rb:13:20:13:20 | x | provenance |  |
+| callbacks.rb:20:17:20:17 | x | callbacks.rb:21:11:21:11 | x | provenance |  |
+| callbacks.rb:21:11:21:11 | x | callbacks.rb:28:31:28:31 | x | provenance |  |
+| callbacks.rb:24:23:24:23 | x | callbacks.rb:25:17:25:17 | x | provenance |  |
+| callbacks.rb:25:17:25:17 | x | callbacks.rb:20:17:20:17 | x | provenance |  |
+| callbacks.rb:28:18:28:25 | call to taint | callbacks.rb:24:23:24:23 | x | provenance |  |
+| callbacks.rb:28:31:28:31 | x | callbacks.rb:28:39:28:39 | x | provenance |  |
+| captured_variables.rb:9:24:9:24 | x | captured_variables.rb:11:5:11:6 | fn : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:11:5:11:6 | fn : [lambda] [captured x] | captured_variables.rb:10:20:10:20 | x | provenance |  |
 | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:9:24:9:24 | x | provenance |  |
-| captured_variables.rb:15:28:15:28 | x | captured_variables.rb:16:5:18:5 | -> { ... } [captured x] | provenance |  |
-| captured_variables.rb:20:1:20:35 | ( ... ) [captured x] | captured_variables.rb:17:14:17:14 | x | provenance |  |
-| captured_variables.rb:20:2:20:34 | call to capture_escape_return1 [captured x] | captured_variables.rb:20:1:20:35 | ( ... ) [captured x] | provenance |  |
+| captured_variables.rb:15:28:15:28 | x | captured_variables.rb:16:5:18:5 | -> { ... } : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:20:1:20:35 | ( ... ) : [lambda] [captured x] | captured_variables.rb:17:14:17:14 | x | provenance |  |
+| captured_variables.rb:20:2:20:34 | call to capture_escape_return1 : [lambda] [captured x] | captured_variables.rb:20:1:20:35 | ( ... ) : [lambda] [captured x] | provenance |  |
 | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:15:28:15:28 | x | provenance |  |
-| captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:20:2:20:34 | call to capture_escape_return1 [captured x] | provenance |  |
-| captured_variables.rb:22:28:22:28 | x | captured_variables.rb:23:5:25:5 | -> { ... } [captured x] | provenance |  |
-| captured_variables.rb:27:25:27:57 | call to capture_escape_return2 [captured x] | captured_variables.rb:24:14:24:14 | x | provenance | heuristic-callback |
+| captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:20:2:20:34 | call to capture_escape_return1 : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:22:28:22:28 | x | captured_variables.rb:23:5:25:5 | -> { ... } : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:27:25:27:57 | call to capture_escape_return2 : [lambda] [captured x] | captured_variables.rb:24:14:24:14 | x | provenance | heuristic-callback |
 | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:22:28:22:28 | x | provenance |  |
-| captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:27:25:27:57 | call to capture_escape_return2 [captured x] | provenance |  |
-| captured_variables.rb:29:33:29:33 | x | captured_variables.rb:33:29:33:30 | fn [captured x] | provenance |  |
-| captured_variables.rb:33:29:33:30 | fn [captured x] | captured_variables.rb:31:14:31:14 | x | provenance | heuristic-callback |
+| captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:27:25:27:57 | call to capture_escape_return2 : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:29:33:29:33 | x | captured_variables.rb:33:29:33:30 | fn : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:33:29:33:30 | fn : [lambda] [captured x] | captured_variables.rb:31:14:31:14 | x | provenance | heuristic-callback |
 | captured_variables.rb:35:29:35:38 | call to taint | captured_variables.rb:29:33:29:33 | x | provenance |  |
-| captured_variables.rb:37:13:37:14 | fn [captured x] | captured_variables.rb:38:5:38:6 | fn [captured x] | provenance |  |
-| captured_variables.rb:38:5:38:6 | fn [captured x] | captured_variables.rb:42:14:42:14 | x | provenance |  |
-| captured_variables.rb:40:31:40:31 | x | captured_variables.rb:44:13:44:14 | fn [captured x] | provenance |  |
-| captured_variables.rb:44:13:44:14 | fn [captured x] | captured_variables.rb:37:13:37:14 | fn [captured x] | provenance |  |
+| captured_variables.rb:37:13:37:14 | fn : [lambda] [captured x] | captured_variables.rb:38:5:38:6 | fn : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:38:5:38:6 | fn : [lambda] [captured x] | captured_variables.rb:42:14:42:14 | x | provenance |  |
+| captured_variables.rb:40:31:40:31 | x | captured_variables.rb:44:13:44:14 | fn : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:44:13:44:14 | fn : [lambda] [captured x] | captured_variables.rb:37:13:37:14 | fn : [lambda] [captured x] | provenance |  |
 | captured_variables.rb:46:27:46:36 | call to taint | captured_variables.rb:40:31:40:31 | x | provenance |  |
-| captured_variables.rb:48:5:48:12 | call to taint | captured_variables.rb:49:16:52:3 | do ... end [captured x] | provenance |  |
+| captured_variables.rb:48:5:48:12 | call to taint | captured_variables.rb:49:16:52:3 | do ... end : [lambda] [captured x] | provenance |  |
 | captured_variables.rb:48:5:48:12 | call to taint | captured_variables.rb:54:6:54:6 | x | provenance |  |
-| captured_variables.rb:49:16:52:3 | [post] do ... end [captured x] | captured_variables.rb:54:6:54:6 | x | provenance |  |
-| captured_variables.rb:49:16:52:3 | do ... end [captured x] | captured_variables.rb:50:10:50:10 | x | provenance |  |
-| captured_variables.rb:49:16:52:3 | do ... end [captured x] | captured_variables.rb:50:10:50:10 | x | provenance | heuristic-callback |
-| captured_variables.rb:51:9:51:16 | call to taint | captured_variables.rb:49:16:52:3 | [post] do ... end [captured x] | provenance |  |
-| captured_variables.rb:51:9:51:16 | call to taint | captured_variables.rb:49:16:52:3 | [post] do ... end [captured x] | provenance | heuristic-callback |
+| captured_variables.rb:49:16:52:3 | [post] do ... end : [lambda] [captured x] | captured_variables.rb:54:6:54:6 | x | provenance |  |
+| captured_variables.rb:49:16:52:3 | do ... end : [lambda] [captured x] | captured_variables.rb:50:10:50:10 | x | provenance |  |
+| captured_variables.rb:49:16:52:3 | do ... end : [lambda] [captured x] | captured_variables.rb:50:10:50:10 | x | provenance | heuristic-callback |
+| captured_variables.rb:51:9:51:16 | call to taint | captured_variables.rb:49:16:52:3 | [post] do ... end : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:51:9:51:16 | call to taint | captured_variables.rb:49:16:52:3 | [post] do ... end : [lambda] [captured x] | provenance | heuristic-callback |
 | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:18:58:18 | x | provenance |  |
+| captured_variables.rb:58:9:58:14 | [post] self [@field] | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | provenance |  |
 | captured_variables.rb:58:18:58:18 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | provenance |  |
-| captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:16:61:21 | self [@field] | provenance |  |
+| captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:16:61:21 | self : Foo [@field] | provenance |  |
+| captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:16:61:21 | self : Foo [@field] | provenance |  |
 | captured_variables.rb:61:16:61:21 | @field | captured_variables.rb:61:9:61:21 | return | provenance |  |
-| captured_variables.rb:61:16:61:21 | self [@field] | captured_variables.rb:61:16:61:21 | @field | provenance |  |
-| captured_variables.rb:66:1:66:3 | [post] foo [@field] | captured_variables.rb:67:16:70:3 | do ... end [captured foo, @field] | provenance |  |
-| captured_variables.rb:66:1:66:3 | [post] foo [@field] | captured_variables.rb:72:6:72:8 | foo [@field] | provenance |  |
+| captured_variables.rb:61:16:61:21 | @field | captured_variables.rb:61:9:61:21 | return | provenance |  |
+| captured_variables.rb:61:16:61:21 | self : Foo [@field] | captured_variables.rb:61:16:61:21 | @field | provenance |  |
+| captured_variables.rb:61:16:61:21 | self : Foo [@field] | captured_variables.rb:61:16:61:21 | @field | provenance |  |
+| captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] | captured_variables.rb:67:16:70:3 | do ... end : [lambda] [captured foo, @field] | provenance |  |
+| captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] | captured_variables.rb:72:6:72:8 | foo : Foo [@field] | provenance |  |
 | captured_variables.rb:66:15:66:22 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
-| captured_variables.rb:66:15:66:22 | call to taint | captured_variables.rb:66:1:66:3 | [post] foo [@field] | provenance |  |
+| captured_variables.rb:66:15:66:22 | call to taint | captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] | provenance |  |
 | captured_variables.rb:66:15:66:22 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| captured_variables.rb:67:16:70:3 | [post] do ... end [captured foo, @field] | captured_variables.rb:72:6:72:8 | foo [@field] | provenance |  |
-| captured_variables.rb:67:16:70:3 | do ... end [captured foo, @field] | captured_variables.rb:68:10:68:12 | foo [@field] | provenance |  |
-| captured_variables.rb:67:16:70:3 | do ... end [captured foo, @field] | captured_variables.rb:68:10:68:12 | foo [@field] | provenance | heuristic-callback |
-| captured_variables.rb:68:10:68:12 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
+| captured_variables.rb:67:16:70:3 | [post] do ... end : [lambda] [captured foo, @field] | captured_variables.rb:72:6:72:8 | foo [@field] | provenance |  |
+| captured_variables.rb:67:16:70:3 | do ... end : [lambda] [captured foo, @field] | captured_variables.rb:68:10:68:12 | foo [@field] | provenance |  |
+| captured_variables.rb:67:16:70:3 | do ... end : [lambda] [captured foo, @field] | captured_variables.rb:68:10:68:12 | foo [@field] | provenance | heuristic-callback |
+| captured_variables.rb:68:10:68:12 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
 | captured_variables.rb:68:10:68:12 | foo [@field] | captured_variables.rb:68:10:68:22 | call to get_field | provenance |  |
-| captured_variables.rb:68:10:68:12 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| captured_variables.rb:69:5:69:7 | [post] foo [@field] | captured_variables.rb:67:16:70:3 | [post] do ... end [captured foo, @field] | provenance |  |
-| captured_variables.rb:69:5:69:7 | [post] foo [@field] | captured_variables.rb:67:16:70:3 | [post] do ... end [captured foo, @field] | provenance | heuristic-callback |
+| captured_variables.rb:68:10:68:12 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] | captured_variables.rb:67:16:70:3 | [post] do ... end : [lambda] [captured foo, @field] | provenance |  |
+| captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] | captured_variables.rb:67:16:70:3 | [post] do ... end : [lambda] [captured foo, @field] | provenance | heuristic-callback |
 | captured_variables.rb:69:19:69:26 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
-| captured_variables.rb:69:19:69:26 | call to taint | captured_variables.rb:69:5:69:7 | [post] foo [@field] | provenance |  |
+| captured_variables.rb:69:19:69:26 | call to taint | captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] | provenance |  |
 | captured_variables.rb:69:19:69:26 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| captured_variables.rb:72:6:72:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | captured_variables.rb:72:6:72:18 | call to get_field | provenance |  |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| captured_variables.rb:72:6:72:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
 | captured_variables.rb:72:6:72:8 | foo [@field] | captured_variables.rb:72:6:72:18 | call to get_field | provenance |  |
-| captured_variables.rb:72:6:72:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| captured_variables.rb:78:20:80:7 | [post] do ... end [captured foo, @field] | captured_variables.rb:83:6:83:8 | foo [@field] | provenance |  |
-| captured_variables.rb:79:9:79:11 | [post] foo [@field] | captured_variables.rb:78:20:80:7 | [post] do ... end [captured foo, @field] | provenance |  |
-| captured_variables.rb:79:9:79:11 | [post] foo [@field] | captured_variables.rb:78:20:80:7 | [post] do ... end [captured foo, @field] | provenance | heuristic-callback |
+| captured_variables.rb:72:6:72:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| captured_variables.rb:78:20:80:7 | [post] do ... end : [lambda] [captured foo, @field] | captured_variables.rb:83:6:83:8 | foo [@field] | provenance |  |
+| captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] | captured_variables.rb:78:20:80:7 | [post] do ... end : [lambda] [captured foo, @field] | provenance |  |
+| captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] | captured_variables.rb:78:20:80:7 | [post] do ... end : [lambda] [captured foo, @field] | provenance | heuristic-callback |
 | captured_variables.rb:79:23:79:30 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
-| captured_variables.rb:79:23:79:30 | call to taint | captured_variables.rb:79:9:79:11 | [post] foo [@field] | provenance |  |
+| captured_variables.rb:79:23:79:30 | call to taint | captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] | provenance |  |
 | captured_variables.rb:79:23:79:30 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
+| captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
 | captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:83:6:83:18 | call to get_field | provenance |  |
-| captured_variables.rb:83:6:83:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| captured_variables.rb:85:5:85:12 | call to taint | captured_variables.rb:90:1:90:2 | fn [captured y] | provenance |  |
+| captured_variables.rb:83:6:83:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| captured_variables.rb:85:5:85:12 | call to taint | captured_variables.rb:90:1:90:2 | fn : [lambda] [captured y] | provenance |  |
 | captured_variables.rb:85:5:85:12 | call to taint | captured_variables.rb:91:6:91:6 | y | provenance |  |
-| captured_variables.rb:88:9:88:16 | call to taint | captured_variables.rb:90:1:90:2 | [post] fn [captured y] | provenance |  |
-| captured_variables.rb:90:1:90:2 | [post] fn [captured y] | captured_variables.rb:91:6:91:6 | y | provenance |  |
-| captured_variables.rb:90:1:90:2 | fn [captured y] | captured_variables.rb:87:10:87:10 | y | provenance |  |
-| captured_variables.rb:93:17:93:17 | x | captured_variables.rb:94:5:96:5 | -> { ... } [captured x] | provenance |  |
-| captured_variables.rb:98:1:98:21 | call to capture_arg [captured x] | captured_variables.rb:95:14:95:14 | x | provenance |  |
+| captured_variables.rb:88:9:88:16 | call to taint | captured_variables.rb:90:1:90:2 | [post] fn : [lambda] [captured y] | provenance |  |
+| captured_variables.rb:90:1:90:2 | [post] fn : [lambda] [captured y] | captured_variables.rb:91:6:91:6 | y | provenance |  |
+| captured_variables.rb:90:1:90:2 | fn : [lambda] [captured y] | captured_variables.rb:87:10:87:10 | y | provenance |  |
+| captured_variables.rb:93:17:93:17 | x | captured_variables.rb:94:5:96:5 | -> { ... } : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:98:1:98:21 | call to capture_arg : [lambda] [captured x] | captured_variables.rb:95:14:95:14 | x | provenance |  |
 | captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:93:17:93:17 | x | provenance |  |
-| captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:98:1:98:21 | call to capture_arg [captured x] | provenance |  |
+| captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:98:1:98:21 | call to capture_arg : [lambda] [captured x] | provenance |  |
 | captured_variables.rb:100:21:100:21 | x | captured_variables.rb:101:11:101:11 | x | provenance |  |
 | captured_variables.rb:101:11:101:11 | x | captured_variables.rb:104:31:104:31 | x | provenance |  |
 | captured_variables.rb:104:17:104:24 | call to taint | captured_variables.rb:100:21:100:21 | x | provenance |  |
 | captured_variables.rb:104:31:104:31 | x | captured_variables.rb:105:10:105:10 | x | provenance |  |
-| captured_variables.rb:109:9:109:17 | call to taint | captured_variables.rb:117:5:117:10 | middle [captured x] | provenance |  |
+| captured_variables.rb:109:9:109:17 | call to taint | captured_variables.rb:117:5:117:10 | middle : [lambda] [captured x] | provenance |  |
 | captured_variables.rb:109:9:109:17 | call to taint | captured_variables.rb:118:10:118:10 | x | provenance |  |
-| captured_variables.rb:113:17:113:25 | call to taint | captured_variables.rb:115:9:115:13 | [post] inner [captured x] | provenance |  |
-| captured_variables.rb:115:9:115:13 | [post] inner [captured x] | captured_variables.rb:117:5:117:10 | [post] middle [captured x] | provenance |  |
-| captured_variables.rb:115:9:115:13 | inner [captured x] | captured_variables.rb:112:18:112:18 | x | provenance |  |
-| captured_variables.rb:117:5:117:10 | [post] middle [captured x] | captured_variables.rb:118:10:118:10 | x | provenance |  |
-| captured_variables.rb:117:5:117:10 | middle [captured x] | captured_variables.rb:115:9:115:13 | inner [captured x] | provenance |  |
-| captured_variables.rb:147:5:147:6 | [post] self [@x] | captured_variables.rb:153:14:155:7 | do ... end [captured self, @x] | provenance |  |
+| captured_variables.rb:113:17:113:25 | call to taint | captured_variables.rb:115:9:115:13 | [post] inner : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:115:9:115:13 | [post] inner : [lambda] [captured x] | captured_variables.rb:117:5:117:10 | [post] middle : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:115:9:115:13 | inner : [lambda] [captured x] | captured_variables.rb:112:18:112:18 | x | provenance |  |
+| captured_variables.rb:117:5:117:10 | [post] middle : [lambda] [captured x] | captured_variables.rb:118:10:118:10 | x | provenance |  |
+| captured_variables.rb:117:5:117:10 | middle : [lambda] [captured x] | captured_variables.rb:115:9:115:13 | inner : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:147:5:147:6 | [post] self [@x] | captured_variables.rb:153:14:155:7 | do ... end : [lambda] [captured self, @x] | provenance |  |
 | captured_variables.rb:147:10:147:18 | call to taint | captured_variables.rb:147:5:147:6 | [post] self [@x] | provenance |  |
-| captured_variables.rb:149:5:151:7 | &block [captured self, @x] | captured_variables.rb:154:14:154:15 | self [@x] | provenance |  |
-| captured_variables.rb:153:14:155:7 | do ... end [captured self, @x] | captured_variables.rb:149:5:151:7 | &block [captured self, @x] | provenance |  |
+| captured_variables.rb:149:5:151:7 | &block : [lambda] [captured self, @x] | captured_variables.rb:154:14:154:15 | self [@x] | provenance |  |
+| captured_variables.rb:153:14:155:7 | do ... end : [lambda] [captured self, @x] | captured_variables.rb:149:5:151:7 | &block : [lambda] [captured self, @x] | provenance |  |
 | captured_variables.rb:154:14:154:15 | self [@x] | captured_variables.rb:154:14:154:15 | @x | provenance |  |
-| captured_variables.rb:160:9:160:10 | [post] self [@x] | captured_variables.rb:174:1:174:24 | call to new [@x] | provenance |  |
+| captured_variables.rb:160:9:160:10 | [post] self [@x] | captured_variables.rb:174:1:174:24 | call to new : CaptureInstanceSelf1 [@x] | provenance |  |
 | captured_variables.rb:160:14:160:22 | call to taint | captured_variables.rb:160:9:160:10 | [post] self [@x] | provenance |  |
-| captured_variables.rb:163:5:165:7 | &block [captured self, @x] | captured_variables.rb:169:18:169:19 | self [@x] | provenance |  |
-| captured_variables.rb:167:5:171:7 | self in baz [@x] | captured_variables.rb:168:18:170:11 | do ... end [captured self, @x] | provenance |  |
-| captured_variables.rb:168:18:170:11 | do ... end [captured self, @x] | captured_variables.rb:163:5:165:7 | &block [captured self, @x] | provenance |  |
-| captured_variables.rb:169:18:169:19 | self [@x] | captured_variables.rb:169:18:169:19 | @x | provenance |  |
-| captured_variables.rb:174:1:174:24 | call to new [@x] | captured_variables.rb:167:5:171:7 | self in baz [@x] | provenance |  |
-| captured_variables.rb:178:9:178:10 | [post] self [@x] | captured_variables.rb:193:1:193:1 | [post] c [@x] | provenance |  |
+| captured_variables.rb:163:5:165:7 | &block : [lambda] [captured self, @x] | captured_variables.rb:169:18:169:19 | self : CaptureInstanceSelf1 [@x] | provenance |  |
+| captured_variables.rb:167:5:171:7 | self in baz : CaptureInstanceSelf1 [@x] | captured_variables.rb:168:18:170:11 | do ... end : [lambda] [captured self, @x] | provenance |  |
+| captured_variables.rb:168:18:170:11 | do ... end : [lambda] [captured self, @x] | captured_variables.rb:163:5:165:7 | &block : [lambda] [captured self, @x] | provenance |  |
+| captured_variables.rb:169:18:169:19 | self : CaptureInstanceSelf1 [@x] | captured_variables.rb:169:18:169:19 | @x | provenance |  |
+| captured_variables.rb:174:1:174:24 | call to new : CaptureInstanceSelf1 [@x] | captured_variables.rb:167:5:171:7 | self in baz : CaptureInstanceSelf1 [@x] | provenance |  |
+| captured_variables.rb:177:5:179:7 | self in foo [Return] : CaptureInstanceSelf2 [@x] | captured_variables.rb:193:1:193:1 | [post] c : CaptureInstanceSelf2 [@x] | provenance |  |
+| captured_variables.rb:178:9:178:10 | [post] self [@x] | captured_variables.rb:177:5:179:7 | self in foo [Return] : CaptureInstanceSelf2 [@x] | provenance |  |
 | captured_variables.rb:178:14:178:22 | call to taint | captured_variables.rb:178:9:178:10 | [post] self [@x] | provenance |  |
-| captured_variables.rb:181:5:183:7 | &block [captured self, @x] | captured_variables.rb:187:18:187:19 | self [@x] | provenance |  |
-| captured_variables.rb:185:5:189:7 | self in baz [@x] | captured_variables.rb:186:18:188:11 | do ... end [captured self, @x] | provenance |  |
-| captured_variables.rb:186:18:188:11 | do ... end [captured self, @x] | captured_variables.rb:181:5:183:7 | &block [captured self, @x] | provenance |  |
-| captured_variables.rb:187:18:187:19 | self [@x] | captured_variables.rb:187:18:187:19 | @x | provenance |  |
-| captured_variables.rb:193:1:193:1 | [post] c [@x] | captured_variables.rb:194:1:194:1 | c [@x] | provenance |  |
-| captured_variables.rb:194:1:194:1 | c [@x] | captured_variables.rb:185:5:189:7 | self in baz [@x] | provenance |  |
+| captured_variables.rb:181:5:183:7 | &block : [lambda] [captured self, @x] | captured_variables.rb:187:18:187:19 | self : CaptureInstanceSelf2 [@x] | provenance |  |
+| captured_variables.rb:185:5:189:7 | self in baz : CaptureInstanceSelf2 [@x] | captured_variables.rb:186:18:188:11 | do ... end : [lambda] [captured self, @x] | provenance |  |
+| captured_variables.rb:186:18:188:11 | do ... end : [lambda] [captured self, @x] | captured_variables.rb:181:5:183:7 | &block : [lambda] [captured self, @x] | provenance |  |
+| captured_variables.rb:187:18:187:19 | self : CaptureInstanceSelf2 [@x] | captured_variables.rb:187:18:187:19 | @x | provenance |  |
+| captured_variables.rb:193:1:193:1 | [post] c : CaptureInstanceSelf2 [@x] | captured_variables.rb:194:1:194:1 | c : CaptureInstanceSelf2 [@x] | provenance |  |
+| captured_variables.rb:194:1:194:1 | c : CaptureInstanceSelf2 [@x] | captured_variables.rb:185:5:189:7 | self in baz : CaptureInstanceSelf2 [@x] | provenance |  |
 | captured_variables.rb:197:9:197:17 | call to taint | captured_variables.rb:199:10:199:10 | x | provenance |  |
 | captured_variables.rb:206:13:206:21 | call to taint | captured_variables.rb:208:14:208:14 | x | provenance |  |
-| captured_variables.rb:219:9:219:17 | call to taint | captured_variables.rb:226:5:226:7 | fn1 [captured x] | provenance |  |
-| captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | captured_variables.rb:227:10:227:10 | y | provenance |  |
-| captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:223:13:223:13 | x | provenance |  |
-| captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | provenance |  |
+| captured_variables.rb:219:9:219:17 | call to taint | captured_variables.rb:226:5:226:7 | fn1 : [lambda] [captured x] | provenance |  |
+| captured_variables.rb:226:5:226:7 | [post] fn1 : [lambda] [captured y] | captured_variables.rb:227:10:227:10 | y | provenance |  |
+| captured_variables.rb:226:5:226:7 | fn1 : [lambda] [captured x] | captured_variables.rb:223:13:223:13 | x | provenance |  |
+| captured_variables.rb:226:5:226:7 | fn1 : [lambda] [captured x] | captured_variables.rb:226:5:226:7 | [post] fn1 : [lambda] [captured y] | provenance |  |
 | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:18:11:18 | x | provenance |  |
+| instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | provenance |  |
 | instance_variables.rb:11:18:11:18 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | provenance |  |
-| instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:16:14:21 | self [@field] | provenance |  |
+| instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:16:14:21 | self : Foo [@field] | provenance |  |
+| instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:16:14:21 | self : Foo [@field] | provenance |  |
 | instance_variables.rb:14:16:14:21 | @field | instance_variables.rb:14:9:14:21 | return | provenance |  |
-| instance_variables.rb:14:16:14:21 | self [@field] | instance_variables.rb:14:16:14:21 | @field | provenance |  |
-| instance_variables.rb:16:5:18:7 | self in inc_field [@field] | instance_variables.rb:17:9:17:14 | [post] self [@field] | provenance |  |
+| instance_variables.rb:14:16:14:21 | @field | instance_variables.rb:14:9:14:21 | return | provenance |  |
+| instance_variables.rb:14:16:14:21 | self : Foo [@field] | instance_variables.rb:14:16:14:21 | @field | provenance |  |
+| instance_variables.rb:14:16:14:21 | self : Foo [@field] | instance_variables.rb:14:16:14:21 | @field | provenance |  |
+| instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | instance_variables.rb:17:9:17:14 | [post] self [@field] | provenance |  |
 | instance_variables.rb:17:9:17:14 | [post] self [@field] | instance_variables.rb:17:9:17:14 | [post] self [@field] | provenance |  |
 | instance_variables.rb:19:5:19:8 | [post] self [@foo] | instance_variables.rb:20:10:20:13 | self [@foo] | provenance |  |
 | instance_variables.rb:19:12:19:21 | call to taint | instance_variables.rb:19:5:19:8 | [post] self [@foo] | provenance |  |
 | instance_variables.rb:20:10:20:13 | self [@foo] | instance_variables.rb:20:10:20:13 | @foo | provenance |  |
 | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:18:23:22 | field | provenance |  |
+| instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:22:5:25:7 | self in initialize [Return] : Foo [@field] | provenance |  |
 | instance_variables.rb:23:18:23:22 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | provenance |  |
 | instance_variables.rb:24:9:24:17 | call to taint | instance_variables.rb:28:9:28:25 | call to initialize | provenance |  |
 | instance_variables.rb:27:25:27:29 | field | instance_variables.rb:28:20:28:24 | field | provenance |  |
+| instance_variables.rb:28:9:28:25 | [post] self : Foo [@field] | instance_variables.rb:27:5:29:7 | self in call_initialize [Return] : Foo [@field] | provenance |  |
 | instance_variables.rb:28:9:28:25 | call to initialize | instance_variables.rb:119:6:119:37 | call to call_initialize | provenance |  |
 | instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | provenance |  |
-| instance_variables.rb:28:20:28:24 | field | instance_variables.rb:28:9:28:25 | [post] self [@field] | provenance |  |
+| instance_variables.rb:28:20:28:24 | field | instance_variables.rb:28:9:28:25 | [post] self : Foo [@field] | provenance |  |
 | instance_variables.rb:31:18:31:18 | x | instance_variables.rb:33:13:33:13 | x | provenance |  |
 | instance_variables.rb:32:13:32:21 | call to taint | instance_variables.rb:48:20:48:20 | x | provenance |  |
 | instance_variables.rb:33:13:33:13 | x | instance_variables.rb:22:20:22:24 | field | provenance |  |
-| instance_variables.rb:33:13:33:13 | x | instance_variables.rb:33:9:33:14 | call to new [@field] | provenance |  |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | instance_variables.rb:36:10:36:33 | call to get_field | provenance |  |
+| instance_variables.rb:33:13:33:13 | x | instance_variables.rb:33:9:33:14 | call to new : Foo [@field] | provenance |  |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | instance_variables.rb:36:10:36:33 | call to get_field | provenance |  |
 | instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:22:20:22:24 | field | provenance |  |
-| instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:36:10:36:23 | call to new [@field] | provenance |  |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | instance_variables.rb:39:6:39:33 | call to get_field | provenance |  |
+| instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | provenance |  |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | instance_variables.rb:39:6:39:33 | call to get_field | provenance |  |
 | instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:31:18:31:18 | x | provenance |  |
-| instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:39:6:39:23 | call to bar [@field] | provenance |  |
+| instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | provenance |  |
 | instance_variables.rb:43:9:43:17 | call to taint | instance_variables.rb:121:7:121:24 | call to new | provenance |  |
 | instance_variables.rb:48:20:48:20 | x | instance_variables.rb:49:14:49:14 | x | provenance |  |
-| instance_variables.rb:54:1:54:3 | [post] foo [@field] | instance_variables.rb:55:6:55:8 | foo [@field] | provenance |  |
+| instance_variables.rb:54:1:54:3 | [post] foo : Foo [@field] | instance_variables.rb:55:6:55:8 | foo : Foo [@field] | provenance |  |
 | instance_variables.rb:54:15:54:23 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:54:15:54:23 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:54:15:54:23 | call to taint | instance_variables.rb:54:1:54:3 | [post] foo [@field] | provenance |  |
-| instance_variables.rb:55:6:55:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:55:6:55:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:55:6:55:8 | foo [@field] | instance_variables.rb:55:6:55:18 | call to get_field | provenance |  |
-| instance_variables.rb:58:1:58:3 | [post] bar [@field] | instance_variables.rb:59:6:59:8 | bar [@field] | provenance |  |
+| instance_variables.rb:54:15:54:23 | call to taint | instance_variables.rb:54:1:54:3 | [post] foo : Foo [@field] | provenance |  |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | instance_variables.rb:55:6:55:18 | call to get_field | provenance |  |
+| instance_variables.rb:58:1:58:3 | [post] bar : Foo [@field] | instance_variables.rb:59:6:59:8 | bar : Foo [@field] | provenance |  |
 | instance_variables.rb:58:15:58:22 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:58:15:58:22 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:58:15:58:22 | call to taint | instance_variables.rb:58:1:58:3 | [post] bar [@field] | provenance |  |
-| instance_variables.rb:59:6:59:8 | bar [@field] | instance_variables.rb:16:5:18:7 | self in inc_field [@field] | provenance |  |
-| instance_variables.rb:59:6:59:8 | bar [@field] | instance_variables.rb:59:6:59:18 | call to inc_field | provenance |  |
+| instance_variables.rb:58:15:58:22 | call to taint | instance_variables.rb:58:1:58:3 | [post] bar : Foo [@field] | provenance |  |
+| instance_variables.rb:59:6:59:8 | bar : Foo [@field] | instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | provenance |  |
+| instance_variables.rb:59:6:59:8 | bar : Foo [@field] | instance_variables.rb:59:6:59:18 | call to inc_field | provenance |  |
 | instance_variables.rb:62:1:62:4 | [post] foo1 [@field] | instance_variables.rb:63:6:63:9 | foo1 [@field] | provenance |  |
 | instance_variables.rb:62:14:62:22 | call to taint | instance_variables.rb:62:1:62:4 | [post] foo1 [@field] | provenance |  |
 | instance_variables.rb:63:6:63:9 | foo1 [@field] | instance_variables.rb:63:6:63:15 | call to field | provenance |  |
 | instance_variables.rb:66:1:66:4 | [post] foo2 [@field] | instance_variables.rb:67:6:67:9 | foo2 [@field] | provenance |  |
 | instance_variables.rb:66:14:66:22 | call to taint | instance_variables.rb:66:1:66:4 | [post] foo2 [@field] | provenance |  |
-| instance_variables.rb:67:6:67:9 | foo2 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:67:6:67:9 | foo2 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
+| instance_variables.rb:67:6:67:9 | foo2 [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:67:6:67:9 | foo2 [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
 | instance_variables.rb:67:6:67:9 | foo2 [@field] | instance_variables.rb:67:6:67:19 | call to get_field | provenance |  |
-| instance_variables.rb:70:1:70:4 | [post] foo3 [@field] | instance_variables.rb:71:6:71:9 | foo3 [@field] | provenance |  |
-| instance_variables.rb:70:1:70:4 | [post] foo3 [@field] | instance_variables.rb:83:6:83:9 | foo3 [@field] | provenance |  |
+| instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] | instance_variables.rb:71:6:71:9 | foo3 : Foo [@field] | provenance |  |
+| instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] | instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | provenance |  |
 | instance_variables.rb:70:16:70:24 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:70:16:70:24 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:70:16:70:24 | call to taint | instance_variables.rb:70:1:70:4 | [post] foo3 [@field] | provenance |  |
-| instance_variables.rb:71:6:71:9 | foo3 [@field] | instance_variables.rb:71:6:71:15 | call to field | provenance |  |
-| instance_variables.rb:78:2:78:5 | [post] foo5 [@field] | instance_variables.rb:79:6:79:9 | foo5 [@field] | provenance |  |
-| instance_variables.rb:78:2:78:5 | [post] foo5 [@field] | instance_variables.rb:84:6:84:9 | foo5 [@field] | provenance |  |
+| instance_variables.rb:70:16:70:24 | call to taint | instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] | provenance |  |
+| instance_variables.rb:71:6:71:9 | foo3 : Foo [@field] | instance_variables.rb:71:6:71:15 | call to field | provenance |  |
+| instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] | instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | provenance |  |
+| instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] | instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | provenance |  |
 | instance_variables.rb:78:18:78:26 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:78:18:78:26 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:78:18:78:26 | call to taint | instance_variables.rb:78:2:78:5 | [post] foo5 [@field] | provenance |  |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | instance_variables.rb:79:6:79:19 | call to get_field | provenance |  |
-| instance_variables.rb:82:15:82:18 | [post] foo6 [@field] | instance_variables.rb:85:6:85:9 | foo6 [@field] | provenance |  |
+| instance_variables.rb:78:18:78:26 | call to taint | instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] | provenance |  |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | instance_variables.rb:79:6:79:19 | call to get_field | provenance |  |
+| instance_variables.rb:82:1:82:20 | [post] ( ... ) : Foo [@field] | instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | provenance |  |
 | instance_variables.rb:82:32:82:40 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:82:32:82:40 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:82:32:82:40 | call to taint | instance_variables.rb:82:15:82:18 | [post] foo6 [@field] | provenance |  |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | instance_variables.rb:83:6:83:19 | call to get_field | provenance |  |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | instance_variables.rb:84:6:84:19 | call to get_field | provenance |  |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | instance_variables.rb:85:6:85:19 | call to get_field | provenance |  |
-| instance_variables.rb:89:15:89:18 | [post] foo7 [@field] | instance_variables.rb:90:6:90:9 | foo7 [@field] | provenance |  |
-| instance_variables.rb:89:25:89:28 | [post] foo8 [@field] | instance_variables.rb:91:6:91:9 | foo8 [@field] | provenance |  |
+| instance_variables.rb:82:32:82:40 | call to taint | instance_variables.rb:82:1:82:20 | [post] ( ... ) : Foo [@field] | provenance |  |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | instance_variables.rb:83:6:83:19 | call to get_field | provenance |  |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | instance_variables.rb:84:6:84:19 | call to get_field | provenance |  |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | instance_variables.rb:85:6:85:19 | call to get_field | provenance |  |
+| instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] | instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | provenance |  |
+| instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] | instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | provenance |  |
 | instance_variables.rb:89:45:89:53 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:89:15:89:18 | [post] foo7 [@field] | provenance |  |
-| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:89:25:89:28 | [post] foo8 [@field] | provenance |  |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | instance_variables.rb:90:6:90:19 | call to get_field | provenance |  |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | instance_variables.rb:91:6:91:19 | call to get_field | provenance |  |
-| instance_variables.rb:95:22:95:25 | [post] foo9 [@field] | instance_variables.rb:96:6:96:9 | foo9 [@field] | provenance |  |
-| instance_variables.rb:95:32:95:36 | [post] foo10 [@field] | instance_variables.rb:97:6:97:10 | foo10 [@field] | provenance |  |
+| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] | provenance |  |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | instance_variables.rb:90:6:90:19 | call to get_field | provenance |  |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | instance_variables.rb:91:6:91:19 | call to get_field | provenance |  |
+| instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] | instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | provenance |  |
+| instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] | instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | provenance |  |
 | instance_variables.rb:95:53:95:61 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:95:22:95:25 | [post] foo9 [@field] | provenance |  |
-| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:95:32:95:36 | [post] foo10 [@field] | provenance |  |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | instance_variables.rb:96:6:96:19 | call to get_field | provenance |  |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | instance_variables.rb:97:6:97:20 | call to get_field | provenance |  |
-| instance_variables.rb:100:5:100:5 | [post] x [@field] | instance_variables.rb:104:14:104:18 | [post] foo11 [@field] | provenance |  |
-| instance_variables.rb:100:5:100:5 | [post] x [@field] | instance_variables.rb:108:15:108:19 | [post] foo12 [@field] | provenance |  |
-| instance_variables.rb:100:5:100:5 | [post] x [@field] | instance_variables.rb:113:22:113:26 | [post] foo13 [@field] | provenance |  |
+| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] | provenance |  |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | instance_variables.rb:96:6:96:19 | call to get_field | provenance |  |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | instance_variables.rb:97:6:97:20 | call to get_field | provenance |  |
+| instance_variables.rb:99:18:99:18 | x [Return] : Foo [@field] | instance_variables.rb:104:14:104:18 | [post] foo11 : Foo [@field] | provenance |  |
+| instance_variables.rb:99:18:99:18 | x [Return] : Foo [@field] | instance_variables.rb:108:14:108:20 | [post] ( ... ) : Foo [@field] | provenance |  |
+| instance_variables.rb:99:18:99:18 | x [Return] : Foo [@field] | instance_variables.rb:113:14:113:26 | [post] ... = ... : Foo [@field] | provenance |  |
+| instance_variables.rb:100:5:100:5 | [post] x : Foo [@field] | instance_variables.rb:99:18:99:18 | x [Return] : Foo [@field] | provenance |  |
 | instance_variables.rb:100:17:100:25 | call to taint | captured_variables.rb:57:19:57:19 | x | provenance |  |
 | instance_variables.rb:100:17:100:25 | call to taint | instance_variables.rb:10:19:10:19 | x | provenance |  |
-| instance_variables.rb:100:17:100:25 | call to taint | instance_variables.rb:100:5:100:5 | [post] x [@field] | provenance |  |
-| instance_variables.rb:104:14:104:18 | [post] foo11 [@field] | instance_variables.rb:105:6:105:10 | foo11 [@field] | provenance |  |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | instance_variables.rb:105:6:105:20 | call to get_field | provenance |  |
-| instance_variables.rb:108:15:108:19 | [post] foo12 [@field] | instance_variables.rb:109:6:109:10 | foo12 [@field] | provenance |  |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | instance_variables.rb:109:6:109:20 | call to get_field | provenance |  |
-| instance_variables.rb:113:22:113:26 | [post] foo13 [@field] | instance_variables.rb:114:6:114:10 | foo13 [@field] | provenance |  |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | instance_variables.rb:114:6:114:20 | call to get_field | provenance |  |
-| instance_variables.rb:116:1:116:5 | foo15 [@field] | instance_variables.rb:117:6:117:10 | foo15 [@field] | provenance |  |
-| instance_variables.rb:116:9:116:26 | call to new [@field] | instance_variables.rb:116:1:116:5 | foo15 [@field] | provenance |  |
+| instance_variables.rb:100:17:100:25 | call to taint | instance_variables.rb:100:5:100:5 | [post] x : Foo [@field] | provenance |  |
+| instance_variables.rb:104:14:104:18 | [post] foo11 : Foo [@field] | instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | provenance |  |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | instance_variables.rb:105:6:105:20 | call to get_field | provenance |  |
+| instance_variables.rb:108:14:108:20 | [post] ( ... ) : Foo [@field] | instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | provenance |  |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | instance_variables.rb:109:6:109:20 | call to get_field | provenance |  |
+| instance_variables.rb:113:14:113:26 | [post] ... = ... : Foo [@field] | instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | provenance |  |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | instance_variables.rb:114:6:114:20 | call to get_field | provenance |  |
+| instance_variables.rb:116:1:116:5 | foo15 : Foo [@field] | instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | provenance |  |
+| instance_variables.rb:116:9:116:26 | call to new : Foo [@field] | instance_variables.rb:116:1:116:5 | foo15 : Foo [@field] | provenance |  |
 | instance_variables.rb:116:17:116:25 | call to taint | instance_variables.rb:22:20:22:24 | field | provenance |  |
-| instance_variables.rb:116:17:116:25 | call to taint | instance_variables.rb:116:9:116:26 | call to new [@field] | provenance |  |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | instance_variables.rb:117:6:117:20 | call to get_field | provenance |  |
-| instance_variables.rb:119:6:119:10 | [post] foo16 [@field] | instance_variables.rb:120:6:120:10 | foo16 [@field] | provenance |  |
+| instance_variables.rb:116:17:116:25 | call to taint | instance_variables.rb:116:9:116:26 | call to new : Foo [@field] | provenance |  |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | instance_variables.rb:117:6:117:20 | call to get_field | provenance |  |
+| instance_variables.rb:119:6:119:10 | [post] foo16 : Foo [@field] | instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | provenance |  |
 | instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:27:25:27:29 | field | provenance |  |
-| instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:119:6:119:10 | [post] foo16 [@field] | provenance |  |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | provenance |  |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:120:6:120:20 | call to get_field | provenance |  |
+| instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:119:6:119:10 | [post] foo16 : Foo [@field] | provenance |  |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | provenance |  |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | instance_variables.rb:120:6:120:20 | call to get_field | provenance |  |
 | instance_variables.rb:121:1:121:3 | bar | instance_variables.rb:122:6:122:8 | bar | provenance |  |
 | instance_variables.rb:121:7:121:24 | call to new | instance_variables.rb:121:1:121:3 | bar | provenance |  |
 nodes
 | blocks.rb:8:10:8:14 | yield ... | semmle.label | yield ... |
 | blocks.rb:14:12:14:20 | call to source | semmle.label | call to source |
+| blocks.rb:17:10:17:10 | x | semmle.label | x |
+| blocks.rb:18:11:18:11 | x | semmle.label | x |
+| blocks.rb:24:3:24:11 | call to source | semmle.label | call to source |
+| blocks.rb:24:18:24:18 | x | semmle.label | x |
+| blocks.rb:25:8:25:8 | x | semmle.label | x |
+| callbacks.rb:9:15:9:15 | x | semmle.label | x |
+| callbacks.rb:10:12:10:12 | x | semmle.label | x |
+| callbacks.rb:13:20:13:20 | x | semmle.label | x |
+| callbacks.rb:14:14:14:14 | x | semmle.label | x |
+| callbacks.rb:17:15:17:15 | x | semmle.label | x |
+| callbacks.rb:17:25:17:25 | x | semmle.label | x |
+| callbacks.rb:17:31:17:38 | call to taint | semmle.label | call to taint |
+| callbacks.rb:20:17:20:17 | x | semmle.label | x |
+| callbacks.rb:21:11:21:11 | x | semmle.label | x |
+| callbacks.rb:24:23:24:23 | x | semmle.label | x |
+| callbacks.rb:25:17:25:17 | x | semmle.label | x |
+| callbacks.rb:28:18:28:25 | call to taint | semmle.label | call to taint |
+| callbacks.rb:28:31:28:31 | x | semmle.label | x |
+| callbacks.rb:28:39:28:39 | x | semmle.label | x |
 | captured_variables.rb:9:24:9:24 | x | semmle.label | x |
 | captured_variables.rb:10:20:10:20 | x | semmle.label | x |
-| captured_variables.rb:11:5:11:6 | fn [captured x] | semmle.label | fn [captured x] |
+| captured_variables.rb:11:5:11:6 | fn : [lambda] [captured x] | semmle.label | fn : [lambda] [captured x] |
 | captured_variables.rb:13:20:13:29 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:15:28:15:28 | x | semmle.label | x |
-| captured_variables.rb:16:5:18:5 | -> { ... } [captured x] | semmle.label | -> { ... } [captured x] |
+| captured_variables.rb:16:5:18:5 | -> { ... } : [lambda] [captured x] | semmle.label | -> { ... } : [lambda] [captured x] |
 | captured_variables.rb:17:14:17:14 | x | semmle.label | x |
-| captured_variables.rb:20:1:20:35 | ( ... ) [captured x] | semmle.label | ( ... ) [captured x] |
-| captured_variables.rb:20:2:20:34 | call to capture_escape_return1 [captured x] | semmle.label | call to capture_escape_return1 [captured x] |
+| captured_variables.rb:20:1:20:35 | ( ... ) : [lambda] [captured x] | semmle.label | ( ... ) : [lambda] [captured x] |
+| captured_variables.rb:20:2:20:34 | call to capture_escape_return1 : [lambda] [captured x] | semmle.label | call to capture_escape_return1 : [lambda] [captured x] |
 | captured_variables.rb:20:25:20:34 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:22:28:22:28 | x | semmle.label | x |
-| captured_variables.rb:23:5:25:5 | -> { ... } [captured x] | semmle.label | -> { ... } [captured x] |
+| captured_variables.rb:23:5:25:5 | -> { ... } : [lambda] [captured x] | semmle.label | -> { ... } : [lambda] [captured x] |
 | captured_variables.rb:24:14:24:14 | x | semmle.label | x |
-| captured_variables.rb:27:25:27:57 | call to capture_escape_return2 [captured x] | semmle.label | call to capture_escape_return2 [captured x] |
+| captured_variables.rb:27:25:27:57 | call to capture_escape_return2 : [lambda] [captured x] | semmle.label | call to capture_escape_return2 : [lambda] [captured x] |
 | captured_variables.rb:27:48:27:57 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:29:33:29:33 | x | semmle.label | x |
 | captured_variables.rb:31:14:31:14 | x | semmle.label | x |
-| captured_variables.rb:33:29:33:30 | fn [captured x] | semmle.label | fn [captured x] |
+| captured_variables.rb:33:29:33:30 | fn : [lambda] [captured x] | semmle.label | fn : [lambda] [captured x] |
 | captured_variables.rb:35:29:35:38 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:37:13:37:14 | fn [captured x] | semmle.label | fn [captured x] |
-| captured_variables.rb:38:5:38:6 | fn [captured x] | semmle.label | fn [captured x] |
+| captured_variables.rb:37:13:37:14 | fn : [lambda] [captured x] | semmle.label | fn : [lambda] [captured x] |
+| captured_variables.rb:38:5:38:6 | fn : [lambda] [captured x] | semmle.label | fn : [lambda] [captured x] |
 | captured_variables.rb:40:31:40:31 | x | semmle.label | x |
 | captured_variables.rb:42:14:42:14 | x | semmle.label | x |
-| captured_variables.rb:44:13:44:14 | fn [captured x] | semmle.label | fn [captured x] |
+| captured_variables.rb:44:13:44:14 | fn : [lambda] [captured x] | semmle.label | fn : [lambda] [captured x] |
 | captured_variables.rb:46:27:46:36 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:48:5:48:12 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:49:16:52:3 | [post] do ... end [captured x] | semmle.label | [post] do ... end [captured x] |
-| captured_variables.rb:49:16:52:3 | do ... end [captured x] | semmle.label | do ... end [captured x] |
+| captured_variables.rb:49:16:52:3 | [post] do ... end : [lambda] [captured x] | semmle.label | [post] do ... end : [lambda] [captured x] |
+| captured_variables.rb:49:16:52:3 | do ... end : [lambda] [captured x] | semmle.label | do ... end : [lambda] [captured x] |
 | captured_variables.rb:50:10:50:10 | x | semmle.label | x |
 | captured_variables.rb:51:9:51:16 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:54:6:54:6 | x | semmle.label | x |
+| captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | semmle.label | self in set_field [Return] : Foo [@field] |
 | captured_variables.rb:57:19:57:19 | x | semmle.label | x |
 | captured_variables.rb:58:9:58:14 | [post] self [@field] | semmle.label | [post] self [@field] |
 | captured_variables.rb:58:18:58:18 | x | semmle.label | x |
-| captured_variables.rb:60:5:62:7 | self in get_field [@field] | semmle.label | self in get_field [@field] |
+| captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | semmle.label | self in get_field : Foo [@field] |
+| captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | semmle.label | self in get_field : Foo [@field] |
+| captured_variables.rb:61:9:61:21 | return | semmle.label | return |
 | captured_variables.rb:61:9:61:21 | return | semmle.label | return |
 | captured_variables.rb:61:16:61:21 | @field | semmle.label | @field |
-| captured_variables.rb:61:16:61:21 | self [@field] | semmle.label | self [@field] |
-| captured_variables.rb:66:1:66:3 | [post] foo [@field] | semmle.label | [post] foo [@field] |
+| captured_variables.rb:61:16:61:21 | @field | semmle.label | @field |
+| captured_variables.rb:61:16:61:21 | self : Foo [@field] | semmle.label | self : Foo [@field] |
+| captured_variables.rb:61:16:61:21 | self : Foo [@field] | semmle.label | self : Foo [@field] |
+| captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] | semmle.label | [post] foo : Foo [@field] |
 | captured_variables.rb:66:15:66:22 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:67:16:70:3 | [post] do ... end [captured foo, @field] | semmle.label | [post] do ... end [captured foo, @field] |
-| captured_variables.rb:67:16:70:3 | do ... end [captured foo, @field] | semmle.label | do ... end [captured foo, @field] |
+| captured_variables.rb:67:16:70:3 | [post] do ... end : [lambda] [captured foo, @field] | semmle.label | [post] do ... end : [lambda] [captured foo, @field] |
+| captured_variables.rb:67:16:70:3 | do ... end : [lambda] [captured foo, @field] | semmle.label | do ... end : [lambda] [captured foo, @field] |
 | captured_variables.rb:68:10:68:12 | foo [@field] | semmle.label | foo [@field] |
 | captured_variables.rb:68:10:68:22 | call to get_field | semmle.label | call to get_field |
-| captured_variables.rb:69:5:69:7 | [post] foo [@field] | semmle.label | [post] foo [@field] |
+| captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] | semmle.label | [post] foo : Foo [@field] |
 | captured_variables.rb:69:19:69:26 | call to taint | semmle.label | call to taint |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | semmle.label | foo : Foo [@field] |
 | captured_variables.rb:72:6:72:8 | foo [@field] | semmle.label | foo [@field] |
 | captured_variables.rb:72:6:72:18 | call to get_field | semmle.label | call to get_field |
-| captured_variables.rb:78:20:80:7 | [post] do ... end [captured foo, @field] | semmle.label | [post] do ... end [captured foo, @field] |
-| captured_variables.rb:79:9:79:11 | [post] foo [@field] | semmle.label | [post] foo [@field] |
+| captured_variables.rb:78:20:80:7 | [post] do ... end : [lambda] [captured foo, @field] | semmle.label | [post] do ... end : [lambda] [captured foo, @field] |
+| captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] | semmle.label | [post] foo : Foo [@field] |
 | captured_variables.rb:79:23:79:30 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:83:6:83:8 | foo [@field] | semmle.label | foo [@field] |
 | captured_variables.rb:83:6:83:18 | call to get_field | semmle.label | call to get_field |
 | captured_variables.rb:85:5:85:12 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:87:10:87:10 | y | semmle.label | y |
 | captured_variables.rb:88:9:88:16 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:90:1:90:2 | [post] fn [captured y] | semmle.label | [post] fn [captured y] |
-| captured_variables.rb:90:1:90:2 | fn [captured y] | semmle.label | fn [captured y] |
+| captured_variables.rb:90:1:90:2 | [post] fn : [lambda] [captured y] | semmle.label | [post] fn : [lambda] [captured y] |
+| captured_variables.rb:90:1:90:2 | fn : [lambda] [captured y] | semmle.label | fn : [lambda] [captured y] |
 | captured_variables.rb:91:6:91:6 | y | semmle.label | y |
 | captured_variables.rb:93:17:93:17 | x | semmle.label | x |
-| captured_variables.rb:94:5:96:5 | -> { ... } [captured x] | semmle.label | -> { ... } [captured x] |
+| captured_variables.rb:94:5:96:5 | -> { ... } : [lambda] [captured x] | semmle.label | -> { ... } : [lambda] [captured x] |
 | captured_variables.rb:95:14:95:14 | x | semmle.label | x |
-| captured_variables.rb:98:1:98:21 | call to capture_arg [captured x] | semmle.label | call to capture_arg [captured x] |
+| captured_variables.rb:98:1:98:21 | call to capture_arg : [lambda] [captured x] | semmle.label | call to capture_arg : [lambda] [captured x] |
 | captured_variables.rb:98:13:98:20 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:100:21:100:21 | x | semmle.label | x |
 | captured_variables.rb:101:11:101:11 | x | semmle.label | x |
@@ -320,84 +374,92 @@ nodes
 | captured_variables.rb:109:9:109:17 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:112:18:112:18 | x | semmle.label | x |
 | captured_variables.rb:113:17:113:25 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:115:9:115:13 | [post] inner [captured x] | semmle.label | [post] inner [captured x] |
-| captured_variables.rb:115:9:115:13 | inner [captured x] | semmle.label | inner [captured x] |
-| captured_variables.rb:117:5:117:10 | [post] middle [captured x] | semmle.label | [post] middle [captured x] |
-| captured_variables.rb:117:5:117:10 | middle [captured x] | semmle.label | middle [captured x] |
+| captured_variables.rb:115:9:115:13 | [post] inner : [lambda] [captured x] | semmle.label | [post] inner : [lambda] [captured x] |
+| captured_variables.rb:115:9:115:13 | inner : [lambda] [captured x] | semmle.label | inner : [lambda] [captured x] |
+| captured_variables.rb:117:5:117:10 | [post] middle : [lambda] [captured x] | semmle.label | [post] middle : [lambda] [captured x] |
+| captured_variables.rb:117:5:117:10 | middle : [lambda] [captured x] | semmle.label | middle : [lambda] [captured x] |
 | captured_variables.rb:118:10:118:10 | x | semmle.label | x |
 | captured_variables.rb:147:5:147:6 | [post] self [@x] | semmle.label | [post] self [@x] |
 | captured_variables.rb:147:10:147:18 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:149:5:151:7 | &block [captured self, @x] | semmle.label | &block [captured self, @x] |
-| captured_variables.rb:153:14:155:7 | do ... end [captured self, @x] | semmle.label | do ... end [captured self, @x] |
+| captured_variables.rb:149:5:151:7 | &block : [lambda] [captured self, @x] | semmle.label | &block : [lambda] [captured self, @x] |
+| captured_variables.rb:153:14:155:7 | do ... end : [lambda] [captured self, @x] | semmle.label | do ... end : [lambda] [captured self, @x] |
 | captured_variables.rb:154:14:154:15 | @x | semmle.label | @x |
 | captured_variables.rb:154:14:154:15 | self [@x] | semmle.label | self [@x] |
 | captured_variables.rb:160:9:160:10 | [post] self [@x] | semmle.label | [post] self [@x] |
 | captured_variables.rb:160:14:160:22 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:163:5:165:7 | &block [captured self, @x] | semmle.label | &block [captured self, @x] |
-| captured_variables.rb:167:5:171:7 | self in baz [@x] | semmle.label | self in baz [@x] |
-| captured_variables.rb:168:18:170:11 | do ... end [captured self, @x] | semmle.label | do ... end [captured self, @x] |
+| captured_variables.rb:163:5:165:7 | &block : [lambda] [captured self, @x] | semmle.label | &block : [lambda] [captured self, @x] |
+| captured_variables.rb:167:5:171:7 | self in baz : CaptureInstanceSelf1 [@x] | semmle.label | self in baz : CaptureInstanceSelf1 [@x] |
+| captured_variables.rb:168:18:170:11 | do ... end : [lambda] [captured self, @x] | semmle.label | do ... end : [lambda] [captured self, @x] |
 | captured_variables.rb:169:18:169:19 | @x | semmle.label | @x |
-| captured_variables.rb:169:18:169:19 | self [@x] | semmle.label | self [@x] |
-| captured_variables.rb:174:1:174:24 | call to new [@x] | semmle.label | call to new [@x] |
+| captured_variables.rb:169:18:169:19 | self : CaptureInstanceSelf1 [@x] | semmle.label | self : CaptureInstanceSelf1 [@x] |
+| captured_variables.rb:174:1:174:24 | call to new : CaptureInstanceSelf1 [@x] | semmle.label | call to new : CaptureInstanceSelf1 [@x] |
+| captured_variables.rb:177:5:179:7 | self in foo [Return] : CaptureInstanceSelf2 [@x] | semmle.label | self in foo [Return] : CaptureInstanceSelf2 [@x] |
 | captured_variables.rb:178:9:178:10 | [post] self [@x] | semmle.label | [post] self [@x] |
 | captured_variables.rb:178:14:178:22 | call to taint | semmle.label | call to taint |
-| captured_variables.rb:181:5:183:7 | &block [captured self, @x] | semmle.label | &block [captured self, @x] |
-| captured_variables.rb:185:5:189:7 | self in baz [@x] | semmle.label | self in baz [@x] |
-| captured_variables.rb:186:18:188:11 | do ... end [captured self, @x] | semmle.label | do ... end [captured self, @x] |
+| captured_variables.rb:181:5:183:7 | &block : [lambda] [captured self, @x] | semmle.label | &block : [lambda] [captured self, @x] |
+| captured_variables.rb:185:5:189:7 | self in baz : CaptureInstanceSelf2 [@x] | semmle.label | self in baz : CaptureInstanceSelf2 [@x] |
+| captured_variables.rb:186:18:188:11 | do ... end : [lambda] [captured self, @x] | semmle.label | do ... end : [lambda] [captured self, @x] |
 | captured_variables.rb:187:18:187:19 | @x | semmle.label | @x |
-| captured_variables.rb:187:18:187:19 | self [@x] | semmle.label | self [@x] |
-| captured_variables.rb:193:1:193:1 | [post] c [@x] | semmle.label | [post] c [@x] |
-| captured_variables.rb:194:1:194:1 | c [@x] | semmle.label | c [@x] |
+| captured_variables.rb:187:18:187:19 | self : CaptureInstanceSelf2 [@x] | semmle.label | self : CaptureInstanceSelf2 [@x] |
+| captured_variables.rb:193:1:193:1 | [post] c : CaptureInstanceSelf2 [@x] | semmle.label | [post] c : CaptureInstanceSelf2 [@x] |
+| captured_variables.rb:194:1:194:1 | c : CaptureInstanceSelf2 [@x] | semmle.label | c : CaptureInstanceSelf2 [@x] |
 | captured_variables.rb:197:9:197:17 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:199:10:199:10 | x | semmle.label | x |
 | captured_variables.rb:206:13:206:21 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:208:14:208:14 | x | semmle.label | x |
 | captured_variables.rb:219:9:219:17 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:223:13:223:13 | x | semmle.label | x |
-| captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | semmle.label | [post] fn1 [captured y] |
-| captured_variables.rb:226:5:226:7 | fn1 [captured x] | semmle.label | fn1 [captured x] |
+| captured_variables.rb:226:5:226:7 | [post] fn1 : [lambda] [captured y] | semmle.label | [post] fn1 : [lambda] [captured y] |
+| captured_variables.rb:226:5:226:7 | fn1 : [lambda] [captured x] | semmle.label | fn1 : [lambda] [captured x] |
 | captured_variables.rb:227:10:227:10 | y | semmle.label | y |
+| instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | semmle.label | self in set_field [Return] : Foo [@field] |
 | instance_variables.rb:10:19:10:19 | x | semmle.label | x |
 | instance_variables.rb:11:9:11:14 | [post] self [@field] | semmle.label | [post] self [@field] |
 | instance_variables.rb:11:18:11:18 | x | semmle.label | x |
-| instance_variables.rb:13:5:15:7 | self in get_field [@field] | semmle.label | self in get_field [@field] |
+| instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | semmle.label | self in get_field : Foo [@field] |
+| instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | semmle.label | self in get_field : Foo [@field] |
+| instance_variables.rb:14:9:14:21 | return | semmle.label | return |
 | instance_variables.rb:14:9:14:21 | return | semmle.label | return |
 | instance_variables.rb:14:16:14:21 | @field | semmle.label | @field |
-| instance_variables.rb:14:16:14:21 | self [@field] | semmle.label | self [@field] |
-| instance_variables.rb:16:5:18:7 | self in inc_field [@field] | semmle.label | self in inc_field [@field] |
+| instance_variables.rb:14:16:14:21 | @field | semmle.label | @field |
+| instance_variables.rb:14:16:14:21 | self : Foo [@field] | semmle.label | self : Foo [@field] |
+| instance_variables.rb:14:16:14:21 | self : Foo [@field] | semmle.label | self : Foo [@field] |
+| instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | semmle.label | self in inc_field : Foo [@field] |
 | instance_variables.rb:17:9:17:14 | [post] self [@field] | semmle.label | [post] self [@field] |
 | instance_variables.rb:19:5:19:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | instance_variables.rb:19:12:19:21 | call to taint | semmle.label | call to taint |
 | instance_variables.rb:20:10:20:13 | @foo | semmle.label | @foo |
 | instance_variables.rb:20:10:20:13 | self [@foo] | semmle.label | self [@foo] |
+| instance_variables.rb:22:5:25:7 | self in initialize [Return] : Foo [@field] | semmle.label | self in initialize [Return] : Foo [@field] |
 | instance_variables.rb:22:20:22:24 | field | semmle.label | field |
 | instance_variables.rb:23:9:23:14 | [post] self [@field] | semmle.label | [post] self [@field] |
 | instance_variables.rb:23:18:23:22 | field | semmle.label | field |
 | instance_variables.rb:24:9:24:17 | call to taint | semmle.label | call to taint |
+| instance_variables.rb:27:5:29:7 | self in call_initialize [Return] : Foo [@field] | semmle.label | self in call_initialize [Return] : Foo [@field] |
 | instance_variables.rb:27:25:27:29 | field | semmle.label | field |
-| instance_variables.rb:28:9:28:25 | [post] self [@field] | semmle.label | [post] self [@field] |
+| instance_variables.rb:28:9:28:25 | [post] self : Foo [@field] | semmle.label | [post] self : Foo [@field] |
 | instance_variables.rb:28:9:28:25 | call to initialize | semmle.label | call to initialize |
 | instance_variables.rb:28:20:28:24 | field | semmle.label | field |
 | instance_variables.rb:31:18:31:18 | x | semmle.label | x |
 | instance_variables.rb:32:13:32:21 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:33:9:33:14 | call to new [@field] | semmle.label | call to new [@field] |
+| instance_variables.rb:33:9:33:14 | call to new : Foo [@field] | semmle.label | call to new : Foo [@field] |
 | instance_variables.rb:33:13:33:13 | x | semmle.label | x |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | semmle.label | call to new [@field] |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | semmle.label | call to new : Foo [@field] |
 | instance_variables.rb:36:10:36:33 | call to get_field | semmle.label | call to get_field |
 | instance_variables.rb:36:14:36:22 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | semmle.label | call to bar [@field] |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | semmle.label | call to bar : Foo [@field] |
 | instance_variables.rb:39:6:39:33 | call to get_field | semmle.label | call to get_field |
 | instance_variables.rb:39:14:39:22 | call to taint | semmle.label | call to taint |
 | instance_variables.rb:43:9:43:17 | call to taint | semmle.label | call to taint |
 | instance_variables.rb:48:20:48:20 | x | semmle.label | x |
 | instance_variables.rb:49:14:49:14 | x | semmle.label | x |
-| instance_variables.rb:54:1:54:3 | [post] foo [@field] | semmle.label | [post] foo [@field] |
+| instance_variables.rb:54:1:54:3 | [post] foo : Foo [@field] | semmle.label | [post] foo : Foo [@field] |
 | instance_variables.rb:54:15:54:23 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:55:6:55:8 | foo [@field] | semmle.label | foo [@field] |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | semmle.label | foo : Foo [@field] |
 | instance_variables.rb:55:6:55:18 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:58:1:58:3 | [post] bar [@field] | semmle.label | [post] bar [@field] |
+| instance_variables.rb:58:1:58:3 | [post] bar : Foo [@field] | semmle.label | [post] bar : Foo [@field] |
 | instance_variables.rb:58:15:58:22 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:59:6:59:8 | bar [@field] | semmle.label | bar [@field] |
+| instance_variables.rb:59:6:59:8 | bar : Foo [@field] | semmle.label | bar : Foo [@field] |
 | instance_variables.rb:59:6:59:18 | call to inc_field | semmle.label | call to inc_field |
 | instance_variables.rb:62:1:62:4 | [post] foo1 [@field] | semmle.label | [post] foo1 [@field] |
 | instance_variables.rb:62:14:62:22 | call to taint | semmle.label | call to taint |
@@ -407,141 +469,142 @@ nodes
 | instance_variables.rb:66:14:66:22 | call to taint | semmle.label | call to taint |
 | instance_variables.rb:67:6:67:9 | foo2 [@field] | semmle.label | foo2 [@field] |
 | instance_variables.rb:67:6:67:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:70:1:70:4 | [post] foo3 [@field] | semmle.label | [post] foo3 [@field] |
+| instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] | semmle.label | [post] foo3 : Foo [@field] |
 | instance_variables.rb:70:16:70:24 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:71:6:71:9 | foo3 [@field] | semmle.label | foo3 [@field] |
+| instance_variables.rb:71:6:71:9 | foo3 : Foo [@field] | semmle.label | foo3 : Foo [@field] |
 | instance_variables.rb:71:6:71:15 | call to field | semmle.label | call to field |
-| instance_variables.rb:78:2:78:5 | [post] foo5 [@field] | semmle.label | [post] foo5 [@field] |
+| instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] | semmle.label | [post] ( ... ) : Foo [@field] |
 | instance_variables.rb:78:18:78:26 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | semmle.label | foo5 [@field] |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | semmle.label | foo5 : Foo [@field] |
 | instance_variables.rb:79:6:79:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:82:15:82:18 | [post] foo6 [@field] | semmle.label | [post] foo6 [@field] |
+| instance_variables.rb:82:1:82:20 | [post] ( ... ) : Foo [@field] | semmle.label | [post] ( ... ) : Foo [@field] |
 | instance_variables.rb:82:32:82:40 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | semmle.label | foo3 [@field] |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | semmle.label | foo3 : Foo [@field] |
 | instance_variables.rb:83:6:83:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | semmle.label | foo5 [@field] |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | semmle.label | foo5 : Foo [@field] |
 | instance_variables.rb:84:6:84:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | semmle.label | foo6 [@field] |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | semmle.label | foo6 : Foo [@field] |
 | instance_variables.rb:85:6:85:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:89:15:89:18 | [post] foo7 [@field] | semmle.label | [post] foo7 [@field] |
-| instance_variables.rb:89:25:89:28 | [post] foo8 [@field] | semmle.label | [post] foo8 [@field] |
+| instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] | semmle.label | [post] ( ... ) : Foo [@field] |
 | instance_variables.rb:89:45:89:53 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | semmle.label | foo7 [@field] |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | semmle.label | foo7 : Foo [@field] |
 | instance_variables.rb:90:6:90:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | semmle.label | foo8 [@field] |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | semmle.label | foo8 : Foo [@field] |
 | instance_variables.rb:91:6:91:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:95:22:95:25 | [post] foo9 [@field] | semmle.label | [post] foo9 [@field] |
-| instance_variables.rb:95:32:95:36 | [post] foo10 [@field] | semmle.label | [post] foo10 [@field] |
+| instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] | semmle.label | [post] ( ... ) : Foo [@field] |
 | instance_variables.rb:95:53:95:61 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | semmle.label | foo9 [@field] |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | semmle.label | foo9 : Foo [@field] |
 | instance_variables.rb:96:6:96:19 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | semmle.label | foo10 [@field] |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | semmle.label | foo10 : Foo [@field] |
 | instance_variables.rb:97:6:97:20 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:100:5:100:5 | [post] x [@field] | semmle.label | [post] x [@field] |
+| instance_variables.rb:99:18:99:18 | x [Return] : Foo [@field] | semmle.label | x [Return] : Foo [@field] |
+| instance_variables.rb:100:5:100:5 | [post] x : Foo [@field] | semmle.label | [post] x : Foo [@field] |
 | instance_variables.rb:100:17:100:25 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:104:14:104:18 | [post] foo11 [@field] | semmle.label | [post] foo11 [@field] |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | semmle.label | foo11 [@field] |
+| instance_variables.rb:104:14:104:18 | [post] foo11 : Foo [@field] | semmle.label | [post] foo11 : Foo [@field] |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | semmle.label | foo11 : Foo [@field] |
 | instance_variables.rb:105:6:105:20 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:108:15:108:19 | [post] foo12 [@field] | semmle.label | [post] foo12 [@field] |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | semmle.label | foo12 [@field] |
+| instance_variables.rb:108:14:108:20 | [post] ( ... ) : Foo [@field] | semmle.label | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | semmle.label | foo12 : Foo [@field] |
 | instance_variables.rb:109:6:109:20 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:113:22:113:26 | [post] foo13 [@field] | semmle.label | [post] foo13 [@field] |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | semmle.label | foo13 [@field] |
+| instance_variables.rb:113:14:113:26 | [post] ... = ... : Foo [@field] | semmle.label | [post] ... = ... : Foo [@field] |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | semmle.label | foo13 : Foo [@field] |
 | instance_variables.rb:114:6:114:20 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:116:1:116:5 | foo15 [@field] | semmle.label | foo15 [@field] |
-| instance_variables.rb:116:9:116:26 | call to new [@field] | semmle.label | call to new [@field] |
+| instance_variables.rb:116:1:116:5 | foo15 : Foo [@field] | semmle.label | foo15 : Foo [@field] |
+| instance_variables.rb:116:9:116:26 | call to new : Foo [@field] | semmle.label | call to new : Foo [@field] |
 | instance_variables.rb:116:17:116:25 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | semmle.label | foo15 [@field] |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | semmle.label | foo15 : Foo [@field] |
 | instance_variables.rb:117:6:117:20 | call to get_field | semmle.label | call to get_field |
-| instance_variables.rb:119:6:119:10 | [post] foo16 [@field] | semmle.label | [post] foo16 [@field] |
+| instance_variables.rb:119:6:119:10 | [post] foo16 : Foo [@field] | semmle.label | [post] foo16 : Foo [@field] |
 | instance_variables.rb:119:6:119:37 | call to call_initialize | semmle.label | call to call_initialize |
 | instance_variables.rb:119:28:119:36 | call to taint | semmle.label | call to taint |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | semmle.label | foo16 [@field] |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | semmle.label | foo16 : Foo [@field] |
 | instance_variables.rb:120:6:120:20 | call to get_field | semmle.label | call to get_field |
 | instance_variables.rb:121:1:121:3 | bar | semmle.label | bar |
 | instance_variables.rb:121:7:121:24 | call to new | semmle.label | call to new |
 | instance_variables.rb:122:6:122:8 | bar | semmle.label | bar |
 subpaths
-| captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:15:28:15:28 | x | captured_variables.rb:16:5:18:5 | -> { ... } [captured x] | captured_variables.rb:20:2:20:34 | call to capture_escape_return1 [captured x] |
-| captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:22:28:22:28 | x | captured_variables.rb:23:5:25:5 | -> { ... } [captured x] | captured_variables.rb:27:25:27:57 | call to capture_escape_return2 [captured x] |
-| captured_variables.rb:66:15:66:22 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | captured_variables.rb:66:1:66:3 | [post] foo [@field] |
-| captured_variables.rb:66:15:66:22 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | captured_variables.rb:66:1:66:3 | [post] foo [@field] |
-| captured_variables.rb:68:10:68:12 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:68:10:68:22 | call to get_field |
-| captured_variables.rb:68:10:68:12 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:68:10:68:22 | call to get_field |
-| captured_variables.rb:69:19:69:26 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | captured_variables.rb:69:5:69:7 | [post] foo [@field] |
-| captured_variables.rb:69:19:69:26 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | captured_variables.rb:69:5:69:7 | [post] foo [@field] |
-| captured_variables.rb:72:6:72:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
-| captured_variables.rb:72:6:72:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
-| captured_variables.rb:79:23:79:30 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | captured_variables.rb:79:9:79:11 | [post] foo [@field] |
-| captured_variables.rb:79:23:79:30 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | captured_variables.rb:79:9:79:11 | [post] foo [@field] |
-| captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
-| captured_variables.rb:83:6:83:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
-| captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:93:17:93:17 | x | captured_variables.rb:94:5:96:5 | -> { ... } [captured x] | captured_variables.rb:98:1:98:21 | call to capture_arg [captured x] |
-| captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] |
-| instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:28:9:28:25 | [post] self [@field] |
-| instance_variables.rb:33:13:33:13 | x | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:33:9:33:14 | call to new [@field] |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:36:10:36:33 | call to get_field |
-| instance_variables.rb:36:10:36:23 | call to new [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:36:10:36:33 | call to get_field |
-| instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:36:10:36:23 | call to new [@field] |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:39:6:39:33 | call to get_field |
-| instance_variables.rb:39:6:39:23 | call to bar [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:39:6:39:33 | call to get_field |
-| instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:31:18:31:18 | x | instance_variables.rb:33:9:33:14 | call to new [@field] | instance_variables.rb:39:6:39:23 | call to bar [@field] |
-| instance_variables.rb:54:15:54:23 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:54:1:54:3 | [post] foo [@field] |
-| instance_variables.rb:54:15:54:23 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:54:1:54:3 | [post] foo [@field] |
-| instance_variables.rb:55:6:55:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:55:6:55:18 | call to get_field |
-| instance_variables.rb:55:6:55:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:55:6:55:18 | call to get_field |
-| instance_variables.rb:58:15:58:22 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:58:1:58:3 | [post] bar [@field] |
-| instance_variables.rb:58:15:58:22 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:58:1:58:3 | [post] bar [@field] |
-| instance_variables.rb:59:6:59:8 | bar [@field] | instance_variables.rb:16:5:18:7 | self in inc_field [@field] | instance_variables.rb:16:5:18:7 | self in inc_field [@field] | instance_variables.rb:59:6:59:18 | call to inc_field |
-| instance_variables.rb:59:6:59:8 | bar [@field] | instance_variables.rb:16:5:18:7 | self in inc_field [@field] | instance_variables.rb:17:9:17:14 | [post] self [@field] | instance_variables.rb:59:6:59:18 | call to inc_field |
-| instance_variables.rb:67:6:67:9 | foo2 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:67:6:67:19 | call to get_field |
-| instance_variables.rb:67:6:67:9 | foo2 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:67:6:67:19 | call to get_field |
-| instance_variables.rb:70:16:70:24 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:70:1:70:4 | [post] foo3 [@field] |
-| instance_variables.rb:70:16:70:24 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:70:1:70:4 | [post] foo3 [@field] |
-| instance_variables.rb:78:18:78:26 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:78:2:78:5 | [post] foo5 [@field] |
-| instance_variables.rb:78:18:78:26 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:78:2:78:5 | [post] foo5 [@field] |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:79:6:79:19 | call to get_field |
-| instance_variables.rb:79:6:79:9 | foo5 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:79:6:79:19 | call to get_field |
-| instance_variables.rb:82:32:82:40 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:82:15:82:18 | [post] foo6 [@field] |
-| instance_variables.rb:82:32:82:40 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:82:15:82:18 | [post] foo6 [@field] |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:83:6:83:19 | call to get_field |
-| instance_variables.rb:83:6:83:9 | foo3 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:83:6:83:19 | call to get_field |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:84:6:84:19 | call to get_field |
-| instance_variables.rb:84:6:84:9 | foo5 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:84:6:84:19 | call to get_field |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:85:6:85:19 | call to get_field |
-| instance_variables.rb:85:6:85:9 | foo6 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:85:6:85:19 | call to get_field |
-| instance_variables.rb:89:45:89:53 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:89:15:89:18 | [post] foo7 [@field] |
-| instance_variables.rb:89:45:89:53 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:89:25:89:28 | [post] foo8 [@field] |
-| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:89:15:89:18 | [post] foo7 [@field] |
-| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:89:25:89:28 | [post] foo8 [@field] |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:90:6:90:19 | call to get_field |
-| instance_variables.rb:90:6:90:9 | foo7 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:90:6:90:19 | call to get_field |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:91:6:91:19 | call to get_field |
-| instance_variables.rb:91:6:91:9 | foo8 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:91:6:91:19 | call to get_field |
-| instance_variables.rb:95:53:95:61 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:95:22:95:25 | [post] foo9 [@field] |
-| instance_variables.rb:95:53:95:61 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:95:32:95:36 | [post] foo10 [@field] |
-| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:95:22:95:25 | [post] foo9 [@field] |
-| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:95:32:95:36 | [post] foo10 [@field] |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:96:6:96:19 | call to get_field |
-| instance_variables.rb:96:6:96:9 | foo9 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:96:6:96:19 | call to get_field |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:97:6:97:20 | call to get_field |
-| instance_variables.rb:97:6:97:10 | foo10 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:97:6:97:20 | call to get_field |
-| instance_variables.rb:100:17:100:25 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:58:9:58:14 | [post] self [@field] | instance_variables.rb:100:5:100:5 | [post] x [@field] |
-| instance_variables.rb:100:17:100:25 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | instance_variables.rb:100:5:100:5 | [post] x [@field] |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:105:6:105:20 | call to get_field |
-| instance_variables.rb:105:6:105:10 | foo11 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:105:6:105:20 | call to get_field |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:109:6:109:20 | call to get_field |
-| instance_variables.rb:109:6:109:10 | foo12 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:109:6:109:20 | call to get_field |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:114:6:114:20 | call to get_field |
-| instance_variables.rb:114:6:114:10 | foo13 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:114:6:114:20 | call to get_field |
-| instance_variables.rb:116:17:116:25 | call to taint | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:116:9:116:26 | call to new [@field] |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:117:6:117:20 | call to get_field |
-| instance_variables.rb:117:6:117:10 | foo15 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:117:6:117:20 | call to get_field |
-| instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:27:25:27:29 | field | instance_variables.rb:28:9:28:25 | [post] self [@field] | instance_variables.rb:119:6:119:10 | [post] foo16 [@field] |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
-| instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
+| captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:15:28:15:28 | x | captured_variables.rb:16:5:18:5 | -> { ... } : [lambda] [captured x] | captured_variables.rb:20:2:20:34 | call to capture_escape_return1 : [lambda] [captured x] |
+| captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:22:28:22:28 | x | captured_variables.rb:23:5:25:5 | -> { ... } : [lambda] [captured x] | captured_variables.rb:27:25:27:57 | call to capture_escape_return2 : [lambda] [captured x] |
+| captured_variables.rb:66:15:66:22 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] |
+| captured_variables.rb:66:15:66:22 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:66:1:66:3 | [post] foo : Foo [@field] |
+| captured_variables.rb:68:10:68:12 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:68:10:68:22 | call to get_field |
+| captured_variables.rb:68:10:68:12 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:68:10:68:22 | call to get_field |
+| captured_variables.rb:69:19:69:26 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] |
+| captured_variables.rb:69:19:69:26 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:69:5:69:7 | [post] foo : Foo [@field] |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
+| captured_variables.rb:72:6:72:8 | foo : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
+| captured_variables.rb:72:6:72:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
+| captured_variables.rb:72:6:72:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:72:6:72:18 | call to get_field |
+| captured_variables.rb:79:23:79:30 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] |
+| captured_variables.rb:79:23:79:30 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | captured_variables.rb:79:9:79:11 | [post] foo : Foo [@field] |
+| captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
+| captured_variables.rb:83:6:83:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
+| captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:93:17:93:17 | x | captured_variables.rb:94:5:96:5 | -> { ... } : [lambda] [captured x] | captured_variables.rb:98:1:98:21 | call to capture_arg : [lambda] [captured x] |
+| captured_variables.rb:226:5:226:7 | fn1 : [lambda] [captured x] | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:226:5:226:7 | [post] fn1 : [lambda] [captured y] |
+| instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:22:5:25:7 | self in initialize [Return] : Foo [@field] | instance_variables.rb:28:9:28:25 | [post] self : Foo [@field] |
+| instance_variables.rb:33:13:33:13 | x | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:33:9:33:14 | call to new : Foo [@field] |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:36:10:36:33 | call to get_field |
+| instance_variables.rb:36:10:36:23 | call to new : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:36:10:36:33 | call to get_field |
+| instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:36:10:36:23 | call to new : Foo [@field] |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:39:6:39:33 | call to get_field |
+| instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:39:6:39:33 | call to get_field |
+| instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:31:18:31:18 | x | instance_variables.rb:33:9:33:14 | call to new : Foo [@field] | instance_variables.rb:39:6:39:23 | call to bar : Foo [@field] |
+| instance_variables.rb:54:15:54:23 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:54:1:54:3 | [post] foo : Foo [@field] |
+| instance_variables.rb:54:15:54:23 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:54:1:54:3 | [post] foo : Foo [@field] |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:55:6:55:18 | call to get_field |
+| instance_variables.rb:55:6:55:8 | foo : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:55:6:55:18 | call to get_field |
+| instance_variables.rb:58:15:58:22 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:58:1:58:3 | [post] bar : Foo [@field] |
+| instance_variables.rb:58:15:58:22 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:58:1:58:3 | [post] bar : Foo [@field] |
+| instance_variables.rb:59:6:59:8 | bar : Foo [@field] | instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | instance_variables.rb:59:6:59:18 | call to inc_field |
+| instance_variables.rb:59:6:59:8 | bar : Foo [@field] | instance_variables.rb:16:5:18:7 | self in inc_field : Foo [@field] | instance_variables.rb:17:9:17:14 | [post] self [@field] | instance_variables.rb:59:6:59:18 | call to inc_field |
+| instance_variables.rb:67:6:67:9 | foo2 [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:67:6:67:19 | call to get_field |
+| instance_variables.rb:67:6:67:9 | foo2 [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:67:6:67:19 | call to get_field |
+| instance_variables.rb:70:16:70:24 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] |
+| instance_variables.rb:70:16:70:24 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:70:1:70:4 | [post] foo3 : Foo [@field] |
+| instance_variables.rb:78:18:78:26 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:78:18:78:26 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:78:1:78:6 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:79:6:79:19 | call to get_field |
+| instance_variables.rb:79:6:79:9 | foo5 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:79:6:79:19 | call to get_field |
+| instance_variables.rb:82:32:82:40 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:82:1:82:20 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:82:32:82:40 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:82:1:82:20 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:83:6:83:19 | call to get_field |
+| instance_variables.rb:83:6:83:9 | foo3 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:83:6:83:19 | call to get_field |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:84:6:84:19 | call to get_field |
+| instance_variables.rb:84:6:84:9 | foo5 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:84:6:84:19 | call to get_field |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:85:6:85:19 | call to get_field |
+| instance_variables.rb:85:6:85:9 | foo6 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:85:6:85:19 | call to get_field |
+| instance_variables.rb:89:45:89:53 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:89:45:89:53 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:89:1:89:33 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:90:6:90:19 | call to get_field |
+| instance_variables.rb:90:6:90:9 | foo7 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:90:6:90:19 | call to get_field |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:91:6:91:19 | call to get_field |
+| instance_variables.rb:91:6:91:9 | foo8 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:91:6:91:19 | call to get_field |
+| instance_variables.rb:95:53:95:61 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:95:53:95:61 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:95:1:95:41 | [post] ( ... ) : Foo [@field] |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:96:6:96:19 | call to get_field |
+| instance_variables.rb:96:6:96:9 | foo9 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:96:6:96:19 | call to get_field |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:97:6:97:20 | call to get_field |
+| instance_variables.rb:97:6:97:10 | foo10 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:97:6:97:20 | call to get_field |
+| instance_variables.rb:100:17:100:25 | call to taint | captured_variables.rb:57:19:57:19 | x | captured_variables.rb:57:5:59:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:100:5:100:5 | [post] x : Foo [@field] |
+| instance_variables.rb:100:17:100:25 | call to taint | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:10:5:12:7 | self in set_field [Return] : Foo [@field] | instance_variables.rb:100:5:100:5 | [post] x : Foo [@field] |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:105:6:105:20 | call to get_field |
+| instance_variables.rb:105:6:105:10 | foo11 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:105:6:105:20 | call to get_field |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:109:6:109:20 | call to get_field |
+| instance_variables.rb:109:6:109:10 | foo12 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:109:6:109:20 | call to get_field |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:114:6:114:20 | call to get_field |
+| instance_variables.rb:114:6:114:10 | foo13 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:114:6:114:20 | call to get_field |
+| instance_variables.rb:116:17:116:25 | call to taint | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:116:9:116:26 | call to new : Foo [@field] |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:117:6:117:20 | call to get_field |
+| instance_variables.rb:117:6:117:10 | foo15 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:117:6:117:20 | call to get_field |
+| instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:27:25:27:29 | field | instance_variables.rb:27:5:29:7 | self in call_initialize [Return] : Foo [@field] | instance_variables.rb:119:6:119:10 | [post] foo16 : Foo [@field] |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
+| instance_variables.rb:120:6:120:10 | foo16 : Foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
+testFailures
 #select
 | blocks.rb:8:10:8:14 | yield ... | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | $@ | blocks.rb:14:12:14:20 | call to source | call to source |
+| blocks.rb:25:8:25:8 | x | blocks.rb:24:3:24:11 | call to source | blocks.rb:25:8:25:8 | x | $@ | blocks.rb:24:3:24:11 | call to source | call to source |
+| callbacks.rb:17:25:17:25 | x | callbacks.rb:17:31:17:38 | call to taint | callbacks.rb:17:25:17:25 | x | $@ | callbacks.rb:17:31:17:38 | call to taint | call to taint |
+| callbacks.rb:28:39:28:39 | x | callbacks.rb:28:18:28:25 | call to taint | callbacks.rb:28:39:28:39 | x | $@ | callbacks.rb:28:18:28:25 | call to taint | call to taint |
 | captured_variables.rb:10:20:10:20 | x | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:10:20:10:20 | x | $@ | captured_variables.rb:13:20:13:29 | call to taint | call to taint |
 | captured_variables.rb:17:14:17:14 | x | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:17:14:17:14 | x | $@ | captured_variables.rb:20:25:20:34 | call to taint | call to taint |
 | captured_variables.rb:24:14:24:14 | x | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:24:14:24:14 | x | $@ | captured_variables.rb:27:48:27:57 | call to taint | call to taint |

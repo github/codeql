@@ -1,0 +1,8 @@
+- description: Queries to model composite actions
+- queries: .
+
+- include:
+    kind:
+      - path-problem
+    tags contain:
+      - model-generator 

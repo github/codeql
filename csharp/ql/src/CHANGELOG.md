@@ -1,3 +1,117 @@
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `csharp/path-combine`, to recommend against the `Path.Combine` method due to it silently discarding its earlier parameters if later parameters are rooted.
+
+### Minor Analysis Improvements
+
+* Improved dependency resolution in `build-mode: none` extraction to handle failing `dotnet restore` processes that managed to download a subset of the dependencies before the failure.
+* Increase query precision for `cs/useless-gethashcode-call` by not flagging calls to `GetHashCode` on `uint`, `long` and `ulong`.
+* Increase query precision for `cs/constant-condition` and allow the use of discards in switch/case statements and also take the condition (if any) into account.
+* The `cs/local-not-disposed` query no longer flags un-disposed tasks as this is often not needed (explained [here](https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/)).
+* Increase query precision for `cs/useless-assignment-to-local` and `cs/constant-condition` when *unknown* types are involved (mostly relevant for `build-mode: none` databases).
+* Don't consider an if-statement to be *useless* in `cs/useless-if-statement` if there is at least a comment.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+### Minor Analysis Improvements
+
+* C#: Improve precision of the query `cs/call-to-object-tostring` for value tuples.
+
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+### Minor Analysis Improvements
+
+* All *experimental* queries have been deprecated. The queries are instead available as part of the *default* query suite in [CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs).
+
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+### Minor Analysis Improvements
+
+* The `ExternalApi` and `TestLibrary` modules have been moved to the library pack.
+
+## 1.0.13
+
+### Minor Analysis Improvements
+
+* `csharp/diagnostic/database-quality` has been changed to exclude various property access expressions from database quality evaluation. The excluded property access expressions are expected to have no target callables even in manual or autobuilt databases.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+### Minor Analysis Improvements
+
+* C#: The method `string.ReplaceLineEndings(string)` is now considered a sanitizer for the `cs/log-forging` query. 
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+### Minor Analysis Improvements
+
+* C#: The indexer and `Add` method on `System.Web.UI.AttributeCollection` is no longer considered an HTML sink.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+### Minor Analysis Improvements
+
+* Attributes in the `System.Runtime.CompilerServices` namespace are ignored when checking if a declaration requires documentation comments.
+* C# build-mode `none` analyses now report a warning on the CodeQL status page when there are significant analysis problems -- defined as 5% of expressions lacking a type, or 5% of call targets being unknown. Other messages reported on the status page are downgraded from warnings to notes and so are less prominent, but are still available for review.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* .NET 8 Runtime models have been updated based on the newest version of the model generator. Furthermore, the database sources have been changed slightly to reduce result multiplicity.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
 ## 0.8.16
 
 No user-facing changes.

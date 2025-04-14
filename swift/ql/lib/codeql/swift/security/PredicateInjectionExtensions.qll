@@ -46,6 +46,7 @@ private class PredicateInjectionSinkCsv extends SinkModelCsv {
 private class PredicateInjectionDefaultBarrier extends PredicateInjectionBarrier {
   PredicateInjectionDefaultBarrier() {
     // any numeric type
-    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() =
+      ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

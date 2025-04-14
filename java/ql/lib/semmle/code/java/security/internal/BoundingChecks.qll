@@ -36,30 +36,32 @@ int lowerBound(VarAccess va) {
   )
 }
 
+/** Gets an access to `e`, which is either a variable or a method. */
+pragma[nomagic]
+private Expr getAnAccess(Element e) {
+  result = e.(Variable).getAnAccess()
+  or
+  result.(MethodCall).getMethod() = e
+}
+
+pragma[nomagic]
+private predicate lengthAccess(FieldAccess fa, Element qualifier) {
+  fa.getQualifier() = getAnAccess(qualifier) and
+  fa.getField().hasName("length")
+}
+
 /**
  * Holds if the index expression is a `VarAccess`, where the variable has been confirmed to be less
  * than the length.
  */
 predicate lessthanLength(ArrayAccess a) {
-  exists(ComparisonExpr lessThanLength, VarAccess va |
+  exists(ComparisonExpr lessThanLength, VarAccess va, Element qualifier |
     va = a.getIndexExpr() and
     conditionHolds(lessThanLength, va)
   |
-    lessThanLength.getGreaterOperand().(FieldAccess).getQualifier() = arrayReference(a) and
-    lessThanLength.getGreaterOperand().(FieldAccess).getField().hasName("length") and
+    lengthAccess(lessThanLength.getGreaterOperand(), qualifier) and
+    a.getArray() = getAnAccess(qualifier) and
     lessThanLength.getLesserOperand() = va.getVariable().getAnAccess() and
     lessThanLength.isStrict()
   )
-}
-
-/**
- * Return all other references to the array accessed in the `ArrayAccess`.
- */
-pragma[nomagic]
-private Expr arrayReference(ArrayAccess arrayAccess) {
-  // Array is stored in a variable.
-  result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess()
-  or
-  // Array is returned from a method.
-  result.(MethodCall).getMethod() = arrayAccess.getArray().(MethodCall).getMethod()
 }

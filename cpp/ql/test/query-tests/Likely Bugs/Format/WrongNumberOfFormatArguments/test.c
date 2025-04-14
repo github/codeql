@@ -46,4 +46,12 @@ void test(int i, const char *str)
 	printf("%Y", 1, 2); // GOOD (unknown format character, this might be correct)
 	printf("%1.1Y", 1, 2); // GOOD (unknown format character, this might be correct)
 	printf("%*.*Y", 1, 2); // GOOD (unknown format character, this might be correct)
+
+	// Implicit logger function declaration
+	my_logger(0, "%i %i %i %i %i %i\n", 1, 2, 3, 4, 5, 6); // GOOD
+	my_logger(0, "%i %i %i\n", 1, 2, 3); // GOOD
+	my_logger(0, "%i %i %i\n", 1, 2); // BAD (too few format arguments)
 }
+
+// A spurious definition of my_logger
+extern void my_logger(int param, char *fmt, int, int, int, int, int);

@@ -38,18 +38,26 @@ query predicate resolution(
   klassFile = klass.getFile().getBaseName()
 }
 
-class TaintConfig extends TaintTracking::Configuration {
-  TaintConfig() { this = "test taint config" }
-
-  override predicate isSource(DataFlow::Node node) {
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     node = DataFlow::moduleImport("externalTaintSource").getACall()
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     node = DataFlow::moduleImport("externalTaintSink").getACall().getArgument(0)
   }
 }
 
-query predicate taint(TaintConfig cfg, DataFlow::Node source, DataFlow::Node sink) {
-  cfg.hasFlow(source, sink)
+module TestFlow = TaintTracking::Global<TestConfig>;
+
+query predicate taint = TestFlow::flow/2;
+
+deprecated class LegacyConfig extends TaintTracking::Configuration {
+  LegacyConfig() { this = "LegacyConfig" }
+
+  override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
+
+  override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
+
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>

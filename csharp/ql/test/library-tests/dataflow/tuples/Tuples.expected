@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | Tuples.cs:7:13:7:14 | access to local variable o1 : Object | Tuples.cs:10:21:10:22 | access to local variable o1 : Object | provenance |  |
 | Tuples.cs:7:13:7:14 | access to local variable o1 : Object | Tuples.cs:10:21:10:22 | access to local variable o1 : Object | provenance |  |
@@ -152,6 +152,8 @@ edges
 | Tuples.cs:87:18:87:35 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item1] : String | Tuples.cs:89:18:89:18 | access to local variable p | provenance |  |
 | Tuples.cs:87:18:87:35 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:87:18:87:35 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
 | Tuples.cs:87:18:87:35 | (..., ...) : ValueTuple<String,ValueTuple<Int32,String>,Int32> [field Item2, field Item2] : String | Tuples.cs:87:18:87:35 | (..., ...) : ValueTuple<Int32,String> [field Item2] : String | provenance |  |
+| Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | provenance |  |
+| Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | provenance |  |
 | Tuples.cs:99:13:99:13 | access to local variable o : String | Tuples.cs:100:24:100:24 | access to local variable o : String | provenance |  |
 | Tuples.cs:99:13:99:13 | access to local variable o : String | Tuples.cs:100:24:100:24 | access to local variable o : String | provenance |  |
 | Tuples.cs:99:17:99:33 | call to method Source<String> : String | Tuples.cs:99:13:99:13 | access to local variable o : String | provenance |  |
@@ -379,6 +381,8 @@ nodes
 | Tuples.cs:89:18:89:18 | access to local variable p | semmle.label | access to local variable p |
 | Tuples.cs:90:18:90:18 | access to local variable r | semmle.label | access to local variable r |
 | Tuples.cs:90:18:90:18 | access to local variable r | semmle.label | access to local variable r |
+| Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | semmle.label | this [Return] : R1 [property i] : String |
+| Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | semmle.label | this [Return] : R1 [property i] : String |
 | Tuples.cs:95:22:95:22 | i : String | semmle.label | i : String |
 | Tuples.cs:95:22:95:22 | i : String | semmle.label | i : String |
 | Tuples.cs:99:13:99:13 | access to local variable o : String | semmle.label | access to local variable o : String |
@@ -436,8 +440,9 @@ nodes
 | Tuples.cs:134:14:134:15 | access to local variable y4 | semmle.label | access to local variable y4 |
 | Tuples.cs:134:14:134:15 | access to local variable y4 | semmle.label | access to local variable y4 |
 subpaths
-| Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
-| Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
+| Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
+| Tuples.cs:100:24:100:24 | access to local variable o : String | Tuples.cs:95:22:95:22 | i : String | Tuples.cs:95:12:95:13 | this [Return] : R1 [property i] : String | Tuples.cs:100:17:100:28 | object creation of type R1 : R1 [property i] : String |
+testFailures
 #select
 | Tuples.cs:12:14:12:14 | access to local variable a | Tuples.cs:7:18:7:34 | call to method Source<Object> : Object | Tuples.cs:12:14:12:14 | access to local variable a | $@ | Tuples.cs:7:18:7:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Tuples.cs:12:14:12:14 | access to local variable a | Tuples.cs:7:18:7:34 | call to method Source<Object> : Object | Tuples.cs:12:14:12:14 | access to local variable a | $@ | Tuples.cs:7:18:7:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |

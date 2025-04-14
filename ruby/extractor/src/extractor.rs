@@ -25,15 +25,8 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    tracing_subscriber::fmt()
-        .with_target(false)
-        .without_time()
-        .with_level(true)
-        .with_env_filter(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("ruby_extractor=warn")),
-        )
-        .init();
+    extractor::set_tracing_level("ruby");
+    tracing::info!("Extraction started");
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
     let mut main_thread_logger = diagnostics.logger();
     let num_threads = match codeql_extractor::options::num_threads() {
@@ -85,8 +78,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
 
     let file_list = fs::File::open(file_paths::path_from_string(&options.file_list))?;
 
-    let language = tree_sitter_ruby::language();
-    let erb = tree_sitter_embedded_template::language();
+    let language: Language = tree_sitter_ruby::LANGUAGE.into();
+    let erb: Language = tree_sitter_embedded_template::LANGUAGE.into();
     // Look up tree-sitter kind ids now, to avoid string comparisons when scanning ERB files.
     let erb_directive_id = erb.id_for_node_kind("directive", true);
     let erb_output_directive_id = erb.id_for_node_kind("output_directive", true);
@@ -106,10 +99,10 @@ pub fn run(options: Options) -> std::io::Result<()> {
             let mut needs_conversion = false;
             let code_ranges;
             let mut trap_writer = trap::Writer::new();
-            if path.extension().map_or(false, |x| x == "erb") {
+            if path.extension().is_some_and(|x| x == "erb") {
                 tracing::info!("scanning: {}", path.display());
                 extractor::extract(
-                    erb,
+                    &erb,
                     "erb",
                     &erb_schema,
                     &mut diagnostics_writer,
@@ -120,7 +113,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 );
 
                 let (ranges, line_breaks) = scan_erb(
-                    erb,
+                    &erb,
                     &source,
                     erb_directive_id,
                     erb_output_directive_id,
@@ -196,7 +189,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 code_ranges = vec![];
             }
             extractor::extract(
-                language,
+                &language,
                 "ruby",
                 &schema,
                 &mut diagnostics_writer,
@@ -218,7 +211,9 @@ pub fn run(options: Options) -> std::io::Result<()> {
     let path = PathBuf::from("extras");
     let mut trap_writer = trap::Writer::new();
     extractor::populate_empty_location(&mut trap_writer);
-    write_trap(&trap_dir, path, &trap_writer, trap_compression)
+    let res = write_trap(&trap_dir, path, &trap_writer, trap_compression);
+    tracing::info!("Extraction complete");
+    res
 }
 
 lazy_static! {
@@ -249,7 +244,7 @@ fn write_trap(
 }
 
 fn scan_erb(
-    erb: Language,
+    erb: &Language,
     source: &[u8],
     directive_id: u16,
     output_directive_id: u16,
@@ -376,59 +371,59 @@ fn test_scan_coding_comment() {
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "#coding:utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "# foo\n# encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, None);
 
     let text = "# encoding: latin1 encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("latin1".into()));
 
     let text = "# encoding: nonsense";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("nonsense".into()));
 
     let text = "# coding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "# CODING = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "# CoDiNg = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "# blah blahblahcoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     // unicode BOM is ignored
     let text = "\u{FEFF}# encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "\u{FEFF} # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "#! /usr/bin/env ruby\n # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     let text = "\u{FEFF}#! /usr/bin/env ruby\n # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
 
     // A #! must be the first thing on a line, otherwise it's a normal comment
     let text = " #! /usr/bin/env ruby encoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, Some("utf-8".into()));
     let text = " #! /usr/bin/env ruby \n # encoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
+    let result = scan_coding_comment(text.as_bytes());
     assert_eq!(result, None);
 }

@@ -1,4 +1,4 @@
-| Test.java:4:21:76:2 | { ... } | Test.java:4:14:4:17 | test |
+| Test.java:4:21:76:2 | { ... } | Test.java:4:14:4:17 | Exit |
 | Test.java:4:21:76:2 | { ... } | Test.java:11:14:14:3 | { ... } |
 | Test.java:4:21:76:2 | { ... } | Test.java:14:10:16:3 | { ... } |
 | Test.java:4:21:76:2 | { ... } | Test.java:18:3:18:8 | <Expr>; |
@@ -20,7 +20,7 @@
 | Test.java:4:21:76:2 | { ... } | Test.java:60:12:62:5 | { ... } |
 | Test.java:4:21:76:2 | { ... } | Test.java:63:9:66:4 | { ... } |
 | Test.java:4:21:76:2 | { ... } | Test.java:70:3:70:9 | <Expr>; |
-| Test.java:18:3:18:8 | <Expr>; | Test.java:4:14:4:17 | test |
+| Test.java:18:3:18:8 | <Expr>; | Test.java:4:14:4:17 | Exit |
 | Test.java:18:3:18:8 | <Expr>; | Test.java:22:4:22:10 | <Expr>; |
 | Test.java:18:3:18:8 | <Expr>; | Test.java:24:4:24:10 | return ... |
 | Test.java:18:3:18:8 | <Expr>; | Test.java:30:15:33:3 | { ... } |

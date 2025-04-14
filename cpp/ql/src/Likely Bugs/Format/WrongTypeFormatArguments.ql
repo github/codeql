@@ -170,7 +170,10 @@ where
   ) and
   not arg.isAffectedByMacro() and
   not arg.isFromUninstantiatedTemplate(_) and
-  not actual.getUnspecifiedType() instanceof ErroneousType
+  not actual.stripType() instanceof ErroneousType and
+  not arg.(Call).mayBeFromImplicitlyDeclaredFunction() and
+  // Make sure that the format function definition is consistent
+  count(ffc.getTarget().getFormatParameterIndex()) = 1
 select arg,
-  "This argument should be of type '" + expected.getName() + "' but is of type '" +
+  "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
     actual.getUnspecifiedType().getName() + "'."

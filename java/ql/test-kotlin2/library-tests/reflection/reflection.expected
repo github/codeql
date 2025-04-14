@@ -263,6 +263,8 @@ modifiers
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
 compGenerated
+| file://<external>/AccessFlag$Location.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/AccessFlag.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/CharProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
@@ -273,18 +275,25 @@ compGenerated
 | file://<external>/ChronoUnit.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/ClassFileFormatVersion.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Collector$Characteristics.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/ConstantPool$Tag.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Continuation$Pinned.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Continuation$PreemptStatus.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/DateTimeFormatterBuilder$SettingsParser.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/DayOfWeek.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/DirectMethodHandleDesc$Kind.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/ElementType.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | getFirst | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | getLast | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | reversed | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/FormatStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Future$State.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
@@ -313,6 +322,7 @@ compGenerated
 | file://<external>/ModuleDescriptor$Requires$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Month.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/ObjectInputFilter$Status.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/PreviewFeature$Feature.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Proxy$Type.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/ResolverStyle.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/RetentionPolicy.class:0:0:0:0 | getEntries | Default property accessor |
@@ -323,6 +333,7 @@ compGenerated
 | file://<external>/TextStyle.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Thread$State.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/TimeUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/TypeKind.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessType.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Wrapper.class:0:0:0:0 | getEntries | Default property accessor |

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["telepresenceio/telepresence", "*", "input.release_version", "code-injection", "generated"]

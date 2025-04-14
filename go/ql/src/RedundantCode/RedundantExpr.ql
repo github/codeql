@@ -71,10 +71,6 @@ class AverageExpr extends PotentiallyRedundantExpr, AddExpr {
       this.getLeftOperand().getKind() = this.getRightOperand().getKind()
     )
   }
-
-  override predicate operands(Expr left, Expr right) {
-    left = this.getLeftOperand() and right = this.getRightOperand()
-  }
 }
 
 /** Gets the hash of `nd`, which is the `i`th operand of `red`. */

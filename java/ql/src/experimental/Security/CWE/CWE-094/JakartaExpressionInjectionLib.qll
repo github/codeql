@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import FlowUtils
 import semmle.code.java.dataflow.FlowSources
@@ -8,7 +10,7 @@ import semmle.code.java.dataflow.TaintTracking
  * that is used to construct and evaluate an expression.
  */
 module JakartaExpressionInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
 

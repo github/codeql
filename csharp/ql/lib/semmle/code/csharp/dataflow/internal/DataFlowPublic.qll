@@ -3,6 +3,7 @@ private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.Unification
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -39,7 +40,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   final Callable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable(_)
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -88,7 +89,7 @@ class ExprNode extends Node, TExprNode {
 
 pragma[nomagic]
 private predicate isParameterOf0(DataFlowCallable c, ParameterPosition ppos, Parameter p) {
-  p.getCallable() = c.asCallable() and
+  p.getCallable() = c.asCallable(_) and
   p.getPosition() = ppos.getPosition()
 }
 
@@ -147,6 +148,16 @@ pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
+ * A module importing the modules that provide non local jump node declarations,
+ * ensuring that they are visible to the taint tracking / data flow library.
+ */
+private module JumpNodes {
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components
+  private import semmle.code.csharp.frameworks.Razor
+  private import semmle.code.csharp.frameworks.NHibernate
+}
+
+/**
  * A data flow node that jumps between callables. This can be extended in
  * framework code to add additional data flow steps.
  */
@@ -171,8 +182,14 @@ signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  private import SsaImpl as SsaImpl
+
   /** Gets a node that is safely guarded by the given guard check. */
-  ExprNode getABarrierNode() {
+  pragma[nomagic]
+  Node getABarrierNode() {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
+    or
     exists(Guard g, Expr e, AbstractValue v |
       guardChecks(g, e, v) and
       g.controlsNode(result.getControlFlowNode(), e, v)
@@ -232,6 +249,47 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/** A reference to a dynamic property. */
+class DynamicPropertyContent extends Content, TDynamicPropertyContent {
+  private DynamicProperty name;
+
+  DynamicPropertyContent() { this = TDynamicPropertyContent(name) }
+
+  /** Gets an access of this dynamic property. */
+  DynamicMemberAccess getAnAccess() { result = name.getAnAccess() }
+
+  override string toString() { result = "dynamic property " + name }
+
+  override EmptyLocation getLocation() { any() }
+
+  /** Gets the name that is referenced. */
+  string getName() { result = name }
+}
+
+/**
+ * A reference to the index of an argument of a delegate call.
+ */
+class DelegateCallArgumentContent extends Content, TDelegateCallArgumentContent {
+  private int i;
+
+  DelegateCallArgumentContent() { this = TDelegateCallArgumentContent(i) }
+
+  override string toString() { result = "delegate argument at position " + i }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A reference to the return of a delegate call.
+ */
+class DelegateCallReturnContent extends Content, TDelegateCallReturnContent {
+  DelegateCallReturnContent() { this = TDelegateCallReturnContent() }
+
+  override string toString() { result = "delegate return" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
 /**
  * A reference to a synthetic field corresponding to a
  * primary constructor parameter.
@@ -267,22 +325,119 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
   override Location getLocation() { result = v.getLocation() }
 }
 
+/** Holds if property `p1` overrides or implements source declaration property `p2`. */
+private predicate overridesOrImplementsSourceDecl(Property p1, Property p2) {
+  p1.getOverridee*().getUnboundDeclaration() = p2
+  or
+  p1.getAnUltimateImplementee().getUnboundDeclaration() = p2
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet instanceof Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /**
+   * Holds if this content set represents the property `p`.
+   *
+   *
+   * For `getAReadContent`, this set represents all properties that may
+   * (reflexively and transitively) override/implement `p` (or vice versa).
+   */
+  predicate isProperty(Property p) { this = TPropertyContentSet(p) }
+
+  /** Holds if this content set represents the dynamic property `name`. */
+  predicate isDynamicProperty(string name) { this = TDynamicPropertyContentSet(name) }
+
+  /**
+   * Holds if this content set represents the `i`th argument of a delegate call.
+   */
+  predicate isDelegateCallArgument(int i) { this.isSingleton(TDelegateCallArgumentContent(i)) }
+
+  /**
+   * Holds if this content set represents the return of a delegate call.
+   */
+  predicate isDelegateCallReturn() { this.isSingleton(TDelegateCallReturnContent()) }
+
+  /** Holds if this content set represents the field `f`. */
+  predicate isField(Field f) { this.isSingleton(TFieldContent(f)) }
+
+  /** Holds if this content set represents the synthetic field `s`. */
+  predicate isSyntheticField(string s) { this.isSingleton(TSyntheticFieldContent(s)) }
+
+  /** Holds if this content set represents an element in a collection. */
+  predicate isElement() { this.isSingleton(TElementContent()) }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() {
+    this.isSingleton(result)
+    or
+    this.isProperty(result.(PropertyContent).getProperty())
+    or
+    this.isDynamicProperty(result.(DynamicPropertyContent).getName())
+  }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() {
+    this.isSingleton(result)
+    or
+    exists(Property p1, Property p2 |
+      this.isProperty(p1) and
+      p2 = result.(PropertyContent).getProperty()
+    |
+      overridesOrImplementsSourceDecl(p2, p1)
+      or
+      overridesOrImplementsSourceDecl(p1, p2)
+    )
+    or
+    exists(FieldOrProperty p |
+      this = p.getContentSet() and
+      result.(DynamicPropertyContent).getName() = p.getName()
+    )
+    or
+    this.isDynamicProperty([
+        result.(DynamicPropertyContent).getName(),
+        result.(PropertyContent).getProperty().getName(),
+        result.(FieldContent).getField().getName()
+      ])
+  }
 
   /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+    or
+    exists(Property p |
+      this.isProperty(p) and
+      result = "property " + p.getName()
+    )
+    or
+    exists(string name |
+      this.isDynamicProperty(name) and
+      result = "dynamic property " + name
+    )
+  }
 
   /** Gets the location of this content set. */
-  Location getLocation() { result = super.getLocation() }
+  Location getLocation() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.getLocation()
+    )
+    or
+    exists(Property p |
+      this.isProperty(p) and
+      result = p.getLocation()
+    )
+    or
+    this.isDynamicProperty(_) and
+    result instanceof EmptyLocation
+  }
 }

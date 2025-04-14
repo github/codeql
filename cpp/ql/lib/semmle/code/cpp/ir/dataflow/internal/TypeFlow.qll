@@ -27,8 +27,11 @@ private module Input implements TypeFlowInput<Location> {
   }
 
   private predicate hasExactSingleType(Instruction i) {
-    // The address of a variable is always a single object
-    i instanceof VariableAddressInstruction
+    // The address of a variable is always a single object (unless it's an array)
+    exists(VariableAddressInstruction vai |
+      i = vai and
+      not vai.getResultType() instanceof ArrayType
+    )
     or
     // A reference always points to a single object
     i.getResultLanguageType().hasUnspecifiedType(any(ReferenceType rt), false)
@@ -159,7 +162,7 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
     // instruction -> phi
     getAnUltimateLocalDefinition(n2.asInstruction()) = n1.asInstruction()
     or
@@ -179,6 +182,8 @@ private module Input implements TypeFlowInput<Location> {
       n1.asInstruction() = arg and
       n2.asInstruction() = p
     )
+    or
+    instructionStep(n1.asInstruction(), n2.asInstruction())
   }
 
   /**
@@ -197,10 +202,6 @@ private module Input implements TypeFlowInput<Location> {
     i2.(InheritanceConversionInstruction).getUnary() = i1
     or
     i2.(PointerArithmeticInstruction).getLeft() = i1
-  }
-
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
-    instructionStep(n1.asInstruction(), n2.asInstruction())
   }
 
   predicate isNullValue(TypeFlowNode n) { n.isNullValue() }
@@ -245,11 +246,7 @@ private module Input implements TypeFlowInput<Location> {
 
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, Type t1, Type t2) {
-    exists(TypeFlowNode next |
-      step(n, next)
-      or
-      joinStep(n, next)
-    |
+    exists(TypeFlowNode next | step(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1 != t2

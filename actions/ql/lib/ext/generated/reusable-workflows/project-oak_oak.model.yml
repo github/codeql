@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["project-oak/oak/.github/workflows/reusable_provenance.yaml", "*", "input.ent-public-key", "code-injection", "generated"]
+     - ["project-oak/oak/.github/workflows/reusable_provenance.yaml", "*", "input.build-config-path", "code-injection", "generated"]

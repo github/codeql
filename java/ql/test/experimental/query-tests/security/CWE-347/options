@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/auth0-java-jwt-4.4.0:${testdir}/../../../../stubs/javax-servlet-2.5:${testdir}/../../../stubs/org-apache-shiro-authc-2.0.1

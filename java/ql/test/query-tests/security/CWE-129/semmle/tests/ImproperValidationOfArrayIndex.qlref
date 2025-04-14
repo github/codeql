@@ -1,1 +1,2 @@
-Security/CWE/CWE-129/ImproperValidationOfArrayIndex.ql
+query: Security/CWE/CWE-129/ImproperValidationOfArrayIndex.ql
+postprocess: utils/test/PrettyPrintModels.ql

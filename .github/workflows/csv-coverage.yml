@@ -34,12 +34,12 @@ jobs:
         run: |
           python script/misc/scripts/library-coverage/generate-report.py ci codeqlModels script
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework-coverage-csv
           path: framework-coverage-*.csv
       - name: Upload RST package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: framework-coverage-rst
           path: framework-coverage-*.rst

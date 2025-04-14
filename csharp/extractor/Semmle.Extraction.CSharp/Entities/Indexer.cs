@@ -22,16 +22,16 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var l in Locations)
                 trapFile.indexer_location(this, l);
 
-            var getter = Symbol.GetMethod;
-            var setter = Symbol.SetMethod;
+            var getter = BodyDeclaringSymbol.GetMethod;
+            var setter = BodyDeclaringSymbol.SetMethod;
 
             if (getter is null && setter is null)
                 Context.ModelError(Symbol, "No indexer accessor defined");
 
-            if (!(getter is null))
+            if (getter is not null)
                 Method.Create(Context, getter);
 
-            if (!(setter is null))
+            if (setter is not null)
                 Method.Create(Context, setter);
 
             for (var i = 0; i < Symbol.Parameters.Length; ++i)
@@ -51,6 +51,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
+            PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
 
@@ -93,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<IndexerDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 

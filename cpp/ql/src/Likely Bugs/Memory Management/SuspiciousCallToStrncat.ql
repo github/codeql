@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 9.3
- * @precision medium
+ * @precision high
  * @id cpp/unsafe-strncat
  * @tags reliability
  *       correctness

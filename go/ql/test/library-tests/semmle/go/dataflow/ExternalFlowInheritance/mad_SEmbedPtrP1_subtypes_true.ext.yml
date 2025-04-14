@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/nonexistent/test", "SEmbedPtrP1", True, "Source", "", "", "ReturnValue", "qltest", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedPtrP1", True, "SourceField", "", "", "", "qltest", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/nonexistent/test", "SEmbedPtrP1", True, "Step", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/nonexistent/test", "SEmbedPtrP1", True, "Sink", "", "", "Argument[0]", "qltest", "manual"]
+      - ["github.com/nonexistent/test", "SEmbedPtrP1", True, "SinkField", "", "", "", "qltest", "manual"]

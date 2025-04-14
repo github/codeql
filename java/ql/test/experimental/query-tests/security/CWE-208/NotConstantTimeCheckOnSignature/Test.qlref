@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstSignature.ql
+query: experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstSignature.ql
+postprocess: utils/test/PrettyPrintModels.ql

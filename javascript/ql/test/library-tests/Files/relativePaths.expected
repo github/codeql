@@ -1,2 +1,2 @@
-| a.js:0:0:0:0 | a.js | library-tests/Files/a.js |
-| b/c.js:0:0:0:0 | b/c.js | library-tests/Files/b/c.js |
+| a.js:0:0:0:0 | a.js | a.js |
+| b/c.js:0:0:0:0 | b/c.js | b/c.js |

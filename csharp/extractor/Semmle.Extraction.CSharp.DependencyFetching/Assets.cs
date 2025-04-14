@@ -120,8 +120,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     info.Compile
                         .ForEach(r => Dependencies.Add(name, r.Key));
                 });
-
-            return;
         }
 
         /// <summary>
@@ -129,21 +127,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///
         /// Example:
         /// "project": {
-        //     "version": "1.0.0",
-        //     "frameworks": {
-        //         "net7.0": {
-        //             "frameworkReferences": {
-        //                 "Microsoft.AspNetCore.App": {
-        //                     "privateAssets": "none"
-        //                 },
-        //                 "Microsoft.NETCore.App": {
-        //                     "privateAssets": "all"
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        //
+        ///    "version": "1.0.0",
+        ///    "frameworks": {
+        ///        "net7.0": {
+        ///            "frameworkReferences": {
+        ///                "Microsoft.AspNetCore.App": {
+        ///                    "privateAssets": "none"
+        ///                },
+        ///                "Microsoft.NETCore.App": {
+        ///                    "privateAssets": "all"
+        ///                }
+        ///            }
+        ///        }
+        ///    }
+        /// }
+        ///
         /// Adds the following dependencies
         ///   Paths: {
         ///     "microsoft.aspnetcore.app.ref",
@@ -191,13 +189,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (together with used package information) required for compilation.
         /// </summary>
         /// <returns>True if parsing succeeds, otherwise false.</returns>
-        public bool TryParse(string json)
+        public bool TryParse(string json, string jsonPath)
         {
             try
             {
                 var obj = JObject.Parse(json);
-                AddPackageDependencies(obj, json);
-                AddFrameworkDependencies(obj, json);
+                AddPackageDependencies(obj, jsonPath);
+                AddFrameworkDependencies(obj, jsonPath);
                 return true;
             }
             catch (Exception e)
@@ -230,7 +228,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (TryReadAllText(asset, logger, out var json))
             {
-                TryParse(json);
+                TryParse(json, asset);
             }
         }
 

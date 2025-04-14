@@ -1,2 +1,1 @@
-semmle-extractor-options: -R . -p . --filter exclude:**/src_archive/**
-
+semmle-extractor-options: -R . -p . --filter exclude:**/*.testproj/**

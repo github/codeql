@@ -1,4 +1,4 @@
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.java.security.regexp.PolynomialReDoSQuery
 
 module HasPolyRedos implements TestSig {

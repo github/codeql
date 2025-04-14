@@ -187,6 +187,14 @@ class Variable extends Declaration, @variable {
    *    `for (char c : str) { ... }`
    */
   predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
+
+  /** Holds if this variable is a template specialization. */
+  predicate isSpecialization() {
+    exists(VariableDeclarationEntry vde |
+      var_decls(unresolveElement(vde), underlyingElement(this), _, _, _) and
+      vde.isSpecialization()
+    )
+  }
 }
 
 /**
@@ -241,6 +249,10 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
         name != "" and result = name
         or
         name = "" and result = this.getVariable().(LocalVariable).getName()
+        or
+        name = "" and
+        not this instanceof ParameterDeclarationEntry and
+        result = this.getVariable().(Parameter).getName()
       )
     )
   }
@@ -263,6 +275,14 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override predicate isDefinition() { var_def(underlyingElement(this)) }
 
   override string getASpecifier() { var_decl_specifiers(underlyingElement(this), result) }
+
+  /** Holds if this declaration is a template specialization. */
+  predicate isSpecialization() { var_specialized(underlyingElement(this)) }
+
+  /**
+   * Gets the requires clause if this declaration is a template with such a clause.
+   */
+  Expr getRequiresClause() { var_requires(underlyingElement(this), unresolveElement(result)) }
 }
 
 /**
@@ -295,19 +315,11 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
   private string getAnonymousParameterDescription() {
     not exists(this.getName()) and
-    exists(string idx |
-      idx =
-        ((this.getIndex() + 1).toString() + "th")
-            .replaceAll("1th", "1st")
-            .replaceAll("2th", "2nd")
-            .replaceAll("3th", "3rd")
-            .replaceAll("11st", "11th")
-            .replaceAll("12nd", "12th")
-            .replaceAll("13rd", "13th") and
+    exists(string anon |
+      anon = "(unnamed parameter " + this.getIndex().toString() + ")" and
       if exists(this.getCanonicalName())
-      then
-        result = "declaration of " + this.getCanonicalName() + " as anonymous " + idx + " parameter"
-      else result = "declaration of " + idx + " parameter"
+      then result = "declaration of " + this.getCanonicalName() + " as " + anon
+      else result = "declaration of " + anon
     )
   }
 
@@ -409,6 +421,17 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
     or
     orphaned_variables(underlyingElement(this), unresolveElement(result))
+    or
+    coroutine_placeholder_variable(underlyingElement(this), _, unresolveElement(result))
+  }
+
+  override predicate isStatic() {
+    super.isStatic() or orphaned_variables(underlyingElement(this), _)
+  }
+
+  override predicate isCompilerGenerated() {
+    super.isCompilerGenerated() or
+    coroutine_placeholder_variable(underlyingElement(this), _, _)
   }
 }
 
@@ -587,7 +610,10 @@ class TemplateVariable extends Variable {
   /**
    * Gets an instantiation of this variable template.
    */
-  Variable getAnInstantiation() { result.isConstructedFrom(this) }
+  Variable getAnInstantiation() {
+    result.isConstructedFrom(this) and
+    not result.isSpecialization()
+  }
 }
 
 /**
@@ -615,6 +641,21 @@ class VariableTemplateInstantiation extends Variable {
    * Example: For `int x<int>`, returns `T x`.
    */
   TemplateVariable getTemplate() { result = tv }
+}
+
+/**
+ * An explicit specialization of a C++ variable template.
+ */
+class VariableTemplateSpecialization extends Variable {
+  VariableTemplateSpecialization() { this.isSpecialization() }
+
+  override string getAPrimaryQlClass() { result = "VariableTemplateSpecialization" }
+
+  /**
+   * Gets the primary template for the specialization (the function template
+   * this specializes).
+   */
+  TemplateVariable getPrimaryTemplate() { this.isConstructedFrom(result) }
 }
 
 /**

@@ -1,0 +1,132 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  pulls1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: head_ref 
+        run: |
+          HEAD_REF=$(gh pr view "${{ github.event.issue.number }}" --json headRefName -q '.headRefName')
+          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.head_ref.outputs.head_ref}}"
+      - id: title
+        run: |
+          TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title}}"
+      - id: body
+        run: |
+          BODY=$(gh pr view $PR_NUMBER --json body --jq .body)
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.body.outputs.body}}"
+      - id: comments
+        run: |
+          COMMENTS="$(gh pr view --repo ${{ github.repository }} "$PR_NUMBER" --json "body,comments" -q '.body, .comments[].body')"
+          echo "comments=$COMMENTS" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.comments.outputs.comments}}"
+      - id: files 
+        run: |
+          CHANGED_FILES="$(gh pr view --repo ${{ github.repository }} ${{ needs.check-comment.outputs.pull_number }} --json files --jq '.files.[].path')"
+          echo "files=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.files.outputs.files}}"
+      - id: author 
+        run: |
+          AUTHOR=$(gh pr view ${ORI_PR} -R ${REPO} --json author -q '.author.login') 
+          echo "author=$AUTHOR" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.author.outputs.author}}"
+  pulls2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: head_ref 
+        run: |
+          HEAD_REF=$(gh api -H 'Accept: application/vnd.github+json' /repos/test/test/commits/${{ env.sui_sha }}/pulls --jq '.[].head.ref' | head -n 1)
+          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.head_ref.outputs.head_ref}}"
+      - id: title
+        run: |
+          TITLE=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".title")
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title}}"
+      - id: body
+        run: |
+          BODY=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".body")
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.body.outputs.body}}"
+      - id: comments
+        run: |
+          COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')
+          echo "comments=$COMMENTS" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.comments.outputs.comments}}"
+      - id: files 
+        run: |
+          CHANGED_FILES=$(gh api /repos/test/test/pulls/${{PR_NUMBER}}/files --jq '.[].filename')
+          echo "files=$CHANGED_FILES" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.files.outputs.files}}"
+      - id: author 
+        run: |
+          AUTHOR=$(gh api /repos/test/test/pulls/${{PR_NUMBER}} --jq ".user.login")
+          echo "author=$AUTHOR" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.author.outputs.author}}"
+  issues1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title
+        run: |
+          TITLE=$(gh issue view "$ISSUE_NUMBER" --json title --jq '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title}}"
+      - id: body
+        run: |
+          BODY=$(gh issue view -R ${GITHUB_REPOSITORY} ${ORIGINAL_ISSUE_NUMBER} --json title,body --jq '.body')
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.body.outputs.body}}"
+      - id: comments
+        run: |
+          COMMENTS=$(gh issue view "$ISSUE_NUMBER" --json comments --jq '.comments[].body')
+          echo "comments=$COMMENTS" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.comments.outputs.comments}}"
+  issues2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title
+        run: |
+          TITLE=$(gh api /repos/test/test/issues/${{PR_NUMBER}} --jq ".title")
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title.outputs.title}}"
+      - id: body
+        run: |
+          BODY=$(gh api /repos/test/test/issues/${{PR_NUMBER}} --jq ".body")
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.body.outputs.body}}"
+      - id: comments
+        run: |
+          COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')
+          echo "comments=$COMMENTS" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.comments.outputs.comments}}"
+  pulls3:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title1
+        run: |
+          DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
+          TITLE=$(echo $DETAILS | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title1.outputs.title}}"
+      - id: title2
+        run: |
+          TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
+          TITLE=$(echo $TITLE | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title2.outputs.title}}"
+      - id: title3
+        run: |
+          TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)
+          TITLE=$(echo $TITLE | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title3.outputs.title}}"
+
+
+

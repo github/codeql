@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ray-project/kuberay", "*", "input.ray_version", "code-injection", "generated"]

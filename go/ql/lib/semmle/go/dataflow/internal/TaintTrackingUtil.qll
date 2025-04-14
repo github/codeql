@@ -47,10 +47,11 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  exists(Type containerType |
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+  exists(Type containerType, DataFlow::Content c |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType
+    getElementType*(node.getType()) = containerType and
+    cs.asOneContent() = c
   |
     containerType instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
@@ -142,7 +143,7 @@ predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
   any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
-        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+        .getSummaryNode(), any(DataFlow::ArrayContent ac).asContentSet(),
     succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
@@ -190,6 +191,7 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
+  pragma[nomagic]
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
@@ -202,8 +204,8 @@ abstract class FunctionModel extends Function {
   predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
     c = this.getACall() and
     exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
-      pred = inp.getNode(c) and
-      succ = outp.getNode(c)
+      pred = pragma[only_bind_out](inp).getNode(c) and
+      succ = pragma[only_bind_out](outp).getNode(c)
     )
   }
 
@@ -214,11 +216,11 @@ abstract class FunctionModel extends Function {
 }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `node1` to `node2` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
-  localAdditionalTaintStep(src, sink, model)
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  localAdditionalTaintStep(node1, node2, model)
 }
 
 /**
@@ -382,9 +384,9 @@ predicate inputIsConstantIfOutputHasProperty(
 ) {
   exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
     functionEnsuresInputIsConstant(f, inp, outp, p) and
-    call = f.getACall() and
-    inputNode = inp.getNode(call) and
-    DataFlow::localFlow(outp.getNode(call), outputNode)
+    call = pragma[only_bind_out](f).getACall() and
+    inputNode = pragma[only_bind_out](inp).getNode(call) and
+    DataFlow::localFlow(pragma[only_bind_out](outp).getNode(call), outputNode)
   )
 }
 
@@ -423,7 +425,33 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
       arg = call.getAnArgument() and
       arg = var.getAUse() and
       arg != this and
-      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+      arg.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
+  }
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.go.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowPrivate::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlow::ArgumentNode).argumentOf(call, argpos)
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlow::ArgumentNode)
+          .argumentOf(call, -1)
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
     )
   }
 }

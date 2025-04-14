@@ -51,5 +51,7 @@ predicate tooFewArguments(FunctionCall fc, Function f) {
     hasDefiniteNumberOfParameters(fde)
   |
     fde.getNumberOfParameters() > fc.getNumberOfArguments()
-  )
+  ) and
+  // Don't report on implicit function declarations, as these are likely extraction errors.
+  not f.getADeclarationEntry().isImplicit()
 }

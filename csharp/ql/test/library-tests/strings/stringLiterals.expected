@@ -1,0 +1,4 @@
+| Strings.cs:7:18:7:30 | "Hello world" | Hello world |
+| Strings.cs:8:18:8:25 | "\u001b" | \u001b |
+| Strings.cs:9:18:9:23 | "\u001b" | \u001b |
+| Strings.cs:10:18:10:21 | "\u001b" | \u001b |

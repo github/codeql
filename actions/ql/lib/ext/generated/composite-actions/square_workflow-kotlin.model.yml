@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["square/workflow-kotlin", "*", "input.commit-message", "code-injection", "generated"]
+     - ["square/workflow-kotlin", "*", "input.fix-task", "code-injection", "generated"]
+     - ["square/workflow-kotlin", "*", "input.personal-access-token", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["quickwit-oss/quickwit", "*", "input.target", "code-injection", "generated"]
+     - ["quickwit-oss/quickwit", "*", "input.version", "code-injection", "generated"]

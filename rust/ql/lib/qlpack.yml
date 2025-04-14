@@ -1,0 +1,19 @@
+name: codeql/rust-all
+version: 0.1.6-dev
+groups: rust
+extractor: rust
+dbscheme: rust.dbscheme
+library: true
+dependencies:
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
+  codeql/regex: ${workspace}
+  codeql/threat-models: ${workspace}
+  codeql/mad: ${workspace}
+  codeql/ssa: ${workspace}
+  codeql/tutorial: ${workspace}
+  codeql/typeinference: ${workspace}
+  codeql/util: ${workspace}
+dataExtensions:
+  - /**/*.model.yml
+warnOnImplicitThis: true

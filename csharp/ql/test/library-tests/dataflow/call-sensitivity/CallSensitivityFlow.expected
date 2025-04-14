@@ -1,8 +1,6 @@
 edges
 | CallSensitivityFlow.cs:7:38:7:38 | o : Object | CallSensitivityFlow.cs:11:20:11:20 | access to parameter o : Object | provenance |  |
-| CallSensitivityFlow.cs:7:38:7:38 | o : Object | CallSensitivityFlow.cs:11:20:11:20 | access to parameter o : Object | provenance |  |
 | CallSensitivityFlow.cs:19:39:19:39 | o : Object | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | provenance |  |
-| CallSensitivityFlow.cs:27:40:27:40 | o : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | provenance |  |
 | CallSensitivityFlow.cs:27:40:27:40 | o : Object | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | provenance |  |
 | CallSensitivityFlow.cs:35:41:35:41 | o : Object | CallSensitivityFlow.cs:39:18:39:18 | [cond (line 35): true] access to parameter o | provenance |  |
 | CallSensitivityFlow.cs:43:45:43:45 | o : Object | CallSensitivityFlow.cs:45:16:45:17 | access to local variable o1 : Object | provenance |  |
@@ -13,20 +11,15 @@ edges
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | provenance |  |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | provenance |  |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | provenance |  |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | provenance |  |
-| CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | provenance |  |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | provenance |  |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | provenance |  |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | provenance |  |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | provenance |  |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | provenance |  |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | provenance |  |
-| CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | provenance |  |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | provenance |  |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | provenance |  |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | provenance |  |
-| CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | provenance |  |
-| CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 | provenance |  |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 | provenance |  |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 | provenance |  |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | CallSensitivityFlow.cs:66:14:66:15 | access to local variable o3 | provenance |  |
@@ -68,12 +61,9 @@ edges
 | CallSensitivityFlow.cs:205:40:205:40 | o : Object | CallSensitivityFlow.cs:208:18:208:18 | access to parameter o | provenance |  |
 nodes
 | CallSensitivityFlow.cs:7:38:7:38 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:7:38:7:38 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:11:20:11:20 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | CallSensitivityFlow.cs:11:20:11:20 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | CallSensitivityFlow.cs:19:39:19:39 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:23:18:23:18 | access to parameter o | semmle.label | access to parameter o |
-| CallSensitivityFlow.cs:27:40:27:40 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:27:40:27:40 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:31:18:31:18 | access to parameter o | semmle.label | access to parameter o |
 | CallSensitivityFlow.cs:35:41:35:41 | o : Object | semmle.label | o : Object |
@@ -87,20 +77,15 @@ nodes
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
 | CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:56:46:56:46 | o : Object | semmle.label | o : Object |
-| CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | CallSensitivityFlow.cs:58:16:58:17 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | semmle.label | access to local variable tmp : Object |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | semmle.label | access to local variable tmp : Object |
 | CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | semmle.label | access to local variable tmp : Object |
-| CallSensitivityFlow.cs:62:20:62:22 | access to local variable tmp : Object | semmle.label | access to local variable tmp : Object |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 | CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
-| CallSensitivityFlow.cs:63:13:63:14 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
-| CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | semmle.label | access to local variable o3 : Object |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | semmle.label | access to local variable o3 : Object |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | semmle.label | access to local variable o3 : Object |
 | CallSensitivityFlow.cs:65:16:65:17 | access to local variable o3 : Object | semmle.label | access to local variable o3 : Object |

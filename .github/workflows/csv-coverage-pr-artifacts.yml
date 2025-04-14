@@ -71,21 +71,21 @@ jobs:
         run: |
           python base/misc/scripts/library-coverage/compare-folders.py out_base out_merge comparison.md
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: csv-framework-coverage-merge
           path: |
             out_merge/framework-coverage-*.csv
             out_merge/framework-coverage-*.rst
       - name: Upload CSV package list
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: csv-framework-coverage-base
           path: |
             out_base/framework-coverage-*.csv
             out_base/framework-coverage-*.rst
       - name: Upload comparison results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comparison
           path: |
@@ -97,7 +97,7 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
       - name: Upload PR number
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pr
           path: pr/
@@ -117,7 +117,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
       - name: Upload comment ID (if it exists)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comment
           path: comment/

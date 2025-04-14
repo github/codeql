@@ -17,5 +17,5 @@ predicate dominanceCounterExample(ControlFlowNode entry, ControlFlowNode dom, Co
 from Callable c, ControlFlowNode dom, ControlFlowNode node
 where
   (strictlyDominates(dom, node) or bbStrictlyDominates(dom, node)) and
-  dominanceCounterExample(c.getBody(), dom, node)
+  dominanceCounterExample(c.getBody().getControlFlowNode(), dom, node)
 select c, dom, node

@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["jwalton/gh-ecr-push", "*", "input.image", "output.imageUrl", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["jwalton/gh-ecr-push", "*", "input.image", "command-injection", "manual"]
+      - ["jwalton/gh-ecr-push", "*", "input.local-image", "command-injection", "manual"]
+      - ["jwalton/gh-ecr-push", "*", "input.region", "command-injection", "manual"]

@@ -2,16 +2,16 @@
 name = "codeql-extractor-ql"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tree-sitter = ">= 0.20, < 0.21"
-tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "d08db734f8dc52f6bc04db53a966603122bc6985"}
-tree-sitter-ql-dbscheme = { git = "https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git", rev = "63e1344353f63931e88bfbc2faa2e78e1421b213"}
+tree-sitter = ">= 0.23.0"
+tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", rev = "c73c31c89cb0019ef56fe8bc1723e7c36e0be607"}
+tree-sitter-ql-dbscheme = { git = "https://github.com/tree-sitter/tree-sitter-ql-dbscheme.git", rev = "1980b4b6998a1138d326f863e6168f0f2c0c544d"}
 tree-sitter-blame = {path = "../buramu/tree-sitter-blame"}
-tree-sitter-json = {git = "https://github.com/tausbn/tree-sitter-json.git", rev = "745663ee997f1576fe1e7187e6347e0db36ec7a9"}
+tree-sitter-json = {git = "https://github.com/tree-sitter/tree-sitter-json.git", rev = "8bfdb43f47ad805bb1ce093203cfcbaa8ed2c571"}
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }

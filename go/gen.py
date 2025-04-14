@@ -2,7 +2,7 @@
 Update generated files related to Go in the repo. Using --force will regenerate all files from scratch.
 
 In particular the script will:
-1. update the `vendor` dir with `go work vendor` (using a go toolchain provided by bazel)
+1. update the `vendor` dir with `go mod vendor` (using a go toolchain provided by bazel)
 2. update `BUILD.bazel` files using gazelle
 3. update `ql/lib/go.dbscheme` using a compiled `go-dbschemegen`
 """
@@ -24,7 +24,7 @@ def options():
 opts = options()
 
 try:
-    workspace_dir = pathlib.Path(os.environ.pop('BUILD_WORKSPACE_DIRECTORY'))
+    workspace_dir = pathlib.Path(os.environ['BUILD_WORKSPACE_DIRECTORY'])
 except KeyError:
     print("this should be run with bazel run", file=sys.stderr)
     sys.exit(1)
@@ -41,14 +41,7 @@ r = runfiles.Create()
 go, gazelle, go_gen_dbscheme = map(r.Rlocation, opts.executables)
 
 
-if opts.force:
-    print("clearing vendor directory")
-    shutil.rmtree(go_extractor_dir / "vendor")
-
 existing_build_files = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
-
-print("updating vendor directory")
-subprocess.check_call([go, "-C", go_extractor_dir, "work", "vendor"])
 
 if opts.force:
     print("clearing generated BUILD files")
@@ -64,8 +57,6 @@ build_files_to_update = set(go_extractor_dir.glob("*/**/BUILD.bazel"))
 if not opts.force:
     # otherwise, subtract the files that existed at the start
     build_files_to_update -= existing_build_files
-    # but bring back the `vendor` ones, as the vendor update step always clears them
-    build_files_to_update.update(go_extractor_dir.glob("vendor/**/BUILD.bazel"))
 
 print("adding header to newly generated BUILD files")
 for build_file in build_files_to_update:

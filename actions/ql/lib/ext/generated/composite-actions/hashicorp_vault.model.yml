@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/vault", "*", "input.destination", "code-injection", "generated"]
+     - ["hashicorp/vault", "*", "input.version", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["hashicorp/vault", "*", "input.vault-version", "output.vault-version", "taint", "manual"]
+      - ["hashicorp/vault", "*", "input.vault-binary-path", "output.vault-binary-path", "taint", "manual"]

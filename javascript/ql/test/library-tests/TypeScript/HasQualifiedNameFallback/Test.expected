@@ -1,12 +1,12 @@
 hasQualifiedNameModule
 | default-import | default | tst.ts:11:9:11:21 | DefaultImport |
 | import-assign | Foo | tst.ts:10:9:10:15 | asn.Foo |
-| library-tests/TypeScript/HasQualifiedNameFallback/tst.ts | ExportedClass | relative.ts:4:8:4:20 | ExportedClass |
 | named-import | Name1 | tst.ts:7:9:7:13 | Name1 |
 | named-import | Name1 | tst.ts:13:9:13:13 | Name1 |
 | named-import | Name1 | tst.ts:13:9:13:21 | Name1<number> |
 | named-import | Name2 | tst.ts:8:9:8:13 | Name2 |
 | namespace-import | Foo | tst.ts:9:9:9:21 | namespace.Foo |
+| tst.ts | ExportedClass | relative.ts:4:8:4:20 | ExportedClass |
 hasQualifiedNameGlobal
 | UnresolvedName | tst.ts:12:9:12:22 | UnresolvedName |
 paramExample

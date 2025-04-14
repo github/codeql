@@ -1,4 +1,4 @@
-| TestTryWithResources.java:6:14:6:33 | super(...) | TestTryWithResources.java:6:14:6:33 | TestTryWithResources |
+| TestTryWithResources.java:6:14:6:33 | super(...) | TestTryWithResources.java:6:14:6:33 | Exit |
 | TestTryWithResources.java:6:14:6:33 | { ... } | TestTryWithResources.java:6:14:6:33 | super(...) |
 | TestTryWithResources.java:7:60:16:2 | { ... } | TestTryWithResources.java:8:3:15:3 | try ... |
 | TestTryWithResources.java:8:3:15:3 | try ... | TestTryWithResources.java:8:8:8:58 | var ...; |
@@ -32,6 +32,6 @@
 | TestTryWithResources.java:12:23:12:38 | "file not found" | TestTryWithResources.java:12:4:12:39 | println(...) |
 | TestTryWithResources.java:13:13:15:3 | { ... } | TestTryWithResources.java:14:4:14:33 | <Expr>; |
 | TestTryWithResources.java:14:4:14:13 | System.out | TestTryWithResources.java:14:23:14:31 | "finally" |
-| TestTryWithResources.java:14:4:14:32 | println(...) | TestTryWithResources.java:7:21:7:24 | main |
+| TestTryWithResources.java:14:4:14:32 | println(...) | TestTryWithResources.java:7:21:7:24 | Exit |
 | TestTryWithResources.java:14:4:14:33 | <Expr>; | TestTryWithResources.java:14:4:14:13 | System.out |
 | TestTryWithResources.java:14:23:14:31 | "finally" | TestTryWithResources.java:14:4:14:32 | println(...) |

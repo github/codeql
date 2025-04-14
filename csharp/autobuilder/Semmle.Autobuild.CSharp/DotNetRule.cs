@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Semmle.Util;
-using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
 using Semmle.Extraction.CSharp.DependencyFetching;
 
@@ -15,14 +13,14 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     internal class DotNetRule : IBuildRule<CSharpAutobuildOptions>
     {
-        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+        public List<IProjectOrSolution> FailedProjectsOrSolutions { get; } = [];
 
         /// <summary>
         /// A list of projects which are incompatible with DotNet.
         /// </summary>
         public IEnumerable<Project<CSharpAutobuildOptions>> NotDotNetProjects { get; private set; }
 
-        public DotNetRule() => NotDotNetProjects = new List<Project<CSharpAutobuildOptions>>();
+        public DotNetRule() => NotDotNetProjects = [];
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
@@ -39,7 +37,7 @@ namespace Semmle.Autobuild.CSharp
 
                 if (notDotNetProject is not null)
                 {
-                    builder.Logger.Log(Severity.Info, "Not using .NET Core because of incompatible project {0}", notDotNetProject);
+                    builder.Logger.LogInfo($"Not using .NET Core because of incompatible project {notDotNetProject}");
                     return BuildScript.Failure;
                 }
 
@@ -48,7 +46,9 @@ namespace Semmle.Autobuild.CSharp
 
             return WithDotNet(builder, ensureDotNetAvailable: false, (dotNetPath, environment) =>
                 {
-                    var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
+                    // When a custom .NET CLI has been installed, `dotnet --info` has already been executed
+                    // to verify the installation.
+                    var ret = dotNetPath is null ? GetInfoCommand(builder.Actions, dotNetPath, environment) : BuildScript.Success;
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
                     {
                         var cleanCommand = GetCleanCommand(builder.Actions, dotNetPath, environment);

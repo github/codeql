@@ -10,7 +10,7 @@ swift_cc_library(
         "//swift/extractor/infra/file",
         "//swift/extractor/trap",
         "//swift/logging",
-        "//swift/third_party/swift-llvm-support",
+        "//swift/third_party/resources:prebuilt",
         "@picosha2",
     ],
 )

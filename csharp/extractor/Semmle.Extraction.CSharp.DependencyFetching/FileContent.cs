@@ -38,8 +38,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// True if any file in the source directory indicates that ASP.NET Core is used.
         /// The following heuristic is used to decide, if ASP.NET Core is used:
         /// If any file in the source directory contains something like (this will most like be a .csproj file)
-        ///     <Project Sdk="Microsoft.NET.Sdk.Web">
-        ///     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        ///     &lt;Project Sdk="Microsoft.NET.Sdk.Web"&gt;
+        ///     &lt;FrameworkReference Include="Microsoft.AspNetCore.App"/&gt;
         /// </summary>
         public bool UseAspNetCoreDlls
         {

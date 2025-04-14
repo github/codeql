@@ -6,6 +6,20 @@ import java
 private import semmle.code.xml.AndroidManifest
 
 /**
+ * Holds if in `file`'s directory or some parent directory there is an `AndroidManifestXmlFile`
+ * that defines at least one activity, service or contest provider, suggesting this file is
+ * part of an android application.
+ */
+predicate inAndroidApplication(File file) {
+  file.isSourceFile() and
+  exists(AndroidManifestXmlFile amxf, Folder amxfDir |
+    amxf.definesAndroidApplication() and amxfDir = amxf.getParentContainer()
+  |
+    file.getParentContainer+() = amxfDir
+  )
+}
+
+/**
  * Gets a reflexive/transitive superType
  */
 pragma[inline]

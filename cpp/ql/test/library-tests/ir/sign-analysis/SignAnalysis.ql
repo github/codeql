@@ -5,7 +5,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisRelativeSpecific
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SignAnalysisInstantiated = SignAnalysis<FloatDelta>;
 

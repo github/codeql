@@ -1,1 +1,2 @@
-experimental/CWE-918/SSRF.ql
+query: experimental/CWE-918/SSRF.ql
+postprocess: utils/test/PrettyPrintModels.ql

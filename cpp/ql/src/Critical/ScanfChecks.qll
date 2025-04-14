@@ -37,12 +37,19 @@ private string getEofValue() {
  */
 private predicate checkedForEof(ScanfFunctionCall call) {
   exists(IRGuardCondition gc |
-    exists(Instruction i | i.getUnconvertedResultExpression() = call |
-      // call == EOF
-      gc.comparesEq(valueNumber(i).getAUse(), getEofValue().toInt(), _, _)
+    exists(CallInstruction i | i.getUnconvertedResultExpression() = call |
+      exists(int val | gc.comparesEq(valueNumber(i).getAUse(), val, _, _) |
+        // call == EOF
+        val = getEofValue().toInt()
+        or
+        // call == [any positive number]
+        val > 0
+      )
       or
-      // call < 0 (EOF is guaranteed to be negative)
-      gc.comparesLt(valueNumber(i).getAUse(), 0, true, _)
+      exists(int val | gc.comparesLt(valueNumber(i).getAUse(), val, true, _) |
+        // call < [any non-negative number] (EOF is guaranteed to be negative)
+        val >= 0
+      )
     )
   )
 }

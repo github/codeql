@@ -9,28 +9,22 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Compilation : CachedEntity<object>
     {
-        internal readonly ConcurrentDictionary<string, int> messageCounts = new();
+        internal readonly ConcurrentDictionary<string, int> messageCounts = [];
 
-        private static (string Cwd, string[] Args) settings;
-        private static int hashCode;
-
-        public static (string Cwd, string[] Args) Settings
-        {
-            get { return settings; }
-            set
-            {
-                settings = value;
-                hashCode = settings.Cwd.GetHashCode();
-                for (var i = 0; i < settings.Args.Length; i++)
-                {
-                    hashCode = HashCode.Combine(hashCode, settings.Args[i].GetHashCode());
-                }
-            }
-        }
+        private readonly string cwd;
+        private readonly string[] args;
+        private readonly int hashCode;
 
 #nullable disable warnings
         private Compilation(Context cx) : base(cx, null)
         {
+            cwd = cx.ExtractionContext.Cwd;
+            args = cx.ExtractionContext.Args;
+            hashCode = cwd.GetHashCode();
+            for (var i = 0; i < args.Length; i++)
+            {
+                hashCode = HashCode.Combine(hashCode, args[i].GetHashCode());
+            }
         }
 #nullable restore warnings
 
@@ -38,14 +32,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var assembly = Assembly.CreateOutputAssembly(Context);
 
-            trapFile.compilations(this, FileUtils.ConvertToUnix(Compilation.Settings.Cwd));
+            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
             var expandedIndex = 0;
-            for (var i = 0; i < Compilation.Settings.Args.Length; i++)
+            for (var i = 0; i < args.Length; i++)
             {
-                var arg = Compilation.Settings.Args[i];
+                var arg = args[i];
                 trapFile.compilation_args(this, i, arg);
 
                 if (CommandLineExtensions.IsFileArgument(arg))
@@ -95,13 +89,21 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds);
         }
 
+        public void PopulateAggregatedMessages()
+        {
+            ExtractionMessage.groupedMessageCounts.ForEach(pair =>
+            {
+                Context.TrapWriter.Writer.compilation_info(this, $"Extractor message count for group '{pair.Key}'", pair.Value.ToString());
+            });
+        }
+
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.Write(hashCode);
             trapFile.Write(";compilation");
         }
 
-        public override Location ReportingLocation => throw new NotImplementedException();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
         public override bool NeedsPopulation => Context.IsAssemblyScope;
 

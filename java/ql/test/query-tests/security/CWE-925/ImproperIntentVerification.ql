@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.ImproperIntentVerificationQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HasFlowTest implements TestSig {
   string getARelevantTag() { result = "hasResult" }

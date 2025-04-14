@@ -1,4 +1,4 @@
 import csharp
 
 from AssignableDefinition def
-select def, def.getAControlFlowNode()
+select def, def.getExpr().getAControlFlowNode()

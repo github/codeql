@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shader-slang/slang", "*", "input.platform", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.os", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.runs-on", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.config", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "input.compiler", "code-injection", "generated"]

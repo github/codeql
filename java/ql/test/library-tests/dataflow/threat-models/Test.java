@@ -59,7 +59,7 @@ class Test {
   }
 
   public void M5(Statement handle) throws Exception {
-    // Only a source if "commandargs" is a selected threat model.
+    // Only a source if "stdin" is a selected threat model.
     byte[] data = new byte[1024];
     System.in.read(data);
 

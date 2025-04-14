@@ -49,20 +49,20 @@ jobs:
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Release build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cd ql; ./scripts/create-extractor-pack.sh       
+        run: cd ql; ./scripts/create-extractor-pack.sh
         env:
-          GH_TOKEN: ${{ github.token }}   
+          GH_TOKEN: ${{ github.token }}
       - name: Cache compilation cache
         id: query-cache
         uses: ./.github/actions/cache-query-compilation
-        with: 
+        with:
           key: run-ql-for-ql
       - name: Make database and analyze
         run: |
           ./ql/target/release/buramu | tee deprecated.blame # Add a blame file for the extractor to parse.
-          ${CODEQL} database create -l=ql --search-path ql/extractor-pack ${DB}
+          ${CODEQL} database create -l=ql ${DB} --search-path "${{ github.workspace }}"
           ${CODEQL} database analyze -j0 --format=sarif-latest --output=ql-for-ql.sarif ${DB} ql/ql/src/codeql-suites/ql-code-scanning.qls  --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-        env: 
+        env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
           DB: ${{ runner.temp }}/DB
           LGTM_INDEX_FILTERS: |
@@ -75,7 +75,7 @@ jobs:
           sarif_file: ql-for-ql.sarif
           category: ql-for-ql
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ql-for-ql.sarif
           path: ql-for-ql.sarif
@@ -84,7 +84,7 @@ jobs:
           mkdir split-sarif
           node ./ql/scripts/split-sarif.js ql-for-ql.sarif split-sarif
       - name: Upload langs as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ql-for-ql-langs
           path: split-sarif

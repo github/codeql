@@ -6,9 +6,8 @@ edges
 | LdapInjection.rb:9:5:9:8 | name | LdapInjection.rb:33:88:33:91 | name | provenance |  |
 | LdapInjection.rb:9:12:9:17 | call to params | LdapInjection.rb:9:12:9:29 | ...[...] | provenance |  |
 | LdapInjection.rb:9:12:9:29 | ...[...] | LdapInjection.rb:9:5:9:8 | name | provenance |  |
-| LdapInjection.rb:33:87:33:92 | call to [] [element 0] | LdapInjection.rb:33:87:33:92 | call to [] | provenance |  |
 | LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance |  |
-| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] [element 0] | provenance |  |
+| LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:33:87:33:92 | call to [] | provenance | Config |
 | LdapInjection.rb:33:88:33:91 | name | LdapInjection.rb:37:41:37:44 | name | provenance |  |
 | LdapInjection.rb:37:5:37:10 | filter | LdapInjection.rb:38:62:38:67 | filter | provenance |  |
 | LdapInjection.rb:37:14:37:45 | call to eq | LdapInjection.rb:37:5:37:10 | filter | provenance |  |
@@ -23,7 +22,6 @@ nodes
 | LdapInjection.rb:25:23:25:49 | "ou=people,dc=#{...},dc=com" | semmle.label | "ou=people,dc=#{...},dc=com" |
 | LdapInjection.rb:29:62:29:73 | "cn=#{...}" | semmle.label | "cn=#{...}" |
 | LdapInjection.rb:33:87:33:92 | call to [] | semmle.label | call to [] |
-| LdapInjection.rb:33:87:33:92 | call to [] [element 0] | semmle.label | call to [] [element 0] |
 | LdapInjection.rb:33:88:33:91 | name | semmle.label | name |
 | LdapInjection.rb:37:5:37:10 | filter | semmle.label | filter |
 | LdapInjection.rb:37:14:37:45 | call to eq | semmle.label | call to eq |

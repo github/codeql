@@ -5,7 +5,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", False, "MemoryConfigurationProvider", "(Microsoft.Extensions.Configuration.Memory.MemoryConfigurationSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationSource", False, "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

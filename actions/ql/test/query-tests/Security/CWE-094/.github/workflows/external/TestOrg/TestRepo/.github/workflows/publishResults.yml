@@ -1,0 +1,94 @@
+on:
+  workflow_call:
+    inputs:
+      botGithubId:
+        description: bot id
+        type: string
+        required: true
+
+    secrets:
+      githubBotPAT:
+        description: The personal access token
+        required: true
+
+permissions: {} # all none
+
+jobs:
+  versions-check-result:
+    name: Publish Results
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion != 'skipped'
+    steps:
+
+    - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      id: search-patch
+      with:
+        script: |
+          let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+             run_id: context.payload.workflow_run.id,
+             ...context.repo
+          })
+          let artifact = allArtifacts.data.artifacts.find(artifact => artifact.name == 'git-patch')
+          return artifact?.id
+
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      if: steps.search-patch.outputs.result
+      with:
+        ref: '${{ github.event.workflow_run.head_sha }}'
+        persist-credentials: false #Opt out from persisting the default Github-token authentication in order to enable use of the bot's PAT when pushing below
+
+    - name: Download git patch
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      id: fetch-patch
+      if: steps.search-patch.outputs.result
+      with:
+        script: |
+          let download = await github.rest.actions.downloadArtifact({
+             artifact_id: ${{ steps.search-patch.outputs.result }},
+             archive_format: 'zip',
+             ...context.repo
+          })
+          let fs = require('fs')
+          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/patch.zip`, Buffer.from(download.data))
+          await exec.exec('unzip', ['patch.zip'])
+          let pr_number = Number(fs.readFileSync('github_pull_request_number.txt'))
+          core.setOutput('pull_request_number', pr_number)
+          await io.rmRF('patch.zip')
+          await io.rmRF('github_pull_request_number.txt')
+
+    - name: Apply and push version increment
+      id: git-commit
+      if: steps.search-patch.outputs.result
+      run: |
+          set -x
+          # Set initial placeholder name/mail and read it from the patch later
+          git config --global user.email 'foo@bar'
+          git config --global user.name 'Foo Bar'
+          
+          git am version_increments.patch
+          
+          # Read the author's name+mail from the just applied patch and recommit it with both set as committer
+          botMail=$(git log -1 --pretty=format:'%ae')
+          botName=$(git log -1 --pretty=format:'%an')
+          git config --global user.email "${botMail}"
+          git config --global user.name "${botName}"
+          git commit --amend --no-edit
+          
+          fileList=$(git diff-tree --no-commit-id --name-only HEAD -r)
+          echo "file-list<<EOF" >> $GITHUB_OUTPUT
+          echo "$fileList" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          git push \
+            "https://oauth2:${BOT_PA_TOKEN}@github.com/${{ github.event.workflow_run.head_repository.full_name }}.git" \
+            'HEAD:refs/heads/${{ github.event.workflow_run.head_branch }}'
+      env:
+        BOT_PA_TOKEN: ${{ secrets.githubBotPAT }}
+
+    - name: Add or update information comment
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      if: always()
+      with:
+        github-token: ${{ secrets.githubBotPAT }}
+        script: |
+          const fileList = `${{ steps.git-commit.outputs.file-list }}`

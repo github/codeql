@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "", False, "ymlStep", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

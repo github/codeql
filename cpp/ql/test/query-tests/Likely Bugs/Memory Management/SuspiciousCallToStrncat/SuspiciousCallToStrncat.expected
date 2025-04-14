@@ -3,3 +3,5 @@
 | test.c:67:3:67:9 | call to strncat | Potentially unsafe call to strncat. |
 | test.c:75:3:75:9 | call to strncat | Potentially unsafe call to strncat. |
 | test.c:76:3:76:9 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:91:3:91:9 | call to strncat | Potentially unsafe call to strncat. |
+| test.c:99:3:99:9 | call to strncat | Potentially unsafe call to strncat. |

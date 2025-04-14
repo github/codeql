@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.TraceSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.TraceSource, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
@@ -106,7 +106,7 @@ namespace System
         public sealed class Trace
         {
             public static void Assert(bool condition) => throw null;
-            public static void Assert(bool condition, string message) => throw null;
+            public static void Assert(bool condition, string message = default(string)) => throw null;
             public static void Assert(bool condition, string message, string detailMessage) => throw null;
             public static bool AutoFlush { get => throw null; set { } }
             public static void Close() => throw null;

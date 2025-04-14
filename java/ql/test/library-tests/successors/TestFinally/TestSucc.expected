@@ -1,4 +1,4 @@
-| TestFinally.java:3:14:3:24 | super(...) | TestFinally.java:3:14:3:24 | TestFinally |
+| TestFinally.java:3:14:3:24 | super(...) | TestFinally.java:3:14:3:24 | Exit |
 | TestFinally.java:3:14:3:24 | { ... } | TestFinally.java:3:14:3:24 | super(...) |
 | TestFinally.java:5:2:149:2 | { ... } | TestFinally.java:6:3:6:13 | var ...; |
 | TestFinally.java:6:3:6:13 | var ...; | TestFinally.java:6:11:6:12 | 12 |
@@ -268,7 +268,7 @@
 | TestFinally.java:118:4:118:32 | println(...) | TestFinally.java:119:4:119:13 | <Expr>; |
 | TestFinally.java:118:4:118:33 | <Expr>; | TestFinally.java:118:4:118:13 | System.out |
 | TestFinally.java:118:23:118:31 | "Finally" | TestFinally.java:118:4:118:32 | println(...) |
-| TestFinally.java:119:4:119:12 | ...=... | TestFinally.java:4:14:4:14 | f |
+| TestFinally.java:119:4:119:12 | ...=... | TestFinally.java:4:14:4:14 | Exit |
 | TestFinally.java:119:4:119:12 | ...=... | TestFinally.java:121:3:121:12 | <Expr>; |
 | TestFinally.java:119:4:119:13 | <Expr>; | TestFinally.java:119:8:119:8 | y |
 | TestFinally.java:119:8:119:8 | y | TestFinally.java:119:12:119:12 | 1 |
@@ -324,13 +324,13 @@
 | TestFinally.java:141:8:141:13 | ... == ... | TestFinally.java:145:4:145:34 | <Expr>; |
 | TestFinally.java:141:13:141:13 | 1 | TestFinally.java:141:8:141:13 | ... == ... |
 | TestFinally.java:142:4:144:4 | { ... } | TestFinally.java:143:5:143:11 | return ... |
-| TestFinally.java:143:5:143:11 | return ... | TestFinally.java:4:14:4:14 | f |
+| TestFinally.java:143:5:143:11 | return ... | TestFinally.java:4:14:4:14 | Exit |
 | TestFinally.java:145:4:145:13 | System.out | TestFinally.java:145:23:145:32 | "Finally2" |
-| TestFinally.java:145:4:145:33 | println(...) | TestFinally.java:4:14:4:14 | f |
+| TestFinally.java:145:4:145:33 | println(...) | TestFinally.java:4:14:4:14 | Exit |
 | TestFinally.java:145:4:145:33 | println(...) | TestFinally.java:148:3:148:12 | <Expr>; |
 | TestFinally.java:145:4:145:34 | <Expr>; | TestFinally.java:145:4:145:13 | System.out |
 | TestFinally.java:145:23:145:32 | "Finally2" | TestFinally.java:145:4:145:33 | println(...) |
-| TestFinally.java:148:3:148:11 | ...=... | TestFinally.java:4:14:4:14 | f |
+| TestFinally.java:148:3:148:11 | ...=... | TestFinally.java:4:14:4:14 | Exit |
 | TestFinally.java:148:3:148:12 | <Expr>; | TestFinally.java:148:7:148:7 | z |
 | TestFinally.java:148:7:148:7 | z | TestFinally.java:148:11:148:11 | 2 |
 | TestFinally.java:148:7:148:11 | ... + ... | TestFinally.java:148:3:148:11 | ...=... |

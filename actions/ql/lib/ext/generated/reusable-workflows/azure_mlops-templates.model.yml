@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["azure/mlops-templates/.github/workflows/tf-gha-install-terraform.yml", "*", "input.terraform_workingdir", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/run-pipeline.yml", "*", "input.parameters-file", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/run-pipeline.yml", "*", "input.workspace_name", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/run-pipeline.yml", "*", "input.resource_group", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/register-environment.yml", "*", "input.dockerfile-location", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/register-environment.yml", "*", "input.environment_file", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/register-environment.yml", "*", "input.workspace_name", "code-injection", "generated"]
+     - ["azure/mlops-templates/.github/workflows/register-environment.yml", "*", "input.resource_group", "code-injection", "generated"]

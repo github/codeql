@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "input.REGISTRY", "code-injection", "generated"]
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "input.IMAGE_NAME", "code-injection", "generated"]
+     - ["bridgecrewio/checkov/tests/github_actions/resources/.github/workflows/docker-slsa.yaml", "*", "input.IMAGE_TAG", "code-injection", "generated"]

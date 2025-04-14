@@ -1,8 +1,6 @@
+using System;
 using System.IO;
 using Semmle.Util;
-using Semmle.Util.Logging;
-using Semmle.Extraction.CSharp.DependencyFetching;
-using System;
 
 namespace Semmle.Extraction.CSharp.Standalone
 {

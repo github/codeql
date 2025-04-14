@@ -1,1 +1,2 @@
-Security/CWE/CWE-094/InsecureBeanValidation.ql
+query: Security/CWE/CWE-094/InsecureBeanValidation.ql
+postprocess: utils/test/PrettyPrintModels.ql

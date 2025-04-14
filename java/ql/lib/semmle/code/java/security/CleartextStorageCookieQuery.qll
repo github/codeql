@@ -2,7 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.security.CleartextStorageQuery
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources

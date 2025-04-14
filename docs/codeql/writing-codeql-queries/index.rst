@@ -9,8 +9,11 @@ Get to know more about queries and learn some key query-writing skills by solvin
 
 - :ref:`QL tutorials <ql-tutorials>`: Solve puzzles to learn the basics of QL before you analyze code with CodeQL. The tutorials teach you how to write queries and introduce you to key logic concepts along the way.
 
+- :ref:`Running CodeQL queries <running-codeql-queries>`: Guide to running queries as you try out the tutorials and start to develop your own queries.
+
 .. toctree::
    :hidden:
 
    codeql-queries
    ql-tutorials
+   running-codeql-queries

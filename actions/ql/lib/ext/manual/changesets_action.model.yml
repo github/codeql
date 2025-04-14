@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["changesets/action", "*", "input.publish", "command-injection", "manual"]
+      - ["changesets/action", "*", "input.version", "command-injection", "manual"]

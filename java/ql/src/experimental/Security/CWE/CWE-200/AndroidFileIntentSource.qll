@@ -1,4 +1,5 @@
 /** Provides summary models relating to file content inputs of Android. */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.FlowSources

@@ -8,6 +8,6 @@ private import codeql.swift.elements.expr.BinaryExpr
 /**
  * A Swift nil-coalesing expr (`??`).
  */
-class NilCoalescingExpr extends BinaryExpr {
+final class NilCoalescingExpr extends BinaryExpr {
   NilCoalescingExpr() { this.getStaticTarget().getName() = "??(_:_:)" }
 }

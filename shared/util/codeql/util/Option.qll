@@ -2,6 +2,7 @@
 
 /** A type with `toString`. */
 private signature class TypeWithToString {
+  bindingset[this]
   string toString();
 }
 

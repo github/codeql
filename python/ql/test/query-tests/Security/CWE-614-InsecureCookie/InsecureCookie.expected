@@ -1,0 +1,10 @@
+| test.py:10:5:10:37 | ControlFlowNode for Attribute() | Cookie is added without the Secure and HttpOnly attributes properly set. |
+| test.py:11:5:11:50 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:12:5:12:52 | ControlFlowNode for Attribute() | Cookie is added without the Secure attribute properly set. |
+| test.py:13:5:13:56 | ControlFlowNode for Attribute() | Cookie is added without the Secure and HttpOnly attributes properly set. |
+| test.py:14:5:14:53 | ControlFlowNode for Attribute() | Cookie is added without the Secure and HttpOnly attributes properly set. |
+| test.py:15:5:15:54 | ControlFlowNode for Attribute() | Cookie is added without the Secure, HttpOnly, and SameSite attributes properly set. |
+| test.py:16:5:16:69 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly attribute properly set. |
+| test.py:17:5:17:71 | ControlFlowNode for Attribute() | Cookie is added without the Secure attribute properly set. |
+| test.py:18:5:18:67 | ControlFlowNode for Attribute() | Cookie is added without the HttpOnly and SameSite attributes properly set. |
+| test.py:19:5:19:69 | ControlFlowNode for Attribute() | Cookie is added without the Secure and SameSite attributes properly set. |

@@ -1,20 +1,4 @@
 | box.cpp:3:6:3:6 | definition of h | -------- | --- |
-| box.h:2:8:2:8 | declaration of Box | -------- | --- |
-| box.h:2:8:2:8 | declaration of Box | -------- | --- |
-| box.h:2:8:2:8 | declaration of Box | -------- | --- |
-| box.h:2:8:2:8 | declaration of Box | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | declaration of operator= | -------- | --- |
-| box.h:2:8:2:8 | definition of Box | no except | --- |
-| box.h:2:8:2:8 | definition of Box | no except | --- |
-| box.h:2:8:2:8 | definition of Box | no except | --- |
-| box.h:2:8:2:8 | definition of Box | no except | --- |
 | box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
 | box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |
 | box.h:3:3:3:3 | definition of Box | -------- | __has_nothrow_copy |

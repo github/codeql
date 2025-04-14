@@ -2,7 +2,14 @@ edges
 | file://:0:0:0:0 | .wrappedValue | test.swift:949:15:949:15 | x | provenance |  |
 | file://:0:0:0:0 | .wrappedValue | test.swift:951:15:951:15 | x | provenance |  |
 | file://:0:0:0:0 | KeyPathComponent [some:0] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] | provenance |  |
+| file://:0:0:0:0 | [post] self [v2, some:0] | test.swift:731:9:731:9 | self [Return] [v2, some:0] | provenance |  |
+| file://:0:0:0:0 | [post] self [v2] | test.swift:731:9:731:9 | self [Return] [v2] | provenance |  |
+| file://:0:0:0:0 | [post] self [v3] | test.swift:732:9:732:9 | self [Return] [v3] | provenance |  |
+| file://:0:0:0:0 | [post] self [v] | test.swift:815:7:815:7 | self [Return] [v] | provenance |  |
 | file://:0:0:0:0 | [post] self [wrappedValue] | file://:0:0:0:0 | self [wrappedValue] | provenance |  |
+| file://:0:0:0:0 | [post] self [x, some:0] | test.swift:559:9:559:9 | self [Return] [x, some:0] | provenance |  |
+| file://:0:0:0:0 | [post] self [x] | test.swift:163:7:163:7 | self [Return] [x] | provenance |  |
+| file://:0:0:0:0 | [post] self [x] | test.swift:559:9:559:9 | self [Return] [x] | provenance |  |
 | file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] | provenance |  |
 | file://:0:0:0:0 | self [s, x] | file://:0:0:0:0 | .s [x] | provenance |  |
 | file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str | provenance |  |
@@ -26,9 +33,146 @@ edges
 | file://:0:0:0:0 | value | test.swift:965:9:965:9 | newValue | provenance |  |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] | provenance |  |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:10:15:10:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:11:15:11:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:12:15:12:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:14:15:14:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:15:15:15:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:16:15:16:15 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:20:19:20:19 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | test2.swift:25:25:25:25 | d1 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:44:5:65 | (...) [Tuple element at index 1] | test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:5:49:5:65 | call to source(_:) | test2.swift:5:44:5:65 | (...) [Tuple element at index 1] | provenance |  |
+| test2.swift:10:15:10:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:10:15:10:21 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:10:15:10:21 | ...[...] | test2.swift:10:15:10:22 | ...! | provenance |  |
+| test2.swift:10:15:10:21 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:10:15:10:21 | ...[...] | provenance |  |
+| test2.swift:11:15:11:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:11:15:11:21 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:11:15:11:21 | ...[...] | test2.swift:11:15:11:22 | ...! | provenance |  |
+| test2.swift:11:15:11:21 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:11:15:11:21 | ...[...] | provenance |  |
+| test2.swift:12:15:12:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:12:15:12:21 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:12:15:12:21 | ...[...] | test2.swift:12:15:12:22 | ...! | provenance |  |
+| test2.swift:12:15:12:21 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:12:15:12:21 | ...[...] | provenance |  |
+| test2.swift:14:15:14:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:14:15:14:22 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:14:15:14:22 | ...[...] | test2.swift:14:15:14:23 | ...! | provenance |  |
+| test2.swift:14:15:14:22 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:14:15:14:22 | ...[...] | provenance |  |
+| test2.swift:15:15:15:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:15:15:15:22 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:15:15:15:22 | ...[...] | test2.swift:15:15:15:23 | ...! | provenance |  |
+| test2.swift:15:15:15:22 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:15:15:15:22 | ...[...] | provenance |  |
+| test2.swift:16:15:16:15 | d1 [Collection element, Tuple element at index 1] | test2.swift:16:15:16:22 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:16:15:16:22 | ...[...] | test2.swift:16:15:16:23 | ...! | provenance |  |
+| test2.swift:16:15:16:22 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:16:15:16:22 | ...[...] | provenance |  |
+| test2.swift:20:19:20:19 | d1 [Collection element, Tuple element at index 1] | test2.swift:20:19:20:25 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:20:19:20:25 | ...[...] | test2.swift:20:19:20:26 | ...! | provenance |  |
+| test2.swift:20:19:20:25 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:20:19:20:25 | ...[...] | provenance |  |
+| test2.swift:25:5:25:5 | $generator [Collection element, Tuple element at index 1] | test2.swift:25:5:25:5 | call to next() [some:0, Tuple element at index 1] | provenance |  |
+| test2.swift:25:5:25:5 | call to next() [some:0, Tuple element at index 1] | test2.swift:25:9:25:20 | (...) [Tuple element at index 1] | provenance |  |
+| test2.swift:25:9:25:20 | (...) [Tuple element at index 1] | test2.swift:25:15:25:15 | value | provenance |  |
+| test2.swift:25:15:25:15 | value | test2.swift:27:19:27:19 | value | provenance |  |
+| test2.swift:25:25:25:25 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:25:5:25:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:25:25:25:25 | d1 [Collection element, Tuple element at index 1] | test2.swift:25:25:25:25 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | test2.swift:34:15:34:15 | d2 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | test2.swift:35:15:35:15 | d2 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | test2.swift:36:15:36:15 | d2 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | test2.swift:38:15:38:15 | d2 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:25:32:44 | (...) [Tuple element at index 1] | test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:32:28:32:44 | call to source(_:) | test2.swift:32:25:32:44 | (...) [Tuple element at index 1] | provenance |  |
+| test2.swift:34:15:34:15 | d2 [Collection element, Tuple element at index 1] | test2.swift:34:15:34:19 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:34:15:34:19 | ...[...] | test2.swift:34:15:34:20 | ...! | provenance |  |
+| test2.swift:34:15:34:19 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:34:15:34:19 | ...[...] | provenance |  |
+| test2.swift:35:15:35:15 | d2 [Collection element, Tuple element at index 1] | test2.swift:35:15:35:19 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:35:15:35:19 | ...[...] | test2.swift:35:15:35:20 | ...! | provenance |  |
+| test2.swift:35:15:35:19 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:35:15:35:19 | ...[...] | provenance |  |
+| test2.swift:36:15:36:15 | d2 [Collection element, Tuple element at index 1] | test2.swift:36:15:36:19 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:36:15:36:19 | ...[...] | test2.swift:36:15:36:20 | ...! | provenance |  |
+| test2.swift:36:15:36:19 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:36:15:36:19 | ...[...] | provenance |  |
+| test2.swift:38:15:38:15 | d2 [Collection element, Tuple element at index 1] | test2.swift:38:15:38:23 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:38:15:38:23 | ...[...] | test2.swift:38:15:38:24 | ...! | provenance |  |
+| test2.swift:38:15:38:23 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:38:15:38:23 | ...[...] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:48:15:48:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:53:15:53:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:46:17:46:33 | call to source(_:) | test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:46:17:46:33 | call to source(_:) | test2.swift:46:17:46:33 | call to source(_:) [some:0] | provenance |  |
+| test2.swift:46:17:46:33 | call to source(_:) [some:0] | test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:48:15:48:15 | d3 [Collection element, Tuple element at index 1] | test2.swift:48:15:48:23 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:48:15:48:23 | ...[...] | test2.swift:48:15:48:28 | ... ??(_:_:) ... | provenance |  |
+| test2.swift:48:15:48:23 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:48:15:48:23 | ...[...] | provenance |  |
+| test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1] | test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:49:15:49:23 | ...[...] | test2.swift:49:15:49:24 | ...! | provenance |  |
+| test2.swift:49:15:49:23 | ...[...] [some:0] | test2.swift:49:15:49:24 | ...! | provenance |  |
+| test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | test2.swift:49:15:49:23 | ...[...] [some:0] | provenance |  |
+| test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:49:15:49:23 | ...[...] | provenance |  |
+| test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:53:15:53:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1] | test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1] | test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:53:15:53:15 | d3 [Collection element, Tuple element at index 1] | test2.swift:53:15:53:23 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:53:15:53:23 | ...[...] | test2.swift:53:15:53:28 | ... ??(_:_:) ... | provenance |  |
+| test2.swift:53:15:53:23 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:53:15:53:23 | ...[...] | provenance |  |
+| test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1, some:0] | test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | provenance |  |
+| test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1] | test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test2.swift:54:15:54:23 | ...[...] | test2.swift:54:15:54:24 | ...! | provenance |  |
+| test2.swift:54:15:54:23 | ...[...] [some:0] | test2.swift:54:15:54:24 | ...! | provenance |  |
+| test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | test2.swift:54:15:54:23 | ...[...] [some:0] | provenance |  |
+| test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1] | test2.swift:54:15:54:23 | ...[...] | provenance |  |
+| test2.swift:60:5:60:5 | [post] d4 [Collection element, Tuple element at index 0] | test2.swift:69:25:69:25 | d4 [Collection element, Tuple element at index 0] | provenance |  |
+| test2.swift:60:5:60:25 | DictionarySubscriptNode [Tuple element at index 0] | test2.swift:60:5:60:5 | [post] d4 [Collection element, Tuple element at index 0] | provenance |  |
+| test2.swift:60:8:60:24 | call to source(_:) | test2.swift:60:5:60:25 | DictionarySubscriptNode [Tuple element at index 0] | provenance |  |
+| test2.swift:69:5:69:5 | $generator [Collection element, Tuple element at index 0] | test2.swift:69:5:69:5 | call to next() [some:0, Tuple element at index 0] | provenance |  |
+| test2.swift:69:5:69:5 | call to next() [some:0, Tuple element at index 0] | test2.swift:69:9:69:20 | (...) [Tuple element at index 0] | provenance |  |
+| test2.swift:69:9:69:20 | (...) [Tuple element at index 0] | test2.swift:69:10:69:10 | key | provenance |  |
+| test2.swift:69:10:69:10 | key | test2.swift:70:19:70:19 | key | provenance |  |
+| test2.swift:69:25:69:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test2.swift:69:5:69:5 | $generator [Collection element, Tuple element at index 0] | provenance |  |
+| test2.swift:69:25:69:25 | d4 [Collection element, Tuple element at index 0] | test2.swift:69:25:69:25 | call to makeIterator() [Collection element, Tuple element at index 0] | provenance |  |
+| test2.swift:76:14:76:47 | [...] [Collection element] | test2.swift:78:14:78:14 | a1 [Collection element] | provenance |  |
+| test2.swift:76:14:76:47 | [...] [Collection element] | test2.swift:82:19:82:19 | a1 [Collection element] | provenance |  |
+| test2.swift:76:14:76:47 | [...] [Collection element] | test2.swift:84:20:84:20 | a1 [Collection element] | provenance |  |
+| test2.swift:76:30:76:46 | call to source(_:) | test2.swift:76:14:76:47 | [...] [Collection element] | provenance |  |
+| test2.swift:78:5:78:5 | $v$generator [Collection element] | test2.swift:78:5:78:5 | call to next() [some:0] | provenance |  |
+| test2.swift:78:5:78:5 | call to next() [some:0] | test2.swift:78:9:78:9 | v | provenance |  |
+| test2.swift:78:9:78:9 | v | test2.swift:79:19:79:19 | v | provenance |  |
+| test2.swift:78:14:78:14 | a1 [Collection element] | test2.swift:78:14:78:14 | call to makeIterator() [Collection element] | provenance |  |
+| test2.swift:78:14:78:14 | call to makeIterator() [Collection element] | test2.swift:78:5:78:5 | $v$generator [Collection element] | provenance |  |
+| test2.swift:82:19:82:19 | a1 [Collection element] | test2.swift:82:19:82:24 | ...[...] | provenance |  |
+| test2.swift:84:5:84:5 | $generator [Collection element, Tuple element at index 1] | test2.swift:84:5:84:5 | call to next() [some:0, Tuple element at index 1] | provenance |  |
+| test2.swift:84:5:84:5 | call to next() [some:0, Tuple element at index 1] | test2.swift:84:9:84:15 | (...) [Tuple element at index 1] | provenance |  |
+| test2.swift:84:9:84:15 | (...) [Tuple element at index 1] | test2.swift:84:14:84:14 | v | provenance |  |
+| test2.swift:84:14:84:14 | v | test2.swift:86:19:86:19 | v | provenance |  |
+| test2.swift:84:20:84:20 | a1 [Collection element] | test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:84:5:84:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:95:14:95:14 | a2 [Collection element] | provenance |  |
+| test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:99:19:99:19 | a2 [Collection element] | provenance |  |
+| test2.swift:93:5:93:5 | [post] a2 [Collection element] | test2.swift:101:20:101:20 | a2 [Collection element] | provenance |  |
+| test2.swift:93:13:93:29 | call to source(_:) | test2.swift:93:5:93:5 | [post] a2 [Collection element] | provenance |  |
+| test2.swift:95:5:95:5 | $v$generator [Collection element] | test2.swift:95:5:95:5 | call to next() [some:0] | provenance |  |
+| test2.swift:95:5:95:5 | call to next() [some:0] | test2.swift:95:9:95:9 | v | provenance |  |
+| test2.swift:95:9:95:9 | v | test2.swift:96:19:96:19 | v | provenance |  |
+| test2.swift:95:14:95:14 | a2 [Collection element] | test2.swift:95:14:95:14 | call to makeIterator() [Collection element] | provenance |  |
+| test2.swift:95:14:95:14 | call to makeIterator() [Collection element] | test2.swift:95:5:95:5 | $v$generator [Collection element] | provenance |  |
+| test2.swift:99:19:99:19 | a2 [Collection element] | test2.swift:99:19:99:24 | ...[...] | provenance |  |
+| test2.swift:101:5:101:5 | $generator [Collection element, Tuple element at index 1] | test2.swift:101:5:101:5 | call to next() [some:0, Tuple element at index 1] | provenance |  |
+| test2.swift:101:5:101:5 | call to next() [some:0, Tuple element at index 1] | test2.swift:101:9:101:15 | (...) [Tuple element at index 1] | provenance |  |
+| test2.swift:101:9:101:15 | (...) [Tuple element at index 1] | test2.swift:101:14:101:14 | v | provenance |  |
+| test2.swift:101:14:101:14 | v | test2.swift:103:19:103:19 | v | provenance |  |
+| test2.swift:101:20:101:20 | a2 [Collection element] | test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
+| test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | test2.swift:101:5:101:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | provenance |  |
 | test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | provenance |  |
+| test.swift:6:19:6:26 | call to source() | test.swift:15:15:15:15 | t2 | provenance |  |
 | test.swift:25:20:25:27 | call to source() | test.swift:29:18:29:21 | x | provenance |  |
 | test.swift:26:26:26:33 | call to source() | test.swift:29:26:29:29 | y | provenance |  |
 | test.swift:29:18:29:21 | x | test.swift:30:15:30:15 | x | provenance |  |
@@ -78,6 +222,7 @@ edges
 | test.swift:163:7:163:7 | value | file://:0:0:0:0 | value | provenance |  |
 | test.swift:169:12:169:22 | value | test.swift:170:9:170:9 | value | provenance |  |
 | test.swift:170:5:170:5 | [post] self [x] | test.swift:169:3:171:3 | self[return] [x] | provenance |  |
+| test.swift:170:5:170:5 | [post] self [x] | test.swift:169:8:169:8 | self [Return] [x] | provenance |  |
 | test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value | provenance |  |
 | test.swift:170:9:170:9 | value | test.swift:170:5:170:5 | [post] self [x] | provenance |  |
 | test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | self [x] | provenance |  |
@@ -316,6 +461,7 @@ edges
 | test.swift:576:14:576:21 | call to source() | test.swift:576:13:576:21 | call to +(_:) | provenance |  |
 | test.swift:585:9:585:9 | self [str] | file://:0:0:0:0 | self [str] | provenance |  |
 | test.swift:586:10:586:13 | s | test.swift:587:13:587:13 | s | provenance |  |
+| test.swift:587:7:587:7 | [post] self [str] | test.swift:586:5:586:5 | self [Return] [str] | provenance |  |
 | test.swift:587:7:587:7 | [post] self [str] | test.swift:586:5:588:5 | self[return] [str] | provenance |  |
 | test.swift:587:13:587:13 | s | test.swift:587:7:587:7 | [post] self [str] | provenance |  |
 | test.swift:592:17:595:5 | self[return] [str] | test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | provenance |  |
@@ -562,6 +708,7 @@ edges
 | test.swift:831:15:831:15 | s2 [v] | test.swift:831:15:831:18 | .v | provenance |  |
 | test.swift:833:15:833:15 | s2 [v] | test.swift:813:8:813:8 | self [v] | provenance |  |
 | test.swift:833:15:833:15 | s2 [v] | test.swift:833:15:833:23 | call to getv() | provenance |  |
+| test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] | test.swift:839:11:839:17 | enter #keyPath(...) [Return] [s, x] | provenance |  |
 | test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:17:839:17 | [post] KeyPathComponent | provenance |  |
 | test.swift:839:15:839:15 | [post] KeyPathComponent [x] | test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] | provenance |  |
 | test.swift:839:17:839:17 | [post] KeyPathComponent | test.swift:839:15:839:15 | [post] KeyPathComponent [x] | provenance |  |
@@ -677,10 +824,148 @@ nodes
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value [some:0] | semmle.label | value [some:0] |
 | file://:0:0:0:0 | value [some:0] | semmle.label | value [some:0] |
+| test2.swift:5:14:5:66 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| test2.swift:5:44:5:65 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test2.swift:5:49:5:65 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:10:15:10:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:10:15:10:21 | ...[...] | semmle.label | ...[...] |
+| test2.swift:10:15:10:21 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:10:15:10:22 | ...! | semmle.label | ...! |
+| test2.swift:11:15:11:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:11:15:11:21 | ...[...] | semmle.label | ...[...] |
+| test2.swift:11:15:11:21 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:11:15:11:22 | ...! | semmle.label | ...! |
+| test2.swift:12:15:12:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:12:15:12:21 | ...[...] | semmle.label | ...[...] |
+| test2.swift:12:15:12:21 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:12:15:12:22 | ...! | semmle.label | ...! |
+| test2.swift:14:15:14:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:14:15:14:22 | ...[...] | semmle.label | ...[...] |
+| test2.swift:14:15:14:22 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:14:15:14:23 | ...! | semmle.label | ...! |
+| test2.swift:15:15:15:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:15:15:15:22 | ...[...] | semmle.label | ...[...] |
+| test2.swift:15:15:15:22 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:15:15:15:23 | ...! | semmle.label | ...! |
+| test2.swift:16:15:16:15 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:16:15:16:22 | ...[...] | semmle.label | ...[...] |
+| test2.swift:16:15:16:22 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:16:15:16:23 | ...! | semmle.label | ...! |
+| test2.swift:20:19:20:19 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:20:19:20:25 | ...[...] | semmle.label | ...[...] |
+| test2.swift:20:19:20:25 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:20:19:20:26 | ...! | semmle.label | ...! |
+| test2.swift:25:5:25:5 | $generator [Collection element, Tuple element at index 1] | semmle.label | $generator [Collection element, Tuple element at index 1] |
+| test2.swift:25:5:25:5 | call to next() [some:0, Tuple element at index 1] | semmle.label | call to next() [some:0, Tuple element at index 1] |
+| test2.swift:25:9:25:20 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test2.swift:25:15:25:15 | value | semmle.label | value |
+| test2.swift:25:25:25:25 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
+| test2.swift:25:25:25:25 | d1 [Collection element, Tuple element at index 1] | semmle.label | d1 [Collection element, Tuple element at index 1] |
+| test2.swift:27:19:27:19 | value | semmle.label | value |
+| test2.swift:32:14:32:57 | [...] [Collection element, Tuple element at index 1] | semmle.label | [...] [Collection element, Tuple element at index 1] |
+| test2.swift:32:25:32:44 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test2.swift:32:28:32:44 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:34:15:34:15 | d2 [Collection element, Tuple element at index 1] | semmle.label | d2 [Collection element, Tuple element at index 1] |
+| test2.swift:34:15:34:19 | ...[...] | semmle.label | ...[...] |
+| test2.swift:34:15:34:19 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:34:15:34:20 | ...! | semmle.label | ...! |
+| test2.swift:35:15:35:15 | d2 [Collection element, Tuple element at index 1] | semmle.label | d2 [Collection element, Tuple element at index 1] |
+| test2.swift:35:15:35:19 | ...[...] | semmle.label | ...[...] |
+| test2.swift:35:15:35:19 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:35:15:35:20 | ...! | semmle.label | ...! |
+| test2.swift:36:15:36:15 | d2 [Collection element, Tuple element at index 1] | semmle.label | d2 [Collection element, Tuple element at index 1] |
+| test2.swift:36:15:36:19 | ...[...] | semmle.label | ...[...] |
+| test2.swift:36:15:36:19 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:36:15:36:20 | ...! | semmle.label | ...! |
+| test2.swift:38:15:38:15 | d2 [Collection element, Tuple element at index 1] | semmle.label | d2 [Collection element, Tuple element at index 1] |
+| test2.swift:38:15:38:23 | ...[...] | semmle.label | ...[...] |
+| test2.swift:38:15:38:23 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:38:15:38:24 | ...! | semmle.label | ...! |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | semmle.label | [post] d3 [Collection element, Tuple element at index 1, some:0] |
+| test2.swift:46:5:46:5 | [post] d3 [Collection element, Tuple element at index 1] | semmle.label | [post] d3 [Collection element, Tuple element at index 1] |
+| test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | semmle.label | DictionarySubscriptNode [Tuple element at index 1, some:0] |
+| test2.swift:46:5:46:13 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:46:17:46:33 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:46:17:46:33 | call to source(_:) [some:0] | semmle.label | call to source(_:) [some:0] |
+| test2.swift:48:15:48:15 | d3 [Collection element, Tuple element at index 1] | semmle.label | d3 [Collection element, Tuple element at index 1] |
+| test2.swift:48:15:48:23 | ...[...] | semmle.label | ...[...] |
+| test2.swift:48:15:48:23 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:48:15:48:28 | ... ??(_:_:) ... | semmle.label | ... ??(_:_:) ... |
+| test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1, some:0] | semmle.label | d3 [Collection element, Tuple element at index 1, some:0] |
+| test2.swift:49:15:49:15 | d3 [Collection element, Tuple element at index 1] | semmle.label | d3 [Collection element, Tuple element at index 1] |
+| test2.swift:49:15:49:23 | ...[...] | semmle.label | ...[...] |
+| test2.swift:49:15:49:23 | ...[...] [some:0] | semmle.label | ...[...] [some:0] |
+| test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | semmle.label | DictionarySubscriptNode [Tuple element at index 1, some:0] |
+| test2.swift:49:15:49:23 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:49:15:49:24 | ...! | semmle.label | ...! |
+| test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1, some:0] | semmle.label | [post] d3 [Collection element, Tuple element at index 1, some:0] |
+| test2.swift:51:5:51:5 | [post] d3 [Collection element, Tuple element at index 1] | semmle.label | [post] d3 [Collection element, Tuple element at index 1] |
+| test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1, some:0] | semmle.label | d3 [Collection element, Tuple element at index 1, some:0] |
+| test2.swift:51:5:51:5 | d3 [Collection element, Tuple element at index 1] | semmle.label | d3 [Collection element, Tuple element at index 1] |
+| test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1, some:0] | semmle.label | DictionarySubscriptNode [Tuple element at index 1, some:0] |
+| test2.swift:51:5:51:13 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:53:15:53:15 | d3 [Collection element, Tuple element at index 1] | semmle.label | d3 [Collection element, Tuple element at index 1] |
+| test2.swift:53:15:53:23 | ...[...] | semmle.label | ...[...] |
+| test2.swift:53:15:53:23 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:53:15:53:28 | ... ??(_:_:) ... | semmle.label | ... ??(_:_:) ... |
+| test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1, some:0] | semmle.label | d3 [Collection element, Tuple element at index 1, some:0] |
+| test2.swift:54:15:54:15 | d3 [Collection element, Tuple element at index 1] | semmle.label | d3 [Collection element, Tuple element at index 1] |
+| test2.swift:54:15:54:23 | ...[...] | semmle.label | ...[...] |
+| test2.swift:54:15:54:23 | ...[...] [some:0] | semmle.label | ...[...] [some:0] |
+| test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1, some:0] | semmle.label | DictionarySubscriptNode [Tuple element at index 1, some:0] |
+| test2.swift:54:15:54:23 | DictionarySubscriptNode [Tuple element at index 1] | semmle.label | DictionarySubscriptNode [Tuple element at index 1] |
+| test2.swift:54:15:54:24 | ...! | semmle.label | ...! |
+| test2.swift:60:5:60:5 | [post] d4 [Collection element, Tuple element at index 0] | semmle.label | [post] d4 [Collection element, Tuple element at index 0] |
+| test2.swift:60:5:60:25 | DictionarySubscriptNode [Tuple element at index 0] | semmle.label | DictionarySubscriptNode [Tuple element at index 0] |
+| test2.swift:60:8:60:24 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:69:5:69:5 | $generator [Collection element, Tuple element at index 0] | semmle.label | $generator [Collection element, Tuple element at index 0] |
+| test2.swift:69:5:69:5 | call to next() [some:0, Tuple element at index 0] | semmle.label | call to next() [some:0, Tuple element at index 0] |
+| test2.swift:69:9:69:20 | (...) [Tuple element at index 0] | semmle.label | (...) [Tuple element at index 0] |
+| test2.swift:69:10:69:10 | key | semmle.label | key |
+| test2.swift:69:25:69:25 | call to makeIterator() [Collection element, Tuple element at index 0] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 0] |
+| test2.swift:69:25:69:25 | d4 [Collection element, Tuple element at index 0] | semmle.label | d4 [Collection element, Tuple element at index 0] |
+| test2.swift:70:19:70:19 | key | semmle.label | key |
+| test2.swift:76:14:76:47 | [...] [Collection element] | semmle.label | [...] [Collection element] |
+| test2.swift:76:30:76:46 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:78:5:78:5 | $v$generator [Collection element] | semmle.label | $v$generator [Collection element] |
+| test2.swift:78:5:78:5 | call to next() [some:0] | semmle.label | call to next() [some:0] |
+| test2.swift:78:9:78:9 | v | semmle.label | v |
+| test2.swift:78:14:78:14 | a1 [Collection element] | semmle.label | a1 [Collection element] |
+| test2.swift:78:14:78:14 | call to makeIterator() [Collection element] | semmle.label | call to makeIterator() [Collection element] |
+| test2.swift:79:19:79:19 | v | semmle.label | v |
+| test2.swift:82:19:82:19 | a1 [Collection element] | semmle.label | a1 [Collection element] |
+| test2.swift:82:19:82:24 | ...[...] | semmle.label | ...[...] |
+| test2.swift:84:5:84:5 | $generator [Collection element, Tuple element at index 1] | semmle.label | $generator [Collection element, Tuple element at index 1] |
+| test2.swift:84:5:84:5 | call to next() [some:0, Tuple element at index 1] | semmle.label | call to next() [some:0, Tuple element at index 1] |
+| test2.swift:84:9:84:15 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test2.swift:84:14:84:14 | v | semmle.label | v |
+| test2.swift:84:20:84:20 | a1 [Collection element] | semmle.label | a1 [Collection element] |
+| test2.swift:84:20:84:34 | call to enumerated() [Collection element, Tuple element at index 1] | semmle.label | call to enumerated() [Collection element, Tuple element at index 1] |
+| test2.swift:84:20:84:34 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
+| test2.swift:86:19:86:19 | v | semmle.label | v |
+| test2.swift:93:5:93:5 | [post] a2 [Collection element] | semmle.label | [post] a2 [Collection element] |
+| test2.swift:93:13:93:29 | call to source(_:) | semmle.label | call to source(_:) |
+| test2.swift:95:5:95:5 | $v$generator [Collection element] | semmle.label | $v$generator [Collection element] |
+| test2.swift:95:5:95:5 | call to next() [some:0] | semmle.label | call to next() [some:0] |
+| test2.swift:95:9:95:9 | v | semmle.label | v |
+| test2.swift:95:14:95:14 | a2 [Collection element] | semmle.label | a2 [Collection element] |
+| test2.swift:95:14:95:14 | call to makeIterator() [Collection element] | semmle.label | call to makeIterator() [Collection element] |
+| test2.swift:96:19:96:19 | v | semmle.label | v |
+| test2.swift:99:19:99:19 | a2 [Collection element] | semmle.label | a2 [Collection element] |
+| test2.swift:99:19:99:24 | ...[...] | semmle.label | ...[...] |
+| test2.swift:101:5:101:5 | $generator [Collection element, Tuple element at index 1] | semmle.label | $generator [Collection element, Tuple element at index 1] |
+| test2.swift:101:5:101:5 | call to next() [some:0, Tuple element at index 1] | semmle.label | call to next() [some:0, Tuple element at index 1] |
+| test2.swift:101:9:101:15 | (...) [Tuple element at index 1] | semmle.label | (...) [Tuple element at index 1] |
+| test2.swift:101:14:101:14 | v | semmle.label | v |
+| test2.swift:101:20:101:20 | a2 [Collection element] | semmle.label | a2 [Collection element] |
+| test2.swift:101:20:101:34 | call to enumerated() [Collection element, Tuple element at index 1] | semmle.label | call to enumerated() [Collection element, Tuple element at index 1] |
+| test2.swift:101:20:101:34 | call to makeIterator() [Collection element, Tuple element at index 1] | semmle.label | call to makeIterator() [Collection element, Tuple element at index 1] |
+| test2.swift:103:19:103:19 | v | semmle.label | v |
 | test.swift:6:19:6:26 | call to source() | semmle.label | call to source() |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
 | test.swift:9:15:9:15 | t1 | semmle.label | t1 |
 | test.swift:10:15:10:15 | t2 | semmle.label | t2 |
+| test.swift:15:15:15:15 | t2 | semmle.label | t2 |
 | test.swift:25:20:25:27 | call to source() | semmle.label | call to source() |
 | test.swift:26:26:26:33 | call to source() | semmle.label | call to source() |
 | test.swift:29:18:29:21 | x | semmle.label | x |
@@ -739,9 +1024,11 @@ nodes
 | test.swift:155:19:155:19 | i | semmle.label | i |
 | test.swift:157:16:157:23 | call to source() | semmle.label | call to source() |
 | test.swift:159:16:159:29 | call to ... | semmle.label | call to ... |
+| test.swift:163:7:163:7 | self [Return] [x] | semmle.label | self [Return] [x] |
 | test.swift:163:7:163:7 | self [x] | semmle.label | self [x] |
 | test.swift:163:7:163:7 | value | semmle.label | value |
 | test.swift:169:3:171:3 | self[return] [x] | semmle.label | self[return] [x] |
+| test.swift:169:8:169:8 | self [Return] [x] | semmle.label | self [Return] [x] |
 | test.swift:169:12:169:22 | value | semmle.label | value |
 | test.swift:170:5:170:5 | [post] self [x] | semmle.label | [post] self [x] |
 | test.swift:170:9:170:9 | value | semmle.label | value |
@@ -958,6 +1245,8 @@ nodes
 | test.swift:545:11:545:22 | .some(...) [some:0] | semmle.label | .some(...) [some:0] |
 | test.swift:545:21:545:21 | a | semmle.label | a |
 | test.swift:546:19:546:19 | a | semmle.label | a |
+| test.swift:559:9:559:9 | self [Return] [x, some:0] | semmle.label | self [Return] [x, some:0] |
+| test.swift:559:9:559:9 | self [Return] [x] | semmle.label | self [Return] [x] |
 | test.swift:559:9:559:9 | self [x, some:0] | semmle.label | self [x, some:0] |
 | test.swift:559:9:559:9 | self [x] | semmle.label | self [x] |
 | test.swift:559:9:559:9 | value | semmle.label | value |
@@ -979,6 +1268,7 @@ nodes
 | test.swift:576:14:576:21 | call to source() | semmle.label | call to source() |
 | test.swift:577:14:577:21 | call to source() | semmle.label | call to source() |
 | test.swift:585:9:585:9 | self [str] | semmle.label | self [str] |
+| test.swift:586:5:586:5 | self [Return] [str] | semmle.label | self [Return] [str] |
 | test.swift:586:5:588:5 | self[return] [str] | semmle.label | self[return] [str] |
 | test.swift:586:10:586:13 | s | semmle.label | s |
 | test.swift:587:7:587:7 | [post] self [str] | semmle.label | [post] self [str] |
@@ -1100,10 +1390,13 @@ nodes
 | test.swift:726:15:726:15 | set2 [Collection element] | semmle.label | set2 [Collection element] |
 | test.swift:726:15:726:34 | call to randomElement() [some:0] | semmle.label | call to randomElement() [some:0] |
 | test.swift:726:15:726:35 | ...! | semmle.label | ...! |
+| test.swift:731:9:731:9 | self [Return] [v2, some:0] | semmle.label | self [Return] [v2, some:0] |
+| test.swift:731:9:731:9 | self [Return] [v2] | semmle.label | self [Return] [v2] |
 | test.swift:731:9:731:9 | self [v2, some:0] | semmle.label | self [v2, some:0] |
 | test.swift:731:9:731:9 | self [v2] | semmle.label | self [v2] |
 | test.swift:731:9:731:9 | value | semmle.label | value |
 | test.swift:731:9:731:9 | value [some:0] | semmle.label | value [some:0] |
+| test.swift:732:9:732:9 | self [Return] [v3] | semmle.label | self [Return] [v3] |
 | test.swift:732:9:732:9 | self [v3] | semmle.label | self [v3] |
 | test.swift:732:9:732:9 | value | semmle.label | value |
 | test.swift:742:5:742:5 | v1 [some:0] | semmle.label | v1 [some:0] |
@@ -1221,6 +1514,7 @@ nodes
 | test.swift:813:8:813:8 | self [v] | semmle.label | self [v] |
 | test.swift:813:31:813:31 | .v | semmle.label | .v |
 | test.swift:813:31:813:31 | self [v] | semmle.label | self [v] |
+| test.swift:815:7:815:7 | self [Return] [v] | semmle.label | self [Return] [v] |
 | test.swift:815:7:815:7 | self [v] | semmle.label | self [v] |
 | test.swift:815:7:815:7 | value | semmle.label | value |
 | test.swift:819:14:819:25 | call to S3.init(_:) [v] | semmle.label | call to S3.init(_:) [v] |
@@ -1237,6 +1531,7 @@ nodes
 | test.swift:833:15:833:23 | call to getv() | semmle.label | call to getv() |
 | test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] | semmle.label | [post] enter #keyPath(...) [s, x] |
 | test.swift:839:11:839:17 | [post] exit #keyPath(...) | semmle.label | [post] exit #keyPath(...) |
+| test.swift:839:11:839:17 | enter #keyPath(...) [Return] [s, x] | semmle.label | enter #keyPath(...) [Return] [s, x] |
 | test.swift:839:15:839:15 | [post] KeyPathComponent [x] | semmle.label | [post] KeyPathComponent [x] |
 | test.swift:839:17:839:17 | [post] KeyPathComponent | semmle.label | [post] KeyPathComponent |
 | test.swift:840:3:840:3 | [post] s2 [s, x] | semmle.label | [post] s2 [s, x] |
@@ -1326,33 +1621,33 @@ subpaths
 | test.swift:119:31:119:31 | x | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:119:18:119:44 | call to forward(arg:lambda:) |
 | test.swift:122:31:122:38 | call to source() | test.swift:113:14:113:19 | arg | test.swift:114:12:114:22 | call to ... | test.swift:122:18:125:6 | call to forward(arg:lambda:) |
 | test.swift:145:23:145:30 | call to source() | test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i | test.swift:145:15:145:31 | call to ... |
-| test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value | file://:0:0:0:0 | [post] self [x] | test.swift:170:5:170:5 | [post] self [x] |
+| test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Return] [x] | test.swift:170:5:170:5 | [post] self [x] |
 | test.swift:174:12:174:12 | self [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:174:12:174:12 | .x |
-| test.swift:180:9:180:16 | call to source() | test.swift:163:7:163:7 | value | file://:0:0:0:0 | [post] self [x] | test.swift:180:3:180:3 | [post] a [x] |
+| test.swift:180:9:180:16 | call to source() | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Return] [x] | test.swift:180:3:180:3 | [post] a [x] |
 | test.swift:181:13:181:13 | a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:181:13:181:15 | .x |
-| test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value | file://:0:0:0:0 | [post] self [x] | test.swift:194:3:194:5 | [post] getter for .a [x] |
+| test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Return] [x] | test.swift:194:3:194:5 | [post] getter for .a [x] |
 | test.swift:195:13:195:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | .a [x] | test.swift:195:13:195:15 | .a [x] |
 | test.swift:195:13:195:15 | .a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:195:13:195:17 | .x |
 | test.swift:200:9:200:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:3:171:3 | self[return] [x] | test.swift:200:3:200:3 | [post] a [x] |
-| test.swift:200:9:200:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:170:5:170:5 | [post] self [x] | test.swift:200:3:200:3 | [post] a [x] |
+| test.swift:200:9:200:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:8:169:8 | self [Return] [x] | test.swift:200:3:200:3 | [post] a [x] |
 | test.swift:201:13:201:13 | a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:201:13:201:15 | .x |
-| test.swift:206:9:206:16 | call to source() | test.swift:163:7:163:7 | value | file://:0:0:0:0 | [post] self [x] | test.swift:206:3:206:3 | [post] a [x] |
+| test.swift:206:9:206:16 | call to source() | test.swift:163:7:163:7 | value | test.swift:163:7:163:7 | self [Return] [x] | test.swift:206:3:206:3 | [post] a [x] |
 | test.swift:207:13:207:13 | a [x] | test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | .x | test.swift:207:13:207:19 | call to get() |
 | test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:3:171:3 | self[return] [x] | test.swift:212:3:212:3 | [post] a [x] |
-| test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:170:5:170:5 | [post] self [x] | test.swift:212:3:212:3 | [post] a [x] |
+| test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:8:169:8 | self [Return] [x] | test.swift:212:3:212:3 | [post] a [x] |
 | test.swift:213:13:213:13 | a [x] | test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | .x | test.swift:213:13:213:19 | call to get() |
 | test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:3:171:3 | self[return] [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
-| test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:170:5:170:5 | [post] self [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
+| test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | test.swift:169:8:169:8 | self [Return] [x] | test.swift:218:3:218:5 | [post] getter for .a [x] |
 | test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | .a [x] | test.swift:219:13:219:15 | .a [x] |
 | test.swift:219:13:219:15 | .a [x] | test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | .x | test.swift:219:13:219:17 | .x |
 | test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:368:22:368:36 | t [Tuple element at index 1] | test.swift:369:12:369:19 | (...) [Tuple element at index 0] | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] |
 | test.swift:509:24:509:31 | call to source() | test.swift:394:16:394:21 | v | test.swift:394:45:394:62 | call to ... [mySingle:0] | test.swift:509:14:509:32 | call to mkMyEnum1(_:) [mySingle:0] |
 | test.swift:522:26:522:33 | call to source() | test.swift:396:18:396:23 | v | test.swift:396:45:396:60 | call to ... [some:0] | test.swift:522:14:522:34 | call to mkOptional1(_:) [some:0] |
-| test.swift:565:12:565:12 | x | test.swift:559:9:559:9 | value | file://:0:0:0:0 | [post] self [x] | test.swift:565:5:565:5 | [post] cx [x] |
-| test.swift:565:12:565:12 | x [some:0] | test.swift:559:9:559:9 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] | test.swift:565:5:565:5 | [post] cx [x, some:0] |
+| test.swift:565:12:565:12 | x | test.swift:559:9:559:9 | value | test.swift:559:9:559:9 | self [Return] [x] | test.swift:565:5:565:5 | [post] cx [x] |
+| test.swift:565:12:565:12 | x [some:0] | test.swift:559:9:559:9 | value [some:0] | test.swift:559:9:559:9 | self [Return] [x, some:0] | test.swift:565:5:565:5 | [post] cx [x, some:0] |
 | test.swift:569:20:569:20 | cx [x, some:0] | test.swift:559:9:559:9 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] | test.swift:569:20:569:23 | .x [some:0] |
 | test.swift:569:20:569:20 | cx [x] | test.swift:559:9:559:9 | self [x] | file://:0:0:0:0 | .x | test.swift:569:20:569:23 | .x |
-| test.swift:593:20:593:28 | call to source3() | test.swift:586:10:586:13 | s | test.swift:587:7:587:7 | [post] self [str] | test.swift:593:7:593:7 | [post] self [str] |
+| test.swift:593:20:593:28 | call to source3() | test.swift:586:10:586:13 | s | test.swift:586:5:586:5 | self [Return] [str] | test.swift:593:7:593:7 | [post] self [str] |
 | test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | test.swift:585:9:585:9 | self [str] | file://:0:0:0:0 | .str | test.swift:599:13:599:35 | .str |
 | test.swift:599:24:599:32 | call to source3() | test.swift:586:10:586:13 | s | test.swift:586:5:588:5 | self[return] [str] | test.swift:599:13:599:33 | call to MyClass.init(s:) [str] |
 | test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | test.swift:585:9:585:9 | self [str] | file://:0:0:0:0 | .str | test.swift:600:13:600:43 | .str |
@@ -1366,9 +1661,9 @@ subpaths
 | test.swift:661:18:661:25 | call to source() | test.swift:617:8:617:11 | x | test.swift:617:3:619:3 | self[return] [x] | test.swift:661:13:661:26 | call to S.init(x:) [x] |
 | test.swift:662:29:662:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] | test.swift:655:3:657:3 | self[return] [s, some:0, x] | test.swift:662:14:662:30 | call to S2_Optional.init(s:) [s, some:0, x] |
 | test.swift:664:15:664:15 | s2 [s, some:0, x] | test.swift:663:13:663:29 | enter #keyPath(...) [s, some:0, x] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] | test.swift:664:15:664:28 | \\...[...] [some:0] |
-| test.swift:746:14:746:21 | call to source() | test.swift:731:9:731:9 | value | file://:0:0:0:0 | [post] self [v2] | test.swift:746:5:746:5 | [post] mo1 [v2] |
-| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:731:9:731:9 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] | test.swift:746:5:746:5 | [post] mo1 [v2, some:0] |
-| test.swift:747:14:747:21 | call to source() | test.swift:732:9:732:9 | value | file://:0:0:0:0 | [post] self [v3] | test.swift:747:5:747:5 | [post] mo1 [v3] |
+| test.swift:746:14:746:21 | call to source() | test.swift:731:9:731:9 | value | test.swift:731:9:731:9 | self [Return] [v2] | test.swift:746:5:746:5 | [post] mo1 [v2] |
+| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:731:9:731:9 | value [some:0] | test.swift:731:9:731:9 | self [Return] [v2, some:0] | test.swift:746:5:746:5 | [post] mo1 [v2, some:0] |
+| test.swift:747:14:747:21 | call to source() | test.swift:732:9:732:9 | value | test.swift:732:9:732:9 | self [Return] [v3] | test.swift:747:5:747:5 | [post] mo1 [v3] |
 | test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:731:9:731:9 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] | test.swift:756:15:756:19 | .v2 [some:0] |
 | test.swift:756:15:756:15 | mo1 [v2] | test.swift:731:9:731:9 | self [v2] | file://:0:0:0:0 | .v2 | test.swift:756:15:756:19 | .v2 |
 | test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] | file://:0:0:0:0 | .v3 | test.swift:757:15:757:19 | .v3 |
@@ -1379,17 +1674,41 @@ subpaths
 | test.swift:819:17:819:24 | call to source() | test.swift:809:8:809:13 | v | test.swift:809:3:811:3 | self[return] [v] | test.swift:819:14:819:25 | call to S3.init(_:) [v] |
 | test.swift:822:15:822:15 | s1 [v] | test.swift:815:7:815:7 | self [v] | file://:0:0:0:0 | .v | test.swift:822:15:822:18 | .v |
 | test.swift:824:15:824:15 | s1 [v] | test.swift:813:8:813:8 | self [v] | test.swift:813:31:813:31 | .v | test.swift:824:15:824:23 | call to getv() |
-| test.swift:828:12:828:19 | call to source() | test.swift:815:7:815:7 | value | file://:0:0:0:0 | [post] self [v] | test.swift:828:5:828:5 | [post] s2 [v] |
+| test.swift:828:12:828:19 | call to source() | test.swift:815:7:815:7 | value | test.swift:815:7:815:7 | self [Return] [v] | test.swift:828:5:828:5 | [post] s2 [v] |
 | test.swift:831:15:831:15 | s2 [v] | test.swift:815:7:815:7 | self [v] | file://:0:0:0:0 | .v | test.swift:831:15:831:18 | .v |
 | test.swift:833:15:833:15 | s2 [v] | test.swift:813:8:813:8 | self [v] | test.swift:813:31:813:31 | .v | test.swift:833:15:833:23 | call to getv() |
-| test.swift:840:3:840:16 | \\...[...] | test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] | test.swift:840:3:840:3 | [post] s2 [s, x] |
+| test.swift:840:3:840:16 | \\...[...] | test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:11:839:17 | enter #keyPath(...) [Return] [s, x] | test.swift:840:3:840:3 | [post] s2 [s, x] |
 | test.swift:841:13:841:13 | s2 [s, x] | test.swift:632:7:632:7 | self [s, x] | file://:0:0:0:0 | .s [x] | test.swift:841:13:841:16 | .s [x] |
 | test.swift:841:13:841:16 | .s [x] | test.swift:615:7:615:7 | self [x] | file://:0:0:0:0 | .x | test.swift:841:13:841:18 | .x |
 | test.swift:867:15:867:15 | args [Collection element] | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | test.swift:866:21:866:29 | exit #keyPath(...) | test.swift:867:15:867:38 | \\...[...] |
 #select
+| test2.swift:10:15:10:22 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:10:15:10:22 | ...! | result |
+| test2.swift:11:15:11:22 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:11:15:11:22 | ...! | result |
+| test2.swift:12:15:12:22 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:12:15:12:22 | ...! | result |
+| test2.swift:14:15:14:23 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:14:15:14:23 | ...! | result |
+| test2.swift:15:15:15:23 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:15:15:15:23 | ...! | result |
+| test2.swift:16:15:16:23 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:16:15:16:23 | ...! | result |
+| test2.swift:20:19:20:26 | ...! | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:20:19:20:26 | ...! | result |
+| test2.swift:27:19:27:19 | value | test2.swift:5:49:5:65 | call to source(_:) | test2.swift:27:19:27:19 | value | result |
+| test2.swift:34:15:34:20 | ...! | test2.swift:32:28:32:44 | call to source(_:) | test2.swift:34:15:34:20 | ...! | result |
+| test2.swift:35:15:35:20 | ...! | test2.swift:32:28:32:44 | call to source(_:) | test2.swift:35:15:35:20 | ...! | result |
+| test2.swift:36:15:36:20 | ...! | test2.swift:32:28:32:44 | call to source(_:) | test2.swift:36:15:36:20 | ...! | result |
+| test2.swift:38:15:38:24 | ...! | test2.swift:32:28:32:44 | call to source(_:) | test2.swift:38:15:38:24 | ...! | result |
+| test2.swift:48:15:48:28 | ... ??(_:_:) ... | test2.swift:46:17:46:33 | call to source(_:) | test2.swift:48:15:48:28 | ... ??(_:_:) ... | result |
+| test2.swift:49:15:49:24 | ...! | test2.swift:46:17:46:33 | call to source(_:) | test2.swift:49:15:49:24 | ...! | result |
+| test2.swift:53:15:53:28 | ... ??(_:_:) ... | test2.swift:46:17:46:33 | call to source(_:) | test2.swift:53:15:53:28 | ... ??(_:_:) ... | result |
+| test2.swift:54:15:54:24 | ...! | test2.swift:46:17:46:33 | call to source(_:) | test2.swift:54:15:54:24 | ...! | result |
+| test2.swift:70:19:70:19 | key | test2.swift:60:8:60:24 | call to source(_:) | test2.swift:70:19:70:19 | key | result |
+| test2.swift:79:19:79:19 | v | test2.swift:76:30:76:46 | call to source(_:) | test2.swift:79:19:79:19 | v | result |
+| test2.swift:82:19:82:24 | ...[...] | test2.swift:76:30:76:46 | call to source(_:) | test2.swift:82:19:82:24 | ...[...] | result |
+| test2.swift:86:19:86:19 | v | test2.swift:76:30:76:46 | call to source(_:) | test2.swift:86:19:86:19 | v | result |
+| test2.swift:96:19:96:19 | v | test2.swift:93:13:93:29 | call to source(_:) | test2.swift:96:19:96:19 | v | result |
+| test2.swift:99:19:99:24 | ...[...] | test2.swift:93:13:93:29 | call to source(_:) | test2.swift:99:19:99:24 | ...[...] | result |
+| test2.swift:103:19:103:19 | v | test2.swift:93:13:93:29 | call to source(_:) | test2.swift:103:19:103:19 | v | result |
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | result |
 | test.swift:10:15:10:15 | t2 | test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | result |
+| test.swift:15:15:15:15 | t2 | test.swift:6:19:6:26 | call to source() | test.swift:15:15:15:15 | t2 | result |
 | test.swift:30:15:30:15 | x | test.swift:25:20:25:27 | call to source() | test.swift:30:15:30:15 | x | result |
 | test.swift:31:15:31:15 | y | test.swift:26:26:26:33 | call to source() | test.swift:31:15:31:15 | y | result |
 | test.swift:39:15:39:29 | call to callee_source() | test.swift:35:12:35:19 | call to source() | test.swift:39:15:39:29 | call to callee_source() | result |

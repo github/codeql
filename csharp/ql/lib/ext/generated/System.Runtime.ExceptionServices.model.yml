@@ -4,17 +4,18 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "Capture", "(System.Exception)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetCurrentStackTrace", "(System.Exception)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "get_SourceException", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "Capture", "(System.Exception)", "", "Argument[0]", "ReturnValue.SyntheticField[System.Runtime.ExceptionServices.ExceptionDispatchInfo._exception]", "value", "dfc-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetCurrentStackTrace", "(System.Exception)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[1]", "Argument[0].SyntheticField[System.Exception._remoteStackTraceString]", "taint", "dfc-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "SetRemoteStackTrace", "(System.Exception,System.String)", "", "Argument[1]", "ReturnValue.SyntheticField[System.Exception._remoteStackTraceString]", "taint", "dfc-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", False, "get_SourceException", "()", "", "Argument[this].SyntheticField[System.Runtime.ExceptionServices.ExceptionDispatchInfo._exception]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw", "()", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw", "(System.Exception)", "summary", "df-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionHandling", "SetUnhandledExceptionHandler", "(System.Func<System.Exception,System.Boolean>)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "FirstChanceExceptionEventArgs", "(System.Exception)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "get_Exception", "()", "summary", "df-generated"]

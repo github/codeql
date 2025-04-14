@@ -1,0 +1,50 @@
+models
+edges
+| main.rs:12:9:12:9 | a | main.rs:13:10:13:14 | ... + ... | provenance |  |
+| main.rs:12:13:12:22 | source(...) | main.rs:12:9:12:9 | a | provenance |  |
+| main.rs:17:9:17:9 | a | main.rs:18:10:18:11 | - ... | provenance |  |
+| main.rs:17:13:17:22 | source(...) | main.rs:17:9:17:9 | a | provenance |  |
+| main.rs:22:9:22:9 | a | main.rs:23:9:23:9 | b | provenance |  |
+| main.rs:22:13:22:22 | source(...) | main.rs:22:9:22:9 | a | provenance |  |
+| main.rs:23:9:23:9 | b | main.rs:24:10:24:17 | b as i64 | provenance |  |
+| main.rs:37:13:37:13 | s | main.rs:38:23:38:29 | s[...] | provenance |  |
+| main.rs:37:17:37:26 | source(...) | main.rs:37:13:37:13 | s | provenance |  |
+| main.rs:38:13:38:18 | sliced [&ref] | main.rs:39:14:39:19 | sliced | provenance |  |
+| main.rs:38:22:38:29 | &... [&ref] | main.rs:38:13:38:18 | sliced [&ref] | provenance |  |
+| main.rs:38:23:38:29 | s[...] | main.rs:38:22:38:29 | &... [&ref] | provenance |  |
+| main.rs:53:13:53:15 | arr | main.rs:54:14:54:19 | arr[1] | provenance |  |
+| main.rs:53:19:53:28 | source(...) | main.rs:53:13:53:15 | arr | provenance |  |
+| main.rs:69:9:69:12 | [post] arr2 [element] | main.rs:70:14:70:17 | arr2 | provenance |  |
+| main.rs:69:19:69:28 | source(...) | main.rs:69:9:69:12 | [post] arr2 [element] | provenance |  |
+nodes
+| main.rs:12:9:12:9 | a | semmle.label | a |
+| main.rs:12:13:12:22 | source(...) | semmle.label | source(...) |
+| main.rs:13:10:13:14 | ... + ... | semmle.label | ... + ... |
+| main.rs:17:9:17:9 | a | semmle.label | a |
+| main.rs:17:13:17:22 | source(...) | semmle.label | source(...) |
+| main.rs:18:10:18:11 | - ... | semmle.label | - ... |
+| main.rs:22:9:22:9 | a | semmle.label | a |
+| main.rs:22:13:22:22 | source(...) | semmle.label | source(...) |
+| main.rs:23:9:23:9 | b | semmle.label | b |
+| main.rs:24:10:24:17 | b as i64 | semmle.label | b as i64 |
+| main.rs:37:13:37:13 | s | semmle.label | s |
+| main.rs:37:17:37:26 | source(...) | semmle.label | source(...) |
+| main.rs:38:13:38:18 | sliced [&ref] | semmle.label | sliced [&ref] |
+| main.rs:38:22:38:29 | &... [&ref] | semmle.label | &... [&ref] |
+| main.rs:38:23:38:29 | s[...] | semmle.label | s[...] |
+| main.rs:39:14:39:19 | sliced | semmle.label | sliced |
+| main.rs:53:13:53:15 | arr | semmle.label | arr |
+| main.rs:53:19:53:28 | source(...) | semmle.label | source(...) |
+| main.rs:54:14:54:19 | arr[1] | semmle.label | arr[1] |
+| main.rs:69:9:69:12 | [post] arr2 [element] | semmle.label | [post] arr2 [element] |
+| main.rs:69:19:69:28 | source(...) | semmle.label | source(...) |
+| main.rs:70:14:70:17 | arr2 | semmle.label | arr2 |
+subpaths
+testFailures
+#select
+| main.rs:13:10:13:14 | ... + ... | main.rs:12:13:12:22 | source(...) | main.rs:13:10:13:14 | ... + ... | $@ | main.rs:12:13:12:22 | source(...) | source(...) |
+| main.rs:18:10:18:11 | - ... | main.rs:17:13:17:22 | source(...) | main.rs:18:10:18:11 | - ... | $@ | main.rs:17:13:17:22 | source(...) | source(...) |
+| main.rs:24:10:24:17 | b as i64 | main.rs:22:13:22:22 | source(...) | main.rs:24:10:24:17 | b as i64 | $@ | main.rs:22:13:22:22 | source(...) | source(...) |
+| main.rs:39:14:39:19 | sliced | main.rs:37:17:37:26 | source(...) | main.rs:39:14:39:19 | sliced | $@ | main.rs:37:17:37:26 | source(...) | source(...) |
+| main.rs:54:14:54:19 | arr[1] | main.rs:53:19:53:28 | source(...) | main.rs:54:14:54:19 | arr[1] | $@ | main.rs:53:19:53:28 | source(...) | source(...) |
+| main.rs:70:14:70:17 | arr2 | main.rs:69:19:69:28 | source(...) | main.rs:70:14:70:17 | arr2 | $@ | main.rs:69:19:69:28 | source(...) | source(...) |

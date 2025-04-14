@@ -12,10 +12,10 @@
  */
 
 import java
-import experimental.semmle.code.java.security.SpringUrlRedirect
+deprecated import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
-import SpringUrlRedirectFlow::PathGraph
+deprecated import SpringUrlRedirectFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   g.(MethodCall).getMethod().hasName("startsWith") and
@@ -25,8 +25,8 @@ private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   branch = true
 }
 
-module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+deprecated module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpringUrlRedirectSink }
 
@@ -60,9 +60,15 @@ module SpringUrlRedirectFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module SpringUrlRedirectFlow = TaintTracking::Global<SpringUrlRedirectFlowConfig>;
+deprecated module SpringUrlRedirectFlow = TaintTracking::Global<SpringUrlRedirectFlowConfig>;
 
-from SpringUrlRedirectFlow::PathNode source, SpringUrlRedirectFlow::PathNode sink
-where SpringUrlRedirectFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Potentially untrusted URL redirection due to $@.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SpringUrlRedirectFlow::PathNode source,
+  SpringUrlRedirectFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  SpringUrlRedirectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potentially untrusted URL redirection due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

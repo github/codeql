@@ -21,14 +21,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            // The below doesn't limit the extractor messages to the exact limit, but it's good enough.
             var key = diagnostic.Id;
             var messageCount = compilation.messageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);
             if (messageCount > limit)
             {
                 if (messageCount == limit + 1)
                 {
-                    Context.Extractor.Logger.LogWarning($"Stopped logging {key} compiler diagnostics for the current compilation after reaching {limit}");
+                    Context.ExtractionContext.Logger.LogWarning($"Stopped logging {key} compiler diagnostics for the current compilation after reaching {limit}");
                 }
 
                 return;

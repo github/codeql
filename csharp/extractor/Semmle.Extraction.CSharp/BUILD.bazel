@@ -1,0 +1,27 @@
+load(
+    "//misc/bazel:csharp.bzl",
+    "codeql_csharp_library",
+)
+
+codeql_csharp_library(
+    name = "Semmle.Extraction.CSharp",
+    srcs = glob([
+        "CodeAnalysisExtensions/**/*.cs",
+        "Comments/**/*.cs",
+        "Entities/**/*.cs",
+        "Extractor/**/*.cs",
+        "Kinds/**/*.cs",
+        "Populators/**/*.cs",
+        "Trap/**/*.cs",
+        "*.cs",
+    ]),
+    allow_unsafe_blocks = True,
+    visibility = ["//csharp:__subpackages__"],
+    deps = [
+        "//csharp/extractor/Semmle.Extraction.CSharp.Util",
+        "//csharp/extractor/Semmle.Util",
+        "@paket.main//basic.compilerlog.util",
+        "@paket.main//microsoft.build",
+        "@paket.main//microsoft.codeanalysis.csharp",
+    ],
+)

@@ -30,7 +30,7 @@ class ExternalApi extends Callable {
   string getApiName() {
     result =
       this.getDeclaringType().getPackage() + "." +
-        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        this.getDeclaringType().getSourceDeclaration().getNestedName() + "#" + this.getName() +
         paramsString(this)
   }
 

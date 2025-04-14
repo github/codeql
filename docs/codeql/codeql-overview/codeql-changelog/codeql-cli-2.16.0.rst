@@ -53,8 +53,8 @@ Query Packs
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The three queries :code:`java/insufficient-key-size`, :code:`java/server-side-template-injection`, and :code:`java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
 
@@ -77,8 +77,8 @@ Golang
 
 *   There was a bug in the query :code:`go/incorrect-integer-conversion` which meant that upper bound checks using a strict inequality (:code:`<`) and comparing against :code:`math.MaxInt` or :code:`math.MaxUint` were not considered correctly, which led to false positives. This has now been fixed.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Modified the :code:`java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
 *   The query :code:`java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
@@ -98,8 +98,8 @@ C/C++
 *   Added a new query, :code:`cpp/use-of-unique-pointer-after-lifetime-ends`, to detect uses of the contents unique pointers that will be destroyed immediately.
 *   The :code:`cpp/incorrectly-checked-scanf` query has been added. This finds results where the return value of scanf is not checked correctly. Some of these were previously found by :code:`cpp/missing-check-scanf` and will no longer be reported there.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added the :code:`java/insecure-randomness` query to detect uses of weakly random values which an attacker may be able to predict. Also added the :code:`crypto-parameter` sink kind for sinks which represent the parameters and keys of cryptographic operations.
 
@@ -153,8 +153,8 @@ Golang
 *   The XPath library, which is used for the XPath injection query (:code:`go/xml/xpath-injection`), now includes support for :code:`Parser` sinks from the `libxml2 <https://github.com/lestrrat-go/libxml2>`__ package.
 *   :code:`CallNode::getACallee` and related predicates now recognise more callees accessed via a function variable, in particular when the callee is stored into a global variable or is captured by an anonymous function. This may lead to new alerts where data-flow into such a callee is relevant.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added the :code:`Map#replace` and :code:`Map#replaceAll` methods to the :code:`MapMutator` class in :code:`semmle.code.java.Maps`.
     
@@ -219,8 +219,8 @@ C/C++
 
 *   The :code:`isUserInput`, :code:`userInputArgument`, and :code:`userInputReturned` predicates from :code:`SecurityOptions` have been deprecated. Use :code:`FlowSource` instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Imports of the old dataflow libraries (e.g. :code:`semmle.code.java.dataflow.DataFlow2`) have been deprecated in the libraries under the :code:`semmle.code.java.security` namespace.
 

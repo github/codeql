@@ -1,5 +1,5 @@
-WARNING: Module DataFlow has been deprecated and may be removed in future (standardEdges.ql:4,6-14)
-WARNING: Module DataFlow has been deprecated and may be removed in future (standardEdges.ql:4,31-39)
-WARNING: Module DataFlow has been deprecated and may be removed in future (standardEdges.ql:5,7-15)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (standardEdges.ql:4,6-14)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (standardEdges.ql:4,31-39)
+WARNING: module 'DataFlow' has been deprecated and may be removed in future (standardEdges.ql:5,7-15)
 | tryExcept.c:7:13:7:14 | 0 | tryExcept.c:10:9:10:9 | y |
 | tryExcept.c:10:9:10:9 | y | tryExcept.c:10:5:10:9 | ... = ... |

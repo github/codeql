@@ -26,6 +26,9 @@ extensions:
       - ["java.security", "CodeSource", False, "getCertificates", "()", "", "Argument[this].SyntheticField[java.security.CodeSource.certificates].ArrayElement", "ReturnValue.ArrayElement", "value", "df-manual"]
       - ["java.security", "CodeSource", False, "getCodeSigners", "()", "", "Argument[this].SyntheticField[java.security.CodeSource.codeSigners].ArrayElement", "ReturnValue.ArrayElement", "value", "df-manual"]
       - ["java.security", "CodeSource", False, "getLocation", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+      - ["java.security", "Permission", True, "Permission", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-manual"]
+      - ["java.security", "Permission", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-manual"]
+
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

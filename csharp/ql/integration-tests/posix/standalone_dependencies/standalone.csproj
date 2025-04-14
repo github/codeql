@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net9.0;net6.0;netcoreapp3.1;netstandard2.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <Target Name="DeleteBinObjFolders" BeforeTargets="Clean">
+    <RemoveDir Directories=".\bin" />
+    <RemoveDir Directories=".\obj" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <!-- The below causes DB-CHECK errors: -->
+    <!-- <PackageReference Include="NUnit" Version="3.10.1" /> -->
+    <PackageReference Include="Avalara.AvaTax" Version="23.11.0" />
+  </ItemGroup>
+</Project>

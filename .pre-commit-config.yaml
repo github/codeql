@@ -5,9 +5,9 @@ repos:
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
-        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)|.*\.patch
+        exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
       - id: end-of-file-fixer
-        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)|.*\.patch
+        exclude: /test/.*$(?<!\.qlref)|.*\.patch$|.*\.qll?$
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v17.0.6
@@ -15,7 +15,7 @@ repos:
       - id: clang-format
 
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.6.0
+    rev: v2.0.4
     hooks:
       - id: autopep8
         files: ^misc/codegen/.*\.py
@@ -26,7 +26,7 @@ repos:
         name: Format bazel files
         files: \.(bazel|bzl)
         language: system
-        entry: bazel run //misc/bazel:buildifier
+        entry: bazel run //misc/bazel/buildifier
         pass_filenames: false
 
 #      DISABLED: can be enabled by copying this config and installing `pre-commit` with `--config` on the copy
@@ -45,7 +45,7 @@ repos:
 
       - id: sync-files
         name: Fix files required to be identical
-        files: \.(qll?|qhelp|swift)$|^config/identical-files\.json$
+        files: \.(qll?|qhelp|swift|toml)$|^config/identical-files\.json$
         language: system
         entry: python3 config/sync-files.py --latest
         pass_filenames: false
@@ -58,7 +58,7 @@ repos:
 
       - id: swift-codegen
         name: Run Swift checked in code generation
-        files: ^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements)|ql/\.generated.list)
+        files: ^misc/codegen/|^swift/(schema.py$|codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements)|ql/\.generated.list)
         language: system
         entry: bazel run //swift/codegen -- --quiet
         pass_filenames: false
@@ -68,4 +68,18 @@ repos:
         files: ^swift/codegen/.*\.py$
         language: system
         entry: bazel test //misc/codegen/test
+        pass_filenames: false
+
+      - id: rust-codegen
+        name: Run Rust checked in code generation
+        files: ^misc/codegen/|^rust/(prefix\.dbscheme|schema/|codegen/|.*/generated/|ql/lib/(rust\.dbscheme$|codeql/rust/elements)|\.generated.list|ast-generator/)
+        language: system
+        entry: bazel run //rust/codegen -- --quiet
+        pass_filenames: false
+
+      - id: rust-lint
+        name: Run fmt and clippy on Rust code
+        files: ^rust/extractor/(.*rs|Cargo.toml)$
+        language: system
+        entry: python3 rust/lint.py
         pass_filenames: false

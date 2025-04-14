@@ -3,9 +3,6 @@ CodeQL CWE coverage
 
 You can view the full coverage of MITRE's Common Weakness Enumeration (CWE) or coverage by language for the latest release of CodeQL.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-.. include:: ../reusables/swift-beta-note.rst
-
 About CWEs
 ##########
 
@@ -30,6 +27,7 @@ Note that the CWE coverage includes both "`supported queries <https://github.com
    :titlesonly:
 
    full-cwe
+   actions-cwe
    cpp-cwe
    csharp-cwe
    go-cwe

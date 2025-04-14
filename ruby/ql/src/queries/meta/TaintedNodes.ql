@@ -19,6 +19,8 @@ private module BasicTaintConfig implements DataFlow::ConfigSig {
     // To reduce noise from synthetic nodes, only count nodes that have an associated expression.
     exists(node.asExpr().getExpr())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;

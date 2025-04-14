@@ -179,7 +179,6 @@ module ExternalApiUsedWithUntrustedData {
       or
       exists(string member |
         node = base.getMember(member) and
-        not node = base.getUnknownMember() and
         not isNumericString(member) and
         not (member = "default" and base = API::moduleImport(_)) and
         not member = "then" // use the 'promised' edges for .then callbacks
@@ -189,10 +188,7 @@ module ExternalApiUsedWithUntrustedData {
         else result = basename + "['" + member.regexpReplaceAll("'", "\\'") + "']"
       )
       or
-      (
-        node = base.getUnknownMember() or
-        node = base.getMember(any(string s | isNumericString(s)))
-      ) and
+      node = base.getArrayElement() and
       result = basename + "[]"
       or
       // just collapse promises
@@ -252,7 +248,6 @@ module ExternalApiUsedWithUntrustedData {
       |
         TaintTracking::sharedTaintStep(arg, _) or
         DataFlow::SharedFlowStep::step(arg, _) or
-        DataFlow::SharedFlowStep::step(arg, _, _, _) or
         DataFlow::SharedFlowStep::loadStep(arg, _, _) or
         DataFlow::SharedFlowStep::storeStep(arg, _, _) or
         DataFlow::SharedFlowStep::loadStoreStep(arg, _, _)

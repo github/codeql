@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "input.package-name", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "input.product-version", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "input.goarch", "code-injection", "generated"]
+     - ["opentofu/opentofu/.github/workflows/build-opentofu-oss.yml", "*", "input.goos", "code-injection", "generated"]

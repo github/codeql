@@ -473,3 +473,107 @@ void check_for_negative_test() {
 	}
 	use(value);
 }
+
+void multiple_checks() {
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 0) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value [FALSE POSITIVE]
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res < 0) return;
+		if (res != 0) {
+			use(i); // GOOD: checks return value [FALSE POSITIVE]
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res >= 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+
+	{
+		int i;
+		int res = scanf("%d", &i);
+
+		if (res == 1) {
+			if (res != 0) {
+				use(i); // GOOD: checks return value
+			}
+		}
+	}
+}
+
+void switch_cases(const char *data) {
+	float a, b, c;
+
+	switch (sscanf(data, "%f %f %f", &a, &b, &c)) {
+		case 2:
+			use(a); // GOOD
+			use(b); // GOOD
+			break;
+		case 3:
+			use(a); // GOOD
+			use(b); // GOOD
+			use(c); // GOOD
+			break;
+		default:
+			break;
+	}
+
+	float d, e, f;
+
+	switch (sscanf(data, "%f %f %f", &d, &e, &f)) {
+		case 2:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // BAD
+			break;
+		case 3:
+			use(d); // GOOD
+			use(e); // GOOD
+			use(f); // GOOD
+			break;
+		default:
+			break;
+	}
+}
+
+void test_scanf_compared_right_away() {
+  int i;
+  bool success = scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD
+  }
+}
+
+void test_scanf_compared_in_conjunct_right(bool b) {
+  int i;
+  bool success = b && scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test_scanf_compared_in_conjunct_left(bool b) {
+  int i;
+  bool success = scanf("%d", &i) == 1 && b;
+  if(success) {
+    use(i); // GOOD [FALSE POSITIVE]
+  }
+}

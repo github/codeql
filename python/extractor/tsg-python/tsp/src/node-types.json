@@ -116,10 +116,6 @@
     "named": true,
     "subtypes": [
       {
-        "type": "await",
-        "named": true
-      },
-      {
         "type": "boolean_operator",
         "named": true
       },
@@ -227,6 +223,10 @@
     "subtypes": [
       {
         "type": "attribute",
+        "named": true
+      },
+      {
+        "type": "await",
         "named": true
       },
       {
@@ -587,7 +587,7 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "primary_expression",
           "named": true
         }
       ]
@@ -1830,6 +1830,30 @@
     }
   },
   {
+    "type": "index_expression_list",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "list_splat",
+            "named": true
+          },
+          {
+            "type": "slice",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "interpolation",
     "named": true,
     "fields": {
@@ -2809,6 +2833,20 @@
     "type": "paramspec_parameter",
     "named": true,
     "fields": {
+      "default": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "list_splat",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -3186,11 +3224,19 @@
     "named": true,
     "fields": {
       "subscript": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
           {
             "type": "expression",
+            "named": true
+          },
+          {
+            "type": "index_expression_list",
+            "named": true
+          },
+          {
+            "type": "list_splat",
             "named": true
           },
           {
@@ -3327,6 +3373,10 @@
       "types": [
         {
           "type": "expression",
+          "named": true
+        },
+        {
+          "type": "list_splat",
           "named": true
         }
       ]
@@ -3476,6 +3526,20 @@
           }
         ]
       },
+      "default": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "list_splat",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -3492,6 +3556,20 @@
     "type": "typevartuple_parameter",
     "named": true,
     "fields": {
+      "default": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "list_splat",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -3903,10 +3981,6 @@
   },
   {
     "type": "except",
-    "named": false
-  },
-  {
-    "type": "except*",
     "named": false
   },
   {

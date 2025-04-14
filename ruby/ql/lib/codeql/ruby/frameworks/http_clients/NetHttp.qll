@@ -29,7 +29,7 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
       this = request
     |
       // Net::HTTP.get(...)
-      method = "get" and
+      method in ["get", "get_response"] and
       requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
       returnsResponseBody = true
       or
@@ -102,6 +102,10 @@ private module NetHttpDisablesCertificateValidationConfig implements DataFlow::C
 
   predicate isSink(DataFlow::Node sink) {
     sink = any(NetHttpRequest req).getCertificateValidationControllingValue()
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
   }
 }
 

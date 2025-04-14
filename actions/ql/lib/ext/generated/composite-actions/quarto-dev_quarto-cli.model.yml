@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["quarto-dev/quarto-cli", "*", "input.keychain-pw", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.keychain", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.certificate-file", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.certificate-value", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.working-dir", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.bucket", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.base-url", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.files", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.binary-name", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "input.version", "code-injection", "generated"]

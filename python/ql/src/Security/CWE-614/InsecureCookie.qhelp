@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Cookies without the <code>Secure</code> flag set may be transmitted using HTTP instead of HTTPS, which leaves them vulnerable to reading by a third party.</p>
+<p>Cookies without the <code>HttpOnly</code> flag set are accessible to JavaScript running in the same origin. In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.</p>
+<p>Cookies with the <code>SameSite</code> attribute set to <code>'None'</code> will be sent with cross-origin requests, which can be controlled by third-party JavaScript code and allow for Cross-Site Request Forgery (CSRF) attacks.</p>
+</overview>
+
+<recommendation>
+<p>Always set <code>secure</code> to <code>True</code> or add "; Secure;" to the cookie's raw value.</p>
+<p>Always set <code>httponly</code> to <code>True</code> or add "; HttpOnly;" to the cookie's raw value.</p>
+<p>Always set <code>samesite</code> to <code>Lax</code> or <code>Strict</code>, or add "; SameSite=Lax;", or
+"; Samesite=Strict;" to the cookie's raw header value.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the cases marked GOOD show secure cookie attributes being set; whereas in the cases marked BAD they are not set.</p>
+<sample src="examples/InsecureCookie.py" />
+</example>
+
+<references>
+<li>Detectify: <a href="https://support.detectify.com/support/solutions/articles/48001048982-cookie-lack-secure-flag">Cookie lack Secure flag</a>.</li>
+<li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500200_tls-cookie-without-secure-flag-set">TLS cookie without secure flag set</a>.</li>
+</references>
+
+</qhelp>

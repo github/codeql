@@ -68,6 +68,7 @@
 | types.cpp:31:7:31:9 | clX<TX1> | clX<TX1> |
 | types.cpp:32:17:32:19 | TX3 | int |
 | types.cpp:36:19:36:21 | TX2 | TX2 |
+| types.cpp:40:30:40:30 | T | T |
 | types.cpp:40:39:40:42 | Tmpl | Tmpl |
 | types.cpp:41:8:41:18 | TemplateSel<Tmpl> | TemplateSel<Tmpl> |
 | types.cpp:42:22:42:22 | T | T |

@@ -1,0 +1,2 @@
+| gen_continue_expr.rs:7:13:7:20 | continue | getNumberOfAttrs: | 0 | hasLifetime: | no |
+| gen_continue_expr.rs:12:13:12:27 | continue 'label | getNumberOfAttrs: | 0 | hasLifetime: | yes |

@@ -1,5 +1,4 @@
 using System.IO;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {

@@ -66,7 +66,7 @@ class Symbol extends DependsSource {
       not this.(TypeDeclarationEntry).getType() instanceof LocalEnum and
       not this.(TypeDeclarationEntry).getType() instanceof LocalClass and
       not this.(TypeDeclarationEntry).getType() instanceof LocalTypedefType and
-      not this.(TypeDeclarationEntry).getType() instanceof TemplateParameter
+      not this.(TypeDeclarationEntry).getType() instanceof TypeTemplateParameter
       or
       this instanceof NamespaceDeclarationEntry
     )

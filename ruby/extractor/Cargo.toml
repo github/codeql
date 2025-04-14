@@ -3,35 +3,19 @@ name = "codeql-extractor-ruby"
 description = "CodeQL Ruby extractor"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2018"
+edition = "2024"
 
-# When changing/updating these, the `cargo-bazel-lock.json` file has to be regenerated.
-# Run `CARGO_BAZEL_REPIN=true CARGO_BAZEL_REPIN_ONLY=ruby_deps ./build --bazel sync --only=ruby_deps`
-# in the `semmle-code` repository to do so.
-# For more information, check out the documentation at
-# https://bazelbuild.github.io/rules_rust/crate_universe.html#repinning--updating-dependencies
-# In the future, the hope is to move this handling of the dependencies entirely into the `codeql` repository,
-# but that depends on `rules_rust` being fully compatible with bzlmod, which they aren't yet
-# (c.f. https://github.com/bazelbuild/rules_rust/issues/2452).
-# Warning: The process takes >5min on my M1 mac, so do wait for a while.
+# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]
-tree-sitter = "0.20"
-tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205" }
-tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "4d9ad3f010fdc47a8433adcf9ae30c8eb8475ae7" }
-clap = { version = "4.2", features = ["derive"] }
+tree-sitter = ">= 0.23.0"
+tree-sitter-embedded-template = "0.23.2"
+tree-sitter-ruby = "0.23.1"
+clap = { version = "4.5", features = ["derive"] }
 tracing = "0.1"
-tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
-rayon = "1.5.0"
-regex = "1.7.1"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+rayon = "1.10.0"
+regex = "1.11.1"
 encoding = "0.2"
-lazy_static = "1.4.0"
-# Ideally, we'd like to pull this in via a relative path.
-# However, our bazel/rust tooling chokes on this, c.f. https://github.com/bazelbuild/rules_rust/issues/1525
-# Therefore, to break that dependency, we depend on it via a git dependency instead.
-# We should change this back to a path dependency once this issue is fixed.
-# We can't depend on this without a rev/branch specification, as the rules_rust code assumes the default branch
-# is called `master`, and if we pull this in with `branch=main`, then `cargo` works (and pins this at th current git SHA
-# of lock-file update time, but `rules_rust` pins generates a bazel rule that unconditionally downloads `main`, which
-# breaks build hermeticity. So, rev-pinning it is.
-# See also https://github.com/bazelbuild/rules_rust/issues/2502.
-codeql-extractor = { git = "https://github.com/github/codeql.git", rev = "cee6f003fd58c64916c629f7d8b27b870d6f78c5" }
+lazy_static = "1.5.0"
+
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

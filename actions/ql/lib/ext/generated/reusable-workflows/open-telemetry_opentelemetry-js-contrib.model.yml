@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-js-contrib/.github/workflows/test-all-versions.yml", "*", "input.npm-workspace-args", "code-injection", "generated"]

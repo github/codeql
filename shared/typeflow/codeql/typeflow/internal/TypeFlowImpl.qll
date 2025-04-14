@@ -1,189 +1,34 @@
 private import codeql.typeflow.TypeFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 private import codeql.util.Location
 private import codeql.util.Unit
 
 module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
-  /** Holds if `null` is the only value that flows to `n`. */
-  predicate isNull(TypeFlowNode n) {
-    isNullValue(n)
-    or
-    exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
-    or
-    forex(TypeFlowNode mid | joinStep(mid, n) | isNull(mid)) and
-    not isExcludedFromNullAnalysis(n)
+  private module UfInput implements UniversalFlow::UniversalFlowInput<Location> {
+    class FlowNode = TypeFlowNode;
+
+    predicate step = I::step/2;
+
+    predicate isNullValue = I::isNullValue/1;
+
+    predicate isExcludedFromNullAnalysis = I::isExcludedFromNullAnalysis/1;
   }
 
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
-   * functionally determined by `n2`, and `n1` might take a non-null value.
-   */
-  private predicate joinStepNotNull(TypeFlowNode n1, TypeFlowNode n2) {
-    joinStep(n1, n2) and not isNull(n1)
-  }
+  private module UnivFlow = UniversalFlow::Make<Location, UfInput>;
 
-  private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) {
-    joinStepNotNull(n1, n2) or step(n1, n2)
-  }
+  private module ExactTypeProperty implements UnivFlow::PropertySig {
+    class Prop = Type;
 
-  private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) {
-    anyStep(n1, n2) and anyStep+(n2, n1)
-  }
-
-  private module Scc = QlBuiltins::EquivalenceRelation<TypeFlowNode, sccEdge/2>;
-
-  private class TypeFlowScc = Scc::EquivalenceClass;
-
-  /** Holds if `n` is part of an SCC of size 2 or more represented by `scc`. */
-  private predicate sccRepr(TypeFlowNode n, TypeFlowScc scc) { scc = Scc::getEquivalenceClass(n) }
-
-  private predicate sccJoinStepNotNull(TypeFlowNode n, TypeFlowScc scc) {
-    exists(TypeFlowNode mid |
-      joinStepNotNull(n, mid) and
-      sccRepr(mid, scc) and
-      not sccRepr(n, scc)
-    )
-  }
-
-  private signature class NodeSig;
-
-  private signature module Edge {
-    class Node;
-
-    predicate edge(TypeFlowNode n1, Node n2);
-  }
-
-  private signature module RankedEdge<NodeSig Node> {
-    predicate edgeRank(int r, TypeFlowNode n1, Node n2);
-
-    int lastRank(Node n);
-  }
-
-  private module RankEdge<Edge E> implements RankedEdge<E::Node> {
-    private import E
-
-    /**
-     * Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. The used
-     * ordering is not necessarily total, so the ranking may have gaps.
-     */
-    private predicate edgeRank1(int r, TypeFlowNode n1, Node n2) {
-      n1 =
-        rank[r](TypeFlowNode n, int startline, int startcolumn |
-          edge(n, n2) and
-          n.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-        |
-          n order by startline, startcolumn
-        )
-    }
-
-    /**
-     * Holds if `r2` is a ranking of the ranks from `edgeRank1`. This removes the
-     * gaps from the ranking.
-     */
-    private predicate edgeRank2(int r2, int r1, Node n) {
-      r1 = rank[r2](int r | edgeRank1(r, _, n) | r)
-    }
-
-    /** Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. */
-    predicate edgeRank(int r, TypeFlowNode n1, Node n2) {
-      exists(int r1 |
-        edgeRank1(r1, n1, n2) and
-        edgeRank2(r, r1, n2)
-      )
-    }
-
-    int lastRank(Node n) { result = max(int r | edgeRank(r, _, n)) }
-  }
-
-  private signature module TypePropagation {
-    class Typ;
-
-    predicate candType(TypeFlowNode n, Typ t);
-
-    bindingset[t]
-    predicate supportsType(TypeFlowNode n, Typ t);
-  }
-
-  /** Implements recursion through `forall` by way of edge ranking. */
-  private module ForAll<NodeSig Node, RankedEdge<Node> E, TypePropagation T> {
-    /**
-     * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
-     * thus is a candidate bound for `n`.
-     */
-    pragma[nomagic]
-    private predicate candJoinType(Node n, T::Typ t) {
-      exists(TypeFlowNode mid |
-        T::candType(mid, t) and
-        E::edgeRank(_, mid, n)
-      )
-    }
-
-    /**
-     * Holds if `t` is a candidate bound for `n` that is also valid for data coming
-     * through the edges into `n` ranked from `1` to `r`.
-     */
-    private predicate flowJoin(int r, Node n, T::Typ t) {
-      (
-        r = 1 and candJoinType(n, t)
-        or
-        flowJoin(r - 1, n, t) and E::edgeRank(r, _, n)
-      ) and
-      forall(TypeFlowNode mid | E::edgeRank(r, mid, n) | T::supportsType(mid, t))
-    }
-
-    /**
-     * Holds if `t` is a candidate bound for `n` that is also valid for data
-     * coming through all the incoming edges, and therefore is a valid bound for
-     * `n`.
-     */
-    predicate flowJoin(Node n, T::Typ t) { flowJoin(E::lastRank(n), n, t) }
-  }
-
-  private module JoinStep implements Edge {
-    class Node = TypeFlowNode;
-
-    predicate edge = joinStepNotNull/2;
-  }
-
-  private module SccJoinStep implements Edge {
-    class Node = TypeFlowScc;
-
-    predicate edge = sccJoinStepNotNull/2;
-  }
-
-  private module RankedJoinStep = RankEdge<JoinStep>;
-
-  private module RankedSccJoinStep = RankEdge<SccJoinStep>;
-
-  private module ExactTypePropagation implements TypePropagation {
-    class Typ = Type;
-
-    predicate candType = exactType/2;
-
-    predicate supportsType = exactType/2;
+    predicate hasPropertyBase = exactTypeBase/2;
   }
 
   /**
    * Holds if the runtime type of `n` is exactly `t` and if this bound is a
    * non-trivial lower bound, that is, `t` has a subtype.
    */
-  private predicate exactType(TypeFlowNode n, Type t) {
-    exactTypeBase(n, t)
-    or
-    exists(TypeFlowNode mid | exactType(mid, t) and step(mid, n))
-    or
-    // The following is an optimized version of
-    // `forex(TypeFlowNode mid | joinStepNotNull(mid, n) | exactType(mid, t))`
-    ForAll<TypeFlowNode, RankedJoinStep, ExactTypePropagation>::flowJoin(n, t)
-    or
-    exists(TypeFlowScc scc |
-      sccRepr(n, scc) and
-      // Optimized version of
-      // `forex(TypeFlowNode mid | sccJoinStepNotNull(mid, scc) | exactType(mid, t))`
-      ForAll<TypeFlowScc, RankedSccJoinStep, ExactTypePropagation>::flowJoin(scc, t)
-    )
-  }
+  private predicate exactType = UnivFlow::Flow<ExactTypeProperty>::hasProperty/2;
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
@@ -214,17 +59,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     )
   }
 
-  private module TypeFlowPropagation implements TypePropagation {
-    class Typ = Type;
+  private module TypeFlowProperty implements UnivFlow::PropertySig {
+    class Prop = Type;
 
-    predicate candType = typeFlow/2;
+    bindingset[t1, t2]
+    predicate propImplies(Type t1, Type t2) { getAnAncestor(pragma[only_bind_out](t1)) = t2 }
 
-    bindingset[t]
-    predicate supportsType(TypeFlowNode mid, Type t) {
-      exists(Type midtyp | exactType(mid, midtyp) or typeFlow(mid, midtyp) |
-        getAnAncestor(pragma[only_bind_out](midtyp)) = t
-      )
-    }
+    predicate hasPropertyBase(TypeFlowNode n, Prop t) { typeFlowBase(n, t) or exactType(n, t) }
   }
 
   /**
@@ -232,16 +73,8 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    * likely to be better than the static type of `n`.
    */
   private predicate typeFlow(TypeFlowNode n, Type t) {
-    typeFlowBase(n, t)
-    or
-    exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
-    or
-    ForAll<TypeFlowNode, RankedJoinStep, TypeFlowPropagation>::flowJoin(n, t)
-    or
-    exists(TypeFlowScc scc |
-      sccRepr(n, scc) and
-      ForAll<TypeFlowScc, RankedSccJoinStep, TypeFlowPropagation>::flowJoin(scc, t)
-    )
+    UnivFlow::Flow<TypeFlowProperty>::hasProperty(n, t) and
+    not exactType(n, t)
   }
 
   pragma[nomagic]
@@ -252,12 +85,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   pragma[nomagic]
   private predicate typeBound(Type t) { typeFlow(_, t) }
 
+  private predicate hasSupertype(Type sub, Type ancestor) { sub.getASupertype() = ancestor }
+
   /**
-   * Gets a direct or indirect supertype of this type.
-   * This does not include itself, unless this type is part of a cycle
-   * in the type hierarchy.
+   * Holds if `ancestor` is a direct or indirect supertype of `sub`.
    */
-  private Type getAStrictAncestor(Type sub) { result = getAnAncestor(sub.getASupertype()) }
+  private predicate hasAncestorBound(Type sub, Type ancestor) =
+    doublyBoundedFastTC(hasSupertype/2, typeBound/1, typeBound/1)(sub, ancestor)
 
   /**
    * Holds if we have a bound for `n` that is better than `t`.
@@ -265,10 +99,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   pragma[nomagic]
   private predicate irrelevantBound(TypeFlowNode n, Type t) {
     exists(Type bound |
-      typeFlow(n, bound) and
-      t = getAStrictAncestor(bound) and
-      typeBound(t) and
-      typeFlow(n, pragma[only_bind_into](t)) and
+      typeFlow(n, pragma[only_bind_into](bound)) and
+      hasAncestorBound(bound, t) and
+      typeFlow(n, t) and
       not getAnAncestor(t) = bound
       or
       n.getType() = pragma[only_bind_into](bound) and
@@ -329,22 +162,20 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    */
   private predicate unionTypeFlowBaseCand(TypeFlowNode n, Type t, boolean exact) {
     exists(TypeFlowNode next |
-      joinStepNotNull(n, next) and
+      UnivFlow::Internal::joinStepNotNull(n, next) and
       bestTypeFlowOrTypeFlowBase(n, t, exact) and
       not bestTypeFlowOrTypeFlowBase(next, t, exact) and
       not exactType(next, _)
     )
   }
 
-  private module HasUnionTypePropagation implements TypePropagation {
-    class Typ = Unit;
-
-    predicate candType(TypeFlowNode mid, Unit unit) {
-      exists(unit) and
-      (unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))
+  module UnionTypeFlowProperty implements UnivFlow::NullaryPropertySig {
+    predicate hasPropertyBase(TypeFlowNode n) {
+      unionTypeFlowBaseCand(n, _, _) or
+      instanceofDisjunctionGuarded(n, _)
     }
 
-    predicate supportsType = candType/2;
+    predicate barrier(TypeFlowNode n) { exactType(n, _) }
   }
 
   /**
@@ -352,25 +183,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    * `unionTypeFlowBaseCand`, such that we can compute a union type bound for `n`.
    * Disregards nodes for which we have an exact bound.
    */
-  private predicate hasUnionTypeFlow(TypeFlowNode n) {
-    not exactType(n, _) and
-    (
-      // Optimized version of
-      // `forex(TypeFlowNode mid | joinStepNotNull(mid, n) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
-      ForAll<TypeFlowNode, RankedJoinStep, HasUnionTypePropagation>::flowJoin(n, _)
-      or
-      exists(TypeFlowScc scc |
-        sccRepr(n, scc) and
-        // Optimized version of
-        // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
-        ForAll<TypeFlowScc, RankedSccJoinStep, HasUnionTypePropagation>::flowJoin(scc, _)
-      )
-      or
-      exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
-      or
-      instanceofDisjunctionGuarded(n, _)
-    )
-  }
+  private predicate hasUnionTypeFlow = UnivFlow::FlowNullary<UnionTypeFlowProperty>::hasProperty/1;
 
   pragma[nomagic]
   private Type getTypeBound(TypeFlowNode n) {
@@ -383,9 +196,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private predicate unionTypeFlow0(TypeFlowNode n, Type t, boolean exact) {
     hasUnionTypeFlow(n) and
     (
-      exists(TypeFlowNode mid | anyStep(mid, n) |
-        unionTypeFlowBaseCand(mid, t, exact) or unionTypeFlow(mid, t, exact)
-      )
+      exists(TypeFlowNode mid | UnivFlow::Internal::anyStep(mid, n) | unionTypeFlow(mid, t, exact))
+      or
+      unionTypeFlowBaseCand(n, t, exact)
       or
       instanceofDisjunctionGuarded(n, t) and exact = false
     )
@@ -470,6 +283,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    */
   predicate bestUnionType(TypeFlowNode n, Type t, boolean exact) {
     unionTypeFlow(n, t, exact) and
+    not exactType(n, _) and
     not irrelevantUnionType(n) and
     not irrelevantUnionTypePart(n, t, exact)
   }

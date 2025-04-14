@@ -1,0 +1,38 @@
+name: Octokit (heuristics)
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  test1:
+    if: github.event.comment.body == '@metabase-bot run visual tests'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fetch issue
+        uses: octokit/request-action@v2.x
+        id: fetch_issue
+        with:
+          route: GET ${{ github.event.issue.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Fetch PR minor and patch wildcard
+        uses: octokit/request-action@v2.x.x
+        id: fetch_pr
+        with:
+          route: GET ${{ fromJson(steps.fetch_issue.outputs.data).pull_request.url }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout PR minor patch wildcard
+      - uses: actions/checkout@v2.x.xx
+        with:
+          ref: ${{ fromJson(steps.fetch_pr.outputs.data).head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout PR minor wildcard incomplete patch
+        uses: actions/checkout@v2.x.
+      - name: Run latest action
+        uses: some-action/some-repo@latest
+        with:
+          some-input: some-value
+      - name: run the latest checkout action
+        uses: actions/checkout@latest

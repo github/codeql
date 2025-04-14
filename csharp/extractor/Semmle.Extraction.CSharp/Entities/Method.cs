@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            if (Symbol.OverriddenMethod is not null)
+            if (Symbol.OverriddenMethod is not null && Symbol.OverriddenMethod.ShouldExtractSymbol())
             {
                 trapFile.overrides(this, Method.Create(Context, Symbol.OverriddenMethod));
             }
@@ -290,7 +290,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Method OriginalDefinition => Create(Context, Symbol.OriginalDefinition);
 
-        public override Location? FullLocation => ReportingLocation;
+        public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
         public override bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 
@@ -360,7 +360,6 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateParameters();
             PopulateMethodBody(trapFile);
             PopulateGenerics(trapFile);
-            PopulateMetadataHandle(trapFile);
             PopulateNullability(trapFile, Symbol.GetAnnotatedReturnType());
         }
 

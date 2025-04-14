@@ -40,7 +40,8 @@ predicate ignoreInstruction(Instruction instr) {
     instr instanceof AliasedDefinitionInstruction or
     instr instanceof AliasedUseInstruction or
     instr instanceof InitializeNonLocalInstruction or
-    instr instanceof ReturnIndirectionInstruction
+    instr instanceof ReturnIndirectionInstruction or
+    instr instanceof UninitializedGroupInstruction
   )
 }
 
@@ -629,10 +630,18 @@ private module Cached {
     Operand operand, int indirectionIndex, Operand operandRepr, int indirectionIndexRepr
   ) {
     indirectionIndex = [1 .. countIndirectionsForCppType(getLanguageType(operand))] and
-    exists(Instruction load |
-      isDereference(load, operand, false) and
-      operandRepr = unique( | | getAUse(load)) and
-      indirectionIndexRepr = indirectionIndex - 1
+    (
+      exists(Instruction load |
+        isDereference(load, operand, false) and
+        operandRepr = unique( | | getAUse(load)) and
+        indirectionIndexRepr = indirectionIndex - 1
+      )
+      or
+      exists(CopyValueInstruction copy |
+        copy.getSourceValueOperand() = operand and
+        operandRepr = unique( | | getAUse(copy)) and
+        indirectionIndexRepr = indirectionIndex
+      )
     )
   }
 
@@ -648,11 +657,19 @@ private module Cached {
     Instruction instr, int indirectionIndex, Instruction instrRepr, int indirectionIndexRepr
   ) {
     indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
-    exists(Instruction load, Operand address |
-      address = unique( | | getAUse(instr)) and
-      isDereference(load, address, false) and
-      instrRepr = load and
-      indirectionIndexRepr = indirectionIndex - 1
+    (
+      exists(Instruction load, Operand address |
+        address = unique( | | getAUse(instr)) and
+        isDereference(load, address, false) and
+        instrRepr = load and
+        indirectionIndexRepr = indirectionIndex - 1
+      )
+      or
+      exists(CopyValueInstruction copy |
+        copy.getSourceValueOperand() = unique( | | getAUse(instr)) and
+        instrRepr = copy and
+        indirectionIndexRepr = indirectionIndex
+      )
     )
   }
 
@@ -757,13 +774,15 @@ import Cached
  * between the SSA pruning stage, and the final SSA stage.
  */
 module InputSigCommon {
-  class BasicBlock = IRBlock;
+  class BasicBlock extends IRBlock {
+    ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
+
+    int length() { result = this.getInstructionCount() }
+  }
+
+  class ControlFlowNode = Instruction;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock extends IRBlock {
-    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
-  }
 }

@@ -1,0 +1,11 @@
+on: gollum
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo '${{ github.event.pages[1].title }}'
+    - run: echo '${{ github.event.pages[11].title }}'
+    - run: echo '${{ github.event.pages[0].page_name }}'
+    - run: echo '${{ github.event.pages[2222].page_name }}'
+    - run: echo '${{ toJSON(github.event.pages.*.title) }}' # safe

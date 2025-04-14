@@ -1,0 +1,17 @@
+| gen_format.rs:5:21:5:22 | {} | getParent: | gen_format.rs:5:14:5:32 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format.rs:7:21:7:46 | {value:#width$.precision$} | getParent: | gen_format.rs:7:14:7:47 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | yes | hasPrecisionArgument: | yes |
+| gen_format.rs:11:15:11:20 | {name} | getParent: | gen_format.rs:11:14:11:35 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format.rs:12:15:12:17 | {0} | getParent: | gen_format.rs:12:14:12:38 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format.rs:16:15:16:23 | {:width$} | getParent: | gen_format.rs:16:14:16:28 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | yes | hasPrecisionArgument: | no |
+| gen_format.rs:17:15:17:19 | {:1$} | getParent: | gen_format.rs:17:14:17:31 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | yes | hasPrecisionArgument: | no |
+| gen_format.rs:21:15:21:23 | {:.prec$} | getParent: | gen_format.rs:21:14:21:28 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | yes |
+| gen_format.rs:22:15:22:20 | {:.1$} | getParent: | gen_format.rs:22:14:22:31 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | yes |
+| gen_format_args_arg.rs:5:26:5:27 | {} | getParent: | gen_format_args_arg.rs:5:17:5:39 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:6:19:6:20 | {} | getParent: | gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:6:26:6:29 | {:?} | getParent: | gen_format_args_expr.rs:6:17:6:37 | FormatArgsExpr | getIndex: | 3 | hasArgumentRef: | no | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:7:19:7:21 | {b} | getParent: | gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:7:27:7:31 | {a:?} | getParent: | gen_format_args_expr.rs:7:17:7:43 | FormatArgsExpr | getIndex: | 3 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:9:19:9:21 | {x} | getParent: | gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_args_expr.rs:9:24:9:26 | {y} | getParent: | gen_format_args_expr.rs:9:17:9:28 | FormatArgsExpr | getIndex: | 3 | hasArgumentRef: | yes | hasWidthArgument: | no | hasPrecisionArgument: | no |
+| gen_format_argument.rs:5:21:5:46 | {value:#width$.precision$} | getParent: | gen_format_argument.rs:5:14:5:47 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | yes | hasPrecisionArgument: | yes |
+| gen_format_argument.rs:7:21:7:30 | {0:#1$.2$} | getParent: | gen_format_argument.rs:7:14:7:56 | FormatArgsExpr | getIndex: | 1 | hasArgumentRef: | yes | hasWidthArgument: | yes | hasPrecisionArgument: | yes |

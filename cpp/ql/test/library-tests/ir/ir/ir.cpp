@@ -2552,4 +2552,177 @@ void constexpr_inconsistency(bool b) {
     ;
 }
 
+void builtin_bitcast(unsigned long ul) {
+    double d = __builtin_bit_cast(double, ul);
+}
+
+void p_points_to_x_or_y(int a, int b) {
+    int x;
+    int y;
+    int* p;
+    if (a < b) {
+        p = &x;
+    } else {
+        p = &y;
+    }
+    *p = 5;
+    int z = x;
+    int w = y;
+}
+
+int phi_after_while() {
+  int r;
+  int *rP = &r;
+
+  while(predicateA()) {
+    int s = 0;
+    *rP = s;
+    rP = &s;
+  }
+
+  return r;
+}
+
+// This testcase will loop infinitely if the analysis attempts to propagate
+// phi inputs with a non-unknown bit offset.
+char *recursive_conditional_call_with_increment(char *d, bool b)
+{
+  if (b) {
+    d = recursive_conditional_call_with_increment(d, b);
+  }
+  d++;
+  return d;
+}
+
+struct Recursive
+{
+  Recursive *next;
+};
+
+static Recursive *merge(Recursive *a)
+{
+  Recursive *b;
+  Recursive **p = &b;
+
+  while (predicateA())
+  {
+    *p = a;
+    p = &a->next;
+  }
+  
+  return b;
+}
+
+void use_const_int(const int*);
+
+void escaping_pointer(bool b)
+{
+  int *data;
+  int l1, l2;
+  if (b)
+  {
+    data = &l1;
+  }
+  else
+  {
+    data = &l2;
+  }
+  use_const_int(data);
+}
+
+using int64_t = long long;
+#define NULL ((void *)0)
+
+void *malloc(unsigned long);
+void use_const_void_pointer(const void *);
+
+static void needs_chi_for_initialize_groups()
+{
+  if (predicateA())
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(100);
+    }
+    use_const_void_pointer(data);
+  }
+  else
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(200);
+    }
+    use_const_void_pointer(data);
+  }
+}
+
+void use_int(int);
+
+static void phi_with_single_input_at_merge(bool b)
+{
+  int *data = nullptr;
+  if(b) {
+    int intBuffer = 8;
+    data = &intBuffer;
+  }
+  use_int(*data);
+}
+
+void use(const char *fmt);
+
+#define call_use(format) use(format)
+
+#define twice_call_use(format) \
+  do                       \
+  {                        \
+    call_use(format);           \
+    call_use(format);           \
+  } while (0)
+
+void test(bool b)
+{
+  twice_call_use(b ? "" : "");
+}
+
+namespace concepts {
+
+int requires_use() {
+  int y = requires { sizeof(int) > 0; };
+  return y;
+}
+
+}
+
+void branch_on_integral_in_cpp(int x1, int x2) {
+  if (x1) {}
+  if(!x1) {}
+
+  int y = !x1;
+  if(y) {}
+  if(!y) {}
+
+  if(x1 && x2) {}
+  if(!x1 && x2) {}
+  if(x1 && !x2) {}
+  if(!x1 && !x2) {}
+  if(x1 || x2) {}
+  if(!x1 || x2) {}
+  if(x1 || !x2) {}
+  if(!x1 || !x2) {}
+
+  int x_1_and_2 = x1 && x2;
+  if(x_1_and_2) {}
+  if(!x_1_and_2) {}
+}
+
+struct WithBracketOperator {
+  const char& operator[](int pos) const;
+};
+
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
+}
+
 // semmle-extractor-options: -std=c++20 --clang

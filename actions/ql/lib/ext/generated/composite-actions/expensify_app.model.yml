@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["expensify/app", "*", "input.GPG_PASSPHRASE", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.PACKAGE_SCRIPT_NAME", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.EXPENSIFY_PARTNER_PASSWORD_EMAIL", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.EXPENSIFY_PARTNER_USER_SECRET", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.EXPENSIFY_PARTNER_USER_ID", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.EXPENSIFY_PARTNER_PASSWORD", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.PATH_ENV_FILE", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.EXPENSIFY_PARTNER_NAME", "code-injection", "generated"]
+     - ["expensify/app", "*", "input.MAPBOX_SDK_DOWNLOAD_TOKEN", "code-injection", "generated"]

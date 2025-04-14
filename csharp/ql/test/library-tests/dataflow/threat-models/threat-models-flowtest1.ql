@@ -3,7 +3,7 @@
  */
 
 import Test
-import ThreatModel::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<ThreatModel::PathNode, ThreatModel::PathGraph>
 
 from ThreatModel::PathNode source, ThreatModel::PathNode sink
 where ThreatModel::flowPath(source, sink)

@@ -1,4 +1,4 @@
-| tests_32.cpp:14:16:14:23 | void_ptr | This argument should be of type 'long' but is of type 'void *'. |
-| tests_32.cpp:15:15:15:15 | l | This argument should be of type 'void *' but is of type 'long'. |
-| tests_64.cpp:14:16:14:23 | void_ptr | This argument should be of type 'long' but is of type 'void *'. |
-| tests_64.cpp:15:15:15:15 | l | This argument should be of type 'void *' but is of type 'long'. |
+| tests_32.cpp:14:16:14:23 | void_ptr | This format specifier for type 'long' does not match the argument type 'void *'. |
+| tests_32.cpp:15:15:15:15 | l | This format specifier for type 'void *' does not match the argument type 'long'. |
+| tests_64.cpp:14:16:14:23 | void_ptr | This format specifier for type 'long' does not match the argument type 'void *'. |
+| tests_64.cpp:15:15:15:15 | l | This format specifier for type 'void *' does not match the argument type 'long'. |

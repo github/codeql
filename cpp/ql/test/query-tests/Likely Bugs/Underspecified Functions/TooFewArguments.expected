@@ -1,4 +1,2 @@
-| test.c:34:3:34:19 | call to not_yet_declared2 | This call has fewer arguments than required by $@. | test.c:32:3:32:3 | not_yet_declared2 | not_yet_declared2 |
-| test.c:34:3:34:19 | call to not_yet_declared2 | This call has fewer arguments than required by $@. | test.c:76:6:76:22 | not_yet_declared2 | not_yet_declared2 |
-| test.c:36:3:36:29 | call to declared_empty_defined_with | This call has fewer arguments than required by $@. | test.c:77:6:77:32 | declared_empty_defined_with | declared_empty_defined_with |
-| test.c:87:10:87:20 | call to dereference | This call has fewer arguments than required by $@. | test.c:90:5:90:15 | dereference | dereference |
+| test.c:37:3:37:29 | call to declared_empty_defined_with | This call has fewer arguments than required by $@. | test.c:78:6:78:32 | declared_empty_defined_with | declared_empty_defined_with |
+| test.c:88:10:88:20 | call to dereference | This call has fewer arguments than required by $@. | test.c:91:5:91:15 | dereference | dereference |

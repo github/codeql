@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["scala-native/scala-native", "*", "input.llvm-version", "code-injection", "generated"]
+     - ["scala-native/scala-native", "*", "input.scala-version", "code-injection", "generated"]

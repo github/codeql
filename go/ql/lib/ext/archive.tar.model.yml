@@ -5,6 +5,6 @@ extensions:
     data:
       - ["archive/tar", "", False, "FileInfoHeader", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["archive/tar", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["archive/tar", "Header", True, "FileInfo", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["archive/tar", "Reader", True, "Next", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
-      - ["archive/tar", "Writer", True, "WriteHeader", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["archive/tar", "Header", True, "FileInfo", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["archive/tar", "Reader", True, "Next", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
+      - ["archive/tar", "Writer", True, "WriteHeader", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

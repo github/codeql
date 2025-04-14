@@ -1,0 +1,45 @@
+testFailures
+edges
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:10 |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:2  |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:2 Sink:MaD:6 |
+| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
+| asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:100:64:100:71 | *send_str | provenance | TaintFunction |
+| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
+| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
+| asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:6 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:10 |
+| test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | test.cpp:4:5:4:11 | [summary] to write: ReturnValue in ymlStep | provenance | MaD:969 |
+| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:7:10:7:18 | call to ymlSource | provenance | Src:MaD:967  |
+| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:11:10:11:10 | x | provenance | Sink:MaD:968 |
+| test.cpp:7:10:7:18 | call to ymlSource | test.cpp:13:18:13:18 | x | provenance |  |
+| test.cpp:13:10:13:16 | call to ymlStep | test.cpp:13:10:13:16 | call to ymlStep | provenance |  |
+| test.cpp:13:10:13:16 | call to ymlStep | test.cpp:15:10:15:10 | y | provenance | Sink:MaD:968 |
+| test.cpp:13:18:13:18 | x | test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | provenance |  |
+| test.cpp:13:18:13:18 | x | test.cpp:13:10:13:16 | call to ymlStep | provenance | MaD:969 |
+nodes
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
+| asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | semmle.label | read_until output argument |
+| asio_streams.cpp:91:7:91:17 | recv_buffer | semmle.label | recv_buffer |
+| asio_streams.cpp:93:29:93:39 | *recv_buffer | semmle.label | *recv_buffer |
+| asio_streams.cpp:97:37:97:44 | call to source | semmle.label | call to source |
+| asio_streams.cpp:98:7:98:14 | send_str | semmle.label | send_str |
+| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:100:44:100:62 | call to buffer | semmle.label | call to buffer |
+| asio_streams.cpp:100:64:100:71 | *send_str | semmle.label | *send_str |
+| asio_streams.cpp:101:7:101:17 | send_buffer | semmle.label | send_buffer |
+| asio_streams.cpp:103:29:103:39 | *send_buffer | semmle.label | *send_buffer |
+| test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | semmle.label | [summary param] 0 in ymlStep |
+| test.cpp:4:5:4:11 | [summary] to write: ReturnValue in ymlStep | semmle.label | [summary] to write: ReturnValue in ymlStep |
+| test.cpp:7:10:7:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:7:10:7:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:11:10:11:10 | x | semmle.label | x |
+| test.cpp:13:10:13:16 | call to ymlStep | semmle.label | call to ymlStep |
+| test.cpp:13:10:13:16 | call to ymlStep | semmle.label | call to ymlStep |
+| test.cpp:13:18:13:18 | x | semmle.label | x |
+| test.cpp:15:10:15:10 | y | semmle.label | y |
+subpaths
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | asio_streams.cpp:100:44:100:62 | call to buffer |
+| test.cpp:13:18:13:18 | x | test.cpp:4:5:4:11 | [summary param] 0 in ymlStep | test.cpp:4:5:4:11 | [summary] to write: ReturnValue in ymlStep | test.cpp:13:10:13:16 | call to ymlStep |

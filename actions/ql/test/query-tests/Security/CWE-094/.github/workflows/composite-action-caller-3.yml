@@ -1,0 +1,15 @@
+name: Issue Workflow
+on: 
+  issue_comment:
+jobs: 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: .github/actions/action5
+        id: foo
+        with:
+          taint: ${{ github.event.comment.body }}
+      - run: echo "${{ steps.foo.outputs.result }}"
+      - run: echo "${{ steps.foo.outputs.result2 }}"
+

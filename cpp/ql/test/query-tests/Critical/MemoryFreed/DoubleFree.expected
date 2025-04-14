@@ -13,21 +13,6 @@ edges
 | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | provenance |  |
 | test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | provenance |  |
 | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:322:12:322:12 | a | provenance |  |
-| test_free.cpp:343:12:343:24 | *access to array [post update] [ptr] | test_free.cpp:344:12:344:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:343:12:343:24 | *access to array [post update] [ptr] | test_free.cpp:345:12:345:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:343:12:343:24 | *access to array [post update] [ptr] | test_free.cpp:346:12:346:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:343:26:343:28 | pointer to operator delete output argument | test_free.cpp:343:12:343:24 | *access to array [post update] [ptr] | provenance |  |
-| test_free.cpp:344:12:344:24 | *access to array [post update] [ptr] | test_free.cpp:345:12:345:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:344:12:344:24 | *access to array [post update] [ptr] | test_free.cpp:346:12:346:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:344:12:344:24 | *access to array [ptr] | test_free.cpp:344:26:344:28 | ptr | provenance |  |
-| test_free.cpp:344:26:344:28 | pointer to operator delete output argument | test_free.cpp:344:12:344:24 | *access to array [post update] [ptr] | provenance |  |
-| test_free.cpp:345:12:345:24 | *access to array [post update] [ptr] | test_free.cpp:346:12:346:24 | *access to array [ptr] | provenance |  |
-| test_free.cpp:345:12:345:24 | *access to array [ptr] | test_free.cpp:345:26:345:28 | ptr | provenance |  |
-| test_free.cpp:345:12:345:24 | *access to array [ptr] | test_free.cpp:345:26:345:28 | ptr | provenance |  |
-| test_free.cpp:345:26:345:28 | pointer to operator delete output argument | test_free.cpp:345:12:345:24 | *access to array [post update] [ptr] | provenance |  |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | test_free.cpp:346:26:346:28 | ptr | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:14:10:14:10 | a | semmle.label | a |
@@ -57,24 +42,6 @@ nodes
 | test_free.cpp:302:12:302:14 | buf | semmle.label | buf |
 | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
 | test_free.cpp:322:12:322:12 | a | semmle.label | a |
-| test_free.cpp:343:12:343:24 | *access to array [post update] [ptr] | semmle.label | *access to array [post update] [ptr] |
-| test_free.cpp:343:26:343:28 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
-| test_free.cpp:344:12:344:24 | *access to array [post update] [ptr] | semmle.label | *access to array [post update] [ptr] |
-| test_free.cpp:344:12:344:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:344:26:344:28 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
-| test_free.cpp:344:26:344:28 | ptr | semmle.label | ptr |
-| test_free.cpp:345:12:345:24 | *access to array [post update] [ptr] | semmle.label | *access to array [post update] [ptr] |
-| test_free.cpp:345:12:345:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:345:12:345:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:345:26:345:28 | pointer to operator delete output argument | semmle.label | pointer to operator delete output argument |
-| test_free.cpp:345:26:345:28 | ptr | semmle.label | ptr |
-| test_free.cpp:345:26:345:28 | ptr | semmle.label | ptr |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:346:12:346:24 | *access to array [ptr] | semmle.label | *access to array [ptr] |
-| test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
-| test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
-| test_free.cpp:346:26:346:28 | ptr | semmle.label | ptr |
 subpaths
 #select
 | test_free.cpp:14:10:14:10 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:14:10:14:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:14:10:14:10 | a | a | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -91,9 +58,3 @@ subpaths
 | test_free.cpp:209:10:209:10 | a | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:209:10:209:10 | a | a | test_free.cpp:207:5:207:8 | call to free | call to free |
 | test_free.cpp:302:12:302:14 | buf | test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:302:12:302:14 | buf | buf | test_free.cpp:301:5:301:10 | call to g_free | call to g_free |
 | test_free.cpp:322:12:322:12 | a | test_free.cpp:319:16:319:16 | pointer to operator delete output argument | test_free.cpp:322:12:322:12 | a | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:322:12:322:12 | a | a | test_free.cpp:319:9:319:16 | delete | delete |
-| test_free.cpp:344:26:344:28 | ptr | test_free.cpp:343:26:343:28 | pointer to operator delete output argument | test_free.cpp:344:26:344:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:344:26:344:28 | ptr | ptr | test_free.cpp:343:5:343:28 | delete | delete |
-| test_free.cpp:345:26:345:28 | ptr | test_free.cpp:343:26:343:28 | pointer to operator delete output argument | test_free.cpp:345:26:345:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:345:26:345:28 | ptr | ptr | test_free.cpp:343:5:343:28 | delete | delete |
-| test_free.cpp:345:26:345:28 | ptr | test_free.cpp:344:26:344:28 | pointer to operator delete output argument | test_free.cpp:345:26:345:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:345:26:345:28 | ptr | ptr | test_free.cpp:344:5:344:28 | delete | delete |
-| test_free.cpp:346:26:346:28 | ptr | test_free.cpp:343:26:343:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:343:5:343:28 | delete | delete |
-| test_free.cpp:346:26:346:28 | ptr | test_free.cpp:344:26:344:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:344:5:344:28 | delete | delete |
-| test_free.cpp:346:26:346:28 | ptr | test_free.cpp:345:26:345:28 | pointer to operator delete output argument | test_free.cpp:346:26:346:28 | ptr | Memory pointed to by $@ may already have been freed by $@. | test_free.cpp:346:26:346:28 | ptr | ptr | test_free.cpp:345:5:345:28 | delete | delete |

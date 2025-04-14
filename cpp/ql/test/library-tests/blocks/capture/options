@@ -1,1 +1,1 @@
-semmle-extractor-options: -fblocks
+semmle-extractor-options: --edg --blocks

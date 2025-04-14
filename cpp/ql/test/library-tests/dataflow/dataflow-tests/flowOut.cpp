@@ -78,7 +78,7 @@ int* deref(int** p) { // $ ast-def=p ir-def=*p ir-def=**p
   return q;
 }
 
-void test1() {
+void flowout_test1() {
   int x = 0;
   int* p = &x;
   deref(&p)[0] = source();
@@ -95,7 +95,7 @@ void addtaint2(int** p) { // $ ast-def=p ir-def=*p ir-def=**p
   addtaint1(q);
 }
 
-void test2() {
+void flowout_test2() {
   int x = 0;
   int* p = &x;
   addtaint2(&p);

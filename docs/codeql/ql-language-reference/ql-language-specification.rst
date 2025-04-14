@@ -359,7 +359,7 @@ Kinds of types
 
 Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
-The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
+The primitive types are ``boolean``, ``date``, ``float``, ``int``, ``string``, and ``QlBuiltins::BigInt``.
 
 Database types are supplied as part of the database. Each database type has a *name*, which is an identifier starting with an at sign (``@``, U+0040) followed by lower-case letter. Database types have some number of *base types*, which are other database types. In a valid database, the base types relation is non-cyclic.
 
@@ -433,7 +433,7 @@ Values are the fundamental data that QL programs compute over. This section spec
 Kinds of values
 ~~~~~~~~~~~~~~~
 
-There are six kinds of values in QL: one kind for each of the five primitive types, and *entities*. Each value has a type.
+There are seven kinds of values in QL: one kind for each of the six primitive types, and *entities*. Each value has a type.
 
 A boolean value is of type ``boolean``, and may have one of two distinct values: ``true`` or ``false``.
 
@@ -444,6 +444,8 @@ A float value is of type ``float``. Each float value is a binary 64-bit floating
 An integer value is of type ``int``. Each value is a 32-bit two's complement integer.
 
 A string is a finite sequence of 16-bit characters. The characters are interpreted as Unicode code points.
+
+A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-range integer.
 
 The database includes a number of opaque entity values. Each such value has a type that is one of the database types, and an identifying integer. An entity value is written as the name of its database type followed by its identifying integer in parentheses. For example, ``@tree(12)``, ``@person(16)``, and ``@location(38132)`` are entity values. The identifying integers are left opaque to programmers in this specification, so an implementation of QL is free to use some other set of countable labels to identify its entities.
 
@@ -458,7 +460,7 @@ For dates, the ordering is chronological.
 
 For floats, the ordering is as specified in IEEE 754 when one exists, except that NaN is considered equal to itself and is ordered after all other floats, and negative zero is considered to be strictly less than positive zero.
 
-For integers, the ordering is as for two's complement integers.
+For integers (and :ref:`big integers <bigint>`), the ordering is numerical.
 
 For strings, the ordering is lexicographic.
 
@@ -716,7 +718,7 @@ An integer literal is a possibly negated sequence of decimal digits (``0`` throu
 Float literals (float)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-A floating-point literals is a possibly negated two non-negative integers literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
+A floating-point literal is a possibly negated pair of non-negative integer literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
 
 ::
 
@@ -1241,7 +1243,7 @@ A unary operation is the application of ``+`` or ``-`` to another expression:
 
 The ``+`` or ``-`` in the operation is called the *operator*, and the expression is called the *operand*. The typing environment of the operand is the same as for the unary operation.
 
-For a valid unary operation, the operand must be of type ``int`` or ``float``. The operation has the same type as its operand.
+For a valid unary operation, the operand must be of type ``int``, ``float`` or ``QlBuiltins::BigInt``. The operation has the same type as its operand.
 
 If the operator is ``+``, then the values of the expression are the same as the values of the operand. If the operator is ``-``, then the values of the expression are the arithmetic negations of the values of the operand.
 
@@ -1258,9 +1260,9 @@ A binary operation is written as a *left operand* followed by a *binary operator
          |   expr "/" expr
          |   expr "%" expr
 
-The typing environment for the two environments is the same as for the operation. If the operator is ``+``, then either both operands must be subtypes of ``int`` or ``float``, or at least one operand must be a subtype of ``string``. If the operator is anything else, then each operand must be a subtype of ``int`` or ``float``.
+The typing environment for the two environments is the same as for the operation. If the operator is ``+``, then either both operands must be subtypes of one of ``int``, ``float`` or ``QlBuiltins::BigInt``, or at least one operand must be a subtype of ``string``. If the operator is anything else, then both operands must be subtypes of one of ``int``, ``float`` or ``QlBuiltins::BigInt``.
 
-The type of the operation is ``string`` if either operand is a subtype of ``string``. Otherwise, the type of the operation is ``int`` if both operands are subtypes of ``int``. Otherwise, the type of the operation is ``float``.
+The type of the operation is ``string`` if either operand is a subtype of ``string``. Otherwise, the type of the operation is ``int`` or ``QlBuiltins::BigInt`` if both operands are subtypes of ``int`` or ``QlBuiltins::BigInt``, respectively. Otherwise, the type of the operation is ``float``.
 
 If the result is of type ``string``, then the *left values* of the operation are the values of a "call with results" expression with the left operand as the receiver, ``toString`` as the predicate name, and no arguments (see "`Calls with results <#calls-with-results>`__"). Otherwise the left values are the values of the left operand. Likewise, the *right values* are either the values from calling ``toString`` on the right operand, or the values of the right operand as it is.
 
@@ -1269,6 +1271,8 @@ The binary operation has one value for each combination of a left value and a ri
 -  If the left and right operand types are subtypes of string, then the operation has a value that is the concatenation of the left and right values.
 
 -  Otherwise, if both operand types are subtypes of ``int``, then the value of the operation is the result of applying the two's-complement 32-bit integer operation corresponding to the QL binary operator.
+
+-  Otherwise, if both operand types are subtypes of ``QlBuiltins::BigInt``, then the value of the operation is the result of applying the arbitrary-range integer operation corresponding to the QL binary operator.
 
 -  Otherwise, both operand types must be subtypes of ``float``. If either operand is of type ``int`` then they are converted to a float. The value of the operation is then the result of applying the IEEE 754 floating-point operator that corresponds to the QL binary operator: addition for ``+``, subtraction for ``-``, multiplication for ``*``, division for ``/``, or remainder for ``%``.
 
@@ -1441,10 +1445,11 @@ The number and types of the aggregation expressions are restricted as follows:
 -  A ``max``, ``min``, ``rank`` or ``unique`` aggregation must have a single expression.
 -  The type of the expression in a ``max``, ``min`` or ``rank`` aggregation without an ordering directive expression must be an orderable type.
 -  A ``count`` or ``strictcount`` aggregation must not have an expression.
--  A ``sum``, ``strictsum`` or ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
+-  A ``sum`` or ``strictsum`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float`` or ``QlBuiltins::BigInt``.
+-  An ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
 -  A ``concat`` or ``strictconcat`` aggregation must have two expressions. Both expressions must have types which are subtypes of ``string``.
 
-The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an ``avg`` aggregation is ``float``. The type of a ``concat`` or ``strictconcat`` aggregation is ``string``. The type of a ``sum`` or ``strictsum`` aggregation is ``int`` if the aggregation expression is a subtype of ``int``, otherwise it is ``float``. The type of a ``rank``, ``min`` or ``max`` aggregation is the type of the single expression.
+The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an ``avg`` aggregation is ``float``. The type of a ``concat`` or ``strictconcat`` aggregation is ``string``. The type of a ``sum`` or ``strictsum`` aggregation is ``int`` if the aggregation expression is a subtype of ``int``; otherwise it is ``QlBuiltins::BigInt`` if the aggregation expression is a subtype of ``QlBuiltins::BigInt``; otherwise it is ``float``. The type of a ``rank``, ``min`` or ``max`` aggregation is the type of the single expression.
 
 An ordering directive may only be specified for a ``max``, ``min``, ``rank``, ``concat`` or ``strictconcat`` aggregation. The type of the expression in an ordering directive must be an orderable type.
 
@@ -1460,7 +1465,7 @@ If the aggregation id is ``max``, ``min`` or ``rank`` and there was no ordering 
 
 The values of the aggregation expression are given by applying the aggregation function to each set of tuples obtained by picking exactly one aggregation tuple for each range tuple.
 
--  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the value for the aggregation variable in each tuple in the set, weighted by the number of tuples in the set, after converting the value to a floating-point number.
+-  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the aggregation variable's value in each tuple in the set, converted to ``float`` and weighted by the number of tuples in the set.
 
 -  If the aggregation id is ``count``, then the resulting value is the number of tuples in the set. If there are no tuples in the set, then the value is the integer ``0``.
 

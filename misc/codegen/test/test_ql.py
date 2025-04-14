@@ -12,21 +12,6 @@ def test_property_has_first_table_param_marked():
     assert [p.param for p in prop.tableparams] == tableparams
 
 
-@pytest.mark.parametrize("type,expected", [
-    ("Foo", True),
-    ("Bar", True),
-    ("foo", False),
-    ("bar", False),
-    (None, False),
-])
-def test_property_is_a_class(type, expected):
-    tableparams = ["a", "result", "b"]
-    expected_tableparams = ["a", "result" if expected else "result", "b"]
-    prop = ql.Property("Prop", type, tableparams=tableparams)
-    assert prop.type_is_class is expected
-    assert [p.param for p in prop.tableparams] == expected_tableparams
-
-
 indefinite_getters = [
     ("Argument", "getAnArgument"),
     ("Element", "getAnElement"),
@@ -147,15 +132,14 @@ def test_class_with_children():
     assert cls.has_children is True
 
 
-@pytest.mark.parametrize("doc,internal,expected",
+@pytest.mark.parametrize("doc,expected",
                          [
-                             (["foo", "bar"], False, True),
-                             (["foo", "bar"], True, True),
-                             ([], False, False),
-                             ([], True, True),
+                             (["foo", "bar"], True),
+                             (["foo", "bar"], True),
+                             ([], False)
                          ])
-def test_has_doc(doc, internal, expected):
-    stub = ql.Stub("Class", base_import="foo", import_prefix="bar", doc=doc, internal=internal)
+def test_has_doc(doc, expected):
+    stub = ql.Stub("Class", base_import="foo", import_prefix="bar", doc=doc)
     assert stub.has_qldoc is expected
 
 

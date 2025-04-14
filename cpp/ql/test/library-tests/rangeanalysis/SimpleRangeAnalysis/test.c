@@ -389,6 +389,30 @@ unsigned int test_ternary02(unsigned int x) {
   return y1 + y2 + y3 + y4 + y5;
 }
 
+// Test that nested ternary expressions of literals doesn't cause performance blow up.
+double test_ternary_nested_of_literals(double m, double n, double o, double p, double q) {
+  double a = m ? n ? o ? p ? q ? 0.47438827 : 0.14333887 : 0.35279203 : 0.39206458 : 0.21540225 : 0.40496805;
+  double b = m ? n ? o ? p ? q ? 0.34183348 : 0.35334640 : 0.22247853 : 0.32661893 : 0.59270465 : 0.52977410;
+  double c = m ? n ? o ? p ? q ? 0.77429603 : 0.31478084 : 0.31235514 : 0.05121256 : 0.79310745 : 0.67981451;
+  double d = m ? n ? o ? p ? q ? 0.44729556 : 0.80599202 : 0.98997262 : 0.59952732 : 0.36976948 : 0.83866835;
+  double e = m ? n ? o ? p ? q ? 0.49311828 : 0.90389911 : 0.10597712 : 0.21778426 : 0.72485966 : 0.68734874;
+  double f = m ? n ? o ? p ? q ? 0.47452848 : 0.10786650 : 0.11884576 : 0.76164052 : 0.34808892 : 0.58440865;
+  double g = m ? n ? o ? p ? q ? 0.02524326 : 0.82905046 : 0.95823075 : 0.12516558 : 0.85235179 : 0.36232384;
+  double h = m ? n ? o ? p ? q ? 0.38708626 : 0.32876044 : 0.14963485 : 0.45041108 : 0.48640909 : 0.84331272;
+  double i = m ? n ? o ? p ? q ? 0.15755063 : 0.77086833 : 0.26428481 : 0.14800508 : 0.37428143 : 0.05328182;
+  double j = m ? n ? o ? p ? q ? 0.41736536 : 0.76826628 : 0.27643238 : 0.55679274 : 0.39468857 : 0.69072144;
+  double k = m ? n ? o ? p ? q ? 0.88955345 : 0.29904824 : 0.76242583 : 0.20519110 : 0.88745559 : 0.81372798;
+  double l = m ? n ? o ? p ? q ? 0.42186276 : 0.53843358 : 0.44996679 : 0.13204114 : 0.52031241 : 0.42762647;
+
+  // Since the abstract interpretation of `+` produces a product of the bounds
+  // of the input operands, `output` will have k^12 bounds, where `k` is the
+  // number of bounds that each of the variables above have. This blows up
+  // unless `k` is 1.
+  double output = a + b + c + d + e + f + g + h + i + j + k + l;
+
+  return output;
+}
+
 // Test the comma expression.
 unsigned int test_comma01(unsigned int x) {
   unsigned int y = x < 100 ? x : 100;

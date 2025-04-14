@@ -44,7 +44,7 @@ jobs:
       - name: Create database
         run: |
           codeql database create \
-            --search-path "${{ github.workspace }}/ruby/extractor-pack" \
+            --search-path "${{ github.workspace }}" \
             --threads 4 \
             --language ruby --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
@@ -52,9 +52,9 @@ jobs:
         run: |
           mkdir -p "stats/${{ matrix.repo }}"
           codeql dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ruby"
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: measurements
+          name: measurements-${{ hashFiles('stats/**') }}
           path: stats
           retention-days: 1
 
@@ -63,14 +63,13 @@ jobs:
     needs: measure
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: measurements
           path: stats
       - run: |
           python -m pip install --user lxml
           find stats -name 'stats.xml' | sort | xargs python ruby/scripts/merge_stats.py --output ruby/ql/lib/ruby.dbscheme.stats --normalise ruby_tokeninfo
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ruby.dbscheme.stats
           path: ruby/ql/lib/ruby.dbscheme.stats

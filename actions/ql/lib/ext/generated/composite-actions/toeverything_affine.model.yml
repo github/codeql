@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["toeverything/affine", "*", "input.extra-flags", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.nmHoistingLimits", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.path", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.cluster-location", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.cluster-name", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.gcp-project-id", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.package", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "input.target", "code-injection", "generated"]

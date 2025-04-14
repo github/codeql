@@ -1,5 +1,7 @@
-load("@ruby_deps//:defs.bzl", "aliases", "all_crate_deps")
-load("@semmle_code//:common.bzl", "codeql_rust_binary")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps")
+
+exports_files(["Cargo.toml"])
 
 codeql_rust_binary(
     name = "extractor",
@@ -11,5 +13,7 @@ codeql_rust_binary(
     visibility = ["//visibility:public"],
     deps = all_crate_deps(
         normal = True,
-    ),
+    ) + [
+        "//shared/tree-sitter-extractor",
+    ],
 )

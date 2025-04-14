@@ -70,6 +70,10 @@ private module HttpartyDisablesCertificateValidationConfig implements DataFlow::
   predicate isSink(DataFlow::Node sink) {
     sink = any(HttpartyRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
 
 private module HttpartyDisablesCertificateValidationFlow =

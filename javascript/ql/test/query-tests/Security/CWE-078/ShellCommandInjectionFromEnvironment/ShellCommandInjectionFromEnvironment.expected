@@ -1,32 +1,21 @@
-nodes
-| tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname |
-| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname |
-| tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname |
-| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname |
-| tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname |
-| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname |
 edges
-| tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname | tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") |
-| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname | tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") | provenance |  |
+| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") | provenance |  |
+| tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") | provenance |  |
+| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") | provenance |  |
+| tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") | tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") | provenance |  |
+| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname | tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") | provenance |  |
+nodes
+| tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") | semmle.label | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:6:26:6:53 | path.jo ... "temp") | semmle.label | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | semmle.label | __dirname |
+| tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") | semmle.label | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:8:26:8:53 | path.jo ... "temp") | semmle.label | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | semmle.label | __dirname |
+| tst_shell-command-injection-from-environment.js:9:18:9:57 | 'rm -rf ... "temp") | semmle.label | 'rm -rf ... "temp") |
+| tst_shell-command-injection-from-environment.js:9:30:9:57 | path.jo ... "temp") | semmle.label | path.jo ... "temp") |
+| tst_shell-command-injection-from-environment.js:9:40:9:48 | __dirname | semmle.label | __dirname |
+subpaths
 #select
 | tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") | tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | tst_shell-command-injection-from-environment.js:6:14:6:53 | 'rm -rf ... "temp") | This shell command depends on an uncontrolled $@. | tst_shell-command-injection-from-environment.js:6:36:6:44 | __dirname | absolute path |
 | tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") | tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | tst_shell-command-injection-from-environment.js:8:14:8:53 | 'rm -rf ... "temp") | This shell command depends on an uncontrolled $@. | tst_shell-command-injection-from-environment.js:8:36:8:44 | __dirname | absolute path |

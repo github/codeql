@@ -1126,6 +1126,9 @@ class ParamSpec_ extends @py_ParamSpec, TypeParameter {
   /** Gets the name of this parameter spec. */
   Expr getName() { py_exprs(result, _, this, 1) }
 
+  /** Gets the default of this parameter spec. */
+  Expr getDefault() { py_exprs(result, _, this, 2) }
+
   override string toString() { result = "ParamSpec" }
 }
 
@@ -1466,6 +1469,9 @@ class TypeVar_ extends @py_TypeVar, TypeParameter {
   /** Gets the bound of this type variable. */
   Expr getBound() { py_exprs(result, _, this, 2) }
 
+  /** Gets the default of this type variable. */
+  Expr getDefault() { py_exprs(result, _, this, 3) }
+
   override string toString() { result = "TypeVar" }
 }
 
@@ -1473,6 +1479,9 @@ class TypeVar_ extends @py_TypeVar, TypeParameter {
 class TypeVarTuple_ extends @py_TypeVarTuple, TypeParameter {
   /** Gets the name of this type variable tuple. */
   Expr getName() { py_exprs(result, _, this, 1) }
+
+  /** Gets the default of this type variable tuple. */
+  Expr getDefault() { py_exprs(result, _, this, 2) }
 
   override string toString() { result = "TypeVarTuple" }
 }

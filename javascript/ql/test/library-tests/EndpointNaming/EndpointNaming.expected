@@ -5,4 +5,3 @@ ambiguousPreferredPredecessor
 | pack2/main.js:1:1:3:1 | def moduleImport("pack2").getMember("exports").getMember("MainClass").getInstance() |
 ambiguousSinkName
 ambiguousFunctionName
-failures

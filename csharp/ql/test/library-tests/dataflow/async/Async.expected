@@ -1,3 +1,5 @@
+models
+| 1 | Summary: System.Threading.Tasks; Task; false; FromResult<TResult>; (TResult); ; Argument[0]; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
 edges
 | Async.cs:9:37:9:41 | input : String | Async.cs:11:21:11:25 | access to parameter input : String | provenance |  |
 | Async.cs:11:21:11:25 | access to parameter input : String | Async.cs:11:14:11:26 | call to method Return | provenance |  |
@@ -25,13 +27,13 @@ edges
 | Async.cs:38:16:38:16 | access to parameter x : String | Async.cs:26:23:26:40 | call to method ReturnAwait : Task<String> [property Result] : String | provenance |  |
 | Async.cs:41:33:41:37 | input : String | Async.cs:43:25:43:29 | access to parameter input : String | provenance |  |
 | Async.cs:43:14:43:30 | call to method ReturnTask : Task<T> [property Result] : String | Async.cs:43:14:43:37 | access to property Result | provenance |  |
-| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:43:14:43:30 | call to method ReturnTask : Task<T> [property Result] : String | provenance |  |
+| Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:43:14:43:30 | call to method ReturnTask : Task<T> [property Result] : String | provenance | MaD:1 |
 | Async.cs:43:25:43:29 | access to parameter input : String | Async.cs:46:44:46:44 | x : String | provenance |  |
 | Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String | provenance |  |
 | Async.cs:46:44:46:44 | x : String | Async.cs:48:32:48:32 | access to parameter x : String | provenance |  |
 | Async.cs:48:16:48:33 | call to method FromResult<String> : Task<T> [property Result] : String | Async.cs:43:14:43:30 | call to method ReturnTask : Task<T> [property Result] : String | provenance |  |
-| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> : Task<T> [property Result] : String | provenance | MaD:1993 |
-| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> : Task<T> [property Result] : String | provenance | MaD:1993 |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> : Task<T> [property Result] : String | provenance | MaD:1 |
+| Async.cs:48:32:48:32 | access to parameter x : String | Async.cs:48:16:48:33 | call to method FromResult<String> : Task<T> [property Result] : String | provenance | MaD:1 |
 | Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String | provenance |  |
 | Async.cs:51:52:51:52 | x : String | Async.cs:51:58:51:58 | access to parameter x : String | provenance |  |
 | Async.cs:51:58:51:58 | access to parameter x : String | Async.cs:32:14:32:32 | call to method ReturnAwait2 : Task<String> [property Result] : String | provenance |  |

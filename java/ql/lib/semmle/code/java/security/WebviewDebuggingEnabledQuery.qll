@@ -20,32 +20,6 @@ private predicate isDebugCheck(Expr ex) {
 }
 
 /**
- * DEPRECATED: Use `WebviewDebugEnabledFlow` instead.
- *
- * A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values.
- */
-deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
-  WebviewDebugEnabledConfig() { this = "WebviewDebugEnabledConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr().(BooleanLiteral).getBooleanValue() = true
-  }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(MethodCall ma |
-      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
-      node.asExpr() = ma.getArgument(0)
-    )
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))
-    or
-    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
-  }
-}
-
-/**
  * A webview debug sink node.
  */
 private class WebviewDebugSink extends ApiSinkNode {
@@ -69,6 +43,14 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
     exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))
     or
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    // This module is only used in `WebviewDebuggingEnabled.ql`, which doesn't
+    // select the source in any "$@" column.
+    none()
   }
 }
 

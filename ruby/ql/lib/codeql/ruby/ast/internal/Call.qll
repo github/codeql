@@ -2,6 +2,7 @@ private import TreeSitter
 private import Variable
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
+private import codeql.ruby.ast.internal.Scope
 
 predicate isIdentifierMethodCall(Ruby::Identifier g) { vcall(g) and not access(g, _) }
 
@@ -112,7 +113,7 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
 
   final override string getMethodNameImpl() { result = "[]" }
 
-  final override Block getBlockImpl() { none() }
+  final override Block getBlockImpl() { toGenerated(result) = g.getBlock() }
 }
 
 abstract class SuperCallImpl extends MethodCallImpl, TSuperCall { }
@@ -133,18 +134,61 @@ private string getSuperMethodName(Ruby::Super sup) {
   )
 }
 
+private Ruby::Identifier getParameter(Ruby::Method m, int pos, Ruby::AstNode param) {
+  scopeDefinesParameterVariable(m, _, result, pos) and
+  param = m.getParameters().getChild(pos)
+}
+
 class TokenSuperCall extends SuperCallImpl, TTokenSuperCall {
   private Ruby::Super g;
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
 
+  Ruby::Method getEnclosingMethod() { result = scopeOf(toGenerated(this)).getEnclosingMethod() }
+
+  int getNumberOfImplicitArguments() {
+    exists(Ruby::Method encl |
+      encl = this.getEnclosingMethod() and
+      result = count(getParameter(encl, _, _))
+    )
+  }
+
+  /**
+   * Gets the local variable defined by parameter `param` which is used as an
+   * implicit argument at position `pos`.
+   *
+   * For example, in
+   *
+   * ```ruby
+   * class Sup
+   *     def m(x)
+   *     end
+   * end
+   *
+   * class Sub < Sup
+   *    def m(x)
+   *        super
+   *    end
+   * end
+   * ```
+   *
+   * `x` is an implicit argument at position 0 of the `super` call in `Sub#m`.
+   */
+  pragma[nomagic]
+  LocalVariableReal getImplicitArgument(int pos, Ruby::AstNode param) {
+    exists(Ruby::Method encl |
+      encl = this.getEnclosingMethod() and
+      toGenerated(result.getDefiningAccessImpl()) = getParameter(encl, pos, param)
+    )
+  }
+
   final override string getMethodNameImpl() { result = getSuperMethodName(g) }
 
   final override Expr getReceiverImpl() { none() }
 
-  final override Expr getArgumentImpl(int n) { none() }
+  final override Expr getArgumentImpl(int n) { synthChild(this, n, result) }
 
-  final override int getNumberOfArgumentsImpl() { result = 0 }
+  final override int getNumberOfArgumentsImpl() { result = this.getNumberOfImplicitArguments() }
 
   final override Block getBlockImpl() { none() }
 }

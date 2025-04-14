@@ -1,3 +1,28 @@
+models
+| 1 | Summary: System.Collections.Generic; List<T>; false; ForEach; (System.Action<T>); ; Argument[this].Element; Argument[0].Parameter[0]; value; manual |
+| 2 | Summary: System.Linq; Enumerable; false; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[0].Element; Argument[2].Parameter[1]; value; manual |
+| 3 | Summary: System.Linq; Enumerable; false; Aggregate<TSource,TAccumulate,TResult>; (System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>); ; Argument[1]; Argument[2].Parameter[0]; value; manual |
+| 4 | Summary: System.Linq; Enumerable; false; First<TSource>; (System.Collections.Generic.IEnumerable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 5 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
+| 6 | Summary: System.Linq; Enumerable; false; Select<TSource,TResult>; (System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>); ; Argument[1].ReturnValue; ReturnValue.Element; value; manual |
+| 7 | Summary: System.Linq; Enumerable; false; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[0].Element; Argument[2].Parameter[0]; value; manual |
+| 8 | Summary: System.Linq; Enumerable; false; Zip<TFirst,TSecond,TResult>; (System.Collections.Generic.IEnumerable<TFirst>,System.Collections.Generic.IEnumerable<TSecond>,System.Func<TFirst,TSecond,TResult>); ; Argument[1].Element; Argument[2].Parameter[1]; value; manual |
+| 9 | Summary: System.Linq; Queryable; false; AsQueryable<TElement>; (System.Collections.Generic.IEnumerable<TElement>); ; Argument[0].Element; ReturnValue.Element; value; manual |
+| 10 | Summary: System.Linq; Queryable; false; First<TSource>; (System.Linq.IQueryable<TSource>); ; Argument[0].Element; ReturnValue; value; manual |
+| 11 | Summary: System.Linq; Queryable; false; Select<TSource,TResult>; (System.Linq.IQueryable<TSource>,System.Linq.Expressions.Expression<System.Func<TSource,TResult>>); ; Argument[0].Element; Argument[1].Parameter[0]; value; manual |
+| 12 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>+ConfiguredTaskAwaiter; false; GetResult; (); ; Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task`1.Result]; ReturnValue; value; manual |
+| 13 | Summary: System.Runtime.CompilerServices; ConfiguredTaskAwaitable<TResult>; false; GetAwaiter; (); ; Argument[this].SyntheticField[m_configuredTaskAwaiter]; ReturnValue; value; manual |
+| 14 | Summary: System.Text; StringBuilder; false; Append; (System.String); ; Argument[0]; Argument[this]; taint; manual |
+| 15 | Summary: System.Text; StringBuilder; false; Append; (System.Text.StringBuilder); ; Argument[0]; Argument[this]; taint; manual |
+| 16 | Summary: System.Text; StringBuilder; false; Append; (System.Text.StringBuilder+AppendInterpolatedStringHandler); ; Argument[0]; Argument[this]; taint; manual |
+| 17 | Summary: System.Text; StringBuilder; false; ToString; (); ; Argument[this]; ReturnValue; taint; manual |
+| 18 | Summary: System.Threading.Tasks; Task; false; Run<TResult>; (System.Func<TResult>); ; Argument[0].ReturnValue; ReturnValue.Property[System.Threading.Tasks.Task`1.Result]; value; manual |
+| 19 | Summary: System.Threading.Tasks; Task<TResult>; false; ConfigureAwait; (System.Boolean); ; Argument[this]; ReturnValue.SyntheticField[m_configuredTaskAwaiter].SyntheticField[m_task_configured_task_awaitable]; value; manual |
+| 20 | Summary: System; Boolean; false; TryParse; (System.String,System.Boolean); ; Argument[0]; Argument[1]; taint; manual |
+| 21 | Summary: System; Int32; false; TryParse; (System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.Int32); ; Argument[0]; Argument[3]; taint; manual |
+| 22 | Summary: System; Int32; false; TryParse; (System.String,System.Int32); ; Argument[0]; Argument[1]; taint; manual |
+| 23 | Summary: System; Lazy<T>; false; Lazy; (System.Func<T>); ; Argument[0].ReturnValue; Argument[this].Property[System.Lazy`1.Value]; value; manual |
+| 24 | Summary: System; String; false; Join; (System.String,System.ReadOnlySpan<System.String>); ; Argument[1].Element; ReturnValue; taint; manual |
 edges
 | Capture.cs:7:20:7:26 | tainted : String | Capture.cs:14:9:14:18 | access to local function CaptureIn1 : CaptureIn1 [captured tainted] : String | provenance |  |
 | Capture.cs:7:20:7:26 | tainted : String | Capture.cs:25:9:25:18 | access to local function CaptureIn2 : CaptureIn2 [captured tainted] : String | provenance |  |
@@ -12,8 +37,8 @@ edges
 | Capture.cs:25:9:25:18 | access to local function CaptureIn2 : CaptureIn2 [captured tainted] : String | Capture.cs:23:13:23:13 | access to local function M : M [captured tainted] : String | provenance |  |
 | Capture.cs:29:17:29:22 | access to local variable sink29 : String | Capture.cs:30:19:30:24 | access to local variable sink29 | provenance |  |
 | Capture.cs:29:26:29:32 | access to parameter tainted : String | Capture.cs:29:17:29:22 | access to local variable sink29 : String | provenance |  |
-| Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:1298 |
-| Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:1299 |
+| Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:5 |
+| Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | MaD:6 |
 | Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance | heuristic-callback |
 | Capture.cs:50:50:50:55 | sink39 : String | Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | provenance |  |
@@ -45,11 +70,11 @@ edges
 | Capture.cs:146:9:146:23 | access to local function CaptureThrough2 : CaptureThrough2 [captured tainted] : String | Capture.cs:144:13:144:13 | access to local function M : M [captured tainted] : String | provenance |  |
 | Capture.cs:146:9:146:23 | access to local function CaptureThrough2 : CaptureThrough2 [captured tainted] : String | Capture.cs:146:9:146:23 | [post] access to local function CaptureThrough2 : CaptureThrough2 [captured sink34] : String | provenance |  |
 | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | Capture.cs:156:15:156:20 | access to local variable sink35 | provenance |  |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:1298 |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:1299 |
+| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:5 |
+| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | MaD:6 |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:152:22:152:28 | access to parameter tainted : String | provenance | heuristic-callback |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:1298 |
-| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:1299 |
+| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:5 |
+| Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | MaD:6 |
 | Capture.cs:155:30:155:44 | access to local variable captureThrough3 : Func<String,String> [captured tainted] : String | Capture.cs:155:30:155:44 | [post] access to local variable captureThrough3 : (...) => ... [captured sink35] : String | provenance | heuristic-callback |
 | Capture.cs:162:13:162:18 | access to local variable sink36 : String | Capture.cs:163:15:163:20 | access to local variable sink36 | provenance |  |
 | Capture.cs:162:22:162:36 | access to local function CaptureThrough4 : CaptureThrough4 [captured tainted] : String | Capture.cs:160:20:160:26 | access to parameter tainted : String | provenance |  |
@@ -78,7 +103,7 @@ edges
 | Capture.cs:223:31:223:44 | "taint source" : String | Capture.cs:223:28:223:45 | call to method M3 : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:228:17:228:30 | "taint source" : String | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:228:17:228:30 | "taint source" : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
-| Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | MaD:633 |
+| Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | MaD:1 |
 | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:231:19:231:19 | access to local variable x | provenance | heuristic-callback |
 | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | Capture.cs:234:15:234:15 | access to local variable x | provenance |  |
 | Capture.cs:232:17:232:30 | "taint source" : String | Capture.cs:229:20:233:9 | [post] (...) => ... : (...) => ... [captured x] : String | provenance |  |
@@ -121,12 +146,13 @@ edges
 | Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | provenance |  |
 | Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
-| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | Capture.cs:217:19:217:19 | access to parameter s | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:57:27:57:32 | access to parameter sink39 | provenance |  |
@@ -238,7 +264,7 @@ edges
 | GlobalDataFlow.cs:79:30:79:34 | access to local variable sink3 : String | GlobalDataFlow.cs:139:29:139:33 | access to local variable sink3 : String | provenance |  |
 | GlobalDataFlow.cs:81:13:81:18 | access to local variable sink13 : String | GlobalDataFlow.cs:82:15:82:20 | access to local variable sink13 | provenance |  |
 | GlobalDataFlow.cs:81:13:81:18 | access to local variable sink13 : String | GlobalDataFlow.cs:83:59:83:64 | access to local variable sink13 : String | provenance |  |
-| GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> : String | GlobalDataFlow.cs:81:13:81:18 | access to local variable sink13 : String | provenance |  |
 | GlobalDataFlow.cs:81:23:81:65 | (...) ... : null [element] : String | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> : IEnumerable<T> [element] : String | provenance |  |
 | GlobalDataFlow.cs:81:23:81:65 | (...) ... : null [element] : String | GlobalDataFlow.cs:553:71:553:71 | e : null [element] : String | provenance |  |
@@ -249,45 +275,53 @@ edges
 | GlobalDataFlow.cs:83:13:83:18 | access to local variable sink14 : String | GlobalDataFlow.cs:85:59:85:64 | access to local variable sink14 : String | provenance |  |
 | GlobalDataFlow.cs:83:13:83:18 | access to local variable sink14 : String | GlobalDataFlow.cs:89:59:89:64 | access to local variable sink14 : String | provenance |  |
 | GlobalDataFlow.cs:83:13:83:18 | access to local variable sink14 : String | GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | provenance |  |
-| GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:83:22:83:95 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:83:22:83:95 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:83:22:83:95 | call to method First<String> : String | GlobalDataFlow.cs:83:13:83:18 | access to local variable sink14 : String | provenance |  |
-| GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:1298 |
-| GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:315:31:315:40 | sinkParam8 : String | provenance | MaD:1298 |
+| GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:5 |
+| GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:315:31:315:40 | sinkParam8 : String | provenance | MaD:5 |
 | GlobalDataFlow.cs:83:57:83:66 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:83:59:83:64 | access to local variable sink13 : String | GlobalDataFlow.cs:83:57:83:66 | { ..., ... } : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:85:13:85:18 | access to local variable sink15 : String | GlobalDataFlow.cs:86:15:86:20 | access to local variable sink15 | provenance |  |
 | GlobalDataFlow.cs:85:13:85:18 | access to local variable sink15 : String | GlobalDataFlow.cs:87:106:87:111 | access to local variable sink15 : String | provenance |  |
-| GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:85:22:85:136 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:85:22:85:136 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:85:22:85:136 | call to method First<String> : String | GlobalDataFlow.cs:85:13:85:18 | access to local variable sink15 : String | provenance |  |
-| GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | provenance | MaD:1376 |
-| GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:118:85:118 | x : String | provenance | MaD:1376 |
+| GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | provenance | MaD:7 |
+| GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:118:85:118 | x : String | provenance | MaD:7 |
 | GlobalDataFlow.cs:85:57:85:66 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:85:59:85:64 | access to local variable sink14 : String | GlobalDataFlow.cs:85:57:85:66 | { ..., ... } : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:85:118:85:118 | x : String | GlobalDataFlow.cs:85:127:85:127 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:87:13:87:18 | access to local variable sink16 : String | GlobalDataFlow.cs:88:15:88:20 | access to local variable sink16 | provenance |  |
-| GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:87:22:87:136 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:87:22:87:136 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:87:22:87:136 | call to method First<String> : String | GlobalDataFlow.cs:87:13:87:18 | access to local variable sink16 : String | provenance |  |
-| GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | provenance | MaD:1377 |
-| GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:121:87:121 | y : String | provenance | MaD:1377 |
+| GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String | provenance | MaD:8 |
+| GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:121:87:121 | y : String | provenance | MaD:8 |
 | GlobalDataFlow.cs:87:104:87:113 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:87:106:87:111 | access to local variable sink15 : String | GlobalDataFlow.cs:87:104:87:113 | { ..., ... } : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:87:121:87:121 | y : String | GlobalDataFlow.cs:87:127:87:127 | access to parameter y : String | provenance |  |
 | GlobalDataFlow.cs:89:13:89:18 | access to local variable sink17 : String | GlobalDataFlow.cs:90:15:90:20 | access to local variable sink17 | provenance |  |
 | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String | GlobalDataFlow.cs:89:13:89:18 | access to local variable sink17 : String | provenance |  |
-| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:1167 |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:2 |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:89:89:89 | s : String | provenance | MaD:2 |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:104:89:104 | x : String | provenance | MaD:2 |
 | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:89:59:89:64 | access to local variable sink14 : String | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | provenance |  |
+| GlobalDataFlow.cs:89:89:89:89 | s : String | GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | provenance |  |
+| GlobalDataFlow.cs:89:104:89:104 | x : String | GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:92:15:92:20 | access to local variable sink18 | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:97:23:97:28 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | GlobalDataFlow.cs:100:24:100:29 | access to local variable sink18 : String | provenance |  |
 | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | provenance |  |
-| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:1168 |
-| GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | provenance | MaD:2612 |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:84:91:86 | acc : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:104:91:104 | x : String | provenance | MaD:3 |
+| GlobalDataFlow.cs:91:84:91:86 | acc : String | GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | provenance |  |
+| GlobalDataFlow.cs:91:104:91:104 | x : String | GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | provenance |  |
+| GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | provenance | MaD:22 |
 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | GlobalDataFlow.cs:95:15:95:20 | access to local variable sink21 | provenance |  |
-| GlobalDataFlow.cs:97:23:97:28 | access to local variable sink18 : String | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 : Boolean | provenance | MaD:2272 |
+| GlobalDataFlow.cs:97:23:97:28 | access to local variable sink18 : String | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 : Boolean | provenance | MaD:20 |
 | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 : Boolean | GlobalDataFlow.cs:98:15:98:20 | access to local variable sink22 | provenance |  |
-| GlobalDataFlow.cs:100:24:100:29 | access to local variable sink18 : String | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b : Int32 | provenance | MaD:2610 |
+| GlobalDataFlow.cs:100:24:100:29 | access to local variable sink18 : String | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b : Int32 | provenance | MaD:21 |
 | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b : Int32 | GlobalDataFlow.cs:101:15:101:21 | access to local variable sink21b | provenance |  |
 | GlobalDataFlow.cs:138:40:138:40 | x : String | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String | provenance |  |
@@ -306,7 +340,7 @@ edges
 | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 : String | GlobalDataFlow.cs:161:15:161:19 | access to local variable sink7 | provenance |  |
 | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 : String | GlobalDataFlow.cs:164:15:164:19 | access to local variable sink8 | provenance |  |
 | GlobalDataFlow.cs:165:13:165:18 | access to local variable sink12 : String | GlobalDataFlow.cs:166:15:166:20 | access to local variable sink12 | provenance |  |
-| GlobalDataFlow.cs:165:22:165:31 | call to method OutYield : IEnumerable<String> [element] : String | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:165:22:165:31 | call to method OutYield : IEnumerable<String> [element] : String | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> : String | GlobalDataFlow.cs:165:13:165:18 | access to local variable sink12 : String | provenance |  |
 | GlobalDataFlow.cs:167:13:167:18 | access to local variable sink23 : String | GlobalDataFlow.cs:168:15:168:20 | access to local variable sink23 | provenance |  |
 | GlobalDataFlow.cs:167:22:167:43 | call to method TaintedParam : String | GlobalDataFlow.cs:167:13:167:18 | access to local variable sink23 : String | provenance |  |
@@ -321,7 +355,7 @@ edges
 | GlobalDataFlow.cs:211:28:211:34 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:216:22:216:28 | access to local variable tainted : IQueryable<T> [element] : String | provenance |  |
 | GlobalDataFlow.cs:211:28:211:34 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | provenance |  |
 | GlobalDataFlow.cs:211:28:211:34 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | provenance |  |
-| GlobalDataFlow.cs:211:38:211:61 | array creation of type String[] : null [element] : String | GlobalDataFlow.cs:211:38:211:75 | call to method AsQueryable<String> : IQueryable<T> [element] : String | provenance | MaD:1645 |
+| GlobalDataFlow.cs:211:38:211:61 | array creation of type String[] : null [element] : String | GlobalDataFlow.cs:211:38:211:75 | call to method AsQueryable<String> : IQueryable<T> [element] : String | provenance | MaD:9 |
 | GlobalDataFlow.cs:211:38:211:75 | call to method AsQueryable<String> : IQueryable<T> [element] : String | GlobalDataFlow.cs:211:28:211:34 | access to local variable tainted : IQueryable<T> [element] : String | provenance |  |
 | GlobalDataFlow.cs:211:44:211:61 | { ..., ... } : null [element] : String | GlobalDataFlow.cs:211:38:211:61 | array creation of type String[] : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:211:46:211:59 | "taint source" : String | GlobalDataFlow.cs:211:44:211:61 | { ..., ... } : null [element] : String | provenance |  |
@@ -331,24 +365,24 @@ edges
 | GlobalDataFlow.cs:215:89:215:89 | access to parameter x : String | GlobalDataFlow.cs:215:76:215:90 | call to method ReturnCheck2<String> : String | provenance |  |
 | GlobalDataFlow.cs:215:89:215:89 | access to parameter x : String | GlobalDataFlow.cs:321:32:321:41 | sinkParam9 : String | provenance |  |
 | GlobalDataFlow.cs:216:13:216:18 | access to local variable sink24 : String | GlobalDataFlow.cs:217:15:217:20 | access to local variable sink24 | provenance |  |
-| GlobalDataFlow.cs:216:22:216:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:214:35:214:45 | sinkParam10 : String | provenance | MaD:1298 |
-| GlobalDataFlow.cs:216:22:216:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:1298 |
-| GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:216:22:216:47 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:216:22:216:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:214:35:214:45 | sinkParam10 : String | provenance | MaD:5 |
+| GlobalDataFlow.cs:216:22:216:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:5 |
+| GlobalDataFlow.cs:216:22:216:39 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:216:22:216:47 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:216:22:216:47 | call to method First<String> : String | GlobalDataFlow.cs:216:13:216:18 | access to local variable sink24 : String | provenance |  |
 | GlobalDataFlow.cs:218:13:218:18 | access to local variable sink25 : String | GlobalDataFlow.cs:219:15:219:20 | access to local variable sink25 | provenance |  |
-| GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:215:71:215:71 | x : String | provenance | MaD:1742 |
-| GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> : IQueryable<T> [element] : String | provenance | MaD:1742 |
-| GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> : IQueryable<T> [element] : String | GlobalDataFlow.cs:218:22:218:47 | call to method First<String> : String | provenance | MaD:1669 |
+| GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:215:71:215:71 | x : String | provenance | MaD:11 |
+| GlobalDataFlow.cs:218:22:218:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> : IQueryable<T> [element] : String | provenance | MaD:11 |
+| GlobalDataFlow.cs:218:22:218:39 | call to method Select<String,String> : IQueryable<T> [element] : String | GlobalDataFlow.cs:218:22:218:47 | call to method First<String> : String | provenance | MaD:10 |
 | GlobalDataFlow.cs:218:22:218:47 | call to method First<String> : String | GlobalDataFlow.cs:218:13:218:18 | access to local variable sink25 : String | provenance |  |
 | GlobalDataFlow.cs:220:13:220:18 | access to local variable sink26 : String | GlobalDataFlow.cs:221:15:221:20 | access to local variable sink26 | provenance |  |
-| GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:1298 |
-| GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | provenance | MaD:1298 |
-| GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:220:22:220:57 | call to method First<String> : String | provenance | MaD:1202 |
+| GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String | provenance | MaD:5 |
+| GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | provenance | MaD:5 |
+| GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String | GlobalDataFlow.cs:220:22:220:57 | call to method First<String> : String | provenance | MaD:4 |
 | GlobalDataFlow.cs:220:22:220:57 | call to method First<String> : String | GlobalDataFlow.cs:220:13:220:18 | access to local variable sink26 : String | provenance |  |
 | GlobalDataFlow.cs:241:13:241:16 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:242:22:242:25 | access to local variable task : Task<T> [property Result] : String | provenance |  |
 | GlobalDataFlow.cs:241:13:241:16 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:244:28:244:31 | access to local variable task : Task<T> [property Result] : String | provenance |  |
 | GlobalDataFlow.cs:241:20:241:49 | call to method Run<String> : Task<T> [property Result] : String | GlobalDataFlow.cs:241:13:241:16 | access to local variable task : Task<T> [property Result] : String | provenance |  |
-| GlobalDataFlow.cs:241:35:241:48 | "taint source" : String | GlobalDataFlow.cs:241:20:241:49 | call to method Run<String> : Task<T> [property Result] : String | provenance | MaD:1996 |
+| GlobalDataFlow.cs:241:35:241:48 | "taint source" : String | GlobalDataFlow.cs:241:20:241:49 | call to method Run<String> : Task<T> [property Result] : String | provenance | MaD:18 |
 | GlobalDataFlow.cs:242:13:242:18 | access to local variable sink41 : String | GlobalDataFlow.cs:243:15:243:20 | access to local variable sink41 | provenance |  |
 | GlobalDataFlow.cs:242:22:242:25 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:242:22:242:32 | access to property Result : String | provenance |  |
 | GlobalDataFlow.cs:242:22:242:32 | access to property Result : String | GlobalDataFlow.cs:242:13:242:18 | access to local variable sink41 : String | provenance |  |
@@ -379,7 +413,7 @@ edges
 | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | GlobalDataFlow.cs:329:15:329:25 | access to parameter sinkParam11 | provenance |  |
 | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | GlobalDataFlow.cs:330:16:330:26 | access to parameter sinkParam11 : String | provenance |  |
 | GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | GlobalDataFlow.cs:157:21:157:25 | call to method Out : String | provenance |  |
-| GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | GlobalDataFlow.cs:193:22:193:42 | object creation of type Lazy<String> : Lazy<T> [property Value] : String | provenance | MaD:2614 |
+| GlobalDataFlow.cs:341:16:341:29 | "taint source" : String | GlobalDataFlow.cs:193:22:193:42 | object creation of type Lazy<String> : Lazy<T> [property Value] : String | provenance | MaD:23 |
 | GlobalDataFlow.cs:346:9:346:9 | access to parameter x : String | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 : String | provenance |  |
 | GlobalDataFlow.cs:346:13:346:26 | "taint source" : String | GlobalDataFlow.cs:346:9:346:9 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:351:9:351:9 | access to parameter x : String | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 : String | provenance |  |
@@ -391,11 +425,8 @@ edges
 | GlobalDataFlow.cs:384:11:384:11 | access to parameter x : String | GlobalDataFlow.cs:268:26:268:35 | sinkParam3 : String | provenance |  |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
-| GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | provenance |  |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | provenance |  |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | provenance |  |
 | GlobalDataFlow.cs:396:52:396:52 | x : String | GlobalDataFlow.cs:398:11:398:11 | access to parameter x : String | provenance |  |
@@ -413,95 +444,98 @@ edges
 | GlobalDataFlow.cs:438:22:438:35 | "taint source" : String | GlobalDataFlow.cs:201:22:201:32 | access to property OutProperty : String | provenance |  |
 | GlobalDataFlow.cs:448:13:448:18 | access to local variable sink44 : String | GlobalDataFlow.cs:449:15:449:20 | access to local variable sink44 | provenance |  |
 | GlobalDataFlow.cs:448:22:448:65 | call to method Join : String | GlobalDataFlow.cs:448:13:448:18 | access to local variable sink44 : String | provenance |  |
-| GlobalDataFlow.cs:448:51:448:64 | "taint source" : String | GlobalDataFlow.cs:448:22:448:65 | call to method Join : String | provenance | MaD:2716 |
+| GlobalDataFlow.cs:448:51:448:64 | "taint source" : String | GlobalDataFlow.cs:448:22:448:65 | call to method Join : String | provenance | MaD:24 |
 | GlobalDataFlow.cs:457:13:457:16 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:458:25:458:28 | access to local variable task : Task<T> [property Result] : String | provenance |  |
 | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> : Task<T> [property Result] : String | GlobalDataFlow.cs:457:13:457:16 | access to local variable task : Task<T> [property Result] : String | provenance |  |
-| GlobalDataFlow.cs:457:35:457:48 | "taint source" : String | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> : Task<T> [property Result] : String | provenance | MaD:1996 |
+| GlobalDataFlow.cs:457:35:457:48 | "taint source" : String | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> : Task<T> [property Result] : String | provenance | MaD:18 |
 | GlobalDataFlow.cs:458:13:458:21 | access to local variable awaitable : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:459:23:459:31 | access to local variable awaitable : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | provenance |  |
-| GlobalDataFlow.cs:458:25:458:28 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | provenance | MaD:2008 |
+| GlobalDataFlow.cs:458:25:458:28 | access to local variable task : Task<T> [property Result] : String | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | provenance | MaD:19 |
 | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:458:13:458:21 | access to local variable awaitable : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | provenance |  |
 | GlobalDataFlow.cs:459:13:459:19 | access to local variable awaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:460:22:460:28 | access to local variable awaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | provenance |  |
-| GlobalDataFlow.cs:459:23:459:31 | access to local variable awaitable : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | provenance | MaD:1824 |
+| GlobalDataFlow.cs:459:23:459:31 | access to local variable awaitable : ConfiguredTaskAwaitable<T> [synthetic m_configuredTaskAwaiter, synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | provenance | MaD:13 |
 | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:459:13:459:19 | access to local variable awaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | provenance |  |
 | GlobalDataFlow.cs:460:13:460:18 | access to local variable sink45 : String | GlobalDataFlow.cs:461:15:461:20 | access to local variable sink45 | provenance |  |
-| GlobalDataFlow.cs:460:22:460:28 | access to local variable awaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult : String | provenance | MaD:1825 |
+| GlobalDataFlow.cs:460:22:460:28 | access to local variable awaiter : ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter [synthetic m_task_configured_task_awaitable, property Result] : String | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult : String | provenance | MaD:12 |
 | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult : String | GlobalDataFlow.cs:460:13:460:18 | access to local variable sink45 : String | provenance |  |
 | GlobalDataFlow.cs:466:53:466:55 | arg : String | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | provenance |  |
 | GlobalDataFlow.cs:469:21:469:21 | s : String | GlobalDataFlow.cs:469:32:469:32 | access to parameter s | provenance |  |
 | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | GlobalDataFlow.cs:469:21:469:21 | s : String | provenance |  |
 | GlobalDataFlow.cs:473:28:473:41 | "taint source" : String | GlobalDataFlow.cs:466:53:466:55 | arg : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | GlobalDataFlow.cs:491:15:491:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | GlobalDataFlow.cs:492:15:492:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | GlobalDataFlow.cs:498:15:498:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | GlobalDataFlow.cs:499:15:499:22 | access to field field | provenance |  |
 | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | GlobalDataFlow.cs:500:15:500:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:509:15:509:21 | access to field field | provenance |  |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | GlobalDataFlow.cs:516:15:516:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:517:15:517:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
-| GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:531:15:531:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | GlobalDataFlow.cs:532:15:532:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | GlobalDataFlow.cs:533:15:533:21 | access to field field | provenance |  |
-| GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | GlobalDataFlow.cs:539:15:539:22 | access to field field | provenance |  |
-| GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
+| GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | provenance |  |
 | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | GlobalDataFlow.cs:547:15:547:21 | access to field field | provenance |  |
 | GlobalDataFlow.cs:553:71:553:71 | e : null [element] : String | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | provenance |  |
 | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | provenance |  |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | provenance |  |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | provenance |  |
-| GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:1901 |
+| GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:17:53:17:54 | sb [Return] : StringBuilder | provenance |  |
+| GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:14 |
 | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
-| GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:1913 |
+| GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:22:65:22:66 | sb [Return] : StringBuilder | provenance |  |
+| GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | provenance | MaD:16 |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | provenance |  |
-| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
+| GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | provenance |  |
-| GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | provenance |  |
+| GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder | provenance | MaD:14 |
 | GlobalDataFlowStringBuilder.cs:31:13:31:17 | access to local variable sink0 : String | GlobalDataFlowStringBuilder.cs:32:15:32:19 | access to local variable sink0 | provenance |  |
-| GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String | provenance | MaD:1971 |
+| GlobalDataFlowStringBuilder.cs:31:21:31:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:31:21:31:33 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:31:13:31:17 | access to local variable sink0 : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder | GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder | provenance |  |
-| GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder | provenance | MaD:1906 |
+| GlobalDataFlowStringBuilder.cs:35:20:35:21 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:35:9:35:11 | [post] access to local variable sb1 : StringBuilder | provenance | MaD:15 |
 | GlobalDataFlowStringBuilder.cs:36:13:36:17 | access to local variable sink1 : String | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | provenance |  |
-| GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | provenance | MaD:1971 |
+| GlobalDataFlowStringBuilder.cs:36:21:36:23 | access to local variable sb1 : StringBuilder | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:36:21:36:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:36:13:36:17 | access to local variable sink1 : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | provenance |  |
-| GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | provenance | MaD:1913 |
+| GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | provenance | MaD:16 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | provenance | MaD:17 |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | provenance |  |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | provenance |  |
-| GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | provenance | MaD:1971 |
+| GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | provenance |  |
 | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | provenance |  |
 | GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | provenance |  |
-| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder | provenance |  |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder | provenance | MaD:16 |
 | GlobalDataFlowStringBuilder.cs:49:13:49:17 | access to local variable sink3 : String | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | provenance |  |
-| GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | provenance | MaD:1971 |
+| GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | provenance | MaD:17 |
 | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | GlobalDataFlowStringBuilder.cs:49:13:49:17 | access to local variable sink3 : String | provenance |  |
+| MultiImplementationA.cs:5:28:5:41 | "taint source" : String | MultiImplementationA.cs:7:27:7:27 | x : String | provenance |  |
+| MultiImplementationA.cs:7:27:7:27 | x : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | provenance |  |
+| MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationB.cs:5:27:5:27 | x : String | provenance |  |
+| MultiImplementationB.cs:5:27:5:27 | x : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | provenance |  |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | provenance |  |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | provenance |  |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | provenance |  |
@@ -671,11 +705,12 @@ nodes
 | Capture.cs:339:17:339:30 | "taint source" : String | semmle.label | "taint source" : String |
 | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | semmle.label | (...) => ... : (...) => ... [captured x] : String |
 | Capture.cs:341:45:341:45 | access to local variable x | semmle.label | access to local variable x |
-| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | semmle.label | access to local variable capturedLambda : (...) => ... [captured x] : String |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : Action [captured x] : String | semmle.label | access to local variable capturedLambda : Action [captured x] : String |
 | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
 | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
+| Capture.cs:350:34:350:34 | a [Return] : (...) => ... [captured sink40] : String | semmle.label | a [Return] : (...) => ... [captured sink40] : String |
 | Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | semmle.label | [post] access to parameter a : (...) => ... [captured sink40] : String |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | semmle.label | access to parameter a : (...) => ... [captured s] : String |
 | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
@@ -757,10 +792,18 @@ nodes
 | GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | semmle.label | (...) ... : null [element] : String |
 | GlobalDataFlow.cs:89:57:89:66 | { ..., ... } : null [element] : String | semmle.label | { ..., ... } : null [element] : String |
 | GlobalDataFlow.cs:89:59:89:64 | access to local variable sink14 : String | semmle.label | access to local variable sink14 : String |
+| GlobalDataFlow.cs:89:89:89:89 | s : String | semmle.label | s : String |
+| GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | semmle.label | ... + ... : String |
+| GlobalDataFlow.cs:89:104:89:104 | x : String | semmle.label | x : String |
+| GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:90:15:90:20 | access to local variable sink17 | semmle.label | access to local variable sink17 |
 | GlobalDataFlow.cs:91:13:91:18 | access to local variable sink18 : String | semmle.label | access to local variable sink18 : String |
 | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String | semmle.label | call to method Aggregate<String,String,String> : String |
 | GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | semmle.label | access to local variable sink14 : String |
+| GlobalDataFlow.cs:91:84:91:86 | acc : String | semmle.label | acc : String |
+| GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | semmle.label | ... + ... : String |
+| GlobalDataFlow.cs:91:104:91:104 | x : String | semmle.label | x : String |
+| GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:92:15:92:20 | access to local variable sink18 | semmle.label | access to local variable sink18 |
 | GlobalDataFlow.cs:94:24:94:29 | access to local variable sink18 : String | semmle.label | access to local variable sink18 : String |
 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 : Int32 | semmle.label | access to local variable sink21 : Int32 |
@@ -891,11 +934,8 @@ nodes
 | GlobalDataFlow.cs:384:11:384:11 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
-| GlobalDataFlow.cs:387:46:387:46 | x : String | semmle.label | x : String |
 | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
-| GlobalDataFlow.cs:389:16:389:19 | delegate call : String | semmle.label | delegate call : String |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:396:52:396:52 | x : String | semmle.label | x : String |
@@ -934,54 +974,51 @@ nodes
 | GlobalDataFlow.cs:469:32:469:32 | access to parameter s | semmle.label | access to parameter s |
 | GlobalDataFlow.cs:470:15:470:17 | access to parameter arg : String | semmle.label | access to parameter arg : String |
 | GlobalDataFlow.cs:473:28:473:41 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:481:41:481:42 | sc [Return] : SimpleClass [field field] : String | semmle.label | sc [Return] : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:9:483:10 | [post] access to parameter sc : SimpleClass [field field] : String | semmle.label | [post] access to parameter sc : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:483:20:483:33 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:490:25:490:26 | [post] access to local variable x1 : SimpleClass [field field] : String | semmle.label | [post] access to local variable x1 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:490:30:490:31 | [post] access to local variable x2 : SimpleClass [field field] : String | semmle.label | [post] access to local variable x2 : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:490:20:490:31 | [post] ... ? ... : ... : SimpleClass [field field] : String | semmle.label | [post] ... ? ... : ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:491:15:491:16 | access to local variable x1 : SimpleClass [field field] : String | semmle.label | access to local variable x1 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:491:15:491:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:492:15:492:16 | access to local variable x2 : SimpleClass [field field] : String | semmle.label | access to local variable x2 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:492:15:492:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:497:31:497:32 | [post] access to local variable y1 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y1 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:497:36:497:37 | [post] access to local variable y2 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y2 : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:497:42:497:43 | [post] access to local variable y3 : SimpleClass [field field] : String | semmle.label | [post] access to local variable y3 : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:497:20:497:43 | [post] ... ? ... : ... : SimpleClass [field field] : String | semmle.label | [post] ... ? ... : ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:498:15:498:16 | access to local variable y1 : SimpleClass [field field] : String | semmle.label | access to local variable y1 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:498:15:498:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:499:15:499:16 | access to local variable y2 : SimpleClass [field field] : String | semmle.label | access to local variable y2 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:499:15:499:22 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:500:15:500:16 | access to local variable y3 : SimpleClass [field field] : String | semmle.label | access to local variable y3 : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:500:15:500:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:508:33:508:33 | [post] access to local variable x : SubSimpleClass [field field] : String | semmle.label | [post] access to local variable x : SubSimpleClass [field field] : String |
-| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SubSimpleClass [field field] : String | semmle.label | access to local variable x : SubSimpleClass [field field] : String |
+| GlobalDataFlow.cs:508:20:508:33 | [post] (...) ... : SimpleClass [field field] : String | semmle.label | [post] (...) ... : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:509:15:509:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:509:15:509:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:515:20:515:20 | [post] access to parameter x : SimpleClass [field field] : String | semmle.label | [post] access to parameter x : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:515:25:515:25 | [post] access to local variable y : SimpleClass [field field] : String | semmle.label | [post] access to local variable y : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:515:20:515:25 | [post] ... ?? ... : SimpleClass [field field] : String | semmle.label | [post] ... ?? ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:516:15:516:15 | access to parameter x : SimpleClass [field field] : String | semmle.label | access to parameter x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:516:15:516:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:517:15:517:15 | access to local variable y : SimpleClass [field field] : String | semmle.label | access to local variable y : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:517:15:517:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:527:20:527:20 | [post] access to local variable x : SimpleClass [field field] : String | semmle.label | [post] access to local variable x : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:528:20:528:20 | [post] access to local variable y : SimpleClass [field field] : String | semmle.label | [post] access to local variable y : SimpleClass [field field] : String |
-| GlobalDataFlow.cs:529:18:529:18 | [post] access to local variable z : SimpleClass [field field] : String | semmle.label | [post] access to local variable z : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:525:20:530:9 | [post] ... switch { ... } : SimpleClass [field field] : String | semmle.label | [post] ... switch { ... } : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:531:15:531:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:531:15:531:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:532:15:532:15 | access to local variable y : SimpleClass [field field] : String | semmle.label | access to local variable y : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:532:15:532:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:533:15:533:15 | access to local variable z : SimpleClass [field field] : String | semmle.label | access to local variable z : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:533:15:533:21 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:538:20:538:21 | [post] access to parameter sc : SimpleClass [field field] : String | semmle.label | [post] access to parameter sc : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:538:20:538:22 | [post] ...! : SimpleClass [field field] : String | semmle.label | [post] ...! : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:539:15:539:16 | access to parameter sc : SimpleClass [field field] : String | semmle.label | access to parameter sc : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:539:15:539:22 | access to field field | semmle.label | access to field field |
-| GlobalDataFlow.cs:546:24:546:24 | [post] access to local variable x : SimpleClass [field field] : String | semmle.label | [post] access to local variable x : SimpleClass [field field] : String |
+| GlobalDataFlow.cs:546:20:546:24 | [post] ... = ... : SimpleClass [field field] : String | semmle.label | [post] ... = ... : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:547:15:547:15 | access to local variable x : SimpleClass [field field] : String | semmle.label | access to local variable x : SimpleClass [field field] : String |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field | semmle.label | access to field field |
 | GlobalDataFlow.cs:553:71:553:71 | e : null [element] : String | semmle.label | e : null [element] : String |
 | GlobalDataFlow.cs:556:27:556:27 | access to parameter e : null [element] : String | semmle.label | access to parameter e : null [element] : String |
 | GlobalDataFlow.cs:558:44:558:47 | delegate call : String | semmle.label | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | semmle.label | access to local variable x : String |
+| GlobalDataFlowStringBuilder.cs:17:53:17:54 | sb [Return] : StringBuilder | semmle.label | sb [Return] : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | semmle.label | s : String |
 | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | semmle.label | [post] access to parameter sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:19:19:19:19 | access to parameter s : String | semmle.label | access to parameter s : String |
+| GlobalDataFlowStringBuilder.cs:22:65:22:66 | sb [Return] : StringBuilder | semmle.label | sb [Return] : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | semmle.label | s : String |
 | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | semmle.label | [post] access to parameter sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:24:19:24:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
@@ -999,6 +1036,8 @@ nodes
 | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | semmle.label | access to local variable sink1 |
 | GlobalDataFlowStringBuilder.cs:40:9:40:11 | [post] access to local variable sb2 : StringBuilder | semmle.label | [post] access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:40:20:40:26 | (...) ... : AppendInterpolatedStringHandler | semmle.label | (...) ... : AppendInterpolatedStringHandler |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:40:23:40:24 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:41:13:41:17 | access to local variable sink2 : String | semmle.label | access to local variable sink2 : String |
 | GlobalDataFlowStringBuilder.cs:41:21:41:23 | access to local variable sb2 : StringBuilder | semmle.label | access to local variable sb2 : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:41:21:41:34 | call to method ToString : String | semmle.label | call to method ToString : String |
@@ -1009,6 +1048,12 @@ nodes
 | GlobalDataFlowStringBuilder.cs:49:21:49:22 | access to local variable sb : StringBuilder | semmle.label | access to local variable sb : StringBuilder |
 | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString : String | semmle.label | call to method ToString : String |
 | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | semmle.label | access to local variable sink3 |
+| MultiImplementationA.cs:5:28:5:41 | "taint source" : String | semmle.label | "taint source" : String |
+| MultiImplementationA.cs:7:27:7:27 | x : String | semmle.label | x : String |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x | semmle.label | access to parameter x |
+| MultiImplementationB.cs:3:28:3:41 | "taint source" : String | semmle.label | "taint source" : String |
+| MultiImplementationB.cs:5:27:5:27 | x : String | semmle.label | x : String |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x | semmle.label | access to parameter x |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
 | Splitting.cs:8:13:8:13 | access to local variable x : String | semmle.label | access to local variable x : String |
@@ -1065,6 +1110,10 @@ subpaths
 | GlobalDataFlow.cs:83:23:83:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:315:31:315:40 | sinkParam8 : String | GlobalDataFlow.cs:318:16:318:25 | access to parameter sinkParam8 : String | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:85:23:85:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:85:118:85:118 | x : String | GlobalDataFlow.cs:85:127:85:127 | access to parameter x : String | GlobalDataFlow.cs:85:22:85:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:87:70:87:113 | (...) ... : null [element] : String | GlobalDataFlow.cs:87:121:87:121 | y : String | GlobalDataFlow.cs:87:127:87:127 | access to parameter y : String | GlobalDataFlow.cs:87:22:87:128 | call to method Zip<String,String,String> : IEnumerable<T> [element] : String |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:89:89:89 | s : String | GlobalDataFlow.cs:89:95:89:101 | ... + ... : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:89:23:89:66 | (...) ... : null [element] : String | GlobalDataFlow.cs:89:104:89:104 | x : String | GlobalDataFlow.cs:89:109:89:109 | access to parameter x : String | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:84:91:86 | acc : String | GlobalDataFlow.cs:91:95:91:101 | ... + ... : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String |
+| GlobalDataFlow.cs:91:75:91:80 | access to local variable sink14 : String | GlobalDataFlow.cs:91:104:91:104 | x : String | GlobalDataFlow.cs:91:109:91:109 | access to parameter x : String | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> : String |
 | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String |
 | GlobalDataFlow.cs:139:29:139:33 | access to local variable sink3 : String | GlobalDataFlow.cs:138:40:138:40 | x : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String | GlobalDataFlow.cs:139:21:139:34 | delegate call : String |
 | GlobalDataFlow.cs:147:39:147:43 | access to local variable sink4 : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> : String |
@@ -1074,11 +1123,10 @@ subpaths
 | GlobalDataFlow.cs:220:22:220:28 | access to local variable tainted : IQueryable<T> [element] : String | GlobalDataFlow.cs:327:32:327:42 | sinkParam11 : String | GlobalDataFlow.cs:330:16:330:26 | access to parameter sinkParam11 : String | GlobalDataFlow.cs:220:22:220:49 | call to method Select<String,String> : IEnumerable<T> [element] : String |
 | GlobalDataFlow.cs:300:37:300:37 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
-| GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:558:46:558:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:558:44:558:47 | delegate call : String |
-| GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | GlobalDataFlowStringBuilder.cs:19:9:19:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder |
-| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | GlobalDataFlowStringBuilder.cs:24:9:24:10 | [post] access to parameter sb : StringBuilder | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:17:64:17:64 | s : String | GlobalDataFlowStringBuilder.cs:17:53:17:54 | sb [Return] : StringBuilder | GlobalDataFlowStringBuilder.cs:30:31:30:32 | [post] access to local variable sb : StringBuilder |
+| GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:22:76:22:76 | s : String | GlobalDataFlowStringBuilder.cs:22:65:22:66 | sb [Return] : StringBuilder | GlobalDataFlowStringBuilder.cs:48:43:48:44 | [post] access to local variable sb : StringBuilder |
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String |
@@ -1185,6 +1233,8 @@ subpaths
 | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:37:15:37:19 | access to local variable sink1 | access to local variable sink1 |
 | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | GlobalDataFlowStringBuilder.cs:30:35:30:48 | "taint source" : String | GlobalDataFlowStringBuilder.cs:42:15:42:19 | access to local variable sink2 | access to local variable sink2 |
 | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | GlobalDataFlowStringBuilder.cs:48:47:48:60 | "taint source" : String | GlobalDataFlowStringBuilder.cs:50:15:50:19 | access to local variable sink3 | access to local variable sink3 |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x | MultiImplementationA.cs:5:28:5:41 | "taint source" : String | MultiImplementationA.cs:7:39:7:39 | access to parameter x | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x | MultiImplementationB.cs:3:28:3:41 | "taint source" : String | MultiImplementationB.cs:5:39:5:39 | access to parameter x | access to parameter x |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |

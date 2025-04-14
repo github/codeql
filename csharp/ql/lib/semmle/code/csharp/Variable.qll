@@ -157,7 +157,7 @@ class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @p
   predicate isOutOrRef() { this.isOut() or this.isRef() }
 
   /**
-   * Holds if this parameter is a parameter array. For example, `args`
+   * Holds if this parameter is a parameter collection. For example, `args`
    * is a parameter array in
    *
    * ```csharp

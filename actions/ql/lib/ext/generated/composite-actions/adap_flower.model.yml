@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["adap/flower", "*", "input.poetry-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.setuptools-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.pip-version", "code-injection", "generated"]
+     - ["adap/flower", "*", "input.python-version", "code-injection", "generated"]

@@ -1,0 +1,32 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: untrustedGitCommandDataModel 
+    data:
+      # FILES=$(git diff-tree --no-commit-id --name-only HEAD -r)
+      - ["git\\b.*\\bdiff-tree\\b", "filename,multiline"]
+      # CHANGES=$(git --no-pager diff --name-only $NAME | grep -v -f .droneignore);
+      # CHANGES=$(git diff --name-only)
+      - ["git\\b.*\\bdiff\\b", "filename,multiline"]
+      # COMMIT_MESSAGE=$(git log --format=%s -n 1)
+      - ["git\\b.*\\blog\\b.*%s", "text,online"]
+      # COMMIT_MESSAGE=$(git log --format=%B -n 1) 
+      - ["git\\b.*\\blog\\b.*%B", "text,multiline"]
+      # COMMIT_MESSAGE=$(git log --format=oneline)
+      - ["git\\b.*\\blog\\b.*oneline", "text,oneline"]
+      # COMMIT_MESSAGE=$(git show -s --format=%B)
+      # COMMIT_MESSAGE=$(git show -s --format=%s)
+      - ["git\\b.*\\bshow\\b.*-s.*%s", "text,oneline"]
+      - ["git\\b.*\\bshow\\b.*-s.*%B", "text,multiline"]
+      # AUTHOR=$(git log -1 --pretty=format:'%an')
+      - ["git\\b.*\\blog\\b.*%an", "username,oneline"]
+      # AUTHOR=$(git show -s --pretty=%an)
+      - ["git\\b.*\\bshow\\b.*%an", "username,oneline"]
+      # EMAIL=$(git log -1 --pretty=format:'%ae')
+      - ["git\\b.*\\blog\\b.*%ae", "email,oneline"]
+      # EMAIL=$(git show -s --pretty=%ae)
+      - ["git\\b.*\\bshow\\b.*%ae", "email,oneline"]
+      # BRANCH=$(git branch --show-current)
+      - ["git\\b.*\\bbranch\\b.*\\b--show-current\\b", "branch,oneline"]
+      # BRANCH=$(git rev-parse --abbrev-ref HEAD)
+      - ["git\\b.*\\brev-parse\\b.*\\b--abbrev-ref\\b", "branch,oneline"]

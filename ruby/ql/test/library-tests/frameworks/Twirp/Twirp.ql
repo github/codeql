@@ -4,5 +4,3 @@ private import codeql.ruby.DataFlow
 query predicate sourceTest(Twirp::UnmarshaledParameter source) { any() }
 
 query predicate ssrfSinkTest(Twirp::ServiceUrlAsSsrfSink sink) { any() }
-
-deprecated query predicate serviceInstantiationTest(Twirp::ServiceInstantiation si) { any() }

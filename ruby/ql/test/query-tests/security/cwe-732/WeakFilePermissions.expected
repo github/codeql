@@ -1,25 +1,25 @@
 edges
-| FilePermissions.rb:51:3:51:6 | perm | FilePermissions.rb:53:19:53:22 | perm | provenance |  |
-| FilePermissions.rb:51:3:51:6 | perm | FilePermissions.rb:54:3:54:7 | perm2 | provenance |  |
-| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:3:51:6 | perm | provenance |  |
-| FilePermissions.rb:54:3:54:7 | perm2 | FilePermissions.rb:56:19:56:23 | perm2 | provenance |  |
-| FilePermissions.rb:58:3:58:6 | perm | FilePermissions.rb:59:3:59:7 | perm2 | provenance |  |
-| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | FilePermissions.rb:58:3:58:6 | perm | provenance |  |
-| FilePermissions.rb:59:3:59:7 | perm2 | FilePermissions.rb:61:19:61:23 | perm2 | provenance |  |
+| FilePermissions.rb:51:3:51:6 | perm : Integer | FilePermissions.rb:53:19:53:22 | perm | provenance |  |
+| FilePermissions.rb:51:3:51:6 | perm : Integer | FilePermissions.rb:54:3:54:7 | perm2 : Integer | provenance |  |
+| FilePermissions.rb:51:10:51:13 | 0777 : Integer | FilePermissions.rb:51:3:51:6 | perm : Integer | provenance |  |
+| FilePermissions.rb:54:3:54:7 | perm2 : Integer | FilePermissions.rb:56:19:56:23 | perm2 | provenance |  |
+| FilePermissions.rb:58:3:58:6 | perm : String | FilePermissions.rb:59:3:59:7 | perm2 : String | provenance |  |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" : String | FilePermissions.rb:58:3:58:6 | perm : String | provenance |  |
+| FilePermissions.rb:59:3:59:7 | perm2 : String | FilePermissions.rb:61:19:61:23 | perm2 | provenance |  |
 nodes
 | FilePermissions.rb:5:19:5:22 | 0222 | semmle.label | 0222 |
 | FilePermissions.rb:7:19:7:22 | 0622 | semmle.label | 0622 |
 | FilePermissions.rb:9:19:9:22 | 0755 | semmle.label | 0755 |
 | FilePermissions.rb:11:19:11:22 | 0777 | semmle.label | 0777 |
 | FilePermissions.rb:28:13:28:16 | 0755 | semmle.label | 0755 |
-| FilePermissions.rb:51:3:51:6 | perm | semmle.label | perm |
-| FilePermissions.rb:51:10:51:13 | 0777 | semmle.label | 0777 |
+| FilePermissions.rb:51:3:51:6 | perm : Integer | semmle.label | perm : Integer |
+| FilePermissions.rb:51:10:51:13 | 0777 : Integer | semmle.label | 0777 : Integer |
 | FilePermissions.rb:53:19:53:22 | perm | semmle.label | perm |
-| FilePermissions.rb:54:3:54:7 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:54:3:54:7 | perm2 : Integer | semmle.label | perm2 : Integer |
 | FilePermissions.rb:56:19:56:23 | perm2 | semmle.label | perm2 |
-| FilePermissions.rb:58:3:58:6 | perm | semmle.label | perm |
-| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | semmle.label | "u=wrx,g=rwx,o=x" |
-| FilePermissions.rb:59:3:59:7 | perm2 | semmle.label | perm2 |
+| FilePermissions.rb:58:3:58:6 | perm : String | semmle.label | perm : String |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" : String | semmle.label | "u=wrx,g=rwx,o=x" : String |
+| FilePermissions.rb:59:3:59:7 | perm2 : String | semmle.label | perm2 : String |
 | FilePermissions.rb:61:19:61:23 | perm2 | semmle.label | perm2 |
 | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | semmle.label | "u=rwx,o+r" |
 | FilePermissions.rb:67:19:67:24 | "a+rw" | semmle.label | "a+rw" |
@@ -31,9 +31,9 @@ subpaths
 | FilePermissions.rb:9:19:9:22 | 0755 | FilePermissions.rb:9:19:9:22 | 0755 | FilePermissions.rb:9:19:9:22 | 0755 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:9:3:9:32 | call to chmod | call to chmod |
 | FilePermissions.rb:11:19:11:22 | 0777 | FilePermissions.rb:11:19:11:22 | 0777 | FilePermissions.rb:11:19:11:22 | 0777 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:11:3:11:32 | call to chmod | call to chmod |
 | FilePermissions.rb:28:13:28:16 | 0755 | FilePermissions.rb:28:13:28:16 | 0755 | FilePermissions.rb:28:13:28:16 | 0755 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:28:3:28:26 | call to chmod | call to chmod |
-| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:53:19:53:22 | perm | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:53:3:53:32 | call to chmod | call to chmod |
-| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:56:19:56:23 | perm2 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:56:3:56:33 | call to chmod | call to chmod |
-| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | FilePermissions.rb:61:19:61:23 | perm2 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:61:3:61:33 | call to chmod | call to chmod |
+| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 : Integer | FilePermissions.rb:53:19:53:22 | perm | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:53:3:53:32 | call to chmod | call to chmod |
+| FilePermissions.rb:51:10:51:13 | 0777 | FilePermissions.rb:51:10:51:13 | 0777 : Integer | FilePermissions.rb:56:19:56:23 | perm2 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:56:3:56:33 | call to chmod | call to chmod |
+| FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" | FilePermissions.rb:58:10:58:26 | "u=wrx,g=rwx,o=x" : String | FilePermissions.rb:61:19:61:23 | perm2 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:61:3:61:33 | call to chmod | call to chmod |
 | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:63:3:63:39 | call to chmod | call to chmod |
 | FilePermissions.rb:67:19:67:24 | "a+rw" | FilePermissions.rb:67:19:67:24 | "a+rw" | FilePermissions.rb:67:19:67:24 | "a+rw" | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:67:3:67:34 | call to chmod | call to chmod |
 | FilePermissions.rb:72:21:72:24 | 0755 | FilePermissions.rb:72:21:72:24 | 0755 | FilePermissions.rb:72:21:72:24 | 0755 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:72:3:72:34 | call to chmod_R | call to chmod_R |

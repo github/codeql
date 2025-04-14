@@ -12,13 +12,13 @@
  */
 
 import java
-import JShellInjection
+deprecated import JShellInjection
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import JShellInjectionFlow::PathGraph
+deprecated import JShellInjectionFlow::PathGraph
 
-module JShellInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+deprecated module JShellInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JShellInjectionSink }
 
@@ -33,9 +33,15 @@ module JShellInjectionConfig implements DataFlow::ConfigSig {
   }
 }
 
-module JShellInjectionFlow = TaintTracking::Global<JShellInjectionConfig>;
+deprecated module JShellInjectionFlow = TaintTracking::Global<JShellInjectionConfig>;
 
-from JShellInjectionFlow::PathNode source, JShellInjectionFlow::PathNode sink
-where JShellInjectionFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "JShell injection from $@.", source.getNode(),
-  "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, JShellInjectionFlow::PathNode source, JShellInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  JShellInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "JShell injection from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

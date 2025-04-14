@@ -1,6 +1,6 @@
 import python
 import semmle.python.dataflow.new.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.ApiGraphs
 
 module ApiUseTest implements TestSig {

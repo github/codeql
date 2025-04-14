@@ -1,6 +1,7 @@
 /**
  * Provides classes for working with resource loading in Spring.
  */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.FlowSources

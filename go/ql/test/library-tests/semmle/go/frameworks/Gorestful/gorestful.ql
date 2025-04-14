@@ -1,6 +1,9 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import semmle.go.security.CommandInjection
-import CommandInjection::Flow::PathGraph
+import codeql.dataflow.test.ProvenancePathGraph
+import ShowProvenance<interpretModelForTest/2, CommandInjection::Flow::PathNode, CommandInjection::Flow::PathGraph>
 
 from CommandInjection::Flow::PathNode source, CommandInjection::Flow::PathNode sink
 where CommandInjection::Flow::flowPath(source, sink)

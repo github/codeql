@@ -1,11 +1,11 @@
-load("@py_deps//:defs.bzl", "aliases", "all_crate_deps")
-load("@semmle_code//:common.bzl", "codeql_rust_binary")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/py_deps:defs.bzl", "aliases", "all_crate_deps")
 
 codeql_rust_binary(
     name = "tsg-python",
     srcs = ["src/main.rs"],
     aliases = aliases(),
-    data = ["python.tsg"],
+    compile_data = ["python.tsg"],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -14,3 +14,8 @@ codeql_rust_binary(
         normal = True,
     ) + ["//python/extractor/tsg-python/tsp"],
 )
+
+exports_files([
+    "Cargo.toml",
+    "Cargo.lock",
+])

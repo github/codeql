@@ -132,8 +132,8 @@ def test_dict_from_keyword():
 @expects(2)
 def test_dict_from_list():
     d = dict([("k", SOURCE), ("k1", NONSOURCE)])
-    SINK(d["k"]) #$ MISSING: flow="SOURCE, l:-1 -> d[k]"
-    SINK_F(d["k1"])
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"]) #$ SPURIOUS: flow="SOURCE, l:-2 -> d['k1']"  // due to imprecise list content
 
 @expects(2)
 def test_dict_from_dict():
@@ -141,6 +141,14 @@ def test_dict_from_dict():
     d2 = dict(d1)
     SINK(d2["k"]) #$ flow="SOURCE, l:-2 -> d2['k']"
     SINK_F(d2["k1"])
+
+@expects(4)
+def test_dict_from_multiple_args():
+    d = dict([("k", SOURCE), ("k1", NONSOURCE)], k2 = SOURCE, k3 = NONSOURCE)
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
+    SINK_F(d["k1"]) #$ SPURIOUS: flow="SOURCE, l:-2 -> d['k1']" // due to imprecise list content
+    SINK(d["k2"]) #$ flow="SOURCE, l:-3 -> d['k2']"
+    SINK_F(d["k3"]) #$ SPURIOUS: flow="SOURCE, l:-4 -> d['k3']" // due to imprecise list content
 
 ## Container methods
 
@@ -358,3 +366,246 @@ def test_next_dict():
     i = iter(d)
     n = next(i)
     SINK(n) #$ MISSING: flow="SOURCE, l:-3 -> n"
+
+### map
+
+@expects(4)
+def test_map_list():
+    l1 = [SOURCE]
+    l2 = [NONSOURCE]
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_set():
+    s1 = {SOURCE}
+    s2 = {NONSOURCE}
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, s1, s2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_tuple():
+    t1 = (SOURCE,)
+    t2 = (NONSOURCE,)
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, t1, t2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+
+@expects(4)
+def test_map_dict():
+    d1 = {SOURCE: "v1"}
+    d2 = {NONSOURCE: "v2"}
+
+    def f(p1,p2):
+        SINK(p1)  #$ MISSING: flow="SOURCE, l:-4 -> p1"
+        SINK_F(p2)
+
+        return p1,p2
+
+    rl = list(map(f, d1, d2))
+    SINK(rl[0][0]) #$ MISSING: flow="SOURCE, l:-10 -> rl[0][0]"
+    SINK_F(rl[0][1])
+
+@expects(4)
+def test_map_multi_list():
+    l1 = [SOURCE]
+    l2 = [SOURCE]
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK(p2)  #$ flow="SOURCE, l:-4 -> p2"
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-9 -> rl[0][0]"
+    SINK(rl[0][1]) #$ flow="SOURCE, l:-9 -> rl[0][1]"
+
+@expects(4)
+def test_map_multi_tuple():
+    l1 = (SOURCE,)
+    l2 = (SOURCE,)
+
+    def f(p1,p2):
+        SINK(p1)  #$ flow="SOURCE, l:-4 -> p1"
+        SINK(p2)  #$ MISSING: flow="SOURCE, l:-4 -> p2" # Tuples are not tracked beyond the first list argument for performance.
+        return p1,p2
+
+    rl = list(map(f, l1, l2))
+    SINK(rl[0][0]) #$ flow="SOURCE, l:-9 -> rl[0][0]"
+    SINK(rl[0][1]) #$ MISSING: flow="SOURCE, l:-9 -> rl[0][1]"
+
+### filter 
+
+@expects(2)
+def test_filter_list():
+    l = [SOURCE]
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,l))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_set():
+    s = {SOURCE}
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,s))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_tuple():
+    t = (SOURCE,)
+
+    def f(p):
+        SINK(p) #$ flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,t))
+    SINK(rl[0]) #$ flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(2)
+def test_filter_dict():
+    d = {SOURCE: "v"}
+
+    def f(p):
+        SINK(p) #$ MISSING: flow="SOURCE, l:-3 -> p"
+        return True 
+
+    rl = list(filter(f,d))
+    SINK(rl[0]) #$ MISSING: flow="SOURCE, l:-7 -> rl[0]"
+
+@expects(1)
+def test_enumerate_list():
+    l = [SOURCE]
+
+    e = list(enumerate(l))
+
+    SINK(e[0][1]) #$ flow="SOURCE, l:-4 -> e[0][1]"
+
+@expects(1)
+def test_enumerate_set():
+    s = {SOURCE}
+
+    e = list(enumerate(s))
+
+    SINK(e[0][1]) #$ flow="SOURCE, l:-4 -> e[0][1]"
+
+@expects(1)
+def test_enumerate_tuple():
+    t = (SOURCE,)
+
+    e = list(enumerate(t))
+
+    SINK(e[0][1]) #$ flow="SOURCE, l:-4 -> e[0][1]"
+
+@expects(2)
+def test_enumerate_list_for():
+    l = [SOURCE]
+
+    for i, x in enumerate(l):
+        SINK(x) #$ flow="SOURCE, l:-3 -> x" 
+
+    for t in enumerate(l):
+        SINK(t[1]) #$ flow="SOURCE, l:-6 -> t[1]"
+
+@expects(1)
+def test_enumerate_dict():
+    d = {SOURCE:"v"}
+
+    e = list(enumerate(d))
+
+    SINK(e[0][1]) # $ MISSING: flow="SOURCE, l:-4 -> e[0][1]"
+
+@expects(8)
+def test_zip_list():
+    l1 = [SOURCE, SOURCE]
+    l2 = [SOURCE, NONSOURCE]
+    l3 = [NONSOURCE, SOURCE]
+    l4 = [NONSOURCE, NONSOURCE]
+    
+    z =  list(zip(l1,l2,l3,l4))
+
+    SINK(z[0][0])  #$ flow="SOURCE, l:-7 -> z[0][0]"
+    SINK(z[0][1])  #$ flow="SOURCE, l:-7 -> z[0][1]"
+    SINK_F(z[0][2])  #$ SPURIOUS: flow="SOURCE, l:-7 -> z[0][2]"
+    SINK_F(z[0][3])
+    SINK(z[1][0])  #$ flow="SOURCE, l:-11 -> z[1][0]"
+    SINK_F(z[1][1]) #$ SPURIOUS: flow="SOURCE, l:-11 -> z[1][1]"
+    SINK(z[1][2]) #$ flow="SOURCE, l:-11 -> z[1][2]"
+    SINK_F(z[1][3])
+
+@expects(4)
+def test_zip_set():
+    s1 = {SOURCE}
+    s2 = {NONSOURCE}
+    s3 = {SOURCE}
+    s4 = {NONSOURCE}
+    
+    z =  list(zip(s1,s2,s3,s4))
+
+    SINK(z[0][0])  #$ flow="SOURCE, l:-7 -> z[0][0]"
+    SINK_F(z[0][1])
+    SINK(z[0][2]) #$ flow="SOURCE, l:-7 -> z[0][2]"
+    SINK_F(z[0][3])
+
+@expects(8)
+def test_zip_tuple():
+    t1 = (SOURCE, SOURCE)
+    t2 = (SOURCE, NONSOURCE)
+    t3 = (NONSOURCE, SOURCE)
+    t4 = (NONSOURCE, NONSOURCE)
+    
+    z =  list(zip(t1,t2,t3,t4))
+
+    SINK(z[0][0])  #$ flow="SOURCE, l:-7 -> z[0][0]"
+    SINK(z[0][1])  #$ flow="SOURCE, l:-7 -> z[0][1]"
+    SINK_F(z[0][2])  
+    SINK_F(z[0][3])
+    SINK(z[1][0])  #$ flow="SOURCE, l:-11 -> z[1][0]"
+    SINK_F(z[1][1]) #$ SPURIOUS: flow="SOURCE, l:-11 -> z[1][1]"
+    SINK(z[1][2]) #$ MISSING: flow="SOURCE, l:-11 -> z[1][2]" # Tuple contents are not tracked beyond the first two arguments for performance.
+    SINK_F(z[1][3])
+
+@expects(4)
+def test_zip_dict():
+    d1 = {SOURCE: "v"}
+    d2 = {NONSOURCE: "v"}
+    d3 = {SOURCE: "v"}
+    d4 = {NONSOURCE: "v"}
+    
+    z =  list(zip(d1,d2,d3,d4))
+
+    SINK(z[0][0])  #$ MISSING: flow="SOURCE, l:-7 -> z[0][0]"
+    SINK_F(z[0][1]) 
+    SINK(z[0][2]) #$ MISSING: flow="SOURCE, l:-7 -> z[0][2]"
+    SINK_F(z[0][3])

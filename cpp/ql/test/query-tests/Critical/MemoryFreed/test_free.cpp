@@ -341,7 +341,88 @@ struct PtrContainer {
 
 void test_array(PtrContainer *containers) {
     delete containers[0].ptr; // GOOD
-    delete containers[1].ptr; // GOOD [FALSE POSITIVE]
-    delete containers[2].ptr; // GOOD [FALSE POSITIVE]
-    delete containers[2].ptr; // BAD (double free)
+    delete containers[1].ptr; // GOOD
+    delete containers[2].ptr; // GOOD
+    delete containers[2].ptr; // BAD (double free) [NOT DETECTED]
+}
+
+struct E {
+    struct EC {
+        int* a;
+    } ec[2];
+};
+
+void test(E* e) {
+    free(e->ec[0].a);
+    free(e->ec[1].a); // GOOD
+}
+
+// ---
+
+void test_return_by_parameter(int **out_i, MyStruct **out_ms) {
+    int *a = (int *)malloc(sizeof(int)); // GOOD (freed)
+    int *b = (int *)malloc(sizeof(int)); // GOOD (out parameter)
+    int *d = (int *)malloc(sizeof(int)); // BAD (not freed)
+    MyStruct *e = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (freed)
+    MyStruct *f = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (out parameter)
+    MyStruct *h = (MyStruct *)malloc(sizeof(MyStruct)); // BAD (not freed)
+
+    free(a);
+    *out_i = b;
+
+    free(e);
+    *out_ms = f;
+}
+
+void test_return_by_parameter_caller() {
+    int *i;
+    MyStruct *s;
+
+    test_return_by_parameter(&i, &s);
+    free(i);
+    free(s);
+}
+
+// ---
+
+class HasGetterAndFree {
+public:
+    HasGetterAndFree() {
+        buffer = malloc(1024);
+    }
+
+    ~HasGetterAndFree() {
+        free(buffer);
+    }
+
+    void *getBuffer() {
+        return buffer;
+    }
+
+    void *buffer;
+};
+
+class HasGetterNoFree {
+public:
+    HasGetterNoFree() {
+        buffer = malloc(1024);
+    }
+
+    void *getBuffer() {
+        return buffer;
+    }
+
+    void *buffer;
+};
+
+void testHasGetter() {
+    HasGetterAndFree hg;
+    void *buffer = hg.getBuffer(); // GOOD (freed in destructor)
+
+    HasGetterNoFree hg2;
+    void *buffer2 = hg2.getBuffer(); // GOOD (freed below)
+    free(buffer2);
+
+    HasGetterNoFree hg3;
+    void *buffer3 = hg3.getBuffer(); // BAD (not freed) [NOT DETECTED]
 }

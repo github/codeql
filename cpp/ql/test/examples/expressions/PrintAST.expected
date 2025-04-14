@@ -870,6 +870,8 @@ Throw.cpp:
 #    8|               Type = [BoolType] bool
 #    8|               ValueCategory = prvalue
 #   12|       getChild(1): [Handler] <handler>
+#   12|         getParameter(): [Parameter] e
+#   12|             Type = [PointerType] E *
 #   12|         getBlock(): [CatchBlock] { ... }
 #   13|           getStmt(0): [ExprStmt] ExprStmt
 #   13|             getExpr(): [ReThrowExpr] re-throw exception 
@@ -913,7 +915,7 @@ VacuousDestructorCall.cpp:
 #    2| [TemplateFunction,TopLevelFunction] void CallDestructor<T>(T, T*)
 #    2|   <params>: 
 #    2|     getParameter(0): [Parameter] x
-#    2|         Type = [TemplateParameter] T
+#    2|         Type = [TypeTemplateParameter] T
 #    2|     getParameter(1): [Parameter] y
 #    2|         Type = [PointerType] T *
 #    2|   getEntryPoint(): [BlockStmt] { ... }
@@ -925,7 +927,7 @@ VacuousDestructorCall.cpp:
 #    3|             Type = [UnknownType] unknown
 #    3|             ValueCategory = prvalue
 #    3|           getChild(-1): [VariableAccess] x
-#    3|               Type = [TemplateParameter] T
+#    3|               Type = [TypeTemplateParameter] T
 #    3|               ValueCategory = lvalue
 #    4|     getStmt(1): [ExprStmt] ExprStmt
 #    4|       getExpr(): [ExprCall] call to expression

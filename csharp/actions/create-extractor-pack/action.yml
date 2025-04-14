@@ -5,9 +5,9 @@ runs:
   steps:
     - uses: ./.github/actions/fetch-codeql
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.101
+        dotnet-version: 9.0.100
     - name: Build Extractor
       shell: bash
       run: scripts/create-extractor-pack.sh

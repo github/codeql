@@ -1,5 +1,5 @@
 edges
-| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance | Config |
 | testNSUbiquitousKeyValueStore.swift:41:24:41:24 | x | testNSUbiquitousKeyValueStore.swift:42:40:42:40 | x | provenance |  |
 | testNSUbiquitousKeyValueStore.swift:44:10:44:22 | call to getPassword() | testNSUbiquitousKeyValueStore.swift:45:40:45:40 | y | provenance |  |
 | testNSUbiquitousKeyValueStore.swift:55:10:55:10 | passwd | testNSUbiquitousKeyValueStore.swift:59:40:59:40 | x | provenance |  |
@@ -12,7 +12,7 @@ edges
 | testUserDefaults.swift:57:10:57:10 | passwd | testUserDefaults.swift:61:28:61:28 | z | provenance |  |
 | testUserDefaults.swift:74:7:74:7 | self | file://:0:0:0:0 | self | provenance |  |
 | testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:74:7:74:7 | self | provenance |  |
-| testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:82:28:82:40 | .value | provenance |  |
+| testUserDefaults.swift:82:28:82:31 | .password | testUserDefaults.swift:82:28:82:40 | .value | provenance | Config |
 nodes
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | self | semmle.label | self |

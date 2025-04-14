@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM people WHERE firstname=$1",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "firstname",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "lastname",
+        "ordinal": 2,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "c996a36820ff0b98021fa553b09b6da5ed65c28f666a68c4d73a1918f0eaa6f6"
+}

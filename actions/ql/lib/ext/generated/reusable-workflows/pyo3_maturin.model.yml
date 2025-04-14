@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pyo3/maturin/.github/workflows/downstream.yml", "*", "input.manifest-dir", "code-injection", "generated"]

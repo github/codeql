@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.InsecureTrustManagerQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module InsecureTrustManagerTest implements TestSig {
   string getARelevantTag() { result = "hasValueFlow" }

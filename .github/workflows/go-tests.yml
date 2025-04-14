@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - "go/**"
+      - "!go/documentation/**"
+      - "shared/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
@@ -12,9 +14,14 @@ on:
   pull_request:
     paths:
       - "go/**"
+      - "!go/documentation/**"      
+      - "shared/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
+      - MODULE.bazel
+      - .bazelrc
+      - misc/bazel/**
 
 permissions:
   contents: read

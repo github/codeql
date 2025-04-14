@@ -8,8 +8,6 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
 /**
  * Gets the name of an unescaped placeholder in a lodash template.
@@ -21,13 +19,11 @@ string getAPlaceholderInString(string s) {
   result = s.regexpCapture(".*<%=\\s*([a-zA-Z0-9_]+)\\s*%>.*", 1)
 }
 
-class TemplateInjection extends TaintTracking::Configuration {
-  TemplateInjection() { this = "TemplateInjection" }
+module TemplateInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSource(Node node) { node instanceof RemoteFlowSource }
-
-  override predicate isSink(Node node) {
-    exists(CallNode call, string placeholder |
+  predicate isSink(DataFlow::Node node) {
+    exists(DataFlow::CallNode call, string placeholder |
       call = LodashUnderscore::member("template").getACall() and
       placeholder = getAPlaceholderInString(call.getArgument(0).getStringValue()) and
       node = call.getOptionArgument(1, placeholder)
@@ -35,7 +31,11 @@ class TemplateInjection extends TaintTracking::Configuration {
   }
 }
 
-from TemplateInjection cfg, PathNode source, PathNode sink
-where cfg.hasFlowPath(source, sink)
+module TemplateInjectionFlow = TaintTracking::Global<TemplateInjectionConfig>;
+
+import TemplateInjectionFlow::PathGraph
+
+from TemplateInjectionFlow::PathNode source, TemplateInjectionFlow::PathNode sink
+where TemplateInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "User-controlled value from $@ occurs unescaped in a lodash template.", source.getNode(), "here."

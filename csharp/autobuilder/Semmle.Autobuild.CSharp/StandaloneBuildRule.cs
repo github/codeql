@@ -10,17 +10,9 @@ namespace Semmle.Autobuild.CSharp
     {
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
-            if (builder.CodeQLExtractorLangRoot is null
-                || builder.CodeQlPlatform is null)
-            {
-                return BuildScript.Failure;
-            }
-
-            var standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
-            var cmd = new CommandBuilder(builder.Actions);
-            cmd.RunCommand(standalone);
-
-            return cmd.Script;
+            return builder.Options.Binlog is string binlog
+                ? BuildScript.Create(_ => Semmle.Extraction.CSharp.Driver.Main(["--binlog", binlog]))
+                : BuildScript.Create(_ => Semmle.Extraction.CSharp.Standalone.Program.Main([]));
         }
     }
 }

@@ -1,0 +1,4 @@
+| gen_call_expr.rs:5:5:5:11 | foo(...) | gen_call_expr.rs:5:8:5:11 | ArgList |
+| gen_call_expr.rs:6:5:6:23 | foo::<...>(...) | gen_call_expr.rs:6:20:6:23 | ArgList |
+| gen_call_expr.rs:7:5:7:14 | ...(...) | gen_call_expr.rs:7:11:7:14 | ArgList |
+| gen_call_expr.rs:8:5:8:10 | foo(...) | gen_call_expr.rs:8:8:8:10 | ArgList |

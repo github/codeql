@@ -1,7 +1,7 @@
 booleans
 | boolean |
 getExprType
-| boolean-type.ts:1:13:1:17 | dummy | typeof library-tests/TypeScript/Types/dummy.ts |
+| boolean-type.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | boolean-type.ts:1:24:1:32 | "./dummy" | any |
 | boolean-type.ts:3:5:3:9 | true1 | true |
 | boolean-type.ts:4:5:4:9 | true2 | true |
@@ -24,7 +24,7 @@ getExprType
 | middle-rest.ts:3:8:3:11 | true | true |
 | middle-rest.ts:3:14:3:20 | "hello" | "hello" |
 | middle-rest.ts:3:23:3:25 | 123 | 123 |
-| tst.ts:1:13:1:17 | dummy | typeof library-tests/TypeScript/Types/dummy.ts |
+| tst.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | tst.ts:1:24:1:32 | "./dummy" | any |
 | tst.ts:3:5:3:10 | numVar | number |
 | tst.ts:5:5:5:8 | num1 | number |
@@ -127,7 +127,7 @@ getExprType
 | tst.ts:69:24:69:45 | {yetAno ... : true} | MyUnion2 |
 | tst.ts:69:25:69:38 | yetAnotherType | true |
 | tst.ts:69:41:69:44 | true | true |
-| tst.ts:71:8:71:11 | TS43 | typeof TS43 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:71:8:71:11 | TS43 | typeof TS43 in tst.ts |
 | tst.ts:74:5:74:22 | get size(): number | number |
 | tst.ts:74:9:74:12 | size | number |
 | tst.ts:75:5:75:47 | set siz ... olean); | number |
@@ -175,7 +175,7 @@ getExprType
 | tst.ts:126:7:126:22 | this.#someMethod | () => number |
 | tst.ts:126:7:126:24 | this.#someMethod() | number |
 | tst.ts:127:14:127:28 | this.#someValue | number |
-| tst.ts:132:8:132:11 | TS44 | typeof TS44 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:132:8:132:11 | TS44 | typeof TS44 in tst.ts |
 | tst.ts:133:12:133:14 | foo | (arg: unknown) => void |
 | tst.ts:133:16:133:18 | arg | unknown |
 | tst.ts:134:11:134:21 | argIsString | boolean |
@@ -260,7 +260,7 @@ getExprType
 | tst.ts:189:11:189:15 | count | number |
 | tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
 | tst.ts:189:19:189:28 | Foo.#count | number |
-| tst.ts:195:8:195:11 | TS45 | typeof TS45 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:195:8:195:11 | TS45 | typeof TS45 in tst.ts |
 | tst.ts:207:5:207:8 | body | string |
 | tst.ts:212:7:212:13 | message | string |
 | tst.ts:215:19:215:25 | handler | (r: Success \| Error) => void |
@@ -301,7 +301,7 @@ getExprType
 | tst.ts:238:11:238:14 | Foo3 | { foo: string; } |
 | tst.ts:238:11:238:18 | Foo3.foo | string |
 | tst.ts:238:16:238:18 | foo | string |
-| tst.ts:240:8:240:11 | TS46 | typeof TS46 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:240:8:240:11 | TS46 | typeof TS46 in tst.ts |
 | tst.ts:241:9:241:12 | Base | Base |
 | tst.ts:243:9:243:15 | Derived | Derived |
 | tst.ts:243:25:243:28 | Base | Base |
@@ -474,7 +474,6 @@ getExprType
 | tst.ts:358:13:358:23 | tstModuleES | () => "a" \| "b" |
 | tst.ts:358:13:358:25 | tstModuleES() | "a" \| "b" |
 | tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
-| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
 | tst.ts:360:30:360:49 | './tstModuleCJS.cjs' | any |
 | tst.ts:362:1:362:7 | console | Console |
 | tst.ts:362:1:362:11 | console.log | (...data: any[]) => void |
@@ -482,27 +481,27 @@ getExprType
 | tst.ts:362:9:362:11 | log | (...data: any[]) => void |
 | tst.ts:362:13:362:24 | tstModuleCJS | () => "a" \| "b" |
 | tst.ts:362:13:362:26 | tstModuleCJS() | "a" \| "b" |
-| tst.ts:368:13:368:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:368:13:368:13 | A | typeof tstSuffixA.ts |
 | tst.ts:368:20:368:33 | './tstSuffixA' | any |
 | tst.ts:370:1:370:7 | console | Console |
 | tst.ts:370:1:370:11 | console.log | (...data: any[]) => void |
 | tst.ts:370:1:370:29 | console ... File()) | void |
 | tst.ts:370:9:370:11 | log | (...data: any[]) => void |
-| tst.ts:370:13:370:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:370:13:370:13 | A | typeof tstSuffixA.ts |
 | tst.ts:370:13:370:26 | A.resolvedFile | () => "tstSuffixA.ts" |
 | tst.ts:370:13:370:28 | A.resolvedFile() | "tstSuffixA.ts" |
 | tst.ts:370:15:370:26 | resolvedFile | () => "tstSuffixA.ts" |
-| tst.ts:372:13:372:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:372:13:372:13 | B | typeof tstSuffixB.ios.ts |
 | tst.ts:372:20:372:33 | './tstSuffixB' | any |
 | tst.ts:374:1:374:7 | console | Console |
 | tst.ts:374:1:374:11 | console.log | (...data: any[]) => void |
 | tst.ts:374:1:374:29 | console ... File()) | void |
 | tst.ts:374:9:374:11 | log | (...data: any[]) => void |
-| tst.ts:374:13:374:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:374:13:374:13 | B | typeof tstSuffixB.ios.ts |
 | tst.ts:374:13:374:26 | B.resolvedFile | () => "tstSuffixB.ios.ts" |
 | tst.ts:374:13:374:28 | B.resolvedFile() | "tstSuffixB.ios.ts" |
 | tst.ts:374:15:374:26 | resolvedFile | () => "tstSuffixB.ios.ts" |
-| tst.ts:379:8:379:11 | TS48 | typeof TS48 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:379:8:379:11 | TS48 | typeof TS48 in tst.ts |
 | tst.ts:383:22:383:35 | chooseRandomly | <T>(x: T, y: T) => T |
 | tst.ts:383:40:383:40 | x | T |
 | tst.ts:383:46:383:46 | y | T |
@@ -519,7 +518,7 @@ getExprType
 | tst.ts:385:56:385:56 | 0 | 0 |
 | tst.ts:385:59:385:63 | false | false |
 | tst.ts:385:66:385:71 | "bye!" | "bye!" |
-| tst.ts:390:8:390:11 | TS49 | typeof TS49 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:390:8:390:11 | TS49 | typeof TS49 in tst.ts |
 | tst.ts:395:9:395:15 | palette | { red: [number, number, number]; green: string;... |
 | tst.ts:395:19:399:3 | {\\n    r ... 5],\\n  } | Record<Colors, string \| RGB> |
 | tst.ts:395:19:399:42 | {\\n    r ...  \| RGB> | { red: [number, number, number]; green: string;... |
@@ -560,7 +559,7 @@ getExprType
 | tst.ts:423:7:423:22 | this.name = name | string |
 | tst.ts:423:12:423:15 | name | string |
 | tst.ts:423:19:423:22 | name | string |
-| tst.ts:430:8:430:11 | TS50 | typeof TS50 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:430:8:430:11 | TS50 | typeof TS50 in tst.ts |
 | tst.ts:432:33:432:36 | args | Args |
 | tst.ts:433:68:433:71 | args | Args |
 | tst.ts:435:15:435:24 | methodName | string |
@@ -633,7 +632,7 @@ getExprType
 | tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] |
 | tst.ts:467:15:467:20 | foo[1] | "b" |
 | tst.ts:467:19:467:19 | 1 | 1 |
-| tst.ts:472:8:472:11 | TS52 | typeof TS52 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:472:8:472:11 | TS52 | typeof TS52 in tst.ts |
 | tst.ts:473:11:473:19 | SomeClass | SomeClass |
 | tst.ts:474:10:474:36 | ((_targ ...  => {}) | (_target: undefined, _context: ClassFieldDecora... |
 | tst.ts:474:11:474:35 | (_targe ... ) => {} | (_target: undefined, _context: ClassFieldDecora... |
@@ -658,7 +657,7 @@ getExprType
 | tst.ts:483:17:483:58 | ["hello ... string> | [first: string, string] |
 | tst.ts:483:18:483:24 | "hello" | "hello" |
 | tst.ts:483:27:483:33 | "world" | "world" |
-| tst.ts:486:8:486:11 | TS54 | typeof TS54 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:486:8:486:11 | TS54 | typeof TS54 in tst.ts |
 | tst.ts:487:48:487:53 | colors | C[] |
 | tst.ts:488:12:488:17 | colors | C[] |
 | tst.ts:488:12:488:20 | colors[0] | C |
@@ -692,6 +691,50 @@ getExprType
 | tst.ts:494:24:494:24 | 0 | 0 |
 | tst.ts:494:28:494:33 | "even" | "even" |
 | tst.ts:494:36:494:40 | "odd" | "odd" |
+| tst.ts:498:8:498:11 | TS55 | typeof TS55 in tst.ts |
+| tst.ts:499:9:499:15 | strings | string[] |
+| tst.ts:499:19:499:32 | (["foo", 123]) | (string \| number)[] |
+| tst.ts:499:19:500:11 | (["foo" ... .filter | { <S extends string \| number>(predicate: (value... |
+| tst.ts:499:19:500:39 | (["foo" ... tring") | string[] |
+| tst.ts:499:20:499:31 | ["foo", 123] | (string \| number)[] |
+| tst.ts:499:21:499:25 | "foo" | "foo" |
+| tst.ts:499:28:499:30 | 123 | 123 |
+| tst.ts:500:6:500:11 | filter | { <S extends string \| number>(predicate: (value... |
+| tst.ts:500:13:500:13 | s | string \| number |
+| tst.ts:500:13:500:38 | s => ty ... string" | (s: string \| number) => s is string |
+| tst.ts:500:18:500:25 | typeof s | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:500:18:500:38 | typeof  ... string" | boolean |
+| tst.ts:500:25:500:25 | s | string \| number |
+| tst.ts:500:31:500:38 | "string" | "string" |
+| tst.ts:502:14:502:16 | str | string |
+| tst.ts:502:21:502:27 | strings | string[] |
+| tst.ts:503:5:503:7 | str | string |
+| tst.ts:503:5:503:19 | str.toLowerCase | () => string |
+| tst.ts:503:5:503:21 | str.toLowerCase() | string |
+| tst.ts:503:9:503:19 | toLowerCase | () => string |
+| tst.ts:506:12:506:13 | f1 | (obj: Record<string, unknown>, key: string) => ... |
+| tst.ts:506:15:506:17 | obj | Record<string, unknown> |
+| tst.ts:506:45:506:47 | key | string |
+| tst.ts:507:9:507:23 | typeof obj[key] | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:507:9:507:36 | typeof  ... string" | boolean |
+| tst.ts:507:16:507:18 | obj | Record<string, unknown> |
+| tst.ts:507:16:507:23 | obj[key] | unknown |
+| tst.ts:507:20:507:22 | key | string |
+| tst.ts:507:29:507:36 | "string" | "string" |
+| tst.ts:508:11:508:13 | str | string |
+| tst.ts:508:17:508:19 | obj | Record<string, unknown> |
+| tst.ts:508:17:508:24 | obj[key] | string |
+| tst.ts:508:17:508:36 | obj[key].toUpperCase | () => string |
+| tst.ts:508:17:508:38 | obj[key ... rCase() | string |
+| tst.ts:508:21:508:23 | key | string |
+| tst.ts:508:26:508:36 | toUpperCase | () => string |
+| tst.ts:513:11:513:14 | TS57 | typeof TS57 in tst.ts |
+| tst.ts:514:17:514:17 | a | symbol |
+| tst.ts:515:16:515:16 | A | A |
+| tst.ts:516:7:516:24 | [a]() { return 1 } | () => number |
+| tst.ts:516:8:516:8 | a | symbol |
+| tst.ts:516:22:516:22 | 1 | 1 |
+| tst.ts:519:17:519:18 | e1 | () => number |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -743,18 +786,18 @@ getExprType
 | type_alias.ts:26:19:26:20 | id | string |
 | type_alias.ts:26:23:26:36 | "second-child" | "second-child" |
 | type_alias.ts:26:41:26:62 | "I'm th ...  child" | "I'm the second child" |
-| type_definition_objects.ts:1:13:1:17 | dummy | typeof library-tests/TypeScript/Types/dummy.ts |
+| type_definition_objects.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definition_objects.ts:1:24:1:32 | "./dummy" | any |
 | type_definition_objects.ts:3:14:3:14 | C | C |
-| type_definition_objects.ts:4:5:4:12 | classObj | typeof C in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definition_objects.ts:4:16:4:16 | C | typeof C in library-tests/TypeScript/Types/type_definition_objects.ts |
+| type_definition_objects.ts:4:5:4:12 | classObj | typeof C in type_definition_objects.ts |
+| type_definition_objects.ts:4:16:4:16 | C | typeof C in type_definition_objects.ts |
 | type_definition_objects.ts:6:13:6:13 | E | E |
-| type_definition_objects.ts:7:5:7:11 | enumObj | typeof E in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definition_objects.ts:7:15:7:15 | E | typeof E in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definition_objects.ts:9:18:9:18 | N | typeof N in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definition_objects.ts:10:5:10:16 | namespaceObj | typeof N in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definition_objects.ts:10:20:10:20 | N | typeof N in library-tests/TypeScript/Types/type_definition_objects.ts |
-| type_definitions.ts:1:13:1:17 | dummy | typeof library-tests/TypeScript/Types/dummy.ts |
+| type_definition_objects.ts:7:5:7:11 | enumObj | typeof E in type_definition_objects.ts |
+| type_definition_objects.ts:7:15:7:15 | E | typeof E in type_definition_objects.ts |
+| type_definition_objects.ts:9:18:9:18 | N | typeof N in type_definition_objects.ts |
+| type_definition_objects.ts:10:5:10:16 | namespaceObj | typeof N in type_definition_objects.ts |
+| type_definition_objects.ts:10:20:10:20 | N | typeof N in type_definition_objects.ts |
+| type_definitions.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definitions.ts:1:24:1:32 | "./dummy" | any |
 | type_definitions.ts:4:3:4:3 | x | S |
 | type_definitions.ts:6:5:6:5 | i | I<number> |
@@ -807,6 +850,7 @@ getTypeDefinitionType
 | tst.ts:447:5:458:5 | class P ... }\\n    } | Person |
 | tst.ts:473:5:476:5 | class S ... ;\\n    } | SomeClass |
 | tst.ts:481:5:481:34 | type Pa ...  T, T]; | Pair3<T> |
+| tst.ts:515:10:517:3 | class A ...  };\\n  } | A |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -820,8 +864,6 @@ getTypeDefinitionType
 | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; | Alias<T> |
 getTypeExprType
 | badTypes.ts:5:11:5:11 | A | A |
-| badTypes.ts:5:21:5:26 | this.B | any |
-| badTypes.ts:5:26:5:26 | B | any |
 | badTypes.ts:6:6:6:6 | T | any |
 | badTypes.ts:6:10:6:23 | typeof var.bar | any |
 | badTypes.ts:6:17:6:19 | var | any |
@@ -1178,6 +1220,16 @@ getTypeExprType
 | tst.ts:487:56:487:58 | C[] | C[] |
 | tst.ts:487:76:487:82 | NoInfer | any |
 | tst.ts:487:84:487:84 | C | C |
+| tst.ts:506:20:506:25 | Record | Record<K, T> |
+| tst.ts:506:20:506:42 | Record< ... nknown> | Record<string, unknown> |
+| tst.ts:506:27:506:32 | string | string |
+| tst.ts:506:35:506:41 | unknown | unknown |
+| tst.ts:506:50:506:55 | string | string |
+| tst.ts:514:20:514:25 | symbol | symbol |
+| tst.ts:519:21:519:21 | A | A |
+| tst.ts:519:21:519:31 | A[typeof a] | () => number |
+| tst.ts:519:23:519:30 | typeof a | symbol |
+| tst.ts:519:30:519:30 | a | symbol |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1249,6 +1301,7 @@ getTypeExprType
 missingToString
 referenceDefinition
 | A | badTypes.ts:5:1:5:29 | interfa ... is.B {} |
+| A | tst.ts:515:10:517:3 | class A ...  };\\n  } |
 | Action | tst.ts:252:3:254:50 | type Ac ... ring }; |
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
@@ -1375,6 +1428,7 @@ unknownType
 | tst.ts:228:12:228:16 | other | unknown |
 | tst.ts:229:16:229:20 | other | unknown |
 | tst.ts:230:20:230:24 | other | unknown |
+| tst.ts:507:16:507:23 | obj[key] | unknown |
 abstractSignature
 | (): HasArea |
 | new (): HasArea |

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
+    data:
+      - ["file", true, 0]

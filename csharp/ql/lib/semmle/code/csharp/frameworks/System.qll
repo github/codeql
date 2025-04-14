@@ -354,6 +354,14 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
+  /** Gets the `ReplaceLineEndings(string) method. */
+  Method getReplaceLineEndingsMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("ReplaceLineEndings") and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof StringType
+  }
+
   /** Gets a `Format(...)` method. */
   Method getFormatMethod() {
     result.getDeclaringType() = this and
@@ -746,4 +754,25 @@ class SystemNotImplementedExceptionClass extends SystemClass {
 /** The `System.DateTime` struct. */
 class SystemDateTimeStruct extends SystemStruct {
   SystemDateTimeStruct() { this.hasName("DateTime") }
+}
+
+/** The `System.DateTimeOffset` struct. */
+class SystemDateTimeOffsetStruct extends SystemStruct {
+  SystemDateTimeOffsetStruct() { this.hasName("DateTimeOffset") }
+}
+
+/** The `System.Span<T>` struct. */
+class SystemSpanStruct extends SystemUnboundGenericStruct {
+  SystemSpanStruct() {
+    this.hasName("Span`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
+/** The `System.ReadOnlySpan<T>` struct. */
+class SystemReadOnlySpanStruct extends SystemUnboundGenericStruct {
+  SystemReadOnlySpanStruct() {
+    this.hasName("ReadOnlySpan`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
 }

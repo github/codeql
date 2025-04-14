@@ -28,29 +28,31 @@ module KindValidation<KindValidationConfigSig Config> {
           // shared
           "code-injection", "command-injection", "environment-injection", "file-content-store",
           "html-injection", "js-injection", "ldap-injection", "log-injection", "path-injection",
-          "request-forgery", "sql-injection", "url-redirection",
+          "request-forgery", "sql-injection", "url-redirection", "xpath-injection",
           // Java-only currently, but may be shared in the future
           "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
           "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
           "mvel-injection", "notification", "ognl-injection", "pending-intents",
           "response-splitting", "trust-boundary-violation", "template-injection", "url-forward",
-          "xpath-injection", "xslt-injection",
+          "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
           "mongodb.sink", "nosql-injection", "unsafe-deserialization",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
           // Go-only currently, but may be shared in the future
-          "jwt"
+          "jwt",
+          // CPP-only currently
+          "remote-sink"
         ]
       or
       this.matches([
           // shared
-          "credentials-%", "encryption-%", "qltest%", "test-%",
-          // Java-only currently, but may be shared in the future
-          "regex-use%",
+          "credentials-%", "encryption-%", "qltest%", "test-%", "regex-use%",
           // Swift-only currently, but may be shared in the future
-          "%string-%length", "weak-hash-input-%"
+          "%string-%length", "weak-hash-input-%",
+          // Go-only currently, but may be shared in the future
+          "request-forgery[%]", "url-redirection[%]"
         ])
     }
   }
@@ -116,13 +118,14 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote", "file", "commandargs", "database", "environment",
+          "local", "remote", "file", "commandargs", "database", "environment", "reverse-dns",
+          "stdin",
           // Java
           "android-external-storage-dir", "contentprovider",
           // C#
           "file-write", "windows-registry",
           // JavaScript
-          "database-access-result"
+          "database-access-result", "response", "request"
         ]
       or
       this.matches([

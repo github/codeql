@@ -13,31 +13,6 @@ import semmle.python.Concepts
 import ServerSideRequestForgeryCustomizations::ServerSideRequestForgery
 
 /**
- * DEPRECATED: Use `FullServerSideRequestForgeryFlow` module instead.
- *
- * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
- * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
- * See `PartialServerSideRequestForgery` for a variant without this requirement.
- *
- * You should use the `fullyControlledRequest` to only select results where all
- * URL parts are fully controlled.
- */
-deprecated class FullServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
-  FullServerSideRequestForgeryConfiguration() { this = "FullServerSideRequestForgery" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof Sanitizer
-    or
-    node instanceof FullUrlControlSanitizer
-  }
-}
-
-/**
  * This configuration has a sanitizer to limit results to cases where attacker has full control of URL.
  * See `PartialServerSideRequestForgery` for a variant without this requirement.
  *
@@ -53,6 +28,12 @@ private module FullServerSideRequestForgeryConfig implements DataFlow::ConfigSig
     node instanceof Sanitizer
     or
     node instanceof FullUrlControlSanitizer
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // The partial request forgery query depends on `fullyControlledRequest` to reject alerts about
+    // such full-controlled requests, regardless of the associated source.
+    none()
   }
 }
 
@@ -74,24 +55,6 @@ predicate fullyControlledRequest(Http::Client::Request request) {
 }
 
 /**
- * DEPRECATED: Use `FullServerSideRequestForgeryFlow` module instead.
- *
- * A taint-tracking configuration for detecting "Server-side request forgery" vulnerabilities.
- *
- * This configuration has results, even when the attacker does not have full control over the URL.
- * See `FullServerSideRequestForgeryConfiguration`, and the `fullyControlledRequest` predicate.
- */
-deprecated class PartialServerSideRequestForgeryConfiguration extends TaintTracking::Configuration {
-  PartialServerSideRequestForgeryConfiguration() { this = "PartialServerSideRequestForgery" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * This configuration has results, even when the attacker does not have full control over the URL.
  * See `FullServerSideRequestForgeryConfiguration`, and the `fullyControlledRequest` predicate.
  */
@@ -101,6 +64,13 @@ private module PartialServerSideRequestForgeryConfig implements DataFlow::Config
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    // Note: this query does not select the sink itself
+    result = sink.(Sink).getRequest().getLocation()
+  }
 }
 
 /**

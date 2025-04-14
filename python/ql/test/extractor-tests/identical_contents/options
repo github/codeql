@@ -1,1 +1,1 @@
-semmle-extractor-options: -R . --path no-such-path --filter exclude:**/src_archive/**
+semmle-extractor-options: -R . --path no-such-path --filter exclude:**/*.testproj/**

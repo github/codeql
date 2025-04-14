@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kubescape/kubescape/.github/workflows/d-publish-image.yaml", "*", "input.image_tag", "code-injection", "generated"]
+     - ["kubescape/kubescape/.github/workflows/d-publish-image.yaml", "*", "input.image_name", "code-injection", "generated"]
+     - ["kubescape/kubescape/.github/workflows/d-publish-image.yaml", "*", "input.client", "code-injection", "generated"]
+     - ["kubescape/kubescape/.github/workflows/a-pr-scanner.yaml", "*", "input.UNIT_TESTS_PATH", "code-injection", "generated"]

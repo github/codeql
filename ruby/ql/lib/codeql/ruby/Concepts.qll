@@ -693,14 +693,6 @@ module Http {
     class Request extends SC::Request instanceof Request::Range {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
-
-      /**
-       * DEPRECATED: Use `getAUrlPart` instead.
-       *
-       * Gets a node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      deprecated DataFlow::Node getURL() { result = Request::Range.super.getAUrlPart() }
     }
 
     /** Provides a class for modeling new HTTP requests. */

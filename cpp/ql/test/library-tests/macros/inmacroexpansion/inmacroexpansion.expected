@@ -2,25 +2,168 @@
 | file://:0:0:0:0 | (unnamed parameter 0) | false |
 | file://:0:0:0:0 | __super | false |
 | file://:0:0:0:0 | __va_list_tag | false |
+| file://:0:0:0:0 | decltype([...](...){...}) | false |
 | file://:0:0:0:0 | operator= | false |
 | file://:0:0:0:0 | operator= | false |
 | test.cpp:0:0:0:0 | test.cpp | false |
-| test.cpp:2:1:2:61 | #define FOO class S{int i; void f(void) { int j; return; } }; | false |
+| test.cpp:2:1:2:68 | #define CLASS_DECL class S{int i; void f(void) { int j; return; } }; | false |
 | test.cpp:4:1:4:1 | S | false |
 | test.cpp:4:1:4:1 | declaration of S | false |
 | test.cpp:4:1:4:1 | declaration of operator= | false |
 | test.cpp:4:1:4:1 | declaration of operator= | false |
 | test.cpp:4:1:4:1 | operator= | false |
 | test.cpp:4:1:4:1 | operator= | false |
-| test.cpp:4:1:4:3 | FOO | false |
-| test.cpp:4:1:4:3 | S | false |
-| test.cpp:4:1:4:3 | declaration | true |
-| test.cpp:4:1:4:3 | definition of S | true |
-| test.cpp:4:1:4:3 | definition of f | true |
-| test.cpp:4:1:4:3 | definition of i | true |
-| test.cpp:4:1:4:3 | definition of j | true |
-| test.cpp:4:1:4:3 | f | false |
-| test.cpp:4:1:4:3 | i | false |
-| test.cpp:4:1:4:3 | j | true |
-| test.cpp:4:1:4:3 | return ... | true |
-| test.cpp:4:1:4:3 | { ... } | true |
+| test.cpp:4:1:4:10 | CLASS_DECL | false |
+| test.cpp:4:1:4:10 | S | false |
+| test.cpp:4:1:4:10 | declaration | true |
+| test.cpp:4:1:4:10 | definition of S | true |
+| test.cpp:4:1:4:10 | definition of f | true |
+| test.cpp:4:1:4:10 | definition of i | true |
+| test.cpp:4:1:4:10 | definition of j | true |
+| test.cpp:4:1:4:10 | f | false |
+| test.cpp:4:1:4:10 | i | false |
+| test.cpp:4:1:4:10 | j | true |
+| test.cpp:4:1:4:10 | return ... | true |
+| test.cpp:4:1:4:10 | { ... } | true |
+| test.cpp:6:1:6:42 | #define FUNCTION_DECL void f1() { int k; } | false |
+| test.cpp:8:1:8:13 | FUNCTION_DECL | false |
+| test.cpp:8:1:8:13 | declaration | true |
+| test.cpp:8:1:8:13 | definition of f1 | true |
+| test.cpp:8:1:8:13 | definition of k | true |
+| test.cpp:8:1:8:13 | f1 | false |
+| test.cpp:8:1:8:13 | k | true |
+| test.cpp:8:1:8:13 | return ... | true |
+| test.cpp:8:1:8:13 | { ... } | true |
+| test.cpp:10:1:10:33 | #define VARIABLE_DECL int v1 = 1; | false |
+| test.cpp:12:1:12:13 | 1 | true |
+| test.cpp:12:1:12:13 | VARIABLE_DECL | false |
+| test.cpp:12:1:12:13 | definition of v1 | true |
+| test.cpp:12:1:12:13 | initializer for v1 | true |
+| test.cpp:12:1:12:13 | v1 | true |
+| test.cpp:14:1:14:35 | #define TYPE_DECL_1 typedef int t1; | false |
+| test.cpp:16:1:16:11 | TYPE_DECL_1 | false |
+| test.cpp:16:1:16:11 | declaration of t1 | true |
+| test.cpp:16:1:16:11 | t1 | false |
+| test.cpp:18:1:18:35 | #define TYPE_DECL_2 using t2 = int; | false |
+| test.cpp:20:1:20:11 | TYPE_DECL_2 | false |
+| test.cpp:20:1:20:11 | declaration of t2 | true |
+| test.cpp:20:1:20:11 | t2 | false |
+| test.cpp:22:1:22:47 | #define NAMESPACE_DECL namespace ns { int v2; } | false |
+| test.cpp:24:1:24:14 | NAMESPACE_DECL | false |
+| test.cpp:24:1:24:14 | definition of v2 | true |
+| test.cpp:24:1:24:14 | ns | false |
+| test.cpp:24:1:24:14 | ns | false |
+| test.cpp:24:1:24:14 | v2 | true |
+| test.cpp:26:1:26:43 | #define USING_NAMESPACE using namespace ns; | false |
+| test.cpp:28:1:28:34 | #define ENUM_CONSTANT enum_element | false |
+| test.cpp:30:12:30:21 | definition of enum_class | false |
+| test.cpp:30:12:30:21 | enum_class | false |
+| test.cpp:30:25:30:37 | ENUM_CONSTANT | false |
+| test.cpp:30:25:30:37 | enum_element | false |
+| test.cpp:32:1:32:41 | #define USING_ENUM using enum enum_class; | false |
+| test.cpp:34:1:34:10 | USING_ENUM | false |
+| test.cpp:34:1:34:10 | using enum enum_class | false |
+| test.cpp:36:1:36:48 | #define STATIC_ASSERT static_assert(1 == 1, ""); | false |
+| test.cpp:38:1:38:13 | 1 | true |
+| test.cpp:38:1:38:13 | 1 | true |
+| test.cpp:38:1:38:13 | ... == ... | true |
+| test.cpp:38:1:38:13 | STATIC_ASSERT | false |
+| test.cpp:38:1:38:13 | static_assert(..., "") | false |
+| test.cpp:40:1:40:42 | #define ATTRIBUTE [[nodiscard("reason1")]] | false |
+| test.cpp:42:1:42:9 | ATTRIBUTE | false |
+| test.cpp:42:1:42:9 | nodiscard | false |
+| test.cpp:42:1:42:9 | reason1 | false |
+| test.cpp:42:1:42:9 | reason1 | true |
+| test.cpp:43:5:43:6 | declaration of f2 | false |
+| test.cpp:43:5:43:6 | f2 | false |
+| test.cpp:45:1:45:31 | #define ATTRIBUTE_ARG "reason2" | false |
+| test.cpp:47:3:47:11 | nodiscard | false |
+| test.cpp:47:13:47:25 | ATTRIBUTE_ARG | false |
+| test.cpp:47:13:47:25 | reason2 | false |
+| test.cpp:47:13:47:25 | reason2 | true |
+| test.cpp:48:5:48:6 | declaration of f3 | false |
+| test.cpp:48:5:48:6 | f3 | false |
+| test.cpp:50:1:50:16 | #define TYPE int | false |
+| test.cpp:52:1:52:4 | TYPE | false |
+| test.cpp:52:6:52:7 | definition of v3 | true |
+| test.cpp:52:6:52:7 | v3 | true |
+| test.cpp:52:11:52:11 | 1 | false |
+| test.cpp:52:11:52:11 | initializer for v3 | false |
+| test.cpp:54:1:54:29 | #define DERIVATION : public S | false |
+| test.cpp:56:7:56:7 | T | false |
+| test.cpp:56:7:56:7 | T | false |
+| test.cpp:56:7:56:7 | declaration of T | false |
+| test.cpp:56:7:56:7 | declaration of operator= | false |
+| test.cpp:56:7:56:7 | declaration of operator= | false |
+| test.cpp:56:7:56:7 | definition of T | false |
+| test.cpp:56:7:56:7 | operator= | false |
+| test.cpp:56:7:56:7 | operator= | false |
+| test.cpp:56:9:56:18 | DERIVATION | false |
+| test.cpp:56:9:56:18 | derivation | false |
+| test.cpp:58:1:58:31 | #define FRIEND friend int f3(); | false |
+| test.cpp:60:7:60:7 | U | false |
+| test.cpp:60:7:60:7 | declaration of operator= | false |
+| test.cpp:60:7:60:7 | declaration of operator= | false |
+| test.cpp:60:7:60:7 | definition of U | false |
+| test.cpp:60:7:60:7 | operator= | false |
+| test.cpp:60:7:60:7 | operator= | false |
+| test.cpp:61:3:61:8 | FRIEND | false |
+| test.cpp:61:3:61:8 | U's friend | false |
+| test.cpp:64:1:64:24 | #define NAME_QUAL_1 ns:: | false |
+| test.cpp:66:1:66:22 | #define NAME_QUAL_2 ns | false |
+| test.cpp:68:1:68:19 | #define LOCAL_VAR m | false |
+| test.cpp:70:6:70:7 | definition of f4 | false |
+| test.cpp:70:6:70:7 | f4 | false |
+| test.cpp:70:11:76:1 | { ... } | false |
+| test.cpp:71:5:71:8 | ns:: | false |
+| test.cpp:71:5:71:15 | NAME_QUAL_1 | false |
+| test.cpp:71:5:71:18 | v2 | false |
+| test.cpp:71:5:71:19 | ExprStmt | false |
+| test.cpp:72:5:72:8 | ns:: | false |
+| test.cpp:72:5:72:15 | NAME_QUAL_2 | false |
+| test.cpp:72:5:72:21 | v2 | false |
+| test.cpp:72:5:72:22 | ExprStmt | false |
+| test.cpp:73:5:73:23 | declaration | false |
+| test.cpp:73:9:73:17 | LOCAL_VAR | false |
+| test.cpp:73:9:73:17 | definition of m | true |
+| test.cpp:73:9:73:17 | m | true |
+| test.cpp:73:20:73:22 | 42 | false |
+| test.cpp:73:20:73:22 | initializer for m | false |
+| test.cpp:74:5:74:41 | declaration | false |
+| test.cpp:74:10:74:10 | definition of l | false |
+| test.cpp:74:10:74:10 | l | false |
+| test.cpp:74:13:74:40 | [...](...){...} | false |
+| test.cpp:74:13:74:40 | initializer for l | false |
+| test.cpp:74:13:74:40 | {...} | false |
+| test.cpp:74:14:74:14 | (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | declaration of (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | declaration of (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | definition of (unnamed constructor) | false |
+| test.cpp:74:14:74:14 | definition of operator= | false |
+| test.cpp:74:14:74:14 | operator= | false |
+| test.cpp:74:15:74:15 | definition of m | false |
+| test.cpp:74:15:74:15 | m | false |
+| test.cpp:74:15:74:15 | m | false |
+| test.cpp:74:15:74:23 | LOCAL_VAR | false |
+| test.cpp:74:15:74:23 | m | true |
+| test.cpp:74:25:74:25 | definition of operator() | false |
+| test.cpp:74:25:74:25 | operator() | false |
+| test.cpp:74:28:74:40 | { ... } | false |
+| test.cpp:74:30:74:38 | return ... | false |
+| test.cpp:74:37:74:37 | (int)... | false |
+| test.cpp:75:5:75:5 | (const lambda [] type at line 74, col. 14)... | false |
+| test.cpp:75:5:75:5 | l | false |
+| test.cpp:75:5:75:8 | ExprStmt | false |
+| test.cpp:75:6:75:6 | call to operator() | false |
+| test.cpp:76:1:76:1 | return ... | false |
+| test.cpp:78:1:78:15 | #define ID(x) x | false |
+| test.cpp:79:1:79:23 | #define NESTED(x) ID(x) | false |
+| test.cpp:80:5:80:6 | definition of v4 | false |
+| test.cpp:80:5:80:6 | v4 | false |
+| test.cpp:80:10:80:18 | ID(x) | false |
+| test.cpp:80:10:80:18 | NESTED(x) | false |
+| test.cpp:80:17:80:17 | 1 | true |
+| test.cpp:80:17:80:17 | initializer for v4 | true |
+| test.cpp:82:1:82:39 | // semmle-extractor-options: -std=c++20 | false |

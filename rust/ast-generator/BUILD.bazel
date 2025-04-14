@@ -1,0 +1,94 @@
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl", "aliases", "all_crate_deps", "crate_deps")
+
+(ra_ap_syntax_label,) = crate_deps(
+    ["ra_ap_syntax"],
+    "rust/extractor",
+)
+
+ra_ap_syntax_workspace, _, _ = str(ra_ap_syntax_label).partition("//")
+
+alias(
+    name = "rust.ungram",
+    actual = "%s//:rust.ungram" % ra_ap_syntax_workspace,
+    visibility = ["//rust/codegen:__pkg__"],
+)
+
+_codegen = [
+    "grammar.rs",
+    "grammar/ast_src.rs",
+]
+
+_codegen_srcs = ["@rust-analyzer-src//:xtask/src/codegen/%s" % f for f in _codegen]
+
+_codegen_outs = ["src/codegen/%s" % f for f in _codegen]
+
+genrule(
+    name = "codegen",
+    srcs = _codegen_srcs,
+    outs = _codegen_outs,
+    cmd = "\n".join(
+        ["mkdir -p $(RULEDIR)/src/codegen/grammar"] +
+        [
+            "cp $(location %s) $(RULEDIR)/%s" % item
+            for item in zip(_codegen_srcs, _codegen_outs)
+        ],
+    ),
+)
+
+codeql_rust_binary(
+    name = "ast-generator",
+    srcs = glob(
+        ["src/**/*.rs"],
+        exclude = ["src/codegen/**"],
+    ) + [":codegen"],
+    aliases = aliases(),
+    args = ["$(rlocationpath :rust.ungram)"],
+    compile_data = glob(["src/templates/*.mustache"]),
+    data = [":rust.ungram"],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    visibility = ["//rust:__subpackages__"],
+    deps = all_crate_deps(
+        normal = True,
+    ),
+)
+
+write_file(
+    name = "update",
+    out = "update.sh",
+    content = [
+        "#!/bin/bash",
+        ". misc/bazel/runfiles.sh",
+        'DST_DIR="$(dirname "$(rlocation "$1")")"',
+        'mkdir -p "$DST_DIR/src/codegen/grammar"',
+    ] + [
+        # using cat instead of cp to honor default umask
+        # (also, macOS does not support `cp --no-preserve=mode`)
+        'cat "$(rlocation "$%s")" > "$DST_DIR/%s"' % item
+        for item in enumerate(
+            ["rust.ungram"] + _codegen_outs,
+            2,
+        )
+    ],
+    is_executable = True,
+)
+
+sh_binary(
+    name = "inject-sources",
+    srcs = [":update"],
+    args = ["$(rlocationpath %s)" % f for f in [
+        "Cargo.toml",
+        ":rust.ungram",
+    ] + _codegen_outs],
+    data = [
+        "Cargo.toml",
+        ":rust.ungram",
+    ] + _codegen_outs,
+    deps = ["//misc/bazel:sh_runfiles"],
+)
+
+exports_files(["Cargo.toml"])

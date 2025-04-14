@@ -26,7 +26,7 @@ abstract class ExecTaintedEnvironmentSanitizer extends DataFlow::Node { }
  * A taint-tracking configuration that tracks flow from unvalidated data to an environment variable for a subprocess.
  */
 module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof ExecTaintedEnvironmentSanitizer }
 

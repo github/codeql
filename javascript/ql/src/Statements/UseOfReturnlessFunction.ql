@@ -114,7 +114,7 @@ predicate hasNonVoidCallbackMethod(string name) {
   name =
     [
       "every", "filter", "find", "findIndex", "flatMap", "map", "reduce", "reduceRight", "some",
-      "sort"
+      "sort", "findLastIndex", "findLast"
     ]
 }
 

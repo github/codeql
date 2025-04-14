@@ -1,0 +1,7 @@
+| does_not_compile.rs:2:6:2:5 | expected SEMICOLON | Extraction warning in does_not_compile.rs with message expected SEMICOLON | 1 |
+| does_not_compile.rs:2:9:2:8 | expected SEMICOLON | Extraction warning in does_not_compile.rs with message expected SEMICOLON | 1 |
+| does_not_compile.rs:2:13:2:12 | expected SEMICOLON | Extraction warning in does_not_compile.rs with message expected SEMICOLON | 1 |
+| does_not_compile.rs:2:21:2:20 | expected SEMICOLON | Extraction warning in does_not_compile.rs with message expected SEMICOLON | 1 |
+| does_not_compile.rs:2:26:2:25 | expected SEMICOLON | Extraction warning in does_not_compile.rs with message expected SEMICOLON | 1 |
+| error.rs:2:5:2:17 | An error! | Extraction warning in error.rs with message An error! | 1 |
+| my_macro.rs:17:9:17:27 | macro expansion failed: could not resolve macro 'myUndefinedMacro' | Extraction warning in my_macro.rs with message macro expansion failed: could not resolve macro 'myUndefinedMacro' | 1 |

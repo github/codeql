@@ -14,16 +14,22 @@
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
  * 1. The `namespace` column selects a namespace.
- * 2. The `type` column selects a type within that namespace.
+ * 2. The `type` column selects a type within that namespace. This column can
+ *    introduce template names that can be mentioned in the `signature` column.
+ *    For example, `vector<T,Allocator>` introduces the template names `T` and
+ *    `Allocator`.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
+ *    Like the `type` column, this column can introduce template names that can
+ *    be mentioned in the `signature` column. For example, `insert<InputIt>`
+ *    introduces the template name `InputIt`.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
  *    signature is a comma-separated list of types enclosed in parentheses. The
- *    types can be short names or fully qualified names (mixing these two options
- *    is not allowed within a single signature).
+ *    types must be stripped of template names. That is, write `const vector &`
+ *    instead of `const vector<T> &`.
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
  *    there is only one valid value: "".
  * 7. The `input` column specifies how data enters the element selected by the
@@ -44,6 +50,9 @@
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
  *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `input` column `Argument[*@0]`
+ *    indicates one or more indirections of the 0th argument.
  *
  *    An `output` can be either:
  *    - "": Selects a read of a selected field.
@@ -65,6 +74,17 @@
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
  *      value.
+ *    The special symbol `@` can be used to specify an arbitrary (but fixed)
+ *    number of indirections. For example, the `output` column
+ *    `ReturnValue[*@0]` indicates one or more indirections of the return
+ *    value.
+ *    Note: The symbol `@` only ever takes a single value across a row. Thus,
+ *    the (`input`, `output`) pair `("Argument[*@0]", "ReturnValue[@]")`
+ *    represents:
+ *    - flow from the _first_ indirection of the 0th argument to the return
+ *    value, and
+ *    - flow from the _second_ indirection of the 0th argument to the first
+ *    indirection of the return value, etc.
  * 8. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
@@ -74,10 +94,13 @@
 
 import cpp
 private import new.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
+private import internal.ExternalFlowExtensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 private import codeql.util.Unit
 
@@ -123,7 +146,7 @@ predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance
+  string output, string kind, string provenance, string model
 ) {
   exists(string row |
     sourceModel(row) and
@@ -137,13 +160,20 @@ predicate sourceModel(
     row.splitAt(";", 6) = output and
     row.splitAt(";", 7) = kind
   ) and
-  provenance = "manual"
+  provenance = "manual" and
+  model = ""
+  or
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sourceModel(namespace, type, subtypes, name, signature, ext, output, kind,
+      provenance, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance
+  string input, string kind, string provenance, string model
 ) {
   exists(string row |
     sinkModel(row) and
@@ -157,13 +187,24 @@ predicate sinkModel(
     row.splitAt(";", 6) = input and
     row.splitAt(";", 7) = kind
   ) and
-  provenance = "manual"
+  provenance = "manual" and
+  model = ""
+  or
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance,
+      madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
+/**
+ * Holds if a summary model exists for the given parameters.
+ *
+ * This predicate does not expand `@` to `*`s.
+ */
+private predicate summaryModel0(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance
+  string input, string output, string kind, string provenance, string model
 ) {
   exists(string row |
     summaryModel(row) and
@@ -178,13 +219,48 @@ predicate summaryModel(
     row.splitAt(";", 7) = output and
     row.splitAt(";", 8) = kind
   ) and
-  provenance = "manual"
+  provenance = "manual" and
+  model = ""
+  or
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind,
+      provenance, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
+/**
+ * Holds if `input` is `input0`, but with all occurrences of `@` replaced
+ * by `n` repetitions of `*` (and similarly for `output` and `output0`).
+ */
+bindingset[input0, output0, n]
+pragma[inline_late]
+private predicate expandInputAndOutput(
+  string input0, string input, string output0, string output, int n
+) {
+  input = input0.replaceAll("@", repeatStars(n)) and
+  output = output0.replaceAll("@", repeatStars(n))
+}
+
+/**
+ * Holds if a summary model exists for the given parameters.
+ */
+predicate summaryModel(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance, string model
+) {
+  exists(string input0, string output0 |
+    summaryModel0(namespace, type, subtypes, name, signature, ext, input0, output0, kind,
+      provenance, model) and
+    expandInputAndOutput(input0, input, output0, output,
+      [0 .. Private::getMaxElementContentIndirectionIndex() - 1])
+  )
 }
 
 private predicate relevantNamespace(string namespace) {
-  sourceModel(namespace, _, _, _, _, _, _, _, _) or
-  sinkModel(namespace, _, _, _, _, _, _, _, _) or
-  summaryModel(namespace, _, _, _, _, _, _, _, _, _)
+  sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
+  sinkModel(namespace, _, _, _, _, _, _, _, _, _) or
+  summaryModel(namespace, _, _, _, _, _, _, _, _, _, _)
 }
 
 private predicate namespaceLink(string shortns, string longns) {
@@ -203,8 +279,10 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -212,17 +290,17 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
     part = "source" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
+        string ext, string output, string provenance, string model |
         canonicalNamespaceLink(namespace, subns) and
-        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance)
+        sourceModel(subns, type, subtypes, name, signature, ext, output, kind, provenance, model)
       )
     or
     part = "sink" and
     n =
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
+        string ext, string input, string provenance, string model |
         canonicalNamespaceLink(namespace, subns) and
-        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance)
+        sinkModel(subns, type, subtypes, name, signature, ext, input, kind, provenance, model)
       )
     or
     part = "summary" and
@@ -230,7 +308,7 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
       strictcount(string subns, string type, boolean subtypes, string name, string signature,
         string ext, string input, string output, string provenance |
         canonicalNamespaceLink(namespace, subns) and
-        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance)
+        summaryModel(subns, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
       )
   )
 }
@@ -239,9 +317,9 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 module CsvValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+      sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
@@ -258,9 +336,9 @@ module CsvValidation {
 
   private string getInvalidModelOutput() {
     exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+      sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       invalidSpecComponent(output, part) and
       not part = "" and
@@ -270,11 +348,11 @@ module CsvValidation {
   }
 
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
-    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
   }
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
@@ -315,16 +393,16 @@ module CsvValidation {
 
   private string getInvalidModelSignature() {
     exists(string pred, string namespace, string type, string name, string signature, string ext |
-      sourceModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "source"
+      sourceModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "source"
       or
-      sinkModel(namespace, type, _, name, signature, ext, _, _, _) and pred = "sink"
+      sinkModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "sink"
       or
-      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "summary"
+      summaryModel(namespace, type, _, name, signature, ext, _, _, _, _, _) and pred = "summary"
     |
-      not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
+      not namespace.regexpMatch("[a-zA-Z0-9_\\.:]*") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]*") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_<>,]*") and
@@ -351,38 +429,494 @@ module CsvValidation {
 private predicate elementSpec(
   string namespace, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
-  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _) or
-  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
-}
-
-private string paramsStringPart(Function c, int i) {
-  i = -1 and result = "(" and exists(c)
-  or
-  exists(int n, string p | c.getParameter(n).getType().toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
-  or
-  i = 2 * c.getNumberOfParameters() and result = ")"
+  sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) or
+  summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
 }
 
 /**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ * Holds if `c` is an instantiation of a class template `templateClass`, or
+ * holds with `c = templateClass` if `c` is not an instantiation of any class
+ * template.
  *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
+ * This predicate is used instead of `Class.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
  */
-cached
-private string paramsString(Function c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
+private predicate isClassConstructedFrom(Class c, Class templateClass) {
+  c.isConstructedFrom(templateClass)
+  or
+  not c.isConstructedFrom(_) and c = templateClass
 }
 
-bindingset[func]
-private predicate matchesSignature(Function func, string signature) {
-  signature = "" or
-  paramsString(func) = signature
+/**
+ * Holds if `f` is an instantiation of a function template `templateFunc`, or
+ * holds with `f = templateFunc` if `f` is not an instantiation of any function
+ * template.
+ *
+ * This predicate is used instead of `Function.isConstructedFrom` (which only
+ * holds for template instantiations) in this file to allow for uniform
+ * treatment of non-templated classes and class template instantiations.
+ */
+private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
+  f.isConstructedFrom(templateFunc)
+  or
+  not f.isConstructedFrom(_) and f = templateFunc
+}
+
+/** Gets the fully templated version of `f`. */
+Function getFullyTemplatedFunction(Function f) {
+  not f.isFromUninstantiatedTemplate(_) and
+  (
+    exists(Class c, Class templateClass, int i |
+      isClassConstructedFrom(c, templateClass) and
+      f = c.getAMember(i) and
+      result = templateClass.getCanonicalMember(i)
+    )
+    or
+    not exists(f.getDeclaringType()) and
+    isFunctionConstructedFrom(f, result)
+  )
+}
+
+/** Prefixes `const` to `s` if `t` is const, or returns `s` otherwise. */
+bindingset[s, t]
+private string withConst(string s, Type t) {
+  if t.isConst() then result = "const " + s else result = s
+}
+
+/** Prefixes `volatile` to `s` if `t` is const, or returns `s` otherwise. */
+bindingset[s, t]
+private string withVolatile(string s, Type t) {
+  if t.isVolatile() then result = "volatile " + s else result = s
+}
+
+/**
+ * Returns `s` prefixed with appropriate specifiers from `t`, or `s` if `t` has
+ * no relevant specifiers.
+ */
+bindingset[s, t]
+private string withSpecifiers(string s, Type t) {
+  // An `int` that is both const and volatile will be printed as
+  // `const volatile int` to match the behavior of `Type.getName` which
+  // is generated by the extractor.
+  result = withConst(withVolatile(s, t), t)
+}
+
+/**
+ * Gets the string version of `t`, after resolving typedefs. The boolean `needsSpace` is `true`
+ * if a space should be appended before concatenating any additional symbols
+ * (such as `*` or `&`) when recursively constructing the type name.
+ */
+private string getTypeName(Type t, boolean needsSpace) {
+  // We don't care about template instantiations since we always base models
+  // on the uninstantiated templates
+  not t.isFromTemplateInstantiation(_) and
+  (
+    exists(DerivedType dt, string s, boolean needsSpace0 |
+      dt = t and s = withSpecifiers(getTypeName(dt.getBaseType(), needsSpace0), dt)
+    |
+      dt instanceof ReferenceType and
+      not dt instanceof RValueReferenceType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " &" else result = s + "&")
+      or
+      dt instanceof RValueReferenceType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " &&" else result = s + "&&")
+      or
+      dt instanceof PointerType and
+      needsSpace = false and
+      (if needsSpace0 = true then result = s + " *" else result = s + "*")
+      or
+      // We don't need to check for `needsSpace0` here because the type of
+      // `x` in `int x[1024]` is formatted without a space between the bracket
+      // and the `int` by `Type.getName`. That is, calling `Type.getName` on
+      // the type of `x` gives `int[1024]` and not `int [1024]`.
+      needsSpace = false and
+      exists(ArrayType array | array = dt |
+        result = s + "[" + array.getArraySize() + "]"
+        or
+        not array.hasArraySize() and
+        result = s + "[]"
+      )
+      or
+      not dt instanceof ReferenceType and
+      not dt instanceof PointerType and
+      not dt instanceof ArrayType and
+      result = s and
+      needsSpace = needsSpace0
+    )
+    or
+    not t instanceof DerivedType and
+    not t instanceof TypedefType and
+    result = t.getName() and
+    (if result.matches(["%*", "%&", "%]"]) then needsSpace = false else needsSpace = true)
+  )
+  or
+  result = getTypeName(t.(TypedefType).getBaseType(), needsSpace)
+}
+
+/**
+ * Gets a type name for the `n`'th parameter of `f` without any template
+ * arguments.
+ *
+ * If `canonical = false` then the result may be a string representing a type
+ * for which the typedefs have been resolved. If `canonical = true` then the
+ * result will be a string representing a type without resolving `typedefs`.
+ */
+bindingset[f]
+pragma[inline_late]
+string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canonical) {
+  exists(string s, string base, string specifiers, Type t |
+    t = f.getParameter(n).getType() and
+    // The name of the string can either be the possibly typedefed name
+    // or an alternative name where typedefs has been resolved.
+    // `getTypeName(t, _)` is almost equal to `t.resolveTypedefs().getName()`,
+    // except that `t.resolveTypedefs()` doesn't have a result when the
+    // resulting type doesn't appear in the database.
+    (
+      s = t.getName() and canonical = true
+      or
+      s = getTypeName(t, _) and canonical = false
+    ) and
+    parseAngles(s, base, _, specifiers) and
+    result = base + specifiers
+  )
+  or
+  f.isVarargs() and
+  n = f.getNumberOfParameters() and
+  result = "..." and
+  canonical = true
+}
+
+/**
+ * Normalize the `n`'th parameter of `f` by replacing template names
+ * with `func:N` (where `N` is the index of the template).
+ */
+private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
+  exists(Function templateFunction |
+    templateFunction = getFullyTemplatedFunction(f) and
+    remaining = templateFunction.getNumberOfTemplateArguments() and
+    result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
+  )
+  or
+  exists(string mid, TypeTemplateParameter tp, Function templateFunction |
+    mid = getTypeNameWithoutFunctionTemplates(f, n, remaining + 1) and
+    templateFunction = getFullyTemplatedFunction(f) and
+    tp = templateFunction.getTemplateArgument(remaining) and
+    result = mid.replaceAll(tp.getName(), "func:" + remaining.toString())
+  )
+}
+
+/**
+ * Normalize the `n`'th parameter of `f` by replacing template names
+ * with `class:N` (where `N` is the index of the template).
+ */
+private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
+  // If there is a declaring type then we start by expanding the function templates
+  exists(Class template |
+    isClassConstructedFrom(f.getDeclaringType(), template) and
+    remaining = template.getNumberOfTemplateArguments() and
+    result = getTypeNameWithoutFunctionTemplates(f, n, 0)
+  )
+  or
+  // If there is no declaring type we're done after expanding the function templates
+  not exists(f.getDeclaringType()) and
+  remaining = 0 and
+  result = getTypeNameWithoutFunctionTemplates(f, n, 0)
+  or
+  exists(string mid, TypeTemplateParameter tp, Class template |
+    mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
+    isClassConstructedFrom(f.getDeclaringType(), template) and
+    tp = template.getTemplateArgument(remaining) and
+    result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
+  )
+}
+
+/** Gets the string representation of the `i`'th parameter of `c`. */
+string getParameterTypeName(Function c, int i) {
+  result = getTypeNameWithoutClassTemplates(c, i, 0)
+}
+
+/** Splits `s` by `,` and gets the `i`'th element. */
+bindingset[s]
+pragma[inline_late]
+private string getAtIndex(string s, int i) {
+  result = s.splitAt(",", i) and
+  // when `s` is `""` and `i` is `0` we get `result = ""` which we don't want.
+  not (s = "" and i = 0)
+}
+
+/**
+ * Normalizes `partiallyNormalizedSignature` by replacing the `remaining`
+ * number of template arguments in `partiallyNormalizedSignature` with their
+ * index in `typeArgs`.
+ */
+private string getSignatureWithoutClassTemplateNames(
+  string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
+) {
+  elementSpecWithArguments0(_, _, _, partiallyNormalizedSignature, typeArgs, nameArgs) and
+  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  result = partiallyNormalizedSignature
+  or
+  exists(string mid |
+    mid =
+      getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs,
+        remaining + 1)
+  |
+    exists(string typeArg |
+      typeArg = getAtIndex(typeArgs, remaining) and
+      result = mid.replaceAll(typeArg, "class:" + remaining.toString())
+    )
+    or
+    // Make sure `remaining` is properly bound
+    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    not exists(getAtIndex(typeArgs, remaining)) and
+    result = mid
+  )
+}
+
+/**
+ * Normalizes `partiallyNormalizedSignature` by replacing:
+ * - _All_ the template arguments in `partiallyNormalizedSignature` that refer to
+ * template parameters in `typeArgs` with their index in `typeArgs`, and
+ * - The `remaining` number of template arguments in `partiallyNormalizedSignature`
+ * with their index in `nameArgs`.
+ */
+private string getSignatureWithoutFunctionTemplateNames(
+  string partiallyNormalizedSignature, string typeArgs, string nameArgs, int remaining
+) {
+  remaining = count(partiallyNormalizedSignature.indexOf(",")) + 1 and
+  result =
+    getSignatureWithoutClassTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs, 0)
+  or
+  exists(string mid |
+    mid =
+      getSignatureWithoutFunctionTemplateNames(partiallyNormalizedSignature, typeArgs, nameArgs,
+        remaining + 1)
+  |
+    exists(string nameArg |
+      nameArg = getAtIndex(nameArgs, remaining) and
+      result = mid.replaceAll(nameArg, "func:" + remaining.toString())
+    )
+    or
+    // Make sure `remaining` is properly bound
+    remaining = [0 .. count(partiallyNormalizedSignature.indexOf(",")) + 1] and
+    not exists(getAtIndex(nameArgs, remaining)) and
+    result = mid
+  )
+}
+
+/**
+ * Holds if `elementSpec(_, type, _, name, signature, _)` holds and
+ * - `typeArgs` represents the named template parameters supplied to `type`, and
+ * - `nameArgs` represents the named template parameters supplied to `name`, and
+ * - `normalizedSignature` is `signature`, except with
+ *    - template parameter names replaced by `func:i` if the template name is
+ *      the `i`'th entry in `nameArgs`, and
+ *    - template parameter names replaced by `class:i` if the template name is
+ *      the `i`'th entry in `typeArgs`.
+ *
+ * In other words, the string `normalizedSignature` represents a "normalized"
+ * signature with no mention of any free template parameters.
+ *
+ * For example, consider a summary row such as:
+ * ```
+ * elementSpec(_, "MyClass<B, C>", _, myFunc<A>, "(const A &,int,C,B *)", _)
+ * ```
+ * In this case, `normalizedSignature` will be `"(const func:0 &,int,class:1,class:0 *)"`.
+ */
+private predicate elementSpecWithArguments(
+  string signature, string type, string name, string normalizedSignature, string typeArgs,
+  string nameArgs
+) {
+  exists(string signatureWithoutParens |
+    elementSpecWithArguments0(signature, type, name, signatureWithoutParens, typeArgs, nameArgs) and
+    normalizedSignature =
+      getSignatureWithoutFunctionTemplateNames(signatureWithoutParens, typeArgs, nameArgs, 0)
+  )
+}
+
+/** Gets the `n`'th normalized signature parameter for the function `name` in class `type`. */
+private string getSignatureParameterName(string signature, string type, string name, int n) {
+  exists(string normalizedSignature |
+    elementSpecWithArguments(signature, type, name, normalizedSignature, _, _) and
+    result = getAtIndex(normalizedSignature, n)
+  )
+}
+
+/**
+ * Holds if the suffix containing the entries in `signature` starting at entry
+ * `i` matches the suffix containing the parameters of `func` starting at entry `i`.
+ *
+ * For example, consider the signature `(int,bool,char)` and a function:
+ * ```
+ * void f(int a, bool b, char c);
+ * ```
+ * 1. The predicate holds for `i = 2` because the suffix containing all the entries
+ * in `signature` starting at `2` is `char`, and suffix containing all the parameters
+ * of `func` starting at `2` is `char`.
+ * 2. The predicate holds for `i = 1` because the suffix containing all the entries
+ * in `signature` starting at `1` is `bool,char`, and the suffix containing all the
+ * parameters of `func` starting at `1` is `bool, char`.
+ * 3. The predicate holds for `i = 0` because the suffix containing all the entries
+ * in `signature` starting at `0` is `int,bool,char` and the suffix containing all
+ * the parameters of `func` starting at `0` is `int, bool, char`.
+ *
+ * When `paramsString(func)[i]` is `class:n` then the signature name is
+ * compared with the `n`'th name in `type`, and when `paramsString(func)[i]`
+ * is `func:n` then the signature name is compared with the `n`'th name
+ * in `name`.
+ */
+private predicate signatureMatches(Function func, string signature, string type, string name, int i) {
+  exists(string s |
+    s = getSignatureParameterName(signature, type, name, i) and
+    s = getParameterTypeName(func, i)
+  ) and
+  if exists(getParameterTypeName(func, i + 1))
+  then signatureMatches(func, signature, type, name, i + 1)
+  else i = count(signature.indexOf(","))
+}
+
+/**
+ * Internal: Do not use.
+ *
+ * This module only exists to expose internal predicates for testing purposes.
+ */
+module ExternalFlowDebug {
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate signatureMatches_debug = signatureMatches/5;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getSignatureParameterName_debug = getSignatureParameterName/4;
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Exposed for testing purposes.
+   */
+  predicate getParameterTypeName_debug = getParameterTypeName/2;
+}
+
+/**
+ * Holds if `s` can be broken into a string of the form
+ * `beforeAngles<betweenAngles>`,
+ * or `s = beforeAngles` where `beforeAngles` does not have any brackets.
+ */
+bindingset[s]
+pragma[inline_late]
+private predicate parseAngles(
+  string s, string beforeAngles, string betweenAngles, string afterAngles
+) {
+  beforeAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 1) and
+  (
+    betweenAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 2) and
+    afterAngles = s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 3)
+    or
+    not exists(s.regexpCapture("([^<]+)(?:<([^>]+)>(.*))?", 2)) and
+    betweenAngles = "" and
+    afterAngles = ""
+  )
+}
+
+/** Holds if `s` can be broken into a string of the form `(betweenParens)`. */
+bindingset[s]
+pragma[inline_late]
+private predicate parseParens(string s, string betweenParens) { s = "(" + betweenParens + ")" }
+
+/**
+ * Holds if `elementSpec(_, type, _, name, signature, _)` and:
+ * - `type` introduces template parameters `typeArgs`, and
+ * - `name` introduces template parameters `nameArgs`, and
+ * - `signatureWithoutParens` equals `signature`, but with the surrounding
+ *    parentheses removed.
+ */
+private predicate elementSpecWithArguments0(
+  string signature, string type, string name, string signatureWithoutParens, string typeArgs,
+  string nameArgs
+) {
+  elementSpec(_, type, _, name, signature, _) and
+  parseAngles(name, _, nameArgs, "") and
+  (
+    type = "" and typeArgs = ""
+    or
+    parseAngles(type, _, typeArgs, "")
+  ) and
+  parseParens(signature, signatureWithoutParens)
+}
+
+/**
+ * Holds if `elementSpec(namespace, type, subtypes, name, signature, _)` and
+ * `func`'s signature matches `signature`.
+ *
+ * `signature` may contain template parameter names that are bound by `type` and `name`.
+ */
+pragma[nomagic]
+private predicate elementSpecMatchesSignature(
+  Function func, string namespace, string type, boolean subtypes, string name, string signature
+) {
+  elementSpec(namespace, pragma[only_bind_into](type), subtypes, pragma[only_bind_into](name),
+    pragma[only_bind_into](signature), _) and
+  signatureMatches(func, signature, type, name, 0)
+}
+
+/**
+ * Holds when `method` has name `nameWithoutArgs`, and gets the enclosing
+ * class of `method`. Unlike `method.getClassAndName` this predicate does
+ * not strip typedefs from the name when `method` is an `ConversionOperator`.
+ */
+bindingset[nameWithoutArgs]
+pragma[inline_late]
+private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
+  result = method.getDeclaringType() and
+  nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
+  or
+  result = method.getClassAndName(nameWithoutArgs) and
+  not method instanceof ConversionOperator
+}
+
+/**
+ * Holds if `classWithMethod` has `method` named `name` (excluding any
+ * template parameters).
+ */
+bindingset[name]
+pragma[inline_late]
+private predicate hasClassAndName(Class classWithMethod, Function method, string name) {
+  exists(string nameWithoutArgs |
+    parseAngles(name, nameWithoutArgs, _, "") and
+    classWithMethod = getClassAndNameImpl(method, nameWithoutArgs)
+  )
+}
+
+bindingset[name]
+pragma[inline_late]
+private predicate funcHasQualifiedName(Function func, string namespace, string name) {
+  exists(string nameWithoutArgs |
+    parseAngles(name, nameWithoutArgs, _, "") and
+    func.hasQualifiedName(namespace, nameWithoutArgs)
+  )
+}
+
+/**
+ * Holds if `namedClass` is in namespace `namespace` and has
+ * name `type` (excluding any template parameters).
+ */
+bindingset[type, namespace]
+pragma[inline_late]
+private predicate classHasQualifiedName(Class namedClass, string namespace, string type) {
+  exists(string typeWithoutArgs |
+    parseAngles(type, typeWithoutArgs, _, "") and
+    namedClass.hasQualifiedName(namespace, typeWithoutArgs)
+  )
 }
 
 /**
@@ -399,34 +933,41 @@ pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
-  elementSpec(namespace, type, subtypes, name, signature, _) and
   (
     // Non-member functions
-    exists(Function func |
-      func.hasQualifiedName(namespace, name) and
-      type = "" and
-      matchesSignature(func, signature) and
-      subtypes = false and
-      not exists(func.getDeclaringType()) and
-      result = func
+    funcHasQualifiedName(result, namespace, name) and
+    subtypes = false and
+    type = "" and
+    (
+      elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
+      or
+      signature = "" and
+      elementSpec(namespace, type, subtypes, name, signature, _)
     )
     or
     // Member functions
-    exists(Class namedClass, Class classWithMethod, Function method |
-      classWithMethod = method.getClassAndName(name) and
-      namedClass.hasQualifiedName(namespace, type) and
-      matchesSignature(method, signature) and
-      result = method
+    exists(Class namedClass, Class classWithMethod |
+      hasClassAndName(classWithMethod, result, name) and
+      classHasQualifiedName(namedClass, namespace, type)
     |
-      // member declared in the named type or a subtype of it
-      subtypes = true and
-      classWithMethod = namedClass.getADerivedClass*()
-      or
-      // member declared directly in the named type
-      subtypes = false and
-      classWithMethod = namedClass
+      (
+        elementSpecMatchesSignature(result, namespace, type, subtypes, name, signature)
+        or
+        signature = "" and
+        elementSpec(namespace, type, subtypes, name, "", _)
+      ) and
+      (
+        // member declared in the named type or a subtype of it
+        subtypes = true and
+        classWithMethod = namedClass.getADerivedClass*()
+        or
+        // member declared directly in the named type
+        subtypes = false and
+        classWithMethod = namedClass
+      )
     )
     or
+    elementSpec(namespace, type, subtypes, name, signature, _) and
     // Member variables
     signature = "" and
     exists(Class namedClass, Class classWithMember, MemberVariable member |
@@ -445,6 +986,7 @@ private Element interpretElement0(
     )
     or
     // Global or namespace variables
+    elementSpec(namespace, type, subtypes, name, signature, _) and
     signature = "" and
     type = "" and
     subtypes = false and
@@ -452,26 +994,27 @@ private Element interpretElement0(
   )
 }
 
-/** Gets the source/sink/summary element corresponding to the supplied parameters. */
-Element interpretElement(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
-) {
-  elementSpec(namespace, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
-    ext = "" and result = e
-  )
-}
-
 cached
 private module Cached {
+  /** Gets the source/sink/summary element corresponding to the supplied parameters. */
+  cached
+  Element interpretElement(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  ) {
+    elementSpec(namespace, type, subtypes, name, signature, ext) and
+    exists(Element e | e = interpretElement0(namespace, type, subtypes, name, signature) |
+      ext = "" and result = e
+    )
+  }
+
   /**
    * Holds if `node` is specified as a source with the given kind in a CSV flow
    * model.
    */
   cached
-  predicate sourceNode(DataFlow::Node node, string kind) {
+  predicate sourceNode(DataFlow::Node node, string kind, string model) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSourceNode(n, kind, _) and n.asNode() = node // TODO
+      isSourceNode(n, kind, model) and n.asNode() = node
     )
   }
 
@@ -480,40 +1023,57 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(DataFlow::Node node, string kind) {
+  predicate sinkNode(DataFlow::Node node, string kind, string model) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
-      isSinkNode(n, kind, _) and n.asNode() = node // TODO
+      isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
 }
 
 import Cached
 
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
 private predicate interpretSummary(
-  Function f, string input, string output, string kind, string provenance
+  Function f, string input, string output, string kind, string provenance, string model
 ) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
-    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      model) and
     f = interpretElement(namespace, type, subtypes, name, signature, ext)
   )
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
 
-  private predicate relevantSummaryElementManual(string input, string output, string kind) {
+  private predicate relevantSummaryElementManual(
+    string input, string output, string kind, string model
+  ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance) and
+      interpretSummary(this, input, output, kind, provenance, model) and
       provenance.isManual()
     )
   }
 
-  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
+  private predicate relevantSummaryElementGenerated(
+    string input, string output, string kind, string model
+  ) {
     exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance) and
+      interpretSummary(this, input, output, kind, provenance, model) and
       provenance.isGenerated()
     )
   }
@@ -522,35 +1082,16 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     string input, string output, boolean preservesValue, string model
   ) {
     exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind)
+      this.relevantSummaryElementManual(input, output, kind, model)
       or
-      not this.relevantSummaryElementManual(_, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind)
+      not this.relevantSummaryElementManual(_, _, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind, model)
     |
       if kind = "value" then preservesValue = true else preservesValue = false
-    ) and
-    model = "" // TODO
+    )
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance)
+    interpretSummary(this, _, _, _, provenance, _)
   }
-}
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() {
-    // Neutral models have not been implemented for CPP.
-    none() and
-    exists(this) and
-    exists(kind) and
-    exists(provenance_)
-  }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }

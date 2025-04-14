@@ -1,9 +1,9 @@
 go.mod:
-#    0| [GoModFile] library-tests/semmle/go/PrintAst/go.mod
+#    0| [GoModFile] go.mod
 #    1|   0: [GoModModuleLine] go.mod module line
 #    3|   1: [GoModGoLine] go.mod go line
 input.go:
-#    0| [GoFile] library-tests/semmle/go/PrintAst/input.go
+#    0| [GoFile] input.go
 #    1|   package: [Ident] main
 #    5|   1: [CommentGroup] comment group
 #    5|     0: [SlashSlashComment] comment
@@ -29,7 +29,7 @@ input.go:
 #    3|     0: [ImportSpec] import specifier
 #    3|       0: [StringLit] "fmt"
 other.go:
-#    0| [GoFile] library-tests/semmle/go/PrintAst/other.go
+#    0| [GoFile] other.go
 #    1|   package: [Ident] main
 #    8|   1: [FuncDecl] function declaration
 #    8|     0: [FunctionName, Ident] hasNested
@@ -56,6 +56,11 @@ other.go:
 #   11|             Type = int
 #   11|           0: [Ident, VariableName] myNested
 #   11|               Type = func() int
+#    8|     3: [TypeParamDecl] type parameter declaration
+#    8|       0: [Ident, TypeName] int
+#    8|           Type = int
+#    8|       1: [Ident, TypeName] U
+#    8|           Type = U
 #   15|   2: [VarDecl] variable declaration
 #   15|     0: [ValueSpec] value declaration specifier
 #   15|       0: [Ident, VariableName] x
@@ -65,3 +70,18 @@ other.go:
 #   15|       2: [IntLit] 0
 #   15|           Type = int
 #   15|           Value = [IntLit] 0
+#   17|   3: [TypeDecl] type declaration
+#   17|     0: [TypeSpec] type declaration specifier
+#   17|       0: [Ident, TypeName] myType
+#   17|           Type = myType
+#   17|       1: [ArrayTypeExpr] array type
+#   17|           Type = []T
+#   17|         0: [Ident, TypeName] T
+#   17|             Type = T
+#   17|       2: [TypeParamDecl] type parameter declaration
+#   17|         0: [TypeSetLiteralExpr] type set literal
+#   17|             Type = ~string
+#   17|           0: [Ident, TypeName] string
+#   17|               Type = string
+#   17|         1: [Ident, TypeName] T
+#   17|             Type = T

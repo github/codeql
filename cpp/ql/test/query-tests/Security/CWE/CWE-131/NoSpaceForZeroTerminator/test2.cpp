@@ -38,35 +38,35 @@ namespace std
 
 //// Test code /////
 
-void bad1(char *str) {
+static void bad1(char *str) {
     // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
     char *buffer = (char *)malloc(strlen(str));
     std::string str2(buffer);
     free(buffer);
 }
 
-void good1(char *str) {
+static void good1(char *str) {
     // GOOD --- copy does not overrun due to size limit
     char *buffer = (char *)malloc(strlen(str));
     std::string str2(buffer, strlen(str));
     free(buffer);
 }
 
-void bad2(wchar_t *str) {
+static void bad2(wchar_t *str) {
     // BAD -- Not allocating space for '\0' terminator [NOT DETECTED]
     wchar_t *buffer = (wchar_t *)calloc(wcslen(str), sizeof(wchar_t));
     wcscpy(buffer, str);
     free(buffer);
 }
 
-void bad3(wchar_t *str) {
+static void bad3(wchar_t *str) {
     // BAD -- Not allocating space for '\0' terminator
     wchar_t *buffer = (wchar_t *)calloc(sizeof(wchar_t), wcslen(str));
     wcscpy(buffer, str);
     free(buffer);
 }
 
-void bad4(char *str) {
+static void bad4(char *str) {
     // BAD -- Not allocating space for '\0' terminator
     char *buffer = (char *)realloc(0, strlen(str));
     strcpy(buffer, str);

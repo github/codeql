@@ -32,7 +32,7 @@ abstract class ActionConfiguration extends string {
 private BasicBlock actionBlock(ActionConfiguration conf) {
   exists(ControlFlowNode node | result = node.getBasicBlock() |
     conf.isAction(node) or
-    callAlwaysPerformsAction(node, conf)
+    callAlwaysPerformsAction(node.asCall(), conf)
   )
 }
 
@@ -45,17 +45,17 @@ private predicate callAlwaysPerformsAction(Call call, ActionConfiguration conf) 
 
 /** Holds if an action dominates the exit of the callable. */
 private predicate actionDominatesExit(Callable callable, ActionConfiguration conf) {
-  exists(BasicBlock exit |
-    exit.getLastNode() = callable and
+  exists(ExitBlock exit |
+    exit.getEnclosingCallable() = callable and
     actionBlock(conf).bbDominates(exit)
   )
 }
 
 /** Gets a `BasicBlock` that contains an action that does not dominate the exit. */
 private BasicBlock nonDominatingActionBlock(ActionConfiguration conf) {
-  exists(BasicBlock exit |
+  exists(ExitBlock exit |
     result = actionBlock(conf) and
-    exit.getLastNode() = result.getEnclosingCallable() and
+    exit.getEnclosingCallable() = result.getEnclosingCallable() and
     not result.bbDominates(exit)
   )
 }
@@ -80,8 +80,8 @@ private predicate postActionBlock(BasicBlock bb, ActionConfiguration conf) {
 private predicate callableAlwaysPerformsAction(Callable callable, ActionConfiguration conf) {
   actionDominatesExit(callable, conf)
   or
-  exists(BasicBlock exit |
-    exit.getLastNode() = callable and
+  exists(ExitBlock exit |
+    exit.getEnclosingCallable() = callable and
     postActionBlock(exit, conf)
   )
 }

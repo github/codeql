@@ -1,0 +1,13 @@
+name: codeql/rust-queries
+version: 0.1.6-dev
+groups:
+  - rust
+  - queries
+suites: codeql-suites
+extractor: rust
+defaultSuiteFile: codeql-suites/rust-code-scanning.qls
+dependencies:
+  codeql/rust-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

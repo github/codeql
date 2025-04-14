@@ -12,9 +12,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.InsufficientPasswordHashQuery
-import DataFlow::PathGraph
+import InsufficientPasswordHashFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from InsufficientPasswordHashFlow::PathNode source, InsufficientPasswordHashFlow::PathNode sink
+where InsufficientPasswordHashFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Password from $@ is hashed insecurely.", source.getNode(),
   source.getNode().(Source).describe()

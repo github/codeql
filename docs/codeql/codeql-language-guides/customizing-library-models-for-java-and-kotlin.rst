@@ -5,8 +5,6 @@ Customizing library models for Java and Kotlin
 
 You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
 About this article

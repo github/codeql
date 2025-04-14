@@ -8,7 +8,7 @@
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
-private import ExternalApi
+private import semmle.code.csharp.telemetry.ExternalApi
 
 private predicate relevant(ExternalApi api) { api.hasSummary() }
 

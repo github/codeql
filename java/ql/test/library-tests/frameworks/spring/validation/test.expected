@@ -1,0 +1,132 @@
+models
+| 1 | Summary: org.springframework.validation; Errors; true; addAllErrors; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: org.springframework.validation; Errors; true; getAllErrors; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: org.springframework.validation; Errors; true; getFieldError; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: org.springframework.validation; Errors; true; getGlobalError; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: org.springframework.validation; Errors; true; getGlobalErrors; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: org.springframework.validation; Errors; true; reject; ; ; Argument[0]; Argument[this]; taint; manual |
+| 7 | Summary: org.springframework.validation; Errors; true; reject; ; ; Argument[1].ArrayElement; Argument[this]; taint; manual |
+| 8 | Summary: org.springframework.validation; Errors; true; reject; ; ; Argument[2]; Argument[this]; taint; manual |
+| 9 | Summary: org.springframework.validation; Errors; true; rejectValue; (java.lang.String,java.lang.String,java.lang.Object[],java.lang.String); ; Argument[2].ArrayElement; Argument[this]; taint; manual |
+| 10 | Summary: org.springframework.validation; Errors; true; rejectValue; (java.lang.String,java.lang.String,java.lang.String); ; Argument[2]; Argument[this]; taint; manual |
+| 11 | Summary: org.springframework.validation; Errors; true; rejectValue; ; ; Argument[1]; Argument[this]; taint; manual |
+| 12 | Summary: org.springframework.validation; Errors; true; rejectValue; ; ; Argument[3]; Argument[this]; taint; manual |
+edges
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:13:22:13:33 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:16:10:16:21 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:18:10:18:21 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:19:10:19:21 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:21:10:21:21 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:32:6:47 | (...)... : Errors | Test.java:22:10:22:21 | sourceErrs(...) : Errors | provenance |  |
+| Test.java:6:40:6:47 | source(...) : Object | Test.java:6:32:6:47 | (...)... : Errors | provenance |  |
+| Test.java:13:5:13:7 | es0 [post update] : Errors | Test.java:14:10:14:12 | es0 | provenance |  |
+| Test.java:13:22:13:33 | sourceErrs(...) : Errors | Test.java:13:5:13:7 | es0 [post update] : Errors | provenance | MaD:1 |
+| Test.java:16:10:16:21 | sourceErrs(...) : Errors | Test.java:16:10:16:36 | getAllErrors(...) | provenance | MaD:2 |
+| Test.java:18:10:18:21 | sourceErrs(...) : Errors | Test.java:18:10:18:37 | getFieldError(...) | provenance | MaD:3 |
+| Test.java:19:10:19:21 | sourceErrs(...) : Errors | Test.java:19:10:19:44 | getFieldError(...) | provenance | MaD:3 |
+| Test.java:21:10:21:21 | sourceErrs(...) : Errors | Test.java:21:10:21:38 | getGlobalError(...) | provenance | MaD:4 |
+| Test.java:22:10:22:21 | sourceErrs(...) : Errors | Test.java:22:10:22:39 | getGlobalErrors(...) | provenance | MaD:5 |
+| Test.java:25:5:25:7 | es1 [post update] : Errors | Test.java:26:10:26:12 | es1 | provenance |  |
+| Test.java:25:16:25:31 | (...)... : String | Test.java:25:5:25:7 | es1 [post update] : Errors | provenance | MaD:6 |
+| Test.java:25:24:25:31 | source(...) : Object | Test.java:25:16:25:31 | (...)... : String | provenance |  |
+| Test.java:29:5:29:7 | es2 [post update] : Errors | Test.java:30:10:30:12 | es2 | provenance |  |
+| Test.java:29:16:29:31 | (...)... : String | Test.java:29:5:29:7 | es2 [post update] : Errors | provenance | MaD:6 |
+| Test.java:29:24:29:31 | source(...) : Object | Test.java:29:16:29:31 | (...)... : String | provenance |  |
+| Test.java:33:5:33:7 | es3 [post update] : Errors | Test.java:34:10:34:12 | es3 | provenance |  |
+| Test.java:33:16:33:31 | (...)... : String | Test.java:33:5:33:7 | es3 [post update] : Errors | provenance | MaD:6 |
+| Test.java:33:24:33:31 | source(...) : Object | Test.java:33:16:33:31 | (...)... : String | provenance |  |
+| Test.java:38:21:38:40 | {...} : Object[] [[]] : String | Test.java:40:12:40:13 | in | provenance |  |
+| Test.java:38:23:38:38 | (...)... : String | Test.java:38:21:38:40 | {...} : Object[] [[]] : String | provenance |  |
+| Test.java:38:31:38:38 | source(...) : Object | Test.java:38:23:38:38 | (...)... : String | provenance |  |
+| Test.java:45:7:45:9 | es5 [post update] : Errors | Test.java:46:12:46:14 | es5 | provenance |  |
+| Test.java:45:28:45:43 | (...)... : String | Test.java:45:7:45:9 | es5 [post update] : Errors | provenance | MaD:8 |
+| Test.java:45:36:45:43 | source(...) : Object | Test.java:45:28:45:43 | (...)... : String | provenance |  |
+| Test.java:50:5:50:7 | es6 [post update] : Errors | Test.java:51:10:51:12 | es6 | provenance |  |
+| Test.java:50:16:50:31 | (...)... : String | Test.java:50:5:50:7 | es6 [post update] : Errors | provenance | MaD:6 |
+| Test.java:50:24:50:31 | source(...) : Object | Test.java:50:16:50:31 | (...)... : String | provenance |  |
+| Test.java:54:5:54:7 | es7 [post update] : Errors | Test.java:55:10:55:12 | es7 | provenance |  |
+| Test.java:54:20:54:35 | (...)... : String | Test.java:54:5:54:7 | es7 [post update] : Errors | provenance | MaD:7 |
+| Test.java:54:28:54:35 | source(...) : Object | Test.java:54:20:54:35 | (...)... : String | provenance |  |
+| Test.java:58:5:58:7 | es8 [post update] : Errors | Test.java:59:10:59:12 | es8 | provenance |  |
+| Test.java:58:25:58:40 | (...)... : String | Test.java:58:5:58:7 | es8 [post update] : Errors | provenance | MaD:11 |
+| Test.java:58:33:58:40 | source(...) : Object | Test.java:58:25:58:40 | (...)... : String | provenance |  |
+| Test.java:62:19:62:28 | {...} : Object[] [[]] : Object | Test.java:63:29:63:30 | in : Object[] [[]] : Object | provenance |  |
+| Test.java:62:20:62:27 | source(...) : Object | Test.java:62:19:62:28 | {...} : Object[] [[]] : Object | provenance |  |
+| Test.java:63:5:63:7 | es9 [post update] : Errors | Test.java:64:10:64:12 | es9 | provenance |  |
+| Test.java:63:29:63:30 | in : Object[] [[]] : Object | Test.java:63:5:63:7 | es9 [post update] : Errors | provenance | MaD:9 |
+| Test.java:67:5:67:8 | es10 [post update] : Errors | Test.java:68:10:68:13 | es10 | provenance |  |
+| Test.java:67:36:67:51 | (...)... : String | Test.java:67:5:67:8 | es10 [post update] : Errors | provenance | MaD:12 |
+| Test.java:67:44:67:51 | source(...) : Object | Test.java:67:36:67:51 | (...)... : String | provenance |  |
+| Test.java:71:5:71:8 | es11 [post update] : Errors | Test.java:72:10:72:13 | es11 | provenance |  |
+| Test.java:71:26:71:41 | (...)... : String | Test.java:71:5:71:8 | es11 [post update] : Errors | provenance | MaD:11 |
+| Test.java:71:34:71:41 | source(...) : Object | Test.java:71:26:71:41 | (...)... : String | provenance |  |
+| Test.java:75:5:75:8 | es12 [post update] : Errors | Test.java:76:10:76:13 | es12 | provenance |  |
+| Test.java:75:30:75:45 | (...)... : String | Test.java:75:5:75:8 | es12 [post update] : Errors | provenance | MaD:10 |
+| Test.java:75:38:75:45 | source(...) : Object | Test.java:75:30:75:45 | (...)... : String | provenance |  |
+nodes
+| Test.java:6:32:6:47 | (...)... : Errors | semmle.label | (...)... : Errors |
+| Test.java:6:40:6:47 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:13:5:13:7 | es0 [post update] : Errors | semmle.label | es0 [post update] : Errors |
+| Test.java:13:22:13:33 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:14:10:14:12 | es0 | semmle.label | es0 |
+| Test.java:16:10:16:21 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:16:10:16:36 | getAllErrors(...) | semmle.label | getAllErrors(...) |
+| Test.java:18:10:18:21 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:18:10:18:37 | getFieldError(...) | semmle.label | getFieldError(...) |
+| Test.java:19:10:19:21 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:19:10:19:44 | getFieldError(...) | semmle.label | getFieldError(...) |
+| Test.java:21:10:21:21 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:21:10:21:38 | getGlobalError(...) | semmle.label | getGlobalError(...) |
+| Test.java:22:10:22:21 | sourceErrs(...) : Errors | semmle.label | sourceErrs(...) : Errors |
+| Test.java:22:10:22:39 | getGlobalErrors(...) | semmle.label | getGlobalErrors(...) |
+| Test.java:25:5:25:7 | es1 [post update] : Errors | semmle.label | es1 [post update] : Errors |
+| Test.java:25:16:25:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:25:24:25:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:26:10:26:12 | es1 | semmle.label | es1 |
+| Test.java:29:5:29:7 | es2 [post update] : Errors | semmle.label | es2 [post update] : Errors |
+| Test.java:29:16:29:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:29:24:29:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:30:10:30:12 | es2 | semmle.label | es2 |
+| Test.java:33:5:33:7 | es3 [post update] : Errors | semmle.label | es3 [post update] : Errors |
+| Test.java:33:16:33:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:33:24:33:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:34:10:34:12 | es3 | semmle.label | es3 |
+| Test.java:38:21:38:40 | {...} : Object[] [[]] : String | semmle.label | {...} : Object[] [[]] : String |
+| Test.java:38:23:38:38 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:38:31:38:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:40:12:40:13 | in | semmle.label | in |
+| Test.java:45:7:45:9 | es5 [post update] : Errors | semmle.label | es5 [post update] : Errors |
+| Test.java:45:28:45:43 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:45:36:45:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:46:12:46:14 | es5 | semmle.label | es5 |
+| Test.java:50:5:50:7 | es6 [post update] : Errors | semmle.label | es6 [post update] : Errors |
+| Test.java:50:16:50:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:50:24:50:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:51:10:51:12 | es6 | semmle.label | es6 |
+| Test.java:54:5:54:7 | es7 [post update] : Errors | semmle.label | es7 [post update] : Errors |
+| Test.java:54:20:54:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:54:28:54:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:55:10:55:12 | es7 | semmle.label | es7 |
+| Test.java:58:5:58:7 | es8 [post update] : Errors | semmle.label | es8 [post update] : Errors |
+| Test.java:58:25:58:40 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:58:33:58:40 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:59:10:59:12 | es8 | semmle.label | es8 |
+| Test.java:62:19:62:28 | {...} : Object[] [[]] : Object | semmle.label | {...} : Object[] [[]] : Object |
+| Test.java:62:20:62:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:63:5:63:7 | es9 [post update] : Errors | semmle.label | es9 [post update] : Errors |
+| Test.java:63:29:63:30 | in : Object[] [[]] : Object | semmle.label | in : Object[] [[]] : Object |
+| Test.java:64:10:64:12 | es9 | semmle.label | es9 |
+| Test.java:67:5:67:8 | es10 [post update] : Errors | semmle.label | es10 [post update] : Errors |
+| Test.java:67:36:67:51 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:67:44:67:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:68:10:68:13 | es10 | semmle.label | es10 |
+| Test.java:71:5:71:8 | es11 [post update] : Errors | semmle.label | es11 [post update] : Errors |
+| Test.java:71:26:71:41 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:71:34:71:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:72:10:72:13 | es11 | semmle.label | es11 |
+| Test.java:75:5:75:8 | es12 [post update] : Errors | semmle.label | es12 [post update] : Errors |
+| Test.java:75:30:75:45 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:75:38:75:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:76:10:76:13 | es12 | semmle.label | es12 |
+subpaths
+testFailures

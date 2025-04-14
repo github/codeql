@@ -1,0 +1,29 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+    branches:
+      - main
+      - 14.0.x
+
+    types:
+      - opened
+      - reopened
+
+jobs:
+  updateJira:
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Jira Key
+        env: 
+          TITLE: ${{ github.event.pull_request.title }}
+        run: echo ISSUE_KEY=$(echo "$TITLE") >> $GITHUB_ENV
+
+      - name: Sink
+        run: echo ${{ env.ISSUE_KEY }}
+
+

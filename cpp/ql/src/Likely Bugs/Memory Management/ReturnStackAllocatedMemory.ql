@@ -29,7 +29,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
   override predicate isSource(Instruction source) {
     exists(Function func |
       // Rule out FPs caused by extraction errors.
-      not any(ErrorExpr e).getEnclosingFunction() = func and
+      not func.hasErrors() and
       not intentionallyReturnsStackPointer(func) and
       func = source.getEnclosingFunction()
     |
@@ -92,6 +92,8 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     or
     node2.(PointerOffsetInstruction).getLeftOperand() = node1
   }
+
+  override predicate isBarrier(Instruction n) { n.getResultType() instanceof ErroneousType }
 }
 
 from

@@ -9,80 +9,80 @@ import android.os.Bundle;
 public class AndroidIntentRedirectionTest extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
-        Intent intent = (Intent) getIntent().getParcelableExtra("forward_intent");
+        Intent intent = (Intent) getIntent().getParcelableExtra("forward_intent"); // $ Source=intent
 
         // @formatter:off
-        startActivities(new Intent[] {intent}); // $ hasAndroidIntentRedirection
-        startActivities(new Intent[] {intent}, null); // $ hasAndroidIntentRedirection
-        startActivity(intent); // $ hasAndroidIntentRedirection
-        startActivity(intent, null); // $ hasAndroidIntentRedirection
-        startActivityAsUser(intent, null); // $ hasAndroidIntentRedirection
-        startActivityAsCaller(intent, null, false, 0); // $ hasAndroidIntentRedirection
-        startActivityForResult(intent, 0); // $ hasAndroidIntentRedirection
-        startActivityForResult(intent, 0, null); // $ hasAndroidIntentRedirection
-        startActivityForResult(null, intent, 0, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, null, 0, null, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, 0, null, null); // $ hasAndroidIntentRedirection
-        startActivityForResultAsUser(intent, 0, null); // $ hasAndroidIntentRedirection
+        startActivities(new Intent[] {intent}); // $ Alert=intent
+        startActivities(new Intent[] {intent}, null); // $ Alert=intent
+        startActivity(intent); // $ Alert=intent
+        startActivity(intent, null); // $ Alert=intent
+        startActivityAsUser(intent, null); // $ Alert=intent
+        startActivityAsCaller(intent, null, false, 0); // $ Alert=intent
+        startActivityForResult(intent, 0); // $ Alert=intent
+        startActivityForResult(intent, 0, null); // $ Alert=intent
+        startActivityForResult(null, intent, 0, null); // $ Alert=intent
+        startActivityForResultAsUser(intent, null, 0, null, null); // $ Alert=intent
+        startActivityForResultAsUser(intent, 0, null, null); // $ Alert=intent
+        startActivityForResultAsUser(intent, 0, null); // $ Alert=intent
         bindService(intent, null, 0);
         bindServiceAsUser(intent, null, 0, null);
-        startService(intent); // $ hasAndroidIntentRedirection
-        startServiceAsUser(intent, null); // $ hasAndroidIntentRedirection
-        startForegroundService(intent); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent); // $ hasAndroidIntentRedirection
-        sendBroadcast(intent, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
-        sendBroadcastAsUser(intent, null, null); // $ hasAndroidIntentRedirection
-        sendBroadcastWithMultiplePermissions(intent, null); // $ hasAndroidIntentRedirection
-        sendStickyBroadcast(intent); // $ hasAndroidIntentRedirection
-        sendStickyBroadcastAsUser(intent, null); // $ hasAndroidIntentRedirection
-        sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ hasAndroidIntentRedirection
-        sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ hasAndroidIntentRedirection
+        startService(intent); // $ Alert=intent
+        startServiceAsUser(intent, null); // $ Alert=intent
+        startForegroundService(intent); // $ Alert=intent
+        sendBroadcast(intent); // $ Alert=intent
+        sendBroadcast(intent, null); // $ Alert=intent
+        sendBroadcastAsUser(intent, null); // $ Alert=intent
+        sendBroadcastAsUser(intent, null, null); // $ Alert=intent
+        sendBroadcastWithMultiplePermissions(intent, null); // $ Alert=intent
+        sendStickyBroadcast(intent); // $ Alert=intent
+        sendStickyBroadcastAsUser(intent, null); // $ Alert=intent
+        sendStickyOrderedBroadcast(intent, null, null, 0, null, null); // $ Alert=intent
+        sendStickyOrderedBroadcastAsUser(intent, null, null, null, 0, null, null); // $ Alert=intent
         // @formatter:on
 
         // Sanitizing only the package or the class still allows redirecting
         // to non-exported activities in the same package
         // or activities with the same name in other packages, respectively.
         if (intent.getComponent().getPackageName().equals("something")) {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ Alert=intent
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ Alert=intent
         }
         if (intent.getComponent().getClassName().equals("something")) {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ Alert=intent
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ Alert=intent
         }
 
         if (intent.getComponent().getPackageName().equals("something")
                 && intent.getComponent().getClassName().equals("something")) {
             startActivity(intent); // Safe
         } else {
-            startActivity(intent); // $ hasAndroidIntentRedirection
+            startActivity(intent); // $ Alert=intent
         }
 
         try {
             {
                 // Delayed cast
-                Object obj = getIntent().getParcelableExtra("forward_intent");
+                Object obj = getIntent().getParcelableExtra("forward_intent"); // $ Source=intent2
                 Intent fwdIntent = (Intent) obj;
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent2
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName((Context) null, intent.getStringExtra("className"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName(intent.getStringExtra("packageName"), null);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setClassName(intent.getStringExtra("packageName"),
                         intent.getStringExtra("className"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
@@ -93,27 +93,27 @@ public class AndroidIntentRedirectionTest extends Activity {
             {
                 Intent fwdIntent = new Intent();
                 fwdIntent.setPackage(intent.getStringExtra("packageName"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         new ComponentName(intent.getStringExtra("packageName"), null);
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = new ComponentName("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         new ComponentName((Context) null, intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
@@ -128,21 +128,21 @@ public class AndroidIntentRedirectionTest extends Activity {
                 ComponentName component =
                         ComponentName.createRelative("", intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component =
                         ComponentName.createRelative(intent.getStringExtra("packageName"), "");
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent fwdIntent = new Intent();
                 ComponentName component = ComponentName.createRelative((Context) null,
                         intent.getStringExtra("className"));
                 fwdIntent.setComponent(component);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                startActivity(fwdIntent); // $ Alert=intent
             }
             {
                 Intent originalIntent = getIntent();
@@ -158,19 +158,19 @@ public class AndroidIntentRedirectionTest extends Activity {
                 startActivity(anotherIntent); // Safe - copy constructor from original Intent
             }
             {
-                Intent originalIntent = getIntent();
+                Intent originalIntent = getIntent(); // $ Source=intent3
                 Intent fwdIntent = (Intent) originalIntent.getParcelableExtra("forward_intent");
                 if (originalIntent.getBooleanExtra("use_fwd_intent", false)) {
-                    startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                    startActivity(fwdIntent); // $ Alert=intent3
                 } else {
                     startActivity(originalIntent); // Safe - not an Intent obtained from the Extras
                 }
             }
             {
-                Intent originalIntent = getIntent();
+                Intent originalIntent = getIntent(); // $ Source=intent4
                 originalIntent.setClassName(originalIntent.getStringExtra("package_name"),
                         originalIntent.getStringExtra("class_name"));
-                startActivity(originalIntent); // $ hasAndroidIntentRedirection
+                startActivity(originalIntent); // $ Alert=intent4
             }
             {
                 Intent originalIntent = getIntent();
@@ -189,16 +189,16 @@ public class AndroidIntentRedirectionTest extends Activity {
                 startActivity(fwdIntent); // $ MISSING: $hasAndroidIntentRedirection
             }
             {
-                Intent fwdIntent = Intent.parseUri(getIntent().getStringExtra("uri"), 0);
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                Intent fwdIntent = Intent.parseUri(getIntent().getStringExtra("uri"), 0); // $ Source=intent5
+                startActivity(fwdIntent); // $ Alert=intent5
             }
             {
-                Intent fwdIntent = Intent.getIntent(getIntent().getStringExtra("uri"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                Intent fwdIntent = Intent.getIntent(getIntent().getStringExtra("uri")); // $ Source=intent6
+                startActivity(fwdIntent); // $ Alert=intent6
             }
             {
-                Intent fwdIntent = Intent.getIntentOld(getIntent().getStringExtra("uri"));
-                startActivity(fwdIntent); // $ hasAndroidIntentRedirection
+                Intent fwdIntent = Intent.getIntentOld(getIntent().getStringExtra("uri")); // $ Source=intent7
+                startActivity(fwdIntent); // $ Alert=intent7
             }
         } catch (Exception e) {
         }

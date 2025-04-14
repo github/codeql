@@ -26,11 +26,15 @@ module RegExpInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source for regular
-   * expression injection.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this.isClientSideSource() }
   }
 
   private import IndirectCommandInjectionCustomizations
@@ -72,7 +76,7 @@ module RegExpInjection {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      this.isGlobal() and
+      this.maybeGlobal() and
       (
         RegExp::alwaysMatchesMetaCharacter(this.getRegExp().getRoot(), ["{", "[", "+"])
         or

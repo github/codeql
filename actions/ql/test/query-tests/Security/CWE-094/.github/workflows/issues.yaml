@@ -1,0 +1,20 @@
+on: issues
+
+env:
+  global_env: ${{ github.event.issue.title }}
+  test: test
+
+jobs:
+  echo-chamber:
+    env:
+      job_env: ${{ github.event.issue.title }}
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo '${{ github.event.issue.title }}'
+    - run: echo '${{ github.event.issue.body }}'
+    - run: echo '${{ env.global_env }}'
+    - run: echo '${{ env.test }}'
+    - run: echo '${{ env.job_env }}'
+    - run: echo '${{ env.step_env }}'
+      env:
+        step_env: ${{ github.event.issue.title }}

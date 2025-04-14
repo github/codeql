@@ -1,0 +1,19 @@
+on: issue_comment
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR number
+        id: pr_number
+        if: github.event_name == 'issue_comment' && github.repository_owner == 'foo'
+        run: |
+          PR_URL="${{ github.event.issue.pull_request.url }}"
+          PR_NUMBER=${PR_URL##*/}
+          echo "number=$PR_NUMBER" >> $GITHUB_OUTPUT
+      - name: Checkout Pull Request
+        if: github.event_name == 'issue_comment'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            gh pr checkout ${{ needs.should_run_it.outputs.pr_number }}

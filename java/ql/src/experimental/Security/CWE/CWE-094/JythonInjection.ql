@@ -99,22 +99,28 @@ class CodeInjectionSink extends DataFlow::ExprNode {
 }
 
 /**
- * A taint configuration for tracking flow from `ThreatModelFlowSource` to a Jython method call
+ * A taint configuration for tracking flow from `ActiveThreatModelSource` to a Jython method call
  * `CodeInjectionSink` that executes injected code.
  */
 module CodeInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 }
 
 /**
- * Taint tracking flow from `ThreatModelFlowSource` to a Jython method call
+ * Taint tracking flow from `ActiveThreatModelSource` to a Jython method call
  * `CodeInjectionSink` that executes injected code.
  */
 module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
 
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
-where CodeInjectionFlow::flowPath(source, sink)
-select sink.getNode().(CodeInjectionSink).getMethodCall(), source, sink, "Jython evaluate $@.",
-  source.getNode(), "user input"
+deprecated query predicate problems(
+  MethodCall sinkCall, CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  sinkCall = sink.getNode().(CodeInjectionSink).getMethodCall() and
+  message1 = "Jython evaluate $@." and
+  sourceNode = source.getNode() and
+  message2 = "user input"
+}

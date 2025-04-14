@@ -282,12 +282,12 @@ module EntityFramework {
      * If `t2` is a column type, `c2` will be included in the model (see
      * https://docs.microsoft.com/en-us/ef/core/modeling/entity-types?tabs=data-annotations).
      */
-    private predicate step(Content c1, Type t1, Content c2, Type t2, int dist) {
+    private predicate step(ContentSet c1, Type t1, ContentSet c2, Type t2, int dist) {
       exists(Property p1 |
         p1 = this.getADbSetProperty(t2) and
-        c1.(PropertyContent).getProperty() = p1 and
+        c1.isProperty(p1) and
         t1 = p1.getType() and
-        c2 instanceof ElementContent and
+        c2.isElement() and
         dist = 0
       )
       or
@@ -299,17 +299,17 @@ module EntityFramework {
         exists(Property p2 |
           p2.getDeclaringType().(Class) = t1 and
           not isColumnType(t1) and
-          c2.(PropertyContent).getProperty() = p2 and
+          c2.isProperty(p2) and
           t2 = p2.getType() and
           not isNotMapped(p2)
         )
         or
         exists(ConstructedInterface ci |
-          c1 instanceof PropertyContent and
+          c1.isProperty(_) and
           t1.(ValueOrRefType).getABaseType*() = ci and
           not t1 instanceof StringType and
           ci.getUnboundDeclaration() instanceof SystemCollectionsGenericIEnumerableTInterface and
-          c2 instanceof ElementContent and
+          c2.isElement() and
           t2 = ci.getTypeArgument(0)
         )
       )
@@ -340,16 +340,16 @@ module EntityFramework {
      * ```
      */
     Property getAColumnProperty(int dist) {
-      exists(PropertyContent c, Type t |
+      exists(ContentSet c, Type t |
         this.step(_, _, c, t, dist) and
-        c.getProperty() = result and
+        c.isProperty(result) and
         isColumnType(t)
       )
     }
 
-    private predicate stepRev(Content c1, Type t1, Content c2, Type t2, int dist) {
+    private predicate stepRev(ContentSet c1, Type t1, ContentSet c2, Type t2, int dist) {
       this.step(c1, t1, c2, t2, dist) and
-      c2.(PropertyContent).getProperty() = this.getAColumnProperty(dist)
+      c2.isProperty(this.getAColumnProperty(dist))
       or
       this.stepRev(c2, t2, _, _, dist + 1) and
       this.step(c1, t1, c2, t2, dist)
@@ -364,13 +364,13 @@ module EntityFramework {
 
     /** Holds if component stack `head :: tail` is required for the input specification. */
     predicate requiresComponentStackIn(
-      Content head, Type headType, SummaryComponentStack tail, int dist
+      ContentSet head, Type headType, SummaryComponentStack tail, int dist
     ) {
       tail = SummaryComponentStack::qualifier() and
       this.stepRev(head, headType, _, _, 0) and
       dist = -1
       or
-      exists(Content tailHead, Type tailType, SummaryComponentStack tailTail |
+      exists(ContentSet tailHead, Type tailType, SummaryComponentStack tailTail |
         this.requiresComponentStackIn(tailHead, tailType, tailTail, dist - 1) and
         tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
         this.stepRev(tailHead, tailType, head, headType, dist)
@@ -379,18 +379,18 @@ module EntityFramework {
 
     /** Holds if component stack `head :: tail` is required for the output specification. */
     predicate requiresComponentStackOut(
-      Content head, Type headType, SummaryComponentStack tail, int dist,
+      ContentSet head, Type headType, SummaryComponentStack tail, int dist,
       DbContextClassSetProperty dbSetProp
     ) {
-      exists(PropertyContent c1 |
+      exists(ContentSet c1 |
         dbSetProp = this.getADbSetProperty(headType) and
         this.stepRev(c1, _, head, headType, 0) and
-        c1.getProperty() = dbSetProp and
+        c1.isProperty(dbSetProp) and
         tail = SummaryComponentStack::return() and
         dist = 0
       )
       or
-      exists(Content tailHead, SummaryComponentStack tailTail, Type tailType |
+      exists(ContentSet tailHead, SummaryComponentStack tailTail, Type tailType |
         this.requiresComponentStackOut(tailHead, tailType, tailTail, dist - 1, dbSetProp) and
         tail = SummaryComponentStack::push(SummaryComponent::content(tailHead), tailTail) and
         this.stepRev(tailHead, tailType, head, headType, dist)
@@ -402,9 +402,9 @@ module EntityFramework {
      */
     pragma[noinline]
     predicate input(SummaryComponentStack input, Property mapped) {
-      exists(PropertyContent head, SummaryComponentStack tail |
+      exists(ContentSet head, SummaryComponentStack tail |
         this.requiresComponentStackIn(head, _, tail, _) and
-        head.getProperty() = mapped and
+        head.isProperty(mapped) and
         mapped = this.getAColumnProperty(_) and
         input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
       )
@@ -418,9 +418,9 @@ module EntityFramework {
     private predicate output(
       SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
     ) {
-      exists(PropertyContent head, SummaryComponentStack tail |
+      exists(ContentSet head, SummaryComponentStack tail |
         this.requiresComponentStackOut(head, _, tail, _, dbSet) and
-        head.getProperty() = mapped and
+        head.isProperty(mapped) and
         mapped = this.getAColumnProperty(_) and
         output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
       )
@@ -437,25 +437,20 @@ module EntityFramework {
     ) {
       this = dbSet.getDbContextClass() and
       this.output(output, mapped, dbSet) and
-      result = dbSet.getFullName() + "#" + output.getMadRepresentation()
+      exists(string qualifier, string type, string name |
+        mapped.hasFullyQualifiedName(qualifier, type, name) and
+        result = getQualifiedName(qualifier, type, name)
+      )
     }
+
+    pragma[nomagic]
+    string getSyntheticNameProj(Property mapped) { result = this.getSyntheticName(_, mapped, _) }
   }
 
   private class DbContextClassSetProperty extends Property {
     private DbContextClass c;
 
     DbContextClassSetProperty() { this = c.getADbSetProperty(_) }
-
-    /**
-     * Gets the fully qualified name for this.
-     */
-    string getFullName() {
-      exists(string qualifier, string type, string name |
-        this.hasFullyQualifiedName(qualifier, type, name)
-      |
-        result = getQualifiedName(qualifier, type, name)
-      )
-    }
 
     /**
      * Gets the context class where this is a DbSet property.
@@ -493,7 +488,7 @@ module EntityFramework {
       exists(string name, Property mapped |
         preservesValue = true and
         c.input(input, mapped) and
-        name = c.getSyntheticName(_, mapped, _) and
+        name = c.getSyntheticNameProj(mapped) and
         output = SummaryComponentStack::syntheticGlobal(name) and
         model = "DbContextSaveChanges"
       )
@@ -504,13 +499,13 @@ module EntityFramework {
    * Add all possible synthetic global names.
    */
   private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
-    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticName(_, _, _) }
+    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticNameProj(_) }
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack
   {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      exists(Content c | head = SummaryComponent::content(c) |
+      exists(ContentSet c | head = SummaryComponent::content(c) |
         any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)
         or
         any(DbContextClass cls).requiresComponentStackOut(c, _, tail, _, _)

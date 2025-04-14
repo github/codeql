@@ -5,8 +5,10 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"
@@ -14,9 +16,11 @@ on:
     paths:
       - "csharp/**"
       - "shared/**"
+      - "misc/bazel/**"
       - .github/workflows/csharp-qltest.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
+      - "MODULE.bazel"
     branches:
       - main
       - "rc/*"
@@ -29,45 +33,6 @@ permissions:
   contents: read
 
 jobs:
-  qlupgrade:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/fetch-codeql
-      - name: Check DB upgrade scripts
-        run: |
-          echo >empty.trap
-          codeql dataset import -S ql/lib/upgrades/initial/semmlecode.csharp.dbscheme testdb empty.trap
-          codeql dataset upgrade testdb --additional-packs ql/lib
-          diff -q testdb/semmlecode.csharp.dbscheme ql/lib/semmlecode.csharp.dbscheme
-      - name: Check DB downgrade scripts
-        run: |
-          echo >empty.trap
-          rm -rf testdb; codeql dataset import -S ql/lib/semmlecode.csharp.dbscheme testdb empty.trap
-          codeql resolve upgrades --format=lines --allow-downgrades --additional-packs downgrades \
-           --dbscheme=ql/lib/semmlecode.csharp.dbscheme --target-dbscheme=downgrades/initial/semmlecode.csharp.dbscheme |
-           xargs codeql execute upgrades testdb
-          diff -q testdb/semmlecode.csharp.dbscheme downgrades/initial/semmlecode.csharp.dbscheme
-  qltest:
-    if: github.repository_owner == 'github'
-    runs-on: ubuntu-latest-xl
-    strategy:
-      fail-fast: false
-      matrix:
-        slice: ["1/2", "2/2"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./csharp/actions/create-extractor-pack
-      - name: Cache compilation cache
-        id: query-cache
-        uses: ./.github/actions/cache-query-compilation
-        with:
-          key: csharp-qltest-${{ matrix.slice }}
-      - name: Run QL tests
-        run: |
-          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
   unit-tests:
     strategy:
       matrix:
@@ -78,14 +43,14 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.101
+          dotnet-version: 9.0.100
       - name: Extractor unit tests
         run: |
           dotnet tool restore
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.Cpp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=9.0.0 autobuilder/Semmle.Autobuild.Cpp.Tests
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest
@@ -101,6 +66,6 @@ jobs:
           # Update existing stubs in the repo with the freshly generated ones
           mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/
           git status
-          codeql test run --threads=0 --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
+          codeql test run --threads=0 --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
         env:
           GITHUB_TOKEN: ${{ github.token }}

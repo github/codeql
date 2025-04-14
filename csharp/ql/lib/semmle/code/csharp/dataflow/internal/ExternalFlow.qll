@@ -28,11 +28,14 @@
  *    types can be short names or fully qualified names (mixing these two options
  *    is not allowed within a single signature).
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
- *    there are only two valid values: "" and "Attribute". The empty string has no
- *    effect. "Attribute" applies if `name` and `signature` were left blank and
- *    acts by selecting an element that is attributed with the attribute type
- *    selected by the first 4 columns. This can be another member such as a field,
- *    property, method, or parameter.
+ *    there are only a few valid values: "", "Attribute", "Attribute.Getter" and "Attribute.Setter".
+ *    The empty string has no effect. "Attribute" applies if `name` and `signature` were left blank
+ *    and acts by selecting an element (except for properties and indexers) that is attributed with
+ *    the attribute type selected by the first 4 columns. This can be another member such as
+ *    a field, method, or parameter. "Attribute.Getter" and "Attribute.Setter" work similar to
+ *    "Attribute", except that they can only be applied to properties and indexers.
+ *    "Attribute.Setter" selects the setter element of a property/indexer and "Attribute.Getter"
+ *    selects the getter.
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. For sinks, an `input` can be either "",
@@ -94,7 +97,48 @@ private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
+private import semmle.code.csharp.dispatch.OverridableCallable
+private import semmle.code.csharp.frameworks.System
+private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 private import codeql.mad.ModelValidation as SharedModelVal
+
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, madId) and
+    model =
+      "Source: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; "
+        + ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+    model =
+      "Sink: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) and
+    model =
+      "Summary: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " + signature +
+        "; " + ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
+  )
+}
 
 private predicate relevantNamespace(string namespace) {
   sourceModel(namespace, _, _, _, _, _, _, _, _, _) or
@@ -119,7 +163,9 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 
 /**
  * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -152,8 +198,6 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
-  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
-
   private predicate getRelevantAccessPath(string path) {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
@@ -247,7 +291,7 @@ module ModelValidation {
       not signature.regexpMatch("|\\([a-zA-Z0-9_<>\\.\\+\\*,\\[\\]]*\\)") and
       result = "Dubious signature \"" + signature + "\" in " + pred + " model."
       or
-      not ext.regexpMatch("|Attribute") and
+      not ext = ["", "Attribute", "Attribute.Getter", "Attribute.Setter"] and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
       or
       invalidProvenance(provenance) and
@@ -274,7 +318,7 @@ private predicate elementSpec(
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(namespace, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private predicate elementSpec(
@@ -334,7 +378,7 @@ private predicate callableInfo(Callable c, string name, UnboundValueOrRefType de
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
     exists(string namespace, string type, string name |
-      partialModel(this, namespace, type, name, _) and
+      partialModel(this, namespace, type, _, name, _) and
       elementSpec(namespace, type, _, name, _, _)
     )
     or
@@ -364,6 +408,30 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
   )
 }
 
+pragma[inline]
+private Declaration interpretExt(Declaration d, ExtPath ext) {
+  ext = "" and result = d
+  or
+  ext.getToken(0) = "Attribute" and
+  (
+    not exists(ext.getToken(1)) and
+    result.(Attributable).getAnAttribute().getType() = d and
+    not result instanceof Property and
+    not result instanceof Indexer
+    or
+    exists(string accessor | accessor = ext.getToken(1) |
+      result.(Accessor).getDeclaration().getAnAttribute().getType() = d and
+      (
+        result instanceof Getter and
+        accessor = "Getter"
+        or
+        result instanceof Setter and
+        accessor = "Setter"
+      )
+    )
+  )
+}
+
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 pragma[nomagic]
 Declaration interpretElement(
@@ -383,24 +451,27 @@ Declaration interpretElement(
       )
     )
   |
-    ext = "" and result = d
-    or
-    ext = "Attribute" and result.(Attributable).getAnAttribute().getType() = d
+    result = interpretExt(d, ext)
   )
 }
 
-/**
- * A callable where there exists a MaD sink model that applies to it.
- */
-class SinkCallable extends Callable {
-  SinkCallable() { SourceSinkInterpretationInput::sinkElement(this, _, _, _, _) }
+private predicate relevantExt(string ext) {
+  summaryModel(_, _, _, _, _, ext, _, _, _, _, _) or
+  sourceModel(_, _, _, _, _, ext, _, _, _, _) or
+  sinkModel(_, _, _, _, _, ext, _, _, _, _)
+}
+
+private class ExtPath = AccessPathSyntax::AccessPath<relevantExt/1>::AccessPath;
+
+private predicate parseSynthField(AccessPathToken c, string name) {
+  c.getName() = "SyntheticField" and name = c.getAnArgument()
 }
 
 /**
- * A callable where there exists a MaD source model that applies to it.
+ * An adapter class for adding synthetic fields from MaD.
  */
-class SourceCallable extends Callable {
-  SourceCallable() { SourceSinkInterpretationInput::sourceElement(this, _, _, _, _) }
+private class SyntheticFieldAdapter extends SyntheticField {
+  SyntheticFieldAdapter() { parseSynthField(_, this) }
 }
 
 cached
@@ -442,20 +513,16 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
-/** Holds if the summary should apply for all overrides of `c`. */
-predicate isBaseCallableOrPrototype(UnboundCallable c) {
-  c.getDeclaringType() instanceof Interface
-  or
-  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
-    m.isAbstract()
-    or
-    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+private predicate isOverridableCallable(OverridableCallable c) {
+  not exists(Type t, Callable base | c.getOverridee+() = base and t = base.getDeclaringType() |
+    t instanceof SystemObjectClass or
+    t instanceof SystemValueTypeClass
   )
 }
 
 /** Gets a string representing whether the summary should apply for all overrides of `c`. */
 private string getCallableOverride(UnboundCallable c) {
-  if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
+  if isOverridableCallable(c) then result = "true" else result = "false"
 }
 
 private module QualifiedNameInput implements QualifiedNameInputSig {
@@ -496,24 +563,11 @@ string parameterQualifiedTypeNamesToString(Callable c) {
 }
 
 predicate partialModel(
-  UnboundCallable c, string namespace, string type, string name, string parameters
+  Callable c, string namespace, string type, string extensible, string name, string parameters
 ) {
   QN::hasQualifiedName(c, namespace, type, name) and
+  extensible = getCallableOverride(c) and
   parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
-}
-
-/** Computes the first 6 columns for positive CSV rows of `c`. */
-string asPartialModel(UnboundCallable c) {
-  exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters) and
-    result =
-      namespace + ";" //
-        + type + ";" //
-        + getCallableOverride(c) + ";" //
-        + name + ";" //
-        + parameters + ";" //
-        + /* ext + */ ";" //
-  )
 }
 
 /**
@@ -521,7 +575,7 @@ string asPartialModel(UnboundCallable c) {
  */
 string getSignature(UnboundCallable c) {
   exists(string namespace, string type, string name, string parameters |
-    partialModel(c, namespace, type, name, parameters)
+    partialModel(c, namespace, type, _, name, parameters)
   |
     result =
       namespace + ";" //
@@ -545,16 +599,22 @@ private predicate interpretSummary(
   )
 }
 
-private predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
   exists(string namespace, string type, string name, string signature |
     neutralModel(namespace, type, name, signature, kind, provenance) and
-    c = interpretElement(namespace, type, false, name, signature, "")
+    c = interpretElement(namespace, type, true, name, signature, "")
   )
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() {
+    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
+      not this.fromSource()
+      or
+      this.fromSource() and provenance.isManual()
+    )
+  }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
@@ -596,14 +656,6 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
+final class SourceCallable = SourceModelCallable;
 
-  NeutralCallableAdapter() { interpretNeutral(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-}
+final class SinkCallable = SinkModelCallable;

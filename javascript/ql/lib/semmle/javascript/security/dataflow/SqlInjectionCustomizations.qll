@@ -22,8 +22,15 @@ module SqlInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for string based query injection. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /** An SQL expression passed to an API call that executes SQL. */
   class SqlInjectionExprSink extends Sink instanceof SQL::SqlString { }

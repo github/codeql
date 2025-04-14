@@ -1,1 +1,2 @@
-Security/CWE-020/IncompleteHostnameRegexp.ql
+query: Security/CWE-020/IncompleteHostnameRegexp.ql
+postprocess: utils/test/PrettyPrintModels.ql

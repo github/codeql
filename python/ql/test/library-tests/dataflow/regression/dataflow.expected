@@ -23,3 +23,4 @@
 | test.py:195:9:195:14 | ControlFlowNode for SOURCE | test.py:199:14:199:14 | ControlFlowNode for t |
 | test.py:202:10:202:15 | ControlFlowNode for SOURCE | test.py:204:14:204:14 | ControlFlowNode for i |
 | test.py:202:10:202:15 | ControlFlowNode for SOURCE | test.py:205:10:205:10 | ControlFlowNode for i |
+| test.py:208:12:208:17 | ControlFlowNode for SOURCE | test.py:214:14:214:14 | ControlFlowNode for x |

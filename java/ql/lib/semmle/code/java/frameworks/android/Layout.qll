@@ -6,7 +6,7 @@ private import semmle.code.java.dataflow.DataFlow
 
 /** An Android Layout XML file. */
 class AndroidLayoutXmlFile extends XmlFile {
-  AndroidLayoutXmlFile() { this.getRelativePath().matches("%/res/layout/%.xml") }
+  AndroidLayoutXmlFile() { this.getRelativePath().regexpMatch("(.*/)?res/layout/.*\\.xml") }
 }
 
 /** A component declared in an Android layout file. */

@@ -40,8 +40,8 @@ C#
 *   Added better support for the SQLite framework in the SQL injection query.
 *   File streams are now considered stored flow sources. For example, reading query elements from a file can lead to a Second Order SQL injection alert.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/static-initialization-vector` no longer requires a :code:`Cipher` object to be initialized with :code:`ENCRYPT_MODE` to be considered a valid sink. Also, several new sanitizers were added.
 *   Improved sanitizers for :code:`java/sensitive-log`, which removes some false positives and improves performance a bit.
@@ -49,8 +49,8 @@ Java
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/implicitly-exported-component`, to detect if components are implicitly exported in the Android manifest.
 *   A new query "Use of RSA algorithm without OAEP" (:code:`java/rsa-without-oaep`) has been added. This query finds uses of RSA encryption that don't use the OAEP scheme.
@@ -84,8 +84,8 @@ Ruby
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The queries :code:`java/redos` and :code:`java/polynomial-redos` now have a tag for CWE-1333.
 
@@ -121,8 +121,8 @@ Golang
 *   Fixed data-flow to captured variable references.
 *   We now assume that if a channel-typed field is only referred to twice in the user codebase, once in a send operation and once in a receive, then data flows from the send to the receive statement. This enables finding some cross-goroutine flow.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added new flow steps for the classes :code:`java.nio.file.Path` and :code:`java.nio.file.Paths`.
 *   The class :code:`AndroidFragment` now also models the Android Jetpack version of the :code:`Fragment` class (:code:`androidx.fragment.app.Fragment`).
@@ -161,8 +161,8 @@ C#
 *   Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
     The old name still exists as a deprecated alias.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
     The old name still exists as a deprecated alias.
@@ -204,8 +204,8 @@ C/C++
 *   Added support for getting the link targets of global and namespace variables.
 *   Added a :code:`BlockAssignExpr` class, which models a :code:`memcpy`\ -like operation used in compiler generated copy/move constructors and assignment operations.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new predicate, :code:`requiresPermissions`, in the :code:`AndroidComponentXmlElement` and :code:`AndroidApplicationXmlElement` classes to detect if the element has explicitly set a value for its :code:`android:permission` attribute.
 *   Added a new predicate, :code:`hasAnIntentFilterElement`, in the :code:`AndroidComponentXmlElement` class to detect if a component contains an intent filter element.

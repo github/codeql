@@ -8,6 +8,13 @@ class User < ApplicationRecord
   def self.authenticate(name, pass)
     # BAD: possible untrusted input interpolated into SQL fragment
     find(:first, :conditions => "name='#{name}' and pass='#{pass}'")
+    # BAD: interpolation in array argument
+    find(:first, conditions: ["name='#{name}' and pass='#{pass}'"])
+    # GOOD: using SQL parameters
+    find(:first, conditions: ["name = ? and pass = ?", name, pass])
+    # BAD: interpolation with flow
+    conds = "name=#{name}"
+    find(:first, conditions: conds)
   end
 
   def self.from(user_group_id)
@@ -117,7 +124,7 @@ class FooController < ActionController::Base
 
     # BAD: executes `SELECT users.* FROM #{params[:tab]}`
     # where `params[:tab]` is unsanitized
-    User.all.from(params[:tab]) 
+    User.all.from(params[:tab])
     # BAD: executes `SELECT "users".* FROM (SELECT "users".* FROM "users") #{params[:sq]}
     User.all.from(User.all, params[:sq])
   end

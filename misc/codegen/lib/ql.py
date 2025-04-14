@@ -44,7 +44,10 @@ class Property:
     doc_plural: Optional[str] = None
     synth: bool = False
     type_is_hideable: bool = False
+    type_is_codegen_class: bool = False
+    type_is_self: bool = False
     internal: bool = False
+    cfg: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -66,10 +69,6 @@ class Property:
             return f"get{article}{self.singular}"
 
     @property
-    def type_is_class(self):
-        return bool(self.type) and self.type[0].isupper()
-
-    @property
     def is_repeated(self):
         return bool(self.plural)
 
@@ -84,6 +83,10 @@ class Property:
     @property
     def is_indexed(self) -> bool:
         return self.is_repeated and not self.is_unordered
+
+    @property
+    def type_alias(self) -> Optional[str]:
+        return self.type + "Alias" if self.type_is_self else self.type
 
 
 @dataclass
@@ -101,26 +104,34 @@ class Class:
 
     name: str
     bases: List[Base] = field(default_factory=list)
+    bases_impl: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     imports: List[str] = field(default_factory=list)
     import_prefix: Optional[str] = None
-    qltest_skip: bool = False
-    qltest_collapse_hierarchy: bool = False
-    qltest_uncollapse_hierarchy: bool = False
     internal: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
+    cfg: bool = False
 
     def __post_init__(self):
-        self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
+        def get_bases(bases): return [Base(str(b), str(prev)) for b, prev in zip(bases, itertools.chain([""], bases))]
+        self.bases = get_bases(self.bases)
+        self.bases_impl = get_bases(self.bases_impl)
         if self.properties:
             self.properties[0].first = True
+            for prop in self.properties:
+                if prop.type == self.name:
+                    prop.type_is_self = True
 
     @property
     def root(self) -> bool:
         return not self.bases
+
+    @property
+    def needs_self_alias(self) -> bool:
+        return self.root or any(p.type_is_self for p in self.properties)
 
     @property
     def path(self) -> pathlib.Path:
@@ -159,12 +170,25 @@ class Stub:
     base_import: str
     import_prefix: str
     synth_accessors: List[SynthUnderlyingAccessor] = field(default_factory=list)
-    internal: bool = False
     doc: List[str] = field(default_factory=list)
 
     @property
     def has_synth_accessors(self) -> bool:
         return bool(self.synth_accessors)
+
+    @property
+    def has_qldoc(self) -> bool:
+        return bool(self.doc)
+
+
+@dataclass
+class ClassPublic:
+    template: ClassVar = 'ql_class_public'
+
+    name: str
+    imports: List[str] = field(default_factory=list)
+    internal: bool = False
+    doc: List[str] = field(default_factory=list)
 
     @property
     def has_qldoc(self) -> bool:
@@ -176,6 +200,7 @@ class DbClasses:
     template: ClassVar = 'ql_db'
 
     classes: List[Class] = field(default_factory=list)
+    imports: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -320,3 +345,18 @@ class Synth:
 
         cls: "Synth.FinalClass"
         import_prefix: str
+
+
+@dataclass
+class CfgClass:
+    name: str
+    bases: List[Base] = field(default_factory=list)
+    properties: List[Property] = field(default_factory=list)
+    doc: List[str] = field(default_factory=list)
+
+
+@dataclass
+class CfgClasses:
+    template: ClassVar = 'ql_cfg_nodes'
+    include_file_import: Optional[str] = None
+    classes: List[CfgClass] = field(default_factory=list)

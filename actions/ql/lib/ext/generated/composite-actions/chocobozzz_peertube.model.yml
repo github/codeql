@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["chocobozzz/peertube", "*", "input.deployKey", "code-injection", "generated"]
+     - ["chocobozzz/peertube", "*", "input.knownHosts", "code-injection", "generated"]

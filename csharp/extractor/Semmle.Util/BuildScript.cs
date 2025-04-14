@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Semmle.Util.Logging;
 
 namespace Semmle.Util
 {
@@ -97,7 +98,7 @@ namespace Semmle.Util
                 this.environment = environment;
             }
 
-            public override string ToString() => arguments.Length > 0 ? exe + " " + arguments : exe;
+            public override string ToString() => arguments.Length > 0 ? $"{exe} {arguments}" : exe;
 
             public override int Run(IBuildActions actions, Action<string, bool> startCallback, Action<int, string, bool> exitCallBack)
             {
@@ -275,14 +276,14 @@ namespace Semmle.Util
         /// <summary>
         /// Creates a build script that downloads the specified file.
         /// </summary>
-        public static BuildScript DownloadFile(string address, string fileName, Action<Exception> exceptionCallback) =>
+        public static BuildScript DownloadFile(string address, string fileName, Action<Exception> exceptionCallback, ILogger logger) =>
             Create(actions =>
             {
                 if (actions.GetDirectoryName(fileName) is string dir && !string.IsNullOrWhiteSpace(dir))
                     actions.CreateDirectory(dir);
                 try
                 {
-                    actions.DownloadFile(address, fileName);
+                    actions.DownloadFile(address, fileName, logger);
                     return 0;
                 }
                 catch (Exception e)

@@ -7,7 +7,8 @@ private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConst
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
-private import AliasConfiguration
+import AliasConfiguration
+private import codeql.util.Boolean
 
 private class IntValue = Ints::IntValue;
 
@@ -16,38 +17,185 @@ private predicate isIndirectOrBufferMemoryAccess(MemoryAccessKind kind) {
   kind instanceof BufferMemoryAccess
 }
 
-private predicate hasResultMemoryAccess(
-  Instruction instr, Allocation var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
+private predicate hasMemoryAccess(
+  AddressOperand addrOperand, Allocation var, IntValue startBitOffset, boolean grouped
 ) {
-  exists(AddressOperand addrOperand |
-    addrOperand = instr.getResultAddressOperand() and
-    addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
-    languageType = instr.getResultLanguageType() and
-    type = languageType.getIRType() and
-    isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
-    (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
-    then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
-    else endBitOffset = Ints::unknown()
-  )
+  addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
+  if strictcount(Allocation alloc | addressOperandAllocationAndOffset(addrOperand, alloc, _)) > 1
+  then grouped = true
+  else grouped = false
+}
+
+private predicate hasResultMemoryAccess(
+  AddressOperand address, Instruction instr, Allocation var, IRType type,
+  Language::LanguageType languageType, IntValue startBitOffset, IntValue endBitOffset,
+  boolean isMayAccess, boolean grouped
+) {
+  address = instr.getResultAddressOperand() and
+  hasMemoryAccess(address, var, startBitOffset, grouped) and
+  languageType = instr.getResultLanguageType() and
+  type = languageType.getIRType() and
+  isIndirectOrBufferMemoryAccess(instr.getResultMemoryAccess()) and
+  (if instr.hasResultMayMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
+  else endBitOffset = Ints::unknown()
 }
 
 private predicate hasOperandMemoryAccess(
-  MemoryOperand operand, Allocation var, IRType type, Language::LanguageType languageType,
-  IntValue startBitOffset, IntValue endBitOffset, boolean isMayAccess
+  AddressOperand address, MemoryOperand operand, Allocation var, IRType type,
+  Language::LanguageType languageType, IntValue startBitOffset, IntValue endBitOffset,
+  boolean isMayAccess, boolean grouped
 ) {
-  exists(AddressOperand addrOperand |
-    addrOperand = operand.getAddressOperand() and
-    addressOperandAllocationAndOffset(addrOperand, var, startBitOffset) and
-    languageType = operand.getLanguageType() and
-    type = languageType.getIRType() and
-    isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
-    (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
-    if exists(type.getByteSize())
-    then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
-    else endBitOffset = Ints::unknown()
+  address = operand.getAddressOperand() and
+  hasMemoryAccess(address, var, startBitOffset, grouped) and
+  languageType = operand.getLanguageType() and
+  type = languageType.getIRType() and
+  isIndirectOrBufferMemoryAccess(operand.getMemoryAccess()) and
+  (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
+  if exists(type.getByteSize())
+  then endBitOffset = Ints::add(startBitOffset, Ints::mul(type.getByteSize(), 8))
+  else endBitOffset = Ints::unknown()
+}
+
+private Allocation getAnAllocation(AddressOperand address) {
+  hasResultMemoryAccess(address, _, result, _, _, _, _, _, true) or
+  hasOperandMemoryAccess(address, _, result, _, _, _, _, _, true)
+}
+
+private module AllocationSet0 =
+  QlBuiltins::InternSets<AddressOperand, Allocation, getAnAllocation/1>;
+
+/**
+ * A set of allocations containing at least 2 elements.
+ */
+private class NonSingletonSets extends AllocationSet0::Set {
+  NonSingletonSets() { strictcount(Allocation var | this.contains(var)) > 1 }
+
+  /** Gets an allocation from this set. */
+  Allocation getAnAllocation() { this.contains(result) }
+
+  /** Gets the string representation of this set. */
+  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
+}
+
+/** Holds the instersection of `s1` and `s2` is non-empty. */
+private predicate hasOverlappingElement(NonSingletonSets s1, NonSingletonSets s2) {
+  exists(Allocation var |
+    s1.contains(var) and
+    s2.contains(var)
   )
+}
+
+private module AllocationSet =
+  QlBuiltins::EquivalenceRelation<NonSingletonSets, hasOverlappingElement/2>;
+
+/**
+ * Holds if `var` is created by the AST element `e`. Furthermore, the value `d`
+ * represents which branch of the `Allocation` type `var` is from.
+ */
+private predicate allocationAst(Allocation var, @element e, int d) {
+  var.(VariableAllocation).getIRVariable().getAst() = e and d = 0
+  or
+  var.(IndirectParameterAllocation).getIRVariable().getAst() = e and d = 1
+  or
+  var.(DynamicAllocation).getABaseInstruction().getAst() = e and d = 2
+}
+
+/** Holds if `x = y` and `x` is an AST element that creates an `Allocation`. */
+private predicate id(@element x, @element y) {
+  allocationAst(_, x, _) and
+  x = y
+}
+
+private predicate idOf(@element x, int y) = equivalenceRelation(id/2)(x, y)
+
+/** Gets a unique integer representation of `var`. */
+private int getUniqueAllocationId(Allocation var) {
+  exists(int r, @element e, int d |
+    allocationAst(var, e, d) and
+    idOf(e, r) and
+    result = 3 * r + d
+  )
+}
+
+/**
+ * An equivalence class of a set of allocations.
+ *
+ * Any `VariableGroup` will be completely disjunct from any other
+ * `VariableGroup`.
+ */
+class VariableGroup extends AllocationSet::EquivalenceClass {
+  /** Gets the location of this set. */
+  final Location getLocation() { result = this.getIRFunction().getLocation() }
+
+  /** Gets the enclosing `IRFunction` of this set. */
+  final IRFunction getIRFunction() {
+    result = unique( | | this.getAnAllocation().getEnclosingIRFunction())
+  }
+
+  /** Gets the type of elements contained in this set. */
+  final Language::LanguageType getType() {
+    strictcount(Language::LanguageType langType |
+      exists(Allocation var | var = this.getAnAllocation() |
+        hasResultMemoryAccess(_, _, var, _, langType, _, _, _, true) or
+        hasOperandMemoryAccess(_, _, var, _, langType, _, _, _, true)
+      )
+    ) = 1 and
+    exists(Allocation var | var = this.getAnAllocation() |
+      hasResultMemoryAccess(_, _, var, _, result, _, _, _, true) or
+      hasOperandMemoryAccess(_, _, var, _, result, _, _, _, true)
+    )
+    or
+    strictcount(Language::LanguageType langType |
+      exists(Allocation var | var = this.getAnAllocation() |
+        hasResultMemoryAccess(_, _, var, _, langType, _, _, _, true) or
+        hasOperandMemoryAccess(_, _, var, _, langType, _, _, _, true)
+      )
+    ) > 1 and
+    result = any(IRUnknownType type).getCanonicalLanguageType()
+  }
+
+  /** Gets an allocation of this set. */
+  final Allocation getAnAllocation() {
+    exists(AllocationSet0::Set set |
+      this = AllocationSet::getEquivalenceClass(set) and
+      set.contains(result)
+    )
+  }
+
+  /** Gets a unique string representing this set. */
+  final private string getUniqueId() {
+    result = strictconcat(getUniqueAllocationId(this.getAnAllocation()).toString(), ",")
+  }
+
+  /**
+   * Gets the order that this set should be initialized in.
+   *
+   * Note: This is _not_ the order in which the _members_ of the set should be
+   * initialized. Rather, it represents the order in which the set should be
+   * initialized in relation to other sets. That is, if
+   * ```
+   * getInitializationOrder() = 2
+   * ```
+   * then this set will be initialized as the second (third) set in the
+   * enclosing function. In order words, the third `UninitializedGroup`
+   * instruction in the entry block of the enclosing function will initialize
+   * this set of allocations.
+   */
+  final int getInitializationOrder() {
+    exists(IRFunction func |
+      func = this.getIRFunction() and
+      this =
+        rank[result + 1](VariableGroup vg, string uniq |
+          vg.getIRFunction() = func and uniq = vg.getUniqueId()
+        |
+          vg order by uniq
+        )
+    )
+  }
+
+  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
 }
 
 private newtype TMemoryLocation =
@@ -56,9 +204,9 @@ private newtype TMemoryLocation =
     IntValue endBitOffset, boolean isMayAccess
   ) {
     (
-      hasResultMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      hasResultMemoryAccess(_, _, var, type, _, startBitOffset, endBitOffset, isMayAccess, false)
       or
-      hasOperandMemoryAccess(_, var, type, _, startBitOffset, endBitOffset, isMayAccess)
+      hasOperandMemoryAccess(_, _, var, type, _, startBitOffset, endBitOffset, isMayAccess, false)
       or
       // For a stack variable, always create a memory location for the entire variable.
       var.isAlwaysAllocatedOnStack() and
@@ -69,31 +217,25 @@ private newtype TMemoryLocation =
     ) and
     languageType = type.getCanonicalLanguageType()
   } or
-  TEntireAllocationMemoryLocation(Allocation var, boolean isMayAccess) {
-    (
-      var instanceof IndirectParameterAllocation or
-      var instanceof DynamicAllocation
-    ) and
-    (isMayAccess = false or isMayAccess = true)
+  TEntireAllocationMemoryLocation(Allocation var, Boolean isMayAccess) {
+    var instanceof IndirectParameterAllocation or
+    var instanceof DynamicAllocation
   } or
-  TUnknownMemoryLocation(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  } or
-  TAllNonLocalMemory(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  } or
-  TAllAliasedMemory(IRFunction irFunc, boolean isMayAccess) {
-    isMayAccess = false or isMayAccess = true
-  }
+  TGroupedMemoryLocation(VariableGroup vg, Boolean isMayAccess, Boolean isAll) or
+  TUnknownMemoryLocation(IRFunction irFunc, Boolean isMayAccess) or
+  TAllNonLocalMemory(IRFunction irFunc, Boolean isMayAccess) or
+  TAllAliasedMemory(IRFunction irFunc, Boolean isMayAccess)
 
 /**
- * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
  * one of the following:
  * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
  * unknown.
  * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ *
+ * Some of these memory locations will be filtered out for performance reasons before being passed to SSA construction.
  */
-abstract class MemoryLocation extends TMemoryLocation {
+abstract private class MemoryLocation0 extends TMemoryLocation {
   final string toString() {
     if this.isMayAccess()
     then result = "?" + this.toStringInternal()
@@ -116,7 +258,14 @@ abstract class MemoryLocation extends TMemoryLocation {
 
   abstract predicate isMayAccess();
 
-  Allocation getAllocation() { none() }
+  /**
+   * Gets an allocation associated with this `MemoryLocation`.
+   *
+   * This returns zero or one results in all cases except when `this` is an
+   * instance of `GroupedMemoryLocation`. When `this` is an instance of
+   * `GroupedMemoryLocation` this predicate always returns two or more results.
+   */
+  Allocation getAnAllocation() { none() }
 
   /**
    * Holds if the location cannot be overwritten except by definition of a `MemoryLocation` for
@@ -136,9 +285,6 @@ abstract class MemoryLocation extends TMemoryLocation {
   predicate isAlwaysAllocatedOnStack() { none() }
 
   final predicate canReuseSsa() { none() }
-
-  /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { this.canReuseSsa() }
 }
 
 /**
@@ -147,30 +293,35 @@ abstract class MemoryLocation extends TMemoryLocation {
  * represented by a `MemoryLocation` that totally overlaps all other
  * `MemoryLocations` in the set.
  */
-abstract class VirtualVariable extends MemoryLocation { }
+abstract class VirtualVariable extends MemoryLocation0 { }
 
-abstract class AllocationMemoryLocation extends MemoryLocation {
+abstract class AllocationMemoryLocation extends MemoryLocation0 {
   Allocation var;
   boolean isMayAccess;
 
-  AllocationMemoryLocation() {
-    this instanceof TMemoryLocation and
-    isMayAccess = false
-    or
-    isMayAccess = true // Just ensures that `isMayAccess` is bound.
-  }
+  bindingset[isMayAccess]
+  AllocationMemoryLocation() { any() }
 
   final override VirtualVariable getVirtualVariable() {
     if allocationEscapes(var)
     then result = TAllAliasedMemory(var.getEnclosingIRFunction(), false)
-    else result.(AllocationMemoryLocation).getAllocation() = var
+    else (
+      // It may be that the grouped memory location contains an escaping
+      // allocation. In that case, the virtual variable is still the memory
+      // location that represents all aliased memory. Thus, we need to
+      // call `getVirtualVariable` on the grouped memory location.
+      result = getGroupedMemoryLocation(var, false, false).getVirtualVariable()
+      or
+      not exists(getGroupedMemoryLocation(var, false, false)) and
+      result.(AllocationMemoryLocation).getAnAllocation() = var
+    )
   }
 
   final override IRFunction getIRFunction() { result = var.getEnclosingIRFunction() }
 
   final override Location getLocation() { result = var.getLocation() }
 
-  final override Allocation getAllocation() { result = var }
+  final override Allocation getAnAllocation() { result = var }
 
   final override predicate isMayAccess() { isMayAccess = true }
 
@@ -211,13 +362,13 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
   final override Language::LanguageType getType() {
     if
       strictcount(Language::LanguageType accessType |
-        hasResultMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _) or
-        hasOperandMemoryAccess(_, var, type, accessType, startBitOffset, endBitOffset, _)
+        hasResultMemoryAccess(_, _, var, type, accessType, startBitOffset, endBitOffset, _, false) or
+        hasOperandMemoryAccess(_, _, var, type, accessType, startBitOffset, endBitOffset, _, false)
       ) = 1
     then
       // All of the accesses have the same `LanguageType`, so just use that.
-      hasResultMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _) or
-      hasOperandMemoryAccess(_, var, type, result, startBitOffset, endBitOffset, _)
+      hasResultMemoryAccess(_, _, var, type, result, startBitOffset, endBitOffset, _, false) or
+      hasOperandMemoryAccess(_, _, var, type, result, startBitOffset, endBitOffset, _, false)
     else
       // There is no single type for all accesses, so just use the canonical one for this `IRType`.
       result = type.getCanonicalLanguageType()
@@ -245,6 +396,89 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
     start = 0 and
     end = var.getIRType().getByteSize() * 8
   }
+}
+
+/**
+ * A group of allocations represented as a single memory location.
+ *
+ * If `isAll()` holds then this memory location represents all the enclosing
+ * allocations, and if `isSome()` holds then this memory location represents
+ * one or more of the enclosing allocations.
+ *
+ * For example, consider the following snippet:
+ * ```
+ * int* p;
+ * int a, b;
+ * if(b) {
+ *   p = &a;
+ * } else {
+ *   p = &b;
+ * }
+ * *p = 42;
+ * ```
+ *
+ * The write memory location associated with the write to `*p` writes to a
+ * grouped memory location representing the _some_ allocation in the set
+ * `{a, b}`, and the subsequent `Chi` instruction merges the new value of
+ * `{a, b}` into a memory location that represents _all_ of the allocations
+ * in the set.
+ */
+class GroupedMemoryLocation extends TGroupedMemoryLocation, MemoryLocation0 {
+  VariableGroup vg;
+  boolean isMayAccess;
+  boolean isAll;
+
+  GroupedMemoryLocation() { this = TGroupedMemoryLocation(vg, isMayAccess, isAll) }
+
+  final override Location getLocation() { result = vg.getLocation() }
+
+  final override IRFunction getIRFunction() { result = vg.getIRFunction() }
+
+  final override predicate isMayAccess() { isMayAccess = true }
+
+  final override string getUniqueId() {
+    if this.isAll()
+    then result = "All{" + strictconcat(vg.getAnAllocation().getUniqueId(), ", ") + "}"
+    else result = "Some{" + strictconcat(vg.getAnAllocation().getUniqueId(), ", ") + "}"
+  }
+
+  final override string toStringInternal() { result = this.getUniqueId() }
+
+  final override Language::LanguageType getType() { result = vg.getType() }
+
+  final override VirtualVariable getVirtualVariable() {
+    if allocationEscapes(this.getAnAllocation())
+    then result = TAllAliasedMemory(vg.getIRFunction(), false)
+    else result = TGroupedMemoryLocation(vg, false, true)
+  }
+
+  /** Gets an allocation of this memory location. */
+  override Allocation getAnAllocation() { result = vg.getAnAllocation() }
+
+  /** Gets the set of allocations associated with this memory location. */
+  VariableGroup getGroup() { result = vg }
+
+  /** Holds if this memory location represents all the enclosing allocations. */
+  predicate isAll() { isAll = true }
+
+  /** Holds if this memory location represents one or more of the enclosing allocations. */
+  predicate isSome() { isAll = false }
+}
+
+private GroupedMemoryLocation getGroupedMemoryLocation(
+  Allocation alloc, boolean isMayAccess, boolean isAll
+) {
+  result.getAnAllocation() = alloc and
+  (
+    isMayAccess = true and result.isMayAccess()
+    or
+    isMayAccess = false and not result.isMayAccess()
+  ) and
+  (
+    isAll = true and result.isAll()
+    or
+    isAll = false and result.isSome()
+  )
 }
 
 class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
@@ -282,10 +516,18 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
   }
 }
 
+class GroupedVirtualVariable extends GroupedMemoryLocation, VirtualVariable {
+  GroupedVirtualVariable() {
+    forex(Allocation var | var = this.getAnAllocation() | not allocationEscapes(var)) and
+    not this.isMayAccess() and
+    this.isAll()
+  }
+}
+
 /**
  * An access to memory that is not known to be confined to a specific `IRVariable`.
  */
-class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
+class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -312,7 +554,7 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
  * An access to memory that is not known to be confined to a specific `IRVariable`, but is known to
  * not access memory on the current function's stack frame.
  */
-class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
+class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -346,7 +588,7 @@ class AllNonLocalMemory extends TAllNonLocalMemory, MemoryLocation {
 /**
  * An access to all aliased memory.
  */
-class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation {
+class AllAliasedMemory extends TAllAliasedMemory, MemoryLocation0 {
   IRFunction irFunc;
   boolean isMayAccess;
 
@@ -377,7 +619,7 @@ class AliasedVirtualVariable extends AllAliasedMemory, VirtualVariable {
 /**
  * Gets the overlap relationship between the definition location `def` and the use location `use`.
  */
-Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+Overlap getOverlap(MemoryLocation0 def, MemoryLocation0 use) {
   exists(Overlap overlap |
     // Compute the overlap based only on the extent.
     overlap = getExtentOverlap(def, use) and
@@ -405,7 +647,7 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
  * based only on the set of memory locations accessed. Handling of "may" accesses and read-only
  * locations occurs in `getOverlap()`.
  */
-private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
+private Overlap getExtentOverlap(MemoryLocation0 def, MemoryLocation0 use) {
   // The def and the use must have the same virtual variable, or no overlap is possible.
   (
     // AllAliasedMemory must totally overlap any location within the same virtual variable.
@@ -441,12 +683,17 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof EntireAllocationMemoryLocation and
     (
-      // EntireAllocationMemoryLocation exactly overlaps itself.
-      use instanceof EntireAllocationMemoryLocation and
+      // EntireAllocationMemoryLocation exactly overlaps any EntireAllocationMemoryLocation for the
+      // same allocation. Checking the allocation, rather than the memory location itself, ensures
+      // that we get the right relationship between the "must" and "may" memory locations for that
+      // allocation.
+      // Note that if one of the locations is a "may" access, the overlap will be downgraded to
+      // `MustTotallyOverlap` or `MayPartialOverlap` in `getOverlap()`.
+      use.(EntireAllocationMemoryLocation).getAnAllocation() = def.getAnAllocation() and
       result instanceof MustExactlyOverlap
       or
       not use instanceof EntireAllocationMemoryLocation and
-      if def.getAllocation() = use.getAllocation()
+      if def.getAnAllocation() = use.getAnAllocation()
       then
         // EntireAllocationMemoryLocation totally overlaps any location within
         // the same allocation.
@@ -454,9 +701,46 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
       else (
         // There is no overlap with a location that's known to belong to a
         // different allocation, but all other locations may partially overlap.
-        not exists(use.getAllocation()) and
+        not exists(use.getAnAllocation()) and
         result instanceof MayPartiallyOverlap
       )
+    )
+    or
+    exists(GroupedMemoryLocation group |
+      group = def and
+      def.getVirtualVariable() = use.getVirtualVariable()
+    |
+      (
+        use instanceof UnknownMemoryLocation or
+        use instanceof AllAliasedMemory
+      ) and
+      result instanceof MayPartiallyOverlap
+      or
+      group.isAll() and
+      (
+        group.getAnAllocation() =
+          [
+            use.(EntireAllocationMemoryLocation).getAnAllocation(),
+            use.(VariableMemoryLocation).getAnAllocation()
+          ]
+        or
+        use.(GroupedMemoryLocation).isSome()
+      ) and
+      result instanceof MustTotallyOverlap
+      or
+      group.isAll() and
+      use.(GroupedMemoryLocation).isAll() and
+      result instanceof MustExactlyOverlap
+      or
+      group.isSome() and
+      (
+        use instanceof EntireAllocationMemoryLocation
+        or
+        use instanceof VariableMemoryLocation
+        or
+        use instanceof GroupedMemoryLocation
+      ) and
+      result instanceof MayPartiallyOverlap
     )
     or
     exists(VariableMemoryLocation defVariableLocation |
@@ -468,7 +752,8 @@ private Overlap getExtentOverlap(MemoryLocation def, MemoryLocation use) {
         (
           use instanceof UnknownMemoryLocation or
           use instanceof AllAliasedMemory or
-          use instanceof EntireAllocationMemoryLocation
+          use instanceof EntireAllocationMemoryLocation or
+          use instanceof GroupedMemoryLocation
         ) and
         result instanceof MayPartiallyOverlap
         or
@@ -534,7 +819,7 @@ private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemory
   exists(int startRank, int endRank, VirtualVariable vvar |
     vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
     vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vvar, offset_)) and
-    var = vml.getAllocation() and
+    var = vml.getAnAllocation() and
     vvar = vml.getVirtualVariable() and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
@@ -542,7 +827,7 @@ private predicate isCoveredOffset(Allocation var, int offsetRank, VariableMemory
 }
 
 private predicate hasUnknownOffset(Allocation var, VariableMemoryLocation vml) {
-  vml.getAllocation() = var and
+  vml.getAnAllocation() = var and
   (
     vml.getStartBitOffset() = Ints::unknown() or
     vml.getEndBitOffset() = Ints::unknown()
@@ -557,9 +842,9 @@ private predicate overlappingIRVariableMemoryLocations(
     isCoveredOffset(var, offsetRank, use)
   )
   or
-  hasUnknownOffset(use.getAllocation(), def)
+  hasUnknownOffset(use.getAnAllocation(), def)
   or
-  hasUnknownOffset(def.getAllocation(), use)
+  hasUnknownOffset(def.getAnAllocation(), use)
 }
 
 private Overlap getVariableMemoryLocationOverlap(
@@ -580,6 +865,58 @@ predicate canReuseSsaForOldResult(Instruction instr) { OldSsa::canReuseSsaForMem
 bindingset[result, b]
 private boolean unbindBool(boolean b) { result != b.booleanNot() }
 
+/** Gets the number of overlapping uses of `def`. */
+private int numberOfOverlappingUses(MemoryLocation0 def) {
+  result = strictcount(MemoryLocation0 use | exists(getOverlap(def, use)))
+}
+
+/**
+ * Holds if `def` is a busy definition. That is, it has a large number of
+ * overlapping uses.
+ */
+private predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
+
+/** Holds if `use` is a use that overlaps with a busy definition. */
+private predicate useOverlapWithBusyDef(MemoryLocation0 use) {
+  exists(MemoryLocation0 def |
+    exists(getOverlap(def, use)) and
+    isBusyDef(def)
+  )
+}
+
+final private class FinalMemoryLocation = MemoryLocation0;
+
+/**
+ * A memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * one of the following:
+ * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
+ * unknown.
+ * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ *
+ * Compared to `MemoryLocation0`, this class does not contain memory locations that represent uses of busy definitions.
+ */
+class MemoryLocation extends FinalMemoryLocation {
+  MemoryLocation() { not useOverlapWithBusyDef(this) }
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getUnknownMemoryLocation(IRFunction fun, boolean isMayAccess) {
+  result = TUnknownMemoryLocation(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllAliasedMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllAliasedMemory(fun, isMayAccess)
+}
+
+bindingset[fun]
+pragma[inline_late]
+private MemoryLocation getAllNonLocalMemory(IRFunction fun, boolean isMayAccess) {
+  result = TAllNonLocalMemory(fun, isMayAccess)
+}
+
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   not canReuseSsaForOldResult(instr) and
   exists(MemoryAccessKind kind, boolean isMayAccess |
@@ -588,15 +925,26 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
     (
       (
         isIndirectOrBufferMemoryAccess(kind) and
-        if hasResultMemoryAccess(instr, _, _, _, _, _, _)
+        if hasResultMemoryAccess(_, instr, _, _, _, _, _, _, _)
         then
-          exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasResultMemoryAccess(instr, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
-                unbindBool(isMayAccess))
+          exists(
+            Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset,
+            boolean grouped
+          |
+            hasResultMemoryAccess(_, instr, var, type, _, startBitOffset, endBitOffset, isMayAccess,
+              grouped)
+          |
+            // If the instruction is only associated with one allocation we assign it a `VariableMemoryLocation`
+            if grouped = false
+            then
+              result =
+                TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset,
+                  unbindBool(isMayAccess))
+            else
+              // And otherwise we assign it a memory location that groups all the relevant memory locations into one.
+              result = getGroupedMemoryLocation(var, unbindBool(isMayAccess), false)
           )
-        else result = TUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
+        else result = getUnknownMemoryLocation(instr.getEnclosingIRFunction(), isMayAccess)
       )
       or
       kind instanceof EntireAllocationMemoryAccess and
@@ -605,28 +953,39 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           unbindBool(isMayAccess))
       or
       kind instanceof EscapedMemoryAccess and
-      result = TAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllAliasedMemory(instr.getEnclosingIRFunction(), isMayAccess)
       or
       kind instanceof NonLocalMemoryAccess and
-      result = TAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
+      result = getAllNonLocalMemory(instr.getEnclosingIRFunction(), isMayAccess)
     )
   )
 }
 
-MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+private MemoryLocation0 getOperandMemoryLocation0(MemoryOperand operand, boolean isMayAccess) {
   not canReuseSsaForOldResult(operand.getAnyDef()) and
-  exists(MemoryAccessKind kind, boolean isMayAccess |
+  exists(MemoryAccessKind kind |
     kind = operand.getMemoryAccess() and
     (if operand.hasMayReadMemoryAccess() then isMayAccess = true else isMayAccess = false) and
     (
       (
         isIndirectOrBufferMemoryAccess(kind) and
-        if hasOperandMemoryAccess(operand, _, _, _, _, _, _)
+        if hasOperandMemoryAccess(_, operand, _, _, _, _, _, _, _)
         then
-          exists(Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset |
-            hasOperandMemoryAccess(operand, var, type, _, startBitOffset, endBitOffset, isMayAccess) and
-            result =
-              TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+          exists(
+            Allocation var, IRType type, IntValue startBitOffset, IntValue endBitOffset,
+            boolean grouped
+          |
+            hasOperandMemoryAccess(_, operand, var, type, _, startBitOffset, endBitOffset,
+              isMayAccess, grouped)
+          |
+            // If the operand is only associated with one memory location we assign it a `VariableMemoryLocation`
+            if grouped = false
+            then
+              result =
+                TVariableMemoryLocation(var, type, _, startBitOffset, endBitOffset, isMayAccess)
+            else
+              // And otherwise we assign it a memory location that groups all relevant memory locations into one.
+              result = getGroupedMemoryLocation(var, isMayAccess, false)
           )
         else result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
       )
@@ -642,6 +1001,19 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
       kind instanceof NonLocalMemoryAccess and
       result = TAllNonLocalMemory(operand.getEnclosingIRFunction(), isMayAccess)
     )
+  )
+}
+
+MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  exists(MemoryLocation0 use0, boolean isMayAccess |
+    use0 = getOperandMemoryLocation0(operand, isMayAccess)
+  |
+    result = use0
+    or
+    // If `use0` overlaps with a busy definition we turn it into a use
+    // of `UnknownMemoryLocation`.
+    not use0 instanceof MemoryLocation and
+    result = TUnknownMemoryLocation(operand.getEnclosingIRFunction(), isMayAccess)
   )
 }
 

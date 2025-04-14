@@ -16,13 +16,11 @@
  */
 
 import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.DataFlow2
 
 module TaintTracking {
-  import semmle.code.cpp.ir.dataflow.internal.tainttracking1.TaintTrackingParameter::Public
+  import semmle.code.cpp.ir.dataflow.internal.TaintTrackingUtil
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
   private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
   import TaintFlowMake<Location, CppDataFlow, CppTaintTracking>
-  import semmle.code.cpp.ir.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

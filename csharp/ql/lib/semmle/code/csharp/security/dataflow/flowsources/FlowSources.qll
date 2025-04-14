@@ -20,11 +20,18 @@ abstract class SourceNode extends DataFlow::Node {
 }
 
 /**
+ * DEPRECATED: Use `ActiveThreatModelSource` instead.
+ *
  * A class of data flow sources that respects the
  * current threat model configuration.
  */
-class ThreatModelFlowSource extends DataFlow::Node {
-  ThreatModelFlowSource() {
+deprecated class ThreatModelFlowSource = ActiveThreatModelSource;
+
+/**
+ * A data flow source that is enabled in the current threat model configuration.
+ */
+class ActiveThreatModelSource extends DataFlow::Node {
+  ActiveThreatModelSource() {
     exists(string kind |
       // Specific threat model.
       currentThreatModel(kind) and

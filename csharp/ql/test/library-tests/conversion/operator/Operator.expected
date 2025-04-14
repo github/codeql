@@ -21,7 +21,6 @@
 | Int32 | Decimal |
 | Int32 | Index |
 | Int32 | Int128 |
-| Int32 | MetadataToken |
 | Int32 | NFloat |
 | Int64 | Decimal |
 | Int64 | Int128 |
@@ -29,7 +28,6 @@
 | IntPtr | Int128 |
 | IntPtr | NFloat |
 | Memory`1 | ReadOnlyMemory<T> |
-| MetadataToken | Int32 |
 | NFloat | Double |
 | SByte | Decimal |
 | SByte | Half |
@@ -59,4 +57,3 @@
 | UIntPtr | Int128 |
 | UIntPtr | NFloat |
 | UIntPtr | UInt128 |
-| UnixFileMode | Nullable<UnixFileMode> |

@@ -1,0 +1,66 @@
+canonicalPaths
+| anonymous.rs:4:1:4:26 | use ...::Trait | None | None |
+| anonymous.rs:6:1:35:1 | fn canonicals | None | None |
+| anonymous.rs:7:5:7:23 | struct OtherStruct | None | None |
+| anonymous.rs:9:5:11:5 | trait OtherTrait | None | None |
+| anonymous.rs:10:9:10:20 | fn g | None | None |
+| anonymous.rs:13:5:15:5 | impl OtherTrait for OtherStruct { ... } | None | None |
+| anonymous.rs:14:9:14:22 | fn g | None | None |
+| anonymous.rs:17:5:19:5 | impl OtherTrait for ...::Struct { ... } | None | None |
+| anonymous.rs:18:9:18:22 | fn g | None | None |
+| anonymous.rs:21:5:23:5 | impl ...::Trait for OtherStruct { ... } | None | None |
+| anonymous.rs:22:9:22:22 | fn f | None | None |
+| anonymous.rs:25:5:27:5 | fn nested | None | None |
+| anonymous.rs:26:9:26:27 | struct OtherStruct | None | None |
+| anonymous.rs:29:5:34:5 | fn usage | None | None |
+| anonymous.rs:37:1:39:1 | fn other | None | None |
+| anonymous.rs:38:5:38:23 | struct OtherStruct | None | None |
+| lib.rs:1:1:1:14 | mod anonymous | None | None |
+| lib.rs:2:1:2:12 | mod regular | None | None |
+| regular.rs:4:1:5:18 | struct Struct | None | None |
+| regular.rs:7:1:9:1 | trait Trait | None | None |
+| regular.rs:8:5:8:16 | fn f | None | None |
+| regular.rs:11:1:13:1 | impl Trait for Struct { ... } | None | None |
+| regular.rs:12:5:12:18 | fn f | None | None |
+| regular.rs:15:1:17:1 | impl Struct { ... } | None | None |
+| regular.rs:16:5:16:18 | fn g | None | None |
+| regular.rs:19:1:21:1 | trait TraitWithBlanketImpl | None | None |
+| regular.rs:20:5:20:16 | fn h | None | None |
+| regular.rs:23:1:25:1 | impl TraitWithBlanketImpl for T { ... } | None | None |
+| regular.rs:24:5:24:18 | fn h | None | None |
+| regular.rs:27:1:27:12 | fn free | None | None |
+| regular.rs:29:1:35:1 | fn usage | None | None |
+| regular.rs:37:1:41:1 | enum MyEnum | None | None |
+| regular.rs:43:1:49:1 | fn enum_qualified_usage | None | None |
+| regular.rs:51:1:58:1 | fn enum_unqualified_usage | None | None |
+| regular.rs:54:5:54:18 | use MyEnum::* | None | None |
+| regular.rs:60:1:66:1 | fn enum_match | None | None |
+resolvedPaths
+| anonymous.rs:30:17:30:30 | OtherStruct {...} | None | None |
+| anonymous.rs:31:9:31:9 | s | None | None |
+| anonymous.rs:31:9:31:13 | s.f() | None | None |
+| anonymous.rs:32:9:32:9 | s | None | None |
+| anonymous.rs:32:9:32:13 | s.g() | None | None |
+| anonymous.rs:33:9:33:14 | nested | None | None |
+| regular.rs:30:13:30:21 | Struct {...} | None | None |
+| regular.rs:31:5:31:5 | s | None | None |
+| regular.rs:31:5:31:9 | s.f() | None | None |
+| regular.rs:32:5:32:5 | s | None | None |
+| regular.rs:32:5:32:9 | s.g() | None | None |
+| regular.rs:33:5:33:5 | s | None | None |
+| regular.rs:33:5:33:9 | s.h() | None | None |
+| regular.rs:34:5:34:8 | free | None | None |
+| regular.rs:44:9:44:26 | ...::None::<...> | None | None |
+| regular.rs:45:9:45:20 | ...::Some | None | None |
+| regular.rs:46:9:46:24 | ...::Variant1 | None | None |
+| regular.rs:47:9:47:24 | ...::Variant2 | None | None |
+| regular.rs:48:9:48:33 | ...::Variant3 {...} | None | None |
+| regular.rs:52:9:52:18 | None::<...> | None | None |
+| regular.rs:53:9:53:12 | Some | None | None |
+| regular.rs:55:9:55:16 | Variant1 | None | None |
+| regular.rs:56:9:56:16 | Variant2 | None | None |
+| regular.rs:57:9:57:25 | Variant3 {...} | None | None |
+| regular.rs:61:11:61:11 | e | None | None |
+| regular.rs:62:9:62:24 | ...::Variant1 | None | None |
+| regular.rs:63:9:63:27 | ...::Variant2(...) | None | None |
+| regular.rs:64:9:64:31 | ...::Variant3 {...} | None | None |

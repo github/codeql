@@ -7,35 +7,19 @@ private import semmle.code.java.frameworks.spring.SpringExpression
 private import semmle.code.java.security.SpelInjection
 
 /**
- * DEPRECATED: Use `SpelInjectionFlow` instead.
- *
- * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a SpEL expression.
- */
-deprecated class SpelInjectionConfig extends TaintTracking::Configuration {
-  SpelInjectionConfig() { this = "SpelInjectionConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)
-  }
-}
-
-/**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a SpEL expression.
  */
 module SpelInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpelExpressionEvaluationSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(SpelExpressionInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a SpEL expression. */

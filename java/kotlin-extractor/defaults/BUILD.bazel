@@ -1,0 +1,30 @@
+load("@codeql_kotlin_defaults//:defaults.bzl", "kotlin_extractor_defaults")
+
+package(default_visibility = ["//java/kotlin-extractor:__pkg__"])
+
+_common_extractor_name_prefix = "codeql-extractor-kotlin"
+
+alias(
+    name = "%s-standalone" % _common_extractor_name_prefix,
+    actual = "//java/kotlin-extractor:%s-standalone-%s" % (
+        _common_extractor_name_prefix,
+        kotlin_extractor_defaults.extractor_version,
+    ),
+)
+
+alias(
+    name = "%s-embeddable" % _common_extractor_name_prefix,
+    actual = "//java/kotlin-extractor:%s-embeddable-%s" % (
+        _common_extractor_name_prefix,
+        kotlin_extractor_defaults.extractor_version,
+    ),
+)
+
+alias(
+    name = _common_extractor_name_prefix,
+    actual = "//java/kotlin-extractor:%s-%s-%s" % (
+        _common_extractor_name_prefix,
+        kotlin_extractor_defaults.variant,
+        kotlin_extractor_defaults.extractor_version,
+    ),
+)

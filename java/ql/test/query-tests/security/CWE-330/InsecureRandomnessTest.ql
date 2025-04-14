@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.InsecureRandomnessQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module WeakRandomTest implements TestSig {
   string getARelevantTag() { result = "hasWeakRandomFlow" }

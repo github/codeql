@@ -3,7 +3,7 @@
  */
 
 import csharp
-import ArrayFlow::PathGraph
+import utils.test.ProvenancePathGraph::ShowProvenance<ArrayFlow::PathNode, ArrayFlow::PathGraph>
 
 module ArrayFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }

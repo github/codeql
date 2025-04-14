@@ -30,7 +30,10 @@ EOF
   exit "${exit_code}"
 }
 
-prev_hash="origin/main"
+# default for prev_hash: the main branch of the remote for 'github/codeql'.
+# This works out as a dynamic lookup of the hash of the file in the main branch
+# of the repo.
+prev_hash=$(git remote -v | grep 'github/codeql\.git (fetch)$' | cut -f1)/main
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -83,7 +86,7 @@ case "${lang}" in
   csharp | cpp | javascript | python)
     scheme_file="${lang}/ql/lib/semmlecode.${lang}.dbscheme"
     ;;
-  go | ruby | swift)
+  go | ruby | rust | swift)
     scheme_file="${lang}/ql/lib/${lang}.dbscheme"
     ;;
   *)

@@ -15,10 +15,10 @@
 | generator.py:0:0:0:0 | Module generator | generator.py:1:1:1:23 | ControlFlowNode for FunctionExpr |
 | generator.py:0:0:0:0 | Module generator | generator.py:1:5:1:18 | ControlFlowNode for generator_func |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:1:20:1:21 | ControlFlowNode for xs |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for .0 |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for .0 |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for ListComp |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:13:2:13 | ControlFlowNode for Yield |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:13:2:13 | ControlFlowNode for x |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:19:2:19 | ControlFlowNode for x |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:24:2:25 | ControlFlowNode for xs |
+| generator.py:2:12:2:26 | Function listcomp | generator.py:2:12:2:26 | ControlFlowNode for .0 |
+| generator.py:2:12:2:26 | Function listcomp | generator.py:2:12:2:26 | ControlFlowNode for .0 |
+| generator.py:2:12:2:26 | Function listcomp | generator.py:2:13:2:13 | ControlFlowNode for Yield |
+| generator.py:2:12:2:26 | Function listcomp | generator.py:2:13:2:13 | ControlFlowNode for x |
+| generator.py:2:12:2:26 | Function listcomp | generator.py:2:19:2:19 | ControlFlowNode for x |

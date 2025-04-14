@@ -15,10 +15,12 @@
 
 import javascript
 import semmle.javascript.security.dataflow.UnsafeShellCommandConstructionQuery
-import DataFlow::PathGraph
+import UnsafeShellCommandConstructionFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
+from
+  UnsafeShellCommandConstructionFlow::PathNode source,
+  UnsafeShellCommandConstructionFlow::PathNode sink, Sink sinkNode
+where UnsafeShellCommandConstructionFlow::flowPath(source, sink) and sinkNode = sink.getNode()
 select sinkNode.getAlertLocation(), source, sink,
   "This " + sinkNode.getSinkType() + " which depends on $@ is later used in a $@.",
   source.getNode(), "library input", sinkNode.getCommandExecution(), "shell command"

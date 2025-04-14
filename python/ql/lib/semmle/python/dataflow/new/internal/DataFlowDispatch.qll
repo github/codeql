@@ -163,6 +163,10 @@ newtype TArgumentPosition =
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
     FlowSummaryImpl::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    or
+    // the generated function inside a comprehension has a positional argument at index 0
+    exists(Comp c) and
+    index = 0
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
@@ -314,12 +318,11 @@ newtype TDataFlowCallable =
    * class instantiations, and (in the future) special methods.
    */
   TFunction(Function func) {
-    // For generators/list-comprehensions we create a synthetic function. In the
-    // points-to call-graph these were not considered callable, and instead we added
-    // data-flow steps (read/write) for these. As an easy solution for now, we do the
-    // same to keep things easy to reason about (and therefore exclude things that do
-    // not have a definition)
+    // Functions with an explicit definition
     exists(func.getDefinition())
+    or
+    // For generators/list-comprehensions we create a synthetic function.
+    exists(Comp c | c.getFunction() = func)
   } or
   /** see QLDoc for `DataFlowModuleScope` for why we need this. */
   TModule(Module m) or
@@ -368,12 +371,11 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   int positionalOffset() { result = 0 }
 
   override ParameterNode getParameter(ParameterPosition ppos) {
+    // Do not handle lower bound positions (such as `[1..]`) here
+    // they are handled by parameter matching and would create
+    // inconsistencies here as multiple parameters could match such a position.
     exists(int index | ppos.isPositional(index) |
       result.getParameter() = func.getArg(index + this.positionalOffset())
-    )
-    or
-    exists(int index1, int index2 | ppos.isPositionalLowerBound(index1) and index2 >= index1 |
-      result.getParameter() = func.getArg(index2 + this.positionalOffset())
     )
     or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
@@ -819,9 +821,15 @@ Function findFunctionAccordingToMro(Class cls, string name) {
   result = cls.getAMethod() and
   result.getName() = name
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result = findFunctionAccordingToMro(getNextClassInMro(cls), name)
 }
+
+/**
+ * Join-order helper for `findFunctionAccordingToMro` and `findFunctionAccordingToMroKnownStartingClass`.
+ */
+pragma[nomagic]
+private predicate class_has_method(Class cls, string name) { cls.getAMethod().getName() = name }
 
 /**
  * Gets a class that, from an approximated MRO calculation, might be the next class
@@ -850,7 +858,7 @@ private Function findFunctionAccordingToMroKnownStartingClass(
   result.getName() = name and
   cls = getADirectSuperclass*(startingClass)
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result =
     findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(cls,
         startingClass), startingClass, name)
@@ -1376,6 +1384,8 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // =============================================================================
 newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  /** A call to the generated function inside a comprehension */
+  TComprehensionCall(Comp c) or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(
@@ -1460,6 +1470,34 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   /** Gets the `CallType` of this call. */
   CallType getCallType() { result = type }
+}
+
+/** A call to the generated function inside a comprhension */
+class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
+  Comp c;
+  Function target;
+
+  ComprehensionCall() {
+    this = TComprehensionCall(c) and
+    target = c.getFunction()
+  }
+
+  Comp getComprehension() { result = c }
+
+  override string toString() { result = "comprehension call" }
+
+  override ControlFlowNode getNode() { result.getNode() = c }
+
+  override Scope getScope() { result = c.getScope() }
+
+  override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
+
+  override ArgumentNode getArgument(ArgumentPosition apos) {
+    result.asExpr() = c.getIterable() and
+    apos.isPositional(0)
+  }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 /**
@@ -1692,6 +1730,47 @@ class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
   }
 }
 
+/** A synthetic node representing the values of variables captured by a comprehension. */
+class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode,
+  ArgumentNode
+{
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentNode() { this = TSynthCompCapturedVariablesArgumentNode(comp) }
+
+  override string toString() { result = "Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getScope() }
+
+  override Location getLocation() { result = comp.getLocation() }
+
+  Comp getComprehension() { result = comp }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call.(ComprehensionCall).getComprehension() = comp and
+    pos.isLambdaSelf()
+  }
+}
+
+/** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
+class SynthCompCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
+  TSynthCompCapturedVariablesArgumentPostUpdateNode
+{
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentPostUpdateNode() {
+    this = TSynthCompCapturedVariablesArgumentPostUpdateNode(comp)
+  }
+
+  override string toString() { result = "[post] Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getScope() }
+
+  override Location getLocation() { result = comp.getLocation() }
+
+  override Node getPreUpdateNode() { result = TSynthCompCapturedVariablesArgumentNode(comp) }
+}
+
 /** Gets a viable run-time target for the call `call`. */
 DataFlowCallable viableCallable(DataFlowCall call) {
   call instanceof ExtractedDataFlowCall and
@@ -1731,7 +1810,10 @@ abstract class ReturnNode extends Node {
 /** A data flow node that represents a value returned by a callable. */
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
-  ExtractedReturnNode() { node = any(Return ret).getValue().getAFlowNode() }
+  ExtractedReturnNode() {
+    node = any(Return ret).getValue().getAFlowNode() or
+    node = any(Yield yield).getAFlowNode()
+  }
 
   override ReturnKind getKind() { any() }
 }

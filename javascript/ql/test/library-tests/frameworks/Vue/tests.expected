@@ -1,12 +1,14 @@
 component_getAPropertyValue
 | compont-with-route.vue:0:0:0:0 | compont-with-route.vue | dataA | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo |
 | compont-with-route.vue:0:0:0:0 | compont-with-route.vue | message | compont-with-route.vue:19:15:19:22 | 'Hello!' |
-| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | dataA | single-component-file-1.vue:6:40:6:41 | 42 |
-| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | dataA | single-file-component-3-script.js:4:37:4:38 | 42 |
-| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | dataA | single-file-component-4.vue:15:14:15:15 | 42 |
-| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | message | single-file-component-4.vue:12:23:12:30 | 'Hello!' |
-| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | dataA | single-file-component-5.vue:13:14:13:15 | 42 |
-| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | message | single-file-component-5.vue:10:23:10:30 | 'Hello!' |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | dataA | single-component-file-1.vue:7:40:7:54 | 42 + this.input |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | dataA | single-file-component-3-script.js:5:37:5:51 | 42 + this.input |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | dataA | single-file-component-4.vue:17:14:17:15 | 42 |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | dataB | single-file-component-4.vue:21:14:21:23 | this.input |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | message | single-file-component-4.vue:13:23:13:30 | 'Hello!' |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | dataA | single-file-component-5.vue:15:14:15:15 | 42 |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | dataB | single-file-component-5.vue:19:14:19:23 | this.input |
+| single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue | message | single-file-component-5.vue:11:23:11:30 | 'Hello!' |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | dataA | tst.js:8:10:8:11 | 42 |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | dataA | tst.js:14:10:14:11 | 42 |
 | tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) | dataA | tst.js:20:10:20:11 | 42 |
@@ -35,9 +37,11 @@ component_getAPropertyValue
 | tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) | fromSubclass2 | tst.js:115:18:115:20 | 100 |
 component_getOption
 | compont-with-route.vue:0:0:0:0 | compont-with-route.vue | watch | compont-with-route.vue:10:12:16:5 | {\\n      ... }\\n    } |
-| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | data | single-component-file-1.vue:6:11:6:45 | functio ...  42 } } |
-| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | data | single-file-component-3-script.js:4:8:4:42 | functio ...  42 } } |
-| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | render | single-file-component-4.vue:9:13:9:22 | (h) => { } |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | data | single-component-file-1.vue:7:11:7:58 | functio ... put } } |
+| single-component-file-1.vue:0:0:0:0 | single-component-file-1.vue | props | single-component-file-1.vue:6:12:6:20 | ['input'] |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | data | single-file-component-3-script.js:5:8:5:55 | functio ... put } } |
+| single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue | props | single-file-component-3-script.js:4:9:4:17 | ['input'] |
+| single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue | render | single-file-component-4.vue:10:13:10:22 | (h) => { } |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | data | tst.js:7:8:9:2 | {\\n\\t\\tdataA: 42\\n\\t} |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) | render | tst.js:4:10:6:2 | functio ...  c);\\n\\t} |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) | data | tst.js:13:8:15:3 | () => ( ...  42\\n\\t}) |
@@ -76,6 +80,10 @@ component
 | single-file-component-3.vue:0:0:0:0 | single-file-component-3.vue |
 | single-file-component-4.vue:0:0:0:0 | single-file-component-4.vue |
 | single-file-component-5.vue:0:0:0:0 | single-file-component-5.vue |
+| single-file-component-6.vue:0:0:0:0 | single-file-component-6.vue |
+| single-file-component-7.vue:0:0:0:0 | single-file-component-7.vue |
+| single-file-component-8.vue:0:0:0:0 | single-file-component-8.vue |
+| special-syntax.vue:0:0:0:0 | special-syntax.vue |
 | tst.js:3:1:10:2 | new Vue ... 2\\n\\t}\\n}) |
 | tst.js:12:1:16:2 | new Vue ... \\t}),\\n}) |
 | tst.js:18:1:27:2 | Vue.com ... }\\n\\t}\\n}) |
@@ -96,10 +104,10 @@ component
 | tst.js:113:17:117:2 | base.ex ... 0\\n\\t}\\n}) |
 viewComponentStep
 | compont-with-route.vue:31:14:31:34 | this.$r ... ery.foo | compont-with-route.vue:2:8:2:21 | v-html=dataA |
-| single-component-file-1.vue:6:40:6:41 | 42 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
-| single-file-component-3-script.js:4:37:4:38 | 42 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
-| single-file-component-4.vue:15:14:15:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
-| single-file-component-5.vue:13:14:13:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
+| single-component-file-1.vue:7:40:7:54 | 42 + this.input | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-3-script.js:5:37:5:51 | 42 + this.input | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-4.vue:17:14:17:15 | 42 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-5.vue:15:14:15:15 | 42 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
 | tst.js:100:18:100:19 | 42 | tst.js:102:20:102:29 | this.dataA |
 templateElement
 | compont-with-route.vue:1:1:3:11 | <template>...</> |
@@ -107,25 +115,41 @@ templateElement
 | compont-with-route.vue:4:1:49:9 | <script>...</> |
 | compont-with-route.vue:50:1:51:8 | <style>...</> |
 | single-component-file-1.vue:1:1:3:11 | <template>...</> |
-| single-component-file-1.vue:2:5:10:8 | <p>...</> |
-| single-component-file-1.vue:4:1:8:9 | <script>...</> |
-| single-component-file-1.vue:9:1:10:8 | <style>...</> |
+| single-component-file-1.vue:2:5:11:8 | <p>...</> |
+| single-component-file-1.vue:4:1:9:9 | <script>...</> |
+| single-component-file-1.vue:10:1:11:8 | <style>...</> |
 | single-file-component-2.vue:1:1:3:11 | <template>...</> |
-| single-file-component-2.vue:2:5:11:8 | <p>...</> |
-| single-file-component-2.vue:4:1:9:9 | <script>...</> |
-| single-file-component-2.vue:10:1:11:8 | <style>...</> |
+| single-file-component-2.vue:2:5:12:8 | <p>...</> |
+| single-file-component-2.vue:4:1:10:9 | <script>...</> |
+| single-file-component-2.vue:11:1:12:8 | <style>...</> |
 | single-file-component-3.vue:1:1:3:11 | <template>...</> |
 | single-file-component-3.vue:2:5:7:8 | <p>...</> |
 | single-file-component-3.vue:4:1:5:9 | <script>...</> |
 | single-file-component-3.vue:6:1:7:8 | <style>...</> |
 | single-file-component-4.vue:1:1:3:11 | <template>...</> |
-| single-file-component-4.vue:2:5:20:9 | <p>...</> |
-| single-file-component-4.vue:4:1:18:9 | <script>...</> |
-| single-file-component-4.vue:19:1:20:8 | <style>...</> |
+| single-file-component-4.vue:2:5:26:9 | <p>...</> |
+| single-file-component-4.vue:4:1:24:9 | <script>...</> |
+| single-file-component-4.vue:25:1:26:8 | <style>...</> |
 | single-file-component-5.vue:1:1:3:11 | <template>...</> |
-| single-file-component-5.vue:2:5:18:9 | <p>...</> |
-| single-file-component-5.vue:4:1:16:9 | <script>...</> |
-| single-file-component-5.vue:17:1:18:8 | <style>...</> |
+| single-file-component-5.vue:2:5:24:9 | <p>...</> |
+| single-file-component-5.vue:4:1:22:9 | <script>...</> |
+| single-file-component-5.vue:23:1:24:8 | <style>...</> |
+| single-file-component-6.vue:1:1:3:11 | <template>...</> |
+| single-file-component-6.vue:2:5:8:9 | <p>...</> |
+| single-file-component-6.vue:4:1:6:9 | <script>...</> |
+| single-file-component-6.vue:7:1:8:8 | <style>...</> |
+| single-file-component-7.vue:1:1:3:11 | <template>...</> |
+| single-file-component-7.vue:2:5:12:9 | <p>...</> |
+| single-file-component-7.vue:4:1:10:9 | <script>...</> |
+| single-file-component-7.vue:11:1:12:8 | <style>...</> |
+| single-file-component-8.vue:1:1:3:11 | <template>...</> |
+| single-file-component-8.vue:2:5:12:9 | <p>...</> |
+| single-file-component-8.vue:4:1:10:9 | <script>...</> |
+| single-file-component-8.vue:11:1:12:8 | <style>...</> |
+| special-syntax.vue:1:1:4:11 | <template>...</> |
+| special-syntax.vue:2:3:2:37 | <blah>...</> |
+| special-syntax.vue:3:3:3:32 | <blah>...</> |
+| special-syntax.vue:5:1:5:17 | <script>...</> |
 xssSink
 | compont-with-route.vue:2:8:2:21 | v-html=dataA |
 | single-component-file-1.vue:2:8:2:21 | v-html=dataA |
@@ -133,6 +157,9 @@ xssSink
 | single-file-component-3.vue:2:8:2:21 | v-html=dataA |
 | single-file-component-4.vue:2:8:2:21 | v-html=dataA |
 | single-file-component-5.vue:2:8:2:21 | v-html=dataA |
+| single-file-component-6.vue:2:8:2:21 | v-html=input |
+| single-file-component-7.vue:2:8:2:21 | v-html=input |
+| single-file-component-8.vue:2:8:2:21 | v-html=input |
 | tst.js:5:13:5:13 | a |
 | tst.js:38:12:38:17 | danger |
 remoteFlowSource
@@ -161,3 +188,55 @@ remoteFlowSource
 | router.js:30:5:30:14 | from.query |
 | router.js:34:5:34:12 | to.query |
 | router.js:35:5:35:14 | from.query |
+parseErrors
+attribute
+| compont-with-route.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-component-file-1.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-2.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-3.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-3.vue:4:9:4:49 | src=./single-file-component-3-script.js | src |
+| single-file-component-4.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-5.vue:2:8:2:21 | v-html=dataA | v-html |
+| single-file-component-6.vue:2:8:2:21 | v-html=input | v-html |
+| single-file-component-6.vue:4:9:4:13 | setup= | setup |
+| single-file-component-7.vue:2:8:2:21 | v-html=input | v-html |
+| single-file-component-7.vue:4:9:4:13 | setup= | setup |
+| single-file-component-8.vue:2:8:2:21 | v-html=input | v-html |
+| single-file-component-8.vue:4:9:4:13 | setup= | setup |
+| single-file-component-8.vue:4:15:4:23 | lang=ts | lang |
+| special-syntax.vue:2:9:2:22 | :colonProp=x | :colonProp |
+| special-syntax.vue:2:24:2:34 | @atProp=x | @atProp |
+| special-syntax.vue:3:9:3:29 | :colonField.field=x | :colonField.field |
+threatModelSource
+| compont-with-route.vue:13:17:13:21 | newId | remote |
+| compont-with-route.vue:13:24:13:28 | oldId | remote |
+| compont-with-route.vue:22:7:22:24 | this.$route.params | remote |
+| compont-with-route.vue:23:7:23:23 | this.$route.query | remote |
+| compont-with-route.vue:24:7:24:22 | this.$route.hash | remote |
+| compont-with-route.vue:25:7:25:22 | this.$route.path | remote |
+| compont-with-route.vue:26:7:26:26 | this.$route.fullPath | remote |
+| compont-with-route.vue:27:7:27:31 | router. ... e.query | remote |
+| compont-with-route.vue:31:14:31:30 | this.$route.query | remote |
+| compont-with-route.vue:35:7:35:14 | to.query | remote |
+| compont-with-route.vue:36:7:36:16 | from.query | remote |
+| compont-with-route.vue:40:7:40:14 | to.query | remote |
+| compont-with-route.vue:41:7:41:16 | from.query | remote |
+| compont-with-route.vue:45:7:45:14 | to.query | remote |
+| compont-with-route.vue:46:7:46:16 | from.query | remote |
+| router.js:8:17:8:24 | to.query | remote |
+| router.js:9:17:9:26 | from.query | remote |
+| router.js:15:25:15:32 | to.query | remote |
+| router.js:16:25:16:34 | from.query | remote |
+| router.js:23:9:23:16 | to.query | remote |
+| router.js:24:9:24:18 | from.query | remote |
+| router.js:29:5:29:12 | to.query | remote |
+| router.js:30:5:30:14 | from.query | remote |
+| router.js:34:5:34:12 | to.query | remote |
+| router.js:35:5:35:14 | from.query | remote |
+| single-component-file-1.vue:7:45:7:54 | this.input | view-component-input |
+| single-file-component-3-script.js:5:42:5:51 | this.input | view-component-input |
+| single-file-component-4.vue:21:14:21:23 | this.input | view-component-input |
+| single-file-component-5.vue:19:14:19:23 | this.input | view-component-input |
+| single-file-component-6.vue:5:11:5:15 | input | view-component-input |
+| single-file-component-7.vue:5:11:5:15 | input | view-component-input |
+| single-file-component-8.vue:5:11:5:15 | input | view-component-input |

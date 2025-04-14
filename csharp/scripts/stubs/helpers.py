@@ -56,7 +56,7 @@ def remove_files(path, ext):
 def write_csproj_prefix(ioWrapper):
     ioWrapper.write('<Project Sdk="Microsoft.NET.Sdk">\n')
     ioWrapper.write('  <PropertyGroup>\n')
-    ioWrapper.write('    <TargetFramework>net8.0</TargetFramework>\n')
+    ioWrapper.write('    <TargetFramework>net9.0</TargetFramework>\n')
     ioWrapper.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
     ioWrapper.write('    <OutputPath>bin\</OutputPath>\n')
     ioWrapper.write(
@@ -73,9 +73,17 @@ class Generator:
         self.projectDirIn = os.path.join(self.workDir, self.projectNameIn)
         self.template = template
         print("\n* Creating new input project")
-        self.run_cmd(['dotnet', 'new', self.template, "-f", "net8.0", "--language", "C#", '--name',
+        self.run_cmd(['dotnet', 'new', self.template, "-f", "net9.0", "--language", "C#", '--name',
                          self.projectNameIn, '--output', self.projectDirIn])
         remove_files(self.projectDirIn, '.cs')
+
+        # Clear possibly inherited Directory.Build.props and Directory.Build.targets:
+        with open(os.path.join(self.workDir, 'Directory.Build.props'), 'w') as f:
+            f.write('<Project>\n')
+            f.write('</Project>\n')
+        with open(os.path.join(self.workDir, 'Directory.Build.targets'), 'w') as f:
+            f.write('<Project>\n')
+            f.write('</Project>\n')
 
     def run_cmd(self, cmd, msg="Failed to run command"):
         run_cmd_cwd(cmd, self.workDir, msg)
@@ -110,7 +118,7 @@ class Generator:
         bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
         jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 
-        sdk_version = '8.0.101'
+        sdk_version = '9.0.100'
         print("\n* Creating new global.json file and setting SDK to " + sdk_version)
         self.run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', self.workDir])
 

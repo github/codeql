@@ -95,28 +95,9 @@ module ElazarlGoproxy {
     }
   }
 
-  private class UserControlledRequestData extends RemoteFlowSource::Range {
-    UserControlledRequestData() {
-      exists(DataFlow::FieldReadNode frn | this = frn |
-        // liberally consider ProxyCtx.UserData to be untrusted; it's a data field set by a request handler
-        frn.getField().hasQualifiedName(packagePath(), "ProxyCtx", "UserData")
-      )
-      or
-      exists(DataFlow::MethodCallNode call | this = call |
-        call.getTarget().hasQualifiedName(packagePath(), "ProxyCtx", "Charset")
-      )
-    }
-  }
-
   private class ProxyLogFunction extends StringOps::Formatting::Range, Method {
     ProxyLogFunction() { this.hasQualifiedName(packagePath(), "ProxyCtx", ["Logf", "Warnf"]) }
 
     override int getFormatStringIndex() { result = 0 }
-  }
-
-  private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {
-    ProxyLog() { this.getTarget() instanceof ProxyLogFunction }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 }

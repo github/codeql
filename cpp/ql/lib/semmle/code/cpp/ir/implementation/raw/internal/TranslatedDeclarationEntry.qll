@@ -45,9 +45,6 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
   final override string toString() { result = entry.toString() }
 
   final override Locatable getAst() { result = entry.getAst() }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 }
 
 /**
@@ -248,9 +245,6 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override Locatable getAst() { result = entry.getAst() }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override LocalVariable getVariable() { result = var }
 
   final override Declaration getFunction() { result = var.getFunction() }
@@ -276,9 +270,6 @@ class TranslatedConditionDecl extends TranslatedLocalVariableDeclaration, TTrans
   override string toString() { result = "decl: " + conditionDeclExpr.toString() }
 
   override Locatable getAst() { result = conditionDeclExpr }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override Declaration getFunction() { result = getEnclosingFunction(conditionDeclExpr) }
 

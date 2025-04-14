@@ -14,7 +14,7 @@ module BaseSsa {
   private predicate definitionAt(
     AssignableDefinition def, ControlFlow::BasicBlock bb, int i, SsaInput::SourceVariable v
   ) {
-    bb.getNode(i) = def.getAControlFlowNode() and
+    bb.getNode(i) = def.getExpr().getAControlFlowNode() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
@@ -27,8 +27,19 @@ module BaseSsa {
   private predicate implicitEntryDef(
     Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
   ) {
-    v.isReadonlyCapturedBy(c) and
-    c = bb.getCallable()
+    exists(ControlFlow::ControlFlow::BasicBlocks::EntryBlock entry |
+      c = entry.getCallable() and
+      // In case `c` has multiple bodies, we want each body to get its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
+      c = v.getCallable()
+    |
+      v.isReadonlyCapturedBy(c)
+      or
+      v instanceof Parameter
+    )
   }
 
   private module SsaInput implements SsaImplCommon::InputSig<Location> {
@@ -36,13 +47,13 @@ module BaseSsa {
 
     class BasicBlock = ControlFlow::BasicBlock;
 
+    class ControlFlowNode = ControlFlow::Node;
+
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = bb.getImmediateDominator()
     }
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-    class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
 
     class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
@@ -83,6 +94,13 @@ module BaseSsa {
       )
     }
 
+    final predicate isImplicitEntryDefinition(SsaInput::SourceVariable v) {
+      exists(ControlFlow::BasicBlock bb |
+        this.definesAt(v, bb, -1) and
+        implicitEntryDef(_, bb, v)
+      )
+    }
+
     private Definition getAPhiInputOrPriorDefinition() {
       result = this.(PhiNode).getAnInput() or
       SsaImpl::uncertainWriteDefinitionInput(this, result)
@@ -93,7 +111,7 @@ module BaseSsa {
       not result instanceof PhiNode
     }
 
-    Location getLocation() {
+    override Location getLocation() {
       result = this.getDefinition().getLocation()
       or
       exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |

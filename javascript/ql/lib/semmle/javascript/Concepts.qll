@@ -5,6 +5,73 @@
  */
 
 import javascript
+private import codeql.threatmodels.ThreatModels
+
+/**
+ * A data flow source, for a specific threat-model.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ThreatModelSource::Range` instead.
+ */
+class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Range {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   *
+   *
+   * See
+   * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+   * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+   */
+  string getThreatModel() { result = super.getThreatModel() }
+
+  /** Gets a string that describes the type of this threat-model source. */
+  string getSourceType() { result = super.getSourceType() }
+
+  /**
+   * Holds if this is a source of data that is specific to the web browser environment.
+   */
+  predicate isClientSideSource() { super.isClientSideSource() }
+}
+
+/** Provides a class for modeling new sources for specific threat-models. */
+module ThreatModelSource {
+  /**
+   * A data flow source, for a specific threat-model.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `ThreatModelSource` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a string that represents the source kind with respect to threat modeling.
+     *
+     * See
+     * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+     * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+     */
+    abstract string getThreatModel();
+
+    /** Gets a string that describes the type of this threat-model source. */
+    abstract string getSourceType();
+
+    /**
+     * Holds if this is a source of data that is specific to the web browser environment.
+     */
+    predicate isClientSideSource() { this.getThreatModel() = "view-component-input" }
+  }
+}
+
+/**
+ * A data flow source that is enabled in the current threat model configuration.
+ */
+class ActiveThreatModelSource extends ThreatModelSource {
+  ActiveThreatModelSource() {
+    exists(string kind |
+      currentThreatModel(kind) and
+      this.getThreatModel() = kind
+    )
+  }
+}
 
 /**
  * A data flow node that executes an operating system command,
@@ -66,6 +133,19 @@ abstract class FileSystemReadAccess extends FileSystemAccess {
 }
 
 /**
+ * A FileSystemReadAccess seen as a ThreatModelSource.
+ */
+private class FileSystemReadAccessAsThreatModelSource extends ThreatModelSource::Range {
+  FileSystemReadAccessAsThreatModelSource() {
+    this = any(FileSystemReadAccess access).getADataNode()
+  }
+
+  override string getThreatModel() { result = "file" }
+
+  override string getSourceType() { result = "FileSystemReadAccess" }
+}
+
+/**
  * A data flow node that writes data to the file system.
  */
 abstract class FileSystemWriteAccess extends FileSystemAccess {
@@ -89,6 +169,17 @@ abstract class DatabaseAccess extends DataFlow::Node {
   DataFlow::Node getAResult() {
     none() // Overridden in subclass
   }
+}
+
+/**
+ * A DatabaseAccess seen as a ThreatModelSource.
+ */
+private class DatabaseAccessAsThreatModelSource extends ThreatModelSource::Range {
+  DatabaseAccessAsThreatModelSource() { this = any(DatabaseAccess access).getAResult() }
+
+  override string getThreatModel() { result = "database" }
+
+  override string getSourceType() { result = "DatabaseAccess" }
 }
 
 /**

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["tripss/conventional-changelog-action", "*", "input.pre-release-identifier", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-user-name", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-user-email", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-url", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.github-token", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-pull-method", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.fallback-version", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-message", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.git-branch", "command-injection", "manual"]
+      - ["tripss/conventional-changelog-action", "*", "input.tag-prefix'", "command-injection", "manual"]

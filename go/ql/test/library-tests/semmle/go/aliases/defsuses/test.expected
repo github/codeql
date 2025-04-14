@@ -1,0 +1,33 @@
+lowLevelDefs
+| defsuses.go:6:6:6:13 | IntAlias | defsuses.go:6:6:6:13 | IntAlias (1 declaration sites) |
+| defsuses.go:8:6:8:7 | S1 | defsuses.go:8:6:8:7 | S1 (1 declaration sites) |
+| defsuses.go:8:19:8:19 | x | defsuses.go:8:19:8:19 | x (2 declaration sites) |
+| defsuses.go:8:19:8:19 | x | defsuses.go:9:19:9:19 | x (2 declaration sites) |
+| defsuses.go:9:6:9:7 | S2 | defsuses.go:9:6:9:7 | S2 (1 declaration sites) |
+| defsuses.go:9:19:9:19 | x | defsuses.go:8:19:8:19 | x (2 declaration sites) |
+| defsuses.go:9:19:9:19 | x | defsuses.go:9:19:9:19 | x (2 declaration sites) |
+| defsuses.go:11:6:11:10 | Test1 | defsuses.go:11:6:11:10 | Test1 (1 declaration sites) |
+| defsuses.go:12:2:12:4 | obj | defsuses.go:12:2:12:4 | obj (1 declaration sites) |
+| defsuses.go:15:6:15:8 | ptr | defsuses.go:15:6:15:8 | ptr (1 declaration sites) |
+lowLevelUses
+| defsuses.go:6:17:6:19 | int | file://:0:0:0:0 | int (0 declaration sites) |
+| defsuses.go:8:21:8:23 | int | file://:0:0:0:0 | int (0 declaration sites) |
+| defsuses.go:9:21:9:28 | IntAlias | defsuses.go:6:6:6:13 | IntAlias (1 declaration sites) |
+| defsuses.go:11:14:11:16 | int | file://:0:0:0:0 | int (0 declaration sites) |
+| defsuses.go:12:9:12:10 | S1 | defsuses.go:8:6:8:7 | S1 (1 declaration sites) |
+| defsuses.go:13:2:13:4 | obj | defsuses.go:12:2:12:4 | obj (1 declaration sites) |
+| defsuses.go:13:6:13:6 | x | defsuses.go:8:19:8:19 | x (2 declaration sites) |
+| defsuses.go:13:6:13:6 | x | defsuses.go:9:19:9:19 | x (2 declaration sites) |
+| defsuses.go:15:11:15:12 | S2 | defsuses.go:9:6:9:7 | S2 (1 declaration sites) |
+| defsuses.go:16:2:16:4 | ptr | defsuses.go:15:6:15:8 | ptr (1 declaration sites) |
+| defsuses.go:16:9:16:11 | obj | defsuses.go:12:2:12:4 | obj (1 declaration sites) |
+| defsuses.go:18:9:18:11 | ptr | defsuses.go:15:6:15:8 | ptr (1 declaration sites) |
+| defsuses.go:18:13:18:13 | x | defsuses.go:8:19:8:19 | x (2 declaration sites) |
+| defsuses.go:18:13:18:13 | x | defsuses.go:9:19:9:19 | x (2 declaration sites) |
+distinctDefinedXs
+| 1 |
+distinctUsedXs
+| 1 |
+fieldUseUsePairs
+| defsuses.go:13:6:13:6 | x | defsuses.go:18:13:18:13 | x |
+| defsuses.go:18:13:18:13 | x | defsuses.go:13:6:13:6 | x |

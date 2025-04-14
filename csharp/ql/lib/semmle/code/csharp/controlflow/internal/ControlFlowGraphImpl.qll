@@ -15,11 +15,19 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
   CfgScope() {
     this.getFile().fromSource() and
     (
-      this instanceof Callable
+      this =
+        any(Callable c |
+          c.(Constructor).hasInitializer()
+          or
+          InitializerSplitting::constructorInitializes(c, _)
+          or
+          c.hasBody()
+        )
       or
       // For now, static initializer values have their own scope. Eventually, they
       // should be treated like instance initializers.
-      this.(Assignable).(Modifiable).isStatic()
+      this.(Assignable).(Modifiable).isStatic() and
+      expr_parent_top_level_adjusted2(_, _, this)
     )
   }
 }
@@ -45,7 +53,6 @@ private predicate idOf(AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 private module CfgInput implements CfgShared::InputSig<Location> {
   private import ControlFlowGraphImpl as Impl
   private import Completion as Comp
-  private import Splitting as Splitting
   private import SuccessorType as ST
   private import semmle.code.csharp.Caching
 
@@ -72,10 +79,6 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     Impl::scopeLast(scope, last, c)
   }
 
-  class SplitKindBase = Splitting::TSplitKind;
-
-  class Split = Splitting::Split;
-
   class SuccessorType = ST::SuccessorType;
 
   SuccessorType getAMatchingSuccessorType(Completion c) { result = c.getAMatchingSuccessorType() }
@@ -92,9 +95,27 @@ private module CfgInput implements CfgShared::InputSig<Location> {
     t instanceof ST::SuccessorTypes::ExceptionSuccessor or
     t instanceof ST::SuccessorTypes::ExitSuccessor
   }
+
+  int idOfAstNode(AstNode node) { result = node.getId() }
+
+  int idOfCfgScope(CfgScope node) { result = idOfAstNode(node) }
 }
 
-import CfgShared::Make<Location, CfgInput>
+private module CfgSplittingInput implements CfgShared::SplittingInputSig<Location, CfgInput> {
+  private import Splitting as S
+
+  class SplitKindBase = S::TSplitKind;
+
+  class Split = S::Split;
+}
+
+private module ConditionalCompletionSplittingInput implements
+  CfgShared::ConditionalCompletionSplittingInputSig<Location, CfgInput, CfgSplittingInput>
+{
+  import Splitting::ConditionalCompletionSplitting::ConditionalCompletionSplittingInput
+}
+
+import CfgShared::MakeWithSplitting<Location, CfgInput, CfgSplittingInput, ConditionalCompletionSplittingInput>
 
 /**
  * A compilation.

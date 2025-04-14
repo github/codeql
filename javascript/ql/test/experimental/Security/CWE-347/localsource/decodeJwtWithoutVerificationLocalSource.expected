@@ -1,0 +1,82 @@
+edges
+| JsonWebToken.js:13:11:13:28 | UserToken | JsonWebToken.js:16:28:16:36 | UserToken | provenance |  |
+| JsonWebToken.js:13:23:13:28 | aJwt() | JsonWebToken.js:13:11:13:28 | UserToken | provenance |  |
+| JsonWebToken.js:20:11:20:28 | UserToken | JsonWebToken.js:23:28:23:36 | UserToken | provenance |  |
+| JsonWebToken.js:20:11:20:28 | UserToken | JsonWebToken.js:24:28:24:36 | UserToken | provenance |  |
+| JsonWebToken.js:20:23:20:28 | aJwt() | JsonWebToken.js:20:11:20:28 | UserToken | provenance |  |
+| JsonWebToken.js:28:11:28:28 | UserToken | JsonWebToken.js:31:28:31:36 | UserToken | provenance |  |
+| JsonWebToken.js:28:23:28:28 | aJwt() | JsonWebToken.js:28:11:28:28 | UserToken | provenance |  |
+| JsonWebToken.js:35:11:35:28 | UserToken | JsonWebToken.js:38:28:38:36 | UserToken | provenance |  |
+| JsonWebToken.js:35:11:35:28 | UserToken | JsonWebToken.js:39:28:39:36 | UserToken | provenance |  |
+| JsonWebToken.js:35:23:35:28 | aJwt() | JsonWebToken.js:35:11:35:28 | UserToken | provenance |  |
+| JsonWebToken.js:43:11:43:28 | UserToken | JsonWebToken.js:46:28:46:36 | UserToken | provenance |  |
+| JsonWebToken.js:43:11:43:28 | UserToken | JsonWebToken.js:47:28:47:36 | UserToken | provenance |  |
+| JsonWebToken.js:43:23:43:28 | aJwt() | JsonWebToken.js:43:11:43:28 | UserToken | provenance |  |
+| jose.js:12:11:12:28 | UserToken | jose.js:15:20:15:28 | UserToken | provenance |  |
+| jose.js:12:23:12:28 | aJwt() | jose.js:12:11:12:28 | UserToken | provenance |  |
+| jose.js:19:11:19:28 | UserToken | jose.js:22:20:22:28 | UserToken | provenance |  |
+| jose.js:19:11:19:28 | UserToken | jose.js:23:26:23:34 | UserToken | provenance |  |
+| jose.js:19:23:19:28 | aJwt() | jose.js:19:11:19:28 | UserToken | provenance |  |
+| jose.js:27:11:27:28 | UserToken | jose.js:30:26:30:34 | UserToken | provenance |  |
+| jose.js:27:23:27:28 | aJwt() | jose.js:27:11:27:28 | UserToken | provenance |  |
+| jwtDecode.js:13:11:13:28 | UserToken | jwtDecode.js:17:16:17:24 | UserToken | provenance |  |
+| jwtDecode.js:13:23:13:28 | aJwt() | jwtDecode.js:13:11:13:28 | UserToken | provenance |  |
+| jwtSimple.js:13:11:13:28 | UserToken | jwtSimple.js:16:23:16:31 | UserToken | provenance |  |
+| jwtSimple.js:13:23:13:28 | aJwt() | jwtSimple.js:13:11:13:28 | UserToken | provenance |  |
+| jwtSimple.js:20:11:20:28 | UserToken | jwtSimple.js:23:23:23:31 | UserToken | provenance |  |
+| jwtSimple.js:20:11:20:28 | UserToken | jwtSimple.js:24:23:24:31 | UserToken | provenance |  |
+| jwtSimple.js:20:23:20:28 | aJwt() | jwtSimple.js:20:11:20:28 | UserToken | provenance |  |
+| jwtSimple.js:28:11:28:28 | UserToken | jwtSimple.js:31:23:31:31 | UserToken | provenance |  |
+| jwtSimple.js:28:11:28:28 | UserToken | jwtSimple.js:32:23:32:31 | UserToken | provenance |  |
+| jwtSimple.js:28:23:28:28 | aJwt() | jwtSimple.js:28:11:28:28 | UserToken | provenance |  |
+nodes
+| JsonWebToken.js:13:11:13:28 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:13:23:13:28 | aJwt() | semmle.label | aJwt() |
+| JsonWebToken.js:16:28:16:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:20:11:20:28 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:20:23:20:28 | aJwt() | semmle.label | aJwt() |
+| JsonWebToken.js:23:28:23:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:24:28:24:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:28:11:28:28 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:28:23:28:28 | aJwt() | semmle.label | aJwt() |
+| JsonWebToken.js:31:28:31:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:35:11:35:28 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:35:23:35:28 | aJwt() | semmle.label | aJwt() |
+| JsonWebToken.js:38:28:38:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:39:28:39:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:43:11:43:28 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:43:23:43:28 | aJwt() | semmle.label | aJwt() |
+| JsonWebToken.js:46:28:46:36 | UserToken | semmle.label | UserToken |
+| JsonWebToken.js:47:28:47:36 | UserToken | semmle.label | UserToken |
+| jose.js:12:11:12:28 | UserToken | semmle.label | UserToken |
+| jose.js:12:23:12:28 | aJwt() | semmle.label | aJwt() |
+| jose.js:15:20:15:28 | UserToken | semmle.label | UserToken |
+| jose.js:19:11:19:28 | UserToken | semmle.label | UserToken |
+| jose.js:19:23:19:28 | aJwt() | semmle.label | aJwt() |
+| jose.js:22:20:22:28 | UserToken | semmle.label | UserToken |
+| jose.js:23:26:23:34 | UserToken | semmle.label | UserToken |
+| jose.js:27:11:27:28 | UserToken | semmle.label | UserToken |
+| jose.js:27:23:27:28 | aJwt() | semmle.label | aJwt() |
+| jose.js:30:26:30:34 | UserToken | semmle.label | UserToken |
+| jwtDecode.js:13:11:13:28 | UserToken | semmle.label | UserToken |
+| jwtDecode.js:13:23:13:28 | aJwt() | semmle.label | aJwt() |
+| jwtDecode.js:17:16:17:24 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:13:11:13:28 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:13:23:13:28 | aJwt() | semmle.label | aJwt() |
+| jwtSimple.js:16:23:16:31 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:20:11:20:28 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:20:23:20:28 | aJwt() | semmle.label | aJwt() |
+| jwtSimple.js:23:23:23:31 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:24:23:24:31 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:28:11:28:28 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:28:23:28:28 | aJwt() | semmle.label | aJwt() |
+| jwtSimple.js:31:23:31:31 | UserToken | semmle.label | UserToken |
+| jwtSimple.js:32:23:32:31 | UserToken | semmle.label | UserToken |
+subpaths
+#select
+| JsonWebToken.js:13:23:13:28 | aJwt() | JsonWebToken.js:13:23:13:28 | aJwt() | JsonWebToken.js:16:28:16:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:16:28:16:36 | UserToken | without signature verification |
+| JsonWebToken.js:20:23:20:28 | aJwt() | JsonWebToken.js:20:23:20:28 | aJwt() | JsonWebToken.js:23:28:23:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:23:28:23:36 | UserToken | without signature verification |
+| JsonWebToken.js:20:23:20:28 | aJwt() | JsonWebToken.js:20:23:20:28 | aJwt() | JsonWebToken.js:24:28:24:36 | UserToken | Decoding JWT $@. | JsonWebToken.js:24:28:24:36 | UserToken | without signature verification |
+| jose.js:12:23:12:28 | aJwt() | jose.js:12:23:12:28 | aJwt() | jose.js:15:20:15:28 | UserToken | Decoding JWT $@. | jose.js:15:20:15:28 | UserToken | without signature verification |
+| jwtDecode.js:13:23:13:28 | aJwt() | jwtDecode.js:13:23:13:28 | aJwt() | jwtDecode.js:17:16:17:24 | UserToken | Decoding JWT $@. | jwtDecode.js:17:16:17:24 | UserToken | without signature verification |
+| jwtSimple.js:13:23:13:28 | aJwt() | jwtSimple.js:13:23:13:28 | aJwt() | jwtSimple.js:16:23:16:31 | UserToken | Decoding JWT $@. | jwtSimple.js:16:23:16:31 | UserToken | without signature verification |

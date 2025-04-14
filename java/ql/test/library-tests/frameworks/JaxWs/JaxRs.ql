@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.security.XSS
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module JaxRsTest implements TestSig {
   string getARelevantTag() {

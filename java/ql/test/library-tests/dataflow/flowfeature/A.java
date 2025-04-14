@@ -46,4 +46,50 @@ public class A {
     Object x = source("6");
     test6sink(x);
   }
+
+  Object getSrc() {
+    return source("get");
+  }
+
+  void srcField() {
+    foo = source("field");
+  }
+
+  static Object foo = null;
+
+  void srcCall(int i) {
+    test7(source("call"), i);
+  }
+
+  Object test7(Object x, int i) {
+    Object src = null;
+    if (i == 0) {
+      src = getSrc();
+    } else if (i == 1) {
+      src = foo;
+    } else if (i == 2) {
+      src = x;
+    } else if (i == 3) {
+      src = source("direct");
+    }
+
+    sinkPut(src);
+    foo2 = src;
+    sink(src); // $ EqCc="direct" SrcCc="field" SrcCc="call" SrcCc="direct" SinkCc="get" SinkCc="field" SinkCc="direct"
+    return src;
+  }
+
+  static Object foo2 = null;
+
+  void sinkPut(Object x) {
+    sink(x); // $ SrcCc="field" SrcCc="call" SrcCc="direct"
+  }
+
+  void sinkField() {
+    sink(foo2); // $ SrcCc="field" SrcCc="call" SrcCc="direct" SinkCc="get" SinkCc="field" SinkCc="call" SinkCc="direct"
+  }
+
+  void sinkReturn(int i) {
+    sink(test7(null, i)); // $ SrcCc="field" SinkCc="get" SinkCc="field" SinkCc="direct"
+  }
 }

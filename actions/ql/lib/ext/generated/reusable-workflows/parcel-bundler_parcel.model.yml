@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["parcel-bundler/parcel/.github/workflows/release.yml", "*", "input.release-command", "code-injection", "generated"]

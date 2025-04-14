@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nearform-actions/optic-release-automation-action", "*", "input.build-command", "code-injection", "generated"]
+     - ["nearform-actions/optic-release-automation-action", "*", "input.actor-name", "code-injection", "generated"]
+     - ["nearform-actions/optic-release-automation-action", "*", "input.actor-email", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 private import java
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
-private import semmle.code.java.dataflow.internal.FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.ModelExclusions
 private import ModelEditor
 
@@ -8,7 +8,7 @@ private import ModelEditor
  * A class of effectively public callables from source code.
  */
 class PublicEndpointFromSource extends Endpoint, ModelApi {
-  override predicate isSource() { SourceSinkInterpretationInput::sourceElement(this, _, _, _, _) }
+  override predicate isSource() { this instanceof SourceCallable }
 
-  override predicate isSink() { SourceSinkInterpretationInput::sinkElement(this, _, _, _, _) }
+  override predicate isSink() { this instanceof SinkCallable }
 }

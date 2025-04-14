@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["wazuh/wazuh", "*", "input.target", "code-injection", "generated"]
+     - ["wazuh/wazuh", "*", "input.doxygen_config", "code-injection", "generated"]
+     - ["wazuh/wazuh", "*", "input.path", "code-injection", "generated"]

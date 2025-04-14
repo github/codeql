@@ -1,0 +1,4 @@
+| gen_match_arm.rs:6:9:6:29 | ... => y | gen_match_arm.rs:6:28:6:28 | y |
+| gen_match_arm.rs:7:9:7:26 | ...::None => 0 | gen_match_arm.rs:7:25:7:25 | 0 |
+| gen_match_arm.rs:10:9:10:35 | ... if ... => ... | gen_match_arm.rs:10:30:10:34 | ... / ... |
+| gen_match_arm.rs:11:9:11:15 | _ => 0 | gen_match_arm.rs:11:14:11:14 | 0 |

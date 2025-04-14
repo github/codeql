@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-601/SpringUrlRedirect.ql
+query: experimental/Security/CWE/CWE-601/SpringUrlRedirect.ql
+postprocess: utils/test/PrettyPrintModels.ql

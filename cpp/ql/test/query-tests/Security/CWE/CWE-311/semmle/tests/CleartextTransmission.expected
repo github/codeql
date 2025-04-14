@@ -16,7 +16,8 @@ edges
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:138:21:138:22 | call to id | provenance |  |
 | test3.cpp:144:16:144:29 | call to get_global_str | test3.cpp:144:16:144:29 | call to get_global_str | provenance |  |
 | test3.cpp:144:16:144:29 | call to get_global_str | test3.cpp:146:15:146:18 | data | provenance |  |
-| test3.cpp:157:19:157:26 | password | test3.cpp:159:15:159:20 | *buffer | provenance | TaintFunction |
+| test3.cpp:157:19:157:26 | password | test3.cpp:158:3:158:16 | ... = ... | provenance | TaintFunction |
+| test3.cpp:158:3:158:16 | ... = ... | test3.cpp:159:15:159:20 | *buffer | provenance |  |
 | test3.cpp:270:16:270:23 | password | test3.cpp:272:15:272:18 | *data | provenance | DataFlowFunction |
 | test3.cpp:278:20:278:23 | data | test3.cpp:280:14:280:17 | data | provenance |  |
 | test3.cpp:283:20:283:23 | data | test3.cpp:285:14:285:17 | data | provenance |  |
@@ -70,6 +71,7 @@ nodes
 | test3.cpp:144:16:144:29 | call to get_global_str | semmle.label | call to get_global_str |
 | test3.cpp:146:15:146:18 | data | semmle.label | data |
 | test3.cpp:157:19:157:26 | password | semmle.label | password |
+| test3.cpp:158:3:158:16 | ... = ... | semmle.label | ... = ... |
 | test3.cpp:159:15:159:20 | *buffer | semmle.label | *buffer |
 | test3.cpp:173:15:173:22 | password | semmle.label | password |
 | test3.cpp:181:15:181:22 | password | semmle.label | password |

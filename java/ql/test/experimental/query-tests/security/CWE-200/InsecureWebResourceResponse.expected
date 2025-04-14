@@ -1,5 +1,5 @@
 edges
-| InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | provenance | MaD:330 |
+| InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | provenance | MaD:1 |
 | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | InsecureWebResourceResponse.java:30:25:30:32 | inputUrl : String | provenance |  |
 | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | InsecureWebResourceResponse.java:32:25:32:32 | inputUrl : String | provenance |  |
 | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | InsecureWebResourceResponse.java:34:25:34:32 | inputUrl : String | provenance |  |
@@ -19,10 +19,10 @@ edges
 | InsecureWebResourceResponse.java:59:34:59:43 | url : String | InsecureWebResourceResponse.java:75:20:75:22 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:63:77:63:86 | url : String | InsecureWebResourceResponse.java:65:41:65:43 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri | InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri | provenance |  |
-| InsecureWebResourceResponse.java:65:41:65:43 | url : String | InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri | provenance | MaD:514 |
+| InsecureWebResourceResponse.java:65:41:65:43 | url : String | InsecureWebResourceResponse.java:65:31:65:44 | parse(...) : Uri | provenance | MaD:2 |
 | InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri | InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | provenance | MaD:504 |
-| InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
+| InsecureWebResourceResponse.java:66:71:66:73 | uri : Uri | InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | provenance | MaD:4 |
+| InsecureWebResourceResponse.java:66:71:66:83 | getPath(...) : String | InsecureWebResourceResponse.java:66:51:66:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
 | InsecureWebResourceResponse.java:75:20:75:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:75:20:75:22 | url : String | InsecureWebResourceResponse.java:84:77:84:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:75:20:75:22 | url : String | InsecureWebResourceResponse.java:110:77:110:86 | url : String | provenance | AdditionalTaintStep |
@@ -31,12 +31,11 @@ edges
 | InsecureWebResourceResponse.java:80:34:80:43 | url : String | InsecureWebResourceResponse.java:101:20:101:22 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:84:77:84:86 | url : String | InsecureWebResourceResponse.java:86:41:86:43 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | provenance |  |
-| InsecureWebResourceResponse.java:86:41:86:43 | url : String | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | provenance | MaD:514 |
-| InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | provenance |  |
-| InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | provenance | MaD:503 |
-| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | provenance | MaD:42945 |
+| InsecureWebResourceResponse.java:86:41:86:43 | url : String | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | provenance | MaD:2 |
+| InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | provenance | MaD:3 |
+| InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:91:75:91:85 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
+| InsecureWebResourceResponse.java:89:75:89:83 | cacheFile : File | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
 | InsecureWebResourceResponse.java:101:20:101:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:101:20:101:22 | url : String | InsecureWebResourceResponse.java:84:77:84:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:101:20:101:22 | url : String | InsecureWebResourceResponse.java:110:77:110:86 | url : String | provenance | AdditionalTaintStep |
@@ -45,13 +44,13 @@ edges
 | InsecureWebResourceResponse.java:106:34:106:43 | url : String | InsecureWebResourceResponse.java:127:20:127:22 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:110:77:110:86 | url : String | InsecureWebResourceResponse.java:112:41:112:43 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | provenance |  |
-| InsecureWebResourceResponse.java:112:41:112:43 | url : String | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | provenance | MaD:514 |
-| InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | provenance | MaD:504 |
-| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | provenance | MaD:43108 |
+| InsecureWebResourceResponse.java:112:41:112:43 | url : String | InsecureWebResourceResponse.java:112:31:112:44 | parse(...) : Uri | provenance | MaD:2 |
+| InsecureWebResourceResponse.java:113:35:113:37 | uri : Uri | InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | provenance | MaD:4 |
+| InsecureWebResourceResponse.java:113:35:113:47 | getPath(...) : String | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | provenance | MaD:7 |
 | InsecureWebResourceResponse.java:113:35:113:60 | substring(...) : String | InsecureWebResourceResponse.java:115:75:115:78 | path : String | provenance |  |
 | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:117:75:117:85 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:115:75:115:78 | path : String | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | provenance | MaD:43108 |
-| InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
+| InsecureWebResourceResponse.java:115:75:115:78 | path : String | InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | provenance | MaD:7 |
+| InsecureWebResourceResponse.java:115:75:115:107 | substring(...) : String | InsecureWebResourceResponse.java:115:55:115:108 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
 | InsecureWebResourceResponse.java:127:20:127:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:127:20:127:22 | url : String | InsecureWebResourceResponse.java:84:77:84:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:127:20:127:22 | url : String | InsecureWebResourceResponse.java:110:77:110:86 | url : String | provenance | AdditionalTaintStep |
@@ -77,13 +76,12 @@ edges
 | InsecureWebResourceResponse.java:184:20:184:22 | url : String | InsecureWebResourceResponse.java:232:69:232:78 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:188:34:188:43 | url : String | InsecureWebResourceResponse.java:209:20:209:22 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:192:77:192:102 | request : WebResourceRequest | InsecureWebResourceResponse.java:194:31:194:37 | request : WebResourceRequest | provenance |  |
-| InsecureWebResourceResponse.java:194:31:194:37 | request : WebResourceRequest | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | provenance | MaD:1950 |
+| InsecureWebResourceResponse.java:194:31:194:37 | request : WebResourceRequest | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | provenance | MaD:5 |
 | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | provenance |  |
-| InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | provenance |  |
-| InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | provenance | MaD:503 |
-| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | provenance | MaD:42945 |
+| InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | provenance | MaD:3 |
+| InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:199:75:199:85 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
+| InsecureWebResourceResponse.java:197:75:197:83 | cacheFile : File | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
 | InsecureWebResourceResponse.java:209:20:209:22 | url : String | InsecureWebResourceResponse.java:63:77:63:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:209:20:209:22 | url : String | InsecureWebResourceResponse.java:84:77:84:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:209:20:209:22 | url : String | InsecureWebResourceResponse.java:110:77:110:86 | url : String | provenance | AdditionalTaintStep |
@@ -97,21 +95,29 @@ edges
 | InsecureWebResourceResponse.java:226:20:226:22 | url : String | InsecureWebResourceResponse.java:232:69:232:78 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebResourceResponse.java:232:69:232:78 | url : String | InsecureWebResourceResponse.java:234:33:234:35 | url : String | provenance |  |
 | InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri | InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri | provenance |  |
-| InsecureWebResourceResponse.java:234:33:234:35 | url : String | InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri | provenance | MaD:514 |
+| InsecureWebResourceResponse.java:234:33:234:35 | url : String | InsecureWebResourceResponse.java:234:23:234:36 | parse(...) : Uri | provenance | MaD:2 |
 | InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream | InsecureWebResourceResponse.java:237:63:237:73 | inputStream | provenance |  |
-| InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri | InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | provenance | MaD:504 |
-| InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
-| InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : String | provenance | MaD:330 |
+| InsecureWebResourceResponse.java:235:63:235:65 | uri : Uri | InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | provenance | MaD:4 |
+| InsecureWebResourceResponse.java:235:63:235:75 | getPath(...) : String | InsecureWebResourceResponse.java:235:43:235:76 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
+| InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : String | provenance | MaD:1 |
 | InsecureWebViewActivity.java:27:27:27:64 | getStringExtra(...) : String | InsecureWebViewActivity.java:28:20:28:27 | inputUrl : String | provenance |  |
 | InsecureWebViewActivity.java:28:20:28:27 | inputUrl : String | InsecureWebViewActivity.java:42:28:42:37 | url : String | provenance |  |
 | InsecureWebViewActivity.java:42:28:42:37 | url : String | InsecureWebViewActivity.java:43:25:43:27 | url : String | provenance |  |
 | InsecureWebViewActivity.java:43:25:43:27 | url : String | InsecureWebViewActivity.java:53:77:53:86 | url : String | provenance | AdditionalTaintStep |
 | InsecureWebViewActivity.java:53:77:53:86 | url : String | InsecureWebViewActivity.java:55:41:55:43 | url : String | provenance |  |
 | InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri | InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | provenance |  |
-| InsecureWebViewActivity.java:55:41:55:43 | url : String | InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri | provenance | MaD:514 |
+| InsecureWebViewActivity.java:55:41:55:43 | url : String | InsecureWebViewActivity.java:55:31:55:44 | parse(...) : Uri | provenance | MaD:2 |
 | InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream | InsecureWebViewActivity.java:58:71:58:81 | inputStream | provenance |  |
-| InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | provenance | MaD:504 |
-| InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:1981 |
+| InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | provenance | MaD:4 |
+| InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | InsecureWebViewActivity.java:56:51:56:84 | new FileInputStream(...) : FileInputStream | provenance | MaD:6 |
+models
+| 1 | Summary: android.content; Intent; true; getStringExtra; (String); ; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; ReturnValue; value; manual |
+| 2 | Summary: android.net; Uri; false; parse; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: android.net; Uri; true; getLastPathSegment; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: android.net; Uri; true; getPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: android.webkit; WebResourceRequest; false; getUrl; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.io; FileInputStream; true; FileInputStream; ; ; Argument[0]; Argument[this]; taint; manual |
+| 7 | Summary: java.lang; String; false; substring; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | InsecureWebResourceResponse.java:28:27:28:64 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
@@ -136,7 +142,6 @@ nodes
 | InsecureWebResourceResponse.java:84:77:84:86 | url : String | semmle.label | url : String |
 | InsecureWebResourceResponse.java:86:31:86:44 | parse(...) : Uri | semmle.label | parse(...) : Uri |
 | InsecureWebResourceResponse.java:86:41:86:43 | url : String | semmle.label | url : String |
-| InsecureWebResourceResponse.java:88:42:88:90 | new File(...) : File | semmle.label | new File(...) : File |
 | InsecureWebResourceResponse.java:88:66:88:68 | uri : Uri | semmle.label | uri : Uri |
 | InsecureWebResourceResponse.java:88:66:88:89 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
 | InsecureWebResourceResponse.java:89:55:89:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
@@ -165,7 +170,6 @@ nodes
 | InsecureWebResourceResponse.java:192:77:192:102 | request : WebResourceRequest | semmle.label | request : WebResourceRequest |
 | InsecureWebResourceResponse.java:194:31:194:37 | request : WebResourceRequest | semmle.label | request : WebResourceRequest |
 | InsecureWebResourceResponse.java:194:31:194:46 | getUrl(...) : Uri | semmle.label | getUrl(...) : Uri |
-| InsecureWebResourceResponse.java:196:42:196:90 | new File(...) : File | semmle.label | new File(...) : File |
 | InsecureWebResourceResponse.java:196:66:196:68 | uri : Uri | semmle.label | uri : Uri |
 | InsecureWebResourceResponse.java:196:66:196:89 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
 | InsecureWebResourceResponse.java:197:55:197:84 | new FileInputStream(...) : FileInputStream | semmle.label | new FileInputStream(...) : FileInputStream |
@@ -193,11 +197,11 @@ nodes
 | InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | semmle.label | uri : Uri |
 | InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | semmle.label | getPath(...) : String |
 | InsecureWebViewActivity.java:58:71:58:81 | inputStream | semmle.label | inputStream |
-subpaths
-#select
+problems
 | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
 | InsecureWebResourceResponse.java:91:75:91:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:91:75:91:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
 | InsecureWebResourceResponse.java:117:75:117:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:117:75:117:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
 | InsecureWebResourceResponse.java:199:75:199:85 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:199:75:199:85 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
 | InsecureWebResourceResponse.java:237:63:237:73 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:237:63:237:73 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |
 | InsecureWebViewActivity.java:58:71:58:81 | inputStream | InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) : Intent | InsecureWebViewActivity.java:58:71:58:81 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebViewActivity.java:27:27:27:37 | getIntent(...) | this user input |
+subpaths

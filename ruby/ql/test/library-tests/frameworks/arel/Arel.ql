@@ -4,7 +4,7 @@
 
 import codeql.ruby.frameworks.Arel
 import codeql.ruby.AST
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
 import TaintFlow::PathGraph
 

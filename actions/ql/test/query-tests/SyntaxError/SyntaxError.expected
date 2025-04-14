@@ -1,0 +1,1 @@
+| .github/workflows/malformed.yml:7:4:7:4 | expected <block end>, but found '<block sequence start>' | expected <block end>, but found '<block sequence start>' |

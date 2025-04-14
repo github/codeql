@@ -2,7 +2,7 @@
 // right values for `getARelevantTag`. We want to alert on this,
 // so it gets fixed!
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module MissingRelevantTag implements TestSig {
   string getARelevantTag() { none() }

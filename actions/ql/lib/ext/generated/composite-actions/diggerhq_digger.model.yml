@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["diggerhq/digger", "*", "input.checkov-version", "code-injection", "generated"]
+     - ["diggerhq/digger", "*", "input.google-auth-credentials", "code-injection", "generated"]
+     - ["diggerhq/digger", "*", "input.google-workload-identity-provider", "code-injection", "generated"]
+     - ["diggerhq/digger", "*", "input.google-service-account", "code-injection", "generated"]

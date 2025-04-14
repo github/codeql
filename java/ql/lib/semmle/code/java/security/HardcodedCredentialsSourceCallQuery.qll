@@ -4,25 +4,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow2
-private import semmle.code.java.dataflow.DataFlow2
 import HardcodedCredentials
-
-/**
- * DEPRECATED: Use `HardcodedCredentialSourceCallFlow` instead.
- *
- * A data-flow configuration that tracks hardcoded expressions flowing to a parameter whose name suggests
- * it may be a credential, excluding those which flow on to other such insecure usage sites.
- */
-deprecated class HardcodedCredentialSourceCallConfiguration extends DataFlow::Configuration {
-  HardcodedCredentialSourceCallConfiguration() {
-    this = "HardcodedCredentialSourceCallConfiguration"
-  }
-
-  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof HardcodedExpr }
-
-  override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof FinalCredentialsSourceSink }
-}
 
 /**
  * A data-flow configuration that tracks hardcoded expressions flowing to a parameter whose name suggests
@@ -39,22 +21,6 @@ module HardcodedCredentialSourceCallConfig implements DataFlow::ConfigSig {
  * it may be a credential, excluding those which flow on to other such insecure usage sites.
  */
 module HardcodedCredentialSourceCallFlow = DataFlow::Global<HardcodedCredentialSourceCallConfig>;
-
-/**
- * DEPRECATED: Use `HardcodedCredentialParameterSourceCallFlow` instead.
- *
- * A data-flow configuration that tracks flow from an argument whose corresponding parameter name suggests
- * a credential, to an argument to a sensitive call.
- */
-deprecated class HardcodedCredentialSourceCallConfiguration2 extends DataFlow2::Configuration {
-  HardcodedCredentialSourceCallConfiguration2() {
-    this = "HardcodedCredentialSourceCallConfiguration2"
-  }
-
-  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof CredentialsSourceSink }
-
-  override predicate isSink(DataFlow::Node n) { n.asExpr() instanceof CredentialsSink }
-}
 
 /**
  * A data-flow configuration that tracks flow from an argument whose corresponding parameter name suggests

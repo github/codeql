@@ -98,6 +98,7 @@ class ModuleImporter(object):
     def get_import_nodes(self, loaded_module):
         'Return list of AST nodes representing imports'
         try:
+            self.logger.debug("Looking for imports in %s", loaded_module.path)
             return imports_from_ast(loaded_module.py_ast)
         except Exception as ex:
             if isinstance(ex, SyntaxError):

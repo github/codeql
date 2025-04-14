@@ -1,1 +1,2 @@
-Security Features/CWE-091/XMLInjection.ql
+query: Security Features/CWE-091/XMLInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

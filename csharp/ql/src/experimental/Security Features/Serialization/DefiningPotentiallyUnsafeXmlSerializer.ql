@@ -10,12 +10,17 @@
  */
 
 import csharp
-import DataSetSerialization
+deprecated import DataSetSerialization
 
-from UnsafeXmlSerializerImplementation c, Member m
-where
+deprecated query predicate problems(
+  Member m, string message, UnsafeXmlSerializerImplementation c, string classMessage, Member member,
+  string memberMessage
+) {
   c.fromSource() and
-  isClassUnsafeXmlSerializerImplementation(c, m)
-select m,
-  "Defining an serializable class $@ that has member $@ of a type that is derived from DataSet or DataTable types and may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details.",
-  c, c.toString(), m, m.toString()
+  isClassUnsafeXmlSerializerImplementation(c, m) and
+  message =
+    "Defining an serializable class $@ that has member $@ of a type that is derived from DataSet or DataTable types and may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details." and
+  classMessage = c.toString() and
+  member = m and
+  memberMessage = m.toString()
+}

@@ -1,11 +1,12 @@
-load("@semmle_code//:dist.bzl", "pack_zip")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
 
-pack_zip(
+codeql_pkg_files(
     name = "downgrades",
     srcs = glob(
         ["**/*"],
         exclude = ["BUILD.bazel"],
     ),
     prefix = "downgrades",
-    visibility = ["//visibility:public"],
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//javascript:__pkg__"],
 )

@@ -31,6 +31,51 @@ module FastApi {
   }
 
   /**
+   * A call to `app.add_middleware` adding a generic middleware.
+   */
+  private class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() { this = App::instance().getMember("add_middleware").getACall() }
+
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+  }
+
+  /**
+   * A call to `app.add_middleware` adding CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends Http::Server::CorsMiddleware::Range, AddMiddlewareCall {
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS origins
+     */
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
+
+    /**
+     * Gets the boolean value corresponding to if CORS credentials is enabled
+     * (`true`) or disabled (`false`) by this node.
+     */
+    override DataFlow::Node getCredentialsAllowed() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
+    DataFlow::Node getMethods() { result = this.getArgByName("allow_methods") }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
+    DataFlow::Node getHeaders() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
    * Provides models for the `fastapi.APIRouter` class
    *
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
@@ -348,7 +393,7 @@ module FastApi {
     /**
      * A call to `set_cookie` on a FastAPI Response.
      */
-    private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+    private class SetCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
       SetCookieCall() { this.calls(instance(), "set_cookie") }
 
       override DataFlow::Node getHeaderArg() { none() }
@@ -361,28 +406,59 @@ module FastApi {
     }
 
     /**
-     * A call to `append` on a `headers` of a FastAPI Response, with the `Set-Cookie`
-     * header-key.
+     * A call to `append` on a `headers` of a FastAPI Response.
      */
-    private class HeadersAppendCookie extends Http::Server::CookieWrite::Range,
+    private class HeadersAppend extends Http::Server::ResponseHeaderWrite::Range,
       DataFlow::MethodCallNode
     {
-      HeadersAppendCookie() {
-        exists(DataFlow::AttrRead headers, DataFlow::Node keyArg |
+      HeadersAppend() {
+        exists(DataFlow::AttrRead headers |
           headers.accesses(instance(), "headers") and
-          this.calls(headers, "append") and
-          keyArg in [this.getArg(0), this.getArgByName("key")] and
-          keyArg.getALocalSource().asExpr().(StringLiteral).getText().toLowerCase() = "set-cookie"
+          this.calls(headers, "append")
         )
       }
 
-      override DataFlow::Node getHeaderArg() {
+      override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("key")] }
+
+      override DataFlow::Node getValueArg() {
         result in [this.getArg(1), this.getArgByName("value")]
       }
 
-      override DataFlow::Node getNameArg() { none() }
+      override predicate nameAllowsNewline() { none() }
 
-      override DataFlow::Node getValueArg() { none() }
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /**
+     * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+     * `response.headers[name] = value`.
+     */
+    class HeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+      DataFlow::Node index;
+      DataFlow::Node value;
+
+      HeaderSubscriptWrite() {
+        exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+          // To give `this` a value, we need to choose between either LHS or RHS,
+          // and just go with the LHS
+          this.asCfgNode() = subscript
+        |
+          headerLookup.accesses(instance(), "headers") and
+          exists(DataFlow::Node subscriptObj | subscriptObj.asCfgNode() = subscript.getObject() |
+            headerLookup.flowsTo(subscriptObj)
+          ) and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          index.asCfgNode() = subscript.getIndex()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = index }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
     }
   }
 }

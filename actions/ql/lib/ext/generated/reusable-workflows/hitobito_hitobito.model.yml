@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hitobito/hitobito/.github/workflows/sbom.yml", "*", "input.project_name", "code-injection", "generated"]
+     - ["hitobito/hitobito/.github/workflows/sbom.yml", "*", "input.dependency_track_url", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["hitobito/hitobito/.github/workflows/stage-settings.yml", "*", "input.stage", "output.release_stage", "taint", "manual"]
+      - ["hitobito/hitobito/.github/workflows/stage-settings.yml", "*", "input.repository", "output.repo_url", "taint", "manual"]
+      - ["hitobito/hitobito/.github/workflows/stage-settings.yml", "*", "input.repository", "output.repo_name", "taint", "manual"]
+      - ["hitobito/hitobito/.github/workflows/stage-settings.yml", "*", "input.repository", "output.project", "taint", "manual"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-ruby", "*", "input.gem", "code-injection", "generated"]
+     - ["open-telemetry/opentelemetry-ruby", "*", "input.ruby", "code-injection", "generated"]

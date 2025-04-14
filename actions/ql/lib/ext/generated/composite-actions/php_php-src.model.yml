@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["php/php-src", "*", "input.jitType", "code-injection", "generated"]
+     - ["php/php-src", "*", "input.runTestsParameters", "code-injection", "generated"]
+     - ["php/php-src", "*", "input.token", "code-injection", "generated"]
+     - ["php/php-src", "*", "input.configurationParameters", "code-injection", "generated"]
+     - ["php/php-src", "*", "input.libmysql", "code-injection", "generated"]

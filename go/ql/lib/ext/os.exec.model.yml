@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["os/exec", "", False, "Command", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["os/exec", "", False, "CommandContext", "", "", "Argument[1]", "command-injection", "manual"]

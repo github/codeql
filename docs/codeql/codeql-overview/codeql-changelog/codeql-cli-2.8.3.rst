@@ -124,8 +124,8 @@ C/C++
 
 *   Many queries now support structured bindings, as structured bindings are now handled in the IR translation.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Add support for :code:`CharacterLiteral` in :code:`CompileTimeConstantExpr.getStringValue()`
 
@@ -152,8 +152,8 @@ Ruby
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added :code:`hasDescendant(RefType anc, Type sub)`
 *   Added :code:`RefType.getADescendant()`

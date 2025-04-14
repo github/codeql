@@ -1,111 +1,115 @@
+#select
+| test.go:81:13:81:29 | type conversion | test.go:80:13:80:16 | &... | test.go:81:13:81:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:80:13:80:16 | &... | stored value |
+| test.go:82:13:82:43 | type conversion | test.go:80:13:80:16 | &... | test.go:82:13:82:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:80:13:80:16 | &... | stored value |
+| test.go:86:13:86:30 | type conversion | test.go:85:22:85:26 | &... | test.go:86:13:86:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:85:22:85:26 | &... | stored value |
+| test.go:90:13:90:30 | type conversion | test.go:89:21:89:25 | &... | test.go:90:13:90:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:89:21:89:25 | &... | stored value |
+| test.go:95:13:95:37 | type conversion | test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:95:20:95:36 | call to Value | stored value |
+| test.go:96:13:96:49 | type conversion | test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:96:20:96:39 | call to RawValue | stored value |
+| test.go:97:13:97:38 | type conversion | test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:97:20:97:37 | call to String | stored value |
+| test.go:98:13:98:37 | type conversion | test.go:98:20:98:36 | call to Value | test.go:98:13:98:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:98:20:98:36 | call to Value | stored value |
+| test.go:99:13:99:49 | type conversion | test.go:99:20:99:39 | call to RawValue | test.go:99:13:99:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:99:20:99:39 | call to RawValue | stored value |
+| test.go:100:13:100:38 | type conversion | test.go:100:20:100:37 | call to String | test.go:100:13:100:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:100:20:100:37 | call to String | stored value |
+| test.go:101:13:101:38 | type conversion | test.go:101:20:101:37 | call to Value | test.go:101:13:101:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:101:20:101:37 | call to Value | stored value |
+| test.go:102:13:102:50 | type conversion | test.go:102:20:102:40 | call to RawValue | test.go:102:13:102:50 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:102:20:102:40 | call to RawValue | stored value |
+| test.go:103:13:103:39 | type conversion | test.go:103:20:103:38 | call to String | test.go:103:13:103:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:103:20:103:38 | call to String | stored value |
+| test.go:110:13:110:33 | type conversion | test.go:109:9:109:13 | &... | test.go:110:13:110:33 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:109:9:109:13 | &... | stored value |
+| test.go:114:13:114:29 | type conversion | test.go:113:9:113:12 | &... | test.go:114:13:114:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:113:9:113:12 | &... | stored value |
+| test.go:118:13:118:48 | type conversion | test.go:117:12:117:19 | &... | test.go:118:13:118:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:117:12:117:19 | &... | stored value |
+| test.go:122:13:122:43 | type conversion | test.go:121:16:121:24 | &... | test.go:122:13:122:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:121:16:121:24 | &... | stored value |
+| test.go:126:13:126:39 | type conversion | test.go:125:16:125:23 | &... | test.go:126:13:126:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:125:16:125:23 | &... | stored value |
+| test.go:130:13:130:47 | type conversion | test.go:129:15:129:24 | &... | test.go:130:13:130:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:129:15:129:24 | &... | stored value |
+| test.go:134:13:134:38 | type conversion | test.go:133:18:133:30 | &... | test.go:134:13:134:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:133:18:133:30 | &... | stored value |
+| test.go:141:13:141:48 | type conversion | test.go:140:12:140:19 | &... | test.go:141:13:141:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:140:12:140:19 | &... | stored value |
+| test.go:145:13:145:43 | type conversion | test.go:144:16:144:24 | &... | test.go:145:13:145:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:144:16:144:24 | &... | stored value |
+| test.go:149:13:149:39 | type conversion | test.go:148:16:148:23 | &... | test.go:149:13:149:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:148:16:148:23 | &... | stored value |
+| test.go:153:13:153:47 | type conversion | test.go:152:15:152:24 | &... | test.go:153:13:153:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:152:15:152:24 | &... | stored value |
+| test.go:157:13:157:38 | type conversion | test.go:156:18:156:30 | &... | test.go:157:13:157:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:156:18:156:30 | &... | stored value |
+| test.go:161:13:161:28 | type conversion | test.go:160:14:160:22 | &... | test.go:161:13:161:28 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:160:14:160:22 | &... | stored value |
+| test.go:165:13:165:32 | type conversion | test.go:164:15:164:24 | &... | test.go:165:13:165:32 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:164:15:164:24 | &... | stored value |
 edges
-| test.go:77:13:77:16 | &... | test.go:78:13:78:29 | type conversion | provenance |  |
-| test.go:77:13:77:16 | &... | test.go:79:13:79:43 | type conversion | provenance |  |
-| test.go:82:22:82:26 | &... | test.go:83:13:83:30 | type conversion | provenance |  |
-| test.go:86:21:86:25 | &... | test.go:87:13:87:30 | type conversion | provenance |  |
-| test.go:92:20:92:36 | call to Value | test.go:92:13:92:37 | type conversion | provenance |  |
-| test.go:93:20:93:39 | call to RawValue | test.go:93:13:93:49 | type conversion | provenance |  |
-| test.go:94:20:94:37 | call to String | test.go:94:13:94:38 | type conversion | provenance |  |
+| test.go:80:13:80:16 | &... | test.go:81:13:81:29 | type conversion | provenance | Src:MaD:1  |
+| test.go:80:13:80:16 | &... | test.go:82:13:82:43 | type conversion | provenance | Src:MaD:1  |
+| test.go:85:22:85:26 | &... | test.go:86:13:86:30 | type conversion | provenance | Src:MaD:2  |
+| test.go:89:21:89:25 | &... | test.go:90:13:90:30 | type conversion | provenance | Src:MaD:3  |
 | test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion | provenance |  |
 | test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion | provenance |  |
 | test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion | provenance |  |
-| test.go:98:20:98:37 | call to Value | test.go:98:13:98:38 | type conversion | provenance |  |
-| test.go:99:20:99:40 | call to RawValue | test.go:99:13:99:50 | type conversion | provenance |  |
-| test.go:100:20:100:38 | call to String | test.go:100:13:100:39 | type conversion | provenance |  |
-| test.go:106:9:106:13 | &... | test.go:107:13:107:33 | type conversion | provenance |  |
-| test.go:110:9:110:12 | &... | test.go:111:13:111:29 | type conversion | provenance |  |
-| test.go:114:12:114:19 | &... | test.go:115:13:115:48 | type conversion | provenance |  |
-| test.go:118:16:118:24 | &... | test.go:119:13:119:43 | type conversion | provenance |  |
-| test.go:122:16:122:23 | &... | test.go:123:13:123:39 | type conversion | provenance |  |
-| test.go:126:15:126:24 | &... | test.go:127:13:127:47 | type conversion | provenance |  |
-| test.go:130:18:130:30 | &... | test.go:131:13:131:38 | type conversion | provenance |  |
-| test.go:137:12:137:19 | &... | test.go:138:13:138:48 | type conversion | provenance |  |
-| test.go:141:16:141:24 | &... | test.go:142:13:142:43 | type conversion | provenance |  |
-| test.go:145:16:145:23 | &... | test.go:146:13:146:39 | type conversion | provenance |  |
-| test.go:149:15:149:24 | &... | test.go:150:13:150:47 | type conversion | provenance |  |
-| test.go:153:18:153:30 | &... | test.go:154:13:154:38 | type conversion | provenance |  |
-| test.go:157:14:157:22 | &... | test.go:158:13:158:28 | type conversion | provenance |  |
-| test.go:161:15:161:24 | &... | test.go:162:13:162:32 | type conversion | provenance |  |
+| test.go:98:20:98:36 | call to Value | test.go:98:13:98:37 | type conversion | provenance |  |
+| test.go:99:20:99:39 | call to RawValue | test.go:99:13:99:49 | type conversion | provenance |  |
+| test.go:100:20:100:37 | call to String | test.go:100:13:100:38 | type conversion | provenance |  |
+| test.go:101:20:101:37 | call to Value | test.go:101:13:101:38 | type conversion | provenance |  |
+| test.go:102:20:102:40 | call to RawValue | test.go:102:13:102:50 | type conversion | provenance |  |
+| test.go:103:20:103:38 | call to String | test.go:103:13:103:39 | type conversion | provenance |  |
+| test.go:109:9:109:13 | &... | test.go:110:13:110:33 | type conversion | provenance |  |
+| test.go:113:9:113:12 | &... | test.go:114:13:114:29 | type conversion | provenance |  |
+| test.go:117:12:117:19 | &... | test.go:118:13:118:48 | type conversion | provenance |  |
+| test.go:121:16:121:24 | &... | test.go:122:13:122:43 | type conversion | provenance |  |
+| test.go:125:16:125:23 | &... | test.go:126:13:126:39 | type conversion | provenance |  |
+| test.go:129:15:129:24 | &... | test.go:130:13:130:47 | type conversion | provenance |  |
+| test.go:133:18:133:30 | &... | test.go:134:13:134:38 | type conversion | provenance |  |
+| test.go:140:12:140:19 | &... | test.go:141:13:141:48 | type conversion | provenance |  |
+| test.go:144:16:144:24 | &... | test.go:145:13:145:43 | type conversion | provenance |  |
+| test.go:148:16:148:23 | &... | test.go:149:13:149:39 | type conversion | provenance |  |
+| test.go:152:15:152:24 | &... | test.go:153:13:153:47 | type conversion | provenance |  |
+| test.go:156:18:156:30 | &... | test.go:157:13:157:38 | type conversion | provenance |  |
+| test.go:160:14:160:22 | &... | test.go:161:13:161:28 | type conversion | provenance |  |
+| test.go:164:15:164:24 | &... | test.go:165:13:165:32 | type conversion | provenance |  |
+models
+| 1 | Source: group:beego-orm; Ormer; true; Read; ; ; Argument[0]; database; manual |
+| 2 | Source: group:beego-orm; Ormer; true; ReadForUpdate; ; ; Argument[0]; database; manual |
+| 3 | Source: group:beego-orm; Ormer; true; ReadOrCreate; ; ; Argument[0]; database; manual |
 nodes
-| test.go:77:13:77:16 | &... | semmle.label | &... |
-| test.go:78:13:78:29 | type conversion | semmle.label | type conversion |
-| test.go:79:13:79:43 | type conversion | semmle.label | type conversion |
-| test.go:82:22:82:26 | &... | semmle.label | &... |
-| test.go:83:13:83:30 | type conversion | semmle.label | type conversion |
-| test.go:86:21:86:25 | &... | semmle.label | &... |
-| test.go:87:13:87:30 | type conversion | semmle.label | type conversion |
-| test.go:92:13:92:37 | type conversion | semmle.label | type conversion |
-| test.go:92:20:92:36 | call to Value | semmle.label | call to Value |
-| test.go:93:13:93:49 | type conversion | semmle.label | type conversion |
-| test.go:93:20:93:39 | call to RawValue | semmle.label | call to RawValue |
-| test.go:94:13:94:38 | type conversion | semmle.label | type conversion |
-| test.go:94:20:94:37 | call to String | semmle.label | call to String |
+| test.go:80:13:80:16 | &... | semmle.label | &... |
+| test.go:81:13:81:29 | type conversion | semmle.label | type conversion |
+| test.go:82:13:82:43 | type conversion | semmle.label | type conversion |
+| test.go:85:22:85:26 | &... | semmle.label | &... |
+| test.go:86:13:86:30 | type conversion | semmle.label | type conversion |
+| test.go:89:21:89:25 | &... | semmle.label | &... |
+| test.go:90:13:90:30 | type conversion | semmle.label | type conversion |
 | test.go:95:13:95:37 | type conversion | semmle.label | type conversion |
 | test.go:95:20:95:36 | call to Value | semmle.label | call to Value |
 | test.go:96:13:96:49 | type conversion | semmle.label | type conversion |
 | test.go:96:20:96:39 | call to RawValue | semmle.label | call to RawValue |
 | test.go:97:13:97:38 | type conversion | semmle.label | type conversion |
 | test.go:97:20:97:37 | call to String | semmle.label | call to String |
-| test.go:98:13:98:38 | type conversion | semmle.label | type conversion |
-| test.go:98:20:98:37 | call to Value | semmle.label | call to Value |
-| test.go:99:13:99:50 | type conversion | semmle.label | type conversion |
-| test.go:99:20:99:40 | call to RawValue | semmle.label | call to RawValue |
-| test.go:100:13:100:39 | type conversion | semmle.label | type conversion |
-| test.go:100:20:100:38 | call to String | semmle.label | call to String |
-| test.go:106:9:106:13 | &... | semmle.label | &... |
-| test.go:107:13:107:33 | type conversion | semmle.label | type conversion |
-| test.go:110:9:110:12 | &... | semmle.label | &... |
-| test.go:111:13:111:29 | type conversion | semmle.label | type conversion |
-| test.go:114:12:114:19 | &... | semmle.label | &... |
-| test.go:115:13:115:48 | type conversion | semmle.label | type conversion |
-| test.go:118:16:118:24 | &... | semmle.label | &... |
-| test.go:119:13:119:43 | type conversion | semmle.label | type conversion |
-| test.go:122:16:122:23 | &... | semmle.label | &... |
-| test.go:123:13:123:39 | type conversion | semmle.label | type conversion |
-| test.go:126:15:126:24 | &... | semmle.label | &... |
-| test.go:127:13:127:47 | type conversion | semmle.label | type conversion |
-| test.go:130:18:130:30 | &... | semmle.label | &... |
-| test.go:131:13:131:38 | type conversion | semmle.label | type conversion |
-| test.go:137:12:137:19 | &... | semmle.label | &... |
-| test.go:138:13:138:48 | type conversion | semmle.label | type conversion |
-| test.go:141:16:141:24 | &... | semmle.label | &... |
-| test.go:142:13:142:43 | type conversion | semmle.label | type conversion |
-| test.go:145:16:145:23 | &... | semmle.label | &... |
-| test.go:146:13:146:39 | type conversion | semmle.label | type conversion |
-| test.go:149:15:149:24 | &... | semmle.label | &... |
-| test.go:150:13:150:47 | type conversion | semmle.label | type conversion |
-| test.go:153:18:153:30 | &... | semmle.label | &... |
-| test.go:154:13:154:38 | type conversion | semmle.label | type conversion |
-| test.go:157:14:157:22 | &... | semmle.label | &... |
-| test.go:158:13:158:28 | type conversion | semmle.label | type conversion |
-| test.go:161:15:161:24 | &... | semmle.label | &... |
-| test.go:162:13:162:32 | type conversion | semmle.label | type conversion |
+| test.go:98:13:98:37 | type conversion | semmle.label | type conversion |
+| test.go:98:20:98:36 | call to Value | semmle.label | call to Value |
+| test.go:99:13:99:49 | type conversion | semmle.label | type conversion |
+| test.go:99:20:99:39 | call to RawValue | semmle.label | call to RawValue |
+| test.go:100:13:100:38 | type conversion | semmle.label | type conversion |
+| test.go:100:20:100:37 | call to String | semmle.label | call to String |
+| test.go:101:13:101:38 | type conversion | semmle.label | type conversion |
+| test.go:101:20:101:37 | call to Value | semmle.label | call to Value |
+| test.go:102:13:102:50 | type conversion | semmle.label | type conversion |
+| test.go:102:20:102:40 | call to RawValue | semmle.label | call to RawValue |
+| test.go:103:13:103:39 | type conversion | semmle.label | type conversion |
+| test.go:103:20:103:38 | call to String | semmle.label | call to String |
+| test.go:109:9:109:13 | &... | semmle.label | &... |
+| test.go:110:13:110:33 | type conversion | semmle.label | type conversion |
+| test.go:113:9:113:12 | &... | semmle.label | &... |
+| test.go:114:13:114:29 | type conversion | semmle.label | type conversion |
+| test.go:117:12:117:19 | &... | semmle.label | &... |
+| test.go:118:13:118:48 | type conversion | semmle.label | type conversion |
+| test.go:121:16:121:24 | &... | semmle.label | &... |
+| test.go:122:13:122:43 | type conversion | semmle.label | type conversion |
+| test.go:125:16:125:23 | &... | semmle.label | &... |
+| test.go:126:13:126:39 | type conversion | semmle.label | type conversion |
+| test.go:129:15:129:24 | &... | semmle.label | &... |
+| test.go:130:13:130:47 | type conversion | semmle.label | type conversion |
+| test.go:133:18:133:30 | &... | semmle.label | &... |
+| test.go:134:13:134:38 | type conversion | semmle.label | type conversion |
+| test.go:140:12:140:19 | &... | semmle.label | &... |
+| test.go:141:13:141:48 | type conversion | semmle.label | type conversion |
+| test.go:144:16:144:24 | &... | semmle.label | &... |
+| test.go:145:13:145:43 | type conversion | semmle.label | type conversion |
+| test.go:148:16:148:23 | &... | semmle.label | &... |
+| test.go:149:13:149:39 | type conversion | semmle.label | type conversion |
+| test.go:152:15:152:24 | &... | semmle.label | &... |
+| test.go:153:13:153:47 | type conversion | semmle.label | type conversion |
+| test.go:156:18:156:30 | &... | semmle.label | &... |
+| test.go:157:13:157:38 | type conversion | semmle.label | type conversion |
+| test.go:160:14:160:22 | &... | semmle.label | &... |
+| test.go:161:13:161:28 | type conversion | semmle.label | type conversion |
+| test.go:164:15:164:24 | &... | semmle.label | &... |
+| test.go:165:13:165:32 | type conversion | semmle.label | type conversion |
 subpaths
-#select
-| test.go:78:13:78:29 | type conversion | test.go:77:13:77:16 | &... | test.go:78:13:78:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
-| test.go:79:13:79:43 | type conversion | test.go:77:13:77:16 | &... | test.go:79:13:79:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |
-| test.go:83:13:83:30 | type conversion | test.go:82:22:82:26 | &... | test.go:83:13:83:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:82:22:82:26 | &... | stored value |
-| test.go:87:13:87:30 | type conversion | test.go:86:21:86:25 | &... | test.go:87:13:87:30 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:86:21:86:25 | &... | stored value |
-| test.go:92:13:92:37 | type conversion | test.go:92:20:92:36 | call to Value | test.go:92:13:92:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:92:20:92:36 | call to Value | stored value |
-| test.go:93:13:93:49 | type conversion | test.go:93:20:93:39 | call to RawValue | test.go:93:13:93:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:93:20:93:39 | call to RawValue | stored value |
-| test.go:94:13:94:38 | type conversion | test.go:94:20:94:37 | call to String | test.go:94:13:94:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:94:20:94:37 | call to String | stored value |
-| test.go:95:13:95:37 | type conversion | test.go:95:20:95:36 | call to Value | test.go:95:13:95:37 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:95:20:95:36 | call to Value | stored value |
-| test.go:96:13:96:49 | type conversion | test.go:96:20:96:39 | call to RawValue | test.go:96:13:96:49 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:96:20:96:39 | call to RawValue | stored value |
-| test.go:97:13:97:38 | type conversion | test.go:97:20:97:37 | call to String | test.go:97:13:97:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:97:20:97:37 | call to String | stored value |
-| test.go:98:13:98:38 | type conversion | test.go:98:20:98:37 | call to Value | test.go:98:13:98:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:98:20:98:37 | call to Value | stored value |
-| test.go:99:13:99:50 | type conversion | test.go:99:20:99:40 | call to RawValue | test.go:99:13:99:50 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:99:20:99:40 | call to RawValue | stored value |
-| test.go:100:13:100:39 | type conversion | test.go:100:20:100:38 | call to String | test.go:100:13:100:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:100:20:100:38 | call to String | stored value |
-| test.go:107:13:107:33 | type conversion | test.go:106:9:106:13 | &... | test.go:107:13:107:33 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:106:9:106:13 | &... | stored value |
-| test.go:111:13:111:29 | type conversion | test.go:110:9:110:12 | &... | test.go:111:13:111:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:110:9:110:12 | &... | stored value |
-| test.go:115:13:115:48 | type conversion | test.go:114:12:114:19 | &... | test.go:115:13:115:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:114:12:114:19 | &... | stored value |
-| test.go:119:13:119:43 | type conversion | test.go:118:16:118:24 | &... | test.go:119:13:119:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:118:16:118:24 | &... | stored value |
-| test.go:123:13:123:39 | type conversion | test.go:122:16:122:23 | &... | test.go:123:13:123:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:122:16:122:23 | &... | stored value |
-| test.go:127:13:127:47 | type conversion | test.go:126:15:126:24 | &... | test.go:127:13:127:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:126:15:126:24 | &... | stored value |
-| test.go:131:13:131:38 | type conversion | test.go:130:18:130:30 | &... | test.go:131:13:131:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:130:18:130:30 | &... | stored value |
-| test.go:138:13:138:48 | type conversion | test.go:137:12:137:19 | &... | test.go:138:13:138:48 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:137:12:137:19 | &... | stored value |
-| test.go:142:13:142:43 | type conversion | test.go:141:16:141:24 | &... | test.go:142:13:142:43 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:141:16:141:24 | &... | stored value |
-| test.go:146:13:146:39 | type conversion | test.go:145:16:145:23 | &... | test.go:146:13:146:39 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:145:16:145:23 | &... | stored value |
-| test.go:150:13:150:47 | type conversion | test.go:149:15:149:24 | &... | test.go:150:13:150:47 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:149:15:149:24 | &... | stored value |
-| test.go:154:13:154:38 | type conversion | test.go:153:18:153:30 | &... | test.go:154:13:154:38 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:153:18:153:30 | &... | stored value |
-| test.go:158:13:158:28 | type conversion | test.go:157:14:157:22 | &... | test.go:158:13:158:28 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:157:14:157:22 | &... | stored value |
-| test.go:162:13:162:32 | type conversion | test.go:161:15:161:24 | &... | test.go:162:13:162:32 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:161:15:161:24 | &... | stored value |

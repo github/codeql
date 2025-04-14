@@ -1,9 +1,8 @@
-load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+load("@rules_shell//shell:sh_library.bzl", "sh_library")
 
-buildifier(
-    name = "buildifier",
-    exclude_patterns = [
-        "./.git/*",
-    ],
-    lint_mode = "fix",
+sh_library(
+    name = "sh_runfiles",
+    srcs = ["runfiles.sh"],
+    visibility = ["//visibility:public"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
 )

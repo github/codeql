@@ -14,3 +14,5 @@
 | test_free.cpp:167:15:167:21 | call to realloc | This memory is never freed. |
 | test_free.cpp:253:14:253:19 | call to malloc | This memory is never freed. |
 | test_free.cpp:261:6:261:12 | new | This memory is never freed. |
+| test_free.cpp:365:21:365:26 | call to malloc | This memory is never freed. |
+| test_free.cpp:368:31:368:36 | call to malloc | This memory is never freed. |

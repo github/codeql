@@ -38,6 +38,19 @@ class AllocaCall extends FunctionCall {
 }
 
 /**
+ * Gets an expression associated with a dataflow node.
+ */
+private Expr getExpr(DataFlow::Node node) {
+  result = node.asInstruction().getAst()
+  or
+  result = node.asOperand().getUse().getAst()
+  or
+  result = node.(DataFlow::RawIndirectInstruction).getInstruction().getAst()
+  or
+  result = node.(DataFlow::RawIndirectOperand).getOperand().getUse().getAst()
+}
+
+/**
  * A loop that contains an `alloca` call.
  */
 class LoopWithAlloca extends Stmt {
@@ -186,19 +199,6 @@ class LoopWithAlloca extends Stmt {
   }
 
   /**
-   * Gets an expression associated with a dataflow node.
-   */
-  private Expr getExpr(DataFlow::Node node) {
-    result = node.asInstruction().getAst()
-    or
-    result = node.asOperand().getUse().getAst()
-    or
-    result = node.(DataFlow::RawIndirectInstruction).getInstruction().getAst()
-    or
-    result = node.(DataFlow::RawIndirectOperand).getOperand().getUse().getAst()
-  }
-
-  /**
    * Gets a definition that may be the most recent definition of the
    * controlling variable `var` before this loop.
    */
@@ -208,9 +208,9 @@ class LoopWithAlloca extends Stmt {
       this.conditionRequiresInequality(va, _, _) and
       DataFlow::localFlow(result, DataFlow::exprNode(va)) and
       // Phi nodes will be preceded by nodes that represent actual definitions
-      not result instanceof DataFlow::SsaPhiNode and
+      not result instanceof DataFlow::SsaSynthNode and
       // A source is outside the loop if it's not inside the loop
-      not exists(Expr e | e = this.getExpr(result) | this = getAnEnclosingLoopOfExpr(e))
+      not exists(Expr e | e = getExpr(result) | this = getAnEnclosingLoopOfExpr(e))
     )
   }
 
@@ -221,9 +221,9 @@ class LoopWithAlloca extends Stmt {
   private int getAControllingVarInitialValue(Variable var, DataFlow::Node source) {
     source = this.getAPrecedingDef(var) and
     (
-      result = this.getExpr(source).getValue().toInt()
+      result = getExpr(source).getValue().toInt()
       or
-      result = this.getExpr(source).(Assignment).getRValue().getValue().toInt()
+      result = getExpr(source).(Assignment).getRValue().getValue().toInt()
     )
   }
 

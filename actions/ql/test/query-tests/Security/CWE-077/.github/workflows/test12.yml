@@ -1,0 +1,80 @@
+name: Write prerelease comment
+
+on:
+  workflow_run:
+    workflows: ["Create Pull Request Prerelease"]
+    types:
+      - completed
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    name: Write comment to the PR
+    steps:
+      - name: "Put PR and workflow ID on the environment"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Copied from .github/extract-pr-and-workflow-id.js
+            const allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+
+            for (const artifact of allArtifacts.data.artifacts) {
+              // Extract the PR number from the artifact name
+              const match = /^npm-package-(.+)-(\d+)$/.exec(artifact.name);
+              if (match) {
+                const packageName = match[1].toUpperCase();
+                require("fs").appendFileSync(
+                  process.env.GITHUB_ENV,
+                  `\nWORKFLOW_RUN_PR_FOR_${packageName}=${match[2]}` +
+                    `\nWORKFLOW_RUN_ID_FOR_${packageName}=${context.payload.workflow_run.id}`
+                );
+              }
+            }
+
+      - name: "Download runtime versions"
+        # Regular `actions/download-artifact` doesn't support downloading
+        # artifacts from another workflow
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: runtime-versions.md
+
+      - name: "Put runtime versions on the environment"
+        id: runtime_versions
+        run: |
+          {
+            echo 'RUNTIME_VERSIONS<<EOF'
+            cat runtime-versions.md
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - name: "Download pre-release report"
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: prerelease-report.md
+
+      - name: "Put pre-release report on the environment"
+        id: prerelease_report
+        run: |
+          {
+            echo 'PRERELEASE_REPORT<<EOF'
+            cat prerelease-report.md
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - name: "Comment on PR with Wrangler link"
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ env.WORKFLOW_RUN_PR_FOR_WRANGLER }}
+          message: |
+            ${{ env.PRERELEASE_REPORT }}
+
+            ---
+
+            ${{ env.RUNTIME_VERSIONS }}
+

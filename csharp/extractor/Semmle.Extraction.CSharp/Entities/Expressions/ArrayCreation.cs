@@ -88,7 +88,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new NormalArrayCreation(info).TryPopulate();
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, IEnumerable<TypedConstant> items, Semmle.Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, IEnumerable<TypedConstant> items, Location location)
         {
             var info = new ExpressionInfo(
                 cx,

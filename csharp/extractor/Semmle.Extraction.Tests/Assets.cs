@@ -16,7 +16,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsJson1;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.Tests
             var json = "garbage data";
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.False(success);
@@ -61,7 +61,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNet70;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNet48;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNetstandard21;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -144,7 +144,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNetstandard16;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -175,7 +175,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNetcoreapp20;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);
@@ -202,7 +202,7 @@ namespace Semmle.Extraction.Tests
             var json = assetsNetcoreapp31;
 
             // Execute
-            var success = assets.TryParse(json);
+            var success = assets.TryParse(json, "");
 
             // Verify
             Assert.True(success);

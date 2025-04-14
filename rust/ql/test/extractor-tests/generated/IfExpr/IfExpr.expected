@@ -1,0 +1,2 @@
+| gen_if_expr.rs:5:5:7:5 | if ... {...} | getNumberOfAttrs: | 0 | hasCondition: | yes | hasElse: | no | hasThen: | yes |
+| gen_if_expr.rs:8:13:12:5 | if ... {...} else {...} | getNumberOfAttrs: | 0 | hasCondition: | yes | hasElse: | yes | hasThen: | yes |

@@ -1,19 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<AssemblyName>Semmle.Extraction.CSharp</AssemblyName>
-		<RootNamespace>Semmle.Extraction.CSharp</RootNamespace>
-		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Semmle.Extraction\Semmle.Extraction.csproj" />
 		<ProjectReference Include="..\Semmle.Extraction.CSharp.Util\Semmle.Extraction.CSharp.Util.csproj" />
 		<ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-		<Folder Include="Properties\" />
-	</ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

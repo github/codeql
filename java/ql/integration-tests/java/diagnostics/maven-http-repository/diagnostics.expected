@@ -1,0 +1,70 @@
+{
+  "markdownMessage": "A dependency failed to download. Check that all dependencies are available, and [supply credentials for any private dependencies](https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md#set-up-secrets-in-github-action-workflows).\n\nRelevant output line: `Caused by: org.apache.maven.project.DependencyResolutionException: Could not resolve dependencies for project com.example:maven-sample:jar:1.0-SNAPSHOT: Failed to collect dependencies at junit-nonesuch:junit-nonesuch:jar:4.11`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/dependency-download-failure",
+    "name": "Failed to download a dependency"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Building your code triggered an access to an insecure HTTP Maven repository. Allow access to insecure repositories, or [update your build to use HTTPS](https://maven.apache.org/docs/3.8.1/release-notes.html#how-to-fix-when-i-get-a-http-repository-blocked).\n\nRelevant output line: `Caused by: org.eclipse.aether.resolution.ArtifactResolutionException: Could not transfer artifact junit-nonesuch:junit-nonesuch:pom:4.11 from/to maven-default-http-blocker (http://0.0.0.0/): Blocked mirror for repositories: [insecure (http://repo.maven.apache.org/maven2/, default, releases+snapshots)]`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/non-https-repository",
+    "name": "A non-HTTPS Maven repository access failed"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Building your code triggered an access to an insecure HTTP Maven repository. Allow access to insecure repositories, or [update your build to use HTTPS](https://maven.apache.org/docs/3.8.1/release-notes.html#how-to-fix-when-i-get-a-http-repository-blocked).\n\nRelevant output line: `Caused by: org.eclipse.aether.transfer.ArtifactTransferException: Could not transfer artifact junit-nonesuch:junit-nonesuch:pom:4.11 from/to maven-default-http-blocker (http://0.0.0.0/): Blocked mirror for repositories: [insecure (http://repo.maven.apache.org/maven2/, default, releases+snapshots)]`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/non-https-repository",
+    "name": "A non-HTTPS Maven repository access failed"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Building your code triggered an access to an insecure HTTP Maven repository. Allow access to insecure repositories, or [update your build to use HTTPS](https://maven.apache.org/docs/3.8.1/release-notes.html#how-to-fix-when-i-get-a-http-repository-blocked).\n\nRelevant output line: `Caused by: org.eclipse.aether.transfer.NoRepositoryConnectorException: Blocked mirror for repositories: [insecure (http://repo.maven.apache.org/maven2/, default, releases+snapshots)]`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/non-https-repository",
+    "name": "A non-HTTPS Maven repository access failed"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Building your code triggered an access to an insecure HTTP Maven repository. Allow access to insecure repositories, or [update your build to use HTTPS](https://maven.apache.org/docs/3.8.1/release-notes.html#how-to-fix-when-i-get-a-http-repository-blocked).\n\nRelevant output line: `[ERROR] Failed to execute goal on project maven-sample: Could not resolve dependencies for project com.example:maven-sample:jar:1.0-SNAPSHOT: Failed to collect dependencies at junit-nonesuch:junit-nonesuch:jar:4.11: Failed to read artifact descriptor for junit-nonesuch:junit-nonesuch:jar:4.11: Could not transfer artifact junit-nonesuch:junit-nonesuch:pom:4.11 from/to maven-default-http-blocker (http://0.0.0.0/): Blocked mirror for repositories: [insecure (http://repo.maven.apache.org/maven2/, default, releases+snapshots)] -> [Help 1]`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/non-https-repository",
+    "name": "A non-HTTPS Maven repository access failed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

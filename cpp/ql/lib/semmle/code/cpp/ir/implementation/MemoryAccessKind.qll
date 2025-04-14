@@ -13,7 +13,8 @@ private newtype TMemoryAccessKind =
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
   TChiTotalMemoryAccess() or
-  TChiPartialMemoryAccess()
+  TChiPartialMemoryAccess() or
+  TGroupedMemoryAccess()
 
 /**
  * Describes the set of memory locations memory accessed by a memory operand or
@@ -98,4 +99,12 @@ class ChiTotalMemoryAccess extends MemoryAccessKind, TChiTotalMemoryAccess {
  */
 class ChiPartialMemoryAccess extends MemoryAccessKind, TChiPartialMemoryAccess {
   override string toString() { result = "chi(partial)" }
+}
+
+/**
+ * The result of an `UninitializedGroup` instruction, which initializes a set of
+ * allocations that are each assigned the same virtual variable.
+ */
+class GroupedMemoryAccess extends MemoryAccessKind, TGroupedMemoryAccess {
+  override string toString() { result = "group" }
 }

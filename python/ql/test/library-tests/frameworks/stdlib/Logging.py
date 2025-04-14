@@ -43,3 +43,12 @@ class MyLogger(logging.Logger):
     pass
 
 MyLogger("bar").info("hello") # $ loggingInput="hello"
+
+class CustomLogger(logging.getLoggerClass()):
+    pass
+
+CustomLogger("baz").info("hello") # $ loggingInput="hello"
+
+class LoggerSubClassUsingSelf(logging.Logger):
+    def foo(self):
+        self.info("hello") # $ loggingInput="hello"

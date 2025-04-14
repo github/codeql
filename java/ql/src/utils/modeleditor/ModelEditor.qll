@@ -27,7 +27,7 @@ class Endpoint extends Callable {
   /**
    * Gets the type name of this endpoint.
    */
-  string getTypeName() { result = this.getDeclaringType().nestedName() }
+  string getTypeName() { result = this.getDeclaringType().getNestedName() }
 
   /**
    * Gets the parameter types of this endpoint.
@@ -77,7 +77,7 @@ class Endpoint extends Callable {
   predicate isNeutral() {
     exists(string namespace, string type, string name, string signature |
       neutralModel(namespace, type, name, signature, _, _) and
-      this = interpretElement(namespace, type, false, name, signature, "")
+      this = interpretElement(namespace, type, true, name, signature, "", _)
     )
   }
 

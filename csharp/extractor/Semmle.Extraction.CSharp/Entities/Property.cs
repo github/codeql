@@ -21,6 +21,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Type Type => type.Value;
 
+        protected override IPropertySymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
+
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => BodyDeclaringSymbol.Locations.BestOrDefault();
+
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Type);
@@ -34,7 +38,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateMetadataHandle(trapFile);
             PopulateAttributes();
             PopulateModifiers(trapFile);
             BindComments();
@@ -44,13 +47,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type;
             trapFile.properties(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var getter = Symbol.GetMethod;
-            var setter = Symbol.SetMethod;
+            var getter = BodyDeclaringSymbol.GetMethod;
+            var setter = BodyDeclaringSymbol.SetMethod;
 
-            if (!(getter is null))
+            if (getter is not null)
                 Method.Create(Context, getter);
 
-            if (!(setter is null))
+            if (setter is not null)
                 Method.Create(Context, setter);
 
             var declSyntaxReferences = IsSourceDeclaration ?
@@ -111,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .OfType<PropertyDeclarationSyntax>()
                     .Select(s => s.GetLocation())
                     .Concat(Symbol.Locations)
-                    .First();
+                    .Best();
             }
         }
 

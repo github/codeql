@@ -52,8 +52,8 @@ Golang
 *   The query :code:`go/insecure-randomness` now recognizes the selection of candidates from a predefined set using a weak RNG when the result is used in a sensitive operation. Also, false positives have been reduced by adding more sink exclusions for functions in the :code:`crypto` package not related to cryptographic operations.
 *   Added more sources and sinks to the query :code:`go/clear-text-logging`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
 
@@ -75,8 +75,8 @@ Swift
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added the :code:`java/exec-tainted-environment` query, to detect the injection of environment variables names or values from remote input.
 
@@ -91,8 +91,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed regular expressions containing flags not being parsed correctly in some cases.
 
@@ -129,8 +129,8 @@ Golang
 *   Support for flow sources in `AWS Lambda function handlers <https://docs.aws.amazon.com/lambda/latest/dg/golang-handler.html>`__ has been added.
 *   Support for the `fasthttp framework <https://github.com/valyala/fasthttp/>`__ has been added.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Deleted many deprecated predicates and classes with uppercase :code:`EJB`, :code:`JMX`, :code:`NFE`, :code:`DNS` etc. in their names. Use the PascalCased versions instead.
 *   Deleted the deprecated :code:`semmle/code/java/security/OverlyLargeRangeQuery.qll`, :code:`semmle/code/java/security/regexp/ExponentialBackTracking.qll`, :code:`semmle/code/java/security/regexp/NfaUtils.qll`, and :code:`semmle/code/java/security/regexp/NfaUtils.qll` files.
@@ -198,8 +198,8 @@ Golang
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new library :code:`semmle.code.java.security.Sanitizers` which contains a new sanitizer class :code:`SimpleTypeSanitizer`, which represents nodes which cannot realistically carry taint for most queries (e.g. primitives, their boxed equivalents, and numeric types).
 *   Converted definitions of :code:`isBarrier` and sanitizer classes to use :code:`SimpleTypeSanitizer` instead of checking if :code:`node.getType()` is :code:`PrimitiveType` or :code:`BoxedType`.

@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+If a database query (such as an SQL query) is built from user-provided data without sufficient sanitization, a user may be able to run malicious database queries. An attacker can craft the part of the query they control to change the overall meaning of the query.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+Most database connector libraries offer a way to safely embed untrusted data into a query using query parameters or prepared statements. You should use these features to build queries, rather than string concatenation or similar methods. You can also escape (sanitize) user-controlled strings so that they can be included directly in an SQL command. A library function should be used for escaping, because this approach is only safe if the escaping function is robust against all possible inputs.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following examples, an SQL query is prepared using string formatting to directly include a user-controlled value <code>remote_controlled_string</code>. An attacker could craft <code>remote_controlled_string</code> to change the overall meaning of the SQL query.
+</p>
+
+<sample src="SqlInjectionBad.rs" />
+
+<p>A better way to do this is with a prepared statement, binding <code>remote_controlled_string</code> to a parameter of that statement. An attacker who controls <code>remote_controlled_string</code> now cannot change the overall meaning of the query.
+</p>
+
+<sample src="SqlInjectionGood.rs" />
+
+</example>
+<references>
+
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection</a>.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">SQL Injection Prevention Cheat Sheet</a>.</li>
+
+</references>
+</qhelp>

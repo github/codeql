@@ -39,11 +39,20 @@ module RequestForgery {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of server-side remote user input, considered as a flow source for request forgery. */
-  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPathOrUrl() }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-    override predicate isServerSide() { not this instanceof ClientSideRemoteFlowSource }
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() {
+      not this.(ClientSideRemoteFlowSource).getKind().isPathOrUrl()
+    }
+
+    override predicate isServerSide() { not super.isClientSideSource() }
   }
 
   /**

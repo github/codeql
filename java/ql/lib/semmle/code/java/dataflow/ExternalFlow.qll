@@ -104,9 +104,9 @@ private import codeql.mad.ModelValidation as SharedModelVal
  * Extend this class to include experimental model rows with `this` name
  * in data flow analysis.
  */
-abstract class ActiveExperimentalModels extends string {
+abstract private class ActiveExperimentalModelsInternal extends string {
   bindingset[this]
-  ActiveExperimentalModels() { any() }
+  ActiveExperimentalModelsInternal() { any() }
 
   /**
    * Holds if an experimental source model exists for the given parameters.
@@ -124,9 +124,9 @@ abstract class ActiveExperimentalModels extends string {
    */
   predicate sinkModel(
     string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+    string input, string kind, string provenance, QlBuiltins::ExtensionId madId
   ) {
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, output, kind,
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, this, madId)
   }
 
@@ -142,6 +142,8 @@ abstract class ActiveExperimentalModels extends string {
   }
 }
 
+deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
+
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
@@ -151,7 +153,7 @@ predicate sourceModel(
     Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
       madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
   )
 }
@@ -165,7 +167,7 @@ predicate sinkModel(
     Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
       madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
   )
 }
@@ -179,9 +181,56 @@ predicate summaryModel(
     Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
       provenance, madId)
     or
-    any(ActiveExperimentalModels q)
+    any(ActiveExperimentalModelsInternal q)
         .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
           provenance, madId)
+  )
+}
+
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId) or
+    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, _, madId)
+  |
+    model =
+      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) or
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
+      provenance, _, madId)
+  |
+    model =
+      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance,
+      madId) or
+    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, _, madId)
+  |
+    model =
+      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
 
@@ -211,7 +260,8 @@ private predicate canonicalPkgLink(string package, string subpkg) {
 
 /**
  * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
+ * which have MaD framework coverage (including `package` itself).
  */
 predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
   pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
@@ -368,16 +418,16 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private string getNestedName(Type t) {
   not t instanceof RefType and result = t.toString()
   or
-  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).getNestedName()
   or
   result =
-    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+    t.(Array).getElementType().(NestedType).getEnclosingType().getNestedName() + "$" + t.getName()
 }
 
 private string getQualifiedName(Type t) {
@@ -413,25 +463,28 @@ private string paramsStringQualified(Callable c) {
 }
 
 private Element interpretElement0(
-  string package, string type, boolean subtypes, string name, string signature
+  string package, string type, boolean subtypes, string name, string signature, boolean isExact
 ) {
   elementSpec(package, type, subtypes, name, signature, _) and
   (
     exists(Member m |
       (
-        result = m
+        result = m and isExact = true
         or
-        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m)
+        subtypes = true and result.(SrcMethod).overridesOrInstantiates+(m) and isExact = false
       ) and
       m.hasQualifiedName(package, type, name)
     |
-      signature = "" or
-      paramsStringQualified(m) = signature or
+      signature = ""
+      or
+      paramsStringQualified(m) = signature
+      or
       paramsString(m) = signature
     )
     or
     exists(RefType t |
       t.hasQualifiedName(package, type) and
+      isExact = false and
       (if subtypes = true then result.(SrcRefType).getASourceSupertype*() = t else result = t) and
       name = "" and
       signature = ""
@@ -442,13 +495,16 @@ private Element interpretElement0(
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 cached
 Element interpretElement(
-  string package, string type, boolean subtypes, string name, string signature, string ext
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  boolean isExact
 ) {
   elementSpec(package, type, subtypes, name, signature, ext) and
-  exists(Element e | e = interpretElement0(package, type, subtypes, name, signature) |
-    ext = "" and result = e
+  exists(Element e, boolean isExact0 |
+    e = interpretElement0(package, type, subtypes, name, signature, isExact0)
+  |
+    ext = "" and result = e and isExact = isExact0
     or
-    ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e
+    ext = "Annotated" and result.(Annotatable).getAnAnnotation().getType() = e and isExact = false
   )
 }
 
@@ -538,13 +594,13 @@ predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
+  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _, _) }
 
   private predicate relevantSummaryElementManual(
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model, _) and
       provenance.isManual()
     )
   }
@@ -553,11 +609,11 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     string input, string output, string kind, string model
   ) {
     exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
+      summaryElement(this, input, output, kind, provenance, model, _) and
       provenance.isGenerated()
     ) and
     not exists(Provenance provenance |
-      neutralElement(this, "summary", provenance) and
+      neutralElement(this, "summary", provenance, _) and
       provenance.isManual()
     )
   }
@@ -576,18 +632,12 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 
   override predicate hasProvenance(Provenance provenance) {
-    summaryElement(this, _, _, _, provenance, _)
+    summaryElement(this, _, _, _, provenance, _, _)
   }
+
+  override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
+final class SinkCallable = SinkModelCallable;
 
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-}
+final class SourceCallable = SourceModelCallable;

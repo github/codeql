@@ -17,10 +17,25 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this basic block. */
     string toString();
 
+    /** Gets the `i`th node in this basic block. */
+    ControlFlowNode getNode(int i);
+
+    /** Gets the length of this basic block. */
+    int length();
+
     /** Gets the enclosing callable. */
     Callable getEnclosingCallable();
 
     /** Gets the location of this basic block. */
+    Location getLocation();
+  }
+
+  /** A control flow node. */
+  class ControlFlowNode {
+    /** Gets a textual representation of this control flow node. */
+    string toString();
+
+    /** Gets the location of this control flow node. */
     Location getLocation();
   }
 
@@ -51,9 +66,6 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `bb` is a control-flow entry point. */
   default predicate entryBlock(BasicBlock bb) { not exists(getImmediateBasicBlockDominator(bb)) }
-
-  /** Holds if `bb` is a control-flow exit point. */
-  default predicate exitBlock(BasicBlock bb) { not exists(getABasicBlockSuccessor(bb)) }
 
   /** A variable that is captured in a closure. */
   class CapturedVariable {
@@ -570,11 +582,13 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     2 <= strictcount(CapturedVariable v | captureAccess(v, c))
     or
     // Constructors that capture a variable may assign it to a field, which also
-    // entails a this-to-this summary.
-    captureAccess(_, c) and c.isConstructor()
+    // entails a this-to-this summary. If there are multiple constructors, then
+    // they might call each other, so if one constructor captures a variable we
+    // allow this-to-this summaries for all of them.
+    exists(ClosureExpr ce | ce.hasBody(c) and c.isConstructor() and hasConstructorCapture(ce, _))
   }
 
-  /** Holds if the constructor, if any, for the closure defined by `ce` captures `v`. */
+  /** Holds if a constructor, if any, for the closure defined by `ce` captures `v`. */
   private predicate hasConstructorCapture(ClosureExpr ce, CapturedVariable v) {
     exists(Callable c | ce.hasBody(c) and c.isConstructor() and captureAccess(v, c))
   }
@@ -645,6 +659,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
     Location getLocation() {
       exists(CapturedVariable v | this = TVariable(v) and result = v.getLocation())
+      or
+      exists(Callable c | this = TThis(c) and result = c.getLocation())
     }
   }
 
@@ -670,6 +686,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
   private module CaptureSsaInput implements Ssa::InputSig<Location> {
     final class BasicBlock = Input::BasicBlock;
 
+    final class ControlFlowNode = Input::ControlFlowNode;
+
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
       result = Input::getImmediateBasicBlockDominator(bb)
     }
@@ -678,13 +696,10 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
       result = Input::getABasicBlockSuccessor(bb)
     }
 
-    class ExitBasicBlock extends BasicBlock {
-      ExitBasicBlock() { exitBlock(this) }
-    }
-
     class SourceVariable = CaptureContainer;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable cc, boolean certain) {
+      Cached::ref() and
       (
         exists(CapturedVariable v | cc = TVariable(v) and captureWrite(v, bb, i, true, _))
         or
@@ -707,23 +722,55 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
 
   private module CaptureSsa = Ssa::Make<Location, CaptureSsaInput>;
 
-  private newtype TClosureNode =
-    TSynthRead(CapturedVariable v, BasicBlock bb, int i, Boolean isPost) {
-      synthRead(v, bb, i, _, _)
-    } or
-    TSynthThisQualifier(BasicBlock bb, int i, Boolean isPost) { synthThisQualifier(bb, i) } or
-    TSynthPhi(CaptureSsa::DefinitionExt phi) {
-      phi instanceof CaptureSsa::PhiNode or phi instanceof CaptureSsa::PhiReadNode
-    } or
-    TExprNode(Expr expr, boolean isPost) {
-      expr instanceof VariableRead and isPost = [false, true]
-      or
-      synthRead(_, _, _, _, expr) and isPost = [false, true]
-    } or
-    TParamNode(CapturedParameter p) or
-    TThisParamNode(Callable c) { captureAccess(_, c) } or
-    TMallocNode(ClosureExpr ce) { hasConstructorCapture(ce, _) } or
-    TVariableWriteSourceNode(VariableWrite write)
+  private module DataFlowIntegrationInput implements CaptureSsa::DataFlowIntegrationInputSig {
+    private import codeql.util.Void
+
+    class Expr instanceof Input::ControlFlowNode {
+      string toString() { result = super.toString() }
+
+      predicate hasCfgNode(BasicBlock bb, int i) { bb.getNode(i) = this }
+    }
+
+    class Guard extends Void {
+      predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) { none() }
+    }
+
+    predicate guardDirectlyControlsBlock(Guard guard, BasicBlock bb, boolean branch) { none() }
+
+    predicate includeWriteDefsInFlowStep() { none() }
+
+    predicate supportBarrierGuardsOnPhiEdges() { none() }
+  }
+
+  private module SsaFlow = CaptureSsa::DataFlowIntegration<DataFlowIntegrationInput>;
+
+  cached
+  private module Cached {
+    cached
+    predicate ref() { any() }
+
+    cached
+    predicate backref() { localFlowStep(_, _) implies any() }
+
+    cached
+    newtype TClosureNode =
+      TSynthRead(CapturedVariable v, BasicBlock bb, int i, Boolean isPost) {
+        synthRead(v, bb, i, _, _)
+      } or
+      TSynthThisQualifier(BasicBlock bb, int i, Boolean isPost) { synthThisQualifier(bb, i) } or
+      TSynthSsa(SsaFlow::SsaNode n) or
+      TExprNode(Expr expr, Boolean isPost) {
+        expr instanceof VariableRead
+        or
+        synthRead(_, _, _, _, expr)
+      } or
+      TParamNode(CapturedParameter p) or
+      TThisParamNode(Callable c) { captureAccess(_, c) } or
+      TMallocNode(ClosureExpr ce) { hasConstructorCapture(ce, _) } or
+      TVariableWriteSourceNode(VariableWrite write)
+  }
+
+  private import Cached
 
   class ClosureNode extends TClosureNode {
     /** Gets a textual representation of this node. */
@@ -732,11 +779,7 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
       or
       result = "this" and this = TSynthThisQualifier(_, _, _)
       or
-      exists(CaptureSsa::DefinitionExt phi, CaptureContainer cc |
-        this = TSynthPhi(phi) and
-        phi.definesAt(cc, _, _, _) and
-        result = "phi(" + cc.toString() + ")"
-      )
+      exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and result = n.toString())
       or
       exists(Expr expr, boolean isPost | this = TExprNode(expr, isPost) |
         isPost = false and result = expr.toString()
@@ -770,9 +813,7 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
         captureWrite(_, bb, i, false, any(VariableWrite vw | result = vw.getLocation()))
       )
       or
-      exists(CaptureSsa::DefinitionExt phi, BasicBlock bb |
-        this = TSynthPhi(phi) and phi.definesAt(_, bb, _, _) and result = bb.getLocation()
-      )
+      exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and result = n.getLocation())
       or
       exists(Expr expr | this = TExprNode(expr, _) and result = expr.getLocation())
       or
@@ -788,35 +829,29 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     }
   }
 
-  private class TSynthesizedCaptureNode = TSynthRead or TSynthThisQualifier or TSynthPhi;
+  private class TSynthesizedCaptureNode = TSynthRead or TSynthThisQualifier or TSynthSsa;
 
   class SynthesizedCaptureNode extends ClosureNode, TSynthesizedCaptureNode {
-    Callable getEnclosingCallable() {
-      exists(BasicBlock bb | this = TSynthRead(_, bb, _, _) and result = bb.getEnclosingCallable())
+    BasicBlock getBasicBlock() {
+      this = TSynthRead(_, result, _, _)
       or
-      exists(BasicBlock bb |
-        this = TSynthThisQualifier(bb, _, _) and result = bb.getEnclosingCallable()
-      )
+      this = TSynthThisQualifier(result, _, _)
       or
-      exists(CaptureSsa::DefinitionExt phi, BasicBlock bb |
-        this = TSynthPhi(phi) and phi.definesAt(_, bb, _, _) and result = bb.getEnclosingCallable()
-      )
+      exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getBasicBlock() = result)
     }
+
+    Callable getEnclosingCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     predicate isVariableAccess(CapturedVariable v) {
       this = TSynthRead(v, _, _, _)
       or
-      exists(CaptureSsa::DefinitionExt phi |
-        this = TSynthPhi(phi) and phi.definesAt(TVariable(v), _, _, _)
-      )
+      exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getSourceVariable() = TVariable(v))
     }
 
     predicate isInstanceAccess() {
       this instanceof TSynthThisQualifier
       or
-      exists(CaptureSsa::DefinitionExt phi |
-        this = TSynthPhi(phi) and phi.definesAt(TThis(_), _, _, _)
-      )
+      exists(SsaFlow::SsaNode n | this = TSynthSsa(n) and n.getSourceVariable() = TThis(_))
     }
   }
 
@@ -858,18 +893,7 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     )
   }
 
-  private predicate step(CaptureContainer cc, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
-    CaptureSsa::adjacentDefReadExt(_, cc, bb1, i1, bb2, i2)
-  }
-
-  private predicate stepToPhi(CaptureContainer cc, BasicBlock bb, int i, TSynthPhi phi) {
-    exists(CaptureSsa::DefinitionExt next |
-      CaptureSsa::lastRefRedefExt(_, cc, bb, i, next) and
-      phi = TSynthPhi(next)
-    )
-  }
-
-  private predicate ssaAccessAt(
+  private predicate ssaReadAt(
     ClosureNode n, CaptureContainer cc, boolean isPost, BasicBlock bb, int i
   ) {
     exists(CapturedVariable v |
@@ -880,49 +904,57 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     or
     n = TSynthThisQualifier(bb, i, isPost) and cc = TThis(bb.getEnclosingCallable())
     or
-    exists(CaptureSsa::DefinitionExt phi |
-      n = TSynthPhi(phi) and phi.definesAt(cc, bb, i, _) and isPost = false
-    )
-    or
     exists(VariableRead vr, CapturedVariable v |
       captureRead(v, bb, i, true, vr) and
       n = TExprNode(vr, isPost) and
       cc = TVariable(v)
     )
-    or
+  }
+
+  private predicate ssaWriteAt(ClosureNode n, CaptureContainer cc, BasicBlock bb, int i) {
     exists(VariableWrite vw, CapturedVariable v |
       captureWrite(v, bb, i, true, vw) and
       n = TVariableWriteSourceNode(vw) and
-      isPost = false and
       cc = TVariable(v)
     )
     or
     exists(CapturedParameter p |
       entryDef(cc, bb, i) and
       cc = TVariable(p) and
-      n = TParamNode(p) and
-      isPost = false
+      n = TParamNode(p)
     )
     or
     exists(Callable c |
       entryDef(cc, bb, i) and
       cc = TThis(c) and
-      n = TThisParamNode(c) and
-      isPost = false
+      n = TThisParamNode(c)
     )
   }
 
-  predicate localFlowStep(ClosureNode node1, ClosureNode node2) {
-    exists(CaptureContainer cc, BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      step(cc, bb1, i1, bb2, i2) and
-      ssaAccessAt(node1, pragma[only_bind_into](cc), _, bb1, i1) and
-      ssaAccessAt(node2, pragma[only_bind_into](cc), false, bb2, i2)
+  bindingset[result, cc]
+  pragma[inline_late]
+  private SsaFlow::Node asNode(CaptureContainer cc, ClosureNode n) {
+    n = TSynthSsa(result)
+    or
+    exists(BasicBlock bb, int i |
+      result.(SsaFlow::ExprNode).getExpr().hasCfgNode(bb, i) and
+      ssaReadAt(n, cc, false, bb, i)
     )
     or
-    exists(CaptureContainer cc, BasicBlock bb, int i |
-      stepToPhi(cc, bb, i, node2) and
-      ssaAccessAt(node1, cc, _, bb, i)
+    exists(BasicBlock bb, int i |
+      result.(SsaFlow::ExprPostUpdateNode).getExpr().hasCfgNode(bb, i) and
+      ssaReadAt(n, cc, true, bb, i)
     )
+    or
+    exists(BasicBlock bb, int i |
+      result.(SsaFlow::WriteDefSourceNode).getDefinition().definesAt(cc, bb, i) and
+      ssaWriteAt(n, cc, bb, i)
+    )
+  }
+
+  cached
+  predicate localFlowStep(ClosureNode n1, ClosureNode n2) {
+    exists(CaptureContainer cc | SsaFlow::localFlowStep(cc, asNode(cc, n1), asNode(cc, n2), _))
   }
 
   private predicate storeStepClosure(

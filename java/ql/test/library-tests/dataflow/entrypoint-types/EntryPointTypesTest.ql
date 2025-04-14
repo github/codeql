@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class TestRemoteFlowSource extends RemoteFlowSource {
   TestRemoteFlowSource() { this.asParameter().hasName("source") }
@@ -9,7 +9,7 @@ class TestRemoteFlowSource extends RemoteFlowSource {
 }
 
 module TaintFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node n) { n instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node n) {
     exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())

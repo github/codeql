@@ -46,6 +46,8 @@ private module WeakParamsConfig implements DataFlow::ConfigSig {
 
   // the sink is an instance of a Model class that receives a method call
   predicate isSink(DataFlow::Node node) { node = any(PersistentWriteAccess a).getValue() }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module WeakParamsFlow = TaintTracking::Global<WeakParamsConfig>;

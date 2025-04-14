@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ionic-team/stencil", "*", "input.paths", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.output", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.tag", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.version", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.filename", "code-injection", "generated"]
+     - ["ionic-team/stencil", "*", "input.path", "code-injection", "generated"]

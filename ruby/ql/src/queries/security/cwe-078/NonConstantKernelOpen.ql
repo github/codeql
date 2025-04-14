@@ -5,7 +5,7 @@
  *              user to execute arbitrary system commands.
  * @kind problem
  * @problem.severity warning
- * @security-severity 6.5
+ * @security-severity 9.8
  * @precision high
  * @id rb/non-constant-kernel-open
  * @tags correctness

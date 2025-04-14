@@ -257,6 +257,13 @@ getTarget
 | calls.rb:659:1:659:23 | call to instance | calls.rb:654:5:656:7 | instance |
 | calls.rb:667:2:667:25 | call to capture_parameter | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:667:20:667:25 | call to new | calls.rb:117:5:117:16 | new |
+| element_reference.rb:3:9:3:19 | yield ... | element_reference.rb:9:6:9:19 | { ... } |
+| element_reference.rb:3:9:3:19 | yield ... | element_reference.rb:11:6:13:3 | do ... end |
+| element_reference.rb:7:5:7:27 | call to new | calls.rb:117:5:117:16 | new |
+| element_reference.rb:9:1:9:19 | ...[...] | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:9:12:9:17 | call to puts | calls.rb:102:5:102:30 | puts |
+| element_reference.rb:11:1:13:3 | ...[...] | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:12:5:12:10 | call to puts | calls.rb:102:5:102:30 | puts |
 | hello.rb:12:5:12:24 | call to include | calls.rb:108:5:110:7 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | super call to message | hello.rb:13:5:15:7 | message |
@@ -385,6 +392,7 @@ unresolvedCall
 | calls.rb:662:5:662:11 | call to [] |
 | calls.rb:662:5:664:7 | call to each |
 | calls.rb:667:1:667:35 | call to instance |
+| element_reference.rb:3:15:3:19 | ... + ... |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
@@ -512,6 +520,7 @@ publicMethod
 | calls.rb:642:5:644:7 | new |
 | calls.rb:650:5:652:7 | new |
 | calls.rb:654:5:656:7 | instance |
+| element_reference.rb:2:5:4:7 | [] |
 | hello.rb:2:5:4:7 | hello |
 | hello.rb:5:5:7:7 | world |
 | hello.rb:13:5:15:7 | message |

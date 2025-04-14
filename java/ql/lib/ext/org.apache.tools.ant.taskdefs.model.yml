@@ -10,3 +10,5 @@ extensions:
       - ["org.apache.tools.ant.taskdefs", "Execute", False, "runCommand", "(Task,String[])", "", "Argument[1]", "command-injection", "ai-manual"]
       - ["org.apache.tools.ant.taskdefs", "Expand", True, "setDest", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["org.apache.tools.ant.taskdefs", "Expand", True, "setSrc", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.tools.ant.taskdefs", "Property", True, "setFile", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.tools.ant.taskdefs", "Property", True, "setResource", "(String)", "", "Argument[0]", "path-injection", "manual"]

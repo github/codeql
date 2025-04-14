@@ -2170,7 +2170,7 @@ module PrivateDjango {
         /**
          * A call to `set_cookie` on a HTTP Response.
          */
-        class DjangoResponseSetCookieCall extends Http::Server::CookieWrite::Range,
+        class DjangoResponseSetCookieCall extends Http::Server::SetCookieCall,
           DataFlow::MethodCallNode
         {
           DjangoResponseSetCookieCall() {
@@ -2238,6 +2238,71 @@ module PrivateDjango {
           override DataFlow::Node getNameArg() { result = index }
 
           override DataFlow::Node getValueArg() { result = value }
+        }
+
+        /**
+         * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+         * `response.headers[name] = value`.
+         */
+        class DjangoResponseHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseHeaderSubscriptWrite() {
+            exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              headerLookup
+                  .accesses(DjangoImpl::DjangoHttp::Response::HttpResponse::instance(), "headers") and
+              exists(DataFlow::Node subscriptObj |
+                subscriptObj.asCfgNode() = subscript.getObject()
+              |
+                headerLookup.flowsTo(subscriptObj)
+              ) and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
+        }
+
+        /**
+         * A dict-like write to an item of an HTTP response, which is treated as a header write,
+         * such as `response[headerName] = value`
+         */
+        class DjangoResponseSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+          DataFlow::Node index;
+          DataFlow::Node value;
+
+          DjangoResponseSubscriptWrite() {
+            exists(SubscriptNode subscript |
+              // To give `this` a value, we need to choose between either LHS or RHS,
+              // and just go with the LHS
+              this.asCfgNode() = subscript
+            |
+              subscript.getObject() =
+                DjangoImpl::DjangoHttp::Response::HttpResponse::instance().asCfgNode() and
+              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              index.asCfgNode() = subscript.getIndex()
+            )
+          }
+
+          override DataFlow::Node getNameArg() { result = index }
+
+          override DataFlow::Node getValueArg() { result = value }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
         }
       }
     }
@@ -2931,4 +2996,17 @@ module PrivateDjango {
       any()
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Templates
+  // ---------------------------------------------------------------------------
+  /** A call to `django.template.Template` */
+  private class DjangoTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+    DjangoTemplateConstruction() {
+      this = API::moduleImport("django").getMember("template").getMember("Template").getACall()
+    }
+
+    override DataFlow::Node getSourceArg() { result = this.getArg(0) }
+  }
+  // TODO: Support `from_string` on instances of `django.template.Engine`.
 }

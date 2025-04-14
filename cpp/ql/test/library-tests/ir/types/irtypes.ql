@@ -1,6 +1,6 @@
 private import cpp
 private import semmle.code.cpp.ir.implementation.raw.IR
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module IRTypesTest implements TestSig {
   string getARelevantTag() { result = "irtype" }

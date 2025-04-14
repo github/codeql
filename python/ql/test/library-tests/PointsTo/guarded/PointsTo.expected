@@ -70,7 +70,3 @@
 | type_test.py | 55 | ControlFlowNode for arg | class E | 29 |
 | type_test.py | 67 | ControlFlowNode for x | float 1.0 | 62 |
 | type_test.py | 67 | ControlFlowNode for x | int 0 | 62 |
-| type_test.py | 77 | ControlFlowNode for IntegerLiteral | int 0 | 77 |
-| type_test.py | 83 | ControlFlowNode for IntegerLiteral | int 0 | 83 |
-| type_test.py | 89 | ControlFlowNode for IntegerLiteral | int 0 | 89 |
-| type_test.py | 95 | ControlFlowNode for IntegerLiteral | int 0 | 95 |

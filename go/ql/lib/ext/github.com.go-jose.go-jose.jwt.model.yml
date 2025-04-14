@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["go-jose/jwt", "gopkg.in/square/go-jose/jwt"]
+      - ["go-jose/jwt", "gopkg.in/go-jose/go-jose/jwt"]
+      - ["go-jose/jwt", "github.com/square/go-jose/jwt"]
+      - ["go-jose/jwt", "github.com/go-jose/go-jose/jwt"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:go-jose/jwt", "JSONWebToken", True, "UnsafeClaimsWithoutVerification", "", "", "Argument[receiver]", "jwt", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["group:go-jose/jwt", "", False, "ParseEncrypted", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:go-jose/jwt", "", False, "ParseSigned", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:go-jose/jwt", "NestedJSONWebToken", True, "ParseSignedAndEncrypted", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["group:go-jose/jwt", "NestedJSONWebToken", True, "Decrypt", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]

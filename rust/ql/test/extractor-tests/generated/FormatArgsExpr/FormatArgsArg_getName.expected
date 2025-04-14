@@ -1,0 +1,2 @@
+| gen_format_args_expr.rs:7:35:7:37 | FormatArgsArg | gen_format_args_expr.rs:7:35:7:35 | a |
+| gen_format_args_expr.rs:7:40:7:42 | FormatArgsArg | gen_format_args_expr.rs:7:40:7:40 | b |

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["layer5labs/meshmap-snapshot", "*", "input.assetLocation", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.mesheryToken", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.application_url", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.prNumber", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.designID", "code-injection", "generated"]
+     - ["layer5labs/meshmap-snapshot", "*", "input.application_type", "code-injection", "generated"]

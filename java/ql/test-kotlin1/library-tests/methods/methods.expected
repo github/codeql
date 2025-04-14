@@ -59,14 +59,14 @@ methods
 | methods.kt:5:1:20:1 | Class | methods.kt:18:5:18:36 | noExplicitVisibilityFun | noExplicitVisibilityFun() | final, public |  |
 | methods.kt:5:1:20:1 | Class | methods.kt:19:12:19:29 | inlineFun | inlineFun() | final, inline, public |  |
 constructors
-| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:6:1:47 | DataClass | DataClass(int,java.lang.String) |
+| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:1:21:1:47 | DataClass | DataClass(int,java.lang.String) |
 | delegates.kt:3:1:12:1 | MyClass | delegates.kt:3:1:12:1 | MyClass | MyClass() |
 | delegates.kt:4:18:6:5 | new KProperty1<MyClass,Integer>(...) { ... } | delegates.kt:4:18:6:5 |  |  |
 | delegates.kt:4:26:6:5 | new Function0<Integer>(...) { ... } | delegates.kt:4:26:6:5 |  |  |
 | delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 |  |  |
 | delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 |  |  |
 | delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | delegates.kt:8:66:11:5 |  |  |
-| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:6:4:1 | EnumClass | EnumClass(int) |
+| enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:21:1:32 | EnumClass | EnumClass(int) |
 | enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:6:16:1 | EnumWithFunctions | EnumWithFunctions() |
 | enumClass.kt:8:3:11:4 | VAL | enumClass.kt:8:3:11:4 | VAL | VAL() |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:7:1:10:1 | Class2 | Class2() |

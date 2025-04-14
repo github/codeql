@@ -1,0 +1,5 @@
+| test.cpp:5:7:5:7 | x | unnecessary NULL check before call to $@ | test.cpp:6:5:6:8 | call to free | free |
+| test.cpp:10:7:10:7 | x | unnecessary NULL check before call to $@ | test.cpp:11:5:11:8 | call to free | free |
+| test.cpp:42:7:42:7 | x | unnecessary NULL check before call to $@ | test.cpp:43:5:43:8 | call to free | free |
+| test.cpp:49:7:49:7 | x | unnecessary NULL check before call to $@ | test.cpp:50:5:50:8 | call to free | free |
+| test.cpp:106:7:106:18 | ... != ... | unnecessary NULL check before call to $@ | test.cpp:107:5:107:8 | call to free | free |

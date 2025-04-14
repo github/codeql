@@ -16,11 +16,12 @@ on:
       - "shared/**/*.qll"
       - "!**/experimental/**"
       - "!ql/**"
+      - "!rust/**"
       - ".github/workflows/check-change-note.yml"
 
 jobs:
   check-change-note:
-    env: 
+    env:
       REPO: ${{ github.repository }}
       PULL_REQUEST_NUMBER: ${{ github.event.number }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -33,7 +34,7 @@ jobs:
           !contains(github.event.pull_request.labels.*.name, 'no-change-note-required')
         run: |
           change_note_files=$(gh api "repos/$REPO/pulls/$PULL_REQUEST_NUMBER/files" --paginate --jq '.[].filename | select(test("/change-notes/.*[.]md$"))')
-          
+
           if [ -z "$change_note_files" ]; then
             echo "No change note found. Either add one, or add the 'no-change-note-required' label."
             exit 1

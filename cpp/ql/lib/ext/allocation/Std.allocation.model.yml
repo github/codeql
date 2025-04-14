@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: allocationFunctionModel
+    data:
+      - ["", "", False, "malloc", "0", "", "", True]
+      - ["std", "", False, "malloc", "0", "", "", True]
+      - ["bsl", "", False, "malloc", "0", "", "", True]
+      - ["", "", False, "alloca", "0", "", "", False]
+      - ["", "", False, "__builtin_alloca", "0", "", "", False]
+      - ["", "", False, "_alloca", "0", "", "", False]
+      - ["", "", False, "_malloca", "0", "", "", False]
+      - ["", "", False, "calloc", "1", "0", "", True]
+      - ["std", "", False, "calloc", "1", "0", "", True]
+      - ["bsl", "", False, "calloc", "1", "0", "", True]

@@ -1,2 +1,2 @@
-var React = x; // OK
+var React = x;
 (<e/>);

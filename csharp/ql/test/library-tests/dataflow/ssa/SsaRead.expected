@@ -193,6 +193,8 @@
 | Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:114:9:114:22 | SSA call def(this.Field.Field) | Fields.cs:117:17:117:32 | access to field Field |
 | Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:114:9:114:22 | SSA qualifier def(this.Field.Field.xs) | Fields.cs:116:21:116:39 | access to field xs |
 | Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:114:9:114:22 | SSA qualifier def(this.Field.Field.xs) | Fields.cs:117:17:117:35 | access to field xs |
+| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | SSA param(x) | MultiImplementationA.cs:5:28:5:28 | access to parameter x |
+| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationB.cs:3:22:3:22 | SSA param(x) | MultiImplementationB.cs:3:28:3:28 | access to parameter x |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:9:13:9:17 | SSA def(j) | OutRef.cs:10:32:10:32 | access to local variable j |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:10:32:10:32 | SSA def(j) | OutRef.cs:12:13:12:13 | access to local variable j |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:10:32:10:32 | SSA def(j) | OutRef.cs:22:29:22:29 | access to local variable j |

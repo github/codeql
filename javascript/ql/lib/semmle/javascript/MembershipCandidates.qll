@@ -140,22 +140,17 @@ module MembershipCandidate {
     EnumerationRegExp() {
       this.isRootTerm() and
       RegExp::isFullyAnchoredTerm(this) and
-      exists(RegExpTerm child | this.getAChild*() = child |
-        child instanceof RegExpSequence or
-        child instanceof RegExpCaret or
-        child instanceof RegExpDollar or
-        child instanceof RegExpConstant or
-        child instanceof RegExpAlt or
-        child instanceof RegExpGroup
-      ) and
-      // exclude "length matches" that match every string
-      not this.getAChild*() instanceof RegExpDot
+      not exists(RegExpTerm child | child.getRootTerm() = this |
+        child instanceof RegExpDot or
+        child instanceof RegExpCharacterClass or
+        child instanceof RegExpUnicodePropertyEscape
+      )
     }
 
     /**
      * Gets a string matched by this regular expression.
      */
-    string getAMember() { result = this.getAChild*().getAMatchedString() }
+    string getAMember() { result = any(RegExpTerm t | t.getRootTerm() = this).getAMatchedString() }
   }
 
   /**
@@ -193,7 +188,7 @@ module MembershipCandidate {
         or
         // u.match(/re/) or u.match("re")
         base = this and
-        m = "match" and
+        m = ["match", "matchAll"] and
         enumeration = RegExp::getRegExpFromNode(firstArg)
       )
     }

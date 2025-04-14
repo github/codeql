@@ -1,3 +1,100 @@
+## 2.0.4
+
+No user-facing changes.
+
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `Make` and `MakeWithState` modules, use `Global` and `GlobalWithState` instead.
+* Deleted the deprecated `hasFlow`, `hasFlowPath`, `hasFlowTo`, and `hasFlowToExpr` predicates, use `flow`, `flowPath`, `flowTo`, and `flowToExpr` respectively instead.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+### Minor Analysis Improvements
+
+* Added a module `DataFlow::DeduplicatePathGraph` that can be used to avoid generating duplicate path explanations in queries that use flow state.
+
+## 1.1.7
+
+No user-facing changes.
+
+## 1.1.6
+
+No user-facing changes.
+
+## 1.1.5
+
+No user-facing changes.
+
+## 1.1.4
+
+No user-facing changes.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Deprecated APIs
+
+* The source/sink grouping feature of the data flow library has been removed. It was introduced primarily for debugging, but has not proven useful.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* The data flow library now adds intermediate nodes when data flows out of a function via a parameter, in order to make path explanations easier to follow. The intermediate nodes have the same location as the underlying parameter, but must be accessed via `PathNode.asParameterReturnNode` instead of `PathNode.asNode`.
+
 ## 0.2.7
 
 No user-facing changes.

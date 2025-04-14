@@ -13,6 +13,10 @@ func Compile(_ string) (*Expr, error) {
 	return nil, nil
 }
 
+func CompileWithNS(_ string, _ map[string]string) (*Expr, error) {
+	return nil, nil
+}
+
 type Expr struct{}
 
 func (_ *Expr) Evaluate(_ NodeNavigator) interface{} {

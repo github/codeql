@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/gogf/gf-jwt", "GfJWTMiddleware", True, "Key", "", "", "", "credentials-key", "manual"]

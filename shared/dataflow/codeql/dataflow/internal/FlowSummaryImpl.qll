@@ -4,7 +4,6 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.util.Location
-private import DataFlowImpl
 private import AccessPathSyntax as AccessPathSyntax
 
 /**
@@ -18,6 +17,35 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   class SummarizedCallableBase {
     bindingset[this]
     string toString();
+  }
+
+  /**
+   * A base class of elements that are candidates for flow source modeling.
+   */
+  bindingset[this]
+  class SourceBase {
+    bindingset[this]
+    string toString();
+  }
+
+  /**
+   * A base class of elements that are candidates for flow sink modeling.
+   */
+  bindingset[this]
+  class SinkBase {
+    bindingset[this]
+    string toString();
+  }
+
+  /**
+   * Holds if a neutral (MaD) model exists for `c` of kind `kind`
+   * with provenance `provenance` and `isExact` is true if the model
+   * signature matches `c` exactly - otherwise false.
+   */
+  default predicate neutralElement(
+    SummarizedCallableBase c, string kind, string provenance, boolean isExact
+  ) {
+    none()
   }
 
   /** Gets the parameter position representing a callback itself, if any. */
@@ -149,6 +177,10 @@ module Make<
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
 
+  final private class SourceBaseFinal = SourceBase;
+
+  final private class SinkBaseFinal = SinkBase;
+
   /** Provides classes and predicates for defining flow summaries. */
   module Public {
     private import Private
@@ -161,6 +193,7 @@ module Make<
         [
           "ai", // AI (machine learning)
           "df", // Dataflow (model generator)
+          "dfc", // Content dataflow (model generator)
           "tb", // Type based (model generator)
           "hq", // Heuristic query
         ]
@@ -253,45 +286,141 @@ module Make<
        * that has provenance `provenance`.
        */
       predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+
+      /**
+       * Holds if there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from
+       * the model.
+       */
+      predicate hasExactModel() { none() }
     }
 
-    final private class NeutralCallableFinal = NeutralCallable;
-
-    /**
-     * A callable where there is no flow via the callable.
-     */
-    class NeutralSummaryCallable extends NeutralCallableFinal {
-      NeutralSummaryCallable() { this.getKind() = "summary" }
-    }
-
-    /**
-     * A callable that has a neutral model.
-     */
-    abstract class NeutralCallable extends SummarizedCallableBaseFinal {
+    /** A source element. */
+    abstract class SourceElement extends SourceBaseFinal {
       bindingset[this]
-      NeutralCallable() { exists(this) }
+      SourceElement() { any() }
 
       /**
-       * Holds if the neutral is auto generated.
+       * Holds if this element is a flow source of kind `kind`, where data
+       * flows out as described by `output`.
        */
-      final predicate hasGeneratedModel() {
-        any(Provenance p | this.hasProvenance(p)).isGenerated()
-      }
+      pragma[nomagic]
+      abstract predicate isSource(string output, string kind, Provenance provenance, string model);
+    }
+
+    /** A sink element. */
+    abstract class SinkElement extends SinkBaseFinal {
+      bindingset[this]
+      SinkElement() { any() }
 
       /**
-       * Holds if there exists a manual neutral that applies to this callable.
+       * Holds if this element is a flow sink of kind `kind`, where data
+       * flows in as described by `input`.
        */
-      final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+      pragma[nomagic]
+      abstract predicate isSink(string input, string kind, Provenance provenance, string model);
+    }
 
+    private signature predicate hasKindSig(string kind);
+
+    signature class NeutralCallableSig extends SummarizedCallableBaseFinal {
       /**
        * Holds if the neutral has provenance `p`.
        */
-      abstract predicate hasProvenance(Provenance p);
+      predicate hasProvenance(Provenance p);
 
       /**
        * Gets the kind of the neutral.
        */
-      abstract string getKind();
+      string getKind();
+
+      /**
+       * Holds if the neutral is auto generated.
+       */
+      predicate hasGeneratedModel();
+
+      /**
+       * Holds if there exists a manual neutral that applies to this callable.
+       */
+      predicate hasManualModel();
+    }
+
+    /**
+     * A module for constructing classes of neutral callables.
+     */
+    private module MakeNeutralCallable<hasKindSig/1 hasKind> {
+      class NeutralCallable extends SummarizedCallableBaseFinal {
+        private string kind;
+        private string provenance_;
+        private boolean exact;
+
+        NeutralCallable() {
+          hasKind(kind) and
+          neutralElement(this, kind, provenance_, exact)
+        }
+
+        /**
+         * Gets the kind of the neutral.
+         */
+        string getKind() { result = kind }
+
+        /**
+         * Holds if the neutral has provenance `p`.
+         */
+        predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+
+        /**
+         * Holds if the neutral is auto generated.
+         */
+        final predicate hasGeneratedModel() {
+          any(Provenance p | this.hasProvenance(p)).isGenerated()
+        }
+
+        /**
+         * Holds if there exists a manual neutral that applies to this callable.
+         */
+        final predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+        /**
+         * Holds if there exists a model for which this callable is an exact
+         * match, that is, no overriding was used to identify this callable from
+         * the model.
+         */
+        predicate hasExactModel() { exact = true }
+      }
+    }
+
+    private predicate neutralSummaryKind(string kind) { kind = "summary" }
+
+    /**
+     * A callable where there exists a MaD neutral summary model that applies to it.
+     */
+    class NeutralSummaryCallable = MakeNeutralCallable<neutralSummaryKind/1>::NeutralCallable;
+
+    private predicate neutralSourceKind(string kind) { kind = "source" }
+
+    /**
+     * A callable where there exists a MaD neutral source model that applies to it.
+     */
+    class NeutralSourceCallable = MakeNeutralCallable<neutralSourceKind/1>::NeutralCallable;
+
+    private predicate neutralSinkKind(string kind) { kind = "sink" }
+
+    /**
+     * A callable where there exists a MaD neutral sink model that applies to it.
+     */
+    class NeutralSinkCallable = MakeNeutralCallable<neutralSinkKind/1>::NeutralCallable;
+
+    /**
+     * A callable where there exist a MaD neutral (summary, source or sink) model
+     * that applies to it.
+     */
+    class NeutralCallable extends SummarizedCallableBaseFinal {
+      NeutralCallable() {
+        this instanceof NeutralSummaryCallable or
+        this instanceof NeutralSourceCallable or
+        this instanceof NeutralSinkCallable
+      }
     }
   }
 
@@ -407,6 +536,10 @@ module Make<
         or
         c.propagatesFlow(_, spec, _, _)
       )
+      or
+      any(SourceElement s).isSource(spec, _, _, _)
+      or
+      any(SinkElement s).isSink(spec, _, _, _)
     }
 
     import AccessPathSyntax::AccessPath<summarySpec/1>
@@ -756,9 +889,57 @@ module Make<
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
+    pragma[nomagic]
+    private predicate sourceOutputStateEntry(
+      SourceElement source, SummaryComponentStack s, string kind, string model
+    ) {
+      exists(string outSpec |
+        source.isSource(outSpec, kind, _, model) and
+        External::interpretSpec(outSpec, s)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sourceOutputState(
+      SourceElement source, SummaryComponentStack s, string kind, string model
+    ) {
+      sourceOutputStateEntry(source, s, kind, model)
+      or
+      exists(SummaryComponentStack out |
+        sourceOutputState(source, out, kind, model) and
+        out.head() = TContentSummaryComponent(_) and
+        s = out.tail()
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sinkInputStateExit(
+      SinkElement sink, SummaryComponentStack s, string kind, string model
+    ) {
+      exists(string inSpec |
+        sink.isSink(inSpec, kind, _, model) and
+        External::interpretSpec(inSpec, s)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate sinkInputState(
+      SinkElement sink, SummaryComponentStack s, string kind, string model
+    ) {
+      sinkInputStateExit(sink, s, kind, model)
+      or
+      exists(SummaryComponentStack inp |
+        sinkInputState(sink, inp, kind, model) and
+        inp.head() = TContentSummaryComponent(_) and
+        s = inp.tail()
+      )
+    }
+
     private newtype TSummaryNodeState =
       TSummaryNodeInputState(SummaryComponentStack s) { inputState(_, s) } or
-      TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) }
+      TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) } or
+      TSourceOutputState(SummaryComponentStack s) { sourceOutputState(_, s, _, _) } or
+      TSinkInputState(SummaryComponentStack s) { sinkInputState(_, s, _, _) }
 
     /**
      * A state used to break up (complex) flow summaries into atomic flow steps.
@@ -794,6 +975,24 @@ module Make<
         outputState(c, s)
       }
 
+      /** Holds if this state is a valid output state for `source`. */
+      pragma[nomagic]
+      predicate isSourceOutputState(
+        SourceElement source, SummaryComponentStack s, string kind, string model
+      ) {
+        sourceOutputState(source, s, kind, model) and
+        this = TSourceOutputState(s)
+      }
+
+      /** Holds if this state is a valid input state for `sink`. */
+      pragma[nomagic]
+      predicate isSinkInputState(
+        SinkElement sink, SummaryComponentStack s, string kind, string model
+      ) {
+        sinkInputState(sink, s, kind, model) and
+        this = TSinkInputState(s)
+      }
+
       /** Gets a textual representation of this state. */
       string toString() {
         exists(SummaryComponentStack s |
@@ -805,6 +1004,16 @@ module Make<
           this = TSummaryNodeOutputState(s) and
           result = "to write: " + s
         )
+        or
+        exists(SummaryComponentStack s |
+          this = TSourceOutputState(s) and
+          result = "to write source: " + s
+        )
+        or
+        exists(SummaryComponentStack s |
+          this = TSinkInputState(s) and
+          result = "read sink: " + s
+        )
       }
     }
 
@@ -814,12 +1023,24 @@ module Make<
       } or
       TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
         summaryParameterNodeRange(c, pos)
+      } or
+      TSourceOutputNode(SourceElement source, SummaryNodeState state, string kind, string model) {
+        state.isSourceOutputState(source, _, kind, model)
+      } or
+      TSinkInputNode(SinkElement sink, SummaryNodeState state, string kind, string model) {
+        state.isSinkInputState(sink, _, kind, model)
       }
 
     abstract class SummaryNode extends TSummaryNode {
       abstract string toString();
 
       abstract SummarizedCallable getSummarizedCallable();
+
+      abstract SourceElement getSourceElement();
+
+      abstract SinkElement getSinkElement();
+
+      predicate isHidden() { any() }
     }
 
     private class SummaryInternalNode extends SummaryNode, TSummaryInternalNode {
@@ -831,6 +1052,10 @@ module Make<
       override string toString() { result = "[summary] " + state + " in " + c }
 
       override SummarizedCallable getSummarizedCallable() { result = c }
+
+      override SourceElement getSourceElement() { none() }
+
+      override SinkElement getSinkElement() { none() }
     }
 
     private class SummaryParamNode extends SummaryNode, TSummaryParameterNode {
@@ -842,6 +1067,107 @@ module Make<
       override string toString() { result = "[summary param] " + pos + " in " + c }
 
       override SummarizedCallable getSummarizedCallable() { result = c }
+
+      override SourceElement getSourceElement() { none() }
+
+      override SinkElement getSinkElement() { none() }
+    }
+
+    class SourceOutputNode extends SummaryNode, TSourceOutputNode {
+      private SourceElement source_;
+      private SummaryNodeState state_;
+      private string kind_;
+      private string model_;
+
+      SourceOutputNode() { this = TSourceOutputNode(source_, state_, kind_, model_) }
+
+      /**
+       * Holds if this node is an entry node, i.e. before any stores have been performed.
+       *
+       * This node should be used as the actual source node in data flow configurations.
+       */
+      predicate isEntry(string kind, string model) {
+        model = model_ and
+        exists(SummaryComponentStack out |
+          sourceOutputStateEntry(source_, out, kind, model_) and
+          state_.isSourceOutputState(source_, out, kind, model_)
+        )
+      }
+
+      /**
+       * Holds if this node is an exit node, i.e. after all stores have been performed.
+       *
+       * A local flow step should be added from this node to a data flow node representing
+       * `sc` inside `source`.
+       */
+      predicate isExit(SourceElement source, SummaryComponent sc, string model) {
+        source = source_ and
+        model = model_ and
+        state_.isSourceOutputState(source, TSingletonSummaryComponentStack(sc), _, model)
+      }
+
+      override predicate isHidden() { not this.isEntry(_, _) }
+
+      override string toString() {
+        if this.isEntry(_, _)
+        then result = source_.toString()
+        else result = "[source] " + state_ + " at " + source_
+      }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceElement getSourceElement() { result = source_ }
+
+      override SinkElement getSinkElement() { none() }
+    }
+
+    class SinkInputNode extends SummaryNode, TSinkInputNode {
+      private SinkElement sink_;
+      private SummaryNodeState state_;
+      private string kind_;
+      private string model_;
+
+      SinkInputNode() { this = TSinkInputNode(sink_, state_, kind_, model_) }
+
+      /**
+       * Holds if this node is an entry node, i.e. before any reads have been performed.
+       *
+       * A local flow step should be added to this node from a data flow node representing
+       * `sc` inside `sink`.
+       */
+      predicate isEntry(SinkElement sink, SummaryComponent sc, string model) {
+        sink = sink_ and
+        model = model_ and
+        state_.isSinkInputState(sink, TSingletonSummaryComponentStack(sc), _, model)
+      }
+
+      /**
+       * Holds if this node is an exit node, i.e. after all reads have been performed.
+       *
+       * This node should be used as the actual sink node in data flow configurations.
+       */
+      predicate isExit(string kind, string model) {
+        kind = kind_ and
+        model = model_ and
+        exists(SummaryComponentStack inp |
+          sinkInputStateExit(sink_, inp, kind, model_) and
+          state_.isSinkInputState(sink_, inp, kind, model_)
+        )
+      }
+
+      override predicate isHidden() { not this.isExit(_, _) }
+
+      override string toString() {
+        if this.isExit(_, _)
+        then result = sink_.toString()
+        else result = "[sink] " + state_ + " at " + sink_
+      }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceElement getSourceElement() { none() }
+
+      override SinkElement getSinkElement() { result = sink_ }
     }
 
     /**
@@ -883,6 +1209,22 @@ module Make<
       exists(SummaryNodeState state |
         state.isOutputState(c, s) and
         result = TSummaryInternalNode(c, state)
+      )
+    }
+
+    pragma[noinline]
+    private SummaryNode sourceElementOutputState(SourceElement source, SummaryComponentStack s) {
+      exists(SummaryNodeState state, string kind, string model |
+        state.isSourceOutputState(source, s, kind, model) and
+        result = TSourceOutputNode(source, state, kind, model)
+      )
+    }
+
+    pragma[noinline]
+    private SummaryNode sinkElementInputState(SinkElement sink, SummaryComponentStack s) {
+      exists(SummaryNodeState state, string kind, string model |
+        state.isSinkInputState(sink, s, kind, model) and
+        result = TSinkInputNode(sink, state, kind, model)
       )
     }
 
@@ -1009,6 +1351,10 @@ module Make<
       DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk);
 
       DataFlowType getSyntheticGlobalType(SyntheticGlobal sg);
+
+      DataFlowType getSourceType(SourceBase source, SummaryComponent sc);
+
+      DataFlowType getSinkType(SinkBase sink, SummaryComponent sc);
     }
 
     /**
@@ -1087,12 +1433,54 @@ module Make<
             )
           )
         )
+        or
+        exists(SourceElement source |
+          exists(SummaryComponent sc |
+            n.(SourceOutputNode).isExit(source, sc, _) and
+            result = getSourceType(source, sc)
+          )
+          or
+          exists(SummaryComponentStack s, ContentSet cont |
+            n = sourceElementOutputState(source, s) and
+            s.head() = TContentSummaryComponent(cont) and
+            result = getContentType(cont)
+          )
+        )
+        or
+        exists(SinkElement sink |
+          exists(SummaryComponent sc |
+            n.(SinkInputNode).isEntry(sink, sc, _) and
+            result = getSinkType(sink, sc)
+          )
+          or
+          exists(SummaryComponentStack s, ContentSet cont |
+            n = sinkElementInputState(sink, s) and
+            s.head() = TContentSummaryComponent(cont) and
+            result = getContentType(cont)
+          )
+        )
       }
     }
 
     signature module StepsInputSig {
       /** Gets a call that targets summarized callable `sc`. */
       DataFlowCall getACall(SummarizedCallable sc);
+
+      /**
+       * Gets a data flow node corresponding to the `sc` part of `source`.
+       *
+       * `sc` is typically `ReturnValue` and the result is the node that
+       * represents the return value of `source`.
+       */
+      Node getSourceNode(SourceBase source, SummaryComponent sc);
+
+      /**
+       * Gets a data flow node corresponding to the `sc` part of `sink`.
+       *
+       * `sc` is typically `Argument[i]` and the result is the node that
+       * represents the `i`th argument of `sink`.
+       */
+      Node getSinkNode(SinkBase sink, SummaryComponent sc);
     }
 
     /** Provides a compilation of flow summaries to atomic data-flow steps. */
@@ -1126,6 +1514,25 @@ module Make<
         )
       }
 
+      predicate sourceLocalStep(SourceOutputNode nodeFrom, Node nodeTo, string model) {
+        exists(SummaryComponent sc, SourceElement source |
+          nodeFrom.isExit(source, sc, model) and
+          nodeTo = StepsInput::getSourceNode(source, sc)
+        )
+      }
+
+      predicate sinkLocalStep(Node nodeFrom, SinkInputNode nodeTo, string model) {
+        exists(SummaryComponent sc, SinkElement sink |
+          nodeFrom = StepsInput::getSinkNode(sink, sc) and
+          nodeTo.isEntry(sink, sc, model)
+        )
+      }
+
+      /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
+      predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
+        pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
+      }
+
       /**
        * Holds if there is a read step of content `c` from `pred` to `succ`, which
        * is synthesized from a flow summary.
@@ -1134,6 +1541,12 @@ module Make<
         exists(SummarizedCallable sc, SummaryComponentStack s |
           pred = summaryNodeInputState(sc, s.tail()) and
           succ = summaryNodeInputState(sc, s) and
+          SummaryComponent::content(c) = s.head()
+        )
+        or
+        exists(SinkElement sink, SummaryComponentStack s |
+          pred = sinkElementInputState(sink, s.tail()) and
+          succ = sinkElementInputState(sink, s) and
           SummaryComponent::content(c) = s.head()
         )
       }
@@ -1146,6 +1559,12 @@ module Make<
         exists(SummarizedCallable sc, SummaryComponentStack s |
           pred = summaryNodeOutputState(sc, s) and
           succ = summaryNodeOutputState(sc, s.tail()) and
+          SummaryComponent::content(c) = s.head()
+        )
+        or
+        exists(SourceElement source, SummaryComponentStack s |
+          pred = sourceElementOutputState(source, s) and
+          succ = sourceElementOutputState(source, s.tail()) and
           SummaryComponent::content(c) = s.head()
         )
       }
@@ -1274,7 +1693,7 @@ module Make<
         exists(DataFlowCall call, ReturnKindExt rk |
           result = summaryArgParam(call, arg, sc) and
           summaryReturnNodeExt(ret, pragma[only_bind_into](rk)) and
-          out = pragma[only_bind_into](rk).getAnOutNode(call)
+          out = getAnOutNodeExt(call, pragma[only_bind_into](rk))
         )
       }
 
@@ -1692,10 +2111,11 @@ module Make<
               )
             )
             or
-            exists(ReturnNodeExt ret |
+            exists(ReturnNode ret, ValueReturnKind kind |
               c = "ReturnValue" and
               ret = node.asNode() and
-              ret.getKind().(ValueReturnKind).getKind() = getStandardReturnValueKind() and
+              kind.getKind() = ret.getKind() and
+              kind.getKind() = getStandardReturnValueKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
             )
             or
@@ -1724,6 +2144,40 @@ module Make<
             interpretInput(input, input.getNumToken(), ref, node)
           )
         }
+
+        final private class SourceOrSinkElementFinal = SourceOrSinkElement;
+
+        signature predicate sourceOrSinkElementSig(
+          Element e, string path, string kind, Provenance provenance, string model
+        );
+
+        private module MakeSourceOrSinkCallable<sourceOrSinkElementSig/5 sourceOrSinkElement> {
+          class SourceSinkCallable extends SourceOrSinkElementFinal {
+            private Provenance provenance;
+
+            SourceSinkCallable() { sourceOrSinkElement(this, _, _, provenance, _) }
+
+            /**
+             * Holds if there exists a manual model that applies to this.
+             */
+            predicate hasManualModel() { any(Provenance p | this.hasProvenance(p)).isManual() }
+
+            /**
+             * Holds if this has provenance `p`.
+             */
+            predicate hasProvenance(Provenance p) { provenance = p }
+          }
+        }
+
+        /**
+         * A callable that has a source model.
+         */
+        class SourceModelCallable = MakeSourceOrSinkCallable<sourceElement/5>::SourceSinkCallable;
+
+        /**
+         * A callable that has a sink model.
+         */
+        class SinkModelCallable = MakeSourceOrSinkCallable<sinkElement/5>::SourceSinkCallable;
 
         /** A source or sink relevant for testing. */
         signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
@@ -1821,13 +2275,20 @@ module Make<
     }
 
     /** A summarized callable relevant for testing. */
-    signature class RelevantNeutralCallableSig extends NeutralCallable {
-      /** Gets the string representation of this callable used by `neutral/1`. */
-      string getCallableCsv();
+    signature module RelevantNeutralCallableSig<NeutralCallableSig NeutralCallableInput> {
+      class RelevantNeutralCallable extends NeutralCallableInput {
+        /** Gets the string representation of this callable used by `neutral/1`. */
+        string getCallableCsv();
+      }
     }
 
-    module TestNeutralOutput<RelevantNeutralCallableSig RelevantNeutralCallable> {
-      private string renderProvenance(NeutralCallable c) {
+    module TestNeutralOutput<
+      NeutralCallableSig NeutralCallableInput,
+      RelevantNeutralCallableSig<NeutralCallableInput> RelevantNeutralCallableInput>
+    {
+      class RelevantNeutralCallable = RelevantNeutralCallableInput::RelevantNeutralCallable;
+
+      private string renderProvenance(NeutralCallableInput c) {
         exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
         or
         not c.hasManualModel() and

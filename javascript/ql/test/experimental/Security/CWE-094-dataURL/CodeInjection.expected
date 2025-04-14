@@ -1,0 +1,40 @@
+edges
+| test.js:5:11:5:44 | payload | test.js:6:30:6:36 | payload | provenance |  |
+| test.js:5:11:5:44 | payload | test.js:9:26:9:32 | payload | provenance |  |
+| test.js:5:21:5:44 | req.que ... rameter | test.js:5:11:5:44 | payload | provenance |  |
+| test.js:6:9:6:43 | payloadURL | test.js:7:16:7:25 | payloadURL | provenance |  |
+| test.js:6:22:6:43 | new URL ...  + sth) | test.js:6:9:6:43 | payloadURL | provenance |  |
+| test.js:6:30:6:36 | payload | test.js:6:30:6:42 | payload + sth | provenance |  |
+| test.js:6:30:6:42 | payload + sth | test.js:6:22:6:43 | new URL ...  + sth) | provenance | Config |
+| test.js:9:5:9:39 | payloadURL | test.js:10:16:10:25 | payloadURL | provenance |  |
+| test.js:9:18:9:39 | new URL ...  + sth) | test.js:9:5:9:39 | payloadURL | provenance |  |
+| test.js:9:26:9:32 | payload | test.js:9:26:9:38 | payload + sth | provenance |  |
+| test.js:9:26:9:38 | payload + sth | test.js:9:18:9:39 | new URL ...  + sth) | provenance | Config |
+| test.js:17:11:17:44 | payload | test.js:18:18:18:24 | payload | provenance |  |
+| test.js:17:11:17:44 | payload | test.js:19:18:19:24 | payload | provenance |  |
+| test.js:17:21:17:44 | req.que ... rameter | test.js:17:11:17:44 | payload | provenance |  |
+| test.js:19:18:19:24 | payload | test.js:19:18:19:30 | payload + sth | provenance |  |
+nodes
+| test.js:5:11:5:44 | payload | semmle.label | payload |
+| test.js:5:21:5:44 | req.que ... rameter | semmle.label | req.que ... rameter |
+| test.js:6:9:6:43 | payloadURL | semmle.label | payloadURL |
+| test.js:6:22:6:43 | new URL ...  + sth) | semmle.label | new URL ...  + sth) |
+| test.js:6:30:6:36 | payload | semmle.label | payload |
+| test.js:6:30:6:42 | payload + sth | semmle.label | payload + sth |
+| test.js:7:16:7:25 | payloadURL | semmle.label | payloadURL |
+| test.js:9:5:9:39 | payloadURL | semmle.label | payloadURL |
+| test.js:9:18:9:39 | new URL ...  + sth) | semmle.label | new URL ...  + sth) |
+| test.js:9:26:9:32 | payload | semmle.label | payload |
+| test.js:9:26:9:38 | payload + sth | semmle.label | payload + sth |
+| test.js:10:16:10:25 | payloadURL | semmle.label | payloadURL |
+| test.js:17:11:17:44 | payload | semmle.label | payload |
+| test.js:17:21:17:44 | req.que ... rameter | semmle.label | req.que ... rameter |
+| test.js:18:18:18:24 | payload | semmle.label | payload |
+| test.js:19:18:19:24 | payload | semmle.label | payload |
+| test.js:19:18:19:30 | payload + sth | semmle.label | payload + sth |
+subpaths
+#select
+| test.js:7:16:7:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:7:16:7:25 | payloadURL | This command line depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
+| test.js:10:16:10:25 | payloadURL | test.js:5:21:5:44 | req.que ... rameter | test.js:10:16:10:25 | payloadURL | This command line depends on a $@. | test.js:5:21:5:44 | req.que ... rameter | user-provided value |
+| test.js:18:18:18:24 | payload | test.js:17:21:17:44 | req.que ... rameter | test.js:18:18:18:24 | payload | This command line depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |
+| test.js:19:18:19:30 | payload + sth | test.js:17:21:17:44 | req.que ... rameter | test.js:19:18:19:30 | payload + sth | This command line depends on a $@. | test.js:17:21:17:44 | req.que ... rameter | user-provided value |

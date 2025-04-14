@@ -4,11 +4,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", False, "EnvironmentVariablesConfigurationProvider", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", False, "EnvironmentVariablesConfigurationProvider", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.Configuration.EnvironmentVariables.EnvironmentVariablesConfigurationProvider._prefix]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", False, "ToString", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.Configuration.EnvironmentVariables.EnvironmentVariablesConfigurationProvider._prefix]", "ReturnValue", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationProvider", "Load", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.EnvironmentVariables", "EnvironmentVariablesConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

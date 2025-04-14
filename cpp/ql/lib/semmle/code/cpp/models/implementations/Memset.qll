@@ -8,9 +8,10 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 private class MemsetFunctionModel extends ArrayFunction, DataFlowFunction, AliasFunction,
-  SideEffectFunction
+  SideEffectFunction, NonCppThrowingFunction
 {
   MemsetFunctionModel() {
     this.hasGlobalOrStdOrBslName("memset")

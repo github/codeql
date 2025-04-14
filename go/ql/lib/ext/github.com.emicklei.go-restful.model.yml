@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/emicklei/go-restful", "Request", True, "QueryParameters", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .ArrayElement
+      - ["github.com/emicklei/go-restful", "Request", True, "QueryParameter", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/emicklei/go-restful", "Request", True, "BodyParameter", "", "", "ReturnValue[0]", "remote", "manual"]
+      - ["github.com/emicklei/go-restful", "Request", True, "HeaderParameter", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/emicklei/go-restful", "Request", True, "PathParameter", "", "", "ReturnValue", "remote", "manual"]
+      - ["github.com/emicklei/go-restful", "Request", True, "PathParameters", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue
+      - ["github.com/emicklei/go-restful", "Request", True, "ReadEntity", "", "", "Argument[0]", "remote", "manual"]

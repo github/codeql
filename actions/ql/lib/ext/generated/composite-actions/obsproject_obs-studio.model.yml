@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["obsproject/obs-studio", "*", "input.failCondition", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.checkGlob", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.playtestBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.steamPassword", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.steamUser", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.preview", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.stableBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.betaBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.nightlyBranch", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.tagName", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.customLink", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.customTitle", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.urlPrefix", "code-injection", "generated"]
+     - ["obsproject/obs-studio", "*", "input.sparklePrivateKey", "code-injection", "generated"]

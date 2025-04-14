@@ -12,6 +12,29 @@
 
 import python
 import Variables.Definition
+import semmle.python.ApiGraphs
+
+private predicate is_pytest_fixture(Import imp, Variable name) {
+  exists(Alias a, API::Node pytest_fixture, API::Node decorator |
+    pytest_fixture = API::moduleImport("pytest").getMember("fixture") and
+    // The additional `.getReturn()` is to account for the difference between
+    // ```
+    // @pytest.fixture
+    // def foo():
+    //    ...
+    // ```
+    // and
+    // ```
+    // @pytest.fixture(some, args, here)
+    // def foo():
+    //    ...
+    // ```
+    decorator in [pytest_fixture, pytest_fixture.getReturn()] and
+    a = imp.getAName() and
+    a.getAsname().(Name).getVariable() = name and
+    a.getValue() = decorator.getReturn().getAValueReachableFromSource().asExpr()
+  )
+}
 
 predicate global_name_used(Module m, string name) {
   exists(Name u, GlobalVariable v |
@@ -117,6 +140,7 @@ predicate unused_import(Import imp, Variable name) {
   not all_not_understood(imp.getEnclosingModule()) and
   not imported_module_used_in_doctest(imp) and
   not imported_alias_used_in_typehint(imp, name) and
+  not is_pytest_fixture(imp, name) and
   // Only consider import statements that actually point-to something (possibly an unknown module).
   // If this is not the case, it's likely that the import statement never gets executed.
   imp.getAName().getValue().pointsTo(_)

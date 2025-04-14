@@ -1,0 +1,28 @@
+name: "Kotlin Build"
+
+on:
+  pull_request:
+    paths:
+      - "java/kotlin-extractor/**"
+      - "misc/bazel/**"
+      - "misc/codegen/**"
+      - "*.bazel*"
+      - .github/workflows/kotlin-build.yml
+    branches:
+      - main
+      - rc/*
+      - codeql-cli-*
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          bazel query //java/kotlin-extractor/...
+          # only build the default version as a quick check that we can build from `codeql`
+          # the full official build will be checked by QLucie
+          bazel build //java/kotlin-extractor

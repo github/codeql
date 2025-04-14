@@ -1,0 +1,4 @@
+| gen_ref_expr.rs:5:25:5:28 | &foo | getNumberOfAttrs: | 0 | hasExpr: | yes | isConst: | no | isMut: | no | isRaw: | no |
+| gen_ref_expr.rs:6:23:6:30 | &mut foo | getNumberOfAttrs: | 0 | hasExpr: | yes | isConst: | no | isMut: | yes | isRaw: | no |
+| gen_ref_expr.rs:7:35:7:48 | &raw const foo | getNumberOfAttrs: | 0 | hasExpr: | yes | isConst: | yes | isMut: | no | isRaw: | yes |
+| gen_ref_expr.rs:8:33:8:44 | &raw mut foo | getNumberOfAttrs: | 0 | hasExpr: | yes | isConst: | no | isMut: | yes | isRaw: | yes |

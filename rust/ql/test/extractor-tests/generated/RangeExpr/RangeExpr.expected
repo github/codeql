@@ -1,0 +1,6 @@
+| gen_range_expr.rs:5:13:5:18 | 1..=10 | getNumberOfAttrs: | 0 | hasEnd: | yes | hasOperatorName: | yes | hasStart: | yes |
+| gen_range_expr.rs:6:13:6:17 | 1..10 | getNumberOfAttrs: | 0 | hasEnd: | yes | hasOperatorName: | yes | hasStart: | yes |
+| gen_range_expr.rs:7:13:7:16 | 10.. | getNumberOfAttrs: | 0 | hasEnd: | no | hasOperatorName: | yes | hasStart: | yes |
+| gen_range_expr.rs:8:13:8:16 | ..10 | getNumberOfAttrs: | 0 | hasEnd: | yes | hasOperatorName: | yes | hasStart: | no |
+| gen_range_expr.rs:9:13:9:17 | ..=10 | getNumberOfAttrs: | 0 | hasEnd: | yes | hasOperatorName: | yes | hasStart: | no |
+| gen_range_expr.rs:10:13:10:14 | .. | getNumberOfAttrs: | 0 | hasEnd: | no | hasOperatorName: | yes | hasStart: | no |

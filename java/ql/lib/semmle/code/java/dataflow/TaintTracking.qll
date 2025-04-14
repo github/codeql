@@ -4,14 +4,12 @@
  */
 
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.internal.TaintTrackingUtil::StringBuilderVarModule
 
 module TaintTracking {
-  import semmle.code.java.dataflow.internal.tainttracking1.TaintTrackingParameter::Public
+  import semmle.code.java.dataflow.internal.TaintTrackingUtil
   private import semmle.code.java.dataflow.internal.DataFlowImplSpecific
   private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
   import TaintFlowMake<Location, JavaDataFlow, JavaTaintTracking>
-  import semmle.code.java.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

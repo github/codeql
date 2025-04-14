@@ -140,6 +140,7 @@ class KotlinExtractorExtension(
             val logger = Logger(loggerBase, tw)
             logger.info("Extraction started")
             logger.flush()
+            logger.infoVerbosity()
             logger.info("Extraction for invocation TRAP file $invocationTrapFile")
             logger.flush()
             logger.info("Kotlin version ${KotlinCompilerVersion.getVersion()}")

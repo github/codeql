@@ -82,6 +82,8 @@
 | GlobalDataFlow.cs:533:15:533:21 | access to field field |
 | GlobalDataFlow.cs:539:15:539:22 | access to field field |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field |
+| MultiImplementationA.cs:7:39:7:39 | access to parameter x |
+| MultiImplementationB.cs:5:39:5:39 | access to parameter x |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |

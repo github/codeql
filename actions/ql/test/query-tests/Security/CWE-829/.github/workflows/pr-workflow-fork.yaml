@@ -1,0 +1,27 @@
+name: "pr-workflow-fork"
+concurrency:
+  group: ${{ github.workflow }}-pr-workflow-fork-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request_target:
+  
+jobs:
+  pr-workflow-fork:
+    uses: ./.github/workflows/pr-workflow.yml
+    with:
+      github_event_name: ${{ github.event_name }}
+      github_event_pull_request_head_repo_id : ${{ github.event.pull_request.head.repo.id }}
+      github_workflow: $ {{ github.workflow }}
+      github_event_pull_request_head_sha: ${{ github.event.pull_request.head.sha }}
+      flow: ${{( github.event_name == 'push' && 'push' ) || ( github.event_name == 'merge_group' && 'merge_queue_check' ) || ( github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.id != 383289760 && 'pr_from_fork' ) || ( github.event_name == 'pull_request' && github.event.pull_request.head.repo.id == 383289760 && 'pr_from_branch' )}}      
+      sha_to_check: ${{ github.event.pull_request.head.sha || github.sha }}
+
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}          
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      PABLO_PROJ_JSON: ${{ secrets.PABLO_PROJ_JSON }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      CANCEL_GITHUB_TOKEN: ${{ github.token }}
+      NIXBUILD_TOKEN: ${{ secrets.NIXBUILD_TOKEN }}

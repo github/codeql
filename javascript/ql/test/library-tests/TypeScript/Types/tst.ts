@@ -494,3 +494,27 @@ module TS54 {
     return num % 2 === 0 ? "even": "odd";
   });
 }
+
+module TS55 {
+  const strings = (["foo", 123])
+    .filter(s => typeof s === "string");
+
+  for (const str of strings) {
+    str.toLowerCase(); // <- string in 5.5, string | number in 5.4
+  }
+
+  function f1(obj: Record<string, unknown>, key: string) {
+    if (typeof obj[key] === "string") {
+      var str = obj[key].toUpperCase(); // Now okay, previously was error
+    }
+  }
+}
+
+namespace TS57{
+  declare const a: symbol;
+  export class A {
+      [a]() { return 1 };
+  }
+
+  declare const e1: A[typeof a]; // Now okay, previously was compilation error TS2538: Type 'symbol' cannot be used as an index type.
+}

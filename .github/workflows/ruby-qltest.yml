@@ -64,10 +64,10 @@ jobs:
       - name: Cache compilation cache
         id: query-cache
         uses: ./.github/actions/cache-query-compilation
-        with: 
+        with:
           key: ruby-qltest
       - name: Run QL tests
         run: |
-          codeql test run --threads=0 --ram 50000 --search-path "${{ github.workspace }}/ruby/extractor-pack" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql test run --threads=0 --ram 50000 --search-path "${{ github.workspace }}" --check-databases --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}

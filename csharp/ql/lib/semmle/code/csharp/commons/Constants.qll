@@ -43,7 +43,7 @@ predicate isConstantComparison(ComparisonOperation co, boolean b) {
 private module ConstantComparisonOperation {
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private SimpleType convertedType(Expr expr) { result = expr.stripImplicitCasts().getType() }
+  private SimpleType convertedType(Expr expr) { result = expr.stripImplicit().getType() }
 
   private int maxValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())

@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["actions/actions-runner-controller", "*", "input.image-tag", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.image-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.arc-controller-namespace", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.arc-namespace", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.arc-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.repo-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.repo-owner", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.workflow-file", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "input.auth-token", "code-injection", "generated"]

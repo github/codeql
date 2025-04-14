@@ -1,23 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>Semmle.Autobuild.Cpp</AssemblyName>
-    <RootNamespace>Semmle.Autobuild.Cpp</RootNamespace>
-    <ApplicationIcon />
     <OutputType>Exe</OutputType>
-    <StartupObject />
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\extractor\Semmle.Util\Semmle.Util.csproj" />
     <ProjectReference Include="..\Semmle.Autobuild.Shared\Semmle.Autobuild.Shared.csproj" />
   </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

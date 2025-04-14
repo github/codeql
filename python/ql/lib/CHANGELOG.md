@@ -1,3 +1,161 @@
+## 4.0.4
+
+### Minor Analysis Improvements
+
+- Added the methods `getMinArguments` and `getMaxArguments` to the `Function` class. These return the minimum and maximum positional arguments that the given function accepts.
+
+### Bug Fixes
+
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+No user-facing changes.
+
+## 4.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
+- Using the `break` and `continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated TypeTracking library.
+* Deleted the deprecated `classRef` predicate from the `FieldStorage` module, use `subclassRef` instead.
+* Deleted a lot of deprecated modules and predicates from `Stdlib.qll`, use API-graphs directly instead.
+
+### Minor Analysis Improvements
+
+* Additional data flow models for the builtin functions `map`, `filter`, `zip`, and `enumerate` have been added.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+
+## 3.1.0
+
+### New Features
+
+* Added support for parameter annotations in API graphs. This means that in a function definition such as `def foo(x: Bar): ...`, you can now use the `getInstanceFromAnnotation()` method to step from `Bar` to `x`. In addition to this, the `getAnInstance` method now also includes instances arising from parameter annotations.
+
+### Minor Analysis Improvements
+
+* Added modeling of `fastapi.Request` and `starlette.requests.Request` as sources of untrusted input,
+  and modeling of tainted data flow out of these request objects.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Bug Fixes
+
+- Fixed a problem with the control-flow graph construction, where writing `case True:` or `case False:` would cause parts of the graph to be pruned by mistake.
+
+## 2.2.0
+
+### Major Analysis Improvements
+
+* Added modeling of the `bottle` framework, leading to new remote flow sources and header writes
+
+## 2.1.2
+
+### Minor Analysis Improvements
+
+- Added partial support for the `copy.replace` method, [added](https://docs.python.org/3.13/library/copy.html#copy.replace) in Python 3.13.
+- Added support for type parameter defaults, as specified in [PEP-696](https://peps.python.org/pep-0696/).
+
+## 2.1.1
+
+### Minor Analysis Improvements
+
+* Modelled that `re.finditer` returns an iterable of `re.Match` objects. This is now understood by the API graph in many cases.
+* Type tracking, and hence the API graph, is now able to correctly trace through comprehensions.
+* More precise modelling of the dataflow through comprehensions. In particular, captured variables are now handled correctly.
+* Dataflow out of yield is added, allowing proper tracing through generators.
+* Added several models of standard library functions and classes, in anticipation of no longer extracting the standard library in a future release.
+
+## 2.1.0
+
+### New Features
+
+* Added support for custom threat-models, which can be used in most of our taint-tracking queries, see our [documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models) for more details.
+
+### Minor Analysis Improvements
+
+* The common sanitizer guard `StringConstCompareBarrier` has been renamed to `ConstCompareBarrier` and expanded to cover comparisons with other constant values such as `None`. This may result in fewer false positive results for several queries. 
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `semmle.python.RegexTreeView` module, use `semmle.python.regexp.RegexTreeView` instead.
+* Deleted the deprecated `RegexString` class from  `regex.qll`.
+* Deleted the deprecated `Regex` class, use `RegExp` instead.
+* Deleted the deprecated `semmle/python/security/SQL.qll` file.
+* Deleted the deprecated `useSSL` predicates from the LDAP libraries, use `useSsl` instead.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* Added support for `DictionaryElement[<key>]` and `DictionaryElementAny` when Customizing Library Models for `sourceModel` (see https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/)
+
+## 1.0.4
+
+### Minor Analysis Improvements
+
+* Additional modelling to detect direct writes to the `Set-Cookie` header has been added for several web frameworks.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* A number of Python queries now support sinks defined using data extensions. The format of data extensions for Python has been documented.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### New Features
+
+* A Python MaD (Models as Data) row may now contain a dotted path in the `type` column. Like in Ruby, a path to a class will refer to instances of that class. This means that the summary `["foo", "Member[MyClass].Instance.Member[instance_method]", "Argument[0]", "ReturnValue", "value"]` can now be written `["foo.MS_Class", "Member[instance_method]", "Argument[0]", "ReturnValue", "value"]`. To refer to an actual class, one may add a `!` at the end of the path.
+
+### Minor Analysis Improvements
+
+* The `request` parameter of Flask `SessionInterface.open_session` method is now modeled as a remote flow source.
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `py/clear-text-storage-sensitive-data` and `py/clear-text-logging-sensitive-data`.
+
 ## 0.12.1
 
 ### Major Analysis Improvements

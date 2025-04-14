@@ -1,0 +1,10 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - cipher = { version = "0.4.4" }
+    - rc4 = { version = "0.1.0" }
+    - rabbit = { version = "0.4.1" }
+    - aes = { version = "0.8.4" }
+    - des = { version = "0.8.1" }
+    - rc2 = { version = "0.8.1" }
+    - rc5 = { version = "0.0.1" }
+    - cbc = { version = "0.1.2" }

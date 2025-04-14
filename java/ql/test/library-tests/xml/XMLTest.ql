@@ -1,5 +1,5 @@
 import semmle.code.xml.XML
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module XmlTest implements TestSig {
   string getARelevantTag() { result = "hasXmlResult" }

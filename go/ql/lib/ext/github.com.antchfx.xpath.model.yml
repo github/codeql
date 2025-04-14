@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/antchfx/xpath", "", False, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/xpath", "", False, "CompileWithNS", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/xpath", "", False, "MustCompile", "", "", "Argument[0]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/xpath", "", False, "Select", "", "", "Argument[1]", "xpath-injection", "manual"]

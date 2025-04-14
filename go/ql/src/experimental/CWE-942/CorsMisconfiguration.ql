@@ -52,7 +52,7 @@ class AllowCredentialsHeaderWrite extends Http::HeaderWrite {
 }
 
 module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   additional predicate isSinkHW(DataFlow::Node sink, AllowOriginHeaderWrite hw) {
     sink = hw.getValue()
@@ -70,21 +70,21 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
 }
 
 module UntrustedToAllowOriginConfigConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  additional predicate isSinkWrite(DataFlow::Node sink, GinCors::AllowOriginsWrite w) { sink = w }
+  additional predicate isSinkWrite(DataFlow::Node sink, UniversalOriginWrite w) { sink = w }
 
   predicate isSink(DataFlow::Node sink) { isSinkWrite(sink, _) }
 }
 
 /**
- * Tracks taint flowfor reasoning about when a `RemoteFlowSource` flows to
+ * Tracks taint flowfor reasoning about when a `ActiveThreatModelSource` flows to
  * a `HeaderWrite` that writes an `Access-Control-Allow-Origin` header's value.
  */
 module UntrustedToAllowOriginHeaderFlow = TaintTracking::Global<UntrustedToAllowOriginHeaderConfig>;
 
 /**
- * Tracks taint flowfor reasoning about when a `RemoteFlowSource` flows to
+ * Tracks taint flowfor reasoning about when a `ActiveThreatModelSource` flows to
  * a `AllowOriginsWrite` that writes an `Access-Control-Allow-Origin` header's value.
  */
 module UntrustedToAllowOriginConfigFlow = TaintTracking::Global<UntrustedToAllowOriginConfigConfig>;
@@ -102,17 +102,17 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
       allowCredentialsHW.getResponseWriter()
   )
   or
-  exists(GinCors::AllowCredentialsWrite allowCredentialsGin |
+  exists(UniversalAllowCredentialsWrite allowCredentialsGin |
     allowCredentialsGin.getExpr().getBoolValue() = true
   |
-    allowCredentialsGin.getConfig() = allowOriginHW.(GinCors::AllowOriginsWrite).getConfig() and
-    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+    allowCredentialsGin.getConfig() = allowOriginHW.(UniversalOriginWrite).getConfig() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
       allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getConfig() = allowAllOrigins.getConfig()
     )
     or
-    allowCredentialsGin.getBase() = allowOriginHW.(GinCors::AllowOriginsWrite).getBase() and
-    not exists(GinCors::AllowAllOriginsWrite allowAllOrigins |
+    allowCredentialsGin.getBase() = allowOriginHW.(UniversalOriginWrite).getBase() and
+    not exists(UniversalAllowAllOriginsWrite allowAllOrigins |
       allowAllOrigins.getExpr().getBoolValue() = true and
       allowCredentialsGin.getBase() = allowAllOrigins.getBase()
     )
@@ -121,7 +121,7 @@ predicate allowCredentialsIsSetToTrue(DataFlow::ExprNode allowOriginHW) {
 
 /**
  * Holds if the provided `allowOriginHW` HeaderWrite's value is set using an
- * RemoteFlowSource.
+ * ActiveThreatModelSource.
  * The `message` parameter is populated with the warning message to be returned by the query.
  */
 predicate flowsFromUntrustedToAllowOrigin(DataFlow::ExprNode allowOriginHW, string message) {
@@ -150,7 +150,7 @@ predicate allowOriginIsNull(DataFlow::ExprNode allowOriginHW, string message) {
       + " is set to `true`"
   or
   allowOriginHW
-      .(GinCors::AllowOriginsWrite)
+      .(UniversalOriginWrite)
       .asExpr()
       .(SliceLit)
       .getAnElement()
@@ -169,7 +169,7 @@ class MapRead extends DataFlow::ElementReadNode {
 }
 
 module FromUntrustedConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { isSinkCgn(sink, _) }
 
@@ -208,13 +208,13 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * Tracks taint flow for reasoning about when a `RemoteFlowSource` flows
+ * Tracks taint flow for reasoning about when a `ActiveThreatModelSource` flows
  * somewhere.
  */
 module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;
 
 /**
- * Holds if the provided `allowOriginHW` is also destination of a `RemoteFlowSource`.
+ * Holds if the provided `allowOriginHW` is also destination of a `ActiveThreatModelSource`.
  */
 predicate flowsToGuardedByCheckOnUntrusted(DataFlow::ExprNode allowOriginHW) {
   exists(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |

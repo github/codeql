@@ -1,0 +1,7 @@
+| com/semmle/e/DeadProfileComponent.java:8:14:8:33 | DeadProfileComponent | dead |
+| com/semmle/e/LiveConfiguration.java:16:14:16:30 | LiveConfiguration | live |
+| com/semmle/e/LiveProfileComponent.java:8:14:8:33 | LiveProfileComponent | live |
+| com/semmle/e/LiveRestController.java:12:14:12:31 | LiveRestController | live |
+| com/semmle/f/DeadConfiguration.java:9:14:9:30 | DeadConfiguration | dead |
+| com/semmle/g/ProfileComponent.java:6:14:6:29 | ProfileComponent | dead |
+| com/semmle/h/WebXMLLiveConfiguration.java:11:14:11:36 | WebXMLLiveConfiguration | live |

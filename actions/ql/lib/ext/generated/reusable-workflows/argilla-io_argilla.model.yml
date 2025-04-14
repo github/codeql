@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["argilla-io/argilla/.github/workflows/run-python-tests.yml", "*", "input.pytestArgs", "code-injection", "generated"]

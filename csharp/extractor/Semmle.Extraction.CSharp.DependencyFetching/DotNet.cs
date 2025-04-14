@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -19,19 +18,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             this.logger = logger;
-            Info();
+            if (runDotnetInfo)
+            {
+                Info();
+            }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) => new DotNet(logger, dotNetPath, tempWorkingDirectory);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
         private void Info()
         {
@@ -67,6 +69,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
+            }
+
+            if (restoreSettings.TargetWindows)
+            {
+                args += " /p:EnableWindowsTargeting=true";
+            }
+
+            if (restoreSettings.ExtraArgs is not null)
+            {
+                args += $" {restoreSettings.ExtraArgs}";
             }
 
             return args;
@@ -126,7 +138,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "8.0.101";
+        public const string LatestDotNetSdkVersion = "9.0.100";
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
@@ -164,7 +176,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (versions.Count > 0)
             {
-                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, versions);
+                return
+                    DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, versions) |
+                    // if neither of the versions succeed, try the latest version
+                    DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, [LatestDotNetSdkVersion], needExactVersion: false);
             }
 
             if (ensureDotNetAvailable)
@@ -230,7 +245,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
                             Argument("-Command").
-                            Argument("\"" + psCommand + "\"").
+                            Argument($"\"{psCommand}\"").
                             Script;
 
                         return GetInstall("pwsh") | GetInstall("powershell");
@@ -243,7 +258,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
-                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"));
+                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"),
+                        logger);
 
                     var chmod = new CommandBuilder(actions).
                         RunCommand("chmod").
@@ -263,6 +279,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         Argument(path).Script;
                 }
 
+                var dotnetInfo = new CommandBuilder(actions).
+                    RunCommand(actions.PathCombine(path, "dotnet")).
+                    Argument("--info").Script;
+
+                Func<string, BuildScript> getInstallAndVerify = version =>
+                    // run `dotnet --info` after install, to check that it executes successfully
+                    getInstall(version) & dotnetInfo;
+
                 var installScript = prelude & BuildScript.Failure;
 
                 var attempted = new HashSet<string>();
@@ -277,7 +301,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                         // When there are multiple versions requested, we want to try to fetch them all, reporting
                         // a successful exit code when at least one of them succeeds
-                        return combinedExit != 0 ? getInstall(version) : BuildScript.Bind(getInstall(version), _ => BuildScript.Success);
+                        return combinedExit != 0 ? getInstallAndVerify(version) : BuildScript.Bind(getInstallAndVerify(version), _ => BuildScript.Success);
                     });
                 }
 

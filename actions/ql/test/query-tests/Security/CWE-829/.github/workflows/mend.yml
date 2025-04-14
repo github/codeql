@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  workflow_call:
+
+env:
+  API_KEY: ${{ secrets.API_KEY != '' && secrets.API_KEY  }}
+
+jobs:
+  mend:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Set the checkout ref"
+        id: set_ref
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "ref=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "ref=${{ github.ref }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: "checkout"
+        if: success()
+        uses: "actions/checkout@v4"
+        with:
+          fetch-depth: 1
+          ref: ${{ steps.set_ref.outputs.ref }}
+
+      - name: "setup ruby"
+        if: success()
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: 2.7

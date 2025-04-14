@@ -1,0 +1,413 @@
+models
+| 1 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 2 | Summary: java.util; Scanner; true; Scanner; ; ; Argument[0]; Argument[this]; taint; manual |
+| 3 | Summary: java.util; Scanner; true; findInLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.util; Scanner; true; findWithinHorizon; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: java.util; Scanner; true; next; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.util; Scanner; true; nextBigDecimal; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.util; Scanner; true; nextBigInteger; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: java.util; Scanner; true; nextBoolean; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: java.util; Scanner; true; nextByte; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: java.util; Scanner; true; nextDouble; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: java.util; Scanner; true; nextFloat; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: java.util; Scanner; true; nextInt; ; ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: java.util; Scanner; true; nextLine; ; ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: java.util; Scanner; true; nextLong; ; ; Argument[this]; ReturnValue; taint; manual |
+| 15 | Summary: java.util; Scanner; true; nextShort; ; ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: java.util; Scanner; true; reset; ; ; Argument[this]; ReturnValue; value; manual |
+| 17 | Summary: java.util; Scanner; true; skip; ; ; Argument[this]; ReturnValue; value; manual |
+| 18 | Summary: java.util; Scanner; true; useDelimiter; ; ; Argument[this]; ReturnValue; value; manual |
+| 19 | Summary: java.util; Scanner; true; useLocale; ; ; Argument[this]; ReturnValue; value; manual |
+| 20 | Summary: java.util; Scanner; true; useRadix; ; ; Argument[this]; ReturnValue; value; manual |
+edges
+| Test.java:27:14:27:28 | (...)... : File | Test.java:28:22:28:23 | in : File | provenance |  |
+| Test.java:27:21:27:28 | source(...) : Object | Test.java:27:14:27:28 | (...)... : File | provenance |  |
+| Test.java:28:10:28:24 | new Scanner(...) : Scanner | Test.java:29:9:29:11 | out | provenance |  |
+| Test.java:28:22:28:23 | in : File | Test.java:28:10:28:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:34:14:34:28 | (...)... : File | Test.java:35:22:35:23 | in : File | provenance |  |
+| Test.java:34:21:34:28 | source(...) : Object | Test.java:34:14:34:28 | (...)... : File | provenance |  |
+| Test.java:35:10:35:40 | new Scanner(...) : Scanner | Test.java:36:9:36:11 | out | provenance |  |
+| Test.java:35:22:35:23 | in : File | Test.java:35:10:35:40 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:41:14:41:28 | (...)... : File | Test.java:42:22:42:23 | in : File | provenance |  |
+| Test.java:41:21:41:28 | source(...) : Object | Test.java:41:14:41:28 | (...)... : File | provenance |  |
+| Test.java:42:10:42:39 | new Scanner(...) : Scanner | Test.java:43:9:43:11 | out | provenance |  |
+| Test.java:42:22:42:23 | in : File | Test.java:42:10:42:39 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:48:21:48:42 | (...)... : InputStream | Test.java:49:22:49:23 | in : InputStream | provenance |  |
+| Test.java:48:35:48:42 | source(...) : Object | Test.java:48:21:48:42 | (...)... : InputStream | provenance |  |
+| Test.java:49:10:49:24 | new Scanner(...) : Scanner | Test.java:50:9:50:11 | out | provenance |  |
+| Test.java:49:22:49:23 | in : InputStream | Test.java:49:10:49:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:55:21:55:42 | (...)... : InputStream | Test.java:56:22:56:23 | in : InputStream | provenance |  |
+| Test.java:55:35:55:42 | source(...) : Object | Test.java:55:21:55:42 | (...)... : InputStream | provenance |  |
+| Test.java:56:10:56:40 | new Scanner(...) : Scanner | Test.java:57:9:57:11 | out | provenance |  |
+| Test.java:56:22:56:23 | in : InputStream | Test.java:56:10:56:40 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:62:21:62:42 | (...)... : InputStream | Test.java:63:22:63:23 | in : InputStream | provenance |  |
+| Test.java:62:35:62:42 | source(...) : Object | Test.java:62:21:62:42 | (...)... : InputStream | provenance |  |
+| Test.java:63:10:63:39 | new Scanner(...) : Scanner | Test.java:64:9:64:11 | out | provenance |  |
+| Test.java:63:22:63:23 | in : InputStream | Test.java:63:10:63:39 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:69:14:69:28 | (...)... : Path | Test.java:70:22:70:23 | in : Path | provenance |  |
+| Test.java:69:21:69:28 | source(...) : Object | Test.java:69:14:69:28 | (...)... : Path | provenance |  |
+| Test.java:70:10:70:24 | new Scanner(...) : Scanner | Test.java:71:9:71:11 | out | provenance |  |
+| Test.java:70:22:70:23 | in : Path | Test.java:70:10:70:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:76:14:76:28 | (...)... : Path | Test.java:77:22:77:23 | in : Path | provenance |  |
+| Test.java:76:21:76:28 | source(...) : Object | Test.java:76:14:76:28 | (...)... : Path | provenance |  |
+| Test.java:77:10:77:40 | new Scanner(...) : Scanner | Test.java:78:9:78:11 | out | provenance |  |
+| Test.java:77:22:77:23 | in : Path | Test.java:77:10:77:40 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:83:14:83:28 | (...)... : Path | Test.java:84:22:84:23 | in : Path | provenance |  |
+| Test.java:83:21:83:28 | source(...) : Object | Test.java:83:14:83:28 | (...)... : Path | provenance |  |
+| Test.java:84:10:84:39 | new Scanner(...) : Scanner | Test.java:85:9:85:11 | out | provenance |  |
+| Test.java:84:22:84:23 | in : Path | Test.java:84:10:84:39 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:90:18:90:36 | (...)... : Readable | Test.java:91:22:91:23 | in : Readable | provenance |  |
+| Test.java:90:29:90:36 | source(...) : Object | Test.java:90:18:90:36 | (...)... : Readable | provenance |  |
+| Test.java:91:10:91:24 | new Scanner(...) : Scanner | Test.java:92:9:92:11 | out | provenance |  |
+| Test.java:91:22:91:23 | in : Readable | Test.java:91:10:91:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:97:29:97:58 | (...)... : ReadableByteChannel | Test.java:98:22:98:23 | in : ReadableByteChannel | provenance |  |
+| Test.java:97:51:97:58 | source(...) : Object | Test.java:97:29:97:58 | (...)... : ReadableByteChannel | provenance |  |
+| Test.java:98:10:98:24 | new Scanner(...) : Scanner | Test.java:99:9:99:11 | out | provenance |  |
+| Test.java:98:22:98:23 | in : ReadableByteChannel | Test.java:98:10:98:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:104:29:104:58 | (...)... : ReadableByteChannel | Test.java:105:22:105:23 | in : ReadableByteChannel | provenance |  |
+| Test.java:104:51:104:58 | source(...) : Object | Test.java:104:29:104:58 | (...)... : ReadableByteChannel | provenance |  |
+| Test.java:105:10:105:40 | new Scanner(...) : Scanner | Test.java:106:9:106:11 | out | provenance |  |
+| Test.java:105:22:105:23 | in : ReadableByteChannel | Test.java:105:10:105:40 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:111:29:111:58 | (...)... : ReadableByteChannel | Test.java:112:22:112:23 | in : ReadableByteChannel | provenance |  |
+| Test.java:111:51:111:58 | source(...) : Object | Test.java:111:29:111:58 | (...)... : ReadableByteChannel | provenance |  |
+| Test.java:112:10:112:39 | new Scanner(...) : Scanner | Test.java:113:9:113:11 | out | provenance |  |
+| Test.java:112:22:112:23 | in : ReadableByteChannel | Test.java:112:10:112:39 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:118:16:118:32 | (...)... : String | Test.java:119:22:119:23 | in : String | provenance |  |
+| Test.java:118:25:118:32 | source(...) : Object | Test.java:118:16:118:32 | (...)... : String | provenance |  |
+| Test.java:119:10:119:24 | new Scanner(...) : Scanner | Test.java:120:9:120:11 | out | provenance |  |
+| Test.java:119:22:119:23 | in : String | Test.java:119:10:119:24 | new Scanner(...) : Scanner | provenance | MaD:2 |
+| Test.java:125:17:125:34 | (...)... : Scanner | Test.java:126:10:126:11 | in : Scanner | provenance |  |
+| Test.java:125:27:125:34 | source(...) : Object | Test.java:125:17:125:34 | (...)... : Scanner | provenance |  |
+| Test.java:126:10:126:11 | in : Scanner | Test.java:126:10:126:38 | findInLine(...) : String | provenance | MaD:3 |
+| Test.java:126:10:126:38 | findInLine(...) : String | Test.java:127:9:127:11 | out | provenance |  |
+| Test.java:132:17:132:34 | (...)... : Scanner | Test.java:133:10:133:11 | in : Scanner | provenance |  |
+| Test.java:132:27:132:34 | source(...) : Object | Test.java:132:17:132:34 | (...)... : Scanner | provenance |  |
+| Test.java:133:10:133:11 | in : Scanner | Test.java:133:10:133:37 | findInLine(...) : String | provenance | MaD:3 |
+| Test.java:133:10:133:37 | findInLine(...) : String | Test.java:134:9:134:11 | out | provenance |  |
+| Test.java:139:17:139:34 | (...)... : Scanner | Test.java:140:10:140:11 | in : Scanner | provenance |  |
+| Test.java:139:27:139:34 | source(...) : Object | Test.java:139:17:139:34 | (...)... : Scanner | provenance |  |
+| Test.java:140:10:140:11 | in : Scanner | Test.java:140:10:140:48 | findWithinHorizon(...) : String | provenance | MaD:4 |
+| Test.java:140:10:140:48 | findWithinHorizon(...) : String | Test.java:141:9:141:11 | out | provenance |  |
+| Test.java:146:17:146:34 | (...)... : Scanner | Test.java:147:10:147:11 | in : Scanner | provenance |  |
+| Test.java:146:27:146:34 | source(...) : Object | Test.java:146:17:146:34 | (...)... : Scanner | provenance |  |
+| Test.java:147:10:147:11 | in : Scanner | Test.java:147:10:147:47 | findWithinHorizon(...) : String | provenance | MaD:4 |
+| Test.java:147:10:147:47 | findWithinHorizon(...) : String | Test.java:148:9:148:11 | out | provenance |  |
+| Test.java:153:17:153:34 | (...)... : Scanner | Test.java:154:10:154:11 | in : Scanner | provenance |  |
+| Test.java:153:27:153:34 | source(...) : Object | Test.java:153:17:153:34 | (...)... : Scanner | provenance |  |
+| Test.java:154:10:154:11 | in : Scanner | Test.java:154:10:154:32 | next(...) : String | provenance | MaD:5 |
+| Test.java:154:10:154:32 | next(...) : String | Test.java:155:9:155:11 | out | provenance |  |
+| Test.java:160:17:160:34 | (...)... : Scanner | Test.java:161:10:161:11 | in : Scanner | provenance |  |
+| Test.java:160:27:160:34 | source(...) : Object | Test.java:160:17:160:34 | (...)... : Scanner | provenance |  |
+| Test.java:161:10:161:11 | in : Scanner | Test.java:161:10:161:31 | next(...) : String | provenance | MaD:5 |
+| Test.java:161:10:161:31 | next(...) : String | Test.java:162:9:162:11 | out | provenance |  |
+| Test.java:167:17:167:34 | (...)... : Scanner | Test.java:168:10:168:11 | in : Scanner | provenance |  |
+| Test.java:167:27:167:34 | source(...) : Object | Test.java:167:17:167:34 | (...)... : Scanner | provenance |  |
+| Test.java:168:10:168:11 | in : Scanner | Test.java:168:10:168:18 | next(...) : String | provenance | MaD:1 |
+| Test.java:168:10:168:11 | in : Scanner | Test.java:168:10:168:18 | next(...) : String | provenance | MaD:5 |
+| Test.java:168:10:168:18 | next(...) : String | Test.java:169:9:169:11 | out | provenance |  |
+| Test.java:174:17:174:34 | (...)... : Scanner | Test.java:175:10:175:11 | in : Scanner | provenance |  |
+| Test.java:174:27:174:34 | source(...) : Object | Test.java:174:17:174:34 | (...)... : Scanner | provenance |  |
+| Test.java:175:10:175:11 | in : Scanner | Test.java:175:10:175:28 | nextBigDecimal(...) : BigDecimal | provenance | MaD:6 |
+| Test.java:175:10:175:28 | nextBigDecimal(...) : BigDecimal | Test.java:176:9:176:11 | out | provenance |  |
+| Test.java:181:17:181:34 | (...)... : Scanner | Test.java:182:10:182:11 | in : Scanner | provenance |  |
+| Test.java:181:27:181:34 | source(...) : Object | Test.java:181:17:181:34 | (...)... : Scanner | provenance |  |
+| Test.java:182:10:182:11 | in : Scanner | Test.java:182:10:182:28 | nextBigInteger(...) : BigInteger | provenance | MaD:7 |
+| Test.java:182:10:182:28 | nextBigInteger(...) : BigInteger | Test.java:183:9:183:11 | out | provenance |  |
+| Test.java:188:17:188:34 | (...)... : Scanner | Test.java:189:10:189:11 | in : Scanner | provenance |  |
+| Test.java:188:27:188:34 | source(...) : Object | Test.java:188:17:188:34 | (...)... : Scanner | provenance |  |
+| Test.java:189:10:189:11 | in : Scanner | Test.java:189:10:189:29 | nextBigInteger(...) : BigInteger | provenance | MaD:7 |
+| Test.java:189:10:189:29 | nextBigInteger(...) : BigInteger | Test.java:190:9:190:11 | out | provenance |  |
+| Test.java:195:17:195:34 | (...)... : Scanner | Test.java:196:10:196:11 | in : Scanner | provenance |  |
+| Test.java:195:27:195:34 | source(...) : Object | Test.java:195:17:195:34 | (...)... : Scanner | provenance |  |
+| Test.java:196:10:196:11 | in : Scanner | Test.java:196:10:196:25 | nextBoolean(...) : Boolean | provenance | MaD:8 |
+| Test.java:196:10:196:25 | nextBoolean(...) : Boolean | Test.java:197:9:197:11 | out | provenance |  |
+| Test.java:202:17:202:34 | (...)... : Scanner | Test.java:203:10:203:11 | in : Scanner | provenance |  |
+| Test.java:202:27:202:34 | source(...) : Object | Test.java:202:17:202:34 | (...)... : Scanner | provenance |  |
+| Test.java:203:10:203:11 | in : Scanner | Test.java:203:10:203:22 | nextByte(...) : Number | provenance | MaD:9 |
+| Test.java:203:10:203:22 | nextByte(...) : Number | Test.java:204:9:204:11 | out | provenance |  |
+| Test.java:209:17:209:34 | (...)... : Scanner | Test.java:210:10:210:11 | in : Scanner | provenance |  |
+| Test.java:209:27:209:34 | source(...) : Object | Test.java:209:17:209:34 | (...)... : Scanner | provenance |  |
+| Test.java:210:10:210:11 | in : Scanner | Test.java:210:10:210:23 | nextByte(...) : Number | provenance | MaD:9 |
+| Test.java:210:10:210:23 | nextByte(...) : Number | Test.java:211:9:211:11 | out | provenance |  |
+| Test.java:216:17:216:34 | (...)... : Scanner | Test.java:217:10:217:11 | in : Scanner | provenance |  |
+| Test.java:216:27:216:34 | source(...) : Object | Test.java:216:17:216:34 | (...)... : Scanner | provenance |  |
+| Test.java:217:10:217:11 | in : Scanner | Test.java:217:10:217:24 | nextDouble(...) : Number | provenance | MaD:10 |
+| Test.java:217:10:217:24 | nextDouble(...) : Number | Test.java:218:9:218:11 | out | provenance |  |
+| Test.java:223:17:223:34 | (...)... : Scanner | Test.java:224:10:224:11 | in : Scanner | provenance |  |
+| Test.java:223:27:223:34 | source(...) : Object | Test.java:223:17:223:34 | (...)... : Scanner | provenance |  |
+| Test.java:224:10:224:11 | in : Scanner | Test.java:224:10:224:23 | nextFloat(...) : Number | provenance | MaD:11 |
+| Test.java:224:10:224:23 | nextFloat(...) : Number | Test.java:225:9:225:11 | out | provenance |  |
+| Test.java:230:17:230:34 | (...)... : Scanner | Test.java:231:10:231:11 | in : Scanner | provenance |  |
+| Test.java:230:27:230:34 | source(...) : Object | Test.java:230:17:230:34 | (...)... : Scanner | provenance |  |
+| Test.java:231:10:231:11 | in : Scanner | Test.java:231:10:231:21 | nextInt(...) : Number | provenance | MaD:12 |
+| Test.java:231:10:231:21 | nextInt(...) : Number | Test.java:232:9:232:11 | out | provenance |  |
+| Test.java:237:17:237:34 | (...)... : Scanner | Test.java:238:10:238:11 | in : Scanner | provenance |  |
+| Test.java:237:27:237:34 | source(...) : Object | Test.java:237:17:237:34 | (...)... : Scanner | provenance |  |
+| Test.java:238:10:238:11 | in : Scanner | Test.java:238:10:238:22 | nextInt(...) : Number | provenance | MaD:12 |
+| Test.java:238:10:238:22 | nextInt(...) : Number | Test.java:239:9:239:11 | out | provenance |  |
+| Test.java:244:17:244:34 | (...)... : Scanner | Test.java:245:10:245:11 | in : Scanner | provenance |  |
+| Test.java:244:27:244:34 | source(...) : Object | Test.java:244:17:244:34 | (...)... : Scanner | provenance |  |
+| Test.java:245:10:245:11 | in : Scanner | Test.java:245:10:245:22 | nextLine(...) : String | provenance | MaD:13 |
+| Test.java:245:10:245:22 | nextLine(...) : String | Test.java:246:9:246:11 | out | provenance |  |
+| Test.java:251:17:251:34 | (...)... : Scanner | Test.java:252:10:252:11 | in : Scanner | provenance |  |
+| Test.java:251:27:251:34 | source(...) : Object | Test.java:251:17:251:34 | (...)... : Scanner | provenance |  |
+| Test.java:252:10:252:11 | in : Scanner | Test.java:252:10:252:22 | nextLong(...) : Number | provenance | MaD:14 |
+| Test.java:252:10:252:22 | nextLong(...) : Number | Test.java:253:9:253:11 | out | provenance |  |
+| Test.java:258:17:258:34 | (...)... : Scanner | Test.java:259:10:259:11 | in : Scanner | provenance |  |
+| Test.java:258:27:258:34 | source(...) : Object | Test.java:258:17:258:34 | (...)... : Scanner | provenance |  |
+| Test.java:259:10:259:11 | in : Scanner | Test.java:259:10:259:23 | nextLong(...) : Number | provenance | MaD:14 |
+| Test.java:259:10:259:23 | nextLong(...) : Number | Test.java:260:9:260:11 | out | provenance |  |
+| Test.java:265:17:265:34 | (...)... : Scanner | Test.java:266:10:266:11 | in : Scanner | provenance |  |
+| Test.java:265:27:265:34 | source(...) : Object | Test.java:265:17:265:34 | (...)... : Scanner | provenance |  |
+| Test.java:266:10:266:11 | in : Scanner | Test.java:266:10:266:23 | nextShort(...) : Number | provenance | MaD:15 |
+| Test.java:266:10:266:23 | nextShort(...) : Number | Test.java:267:9:267:11 | out | provenance |  |
+| Test.java:272:17:272:34 | (...)... : Scanner | Test.java:273:10:273:11 | in : Scanner | provenance |  |
+| Test.java:272:27:272:34 | source(...) : Object | Test.java:272:17:272:34 | (...)... : Scanner | provenance |  |
+| Test.java:273:10:273:11 | in : Scanner | Test.java:273:10:273:24 | nextShort(...) : Number | provenance | MaD:15 |
+| Test.java:273:10:273:24 | nextShort(...) : Number | Test.java:274:9:274:11 | out | provenance |  |
+| Test.java:279:17:279:34 | (...)... : Scanner | Test.java:280:10:280:11 | in : Scanner | provenance |  |
+| Test.java:279:27:279:34 | source(...) : Object | Test.java:279:17:279:34 | (...)... : Scanner | provenance |  |
+| Test.java:280:10:280:11 | in : Scanner | Test.java:280:10:280:19 | reset(...) : Scanner | provenance | MaD:16 |
+| Test.java:280:10:280:19 | reset(...) : Scanner | Test.java:281:9:281:11 | out | provenance |  |
+| Test.java:286:17:286:34 | (...)... : Scanner | Test.java:287:10:287:11 | in : Scanner | provenance |  |
+| Test.java:286:27:286:34 | source(...) : Object | Test.java:286:17:286:34 | (...)... : Scanner | provenance |  |
+| Test.java:287:10:287:11 | in : Scanner | Test.java:287:10:287:32 | skip(...) : Scanner | provenance | MaD:17 |
+| Test.java:287:10:287:32 | skip(...) : Scanner | Test.java:288:9:288:11 | out | provenance |  |
+| Test.java:293:17:293:34 | (...)... : Scanner | Test.java:294:10:294:11 | in : Scanner | provenance |  |
+| Test.java:293:27:293:34 | source(...) : Object | Test.java:293:17:293:34 | (...)... : Scanner | provenance |  |
+| Test.java:294:10:294:11 | in : Scanner | Test.java:294:10:294:31 | skip(...) : Scanner | provenance | MaD:17 |
+| Test.java:294:10:294:31 | skip(...) : Scanner | Test.java:295:9:295:11 | out | provenance |  |
+| Test.java:300:17:300:34 | (...)... : Scanner | Test.java:301:10:301:11 | in : Scanner | provenance |  |
+| Test.java:300:27:300:34 | source(...) : Object | Test.java:300:17:300:34 | (...)... : Scanner | provenance |  |
+| Test.java:301:10:301:11 | in : Scanner | Test.java:301:10:301:40 | useDelimiter(...) : Scanner | provenance | MaD:18 |
+| Test.java:301:10:301:40 | useDelimiter(...) : Scanner | Test.java:302:9:302:11 | out | provenance |  |
+| Test.java:307:17:307:34 | (...)... : Scanner | Test.java:308:10:308:11 | in : Scanner | provenance |  |
+| Test.java:307:27:307:34 | source(...) : Object | Test.java:307:17:307:34 | (...)... : Scanner | provenance |  |
+| Test.java:308:10:308:11 | in : Scanner | Test.java:308:10:308:39 | useDelimiter(...) : Scanner | provenance | MaD:18 |
+| Test.java:308:10:308:39 | useDelimiter(...) : Scanner | Test.java:309:9:309:11 | out | provenance |  |
+| Test.java:314:17:314:34 | (...)... : Scanner | Test.java:315:10:315:11 | in : Scanner | provenance |  |
+| Test.java:314:27:314:34 | source(...) : Object | Test.java:314:17:314:34 | (...)... : Scanner | provenance |  |
+| Test.java:315:10:315:11 | in : Scanner | Test.java:315:10:315:27 | useLocale(...) : Scanner | provenance | MaD:19 |
+| Test.java:315:10:315:27 | useLocale(...) : Scanner | Test.java:316:9:316:11 | out | provenance |  |
+| Test.java:321:17:321:34 | (...)... : Scanner | Test.java:322:10:322:11 | in : Scanner | provenance |  |
+| Test.java:321:27:321:34 | source(...) : Object | Test.java:321:17:321:34 | (...)... : Scanner | provenance |  |
+| Test.java:322:10:322:11 | in : Scanner | Test.java:322:10:322:23 | useRadix(...) : Scanner | provenance | MaD:20 |
+| Test.java:322:10:322:23 | useRadix(...) : Scanner | Test.java:323:9:323:11 | out | provenance |  |
+nodes
+| Test.java:27:14:27:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:27:21:27:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:28:10:28:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:28:22:28:23 | in : File | semmle.label | in : File |
+| Test.java:29:9:29:11 | out | semmle.label | out |
+| Test.java:34:14:34:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:34:21:34:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:35:10:35:40 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:35:22:35:23 | in : File | semmle.label | in : File |
+| Test.java:36:9:36:11 | out | semmle.label | out |
+| Test.java:41:14:41:28 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:41:21:41:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:42:10:42:39 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:42:22:42:23 | in : File | semmle.label | in : File |
+| Test.java:43:9:43:11 | out | semmle.label | out |
+| Test.java:48:21:48:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:48:35:48:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:10:49:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:49:22:49:23 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:50:9:50:11 | out | semmle.label | out |
+| Test.java:55:21:55:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:55:35:55:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:56:10:56:40 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:56:22:56:23 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:57:9:57:11 | out | semmle.label | out |
+| Test.java:62:21:62:42 | (...)... : InputStream | semmle.label | (...)... : InputStream |
+| Test.java:62:35:62:42 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:63:10:63:39 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:63:22:63:23 | in : InputStream | semmle.label | in : InputStream |
+| Test.java:64:9:64:11 | out | semmle.label | out |
+| Test.java:69:14:69:28 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:69:21:69:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:70:10:70:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:70:22:70:23 | in : Path | semmle.label | in : Path |
+| Test.java:71:9:71:11 | out | semmle.label | out |
+| Test.java:76:14:76:28 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:76:21:76:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:77:10:77:40 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:77:22:77:23 | in : Path | semmle.label | in : Path |
+| Test.java:78:9:78:11 | out | semmle.label | out |
+| Test.java:83:14:83:28 | (...)... : Path | semmle.label | (...)... : Path |
+| Test.java:83:21:83:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:84:10:84:39 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:84:22:84:23 | in : Path | semmle.label | in : Path |
+| Test.java:85:9:85:11 | out | semmle.label | out |
+| Test.java:90:18:90:36 | (...)... : Readable | semmle.label | (...)... : Readable |
+| Test.java:90:29:90:36 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:91:10:91:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:91:22:91:23 | in : Readable | semmle.label | in : Readable |
+| Test.java:92:9:92:11 | out | semmle.label | out |
+| Test.java:97:29:97:58 | (...)... : ReadableByteChannel | semmle.label | (...)... : ReadableByteChannel |
+| Test.java:97:51:97:58 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:98:10:98:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:98:22:98:23 | in : ReadableByteChannel | semmle.label | in : ReadableByteChannel |
+| Test.java:99:9:99:11 | out | semmle.label | out |
+| Test.java:104:29:104:58 | (...)... : ReadableByteChannel | semmle.label | (...)... : ReadableByteChannel |
+| Test.java:104:51:104:58 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:105:10:105:40 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:105:22:105:23 | in : ReadableByteChannel | semmle.label | in : ReadableByteChannel |
+| Test.java:106:9:106:11 | out | semmle.label | out |
+| Test.java:111:29:111:58 | (...)... : ReadableByteChannel | semmle.label | (...)... : ReadableByteChannel |
+| Test.java:111:51:111:58 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:112:10:112:39 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:112:22:112:23 | in : ReadableByteChannel | semmle.label | in : ReadableByteChannel |
+| Test.java:113:9:113:11 | out | semmle.label | out |
+| Test.java:118:16:118:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:118:25:118:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:119:10:119:24 | new Scanner(...) : Scanner | semmle.label | new Scanner(...) : Scanner |
+| Test.java:119:22:119:23 | in : String | semmle.label | in : String |
+| Test.java:120:9:120:11 | out | semmle.label | out |
+| Test.java:125:17:125:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:125:27:125:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:126:10:126:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:126:10:126:38 | findInLine(...) : String | semmle.label | findInLine(...) : String |
+| Test.java:127:9:127:11 | out | semmle.label | out |
+| Test.java:132:17:132:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:132:27:132:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:133:10:133:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:133:10:133:37 | findInLine(...) : String | semmle.label | findInLine(...) : String |
+| Test.java:134:9:134:11 | out | semmle.label | out |
+| Test.java:139:17:139:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:139:27:139:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:140:10:140:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:140:10:140:48 | findWithinHorizon(...) : String | semmle.label | findWithinHorizon(...) : String |
+| Test.java:141:9:141:11 | out | semmle.label | out |
+| Test.java:146:17:146:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:146:27:146:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:147:10:147:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:147:10:147:47 | findWithinHorizon(...) : String | semmle.label | findWithinHorizon(...) : String |
+| Test.java:148:9:148:11 | out | semmle.label | out |
+| Test.java:153:17:153:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:153:27:153:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:154:10:154:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:154:10:154:32 | next(...) : String | semmle.label | next(...) : String |
+| Test.java:155:9:155:11 | out | semmle.label | out |
+| Test.java:160:17:160:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:160:27:160:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:161:10:161:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:161:10:161:31 | next(...) : String | semmle.label | next(...) : String |
+| Test.java:162:9:162:11 | out | semmle.label | out |
+| Test.java:167:17:167:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:167:27:167:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:168:10:168:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:168:10:168:18 | next(...) : String | semmle.label | next(...) : String |
+| Test.java:169:9:169:11 | out | semmle.label | out |
+| Test.java:174:17:174:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:174:27:174:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:175:10:175:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:175:10:175:28 | nextBigDecimal(...) : BigDecimal | semmle.label | nextBigDecimal(...) : BigDecimal |
+| Test.java:176:9:176:11 | out | semmle.label | out |
+| Test.java:181:17:181:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:181:27:181:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:182:10:182:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:182:10:182:28 | nextBigInteger(...) : BigInteger | semmle.label | nextBigInteger(...) : BigInteger |
+| Test.java:183:9:183:11 | out | semmle.label | out |
+| Test.java:188:17:188:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:188:27:188:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:189:10:189:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:189:10:189:29 | nextBigInteger(...) : BigInteger | semmle.label | nextBigInteger(...) : BigInteger |
+| Test.java:190:9:190:11 | out | semmle.label | out |
+| Test.java:195:17:195:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:195:27:195:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:196:10:196:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:196:10:196:25 | nextBoolean(...) : Boolean | semmle.label | nextBoolean(...) : Boolean |
+| Test.java:197:9:197:11 | out | semmle.label | out |
+| Test.java:202:17:202:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:202:27:202:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:203:10:203:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:203:10:203:22 | nextByte(...) : Number | semmle.label | nextByte(...) : Number |
+| Test.java:204:9:204:11 | out | semmle.label | out |
+| Test.java:209:17:209:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:209:27:209:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:210:10:210:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:210:10:210:23 | nextByte(...) : Number | semmle.label | nextByte(...) : Number |
+| Test.java:211:9:211:11 | out | semmle.label | out |
+| Test.java:216:17:216:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:216:27:216:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:217:10:217:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:217:10:217:24 | nextDouble(...) : Number | semmle.label | nextDouble(...) : Number |
+| Test.java:218:9:218:11 | out | semmle.label | out |
+| Test.java:223:17:223:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:223:27:223:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:224:10:224:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:224:10:224:23 | nextFloat(...) : Number | semmle.label | nextFloat(...) : Number |
+| Test.java:225:9:225:11 | out | semmle.label | out |
+| Test.java:230:17:230:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:230:27:230:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:231:10:231:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:231:10:231:21 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| Test.java:232:9:232:11 | out | semmle.label | out |
+| Test.java:237:17:237:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:237:27:237:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:238:10:238:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:238:10:238:22 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
+| Test.java:239:9:239:11 | out | semmle.label | out |
+| Test.java:244:17:244:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:244:27:244:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:245:10:245:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:245:10:245:22 | nextLine(...) : String | semmle.label | nextLine(...) : String |
+| Test.java:246:9:246:11 | out | semmle.label | out |
+| Test.java:251:17:251:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:251:27:251:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:252:10:252:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:252:10:252:22 | nextLong(...) : Number | semmle.label | nextLong(...) : Number |
+| Test.java:253:9:253:11 | out | semmle.label | out |
+| Test.java:258:17:258:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:258:27:258:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:259:10:259:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:259:10:259:23 | nextLong(...) : Number | semmle.label | nextLong(...) : Number |
+| Test.java:260:9:260:11 | out | semmle.label | out |
+| Test.java:265:17:265:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:265:27:265:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:266:10:266:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:266:10:266:23 | nextShort(...) : Number | semmle.label | nextShort(...) : Number |
+| Test.java:267:9:267:11 | out | semmle.label | out |
+| Test.java:272:17:272:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:272:27:272:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:273:10:273:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:273:10:273:24 | nextShort(...) : Number | semmle.label | nextShort(...) : Number |
+| Test.java:274:9:274:11 | out | semmle.label | out |
+| Test.java:279:17:279:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:279:27:279:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:280:10:280:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:280:10:280:19 | reset(...) : Scanner | semmle.label | reset(...) : Scanner |
+| Test.java:281:9:281:11 | out | semmle.label | out |
+| Test.java:286:17:286:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:286:27:286:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:287:10:287:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:287:10:287:32 | skip(...) : Scanner | semmle.label | skip(...) : Scanner |
+| Test.java:288:9:288:11 | out | semmle.label | out |
+| Test.java:293:17:293:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:293:27:293:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:294:10:294:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:294:10:294:31 | skip(...) : Scanner | semmle.label | skip(...) : Scanner |
+| Test.java:295:9:295:11 | out | semmle.label | out |
+| Test.java:300:17:300:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:300:27:300:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:301:10:301:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:301:10:301:40 | useDelimiter(...) : Scanner | semmle.label | useDelimiter(...) : Scanner |
+| Test.java:302:9:302:11 | out | semmle.label | out |
+| Test.java:307:17:307:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:307:27:307:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:308:10:308:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:308:10:308:39 | useDelimiter(...) : Scanner | semmle.label | useDelimiter(...) : Scanner |
+| Test.java:309:9:309:11 | out | semmle.label | out |
+| Test.java:314:17:314:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:314:27:314:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:315:10:315:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:315:10:315:27 | useLocale(...) : Scanner | semmle.label | useLocale(...) : Scanner |
+| Test.java:316:9:316:11 | out | semmle.label | out |
+| Test.java:321:17:321:34 | (...)... : Scanner | semmle.label | (...)... : Scanner |
+| Test.java:321:27:321:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:322:10:322:11 | in : Scanner | semmle.label | in : Scanner |
+| Test.java:322:10:322:23 | useRadix(...) : Scanner | semmle.label | useRadix(...) : Scanner |
+| Test.java:323:9:323:11 | out | semmle.label | out |
+subpaths
+testFailures

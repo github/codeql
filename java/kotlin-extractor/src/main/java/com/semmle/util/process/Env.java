@@ -51,10 +51,6 @@ public class Env {
 		 */
 		SEMMLE_CACHE,
 		/**
-		 * The location of the toolchain files, including the odasa jar, our queries etc.
-		 */
-		SEMMLE_DIST,
-		/**
 		 * If running from a git tree, the root of the tree.
 		 */
 		SEMMLE_GIT_ROOT,
@@ -119,6 +115,7 @@ public class Env {
 		 */
 		SEMMLE_TRAP_IMPORTER,
 		SEMMLE_PRESERVE_SYMLINKS,
+		CODEQL_PATH_TRANSFORMER,
 		SEMMLE_PATH_TRANSFORMER,
 
 		/*
@@ -260,8 +257,6 @@ public class Env {
 		 */
 		ODASA_SRC,
 		ODASA_DB,
-		TRAP_FOLDER,
-		SOURCE_ARCHIVE,
 		ODASA_OUTPUT,
 		ODASA_SUBPROJECT_THREADS,
 

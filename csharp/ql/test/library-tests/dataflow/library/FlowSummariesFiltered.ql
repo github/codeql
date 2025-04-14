@@ -1,6 +1,17 @@
 import shared.FlowSummaries
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
+/** Holds if `c` is a base callable or prototype. */
+private predicate isBaseCallableOrPrototype(UnboundCallable c) {
+  c.getDeclaringType() instanceof Interface
+  or
+  exists(Modifiable m | m = [c.(Modifiable), c.(Accessor).getDeclaration()] |
+    m.isAbstract()
+    or
+    c.getDeclaringType().(Modifiable).isAbstract() and m.(Virtualizable).isVirtual()
+  )
+}
+
 class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
   /**
    * Holds if flow is propagated between `input` and `output` and

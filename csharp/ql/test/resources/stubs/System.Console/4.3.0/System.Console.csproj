@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.NETCore.Platforms/1.1.0/Microsoft.NETCore.Platforms.csproj" />
+    <ProjectReference Include="../../Microsoft.NETCore.Platforms/3.1.0/Microsoft.NETCore.Platforms.csproj" />
     <ProjectReference Include="../../Microsoft.NETCore.Targets/1.1.0/Microsoft.NETCore.Targets.csproj" />
     <ProjectReference Include="../../System.IO/4.3.0/System.IO.csproj" />
     <ProjectReference Include="../../System.Runtime/4.3.0/System.Runtime.csproj" />

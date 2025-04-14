@@ -15,7 +15,7 @@ private import semmle.code.csharp.security.Sanitizers
  */
 abstract class Source extends DataFlow::Node { }
 
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A data flow sink for untrusted user input used in XML processing.
@@ -43,26 +43,6 @@ private class InsecureXmlSink extends Sink {
  * A sanitizer for untrusted user input used in XML processing.
  */
 abstract class Sanitizer extends DataFlow::Node { }
-
-/**
- * DEPRECATED: Use `XmlEntityInjection` instead.
- *
- * A taint-tracking configuration for untrusted user input used in XML processing.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "XMLInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-    super.hasFlowPath(source, sink) and
-    exists(sink.getNode().(Sink).getReason())
-  }
-}
 
 /**
  * A taint-tracking configuration for untrusted user input used in XML processing.

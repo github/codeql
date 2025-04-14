@@ -5,6 +5,7 @@
 | Console | Write(string, object, object, object) | arg1 |
 | Console | Write(string, object, object, object) | arg2 |
 | Console | Write(string, params Object[]) | arg |
+| Console | Write(string, params ReadOnlySpan<object>) | arg |
 | Console | WriteLine(string, object) | arg0 |
 | Console | WriteLine(string, object, object) | arg0 |
 | Console | WriteLine(string, object, object) | arg1 |
@@ -12,6 +13,7 @@
 | Console | WriteLine(string, object, object, object) | arg1 |
 | Console | WriteLine(string, object, object, object) | arg2 |
 | Console | WriteLine(string, params Object[]) | arg |
+| Console | WriteLine(string, params ReadOnlySpan<object>) | arg |
 | Debug | Assert(bool, string, string, params Object[]) | args |
 | Debug | Print(string, params Object[]) | args |
 | Debug | WriteLine(string, params Object[]) | args |
@@ -22,6 +24,7 @@
 | StringBuilder | AppendFormat(IFormatProvider, string, object, object, object) | arg1 |
 | StringBuilder | AppendFormat(IFormatProvider, string, object, object, object) | arg2 |
 | StringBuilder | AppendFormat(IFormatProvider, string, params Object[]) | args |
+| StringBuilder | AppendFormat(IFormatProvider, string, params ReadOnlySpan<object>) | args |
 | StringBuilder | AppendFormat(string, object) | arg0 |
 | StringBuilder | AppendFormat(string, object, object) | arg0 |
 | StringBuilder | AppendFormat(string, object, object) | arg1 |
@@ -29,6 +32,8 @@
 | StringBuilder | AppendFormat(string, object, object, object) | arg1 |
 | StringBuilder | AppendFormat(string, object, object, object) | arg2 |
 | StringBuilder | AppendFormat(string, params Object[]) | args |
+| StringBuilder | AppendFormat(string, params ReadOnlySpan<object>) | args |
+| Strings | MyReadOnlyStringFormat(string, params ReadOnlySpan<object>) | args |
 | Strings | MyStringFormat(string, params Object[]) | args |
 | TextWriter | Write(string, object) | arg0 |
 | TextWriter | Write(string, object, object) | arg0 |
@@ -37,6 +42,7 @@
 | TextWriter | Write(string, object, object, object) | arg1 |
 | TextWriter | Write(string, object, object, object) | arg2 |
 | TextWriter | Write(string, params Object[]) | arg |
+| TextWriter | Write(string, params ReadOnlySpan<object>) | arg |
 | TextWriter | WriteLine(string, object) | arg0 |
 | TextWriter | WriteLine(string, object, object) | arg0 |
 | TextWriter | WriteLine(string, object, object) | arg1 |
@@ -44,6 +50,7 @@
 | TextWriter | WriteLine(string, object, object, object) | arg1 |
 | TextWriter | WriteLine(string, object, object, object) | arg2 |
 | TextWriter | WriteLine(string, params Object[]) | arg |
+| TextWriter | WriteLine(string, params ReadOnlySpan<object>) | arg |
 | string | Format(IFormatProvider, string, object) | arg0 |
 | string | Format(IFormatProvider, string, object, object) | arg0 |
 | string | Format(IFormatProvider, string, object, object) | arg1 |
@@ -51,6 +58,7 @@
 | string | Format(IFormatProvider, string, object, object, object) | arg1 |
 | string | Format(IFormatProvider, string, object, object, object) | arg2 |
 | string | Format(IFormatProvider, string, params Object[]) | args |
+| string | Format(IFormatProvider, string, params ReadOnlySpan<object>) | args |
 | string | Format(string, object) | arg0 |
 | string | Format(string, object, object) | arg0 |
 | string | Format(string, object, object) | arg1 |
@@ -58,3 +66,4 @@
 | string | Format(string, object, object, object) | arg1 |
 | string | Format(string, object, object, object) | arg2 |
 | string | Format(string, params Object[]) | args |
+| string | Format(string, params ReadOnlySpan<object>) | args |

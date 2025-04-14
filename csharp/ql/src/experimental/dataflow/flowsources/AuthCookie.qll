@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for detecting insecure cookies.
  */
+deprecated module;
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore
@@ -39,26 +40,6 @@ private module AuthCookieNameConfig implements DataFlow::ConfigSig {
  * Tracks if a variable with a sensitive name is used as an argument.
  */
 private module AuthCookieName = DataFlow::Global<AuthCookieNameConfig>;
-
-/**
- * DEPRECATED: Use `CookieOptionsTracking` instead.
- *
- * Tracks creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)` call as a third parameter.
- */
-deprecated class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
-  CookieOptionsTrackingConfiguration() { this = "CookieOptionsTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(ObjectCreation).getType() instanceof MicrosoftAspNetCoreHttpCookieOptions
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MicrosoftAspNetCoreHttpResponseCookies iResponse, MethodCall mc |
-      iResponse.getAppendMethod() = mc.getTarget() and
-      mc.getArgument(2) = sink.asExpr()
-    )
-  }
-}
 
 /**
  * Configuration module tracking creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)`
@@ -133,83 +114,6 @@ Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
  * Checks if the given property was explicitly set to a value.
  */
 predicate isPropertySet(ObjectCreation oc, string prop) { exists(getAValueForProp(oc, _, prop)) }
-
-/**
- * DEPRECATED: Use `OnAppendCookieSecureTracking` instead.
- *
- * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
- */
-deprecated class OnAppendCookieSecureTrackingConfig extends OnAppendCookieTrackingConfig {
-  OnAppendCookieSecureTrackingConfig() { this = "OnAppendCookieSecureTrackingConfig" }
-
-  override string propertyName() { result = "Secure" }
-}
-
-/**
- * DEPRECATED: Use `OnAppendCookieHttpOnlyTracking` instead.
- *
- * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
- */
-deprecated class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig {
-  OnAppendCookieHttpOnlyTrackingConfig() { this = "OnAppendCookieHttpOnlyTrackingConfig" }
-
-  override string propertyName() { result = "HttpOnly" }
-}
-
-/**
- * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
- */
-abstract deprecated private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
-  bindingset[this]
-  OnAppendCookieTrackingConfig() { any() }
-
-  /**
-   * Specifies the cookie property name to track.
-   */
-  abstract string propertyName();
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(PropertyWrite pw, Assignment delegateAssign, Callable c |
-      pw.getProperty().getName() = "OnAppendCookie" and
-      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreBuilderCookiePolicyOptions and
-      delegateAssign.getLValue() = pw and
-      (
-        exists(LambdaExpr lambda |
-          delegateAssign.getRValue() = lambda and
-          lambda = c
-        )
-        or
-        exists(DelegateCreation delegate |
-          delegateAssign.getRValue() = delegate and
-          delegate.getArgument().(CallableAccess).getTarget() = c
-        )
-      ) and
-      c.getParameter(0) = source.asParameter()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(PropertyWrite pw, Assignment a |
-      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
-      pw.getProperty().getName() = this.propertyName() and
-      a.getLValue() = pw and
-      exists(Expr val |
-        DataFlow::localExprFlow(val, a.getRValue()) and
-        val.getValue() = "true"
-      ) and
-      sink.asExpr() = pw.getQualifier()
-    )
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asExpr() =
-      any(PropertyRead pr |
-        pr.getQualifier() = node1.asExpr() and
-        pr.getProperty().getDeclaringType() instanceof
-          MicrosoftAspNetCoreCookiePolicyAppendCookieContext
-      )
-  }
-}
 
 private signature string propertyName();
 

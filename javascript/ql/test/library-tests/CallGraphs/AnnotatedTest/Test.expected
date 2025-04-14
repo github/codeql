@@ -12,4 +12,4 @@ accessorCall
 | accessors.js:44:1:44:9 | new D().f | accessors.js:37:8:37:13 | (x) {} |
 | accessors.js:48:1:48:5 | obj.f | accessors.js:5:8:5:12 | () {} |
 | accessors.js:51:1:51:3 | C.f | accessors.js:19:15:19:19 | () {} |
-| accessors.js:54:1:54:9 | new D().f | accessors.js:34:8:34:12 | () {} |
+| accessors.js:55:1:55:3 | d.f | accessors.js:34:8:34:12 | () {} |

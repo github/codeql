@@ -1,1 +1,2 @@
-experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql
+query: experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql
+postprocess: utils/test/PrettyPrintModels.ql

@@ -156,10 +156,10 @@ def test_classes_with_dirs(generate_grouped):
     cbase = cpp.Class(name="CBase")
     assert generate_grouped([
         schema.Class(name="A"),
-        schema.Class(name="B", group="foo"),
-        schema.Class(name="CBase", derived={"C"}, group="bar"),
-        schema.Class(name="C", bases=["CBase"], group="bar"),
-        schema.Class(name="D", group="foo/bar/baz"),
+        schema.Class(name="B", pragmas={"group": "foo"}),
+        schema.Class(name="CBase", derived={"C"}, pragmas={"group": "bar"}),
+        schema.Class(name="C", bases=["CBase"], pragmas={"group": "bar"}),
+        schema.Class(name="D", pragmas={"group": "foo/bar/baz"}),
     ]) == {
         ".": [cpp.Class(name="A", trap_name="As", final=True)],
         "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
@@ -185,15 +185,15 @@ def test_synth_classes_ignored(generate):
     assert generate([
         schema.Class(
             name="W",
-            synth=schema.SynthInfo(),
+            pragmas={"synth": schema.SynthInfo()},
         ),
         schema.Class(
             name="X",
-            synth=schema.SynthInfo(from_class="A"),
+            pragmas={"synth": schema.SynthInfo(from_class="A")},
         ),
         schema.Class(
             name="Y",
-            synth=schema.SynthInfo(on_arguments={"a": "A", "b": "int"}),
+            pragmas={"synth": schema.SynthInfo(on_arguments={"a": "A", "b": "int"})},
         ),
         schema.Class(
             name="Z",
@@ -221,6 +221,26 @@ def test_synth_properties_ignored(generate):
         cpp.Class(name="X", final=True, trap_name="Xes", fields=[
             cpp.Field("x", "a"),
             cpp.Field("z", "c"),
+        ]),
+    ]
+
+
+def test_properties_with_custom_db_table_names(generate):
+    assert generate([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == [
+        cpp.Class(name="Obj", final=True, trap_name="Objs", fields=[
+            cpp.Field("x", "a", is_optional=True, trap_name="Foo"),
+            cpp.Field("y", "b", is_repeated=True, trap_name="Bar"),
+            cpp.Field("z", "c", is_repeated=True, is_optional=True, trap_name="Baz"),
+            cpp.Field("p", "bool", is_predicate=True, trap_name="Hello"),
+            cpp.Field("q", "d", is_repeated=True, is_unordered=True, trap_name="World"),
         ]),
     ]
 

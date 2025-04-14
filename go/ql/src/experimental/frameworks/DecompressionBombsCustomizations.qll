@@ -140,13 +140,6 @@ module DecompressionBombs {
       }
 
       override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        exists(DataFlow::FieldReadNode fi |
-          fi.getType().hasQualifiedName("github.com/klauspost/compress/zip", "Reader")
-        |
-          fromNode = fi.getBase() and
-          toNode = fi
-        )
-        or
         exists(Method m, DataFlow::CallNode call |
           m.hasQualifiedName("github.com/klauspost/compress/zip", "File", ["Open", "OpenRaw"]) and
           call = m.getACall()

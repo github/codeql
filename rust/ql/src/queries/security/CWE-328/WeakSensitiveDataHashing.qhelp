@@ -1,0 +1,118 @@
+<!DOCTYPE qhelp PUBLIC
+        "-//Semmle//qhelp//EN"
+        "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            A broken or weak cryptographic hash function can leave data
+            vulnerable, and should not be used in security-related code.
+        </p>
+
+        <p>
+            A strong cryptographic hash function should be resistant to:
+        </p>
+        <ul>
+            <li>
+                <b>Pre-image attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find the input <code>x</code>.
+            </li>
+            <li>
+                <b>Collision attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find a different input
+                <code>y</code>
+                with the same hash value <code>h(x) = h(y)</code>.
+            </li>
+            <li>
+                <b>Brute force</b>. For passwords and other data with limited
+                input space, if you know a hash value <code>h(x)</code>,
+                you should not be able to find the input <code>x</code> even using
+                a brute force attack (without significant computational effort).
+            </li>
+        </ul>
+
+        <p>
+            As an example, both MD5 and SHA-1 are known to be vulnerable to collision attacks.
+        </p>
+
+        <p>
+            All of MD5, SHA-1, SHA-2 and SHA-3 are weak against offline brute forcing, so
+            they are not suitable for hashing passwords. This includes SHA-224, SHA-256,
+
+            SHA-384, and SHA-512, which are in the SHA-2 family.
+        </p>
+
+        <p>
+            Since it's OK to use a weak cryptographic hash function in a non-security
+            context, this query only alerts when these are used to hash sensitive
+            data (such as passwords, certificates, usernames).
+        </p>
+
+    </overview>
+    <recommendation>
+
+        <p>
+            Ensure that you use a strong, modern cryptographic hash function, such as:
+        </p>
+
+        <ul>
+            <li>
+                Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
+                a dictionary-like attack is feasible.
+            </li>
+            <li>
+                SHA-2, or SHA-3 in other cases.
+            </li>
+        </ul>
+
+        <p>
+            Note that special purpose algorithms, which are used to ensure that a message comes from a
+            particular sender, exist for message authentication. These algorithms should be used when
+            appropriate, as they address common vulnerabilities of simple hashing schemes in this context.
+        </p>
+
+    </recommendation>
+    <example>
+
+        <p>
+            The following examples show hashing sensitive data using the MD5 hashing algorithm that is known to be
+            vulnerable to collision attacks, and hashing passwords using the SHA-3 algorithm that is weak to brute
+            force attacks:
+        </p>
+        <sample src="WeakSensitiveDataHashingBad.rs"/>
+
+        <p>
+            To make these secure, we can use the SHA-3 algorithm for sensitive data and Argon2 for passwords:
+        </p>
+        <sample src="WeakSensitiveDataHashingGood.rs"/>
+
+    </example>
+    <references>
+        <li>
+            OWASP:
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">
+                Password Storage Cheat Sheet
+            </a>
+            and
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html">
+                Transport Layer Security Cheat Sheet
+            </a>.
+        </li>
+        <li>
+            GitHub:
+            <a href="https://github.com/RustCrypto/hashes?tab=readme-ov-file#rustcrypto-hashes">
+                RustCrypto: Hashes
+            </a>
+            and
+            <a href="https://github.com/RustCrypto/password-hashes?tab=readme-ov-file#rustcrypto-password-hashes">
+                RustCrypto: Password Hashes
+            </a>.
+        </li>
+        <li>
+            The RustCrypto Book:
+            <a href="https://rustcrypto.org/key-derivation/hashing-password.html">
+                Password Hashing
+            </a>.
+        </li>
+    </references>
+
+</qhelp>

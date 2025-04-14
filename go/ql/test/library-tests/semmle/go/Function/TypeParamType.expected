@@ -1,30 +1,261 @@
-| E | Ordered |
-| E | comparable |
-| E | interface { } |
-| E1 | interface { } |
-| E2 | interface { } |
-| Edge | EdgeConstraint |
-| Edge | interface { } |
-| F | floaty |
-| K | comparable |
-| Node | NodeConstraint |
-| Node | interface { } |
-| S | interface { } |
-| S | interface { ~[]E } |
-| S1 | interface { ~[]E1 } |
-| S2 | interface { ~[]E2 } |
-| SF2 | interface { } |
-| SG2 | interface { } |
-| T | Ordered |
-| T | comparable |
-| T | interface { string \| []uint8 } |
-| T | interface { } |
-| T1 | interface { } |
-| T2 | interface { } |
-| TF1 | interface { } |
-| TF2 | interface { } |
-| TG1 | interface { } |
-| TG2 | interface { } |
-| U | interface { } |
-| V | interface { int64 \| float64 } |
-| bytes | interface { []uint8 \| string } |
+numberOfTypeParameters
+| genericFunctions2.go:3:6:3:33 | GenericFunctionInAnotherFile | 1 |
+| genericFunctions.go:9:6:9:32 | GenericFunctionOneTypeParam | 1 |
+| genericFunctions.go:15:6:15:33 | GenericFunctionTwoTypeParams | 2 |
+| genericFunctions.go:81:6:81:19 | GenericStruct1 | 1 |
+| genericFunctions.go:84:6:84:19 | GenericStruct2 | 2 |
+| genericFunctions.go:87:30:87:31 | f1 | 1 |
+| genericFunctions.go:92:31:92:32 | g1 | 1 |
+| genericFunctions.go:95:35:95:36 | f2 | 2 |
+| genericFunctions.go:98:36:98:37 | g2 | 2 |
+| genericFunctions.go:111:6:111:12 | Element | 1 |
+| genericFunctions.go:115:6:115:9 | List | 1 |
+| genericFunctions.go:120:19:120:23 | MyLen | 1 |
+| genericFunctions.go:124:6:124:19 | NodeConstraint | 1 |
+| genericFunctions.go:128:6:128:19 | EdgeConstraint | 1 |
+| genericFunctions.go:132:6:132:10 | Graph | 2 |
+| genericFunctions.go:134:6:134:8 | New | 2 |
+| genericFunctions.go:138:29:138:40 | ShortestPath | 2 |
+| genericFunctions.go:150:6:150:36 | multipleAnonymousTypeParamsFunc | 3 |
+| genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 3 |
+| genericFunctions.go:154:51:154:51 | f | 3 |
+#select
+| cmp.Compare | 0 | T | Ordered |
+| cmp.Less | 0 | T | Ordered |
+| cmp.Or | 0 | T | comparable |
+| cmp.isNaN | 0 | T | Ordered |
+| codeql-go-tests/function.EdgeConstraint | 0 | Node | interface { } |
+| codeql-go-tests/function.Element | 0 | S | interface { } |
+| codeql-go-tests/function.GenericFunctionInAnotherFile | 0 | T | interface { } |
+| codeql-go-tests/function.GenericFunctionOneTypeParam | 0 | T | interface { } |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 0 | K | comparable |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 1 | V | interface { int64 \| float64 } |
+| codeql-go-tests/function.GenericStruct1 | 0 | T | interface { } |
+| codeql-go-tests/function.GenericStruct1.f1 | 0 | TF1 | interface { } |
+| codeql-go-tests/function.GenericStruct1.g1 | 0 | TG1 | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 0 | S | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 1 | T | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 0 | SF2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 1 | TF2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 0 | SG2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 1 | TG2 | interface { } |
+| codeql-go-tests/function.Graph | 0 | Node | NodeConstraint |
+| codeql-go-tests/function.Graph | 1 | Edge | EdgeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 0 | Node | NodeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 1 | Edge | EdgeConstraint |
+| codeql-go-tests/function.List | 0 | T | interface { } |
+| codeql-go-tests/function.List.MyLen | 0 | U | interface { } |
+| codeql-go-tests/function.New | 0 | Node | NodeConstraint |
+| codeql-go-tests/function.New | 1 | Edge | EdgeConstraint |
+| codeql-go-tests/function.NodeConstraint | 0 | Edge | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 0 | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 1 | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 2 | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 0 | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 1 | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 2 | _ | interface { } |
+| github.com/anotherpkg.GenericFunctionInAnotherPackage | 0 | T | interface { } |
+| internal/abi.Escape | 0 | T | interface { } |
+| internal/bytealg.HashStr | 0 | T | interface { string \| []uint8 } |
+| internal/bytealg.HashStrRev | 0 | T | interface { string \| []uint8 } |
+| internal/bytealg.IndexRabinKarp | 0 | T | interface { string \| []uint8 } |
+| internal/bytealg.LastIndexRabinKarp | 0 | T | interface { string \| []uint8 } |
+| internal/poll.ignoringEINTR2 | 0 | T | interface { } |
+| internal/runtime/atomic.Pointer.CompareAndSwap | 0 | T | interface { } |
+| internal/runtime/atomic.Pointer.CompareAndSwapNoWB | 0 | T | interface { } |
+| internal/runtime/atomic.Pointer.Load | 0 | T | interface { } |
+| internal/runtime/atomic.Pointer.Store | 0 | T | interface { } |
+| internal/runtime/atomic.Pointer.StoreNoWB | 0 | T | interface { } |
+| internal/sync.HashTrieMap.All | 0 | K | comparable |
+| internal/sync.HashTrieMap.All | 1 | V | interface { } |
+| internal/sync.HashTrieMap.CompareAndDelete | 0 | K | comparable |
+| internal/sync.HashTrieMap.CompareAndDelete | 1 | V | interface { } |
+| internal/sync.HashTrieMap.CompareAndSwap | 0 | K | comparable |
+| internal/sync.HashTrieMap.CompareAndSwap | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Delete | 0 | K | comparable |
+| internal/sync.HashTrieMap.Load | 0 | K | comparable |
+| internal/sync.HashTrieMap.Load | 1 | V | interface { } |
+| internal/sync.HashTrieMap.LoadAndDelete | 0 | K | comparable |
+| internal/sync.HashTrieMap.LoadAndDelete | 1 | V | interface { } |
+| internal/sync.HashTrieMap.LoadOrStore | 0 | K | comparable |
+| internal/sync.HashTrieMap.LoadOrStore | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Range | 0 | K | comparable |
+| internal/sync.HashTrieMap.Range | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Store | 0 | K | comparable |
+| internal/sync.HashTrieMap.Store | 1 | V | interface { } |
+| internal/sync.HashTrieMap.Swap | 0 | K | comparable |
+| internal/sync.HashTrieMap.Swap | 1 | V | interface { } |
+| internal/sync.HashTrieMap.find | 0 | K | comparable |
+| internal/sync.HashTrieMap.find | 1 | V | interface { } |
+| internal/sync.HashTrieMap.iter | 0 | K | comparable |
+| internal/sync.HashTrieMap.iter | 1 | V | interface { } |
+| internal/sync.entry | 0 | K | comparable |
+| internal/sync.entry | 1 | V | interface { } |
+| internal/sync.entry.compareAndDelete | 0 | K | comparable |
+| internal/sync.entry.compareAndDelete | 1 | V | interface { } |
+| internal/sync.entry.compareAndSwap | 0 | K | comparable |
+| internal/sync.entry.compareAndSwap | 1 | V | interface { } |
+| internal/sync.entry.loadAndDelete | 0 | K | comparable |
+| internal/sync.entry.loadAndDelete | 1 | V | interface { } |
+| internal/sync.entry.lookup | 0 | K | comparable |
+| internal/sync.entry.lookup | 1 | V | interface { } |
+| internal/sync.entry.lookupWithValue | 0 | K | comparable |
+| internal/sync.entry.lookupWithValue | 1 | V | interface { } |
+| internal/sync.entry.swap | 0 | K | comparable |
+| internal/sync.entry.swap | 1 | V | interface { } |
+| internal/sync.newEntryNode | 0 | K | comparable |
+| internal/sync.newEntryNode | 1 | V | interface { } |
+| iter.Pull | 0 | V | interface { } |
+| iter.Pull2 | 0 | K | interface { } |
+| iter.Pull2 | 1 | V | interface { } |
+| iter.Seq | 0 | V | interface { } |
+| iter.Seq2 | 0 | K | interface { } |
+| iter.Seq2 | 1 | V | interface { } |
+| os.doInRoot | 0 | T | interface { } |
+| os.ignoringEINTR2 | 0 | T | interface { } |
+| reflect.rangeNum | 1 | N | interface { int64 \| uint64 } |
+| runtime.AddCleanup | 0 | T | interface { } |
+| runtime.AddCleanup | 1 | S | interface { } |
+| runtime.fandbits | 0 | F | floaty |
+| runtime.fmax | 0 | F | floaty |
+| runtime.fmin | 0 | F | floaty |
+| runtime.forbits | 0 | F | floaty |
+| runtime.noEscapePtr | 0 | T | interface { } |
+| slices.All | 0 | Slice | interface { ~[]E } |
+| slices.All | 1 | E | interface { } |
+| slices.AppendSeq | 0 | Slice | interface { ~[]E } |
+| slices.AppendSeq | 1 | E | interface { } |
+| slices.Backward | 0 | Slice | interface { ~[]E } |
+| slices.Backward | 1 | E | interface { } |
+| slices.BinarySearch | 0 | S | interface { ~[]E } |
+| slices.BinarySearch | 1 | E | Ordered |
+| slices.BinarySearchFunc | 0 | S | interface { ~[]E } |
+| slices.BinarySearchFunc | 1 | E | interface { } |
+| slices.BinarySearchFunc | 2 | T | interface { } |
+| slices.Chunk | 0 | Slice | interface { ~[]E } |
+| slices.Chunk | 1 | E | interface { } |
+| slices.Clip | 0 | S | interface { ~[]E } |
+| slices.Clip | 1 | E | interface { } |
+| slices.Clone | 0 | S | interface { ~[]E } |
+| slices.Clone | 1 | E | interface { } |
+| slices.Collect | 0 | E | interface { } |
+| slices.Compact | 0 | S | interface { ~[]E } |
+| slices.Compact | 1 | E | comparable |
+| slices.CompactFunc | 0 | S | interface { ~[]E } |
+| slices.CompactFunc | 1 | E | interface { } |
+| slices.Compare | 0 | S | interface { ~[]E } |
+| slices.Compare | 1 | E | Ordered |
+| slices.CompareFunc | 0 | S1 | interface { ~[]E1 } |
+| slices.CompareFunc | 1 | S2 | interface { ~[]E2 } |
+| slices.CompareFunc | 2 | E1 | interface { } |
+| slices.CompareFunc | 3 | E2 | interface { } |
+| slices.Concat | 0 | S | interface { ~[]E } |
+| slices.Concat | 1 | E | interface { } |
+| slices.Contains | 0 | S | interface { ~[]E } |
+| slices.Contains | 1 | E | comparable |
+| slices.ContainsFunc | 0 | S | interface { ~[]E } |
+| slices.ContainsFunc | 1 | E | interface { } |
+| slices.Delete | 0 | S | interface { ~[]E } |
+| slices.Delete | 1 | E | interface { } |
+| slices.DeleteFunc | 0 | S | interface { ~[]E } |
+| slices.DeleteFunc | 1 | E | interface { } |
+| slices.Equal | 0 | S | interface { ~[]E } |
+| slices.Equal | 1 | E | comparable |
+| slices.EqualFunc | 0 | S1 | interface { ~[]E1 } |
+| slices.EqualFunc | 1 | S2 | interface { ~[]E2 } |
+| slices.EqualFunc | 2 | E1 | interface { } |
+| slices.EqualFunc | 3 | E2 | interface { } |
+| slices.Grow | 0 | S | interface { ~[]E } |
+| slices.Grow | 1 | E | interface { } |
+| slices.Index | 0 | S | interface { ~[]E } |
+| slices.Index | 1 | E | comparable |
+| slices.IndexFunc | 0 | S | interface { ~[]E } |
+| slices.IndexFunc | 1 | E | interface { } |
+| slices.Insert | 0 | S | interface { ~[]E } |
+| slices.Insert | 1 | E | interface { } |
+| slices.IsSorted | 0 | S | interface { ~[]E } |
+| slices.IsSorted | 1 | E | Ordered |
+| slices.IsSortedFunc | 0 | S | interface { ~[]E } |
+| slices.IsSortedFunc | 1 | E | interface { } |
+| slices.Max | 0 | S | interface { ~[]E } |
+| slices.Max | 1 | E | Ordered |
+| slices.MaxFunc | 0 | S | interface { ~[]E } |
+| slices.MaxFunc | 1 | E | interface { } |
+| slices.Min | 0 | S | interface { ~[]E } |
+| slices.Min | 1 | E | Ordered |
+| slices.MinFunc | 0 | S | interface { ~[]E } |
+| slices.MinFunc | 1 | E | interface { } |
+| slices.Repeat | 0 | S | interface { ~[]E } |
+| slices.Repeat | 1 | E | interface { } |
+| slices.Replace | 0 | S | interface { ~[]E } |
+| slices.Replace | 1 | E | interface { } |
+| slices.Reverse | 0 | S | interface { ~[]E } |
+| slices.Reverse | 1 | E | interface { } |
+| slices.Sort | 0 | S | interface { ~[]E } |
+| slices.Sort | 1 | E | Ordered |
+| slices.SortFunc | 0 | S | interface { ~[]E } |
+| slices.SortFunc | 1 | E | interface { } |
+| slices.SortStableFunc | 0 | S | interface { ~[]E } |
+| slices.SortStableFunc | 1 | E | interface { } |
+| slices.Sorted | 0 | E | Ordered |
+| slices.SortedFunc | 0 | E | interface { } |
+| slices.SortedStableFunc | 0 | E | interface { } |
+| slices.Values | 0 | Slice | interface { ~[]E } |
+| slices.Values | 1 | E | interface { } |
+| slices.breakPatternsCmpFunc | 0 | E | interface { } |
+| slices.breakPatternsOrdered | 0 | E | Ordered |
+| slices.choosePivotCmpFunc | 0 | E | interface { } |
+| slices.choosePivotOrdered | 0 | E | Ordered |
+| slices.heapSortCmpFunc | 0 | E | interface { } |
+| slices.heapSortOrdered | 0 | E | Ordered |
+| slices.insertionSortCmpFunc | 0 | E | interface { } |
+| slices.insertionSortOrdered | 0 | E | Ordered |
+| slices.isNaN | 0 | T | Ordered |
+| slices.medianAdjacentCmpFunc | 0 | E | interface { } |
+| slices.medianAdjacentOrdered | 0 | E | Ordered |
+| slices.medianCmpFunc | 0 | E | interface { } |
+| slices.medianOrdered | 0 | E | Ordered |
+| slices.order2CmpFunc | 0 | E | interface { } |
+| slices.order2Ordered | 0 | E | Ordered |
+| slices.overlaps | 0 | E | interface { } |
+| slices.partialInsertionSortCmpFunc | 0 | E | interface { } |
+| slices.partialInsertionSortOrdered | 0 | E | Ordered |
+| slices.partitionCmpFunc | 0 | E | interface { } |
+| slices.partitionEqualCmpFunc | 0 | E | interface { } |
+| slices.partitionEqualOrdered | 0 | E | Ordered |
+| slices.partitionOrdered | 0 | E | Ordered |
+| slices.pdqsortCmpFunc | 0 | E | interface { } |
+| slices.pdqsortOrdered | 0 | E | Ordered |
+| slices.reverseRangeCmpFunc | 0 | E | interface { } |
+| slices.reverseRangeOrdered | 0 | E | Ordered |
+| slices.rotateCmpFunc | 0 | E | interface { } |
+| slices.rotateLeft | 0 | E | interface { } |
+| slices.rotateOrdered | 0 | E | Ordered |
+| slices.rotateRight | 0 | E | interface { } |
+| slices.siftDownCmpFunc | 0 | E | interface { } |
+| slices.siftDownOrdered | 0 | E | Ordered |
+| slices.stableCmpFunc | 0 | E | interface { } |
+| slices.stableOrdered | 0 | E | Ordered |
+| slices.startIdx | 0 | E | interface { } |
+| slices.swapRangeCmpFunc | 0 | E | interface { } |
+| slices.swapRangeOrdered | 0 | E | Ordered |
+| slices.symMergeCmpFunc | 0 | E | interface { } |
+| slices.symMergeOrdered | 0 | E | Ordered |
+| strconv.bsearch | 0 | S | interface { ~[]E } |
+| strconv.bsearch | 1 | E | interface { ~uint16 \| ~uint32 } |
+| sync.OnceValue | 0 | T | interface { } |
+| sync.OnceValues | 0 | T1 | interface { } |
+| sync.OnceValues | 1 | T2 | interface { } |
+| sync/atomic.Pointer | 0 | T | interface { } |
+| sync/atomic.Pointer.CompareAndSwap | 0 | T | interface { } |
+| sync/atomic.Pointer.Load | 0 | T | interface { } |
+| sync/atomic.Pointer.Store | 0 | T | interface { } |
+| sync/atomic.Pointer.Swap | 0 | T | interface { } |
+| time.atoi | 0 | bytes | interface { []uint8 \| string } |
+| time.isDigit | 0 | bytes | interface { []uint8 \| string } |
+| time.leadingInt | 0 | bytes | interface { []uint8 \| string } |
+| time.parseNanoseconds | 0 | bytes | interface { []uint8 \| string } |
+| time.parseRFC3339 | 0 | bytes | interface { []uint8 \| string } |

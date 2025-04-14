@@ -102,7 +102,7 @@ module Ssa {
      * end
      * ```
      */
-    final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
+    deprecated final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
 
     /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
@@ -176,9 +176,6 @@ module Ssa {
 
     override string toString() { result = this.getControlFlowNode().toString() }
 
-    /** Gets the location of this SSA definition. */
-    Location getLocation() { result = this.getControlFlowNode().getLocation() }
-
     /** Gets the scope of this SSA definition. */
     CfgScope getScope() { result = this.getBasicBlock().getScope() }
   }
@@ -205,14 +202,31 @@ module Ssa {
     final VariableWriteAccessCfgNode getWriteAccess() { result = write }
 
     /**
-     * Holds if this SSA definition represents a direct assignment of `value`
-     * to the underlying variable.
+     * Holds if this SSA definition assigns `value` to the underlying variable.
+     *
+     * This is either a direct assignment, `x = value`, or an assignment via
+     * simple pattern matching
+     *
+     * ```rb
+     * case value
+     *  in Foo => x then ...
+     *  in y => then ...
+     * end
+     * ```
      */
     predicate assigns(CfgNodes::ExprCfgNode value) {
       exists(CfgNodes::ExprNodes::AssignExprCfgNode a, BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         a = bb.getNode(i) and
         value = a.getRhs()
+      )
+      or
+      exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::AstCfgNode pattern |
+        case.getValue() = value and
+        pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
+      |
+        this.getWriteAccess() =
+          [pattern, pattern.(CfgNodes::ExprNodes::AsPatternCfgNode).getVariableAccess()]
       )
     }
 

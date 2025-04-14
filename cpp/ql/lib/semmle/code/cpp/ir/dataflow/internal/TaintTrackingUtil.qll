@@ -147,7 +147,10 @@ predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, st
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  node instanceof ArgumentNode and
+  c.isSingleton(any(ElementContent ec))
+}
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -208,4 +211,31 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut, string
     ) and
     nodeOut = callOutput(call, modelOut)
   )
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlowPrivate::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.(DirectPosition).getArgumentIndex() = -1 and
+      sink.(PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPrivate::ArgumentNode)
+          .argumentOf(call, any(DirectPosition qualpos | qualpos.getArgumentIndex() = -1))
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
+    )
+  }
 }

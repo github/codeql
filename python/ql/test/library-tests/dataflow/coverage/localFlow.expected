@@ -8,9 +8,4 @@
 | test.py:208:1:208:53 | Entry definition for SsaSourceVariable SINK | test.py:210:5:210:8 | ControlFlowNode for SINK |
 | test.py:208:1:208:53 | Entry definition for SsaSourceVariable SOURCE | test.py:209:25:209:30 | ControlFlowNode for SOURCE |
 | test.py:209:5:209:5 | ControlFlowNode for x | test.py:210:10:210:10 | ControlFlowNode for x |
-| test.py:209:9:209:68 | ControlFlowNode for .0 | test.py:209:9:209:68 | ControlFlowNode for .0 |
 | test.py:209:9:209:68 | ControlFlowNode for ListComp | test.py:209:5:209:5 | ControlFlowNode for x |
-| test.py:209:16:209:16 | ControlFlowNode for v | test.py:209:45:209:45 | ControlFlowNode for v |
-| test.py:209:40:209:40 | ControlFlowNode for u | test.py:209:56:209:56 | ControlFlowNode for u |
-| test.py:209:51:209:51 | ControlFlowNode for z | test.py:209:67:209:67 | ControlFlowNode for z |
-| test.py:209:62:209:62 | ControlFlowNode for y | test.py:209:10:209:10 | ControlFlowNode for y |

@@ -11,7 +11,7 @@ import javascript
 import PostMessageStarCustomizations::PostMessageStar
 
 // Materialize flow labels
-private class ConcretePartiallyTaintedObject extends PartiallyTaintedObject {
+deprecated private class ConcretePartiallyTaintedObject extends PartiallyTaintedObject {
   ConcretePartiallyTaintedObject() { this = this }
 }
 
@@ -26,7 +26,30 @@ private class ConcretePartiallyTaintedObject extends PartiallyTaintedObject {
  * Additional sources or sinks can be added either by extending the relevant class, or by subclassing
  * this configuration itself, and amending the sources and sinks.
  */
-class Configuration extends TaintTracking::Configuration {
+module PostMessageStarConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
+    // If an object leaks, all of its properties have leaked
+    isSink(node) and contents = DataFlow::ContentSet::anyProperty()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * A taint tracking configuration for cross-window communication with unrestricted origin.
+ */
+module PostMessageStarFlow = TaintTracking::Global<PostMessageStarConfig>;
+
+/**
+ * DEPRECATED. Use the `PostMessageStarFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "PostMessageStar" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

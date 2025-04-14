@@ -72,7 +72,6 @@ module FlowFromFree<FlowFromFreeParamSig P> {
 
     predicate isSource(DataFlow::Node node, FlowState state) { isFree(node, _, state, _) }
 
-    pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
       exists(Expr e, DataFlow::Node source, DeallocationExpr dealloc |
         P::isSink(sink, e) and
@@ -95,7 +94,7 @@ module FlowFromFree<FlowFromFreeParamSig P> {
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
       or
-      n.asExpr() instanceof ArrayExpr
+      [n.asExpr(), n.asIndirectExpr()] instanceof ArrayExpr
     }
   }
 

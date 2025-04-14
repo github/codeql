@@ -30,46 +30,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   override string getName() { functions(underlyingElement(this), result, _) }
 
-  /**
-   * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
-   * Gets the full signature of this function, including return type, parameter
-   * types, and template arguments.
-   *
-   * For example, in the following code:
-   * ```
-   * template<typename T> T min(T x, T y);
-   * int z = min(5, 7);
-   * ```
-   * The full signature of the function called on the last line would be
-   * `min<int>(int, int) -> int`, and the full signature of the uninstantiated
-   * template on the first line would be `min<T>(T, T) -> T`.
-   */
-  deprecated string getFullSignature() {
-    exists(string name, string templateArgs, string args |
-      result = name + templateArgs + args + " -> " + this.getType().toString() and
-      name = this.getQualifiedName() and
-      (
-        if exists(this.getATemplateArgument())
-        then
-          templateArgs =
-            "<" +
-              concat(int i |
-                exists(this.getTemplateArgument(i))
-              |
-                this.getTemplateArgument(i).toString(), ", " order by i
-              ) + ">"
-        else templateArgs = ""
-      ) and
-      args =
-        "(" +
-          concat(int i |
-            exists(this.getParameter(i))
-          |
-            this.getParameter(i).getType().toString(), ", " order by i
-          ) + ")"
-    )
-  }
-
   /** Gets a specifier of this function. */
   override Specifier getASpecifier() {
     funspecifiers(underlyingElement(this), unresolveElement(result)) or
@@ -157,6 +117,26 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Holds if this function is declared to be `consteval`.
    */
   predicate isConsteval() { this.hasSpecifier("is_consteval") }
+
+  /**
+   * Holds if this function is declared to be `explicit`.
+   */
+  predicate isExplicit() { this.hasSpecifier("explicit") }
+
+  /**
+   * Gets the constant expression that determines whether the function is explicit.
+   *
+   * For example, for the following code the result is the expression `sizeof(T) == 1`:
+   * ```
+   * template<typename T> struct C {
+   *   explicit(sizeof(T) == 1)
+   *   C(const T);
+   * };
+   * ```
+   */
+  Expr getExplicitExpr() {
+    explicit_specifier_exprs(underlyingElement(this), unresolveElement(result))
+  }
 
   /**
    * Holds if this function is declared with `__attribute__((naked))` or
@@ -250,6 +230,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       )
   }
 
+  /**
+   * Gets a non-implicit function declaration entry.
+   */
+  FunctionDeclarationEntry getAnExplicitDeclarationEntry() {
+    result = this.getADeclarationEntry() and
+    not result.isImplicit()
+  }
+
   private predicate declEntry(FunctionDeclarationEntry fde) {
     fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
     // If one .cpp file specializes a function, and another calls the
@@ -265,7 +253,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
 
-  /** Holds if this Function is a Template specialization. */
+  /** Holds if this function is a template specialization. */
   predicate isSpecialization() {
     exists(FunctionDeclarationEntry fde |
       fun_decls(unresolveElement(fde), underlyingElement(this), _, _, _) and
@@ -520,6 +508,17 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nearest enclosing AccessHolder.
    */
   override AccessHolder getEnclosingAccessHolder() { result = this.getDeclaringType() }
+
+  /**
+   * Holds if this function has extraction errors that create an `ErrorExpr`.
+   */
+  predicate hasErrors() {
+    exists(ErrorExpr e |
+      e.getEnclosingFunction() = this and
+      // Exclude the first allocator call argument because it is always extracted as `ErrorExpr`.
+      not exists(NewOrNewArrayExpr new | e = new.getAllocatorCall().getArgument(0))
+    )
+  }
 }
 
 pragma[noinline]
@@ -666,12 +665,13 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Holds if this declaration is also a definition of its function. */
   override predicate isDefinition() { fun_def(underlyingElement(this)) }
 
-  /** Holds if this declaration is a Template specialization. */
+  /** Holds if this declaration is a template specialization. */
   predicate isSpecialization() { fun_specialized(underlyingElement(this)) }
 
   /**
    * Holds if this declaration is an implicit function declaration, that is,
-   * where a function is used before it is declared (under older C standards).
+   * where a function is used before it is declared (under older C standards,
+   * or when there were parse errors).
    */
   predicate isImplicit() { fun_implicit(underlyingElement(this)) }
 
@@ -715,6 +715,27 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
    * specification.
    */
   predicate isNoExcept() { fun_decl_empty_noexcept(underlyingElement(this)) }
+
+  /**
+   * Gets a requires clause if this declaration is a template with such a clause.
+   */
+  Expr getARequiresClause() { fun_requires(underlyingElement(this), _, unresolveElement(result)) }
+
+  /**
+   * Gets the requires clause that appears after the template argument list if this
+   * declaration is a template with such a clause.
+   */
+  Expr getTemplateRequiresClause() {
+    fun_requires(underlyingElement(this), 1, unresolveElement(result))
+  }
+
+  /**
+   * Gets the requires clause that appears after the declarator if this declaration
+   * is a template with such a clause.
+   */
+  Expr getFunctionRequiresClause() {
+    fun_requires(underlyingElement(this), 2, unresolveElement(result))
+  }
 }
 
 /**
@@ -898,4 +919,11 @@ class UserDefinedLiteral extends Function {
  */
 class DeductionGuide extends Function {
   DeductionGuide() { functions(underlyingElement(this), _, 8) }
+
+  /**
+   * Gets the class template for which this is a deduction guide.
+   */
+  TemplateClass getTemplateClass() {
+    deduction_guide_for_class(underlyingElement(this), unresolveElement(result))
+  }
 }

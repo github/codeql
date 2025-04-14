@@ -1,0 +1,30 @@
+name: Pull Request Open
+
+on:
+  pull_request_target:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - id: changed-files
+        run: |
+          echo "CHANGED-FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_ENV"
+      - run: echo "${{ env.CHANGED-FILES }}"
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - id: changed-files
+        run: |
+          FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)
+          echo "CHANGED-FILES=${FILES}" >> "$GITHUB_ENV"
+      - run: echo "${{ env.CHANGED-FILES }}"
+
+
+

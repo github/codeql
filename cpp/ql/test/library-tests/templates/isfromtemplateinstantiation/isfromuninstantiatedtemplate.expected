@@ -1,10 +1,6 @@
 isFromUninstantiatedTemplate
 | file://:0:0:0:0 | 0 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | file://:0:0:0:0 | (int)... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
-| file://:0:0:0:0 | (unnamed parameter 0) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| file://:0:0:0:0 | (unnamed parameter 0) | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| file://:0:0:0:0 | declaration of 1st parameter | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | file://:0:0:0:0 | initializer for MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |
 | isfromtemplateinstantiation.cpp:12:24:12:46 | definition of inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
 | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function | isfromtemplateinstantiation.cpp:12:24:12:46 | inner_template_function |
@@ -141,10 +137,6 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:129:19:129:19 | 1 | isfromtemplateinstantiation.cpp:129:6:129:6 | f |
 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | isfromtemplateinstantiation.cpp:134:29:134:33 | definition of Outer<T> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |
@@ -358,11 +350,6 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:39:2:40:2 | { ... } | I |  | Stmt |  |
 | isfromtemplateinstantiation.cpp:40:2:40:2 | return ... |  | T | Stmt |  |
 | isfromtemplateinstantiation.cpp:40:2:40:2 | return ... | I |  | Stmt |  |
-| isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:44:26:44:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:44:26:44:26 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:44:26:44:26 | template_class | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<T> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:44:26:44:39 | template_class<char> | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:46:4:46:4 | definition of t |  | T | Definition |  |
@@ -390,20 +377,8 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:59:5:59:8 | main |  |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:72:30:72:32 | 97 |  |  | Expr |  |
 | isfromtemplateinstantiation.cpp:72:30:72:32 | (long)... |  |  | Expr |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:77:26:77:26 | operator= | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<T> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:82:9:82:9 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:82:9:82:9 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:82:9:82:9 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:82:9:82:9 | operator= | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:82:9:82:21 | MyClassStruct | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:84:6:84:10 | definition of value |  | T | Definition |  |
@@ -451,16 +426,8 @@ isFromUninstantiatedTemplate
 | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<T *> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:128:7:128:30 | AnotherTemplateClass<long *> | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:129:6:129:6 | f |  | T | Declaration |  |
-| isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:134:29:134:29 | declaration of operator= | I |  | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:134:29:134:29 | operator= | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:134:29:134:29 | operator= | I |  | Declaration |  |
 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<T> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> | I |  | Declaration |  |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | I | T | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | declaration of operator= | I | T | DeclarationEntry |  |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
-| isfromtemplateinstantiation.cpp:135:31:135:31 | operator= | I | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> |  | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<U> | I | T | Declaration |  |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | I | T | Declaration |  |
@@ -488,11 +455,6 @@ isFromUninstantiatedTemplate
 | load.cpp:6:13:6:21 | externInt |  |  | Expr | Not ref |
 | load.cpp:7:16:7:20 | (reference to) |  |  | Expr |  |
 | load.cpp:7:16:7:20 | * ... |  |  | Expr |  |
-| load.cpp:13:7:13:7 | basic_text_iprimitive | I |  | Declaration |  |
-| load.cpp:13:7:13:7 | basic_text_iprimitive | I |  | Declaration |  |
-| load.cpp:13:7:13:7 | declaration of basic_text_iprimitive | I |  | DeclarationEntry |  |
-| load.cpp:13:7:13:7 | declaration of basic_text_iprimitive | I |  | DeclarationEntry |  |
-| load.cpp:13:7:13:7 | operator= | I |  | Declaration |  |
 | load.cpp:13:7:13:27 | basic_text_iprimitive<IStream> |  | T | Declaration |  |
 | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> | I |  | Declaration |  |
 | load.cpp:15:14:15:15 | definition of is |  | T | Definition |  |

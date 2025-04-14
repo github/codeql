@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["jetbrains/jetbrainsruntime", "*", "input.debug-suffix", "code-injection", "generated"]

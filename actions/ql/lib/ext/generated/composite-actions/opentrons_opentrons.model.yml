@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["opentrons/opentrons", "*", "input.destPrefix", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.domain", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.distPath", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.project", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.python-version", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.repository_url", "code-injection", "generated"]
+     - ["opentrons/opentrons", "*", "input.password", "code-injection", "generated"]

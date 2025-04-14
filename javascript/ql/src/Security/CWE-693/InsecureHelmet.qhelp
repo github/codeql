@@ -1,0 +1,71 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            <a href="https://helmetjs.github.io/">Helmet</a> is a collection of middleware functions for securing Express apps. It sets various HTTP headers to guard against common web vulnerabilities.
+
+            This query detects Helmet misconfigurations that can lead to security vulnerabilities, specifically:
+        </p>
+
+        <ul>
+            <li>Disabling frame protection</li>
+            <li>Disabling Content Security Policy</li>
+        </ul>
+
+        <p>
+            Content Security Policy (CSP) helps spot and prevent injection attacks such as Cross-Site Scripting (XSS).
+
+            Removing frame protections exposes an application to attacks such as clickjacking, where an attacker can trick a user into clicking on a button or link on a targeted page when they intended to click on the page carrying out the attack.
+        </p>
+
+        <p>
+            Users of the query can extend the set of required Helmet features by adding additional checks for them, using CodeQL <a href="https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/">data extensions</a> in a <a href="https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack">CodeQL model pack</a>. See <code>CUSTOMIZING.md</code> in the query source for more information.
+        </p>
+
+    </overview>
+    <recommendation>
+        <p>
+            To help mitigate these vulnerabilities, ensure that the following Helmet functions are not disabled, and are configured appropriately to your application:
+        </p>
+
+        <ul>
+            <li><code>frameguard</code></li>
+            <li><code>contentSecurityPolicy</code></li>
+        </ul>
+    </recommendation>
+    <example>
+        <p>
+            The following code snippet demonstrates Helmet configured in an insecure manner:
+        </p>
+
+        <sample src="examples/helmet_insecure.js" />
+
+        <p>
+            In this example, the defaults are used, which enables frame protection and a default Content Security Policy.
+        </p>
+
+        <sample src="examples/helmet_default.js" />
+
+        <p>
+            You can also enable a custom Content Security Policy by passing an object to the <code>contentSecurityPolicy</code> key. For example, taken from the <a href="https://helmetjs.github.io/#content-security-policy">Helmet docs</a>:
+        </p>
+
+        <sample src="examples/helmet_custom.js" />
+
+    </example>
+    <references>
+        <li>
+            <a href="https://helmetjs.github.io/">helmet.js website</a>
+        </li>
+        <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content Security Policy (CSP) | MDN</a>
+        </li>
+        <li>
+            <a href="https://infosec.mozilla.org/guidelines/web_security">Mozilla Web Security Guidelines</a>
+        </li>
+        <li>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/Security#protect_against_clickjacking">Protect against clickjacking | MDN</a>
+        </li>
+
+    </references>
+</qhelp>

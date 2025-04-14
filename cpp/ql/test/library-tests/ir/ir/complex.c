@@ -144,4 +144,4 @@ void complex_conversions(void) {
   ld = jld;
 }
 
-// semmle-extractor-options: --microsoft --edg --c99
+// semmle-extractor-options: --microsoft -std=c99

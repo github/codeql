@@ -13,3 +13,11 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: neutralModel
+    data: []
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data: []

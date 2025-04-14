@@ -1,3 +1,5 @@
+legacyDataFlowDifference
+#select
 | tst.js:2:11:2:18 | source() | tst.js:8:12:8:12 | x |
 | tst.js:2:11:2:18 | source() | tst.js:12:12:12:12 | x |
 | tst.js:2:11:2:18 | source() | tst.js:14:12:14:12 | x |

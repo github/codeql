@@ -53,8 +53,8 @@ jobs:
       - name: Create database
         run: |
           "${CODEQL}" database create \
-            --search-path "ql/extractor-pack" \
-            --threads 4 \
+          --search-path "${{ github.workspace }}"
+          --threads 4 \
             --language ql --source-root "${{ github.workspace }}/repo" \
             "${{ runner.temp }}/database"
         env:
@@ -65,7 +65,7 @@ jobs:
           "${CODEQL}" dataset measure --threads 4 --output "stats/${{ matrix.repo }}/stats.xml" "${{ runner.temp }}/database/db-ql"
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: measurements
           path: stats
@@ -76,14 +76,14 @@ jobs:
     needs: measure
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: measurements
           path: stats
       - run: |
           python -m pip install --user lxml
           find stats -name 'stats.xml' -print0 | sort -z | xargs -0 python ruby/scripts/merge_stats.py --output ql/ql/src/ql.dbscheme.stats --normalise ql_tokeninfo
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ql.dbscheme.stats
           path: ql/ql/src/ql.dbscheme.stats

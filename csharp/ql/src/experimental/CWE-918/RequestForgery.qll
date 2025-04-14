@@ -1,3 +1,5 @@
+deprecated module;
+
 import csharp
 
 module RequestForgery {
@@ -22,39 +24,6 @@ module RequestForgery {
    * server side request forgery vulnerabilities.
    */
   abstract private class Barrier extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `RequestForgeryFlow` instead.
-   *
-   * A data flow configuration for detecting server side request forgery vulnerabilities.
-   */
-  deprecated class RequestForgeryConfiguration extends DataFlow::Configuration {
-    RequestForgeryConfiguration() { this = "Server Side Request forgery" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-      interpolatedStringFlowStep(prev, succ)
-      or
-      stringReplaceStep(prev, succ)
-      or
-      uriCreationStep(prev, succ)
-      or
-      formatConvertStep(prev, succ)
-      or
-      toStringStep(prev, succ)
-      or
-      stringConcatStep(prev, succ)
-      or
-      stringFormatStep(prev, succ)
-      or
-      pathCombineStep(prev, succ)
-    }
-
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-  }
 
   /**
    * A data flow configuration for detecting server side request forgery vulnerabilities.
@@ -93,7 +62,7 @@ module RequestForgery {
   /**
    * A dataflow source for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call

@@ -18,40 +18,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Callable extends @callable, Element {
-    /**
-     * Gets the name of this callable, if it exists.
-     *
-     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
-     */
-    string getName() { callable_names(this, result) }
-
-    /**
-     * Gets the self parameter of this callable, if it exists.
-     */
-    ParamDecl getSelfParam() { callable_self_params(this, result) }
-
-    /**
-     * Gets the `index`th parameter of this callable (0-based).
-     */
-    ParamDecl getParam(int index) { callable_params(this, index, result) }
-
-    /**
-     * Gets the body of this callable, if it exists.
-     *
-     * The body is absent within protocol declarations.
-     */
-    BraceStmt getBody() { callable_bodies(this, result) }
-
-    /**
-     * Gets the `index`th capture of this callable (0-based).
-     */
-    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class File extends @file, Element {
     /**
      * Gets the name of this file.
@@ -196,6 +162,40 @@ module Raw {
    * ```
    */
   class AvailabilitySpec extends @availability_spec, AstNode { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Callable extends @callable, AstNode {
+    /**
+     * Gets the name of this callable, if it exists.
+     *
+     * The name includes argument labels of the callable, for example `myFunction(arg:)`.
+     */
+    string getName() { callable_names(this, result) }
+
+    /**
+     * Gets the self parameter of this callable, if it exists.
+     */
+    ParamDecl getSelfParam() { callable_self_params(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     */
+    ParamDecl getParam(int index) { callable_params(this, index, result) }
+
+    /**
+     * Gets the body of this callable, if it exists.
+     *
+     * The body is absent within protocol declarations.
+     */
+    BraceStmt getBody() { callable_bodies(this, result) }
+
+    /**
+     * Gets the `index`th capture of this callable (0-based).
+     */
+    CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3002,6 +3002,11 @@ module Raw {
    */
   class ForEachStmt extends @for_each_stmt, LabeledStmt {
     override string toString() { result = "ForEachStmt" }
+
+    /**
+     * Gets the `index`th variable of this for each statement (0-based).
+     */
+    VarDecl getVariable(int index) { for_each_stmt_variables(this, index, result) }
 
     /**
      * Gets the pattern of this for each statement.

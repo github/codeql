@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*1]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*2]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*3]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*4]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*5]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*6]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*7]", "ReturnValue", "taint", "manual"]
+      - ["std", "", False, "format<Args>", "(format_string,Args &&)", "", "Argument[*8]", "ReturnValue", "taint", "manual"]

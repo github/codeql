@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -117,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Location location)
+        private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Microsoft.CodeAnalysis.Location location)
         {
             var initInfo = new ExpressionInfo(Context,
                 AnnotatedTypeSymbol.CreateNotAnnotated(type),

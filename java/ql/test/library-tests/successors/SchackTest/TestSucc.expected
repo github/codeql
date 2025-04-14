@@ -1,8 +1,8 @@
-| SchackTest.java:1:14:1:23 | super(...) | SchackTest.java:1:14:1:23 | SchackTest |
+| SchackTest.java:1:14:1:23 | super(...) | SchackTest.java:1:14:1:23 | Exit |
 | SchackTest.java:1:14:1:23 | { ... } | SchackTest.java:1:14:1:23 | super(...) |
-| SchackTest.java:2:8:2:10 | super(...) | SchackTest.java:2:8:2:10 | ExA |
+| SchackTest.java:2:8:2:10 | super(...) | SchackTest.java:2:8:2:10 | Exit |
 | SchackTest.java:2:8:2:10 | { ... } | SchackTest.java:2:8:2:10 | super(...) |
-| SchackTest.java:3:8:3:10 | super(...) | SchackTest.java:3:8:3:10 | ExB |
+| SchackTest.java:3:8:3:10 | super(...) | SchackTest.java:3:8:3:10 | Exit |
 | SchackTest.java:3:8:3:10 | { ... } | SchackTest.java:3:8:3:10 | super(...) |
 | SchackTest.java:5:18:24:2 | { ... } | SchackTest.java:6:3:23:3 | try ... |
 | SchackTest.java:6:3:23:3 | try ... | SchackTest.java:6:7:17:3 | { ... } |
@@ -56,7 +56,7 @@
 | SchackTest.java:20:23:20:72 | "successor (but neither true nor false successor)" | SchackTest.java:20:4:20:73 | println(...) |
 | SchackTest.java:21:13:23:3 | { ... } | SchackTest.java:22:4:22:41 | <Expr>; |
 | SchackTest.java:22:4:22:13 | System.out | SchackTest.java:22:23:22:39 | "false successor" |
-| SchackTest.java:22:4:22:40 | println(...) | SchackTest.java:5:7:5:9 | foo |
+| SchackTest.java:22:4:22:40 | println(...) | SchackTest.java:5:7:5:9 | Exit |
 | SchackTest.java:22:4:22:41 | <Expr>; | SchackTest.java:22:4:22:13 | System.out |
 | SchackTest.java:22:23:22:39 | "false successor" | SchackTest.java:22:4:22:40 | println(...) |
 | SchackTest.java:26:35:30:2 | { ... } | SchackTest.java:27:3:27:25 | if (...) |
@@ -65,9 +65,9 @@
 | SchackTest.java:27:7:27:24 | ... > ... | SchackTest.java:28:10:28:18 | new ExB(...) |
 | SchackTest.java:27:7:27:24 | ... > ... | SchackTest.java:29:10:29:22 | random(...) |
 | SchackTest.java:27:23:27:24 | .5 | SchackTest.java:27:7:27:24 | ... > ... |
-| SchackTest.java:28:4:28:19 | throw ... | SchackTest.java:26:18:26:20 | bar |
+| SchackTest.java:28:4:28:19 | throw ... | SchackTest.java:26:18:26:20 | Exit |
 | SchackTest.java:28:10:28:18 | new ExB(...) | SchackTest.java:28:4:28:19 | throw ... |
-| SchackTest.java:29:3:29:28 | return ... | SchackTest.java:26:18:26:20 | bar |
+| SchackTest.java:29:3:29:28 | return ... | SchackTest.java:26:18:26:20 | Exit |
 | SchackTest.java:29:10:29:22 | random(...) | SchackTest.java:29:26:29:27 | .3 |
 | SchackTest.java:29:10:29:27 | ... > ... | SchackTest.java:29:3:29:28 | return ... |
 | SchackTest.java:29:26:29:27 | .3 | SchackTest.java:29:10:29:27 | ... > ... |

@@ -81,6 +81,24 @@ module PEP249 {
     }
   }
 
+  /** A call to a method that fetches rows from a previous execution. */
+  private class FetchMethodCall extends ThreatModelSource::Range, API::CallNode {
+    FetchMethodCall() {
+      exists(API::Node start |
+        start instanceof DatabaseCursor or start instanceof DatabaseConnection
+      |
+        // note: since we can't currently provide accesspaths for sources, these are all
+        // lumped together, although clearly the fetchmany/fetchall returns a
+        // list/iterable with rows.
+        this = start.getMember(["fetchone", "fetchmany", "fetchall"]).getACall()
+      )
+    }
+
+    override string getThreatModel() { result = "database" }
+
+    override string getSourceType() { result = "cursor.fetch*()" }
+  }
+
   // ---------------------------------------------------------------------------
   // asyncio implementations
   // ---------------------------------------------------------------------------

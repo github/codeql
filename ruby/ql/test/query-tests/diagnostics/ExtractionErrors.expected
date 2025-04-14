@@ -1,1 +1,0 @@
-| src/not_ruby.rb:5:25:5:26 | A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis. | Extraction failed in src/not_ruby.rb with error A parse error occurred. Check the syntax of the file. If the file is invalid, correct the error or exclude the file from analysis. | 2 |

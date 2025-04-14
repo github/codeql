@@ -30,7 +30,8 @@ jobs:
         run: |
           EXIT_CODE=0
           # TODO: remove the shared exception from the regex when coverage of qlpacks without dbschemes is supported
-          changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -Po '^(?!(shared))[a-z]*/ql/lib' || true; } | sort -u)"
+          # TODO: remove the actions exception once https://github.com/github/codeql-team/issues/3656 is fixed
+          changed_lib_packs="$(git diff --name-only --diff-filter=ACMRT HEAD^ HEAD | { grep -Po '^(?!(shared|actions))[a-z]*/ql/lib' || true; } | sort -u)"
           for pack_dir in ${changed_lib_packs}; do
             lang="${pack_dir%/ql/lib}"
             codeql generate library-doc-coverage --output="${RUNNER_TEMP}/${lang}-current.txt" --dir="${pack_dir}"

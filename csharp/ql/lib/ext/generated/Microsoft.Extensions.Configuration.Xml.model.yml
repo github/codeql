@@ -4,16 +4,14 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlDocumentDecryptor", False, "CreateDecryptingXmlReader", "(System.IO.Stream,System.Xml.XmlReaderSettings)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Xml", "XmlDocumentDecryptor", False, "CreateDecryptingXmlReader", "(System.IO.Stream,System.Xml.XmlReaderSettings)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.Configuration.Xml", "XmlDocumentDecryptor", True, "DecryptDocumentAndCreateXmlReader", "(System.Xml.XmlDocument)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", False, "Read", "(System.IO.Stream,Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationProvider", "XmlConfigurationProvider", "(Microsoft.Extensions.Configuration.Xml.XmlConfigurationSource)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlDocumentDecryptor", "DecryptDocumentAndCreateXmlReader", "(System.Xml.XmlDocument)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", "Read", "(System.IO.Stream,Microsoft.Extensions.Configuration.Xml.XmlDocumentDecryptor)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", "XmlStreamConfigurationProvider", "(Microsoft.Extensions.Configuration.Xml.XmlStreamConfigurationSource)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

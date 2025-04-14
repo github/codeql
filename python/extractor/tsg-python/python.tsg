@@ -22,8 +22,11 @@
 (assignment !type) @assign
 { let @assign.node = (ast-node @assign "Assign") }
 
-[ (expression_list) (tuple) (tuple_pattern) (pattern_list) ] @tuple
+[ (expression_list) (tuple) (tuple_pattern) (pattern_list) (index_expression_list) ] @tuple
 { let @tuple.node = (ast-node @tuple "Tuple") }
+
+(list_pattern) @list
+{ let @list.node = (ast-node @list "List") }
 
 (call) @call { let @call.node = (ast-node @call "Call") }
 
@@ -401,7 +404,7 @@
 
 ;;; GeneratorExp
 
-(generator_expression . "(" . (comment)* . (_) @start (_) @end . (comment)* . ")" .) @generatorexp
+(generator_expression . "(" . (comment)* . (expression) @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
 {
     attr (@generatorexp.node) _location_start = (location-start @start)
     attr (@generatorexp.node) _location_end = (location-end @end)
@@ -413,13 +416,13 @@
     attr (@if.node) _location_end = (location-end @expr)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @child (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     attr (@child.node) _location_start = (location-start @start)
     attr (@child.node) _location_end = (location-end @end)
 }
 
-(generator_expression . "(" . (comment)* . (_) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @end . (comment)* . ")" .) @genexpr
 {
     attr (@end.node) _location_start = (location-start @start)
     attr (@end.node) _location_end = (location-end @end)
@@ -860,7 +863,7 @@
 ; information for the entire generator expression (yes, it is a wide parameter!) and so we must recreate the logic for
 ; setting this location information correctly.
 
-(generator_expression . "(" . (comment)* . (_) @start  (_) @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . (expression) @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     ; Synthesize the `genexpr` function
     let @genexpr.fun = (ast-node @genexpr "Function")
@@ -1059,30 +1062,38 @@
     let @genexpr.result = tuple
 }
 
-; For the final `if` clause, we need to hook it up with the `yield` expression and with its associated `for` clause.
+; For the final clause, we need to hook it up with the rest of the expression.
+; If it's an `if` clause, we need to hook it up with the `yield` expression and with its associated
+; `for` clause.
+; If it's a `for` clause, we only need to create and hook it up with the `yield` expression.
+;
+; It would be tempting to use anchors here, but they just don't work. In particular, an anchor of
+; the form `. (comment)* . )` (which would be needed in order to handle the case where there are
+; comments after the last clause) cause the `tree-sitter` query engine to match _all_ clauses, not
+; just the last one.
+; Instead, we gather up all clauses in a list (these will be in the order they appear in the source
+; code), and extract the last element using a custom Rust function.
 [
     (generator_expression
         body: (_) @body
-        (if_clause) @last
-        .
+        [(if_clause) (for_in_clause)]+ @last_candidates
     ) @genexpr
     (list_comprehension
         body: (_) @body
-        (if_clause) @last
-        .
+        [(if_clause) (for_in_clause)]+ @last_candidates
     ) @genexpr
     (set_comprehension
         body: (_) @body
-        (if_clause) @last
-        .
+        [(if_clause) (for_in_clause)]+ @last_candidates
     ) @genexpr
     (dictionary_comprehension
         body: (_) @body
-        (if_clause) @last
-        .
+        [(if_clause) (for_in_clause)]+ @last_candidates
     ) @genexpr
 ]
 {
+    let last = (get-last-element @last_candidates)
+
     let expr = (ast-node @body "Expr")
     let yield = (ast-node @body "Yield")
 
@@ -1093,50 +1104,19 @@
 
     attr (yield) value = @genexpr.result
     attr (@body.node) ctx = "load"
-    edge @last.first_if -> expr
-    attr (@last.first_if -> expr) body = 0
 
-    ; Hook up this `if` clause with its `for` clause
-    edge @last.for -> @last.node
-    attr (@last.for -> @last.node) body = 0
-}
+    if (instance-of last "if_clause") {
+        edge last.first_if -> expr
+        attr (last.first_if -> expr) body = 0
 
-; If the last clause is a `for`, we only have to create and hook up the `yield` expression.
-[
-    (generator_expression
-        body: (_) @body
-        (for_in_clause) @last
-        .
-    ) @genexpr
-    (list_comprehension
-        body: (_) @body
-        (for_in_clause) @last
-        .
-    ) @genexpr
-    (set_comprehension
-        body: (_) @body
-        (for_in_clause) @last
-        .
-    ) @genexpr
-    (dictionary_comprehension
-        body: (_) @body
-        (for_in_clause) @last
-        .
-    ) @genexpr
-]
-{
-    let expr = (ast-node @body "Expr")
-    let yield = (ast-node @body "Yield")
-
-    let @genexpr.expr = expr
-    let @genexpr.yield = yield
-
-    attr (expr) value = yield
-
-    attr (yield) value = @genexpr.result
-    attr (@body.node) ctx = "load"
-    edge @last.node -> expr
-    attr (@last.node -> expr) body = 0
+        ; Hook up this `if` clause with its `for` clause
+        edge last.for -> last.node
+        attr (last.for -> last.node) body = 0
+    } else {
+        ; If the last clause is a `for`, we only have to create and hook up the `yield` expression.
+        edge last.node -> expr
+        attr (last.node -> expr) body = 0
+    }
 }
 
 ; For whatever reason, we do not consider parentheses around the yielded expression if they are present, so
@@ -1277,18 +1257,29 @@
     attr (@class.inner_scope -> @stmt.node) body = (named-child-index @stmt)
 }
 
-; Class.bases - using `(_ !name)` as a proxy for all non-keyword arguments.
+; Class.bases - using `(_  !value !name)` as a proxy for all non-keyword arguments.
+; In particular, `keyword_argument` nodes have a `name` field, and `dictionary_splat`
+; nodes have a `value` field.
 (class_definition
-    superclasses: (argument_list element: (_ !name) @arg)
+    superclasses: (argument_list element: (_ !value !name) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
     attr (@class.class_expr -> @arg.node) bases = (named-child-index @arg)
 }
 
-; Class.keywords
+; Class.keywords of the form `foo=bar`
 (class_definition
     superclasses: (argument_list element: (keyword_argument) @arg)
+) @class
+{
+    edge @class.class_expr -> @arg.node
+    attr (@class.class_expr -> @arg.node) keywords = (named-child-index @arg)
+}
+
+; Class.keywords of the form `**kwargs`
+(class_definition
+    superclasses: (argument_list element: (dictionary_splat) @arg)
 ) @class
 {
     edge @class.class_expr -> @arg.node
@@ -2552,66 +2543,16 @@
 
 (subscript
     value: (_) @value
+    subscript: (_) @index
 ) @subscript
 {
     attr (@subscript.node) value = @value.node
     attr (@value.node) ctx = "load"
-}
 
-; Single subscript
-(subscript
-    value: (_)
-    .
-    subscript: (_) @index
-    .
-) @subscript
-{
     attr (@subscript.node) index = @index.node
     attr (@index.node) ctx = "load"
 }
 
-; For expressions of the form `a[b, c]` we must explicitly synthesize an internal tuple node
-; We do this and also hook it up:
-(subscript
-    value: (_)
-    .
-    subscript: (_) @first
-    .
-    subscript: (_)
-) @subscript
-{
-    let @subscript.tuple = (ast-node @first "Tuple")
-    attr (@subscript.tuple) ctx = "load"
-    attr (@subscript.node) index = @subscript.tuple
-    edge @subscript.tuple -> @first.node
-    attr (@subscript.tuple -> @first.node) elts = (named-child-index @first)
-    attr (@first.node) ctx = "load"
-}
-
-(subscript
-    value: (_)
-    .
-    subscript: (_)
-    subscript: (_) @elt
-) @subscript
-{
-    edge @subscript.tuple -> @elt.node
-    attr (@subscript.tuple -> @elt.node) elts = (named-child-index @elt)
-    attr (@elt.node) ctx = "load"
-}
-
-
-; Set the end position correctly
-(subscript
-    value: (_)
-    .
-    subscript: (_)
-    subscript: (_) @last
-    .
-) @subscript
-{
-    attr (@subscript.tuple) _location_end = (location-end @last)
-}
 
 
 
@@ -2668,6 +2609,14 @@
 {
     attr (@with.node) _skip_to = @first.node
     let @with.first = @first.node
+}
+
+; Async status
+; NOTE: We only set the `is_async` field on the _first_ clause of the `with` statement,
+; as this is the behaviour of the old parser.
+(with_statement "async" "with" @with_keyword (with_clause . (with_item) @with))
+{
+    attr (@with.node) is_async = #true
 }
 
 (with_item
@@ -3169,11 +3118,11 @@
             (typed_parameter
                 (identifier) @name
                 .
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
             (typed_default_parameter
                 name: (_) @name
-                type: (type (expression) @type)
+                type: (type (_) @type)
                 value: (_) @value
             )
         ] @param
@@ -3228,7 +3177,7 @@
             (list_splat_pattern vararg: (_) @name) @starred
             (typed_parameter
                 (list_splat_pattern vararg: (_) @name) @starred
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
         ]
     ) @params
@@ -3245,7 +3194,7 @@
 
 ; Return type
 (function_definition
-    return_type: (type (expression) @type)
+    return_type: (type (_) @type)
 ) @funcdef
 {
     attr (@funcdef.funcexpr) returns = @type.node
@@ -3259,7 +3208,7 @@
             (dictionary_splat_pattern kwarg: (identifier) @name)
             (typed_parameter
                 (dictionary_splat_pattern kwarg: (identifier) @name)
-                type: (type (expression) @type)
+                type: (type (_) @type)
             )
         ]
     ) @params
@@ -3271,6 +3220,16 @@
         attr (@params.node) kwargannotation = @type.node
         attr (@type.node) ctx = "load"
     }
+}
+
+; Async status
+(function_definition "async" "def" @def_keyword) @funcdef
+{
+    let start = (location-start @def_keyword)
+    attr (@funcdef.function) is_async = #true
+    attr (@funcdef.node) _location_start = start
+    attr (@funcdef.function) _location_start = start
+    attr (@funcdef.funcexpr) _location_start = start
 }
 
 ;;; Decorators
@@ -3388,6 +3347,7 @@
 (typevar_parameter
     name: (_) @name
     bound: (_)? @bound
+    default: (_)? @default
 ) @typevar
 {
     attr (@name.node) ctx = "store"
@@ -3396,22 +3356,36 @@
         attr (@bound.node) ctx = "load"
         attr (@typevar.node) bound = @bound.node
     }
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevar.node) default = @default.node
+    }
 }
 
 (typevartuple_parameter
     name: (_) @name
+    default: (_)? @default
 ) @typevartuple
 {
     attr (@name.node) ctx = "store"
     attr (@typevartuple.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@typevartuple.node) default = @default.node
+    }
 }
 
 (paramspec_parameter
     name: (_) @name
+    default: (_)? @default
 ) @paramspec
 {
     attr (@name.node) ctx = "store"
     attr (@paramspec.node) name = @name.node
+    if some @default {
+        attr (@default.node) ctx = "load"
+        attr (@paramspec.node) default = @default.node
+    }
 }
 
 ;;;;;; End of Type parameters (`T: ..., *T, **T`)
@@ -3421,8 +3395,14 @@
     ; Left hand side of an assignment such as `foo, bar = ...`
     (pattern_list element: (_) @elt) @parent
 
-    ; An unadorned tuple (such as in `x = y, z`)
+    ; Left hand side of an assignment such as `[foo, bar] = ...`
+    (list_pattern element: (_) @elt) @parent
+
+    ; An unadorned tuple such as in `x = y, z`
     (expression_list element: (_) @elt) @parent
+
+    ; An index containing multiple indices such as in `x[y, z]`
+    (index_expression_list element: (_) @elt) @parent
 
     ; A regular tuple such as `(x, y, z)`
     (tuple element: (_) @elt) @parent
@@ -3457,7 +3437,9 @@
     (tuple element: (_) @elt)
     (tuple_pattern element: (_) @elt)
     (pattern_list element: (_) @elt)
+    (list_pattern element: (_) @elt)
     (expression_list element: (_) @elt)
+    (index_expression_list element: (_) @elt)
     (parenthesized_expression inner: (_) @elt)
     (set element: (_) @elt)
     (match_sequence_pattern (_) @elt)
@@ -3468,5 +3450,9 @@
 
 [(tuple element: (_)) (tuple_pattern)] @tup
 {
-    attr (@tup.node) parenthesised = #true
+    ; In order to avoid writing to the `parenthesised` attribute twice, we only set it here
+    ; if the surrounding expression is not a `parenthesized_expression`.
+    if (not (instance-of (get-parent @tup) "parenthesized_expression")) {
+        attr (@tup.node) parenthesised = #true
+    }
 }

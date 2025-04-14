@@ -118,7 +118,7 @@ def response_modification1():  # $requestHandler
 @app.route("/content-type/response-modification2")  # $routeSetup="/content-type/response-modification2"
 def response_modification2():  # $requestHandler
     resp = make_response("<h1>hello</h1>")  # $HttpResponse mimetype=text/html responseBody="<h1>hello</h1>"
-    resp.headers["content-type"] = "text/plain"  # $ headerWriteNameUnsanitized="content-type" headerWriteValueSanitized="text/plain" MISSING: HttpResponse mimetype=text/plain
+    resp.headers["content-type"] = "text/plain"  # $ headerWriteNameUnsanitized="content-type" headerWriteValue="text/plain" MISSING: HttpResponse mimetype=text/plain
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
@@ -148,7 +148,7 @@ def Response3():  # $requestHandler
 @app.route("/content-type/Response4")  # $routeSetup="/content-type/Response4"
 def Response4():  # $requestHandler
     # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $ headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized HttpResponse responseBody="<h1>hello</h1>" SPURIOUS: mimetype=text/html MISSING: mimetype=text/plain
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/plain"})  # $ headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="Content-TYPE" headerWriteValue="text/plain" HttpResponse responseBody="<h1>hello</h1>" SPURIOUS: mimetype=text/html MISSING: mimetype=text/plain
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
@@ -156,7 +156,7 @@ def Response4():  # $requestHandler
 def Response5():  # $requestHandler
     # content_type argument takes priority (and result is text/plain)
     # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8")  # $ headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, content_type="text/plain; charset=utf-8")  # $ headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="Content-TYPE" headerWriteValue="text/html" HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
@@ -164,7 +164,7 @@ def Response5():  # $requestHandler
 def Response6():  # $requestHandler
     # mimetype argument takes priority over header (and result is text/plain)
     # note: capitalization of Content-Type does not matter
-    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain")  # $ headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
+    resp = Response("<h1>hello</h1>", headers={"Content-TYPE": "text/html"}, mimetype="text/plain")  # $ headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="Content-TYPE" headerWriteValue="text/html" HttpResponse mimetype=text/plain responseBody="<h1>hello</h1>"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 
@@ -203,12 +203,17 @@ def redirect_simple():  # $requestHandler
 # Cookies
 ################################################################################
 
+def unk():
+    return
+
 @app.route("/setting_cookie")  # $routeSetup="/setting_cookie"
 def setting_cookie():  # $requestHandler
     resp = make_response() # $ HttpResponse mimetype=text/html
-    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value"
-    resp.headers.add("Set-Cookie", "key2=value2") # $ headerWriteNameUnsanitized="Set-Cookie" headerWriteValueSanitized="key2=value2" MISSING: CookieWrite CookieRawHeader="key2=value2"
+    resp.set_cookie("key", "value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(key="key", value="value") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
+    resp.set_cookie(key="key", value="value", secure=True, httponly=True, samesite="Strict") # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=true CookieHttpOnly=true CookieSameSite=Strict
+    resp.set_cookie(key="key", value="value", secure=unk(), httponly=unk(), samesite=unk()) # $ CookieWrite CookieName="key" CookieValue="value" 
+    resp.headers.add("Set-Cookie", "key2=value2") # $ headerWriteNameUnsanitized="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
     resp.delete_cookie("key3") # $ CookieWrite CookieName="key3"
     resp.delete_cookie(key="key3") # $ CookieWrite CookieName="key3"
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
@@ -220,29 +225,29 @@ def setting_cookie():  # $requestHandler
 @app.route("/headers") # $routeSetup="/headers"
 def headers():  # $requestHandler
     resp1 = Response() # $ HttpResponse mimetype=text/html
-    resp1.headers["X-MyHeader"] = "a" # $ headerWriteNameUnsanitized="X-MyHeader" headerWriteValueSanitized="a"
+    resp1.headers["X-MyHeader"] = "a" # $ headerWriteNameUnsanitized="X-MyHeader" headerWriteValue="a"
     resp2 = make_response() # $ HttpResponse mimetype=text/html
-    resp2.headers["X-MyHeader"] = "aa" # $ headerWriteNameUnsanitized="X-MyHeader" headerWriteValueSanitized="aa"
-    resp2.headers.extend({"X-MyHeader2": "b"}) # $ headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized 
-    resp3 = make_response("hello", 200, {"X-MyHeader3": "c"}) # $ HttpResponse mimetype=text/html responseBody="hello" headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized
-    resp4 = make_response("hello", {"X-MyHeader4": "d"}) # $ HttpResponse mimetype=text/html responseBody="hello" headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized
-    resp5 = Response(headers={"X-MyHeader5":"e"}) # $ HttpResponse mimetype=text/html headerWriteBulk=Dict headerWriteNameUnsanitized headerWriteValueSanitized
+    resp2.headers["X-MyHeader"] = "aa" # $ headerWriteNameUnsanitized="X-MyHeader" headerWriteValue="aa"
+    resp2.headers.extend({"X-MyHeader2": "b"}) # $ headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="X-MyHeader2" headerWriteValue="b" 
+    resp3 = make_response("hello", 200, {"X-MyHeader3": "c"}) # $ HttpResponse mimetype=text/html responseBody="hello" headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="X-MyHeader3" headerWriteValue="c"
+    resp4 = make_response("hello", {"X-MyHeader4": "d"}) # $ HttpResponse mimetype=text/html responseBody="hello" headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="X-MyHeader4" headerWriteValue="d"
+    resp5 = Response(headers={"X-MyHeader5":"e"}) # $ HttpResponse mimetype=text/html headerWriteBulk=Dict headerWriteBulkUnsanitized=name headerWriteBulkUnsanitized=name headerWriteNameUnsanitized="X-MyHeader5" headerWriteValue="e"
     return resp5  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp5
 
 @app.route("/werkzeug-headers") # $routeSetup="/werkzeug-headers"
 def werkzeug_headers():  # $requestHandler
     response = Response() # $ HttpResponse mimetype=text/html
     headers = Headers()
-    headers.add("X-MyHeader1", "a") # $ headerWriteNameUnsanitized="X-MyHeader1" headerWriteValueSanitized="a"
-    headers.add_header("X-MyHeader2", "b") # $ headerWriteNameUnsanitized="X-MyHeader2" headerWriteValueSanitized="b"
-    headers.set("X-MyHeader3", "c") # $ headerWriteNameUnsanitized="X-MyHeader3" headerWriteValueSanitized="c" 
-    headers.setdefault("X-MyHeader4", "d") # $ headerWriteNameUnsanitized="X-MyHeader4" headerWriteValueSanitized="d" 
-    headers.__setitem__("X-MyHeader5", "e") # $ headerWriteNameUnsanitized="X-MyHeader5" headerWriteValueSanitized="e" 
-    headers["X-MyHeader6"] = "f" # $ headerWriteNameUnsanitized="X-MyHeader6" headerWriteValueSanitized="f" 
-    h1 = {"X-MyHeader7": "g"}
-    headers.extend(h1) # $ headerWriteBulk=h1 headerWriteNameUnsanitized headerWriteValueSanitized 
-    h2 = [("X-MyHeader8", "h")]
-    headers.extend(h2) # $ headerWriteBulk=h2 headerWriteNameUnsanitized headerWriteValueSanitized 
+    headers.add("X-MyHeader1", "a") # $ headerWriteNameUnsanitized="X-MyHeader1" headerWriteValue="a"
+    headers.add_header("X-MyHeader2", "b") # $ headerWriteNameUnsanitized="X-MyHeader2" headerWriteValue="b"
+    headers.set("X-MyHeader3", "c") # $ headerWriteNameUnsanitized="X-MyHeader3" headerWriteValue="c" 
+    headers.setdefault("X-MyHeader4", "d") # $ headerWriteNameUnsanitized="X-MyHeader4" headerWriteValue="d" 
+    headers.__setitem__("X-MyHeader5", "e") # $ headerWriteNameUnsanitized="X-MyHeader5" headerWriteValue="e" 
+    headers["X-MyHeader6"] = "f" # $ headerWriteNameUnsanitized="X-MyHeader6" headerWriteValue="f" 
+    h1 = {"X-MyHeader7": "g"} # $ headerWriteNameUnsanitized="X-MyHeader7" headerWriteValue="g"
+    headers.extend(h1) # $ headerWriteBulk=h1 headerWriteBulkUnsanitized=name 
+    h2 = [("X-MyHeader8", "h")] # $ headerWriteNameUnsanitized="X-MyHeader8" headerWriteValue="h"
+    headers.extend(h2) # $ headerWriteBulk=h2 headerWriteBulkUnsanitized=name 
     response.headers = headers 
     return response # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=response
 

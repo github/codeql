@@ -5,8 +5,10 @@
 | macros.cpp:14:2:14:37 | call to printf | Format for printf (in a macro expansion) expects 4 arguments but given 3 |
 | macros.cpp:21:2:21:36 | call to printf | Format for printf (in a macro expansion) expects 4 arguments but given 3 |
 | macros.cpp:32:2:32:25 | call to printf | Format for printf (in a macro expansion) expects 1 arguments but given 0 |
+| syntax_errors.c:15:5:15:10 | call to printf | Format for printf expects 2 arguments but given 0 |
 | test.c:9:2:9:7 | call to printf | Format for printf expects 1 arguments but given 0 |
 | test.c:12:2:12:7 | call to printf | Format for printf expects 2 arguments but given 1 |
 | test.c:15:2:15:7 | call to printf | Format for printf expects 3 arguments but given 2 |
 | test.c:19:2:19:7 | call to printf | Format for printf expects 2 arguments but given 1 |
 | test.c:29:3:29:8 | call to printf | Format for printf expects 2 arguments but given 1 |
+| test.c:53:2:53:10 | call to my_logger | Format for my_logger expects 3 arguments but given 2 |

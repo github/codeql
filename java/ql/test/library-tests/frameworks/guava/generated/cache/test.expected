@@ -1,0 +1,372 @@
+models
+| 1 | Summary: com.google.common.cache; Cache; true; asMap; (); ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
+| 2 | Summary: com.google.common.cache; Cache; true; asMap; (); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
+| 3 | Summary: com.google.common.cache; Cache; true; get; (Object,Callable); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 4 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 5 | Summary: com.google.common.cache; Cache; true; getAllPresent; (Iterable); ; Argument[this].MapKey; ReturnValue.MapKey; value; manual |
+| 6 | Summary: com.google.common.cache; Cache; true; getIfPresent; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 7 | Summary: com.google.common.cache; Cache; true; put; (Object,Object); ; Argument[0]; Argument[this].MapKey; value; manual |
+| 8 | Summary: com.google.common.cache; Cache; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 9 | Summary: com.google.common.cache; Cache; true; putAll; (Map); ; Argument[0].MapKey; Argument[this].MapKey; value; manual |
+| 10 | Summary: com.google.common.cache; Cache; true; putAll; (Map); ; Argument[0].MapValue; Argument[this].MapValue; value; manual |
+| 11 | Summary: com.google.common.cache; LoadingCache; true; apply; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 12 | Summary: com.google.common.cache; LoadingCache; true; get; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 13 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; Argument[this].MapKey; value; manual |
+| 14 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[0].Element; ReturnValue.MapKey; value; manual |
+| 15 | Summary: com.google.common.cache; LoadingCache; true; getAll; (Iterable); ; Argument[this].MapValue; ReturnValue.MapValue; value; manual |
+| 16 | Summary: com.google.common.cache; LoadingCache; true; getUnchecked; (Object); ; Argument[this].MapValue; ReturnValue; value; manual |
+| 17 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 18 | Summary: java.util; Collection; true; add; ; ; Argument[0]; Argument[this].Element; value; manual |
+| 19 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 20 | Summary: java.util; Map; true; keySet; (); ; Argument[this].MapKey; ReturnValue.Element; value; manual |
+| 21 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[0]; Argument[this].MapKey; value; manual |
+| 22 | Summary: java.util; Map; true; put; (Object,Object); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 23 | Summary: java.util; Map; true; values; (); ; Argument[this].MapValue; ReturnValue.Element; value; manual |
+edges
+| Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:57 | container : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | Test.java:16:49:16:57 | container : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:16:49:16:57 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | provenance | MaD:20 |
+| Test.java:16:49:16:57 | container : ImmutableMap [<map.key>] : Object | Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | provenance | MaD:20 |
+| Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:17 |
+| Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:17 |
+| Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | Test.java:16:49:16:84 | next(...) : Object | provenance | MaD:19 |
+| Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | Test.java:16:49:16:84 | next(...) : Object | provenance | MaD:19 |
+| Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | Test.java:17:61:17:69 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:17:20:17:39 | container : LoadingCache [<map.key>] : Object | Test.java:17:61:17:69 | container : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:17:61:17:69 | container : Cache [<map.key>] : Object | Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | provenance | MaD:1 |
+| Test.java:17:61:17:69 | container : LoadingCache [<map.key>] : Object | Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | provenance | MaD:1 |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:17:51:17:78 | getMapKey(...) : Object | provenance | MaD:20 |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:17:51:17:78 | getMapKey(...) : Object | provenance | MaD:20 |
+| Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | Test.java:18:51:18:59 | container : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:18:22:18:39 | container : ImmutableMap [<map.value>] : Object | Test.java:18:51:18:59 | container : ImmutableMap [<map.value>] : Object | provenance |  |
+| Test.java:18:51:18:59 | container : ConcurrentMap [<map.value>] : Object | Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | provenance | MaD:23 |
+| Test.java:18:51:18:59 | container : ImmutableMap [<map.value>] : Object | Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | provenance | MaD:23 |
+| Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:17 |
+| Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:17 |
+| Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | Test.java:18:51:18:86 | next(...) : Object | provenance | MaD:19 |
+| Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | Test.java:18:51:18:86 | next(...) : Object | provenance | MaD:19 |
+| Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | Test.java:19:65:19:73 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:19:65:19:73 | container : Cache [<map.value>] : Object | Test.java:19:65:19:81 | asMap(...) : ConcurrentMap [<map.value>] : Object | provenance | MaD:2 |
+| Test.java:19:65:19:81 | asMap(...) : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:19:65:19:81 | asMap(...) : ConcurrentMap [<map.value>] : Object | Test.java:19:53:19:82 | getMapValue(...) : Object | provenance | MaD:23 |
+| Test.java:20:33:20:41 | element : Object | Test.java:22:9:22:15 | element : Object | provenance |  |
+| Test.java:22:3:22:3 | l [post update] : ArrayList [<element>] : Object | Test.java:23:10:23:10 | l : ArrayList [<element>] : Object | provenance |  |
+| Test.java:22:9:22:15 | element : Object | Test.java:22:3:22:3 | l [post update] : ArrayList [<element>] : Object | provenance | MaD:18 |
+| Test.java:25:34:25:42 | element : Object | Test.java:27:9:27:15 | element : Object | provenance |  |
+| Test.java:27:3:27:3 | m [post update] : HashMap [<map.key>] : Object | Test.java:28:10:28:10 | m : HashMap [<map.key>] : Object | provenance |  |
+| Test.java:27:9:27:15 | element : Object | Test.java:27:3:27:3 | m [post update] : HashMap [<map.key>] : Object | provenance | MaD:21 |
+| Test.java:30:45:30:53 | element : Object | Test.java:32:10:32:16 | element : Object | provenance |  |
+| Test.java:32:3:32:4 | lc [post update] : LoadingCache [<map.key>] : Object | Test.java:33:10:33:11 | lc : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:32:10:32:16 | element : Object | Test.java:32:3:32:4 | lc [post update] : LoadingCache [<map.key>] : Object | provenance | MaD:7 |
+| Test.java:35:36:35:44 | element : Object | Test.java:37:15:37:21 | element : Object | provenance |  |
+| Test.java:37:3:37:3 | m [post update] : HashMap [<map.value>] : Object | Test.java:38:10:38:10 | m : HashMap [<map.value>] : Object | provenance |  |
+| Test.java:37:15:37:21 | element : Object | Test.java:37:3:37:3 | m [post update] : HashMap [<map.value>] : Object | provenance | MaD:22 |
+| Test.java:40:47:40:55 | element : Object | Test.java:42:16:42:22 | element : Object | provenance |  |
+| Test.java:42:3:42:4 | lc [post update] : LoadingCache [<map.value>] : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:42:16:42:22 | element : Object | Test.java:42:3:42:4 | lc [post update] : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:53:22:53:49 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | Test.java:54:10:54:11 | in : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:53:41:53:48 | source(...) : Object | Test.java:30:45:30:53 | element : Object | provenance |  |
+| Test.java:53:41:53:48 | source(...) : Object | Test.java:53:22:53:49 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | provenance | MaD:7 |
+| Test.java:54:10:54:11 | in : LoadingCache [<map.key>] : Object | Test.java:54:10:54:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | provenance | MaD:1 |
+| Test.java:54:10:54:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:55:19:55:21 | out : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:55:19:55:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:55:19:55:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:55:9:55:22 | getMapKey(...) | provenance | MaD:20 |
+| Test.java:60:15:60:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | Test.java:61:10:61:11 | in : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:60:34:60:41 | source(...) : Object | Test.java:30:45:30:53 | element : Object | provenance |  |
+| Test.java:60:34:60:41 | source(...) : Object | Test.java:60:15:60:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | provenance | MaD:7 |
+| Test.java:61:10:61:11 | in : LoadingCache [<map.key>] : Object | Test.java:61:10:61:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | provenance | MaD:1 |
+| Test.java:61:10:61:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:62:19:62:21 | out : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:62:19:62:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | provenance |  |
+| Test.java:62:19:62:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:62:9:62:22 | getMapKey(...) | provenance | MaD:20 |
+| Test.java:67:22:67:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:68:10:68:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:67:43:67:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:67:43:67:50 | source(...) : Object | Test.java:67:22:67:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:68:10:68:11 | in : LoadingCache [<map.value>] : Object | Test.java:68:10:68:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | provenance | MaD:2 |
+| Test.java:68:10:68:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | Test.java:69:21:69:23 | out : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:69:21:69:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:69:21:69:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:69:9:69:24 | getMapValue(...) | provenance | MaD:23 |
+| Test.java:74:15:74:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:75:10:75:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:74:36:74:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:74:36:74:43 | source(...) : Object | Test.java:74:15:74:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:75:10:75:11 | in : LoadingCache [<map.value>] : Object | Test.java:75:10:75:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | provenance | MaD:2 |
+| Test.java:75:10:75:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | Test.java:76:21:76:23 | out : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:76:21:76:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | provenance |  |
+| Test.java:76:21:76:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:76:9:76:24 | getMapValue(...) | provenance | MaD:23 |
+| Test.java:81:15:81:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:82:10:82:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:81:36:81:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:81:36:81:43 | source(...) : Object | Test.java:81:15:81:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:82:10:82:11 | in : LoadingCache [<map.value>] : Object | Test.java:82:10:82:27 | get(...) : Object | provenance | MaD:3 |
+| Test.java:82:10:82:27 | get(...) : Object | Test.java:83:9:83:11 | out | provenance |  |
+| Test.java:88:18:88:41 | newWithElement(...) : ArrayList [<element>] : Object | Test.java:90:33:90:34 | in : ArrayList [<element>] : Object | provenance |  |
+| Test.java:88:33:88:40 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
+| Test.java:88:33:88:40 | source(...) : Object | Test.java:88:18:88:41 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
+| Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:90:33:90:34 | in : ArrayList [<element>] : Object | Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:4 |
+| Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | Test.java:91:9:91:22 | getMapKey(...) | provenance | MaD:20 |
+| Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:96:34:96:41 | source(...) : Object | Test.java:30:45:30:53 | element : Object | provenance |  |
+| Test.java:96:34:96:41 | source(...) : Object | Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | provenance | MaD:7 |
+| Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:5 |
+| Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | Test.java:98:9:98:22 | getMapKey(...) | provenance | MaD:20 |
+| Test.java:103:15:103:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:104:10:104:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:103:36:103:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:103:36:103:43 | source(...) : Object | Test.java:103:15:103:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:104:10:104:11 | in : LoadingCache [<map.value>] : Object | Test.java:104:10:104:30 | getIfPresent(...) : Object | provenance | MaD:6 |
+| Test.java:104:10:104:30 | getIfPresent(...) : Object | Test.java:105:9:105:11 | out | provenance |  |
+| Test.java:110:16:110:23 | source(...) : Object | Test.java:111:12:111:13 | in : Object | provenance |  |
+| Test.java:111:4:111:6 | out [post update] : Cache [<map.key>] : Object | Test.java:112:19:112:21 | out : Cache [<map.key>] : Object | provenance |  |
+| Test.java:111:12:111:13 | in : Object | Test.java:111:4:111:6 | out [post update] : Cache [<map.key>] : Object | provenance | MaD:7 |
+| Test.java:112:19:112:21 | out : Cache [<map.key>] : Object | Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:112:19:112:21 | out : Cache [<map.key>] : Object | Test.java:112:9:112:22 | getMapKey(...) | provenance | MaD:1 |
+| Test.java:117:16:117:23 | source(...) : Object | Test.java:118:18:118:19 | in : Object | provenance |  |
+| Test.java:118:4:118:6 | out [post update] : Cache [<map.value>] : Object | Test.java:119:21:119:23 | out : Cache [<map.value>] : Object | provenance |  |
+| Test.java:118:18:118:19 | in : Object | Test.java:118:4:118:6 | out [post update] : Cache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:119:21:119:23 | out : Cache [<map.value>] : Object | Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:119:21:119:23 | out : Cache [<map.value>] : Object | Test.java:119:9:119:24 | getMapValue(...) | provenance | MaD:2 |
+| Test.java:124:13:124:38 | newMapWithMapKey(...) : HashMap [<map.key>] : Object | Test.java:125:15:125:16 | in : HashMap [<map.key>] : Object | provenance |  |
+| Test.java:124:30:124:37 | source(...) : Object | Test.java:25:34:25:42 | element : Object | provenance |  |
+| Test.java:124:30:124:37 | source(...) : Object | Test.java:124:13:124:38 | newMapWithMapKey(...) : HashMap [<map.key>] : Object | provenance | MaD:21 |
+| Test.java:125:4:125:6 | out [post update] : Cache [<map.key>] : Object | Test.java:126:19:126:21 | out : Cache [<map.key>] : Object | provenance |  |
+| Test.java:125:15:125:16 | in : HashMap [<map.key>] : Object | Test.java:125:4:125:6 | out [post update] : Cache [<map.key>] : Object | provenance | MaD:9 |
+| Test.java:126:19:126:21 | out : Cache [<map.key>] : Object | Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | provenance |  |
+| Test.java:126:19:126:21 | out : Cache [<map.key>] : Object | Test.java:126:9:126:22 | getMapKey(...) | provenance | MaD:1 |
+| Test.java:131:13:131:40 | newMapWithMapValue(...) : HashMap [<map.value>] : Object | Test.java:132:15:132:16 | in : HashMap [<map.value>] : Object | provenance |  |
+| Test.java:131:32:131:39 | source(...) : Object | Test.java:35:36:35:44 | element : Object | provenance |  |
+| Test.java:131:32:131:39 | source(...) : Object | Test.java:131:13:131:40 | newMapWithMapValue(...) : HashMap [<map.value>] : Object | provenance | MaD:22 |
+| Test.java:132:4:132:6 | out [post update] : Cache [<map.value>] : Object | Test.java:133:21:133:23 | out : Cache [<map.value>] : Object | provenance |  |
+| Test.java:132:15:132:16 | in : HashMap [<map.value>] : Object | Test.java:132:4:132:6 | out [post update] : Cache [<map.value>] : Object | provenance | MaD:10 |
+| Test.java:133:21:133:23 | out : Cache [<map.value>] : Object | Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | provenance |  |
+| Test.java:133:21:133:23 | out : Cache [<map.value>] : Object | Test.java:133:9:133:24 | getMapValue(...) | provenance | MaD:2 |
+| Test.java:138:22:138:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:139:10:139:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:138:43:138:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:138:43:138:50 | source(...) : Object | Test.java:138:22:138:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:139:10:139:11 | in : LoadingCache [<map.value>] : Object | Test.java:139:10:139:23 | apply(...) : Object | provenance | MaD:11 |
+| Test.java:139:10:139:23 | apply(...) : Object | Test.java:140:9:140:11 | out | provenance |  |
+| Test.java:145:22:145:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:146:10:146:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:145:43:145:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:145:43:145:50 | source(...) : Object | Test.java:145:22:145:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:146:10:146:11 | in : LoadingCache [<map.value>] : Object | Test.java:146:10:146:21 | get(...) : Object | provenance | MaD:12 |
+| Test.java:146:10:146:21 | get(...) : Object | Test.java:147:9:147:11 | out | provenance |  |
+| Test.java:152:18:152:51 | (...)... : ArrayList [<element>] : Object | Test.java:153:15:153:16 | in : ArrayList [<element>] : Object | provenance |  |
+| Test.java:152:28:152:51 | newWithElement(...) : ArrayList [<element>] : Object | Test.java:152:18:152:51 | (...)... : ArrayList [<element>] : Object | provenance |  |
+| Test.java:152:43:152:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
+| Test.java:152:43:152:50 | source(...) : Object | Test.java:152:28:152:51 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
+| Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:153:15:153:16 | in : ArrayList [<element>] : Object | Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | provenance | MaD:13 |
+| Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | Test.java:17:20:17:39 | container : LoadingCache [<map.key>] : Object | provenance |  |
+| Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | Test.java:154:9:154:22 | getMapKey(...) | provenance | MaD:1 |
+| Test.java:159:18:159:51 | (...)... : ArrayList [<element>] : Object | Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | provenance |  |
+| Test.java:159:28:159:51 | newWithElement(...) : ArrayList [<element>] : Object | Test.java:159:18:159:51 | (...)... : ArrayList [<element>] : Object | provenance |  |
+| Test.java:159:43:159:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | provenance |  |
+| Test.java:159:43:159:50 | source(...) : Object | Test.java:159:28:159:51 | newWithElement(...) : ArrayList [<element>] : Object | provenance | MaD:18 |
+| Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | provenance | MaD:14 |
+| Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | provenance |  |
+| Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | Test.java:162:9:162:22 | getMapKey(...) | provenance | MaD:20 |
+| Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:167:43:167:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:167:43:167:50 | source(...) : Object | Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | provenance |  |
+| Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ImmutableMap [<map.value>] : Object | provenance |  |
+| Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | Test.java:169:9:169:24 | getMapValue(...) | provenance | MaD:23 |
+| Test.java:174:22:174:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | Test.java:175:10:175:11 | in : LoadingCache [<map.value>] : Object | provenance |  |
+| Test.java:174:43:174:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | provenance |  |
+| Test.java:174:43:174:50 | source(...) : Object | Test.java:174:22:174:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | provenance | MaD:8 |
+| Test.java:175:10:175:11 | in : LoadingCache [<map.value>] : Object | Test.java:175:10:175:30 | getUnchecked(...) : Object | provenance | MaD:16 |
+| Test.java:175:10:175:30 | getUnchecked(...) : Object | Test.java:176:9:176:11 | out | provenance |  |
+nodes
+| Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | semmle.label | container : ConcurrentMap [<map.key>] : Object |
+| Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | semmle.label | container : ImmutableMap [<map.key>] : Object |
+| Test.java:16:49:16:57 | container : ConcurrentMap [<map.key>] : Object | semmle.label | container : ConcurrentMap [<map.key>] : Object |
+| Test.java:16:49:16:57 | container : ImmutableMap [<map.key>] : Object | semmle.label | container : ImmutableMap [<map.key>] : Object |
+| Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
+| Test.java:16:49:16:66 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
+| Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:16:49:16:77 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:16:49:16:84 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:16:49:16:84 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | semmle.label | container : Cache [<map.key>] : Object |
+| Test.java:17:20:17:39 | container : LoadingCache [<map.key>] : Object | semmle.label | container : LoadingCache [<map.key>] : Object |
+| Test.java:17:51:17:78 | getMapKey(...) : Object | semmle.label | getMapKey(...) : Object |
+| Test.java:17:51:17:78 | getMapKey(...) : Object | semmle.label | getMapKey(...) : Object |
+| Test.java:17:61:17:69 | container : Cache [<map.key>] : Object | semmle.label | container : Cache [<map.key>] : Object |
+| Test.java:17:61:17:69 | container : LoadingCache [<map.key>] : Object | semmle.label | container : LoadingCache [<map.key>] : Object |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.key>] : Object |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.key>] : Object |
+| Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | semmle.label | container : ConcurrentMap [<map.value>] : Object |
+| Test.java:18:22:18:39 | container : ImmutableMap [<map.value>] : Object | semmle.label | container : ImmutableMap [<map.value>] : Object |
+| Test.java:18:51:18:59 | container : ConcurrentMap [<map.value>] : Object | semmle.label | container : ConcurrentMap [<map.value>] : Object |
+| Test.java:18:51:18:59 | container : ImmutableMap [<map.value>] : Object | semmle.label | container : ImmutableMap [<map.value>] : Object |
+| Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | semmle.label | values(...) : Collection [<element>] : Object |
+| Test.java:18:51:18:68 | values(...) : Collection [<element>] : Object | semmle.label | values(...) : Collection [<element>] : Object |
+| Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:18:51:18:79 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:18:51:18:86 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:18:51:18:86 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | semmle.label | container : Cache [<map.value>] : Object |
+| Test.java:19:53:19:82 | getMapValue(...) : Object | semmle.label | getMapValue(...) : Object |
+| Test.java:19:65:19:73 | container : Cache [<map.value>] : Object | semmle.label | container : Cache [<map.value>] : Object |
+| Test.java:19:65:19:81 | asMap(...) : ConcurrentMap [<map.value>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.value>] : Object |
+| Test.java:20:33:20:41 | element : Object | semmle.label | element : Object |
+| Test.java:22:3:22:3 | l [post update] : ArrayList [<element>] : Object | semmle.label | l [post update] : ArrayList [<element>] : Object |
+| Test.java:22:9:22:15 | element : Object | semmle.label | element : Object |
+| Test.java:23:10:23:10 | l : ArrayList [<element>] : Object | semmle.label | l : ArrayList [<element>] : Object |
+| Test.java:25:34:25:42 | element : Object | semmle.label | element : Object |
+| Test.java:27:3:27:3 | m [post update] : HashMap [<map.key>] : Object | semmle.label | m [post update] : HashMap [<map.key>] : Object |
+| Test.java:27:9:27:15 | element : Object | semmle.label | element : Object |
+| Test.java:28:10:28:10 | m : HashMap [<map.key>] : Object | semmle.label | m : HashMap [<map.key>] : Object |
+| Test.java:30:45:30:53 | element : Object | semmle.label | element : Object |
+| Test.java:32:3:32:4 | lc [post update] : LoadingCache [<map.key>] : Object | semmle.label | lc [post update] : LoadingCache [<map.key>] : Object |
+| Test.java:32:10:32:16 | element : Object | semmle.label | element : Object |
+| Test.java:33:10:33:11 | lc : LoadingCache [<map.key>] : Object | semmle.label | lc : LoadingCache [<map.key>] : Object |
+| Test.java:35:36:35:44 | element : Object | semmle.label | element : Object |
+| Test.java:37:3:37:3 | m [post update] : HashMap [<map.value>] : Object | semmle.label | m [post update] : HashMap [<map.value>] : Object |
+| Test.java:37:15:37:21 | element : Object | semmle.label | element : Object |
+| Test.java:38:10:38:10 | m : HashMap [<map.value>] : Object | semmle.label | m : HashMap [<map.value>] : Object |
+| Test.java:40:47:40:55 | element : Object | semmle.label | element : Object |
+| Test.java:42:3:42:4 | lc [post update] : LoadingCache [<map.value>] : Object | semmle.label | lc [post update] : LoadingCache [<map.value>] : Object |
+| Test.java:42:16:42:22 | element : Object | semmle.label | element : Object |
+| Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | semmle.label | lc : LoadingCache [<map.value>] : Object |
+| Test.java:53:22:53:49 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | semmle.label | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:53:41:53:48 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:54:10:54:11 | in : LoadingCache [<map.key>] : Object | semmle.label | in : LoadingCache [<map.key>] : Object |
+| Test.java:54:10:54:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.key>] : Object |
+| Test.java:55:9:55:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:55:19:55:21 | out : ConcurrentMap [<map.key>] : Object | semmle.label | out : ConcurrentMap [<map.key>] : Object |
+| Test.java:60:15:60:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | semmle.label | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:60:34:60:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:61:10:61:11 | in : LoadingCache [<map.key>] : Object | semmle.label | in : LoadingCache [<map.key>] : Object |
+| Test.java:61:10:61:19 | asMap(...) : ConcurrentMap [<map.key>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.key>] : Object |
+| Test.java:62:9:62:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:62:19:62:21 | out : ConcurrentMap [<map.key>] : Object | semmle.label | out : ConcurrentMap [<map.key>] : Object |
+| Test.java:67:22:67:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:67:43:67:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:68:10:68:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:68:10:68:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.value>] : Object |
+| Test.java:69:9:69:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:69:21:69:23 | out : ConcurrentMap [<map.value>] : Object | semmle.label | out : ConcurrentMap [<map.value>] : Object |
+| Test.java:74:15:74:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:74:36:74:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:75:10:75:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:75:10:75:19 | asMap(...) : ConcurrentMap [<map.value>] : Object | semmle.label | asMap(...) : ConcurrentMap [<map.value>] : Object |
+| Test.java:76:9:76:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:76:21:76:23 | out : ConcurrentMap [<map.value>] : Object | semmle.label | out : ConcurrentMap [<map.value>] : Object |
+| Test.java:81:15:81:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:81:36:81:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:82:10:82:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:82:10:82:27 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:83:9:83:11 | out | semmle.label | out |
+| Test.java:88:18:88:41 | newWithElement(...) : ArrayList [<element>] : Object | semmle.label | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:88:33:88:40 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:90:10:90:35 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | semmle.label | getAllPresent(...) : ImmutableMap [<map.key>] : Object |
+| Test.java:90:33:90:34 | in : ArrayList [<element>] : Object | semmle.label | in : ArrayList [<element>] : Object |
+| Test.java:91:9:91:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | semmle.label | out : ImmutableMap [<map.key>] : Object |
+| Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object | semmle.label | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:96:34:96:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:97:10:97:11 | in : LoadingCache [<map.key>] : Object | semmle.label | in : LoadingCache [<map.key>] : Object |
+| Test.java:97:10:97:31 | getAllPresent(...) : ImmutableMap [<map.key>] : Object | semmle.label | getAllPresent(...) : ImmutableMap [<map.key>] : Object |
+| Test.java:98:9:98:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | semmle.label | out : ImmutableMap [<map.key>] : Object |
+| Test.java:103:15:103:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:103:36:103:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:104:10:104:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:104:10:104:30 | getIfPresent(...) : Object | semmle.label | getIfPresent(...) : Object |
+| Test.java:105:9:105:11 | out | semmle.label | out |
+| Test.java:110:16:110:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:111:4:111:6 | out [post update] : Cache [<map.key>] : Object | semmle.label | out [post update] : Cache [<map.key>] : Object |
+| Test.java:111:12:111:13 | in : Object | semmle.label | in : Object |
+| Test.java:112:9:112:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:112:19:112:21 | out : Cache [<map.key>] : Object | semmle.label | out : Cache [<map.key>] : Object |
+| Test.java:117:16:117:23 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:118:4:118:6 | out [post update] : Cache [<map.value>] : Object | semmle.label | out [post update] : Cache [<map.value>] : Object |
+| Test.java:118:18:118:19 | in : Object | semmle.label | in : Object |
+| Test.java:119:9:119:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:119:21:119:23 | out : Cache [<map.value>] : Object | semmle.label | out : Cache [<map.value>] : Object |
+| Test.java:124:13:124:38 | newMapWithMapKey(...) : HashMap [<map.key>] : Object | semmle.label | newMapWithMapKey(...) : HashMap [<map.key>] : Object |
+| Test.java:124:30:124:37 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:125:4:125:6 | out [post update] : Cache [<map.key>] : Object | semmle.label | out [post update] : Cache [<map.key>] : Object |
+| Test.java:125:15:125:16 | in : HashMap [<map.key>] : Object | semmle.label | in : HashMap [<map.key>] : Object |
+| Test.java:126:9:126:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:126:19:126:21 | out : Cache [<map.key>] : Object | semmle.label | out : Cache [<map.key>] : Object |
+| Test.java:131:13:131:40 | newMapWithMapValue(...) : HashMap [<map.value>] : Object | semmle.label | newMapWithMapValue(...) : HashMap [<map.value>] : Object |
+| Test.java:131:32:131:39 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:132:4:132:6 | out [post update] : Cache [<map.value>] : Object | semmle.label | out [post update] : Cache [<map.value>] : Object |
+| Test.java:132:15:132:16 | in : HashMap [<map.value>] : Object | semmle.label | in : HashMap [<map.value>] : Object |
+| Test.java:133:9:133:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:133:21:133:23 | out : Cache [<map.value>] : Object | semmle.label | out : Cache [<map.value>] : Object |
+| Test.java:138:22:138:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:138:43:138:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:139:10:139:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:139:10:139:23 | apply(...) : Object | semmle.label | apply(...) : Object |
+| Test.java:140:9:140:11 | out | semmle.label | out |
+| Test.java:145:22:145:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:145:43:145:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:146:10:146:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:146:10:146:21 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:147:9:147:11 | out | semmle.label | out |
+| Test.java:152:18:152:51 | (...)... : ArrayList [<element>] : Object | semmle.label | (...)... : ArrayList [<element>] : Object |
+| Test.java:152:28:152:51 | newWithElement(...) : ArrayList [<element>] : Object | semmle.label | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:152:43:152:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:153:4:153:6 | out [post update] : LoadingCache [<map.key>] : Object | semmle.label | out [post update] : LoadingCache [<map.key>] : Object |
+| Test.java:153:15:153:16 | in : ArrayList [<element>] : Object | semmle.label | in : ArrayList [<element>] : Object |
+| Test.java:154:9:154:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | semmle.label | out : LoadingCache [<map.key>] : Object |
+| Test.java:159:18:159:51 | (...)... : ArrayList [<element>] : Object | semmle.label | (...)... : ArrayList [<element>] : Object |
+| Test.java:159:28:159:51 | newWithElement(...) : ArrayList [<element>] : Object | semmle.label | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:159:43:159:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:161:10:161:28 | getAll(...) : ImmutableMap [<map.key>] : Object | semmle.label | getAll(...) : ImmutableMap [<map.key>] : Object |
+| Test.java:161:26:161:27 | in : ArrayList [<element>] : Object | semmle.label | in : ArrayList [<element>] : Object |
+| Test.java:162:9:162:22 | getMapKey(...) | semmle.label | getMapKey(...) |
+| Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | semmle.label | out : ImmutableMap [<map.key>] : Object |
+| Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:167:43:167:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:168:10:168:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:168:10:168:24 | getAll(...) : ImmutableMap [<map.value>] : Object | semmle.label | getAll(...) : ImmutableMap [<map.value>] : Object |
+| Test.java:169:9:169:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | semmle.label | out : ImmutableMap [<map.value>] : Object |
+| Test.java:174:22:174:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object | semmle.label | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:174:43:174:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:175:10:175:11 | in : LoadingCache [<map.value>] : Object | semmle.label | in : LoadingCache [<map.value>] : Object |
+| Test.java:175:10:175:30 | getUnchecked(...) : Object | semmle.label | getUnchecked(...) : Object |
+| Test.java:176:9:176:11 | out | semmle.label | out |
+subpaths
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:17:51:17:78 | getMapKey(...) : Object |
+| Test.java:17:61:17:77 | asMap(...) : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:17:51:17:78 | getMapKey(...) : Object |
+| Test.java:19:65:19:81 | asMap(...) : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | Test.java:18:51:18:86 | next(...) : Object | Test.java:19:53:19:82 | getMapValue(...) : Object |
+| Test.java:53:41:53:48 | source(...) : Object | Test.java:30:45:30:53 | element : Object | Test.java:33:10:33:11 | lc : LoadingCache [<map.key>] : Object | Test.java:53:22:53:49 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:55:19:55:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:55:9:55:22 | getMapKey(...) |
+| Test.java:60:34:60:41 | source(...) : Object | Test.java:30:45:30:53 | element : Object | Test.java:33:10:33:11 | lc : LoadingCache [<map.key>] : Object | Test.java:60:15:60:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:62:19:62:21 | out : ConcurrentMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ConcurrentMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:62:9:62:22 | getMapKey(...) |
+| Test.java:67:43:67:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:67:22:67:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:69:21:69:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | Test.java:18:51:18:86 | next(...) : Object | Test.java:69:9:69:24 | getMapValue(...) |
+| Test.java:74:36:74:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:74:15:74:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:76:21:76:23 | out : ConcurrentMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ConcurrentMap [<map.value>] : Object | Test.java:18:51:18:86 | next(...) : Object | Test.java:76:9:76:24 | getMapValue(...) |
+| Test.java:81:36:81:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:81:15:81:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:88:33:88:40 | source(...) : Object | Test.java:20:33:20:41 | element : Object | Test.java:23:10:23:10 | l : ArrayList [<element>] : Object | Test.java:88:18:88:41 | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:91:19:91:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:91:9:91:22 | getMapKey(...) |
+| Test.java:96:34:96:41 | source(...) : Object | Test.java:30:45:30:53 | element : Object | Test.java:33:10:33:11 | lc : LoadingCache [<map.key>] : Object | Test.java:96:15:96:42 | newCacheWithMapKey(...) : LoadingCache [<map.key>] : Object |
+| Test.java:98:19:98:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:98:9:98:22 | getMapKey(...) |
+| Test.java:103:36:103:43 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:103:15:103:44 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:112:19:112:21 | out : Cache [<map.key>] : Object | Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | Test.java:17:51:17:78 | getMapKey(...) : Object | Test.java:112:9:112:22 | getMapKey(...) |
+| Test.java:119:21:119:23 | out : Cache [<map.value>] : Object | Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | Test.java:19:53:19:82 | getMapValue(...) : Object | Test.java:119:9:119:24 | getMapValue(...) |
+| Test.java:124:30:124:37 | source(...) : Object | Test.java:25:34:25:42 | element : Object | Test.java:28:10:28:10 | m : HashMap [<map.key>] : Object | Test.java:124:13:124:38 | newMapWithMapKey(...) : HashMap [<map.key>] : Object |
+| Test.java:126:19:126:21 | out : Cache [<map.key>] : Object | Test.java:17:20:17:39 | container : Cache [<map.key>] : Object | Test.java:17:51:17:78 | getMapKey(...) : Object | Test.java:126:9:126:22 | getMapKey(...) |
+| Test.java:131:32:131:39 | source(...) : Object | Test.java:35:36:35:44 | element : Object | Test.java:38:10:38:10 | m : HashMap [<map.value>] : Object | Test.java:131:13:131:40 | newMapWithMapValue(...) : HashMap [<map.value>] : Object |
+| Test.java:133:21:133:23 | out : Cache [<map.value>] : Object | Test.java:19:22:19:41 | container : Cache [<map.value>] : Object | Test.java:19:53:19:82 | getMapValue(...) : Object | Test.java:133:9:133:24 | getMapValue(...) |
+| Test.java:138:43:138:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:138:22:138:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:145:43:145:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:145:22:145:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:152:43:152:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | Test.java:23:10:23:10 | l : ArrayList [<element>] : Object | Test.java:152:28:152:51 | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:154:19:154:21 | out : LoadingCache [<map.key>] : Object | Test.java:17:20:17:39 | container : LoadingCache [<map.key>] : Object | Test.java:17:51:17:78 | getMapKey(...) : Object | Test.java:154:9:154:22 | getMapKey(...) |
+| Test.java:159:43:159:50 | source(...) : Object | Test.java:20:33:20:41 | element : Object | Test.java:23:10:23:10 | l : ArrayList [<element>] : Object | Test.java:159:28:159:51 | newWithElement(...) : ArrayList [<element>] : Object |
+| Test.java:162:19:162:21 | out : ImmutableMap [<map.key>] : Object | Test.java:16:20:16:37 | container : ImmutableMap [<map.key>] : Object | Test.java:16:49:16:84 | next(...) : Object | Test.java:162:9:162:22 | getMapKey(...) |
+| Test.java:167:43:167:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:167:22:167:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+| Test.java:169:21:169:23 | out : ImmutableMap [<map.value>] : Object | Test.java:18:22:18:39 | container : ImmutableMap [<map.value>] : Object | Test.java:18:51:18:86 | next(...) : Object | Test.java:169:9:169:24 | getMapValue(...) |
+| Test.java:174:43:174:50 | source(...) : Object | Test.java:40:47:40:55 | element : Object | Test.java:43:10:43:11 | lc : LoadingCache [<map.value>] : Object | Test.java:174:22:174:51 | newCacheWithMapValue(...) : LoadingCache [<map.value>] : Object |
+testFailures

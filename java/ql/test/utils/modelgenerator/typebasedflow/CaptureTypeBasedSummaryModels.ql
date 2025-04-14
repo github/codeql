@@ -1,5 +1,5 @@
 import java
-import TestUtilities.InlineMadTest
+import utils.test.InlineMadTest
 import utils.modelgenerator.internal.CaptureTypeBasedSummaryModels
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {

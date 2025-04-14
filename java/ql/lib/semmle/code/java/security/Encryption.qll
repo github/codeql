@@ -198,19 +198,32 @@ private string algorithmRegex(string algorithmString) {
 }
 
 /**
- * Gets the name of an algorithm that is known to be insecure.
+ * Holds if `name` is the name of an algorithm that is known to be insecure and
+ * `reason` explains why it is insecure.
  */
-string getAnInsecureAlgorithmName() {
-  result =
-    [
-      "DES", "RC2", "RC4", "RC5",
-      // ARCFOUR is a variant of RC4
-      "ARCFOUR",
-      // Encryption mode ECB like AES/ECB/NoPadding is vulnerable to replay and other attacks
-      "ECB",
-      // CBC mode of operation with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks
-      "AES/CBC/PKCS[57]Padding"
-    ]
+predicate insecureAlgorithm(string name, string reason) {
+  name = "DES" and
+  reason =
+    "It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead."
+  or
+  name = "RC2" and
+  reason = "It is vulnerable to related-key attacks. Consider using AES instead."
+  or
+  // ARCFOUR is a variant of RC4
+  name = ["RC4", "ARCFOUR"] and
+  reason =
+    "It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead."
+  or
+  name = "RC5" and
+  reason = "It is vulnerable to differential and related-key attacks. Consider using AES instead."
+  or
+  name = "ECB" and
+  reason =
+    "ECB mode, as in AES/ECB/NoPadding for example, is vulnerable to replay and other attacks. Consider using GCM instead."
+  or
+  name = "AES/CBC/PKCS[57]Padding" and
+  reason =
+    "CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead."
 }
 
 /**
@@ -222,25 +235,18 @@ string getAnInsecureHashAlgorithmName() {
   result = "MD5"
 }
 
-private string rankedInsecureAlgorithm(int i) {
-  // In this case we know these are being used for encryption, so we want to match
-  // weak hash algorithms too.
-  result =
-    rank[i](string s | s = getAnInsecureAlgorithmName() or s = getAnInsecureHashAlgorithmName())
-}
-
-private string insecureAlgorithmString(int i) {
-  i = 1 and result = rankedInsecureAlgorithm(i)
-  or
-  result = rankedInsecureAlgorithm(i) + "|" + insecureAlgorithmString(i - 1)
-}
-
 /**
  * Gets the regular expression used for matching strings that look like they
  * contain an algorithm that is known to be insecure.
  */
 string getInsecureAlgorithmRegex() {
-  result = algorithmRegex(insecureAlgorithmString(max(int i | exists(rankedInsecureAlgorithm(i)))))
+  result = algorithmRegex(concat(string name | insecureAlgorithm(name, _) | name, "|"))
+}
+
+/** Gets the reason why `input` is an insecure algorithm, if any. */
+bindingset[input]
+string getInsecureAlgorithmReason(string input) {
+  exists(string name | insecureAlgorithm(name, result) | input.regexpMatch(algorithmRegex(name)))
 }
 
 /**
@@ -249,8 +255,8 @@ string getInsecureAlgorithmRegex() {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA-?256", "SHA-?512", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
-      "Blowfish", "ECIES"
+      "RSA", "SHA-?(256|384|512)", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
+      "Blowfish", "ECIES", "SHA3-(256|384|512)"
     ]
 }
 

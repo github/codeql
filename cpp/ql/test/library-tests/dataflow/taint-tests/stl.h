@@ -642,3 +642,43 @@ namespace std {
 		pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
 	};
 }
+
+// --- string view ---
+
+namespace std {
+	template<class CharT, class Traits = char_traits<CharT>>
+	class basic_string_view {
+	public:
+		using size_type = size_t;
+
+		basic_string_view() noexcept;
+		basic_string_view(const basic_string_view&) noexcept;
+		basic_string_view(const CharT*, size_type);
+		basic_string_view(const CharT*);
+		template<class It, class End> basic_string_view(It, End);
+		template<class R> explicit basic_string_view(R&&);
+		basic_string_view& operator=(const basic_string_view&) noexcept;
+	};
+
+	using string_view = basic_string_view<char>;
+}
+
+// --- format ---
+namespace std {
+	template<class CharT /* class... Args */>
+	struct basic_format_string {
+	public:
+		template<class T> basic_format_string(const T&);
+
+		basic_string_view<CharT> get() const noexcept;
+	};
+
+	using format_string = basic_format_string<char>; // simplified from `char, std::type_identity_t<Args>...`
+
+	template<class... Args> string format( format_string fmt, Args&&... args );
+
+	// This function has the same signature as `format`, but a different name. It should NOT be able to use
+	// the model for `format`.
+	template <typename... Args>
+	int same_signature_as_format_but_different_name(format_string, Args &&...args);
+}

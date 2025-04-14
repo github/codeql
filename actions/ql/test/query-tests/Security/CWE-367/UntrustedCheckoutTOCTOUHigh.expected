@@ -1,0 +1,2 @@
+| .github/workflows/test6.yml:42:7:47:4 | Uses Step | Insufficient protection against execution of untrusted code on a privileged workflow ($@). | .github/workflows/test6.yml:5:3:5:15 | issue_comment | issue_comment |
+| .github/workflows/test6.yml:92:7:97:4 | Uses Step | Insufficient protection against execution of untrusted code on a privileged workflow ($@). | .github/workflows/test6.yml:5:3:5:15 | issue_comment | issue_comment |

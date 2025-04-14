@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["oneflow-inc/oneflow", "*", "input.extra_flags", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.python_version", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.cuda_version", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.tmp_dir", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.dst_host", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.dst_path", "code-injection", "generated"]
+     - ["oneflow-inc/oneflow", "*", "input.src_path", "code-injection", "generated"]

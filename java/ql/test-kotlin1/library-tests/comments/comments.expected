@@ -18,7 +18,6 @@ comments
 | comments.kt:95:1:95:163 | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% | // Diagnostic Matches: % Couldn't get owner of KDoc. The comment is extracted without an owner.  ...while extracting a file (comments.kt) at %comments.kt:1:1:96:0% |
 commentOwners
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
-| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
 | comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
 | comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
 | comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:13:17:46 | getMembers$private |

@@ -304,9 +304,15 @@ class Expr extends StmtParent, @expr {
       e instanceof NoExceptExpr
       or
       e instanceof AlignofOperator
+      or
+      e instanceof DatasizeofOperator
     )
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
+    or
+    exists(ConstexprIfStmt constIf |
+      constIf.getControllingExpr() = this.getParentWithConversions*()
+    )
   }
 
   /**
@@ -627,6 +633,106 @@ class ParenthesisExpr extends Conversion, @parexpr {
 }
 
 /**
+ * A node representing a C11 `_Generic` selection expression.
+ *
+ * For example:
+ * ```
+ * _Generic(e, int: "int", default: "unknown")
+ * ```
+ */
+class C11GenericExpr extends Conversion, @c11_generic {
+  int associationCount;
+
+  C11GenericExpr() { associationCount = (count(this.getAChild()) - 1) / 2 }
+
+  override string toString() { result = "_Generic" }
+
+  override string getAPrimaryQlClass() { result = "C11GenericExpr" }
+
+  /**
+   * Gets the controlling expression of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the result is `e`.
+   */
+  Expr getControllingExpr() { result = this.getChild(0) }
+
+  /**
+   * Gets the type of the `n`th element in the association list of the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the type of the 0th element is `int`. In the case of the default element the
+   * type will an instance of `VoidType`.
+   */
+  Type getAssociationType(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 1).(TypeName).getType()
+  }
+
+  /**
+   * Gets the type of an element in the association list of the generic selection.
+   */
+  Type getAnAssociationType() { result = this.getAssociationType(_) }
+
+  /**
+   * Gets the expression of the `n`th element in the association list of
+   * the generic selection.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * the expression for 0th element is `"a"`, and the expression for the
+   * 1st element is `"b"`. For the selected expression, this predicate
+   * will yield a `ReuseExpr`, such that
+   * ```
+   * this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+   * ```
+   */
+  Expr getAssociationExpr(int n) {
+    n in [0 .. associationCount - 1] and
+    result = this.getChild(n * 2 + 2)
+  }
+
+  /**
+   * Gets the expression of an element in the association list of the generic selection.
+   */
+  Expr getAnAssociationExpr() { result = this.getAssociationExpr(_) }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * default element.
+   *
+   * For example, for
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 1.
+   */
+  predicate isDefaultAssociation(int n) { this.getAssociationType(n) instanceof VoidType }
+
+  /**
+   * Holds if the `n`th element of the association list of the generic selection is the
+   * one whose expression was selected.
+   *
+   * For example, with `e` of type `int` and
+   * ```
+   * _Generic(e, int: "a", default: "b")
+   * ```
+   * this holds for 0.
+   */
+  predicate isSelectedAssociation(int n) {
+    this.getAssociationExpr(n).(ReuseExpr).getReusedExpr() = this.getExpr()
+  }
+}
+
+/**
  * A C/C++ expression that could not be resolved, or that can no longer be
  * represented due to a database upgrade or downgrade.
  *
@@ -662,6 +768,8 @@ class AssumeExpr extends Expr, @assume {
 
 /**
  * A C/C++ comma expression.
+ *
+ * For example:
  * ```
  * int c = compute1(), compute2(), resulting_value;
  * ```
@@ -856,6 +964,16 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
   }
 
   /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
+    )
+  }
+
+  /**
    * Gets the type that is being allocated.
    *
    * For example, for `new int` the result is `int`.
@@ -949,6 +1067,16 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
    * gives nothing, as the 10 is considered part of the type.
    */
   Expr getExtent() { result = this.getChild(2) }
+
+  /**
+   * Gets the number of elements in the array, if available.
+   *
+   * For example, `new int[]{1,2,3}` has an array size of 3.
+   */
+  int getArraySize() {
+    result = this.getAllocatedType().(ArrayType).getArraySize() or
+    result = this.getInitializer().(ArrayAggregateLiteral).getArraySize()
+  }
 }
 
 private class TDeleteOrDeleteArrayExpr = @delete_expr or @delete_array_expr;
@@ -983,11 +1111,6 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
-   * DEPRECATED: use `getDeallocatorCall` instead.
-   */
-  deprecated FunctionCall getAllocatorCall() { result = this.getChild(0) }
-
-  /**
    * Gets the call to a non-default `operator delete`/`delete[]` that deallocates storage, if any.
    *
    * This will only be present when the type being deleted has a custom `operator delete` and
@@ -1012,6 +1135,16 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
     exists(int form |
       expr_deallocator(underlyingElement(this), _, form) and
       form.bitAnd(2) != 0 // Bit one is the "alignment" bit
+    )
+  }
+
+  /**
+   * Holds if the deallocation function is a destroying delete.
+   */
+  predicate isDestroyingDeleteDeallocation() {
+    exists(int form |
+      expr_deallocator(underlyingElement(this), _, form) and
+      form.bitAnd(4) != 0 // Bit two is the "destroying delete" bit
     )
   }
 

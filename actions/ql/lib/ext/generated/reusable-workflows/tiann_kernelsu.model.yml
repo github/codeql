@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tiann/kernelsu/.github/workflows/ksud.yml", "*", "input.target", "code-injection", "generated"]
+     - ["tiann/kernelsu/.github/workflows/avd-kernel.yml", "*", "input.manifest_name", "code-injection", "generated"]
+     - ["tiann/kernelsu/.github/workflows/wsa-kernel.yml", "*", "input.arch", "code-injection", "generated"]

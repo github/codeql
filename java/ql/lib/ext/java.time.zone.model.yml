@@ -1,0 +1,36 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below were bulk-converted from df-generated taint models
+      - ["java.time.zone", "ZoneOffsetTransition", "getDateTimeAfter", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "getDateTimeBefore", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "getOffsetAfter", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "getOffsetBefore", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "of", "(LocalDateTime,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "of", "(LocalDateTime,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransition", "of", "(LocalDateTime,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule$TimeDefinition", "createDateTime", "(LocalDateTime,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "createTransition", "(int)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getLocalTime", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getOffsetAfter", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getOffsetBefore", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "getStandardOffset", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "of", "(Month,int,DayOfWeek,LocalTime,boolean,ZoneOffsetTransitionRule$TimeDefinition,ZoneOffset,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "of", "(Month,int,DayOfWeek,LocalTime,boolean,ZoneOffsetTransitionRule$TimeDefinition,ZoneOffset,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "of", "(Month,int,DayOfWeek,LocalTime,boolean,ZoneOffsetTransitionRule$TimeDefinition,ZoneOffset,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneOffsetTransitionRule", "of", "(Month,int,DayOfWeek,LocalTime,boolean,ZoneOffsetTransitionRule$TimeDefinition,ZoneOffset,ZoneOffset,ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getOffset", "(Instant)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getOffset", "(LocalDateTime)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getStandardOffset", "(Instant)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getTransition", "(LocalDateTime)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getTransitionRules", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getTransitions", "()", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "getValidOffsets", "(LocalDateTime)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "nextTransition", "(Instant)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "of", "(ZoneOffset)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "of", "(ZoneOffset,ZoneOffset,List,List,List)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "of", "(ZoneOffset,ZoneOffset,List,List,List)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "of", "(ZoneOffset,ZoneOffset,List,List,List)", "summary", "manual"]
+      - ["java.time.zone", "ZoneRules", "previousTransition", "(Instant)", "summary", "manual"]

@@ -1,8 +1,5 @@
 # Swift on CodeQL
 
-> [!NOTE]
-> CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code, and the accompanying documentation, will not be as comprehensive as for other languages.
-
 ## Development
 
 ### Building the Swift extractor
@@ -16,7 +13,14 @@ brew install bazelisk
 then from the `ql` directory run
 
 ```bash
-bazel run //swift:create-extractor-pack    # --cpu=darwin_x86_64 # Uncomment on Arm-based Macs
+bazel run //swift:install
+```
+
+If you are running on macOS and you encounter errors mentioning `XXX is unavailable: introduced in macOS YY.ZZ`,
+you will need to run this from the root of your `codeql` checkout:
+
+```bash
+echo common --macos_sdk_version=$(sw_vers --productVersion) >> local.bazelrc
 ```
 
 which will install `swift/extractor-pack`.
@@ -109,3 +113,8 @@ In particular for breakpoints to work you might need to setup the following remo
 ### Thread safety
 
 The extractor is single-threaded, and there was no effort to make anything in it thread-safe.
+
+### Updating the swift compiler version
+
+This can only be done with access to the internal repository at the moment. Some (incomplete) instructions are
+found [here](third_party/resources/updating.md).

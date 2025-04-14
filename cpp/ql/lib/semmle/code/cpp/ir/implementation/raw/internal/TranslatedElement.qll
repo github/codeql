@@ -128,6 +128,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
   or
+  // The children of C11 _Generic expressions are just surface syntax.
+  exists(C11GenericExpr generic | generic.getAChild() = expr)
+  or
   // Do not translate implicit destructor calls for unnamed temporary variables that are
   // conditionally constructed (until we have a mechanism for calling these only when the
   // temporary's constructor was run)
@@ -163,7 +166,7 @@ private predicate ignoreExpr(Expr expr) {
 }
 
 /**
- * Holds if the side effects of `expr` should be ignoredf for the purposes of IR generation.
+ * Holds if the side effects of `expr` should be ignored for the purposes of IR generation.
  *
  * In cases involving `constexpr`, a call can wind up as a constant expression. `ignoreExpr()` will
  * not hold for such a call, since we do need to translate the call (as a constant), but we need to
@@ -193,6 +196,8 @@ private predicate isInvalidFunction(Function func) {
     expr.getEnclosingFunction() = func and
     not exists(expr.getType())
   )
+  or
+  count(func.getEntryPoint().getLocation()) > 1
 }
 
 /**
@@ -431,6 +436,9 @@ predicate ignoreLoad(Expr expr) {
     or
     // The load is duplicated from the right operand.
     isExtractorFrontendVersion65OrHigher() and expr instanceof CommaExpr
+    or
+    // The load is duplicated from the chosen expression.
+    expr instanceof C11GenericExpr
     or
     expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().getUnspecifiedType()
       instanceof FunctionPointerType
@@ -761,7 +769,10 @@ newtype TTranslatedElement =
   } or
   // A statement
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
+  // The `__except` block of a `__try __except` statement
   TTranslatedMicrosoftTryExceptHandler(MicrosoftTryExceptStmt stmt) or
+  // The `__finally` block of a `__try __finally` statement
+  TTranslatedMicrosoftTryFinallyHandler(MicrosoftTryFinallyStmt stmt) or
   // A function
   TTranslatedFunction(Function func) { translateFunction(func) } or
   // A constructor init list
@@ -919,9 +930,6 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the AST node being translated.
    */
   abstract Locatable getAst();
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = this.getAst() }
 
   /** Gets the location of this element. */
   Location getLocation() { result = this.getAst().getLocation() }

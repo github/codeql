@@ -1,0 +1,10 @@
+name: codeql/rust-tests
+groups: [rust, test]
+dependencies:
+  codeql/rust-queries: ${workspace}
+  codeql/rust-all: ${workspace}
+extractor: rust
+tests: .
+warnOnImplicitThis: true
+dataExtensions:
+  - default-threat-models.model.yml

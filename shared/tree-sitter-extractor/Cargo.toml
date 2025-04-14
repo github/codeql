@@ -1,24 +1,26 @@
 [package]
 name = "codeql-extractor"
 version = "0.2.0"
-edition = "2021"
+edition = "2024"
 authors = ["GitHub"]
 
+# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
 [dependencies]
-flate2 = "1.0"
+flate2 = "1.1"
 globset = "0.4"
-tree-sitter = "0.20"
+tree-sitter = ">= 0.23.0"
 tracing = "0.1"
-rayon = "1.5.0"
-regex = "1.7.1"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+rayon = "1.10.0"
+regex = "1.11.1"
 encoding = "0.2"
-lazy_static = "1.4.0"
+lazy_static = "1.5.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-chrono = { version = "0.4.19", features = ["serde"] }
-num_cpus = "1.14.0"
+chrono = { version = "0.4.40", features = ["serde"] }
+num_cpus = "1.16.0"
 
 [dev-dependencies]
-tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql" }
-tree-sitter-json = {git = "https://github.com/tausbn/tree-sitter-json" }
-rand = "0.8.5"
+tree-sitter-ql = "0.23.1"
+tree-sitter-json = "0.24.8"
+rand = "0.9.0"

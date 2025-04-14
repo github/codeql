@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mdanalysis/mdanalysis", "*", "input.extra-pip-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.full-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.micromamba", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.mamba", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.extra-conda-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.isolation", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.build-docs", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "input.build-tests", "code-injection", "generated"]

@@ -137,7 +137,7 @@ def test_list_comprehension_with_tuple_result():
     s = SOURCE
     ns = NONSOURCE
     l3 = [(s, ns) for _ in [1]]
-    SINK(l3[0][0]) # $ MISSING: flow="SOURCE, l:-3 -> l3[0][0]"
+    SINK(l3[0][0]) # $ flow="SOURCE, l:-3 -> l3[0][0]"
     SINK_F(l3[0][1])
 
 
@@ -245,7 +245,7 @@ def gen(x):
 
 def test_yield():
     g = gen(SOURCE)
-    SINK(next(g)) #$ MISSING:flow="SOURCE, l:-1 -> next()"
+    SINK(next(g)) #$ flow="SOURCE, l:-1 -> next(..)"
 
 
 def gen_from(x):
@@ -260,7 +260,7 @@ def test_yield_from():
 # a statement rather than an expression, but related to generators
 def test_for():
     for x in gen(SOURCE):
-        SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+        SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
 
 # 6.2.9.1. Generator-iterator methods

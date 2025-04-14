@@ -1,0 +1,7 @@
+| gen_tuple_struct_pat.rs:6:9:6:27 | Tuple(...) | 0 | gen_tuple_struct_pat.rs:6:15:6:17 | "a" |
+| gen_tuple_struct_pat.rs:6:9:6:27 | Tuple(...) | 1 | gen_tuple_struct_pat.rs:6:20:6:20 | 1 |
+| gen_tuple_struct_pat.rs:6:9:6:27 | Tuple(...) | 2 | gen_tuple_struct_pat.rs:6:23:6:23 | 2 |
+| gen_tuple_struct_pat.rs:6:9:6:27 | Tuple(...) | 3 | gen_tuple_struct_pat.rs:6:26:6:26 | 3 |
+| gen_tuple_struct_pat.rs:7:9:7:20 | Tuple(...) | 0 | gen_tuple_struct_pat.rs:7:15:7:16 | .. |
+| gen_tuple_struct_pat.rs:7:9:7:20 | Tuple(...) | 1 | gen_tuple_struct_pat.rs:7:19:7:19 | 3 |
+| gen_tuple_struct_pat.rs:8:9:8:17 | Tuple(...) | 0 | gen_tuple_struct_pat.rs:8:15:8:16 | .. |

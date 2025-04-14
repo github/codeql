@@ -15,6 +15,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    functions-in-python
    expressions-and-statements-in-python
    analyzing-control-flow-in-python
+   customizing-library-models-for-python
 
 -  :doc:`Basic query for Python code <basic-query-for-python-code>`: Learn to write and run a simple CodeQL query.
 
@@ -29,3 +30,5 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 -  :doc:`Expressions and statements in Python <expressions-and-statements-in-python>`: You can use syntactic classes from the CodeQL library to explore how Python expressions and statements are used in a codebase.
 
 -  :doc:`Analyzing control flow in Python <analyzing-control-flow-in-python>`: You can write CodeQL queries to explore the control-flow graph of a Python program, for example, to discover unreachable code or mutually exclusive blocks of code.
+
+-  :doc:`Customizing library models for Python <customizing-library-models-for-python>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.

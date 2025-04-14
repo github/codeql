@@ -136,6 +136,7 @@ def make_patches_from_log_file(log_file_lines) -> List[Patch]:
             known_start_paths = {
                 # internal CI runs
                 "/home/runner/work/semmle-code/semmle-code/ql/": CODEQL_REPO_DIR,
+                "/Users/runner/work/semmle-code/semmle-code/ql/": CODEQL_REPO_DIR,
                 "/home/runner/work/semmle-code/semmle-code/target/codeql-java-integration-tests/ql/": CODEQL_REPO_DIR,
                 "/home/runner/work/semmle-code/semmle-code/" : SEMMLE_CODE_DIR,
                 # github actions on codeql repo
@@ -196,15 +197,16 @@ class GithubStatus():
     target_url: str
     created_at: datetime
     nwo: str
-    job_id: int = None
+    job_ids: set = None
 
 
 def get_log_content(status: GithubStatus) -> str:
     LOGGER.debug(f"'{status.context}': Getting logs")
-    if status.job_id:
-        content = subprocess.check_output(
-            ["gh", "api", f"/repos/{status.nwo}/actions/jobs/{status.job_id}/logs"],
-        ).decode("utf-8")
+    if status.job_ids:
+        contents = [subprocess.check_output(
+            ["gh", "api", f"/repos/{status.nwo}/actions/jobs/{job_id}/logs"],
+        ).decode("utf-8") for job_id in status.job_ids]
+        content = "\n".join(contents)
     else:
         m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)(?:/jobs/(\d+))?$", status.target_url)
         nwo = m.group(1)
@@ -301,8 +303,10 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                 api_name: str = job["name"]
 
                 if api_name.lower().startswith(expected_workflow_name.lower()):
-                    lang_test_failure.job_id = job["id"]
-                    break
+                    if lang_test_failure.job_ids is None:
+                        lang_test_failure.job_ids = set()
+                    lang_test_failure.job_ids.add(job["id"])
+                    continue
 
                 if " / " not in api_name:
                     continue
@@ -311,11 +315,11 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                 # The job names we're looking for looks like "Python2 Language Tests / Python2 Language Tests" or "Java Language Tests / Java Language Tests Linux"
                 # for "Java Integration Tests Linux / Java Integration tests Linux" we need to ignore case :|
                 if workflow_name == expected_workflow_name and job_name.lower().startswith(lang_test_failure.context.lower()):
-                    lang_test_failure.job_id = job["id"]
-                    break
+                    lang_test_failure.job_ids.add(job["id"])
+                    continue
 
     for lang_test_failure in lang_test_failures:
-        if lang_test_failure.job_id is None:
+        if lang_test_failure.job_ids is None:
             LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
             sys.exit(1)
 
@@ -370,7 +374,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                             target_url=job["html_url"],
                             created_at=check_run["completed_at"],
                             nwo=nwo,
-                            job_id=job["id"],
+                            job_ids={job["id"]},
                         ))
                         break
                 else:

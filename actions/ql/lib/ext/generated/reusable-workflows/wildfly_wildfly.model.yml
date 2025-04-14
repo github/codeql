@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "input.build-arguments", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "input.test-arguments", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build-and-test.yml", "*", "input.maven-repo-path", "code-injection", "generated"]
+     - ["wildfly/wildfly/.github/workflows/shared-wildfly-build.yml", "*", "input.git-log-number", "code-injection", "generated"]

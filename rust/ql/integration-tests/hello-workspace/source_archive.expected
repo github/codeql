@@ -1,0 +1,4 @@
+exe/src/a_module.rs
+exe/src/main.rs
+lib/src/a_module/mod.rs
+lib/src/lib.rs

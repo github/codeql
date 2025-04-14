@@ -33,7 +33,7 @@ private string getScopePrefix(Declaration decl) {
     result = "(" + type.getEnclosingFunction().(DumpFunction).getIdentityString() + ")::"
   )
   or
-  decl instanceof TemplateParameter and result = ""
+  decl instanceof TypeTemplateParameter and result = ""
 }
 
 /**

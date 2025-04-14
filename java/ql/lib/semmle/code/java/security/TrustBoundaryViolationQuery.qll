@@ -13,7 +13,7 @@ private import semmle.code.java.security.Sanitizers
  */
 abstract class TrustBoundaryViolationSource extends DataFlow::Node { }
 
-private class ThreatModelSource extends TrustBoundaryViolationSource instanceof ThreatModelFlowSource
+private class ThreatModelSource extends TrustBoundaryViolationSource instanceof ActiveThreatModelSource
 { }
 
 /**

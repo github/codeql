@@ -21,12 +21,12 @@ type Person struct {
 func FileSystemAccess() {
 	router := gin.Default()
 	router.POST("/FormUploads", func(c *gin.Context) {
-		filepath := c.Query("filepath")
-		c.File(filepath)                                    // $ FileSystemAccess=filepath
-		http.ServeFile(c.Writer, c.Request, filepath)       // $ FileSystemAccess=filepath
-		c.FileAttachment(filepath, "file name in response") // $ FileSystemAccess=filepath
+		filepath := c.Query("filepath")                     // $ Source=filepath
+		c.File(filepath)                                    // $ Alert=filepath $ FileSystemAccess=filepath
+		http.ServeFile(c.Writer, c.Request, filepath)       // $ Alert=filepath $ FileSystemAccess=filepath
+		c.FileAttachment(filepath, "file name in response") // $ Alert=filepath $ FileSystemAccess=filepath
 		file, _ := c.FormFile("afile")
-		_ = c.SaveUploadedFile(file, filepath) // $ FileSystemAccess=filepath
+		_ = c.SaveUploadedFile(file, filepath) // $ Alert=filepath $ FileSystemAccess=filepath
 	})
 	_ = router.Run()
 }

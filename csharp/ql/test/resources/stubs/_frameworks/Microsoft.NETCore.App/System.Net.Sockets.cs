@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Sockets, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Sockets, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -520,6 +520,7 @@ namespace System
                 DropMembership = 13,
                 DontFragment = 14,
                 AddSourceMembership = 15,
+                FastOpen = 15,
                 DontRoute = 16,
                 DropSourceMembership = 16,
                 TcpKeepAliveRetryCount = 16,

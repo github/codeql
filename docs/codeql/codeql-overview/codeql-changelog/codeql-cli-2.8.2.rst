@@ -36,8 +36,8 @@ Query Packs
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Add more classes to Netty request/response splitting. Change identification to :code:`java/netty-http-request-or-response-splitting`.
     Identify request splitting differently from response splitting in query results.
@@ -58,8 +58,8 @@ JavaScript/TypeScript
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query titled "Local information disclosure in a temporary directory" (:code:`java/local-temp-file-or-directory-information-disclosure`) has been added.
     This query finds uses of APIs that leak potentially sensitive information to other local users via the system temporary directory.
@@ -137,8 +137,8 @@ C/C++
 
 *   Added a :code:`isStructuredBinding` predicate to the :code:`Variable` class which holds when the variable is declared as part of a structured binding declaration.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added predicates :code:`ClassOrInterface.getAPermittedSubtype` and :code:`isSealed` exposing information about sealed classes.
 

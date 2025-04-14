@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.JndiInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HasJndiInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasJndiInjection" }

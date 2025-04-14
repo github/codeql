@@ -1,6 +1,6 @@
 import go
 
-from NamedType t, string m, Type tp
+from DefinedType t, string m, Type tp
 where
   exists(t.getEntity().getDeclaration()) and
   t.getBaseType().hasMethod(m, tp)

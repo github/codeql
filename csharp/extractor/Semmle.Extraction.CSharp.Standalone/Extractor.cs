@@ -42,17 +42,17 @@ namespace Semmle.Extraction.CSharp.Standalone
                     (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
                     () =>
                     {
-                        foreach (var type in analyser.MissingNamespaces)
+                        foreach (var type in analyser.ExtractionContext!.MissingNamespaces)
                         {
                             progressMonitor.MissingNamespace(type);
                         }
 
-                        foreach (var type in analyser.MissingTypes)
+                        foreach (var type in analyser.ExtractionContext!.MissingTypes)
                         {
                             progressMonitor.MissingType(type);
                         }
 
-                        progressMonitor.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
+                        progressMonitor.MissingSummary(analyser.ExtractionContext!.MissingTypes.Count(), analyser.ExtractionContext!.MissingNamespaces.Count());
                     });
             }
             finally
@@ -66,29 +66,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                 }
                 catch
                 { }
-            }
-        }
-
-        private static void ExtractStandalone(
-            ExtractionInput extractionInput,
-            IProgressMonitor pm,
-            ILogger logger,
-            CommonOptions options)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
-            try
-            {
-                AnalyseStandalone(analyser, extractionInput, options, pm, stopwatch);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
             }
         }
 
@@ -141,8 +118,8 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public static ExitCode Run(Options options)
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var overallStopwatch = new Stopwatch();
+            overallStopwatch.Start();
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
             logger.Log(Severity.Info, "Extracting C# with build-mode set to 'none'");
@@ -158,12 +135,26 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             logger.Log(Severity.Info, "");
             logger.Log(Severity.Info, "Extracting...");
-            ExtractStandalone(
-                new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos),
-                new ExtractionProgress(logger),
-                fileLogger,
-                options);
-            logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
+
+            var analyzerStopwatch = new Stopwatch();
+            analyzerStopwatch.Start();
+
+            var canonicalPathCache = CanonicalPathCache.Create(fileLogger, 1000);
+            var pathTransformer = new PathTransformer(canonicalPathCache);
+
+            var progressMonitor = new ExtractionProgress(logger);
+            using var analyser = new StandaloneAnalyser(progressMonitor, fileLogger, pathTransformer, canonicalPathCache, false);
+            try
+            {
+                var extractionInput = new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos);
+                AnalyseStandalone(analyser, extractionInput, options, progressMonitor, analyzerStopwatch);
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                fileLogger.LogError($"  Unhandled exception: {ex}");
+            }
+
+            logger.Log(Severity.Info, $"Extraction completed in {overallStopwatch.Elapsed}");
 
             return ExitCode.Ok;
         }

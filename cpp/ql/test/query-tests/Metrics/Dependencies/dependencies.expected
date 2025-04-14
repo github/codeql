@@ -1,5 +1,5 @@
-| file://:0:0:0:0 | declaration of 1st parameter | LibB/libb_internal.h:5:8:5:12 | thing |
-| file://:0:0:0:0 | declaration of 1st parameter | LibB/libb_internal.h:5:8:5:12 | thing |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) | LibB/libb_internal.h:5:8:5:12 | thing |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) | LibB/libb_internal.h:5:8:5:12 | thing |
 | include.h:3:25:3:33 | num | LibD/libd.h:5:12:5:14 | num |
 | main.cpp:8:31:8:31 | call to container | LibC/libc.h:9:3:9:3 | container |
 | main.cpp:8:31:8:31 | definition of x | LibB/libb_internal.h:5:8:5:12 | thing |

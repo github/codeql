@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["product-os/flowzone/.github/workflows/flowzone.yml", "*", "input.ok_to_test_label", "code-injection", "generated"]

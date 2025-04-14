@@ -1,5 +1,5 @@
 import codeql.ruby.AST
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import codeql.ruby.security.InsecureDependencyQuery
 
 module InsecureDependencyTest implements TestSig {

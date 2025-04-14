@@ -1,3 +1,6 @@
 | file://:0:0:0:0 | Match | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:28:11:28:24 | type conversion | stdlib.go:28:2:28:25 | call to Match |
+| file://:0:0:0:0 | Match | stdlib.go:28:2:28:3 | re | stdlib.go:28:11:28:24 | type conversion | stdlib.go:28:2:28:25 | call to Match |
 | file://:0:0:0:0 | MatchReader | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:29:17:29:37 | call to NewReader | stdlib.go:29:2:29:38 | call to MatchReader |
+| file://:0:0:0:0 | MatchReader | stdlib.go:29:2:29:3 | re | stdlib.go:29:17:29:37 | call to NewReader | stdlib.go:29:2:29:38 | call to MatchReader |
 | file://:0:0:0:0 | MatchString | stdlib.go:16:30:16:37 | "posix?" | stdlib.go:17:17:17:22 | "posi" | stdlib.go:17:2:17:23 | call to MatchString |
+| file://:0:0:0:0 | MatchString | stdlib.go:17:2:17:3 | re | stdlib.go:17:17:17:22 | "posi" | stdlib.go:17:2:17:23 | call to MatchString |

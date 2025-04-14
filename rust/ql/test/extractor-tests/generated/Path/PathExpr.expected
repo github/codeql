@@ -1,0 +1,6 @@
+| gen_path.rs:6:5:6:12 | ...::bar | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |
+| gen_path_expr.rs:5:13:5:20 | variable | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |
+| gen_path_expr.rs:6:13:6:20 | ...::bar | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |
+| gen_path_expr.rs:7:13:7:20 | ...::foo | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |
+| gen_path_expr.rs:8:13:8:36 | ...::foo | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |
+| gen_path_pat.rs:5:11:5:11 | x | hasResolvedPath: | no | hasResolvedCrateOrigin: | no | hasPath: | yes | getNumberOfAttrs: | 0 |

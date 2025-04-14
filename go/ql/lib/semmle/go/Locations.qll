@@ -1,7 +1,6 @@
 /** Provides classes for working with locations and program elements that have locations. */
 
 import go
-private import internal.Locations
 
 /**
  * A location as given by a file, a start line, a start column,
@@ -11,21 +10,21 @@ private import internal.Locations
  *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
-class DbLocation extends TDbLocation {
+class Location extends @location {
   /** Gets the file for this location. */
-  File getFile() { dbLocationInfo(this, result, _, _, _, _) }
+  File getFile() { locations_default(this, result, _, _, _, _) }
 
   /** Gets the 1-based line number (inclusive) where this location starts. */
-  int getStartLine() { dbLocationInfo(this, _, result, _, _, _) }
+  int getStartLine() { locations_default(this, _, result, _, _, _) }
 
   /** Gets the 1-based column number (inclusive) where this location starts. */
-  int getStartColumn() { dbLocationInfo(this, _, _, result, _, _) }
+  int getStartColumn() { locations_default(this, _, _, result, _, _) }
 
   /** Gets the 1-based line number (inclusive) where this location ends. */
-  int getEndLine() { dbLocationInfo(this, _, _, _, result, _) }
+  int getEndLine() { locations_default(this, _, _, _, result, _) }
 
   /** Gets the 1-based column number (inclusive) where this location ends. */
-  int getEndColumn() { dbLocationInfo(this, _, _, _, _, result) }
+  int getEndColumn() { locations_default(this, _, _, _, _, result) }
 
   /** Gets the number of lines covered by this location. */
   int getNumLines() { result = this.getEndLine() - this.getStartLine() + 1 }
@@ -48,14 +47,11 @@ class DbLocation extends TDbLocation {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(File f |
-      dbLocationInfo(this, f, startline, startcolumn, endline, endcolumn) and
+    exists(File f | locations_default(this, f, startline, startcolumn, endline, endcolumn) |
       filepath = f.getAbsolutePath()
     )
   }
 }
-
-final class Location = LocationImpl;
 
 /** A program element with a location. */
 class Locatable extends @locatable {
@@ -63,7 +59,10 @@ class Locatable extends @locatable {
   File getFile() { result = this.getLocation().getFile() }
 
   /** Gets this element's location. */
-  final DbLocation getLocation() { result = getLocatableLocation(this) }
+  final Location getLocation() {
+    has_location(this, result) or
+    xmllocations(this, result)
+  }
 
   /** Gets the number of lines covered by this element. */
   int getNumLines() { result = this.getLocation().getNumLines() }

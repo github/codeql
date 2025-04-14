@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private class AccessStepPack
         {
-            public readonly List<AccessStep> Prefix = new();
+            public List<AccessStep> Prefix { get; } = [];
             public AccessStep Last { get; private set; }
 
             public AccessStepPack Add(string identifier, Microsoft.CodeAnalysis.Location location)

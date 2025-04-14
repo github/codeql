@@ -1,0 +1,8 @@
+| generic.c:21:22:21:32 | _Generic | generic.c:21:22:21:32 | describe(val) |
+| generic.c:22:22:22:32 | _Generic | generic.c:22:22:22:32 | describe(val) |
+| generic.c:23:22:23:32 | _Generic | generic.c:23:22:23:32 | describe(val) |
+| generic.c:24:22:24:32 | _Generic | generic.c:24:22:24:32 | describe(val) |
+| generic.cpp:22:22:22:32 | _Generic | generic.cpp:22:22:22:32 | describe(val) |
+| generic.cpp:23:22:23:32 | _Generic | generic.cpp:23:22:23:32 | describe(val) |
+| generic.cpp:24:22:24:32 | _Generic | generic.cpp:24:22:24:32 | describe(val) |
+| generic.cpp:25:22:25:32 | _Generic | generic.cpp:25:22:25:32 | describe(val) |

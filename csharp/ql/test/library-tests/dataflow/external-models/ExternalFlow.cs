@@ -200,30 +200,24 @@ namespace My.Qltest
         void M3()
         {
             var o1 = new object();
-            Sink(MixedFlowArgs(o1, null));
+            Sink(Library.MixedFlowArgs(o1, null));
 
             var o2 = new object();
-            Sink(MixedFlowArgs(null, o2));
+            Sink(Library.MixedFlowArgs(null, o2));
         }
 
         void M4()
         {
             var o1 = new object();
-            Sink(GeneratedFlowWithGeneratedNeutral(o1));
+            Sink(Library.GeneratedFlowWithGeneratedNeutral(o1));
 
             var o2 = new object();
-            Sink(GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
+            Sink(Library.GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
         }
 
         object GeneratedFlow(object o) => throw null;
 
         object GeneratedFlowArgs(object o1, object o2) => throw null;
-
-        object MixedFlowArgs(object o1, object o2) => throw null;
-
-        object GeneratedFlowWithGeneratedNeutral(object o) => throw null;
-
-        object GeneratedFlowWithManualNeutral(object o) => throw null;
 
         static void Sink(object o) { }
     }
@@ -268,4 +262,90 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    public class J
+    {
+        public virtual object Prop1 { get; }
+
+        public virtual void SetProp1(object o) => throw null;
+
+        public virtual object Prop2 { get; }
+
+        public virtual void SetProp2(object o) => throw null;
+
+        void M1()
+        {
+            var j = new object();
+            SetProp1(j);
+            // flow as there is a manual summary.
+            Sink(this.Prop1);
+        }
+
+        void M2()
+        {
+            var j = new object();
+            SetProp2(j);
+            // no flow as there is only a generated summary and source code is available.
+            Sink(this.Prop2);
+        }
+
+        static void Sink(object o) { }
+    }
+
+    // Test synthetic fields
+    public class K
+    {
+
+        public object MyField;
+
+        public void SetMySyntheticField(object o) => throw null;
+
+        public object GetMySyntheticField() => throw null;
+
+        public void SetMyNestedSyntheticField(object o) => throw null;
+
+        public object GetMyNestedSyntheticField() => throw null;
+
+        public void SetMyFieldOnSyntheticField(object o) => throw null;
+
+        public object GetMyFieldOnSyntheticField() => throw null;
+
+        public void M1()
+        {
+            var o = new object();
+            SetMySyntheticField(o);
+            Sink(GetMySyntheticField());
+        }
+
+        public void M2()
+        {
+            var o = new object();
+            SetMyNestedSyntheticField(o);
+            Sink(GetMyNestedSyntheticField());
+        }
+
+        public void M3()
+        {
+            var o = new object();
+            SetMyFieldOnSyntheticField(o);
+            Sink(GetMyFieldOnSyntheticField());
+        }
+
+        static void Sink(object o) { }
+    }
+
+    // Test content data flow provenance.
+    public class L
+    {
+        public void M1()
+        {
+            var l = new Library();
+            var o = new object();
+            l.SetValue(o);
+            Sink(l.GetValue());
+        }
+
+        static void Sink(object o) { }
+    }
+
 }

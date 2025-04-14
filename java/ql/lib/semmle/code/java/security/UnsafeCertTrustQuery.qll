@@ -6,23 +6,6 @@ import semmle.code.java.security.UnsafeCertTrust
 import semmle.code.java.security.Encryption
 
 /**
- * DEPRECATED: Use `SslEndpointIdentificationFlow` instead.
- *
- * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
- */
-deprecated class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
-  SslEndpointIdentificationFlowConfig() { this = "SslEndpointIdentificationFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof SslUnsafeCertTrustSanitizer
-  }
-}
-
-/**
  * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
  */
 module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {

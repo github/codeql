@@ -251,6 +251,7 @@ closures.swift:
 #   42|                     getArgument(2): [Argument] terminator: default terminator
 #   42|                       getExpr(): [DefaultArgumentExpr] default terminator
 #   42|               getCapture(0): [CapturedDecl] wrapper(_:)
+#   41|             getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   45|     getElement(1): [CallExpr] call to withCallback(_:)
 #   45|       getFunction(): [DeclRefExpr] withCallback(_:)
 #   45|       getArgument(0): [Argument] : { ... }

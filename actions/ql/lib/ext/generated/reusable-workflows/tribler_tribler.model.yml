@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tribler/tribler/.github/workflows/pytest_custom_ipv8.yml", "*", "input.ipv8-git-ref", "code-injection", "generated"]

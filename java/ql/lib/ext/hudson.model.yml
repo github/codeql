@@ -19,6 +19,7 @@ extensions:
       - ["hudson", "FilePath", True, "copyTo", "(FilePath)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyToWithPermission", "", "", "Argument[this]", "path-injection", "manual"]
       - ["hudson", "FilePath", True, "copyToWithPermission", "(FilePath)", "", "Argument[0]", "path-injection", "manual"]
+      - ["hudson", "FilePath", True, "exists", "()", "", "Argument[this]", "path-injection", "manual"]
       - ["hudson", "FilePath", True, "installIfNecessaryFrom", "(URL,TaskListener,String)", "", "Argument[0]", "request-forgery", "ai-manual"]
       - ["hudson", "FilePath", True, "newInputStreamDenyingSymlinkAsNeeded", "(File,String,boolean)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "openInputStream", "(File,OpenOption[])", "", "Argument[0]", "path-injection", "manual"]

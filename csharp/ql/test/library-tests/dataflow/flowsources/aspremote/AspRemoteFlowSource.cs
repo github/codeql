@@ -58,4 +58,9 @@ namespace Testing
             app.Run();
         }
     }
+
+    public abstract class AbstractTestController : Controller
+    {
+        public void MyActionMethod(string param) { }
+    }
 }

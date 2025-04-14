@@ -1,6 +1,6 @@
-| lib/tst.js:7:1:7:45 | app.use ... rname)) | Serves the folder query-tests/Security/CWE-200/lib, which can contain private information. |
-| lib/tst.js:9:1:9:43 | app.use ... otDir)) | Serves the folder query-tests/Security/CWE-200/lib, which can contain private information. |
-| lib/tst.js:11:1:11:52 | app.use ... + '/')) | Serves the folder query-tests/Security/CWE-200/lib, which can contain private information. |
+| lib/tst.js:7:1:7:45 | app.use ... rname)) | Serves the folder lib, which can contain private information. |
+| lib/tst.js:9:1:9:43 | app.use ... otDir)) | Serves the folder lib, which can contain private information. |
+| lib/tst.js:11:1:11:52 | app.use ... + '/')) | Serves the folder lib, which can contain private information. |
 | private-file-exposure.js:8:1:8:49 | app.use ... ular')) | Serves the folder "./node_modules/angular", which can contain private information. |
 | private-file-exposure.js:9:1:9:59 | app.use ... ular')) | Serves the folder "node_modules/angular", which can contain private information. |
 | private-file-exposure.js:10:1:10:67 | app.use ... mate')) | Serves the folder "node_modules/angular-animate", which can contain private information. |
@@ -20,4 +20,4 @@
 | private-file-exposure.js:43:1:43:46 | app.use ... )("/")) | Serves the root folder, which can contain private information. |
 | private-file-exposure.js:51:5:51:88 | app.use ... les'))) | Serves the folder "../node_modules", which can contain private information. |
 | private-file-exposure.js:70:5:70:71 | serveHa ... ular"}) | Serves the folder "./node_modules/angular", which can contain private information. |
-| subfolder/private-file-exposure-2.js:6:1:6:34 | app.use ... rname)) | Serves the folder query-tests/Security/CWE-200/subfolder, which can contain private information. |
+| subfolder/private-file-exposure-2.js:6:1:6:34 | app.use ... rname)) | Serves the folder subfolder, which can contain private information. |

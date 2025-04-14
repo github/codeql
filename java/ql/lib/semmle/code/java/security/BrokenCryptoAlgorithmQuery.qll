@@ -15,6 +15,8 @@ private class ShortStringLiteral extends StringLiteral {
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
     this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
+    // Exclude RSA/ECB/.* ciphers.
+    not this.getValue().regexpMatch("RSA/ECB.*") and
     // Exclude German and French sentences.
     not this.getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }
@@ -29,6 +31,12 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(CryptoAlgoSpec c | sink.asExpr() = c.getAlgoSpec() | result = c.getLocation())
+  }
 }
 
 /**

@@ -1,0 +1,2082 @@
+signatureMatches
+| atl.cpp:71:5:71:17 | _U_STRINGorID | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:71:5:71:17 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:72:5:72:17 | _U_STRINGorID | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:259:5:259:12 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:259:5:259:12 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:259:5:259:12 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:259:5:259:12 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:409:10:409:10 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:409:10:409:10 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:411:5:411:12 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:411:5:411:12 | CComBSTR | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
+| atl.cpp:415:5:415:12 | CComBSTR | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:415:5:415:12 | CComBSTR | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:416:5:416:12 | CComBSTR | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:416:5:416:12 | CComBSTR | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:417:5:417:12 | CComBSTR | (CComBSTR &&) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:420:13:420:18 | Append | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:420:13:420:18 | Append | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:421:13:421:18 | Append | (wchar_t) |  | operator+= | 0 |
+| atl.cpp:421:13:421:18 | Append | (wchar_t) | CComBSTR | Append | 0 |
+| atl.cpp:421:13:421:18 | Append | (wchar_t) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:422:13:422:18 | Append | (char) |  | operator+= | 0 |
+| atl.cpp:422:13:422:18 | Append | (char) | CComBSTR | Append | 0 |
+| atl.cpp:422:13:422:18 | Append | (char) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:423:13:423:18 | Append | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:423:13:423:18 | Append | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:424:13:424:18 | Append | (LPCSTR) | CComBSTR | Append | 0 |
+| atl.cpp:424:13:424:18 | Append | (LPCSTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:425:13:425:18 | Append | (LPCOLESTR,int) | CComBSTR | Append | 0 |
+| atl.cpp:425:13:425:18 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:425:13:425:18 | Append | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:425:13:425:18 | Append | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:425:13:425:18 | Append | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:425:13:425:18 | Append | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:426:13:426:22 | AppendBSTR | (wchar_t *) | CStringT | CStringT | 0 |
+| atl.cpp:427:13:427:23 | AppendBytes | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:427:13:427:23 | AppendBytes | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:427:13:427:23 | AppendBytes | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:427:13:427:23 | AppendBytes | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:427:13:427:23 | AppendBytes | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:428:13:428:23 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:428:13:428:23 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:428:13:428:23 | ArrayToBSTR | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:430:10:430:15 | Attach | (wchar_t *) | CStringT | CStringT | 0 |
+| atl.cpp:440:10:440:19 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:440:10:440:19 | LoadString | (HINSTANCE,UINT) | CComBSTR | LoadString | 1 |
+| atl.cpp:441:10:441:19 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:441:10:441:19 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:449:15:449:24 | operator+= | (const CComBSTR &) | CComBSTR | Append | 0 |
+| atl.cpp:449:15:449:24 | operator+= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:450:15:450:24 | operator+= | (LPCOLESTR) | CComBSTR | Append | 0 |
+| atl.cpp:450:15:450:24 | operator+= | (LPCOLESTR) | CComBSTR | CComBSTR | 0 |
+| atl.cpp:540:5:540:17 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:540:5:540:17 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:540:5:540:17 | CComSafeArray | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:544:13:544:15 | Add | (const SAFEARRAY *) | CComSafeArray | Add | 0 |
+| atl.cpp:544:13:544:15 | Add | (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 |
+| atl.cpp:544:13:544:15 | Add | (const SAFEARRAY *) | CComSafeArray | operator= | 0 |
+| atl.cpp:546:13:546:15 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 0 |
+| atl.cpp:546:13:546:15 | Add | (const T &,BOOL) | CComSafeArray<T> | Add | 1 |
+| atl.cpp:612:5:612:10 | CPathT | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:612:5:612:10 | CPathT | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:612:5:612:10 | CPathT | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:617:10:617:21 | AddExtension | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:617:10:617:21 | AddExtension | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:617:10:617:21 | AddExtension | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:618:10:618:15 | Append | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:618:10:618:15 | Append | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:618:10:618:15 | Append | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:621:10:621:16 | Combine | (PCXSTR,PCXSTR) | CStringT | Replace | 0 |
+| atl.cpp:621:10:621:16 | Combine | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
+| atl.cpp:621:10:621:16 | Combine | (const CStringT &,PCXSTR) |  | operator+ | 1 |
+| atl.cpp:621:10:621:16 | Combine | (int,PCXSTR) | CStringT | Insert | 1 |
+| atl.cpp:622:24:622:35 | CommonPrefix | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:622:24:622:35 | CommonPrefix | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:622:24:622:35 | CommonPrefix | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:659:25:659:34 | operator+= | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:659:25:659:34 | operator+= | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:659:25:659:34 | operator+= | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:765:10:765:12 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:765:10:765:12 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:765:10:765:12 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:765:10:765:12 | Add | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:765:10:765:12 | Add | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:765:10:765:12 | Add | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:765:10:765:12 | Add | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:765:10:765:12 | Add | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:776:10:776:14 | SetAt | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| atl.cpp:777:10:777:19 | SetAtIndex | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| atl.cpp:842:17:842:28 | SetExtraInfo | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:843:17:843:27 | SetHostName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:844:17:844:27 | SetPassword | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:847:17:847:29 | SetSchemeName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:848:17:848:26 | SetUrlPath | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:849:17:849:27 | SetUserName | (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | (const YCHAR *,int,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:915:5:915:18 | CSimpleStringT | (const YCHAR *,int,IAtlStringMgr *) | CStringT | CStringT | 2 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:916:5:916:18 | CSimpleStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) |  | operator+= | 0 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) | CStringT | CStringT | 0 |
+| atl.cpp:917:5:917:18 | CSimpleStringT | (const CSimpleStringT &) | CStringT | operator= | 0 |
+| atl.cpp:921:10:921:15 | Append | (const CSimpleStringT &) |  | operator+= | 0 |
+| atl.cpp:921:10:921:15 | Append | (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 |
+| atl.cpp:921:10:921:15 | Append | (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:921:10:921:15 | Append | (const CSimpleStringT &) | CStringT | CStringT | 0 |
+| atl.cpp:921:10:921:15 | Append | (const CSimpleStringT &) | CStringT | operator= | 0 |
+| atl.cpp:922:10:922:15 | Append | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:922:10:922:15 | Append | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:922:10:922:15 | Append | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:922:10:922:15 | Append | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:922:10:922:15 | Append | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:923:10:923:15 | Append | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:923:10:923:15 | Append | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:923:10:923:15 | Append | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
+| atl.cpp:927:17:927:25 | CopyChars | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:928:17:928:25 | CopyChars | (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| atl.cpp:938:10:938:14 | SetAt | (XCHAR,XCHAR) | CStringT | Replace | 1 |
+| atl.cpp:938:10:938:14 | SetAt | (const CStringT &,char) |  | operator+ | 1 |
+| atl.cpp:938:10:938:14 | SetAt | (int,XCHAR) | CStringT | Insert | 0 |
+| atl.cpp:938:10:938:14 | SetAt | (int,XCHAR) | CStringT | Insert | 1 |
+| atl.cpp:939:10:939:18 | SetString | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:939:10:939:18 | SetString | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:939:10:939:18 | SetString | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:939:10:939:18 | SetString | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:939:10:939:18 | SetString | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:940:10:940:18 | SetString | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:940:10:940:18 | SetString | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:940:10:940:18 | SetString | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) |  | operator+= | 0 |
+| atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) | CStringT | CStringT | 0 |
+| atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) | CStringT | operator= | 0 |
+| atl.cpp:1037:5:1037:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1037:5:1037:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1037:5:1037:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1038:5:1038:12 | CStringT | (const CStringT &) | CStringT | CStringT | 0 |
+| atl.cpp:1038:5:1038:12 | CStringT | (const CStringT &) | CStringT | operator= | 0 |
+| atl.cpp:1042:5:1042:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1042:5:1042:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1042:5:1042:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 0 |
+| atl.cpp:1043:5:1043:12 | CStringT | (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1043:5:1043:12 | CStringT | (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 |
+| atl.cpp:1045:5:1045:12 | CStringT | (char *) | CStringT | CStringT | 0 |
+| atl.cpp:1046:5:1046:12 | CStringT | (unsigned char *) | CStringT | CStringT | 0 |
+| atl.cpp:1047:5:1047:12 | CStringT | (wchar_t *) | CStringT | CStringT | 0 |
+| atl.cpp:1049:5:1049:12 | CStringT | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | (char,int) | CStringT | CStringT | 0 |
+| atl.cpp:1049:5:1049:12 | CStringT | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1049:5:1049:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1050:5:1050:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 0 |
+| atl.cpp:1050:5:1050:12 | CStringT | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | Format | 0 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | Format | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 0 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (UINT,...) | CStringT | Format | 1 |
+| atl.cpp:1061:10:1061:21 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (PCXSTR,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (PCXSTR,...) | CStringT | Format | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (PCXSTR,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 0 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | AppendFormat | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | Format | 0 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | Format | 1 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 0 |
+| atl.cpp:1062:10:1062:21 | AppendFormat | (UINT,...) | CStringT | FormatMessage | 1 |
+| atl.cpp:1070:9:1070:14 | Insert | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
+| atl.cpp:1070:9:1070:14 | Insert | (const CStringT &,PCXSTR) |  | operator+ | 1 |
+| atl.cpp:1070:9:1070:14 | Insert | (int,PCXSTR) | CStringT | Insert | 0 |
+| atl.cpp:1070:9:1070:14 | Insert | (int,PCXSTR) | CStringT | Insert | 1 |
+| atl.cpp:1071:9:1071:14 | Insert | (XCHAR,XCHAR) | CStringT | Replace | 1 |
+| atl.cpp:1071:9:1071:14 | Insert | (int,XCHAR) | CStringT | Insert | 0 |
+| atl.cpp:1071:9:1071:14 | Insert | (int,XCHAR) | CStringT | Insert | 1 |
+| atl.cpp:1075:10:1075:19 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
+| atl.cpp:1075:10:1075:19 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
+| atl.cpp:1079:14:1079:16 | Mid | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| atl.cpp:1079:14:1079:16 | Mid | (char,int) | CStringT | CStringT | 1 |
+| atl.cpp:1079:14:1079:16 | Mid | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1079:14:1079:16 | Mid | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| atl.cpp:1079:14:1079:16 | Mid | (wchar_t,int) | CStringT | CStringT | 1 |
+| atl.cpp:1081:9:1081:15 | Replace | (PCXSTR,PCXSTR) | CStringT | Replace | 0 |
+| atl.cpp:1081:9:1081:15 | Replace | (PCXSTR,PCXSTR) | CStringT | Replace | 1 |
+| atl.cpp:1081:9:1081:15 | Replace | (const CStringT &,PCXSTR) |  | operator+ | 1 |
+| atl.cpp:1081:9:1081:15 | Replace | (int,PCXSTR) | CStringT | Insert | 1 |
+| atl.cpp:1082:9:1082:15 | Replace | (XCHAR,XCHAR) | CStringT | Replace | 0 |
+| atl.cpp:1082:9:1082:15 | Replace | (XCHAR,XCHAR) | CStringT | Replace | 1 |
+| atl.cpp:1082:9:1082:15 | Replace | (int,XCHAR) | CStringT | Insert | 1 |
+| atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:1086:14:1086:26 | SpanIncluding | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:1086:14:1086:26 | SpanIncluding | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:1086:14:1086:26 | SpanIncluding | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:1088:15:1088:18 | Trim | (XCHAR) | CStringT | operator= | 0 |
+| atl.cpp:1089:15:1089:18 | Trim | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:1089:15:1089:18 | Trim | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:1089:15:1089:18 | Trim | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:1091:15:1091:22 | TrimLeft | (XCHAR) | CStringT | operator= | 0 |
+| atl.cpp:1092:15:1092:22 | TrimLeft | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:1092:15:1092:22 | TrimLeft | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:1092:15:1092:22 | TrimLeft | (PCXSTR) | CStringT | operator= | 0 |
+| atl.cpp:1094:15:1094:23 | TrimRight | (XCHAR) | CStringT | operator= | 0 |
+| atl.cpp:1095:15:1095:23 | TrimRight | (PCXSTR) |  | operator+= | 0 |
+| atl.cpp:1095:15:1095:23 | TrimRight | (PCXSTR) | CSimpleStringT | operator+= | 0 |
+| atl.cpp:1095:15:1095:23 | TrimRight | (PCXSTR) | CStringT | operator= | 0 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (char,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | (wchar_t,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (char,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | (wchar_t,int) | CStringT | CStringT | 1 |
+| map.cpp:8:6:8:9 | sink | (char *) | CStringT | CStringT | 0 |
+| set.cpp:8:6:8:9 | sink | (char *) | CStringT | CStringT | 0 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (char,int) | CStringT | CStringT | 1 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | (wchar_t,int) | CStringT | CStringT | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:182:17:182:22 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:185:17:185:22 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:190:17:190:23 | replace | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:232:84:232:90 | getline | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:294:12:294:17 | vector | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:295:3:295:8 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 |
+| stl.h:296:101:296:106 | vector | (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 |
+| stl.h:296:101:296:106 | vector | (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 |
+| stl.h:301:11:301:19 | operator= | (const vector &) | vector | vector | 0 |
+| stl.h:302:11:302:19 | operator= | (vector &&) | vector | vector | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:303:106:303:111 | assign | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | deque<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | forward_list<T> | insert_after | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | list<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (const_iterator,const T &) | vector<T> | insert | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | deque<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | forward_list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | list<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 0 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:306:8:306:13 | assign | (size_type,const T &) | vector<T,Allocator> | assign | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | deque<T> | insert | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | list<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | list<T> | insert | 1 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:331:12:331:17 | insert | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:333:42:333:47 | insert | (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 |
+| stl.h:335:37:335:43 | emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (list &&,const Allocator &) | list<T,Allocator> | list | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:396:3:396:3 | pair | (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:440:36:440:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:448:48:448:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:452:42:452:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:508:36:508:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:516:48:516:58 | try_emplace | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:520:42:520:57 | insert_or_assign | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:557:33:557:35 | set | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:569:36:569:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | deque<T> | insert | 0 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | deque<T> | insert | 1 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 0 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 1 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | list<T> | insert | 0 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | list<T> | insert | 1 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:573:12:573:17 | insert | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:574:38:574:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:623:36:623:47 | emplace_hint | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | deque<T> | insert | 0 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | deque<T> | insert | 1 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 0 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | forward_list<T> | insert_after | 1 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | list<T> | insert | 0 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | list<T> | insert | 1 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | vector<T> | insert | 0 |
+| stl.h:627:12:627:17 | insert | (const_iterator,T &&) | vector<T> | insert | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | forward_list | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | list | assign<InputIt> | 1 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 0 |
+| stl.h:628:38:628:43 | insert | (InputIt,InputIt) | vector | assign<InputIt> | 1 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:678:33:678:38 | format | (format_string,Args &&) |  | format<Args> | 1 |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 0 |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | (format_string,Args &&) |  | format<Args> | 1 |
+| string.cpp:20:6:20:9 | sink | (char) |  | operator+= | 0 |
+| string.cpp:20:6:20:9 | sink | (char) | CComBSTR | Append | 0 |
+| string.cpp:20:6:20:9 | sink | (char) | CSimpleStringT | operator+= | 0 |
+| taint.cpp:4:6:4:21 | arithAssignments | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:4:6:4:21 | arithAssignments | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:4:6:4:21 | arithAssignments | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:4:6:4:21 | arithAssignments | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:4:6:4:21 | arithAssignments | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:142:5:142:10 | select | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:142:5:142:10 | select | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| taint.cpp:190:7:190:12 | memcpy | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:190:7:190:12 | memcpy | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| taint.cpp:249:13:249:13 | _FUN | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:249:13:249:13 | _FUN | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | _FUN | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | _FUN | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | _FUN | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | operator() | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:249:13:249:13 | operator() | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | operator() | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | operator() | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:249:13:249:13 | operator() | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:302:6:302:14 | myAssign2 | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:307:6:307:14 | myAssign3 | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:312:6:312:14 | myAssign4 | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:367:6:367:16 | test_strdup | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:387:6:387:16 | test_wcsdup | (wchar_t *) | CStringT | CStringT | 0 |
+| taint.cpp:397:6:397:17 | test_strdupa | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:514:6:514:16 | test_strtok | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:523:7:523:13 | _strset | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:523:7:523:13 | _strset | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:523:7:523:13 | _strset | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:523:7:523:13 | _strset | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:523:7:523:13 | _strset | (wchar_t,int) | CStringT | CStringT | 1 |
+| taint.cpp:525:6:525:18 | test_strset_1 | (const CStringT &,char) |  | operator+ | 1 |
+| taint.cpp:531:6:531:18 | test_strset_2 | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:591:6:591:16 | test_strsep | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:603:16:603:22 | _mbsinc | (const unsigned char *) | CStringT | CStringT | 0 |
+| taint.cpp:603:16:603:22 | _mbsinc | (const unsigned char *) | CStringT | operator= | 0 |
+| taint.cpp:665:6:665:25 | test_no_const_member | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:677:6:677:27 | test_with_const_member | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:725:10:725:15 | strtol | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 |
+| taint.cpp:725:10:725:15 | strtol | (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 |
+| taint.cpp:727:6:727:16 | test_strtol | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:785:6:785:15 | fopen_test | (char *) | CStringT | CStringT | 0 |
+| taint.cpp:815:7:815:12 | strchr | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| taint.cpp:815:7:815:12 | strchr | (char,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| taint.cpp:815:7:815:12 | strchr | (wchar_t,int) | CStringT | CStringT | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (LPCOLESTR,int) | CComBSTR | Append | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (char,int) | CStringT | CStringT | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (const XCHAR *,int) | CStringT | CStringT | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (const YCHAR *,int) | CStringT | CStringT | 1 |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (wchar_t,int) | CStringT | CStringT | 1 |
+| vector.cpp:417:6:417:25 | test_vector_inserter | (char *) | CStringT | CStringT | 0 |
+getSignatureParameterName
+| (CAtlFile &) | CAtlFile | CAtlFile | 0 | CAtlFile & |
+| (CComBSTR &&) | CComBSTR | CComBSTR | 0 | CComBSTR && |
+| (CRegKey &) | CRegKey | CRegKey | 0 | CRegKey & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 0 | DWORD & |
+| (DWORD &,LPCTSTR) | CRegKey | QueryValue | 1 | LPCTSTR |
+| (HANDLE) | CAtlFile | CAtlFile | 0 | HANDLE |
+| (HINSTANCE,UINT) | CComBSTR | LoadString | 0 | HINSTANCE |
+| (HINSTANCE,UINT) | CComBSTR | LoadString | 1 | UINT |
+| (HKEY) | CRegKey | CRegKey | 0 | HKEY |
+| (InputIt,InputIt) | deque | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | deque | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | forward_list | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | forward_list | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | list | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | list | assign<InputIt> | 1 | func:0 |
+| (InputIt,InputIt) | vector | assign<InputIt> | 0 | func:0 |
+| (InputIt,InputIt) | vector | assign<InputIt> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | deque<T,Allocator> | deque<InputIterator> | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | InputIterator |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | InputIterator |
+| (InputIterator,InputIterator,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | list<T,Allocator> | list<InputIterator> | 2 | const class:1 & |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 0 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 1 | func:0 |
+| (InputIterator,InputIterator,const Allocator &) | vector<T,Allocator> | vector<InputIterator> | 2 | const class:1 & |
+| (LPCOLESTR) | CComBSTR | Append | 0 | LPCOLESTR |
+| (LPCOLESTR) | CComBSTR | CComBSTR | 0 | LPCOLESTR |
+| (LPCOLESTR,int) | CComBSTR | Append | 0 | LPCOLESTR |
+| (LPCOLESTR,int) | CComBSTR | Append | 1 | int |
+| (LPCSTR) | CComBSTR | Append | 0 | LPCSTR |
+| (LPCSTR) | CComBSTR | CComBSTR | 0 | LPCSTR |
+| (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 0 | LPCSTR |
+| (LPCSTR,IAtlStringMgr *) | CStringT | CStringT | 1 | IAtlStringMgr * |
+| (LPCTSTR) | _U_STRINGorID | _U_STRINGorID | 0 | LPCTSTR |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 0 | LPCTSTR |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 1 | DWORD * |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 2 | void * |
+| (LPCTSTR,DWORD *,void *,ULONG *) | CRegKey | QueryValue | 3 | ULONG * |
+| (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 0 | LPCWSTR |
+| (LPCWSTR,IAtlStringMgr *) | CStringT | CStringT | 1 | IAtlStringMgr * |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 0 | LPTSTR |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 1 | LPCTSTR |
+| (LPTSTR,LPCTSTR,DWORD *) | CRegKey | QueryValue | 2 | DWORD * |
+| (PCXSTR) |  | operator+= | 0 | PCXSTR |
+| (PCXSTR) | CSimpleStringT | operator+= | 0 | PCXSTR |
+| (PCXSTR) | CStringT | operator= | 0 | PCXSTR |
+| (PCXSTR,...) | CStringT | AppendFormat | 0 | PCXSTR |
+| (PCXSTR,...) | CStringT | AppendFormat | 1 | ... |
+| (PCXSTR,...) | CStringT | Format | 0 | PCXSTR |
+| (PCXSTR,...) | CStringT | Format | 1 | ... |
+| (PCXSTR,...) | CStringT | FormatMessage | 0 | PCXSTR |
+| (PCXSTR,...) | CStringT | FormatMessage | 1 | ... |
+| (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 | PCXSTR |
+| (PCXSTR,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 | IAtlStringMgr * |
+| (PCXSTR,PCXSTR) | CStringT | Replace | 0 | PCXSTR |
+| (PCXSTR,PCXSTR) | CStringT | Replace | 1 | PCXSTR |
+| (PCXSTR,const CStringT &) |  | operator+ | 0 | PCXSTR |
+| (PCXSTR,const CStringT &) |  | operator+ | 1 | const CStringT & |
+| (PCYSTR) |  | operator+= | 0 | PCYSTR |
+| (PCYSTR) | CStringT | operator= | 0 | PCYSTR |
+| (UINT) | CComBSTR | LoadString | 0 | UINT |
+| (UINT) | _U_STRINGorID | _U_STRINGorID | 0 | UINT |
+| (UINT,...) | CStringT | AppendFormat | 0 | UINT |
+| (UINT,...) | CStringT | AppendFormat | 1 | ... |
+| (UINT,...) | CStringT | Format | 0 | UINT |
+| (UINT,...) | CStringT | Format | 1 | ... |
+| (UINT,...) | CStringT | FormatMessage | 0 | UINT |
+| (UINT,...) | CStringT | FormatMessage | 1 | ... |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 | XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 | const XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 | int |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 0 | XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 1 | const XCHAR * |
+| (XCHAR *,const XCHAR *,int) | CSimpleStringT | CopyCharsOverlapped | 2 | int |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 0 | XCHAR * |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 1 | size_t |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 2 | const XCHAR * |
+| (XCHAR *,size_t,const XCHAR *,int) | CSimpleStringT | CopyChars | 3 | int |
+| (XCHAR) | CStringT | operator= | 0 | XCHAR |
+| (XCHAR,XCHAR) | CStringT | Replace | 0 | XCHAR |
+| (XCHAR,XCHAR) | CStringT | Replace | 1 | XCHAR |
+| (YCHAR) | CStringT | operator= | 0 | YCHAR |
+| (char *) | CStringT | CStringT | 0 | char * |
+| (char) |  | operator+= | 0 | char |
+| (char) | CComBSTR | Append | 0 | char |
+| (char) | CSimpleStringT | operator+= | 0 | char |
+| (char,const CStringT &) |  | operator+ | 0 | char |
+| (char,const CStringT &) |  | operator+ | 1 | const CStringT & |
+| (char,int) | CStringT | CStringT | 0 | char |
+| (char,int) | CStringT | CStringT | 1 | int |
+| (const CComBSTR &) | CComBSTR | Append | 0 | const CComBSTR & |
+| (const CComBSTR &) | CComBSTR | CComBSTR | 0 | const CComBSTR & |
+| (const CComSafeArray &) | CComSafeArray | CComSafeArray | 0 | const CComSafeArray & |
+| (const CComSafeArray &) | CComSafeArray | operator= | 0 | const CComSafeArray & |
+| (const CSimpleStringT &) |  | operator+= | 0 | const CSimpleStringT & |
+| (const CSimpleStringT &) | CSimpleStringT | CSimpleStringT | 0 | const CSimpleStringT & |
+| (const CSimpleStringT &) | CSimpleStringT | operator+= | 0 | const CSimpleStringT & |
+| (const CSimpleStringT &) | CStringT | CStringT | 0 | const CSimpleStringT & |
+| (const CSimpleStringT &) | CStringT | operator= | 0 | const CSimpleStringT & |
+| (const CStaticString &) |  | operator+= | 0 | const CStaticString & |
+| (const CStaticString &) | CSimpleStringT | operator+= | 0 | const CStaticString & |
+| (const CStringT &) | CStringT | CStringT | 0 | const CStringT & |
+| (const CStringT &) | CStringT | operator= | 0 | const CStringT & |
+| (const CStringT &,PCXSTR) |  | operator+ | 0 | const CStringT & |
+| (const CStringT &,PCXSTR) |  | operator+ | 1 | PCXSTR |
+| (const CStringT &,char) |  | operator+ | 0 | const CStringT & |
+| (const CStringT &,char) |  | operator+ | 1 | char |
+| (const CStringT &,const CStringT &) |  | operator+ | 0 | const CStringT & |
+| (const CStringT &,const CStringT &) |  | operator+ | 1 | const CStringT & |
+| (const CStringT &,wchar_t) |  | operator+ | 0 | const CStringT & |
+| (const CStringT &,wchar_t) |  | operator+ | 1 | wchar_t |
+| (const SAFEARRAY &) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY & |
+| (const SAFEARRAY *) | CComSafeArray | Add | 0 | const SAFEARRAY * |
+| (const SAFEARRAY *) | CComSafeArray | CComSafeArray | 0 | const SAFEARRAY * |
+| (const SAFEARRAY *) | CComSafeArray | operator= | 0 | const SAFEARRAY * |
+| (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
+| (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
+| (const VARIANT &) |  | operator+= | 0 | const VARIANT & |
+| (const VARIANT &) | CStringT | CStringT | 0 | const VARIANT & |
+| (const VARIANT &) | CStringT | operator= | 0 | const VARIANT & |
+| (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 0 | const VARIANT & |
+| (const VARIANT &,IAtlStringMgr *) | CStringT | CStringT | 1 | IAtlStringMgr * |
+| (const XCHAR *) | CStringT | CStringT | 0 | const XCHAR * |
+| (const XCHAR *,int) | CStringT | CStringT | 0 | const XCHAR * |
+| (const XCHAR *,int) | CStringT | CStringT | 1 | int |
+| (const XCHAR *,int,AtlStringMgr *) | CStringT | CStringT | 0 | const XCHAR * |
+| (const XCHAR *,int,AtlStringMgr *) | CStringT | CStringT | 1 | int |
+| (const XCHAR *,int,AtlStringMgr *) | CStringT | CStringT | 2 | AtlStringMgr * |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 0 | const XCHAR * |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 1 | int |
+| (const XCHAR *,int,IAtlStringMgr *) | CSimpleStringT | CSimpleStringT | 2 | IAtlStringMgr * |
+| (const YCHAR *) | CStringT | CStringT | 0 | const YCHAR * |
+| (const YCHAR *,int) | CStringT | CStringT | 0 | const YCHAR * |
+| (const YCHAR *,int) | CStringT | CStringT | 1 | int |
+| (const YCHAR *,int,IAtlStringMgr *) | CStringT | CStringT | 0 | const YCHAR * |
+| (const YCHAR *,int,IAtlStringMgr *) | CStringT | CStringT | 1 | int |
+| (const YCHAR *,int,IAtlStringMgr *) | CStringT | CStringT | 2 | IAtlStringMgr * |
+| (const deque &) | deque | deque | 0 | const deque & |
+| (const deque &,const Allocator &) | deque<T,Allocator> | deque | 0 | const deque & |
+| (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
+| (const forward_list &) | forward_list | forward_list | 0 | const forward_list & |
+| (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | const forward_list & |
+| (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (const list &) | list | list | 0 | const list & |
+| (const list &,const Allocator &) | list<T,Allocator> | list | 0 | const list & |
+| (const list &,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
+| (const unsigned char *) | CStringT | CStringT | 0 | const unsigned char * |
+| (const unsigned char *) | CStringT | operator= | 0 | const unsigned char * |
+| (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 0 | const unsigned char * |
+| (const unsigned char *,IAtlStringMgr *) | CStringT | CStringT | 1 | IAtlStringMgr * |
+| (const vector &) | vector | vector | 0 | const vector & |
+| (const vector &,const Allocator &) | vector<T,Allocator> | vector | 0 | const vector & |
+| (const vector &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | deque | insert<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | forward_list | insert_after<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | list | insert<InputIt> | 2 | func:0 |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 0 | const_iterator |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 1 | func:0 |
+| (const_iterator,InputIt,InputIt) | vector | insert<InputIt> | 2 | func:0 |
+| (const_iterator,T &&) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | deque<T> | insert | 1 | class:0 && |
+| (const_iterator,T &&) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,T &&) | forward_list<T> | insert_after | 1 | class:0 && |
+| (const_iterator,T &&) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | list<T> | insert | 1 | class:0 && |
+| (const_iterator,T &&) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,T &&) | vector<T> | insert | 1 | class:0 && |
+| (const_iterator,const T &) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | deque<T> | insert | 1 | const class:0 & |
+| (const_iterator,const T &) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,const T &) | forward_list<T> | insert_after | 1 | const class:0 & |
+| (const_iterator,const T &) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | list<T> | insert | 1 | const class:0 & |
+| (const_iterator,const T &) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,const T &) | vector<T> | insert | 1 | const class:0 & |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | deque<T> | insert | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 1 | size_type |
+| (const_iterator,size_type,const T &) | forward_list<T> | insert_after | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | list<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | list<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | list<T> | insert | 2 | const class:0 & |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 0 | const_iterator |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 1 | size_type |
+| (const_iterator,size_type,const T &) | vector<T> | insert | 2 | const class:0 & |
+| (deque &&) | deque | deque | 0 | deque && |
+| (deque &&,const Allocator &) | deque<T,Allocator> | deque | 0 | deque && |
+| (deque &&,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:1 & |
+| (format_string,Args &&) |  | format<Args> | 0 | format_string |
+| (format_string,Args &&) |  | format<Args> | 1 | func:0 && |
+| (forward_list &&) | forward_list | forward_list | 0 | forward_list && |
+| (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | forward_list && |
+| (forward_list &&,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:1 & |
+| (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 | int |
+| (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 | LPCOLESTR |
+| (int,LPCSTR) | CComBSTR | CComBSTR | 0 | int |
+| (int,LPCSTR) | CComBSTR | CComBSTR | 1 | LPCSTR |
+| (int,PCXSTR) | CStringT | Insert | 0 | int |
+| (int,PCXSTR) | CStringT | Insert | 1 | PCXSTR |
+| (int,XCHAR) | CStringT | Insert | 0 | int |
+| (int,XCHAR) | CStringT | Insert | 1 | XCHAR |
+| (list &&) | list | list | 0 | list && |
+| (list &&,const Allocator &) | list<T,Allocator> | list | 0 | list && |
+| (list &&,const Allocator &) | list<T,Allocator> | list | 1 | const class:1 & |
+| (size_type,const T &) | deque<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | deque<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | forward_list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | list<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | list<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &) | vector<T,Allocator> | assign | 0 | size_type |
+| (size_type,const T &) | vector<T,Allocator> | assign | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 0 | size_type |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | deque<T,Allocator> | deque | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 0 | size_type |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | forward_list<T,Allocator> | forward_list | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 0 | size_type |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | list<T,Allocator> | list | 2 | const class:1 & |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 0 | size_type |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:0 & |
+| (size_type,const T &,const Allocator &) | vector<T,Allocator> | vector | 2 | const class:1 & |
+| (unsigned char *) | CStringT | CStringT | 0 | unsigned char * |
+| (unsigned char) |  | operator+= | 0 | unsigned char |
+| (unsigned char) | CSimpleStringT | operator+= | 0 | unsigned char |
+| (vector &&) | vector | vector | 0 | vector && |
+| (vector &&,const Allocator &) | vector<T,Allocator> | vector | 0 | vector && |
+| (vector &&,const Allocator &) | vector<T,Allocator> | vector | 1 | const class:1 & |
+| (wchar_t *) | CStringT | CStringT | 0 | wchar_t * |
+| (wchar_t) |  | operator+= | 0 | wchar_t |
+| (wchar_t) | CComBSTR | Append | 0 | wchar_t |
+| (wchar_t) | CSimpleStringT | operator+= | 0 | wchar_t |
+| (wchar_t, const CStringT &) |  | operator+ | 0 | wchar_t |
+| (wchar_t, const CStringT &) |  | operator+ | 1 |  const CStringT & |
+| (wchar_t,const CStringT &) |  | operator+ | 0 | wchar_t |
+| (wchar_t,const CStringT &) |  | operator+ | 1 | const CStringT & |
+| (wchar_t,int) | CStringT | CStringT | 0 | wchar_t |
+| (wchar_t,int) | CStringT | CStringT | 1 | int |
+getParameterTypeName
+| arrayassignment.cpp:3:6:3:9 | sink | 0 | int |
+| arrayassignment.cpp:4:6:4:9 | sink | 0 | MyInt |
+| arrayassignment.cpp:5:6:5:9 | sink | 0 | MyArray |
+| arrayassignment.cpp:37:7:37:7 | MyInt | 0 | const MyInt & |
+| arrayassignment.cpp:44:9:44:17 | operator= | 0 | const int & |
+| arrayassignment.cpp:45:9:45:17 | operator= | 0 | const MyInt & |
+| arrayassignment.cpp:83:7:83:7 | MyArray | 0 | MyArray && |
+| arrayassignment.cpp:83:7:83:7 | MyArray | 0 | const MyArray & |
+| arrayassignment.cpp:83:7:83:7 | operator= | 0 | MyArray && |
+| arrayassignment.cpp:83:7:83:7 | operator= | 0 | const MyArray & |
+| arrayassignment.cpp:88:7:88:9 | get | 0 | int |
+| arrayassignment.cpp:90:7:90:16 | operator[] | 0 | int |
+| arrayassignment.cpp:124:6:124:9 | sink | 0 | int * |
+| atl.cpp:4:8:4:11 | sink | 0 | ... |
+| atl.cpp:29:8:29:8 | operator= | 0 | __POSITION && |
+| atl.cpp:29:8:29:8 | operator= | 0 | const __POSITION & |
+| atl.cpp:52:18:52:18 | operator= | 0 | const tagSAFEARRAYBOUND & |
+| atl.cpp:52:18:52:18 | operator= | 0 | tagSAFEARRAYBOUND && |
+| atl.cpp:57:18:57:18 | operator= | 0 | const tagVARIANT & |
+| atl.cpp:57:18:57:18 | operator= | 0 | tagVARIANT && |
+| atl.cpp:61:18:61:18 | operator= | 0 | const tagSAFEARRAY & |
+| atl.cpp:61:18:61:18 | operator= | 0 | tagSAFEARRAY && |
+| atl.cpp:70:10:70:10 | _U_STRINGorID | 0 | _U_STRINGorID && |
+| atl.cpp:70:10:70:10 | _U_STRINGorID | 0 | const _U_STRINGorID & |
+| atl.cpp:70:10:70:10 | operator= | 0 | _U_STRINGorID && |
+| atl.cpp:70:10:70:10 | operator= | 0 | const _U_STRINGorID & |
+| atl.cpp:71:5:71:17 | _U_STRINGorID | 0 | UINT |
+| atl.cpp:71:5:71:17 | _U_STRINGorID | 0 | unsigned int |
+| atl.cpp:72:5:72:17 | _U_STRINGorID | 0 | LPCTSTR |
+| atl.cpp:72:5:72:17 | _U_STRINGorID | 0 | const char * |
+| atl.cpp:196:12:196:14 | Add | 0 | INARGTYPclass:0 |
+| atl.cpp:198:12:198:17 | Append | 0 | const CAtlArray & |
+| atl.cpp:199:10:199:13 | Copy | 0 | const CAtlArray & |
+| atl.cpp:201:8:201:12 | GetAt | 0 | size_t |
+| atl.cpp:205:10:205:22 | InsertArrayAt | 0 | size_t |
+| atl.cpp:205:10:205:22 | InsertArrayAt | 1 | const CAtlArray * |
+| atl.cpp:206:10:206:17 | InsertAt | 0 | size_t |
+| atl.cpp:206:10:206:17 | InsertAt | 1 | INARGTYPclass:0 |
+| atl.cpp:206:10:206:17 | InsertAt | 2 | size_t |
+| atl.cpp:211:10:211:18 | SetAtGrow | 0 | size_t |
+| atl.cpp:211:10:211:18 | SetAtGrow | 1 | INARGTYPclass:0 |
+| atl.cpp:213:8:213:17 | operator[] | 0 | size_t |
+| atl.cpp:259:5:259:12 | CAtlList | 0 | UINT |
+| atl.cpp:259:5:259:12 | CAtlList | 0 | UINT |
+| atl.cpp:259:5:259:12 | CAtlList | 0 | unsigned int |
+| atl.cpp:259:5:259:12 | CAtlList | 0 | unsigned int |
+| atl.cpp:262:14:262:20 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:262:14:262:20 | AddHead | 0 | INARGTYPclass:0 |
+| atl.cpp:263:10:263:20 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:263:10:263:20 | AddHeadList | 0 | const CAtlList * |
+| atl.cpp:265:14:265:20 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:265:14:265:20 | AddTail | 0 | INARGTYPclass:0 |
+| atl.cpp:266:10:266:20 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:266:10:266:20 | AddTailList | 0 | const CAtlList * |
+| atl.cpp:267:14:267:17 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:267:14:267:17 | Find | 0 | INARGTYPclass:0 |
+| atl.cpp:267:14:267:17 | Find | 1 | POSITION |
+| atl.cpp:267:14:267:17 | Find | 1 | POSITION |
+| atl.cpp:267:14:267:17 | Find | 1 | __POSITION * |
+| atl.cpp:267:14:267:17 | Find | 1 | __POSITION * |
+| atl.cpp:268:14:268:22 | FindIndex | 0 | size_t |
+| atl.cpp:268:14:268:22 | FindIndex | 0 | size_t |
+| atl.cpp:269:8:269:12 | GetAt | 0 | POSITION |
+| atl.cpp:269:8:269:12 | GetAt | 0 | POSITION |
+| atl.cpp:269:8:269:12 | GetAt | 0 | __POSITION * |
+| atl.cpp:269:8:269:12 | GetAt | 0 | __POSITION * |
+| atl.cpp:282:14:282:24 | InsertAfter | 0 | POSITION |
+| atl.cpp:282:14:282:24 | InsertAfter | 0 | POSITION |
+| atl.cpp:282:14:282:24 | InsertAfter | 0 | __POSITION * |
+| atl.cpp:282:14:282:24 | InsertAfter | 0 | __POSITION * |
+| atl.cpp:282:14:282:24 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:282:14:282:24 | InsertAfter | 1 | INARGTYPclass:0 |
+| atl.cpp:283:14:283:25 | InsertBefore | 0 | POSITION |
+| atl.cpp:283:14:283:25 | InsertBefore | 0 | POSITION |
+| atl.cpp:283:14:283:25 | InsertBefore | 0 | __POSITION * |
+| atl.cpp:283:14:283:25 | InsertBefore | 0 | __POSITION * |
+| atl.cpp:283:14:283:25 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:283:14:283:25 | InsertBefore | 1 | INARGTYPclass:0 |
+| atl.cpp:293:10:293:14 | SetAt | 0 | POSITION |
+| atl.cpp:293:10:293:14 | SetAt | 0 | POSITION |
+| atl.cpp:293:10:293:14 | SetAt | 0 | __POSITION * |
+| atl.cpp:293:10:293:14 | SetAt | 0 | __POSITION * |
+| atl.cpp:293:10:293:14 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:293:10:293:14 | SetAt | 1 | INARGTYPclass:0 |
+| atl.cpp:403:10:403:10 | operator= | 0 | IUnknown && |
+| atl.cpp:403:10:403:10 | operator= | 0 | const IUnknown & |
+| atl.cpp:405:10:405:10 | operator= | 0 | ISequentialStream && |
+| atl.cpp:405:10:405:10 | operator= | 0 | const ISequentialStream & |
+| atl.cpp:407:10:407:10 | operator= | 0 | IStream && |
+| atl.cpp:407:10:407:10 | operator= | 0 | const IStream & |
+| atl.cpp:409:10:409:10 | operator= | 0 | const CComBSTR & |
+| atl.cpp:411:5:411:12 | CComBSTR | 0 | const CComBSTR & |
+| atl.cpp:412:5:412:12 | CComBSTR | 0 | int |
+| atl.cpp:413:5:413:12 | CComBSTR | 0 | int |
+| atl.cpp:413:5:413:12 | CComBSTR | 1 | LPCOLESTR |
+| atl.cpp:413:5:413:12 | CComBSTR | 1 | const wchar_t * |
+| atl.cpp:414:5:414:12 | CComBSTR | 0 | int |
+| atl.cpp:414:5:414:12 | CComBSTR | 1 | LPCSTR |
+| atl.cpp:414:5:414:12 | CComBSTR | 1 | const char * |
+| atl.cpp:415:5:415:12 | CComBSTR | 0 | LPCOLESTR |
+| atl.cpp:415:5:415:12 | CComBSTR | 0 | const wchar_t * |
+| atl.cpp:416:5:416:12 | CComBSTR | 0 | LPCSTR |
+| atl.cpp:416:5:416:12 | CComBSTR | 0 | const char * |
+| atl.cpp:417:5:417:12 | CComBSTR | 0 | CComBSTR && |
+| atl.cpp:420:13:420:18 | Append | 0 | const CComBSTR & |
+| atl.cpp:421:13:421:18 | Append | 0 | wchar_t |
+| atl.cpp:422:13:422:18 | Append | 0 | char |
+| atl.cpp:423:13:423:18 | Append | 0 | LPCOLESTR |
+| atl.cpp:423:13:423:18 | Append | 0 | const wchar_t * |
+| atl.cpp:424:13:424:18 | Append | 0 | LPCSTR |
+| atl.cpp:424:13:424:18 | Append | 0 | const char * |
+| atl.cpp:425:13:425:18 | Append | 0 | LPCOLESTR |
+| atl.cpp:425:13:425:18 | Append | 0 | const wchar_t * |
+| atl.cpp:425:13:425:18 | Append | 1 | int |
+| atl.cpp:426:13:426:22 | AppendBSTR | 0 | BSTR |
+| atl.cpp:426:13:426:22 | AppendBSTR | 0 | wchar_t * |
+| atl.cpp:427:13:427:23 | AppendBytes | 0 | const char * |
+| atl.cpp:427:13:427:23 | AppendBytes | 1 | int |
+| atl.cpp:428:13:428:23 | ArrayToBSTR | 0 | const SAFEARRAY * |
+| atl.cpp:428:13:428:23 | ArrayToBSTR | 0 | const tagSAFEARRAY * |
+| atl.cpp:429:13:429:22 | AssignBSTR | 0 | const BSTR |
+| atl.cpp:429:13:429:22 | AssignBSTR | 0 | const wchar_t * |
+| atl.cpp:430:10:430:15 | Attach | 0 | BSTR |
+| atl.cpp:430:10:430:15 | Attach | 0 | wchar_t * |
+| atl.cpp:431:13:431:23 | BSTRToArray | 0 | LPSAFEARRAY * |
+| atl.cpp:431:13:431:23 | BSTRToArray | 0 | tagSAFEARRAY ** |
+| atl.cpp:434:13:434:18 | CopyTo | 0 | BSTR * |
+| atl.cpp:434:13:434:18 | CopyTo | 0 | wchar_t ** |
+| atl.cpp:436:13:436:18 | CopyTo | 0 | VARIANT * |
+| atl.cpp:436:13:436:18 | CopyTo | 0 | tagVARIANT * |
+| atl.cpp:440:10:440:19 | LoadString | 0 | HINSTANCE |
+| atl.cpp:440:10:440:19 | LoadString | 0 | void * |
+| atl.cpp:440:10:440:19 | LoadString | 1 | UINT |
+| atl.cpp:440:10:440:19 | LoadString | 1 | unsigned int |
+| atl.cpp:441:10:441:19 | LoadString | 0 | UINT |
+| atl.cpp:441:10:441:19 | LoadString | 0 | unsigned int |
+| atl.cpp:442:13:442:26 | ReadFromStream | 0 | IStream * |
+| atl.cpp:444:13:444:25 | WriteToStream | 0 | IStream * |
+| atl.cpp:449:15:449:24 | operator+= | 0 | const CComBSTR & |
+| atl.cpp:450:15:450:24 | operator+= | 0 | LPCOLESTR |
+| atl.cpp:450:15:450:24 | operator+= | 0 | const wchar_t * |
+| atl.cpp:540:5:540:17 | CComSafeArray | 0 | const SAFEARRAY * |
+| atl.cpp:540:5:540:17 | CComSafeArray | 0 | const tagSAFEARRAY * |
+| atl.cpp:544:13:544:15 | Add | 0 | const SAFEARRAY * |
+| atl.cpp:544:13:544:15 | Add | 0 | const tagSAFEARRAY * |
+| atl.cpp:546:13:546:15 | Add | 0 | const class:0 & |
+| atl.cpp:546:13:546:15 | Add | 1 | BOOL |
+| atl.cpp:546:13:546:15 | Add | 1 | bool |
+| atl.cpp:554:8:554:12 | GetAt | 0 | LONG |
+| atl.cpp:554:8:554:12 | GetAt | 0 | long |
+| atl.cpp:565:13:565:17 | SetAt | 0 | LONG |
+| atl.cpp:565:13:565:17 | SetAt | 0 | long |
+| atl.cpp:565:13:565:17 | SetAt | 1 | const class:0 & |
+| atl.cpp:565:13:565:17 | SetAt | 2 | BOOL |
+| atl.cpp:565:13:565:17 | SetAt | 2 | bool |
+| atl.cpp:567:8:567:17 | operator[] | 0 | long |
+| atl.cpp:568:8:568:17 | operator[] | 0 | int |
+| atl.cpp:612:5:612:10 | CPathT | 0 | PCXSTR |
+| atl.cpp:612:5:612:10 | CPathT | 0 | class:0 |
+| atl.cpp:613:5:613:10 | CPathT | 0 | const CPathT & |
+| atl.cpp:617:10:617:21 | AddExtension | 0 | PCXSTR |
+| atl.cpp:617:10:617:21 | AddExtension | 0 | class:0 |
+| atl.cpp:618:10:618:15 | Append | 0 | PCXSTR |
+| atl.cpp:618:10:618:15 | Append | 0 | class:0 |
+| atl.cpp:621:10:621:16 | Combine | 0 | PCXSTR |
+| atl.cpp:621:10:621:16 | Combine | 0 | class:0 |
+| atl.cpp:621:10:621:16 | Combine | 1 | PCXSTR |
+| atl.cpp:621:10:621:16 | Combine | 1 | class:0 |
+| atl.cpp:622:24:622:35 | CommonPrefix | 0 | PCXSTR |
+| atl.cpp:622:24:622:35 | CommonPrefix | 0 | class:0 |
+| atl.cpp:659:25:659:34 | operator+= | 0 | PCXSTR |
+| atl.cpp:659:25:659:34 | operator+= | 0 | class:0 |
+| atl.cpp:719:10:719:12 | Add | 0 | const class:0 & |
+| atl.cpp:720:9:720:12 | Find | 0 | const class:0 & |
+| atl.cpp:731:8:731:17 | operator[] | 0 | int |
+| atl.cpp:732:23:732:31 | operator= | 0 | const CSimpleArray & |
+| atl.cpp:765:10:765:12 | Add | 0 | const class:0 & |
+| atl.cpp:765:10:765:12 | Add | 1 | const class:1 & |
+| atl.cpp:766:9:766:15 | FindKey | 0 | const class:0 & |
+| atl.cpp:767:9:767:15 | FindVal | 0 | const class:1 & |
+| atl.cpp:770:11:770:20 | GetValueAt | 0 | int |
+| atl.cpp:771:10:771:15 | Lookup | 0 | const class:0 & |
+| atl.cpp:775:10:775:22 | ReverseLookup | 0 | const class:1 & |
+| atl.cpp:776:10:776:14 | SetAt | 0 | const class:0 & |
+| atl.cpp:776:10:776:14 | SetAt | 1 | const class:1 & |
+| atl.cpp:777:10:777:19 | SetAtIndex | 0 | int |
+| atl.cpp:777:10:777:19 | SetAtIndex | 1 | const class:0 & |
+| atl.cpp:777:10:777:19 | SetAtIndex | 2 | const class:1 & |
+| atl.cpp:816:11:816:19 | operator= | 0 | const CUrl & |
+| atl.cpp:818:5:818:8 | CUrl | 0 | const CUrl & |
+| atl.cpp:821:17:821:28 | Canonicalize | 0 | DWORD |
+| atl.cpp:821:17:821:28 | Canonicalize | 0 | unsigned long |
+| atl.cpp:824:10:824:17 | CrackUrl | 0 | LPCTSTR |
+| atl.cpp:824:10:824:17 | CrackUrl | 0 | const char * |
+| atl.cpp:824:10:824:17 | CrackUrl | 1 | DWORD |
+| atl.cpp:824:10:824:17 | CrackUrl | 1 | unsigned long |
+| atl.cpp:825:17:825:25 | CreateUrl | 0 | LPTSTR |
+| atl.cpp:825:17:825:25 | CreateUrl | 0 | char * |
+| atl.cpp:825:17:825:25 | CreateUrl | 1 | DWORD * |
+| atl.cpp:825:17:825:25 | CreateUrl | 1 | unsigned long * |
+| atl.cpp:825:17:825:25 | CreateUrl | 2 | DWORD |
+| atl.cpp:825:17:825:25 | CreateUrl | 2 | unsigned long |
+| atl.cpp:842:17:842:28 | SetExtraInfo | 0 | LPCTSTR |
+| atl.cpp:842:17:842:28 | SetExtraInfo | 0 | const char * |
+| atl.cpp:843:17:843:27 | SetHostName | 0 | LPCTSTR |
+| atl.cpp:843:17:843:27 | SetHostName | 0 | const char * |
+| atl.cpp:844:17:844:27 | SetPassword | 0 | LPCTSTR |
+| atl.cpp:844:17:844:27 | SetPassword | 0 | const char * |
+| atl.cpp:845:17:845:29 | SetPortNumber | 0 | ATL_URL_PORT |
+| atl.cpp:845:17:845:29 | SetPortNumber | 0 | unsigned short |
+| atl.cpp:846:17:846:25 | SetScheme | 0 | ATL_URL_SCHEME |
+| atl.cpp:847:17:847:29 | SetSchemeName | 0 | LPCTSTR |
+| atl.cpp:847:17:847:29 | SetSchemeName | 0 | const char * |
+| atl.cpp:848:17:848:26 | SetUrlPath | 0 | LPCTSTR |
+| atl.cpp:848:17:848:26 | SetUrlPath | 0 | const char * |
+| atl.cpp:849:17:849:27 | SetUserName | 0 | LPCTSTR |
+| atl.cpp:849:17:849:27 | SetUserName | 0 | const char * |
+| atl.cpp:904:10:904:10 | operator= | 0 | IAtlStringMgr && |
+| atl.cpp:904:10:904:10 | operator= | 0 | const IAtlStringMgr & |
+| atl.cpp:915:5:915:18 | CSimpleStringT | 0 | const XCHAR * |
+| atl.cpp:915:5:915:18 | CSimpleStringT | 0 | const char * |
+| atl.cpp:915:5:915:18 | CSimpleStringT | 1 | int |
+| atl.cpp:915:5:915:18 | CSimpleStringT | 2 | IAtlStringMgr * |
+| atl.cpp:916:5:916:18 | CSimpleStringT | 0 | PCXSTR |
+| atl.cpp:916:5:916:18 | CSimpleStringT | 0 | const class:0 * |
+| atl.cpp:916:5:916:18 | CSimpleStringT | 1 | IAtlStringMgr * |
+| atl.cpp:917:5:917:18 | CSimpleStringT | 0 | const CSimpleStringT & |
+| atl.cpp:921:10:921:15 | Append | 0 | const CSimpleStringT & |
+| atl.cpp:922:10:922:15 | Append | 0 | PCXSTR |
+| atl.cpp:922:10:922:15 | Append | 0 | const class:0 * |
+| atl.cpp:922:10:922:15 | Append | 1 | int |
+| atl.cpp:923:10:923:15 | Append | 0 | PCXSTR |
+| atl.cpp:923:10:923:15 | Append | 0 | const class:0 * |
+| atl.cpp:927:17:927:25 | CopyChars | 0 | XCHAR * |
+| atl.cpp:927:17:927:25 | CopyChars | 0 | char * |
+| atl.cpp:927:17:927:25 | CopyChars | 1 | const XCHAR * |
+| atl.cpp:927:17:927:25 | CopyChars | 1 | const char * |
+| atl.cpp:927:17:927:25 | CopyChars | 2 | int |
+| atl.cpp:928:17:928:25 | CopyChars | 0 | XCHAR * |
+| atl.cpp:928:17:928:25 | CopyChars | 0 | char * |
+| atl.cpp:928:17:928:25 | CopyChars | 1 | size_t |
+| atl.cpp:928:17:928:25 | CopyChars | 2 | const XCHAR * |
+| atl.cpp:928:17:928:25 | CopyChars | 2 | const char * |
+| atl.cpp:928:17:928:25 | CopyChars | 3 | int |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | 0 | XCHAR * |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | 0 | char * |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | 1 | const XCHAR * |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | 1 | const char * |
+| atl.cpp:929:17:929:35 | CopyCharsOverlapped | 2 | int |
+| atl.cpp:931:11:931:15 | GetAt | 0 | int |
+| atl.cpp:932:11:932:19 | GetBuffer | 0 | int |
+| atl.cpp:934:11:934:28 | GetBufferSetLength | 0 | int |
+| atl.cpp:938:10:938:14 | SetAt | 0 | int |
+| atl.cpp:938:10:938:14 | SetAt | 1 | XCHAR |
+| atl.cpp:938:10:938:14 | SetAt | 1 | char |
+| atl.cpp:939:10:939:18 | SetString | 0 | PCXSTR |
+| atl.cpp:939:10:939:18 | SetString | 0 | const class:0 * |
+| atl.cpp:939:10:939:18 | SetString | 1 | int |
+| atl.cpp:940:10:940:18 | SetString | 0 | PCXSTR |
+| atl.cpp:940:10:940:18 | SetString | 0 | const class:0 * |
+| atl.cpp:942:11:942:20 | operator[] | 0 | int |
+| atl.cpp:1036:5:1036:12 | CStringT | 0 | const VARIANT & |
+| atl.cpp:1036:5:1036:12 | CStringT | 0 | const tagVARIANT & |
+| atl.cpp:1037:5:1037:12 | CStringT | 0 | const VARIANT & |
+| atl.cpp:1037:5:1037:12 | CStringT | 0 | const tagVARIANT & |
+| atl.cpp:1037:5:1037:12 | CStringT | 1 | IAtlStringMgr * |
+| atl.cpp:1038:5:1038:12 | CStringT | 0 | const CStringT & |
+| atl.cpp:1042:5:1042:12 | CStringT | 0 | LPCSTR |
+| atl.cpp:1042:5:1042:12 | CStringT | 0 | const char * |
+| atl.cpp:1042:5:1042:12 | CStringT | 1 | IAtlStringMgr * |
+| atl.cpp:1043:5:1043:12 | CStringT | 0 | LPCWSTR |
+| atl.cpp:1043:5:1043:12 | CStringT | 0 | const wchar_t * |
+| atl.cpp:1043:5:1043:12 | CStringT | 1 | IAtlStringMgr * |
+| atl.cpp:1045:5:1045:12 | CStringT | 0 | char * |
+| atl.cpp:1046:5:1046:12 | CStringT | 0 | unsigned char * |
+| atl.cpp:1047:5:1047:12 | CStringT | 0 | wchar_t * |
+| atl.cpp:1049:5:1049:12 | CStringT | 0 | char |
+| atl.cpp:1049:5:1049:12 | CStringT | 1 | int |
+| atl.cpp:1050:5:1050:12 | CStringT | 0 | wchar_t |
+| atl.cpp:1050:5:1050:12 | CStringT | 1 | int |
+| atl.cpp:1061:10:1061:21 | AppendFormat | 0 | PCXSTR |
+| atl.cpp:1061:10:1061:21 | AppendFormat | 1 | ... |
+| atl.cpp:1062:10:1062:21 | AppendFormat | 0 | UINT |
+| atl.cpp:1062:10:1062:21 | AppendFormat | 0 | unsigned int |
+| atl.cpp:1062:10:1062:21 | AppendFormat | 1 | ... |
+| atl.cpp:1070:9:1070:14 | Insert | 0 | int |
+| atl.cpp:1070:9:1070:14 | Insert | 1 | PCXSTR |
+| atl.cpp:1071:9:1071:14 | Insert | 0 | int |
+| atl.cpp:1071:9:1071:14 | Insert | 1 | XCHAR |
+| atl.cpp:1071:9:1071:14 | Insert | 1 | class:0 |
+| atl.cpp:1072:14:1072:17 | Left | 0 | int |
+| atl.cpp:1075:10:1075:19 | LoadString | 0 | UINT |
+| atl.cpp:1075:10:1075:19 | LoadString | 0 | unsigned int |
+| atl.cpp:1079:14:1079:16 | Mid | 0 | int |
+| atl.cpp:1079:14:1079:16 | Mid | 1 | int |
+| atl.cpp:1081:9:1081:15 | Replace | 0 | PCXSTR |
+| atl.cpp:1081:9:1081:15 | Replace | 1 | PCXSTR |
+| atl.cpp:1082:9:1082:15 | Replace | 0 | XCHAR |
+| atl.cpp:1082:9:1082:15 | Replace | 0 | class:0 |
+| atl.cpp:1082:9:1082:15 | Replace | 1 | XCHAR |
+| atl.cpp:1082:9:1082:15 | Replace | 1 | class:0 |
+| atl.cpp:1083:14:1083:18 | Right | 0 | int |
+| atl.cpp:1084:10:1084:21 | SetSysString | 0 | BSTR * |
+| atl.cpp:1084:10:1084:21 | SetSysString | 0 | wchar_t ** |
+| atl.cpp:1085:14:1085:26 | SpanExcluding | 0 | PCXSTR |
+| atl.cpp:1086:14:1086:26 | SpanIncluding | 0 | PCXSTR |
+| atl.cpp:1087:14:1087:21 | Tokenize | 0 | PCXSTR |
+| atl.cpp:1087:14:1087:21 | Tokenize | 1 | int & |
+| atl.cpp:1088:15:1088:18 | Trim | 0 | XCHAR |
+| atl.cpp:1088:15:1088:18 | Trim | 0 | class:0 |
+| atl.cpp:1089:15:1089:18 | Trim | 0 | PCXSTR |
+| atl.cpp:1091:15:1091:22 | TrimLeft | 0 | XCHAR |
+| atl.cpp:1091:15:1091:22 | TrimLeft | 0 | class:0 |
+| atl.cpp:1092:15:1092:22 | TrimLeft | 0 | PCXSTR |
+| atl.cpp:1094:15:1094:23 | TrimRight | 0 | XCHAR |
+| atl.cpp:1094:15:1094:23 | TrimRight | 0 | class:0 |
+| atl.cpp:1095:15:1095:23 | TrimRight | 0 | PCXSTR |
+| atl.cpp:1215:10:1215:10 | operator= | 0 | CStringData && |
+| atl.cpp:1215:10:1215:10 | operator= | 0 | const CStringData & |
+| atl.cpp:1231:5:1231:12 | CStrBufT | 0 | StringType & |
+| atl.cpp:1231:5:1231:12 | CStrBufT | 1 | int |
+| atl.cpp:1231:5:1231:12 | CStrBufT | 2 | DWORD |
+| atl.cpp:1231:5:1231:12 | CStrBufT | 2 | unsigned long |
+| bsd.cpp:6:8:6:8 | operator= | 0 | const sockaddr & |
+| bsd.cpp:6:8:6:8 | operator= | 0 | sockaddr && |
+| bsd.cpp:12:5:12:10 | accept | 0 | int |
+| bsd.cpp:12:5:12:10 | accept | 1 | sockaddr * |
+| bsd.cpp:12:5:12:10 | accept | 2 | int * |
+| bsd.cpp:14:6:14:9 | sink | 0 | sockaddr |
+| constructor_delegation.cpp:5:7:5:7 | MyValue | 0 | MyValue && |
+| constructor_delegation.cpp:5:7:5:7 | MyValue | 0 | const MyValue & |
+| constructor_delegation.cpp:5:7:5:7 | operator= | 0 | MyValue && |
+| constructor_delegation.cpp:5:7:5:7 | operator= | 0 | const MyValue & |
+| constructor_delegation.cpp:8:2:8:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:9:2:9:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:9:2:9:8 | MyValue | 1 | bool |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:10:2:10:8 | MyValue | 1 | int |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 0 | int |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 1 | bool |
+| constructor_delegation.cpp:11:2:11:8 | MyValue | 2 | bool |
+| constructor_delegation.cpp:16:7:16:7 | MyDerivedValue | 0 | MyDerivedValue && |
+| constructor_delegation.cpp:16:7:16:7 | MyDerivedValue | 0 | const MyDerivedValue & |
+| constructor_delegation.cpp:16:7:16:7 | operator= | 0 | MyDerivedValue && |
+| constructor_delegation.cpp:16:7:16:7 | operator= | 0 | const MyDerivedValue & |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | 0 | bool |
+| constructor_delegation.cpp:19:2:19:15 | MyDerivedValue | 1 | int |
+| copyableclass.cpp:8:2:8:16 | MyCopyableClass | 0 | int |
+| copyableclass.cpp:9:2:9:16 | MyCopyableClass | 0 | const MyCopyableClass & |
+| copyableclass.cpp:10:19:10:27 | operator= | 0 | const MyCopyableClass & |
+| copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | 0 | int |
+| copyableclass_declonly.cpp:9:2:9:24 | MyCopyableClassDeclOnly | 0 | const MyCopyableClassDeclOnly & |
+| copyableclass_declonly.cpp:10:27:10:35 | operator= | 0 | const MyCopyableClassDeclOnly & |
+| file://:0:0:0:0 | operator delete | 0 | void * |
+| file://:0:0:0:0 | operator new | 0 | unsigned long |
+| file://:0:0:0:0 | operator= | 0 | __va_list_tag && |
+| file://:0:0:0:0 | operator= | 0 | const __va_list_tag & |
+| format.cpp:3:16:3:16 | operator= | 0 | FILE && |
+| format.cpp:3:16:3:16 | operator= | 0 | const FILE & |
+| format.cpp:5:5:5:12 | snprintf | 0 | char * |
+| format.cpp:5:5:5:12 | snprintf | 1 | size_t |
+| format.cpp:5:5:5:12 | snprintf | 1 | unsigned long |
+| format.cpp:5:5:5:12 | snprintf | 2 | const char * |
+| format.cpp:5:5:5:12 | snprintf | 3 | ... |
+| format.cpp:6:5:6:11 | sprintf | 0 | char * |
+| format.cpp:6:5:6:11 | sprintf | 1 | const char * |
+| format.cpp:6:5:6:11 | sprintf | 2 | ... |
+| format.cpp:7:5:7:12 | swprintf | 0 | wchar_t * |
+| format.cpp:7:5:7:12 | swprintf | 1 | size_t |
+| format.cpp:7:5:7:12 | swprintf | 1 | unsigned long |
+| format.cpp:7:5:7:12 | swprintf | 2 | const wchar_t * |
+| format.cpp:7:5:7:12 | swprintf | 3 | ... |
+| format.cpp:14:5:14:13 | vsnprintf | 0 | char * |
+| format.cpp:14:5:14:13 | vsnprintf | 1 | size_t |
+| format.cpp:14:5:14:13 | vsnprintf | 1 | unsigned long |
+| format.cpp:14:5:14:13 | vsnprintf | 2 | const char * |
+| format.cpp:14:5:14:13 | vsnprintf | 3 | va_list |
+| format.cpp:14:5:14:13 | vsnprintf | 3 | void * |
+| format.cpp:16:5:16:13 | mysprintf | 0 | char * |
+| format.cpp:16:5:16:13 | mysprintf | 1 | size_t |
+| format.cpp:16:5:16:13 | mysprintf | 1 | unsigned long |
+| format.cpp:16:5:16:13 | mysprintf | 2 | const char * |
+| format.cpp:16:5:16:13 | mysprintf | 3 | ... |
+| format.cpp:28:5:28:10 | sscanf | 0 | const char * |
+| format.cpp:28:5:28:10 | sscanf | 1 | const char * |
+| format.cpp:28:5:28:10 | sscanf | 2 | ... |
+| format.cpp:142:8:142:13 | strlen | 0 | const char * |
+| format.cpp:143:8:143:13 | wcslen | 0 | const wchar_t * |
+| format.cpp:169:6:169:9 | test | 0 | format_string |
+| map.cpp:8:6:8:9 | sink | 0 | char * |
+| map.cpp:9:6:9:9 | sink | 0 | const char * |
+| map.cpp:10:6:10:9 | sink | 0 | bool |
+| map.cpp:11:6:11:9 | sink | 0 | pair |
+| map.cpp:12:6:12:9 | sink | 0 | map, allocator<pair<char *const, char *>>> |
+| map.cpp:13:6:13:9 | sink | 0 | iterator |
+| map.cpp:14:6:14:9 | sink | 0 | unordered_map, equal_to<char *>, allocator<pair<char *const, char *>>> |
+| map.cpp:15:6:15:9 | sink | 0 | iterator |
+| map.cpp:16:6:16:9 | sink | 0 | unordered_map, hash<char *>, equal_to<char *>, allocator<pair<char *const, pair<int, int>>>> |
+| map.cpp:17:6:17:9 | sink | 0 | iterator |
+| map.cpp:442:7:442:19 | indirect_sink | 0 | int * |
+| movableclass.cpp:3:6:3:9 | sink | 0 | ... |
+| movableclass.cpp:5:7:5:7 | MyMovableClass | 0 | const MyMovableClass & |
+| movableclass.cpp:5:7:5:7 | operator= | 0 | const MyMovableClass & |
+| movableclass.cpp:8:2:8:15 | MyMovableClass | 0 | int |
+| movableclass.cpp:9:2:9:15 | MyMovableClass | 0 | MyMovableClass && |
+| movableclass.cpp:13:18:13:26 | operator= | 0 | MyMovableClass && |
+| set.cpp:8:6:8:9 | sink | 0 | char * |
+| set.cpp:9:6:9:9 | sink | 0 | set, allocator<char *>> |
+| set.cpp:10:6:10:9 | sink | 0 | iterator |
+| set.cpp:11:6:11:9 | sink | 0 | unordered_set, equal_to<char *>, allocator<char *>> |
+| set.cpp:12:6:12:9 | sink | 0 | iterator |
+| smart_pointer.cpp:4:6:4:9 | sink | 0 | int |
+| smart_pointer.cpp:5:6:5:9 | sink | 0 | int * |
+| smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
+| smart_pointer.cpp:7:27:7:30 | sink | 0 | shared_ptr & |
+| smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
+| smart_pointer.cpp:8:27:8:30 | sink | 0 | unique_ptr & |
+| smart_pointer.cpp:60:8:60:8 | operator= | 0 | A && |
+| smart_pointer.cpp:60:8:60:8 | operator= | 0 | const A & |
+| smart_pointer.cpp:70:6:70:14 | getNumber | 0 | shared_ptr |
+| smart_pointer.cpp:80:8:80:8 | operator= | 0 | B && |
+| smart_pointer.cpp:80:8:80:8 | operator= | 0 | const B & |
+| smart_pointer.cpp:86:6:86:24 | test_operator_arrow | 0 | unique_ptr |
+| smart_pointer.cpp:86:6:86:24 | test_operator_arrow | 1 | unique_ptr |
+| smart_pointer.cpp:97:6:97:12 | taint_x | 0 | A * |
+| smart_pointer.cpp:107:8:107:8 | C | 0 | C && |
+| smart_pointer.cpp:107:8:107:8 | C | 0 | const C & |
+| smart_pointer.cpp:107:8:107:8 | operator= | 0 | C && |
+| smart_pointer.cpp:107:8:107:8 | operator= | 0 | const C & |
+| smart_pointer.cpp:112:6:112:19 | taint_x_shared | 0 | shared_ptr |
+| smart_pointer.cpp:116:6:116:24 | taint_x_shared_cref | 0 | const shared_ptr & |
+| smart_pointer.cpp:120:6:120:18 | getNumberCRef | 0 | const shared_ptr & |
+| smart_pointer.cpp:124:5:124:27 | nested_shared_ptr_taint | 0 | shared_ptr |
+| smart_pointer.cpp:124:5:124:27 | nested_shared_ptr_taint | 1 | unique_ptr> |
+| smart_pointer.cpp:132:5:132:32 | nested_shared_ptr_taint_cref | 0 | shared_ptr |
+| smart_pointer.cpp:132:5:132:32 | nested_shared_ptr_taint_cref | 1 | unique_ptr> |
+| standalone_iterators.cpp:5:6:5:9 | sink | 0 | int |
+| standalone_iterators.cpp:7:7:7:7 | operator= | 0 | const int_iterator_by_typedefs & |
+| standalone_iterators.cpp:7:7:7:7 | operator= | 0 | int_iterator_by_typedefs && |
+| standalone_iterators.cpp:16:30:16:39 | operator++ | 0 | int |
+| standalone_iterators.cpp:20:7:20:7 | operator= | 0 | const int_iterator_by_trait & |
+| standalone_iterators.cpp:20:7:20:7 | operator= | 0 | int_iterator_by_trait && |
+| standalone_iterators.cpp:23:27:23:36 | operator++ | 0 | int |
+| standalone_iterators.cpp:36:7:36:7 | operator= | 0 | const non_iterator & |
+| standalone_iterators.cpp:36:7:36:7 | operator= | 0 | non_iterator && |
+| standalone_iterators.cpp:39:18:39:27 | operator++ | 0 | int |
+| standalone_iterators.cpp:43:6:43:18 | test_typedefs | 0 | int_iterator_by_typedefs |
+| standalone_iterators.cpp:49:6:49:15 | test_trait | 0 | int_iterator_by_trait |
+| standalone_iterators.cpp:55:6:55:22 | test_non_iterator | 0 | non_iterator |
+| standalone_iterators.cpp:63:7:63:7 | operator= | 0 | const insert_iterator_by_trait & |
+| standalone_iterators.cpp:63:7:63:7 | operator= | 0 | insert_iterator_by_trait && |
+| standalone_iterators.cpp:66:30:66:39 | operator++ | 0 | int |
+| standalone_iterators.cpp:68:30:68:39 | operator-- | 0 | int |
+| standalone_iterators.cpp:70:31:70:39 | operator= | 0 | int |
+| standalone_iterators.cpp:82:7:82:7 | container | 0 | const container & |
+| standalone_iterators.cpp:82:7:82:7 | container | 0 | container && |
+| standalone_iterators.cpp:82:7:82:7 | operator= | 0 | const container & |
+| standalone_iterators.cpp:82:7:82:7 | operator= | 0 | container && |
+| standalone_iterators.cpp:88:6:88:9 | sink | 0 | container |
+| standalone_iterators.cpp:102:6:102:9 | sink | 0 | insert_iterator_by_trait |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | 0 | insert_iterator_by_trait & |
+| standalone_iterators.cpp:103:27:103:36 | operator+= | 1 | int |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | remove_reference_t & |
+| stl.h:29:34:29:40 | forward | 0 | type & |
+| stl.h:29:34:29:40 | forward | 0 | type & |
+| stl.h:29:34:29:40 | forward | 0 | type & |
+| stl.h:29:34:29:40 | forward | 0 | type & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:49:3:49:10 | iterator | 0 | const iterator & |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:52:12:52:21 | operator++ | 0 | int |
+| stl.h:54:12:54:21 | operator-- | 0 | int |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:56:8:56:17 | operator!= | 0 | iterator |
+| stl.h:59:12:59:20 | operator+ | 0 | int |
+| stl.h:60:12:60:20 | operator- | 0 | int |
+| stl.h:61:13:61:22 | operator+= | 0 | int |
+| stl.h:61:13:61:22 | operator+= | 0 | int |
+| stl.h:62:13:62:22 | operator-= | 0 | int |
+| stl.h:64:18:64:27 | operator[] | 0 | int |
+| stl.h:67:9:67:9 | operator= | 0 | const input_iterator_tag & |
+| stl.h:67:9:67:9 | operator= | 0 | input_iterator_tag && |
+| stl.h:68:9:68:9 | operator= | 0 | const forward_iterator_tag & |
+| stl.h:68:9:68:9 | operator= | 0 | forward_iterator_tag && |
+| stl.h:69:9:69:9 | operator= | 0 | bidirectional_iterator_tag && |
+| stl.h:69:9:69:9 | operator= | 0 | const bidirectional_iterator_tag & |
+| stl.h:70:9:70:9 | operator= | 0 | const random_access_iterator_tag & |
+| stl.h:70:9:70:9 | operator= | 0 | random_access_iterator_tag && |
+| stl.h:72:9:72:9 | operator= | 0 | const output_iterator_tag & |
+| stl.h:72:9:72:9 | operator= | 0 | output_iterator_tag && |
+| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:86:22:86:41 | back_insert_iterator | 0 | class:0 & |
+| stl.h:88:25:88:33 | operator= | 0 | value_type && |
+| stl.h:88:25:88:33 | operator= | 0 | value_type && |
+| stl.h:91:24:91:33 | operator++ | 0 | int |
+| stl.h:91:24:91:33 | operator++ | 0 | int |
+| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
+| stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
+| stl.h:148:3:148:14 | basic_string | 0 | const class:2 & |
+| stl.h:149:33:149:44 | basic_string | 0 | const class:0 * |
+| stl.h:149:33:149:44 | basic_string | 1 | const class:2 & |
+| stl.h:151:16:151:20 | c_str | 0 | func:0 |
+| stl.h:151:16:151:20 | c_str | 1 | func:0 |
+| stl.h:151:16:151:20 | c_str | 2 | const class:2 & |
+| stl.h:173:13:173:22 | operator[] | 0 | size_type |
+| stl.h:175:13:175:14 | at | 0 | size_type |
+| stl.h:176:35:176:44 | operator+= | 0 | size_type |
+| stl.h:176:35:176:44 | operator+= | 0 | size_type |
+| stl.h:177:17:177:26 | operator+= | 0 | const func:0 & |
+| stl.h:178:17:178:22 | append | 0 | const class:0 * |
+| stl.h:179:17:179:22 | append | 0 | const basic_string & |
+| stl.h:180:17:180:22 | append | 0 | const class:0 * |
+| stl.h:181:47:181:52 | append | 0 | size_type |
+| stl.h:181:47:181:52 | append | 1 | class:0 |
+| stl.h:182:17:182:22 | assign | 0 | func:0 |
+| stl.h:182:17:182:22 | assign | 1 | func:0 |
+| stl.h:183:17:183:22 | assign | 0 | const basic_string & |
+| stl.h:184:47:184:52 | assign | 0 | size_type |
+| stl.h:184:47:184:52 | assign | 1 | class:0 |
+| stl.h:185:17:185:22 | insert | 0 | func:0 |
+| stl.h:185:17:185:22 | insert | 1 | func:0 |
+| stl.h:186:17:186:22 | insert | 0 | size_type |
+| stl.h:186:17:186:22 | insert | 1 | const basic_string & |
+| stl.h:187:17:187:22 | insert | 0 | size_type |
+| stl.h:187:17:187:22 | insert | 1 | size_type |
+| stl.h:187:17:187:22 | insert | 2 | class:0 |
+| stl.h:188:12:188:17 | insert | 0 | size_type |
+| stl.h:188:12:188:17 | insert | 1 | const class:0 * |
+| stl.h:189:42:189:47 | insert | 0 | const_iterator |
+| stl.h:189:42:189:47 | insert | 1 | size_type |
+| stl.h:189:42:189:47 | insert | 2 | class:0 |
+| stl.h:190:17:190:23 | replace | 0 | const_iterator |
+| stl.h:190:17:190:23 | replace | 1 | func:0 |
+| stl.h:190:17:190:23 | replace | 2 | func:0 |
+| stl.h:191:17:191:23 | replace | 0 | size_type |
+| stl.h:191:17:191:23 | replace | 1 | size_type |
+| stl.h:191:17:191:23 | replace | 2 | const basic_string & |
+| stl.h:192:13:192:16 | copy | 0 | size_type |
+| stl.h:192:13:192:16 | copy | 1 | size_type |
+| stl.h:192:13:192:16 | copy | 2 | size_type |
+| stl.h:192:13:192:16 | copy | 3 | class:0 |
+| stl.h:193:8:193:12 | clear | 0 | class:0 * |
+| stl.h:193:8:193:12 | clear | 1 | size_type |
+| stl.h:193:8:193:12 | clear | 2 | size_type |
+| stl.h:195:8:195:11 | swap | 0 | size_type |
+| stl.h:195:8:195:11 | swap | 1 | size_type |
+| stl.h:198:94:198:102 | operator+ | 0 | const basic_string & |
+| stl.h:198:94:198:102 | operator+ | 1 | const basic_string & |
+| stl.h:199:94:199:102 | operator+ | 0 | const basic_string & |
+| stl.h:199:94:199:102 | operator+ | 1 | const func:0 * |
+| stl.h:214:33:214:42 | operator>> | 0 | int & |
+| stl.h:217:33:217:35 | get | 0 | char_type & |
+| stl.h:217:33:217:35 | get | 0 | class:0 & |
+| stl.h:218:33:218:35 | get | 0 | char_type * |
+| stl.h:218:33:218:35 | get | 0 | class:0 * |
+| stl.h:218:33:218:35 | get | 1 | streamsize |
+| stl.h:218:33:218:35 | get | 1 | unsigned long |
+| stl.h:220:33:220:36 | read | 0 | char_type * |
+| stl.h:220:33:220:36 | read | 0 | class:0 * |
+| stl.h:220:33:220:36 | read | 1 | streamsize |
+| stl.h:220:33:220:36 | read | 1 | unsigned long |
+| stl.h:221:14:221:21 | readsome | 0 | char_type * |
+| stl.h:221:14:221:21 | readsome | 0 | class:0 * |
+| stl.h:221:14:221:21 | readsome | 1 | streamsize |
+| stl.h:221:14:221:21 | readsome | 1 | unsigned long |
+| stl.h:222:33:222:39 | putback | 0 | char_type |
+| stl.h:222:33:222:39 | putback | 0 | class:0 |
+| stl.h:225:32:225:38 | getline | 0 | char_type * |
+| stl.h:225:32:225:38 | getline | 0 | class:0 * |
+| stl.h:225:32:225:38 | getline | 1 | streamsize |
+| stl.h:225:32:225:38 | getline | 1 | unsigned long |
+| stl.h:226:32:226:38 | getline | 0 | char_type * |
+| stl.h:226:32:226:38 | getline | 0 | class:0 * |
+| stl.h:226:32:226:38 | getline | 1 | streamsize |
+| stl.h:226:32:226:38 | getline | 1 | unsigned long |
+| stl.h:226:32:226:38 | getline | 2 | char_type |
+| stl.h:226:32:226:38 | getline | 2 | class:0 |
+| stl.h:229:68:229:77 | operator>> | 0 | basic_istream & |
+| stl.h:229:68:229:77 | operator>> | 1 | func:0 * |
+| stl.h:230:85:230:94 | operator>> | 0 | basic_istream & |
+| stl.h:230:85:230:94 | operator>> | 1 | basic_string & |
+| stl.h:232:84:232:90 | getline | 0 | basic_istream & |
+| stl.h:232:84:232:90 | getline | 1 | basic_string & |
+| stl.h:232:84:232:90 | getline | 2 | func:0 |
+| stl.h:233:84:233:90 | getline | 0 | basic_istream & |
+| stl.h:233:84:233:90 | getline | 1 | basic_string & |
+| stl.h:240:33:240:42 | operator<< | 0 | int |
+| stl.h:242:33:242:35 | put | 0 | char_type |
+| stl.h:242:33:242:35 | put | 0 | class:0 |
+| stl.h:243:33:243:37 | write | 0 | const char_type * |
+| stl.h:243:33:243:37 | write | 0 | const class:0 * |
+| stl.h:243:33:243:37 | write | 1 | streamsize |
+| stl.h:243:33:243:37 | write | 1 | unsigned long |
+| stl.h:247:67:247:76 | operator<< | 0 | basic_ostream & |
+| stl.h:247:67:247:76 | operator<< | 1 | const func:0 * |
+| stl.h:248:85:248:94 | operator<< | 0 | basic_ostream & |
+| stl.h:248:85:248:94 | operator<< | 1 | const basic_string & |
+| stl.h:259:12:259:29 | basic_stringstream | 0 | const basic_string & |
+| stl.h:263:23:263:31 | operator= | 0 | basic_stringstream && |
+| stl.h:265:8:265:11 | swap | 0 | basic_stringstream & |
+| stl.h:268:8:268:10 | str | 0 | const basic_string & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:293:12:293:17 | vector | 0 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 0 | size_type |
+| stl.h:294:12:294:17 | vector | 0 | unsigned int |
+| stl.h:294:12:294:17 | vector | 0 | unsigned int |
+| stl.h:294:12:294:17 | vector | 0 | unsigned int |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:294:12:294:17 | vector | 1 | const class:1 & |
+| stl.h:295:3:295:8 | vector | 0 | size_type |
+| stl.h:295:3:295:8 | vector | 0 | size_type |
+| stl.h:295:3:295:8 | vector | 0 | unsigned int |
+| stl.h:295:3:295:8 | vector | 0 | unsigned int |
+| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
+| stl.h:295:3:295:8 | vector | 1 | const class:0 & |
+| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
+| stl.h:295:3:295:8 | vector | 2 | const class:1 & |
+| stl.h:296:101:296:106 | vector | 0 | func:0 |
+| stl.h:296:101:296:106 | vector | 1 | func:0 |
+| stl.h:296:101:296:106 | vector | 2 | const class:1 & |
+| stl.h:301:11:301:19 | operator= | 0 | const vector & |
+| stl.h:302:11:302:19 | operator= | 0 | vector && |
+| stl.h:303:106:303:111 | assign | 0 | func:0 |
+| stl.h:303:106:303:111 | assign | 1 | func:0 |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 0 | size_type |
+| stl.h:306:8:306:13 | assign | 0 | unsigned int |
+| stl.h:306:8:306:13 | assign | 0 | unsigned int |
+| stl.h:306:8:306:13 | assign | 0 | unsigned int |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:306:8:306:13 | assign | 1 | const class:0 & |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | size_type |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:315:13:315:22 | operator[] | 0 | unsigned int |
+| stl.h:318:13:318:14 | at | 0 | size_type |
+| stl.h:318:13:318:14 | at | 0 | unsigned int |
+| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
+| stl.h:327:8:327:16 | push_back | 0 | const class:0 & |
+| stl.h:328:8:328:16 | push_back | 0 | class:0 && |
+| stl.h:331:12:331:17 | insert | 0 | const_iterator |
+| stl.h:331:12:331:17 | insert | 1 | class:0 && |
+| stl.h:333:42:333:47 | insert | 0 | const_iterator |
+| stl.h:333:42:333:47 | insert | 0 | const_iterator |
+| stl.h:333:42:333:47 | insert | 1 | func:0 |
+| stl.h:333:42:333:47 | insert | 1 | func:0 |
+| stl.h:333:42:333:47 | insert | 2 | func:0 |
+| stl.h:333:42:333:47 | insert | 2 | func:0 |
+| stl.h:335:37:335:43 | emplace | 0 | const_iterator |
+| stl.h:335:37:335:43 | emplace | 1 | func:0 && |
+| stl.h:336:33:336:44 | emplace_back | 0 | func:0 && |
+| stl.h:338:8:338:11 | swap | 0 | vector & |
+| stl.h:351:12:351:21 | shared_ptr | 0 | class:0 * |
+| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:352:3:352:12 | shared_ptr | 0 | const shared_ptr & |
+| stl.h:369:12:369:21 | unique_ptr | 0 | class:0 * |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:380:52:380:62 | make_unique | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:382:52:382:62 | make_shared | 0 | func:1 && |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 0 | const class:0 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:396:3:396:3 | pair | 1 | const class:1 & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:397:30:397:33 | pair | 0 | const pair & |
+| stl.h:399:8:399:11 | swap | 0 | pair & |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 0 | func:0 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:402:72:402:72 | make_pair | 1 | func:1 && |
+| stl.h:422:3:422:5 | map | 0 | const map & |
+| stl.h:426:8:426:16 | operator= | 0 | const map & |
+| stl.h:435:6:435:15 | operator[] | 0 | class:0 && |
+| stl.h:435:6:435:15 | operator[] | 0 | class:0 && |
+| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
+| stl.h:435:6:435:15 | operator[] | 0 | key_type && |
+| stl.h:436:6:436:7 | at | 0 | const class:0 & |
+| stl.h:436:6:436:7 | at | 0 | const key_type & |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:439:48:439:54 | emplace | 0 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 0 | const_iterator |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
+| stl.h:440:36:440:47 | emplace_hint | 1 | func:0 && |
+| stl.h:443:24:443:29 | insert | 0 | value_type && |
+| stl.h:445:12:445:17 | insert | 0 | const_iterator |
+| stl.h:445:12:445:17 | insert | 1 | value_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | class:0 && |
+| stl.h:448:48:448:58 | try_emplace | 0 | class:0 && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 0 | key_type && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:448:48:448:58 | try_emplace | 1 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 0 | const_iterator |
+| stl.h:450:36:450:46 | try_emplace | 1 | class:0 && |
+| stl.h:450:36:450:46 | try_emplace | 1 | class:0 && |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 1 | key_type && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
+| stl.h:450:36:450:46 | try_emplace | 2 | func:0 && |
+| stl.h:452:42:452:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:452:42:452:57 | insert_or_assign | 0 | key_type && |
+| stl.h:452:42:452:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:454:30:454:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:454:30:454:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:454:30:454:45 | insert_or_assign | 1 | key_type && |
+| stl.h:454:30:454:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:456:12:456:16 | erase | 0 | iterator |
+| stl.h:459:8:459:11 | swap | 0 | map & |
+| stl.h:462:27:462:31 | merge | 0 | map & |
+| stl.h:465:12:465:15 | find | 0 | const class:0 & |
+| stl.h:465:12:465:15 | find | 0 | const key_type & |
+| stl.h:468:12:468:22 | lower_bound | 0 | const class:0 & |
+| stl.h:468:12:468:22 | lower_bound | 0 | const key_type & |
+| stl.h:470:12:470:22 | upper_bound | 0 | const class:0 & |
+| stl.h:470:12:470:22 | upper_bound | 0 | const key_type & |
+| stl.h:473:28:473:38 | equal_range | 0 | const class:0 & |
+| stl.h:473:28:473:38 | equal_range | 0 | const key_type & |
+| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:490:3:490:15 | unordered_map | 0 | const unordered_map & |
+| stl.h:494:18:494:26 | operator= | 0 | const unordered_map & |
+| stl.h:503:16:503:25 | operator[] | 0 | class:0 && |
+| stl.h:503:16:503:25 | operator[] | 0 | class:0 && |
+| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
+| stl.h:503:16:503:25 | operator[] | 0 | key_type && |
+| stl.h:504:16:504:17 | at | 0 | const class:0 & |
+| stl.h:504:16:504:17 | at | 0 | const key_type & |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:507:48:507:54 | emplace | 0 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 0 | const_iterator |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
+| stl.h:508:36:508:47 | emplace_hint | 1 | func:0 && |
+| stl.h:511:24:511:29 | insert | 0 | value_type && |
+| stl.h:513:12:513:17 | insert | 0 | const_iterator |
+| stl.h:513:12:513:17 | insert | 1 | value_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
+| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
+| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
+| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
+| stl.h:516:48:516:58 | try_emplace | 0 | class:0 && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 0 | key_type && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:516:48:516:58 | try_emplace | 1 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 0 | const_iterator |
+| stl.h:518:36:518:46 | try_emplace | 1 | class:0 && |
+| stl.h:518:36:518:46 | try_emplace | 1 | class:0 && |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 1 | key_type && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
+| stl.h:518:36:518:46 | try_emplace | 2 | func:0 && |
+| stl.h:520:42:520:57 | insert_or_assign | 0 | class:0 && |
+| stl.h:520:42:520:57 | insert_or_assign | 0 | key_type && |
+| stl.h:520:42:520:57 | insert_or_assign | 1 | func:0 && |
+| stl.h:522:30:522:45 | insert_or_assign | 0 | const_iterator |
+| stl.h:522:30:522:45 | insert_or_assign | 1 | class:0 && |
+| stl.h:522:30:522:45 | insert_or_assign | 1 | key_type && |
+| stl.h:522:30:522:45 | insert_or_assign | 2 | func:0 && |
+| stl.h:524:12:524:16 | erase | 0 | iterator |
+| stl.h:527:8:527:11 | swap | 0 | unordered_map & |
+| stl.h:530:37:530:41 | merge | 0 | unordered_map & |
+| stl.h:533:12:533:15 | find | 0 | const class:0 & |
+| stl.h:533:12:533:15 | find | 0 | const key_type & |
+| stl.h:536:28:536:38 | equal_range | 0 | const class:0 & |
+| stl.h:536:28:536:38 | equal_range | 0 | const key_type & |
+| stl.h:555:3:555:5 | set | 0 | const set & |
+| stl.h:557:33:557:35 | set | 0 | func:0 |
+| stl.h:557:33:557:35 | set | 1 | func:0 |
+| stl.h:560:8:560:16 | operator= | 0 | const set & |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:568:48:568:54 | emplace | 0 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 0 | const_iterator |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
+| stl.h:569:36:569:47 | emplace_hint | 1 | func:0 && |
+| stl.h:571:23:571:28 | insert | 0 | class:0 && |
+| stl.h:571:23:571:28 | insert | 0 | value_type && |
+| stl.h:573:12:573:17 | insert | 0 | const_iterator |
+| stl.h:573:12:573:17 | insert | 1 | class:0 && |
+| stl.h:573:12:573:17 | insert | 1 | value_type && |
+| stl.h:574:38:574:43 | insert | 0 | func:0 |
+| stl.h:574:38:574:43 | insert | 1 | func:0 |
+| stl.h:576:12:576:16 | erase | 0 | iterator |
+| stl.h:579:8:579:11 | swap | 0 | set & |
+| stl.h:582:27:582:31 | merge | 0 | set & |
+| stl.h:585:12:585:15 | find | 0 | const class:0 & |
+| stl.h:585:12:585:15 | find | 0 | const key_type & |
+| stl.h:588:12:588:22 | lower_bound | 0 | const class:0 & |
+| stl.h:588:12:588:22 | lower_bound | 0 | const key_type & |
+| stl.h:590:12:590:22 | upper_bound | 0 | const class:0 & |
+| stl.h:590:12:590:22 | upper_bound | 0 | const key_type & |
+| stl.h:592:28:592:38 | equal_range | 0 | const class:0 & |
+| stl.h:592:28:592:38 | equal_range | 0 | const key_type & |
+| stl.h:609:3:609:15 | unordered_set | 0 | const unordered_set & |
+| stl.h:611:33:611:45 | unordered_set | 0 | func:0 |
+| stl.h:611:33:611:45 | unordered_set | 1 | func:0 |
+| stl.h:611:33:611:45 | unordered_set | 2 | size_type |
+| stl.h:611:33:611:45 | unordered_set | 2 | unsigned long |
+| stl.h:614:18:614:26 | operator= | 0 | const unordered_set & |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:622:48:622:54 | emplace | 0 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 0 | const_iterator |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
+| stl.h:623:36:623:47 | emplace_hint | 1 | func:0 && |
+| stl.h:625:24:625:29 | insert | 0 | class:0 && |
+| stl.h:625:24:625:29 | insert | 0 | value_type && |
+| stl.h:627:12:627:17 | insert | 0 | const_iterator |
+| stl.h:627:12:627:17 | insert | 1 | class:0 && |
+| stl.h:627:12:627:17 | insert | 1 | value_type && |
+| stl.h:628:38:628:43 | insert | 0 | func:0 |
+| stl.h:628:38:628:43 | insert | 1 | func:0 |
+| stl.h:630:12:630:16 | erase | 0 | iterator |
+| stl.h:633:8:633:11 | swap | 0 | unordered_set & |
+| stl.h:636:37:636:41 | merge | 0 | unordered_set & |
+| stl.h:639:12:639:15 | find | 0 | const class:0 & |
+| stl.h:639:12:639:15 | find | 0 | const key_type & |
+| stl.h:641:28:641:38 | equal_range | 0 | const class:0 & |
+| stl.h:641:28:641:38 | equal_range | 0 | const key_type & |
+| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:671:21:671:39 | basic_format_string | 0 | const func:0 & |
+| stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 0 | format_string |
+| stl.h:678:33:678:38 | format | 1 | func:0 && |
+| stl.h:678:33:678:38 | format | 1 | func:0 && |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 0 | format_string |
+| stl.h:683:6:683:48 | same_signature_as_format_but_different_name | 1 | func:0 && |
+| string.cpp:17:6:17:9 | sink | 0 | const char * |
+| string.cpp:18:6:18:9 | sink | 0 | const string & |
+| string.cpp:19:6:19:9 | sink | 0 | const char * |
+| string.cpp:19:6:19:9 | sink | 1 | const char * |
+| string.cpp:20:6:20:9 | sink | 0 | char |
+| string.cpp:21:6:21:9 | sink | 0 | iterator |
+| stringstream.cpp:13:6:13:9 | sink | 0 | int |
+| stringstream.cpp:15:6:15:9 | sink | 0 | const string & |
+| stringstream.cpp:18:6:18:9 | sink | 0 | const basic_ostream> & |
+| stringstream.cpp:21:6:21:9 | sink | 0 | const basic_istream> & |
+| stringstream.cpp:24:6:24:9 | sink | 0 | const basic_iostream> & |
+| stringstream.cpp:26:6:26:29 | test_stringstream_string | 0 | int |
+| stringstream.cpp:70:6:70:26 | test_stringstream_int | 0 | int |
+| structlikeclass.cpp:5:7:5:7 | StructLikeClass | 0 | StructLikeClass && |
+| structlikeclass.cpp:5:7:5:7 | StructLikeClass | 0 | const StructLikeClass & |
+| structlikeclass.cpp:5:7:5:7 | operator= | 0 | StructLikeClass && |
+| structlikeclass.cpp:5:7:5:7 | operator= | 0 | const StructLikeClass & |
+| structlikeclass.cpp:8:2:8:16 | StructLikeClass | 0 | int |
+| swap1.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap1.cpp:24:9:24:13 | Class | 0 | Class && |
+| swap1.cpp:25:9:25:13 | Class | 0 | const Class & |
+| swap1.cpp:27:16:27:24 | operator= | 0 | const Class & |
+| swap1.cpp:34:16:34:24 | operator= | 0 | Class && |
+| swap1.cpp:40:16:40:26 | copy_assign | 0 | const Class & |
+| swap1.cpp:47:16:47:26 | move_assign | 0 | Class && |
+| swap1.cpp:53:14:53:17 | swap | 0 | Class & |
+| swap1.cpp:61:10:61:13 | swap | 0 | Class & |
+| swap1.cpp:61:10:61:13 | swap | 1 | Class & |
+| swap2.cpp:14:9:14:9 | move | 0 | func:0 & |
+| swap2.cpp:24:9:24:13 | Class | 0 | Class && |
+| swap2.cpp:25:9:25:13 | Class | 0 | const Class & |
+| swap2.cpp:27:16:27:24 | operator= | 0 | const Class & |
+| swap2.cpp:34:16:34:24 | operator= | 0 | Class && |
+| swap2.cpp:40:16:40:26 | copy_assign | 0 | const Class & |
+| swap2.cpp:47:16:47:26 | move_assign | 0 | Class && |
+| swap2.cpp:53:14:53:17 | swap | 0 | Class & |
+| swap2.cpp:61:10:61:13 | swap | 0 | Class & |
+| swap2.cpp:61:10:61:13 | swap | 1 | Class & |
+| swap.h:4:20:4:23 | swap | 0 | func:0 & |
+| swap.h:4:20:4:23 | swap | 1 | func:0 & |
+| taint.cpp:4:6:4:21 | arithAssignments | 0 | int |
+| taint.cpp:4:6:4:21 | arithAssignments | 1 | int |
+| taint.cpp:22:5:22:13 | increment | 0 | int |
+| taint.cpp:23:5:23:8 | zero | 0 | int |
+| taint.cpp:69:7:69:7 | MyClass | 0 | MyClass && |
+| taint.cpp:69:7:69:7 | MyClass | 0 | const MyClass & |
+| taint.cpp:69:7:69:7 | operator= | 0 | MyClass && |
+| taint.cpp:69:7:69:7 | operator= | 0 | const MyClass & |
+| taint.cpp:100:6:100:15 | array_test | 0 | int |
+| taint.cpp:142:5:142:10 | select | 0 | int |
+| taint.cpp:142:5:142:10 | select | 1 | int |
+| taint.cpp:142:5:142:10 | select | 2 | int |
+| taint.cpp:150:6:150:12 | fn_test | 0 | int |
+| taint.cpp:156:7:156:12 | strcpy | 0 | char * |
+| taint.cpp:156:7:156:12 | strcpy | 1 | const char * |
+| taint.cpp:157:7:157:12 | strcat | 0 | char * |
+| taint.cpp:157:7:157:12 | strcat | 1 | const char * |
+| taint.cpp:180:7:180:12 | callee | 0 | int * |
+| taint.cpp:190:7:190:12 | memcpy | 0 | void * |
+| taint.cpp:190:7:190:12 | memcpy | 1 | void * |
+| taint.cpp:190:7:190:12 | memcpy | 2 | int |
+| taint.cpp:192:6:192:16 | test_memcpy | 0 | int * |
+| taint.cpp:228:11:228:11 | (unnamed constructor) | 0 | const lambda [] type at line 233, col. 11 & |
+| taint.cpp:228:11:228:11 | (unnamed constructor) | 0 | lambda [] type at line 233, col. 11 && |
+| taint.cpp:228:11:228:11 | operator= | 0 | const lambda [] type at line 233, col. 11 & |
+| taint.cpp:235:11:235:11 | (unnamed constructor) | 0 | const lambda [] type at line 240, col. 11 & |
+| taint.cpp:235:11:235:11 | (unnamed constructor) | 0 | lambda [] type at line 240, col. 11 && |
+| taint.cpp:235:11:235:11 | operator= | 0 | const lambda [] type at line 240, col. 11 & |
+| taint.cpp:243:11:243:11 | (unnamed constructor) | 0 | const lambda [] type at line 248, col. 11 & |
+| taint.cpp:243:11:243:11 | (unnamed constructor) | 0 | lambda [] type at line 248, col. 11 && |
+| taint.cpp:243:11:243:11 | operator= | 0 | const lambda [] type at line 248, col. 11 & |
+| taint.cpp:249:11:249:11 | (unnamed constructor) | 0 | const lambda [] type at line 254, col. 11 & |
+| taint.cpp:249:11:249:11 | (unnamed constructor) | 0 | lambda [] type at line 254, col. 11 && |
+| taint.cpp:249:11:249:11 | operator= | 0 | const lambda [] type at line 254, col. 11 & |
+| taint.cpp:249:13:249:13 | _FUN | 0 | int |
+| taint.cpp:249:13:249:13 | _FUN | 1 | int |
+| taint.cpp:249:13:249:13 | operator() | 0 | int |
+| taint.cpp:249:13:249:13 | operator() | 1 | int |
+| taint.cpp:255:11:255:11 | (unnamed constructor) | 0 | const lambda [] type at line 260, col. 11 & |
+| taint.cpp:255:11:255:11 | (unnamed constructor) | 0 | lambda [] type at line 260, col. 11 && |
+| taint.cpp:255:11:255:11 | operator= | 0 | const lambda [] type at line 260, col. 11 & |
+| taint.cpp:255:13:255:13 | _FUN | 0 | int & |
+| taint.cpp:255:13:255:13 | _FUN | 1 | int & |
+| taint.cpp:255:13:255:13 | _FUN | 2 | int & |
+| taint.cpp:255:13:255:13 | operator() | 0 | int & |
+| taint.cpp:255:13:255:13 | operator() | 1 | int & |
+| taint.cpp:255:13:255:13 | operator() | 2 | int & |
+| taint.cpp:266:5:266:6 | id | 0 | int |
+| taint.cpp:297:6:297:14 | myAssign1 | 0 | int & |
+| taint.cpp:297:6:297:14 | myAssign1 | 1 | int & |
+| taint.cpp:302:6:302:14 | myAssign2 | 0 | int & |
+| taint.cpp:302:6:302:14 | myAssign2 | 1 | int |
+| taint.cpp:307:6:307:14 | myAssign3 | 0 | int * |
+| taint.cpp:307:6:307:14 | myAssign3 | 1 | int |
+| taint.cpp:312:6:312:14 | myAssign4 | 0 | int * |
+| taint.cpp:312:6:312:14 | myAssign4 | 1 | int |
+| taint.cpp:320:6:320:16 | myNotAssign | 0 | int & |
+| taint.cpp:320:6:320:16 | myNotAssign | 1 | int & |
+| taint.cpp:361:7:361:12 | strdup | 0 | const char * |
+| taint.cpp:362:7:362:13 | strndup | 0 | const char * |
+| taint.cpp:362:7:362:13 | strndup | 1 | size_t |
+| taint.cpp:362:7:362:13 | strndup | 1 | unsigned long |
+| taint.cpp:363:10:363:15 | wcsdup | 0 | const wchar_t * |
+| taint.cpp:364:7:364:13 | strdupa | 0 | const char * |
+| taint.cpp:365:7:365:14 | strndupa | 0 | const char * |
+| taint.cpp:365:7:365:14 | strndupa | 1 | size_t |
+| taint.cpp:365:7:365:14 | strndupa | 1 | unsigned long |
+| taint.cpp:367:6:367:16 | test_strdup | 0 | char * |
+| taint.cpp:379:6:379:17 | test_strndup | 0 | int |
+| taint.cpp:387:6:387:16 | test_wcsdup | 0 | wchar_t * |
+| taint.cpp:397:6:397:17 | test_strdupa | 0 | char * |
+| taint.cpp:409:6:409:18 | test_strndupa | 0 | int |
+| taint.cpp:419:7:419:7 | MyClass2 | 0 | MyClass2 && |
+| taint.cpp:419:7:419:7 | MyClass2 | 0 | const MyClass2 & |
+| taint.cpp:419:7:419:7 | operator= | 0 | MyClass2 && |
+| taint.cpp:419:7:419:7 | operator= | 0 | const MyClass2 & |
+| taint.cpp:421:2:421:9 | MyClass2 | 0 | int |
+| taint.cpp:422:7:422:15 | setMember | 0 | int |
+| taint.cpp:428:7:428:7 | MyClass3 | 0 | MyClass3 && |
+| taint.cpp:428:7:428:7 | MyClass3 | 0 | const MyClass3 & |
+| taint.cpp:428:7:428:7 | operator= | 0 | MyClass3 && |
+| taint.cpp:428:7:428:7 | operator= | 0 | const MyClass3 & |
+| taint.cpp:430:2:430:9 | MyClass3 | 0 | const char * |
+| taint.cpp:431:7:431:15 | setString | 0 | const char * |
+| taint.cpp:474:6:474:9 | swop | 0 | int & |
+| taint.cpp:474:6:474:9 | swop | 1 | int & |
+| taint.cpp:500:5:500:12 | getdelim | 0 | char ** |
+| taint.cpp:500:5:500:12 | getdelim | 1 | size_t * |
+| taint.cpp:500:5:500:12 | getdelim | 1 | unsigned long * |
+| taint.cpp:500:5:500:12 | getdelim | 2 | int |
+| taint.cpp:500:5:500:12 | getdelim | 3 | FILE * |
+| taint.cpp:502:6:502:18 | test_getdelim | 0 | FILE * |
+| taint.cpp:512:7:512:12 | strtok | 0 | char * |
+| taint.cpp:512:7:512:12 | strtok | 1 | const char * |
+| taint.cpp:514:6:514:16 | test_strtok | 0 | char * |
+| taint.cpp:523:7:523:13 | _strset | 0 | char * |
+| taint.cpp:523:7:523:13 | _strset | 1 | int |
+| taint.cpp:525:6:525:18 | test_strset_1 | 0 | char * |
+| taint.cpp:525:6:525:18 | test_strset_1 | 1 | char |
+| taint.cpp:531:6:531:18 | test_strset_2 | 0 | char * |
+| taint.cpp:538:7:538:13 | mempcpy | 0 | void * |
+| taint.cpp:538:7:538:13 | mempcpy | 1 | const void * |
+| taint.cpp:538:7:538:13 | mempcpy | 2 | size_t |
+| taint.cpp:538:7:538:13 | mempcpy | 2 | unsigned long |
+| taint.cpp:540:6:540:17 | test_mempcpy | 0 | int * |
+| taint.cpp:548:7:548:13 | memccpy | 0 | void * |
+| taint.cpp:548:7:548:13 | memccpy | 1 | const void * |
+| taint.cpp:548:7:548:13 | memccpy | 2 | int |
+| taint.cpp:548:7:548:13 | memccpy | 3 | size_t |
+| taint.cpp:548:7:548:13 | memccpy | 3 | unsigned long |
+| taint.cpp:550:6:550:17 | test_memccpy | 0 | int * |
+| taint.cpp:558:7:558:12 | strcat | 0 | char * |
+| taint.cpp:558:7:558:12 | strcat | 1 | const char * |
+| taint.cpp:560:6:560:16 | test_strcat | 0 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 1 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 2 | char * |
+| taint.cpp:560:6:560:16 | test_strcat | 3 | char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 0 | unsigned char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 1 | const unsigned char * |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 2 | int |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 3 | _locale_t |
+| taint.cpp:570:16:570:25 | _mbsncat_l | 3 | void * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 0 | unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 1 | const unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 2 | unsigned char * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 3 | _locale_t |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 3 | void * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 4 | _locale_t |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 4 | void * |
+| taint.cpp:572:6:572:20 | test__mbsncat_l | 5 | int |
+| taint.cpp:589:7:589:12 | strsep | 0 | char ** |
+| taint.cpp:589:7:589:12 | strsep | 1 | const char * |
+| taint.cpp:591:6:591:16 | test_strsep | 0 | char * |
+| taint.cpp:602:7:602:13 | _strinc | 0 | const char * |
+| taint.cpp:602:7:602:13 | _strinc | 1 | _locale_t |
+| taint.cpp:602:7:602:13 | _strinc | 1 | void * |
+| taint.cpp:603:16:603:22 | _mbsinc | 0 | const unsigned char * |
+| taint.cpp:604:16:604:22 | _strdec | 0 | const unsigned char * |
+| taint.cpp:604:16:604:22 | _strdec | 1 | const unsigned char * |
+| taint.cpp:606:6:606:17 | test__strinc | 0 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 1 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 2 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 3 | char * |
+| taint.cpp:606:6:606:17 | test__strinc | 4 | _locale_t |
+| taint.cpp:606:6:606:17 | test__strinc | 4 | void * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 0 | unsigned char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 1 | char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 2 | unsigned char * |
+| taint.cpp:616:6:616:17 | test__mbsinc | 3 | char * |
+| taint.cpp:626:6:626:17 | test__strdec | 0 | const unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 1 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 2 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 3 | unsigned char * |
+| taint.cpp:626:6:626:17 | test__strdec | 4 | unsigned char * |
+| taint.cpp:645:14:645:22 | _strnextc | 0 | const char * |
+| taint.cpp:647:6:647:19 | test__strnextc | 0 | const char * |
+| taint.cpp:659:7:659:7 | operator= | 0 | C_no_const_member_function && |
+| taint.cpp:659:7:659:7 | operator= | 0 | const C_no_const_member_function & |
+| taint.cpp:665:6:665:25 | test_no_const_member | 0 | char * |
+| taint.cpp:671:7:671:7 | operator= | 0 | C_const_member_function && |
+| taint.cpp:671:7:671:7 | operator= | 0 | const C_const_member_function & |
+| taint.cpp:677:6:677:27 | test_with_const_member | 0 | char * |
+| taint.cpp:683:6:683:20 | argument_source | 0 | void * |
+| taint.cpp:685:8:685:8 | operator= | 0 | const two_members & |
+| taint.cpp:685:8:685:8 | operator= | 0 | two_members && |
+| taint.cpp:707:8:707:14 | strncpy | 0 | char * |
+| taint.cpp:707:8:707:14 | strncpy | 1 | const char * |
+| taint.cpp:707:8:707:14 | strncpy | 2 | unsigned long |
+| taint.cpp:709:6:709:17 | test_strncpy | 0 | char * |
+| taint.cpp:709:6:709:17 | test_strncpy | 1 | char * |
+| taint.cpp:725:10:725:15 | strtol | 0 | const char * |
+| taint.cpp:725:10:725:15 | strtol | 1 | char ** |
+| taint.cpp:725:10:725:15 | strtol | 2 | int |
+| taint.cpp:727:6:727:16 | test_strtol | 0 | char * |
+| taint.cpp:735:7:735:12 | malloc | 0 | size_t |
+| taint.cpp:735:7:735:12 | malloc | 0 | unsigned long |
+| taint.cpp:736:7:736:13 | realloc | 0 | void * |
+| taint.cpp:736:7:736:13 | realloc | 1 | size_t |
+| taint.cpp:736:7:736:13 | realloc | 1 | unsigned long |
+| taint.cpp:744:6:744:32 | test_realloc_2_indirections | 0 | int ** |
+| taint.cpp:751:9:751:9 | operator= | 0 | A && |
+| taint.cpp:751:9:751:9 | operator= | 0 | const A & |
+| taint.cpp:758:5:758:11 | sprintf | 0 | char * |
+| taint.cpp:758:5:758:11 | sprintf | 1 | const char * |
+| taint.cpp:758:5:758:11 | sprintf | 2 | ... |
+| taint.cpp:760:6:760:23 | call_sprintf_twice | 0 | char * |
+| taint.cpp:760:6:760:23 | call_sprintf_twice | 1 | char * |
+| taint.cpp:771:8:771:8 | operator= | 0 | TaintInheritingContentObject && |
+| taint.cpp:771:8:771:8 | operator= | 0 | const TaintInheritingContentObject & |
+| taint.cpp:775:30:775:35 | source | 0 | bool |
+| taint.cpp:782:7:782:11 | fopen | 0 | const char * |
+| taint.cpp:782:7:782:11 | fopen | 1 | const char * |
+| taint.cpp:783:5:783:11 | fopen_s | 0 | FILE ** |
+| taint.cpp:783:5:783:11 | fopen_s | 1 | const char * |
+| taint.cpp:783:5:783:11 | fopen_s | 2 | const char * |
+| taint.cpp:785:6:785:15 | fopen_test | 0 | char * |
+| taint.cpp:800:6:800:19 | SysAllocString | 0 | const OLECHAR * |
+| taint.cpp:800:6:800:19 | SysAllocString | 0 | const wchar_t * |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 0 | LPCSTR |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 0 | const char * |
+| taint.cpp:801:6:801:26 | SysAllocStringByteLen | 1 | unsigned int |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const OLECHAR * |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 0 | const wchar_t * |
+| taint.cpp:802:6:802:22 | SysAllocStringLen | 1 | unsigned int |
+| taint.cpp:815:7:815:12 | strchr | 0 | const char * |
+| taint.cpp:815:7:815:12 | strchr | 1 | int |
+| taint.cpp:817:6:817:27 | write_to_const_ptr_ptr | 0 | const char ** |
+| taint.cpp:817:6:817:27 | write_to_const_ptr_ptr | 1 | const char ** |
+| taint.cpp:822:6:822:19 | take_const_ptr | 0 | const char * |
+| taint.cpp:822:6:822:19 | take_const_ptr | 1 | const char * |
+| vector.cpp:13:6:13:9 | sink | 0 | int |
+| vector.cpp:14:27:14:30 | sink | 0 | vector> & |
+| vector.cpp:14:27:14:30 | sink | 0 | vector> & |
+| vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | 0 | int |
+| vector.cpp:37:6:37:23 | test_element_taint | 0 | int |
+| vector.cpp:145:8:145:8 | operator= | 0 | MyPair && |
+| vector.cpp:145:8:145:8 | operator= | 0 | const MyPair & |
+| vector.cpp:150:8:150:8 | MyVectorContainer | 0 | const MyVectorContainer & |
+| vector.cpp:150:8:150:8 | operator= | 0 | MyVectorContainer && |
+| vector.cpp:150:8:150:8 | operator= | 0 | const MyVectorContainer & |
+| vector.cpp:216:6:216:9 | sink | 0 | iterator & |
+| vector.cpp:231:6:231:9 | sink | 0 | vector> & |
+| vector.cpp:232:6:232:9 | sink | 0 | vector> & |
+| vector.cpp:279:6:279:9 | sink | 0 | int * |
+| vector.cpp:295:6:295:9 | sink | 0 | iterator |
+| vector.cpp:329:6:329:33 | taint_vector_output_iterator | 0 | iterator |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | 0 | iterator |
+| vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | 1 | int |
+| vector.cpp:337:6:337:32 | test_vector_output_iterator | 0 | int |
+| vector.cpp:417:6:417:25 | test_vector_inserter | 0 | char * |
+| vector.cpp:454:7:454:12 | memcpy | 0 | void * |
+| vector.cpp:454:7:454:12 | memcpy | 1 | const void * |
+| vector.cpp:454:7:454:12 | memcpy | 2 | size_t |
+| vector.cpp:454:7:454:12 | memcpy | 2 | unsigned long |
+| vector.cpp:461:6:461:9 | sink | 0 | vector> & |
+| vector.cpp:462:6:462:9 | sink | 0 | string & |
+| zmq.cpp:9:8:9:8 | operator= | 0 | const zmq_msg_t & |
+| zmq.cpp:9:8:9:8 | operator= | 0 | zmq_msg_t && |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 0 | zmq_msg_t * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 1 | void * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 2 | size_t |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 2 | unsigned long |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 3 | ..()(..) * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 3 | zmq_free_fn * |
+| zmq.cpp:14:5:14:21 | zmq_msg_init_data | 4 | void * |
+| zmq.cpp:15:7:15:18 | zmq_msg_data | 0 | zmq_msg_t * |
+| zmq.cpp:17:6:17:13 | test_zmc | 0 | void * |
+| zmq.cpp:17:6:17:13 | test_zmc | 1 | char * |
+| zmq.cpp:17:6:17:13 | test_zmc | 2 | size_t |
+| zmq.cpp:17:6:17:13 | test_zmc | 2 | unsigned long |

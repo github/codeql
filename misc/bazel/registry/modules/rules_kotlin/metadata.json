@@ -1,0 +1,27 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_kotlin",
+    "maintainers": [
+        {
+            "email": "ben@ben.cm",
+            "github": "Bencodes",
+            "name": "Ben Lee"
+        },
+        {
+            "email": "corbin@mcneely-smith.com",
+            "github": "restingbull",
+            "name": "Corbin McNeely-Smith"
+        },
+        {
+            "email": "nk@snap.com",
+            "github": "nkoroste",
+            "name": "Nick Korostelev"
+        }
+    ],
+    "repository": [
+        "github:bazelbuild/rules_kotlin"
+    ],
+    "versions": [
+        "2.0.0-codeql.1"
+    ],
+    "yanked_versions": {}
+}

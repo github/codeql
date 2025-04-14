@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gravitational/teleport/.github/workflows/update-ami-ids.yaml", "*", "input.version", "code-injection", "generated"]

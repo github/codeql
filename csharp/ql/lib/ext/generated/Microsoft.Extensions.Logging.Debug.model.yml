@@ -2,11 +2,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: summaryModel
-    data:
-      - ["Microsoft.Extensions.Logging.Debug", "DebugLoggerProvider", False, "CreateLogger", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-  - addsTo:
-      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Logging.Debug", "DebugLoggerProvider", "Dispose", "()", "summary", "df-generated"]

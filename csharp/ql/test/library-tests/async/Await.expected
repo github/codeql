@@ -3,3 +3,4 @@
 | 42 | async.cs:42:46:42:70 | await ... | async.cs:42:52:42:70 | call to method OpenAsync |
 | 44 | async.cs:44:38:44:66 | await ... | async.cs:44:44:44:66 | call to method ReadToEndAsync |
 | 52 | async.cs:52:13:52:51 | await ... | async.cs:52:19:52:51 | call to method PrintContentLengthAsync |
+| 73 | async.cs:73:13:73:31 | await ... | async.cs:73:19:73:31 | call to method Delay |

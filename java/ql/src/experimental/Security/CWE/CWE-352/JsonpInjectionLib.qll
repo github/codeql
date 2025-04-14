@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 private import JsonStringLib
 private import semmle.code.java.security.XSS
@@ -79,7 +81,7 @@ class JsonpBuilderExpr extends AddExpr {
 
 /** A data flow configuration tracing flow from threat model sources to jsonp function name. */
 module ThreatModelFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(JsonpBuilderExpr jhe | jhe.getFunctionName() = sink.asExpr())

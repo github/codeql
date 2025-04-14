@@ -120,6 +120,11 @@ class LocalSourceNode extends Node {
   CallCfgNode getACall() { Cached::call(this, result) }
 
   /**
+   * Gets a node that has this node as its annotation.
+   */
+  Node getAnAnnotatedInstance() { Cached::annotatedInstance(this, result) }
+
+  /**
    * Gets an awaited value from this node.
    */
   Node getAnAwaited() { Cached::await(this, result) }
@@ -272,6 +277,17 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
+    )
+  }
+
+  cached
+  predicate annotatedInstance(LocalSourceNode node, Node instance) {
+    exists(ExprNode n | node.flowsTo(n) |
+      instance.asCfgNode().getNode() =
+        any(AnnAssign ann | ann.getAnnotation() = n.asExpr()).getTarget()
+      or
+      instance.asCfgNode().getNode() =
+        any(Parameter p | p.getAnnotation() = n.asCfgNode().getNode())
     )
   }
 

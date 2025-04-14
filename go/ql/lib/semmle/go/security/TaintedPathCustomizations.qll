@@ -45,12 +45,12 @@ module TaintedPath {
   }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for path traversal. */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {
@@ -89,6 +89,25 @@ module TaintedPath {
         concatNode = cleanCall.getArgument(0) and
         concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
         this = cleanCall.getResult()
+      )
+    }
+  }
+
+  /**
+   * A call to `mux.Vars(path)`, considered to sanitize `path` against path traversal.
+   * Only enabled when `SkipClean` is not set true.
+   */
+  class MuxVarsSanitizer extends Sanitizer {
+    MuxVarsSanitizer() {
+      exists(Function m |
+        m.hasQualifiedName(package("github.com/gorilla/mux", ""), "Vars") and
+        this = m.getACall().getResult()
+      ) and
+      not exists(CallExpr f |
+        f.getTarget()
+            .(Method)
+            .hasQualifiedName(package("github.com/gorilla/mux", ""), "Router", "SkipClean") and
+        f.getArgument(0).getBoolValue() = true
       )
     }
   }

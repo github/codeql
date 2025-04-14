@@ -1,80 +1,98 @@
 edges
-| test.cpp:34:10:34:12 | buf | test.cpp:34:5:34:24 | access to array | provenance |  |
-| test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array | provenance |  |
-| test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array | provenance |  |
-| test.cpp:39:14:39:16 | buf | test.cpp:39:9:39:19 | access to array | provenance |  |
-| test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array | provenance |  |
-| test.cpp:48:10:48:12 | buf | test.cpp:48:5:48:24 | access to array | provenance |  |
-| test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array | provenance |  |
-| test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array | provenance |  |
-| test.cpp:53:14:53:16 | buf | test.cpp:53:9:53:19 | access to array | provenance |  |
-| test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array | provenance |  |
-| test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array | provenance |  |
-| test.cpp:70:33:70:33 | p | test.cpp:71:5:71:17 | access to array | provenance |  |
-| test.cpp:70:33:70:33 | p | test.cpp:72:5:72:15 | access to array | provenance |  |
+| test.cpp:34:10:34:12 | buf | test.cpp:34:5:34:24 | access to array | provenance | Config |
+| test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array | provenance | Config |
+| test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array | provenance | Config |
+| test.cpp:39:14:39:16 | buf | test.cpp:39:9:39:19 | access to array | provenance | Config |
+| test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array | provenance | Config |
+| test.cpp:48:10:48:12 | buf | test.cpp:48:5:48:24 | access to array | provenance | Config |
+| test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array | provenance | Config |
+| test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array | provenance | Config |
+| test.cpp:53:14:53:16 | buf | test.cpp:53:9:53:19 | access to array | provenance | Config |
+| test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array | provenance | Config |
+| test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array | provenance | Config |
+| test.cpp:70:33:70:33 | p | test.cpp:71:5:71:17 | access to array | provenance | Config |
+| test.cpp:70:33:70:33 | p | test.cpp:72:5:72:15 | access to array | provenance | Config |
 | test.cpp:76:26:76:46 | & ... | test.cpp:66:32:66:32 | p | provenance |  |
-| test.cpp:76:32:76:34 | buf | test.cpp:76:26:76:46 | & ... | provenance |  |
+| test.cpp:76:32:76:34 | buf | test.cpp:76:26:76:46 | & ... | provenance | Config |
 | test.cpp:77:26:77:44 | & ... | test.cpp:66:32:66:32 | p | provenance |  |
-| test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... | provenance |  |
+| test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... | provenance | Config |
 | test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p | provenance |  |
 | test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf | provenance |  |
-| test.cpp:85:21:85:36 | buf | test.cpp:87:5:87:31 | access to array | provenance |  |
-| test.cpp:85:21:85:36 | buf | test.cpp:88:5:88:27 | access to array | provenance |  |
+| test.cpp:85:21:85:36 | buf | test.cpp:87:5:87:31 | access to array | provenance | Config |
+| test.cpp:85:21:85:36 | buf | test.cpp:88:5:88:27 | access to array | provenance | Config |
 | test.cpp:85:34:85:36 | buf | test.cpp:85:21:85:36 | buf | provenance |  |
-| test.cpp:96:13:96:15 | arr | test.cpp:96:13:96:18 | access to array | provenance |  |
-| test.cpp:111:17:111:19 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
-| test.cpp:111:17:111:19 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
-| test.cpp:111:17:111:19 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
-| test.cpp:115:35:115:37 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
-| test.cpp:115:35:115:37 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
-| test.cpp:115:35:115:37 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
-| test.cpp:119:17:119:19 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
-| test.cpp:119:17:119:19 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
-| test.cpp:119:17:119:19 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
-| test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array | provenance |  |
-| test.cpp:134:25:134:27 | arr | test.cpp:136:9:136:16 | ... += ... | provenance |  |
+| test.cpp:92:9:92:11 | definition of arr | test.cpp:96:13:96:18 | access to array | provenance | Config |
+| test.cpp:96:13:96:15 | arr | test.cpp:96:13:96:18 | access to array | provenance | Config |
+| test.cpp:102:9:102:11 | definition of arr | test.cpp:111:17:111:22 | access to array | provenance | Config |
+| test.cpp:102:9:102:11 | definition of arr | test.cpp:115:35:115:40 | access to array | provenance | Config |
+| test.cpp:102:9:102:11 | definition of arr | test.cpp:119:17:119:22 | access to array | provenance | Config |
+| test.cpp:111:17:111:19 | arr | test.cpp:111:17:111:22 | access to array | provenance | Config |
+| test.cpp:111:17:111:19 | arr | test.cpp:115:35:115:40 | access to array | provenance | Config |
+| test.cpp:111:17:111:19 | arr | test.cpp:119:17:119:22 | access to array | provenance | Config |
+| test.cpp:115:35:115:37 | arr | test.cpp:111:17:111:22 | access to array | provenance | Config |
+| test.cpp:115:35:115:37 | arr | test.cpp:115:35:115:40 | access to array | provenance | Config |
+| test.cpp:115:35:115:37 | arr | test.cpp:119:17:119:22 | access to array | provenance | Config |
+| test.cpp:119:17:119:19 | arr | test.cpp:111:17:111:22 | access to array | provenance | Config |
+| test.cpp:119:17:119:19 | arr | test.cpp:115:35:115:40 | access to array | provenance | Config |
+| test.cpp:119:17:119:19 | arr | test.cpp:119:17:119:22 | access to array | provenance | Config |
+| test.cpp:125:11:125:13 | definition of arr | test.cpp:128:9:128:14 | access to array | provenance | Config |
+| test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array | provenance | Config |
+| test.cpp:134:25:134:27 | arr | test.cpp:136:9:136:16 | ... += ... | provenance | Config |
 | test.cpp:136:9:136:16 | ... += ... | test.cpp:136:9:136:16 | ... += ... | provenance |  |
 | test.cpp:136:9:136:16 | ... += ... | test.cpp:138:13:138:15 | arr | provenance |  |
+| test.cpp:142:10:142:13 | definition of asdf | test.cpp:143:18:143:21 | asdf | provenance |  |
 | test.cpp:143:18:143:21 | asdf | test.cpp:134:25:134:27 | arr | provenance |  |
 | test.cpp:143:18:143:21 | asdf | test.cpp:143:18:143:21 | asdf | provenance |  |
 | test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... | provenance |  |
-| test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... | provenance |  |
+| test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... | provenance |  |
+| test.cpp:154:7:154:9 | definition of buf | test.cpp:156:12:156:18 | ... + ... | provenance | Config |
+| test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... | provenance | Config |
 | test.cpp:156:12:156:18 | ... + ... | test.cpp:156:12:156:18 | ... + ... | provenance |  |
 | test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | *& ... | provenance |  |
 | test.cpp:158:17:158:18 | *& ... | test.cpp:146:26:146:26 | *p | provenance |  |
-| test.cpp:218:16:218:28 | buffer | test.cpp:220:5:220:11 | access to array | provenance |  |
-| test.cpp:218:16:218:28 | buffer | test.cpp:221:5:221:11 | access to array | provenance |  |
+| test.cpp:217:19:217:24 | definition of buffer | test.cpp:218:16:218:28 | buffer | provenance |  |
+| test.cpp:218:16:218:28 | buffer | test.cpp:220:5:220:11 | access to array | provenance | Config |
+| test.cpp:218:16:218:28 | buffer | test.cpp:221:5:221:11 | access to array | provenance | Config |
 | test.cpp:218:23:218:28 | buffer | test.cpp:218:16:218:28 | buffer | provenance |  |
-| test.cpp:229:17:229:29 | array | test.cpp:231:5:231:10 | access to array | provenance |  |
-| test.cpp:229:17:229:29 | array | test.cpp:232:5:232:10 | access to array | provenance |  |
+| test.cpp:228:10:228:14 | definition of array | test.cpp:229:17:229:29 | array | provenance |  |
+| test.cpp:229:17:229:29 | array | test.cpp:231:5:231:10 | access to array | provenance | Config |
+| test.cpp:229:17:229:29 | array | test.cpp:232:5:232:10 | access to array | provenance | Config |
 | test.cpp:229:25:229:29 | array | test.cpp:229:17:229:29 | array | provenance |  |
-| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
-| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
+| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance | Config |
+| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance | Config |
+| test.cpp:273:19:273:25 | definition of buffer3 | test.cpp:274:14:274:20 | buffer3 | provenance |  |
 | test.cpp:274:14:274:20 | buffer3 | test.cpp:245:30:245:30 | p | provenance |  |
 | test.cpp:274:14:274:20 | buffer3 | test.cpp:274:14:274:20 | buffer3 | provenance |  |
 | test.cpp:277:35:277:35 | p | test.cpp:278:14:278:14 | p | provenance |  |
 | test.cpp:278:14:278:14 | p | test.cpp:245:30:245:30 | p | provenance |  |
+| test.cpp:282:19:282:25 | definition of buffer1 | test.cpp:283:19:283:25 | buffer1 | provenance |  |
 | test.cpp:283:19:283:25 | buffer1 | test.cpp:277:35:277:35 | p | provenance |  |
 | test.cpp:283:19:283:25 | buffer1 | test.cpp:283:19:283:25 | buffer1 | provenance |  |
+| test.cpp:285:19:285:25 | definition of buffer2 | test.cpp:286:19:286:25 | buffer2 | provenance |  |
 | test.cpp:286:19:286:25 | buffer2 | test.cpp:277:35:277:35 | p | provenance |  |
 | test.cpp:286:19:286:25 | buffer2 | test.cpp:286:19:286:25 | buffer2 | provenance |  |
+| test.cpp:288:19:288:25 | definition of buffer3 | test.cpp:289:19:289:25 | buffer3 | provenance |  |
 | test.cpp:289:19:289:25 | buffer3 | test.cpp:277:35:277:35 | p | provenance |  |
 | test.cpp:289:19:289:25 | buffer3 | test.cpp:289:19:289:25 | buffer3 | provenance |  |
-| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance |  |
-| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance |  |
+| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance | Config |
+| test.cpp:305:9:305:12 | definition of arr1 | test.cpp:306:20:306:23 | arr1 | provenance |  |
 | test.cpp:306:20:306:23 | arr1 | test.cpp:292:25:292:27 | arr | provenance |  |
 | test.cpp:306:20:306:23 | arr1 | test.cpp:306:20:306:23 | arr1 | provenance |  |
+| test.cpp:308:9:308:12 | definition of arr2 | test.cpp:309:20:309:23 | arr2 | provenance |  |
 | test.cpp:309:20:309:23 | arr2 | test.cpp:292:25:292:27 | arr | provenance |  |
 | test.cpp:309:20:309:23 | arr2 | test.cpp:309:20:309:23 | arr2 | provenance |  |
+| test.cpp:314:10:314:13 | definition of temp | test.cpp:319:19:319:27 | ... + ... | provenance | Config |
+| test.cpp:314:10:314:13 | definition of temp | test.cpp:322:19:322:27 | ... + ... | provenance | Config |
+| test.cpp:314:10:314:13 | definition of temp | test.cpp:324:23:324:32 | ... + ... | provenance | Config |
 | test.cpp:319:13:319:27 | ... = ... | test.cpp:325:24:325:26 | end | provenance |  |
-| test.cpp:319:19:319:22 | temp | test.cpp:319:19:319:27 | ... + ... | provenance |  |
-| test.cpp:319:19:319:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:319:19:319:22 | temp | test.cpp:319:19:319:27 | ... + ... | provenance | Config |
+| test.cpp:319:19:319:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance | Config |
 | test.cpp:319:19:319:27 | ... + ... | test.cpp:319:13:319:27 | ... = ... | provenance |  |
 | test.cpp:322:13:322:27 | ... = ... | test.cpp:325:24:325:26 | end | provenance |  |
-| test.cpp:322:19:322:22 | temp | test.cpp:322:19:322:27 | ... + ... | provenance |  |
-| test.cpp:322:19:322:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:322:19:322:22 | temp | test.cpp:322:19:322:27 | ... + ... | provenance | Config |
+| test.cpp:322:19:322:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance | Config |
 | test.cpp:322:19:322:27 | ... + ... | test.cpp:322:13:322:27 | ... = ... | provenance |  |
-| test.cpp:324:23:324:26 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:324:23:324:26 | temp | test.cpp:324:23:324:32 | ... + ... | provenance | Config |
 | test.cpp:324:23:324:32 | ... + ... | test.cpp:324:23:324:32 | ... + ... | provenance |  |
 | test.cpp:324:23:324:32 | ... + ... | test.cpp:325:15:325:19 | temp2 | provenance |  |
 nodes
@@ -115,32 +133,40 @@ nodes
 | test.cpp:85:34:85:36 | buf | semmle.label | buf |
 | test.cpp:87:5:87:31 | access to array | semmle.label | access to array |
 | test.cpp:88:5:88:27 | access to array | semmle.label | access to array |
+| test.cpp:92:9:92:11 | definition of arr | semmle.label | definition of arr |
 | test.cpp:96:13:96:15 | arr | semmle.label | arr |
 | test.cpp:96:13:96:18 | access to array | semmle.label | access to array |
+| test.cpp:102:9:102:11 | definition of arr | semmle.label | definition of arr |
 | test.cpp:111:17:111:19 | arr | semmle.label | arr |
 | test.cpp:111:17:111:22 | access to array | semmle.label | access to array |
 | test.cpp:115:35:115:37 | arr | semmle.label | arr |
 | test.cpp:115:35:115:40 | access to array | semmle.label | access to array |
 | test.cpp:119:17:119:19 | arr | semmle.label | arr |
 | test.cpp:119:17:119:22 | access to array | semmle.label | access to array |
+| test.cpp:125:11:125:13 | definition of arr | semmle.label | definition of arr |
 | test.cpp:128:9:128:11 | arr | semmle.label | arr |
 | test.cpp:128:9:128:14 | access to array | semmle.label | access to array |
 | test.cpp:134:25:134:27 | arr | semmle.label | arr |
 | test.cpp:136:9:136:16 | ... += ... | semmle.label | ... += ... |
 | test.cpp:136:9:136:16 | ... += ... | semmle.label | ... += ... |
 | test.cpp:138:13:138:15 | arr | semmle.label | arr |
+| test.cpp:142:10:142:13 | definition of asdf | semmle.label | definition of asdf |
 | test.cpp:143:18:143:21 | asdf | semmle.label | asdf |
 | test.cpp:143:18:143:21 | asdf | semmle.label | asdf |
 | test.cpp:146:26:146:26 | *p | semmle.label | *p |
 | test.cpp:147:4:147:9 | -- ... | semmle.label | -- ... |
+| test.cpp:147:4:147:9 | -- ... | semmle.label | -- ... |
+| test.cpp:154:7:154:9 | definition of buf | semmle.label | definition of buf |
 | test.cpp:156:12:156:14 | buf | semmle.label | buf |
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
 | test.cpp:158:17:158:18 | *& ... | semmle.label | *& ... |
+| test.cpp:217:19:217:24 | definition of buffer | semmle.label | definition of buffer |
 | test.cpp:218:16:218:28 | buffer | semmle.label | buffer |
 | test.cpp:218:23:218:28 | buffer | semmle.label | buffer |
 | test.cpp:220:5:220:11 | access to array | semmle.label | access to array |
 | test.cpp:221:5:221:11 | access to array | semmle.label | access to array |
+| test.cpp:228:10:228:14 | definition of array | semmle.label | definition of array |
 | test.cpp:229:17:229:29 | array | semmle.label | array |
 | test.cpp:229:25:229:29 | array | semmle.label | array |
 | test.cpp:231:5:231:10 | access to array | semmle.label | access to array |
@@ -148,23 +174,29 @@ nodes
 | test.cpp:245:30:245:30 | p | semmle.label | p |
 | test.cpp:245:30:245:30 | p | semmle.label | p |
 | test.cpp:261:27:261:30 | access to array | semmle.label | access to array |
+| test.cpp:273:19:273:25 | definition of buffer3 | semmle.label | definition of buffer3 |
 | test.cpp:274:14:274:20 | buffer3 | semmle.label | buffer3 |
 | test.cpp:274:14:274:20 | buffer3 | semmle.label | buffer3 |
 | test.cpp:277:35:277:35 | p | semmle.label | p |
 | test.cpp:278:14:278:14 | p | semmle.label | p |
+| test.cpp:282:19:282:25 | definition of buffer1 | semmle.label | definition of buffer1 |
 | test.cpp:283:19:283:25 | buffer1 | semmle.label | buffer1 |
 | test.cpp:283:19:283:25 | buffer1 | semmle.label | buffer1 |
+| test.cpp:285:19:285:25 | definition of buffer2 | semmle.label | definition of buffer2 |
 | test.cpp:286:19:286:25 | buffer2 | semmle.label | buffer2 |
 | test.cpp:286:19:286:25 | buffer2 | semmle.label | buffer2 |
+| test.cpp:288:19:288:25 | definition of buffer3 | semmle.label | definition of buffer3 |
 | test.cpp:289:19:289:25 | buffer3 | semmle.label | buffer3 |
 | test.cpp:289:19:289:25 | buffer3 | semmle.label | buffer3 |
-| test.cpp:292:25:292:27 | arr | semmle.label | arr |
 | test.cpp:292:25:292:27 | arr | semmle.label | arr |
 | test.cpp:299:16:299:21 | access to array | semmle.label | access to array |
+| test.cpp:305:9:305:12 | definition of arr1 | semmle.label | definition of arr1 |
 | test.cpp:306:20:306:23 | arr1 | semmle.label | arr1 |
 | test.cpp:306:20:306:23 | arr1 | semmle.label | arr1 |
+| test.cpp:308:9:308:12 | definition of arr2 | semmle.label | definition of arr2 |
 | test.cpp:309:20:309:23 | arr2 | semmle.label | arr2 |
 | test.cpp:309:20:309:23 | arr2 | semmle.label | arr2 |
+| test.cpp:314:10:314:13 | definition of temp | semmle.label | definition of temp |
 | test.cpp:319:13:319:27 | ... = ... | semmle.label | ... = ... |
 | test.cpp:319:19:319:22 | temp | semmle.label | temp |
 | test.cpp:319:19:319:27 | ... + ... | semmle.label | ... + ... |
@@ -189,13 +221,25 @@ subpaths
 | test.cpp:72:5:72:15 | PointerAdd: access to array | test.cpp:79:32:79:34 | buf | test.cpp:72:5:72:15 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:72:5:72:19 | Store: ... = ... | write |
 | test.cpp:77:27:77:44 | PointerAdd: access to array | test.cpp:77:32:77:34 | buf | test.cpp:66:32:66:32 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
 | test.cpp:88:5:88:27 | PointerAdd: access to array | test.cpp:85:34:85:36 | buf | test.cpp:88:5:88:27 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:88:5:88:31 | Store: ... = ... | write |
+| test.cpp:128:9:128:14 | PointerAdd: access to array | test.cpp:125:11:125:13 | definition of arr | test.cpp:128:9:128:14 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:125:11:125:13 | arr | arr | test.cpp:128:9:128:18 | Store: ... = ... | write |
 | test.cpp:128:9:128:14 | PointerAdd: access to array | test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:125:11:125:13 | arr | arr | test.cpp:128:9:128:18 | Store: ... = ... | write |
+| test.cpp:136:9:136:16 | PointerAdd: ... += ... | test.cpp:142:10:142:13 | definition of asdf | test.cpp:138:13:138:15 | arr | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:142:10:142:13 | asdf | asdf | test.cpp:138:12:138:15 | Load: * ... | read |
 | test.cpp:136:9:136:16 | PointerAdd: ... += ... | test.cpp:143:18:143:21 | asdf | test.cpp:138:13:138:15 | arr | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:142:10:142:13 | asdf | asdf | test.cpp:138:12:138:15 | Load: * ... | read |
+| test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:154:7:154:9 | definition of buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
+| test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:154:7:154:9 | definition of buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
 | test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:156:12:156:14 | buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
+| test.cpp:156:12:156:18 | PointerAdd: ... + ... | test.cpp:156:12:156:14 | buf | test.cpp:147:4:147:9 | -- ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:154:7:154:9 | buf | buf | test.cpp:147:3:147:13 | Store: ... = ... | write |
+| test.cpp:221:5:221:11 | PointerAdd: access to array | test.cpp:217:19:217:24 | definition of buffer | test.cpp:221:5:221:11 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:217:19:217:24 | buffer | buffer | test.cpp:221:5:221:15 | Store: ... = ... | write |
 | test.cpp:221:5:221:11 | PointerAdd: access to array | test.cpp:218:23:218:28 | buffer | test.cpp:221:5:221:11 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:217:19:217:24 | buffer | buffer | test.cpp:221:5:221:15 | Store: ... = ... | write |
+| test.cpp:232:5:232:10 | PointerAdd: access to array | test.cpp:228:10:228:14 | definition of array | test.cpp:232:5:232:10 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:228:10:228:14 | array | array | test.cpp:232:5:232:19 | Store: ... = ... | write |
 | test.cpp:232:5:232:10 | PointerAdd: access to array | test.cpp:229:25:229:29 | array | test.cpp:232:5:232:10 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:228:10:228:14 | array | array | test.cpp:232:5:232:19 | Store: ... = ... | write |
+| test.cpp:261:27:261:30 | PointerAdd: access to array | test.cpp:285:19:285:25 | definition of buffer2 | test.cpp:261:27:261:30 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:285:19:285:25 | buffer2 | buffer2 | test.cpp:261:27:261:30 | Load: access to array | read |
 | test.cpp:261:27:261:30 | PointerAdd: access to array | test.cpp:286:19:286:25 | buffer2 | test.cpp:261:27:261:30 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:285:19:285:25 | buffer2 | buffer2 | test.cpp:261:27:261:30 | Load: access to array | read |
+| test.cpp:299:16:299:21 | PointerAdd: access to array | test.cpp:308:9:308:12 | definition of arr2 | test.cpp:299:16:299:21 | access to array | This pointer arithmetic may have an off-by-1014 error allowing it to overrun $@ at this $@. | test.cpp:308:9:308:12 | arr2 | arr2 | test.cpp:299:16:299:21 | Load: access to array | read |
 | test.cpp:299:16:299:21 | PointerAdd: access to array | test.cpp:309:20:309:23 | arr2 | test.cpp:299:16:299:21 | access to array | This pointer arithmetic may have an off-by-1014 error allowing it to overrun $@ at this $@. | test.cpp:308:9:308:12 | arr2 | arr2 | test.cpp:299:16:299:21 | Load: access to array | read |
+| test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:314:10:314:13 | definition of temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:330:13:330:24 | Store: ... = ... | write |
+| test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:314:10:314:13 | definition of temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:331:13:331:24 | Store: ... = ... | write |
+| test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:314:10:314:13 | definition of temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:333:13:333:24 | Store: ... = ... | write |
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:330:13:330:24 | Store: ... = ... | write |
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:331:13:331:24 | Store: ... = ... | write |
 | test.cpp:322:19:322:27 | PointerAdd: ... + ... | test.cpp:322:19:322:22 | temp | test.cpp:325:24:325:26 | end | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:314:10:314:13 | temp | temp | test.cpp:333:13:333:24 | Store: ... = ... | write |

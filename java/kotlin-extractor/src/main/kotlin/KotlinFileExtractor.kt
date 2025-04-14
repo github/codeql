@@ -25,32 +25,21 @@ import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.classifierOrFail
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.types.isNullableAny
+import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeWithArguments
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
-import org.jetbrains.kotlin.ir.util.companionObject
-import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
-import org.jetbrains.kotlin.ir.util.hasAnnotation
-import org.jetbrains.kotlin.ir.util.hasInterfaceParent
-import org.jetbrains.kotlin.ir.util.isAnnotationClass
-import org.jetbrains.kotlin.ir.util.isAnonymousObject
-import org.jetbrains.kotlin.ir.util.isFakeOverride
-import org.jetbrains.kotlin.ir.util.isFunctionOrKFunction
-import org.jetbrains.kotlin.ir.util.isInterface
-import org.jetbrains.kotlin.ir.util.isLocal
-import org.jetbrains.kotlin.ir.util.isNonCompanionObject
-import org.jetbrains.kotlin.ir.util.isObject
-import org.jetbrains.kotlin.ir.util.isSuspend
-import org.jetbrains.kotlin.ir.util.isSuspendFunctionOrKFunction
-import org.jetbrains.kotlin.ir.util.isVararg
-import org.jetbrains.kotlin.ir.util.kotlinFqName
-import org.jetbrains.kotlin.ir.util.packageFqName
-import org.jetbrains.kotlin.ir.util.parentAsClass
-import org.jetbrains.kotlin.ir.util.parentClassOrNull
-import org.jetbrains.kotlin.ir.util.parents
-import org.jetbrains.kotlin.ir.util.primaryConstructor
-import org.jetbrains.kotlin.ir.util.render
-import org.jetbrains.kotlin.ir.util.target
+import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.java.NOT_NULL_ANNOTATIONS
 import org.jetbrains.kotlin.load.java.NULLABLE_ANNOTATIONS
@@ -192,11 +181,17 @@ open class KotlinFileExtractor(
         }
 
     private fun FunctionDescriptor.tryIsHiddenToOvercomeSignatureClash(d: IrFunction): Boolean {
+        // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash`
+        // throws one exception or other in Kotlin 2, depending on the version.
+        // TODO: We need a replacement for this for Kotlin 2
         try {
             return this.isHiddenToOvercomeSignatureClash
         } catch (e: NotImplementedError) {
-            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-            // TODO: We need a replacement for this for Kotlin 2
+            if (!usesK2) {
+                logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            }
+            return false
+        } catch (e: IllegalStateException) {
             if (!usesK2) {
                 logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
             }
@@ -325,7 +320,7 @@ open class KotlinFileExtractor(
             // parameter S of
             // `class Generic<T> { public <S> Generic(T t, S s) { ... } }` will have `tp.index` 1,
             // not 0).
-            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, 0, parentId)
+            tw.writeTypeVars(id, tp.name.asString(), apparentIndex, parentId)
             val locId = tw.getLocation(tp)
             tw.writeHasLocation(id, locId)
 
@@ -501,8 +496,6 @@ open class KotlinFileExtractor(
                 tw.writeIsRaw(id)
             }
 
-            val unbound = useClassSource(c)
-            tw.writeErasure(id, unbound)
             extractClassModifiers(c, id)
             extractClassSupertypes(
                 c,
@@ -826,7 +819,7 @@ open class KotlinFileExtractor(
         fun exprId() = tw.getLabelFor<DbExpr>("@\"annotationExpr;{$parent};$idx\"")
 
         return when (v) {
-            is IrConst<*> -> {
+            is CodeQLIrConst<*> -> {
                 extractConstant(v, parent, idx, null, null, overrideId = exprId())
             }
             is IrGetEnumValue -> {
@@ -1020,7 +1013,7 @@ open class KotlinFileExtractor(
                     // here.
                     val instance = useObjectClassInstance(c)
                     val type = useSimpleTypeClass(c, emptyList(), false)
-                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id, instance.id)
+                    tw.writeFields(instance.id, instance.name, type.javaResult.id, id)
                     tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                     tw.writeHasLocation(instance.id, locId)
                     addModifiers(instance.id, "public", "static", "final")
@@ -1237,8 +1230,7 @@ open class KotlinFileExtractor(
                                 instance.id,
                                 instance.name,
                                 type.javaResult.id,
-                                parentId,
-                                instance.id
+                                parentId
                             )
                             tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
@@ -2313,7 +2305,7 @@ open class KotlinFileExtractor(
             // synthesised and inherit the annotation from the delegate (which given it has
             // @NotNull, is likely written in Java)
             JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless {
-                t.isNullable() ||
+                t.isNullableCodeQL() ||
                     primitiveTypeMapping.getPrimitiveInfo(t) != null ||
                     hasExistingAnnotation(it)
             }
@@ -2600,7 +2592,7 @@ open class KotlinFileExtractor(
         isStatic: Boolean
     ): Label<out DbField> {
         val t = useType(type)
-        tw.writeFields(id, name, t.javaResult.id, parentId, id)
+        tw.writeFields(id, name, t.javaResult.id, parentId)
         tw.writeFieldsKotlinType(id, t.kotlinResult.id)
         tw.writeHasLocation(id, locId)
 
@@ -2757,7 +2749,7 @@ open class KotlinFileExtractor(
             DeclarationStackAdjuster(ee).use {
                 val id = useEnumEntry(ee)
                 val type = getEnumEntryType(ee) ?: return
-                tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId, id)
+                tw.writeFields(id, ee.name.asString(), type.javaResult.id, parentId)
                 tw.writeFieldsKotlinType(id, type.kotlinResult.id)
                 val locId = tw.getLocation(ee)
                 tw.writeHasLocation(id, locId)
@@ -3995,7 +3987,7 @@ open class KotlinFileExtractor(
                 target.parent
             } else {
                 val st = extensionReceiverParameter.type as? IrSimpleType
-                if (isNullable != null && st?.isNullable() != isNullable) {
+                if (isNullable != null && st?.isNullableCodeQL() != isNullable) {
                     verboseln("Nullablility of type didn't match")
                     return false
                 }
@@ -4641,9 +4633,9 @@ open class KotlinFileExtractor(
                     val isPrimitiveArrayCreation = !isBuiltinCallKotlin(c, "arrayOf")
                     val elementType =
                         if (isPrimitiveArrayCreation) {
-                            c.type.getArrayElementType(pluginContext.irBuiltIns)
+                            c.type.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
                         } else {
-                            // TODO: is there any reason not to always use getArrayElementType?
+                            // TODO: is there any reason not to always use getArrayElementTypeCodeQL?
                             if (c.typeArgumentsCount == 1) {
                                 c.getTypeArgument(0).also {
                                     if (it == null) {
@@ -5765,7 +5757,14 @@ open class KotlinFileExtractor(
     ) =
         exprIdOrFresh<DbNullliteral>(overrideId).also {
             val type = useType(t)
-            tw.writeExprs_nullliteral(it, type.javaResult.id, parent, idx)
+            // Match Java by using a special <nulltype> for nulls, rather than Kotlin's view of this which is
+            // kotlin.Nothing?, the type that can only contain null.
+            val nullTypeName = "<nulltype>"
+            val javaNullType = tw.getLabelFor<DbPrimitive>(
+                "@\"type;$nullTypeName\"",
+                { tw.writePrimitives(it, nullTypeName) }
+            )
+            tw.writeExprs_nullliteral(it, javaNullType, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
             extractExprContext(it, locId, callable, enclosingStmt)
         }
@@ -5999,7 +5998,7 @@ open class KotlinFileExtractor(
                         extractExpressionExpr(a, callable, id, i, exprParent.enclosingStmt)
                     }
                 }
-                is IrConst<*> -> {
+                is CodeQLIrConst<*> -> {
                     val exprParent = parent.expr(e, callable)
                     extractConstant(
                         e,
@@ -6211,9 +6210,9 @@ open class KotlinFileExtractor(
                     if (
                         (isAndAnd || isOrOr) &&
                             e.branches.size == 2 &&
-                            (e.branches[1].condition as? IrConst<*>)?.value == true &&
+                            (e.branches[1].condition as? CodeQLIrConst<*>)?.value == true &&
                             (e.branches[if (e.origin == IrStatementOrigin.ANDAND) 1 else 0].result
-                                    as? IrConst<*>)
+                                    as? CodeQLIrConst<*>)
                                 ?.value == isOrOr
                     ) {
 
@@ -6869,7 +6868,7 @@ open class KotlinFileExtractor(
         }
 
     private fun extractConstant(
-        e: IrConst<*>,
+        e: CodeQLIrConst<*>,
         parent: Label<out DbExprparent>,
         idx: Int,
         enclosingCallable: Label<out DbCallable>?,
@@ -9041,7 +9040,7 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(id, locId)
 
         // Extract constructor
-        val unitType = useType(pluginContext.irBuiltIns.unitType)
+        val unitType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
         tw.writeConstrs(ids.constructor, "", "", unitType.javaResult.id, id, ids.constructor)
         tw.writeConstrsKotlinType(ids.constructor, unitType.kotlinResult.id)
         tw.writeHasLocation(ids.constructor, locId)

@@ -17,7 +17,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import RemoteUrlToOpenStreamFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "openstream-called-on-tainted-url" }
 }
 
@@ -33,7 +33,7 @@ class UrlConstructor extends ClassInstanceExpr {
 }
 
 module RemoteUrlToOpenStreamFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall m |
@@ -53,11 +53,11 @@ module RemoteUrlToOpenStreamFlowConfig implements DataFlow::ConfigSig {
 
 module RemoteUrlToOpenStreamFlow = TaintTracking::Global<RemoteUrlToOpenStreamFlowConfig>;
 
-from
-  RemoteUrlToOpenStreamFlow::PathNode source, RemoteUrlToOpenStreamFlow::PathNode sink,
-  MethodCall call
-where
+deprecated query predicate problems(
+  MethodCall call, RemoteUrlToOpenStreamFlow::PathNode source,
+  RemoteUrlToOpenStreamFlow::PathNode sink, string message
+) {
   sink.getNode().asExpr() = call.getQualifier() and
-  RemoteUrlToOpenStreamFlow::flowPath(source, sink)
-select call, source, sink,
-  "URL on which openStream is called may have been constructed from remote source."
+  RemoteUrlToOpenStreamFlow::flowPath(source, sink) and
+  message = "URL on which openStream is called may have been constructed from remote source."
+}

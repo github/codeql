@@ -6,6 +6,7 @@
  *              or comments.
  * @kind metric
  * @tags summary
+ *       debug
  */
 
 import java

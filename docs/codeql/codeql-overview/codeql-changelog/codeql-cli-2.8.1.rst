@@ -82,7 +82,7 @@ Bug Fixes
 Python
 """"""
 
-*   The `View AST functionality <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code/>`__ no longer prints detailed information about regular expressions, greatly improving performance.
+*   The `View AST functionality <https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code>`__ no longer prints detailed information about regular expressions, greatly improving performance.
 
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,8 +104,8 @@ C/C++
 
 *   Added a new query, :code:`cpp/open-call-with-mode-argument`, to detect when :code:`open` or :code:`openat` is called with the :code:`O_CREAT` or :code:`O_TMPFILE` flag but when the :code:`mode` argument is omitted.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query "Cleartext storage of sensitive information using a local database on Android" (:code:`java/android/cleartext-storage-database`) has been added. This query finds instances of sensitive data being stored in local databases without encryption, which may expose it to attackers or malicious applications.
 

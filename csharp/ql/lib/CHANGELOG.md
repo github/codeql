@@ -1,3 +1,172 @@
+## 5.1.3
+
+### Minor Analysis Improvements
+
+* The models for `System.Uri` have been modified to better model the flow of tainted URIs.
+* Modeled parameter passing between Blazor parent and child components.
+
+## 5.1.2
+
+No user-facing changes.
+
+## 5.1.1
+
+No user-facing changes.
+
+## 5.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+### Minor Analysis Improvements
+
+* Full support for C# 13 / .NET 9. All new language features are now supported by the extractor. QL library and data flow support for the new C# 13 language constructs and generated MaD models for the .NET 9 runtime.
+* C# 13: Add generated models for .NET 9.
+* The models for `System.Net.Http.HttpRequestMessage` and `System.UriBuilder` have been modified to better model the flow of tainted URIs.
+* Blazor `[Parameter]` fields bound to a variable from the route specified in the `@page` directive are now modeled as remote flow sources.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInstanceType` predicate from the `UnboundGenericType` class.
+* Deleted the deprecated `getElement` predicate from the `Node` class in `ControlFlowGraph.qll`, use `getAstNode` instead.
+
+### Minor Analysis Improvements
+
+* C# 13: Added MaD models for some overload implementations using `ReadOnlySpan` parameters (like `String.Format(System.String, System.ReadOnlySpan<System.Object>))`).
+* C# 13: Added support for the overload resolution priority attribute (`OverloadResolutionPriority`). Usages of the attribute and the corresponding priority can be found using the QL class `SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute`.
+* C# 13: Added support for partial properties and indexers.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Added extractor support for extracting implicit `ToString` calls in binary `+` expressions and string interpolation expressions.
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+* C# 13: Added extractor support and call dispatch logic (data flow) for the (negative) type parameter constraint `allows ref struct`. Added extractor support for the type parameter constraint `notnull`.
+
+## 4.0.1
+
+### Minor Analysis Improvements
+
+* C# 13: Added QL library support for *collection* like type `params` parameters.
+* Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
+  - `[SupplyParameterFromForm]`
+  - `[SupplyParameterFromQuery]`
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
+* Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Added support for data-flow through member accesses of objects with `dynamic` types.
+* Only extract *public* and *protected* members from reference assemblies. This yields an approximate average speed-up of around 10% for extraction and query execution. Custom MaD rows using `Field`-based summaries may need to be changed to `SyntheticField`-based flows if they reference private fields.
+* Added `Microsoft.AspNetCore.Components.NagivationManager::Uri` as a remote flow source, since this value may contain user-specified values.
+* Added the following URI-parsing methods as summaries, as they may be tainted with user-specified values:
+  - `System.Web.HttpUtility::ParseQueryString`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* The generated .NET 8 runtime models have been updated.
+
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* C#: Add support for MaD directly on properties and indexers using *attributes*. Using `Attribute.Getter` or `Attribute.Setter` in the model `ext` field applies the model to the getter or setter for properties and indexers. Prior to this change `Attribute` models unintentionally worked for property setters (if the property is decorated with the matching attribute). That is, a model that uses the `Attribute` feature directly on a property for a property setter needs to be changed to `Attribute.Setter`.
+* C#: Remove all CIL tables and related QL library functionality.
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* `DataFlow::Node` instances are no longer created for library methods and fields that are not callable (either statically or dynamically) or otherwise referred to from source code. This may affect third-party queries that use these nodes to identify library methods or fields that are present in DLL files where those methods or fields are unreferenced. If this presents a problem, consider using `Callable` and other non-dataflow classes to identify such library entities.
+* C#: Add extractor support for attributes on indexers.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+
+### Minor Analysis Improvements
+
+* Parameters of public methods in abstract controller-like classes are now considered remote flow sources.
+* The reported location of `partial` methods has been changed from the definition to the implementation part.
+
+## 1.2.0
+
+### New Features
+
+* C# support for `build-mode: none` is now out of beta, and generally available.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* Added some new `local` source models. Most prominently `System.IO.Path.GetTempPath` and `System.Environment.GetFolderPath`. This might produce more alerts, if the `local` threat model is enabled.
+* The extractor has been changed to not skip source files that have already been seen. This has an impact on source files that are compiled multiple times in the build process. Source files with conditional compilation preprocessor directives (such as `#if`) are now extracted for each set of preprocessor symbols that are used during the build process.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
 ## 0.10.1
 
 No user-facing changes.

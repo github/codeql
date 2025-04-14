@@ -1,0 +1,32 @@
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches: ["master", "*-rc"]
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+
+      - name: Set Branch Variables
+        id: set-branch-variables
+        env:
+          github_event_pull_request_head_repo_owner_login: ${{ github.event.pull_request.head.repo.owner.login }}
+          github_repository_owner: ${{ github.repository_owner }}
+        run: |
+          # Set the Repo Owner
+          REPO_OWNER="${github_event_pull_request_head_repo_owner_login:-$github_repository_owner}"
+          echo "REPO_OWNER=$REPO_OWNER" >> $GITHUB_ENV
+      - name: Sanitize Github Variables
+        id: sanitize-github-variables
+        env:
+          GITHUB_EVENT_PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Delete non-alphanumeric characters and limit to 75 chars which is the branch title limit in GitHub
+          SAFE_PULL_REQUEST_TITLE=$(echo "${GITHUB_EVENT_PULL_REQUEST_TITLE}" | tr -cd '[:alnum:]_ -' | cut -c1-75)
+          echo "SAFE_PULL_REQUEST_TITLE=$SAFE_PULL_REQUEST_TITLE" >> $GITHUB_ENV

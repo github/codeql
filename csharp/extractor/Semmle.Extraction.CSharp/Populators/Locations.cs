@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             return symbol.DeclaringSyntaxReferences.Any() ?
                 symbol.DeclaringSyntaxReferences.First().GetSyntax().FixedLocation() :
-                symbol.Locations.First();
+                symbol.Locations.Best();
         }
     }
 }

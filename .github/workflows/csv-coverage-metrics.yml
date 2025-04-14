@@ -37,7 +37,7 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/java-database"
           codeql database analyze --format=sarif-latest --output=metrics-java.sarif -- "$DATABASE" ./java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: metrics-java.sarif
           path: metrics-java.sarif
@@ -64,7 +64,7 @@ jobs:
         run: |
           DATABASE="${{ runner.temp }}/csharp-database"
           codeql database analyze --format=sarif-latest --output=metrics-csharp.sarif -- "$DATABASE" ./csharp/ql/src/Metrics/Summaries/FrameworkCoverage.ql
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: metrics-csharp.sarif
           path: metrics-csharp.sarif

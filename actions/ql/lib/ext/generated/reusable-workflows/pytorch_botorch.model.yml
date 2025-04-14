@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pytorch/botorch/.github/workflows/reusable_website.yml", "*", "input.release_tag", "code-injection", "generated"]

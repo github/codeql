@@ -39,8 +39,6 @@
 | qualifiedNames.cpp:39:3:39:19 | typedefStructName | typedefStructName |  |  | typedefStructName | typedefStructName |
 | qualifiedNames.cpp:39:23:39:40 | ptypedefStructName | ptypedefStructName |  |  | ptypedefStructName | ptypedefStructName |
 | qualifiedNames.cpp:41:11:41:18 | typedefC | typedefC |  |  | typedefC | typedefC |
-| qualifiedNames.cpp:45:10:45:10 | operator= | templates::TemplateClass<unsigned long>::operator= | templates | TemplateClass | operator= | (not global) |
-| qualifiedNames.cpp:45:10:45:10 | operator= | templates::TemplateClass<unsigned long>::operator= | templates | TemplateClass | operator= | (not global) |
 | qualifiedNames.cpp:45:10:45:22 | TemplateClass<T> | templates::TemplateClass<T> | templates |  | TemplateClass | (not global) |
 | qualifiedNames.cpp:45:10:45:22 | TemplateClass<T> | templates::TemplateClass<T> | templates |  | TemplateClass | (not global) |
 | qualifiedNames.cpp:45:10:45:22 | TemplateClass<unsigned long> | templates::TemplateClass<unsigned long> | templates |  | TemplateClass | (not global) |

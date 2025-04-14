@@ -65,7 +65,14 @@ module NonConstantTimeComparisonConfig implements DataFlow::ConfigSig {
 
 module NonConstantTimeComparisonFlow = TaintTracking::Global<NonConstantTimeComparisonConfig>;
 
-from NonConstantTimeComparisonFlow::PathNode source, NonConstantTimeComparisonFlow::PathNode sink
-where NonConstantTimeComparisonFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Possible timing attack against $@ validation.",
-  source.getNode(), "client-supplied token"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, NonConstantTimeComparisonFlow::PathNode source,
+  NonConstantTimeComparisonFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  NonConstantTimeComparisonFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Possible timing attack against $@ validation." and
+  sourceNode = source.getNode() and
+  message2 = "client-supplied token"
+}

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["quay/clair", "*", "input.tag", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.repo", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.quay", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.duration", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.token", "code-injection", "generated"]
+     - ["quay/clair", "*", "input.dir", "code-injection", "generated"]

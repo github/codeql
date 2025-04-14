@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["vesoft-inc/nebula", "*", "input.target-path", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.bucket", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.key-secret", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.key-id", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.endpoint", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.asset-path", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "input.tag", "code-injection", "generated"]

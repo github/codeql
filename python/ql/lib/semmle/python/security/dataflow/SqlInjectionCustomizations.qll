@@ -32,9 +32,14 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A SQL statement of a SQL construction, considered as a flow sink.
@@ -51,9 +56,12 @@ module SqlInjection {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 
   private import semmle.python.frameworks.data.ModelsAsData
 

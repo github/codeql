@@ -1,7 +1,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextLoggingQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CleartextLogging implements TestSig {
   string getARelevantTag() { result = "hasCleartextLogging" }

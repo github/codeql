@@ -45,10 +45,10 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   Stmt getAChild() { result.getParent() = this }
 
   /** Gets the basic block in which this statement occurs. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asStmt() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this statement. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asStmt() = this }
 
   /** Cast this statement to a class that provides access to metrics information. */
   MetricStmt getMetrics() { result = this }

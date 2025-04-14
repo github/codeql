@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["learningequality/kolibri/.github/workflows/upload_github_release_asset.yml", "*", "input.release_id", "code-injection", "generated"]
+     - ["learningequality/kolibri/.github/workflows/upload_github_release_asset.yml", "*", "input.filename", "code-injection", "generated"]
+     - ["learningequality/kolibri/.github/workflows/pypi_upload.yml", "*", "input.tar-file-name", "code-injection", "generated"]
+     - ["learningequality/kolibri/.github/workflows/pypi_upload.yml", "*", "input.whl-file-name", "code-injection", "generated"]

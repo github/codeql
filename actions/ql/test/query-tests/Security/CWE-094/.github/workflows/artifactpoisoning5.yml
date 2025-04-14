@@ -1,0 +1,23 @@
+# It consumes an artifact produced by the First Workflow
+
+on: workflow_run
+jobs:
+  my-second-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+            workflow: ${{github.event.workflow_run.workflow_id}}
+            run_id: ${{github.event.workflow_run.id}}
+            name: artifact
+
+      # Save PR id to output
+      - name: Save artifact data
+        id: artifact
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./artifact.txt
+      - name: Use artifact
+        run: echo ${{ steps.artifact.outputs.content }} 
+

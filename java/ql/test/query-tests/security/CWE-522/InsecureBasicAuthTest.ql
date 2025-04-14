@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.InsecureBasicAuthQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HasInsecureBasicAuthTest implements TestSig {
   string getARelevantTag() { result = "hasInsecureBasicAuth" }

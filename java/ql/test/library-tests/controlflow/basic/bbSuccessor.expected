@@ -6,7 +6,7 @@
 | Test.java:18:3:18:8 | <Expr>; | Test.java:24:4:24:10 | return ... |
 | Test.java:22:4:22:10 | <Expr>; | Test.java:30:15:33:3 | { ... } |
 | Test.java:22:4:22:10 | <Expr>; | Test.java:35:3:35:9 | <Expr>; |
-| Test.java:24:4:24:10 | return ... | Test.java:4:14:4:17 | test |
+| Test.java:24:4:24:10 | return ... | Test.java:4:14:4:17 | Exit |
 | Test.java:30:15:33:3 | { ... } | Test.java:35:3:35:9 | <Expr>; |
 | Test.java:35:3:35:9 | <Expr>; | Test.java:38:9:38:9 | x |
 | Test.java:38:9:38:9 | x | Test.java:38:16:41:3 | { ... } |
@@ -27,4 +27,4 @@
 | Test.java:57:15:60:5 | { ... } | Test.java:70:3:70:9 | <Expr>; |
 | Test.java:60:12:62:5 | { ... } | Test.java:54:26:54:26 | j |
 | Test.java:63:9:66:4 | { ... } | Test.java:54:26:54:26 | j |
-| Test.java:70:3:70:9 | <Expr>; | Test.java:4:14:4:17 | test |
+| Test.java:70:3:70:9 | <Expr>; | Test.java:4:14:4:17 | Exit |

@@ -1,0 +1,74 @@
+name: Argument injection
+
+on:
+  pull_request_target:
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    env:
+      TITLE: ${{github.event.pull_request.title}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - run: |
+          # NOT VULNERABLE
+          echo "s/FOO/$TITLE/g"
+      - run: |
+          # VULNERABLE
+          sed "s/FOO/$TITLE/g"
+      - run: |
+          # VULNERABLE
+          echo "foo" | sed "s/FOO/$TITLE/g" > bar
+      - run: |
+          # VULNERABLE
+          echo $(echo "foo" | sed "s/FOO/$TITLE/g" > bar)
+      - run: |
+          # VULNERABLE
+          awk "BEGIN {$TITLE}"
+      - run: |
+          # VULNERABLE
+          sed -i "s/git_branch = .*/git_branch = \"$GITHUB_HEAD_REF\"/" config.json
+      - run: |
+          # VULNERABLE
+          sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json
+      - run: |
+          # VULNERABLE
+          sed -e 's#<branch_to_sync>#${TITLE}#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#TITLE#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky
+      - run: |
+          # VULNERABLE
+          sed -e 's#<branch_to_sync>#TITLE#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#${TITLE}#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky
+      - run: |
+          # VULNERABLE
+          BODY=$(git log --format=%s)
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD)
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD )
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # VULNERABLE
+          BODY=$(git diff --name-only HEAD^ | xargs)
+          sed "s/FOO/$BODY/g" > /tmp/foo
+      - run: |
+          # NOT VULNERABLE
+          echo "value=$(git log -1 --pretty=%s)" >> $GITHUB_OUTPUT
+      - run: |
+          # NOT VULNERABLE
+          git log -1 --pretty=%s
+      - run: |
+          # NOT VULNERABLE
+          BODY=$(git log --format=%s)
+          sed -E 's/\s+/\n/g' <<<"$BODY"

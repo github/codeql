@@ -1,3 +1,4 @@
+/actions/ @github/codeql-dynamic
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor
@@ -13,6 +14,9 @@
 /java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
+# Experimental CodeQL cryptography
+**/experimental/quantum/ @github/ps-codeql
+
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers
@@ -23,7 +27,6 @@
 /ql/ @github/codeql-ql-for-ql-reviewers
 
 # Bazel (excluding BUILD.bazel files)
-WORKSPACE.bazel @github/codeql-ci-reviewers
 MODULE.bazel @github/codeql-ci-reviewers
 .bazelversion @github/codeql-ci-reviewers
 .bazelrc @github/codeql-ci-reviewers
@@ -43,3 +46,6 @@ MODULE.bazel @github/codeql-ci-reviewers
 # Misc
 /misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
 /misc/scripts/generate-code-scanning-query-list.py @RasmusWL
+
+# .devcontainer
+/.devcontainer/ @github/codeql-ci-reviewers

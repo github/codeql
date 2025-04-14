@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/oryx/.github/workflows/automationTemplate.yaml", "*", "input.platformName", "code-injection", "generated"]

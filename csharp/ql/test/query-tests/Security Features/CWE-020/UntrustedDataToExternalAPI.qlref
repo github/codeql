@@ -1,1 +1,2 @@
-Security Features/CWE-020/UntrustedDataToExternalAPI.ql
+query: Security Features/CWE-020/UntrustedDataToExternalAPI.ql
+postprocess: utils/test/PrettyPrintModels.ql

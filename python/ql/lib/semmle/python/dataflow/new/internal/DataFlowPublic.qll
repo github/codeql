@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
 
@@ -70,6 +71,9 @@ newtype TNode =
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
     )
+    or
+    // the iterable argument to the implicit comprehension function
+    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) {
@@ -123,8 +127,22 @@ newtype TNode =
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TSynthCapturedVariablesParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
-    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(f))
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension. */
+  TSynthCompCapturedVariablesArgumentNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
+  TSynthCompCapturedVariablesArgumentPostUpdateNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
 
 private import semmle.python.internal.CachedStages
@@ -211,6 +229,12 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+
+  /** Gets the data-flow node corresponding to the first tuple (*) argument of the call corresponding to this data-flow node, if any. */
+  Node getStarArg() { result.asCfgNode() = node.getStarArg() }
+
+  /** Gets the data-flow node corresponding to a dictionary (**) argument of the call corresponding to this data-flow node, if any. */
+  Node getKwargs() { result.asCfgNode() = node.getKwargs() }
 }
 
 /**
@@ -336,6 +360,9 @@ class ExtractedArgumentNode extends ArgumentNode {
     or
     // and self arguments
     this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+    or
+    // for comprehensions, we allow the synthetic `iterable` argument
+    this.asExpr() = any(Comp c).getIterable()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -660,16 +687,23 @@ newtype TContent =
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }
+
+  /** Gets the Models-as-Data representation of this content (if any). */
+  string getMaDRepresentation() { none() }
 }
 
 /** An element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
+
+  override string getMaDRepresentation() { result = "ListElement" }
 }
 
 /** An element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
+
+  override string getMaDRepresentation() { result = "SetElement" }
 }
 
 /** An element of a tuple at a specific index. */
@@ -682,6 +716,8 @@ class TupleElementContent extends TTupleElementContent, Content {
   int getIndex() { result = index }
 
   override string toString() { result = "Tuple element at index " + index.toString() }
+
+  override string getMaDRepresentation() { result = "TupleElement[" + index + "]" }
 }
 
 /** An element of a dictionary under a specific key. */
@@ -694,11 +730,15 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   string getKey() { result = key }
 
   override string toString() { result = "Dictionary element at key " + key }
+
+  override string getMaDRepresentation() { result = "DictionaryElement[" + key + "]" }
 }
 
 /** An element of a dictionary under any key. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
+
+  override string getMaDRepresentation() { result = "DictionaryElementAny" }
 }
 
 /** An object attribute. */
@@ -711,6 +751,8 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+
+  override string getMaDRepresentation() { result = "Attribute[" + attr + "]" }
 }
 
 /** A captured variable. */
@@ -723,6 +765,8 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
   VariableCapture::CapturedVariable getVariable() { result = v }
 
   override string toString() { result = "captured " + v }
+
+  override string getMaDRepresentation() { none() }
 }
 
 /**

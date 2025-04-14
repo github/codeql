@@ -32,8 +32,8 @@ C/C++
 
 *   The :code:`cpp/uninitialized-local` query now excludes uninitialized uses that are explicitly cast to void and are expression statements. As a result, the query will report less false positives.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query "Unsafe resource fetching in Android WebView" (:code:`java/android/unsafe-android-webview-fetch`) now recognizes WebViews where :code:`setJavascriptEnabled`, :code:`setAllowFileAccess`, :code:`setAllowUniversalAccessFromFileURLs`, and/or :code:`setAllowFileAccessFromFileURLs` are set inside the function block of the Kotlin :code:`apply` function.
 
@@ -104,8 +104,8 @@ Golang
 *   Support for `gqlgen <https://github.com/99designs/gqlgen>`__ has been added.
 *   Support for the `go-pg framework <https://github.com/go-pg/pg>`__ has been improved.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Data flow configurations can now include a predicate :code:`neverSkip(Node node)` in order to ensure inclusion of certain nodes in the path explanations. The predicate defaults to the end-points of the additional flow steps provided in the configuration, which means that such steps now always are visible by default in path explanations.
     
@@ -178,8 +178,8 @@ Golang
 *   The :code:`DataFlow::StateConfigSig` signature module has gained default implementations for :code:`isBarrier/2` and :code:`isAdditionalFlowStep/4`.
     Hence it is no longer needed to provide :code:`none()` implementations of these predicates if they are not needed.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`DataFlow::StateConfigSig` signature module has gained default implementations for :code:`isBarrier/2` and :code:`isAdditionalFlowStep/4`.
     Hence it is no longer needed to provide :code:`none()` implementations of these predicates if they are not needed.

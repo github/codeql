@@ -8,6 +8,7 @@ import Stmt
 import Type
 import exprs.Call
 private import commons.QualifiedName
+private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
@@ -21,70 +22,6 @@ private import TypeRef
  * (`LocalFunction`).
  */
 class Callable extends Parameterizable, ExprOrStmtParent, @callable {
-  pragma[noinline]
-  deprecated private string getDeclaringTypeLabel() { result = this.getDeclaringType().getLabel() }
-
-  pragma[noinline]
-  deprecated private string getParameterTypeLabelNonGeneric(int p) {
-    not this instanceof Generic and
-    result = this.getParameter(p).getType().getLabel()
-  }
-
-  language[monotonicAggregates]
-  pragma[nomagic]
-  deprecated private string getMethodParamListNonGeneric() {
-    result =
-      concat(int p |
-        p in [0 .. this.getNumberOfParameters() - 1]
-      |
-        this.getParameterTypeLabelNonGeneric(p), "," order by p
-      )
-  }
-
-  pragma[noinline]
-  deprecated private string getParameterTypeLabelGeneric(int p) {
-    this instanceof Generic and
-    result = this.getParameter(p).getType().getLabel()
-  }
-
-  language[monotonicAggregates]
-  pragma[nomagic]
-  deprecated private string getMethodParamListGeneric() {
-    result =
-      concat(int p |
-        p in [0 .. this.getNumberOfParameters() - 1]
-      |
-        this.getParameterTypeLabelGeneric(p), "," order by p
-      )
-  }
-
-  pragma[noinline]
-  deprecated private string getLabelNonGeneric() {
-    not this instanceof Generic and
-    result =
-      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
-        this.getUndecoratedName() + "(" + this.getMethodParamListNonGeneric() + ")"
-  }
-
-  pragma[noinline]
-  deprecated private string getLabelGeneric() {
-    result =
-      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
-        this.getUndecoratedName() + getGenericsLabel(this) + "(" + this.getMethodParamListGeneric() +
-        ")"
-  }
-
-  deprecated final override string getLabel() {
-    result = this.getLabelNonGeneric() or
-    result = this.getLabelGeneric()
-  }
-
-  deprecated private string getReturnTypeLabel() {
-    result = this.getReturnType().getLabel()
-    or
-    not exists(this.getReturnType()) and result = "System.Void"
-  }
-
   /** Gets the return type of this callable. */
   Type getReturnType() { none() }
 
@@ -337,7 +274,7 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   Type getParamsType() {
     exists(Parameter last | last = this.getParameter(this.getNumberOfParameters() - 1) |
       last.isParams() and
-      result = last.getType().(ArrayType).getElementType()
+      result = last.getType().(ParamsCollectionType).getElementType()
     )
   }
 

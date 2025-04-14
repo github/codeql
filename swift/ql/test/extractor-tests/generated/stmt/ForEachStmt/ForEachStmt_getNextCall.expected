@@ -1,0 +1,2 @@
+| for.swift:4:5:6:5 | for ... in ... where ... { ... } | for.swift:4:5:4:5 | call to next() |
+| for.swift:7:5:9:5 | for ... in ... { ... } | for.swift:7:5:7:5 | call to next() |

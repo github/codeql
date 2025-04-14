@@ -1,0 +1,650 @@
+models
+| 1 | Summary: android.net; Uri$Builder; false; appendEncodedPath; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: android.net; Uri$Builder; false; appendEncodedPath; ; ; Argument[this]; ReturnValue; value; manual |
+| 3 | Summary: android.net; Uri$Builder; false; appendPath; ; ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: android.net; Uri$Builder; false; appendPath; ; ; Argument[this]; ReturnValue; value; manual |
+| 5 | Summary: android.net; Uri$Builder; false; appendQueryParameter; ; ; Argument[0..1]; Argument[this]; taint; manual |
+| 6 | Summary: android.net; Uri$Builder; false; appendQueryParameter; ; ; Argument[this]; ReturnValue; value; manual |
+| 7 | Summary: android.net; Uri$Builder; false; authority; ; ; Argument[0]; Argument[this]; taint; manual |
+| 8 | Summary: android.net; Uri$Builder; false; authority; ; ; Argument[this]; ReturnValue; value; manual |
+| 9 | Summary: android.net; Uri$Builder; false; build; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: android.net; Uri$Builder; false; clearQuery; ; ; Argument[this]; ReturnValue; value; manual |
+| 11 | Summary: android.net; Uri$Builder; false; encodedAuthority; ; ; Argument[0]; Argument[this]; taint; manual |
+| 12 | Summary: android.net; Uri$Builder; false; encodedAuthority; ; ; Argument[this]; ReturnValue; value; manual |
+| 13 | Summary: android.net; Uri$Builder; false; encodedFragment; ; ; Argument[0]; Argument[this]; taint; manual |
+| 14 | Summary: android.net; Uri$Builder; false; encodedFragment; ; ; Argument[this]; ReturnValue; value; manual |
+| 15 | Summary: android.net; Uri$Builder; false; encodedOpaquePart; ; ; Argument[0]; Argument[this]; taint; manual |
+| 16 | Summary: android.net; Uri$Builder; false; encodedOpaquePart; ; ; Argument[this]; ReturnValue; value; manual |
+| 17 | Summary: android.net; Uri$Builder; false; encodedPath; ; ; Argument[0]; Argument[this]; taint; manual |
+| 18 | Summary: android.net; Uri$Builder; false; encodedPath; ; ; Argument[this]; ReturnValue; value; manual |
+| 19 | Summary: android.net; Uri$Builder; false; encodedQuery; ; ; Argument[0]; Argument[this]; taint; manual |
+| 20 | Summary: android.net; Uri$Builder; false; encodedQuery; ; ; Argument[this]; ReturnValue; value; manual |
+| 21 | Summary: android.net; Uri$Builder; false; fragment; ; ; Argument[0]; Argument[this]; taint; manual |
+| 22 | Summary: android.net; Uri$Builder; false; fragment; ; ; Argument[this]; ReturnValue; value; manual |
+| 23 | Summary: android.net; Uri$Builder; false; opaquePart; ; ; Argument[0]; Argument[this]; taint; manual |
+| 24 | Summary: android.net; Uri$Builder; false; opaquePart; ; ; Argument[this]; ReturnValue; value; manual |
+| 25 | Summary: android.net; Uri$Builder; false; path; ; ; Argument[0]; Argument[this]; taint; manual |
+| 26 | Summary: android.net; Uri$Builder; false; path; ; ; Argument[this]; ReturnValue; value; manual |
+| 27 | Summary: android.net; Uri$Builder; false; query; ; ; Argument[0]; Argument[this]; taint; manual |
+| 28 | Summary: android.net; Uri$Builder; false; query; ; ; Argument[this]; ReturnValue; value; manual |
+| 29 | Summary: android.net; Uri$Builder; false; scheme; ; ; Argument[0]; Argument[this]; taint; manual |
+| 30 | Summary: android.net; Uri$Builder; false; scheme; ; ; Argument[this]; ReturnValue; value; manual |
+| 31 | Summary: android.net; Uri$Builder; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 32 | Summary: android.net; Uri; false; decode; ; ; Argument[0]; ReturnValue; taint; manual |
+| 33 | Summary: android.net; Uri; false; encode; ; ; Argument[0]; ReturnValue; taint; manual |
+| 34 | Summary: android.net; Uri; false; fromFile; ; ; Argument[0]; ReturnValue; taint; manual |
+| 35 | Summary: android.net; Uri; false; fromParts; ; ; Argument[0..2]; ReturnValue; taint; manual |
+| 36 | Summary: android.net; Uri; false; parse; ; ; Argument[0]; ReturnValue; taint; manual |
+| 37 | Summary: android.net; Uri; false; withAppendedPath; ; ; Argument[0..1]; ReturnValue; taint; manual |
+| 38 | Summary: android.net; Uri; false; writeToParcel; ; ; Argument[1]; Argument[0]; taint; manual |
+| 39 | Summary: android.net; Uri; true; buildUpon; ; ; Argument[this]; ReturnValue; taint; manual |
+| 40 | Summary: android.net; Uri; true; getAuthority; ; ; Argument[this]; ReturnValue; taint; manual |
+| 41 | Summary: android.net; Uri; true; getEncodedAuthority; ; ; Argument[this]; ReturnValue; taint; manual |
+| 42 | Summary: android.net; Uri; true; getEncodedFragment; ; ; Argument[this]; ReturnValue; taint; manual |
+| 43 | Summary: android.net; Uri; true; getEncodedPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 44 | Summary: android.net; Uri; true; getEncodedQuery; ; ; Argument[this]; ReturnValue; taint; manual |
+| 45 | Summary: android.net; Uri; true; getEncodedSchemeSpecificPart; ; ; Argument[this]; ReturnValue; taint; manual |
+| 46 | Summary: android.net; Uri; true; getEncodedUserInfo; ; ; Argument[this]; ReturnValue; taint; manual |
+| 47 | Summary: android.net; Uri; true; getFragment; ; ; Argument[this]; ReturnValue; taint; manual |
+| 48 | Summary: android.net; Uri; true; getHost; ; ; Argument[this]; ReturnValue; taint; manual |
+| 49 | Summary: android.net; Uri; true; getLastPathSegment; ; ; Argument[this]; ReturnValue; taint; manual |
+| 50 | Summary: android.net; Uri; true; getPath; ; ; Argument[this]; ReturnValue; taint; manual |
+| 51 | Summary: android.net; Uri; true; getPathSegments; ; ; Argument[this]; ReturnValue; taint; manual |
+| 52 | Summary: android.net; Uri; true; getQuery; ; ; Argument[this]; ReturnValue; taint; manual |
+| 53 | Summary: android.net; Uri; true; getQueryParameter; ; ; Argument[this]; ReturnValue; taint; manual |
+| 54 | Summary: android.net; Uri; true; getQueryParameterNames; ; ; Argument[this]; ReturnValue; taint; manual |
+| 55 | Summary: android.net; Uri; true; getQueryParameters; ; ; Argument[this]; ReturnValue; taint; manual |
+| 56 | Summary: android.net; Uri; true; getScheme; ; ; Argument[this]; ReturnValue; taint; manual |
+| 57 | Summary: android.net; Uri; true; getSchemeSpecificPart; ; ; Argument[this]; ReturnValue; taint; manual |
+| 58 | Summary: android.net; Uri; true; getUserInfo; ; ; Argument[this]; ReturnValue; taint; manual |
+| 59 | Summary: android.net; Uri; true; normalizeScheme; ; ; Argument[this]; ReturnValue; taint; manual |
+| 60 | Summary: android.net; Uri; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+edges
+| Test.java:20:21:20:41 | (...)... : Builder | Test.java:21:10:21:11 | in : Builder | provenance |  |
+| Test.java:20:34:20:41 | source(...) : Object | Test.java:20:21:20:41 | (...)... : Builder | provenance |  |
+| Test.java:21:10:21:11 | in : Builder | Test.java:21:10:21:35 | appendEncodedPath(...) : Builder | provenance | MaD:2 |
+| Test.java:21:10:21:35 | appendEncodedPath(...) : Builder | Test.java:22:9:22:11 | out | provenance |  |
+| Test.java:27:16:27:31 | (...)... : String | Test.java:28:26:28:27 | in : String | provenance |  |
+| Test.java:27:24:27:31 | source(...) : Object | Test.java:27:16:27:31 | (...)... : String | provenance |  |
+| Test.java:28:4:28:6 | out [post update] : Builder | Test.java:29:9:29:11 | out | provenance |  |
+| Test.java:28:26:28:27 | in : String | Test.java:28:4:28:6 | out [post update] : Builder | provenance | MaD:1 |
+| Test.java:34:21:34:41 | (...)... : Builder | Test.java:35:10:35:11 | in : Builder | provenance |  |
+| Test.java:34:34:34:41 | source(...) : Object | Test.java:34:21:34:41 | (...)... : Builder | provenance |  |
+| Test.java:35:10:35:11 | in : Builder | Test.java:35:10:35:28 | appendPath(...) : Builder | provenance | MaD:4 |
+| Test.java:35:10:35:28 | appendPath(...) : Builder | Test.java:36:9:36:11 | out | provenance |  |
+| Test.java:41:16:41:31 | (...)... : String | Test.java:42:19:42:20 | in : String | provenance |  |
+| Test.java:41:24:41:31 | source(...) : Object | Test.java:41:16:41:31 | (...)... : String | provenance |  |
+| Test.java:42:4:42:6 | out [post update] : Builder | Test.java:43:9:43:11 | out | provenance |  |
+| Test.java:42:19:42:20 | in : String | Test.java:42:4:42:6 | out [post update] : Builder | provenance | MaD:3 |
+| Test.java:48:21:48:41 | (...)... : Builder | Test.java:49:10:49:11 | in : Builder | provenance |  |
+| Test.java:48:34:48:41 | source(...) : Object | Test.java:48:21:48:41 | (...)... : Builder | provenance |  |
+| Test.java:49:10:49:11 | in : Builder | Test.java:49:10:49:44 | appendQueryParameter(...) : Builder | provenance | MaD:6 |
+| Test.java:49:10:49:44 | appendQueryParameter(...) : Builder | Test.java:50:9:50:11 | out | provenance |  |
+| Test.java:55:16:55:31 | (...)... : String | Test.java:56:35:56:36 | in : String | provenance |  |
+| Test.java:55:24:55:31 | source(...) : Object | Test.java:55:16:55:31 | (...)... : String | provenance |  |
+| Test.java:56:4:56:6 | out [post update] : Builder | Test.java:57:9:57:11 | out | provenance |  |
+| Test.java:56:35:56:36 | in : String | Test.java:56:4:56:6 | out [post update] : Builder | provenance | MaD:5 |
+| Test.java:62:16:62:31 | (...)... : String | Test.java:63:29:63:30 | in : String | provenance |  |
+| Test.java:62:24:62:31 | source(...) : Object | Test.java:62:16:62:31 | (...)... : String | provenance |  |
+| Test.java:63:4:63:6 | out [post update] : Builder | Test.java:64:9:64:11 | out | provenance |  |
+| Test.java:63:29:63:30 | in : String | Test.java:63:4:63:6 | out [post update] : Builder | provenance | MaD:5 |
+| Test.java:69:21:69:41 | (...)... : Builder | Test.java:70:10:70:11 | in : Builder | provenance |  |
+| Test.java:69:34:69:41 | source(...) : Object | Test.java:69:21:69:41 | (...)... : Builder | provenance |  |
+| Test.java:70:10:70:11 | in : Builder | Test.java:70:10:70:27 | authority(...) : Builder | provenance | MaD:8 |
+| Test.java:70:10:70:27 | authority(...) : Builder | Test.java:71:9:71:11 | out | provenance |  |
+| Test.java:76:16:76:31 | (...)... : String | Test.java:77:18:77:19 | in : String | provenance |  |
+| Test.java:76:24:76:31 | source(...) : Object | Test.java:76:16:76:31 | (...)... : String | provenance |  |
+| Test.java:77:4:77:6 | out [post update] : Builder | Test.java:78:9:78:11 | out | provenance |  |
+| Test.java:77:18:77:19 | in : String | Test.java:77:4:77:6 | out [post update] : Builder | provenance | MaD:7 |
+| Test.java:83:21:83:41 | (...)... : Builder | Test.java:84:10:84:11 | in : Builder | provenance |  |
+| Test.java:83:34:83:41 | source(...) : Object | Test.java:83:21:83:41 | (...)... : Builder | provenance |  |
+| Test.java:84:10:84:11 | in : Builder | Test.java:84:10:84:19 | build(...) : Uri | provenance | MaD:9 |
+| Test.java:84:10:84:19 | build(...) : Uri | Test.java:85:9:85:11 | out | provenance |  |
+| Test.java:90:21:90:41 | (...)... : Builder | Test.java:91:10:91:11 | in : Builder | provenance |  |
+| Test.java:90:34:90:41 | source(...) : Object | Test.java:90:21:90:41 | (...)... : Builder | provenance |  |
+| Test.java:91:10:91:11 | in : Builder | Test.java:91:10:91:24 | clearQuery(...) : Builder | provenance | MaD:10 |
+| Test.java:91:10:91:24 | clearQuery(...) : Builder | Test.java:92:9:92:11 | out | provenance |  |
+| Test.java:97:21:97:41 | (...)... : Builder | Test.java:98:10:98:11 | in : Builder | provenance |  |
+| Test.java:97:34:97:41 | source(...) : Object | Test.java:97:21:97:41 | (...)... : Builder | provenance |  |
+| Test.java:98:10:98:11 | in : Builder | Test.java:98:10:98:34 | encodedAuthority(...) : Builder | provenance | MaD:12 |
+| Test.java:98:10:98:34 | encodedAuthority(...) : Builder | Test.java:99:9:99:11 | out | provenance |  |
+| Test.java:104:16:104:31 | (...)... : String | Test.java:105:25:105:26 | in : String | provenance |  |
+| Test.java:104:24:104:31 | source(...) : Object | Test.java:104:16:104:31 | (...)... : String | provenance |  |
+| Test.java:105:4:105:6 | out [post update] : Builder | Test.java:106:9:106:11 | out | provenance |  |
+| Test.java:105:25:105:26 | in : String | Test.java:105:4:105:6 | out [post update] : Builder | provenance | MaD:11 |
+| Test.java:111:21:111:41 | (...)... : Builder | Test.java:112:10:112:11 | in : Builder | provenance |  |
+| Test.java:111:34:111:41 | source(...) : Object | Test.java:111:21:111:41 | (...)... : Builder | provenance |  |
+| Test.java:112:10:112:11 | in : Builder | Test.java:112:10:112:33 | encodedFragment(...) : Builder | provenance | MaD:14 |
+| Test.java:112:10:112:33 | encodedFragment(...) : Builder | Test.java:113:9:113:11 | out | provenance |  |
+| Test.java:118:16:118:31 | (...)... : String | Test.java:119:24:119:25 | in : String | provenance |  |
+| Test.java:118:24:118:31 | source(...) : Object | Test.java:118:16:118:31 | (...)... : String | provenance |  |
+| Test.java:119:4:119:6 | out [post update] : Builder | Test.java:120:9:120:11 | out | provenance |  |
+| Test.java:119:24:119:25 | in : String | Test.java:119:4:119:6 | out [post update] : Builder | provenance | MaD:13 |
+| Test.java:125:21:125:41 | (...)... : Builder | Test.java:126:10:126:11 | in : Builder | provenance |  |
+| Test.java:125:34:125:41 | source(...) : Object | Test.java:125:21:125:41 | (...)... : Builder | provenance |  |
+| Test.java:126:10:126:11 | in : Builder | Test.java:126:10:126:35 | encodedOpaquePart(...) : Builder | provenance | MaD:16 |
+| Test.java:126:10:126:35 | encodedOpaquePart(...) : Builder | Test.java:127:9:127:11 | out | provenance |  |
+| Test.java:132:16:132:31 | (...)... : String | Test.java:133:26:133:27 | in : String | provenance |  |
+| Test.java:132:24:132:31 | source(...) : Object | Test.java:132:16:132:31 | (...)... : String | provenance |  |
+| Test.java:133:4:133:6 | out [post update] : Builder | Test.java:134:9:134:11 | out | provenance |  |
+| Test.java:133:26:133:27 | in : String | Test.java:133:4:133:6 | out [post update] : Builder | provenance | MaD:15 |
+| Test.java:139:21:139:41 | (...)... : Builder | Test.java:140:10:140:11 | in : Builder | provenance |  |
+| Test.java:139:34:139:41 | source(...) : Object | Test.java:139:21:139:41 | (...)... : Builder | provenance |  |
+| Test.java:140:10:140:11 | in : Builder | Test.java:140:10:140:29 | encodedPath(...) : Builder | provenance | MaD:18 |
+| Test.java:140:10:140:29 | encodedPath(...) : Builder | Test.java:141:9:141:11 | out | provenance |  |
+| Test.java:146:16:146:31 | (...)... : String | Test.java:147:20:147:21 | in : String | provenance |  |
+| Test.java:146:24:146:31 | source(...) : Object | Test.java:146:16:146:31 | (...)... : String | provenance |  |
+| Test.java:147:4:147:6 | out [post update] : Builder | Test.java:148:9:148:11 | out | provenance |  |
+| Test.java:147:20:147:21 | in : String | Test.java:147:4:147:6 | out [post update] : Builder | provenance | MaD:17 |
+| Test.java:153:21:153:41 | (...)... : Builder | Test.java:154:10:154:11 | in : Builder | provenance |  |
+| Test.java:153:34:153:41 | source(...) : Object | Test.java:153:21:153:41 | (...)... : Builder | provenance |  |
+| Test.java:154:10:154:11 | in : Builder | Test.java:154:10:154:30 | encodedQuery(...) : Builder | provenance | MaD:20 |
+| Test.java:154:10:154:30 | encodedQuery(...) : Builder | Test.java:155:9:155:11 | out | provenance |  |
+| Test.java:160:16:160:31 | (...)... : String | Test.java:161:21:161:22 | in : String | provenance |  |
+| Test.java:160:24:160:31 | source(...) : Object | Test.java:160:16:160:31 | (...)... : String | provenance |  |
+| Test.java:161:4:161:6 | out [post update] : Builder | Test.java:162:9:162:11 | out | provenance |  |
+| Test.java:161:21:161:22 | in : String | Test.java:161:4:161:6 | out [post update] : Builder | provenance | MaD:19 |
+| Test.java:167:21:167:41 | (...)... : Builder | Test.java:168:10:168:11 | in : Builder | provenance |  |
+| Test.java:167:34:167:41 | source(...) : Object | Test.java:167:21:167:41 | (...)... : Builder | provenance |  |
+| Test.java:168:10:168:11 | in : Builder | Test.java:168:10:168:26 | fragment(...) : Builder | provenance | MaD:22 |
+| Test.java:168:10:168:26 | fragment(...) : Builder | Test.java:169:9:169:11 | out | provenance |  |
+| Test.java:174:16:174:31 | (...)... : String | Test.java:175:17:175:18 | in : String | provenance |  |
+| Test.java:174:24:174:31 | source(...) : Object | Test.java:174:16:174:31 | (...)... : String | provenance |  |
+| Test.java:175:4:175:6 | out [post update] : Builder | Test.java:176:9:176:11 | out | provenance |  |
+| Test.java:175:17:175:18 | in : String | Test.java:175:4:175:6 | out [post update] : Builder | provenance | MaD:21 |
+| Test.java:181:21:181:41 | (...)... : Builder | Test.java:182:10:182:11 | in : Builder | provenance |  |
+| Test.java:181:34:181:41 | source(...) : Object | Test.java:181:21:181:41 | (...)... : Builder | provenance |  |
+| Test.java:182:10:182:11 | in : Builder | Test.java:182:10:182:28 | opaquePart(...) : Builder | provenance | MaD:24 |
+| Test.java:182:10:182:28 | opaquePart(...) : Builder | Test.java:183:9:183:11 | out | provenance |  |
+| Test.java:188:16:188:31 | (...)... : String | Test.java:189:19:189:20 | in : String | provenance |  |
+| Test.java:188:24:188:31 | source(...) : Object | Test.java:188:16:188:31 | (...)... : String | provenance |  |
+| Test.java:189:4:189:6 | out [post update] : Builder | Test.java:190:9:190:11 | out | provenance |  |
+| Test.java:189:19:189:20 | in : String | Test.java:189:4:189:6 | out [post update] : Builder | provenance | MaD:23 |
+| Test.java:195:21:195:41 | (...)... : Builder | Test.java:196:10:196:11 | in : Builder | provenance |  |
+| Test.java:195:34:195:41 | source(...) : Object | Test.java:195:21:195:41 | (...)... : Builder | provenance |  |
+| Test.java:196:10:196:11 | in : Builder | Test.java:196:10:196:22 | path(...) : Builder | provenance | MaD:26 |
+| Test.java:196:10:196:22 | path(...) : Builder | Test.java:197:9:197:11 | out | provenance |  |
+| Test.java:202:16:202:31 | (...)... : String | Test.java:203:13:203:14 | in : String | provenance |  |
+| Test.java:202:24:202:31 | source(...) : Object | Test.java:202:16:202:31 | (...)... : String | provenance |  |
+| Test.java:203:4:203:6 | out [post update] : Builder | Test.java:204:9:204:11 | out | provenance |  |
+| Test.java:203:13:203:14 | in : String | Test.java:203:4:203:6 | out [post update] : Builder | provenance | MaD:25 |
+| Test.java:209:21:209:41 | (...)... : Builder | Test.java:210:10:210:11 | in : Builder | provenance |  |
+| Test.java:209:34:209:41 | source(...) : Object | Test.java:209:21:209:41 | (...)... : Builder | provenance |  |
+| Test.java:210:10:210:11 | in : Builder | Test.java:210:10:210:23 | query(...) : Builder | provenance | MaD:28 |
+| Test.java:210:10:210:23 | query(...) : Builder | Test.java:211:9:211:11 | out | provenance |  |
+| Test.java:216:16:216:31 | (...)... : String | Test.java:217:14:217:15 | in : String | provenance |  |
+| Test.java:216:24:216:31 | source(...) : Object | Test.java:216:16:216:31 | (...)... : String | provenance |  |
+| Test.java:217:4:217:6 | out [post update] : Builder | Test.java:218:9:218:11 | out | provenance |  |
+| Test.java:217:14:217:15 | in : String | Test.java:217:4:217:6 | out [post update] : Builder | provenance | MaD:27 |
+| Test.java:223:21:223:41 | (...)... : Builder | Test.java:224:10:224:11 | in : Builder | provenance |  |
+| Test.java:223:34:223:41 | source(...) : Object | Test.java:223:21:223:41 | (...)... : Builder | provenance |  |
+| Test.java:224:10:224:11 | in : Builder | Test.java:224:10:224:24 | scheme(...) : Builder | provenance | MaD:30 |
+| Test.java:224:10:224:24 | scheme(...) : Builder | Test.java:225:9:225:11 | out | provenance |  |
+| Test.java:230:16:230:31 | (...)... : String | Test.java:231:15:231:16 | in : String | provenance |  |
+| Test.java:230:24:230:31 | source(...) : Object | Test.java:230:16:230:31 | (...)... : String | provenance |  |
+| Test.java:231:4:231:6 | out [post update] : Builder | Test.java:232:9:232:11 | out | provenance |  |
+| Test.java:231:15:231:16 | in : String | Test.java:231:4:231:6 | out [post update] : Builder | provenance | MaD:29 |
+| Test.java:237:21:237:41 | (...)... : Builder | Test.java:238:10:238:11 | in : Builder | provenance |  |
+| Test.java:237:34:237:41 | source(...) : Object | Test.java:237:21:237:41 | (...)... : Builder | provenance |  |
+| Test.java:238:10:238:11 | in : Builder | Test.java:238:10:238:22 | toString(...) : String | provenance | MaD:31 |
+| Test.java:238:10:238:22 | toString(...) : String | Test.java:239:9:239:11 | out | provenance |  |
+| Test.java:244:16:244:31 | (...)... : String | Test.java:245:21:245:22 | in : String | provenance |  |
+| Test.java:244:24:244:31 | source(...) : Object | Test.java:244:16:244:31 | (...)... : String | provenance |  |
+| Test.java:245:10:245:23 | decode(...) : String | Test.java:246:9:246:11 | out | provenance |  |
+| Test.java:245:21:245:22 | in : String | Test.java:245:10:245:23 | decode(...) : String | provenance | MaD:32 |
+| Test.java:251:16:251:31 | (...)... : String | Test.java:252:21:252:22 | in : String | provenance |  |
+| Test.java:251:24:251:31 | source(...) : Object | Test.java:251:16:251:31 | (...)... : String | provenance |  |
+| Test.java:252:10:252:29 | encode(...) : String | Test.java:253:9:253:11 | out | provenance |  |
+| Test.java:252:21:252:22 | in : String | Test.java:252:10:252:29 | encode(...) : String | provenance | MaD:33 |
+| Test.java:258:16:258:31 | (...)... : String | Test.java:259:21:259:22 | in : String | provenance |  |
+| Test.java:258:24:258:31 | source(...) : Object | Test.java:258:16:258:31 | (...)... : String | provenance |  |
+| Test.java:259:10:259:23 | encode(...) : String | Test.java:260:9:260:11 | out | provenance |  |
+| Test.java:259:21:259:22 | in : String | Test.java:259:10:259:23 | encode(...) : String | provenance | MaD:33 |
+| Test.java:265:14:265:27 | (...)... : File | Test.java:266:23:266:24 | in : File | provenance |  |
+| Test.java:265:20:265:27 | source(...) : Object | Test.java:265:14:265:27 | (...)... : File | provenance |  |
+| Test.java:266:10:266:25 | fromFile(...) : Uri | Test.java:267:9:267:11 | out | provenance |  |
+| Test.java:266:23:266:24 | in : File | Test.java:266:10:266:25 | fromFile(...) : Uri | provenance | MaD:34 |
+| Test.java:272:16:272:31 | (...)... : String | Test.java:273:36:273:37 | in : String | provenance |  |
+| Test.java:272:24:272:31 | source(...) : Object | Test.java:272:16:272:31 | (...)... : String | provenance |  |
+| Test.java:273:10:273:38 | fromParts(...) : Uri | Test.java:274:9:274:11 | out | provenance |  |
+| Test.java:273:36:273:37 | in : String | Test.java:273:10:273:38 | fromParts(...) : Uri | provenance | MaD:35 |
+| Test.java:279:16:279:31 | (...)... : String | Test.java:280:30:280:31 | in : String | provenance |  |
+| Test.java:279:24:279:31 | source(...) : Object | Test.java:279:16:279:31 | (...)... : String | provenance |  |
+| Test.java:280:10:280:38 | fromParts(...) : Uri | Test.java:281:9:281:11 | out | provenance |  |
+| Test.java:280:30:280:31 | in : String | Test.java:280:10:280:38 | fromParts(...) : Uri | provenance | MaD:35 |
+| Test.java:286:16:286:31 | (...)... : String | Test.java:287:24:287:25 | in : String | provenance |  |
+| Test.java:286:24:286:31 | source(...) : Object | Test.java:286:16:286:31 | (...)... : String | provenance |  |
+| Test.java:287:10:287:38 | fromParts(...) : Uri | Test.java:288:9:288:11 | out | provenance |  |
+| Test.java:287:24:287:25 | in : String | Test.java:287:10:287:38 | fromParts(...) : Uri | provenance | MaD:35 |
+| Test.java:293:16:293:31 | (...)... : String | Test.java:294:20:294:21 | in : String | provenance |  |
+| Test.java:293:24:293:31 | source(...) : Object | Test.java:293:16:293:31 | (...)... : String | provenance |  |
+| Test.java:294:10:294:22 | parse(...) : Uri | Test.java:295:9:295:11 | out | provenance |  |
+| Test.java:294:20:294:21 | in : String | Test.java:294:10:294:22 | parse(...) : Uri | provenance | MaD:36 |
+| Test.java:300:13:300:25 | (...)... : Uri | Test.java:301:31:301:32 | in : Uri | provenance |  |
+| Test.java:300:18:300:25 | source(...) : Object | Test.java:300:13:300:25 | (...)... : Uri | provenance |  |
+| Test.java:301:10:301:39 | withAppendedPath(...) : Uri | Test.java:302:9:302:11 | out | provenance |  |
+| Test.java:301:31:301:32 | in : Uri | Test.java:301:10:301:39 | withAppendedPath(...) : Uri | provenance | MaD:37 |
+| Test.java:307:16:307:31 | (...)... : String | Test.java:308:37:308:38 | in : String | provenance |  |
+| Test.java:307:24:307:31 | source(...) : Object | Test.java:307:16:307:31 | (...)... : String | provenance |  |
+| Test.java:308:10:308:39 | withAppendedPath(...) : Uri | Test.java:309:9:309:11 | out | provenance |  |
+| Test.java:308:37:308:38 | in : String | Test.java:308:10:308:39 | withAppendedPath(...) : Uri | provenance | MaD:37 |
+| Test.java:314:13:314:25 | (...)... : Uri | Test.java:315:27:315:28 | in : Uri | provenance |  |
+| Test.java:314:18:314:25 | source(...) : Object | Test.java:314:13:314:25 | (...)... : Uri | provenance |  |
+| Test.java:315:22:315:24 | out [post update] : Parcel | Test.java:316:9:316:11 | out | provenance |  |
+| Test.java:315:27:315:28 | in : Uri | Test.java:315:22:315:24 | out [post update] : Parcel | provenance | MaD:38 |
+| Test.java:321:13:321:25 | (...)... : Uri | Test.java:322:10:322:11 | in : Uri | provenance |  |
+| Test.java:321:18:321:25 | source(...) : Object | Test.java:321:13:321:25 | (...)... : Uri | provenance |  |
+| Test.java:322:10:322:11 | in : Uri | Test.java:322:10:322:23 | buildUpon(...) : Builder | provenance | MaD:39 |
+| Test.java:322:10:322:23 | buildUpon(...) : Builder | Test.java:323:9:323:11 | out | provenance |  |
+| Test.java:328:13:328:25 | (...)... : Uri | Test.java:329:10:329:11 | in : Uri | provenance |  |
+| Test.java:328:18:328:25 | source(...) : Object | Test.java:328:13:328:25 | (...)... : Uri | provenance |  |
+| Test.java:329:10:329:11 | in : Uri | Test.java:329:10:329:26 | getAuthority(...) : String | provenance | MaD:40 |
+| Test.java:329:10:329:26 | getAuthority(...) : String | Test.java:330:9:330:11 | out | provenance |  |
+| Test.java:335:13:335:25 | (...)... : Uri | Test.java:336:10:336:11 | in : Uri | provenance |  |
+| Test.java:335:18:335:25 | source(...) : Object | Test.java:335:13:335:25 | (...)... : Uri | provenance |  |
+| Test.java:336:10:336:11 | in : Uri | Test.java:336:10:336:33 | getEncodedAuthority(...) : String | provenance | MaD:41 |
+| Test.java:336:10:336:33 | getEncodedAuthority(...) : String | Test.java:337:9:337:11 | out | provenance |  |
+| Test.java:342:13:342:25 | (...)... : Uri | Test.java:343:10:343:11 | in : Uri | provenance |  |
+| Test.java:342:18:342:25 | source(...) : Object | Test.java:342:13:342:25 | (...)... : Uri | provenance |  |
+| Test.java:343:10:343:11 | in : Uri | Test.java:343:10:343:32 | getEncodedFragment(...) : String | provenance | MaD:42 |
+| Test.java:343:10:343:32 | getEncodedFragment(...) : String | Test.java:344:9:344:11 | out | provenance |  |
+| Test.java:349:13:349:25 | (...)... : Uri | Test.java:350:10:350:11 | in : Uri | provenance |  |
+| Test.java:349:18:349:25 | source(...) : Object | Test.java:349:13:349:25 | (...)... : Uri | provenance |  |
+| Test.java:350:10:350:11 | in : Uri | Test.java:350:10:350:28 | getEncodedPath(...) : String | provenance | MaD:43 |
+| Test.java:350:10:350:28 | getEncodedPath(...) : String | Test.java:351:9:351:11 | out | provenance |  |
+| Test.java:356:13:356:25 | (...)... : Uri | Test.java:357:10:357:11 | in : Uri | provenance |  |
+| Test.java:356:18:356:25 | source(...) : Object | Test.java:356:13:356:25 | (...)... : Uri | provenance |  |
+| Test.java:357:10:357:11 | in : Uri | Test.java:357:10:357:29 | getEncodedQuery(...) : String | provenance | MaD:44 |
+| Test.java:357:10:357:29 | getEncodedQuery(...) : String | Test.java:358:9:358:11 | out | provenance |  |
+| Test.java:363:13:363:25 | (...)... : Uri | Test.java:364:10:364:11 | in : Uri | provenance |  |
+| Test.java:363:18:363:25 | source(...) : Object | Test.java:363:13:363:25 | (...)... : Uri | provenance |  |
+| Test.java:364:10:364:11 | in : Uri | Test.java:364:10:364:42 | getEncodedSchemeSpecificPart(...) : String | provenance | MaD:45 |
+| Test.java:364:10:364:42 | getEncodedSchemeSpecificPart(...) : String | Test.java:365:9:365:11 | out | provenance |  |
+| Test.java:370:13:370:25 | (...)... : Uri | Test.java:371:10:371:11 | in : Uri | provenance |  |
+| Test.java:370:18:370:25 | source(...) : Object | Test.java:370:13:370:25 | (...)... : Uri | provenance |  |
+| Test.java:371:10:371:11 | in : Uri | Test.java:371:10:371:32 | getEncodedUserInfo(...) : String | provenance | MaD:46 |
+| Test.java:371:10:371:32 | getEncodedUserInfo(...) : String | Test.java:372:9:372:11 | out | provenance |  |
+| Test.java:377:13:377:25 | (...)... : Uri | Test.java:378:10:378:11 | in : Uri | provenance |  |
+| Test.java:377:18:377:25 | source(...) : Object | Test.java:377:13:377:25 | (...)... : Uri | provenance |  |
+| Test.java:378:10:378:11 | in : Uri | Test.java:378:10:378:25 | getFragment(...) : String | provenance | MaD:47 |
+| Test.java:378:10:378:25 | getFragment(...) : String | Test.java:379:9:379:11 | out | provenance |  |
+| Test.java:384:13:384:25 | (...)... : Uri | Test.java:385:10:385:11 | in : Uri | provenance |  |
+| Test.java:384:18:384:25 | source(...) : Object | Test.java:384:13:384:25 | (...)... : Uri | provenance |  |
+| Test.java:385:10:385:11 | in : Uri | Test.java:385:10:385:21 | getHost(...) : String | provenance | MaD:48 |
+| Test.java:385:10:385:21 | getHost(...) : String | Test.java:386:9:386:11 | out | provenance |  |
+| Test.java:391:13:391:25 | (...)... : Uri | Test.java:392:10:392:11 | in : Uri | provenance |  |
+| Test.java:391:18:391:25 | source(...) : Object | Test.java:391:13:391:25 | (...)... : Uri | provenance |  |
+| Test.java:392:10:392:11 | in : Uri | Test.java:392:10:392:32 | getLastPathSegment(...) : String | provenance | MaD:49 |
+| Test.java:392:10:392:32 | getLastPathSegment(...) : String | Test.java:393:9:393:11 | out | provenance |  |
+| Test.java:398:13:398:25 | (...)... : Uri | Test.java:399:10:399:11 | in : Uri | provenance |  |
+| Test.java:398:18:398:25 | source(...) : Object | Test.java:398:13:398:25 | (...)... : Uri | provenance |  |
+| Test.java:399:10:399:11 | in : Uri | Test.java:399:10:399:21 | getPath(...) : String | provenance | MaD:50 |
+| Test.java:399:10:399:21 | getPath(...) : String | Test.java:400:9:400:11 | out | provenance |  |
+| Test.java:405:13:405:25 | (...)... : Uri | Test.java:406:10:406:11 | in : Uri | provenance |  |
+| Test.java:405:18:405:25 | source(...) : Object | Test.java:405:13:405:25 | (...)... : Uri | provenance |  |
+| Test.java:406:10:406:11 | in : Uri | Test.java:406:10:406:29 | getPathSegments(...) : List | provenance | MaD:51 |
+| Test.java:406:10:406:29 | getPathSegments(...) : List | Test.java:407:9:407:11 | out | provenance |  |
+| Test.java:412:13:412:25 | (...)... : Uri | Test.java:413:10:413:11 | in : Uri | provenance |  |
+| Test.java:412:18:412:25 | source(...) : Object | Test.java:412:13:412:25 | (...)... : Uri | provenance |  |
+| Test.java:413:10:413:11 | in : Uri | Test.java:413:10:413:22 | getQuery(...) : String | provenance | MaD:52 |
+| Test.java:413:10:413:22 | getQuery(...) : String | Test.java:414:9:414:11 | out | provenance |  |
+| Test.java:419:13:419:25 | (...)... : Uri | Test.java:420:10:420:11 | in : Uri | provenance |  |
+| Test.java:419:18:419:25 | source(...) : Object | Test.java:419:13:419:25 | (...)... : Uri | provenance |  |
+| Test.java:420:10:420:11 | in : Uri | Test.java:420:10:420:35 | getQueryParameter(...) : String | provenance | MaD:53 |
+| Test.java:420:10:420:35 | getQueryParameter(...) : String | Test.java:421:9:421:11 | out | provenance |  |
+| Test.java:426:13:426:25 | (...)... : Uri | Test.java:427:10:427:11 | in : Uri | provenance |  |
+| Test.java:426:18:426:25 | source(...) : Object | Test.java:426:13:426:25 | (...)... : Uri | provenance |  |
+| Test.java:427:10:427:11 | in : Uri | Test.java:427:10:427:36 | getQueryParameterNames(...) : Set | provenance | MaD:54 |
+| Test.java:427:10:427:36 | getQueryParameterNames(...) : Set | Test.java:428:9:428:11 | out | provenance |  |
+| Test.java:433:13:433:25 | (...)... : Uri | Test.java:434:10:434:11 | in : Uri | provenance |  |
+| Test.java:433:18:433:25 | source(...) : Object | Test.java:433:13:433:25 | (...)... : Uri | provenance |  |
+| Test.java:434:10:434:11 | in : Uri | Test.java:434:10:434:36 | getQueryParameters(...) : List | provenance | MaD:55 |
+| Test.java:434:10:434:36 | getQueryParameters(...) : List | Test.java:435:9:435:11 | out | provenance |  |
+| Test.java:440:13:440:25 | (...)... : Uri | Test.java:441:10:441:11 | in : Uri | provenance |  |
+| Test.java:440:18:440:25 | source(...) : Object | Test.java:440:13:440:25 | (...)... : Uri | provenance |  |
+| Test.java:441:10:441:11 | in : Uri | Test.java:441:10:441:23 | getScheme(...) : String | provenance | MaD:56 |
+| Test.java:441:10:441:23 | getScheme(...) : String | Test.java:442:9:442:11 | out | provenance |  |
+| Test.java:447:13:447:25 | (...)... : Uri | Test.java:448:10:448:11 | in : Uri | provenance |  |
+| Test.java:447:18:447:25 | source(...) : Object | Test.java:447:13:447:25 | (...)... : Uri | provenance |  |
+| Test.java:448:10:448:11 | in : Uri | Test.java:448:10:448:35 | getSchemeSpecificPart(...) : String | provenance | MaD:57 |
+| Test.java:448:10:448:35 | getSchemeSpecificPart(...) : String | Test.java:449:9:449:11 | out | provenance |  |
+| Test.java:454:13:454:25 | (...)... : Uri | Test.java:455:10:455:11 | in : Uri | provenance |  |
+| Test.java:454:18:454:25 | source(...) : Object | Test.java:454:13:454:25 | (...)... : Uri | provenance |  |
+| Test.java:455:10:455:11 | in : Uri | Test.java:455:10:455:25 | getUserInfo(...) : String | provenance | MaD:58 |
+| Test.java:455:10:455:25 | getUserInfo(...) : String | Test.java:456:9:456:11 | out | provenance |  |
+| Test.java:461:13:461:25 | (...)... : Uri | Test.java:462:10:462:11 | in : Uri | provenance |  |
+| Test.java:461:18:461:25 | source(...) : Object | Test.java:461:13:461:25 | (...)... : Uri | provenance |  |
+| Test.java:462:10:462:11 | in : Uri | Test.java:462:10:462:29 | normalizeScheme(...) : Uri | provenance | MaD:59 |
+| Test.java:462:10:462:29 | normalizeScheme(...) : Uri | Test.java:463:9:463:11 | out | provenance |  |
+| Test.java:468:13:468:25 | (...)... : Uri | Test.java:469:10:469:11 | in : Uri | provenance |  |
+| Test.java:468:18:468:25 | source(...) : Object | Test.java:468:13:468:25 | (...)... : Uri | provenance |  |
+| Test.java:469:10:469:11 | in : Uri | Test.java:469:10:469:22 | toString(...) : String | provenance | MaD:60 |
+| Test.java:469:10:469:22 | toString(...) : String | Test.java:470:9:470:11 | out | provenance |  |
+nodes
+| Test.java:20:21:20:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:20:34:20:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:21:10:21:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:21:10:21:35 | appendEncodedPath(...) : Builder | semmle.label | appendEncodedPath(...) : Builder |
+| Test.java:22:9:22:11 | out | semmle.label | out |
+| Test.java:27:16:27:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:27:24:27:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:28:4:28:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:28:26:28:27 | in : String | semmle.label | in : String |
+| Test.java:29:9:29:11 | out | semmle.label | out |
+| Test.java:34:21:34:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:34:34:34:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:35:10:35:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:35:10:35:28 | appendPath(...) : Builder | semmle.label | appendPath(...) : Builder |
+| Test.java:36:9:36:11 | out | semmle.label | out |
+| Test.java:41:16:41:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:41:24:41:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:42:4:42:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:42:19:42:20 | in : String | semmle.label | in : String |
+| Test.java:43:9:43:11 | out | semmle.label | out |
+| Test.java:48:21:48:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:48:34:48:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:49:10:49:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:49:10:49:44 | appendQueryParameter(...) : Builder | semmle.label | appendQueryParameter(...) : Builder |
+| Test.java:50:9:50:11 | out | semmle.label | out |
+| Test.java:55:16:55:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:55:24:55:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:56:4:56:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:56:35:56:36 | in : String | semmle.label | in : String |
+| Test.java:57:9:57:11 | out | semmle.label | out |
+| Test.java:62:16:62:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:62:24:62:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:63:4:63:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:63:29:63:30 | in : String | semmle.label | in : String |
+| Test.java:64:9:64:11 | out | semmle.label | out |
+| Test.java:69:21:69:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:69:34:69:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:70:10:70:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:70:10:70:27 | authority(...) : Builder | semmle.label | authority(...) : Builder |
+| Test.java:71:9:71:11 | out | semmle.label | out |
+| Test.java:76:16:76:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:76:24:76:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:77:4:77:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:77:18:77:19 | in : String | semmle.label | in : String |
+| Test.java:78:9:78:11 | out | semmle.label | out |
+| Test.java:83:21:83:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:83:34:83:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:84:10:84:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:84:10:84:19 | build(...) : Uri | semmle.label | build(...) : Uri |
+| Test.java:85:9:85:11 | out | semmle.label | out |
+| Test.java:90:21:90:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:90:34:90:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:91:10:91:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:91:10:91:24 | clearQuery(...) : Builder | semmle.label | clearQuery(...) : Builder |
+| Test.java:92:9:92:11 | out | semmle.label | out |
+| Test.java:97:21:97:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:97:34:97:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:98:10:98:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:98:10:98:34 | encodedAuthority(...) : Builder | semmle.label | encodedAuthority(...) : Builder |
+| Test.java:99:9:99:11 | out | semmle.label | out |
+| Test.java:104:16:104:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:104:24:104:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:105:4:105:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:105:25:105:26 | in : String | semmle.label | in : String |
+| Test.java:106:9:106:11 | out | semmle.label | out |
+| Test.java:111:21:111:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:111:34:111:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:112:10:112:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:112:10:112:33 | encodedFragment(...) : Builder | semmle.label | encodedFragment(...) : Builder |
+| Test.java:113:9:113:11 | out | semmle.label | out |
+| Test.java:118:16:118:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:118:24:118:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:119:4:119:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:119:24:119:25 | in : String | semmle.label | in : String |
+| Test.java:120:9:120:11 | out | semmle.label | out |
+| Test.java:125:21:125:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:125:34:125:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:126:10:126:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:126:10:126:35 | encodedOpaquePart(...) : Builder | semmle.label | encodedOpaquePart(...) : Builder |
+| Test.java:127:9:127:11 | out | semmle.label | out |
+| Test.java:132:16:132:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:132:24:132:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:133:4:133:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:133:26:133:27 | in : String | semmle.label | in : String |
+| Test.java:134:9:134:11 | out | semmle.label | out |
+| Test.java:139:21:139:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:139:34:139:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:140:10:140:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:140:10:140:29 | encodedPath(...) : Builder | semmle.label | encodedPath(...) : Builder |
+| Test.java:141:9:141:11 | out | semmle.label | out |
+| Test.java:146:16:146:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:146:24:146:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:147:4:147:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:147:20:147:21 | in : String | semmle.label | in : String |
+| Test.java:148:9:148:11 | out | semmle.label | out |
+| Test.java:153:21:153:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:153:34:153:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:154:10:154:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:154:10:154:30 | encodedQuery(...) : Builder | semmle.label | encodedQuery(...) : Builder |
+| Test.java:155:9:155:11 | out | semmle.label | out |
+| Test.java:160:16:160:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:160:24:160:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:161:4:161:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:161:21:161:22 | in : String | semmle.label | in : String |
+| Test.java:162:9:162:11 | out | semmle.label | out |
+| Test.java:167:21:167:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:167:34:167:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:168:10:168:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:168:10:168:26 | fragment(...) : Builder | semmle.label | fragment(...) : Builder |
+| Test.java:169:9:169:11 | out | semmle.label | out |
+| Test.java:174:16:174:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:174:24:174:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:175:4:175:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:175:17:175:18 | in : String | semmle.label | in : String |
+| Test.java:176:9:176:11 | out | semmle.label | out |
+| Test.java:181:21:181:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:181:34:181:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:182:10:182:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:182:10:182:28 | opaquePart(...) : Builder | semmle.label | opaquePart(...) : Builder |
+| Test.java:183:9:183:11 | out | semmle.label | out |
+| Test.java:188:16:188:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:188:24:188:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:189:4:189:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:189:19:189:20 | in : String | semmle.label | in : String |
+| Test.java:190:9:190:11 | out | semmle.label | out |
+| Test.java:195:21:195:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:195:34:195:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:196:10:196:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:196:10:196:22 | path(...) : Builder | semmle.label | path(...) : Builder |
+| Test.java:197:9:197:11 | out | semmle.label | out |
+| Test.java:202:16:202:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:202:24:202:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:203:4:203:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:203:13:203:14 | in : String | semmle.label | in : String |
+| Test.java:204:9:204:11 | out | semmle.label | out |
+| Test.java:209:21:209:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:209:34:209:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:210:10:210:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:210:10:210:23 | query(...) : Builder | semmle.label | query(...) : Builder |
+| Test.java:211:9:211:11 | out | semmle.label | out |
+| Test.java:216:16:216:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:216:24:216:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:217:4:217:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:217:14:217:15 | in : String | semmle.label | in : String |
+| Test.java:218:9:218:11 | out | semmle.label | out |
+| Test.java:223:21:223:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:223:34:223:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:224:10:224:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:224:10:224:24 | scheme(...) : Builder | semmle.label | scheme(...) : Builder |
+| Test.java:225:9:225:11 | out | semmle.label | out |
+| Test.java:230:16:230:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:230:24:230:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:231:4:231:6 | out [post update] : Builder | semmle.label | out [post update] : Builder |
+| Test.java:231:15:231:16 | in : String | semmle.label | in : String |
+| Test.java:232:9:232:11 | out | semmle.label | out |
+| Test.java:237:21:237:41 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:237:34:237:41 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:238:10:238:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:238:10:238:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:239:9:239:11 | out | semmle.label | out |
+| Test.java:244:16:244:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:244:24:244:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:245:10:245:23 | decode(...) : String | semmle.label | decode(...) : String |
+| Test.java:245:21:245:22 | in : String | semmle.label | in : String |
+| Test.java:246:9:246:11 | out | semmle.label | out |
+| Test.java:251:16:251:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:251:24:251:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:252:10:252:29 | encode(...) : String | semmle.label | encode(...) : String |
+| Test.java:252:21:252:22 | in : String | semmle.label | in : String |
+| Test.java:253:9:253:11 | out | semmle.label | out |
+| Test.java:258:16:258:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:258:24:258:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:259:10:259:23 | encode(...) : String | semmle.label | encode(...) : String |
+| Test.java:259:21:259:22 | in : String | semmle.label | in : String |
+| Test.java:260:9:260:11 | out | semmle.label | out |
+| Test.java:265:14:265:27 | (...)... : File | semmle.label | (...)... : File |
+| Test.java:265:20:265:27 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:266:10:266:25 | fromFile(...) : Uri | semmle.label | fromFile(...) : Uri |
+| Test.java:266:23:266:24 | in : File | semmle.label | in : File |
+| Test.java:267:9:267:11 | out | semmle.label | out |
+| Test.java:272:16:272:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:272:24:272:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:273:10:273:38 | fromParts(...) : Uri | semmle.label | fromParts(...) : Uri |
+| Test.java:273:36:273:37 | in : String | semmle.label | in : String |
+| Test.java:274:9:274:11 | out | semmle.label | out |
+| Test.java:279:16:279:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:279:24:279:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:280:10:280:38 | fromParts(...) : Uri | semmle.label | fromParts(...) : Uri |
+| Test.java:280:30:280:31 | in : String | semmle.label | in : String |
+| Test.java:281:9:281:11 | out | semmle.label | out |
+| Test.java:286:16:286:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:286:24:286:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:287:10:287:38 | fromParts(...) : Uri | semmle.label | fromParts(...) : Uri |
+| Test.java:287:24:287:25 | in : String | semmle.label | in : String |
+| Test.java:288:9:288:11 | out | semmle.label | out |
+| Test.java:293:16:293:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:293:24:293:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:294:10:294:22 | parse(...) : Uri | semmle.label | parse(...) : Uri |
+| Test.java:294:20:294:21 | in : String | semmle.label | in : String |
+| Test.java:295:9:295:11 | out | semmle.label | out |
+| Test.java:300:13:300:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:300:18:300:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:301:10:301:39 | withAppendedPath(...) : Uri | semmle.label | withAppendedPath(...) : Uri |
+| Test.java:301:31:301:32 | in : Uri | semmle.label | in : Uri |
+| Test.java:302:9:302:11 | out | semmle.label | out |
+| Test.java:307:16:307:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:307:24:307:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:308:10:308:39 | withAppendedPath(...) : Uri | semmle.label | withAppendedPath(...) : Uri |
+| Test.java:308:37:308:38 | in : String | semmle.label | in : String |
+| Test.java:309:9:309:11 | out | semmle.label | out |
+| Test.java:314:13:314:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:314:18:314:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:315:22:315:24 | out [post update] : Parcel | semmle.label | out [post update] : Parcel |
+| Test.java:315:27:315:28 | in : Uri | semmle.label | in : Uri |
+| Test.java:316:9:316:11 | out | semmle.label | out |
+| Test.java:321:13:321:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:321:18:321:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:322:10:322:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:322:10:322:23 | buildUpon(...) : Builder | semmle.label | buildUpon(...) : Builder |
+| Test.java:323:9:323:11 | out | semmle.label | out |
+| Test.java:328:13:328:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:328:18:328:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:329:10:329:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:329:10:329:26 | getAuthority(...) : String | semmle.label | getAuthority(...) : String |
+| Test.java:330:9:330:11 | out | semmle.label | out |
+| Test.java:335:13:335:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:335:18:335:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:336:10:336:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:336:10:336:33 | getEncodedAuthority(...) : String | semmle.label | getEncodedAuthority(...) : String |
+| Test.java:337:9:337:11 | out | semmle.label | out |
+| Test.java:342:13:342:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:342:18:342:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:343:10:343:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:343:10:343:32 | getEncodedFragment(...) : String | semmle.label | getEncodedFragment(...) : String |
+| Test.java:344:9:344:11 | out | semmle.label | out |
+| Test.java:349:13:349:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:349:18:349:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:350:10:350:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:350:10:350:28 | getEncodedPath(...) : String | semmle.label | getEncodedPath(...) : String |
+| Test.java:351:9:351:11 | out | semmle.label | out |
+| Test.java:356:13:356:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:356:18:356:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:357:10:357:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:357:10:357:29 | getEncodedQuery(...) : String | semmle.label | getEncodedQuery(...) : String |
+| Test.java:358:9:358:11 | out | semmle.label | out |
+| Test.java:363:13:363:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:363:18:363:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:364:10:364:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:364:10:364:42 | getEncodedSchemeSpecificPart(...) : String | semmle.label | getEncodedSchemeSpecificPart(...) : String |
+| Test.java:365:9:365:11 | out | semmle.label | out |
+| Test.java:370:13:370:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:370:18:370:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:371:10:371:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:371:10:371:32 | getEncodedUserInfo(...) : String | semmle.label | getEncodedUserInfo(...) : String |
+| Test.java:372:9:372:11 | out | semmle.label | out |
+| Test.java:377:13:377:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:377:18:377:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:378:10:378:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:378:10:378:25 | getFragment(...) : String | semmle.label | getFragment(...) : String |
+| Test.java:379:9:379:11 | out | semmle.label | out |
+| Test.java:384:13:384:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:384:18:384:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:385:10:385:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:385:10:385:21 | getHost(...) : String | semmle.label | getHost(...) : String |
+| Test.java:386:9:386:11 | out | semmle.label | out |
+| Test.java:391:13:391:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:391:18:391:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:392:10:392:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:392:10:392:32 | getLastPathSegment(...) : String | semmle.label | getLastPathSegment(...) : String |
+| Test.java:393:9:393:11 | out | semmle.label | out |
+| Test.java:398:13:398:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:398:18:398:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:399:10:399:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:399:10:399:21 | getPath(...) : String | semmle.label | getPath(...) : String |
+| Test.java:400:9:400:11 | out | semmle.label | out |
+| Test.java:405:13:405:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:405:18:405:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:406:10:406:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:406:10:406:29 | getPathSegments(...) : List | semmle.label | getPathSegments(...) : List |
+| Test.java:407:9:407:11 | out | semmle.label | out |
+| Test.java:412:13:412:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:412:18:412:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:413:10:413:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:413:10:413:22 | getQuery(...) : String | semmle.label | getQuery(...) : String |
+| Test.java:414:9:414:11 | out | semmle.label | out |
+| Test.java:419:13:419:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:419:18:419:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:420:10:420:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:420:10:420:35 | getQueryParameter(...) : String | semmle.label | getQueryParameter(...) : String |
+| Test.java:421:9:421:11 | out | semmle.label | out |
+| Test.java:426:13:426:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:426:18:426:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:427:10:427:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:427:10:427:36 | getQueryParameterNames(...) : Set | semmle.label | getQueryParameterNames(...) : Set |
+| Test.java:428:9:428:11 | out | semmle.label | out |
+| Test.java:433:13:433:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:433:18:433:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:434:10:434:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:434:10:434:36 | getQueryParameters(...) : List | semmle.label | getQueryParameters(...) : List |
+| Test.java:435:9:435:11 | out | semmle.label | out |
+| Test.java:440:13:440:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:440:18:440:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:441:10:441:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:441:10:441:23 | getScheme(...) : String | semmle.label | getScheme(...) : String |
+| Test.java:442:9:442:11 | out | semmle.label | out |
+| Test.java:447:13:447:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:447:18:447:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:448:10:448:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:448:10:448:35 | getSchemeSpecificPart(...) : String | semmle.label | getSchemeSpecificPart(...) : String |
+| Test.java:449:9:449:11 | out | semmle.label | out |
+| Test.java:454:13:454:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:454:18:454:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:455:10:455:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:455:10:455:25 | getUserInfo(...) : String | semmle.label | getUserInfo(...) : String |
+| Test.java:456:9:456:11 | out | semmle.label | out |
+| Test.java:461:13:461:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:461:18:461:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:462:10:462:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:462:10:462:29 | normalizeScheme(...) : Uri | semmle.label | normalizeScheme(...) : Uri |
+| Test.java:463:9:463:11 | out | semmle.label | out |
+| Test.java:468:13:468:25 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:468:18:468:25 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:469:10:469:11 | in : Uri | semmle.label | in : Uri |
+| Test.java:469:10:469:22 | toString(...) : String | semmle.label | toString(...) : String |
+| Test.java:470:9:470:11 | out | semmle.label | out |
+subpaths
+testFailures

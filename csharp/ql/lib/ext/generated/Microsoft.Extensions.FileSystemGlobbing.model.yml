@@ -4,34 +4,30 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", False, "EnumerateFileSystemInfos", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", False, "GetDirectory", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", False, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", False, "get_ParentDirectory", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", False, "AddExclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", False, "AddInclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", False, "FilePatternMatch", "(System.String,System.String)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch.Path]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", False, "FilePatternMatch", "(System.String,System.String)", "", "Argument[1]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch.Stem]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", True, "GetFile", "(System.String)", "", "Argument[this]", "ReturnValue.SyntheticField[Microsoft.Extensions.FileSystemGlobbing.Internal.InMemoryFileInfo._parent]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddExclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", True, "AddInclude", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", False, "GetResultsInFullPath", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "", "Argument[1]", "ReturnValue.Element", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", False, "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.PatternMatchingResult.Files]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", False, "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>,System.Boolean)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.PatternMatchingResult.Files]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "Equals", "(Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "Equals", "(System.Object)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "FilePatternMatch", "(System.String,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "GetHashCode", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "get_Path", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "FilePatternMatch", "get_Stem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", "InMemoryDirectoryInfo", "(System.String,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", "get_FullName", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "InMemoryDirectoryInfo", "get_Name", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Execute", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "Matcher", "Matcher", "(System.StringComparison)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddExcludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "AddIncludePatterns", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>[])", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "GetResultsInFullPath", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String,System.Collections.Generic.IEnumerable<System.String>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "MatcherExtensions", "Match", "(Microsoft.Extensions.FileSystemGlobbing.Matcher,System.String,System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "PatternMatchingResult", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.FilePatternMatch>,System.Boolean)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing", "PatternMatchingResult", "get_HasMatches", "()", "summary", "df-generated"]

@@ -1,1 +1,2 @@
-Security/CWE-611/Xxe.ql
+query: Security/CWE-611/Xxe.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

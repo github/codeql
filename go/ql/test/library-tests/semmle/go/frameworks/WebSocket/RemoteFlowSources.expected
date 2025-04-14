@@ -1,0 +1,9 @@
+| WebSocketReadWrite.go:27:9:27:16 | selection of Header |
+| WebSocketReadWrite.go:31:7:31:10 | definition of xnet |
+| WebSocketReadWrite.go:35:3:35:7 | definition of xnet2 |
+| WebSocketReadWrite.go:41:3:41:40 | ... := ...[1] |
+| WebSocketReadWrite.go:44:3:44:48 | ... := ...[1] |
+| WebSocketReadWrite.go:51:7:51:16 | definition of gorillaMsg |
+| WebSocketReadWrite.go:55:3:55:10 | definition of gorilla2 |
+| WebSocketReadWrite.go:61:3:61:38 | ... := ...[1] |
+| WebSocketReadWrite.go:67:3:67:36 | ... := ...[0] |

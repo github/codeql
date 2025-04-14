@@ -21,10 +21,9 @@ namespace Semmle.Extraction.CSharp.Entities
             NamedTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
         /// <summary>
-        /// Creates a named type entity from a tuple type. Unlike `Create`, this
+        /// Creates a named type entity from a tuple type. Unlike <see cref="Create"/>, this
         /// will create an entity for the underlying `System.ValueTuple` struct.
-        /// For example, `(int, string)` will result in an entity for
-        /// `System.ValueTuple<int, string>`.
+        /// For example, `(int, string)` will result in an entity for `System.ValueTuple&lt;int, string&gt;`.
         /// </summary>
         public static NamedType CreateNamedTypeFromTupleType(Context cx, INamedTypeSymbol type) =>
             UnderlyingTupleTypeFactory.Instance.CreateEntity(cx, (new SymbolEqualityWrapper(type), typeof(TupleType)), type);
@@ -36,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Symbol.TypeKind == TypeKind.Error)
             {
                 UnknownType.Create(Context); // make sure this exists so we can use it in `TypeRef::getReferencedType`
-                Context.Extractor.MissingType(Symbol.ToString()!, Context.FromSource);
+                Context.ExtractionContext.MissingType(Symbol.ToString()!, Context.FromSource);
                 return;
             }
 
@@ -101,7 +100,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override IEnumerable<Type> TypeMentions => TypeArguments;
 
-        public override IEnumerable<Extraction.Entities.Location> Locations
+        public override IEnumerable<Location> Locations
         {
             get
             {
@@ -124,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 );
         }
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => GetLocations(Symbol).BestOrDefault();
 
         private bool IsAnonymousType() => Symbol.IsAnonymousType || Symbol.Name.Contains("__AnonymousType");
 
@@ -167,7 +166,9 @@ namespace Semmle.Extraction.CSharp.Entities
         // Create typerefs for constructed error types in case they are fully defined elsewhere.
         // We cannot use `!this.NeedsPopulation` because this would not be stable as it would depend on
         // the assembly that was being extracted at the time.
-        private bool UsesTypeRef => Symbol.TypeKind == TypeKind.Error || SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
+        private bool UsesTypeRef =>
+            Symbol.TypeKind == TypeKind.Error ||
+            SymbolEqualityComparer.Default.Equals(Symbol.OriginalDefinition, Symbol);
 
         public override Type TypeRef => UsesTypeRef ? (Type)NamedTypeRef.Create(Context, Symbol) : this;
     }

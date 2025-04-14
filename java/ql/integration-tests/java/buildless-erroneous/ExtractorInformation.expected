@@ -1,0 +1,19 @@
+| Annotation processors enabled: true | 1 |
+| Number of calls with call target | 1 |
+| Number of calls with missing call target | 4 |
+| Number of diagnostics from CodeQL Java extractor with severity 5 | 10 |
+| Number of diagnostics from CodeQL Java extractor with severity 6 | 2 |
+| Number of expressions with known type | 1 |
+| Number of expressions with unknown type | 6 |
+| Number of files | 606 |
+| Number of files with extension class | 604 |
+| Number of files with extension java | 1 |
+| Number of lines of code | 7 |
+| Number of lines of code with extension java | 7 |
+| Percentage of calls with call target | 20 |
+| Percentage of expressions with known type | 14 |
+| Total number of diagnostics from CodeQL Java extractor | 12 |
+| Total number of lines | 13 |
+| Total number of lines with extension java | 13 |
+| Used annotation processor: lombok.launch.AnnotationProcessorHider$AnnotationProcessor | 1 |
+| Used annotation processor: lombok.launch.AnnotationProcessorHider$ClaimingProcessor | 1 |

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["stdlib-js/stdlib/.github/workflows/update_pr_copyright_years.yml", "*", "input.pull_request_number", "code-injection", "generated"]
+     - ["stdlib-js/stdlib/.github/workflows/lint_autofix.yml", "*", "input.pull_request_number", "code-injection", "generated"]
+     - ["stdlib-js/stdlib/.github/workflows/check_required_files.yml", "*", "input.user", "code-injection", "generated"]
+     - ["stdlib-js/stdlib/.github/workflows/check_required_files.yml", "*", "input.pull_request_number", "code-injection", "generated"]

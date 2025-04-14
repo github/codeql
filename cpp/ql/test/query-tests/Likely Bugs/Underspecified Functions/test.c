@@ -30,8 +30,9 @@ void test(int *argv[]) {
   
   not_yet_declared1(1); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
   not_yet_declared2(1); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
-  not_yet_declared2(ca); // BAD
-  not_yet_declared2(); // BAD
+  not_yet_declared2(ca); // BAD (GOOD for everything except for cpp/mistyped-function-arguments
+                         //      and cpp/too-few-arguments. Not detected in the case of cpp/too-few-arguments.)
+  not_yet_declared2(); // BAD [NOT DETECTED] (GOOD for everything except for cpp/too-few-arguments)
 
   declared_empty_defined_with(); // BAD
   declared_empty_defined_with(1); // GOOD

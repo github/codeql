@@ -16,5 +16,5 @@
 | test.kt:22:63:22:70 | source(...) | test.kt:22:92:22:92 | s | test.kt:22:5:22:95 | taintSuppliedAsDefaultStatic$default |
 | test.kt:30:55:30:62 | source(...) | test.kt:30:84:30:84 | s | test.kt:30:3:30:87 | taintSuppliedAsDefault$default |
 | test.kt:40:53:40:60 | source(...) | test.kt:40:80:40:80 | s | test.kt:40:3:40:83 | taintSuppliedAsDefault$default |
-| test.kt:47:92:47:99 | source(...) | test.kt:50:10:50:10 | s | test.kt:47:55:53:1 | ConstructorTaintsByDefault |
-| test.kt:63:100:63:107 | source(...) | test.kt:66:10:66:10 | s | test.kt:63:65:69:1 | GenericConstructorTaintsByDefault |
+| test.kt:47:92:47:99 | source(...) | test.kt:50:10:50:10 | s | test.kt:47:55:47:112 | ConstructorTaintsByDefault |
+| test.kt:63:100:63:107 | source(...) | test.kt:66:10:66:10 | s | test.kt:63:65:63:118 | GenericConstructorTaintsByDefault |

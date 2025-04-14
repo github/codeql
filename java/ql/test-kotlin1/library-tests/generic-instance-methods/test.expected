@@ -20,10 +20,10 @@ constructors
 | Generic2.class:0:0:0:0 | Generic2<String> | Generic2.class:0:0:0:0 | Generic2<String> | Generic2<String>(java.lang.String) | String | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
 | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 | Generic2(java.lang.Object) | T | void | Test.java:1:7:1:14 | Generic2 | Test.java:3:10:3:17 | Generic2 |
 | Test.java:14:14:14:17 | Test | Test.java:14:14:14:17 | Test | Test() | No parameters | void | Test.java:14:14:14:17 | Test | Test.java:14:14:14:17 | Test |
-| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? extends String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? extends String> | Generic<? extends String>(java.lang.Void) | Void | void | test.kt:1:1:13:1 | Generic | test.kt:1:1:13:1 | Generic |
-| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> | Generic<? super String>(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:1:1:13:1 | Generic |
-| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | Generic<String>(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:1:1:13:1 | Generic |
-| test.kt:1:1:13:1 | Generic | test.kt:1:1:13:1 | Generic | Generic(java.lang.Object) | T | void | test.kt:1:1:13:1 | Generic | test.kt:1:1:13:1 | Generic |
+| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? extends String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? extends String> | Generic<? extends String>(java.lang.Void) | Void | void | test.kt:1:1:13:1 | Generic | test.kt:1:17:1:25 | Generic |
+| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<? super String> | Generic<? super String>(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:1:17:1:25 | Generic |
+| file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> | Generic<String>(java.lang.String) | String | void | test.kt:1:1:13:1 | Generic | test.kt:1:17:1:25 | Generic |
+| test.kt:1:1:13:1 | Generic | test.kt:1:17:1:25 | Generic | Generic(java.lang.Object) | T | void | test.kt:1:1:13:1 | Generic | test.kt:1:17:1:25 | Generic |
 constructorCalls
 | Test.java:18:34:18:68 | new Generic2<String>(...) | Generic2.class:0:0:0:0 | Generic2<String> |
 | test.kt:17:19:17:48 | new Generic<String>(...) | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> |

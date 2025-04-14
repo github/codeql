@@ -41,16 +41,14 @@ edges
 | UnsafeJsEval.swift:286:51:286:51 | stringBytes [Collection element] | UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | provenance |  |
 | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | UnsafeJsEval.swift:291:17:291:17 | jsstr | provenance |  |
 | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | provenance |  |
-| UnsafeJsEval.swift:287:60:287:60 | stringBytes | UnsafeJsEval.swift:287:60:287:72 | .baseAddress | provenance |  |
-| UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | UnsafeJsEval.swift:287:60:287:60 | stringBytes | provenance |  |
+| UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | UnsafeJsEval.swift:287:60:287:72 | .baseAddress | provenance | Config |
 | UnsafeJsEval.swift:287:60:287:72 | .baseAddress | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | provenance |  |
 | UnsafeJsEval.swift:299:13:299:13 | string | UnsafeJsEval.swift:300:3:300:10 | .utf8CString | provenance |  |
 | UnsafeJsEval.swift:300:3:300:10 | .utf8CString | UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | provenance |  |
 | UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | provenance |  |
 | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | UnsafeJsEval.swift:305:17:305:17 | jsstr | provenance |  |
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | provenance |  |
-| UnsafeJsEval.swift:301:61:301:61 | stringBytes | UnsafeJsEval.swift:301:61:301:73 | .baseAddress | provenance |  |
-| UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | UnsafeJsEval.swift:301:61:301:61 | stringBytes | provenance |  |
+| UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | UnsafeJsEval.swift:301:61:301:73 | .baseAddress | provenance | Config |
 | UnsafeJsEval.swift:301:61:301:73 | .baseAddress | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | provenance |  |
 | UnsafeJsEval.swift:318:24:318:87 | call to String.init(contentsOf:) | UnsafeJsEval.swift:320:44:320:74 | ... .+(_:_:) ... | provenance |  |
 nodes
@@ -80,7 +78,6 @@ nodes
 | UnsafeJsEval.swift:286:51:286:51 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
 | UnsafeJsEval.swift:287:16:287:98 | call to JSStringRetain(_:) | semmle.label | call to JSStringRetain(_:) |
 | UnsafeJsEval.swift:287:31:287:97 | call to JSStringCreateWithCharacters(_:_:) | semmle.label | call to JSStringCreateWithCharacters(_:_:) |
-| UnsafeJsEval.swift:287:60:287:60 | stringBytes | semmle.label | stringBytes |
 | UnsafeJsEval.swift:287:60:287:60 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
 | UnsafeJsEval.swift:287:60:287:72 | .baseAddress | semmle.label | .baseAddress |
 | UnsafeJsEval.swift:291:17:291:17 | jsstr | semmle.label | jsstr |
@@ -89,7 +86,6 @@ nodes
 | UnsafeJsEval.swift:300:48:300:48 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
 | UnsafeJsEval.swift:301:16:301:85 | call to JSStringRetain(_:) | semmle.label | call to JSStringRetain(_:) |
 | UnsafeJsEval.swift:301:31:301:84 | call to JSStringCreateWithUTF8CString(_:) | semmle.label | call to JSStringCreateWithUTF8CString(_:) |
-| UnsafeJsEval.swift:301:61:301:61 | stringBytes | semmle.label | stringBytes |
 | UnsafeJsEval.swift:301:61:301:61 | stringBytes [Collection element] | semmle.label | stringBytes [Collection element] |
 | UnsafeJsEval.swift:301:61:301:73 | .baseAddress | semmle.label | .baseAddress |
 | UnsafeJsEval.swift:305:17:305:17 | jsstr | semmle.label | jsstr |

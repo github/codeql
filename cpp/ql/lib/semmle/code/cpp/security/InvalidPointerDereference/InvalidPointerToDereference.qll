@@ -161,6 +161,26 @@ private module InvalidPointerToDerefBarrier {
 }
 
 /**
+ * BEWARE: This configuration uses an unrestricted sink, so accessing its full
+ * flow computation or any stages beyond the first 2 will likely diverge.
+ * Stage 1 will still be fast and we use it to restrict the subsequent sink
+ * computation.
+ */
+private module InvalidPointerReachesConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { invalidPointerToDerefSource(_, _, source) }
+
+  predicate isSink(DataFlow::Node sink) { any() }
+
+  predicate isBarrier(DataFlow::Node node) { InvalidPointerToDerefConfig::isBarrier(node) }
+
+  int fieldFlowBranchLimit() { result = invalidPointerToDereferenceFieldFlowBranchLimit() }
+}
+
+private module InvalidPointerReachesFlow = DataFlow::Global<InvalidPointerReachesConfig>;
+
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
+
+/**
  * A configuration to track flow from a pointer-arithmetic operation found
  * by `AllocToInvalidPointerConfig` to a dereference of the pointer.
  */
@@ -173,14 +193,17 @@ private module InvalidPointerToDerefConfig implements DataFlow::StateConfigSig {
     invalidPointerToDerefSource(_, pai, source)
   }
 
-  pragma[inline]
-  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _, _) }
+  predicate isSink(DataFlow::Node sink) {
+    exists(DataFlowImplCommon::NodeEx n |
+      InvalidPointerReachesFlow::Stages::Stage1::sinkNode(n, _) and
+      n.asNode() = sink and
+      isInvalidPointerDerefSink(sink, _, _, _, _)
+    )
+  }
 
   predicate isSink(DataFlow::Node sink, FlowState pai) { none() }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node = any(DataFlow::SsaPhiNode phi | not phi.isPhiRead()).getAnInput(true)
-  }
+  predicate isBarrier(DataFlow::Node node) { DataFlow::flowsToBackEdge(node) }
 
   predicate isBarrier(DataFlow::Node node, FlowState pai) {
     // `node = getABarrierNode(pai)` ensures that node < pai, so this node is safe to dereference.

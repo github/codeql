@@ -82,8 +82,8 @@ void test_set()
 	s12.swap(s13);
 	s14.swap(s15);
 	sink(s12); // $ SPURIOUS: ast
-	sink(s13); // $ ast,ir
-	sink(s14); // $ ast,ir
+	sink(s13); // $ ir
+	sink(s14); // $ ir
 	sink(s15); // $ SPURIOUS: ast
 
 	// merge
@@ -194,8 +194,8 @@ void test_unordered_set()
 	s12.swap(s13);
 	s14.swap(s15);
 	sink(s12); // $ SPURIOUS: ast
-	sink(s13); // $ ast,ir
-	sink(s14); // $ ast,ir
+	sink(s13); // $ ir
+	sink(s14); // $ ir
 	sink(s15); // $ SPURIOUS: ast
 
 	// merge

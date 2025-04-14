@@ -4,10 +4,10 @@
 
 Modules
 #######
-   
-Modules provide a way of organizing QL code by grouping together related types, predicates, and other modules. 
 
-You can import modules into other files, which avoids duplication, and helps 
+Modules provide a way of organizing QL code by grouping together related types, predicates, and other modules.
+
+You can import modules into other files, which avoids duplication, and helps
 structure your code into more manageable pieces.
 
 .. _defining-module:
@@ -16,7 +16,7 @@ Defining a module
 *****************
 
 There are various ways to define modules—here is an example of the simplest way, declaring an
-:ref:`explicit module  <explicit-modules>` named ``Example`` containing 
+:ref:`explicit module  <explicit-modules>` named ``Example`` containing
 a class ``OneTwoThree``:
 
 .. code-block:: ql
@@ -27,17 +27,17 @@ a class ``OneTwoThree``:
           this = 1 or this = 2 or this = 3
         }
       }
-    } 
+    }
 
 The name of a module can be any `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
-that starts with an uppercase or lowercase letter. 
+that starts with an uppercase or lowercase letter.
 
 ``.ql`` or ``.qll`` files also implicitly define modules.
 For more information, see ":ref:`kinds-of-modules`."
 
 You can also annotate a module. For more information, see of ":ref:`annotations-overview`."
 
-Note that you can only annotate :ref:`explicit modules <explicit-modules>`. 
+Note that you can only annotate :ref:`explicit modules <explicit-modules>`.
 File modules cannot be annotated.
 
 .. _kinds-of-modules:
@@ -48,7 +48,7 @@ Kinds of modules
 File modules
 ============
 
-Each query file (extension ``.ql``) and library file (extension ``.qll``) implicitly defines 
+Each query file (extension ``.ql``) and library file (extension ``.qll``) implicitly defines
 a module. The module has the same name as the file, but any spaces in the file name are replaced
 by underscores (``_``). The contents of the file form the :ref:`body of the module <module-bodies>`.
 
@@ -57,7 +57,7 @@ by underscores (``_``). The contents of the file form the :ref:`body of the modu
 Library modules
 ---------------
 
-A library module is defined by a ``.qll`` file. It can contain any of the 
+A library module is defined by a ``.qll`` file. It can contain any of the
 elements listed in :ref:`module-bodies` below, apart from select clauses.
 
 For example, consider the following QL library:
@@ -75,19 +75,19 @@ For example, consider the following QL library:
 This file defines a library module named ``OneTwoThreeLib``. The body of this module
 defines the class ``OneTwoThree``.
 
-.. _query-modules: 
+.. _query-modules:
 
 Query modules
 -------------
 
-A query module is defined by a ``.ql`` file. It can contain any of the elements listed 
-in :ref:`module-bodies` below. 
+A query module is defined by a ``.ql`` file. It can contain any of the elements listed
+in :ref:`module-bodies` below.
 
 Query modules are slightly different from other modules:
 
 - A query module can't be imported.
-- A query module must have at least one query in its 
-  :ref:`namespace <namespaces>`. This is usually a :ref:`select clause <select-clauses>`, 
+- A query module must have at least one query in its
+  :ref:`namespace <namespaces>`. This is usually a :ref:`select clause <select-clauses>`,
   but can also be a :ref:`query predicate <query-predicates>`.
 
 For example:
@@ -97,7 +97,7 @@ For example:
 .. code-block:: ql
 
     import OneTwoThreeLib
-    
+
     from OneTwoThree ott
     where ott = 1 or ott = 2
     select ott
@@ -110,13 +110,13 @@ This file defines a query module named ``OneTwoQuery``. The body of this module 
 Explicit modules
 ================
 
-You can also define a module within another module. This is an explicit module definition. 
+You can also define a module within another module. This is an explicit module definition.
 
-An explicit module is defined with the keyword ``module`` followed by 
-the module name, and then the module body enclosed in braces. It can contain any 
-of the elements listed in ":ref:`module-bodies`" below, apart from select clauses. 
+An explicit module is defined with the keyword ``module`` followed by
+the module name, and then the module body enclosed in braces. It can contain any
+of the elements listed in ":ref:`module-bodies`" below, apart from select clauses.
 
-For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll** 
+For example, you could add the following QL snippet to the library file **OneTwoThreeLib.qll**
 defined :ref:`above <library-modules>`:
 
 .. code-block:: ql
@@ -129,7 +129,7 @@ defined :ref:`above <library-modules>`:
         }
       }
     }
-    
+
 This defines an explicit module named ``M``. The body of this module defines
 the class ``OneTwo``.
 
@@ -226,7 +226,7 @@ Module bodies
 *************
 
 The body of a module is the code inside the module definition, for example
-the class ``OneTwo`` in the :ref:`explicit module <explicit-modules>` ``M``. 
+the class ``OneTwo`` in the :ref:`explicit module <explicit-modules>` ``M``.
 
 In general, the body of a module can contain the following constructs:
 
@@ -243,11 +243,11 @@ In general, the body of a module can contain the following constructs:
 Importing modules
 *****************
 
-The main benefit of storing code in a module is that you can reuse it in other modules. 
-To access the contents of an external module, you can import the module using an 
+The main benefit of storing code in a module is that you can reuse it in other modules.
+To access the contents of an external module, you can import the module using an
 :ref:`import statement <import-statements>`.
 
-When you import a module this brings all the names in its namespace, apart from :ref:`private` names, 
+When you import a module this brings all the names in its namespace, apart from :ref:`private` names,
 into the :ref:`namespace <namespaces>` of the current module.
 
 .. _import-statements:
@@ -263,7 +263,7 @@ Import statements are used for importing modules. They are of the form:
     import <module_expression2>
 
 Import statements are usually listed at the beginning of the module. Each
-import statement imports one module. You can import multiple modules by 
+import statement imports one module. You can import multiple modules by
 including multiple import statements (one for each module you want to import).
 
 An import statement can also be :ref:`annotated <annotations-overview>` with
@@ -272,22 +272,22 @@ An import statement can also be :ref:`annotated <annotations-overview>` with
 only reachable through deprecated imports in a given context then usage of the
 name in that context will generate deprecation warnings.
 
-You can import a module under a different name using the ``as`` keyword, 
+You can import a module under a different name using the ``as`` keyword,
 for example ``import javascript as js``.
 
 The ``<module_expression>`` itself can be a module name, a selection, or a qualified
 reference. For more information, see ":ref:`name-resolution`."
 
 For information about how import statements are looked up, see "`Module resolution <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#module-resolution>`__"
-in the QL language specification. 
+in the QL language specification.
 
 Built-in modules
 ****************
 
 QL defines a ``QlBuiltins`` module that is always in scope.
-Currently, it defines a single parameterized sub-module
-``EquivalenceRelation``, that provides an efficient abstraction for working with
-(partial) equivalence relations in QL.
+``QlBuiltins`` defines parameterized sub-modules for working with
+(partial) equivalence relations (``EquivalenceRelation``) and sets
+(``InternSets``) in QL.
 
 Equivalence relations
 =====================
@@ -347,3 +347,106 @@ The above select clause returns the following partial equivalence relation:
 +---+---+
 | 4 | 4 |
 +---+---+
+
+Sets
+====
+
+The built-in ``InternSets`` module is parameterized by ``Key`` and ``Value`` types
+and a ``Value getAValue(Key key)`` relation. The module groups the ``Value``
+column by ``Key`` and creates a set for each group of values related by a key.
+
+The ``InternSets`` module exports a functional ``Set getSet(Key key)`` relation
+that relates keys with the set of value related to the given key by
+``getAValue``. Sets are represented by the exported ``Set`` type which exposes
+a ``contains(Value v)`` member predicate that holds for values contained in the
+given set. `getSet(k).contains(v)` is thus equivalent to `v = getAValue(k)` as
+illustrated by the following ``InternSets`` example:
+
+.. code-block:: ql
+
+  int getAValue(int key) {
+    key = 1 and result = 1
+    or
+    key = 2 and
+    (result = 1 or result = 2)
+    or
+    key = 3 and result = 1
+    or
+    key = 4 and result = 2
+  }
+
+  module Sets = QlBuiltins::InternSets<int, int, getAValue/1>;
+
+  from int k, int v
+  where Sets::getSet(k).contains(v)
+  select k, v
+
+This evalutes to the `getAValue` relation:
+
++---+---+
+| k | v |
++===+===+
+| 1 | 1 |
++---+---+
+| 2 | 1 |
++---+---+
+| 2 | 2 |
++---+---+
+| 3 | 1 |
++---+---+
+| 4 | 2 |
++---+---+
+
+If two keys `k1` and `k2` relate to the same set of values, then `getSet(k1) = getSet(k2)`.
+For the above example, keys 1 and 3 relate to the same set of values (namely the singleton
+set containing 1) and are therefore related to the same set by ``getSet``:
+
+.. code-block:: ql
+
+  from int k1, int k2
+  where Sets::getSet(k1) = Sets::getSet(k2)
+  select k1, k2
+
+The above query therefore evalutes to:
+
++----+----+
+| k1 | k2 |
++====+====+
+| 1  | 1  |
++----+----+
+| 1  | 3  |
++----+----+
+| 2  | 2  |
++----+----+
+| 3  | 1  |
++----+----+
+| 3  | 3  |
++----+----+
+| 4  | 4  |
++----+----+
+
+.. index:: BigInt
+.. _bigint:
+
+BigInt
+======
+
+The built-in ``QlBuiltins`` module provides a type ``BigInt`` of arbitrary-range integers.
+
+Unlike ``int`` and ``float``, there is no automatic conversion between ``BigInt`` and other numeric types.
+Instead, big integers can be constructed using the ``.toBigInt()`` methods of ``int`` and ``string``.
+
+The other built-in operations are:
+
+*   comparisons between ``BigInt``\s: ``=``, ``!=``, ``<``, ``<=``, ``>``, ``>=``,
+*   conversions from ``BigInt``\s to strings or integers (if within range): ``.toString()``, ``.toInt()``,
+*   ``BigInt`` arithmetic: binary ``+``, ``-``, ``*``, ``/``, ``%``, unary ``-``,
+*   bitwise operations: ``.bitAnd(BigInt)``, ``.bitOr(BigInt)``,
+    ``.bitXor(BigInt)``, ``.bitShiftLeft(int)``, ``.bitShiftRightSigned(int)``,
+    ``.bitNot()``, ``.bitLength()``,
+*   aggregates: ``min``, ``max``, (``strict``)\ ``sum``, (``strict``)\ ``count``,
+    ``rank``, ``unique``, ``any``.
+*   other: ``.pow(int)``, ``.abs()``, ``.gcd(BigInt)``, ``.minimum(BigInt)``,
+    ``.maximum(BigInt)``.
+
+Note: big integers are currently disallowed in query results and dbscheme columns.

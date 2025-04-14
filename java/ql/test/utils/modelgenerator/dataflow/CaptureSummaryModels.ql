@@ -1,6 +1,6 @@
 import java
-import utils.modelgenerator.internal.CaptureSummaryFlowQuery
-import TestUtilities.InlineMadTest
+import utils.modelgenerator.internal.CaptureModels
+import utils.test.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
   string getCapturedModel(Callable c) { result = captureFlow(c) }

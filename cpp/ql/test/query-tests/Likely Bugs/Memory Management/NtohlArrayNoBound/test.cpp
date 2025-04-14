@@ -1,6 +1,7 @@
 
 typedef unsigned int size_t;
 void *memcpy(void *s1, const void *s2, size_t n);
+int memcmp(void *s1, const void *s2, size_t n);
 size_t strlen(const char *s);
 int ntohl(int x);
 
@@ -97,4 +98,11 @@ void test2(size_t len)
 void test3(size_t len)
 {
 	test2(ntohl(len));
+}
+
+int test4(const char *source, size_t len)
+{
+	char buffer[256];
+
+	return memcmp(buffer, source, ntohl(len)); // BAD
 }

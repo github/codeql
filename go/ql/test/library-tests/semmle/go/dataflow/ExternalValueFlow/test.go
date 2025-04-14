@@ -17,6 +17,7 @@ func main() {
 	taint = t.StepArgRes(arg)
 	_, taint = t.StepArgRes1(arg)
 	t.StepArgArg(arg, arg1)
+	t.StepArgArgIgnored(arg, arg1)
 	t.StepArgQual(arg)
 	taint = t.StepQualRes()
 	t.StepQualArg(arg)
@@ -66,6 +67,10 @@ func simpleflow() {
 	var taint3 interface{}
 	t.StepArgArg(src, taint3)
 	b.Sink1(taint3) // $ hasValueFlow="taint3"
+
+	var taint3ignored interface{}
+	t.StepArgArgIgnored(src, taint3ignored)
+	b.Sink1(taint3ignored)
 
 	var taint4 test.T
 	taint4.StepArgQual(src)
@@ -200,6 +205,13 @@ func simpleflow() {
 	b.Sink1(min(srcInt, 0, 1)) // $ hasValueFlow="call to min"
 	b.Sink1(min(0, srcInt, 1)) // $ hasValueFlow="call to min"
 	b.Sink1(min(0, 1, srcInt)) // $ hasValueFlow="call to min"
+
+	temp := test.SourceVariable
+	test.SinkVariable = temp // $ hasValueFlow="temp"
+}
+
+func srcParam(src string, b test.B) {
+	b.Sink1(src) // $ hasValueFlow="src"
 }
 
 type mapstringstringtype map[string]string

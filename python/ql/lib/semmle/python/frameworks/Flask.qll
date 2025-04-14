@@ -101,6 +101,19 @@ module Flask {
   /** Gets a reference to the `flask.request` object. */
   API::Node request() {
     result = API::moduleImport(["flask", "flask_restful"]).getMember("request")
+    or
+    result = sessionInterfaceRequestParam()
+  }
+
+  /** Gets a `request` parameter of an implementation of `open_session` in a subclass of `flask.sessions.SessionInterface` */
+  private API::Node sessionInterfaceRequestParam() {
+    result =
+      API::moduleImport("flask")
+          .getMember("sessions")
+          .getMember("SessionInterface")
+          .getASubclass+()
+          .getMember("open_session")
+          .getParameter(1)
   }
 
   /**
@@ -570,9 +583,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
-  class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode
-  {
+  class FlaskResponseSetCookieCall extends Http::Server::SetCookieCall, DataFlow::MethodCallNode {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -709,5 +720,17 @@ module Flask {
       output = "ReturnValue.ListElement" and
       preservesValue = false
     }
+  }
+
+  /** A call to `flask.render_template_string` or `flask.stream_template_string` as a template construction sink. */
+  private class FlaskTemplateConstruction extends TemplateConstruction::Range, API::CallNode {
+    FlaskTemplateConstruction() {
+      this =
+        API::moduleImport("flask")
+            .getMember(["render_template_string", "stream_template_string"])
+            .getACall()
+    }
+
+    override DataFlow::Node getSourceArg() { result = this.getArg(0) }
   }
 }

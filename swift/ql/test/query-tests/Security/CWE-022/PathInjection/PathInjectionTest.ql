@@ -2,7 +2,7 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.PathInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module PathInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasPathInjection" }

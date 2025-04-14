@@ -1,0 +1,5 @@
+| gen_self_param.rs:6:10:6:14 | SelfParam | getNumberOfAttrs: | 0 | hasTypeRepr: | no | isRef: | yes | isMut: | no | hasLifetime: | no | hasName: | yes |
+| gen_self_param.rs:7:10:7:18 | SelfParam | getNumberOfAttrs: | 0 | hasTypeRepr: | no | isRef: | yes | isMut: | yes | hasLifetime: | no | hasName: | yes |
+| gen_self_param.rs:8:12:8:15 | SelfParam | getNumberOfAttrs: | 0 | hasTypeRepr: | no | isRef: | no | isMut: | no | hasLifetime: | no | hasName: | yes |
+| gen_self_param.rs:9:11:9:18 | SelfParam | getNumberOfAttrs: | 0 | hasTypeRepr: | no | isRef: | no | isMut: | yes | hasLifetime: | no | hasName: | yes |
+| gen_self_param.rs:10:15:10:22 | SelfParam | getNumberOfAttrs: | 0 | hasTypeRepr: | no | isRef: | yes | isMut: | no | hasLifetime: | yes | hasName: | yes |

@@ -1,0 +1,16 @@
+name: codeql/actions-all
+version: 0.4.7-dev
+library: true
+warnOnImplicitThis: true
+dependencies:
+  codeql/util: ${workspace}
+  codeql/yaml: ${workspace}
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
+  codeql/javascript-all: ${workspace}
+extractor: actions
+groups: actions
+dataExtensions:
+  - ext/manual/*.model.yml
+  - ext/generated/**/*.model.yml
+  - ext/config/*.yml

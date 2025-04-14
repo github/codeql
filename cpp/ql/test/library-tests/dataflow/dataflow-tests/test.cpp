@@ -1046,6 +1046,42 @@ void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	sink(*buf); // $ ir MISSING: ast
 }
 
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	int *src = indirect_source();
+	int *dest = (int*)realloc(src, sizeof(int));
+	sink(*dest); // $ ir, MISSING: ast
+}
+
+struct MyInt {
+  int i;
+  MyInt();
+  void swap(MyInt &j);
+};
+
+void test_member_swap() {
+	MyInt s1;
+	MyInt s2;
+	s2.i = source();
+	MyInt s3;
+	MyInt s4;
+	s4.i = source();
+
+	sink(s1.i);
+	sink(s2.i); // $ ast,ir
+	sink(s3.i);
+	sink(s4.i); // $ ast,ir
+
+	s1.swap(s2);
+	s4.swap(s3);
+
+	sink(s1.i); // $ ir
+	sink(s2.i); // $ SPURIOUS: ast
+	sink(s3.i); // $ ir
+	sink(s4.i); // $ SPURIOUS: ast
+}
+
 void flow_out_of_address_with_local_flow() {
   MyStruct a;
   a.content = nullptr;
@@ -1072,4 +1108,49 @@ void single_object_in_both_cases(bool b, int x, int y) {
   *p = source();
   *p = 0;
   sink(*p); // clean
+}
+
+template<typename T>
+void indirect_sink_const_ref(const T&);
+
+void test_temp_with_conversion_from_materialization() {
+  indirect_sink_const_ref(source()); // $ ir MISSING: ast
+}
+
+void reads_input(int x) {
+  sink(x); // $ ir MISSING: ast
+}
+
+void not_does_read_input(int x);
+
+void (*dispatch_table[])(int) = {
+  reads_input,
+  not_does_read_input
+};
+
+void test_dispatch_table(int i) {
+  int x = source();
+  dispatch_table[i](x);
+}
+
+void test_uncertain_array(int n1, int n2) {
+  int data[10];
+  *(data + 1) = source();
+  *data = 0;
+  sink(*(data + 1)); // $ ast=1138:17 ast=1137:7 ir
+}
+
+namespace conflation_regression {
+
+  char* source(int);
+
+  void read_deref_deref(char **l) { // $ ast-def=l ir-def=*l ir-def=**l
+    sink(**l); // Clean. Only *l is tainted
+  }
+
+  void f(char ** p) // $ ast-def=p ir-def=*p ir-def=**p
+  {
+    *p = source(0);
+    read_deref_deref(p);
+  }
 }

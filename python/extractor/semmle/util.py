@@ -10,7 +10,7 @@ from io import BytesIO
 
 #Semantic version of extractor.
 #Update this if any changes are made
-VERSION = "6.1.1"
+VERSION = "7.1.2"
 
 PY_EXTENSIONS = ".py", ".pyw"
 

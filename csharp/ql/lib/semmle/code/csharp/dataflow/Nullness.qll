@@ -157,9 +157,9 @@ private ControlFlowElement getANullCheck(
   exists(Expr e, G::AbstractValue v | v.branch(result, s, e) | exprImpliesSsaDef(e, v, def, nv))
 }
 
-private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr arg) {
+private predicate isMaybeNullArgument(Ssa::ImplicitParameterDefinition def, MaybeNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-    pdef = def.getADefinition()
+    p = def.getParameter()
   |
     p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getAnAssignedArgument() and
@@ -208,9 +208,9 @@ private predicate hasMultipleParamsArguments(Call c) {
   )
 }
 
-private predicate isNullDefaultArgument(Ssa::ExplicitDefinition def, AlwaysNullExpr arg) {
+private predicate isNullDefaultArgument(Ssa::ImplicitParameterDefinition def, AlwaysNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-    pdef = def.getADefinition()
+    p = def.getParameter()
   |
     p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getDefaultValue() and
@@ -526,7 +526,11 @@ class Dereference extends G::DereferenceableExpr {
         not underlyingType instanceof NullableType
       )
     ) else (
-      this = any(QualifiableExpr qe | not qe.isConditional()).getQualifier() and
+      this =
+        any(QualifiableExpr qe |
+          not qe.isConditional() and
+          not qe.(MethodCall).isImplicit()
+        ).getQualifier() and
       not this instanceof ThisAccess and
       not this instanceof BaseAccess and
       not this instanceof TypeAccess
@@ -543,9 +547,10 @@ class Dereference extends G::DereferenceableExpr {
         p.fromSource() // assume all non-source extension methods perform a dereference
         implies
         exists(
-          Ssa::ExplicitDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef
+          Ssa::ImplicitParameterDefinition def,
+          AssignableDefinitions::ImplicitParameterDefinition pdef
         |
-          pdef = def.getADefinition()
+          p = def.getParameter()
         |
           p.getUnboundDeclaration() = pdef.getParameter() and
           def.getARead() instanceof Dereference

@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// Logs an error if the name is not found.
         /// </summary>
         /// <param name="cx">Extractor context.</param>
-        /// <param name="methodName">The method name.</param>
+        /// <param name="method">The method symbol.</param>
         /// <returns>The converted name.</returns>
         private static string OperatorSymbol(Context cx, IMethodSymbol method)
         {

@@ -106,7 +106,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
 
-module TypeTrackingInput implements Shared::TypeTrackingInput {
+module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   class Node = DataFlowPublic::Node;
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
@@ -304,7 +304,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       var.hasDefiningNode(def)
     |
       nodeTo.(DataFlowPublic::ScopeEntryDefinitionNode).getDefinition() = e and
-      nodeFrom.asCfgNode() = def.getValue() and
+      nodeFrom.asCfgNode() = def and
       var.getScope().getScope*() = nodeFrom.getScope()
     )
   }
@@ -323,4 +323,4 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   predicate nonStandardFlowsTo(LocalSourceNode localSource, Node dst) { localSource.flowsTo(dst) }
 }
 
-import SharedImpl::TypeTracking<TypeTrackingInput>
+import SharedImpl::TypeTracking<Location, TypeTrackingInput>

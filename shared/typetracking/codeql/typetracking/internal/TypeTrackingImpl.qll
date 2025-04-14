@@ -6,6 +6,7 @@
 private import codeql.util.Boolean
 private import codeql.util.Option
 private import codeql.typetracking.TypeTracking
+private import codeql.util.Location
 
 /**
  * Given a set of step relations, this module provides classes and predicates
@@ -14,7 +15,7 @@ private import codeql.typetracking.TypeTracking
  * The constructed module contains both public and internal logic; the public
  * interface is exposed via `codeql.typetracking.TypeTracking`.
  */
-module TypeTracking<TypeTrackingInput I> {
+module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
   private import I
 
   signature module ConsistencyChecksInputSig {
@@ -828,13 +829,6 @@ module TypeTracking<TypeTrackingInput I> {
       query predicate edges(PathNode n1, PathNode n2) { edgeCand(n1, n2) }
 
       private predicate stepPlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
-
-      /**
-       * DEPRECATED: Use `flowPath` instead.
-       *
-       * Holds if there is a path between `source` and `sink`.
-       */
-      deprecated predicate hasFlow(PathNode source, PathNode sink) { flowPath(source, sink) }
 
       /** Holds if there is a path between `source` and `sink`. */
       predicate flowPath(PathNode source, PathNode sink) {

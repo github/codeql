@@ -324,7 +324,7 @@ func taintThroughURL() {
 	})
 	urlTainted.withUnsafeFileSystemRepresentation({
 		ptr in
-		sink(any: ptr!) // $ MISSING: tainted=210
+		sink(any: ptr!) // $ tainted=210
 	})
 
 	sink(arg: urlTainted.resolvingSymlinksInPath()) // $ tainted=210

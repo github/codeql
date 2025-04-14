@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ibm/sarama/.github/workflows/fvt.yml", "*", "input.kafka-version", "code-injection", "generated"]

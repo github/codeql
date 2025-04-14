@@ -22,7 +22,7 @@ namespace Semmle.Util
 
         public void Run()
         {
-            var _ = doInit.Value;
+            _ = doInit.Value;
         }
     }
 }

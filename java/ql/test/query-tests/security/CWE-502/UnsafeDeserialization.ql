@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.UnsafeDeserializationQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module UnsafeDeserializationTest implements TestSig {
   string getARelevantTag() { result = "unsafeDeserialization" }

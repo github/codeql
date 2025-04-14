@@ -13,28 +13,6 @@ import go
 module SqlInjection {
   import SqlInjectionCustomizations::SqlInjection
 
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about SQL-injection vulnerabilities.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SqlInjection" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      NoSql::isAdditionalMongoTaintStep(pred, succ)
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-  }
-
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 

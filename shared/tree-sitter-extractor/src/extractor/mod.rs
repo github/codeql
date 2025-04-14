@@ -4,12 +4,69 @@ use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
+use std::env;
 use std::path::Path;
 
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::Layer;
+use tracing_subscriber::filter::Filtered;
+use tracing_subscriber::fmt::format::DefaultFields;
+use tracing_subscriber::fmt::format::Format;
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
 pub mod simple;
 
+/// Sets the tracing level based on the environment variables
+/// `RUST_LOG` and `CODEQL_VERBOSITY` (prioritized in that order),
+/// falling back to `warn` if neither is set.
+pub fn set_tracing_level(language: &str) {
+    let verbosity = env::var("CODEQL_VERBOSITY").ok();
+    tracing_subscriber::registry()
+        .with(default_subscriber_with_level(language, &verbosity))
+        .init();
+}
+
+/// Create a `Subscriber` configured with the tracing level based on the environment variables
+/// `RUST_LOG` and `verbosity` (prioritized in that order), falling back to `warn` if neither is set.
+pub fn default_subscriber_with_level(
+    language: &str,
+    verbosity: &Option<String>,
+) -> Filtered<
+    tracing_subscriber::fmt::Layer<
+        tracing_subscriber::Registry,
+        DefaultFields,
+        Format<tracing_subscriber::fmt::format::Full, ()>,
+    >,
+    EnvFilter,
+    tracing_subscriber::Registry,
+> {
+    tracing_subscriber::fmt::layer()
+        .with_target(false)
+        .without_time()
+        .with_level(true)
+        .with_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(
+                |_| -> tracing_subscriber::EnvFilter {
+                    let verbosity = verbosity
+                        .as_ref()
+                        .map(|v| match v.to_lowercase().as_str() {
+                            "off" | "errors" => "error",
+                            "warnings" => "warn",
+                            "info" | "progress" => "info",
+                            "debug" | "progress+" => "debug",
+                            "trace" | "progress++" | "progress+++" => "trace",
+                            _ => "warn",
+                        })
+                        .unwrap_or_else(|| "warn");
+                    tracing_subscriber::EnvFilter::new(format!(
+                        "{language}_extractor={verbosity},codeql_extractor={verbosity}"
+                    ))
+                },
+            ),
+        )
+}
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
         &file_paths::normalize_path(absolute_path),
@@ -43,16 +100,17 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
 
 pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
-    global_location(
+    let loc_label = global_location(
         writer,
-        file_label,
         trap::Location {
+            file_label,
             start_line: 0,
             start_column: 0,
             end_line: 0,
             end_column: 0,
         },
     );
+    writer.add_tuple("empty_location", vec![trap::Arg::Label(loc_label)]);
 }
 
 pub fn populate_parent_folders(
@@ -95,14 +153,10 @@ pub fn populate_parent_folders(
 }
 
 /** Get the label for the given location, defining it a global ID if it doesn't exist yet. */
-fn global_location(
-    writer: &mut trap::Writer,
-    file_label: trap::Label,
-    location: trap::Location,
-) -> trap::Label {
+fn global_location(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.global_id(&format!(
         "loc,{{{}}},{},{},{},{}",
-        file_label,
+        location.file_label,
         location.start_line,
         location.start_column,
         location.end_line,
@@ -113,7 +167,7 @@ fn global_location(
             "locations_default",
             vec![
                 trap::Arg::Label(loc_label),
-                trap::Arg::Label(file_label),
+                trap::Arg::Label(location.file_label),
                 trap::Arg::Int(location.start_line),
                 trap::Arg::Int(location.start_column),
                 trap::Arg::Int(location.end_line),
@@ -126,18 +180,14 @@ fn global_location(
 
 /** Get the label for the given location, creating it as a fresh ID if we haven't seen the location
  * yet for this file. */
-fn location_label(
-    writer: &mut trap::Writer,
-    file_label: trap::Label,
-    location: trap::Location,
-) -> trap::Label {
+pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> trap::Label {
     let (loc_label, fresh) = writer.location_label(location);
     if fresh {
         writer.add_tuple(
             "locations_default",
             vec![
                 trap::Arg::Label(loc_label),
-                trap::Arg::Label(file_label),
+                trap::Arg::Label(location.file_label),
                 trap::Arg::Int(location.start_line),
                 trap::Arg::Int(location.start_column),
                 trap::Arg::Int(location.end_line),
@@ -150,7 +200,7 @@ fn location_label(
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
 pub fn extract(
-    language: Language,
+    language: &Language,
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,
@@ -168,7 +218,7 @@ pub fn extract(
 
     let _enter = span.enter();
 
-    tracing::info!("extracting: {}", path_str);
+    tracing::debug!("extracting: {}", path_str);
 
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
@@ -280,8 +330,8 @@ impl<'a> Visitor<'a> {
         node: Node,
         status_page: bool,
     ) {
-        let loc = location_for(self, node);
-        let loc_label = location_label(self.trap_writer, self.file_label, loc);
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let mut mesg = self.diagnostics_writer.new_entry(
             "parse-error",
             "Could not process some files due to syntax errors",
@@ -332,8 +382,8 @@ impl<'a> Visitor<'a> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let loc = location_for(self, node);
-        let loc_label = location_label(self.trap_writer, self.file_label, loc);
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
         let table = self
             .schema
             .get(&TypeName {
@@ -541,11 +591,7 @@ impl<'a> Visitor<'a> {
                 }
             }
         }
-        if is_valid {
-            Some(args)
-        } else {
-            None
-        }
+        if is_valid { Some(args) } else { None }
     }
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
@@ -565,7 +611,7 @@ impl<'a> Visitor<'a> {
             }
 
             node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
-                return !tp.named && int_mapping.contains_key(&tp.kind)
+                return !tp.named && int_mapping.contains_key(&tp.kind);
             }
         }
         false
@@ -595,7 +641,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(visitor: &mut Visitor, n: Node) -> trap::Location {
+fn location_for(visitor: &mut Visitor, file_label: trap::Label, n: Node) -> trap::Location {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -653,6 +699,7 @@ fn location_for(visitor: &mut Visitor, n: Node) -> trap::Location {
         }
     }
     trap::Location {
+        file_label,
         start_line,
         start_column,
         end_line,

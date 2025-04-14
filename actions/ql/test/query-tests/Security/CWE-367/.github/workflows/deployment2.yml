@@ -1,0 +1,31 @@
+# https://github.com/AdnaneKhan/ActionsTOCTOU/blob/main/.github/workflows/deployment_victim.yml
+name: Environment PR Check
+
+on:
+  pull_request_target:
+    branches:
+      - main
+    paths:
+      - 'README.md'
+  workflow_dispatch:
+jobs:
+   test:
+     environment: Public CI
+     runs-on: ubuntu-latest
+     steps:
+       - name: Checkout from PR branch  
+         uses: actions/checkout@v4
+         with: 
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+       - name: Set Node.js 20.x for GitHub Action
+         uses: actions/setup-node@v4
+         with:
+           node-version: 20.x
+
+       - name: installing node_modules
+         run: cd deployment_example && npm install 
+
+       - name: Build GitHub Action
+         run: cd deployment_example && npm run build

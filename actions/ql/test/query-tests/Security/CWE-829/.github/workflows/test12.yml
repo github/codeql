@@ -1,0 +1,96 @@
+name: Test
+
+on:
+
+  issue_comment:
+    types: [created]
+
+jobs:
+
+  deploy:
+    name: Update deployment
+    if: >
+      github.event.issue.pull_request &&
+      (contains(github.event.comment.body, '/deploy') || contains(github.event.comment.body, '/rollback')) &&
+      contains(github.event.issue.labels.*.name, 'Deployment Update') &&
+      github.event.comment.user.type != 'Bot' &&
+      (
+        github.event.issue.author_association == 'OWNER' ||
+        github.event.issue.author_association == 'COLLABORATOR' ||
+        github.event.issue.author_association == 'MEMBER'
+      ) 
+    runs-on: [self-hosted, production]
+
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      statuses: write
+
+    steps:
+
+    - name: Check comment keywords
+      shell: bash
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        PR_COMMENT_ALLOW_LIST: ${{ secrets.PR_COMMENT_ALLOW_LIST }}
+      run: |
+        function list_subset { local list1="$1"; local list2="$2"; result=0; for item in $list2; do if ! [[ $list1 =~ (^|[[:space:]])"$item"($|[[:space:]]) ]]; then result=1; fi; done; return $result; }
+
+        if `list_subset "echo $PR_COMMENT_ALLOW_LIST" "echo $COMMENT_BODY"` ; then
+          echo "Command keywords allowed. Proceeding!"
+        else
+          echo "Command keywords not allowed. Skipping!"
+          exit 1
+        fi
+
+    - name: Get environment from comment
+      id: environment
+      shell: bash
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        COMMENT_AT: ${{ github.event.comment.created_at }}
+        GH_REPO: ${{ github.repository }}
+        PR_NUMBER: ${{ github.event.issue.number }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        pr="$(gh api /repos/${GH_REPO}/pulls/${PR_NUMBER})"
+        head_sha="$(echo "$pr" | jq -r .head.sha)"
+        pushed_at="$(echo "$pr" | jq -r .pushed_at)"
+
+        if [[ $(date -d "$pushed_at" +%s) -gt $(date -d "$COMMENT_AT" +%s) ]]; then
+          echo "Deployment not allowed because the PR was pushed to (at $pushed_at) after the triggering comment was issued (at $COMMENT_AT)"
+          exit 1
+        fi
+
+        target=$(echo "$COMMENT_BODY" | sed 's/.* //') && \
+        deploy_type=$(echo "$COMMENT_BODY" | sed 's/ .*//')
+
+        if [[ $target == "scorer" ]]; then
+          echo "env=async scorer" >> $GITHUB_OUTPUT
+        else
+          env=$(echo "$target")
+          echo "env=$env" >> $GITHUB_OUTPUT
+        fi
+
+        if [[ $deploy_type == "/deploy" ]]; then
+          echo "depl=deployment" >> $GITHUB_OUTPUT
+        elif [[ $deploy_type == "/rollback" ]]; then
+          echo "depl=rollback" >> $GITHUB_OUTPUT
+        else
+          echo "depl=unknown deployment type" >> $GITHUB_OUTPUT
+        fi
+
+        echo "head_sha=$head_sha" >> $GITHUB_OUTPUT
+
+    - name: Checkout PR branch
+      if: contains(github.event.comment.body, '/deploy')
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # v4
+      with:
+        ref: ${{ steps.environment.outputs.head_sha }}
+
+    - name: Environment setup
+      uses: ./.github/actions/setup-env
+      with:
+        azure_creds: ${{ secrets.AZURE_CREDENTIALS }}
+

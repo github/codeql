@@ -73,9 +73,6 @@ class JsxElement extends JsxNode {
    * That is, the name starts with a lowercase letter.
    */
   predicate isHtmlElement() { this.getName().regexpMatch("[a-z].*") }
-
-  /** DEPRECATED: Alias for isHtmlElement */
-  deprecated predicate isHTMLElement() { this.isHtmlElement() }
 }
 
 /**
@@ -256,7 +253,4 @@ class JsxPragma extends JSDocTag {
    * the result is `React.DOM`.
    */
   string getDomName() { result = this.getDescription().trim() }
-
-  /** DEPRECATED: Alias for getDomName */
-  deprecated string getDOMName() { result = this.getDomName() }
 }

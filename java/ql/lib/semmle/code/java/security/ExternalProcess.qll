@@ -5,16 +5,6 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.CommandLineQuery
 
 /**
- * DEPRECATED: A callable that executes a command.
- */
-abstract deprecated class ExecCallable extends Callable {
-  /**
-   * Gets the index of an argument that will be part of the command that is executed.
-   */
-  abstract int getAnExecutedArgument();
-}
-
-/**
  * An expression used as an argument to a call that executes an external command. For calls to
  * varargs method calls, this only includes the first argument, which will be the command
  * to be executed.

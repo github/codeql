@@ -26,6 +26,10 @@ postWithInFlow
 | test.cpp:400:10:400:13 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:407:10:407:13 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1045:9:1045:11 | memset output argument | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1076:2:1076:3 | swap output argument | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1076:10:1076:11 | swap output argument | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1077:2:1077:3 | swap output argument | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1077:10:1077:11 | swap output argument | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
@@ -34,3 +38,4 @@ identityLocalStep
 missingArgumentCall
 multipleArgumentCall
 lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel

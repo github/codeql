@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.ViewComponentInput
 
 /**
  * Gets a reference to the 'React' object.
@@ -867,4 +868,10 @@ private class PropsFlowStep extends PreCallGraphStep {
       succ = prn
     )
   }
+}
+
+private class ReactPropAsViewComponentInput extends ViewComponentInput {
+  ReactPropAsViewComponentInput() { this = any(ReactComponent c).getADirectPropsAccess() }
+
+  override string getSourceType() { result = "React props" }
 }

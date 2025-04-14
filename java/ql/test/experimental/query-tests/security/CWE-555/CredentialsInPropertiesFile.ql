@@ -4,7 +4,8 @@
  */
 
 import java
-import experimental.semmle.code.java.frameworks.CredentialsInPropertiesFile
+deprecated import experimental.semmle.code.java.frameworks.CredentialsInPropertiesFile
 
-from CredentialsConfig cc
-select cc, cc.getConfigDesc()
+deprecated query predicate problems(CredentialsConfig cc, string message) {
+  message = cc.getConfigDesc()
+}

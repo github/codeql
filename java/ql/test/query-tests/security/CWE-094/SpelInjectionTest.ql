@@ -2,7 +2,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SpelInjectionQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HasSpelInjectionTest implements TestSig {
   string getARelevantTag() { result = "hasSpelInjection" }

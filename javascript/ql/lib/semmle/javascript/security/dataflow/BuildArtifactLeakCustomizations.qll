@@ -14,9 +14,11 @@ module BuildArtifactLeak {
    */
   abstract class Sink extends DataFlow::Node {
     /**
+     * DEPRECATED. This query no longer uses flow state.
+     *
      * Gets a data-flow label that leaks information for this sink.
      */
-    DataFlow::FlowLabel getLabel() { result.isTaint() }
+    deprecated DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**

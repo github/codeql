@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/vscode-cpptools/.github/workflows/job-compile-and-test.yml", "*", "input.yarn-args", "code-injection", "generated"]

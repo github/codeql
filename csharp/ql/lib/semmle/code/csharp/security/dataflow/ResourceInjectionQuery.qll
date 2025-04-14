@@ -24,21 +24,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ResourceInjection` instead.
- *
- * A taint-tracking configuration for untrusted user input used in resource descriptors.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ResourceInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input used in resource descriptors.
  */
 private module ResourceInjectionConfig implements DataFlow::ConfigSig {
@@ -69,7 +54,7 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** An argument to the `ConnectionString` property on a data connection class. */
 class SqlConnectionStringSink extends Sink {

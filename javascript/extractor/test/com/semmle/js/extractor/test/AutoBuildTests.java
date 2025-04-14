@@ -178,6 +178,8 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.ts");
     addFile(true, LGTM_SRC, "tst.html");
+    addFile(true, LGTM_SRC, "tst.xsjs");
+    addFile(true, LGTM_SRC, "tst.xsjslib");
     addFile(false, LGTM_SRC, "tst.json");
     addFile(true, LGTM_SRC, "package.json");
     addFile(true, LGTM_SRC, ".eslintrc.yml");

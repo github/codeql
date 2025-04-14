@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.CleartextStorageAndroidFilesystemQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CleartextStorageAndroidFilesystemTest implements TestSig {
   string getARelevantTag() { result = "hasCleartextStorageAndroidFilesystem" }

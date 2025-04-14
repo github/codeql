@@ -1,5 +1,5 @@
 import cpp
-private import TestUtilities.InlineExpectationsTest
+private import utils.test.InlineExpectationsTest
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private predicate ignoreAllocation(string name) {
@@ -56,7 +56,7 @@ module UnaliasedSsa {
         not memLocation.getVirtualVariable() instanceof AliasedVirtualVariable and
         not memLocation instanceof AllNonLocalMemory and
         tag = "ussa" and
-        not ignoreAllocation(memLocation.getAllocation().getAllocationString()) and
+        not ignoreAllocation(memLocation.getAnAllocation().getAllocationString()) and
         value = memLocation.toString() and
         element = instr.toString() and
         location = instr.getLocation() and

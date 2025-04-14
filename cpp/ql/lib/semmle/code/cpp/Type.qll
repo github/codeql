@@ -4,6 +4,7 @@
 
 import semmle.code.cpp.Element
 import semmle.code.cpp.Function
+import semmle.code.cpp.TemplateParameter
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
@@ -39,8 +40,8 @@ class Type extends Locatable, @type {
 
   /**
    * Gets a specifier of this type, recursively looking through `typedef` and
-   * `decltype`. For example, in the context of `typedef const int *restrict
-   * t`, the type `volatile t` has specifiers `volatile` and `restrict` but not
+   * `decltype`. For example, in the context of `typedef const int *restrict t`,
+   * the type `volatile t` has specifiers `volatile` and `restrict` but not
    * `const` since the `const` is attached to the type being pointed to rather
    * than the pointer itself.
    */
@@ -288,10 +289,7 @@ class Type extends Locatable, @type {
    */
   Type stripType() { result = this }
 
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
+  override Location getLocation() { result instanceof UnknownDefaultLocation }
 }
 
 /**
@@ -408,10 +406,7 @@ class IntegralOrEnumType extends Type {
     isIntegralType(underlyingElement(this), _)
     or
     // Enum type
-    (
-      usertypes(underlyingElement(this), _, 4) or
-      usertypes(underlyingElement(this), _, 13)
-    )
+    usertypes(underlyingElement(this), _, [4, 13])
   }
 }
 
@@ -1665,60 +1660,6 @@ class RoutineType extends Type, @routinetype {
     this.getAParameterType().involvesTemplateParameter()
   }
 }
-
-/**
- * A C++ `typename` (or `class`) template parameter.
- *
- * In the example below, `T` is a template parameter:
- * ```
- * template <class T>
- * class C { };
- * ```
- */
-class TemplateParameter extends UserType {
-  TemplateParameter() {
-    usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
-  }
-
-  override string getAPrimaryQlClass() { result = "TemplateParameter" }
-
-  override predicate involvesTemplateParameter() { any() }
-}
-
-/**
- * A C++ template template parameter.
- *
- * In the example below, `T` is a template template parameter (although its name
- * may be omitted):
- * ```
- * template <template <typename T> class Container, class Elem>
- * void foo(const Container<Elem> &value) { }
- * ```
- */
-class TemplateTemplateParameter extends TemplateParameter {
-  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
-
-  override string getAPrimaryQlClass() { result = "TemplateTemplateParameter" }
-}
-
-/**
- * A type representing the use of the C++11 `auto` keyword.
- * ```
- * auto val = some_typed_expr();
- * ```
- */
-class AutoType extends TemplateParameter {
-  AutoType() { usertypes(underlyingElement(this), "auto", 7) }
-
-  override string getAPrimaryQlClass() { result = "AutoType" }
-
-  override Location getLocation() {
-    suppressUnusedThis(this) and
-    result instanceof UnknownDefaultLocation
-  }
-}
-
-private predicate suppressUnusedThis(Type t) { any() }
 
 /**
  * A source code location referring to a user-defined type.

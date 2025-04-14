@@ -410,7 +410,7 @@ func AddDefaultSnippet(snippet string) bool {
 
 // PrintDbScheme prints the schema of this database to the writer `w`
 func PrintDbScheme(w io.Writer) {
-	fmt.Fprintf(w, "/** Auto-generated dbscheme; do not edit. */\n\n")
+	fmt.Fprintf(w, "/** Auto-generated dbscheme; do not edit. Run `make gen` in directory `go/` to regenerate. */\n\n")
 	for _, snippet := range defaultSnippets {
 		fmt.Fprintf(w, "%s\n", snippet)
 	}

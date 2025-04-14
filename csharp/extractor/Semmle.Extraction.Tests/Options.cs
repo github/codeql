@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Semmle.Util;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction.Tests
 {
@@ -168,7 +169,7 @@ namespace Semmle.Extraction.Tests
             try
             {
                 File.AppendAllText(file, "Test");
-                sw.WriteContentFromArgumentFile(new string[] { "/noconfig", "@" + file });
+                sw.WriteContentFromArgumentFile(new string[] { "/noconfig", $"@{file}" });
                 Assert.Equal("Test", Regex.Replace(sw.ToString(), @"\t|\n|\r", ""));
             }
             finally

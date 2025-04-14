@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["msys2/setup-msys2/.github/workflows/PKGBUILD.yml", "*", "input.test", "code-injection", "generated"]
+     - ["msys2/setup-msys2/.github/workflows/PKGBUILD.yml", "*", "input.path", "code-injection", "generated"]

@@ -1,5 +1,7 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
 predicate isYamlFunction(Function f) {
   f.hasQualifiedName(package("gopkg.in/yaml", ""), _)
@@ -37,8 +39,7 @@ module TaintFunctionModelTest implements TestSig {
     tag = "ttfnmodelstep" and
     (
       exists(TaintTracking::FunctionModel model, DataFlow::CallNode call | call = model.getACall() |
-        call.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+        call.getLocation() = location and
         element = call.toString() and
         value = "\"" + model.getAnInputNode(call) + " -> " + model.getAnOutputNode(call) + "\""
       )
@@ -46,8 +47,7 @@ module TaintFunctionModelTest implements TestSig {
       exists(DataFlow::Node arg, DataFlow::Node output |
         TaintTransitsFunctionFlow::flow(arg, output) and
         isSourceSinkPair(arg, output) and
-        arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-          location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+        arg.getLocation() = location and
         element = arg.toString() and
         value = "\"" + arg + " -> " + output + "\""
       )
@@ -61,8 +61,7 @@ module MarshalerTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "marshaler" and
     exists(MarshalingFunction m, DataFlow::CallNode call | call = m.getACall() |
-      call.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      call.getLocation() = location and
       element = call.toString() and
       value =
         "\"" + m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " +
@@ -77,8 +76,7 @@ module UnmarshalerTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "unmarshaler" and
     exists(UnmarshalingFunction m, DataFlow::CallNode call | call = m.getACall() |
-      call.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      call.getLocation() = location and
       element = call.toString() and
       value =
         "\"" + m.getFormat() + ": " + m.getAnInput().getNode(call) + " -> " +

@@ -133,5 +133,5 @@ module Private {
 
   predicate ssaUpdateStep = RU::ssaUpdateStep/3;
 
-  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode() }
+  Expr getABasicBlockExpr(BasicBlock bb) { result = bb.getANode().asExpr() }
 }

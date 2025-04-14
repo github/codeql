@@ -71,4 +71,20 @@ class UsersController < ApplicationController
     user.password = random_password
     user.save
   end
+
+  def test 
+    info = [
+      {
+        name: "U1", 
+        password: "aaaaaaaaaa",
+        credit_card_number: "0000-0000-0000-0000",
+        SSN: "000-00-00000"
+      }, 
+      {name: "U2", password: "bbbbbbb"}
+    ]
+    info.each do |inf|
+      # BAD: Plaintext password, SSN, and CCN stored to database.
+      User.create!(inf)
+    end
+  end
 end

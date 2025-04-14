@@ -42,7 +42,7 @@ void CWE121_Stack_Based_Buffer_Overflow__char_type_overrun_memcpy_01_bad()
         /* Print the initial block pointed to by structCharVoid.voidSecond */
         printLine((char *)structCharVoid.voidSecond);
         /* FLAW: Use the sizeof(structCharVoid) which will overwrite the pointer voidSecond */
-        memcpy(structCharVoid.charFirst, SRC_STR, sizeof(structCharVoid));
+        memcpy(structCharVoid.charFirst, SRC_STR, sizeof(structCharVoid)); // [NOT DETECTED]
         structCharVoid.charFirst[(sizeof(structCharVoid.charFirst)/sizeof(char))-1] = '\0'; /* null terminate the string */
         printLine((char *)structCharVoid.charFirst);
         printLine((char *)structCharVoid.voidSecond);
@@ -57,7 +57,7 @@ void CWE122_Heap_Based_Buffer_Overflow__char_type_overrun_memcpy_01_bad()
         /* Print the initial block pointed to by structCharVoid->voidSecond */
         printLine((char *)structCharVoid->voidSecond);
         /* FLAW: Use the sizeof(*structCharVoid) which will overwrite the pointer y */
-        memcpy(structCharVoid->charFirst, SRC_STR, sizeof(*structCharVoid));
+        memcpy(structCharVoid->charFirst, SRC_STR, sizeof(*structCharVoid)); // [NOT DETECTED]
         structCharVoid->charFirst[(sizeof(structCharVoid->charFirst)/sizeof(char))-1] = '\0'; /* null terminate the string */
         printLine((char *)structCharVoid->charFirst);
         printLine((char *)structCharVoid->voidSecond);
@@ -292,7 +292,7 @@ namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_ncpy_01
             delete [] data;
         }
     }
-    
+
     static void goodG2B()
 	{
 		wchar_t * data;
@@ -459,7 +459,7 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_ncpy_01_bad()
 #ifdef _WIN32
 int _snwprintf(wchar_t *buffer, size_t count, const wchar_t *format, ...);
 #define SNPRINTF _snwprintf
-#else 
+#else
 int snprintf(char *s, size_t n, const char *format, ...);
 int swprintf(wchar_t *wcs, size_t maxlen, const wchar_t *format, ...);
 //#define SNPRINTF snprintf --- original code; using snprintf appears to be a mistake in samate?
@@ -485,14 +485,14 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_snprintf_01_bad()
 }
 
 /* classes used in some test cases as a custom type */
-class TwoIntsClass 
+class TwoIntsClass
 {
     public: // Needed to access variables from label files
         int intOne;
         int intTwo;
 };
 
-class OneIntClass 
+class OneIntClass
 {
     public: // Needed to access variables from label files
         int intOne;
@@ -636,7 +636,7 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_snprintf_31_bad()
 
 int rand(void);
 
-int globalReturnsTrueOrFalse() 
+int globalReturnsTrueOrFalse()
 {
     return (rand() % 2);
 }

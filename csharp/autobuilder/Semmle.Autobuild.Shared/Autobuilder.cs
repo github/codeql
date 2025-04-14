@@ -73,16 +73,6 @@ namespace Semmle.Autobuild.Shared
         /// A logger.
         /// </summary>
         ILogger Logger { get; }
-
-        /// <summary>
-        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
-        /// </summary>
-        string? CodeQLExtractorLangRoot { get; }
-
-        /// <summary>
-        /// Value of CODEQL_PLATFORM environment variable.
-        /// </summary>
-        string? CodeQlPlatform { get; }
     }
 
     /// <summary>
@@ -197,9 +187,6 @@ namespace Semmle.Autobuild.Shared
                 return ret ?? new List<IProjectOrSolution>();
             });
 
-            CodeQLExtractorLangRoot = Actions.GetEnvironmentVariable(EnvVars.Root(this.Options.Language));
-            CodeQlPlatform = Actions.GetEnvironmentVariable(EnvVars.Platform);
-
             TrapDir = RequireEnvironmentVariable(EnvVars.TrapDir(this.Options.Language));
             SourceArchiveDir = RequireEnvironmentVariable(EnvVars.SourceArchiveDir(this.Options.Language));
             DiagnosticsDir = RequireEnvironmentVariable(EnvVars.DiagnosticDir(this.Options.Language));
@@ -208,7 +195,7 @@ namespace Semmle.Autobuild.Shared
         }
 
         /// <summary>
-        /// Retrieves the value of an environment variable named <paramref name="name"> or throws
+        /// Retrieves the value of an environment variable named <paramref name="name"/> or throws
         /// an exception if no such environment variable has been set.
         /// </summary>
         /// <param name="name">The name of the environment variable.</param>
@@ -241,7 +228,7 @@ namespace Semmle.Autobuild.Shared
         private readonly IDiagnosticsWriter diagnostics;
 
         /// <summary>
-        /// Makes <see cref="path" /> relative to the root source directory.
+        /// Makes <paramref name="path"/> relative to the root source directory.
         /// </summary>
         /// <param name="path">The path which to make relative.</param>
         /// <returns>The relative path.</returns>
@@ -364,15 +351,5 @@ namespace Semmle.Autobuild.Shared
                 diagnostics.Dispose();
             }
         }
-
-        /// <summary>
-        /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
-        /// </summary>
-        public string? CodeQLExtractorLangRoot { get; }
-
-        /// <summary>
-        /// Value of CODEQL_PLATFORM environment variable.
-        /// </summary>
-        public string? CodeQlPlatform { get; }
     }
 }

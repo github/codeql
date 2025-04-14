@@ -8,6 +8,8 @@ func (t *T) StepArgRes1(arg interface{}) (interface{}, interface{}) { return nil
 
 func (t *T) StepArgArg(a1 interface{}, a2 interface{}) {}
 
+func (t *T) StepArgArgIgnored(a1 interface{}, a2 interface{}) {}
+
 func (t *T) StepArgQual(arg interface{}) {}
 
 func (t *T) StepQualRes() interface{} { return nil }
@@ -70,3 +72,6 @@ func (c C) Get() string  { return "" }
 
 func (c *C) SetThroughPointer(f string) {}
 func (c *C) GetThroughPointer() string  { return "" }
+
+var SourceVariable string
+var SinkVariable string

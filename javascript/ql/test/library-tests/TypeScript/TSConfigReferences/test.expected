@@ -1,0 +1,9 @@
+types
+| (...data: any[]) => void |
+| (foo: string) => void |
+| Console |
+| any |
+| any[] |
+| string |
+| void |
+jsonFiles

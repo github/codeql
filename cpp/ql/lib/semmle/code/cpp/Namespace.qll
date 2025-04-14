@@ -156,7 +156,7 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
  * A C++ `using` directive or `using` declaration.
  */
 class UsingEntry extends Locatable, @using {
-  override Location getLocation() { usings(underlyingElement(this), _, result) }
+  override Location getLocation() { usings(underlyingElement(this), _, result, _) }
 }
 
 /**
@@ -166,15 +166,13 @@ class UsingEntry extends Locatable, @using {
  * ```
  */
 class UsingDeclarationEntry extends UsingEntry {
-  UsingDeclarationEntry() {
-    not exists(Namespace n | usings(underlyingElement(this), unresolveElement(n), _))
-  }
+  UsingDeclarationEntry() { usings(underlyingElement(this), _, _, 1) }
 
   /**
    * Gets the declaration that is referenced by this using declaration. For
    * example, `std::string` in `using std::string`.
    */
-  Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _) }
+  Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
   override string toString() { result = "using " + this.getDeclaration().getDescription() }
 }
@@ -186,17 +184,34 @@ class UsingDeclarationEntry extends UsingEntry {
  * ```
  */
 class UsingDirectiveEntry extends UsingEntry {
-  UsingDirectiveEntry() {
-    exists(Namespace n | usings(underlyingElement(this), unresolveElement(n), _))
-  }
+  UsingDirectiveEntry() { usings(underlyingElement(this), _, _, 2) }
 
   /**
    * Gets the namespace that is referenced by this using directive. For
    * example, `std` in `using namespace std`.
    */
-  Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _) }
+  Namespace getNamespace() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
   override string toString() { result = "using namespace " + this.getNamespace().getFriendlyName() }
+}
+
+/**
+ * A C++ `using enum` declaration. For example:
+ * ```
+ * enum class Foo { a, b };
+ * using enum Foo;
+ * ```
+ */
+class UsingEnumDeclarationEntry extends UsingEntry {
+  UsingEnumDeclarationEntry() { usings(underlyingElement(this), _, _, 3) }
+
+  /**
+   * Gets the enumeration that is referenced by this using directive. For
+   * example, `Foo` in `using enum Foo`.
+   */
+  Enum getEnum() { usings(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string toString() { result = "using enum " + this.getEnum().getQualifiedName() }
 }
 
 /**

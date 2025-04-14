@@ -7,8 +7,6 @@ import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
-private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.dataflow.TaintTracking2
 
 /**
  * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -142,21 +140,6 @@ abstract class Source extends DataFlow::Node { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `XssTracking` instead.
- *
- * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking2::Configuration {
-  TaintTrackingConfiguration() { this = "XSSDataFlowConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for cross-site scripting (XSS) vulnerabilities.
  */
 module XssTrackingConfig implements DataFlow::ConfigSig {
@@ -180,7 +163,7 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;
 
 /** A source supported by the current threat model. */
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

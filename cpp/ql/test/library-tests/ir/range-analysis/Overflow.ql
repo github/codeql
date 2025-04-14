@@ -1,6 +1,6 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module RangeAnalysisTest implements TestSig {
   string getARelevantTag() { result = "overflow" }

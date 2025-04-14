@@ -5,7 +5,8 @@
  */
 
 import csharp
-private import Completion
+private import Completion as Comp
+private import Comp
 private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow as Cfg
 private import semmle.code.csharp.controlflow.internal.PreSsa
@@ -260,10 +261,12 @@ module ConditionalCompletionSplitting {
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
-  private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
+  private class ConditionalCompletionSplitKind_ extends SplitKind, TConditionalCompletionSplitKind {
     override int getListOrder() { result = InitializerSplitting::getNextListOrder() }
 
     override predicate isEnabled(AstNode cfe) { this.appliesTo(cfe) }
@@ -271,89 +274,64 @@ module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
-  int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
+  module ConditionalCompletionSplittingInput {
+    private import Completion as Comp
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
-  {
-    ConditionalCompletion completion;
+    class ConditionalCompletion = Comp::ConditionalCompletion;
 
-    ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
+    class ConditionalCompletionSplitKind extends ConditionalCompletionSplitKind_, TSplitKind { }
 
-    override ConditionalCompletionSplitKind getKind() { any() }
+    class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
 
-    override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      succ(pred, succ, c) and
-      last(succ, _, completion) and
+    bindingset[parent, parentCompletion]
+    predicate condPropagateExpr(
+      AstNode parent, ConditionalCompletion parentCompletion, AstNode child,
+      ConditionalCompletion childCompletion
+    ) {
+      child = parent.(LogicalNotExpr).getOperand() and
+      childCompletion.getDual() = parentCompletion
+      or
+      childCompletion = parentCompletion and
       (
-        last(succ.(LogicalNotExpr).getOperand(), pred, c) and
-        completion.(BooleanCompletion).getDual() = c
+        child = parent.(LogicalAndExpr).getAnOperand()
         or
-        last(succ.(LogicalAndExpr).getAnOperand(), pred, c) and
-        completion = c
+        child = parent.(LogicalOrExpr).getAnOperand()
         or
-        last(succ.(LogicalOrExpr).getAnOperand(), pred, c) and
-        completion = c
+        parent = any(ConditionalExpr ce | child = [ce.getThen(), ce.getElse()])
         or
-        succ =
-          any(ConditionalExpr ce |
-            last([ce.getThen(), ce.getElse()], pred, c) and
-            completion = c
-          )
+        child = parent.(SwitchExpr).getACase()
         or
-        succ =
+        child = parent.(SwitchCaseExpr).getBody()
+        or
+        parent =
           any(NullCoalescingExpr nce |
-            exists(Expr operand |
-              last(operand, pred, c) and
-              completion = c
-            |
-              if c instanceof NullnessCompletion
-              then operand = nce.getRightOperand()
-              else operand = nce.getAnOperand()
-            )
+            if childCompletion instanceof NullnessCompletion
+            then child = nce.getRightOperand()
+            else child = nce.getAnOperand()
           )
+      )
+      or
+      child = parent.(NotPatternExpr).getPattern() and
+      childCompletion.getDual() = parentCompletion
+      or
+      child = parent.(IsExpr).getPattern() and
+      parentCompletion.(BooleanCompletion).getValue() =
+        childCompletion.(MatchingCompletion).getValue()
+      or
+      childCompletion = parentCompletion and
+      (
+        child = parent.(AndPatternExpr).getAnOperand()
         or
-        last(succ.(SwitchExpr).getACase(), pred, c) and
-        completion = c
+        child = parent.(OrPatternExpr).getAnOperand()
         or
-        last(succ.(SwitchCaseExpr).getBody(), pred, c) and
-        completion = c
+        child = parent.(RecursivePatternExpr).getAChildExpr()
         or
-        last(succ.(NotPatternExpr).getPattern(), pred, c) and
-        completion.(MatchingCompletion).getDual() = c
-        or
-        last(succ.(IsExpr).getPattern(), pred, c) and
-        completion.(BooleanCompletion).getValue() = c.(MatchingCompletion).getValue()
-        or
-        last(succ.(AndPatternExpr).getAnOperand(), pred, c) and
-        completion = c
-        or
-        last(succ.(OrPatternExpr).getAnOperand(), pred, c) and
-        completion = c
-        or
-        last(succ.(RecursivePatternExpr).getAChildExpr(), pred, c) and
-        completion = c
-        or
-        last(succ.(PropertyPatternExpr).getPattern(_), pred, c) and
-        completion = c
+        child = parent.(PropertyPatternExpr).getPattern(_)
       )
     }
-
-    override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
-
-    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      this.appliesTo(last) and
-      scopeLast(scope, last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) { none() }
   }
+
+  int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
 }
 
 module AssertionSplitting {

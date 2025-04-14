@@ -237,6 +237,7 @@ flow
 | flow2.js:2:15:2:22 | "source" | flow2.js:6:8:6:13 | arr[0] |
 | flow2.js:2:15:2:22 | "source" | flow2.js:12:7:12:13 | tainted |
 | flow2.js:2:15:2:22 | "source" | flow2.js:16:7:16:14 | tainted2 |
+| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
 | flow2.js:2:15:2:22 | "source" | flow2.js:23:7:23:14 | tainted4 |
 | flow2.js:2:15:2:22 | "source" | flow2.js:26:7:26:14 | tainted5 |
 | flow.js:2:15:2:22 | "source" | flow.js:5:7:5:14 | await p1 |
@@ -273,7 +274,7 @@ flow
 | flow.js:136:15:136:22 | "source" | flow.js:142:7:142:19 | await async() |
 | flow.js:136:15:136:22 | "source" | flow.js:155:9:155:9 | e |
 exclusiveTaintFlow
-| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 |
+| flow2.js:2:15:2:22 | "source" | flow2.js:5:8:5:10 | arr |
 | flow.js:136:15:136:22 | "source" | flow.js:141:7:141:13 | async() |
 | flow.js:160:15:160:22 | "source" | flow.js:164:39:164:39 | x |
 | flow.js:160:15:160:22 | "source" | flow.js:167:7:167:9 | foo |
@@ -367,6 +368,7 @@ typetrack
 | flow.js:62:2:62:24 | p12.cat ... ink(x)) | flow.js:62:17:62:23 | sink(x) | copy $PromiseResolveField$ |
 | flow.js:62:2:62:24 | p12.cat ... ink(x)) | flow.js:62:17:62:23 | sink(x) | store $PromiseResolveField$ |
 | flow.js:65:3:65:56 | await n ... ource)) | flow.js:65:9:65:56 | new Pro ... ource)) | load $PromiseResolveField$ |
+| flow.js:68:3:68:16 | await throws() | flow.js:68:9:68:16 | throws() | load $PromiseResolveField$ |
 | flow.js:76:2:76:52 | chained ... ink(e)) | flow.js:76:2:76:32 | chained ...  => {}) | copy $PromiseResolveField$ |
 | flow.js:76:2:76:52 | chained ... ink(e)) | flow.js:76:45:76:51 | sink(e) | copy $PromiseResolveField$ |
 | flow.js:76:2:76:52 | chained ... ink(e)) | flow.js:76:45:76:51 | sink(e) | store $PromiseResolveField$ |
@@ -462,3 +464,7 @@ typetrack
 | promises.js:143:17:143:50 | Synchro ... source) | promises.js:143:44:143:49 | source | store $PromiseResolveField$ |
 | promises.js:153:17:153:39 | Promise ... source) | promises.js:153:33:153:38 | source | copy $PromiseResolveField$ |
 | promises.js:153:17:153:39 | Promise ... source) | promises.js:153:33:153:38 | source | store $PromiseResolveField$ |
+valueFlowDifference
+| flow2.js:2:15:2:22 | "source" | flow2.js:20:7:20:14 | tainted3 | only flow with NEW data flow library |
+taintFlowDifference
+| flow2.js:2:15:2:22 | "source" | flow2.js:5:8:5:10 | arr | only flow with NEW data flow library |

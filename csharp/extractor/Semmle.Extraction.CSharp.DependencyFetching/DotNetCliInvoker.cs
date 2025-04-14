@@ -12,12 +12,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
         private readonly ILogger logger;
+        private readonly DependabotProxy? proxy;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ILogger logger, string exec)
+        public DotNetCliInvoker(ILogger logger, string exec, DependabotProxy? dependabotProxy)
         {
             this.logger = logger;
+            this.proxy = dependabotProxy;
             this.Exec = exec;
             logger.LogInfo($"Using .NET CLI executable: '{Exec}'");
         }
@@ -38,6 +40,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
             startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
             startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
+
+            // Configure the proxy settings, if applicable.
+            if (this.proxy != null)
+            {
+                logger.LogInfo($"Setting up Dependabot proxy at {this.proxy.Address}");
+
+                startInfo.EnvironmentVariables["HTTP_PROXY"] = this.proxy.Address;
+                startInfo.EnvironmentVariables["HTTPS_PROXY"] = this.proxy.Address;
+                startInfo.EnvironmentVariables["SSL_CERT_FILE"] = this.proxy.CertificatePath;
+            }
+
             return startInfo;
         }
 
@@ -58,13 +71,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return true;
         }
 
-        public bool RunCommand(string args, bool silent) =>
+        public bool RunCommand(string args, bool silent = true) =>
             RunCommandAux(args, null, out _, silent);
 
-        public bool RunCommand(string args, out IList<string> output, bool silent) =>
+        public bool RunCommand(string args, out IList<string> output, bool silent = true) =>
             RunCommandAux(args, null, out output, silent);
 
-        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent) =>
+        public bool RunCommand(string args, string? workingDirectory, out IList<string> output, bool silent = true) =>
             RunCommandAux(args, workingDirectory, out output, silent);
     }
 }

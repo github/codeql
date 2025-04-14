@@ -1,7 +1,11 @@
+#select
+| Test.cs:17:46:17:54 | access to property Text | Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | $@ flows to unsafe deserializer. | Test.cs:17:46:17:49 | access to parameter data : TextBox | User-provided data |
 edges
-| Test.cs:9:46:9:49 | access to parameter data : TextBox | Test.cs:9:46:9:54 | access to property Text | provenance | MaD:2147 |
-| Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | provenance | MaD:2147 |
-| Test.cs:25:46:25:49 | access to parameter data : TextBox | Test.cs:25:46:25:54 | access to property Text | provenance | MaD:2147 |
+| Test.cs:9:46:9:49 | access to parameter data : TextBox | Test.cs:9:46:9:54 | access to property Text | provenance | MaD:1 |
+| Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | provenance | MaD:1 |
+| Test.cs:25:46:25:49 | access to parameter data : TextBox | Test.cs:25:46:25:54 | access to property Text | provenance | MaD:1 |
+models
+| 1 | Summary: System.Web.UI.WebControls; TextBox; false; get_Text; (); ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | Test.cs:9:46:9:49 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | Test.cs:9:46:9:54 | access to property Text | semmle.label | access to property Text |
@@ -10,5 +14,3 @@ nodes
 | Test.cs:25:46:25:49 | access to parameter data : TextBox | semmle.label | access to parameter data : TextBox |
 | Test.cs:25:46:25:54 | access to property Text | semmle.label | access to property Text |
 subpaths
-#select
-| Test.cs:17:46:17:54 | access to property Text | Test.cs:17:46:17:49 | access to parameter data : TextBox | Test.cs:17:46:17:54 | access to property Text | $@ flows to unsafe deserializer. | Test.cs:17:46:17:49 | access to parameter data : TextBox | User-provided data |

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Http, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Http, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -8,6 +8,7 @@ namespace Microsoft
         {
             public static partial class HttpClientBuilderExtensions
             {
+                public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddAsKeyed(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, Microsoft.Extensions.DependencyInjection.ServiceLifetime lifetime = default(Microsoft.Extensions.DependencyInjection.ServiceLifetime)) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddDefaultLogger(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddHttpMessageHandler(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Func<System.IServiceProvider, System.Net.Http.DelegatingHandler> configureHandler) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddHttpMessageHandler(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Func<System.Net.Http.DelegatingHandler> configureHandler) => throw null;
@@ -29,6 +30,7 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder RedactLoggedHeaders(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Collections.Generic.IEnumerable<string> redactedLoggedHeaderNames) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder RedactLoggedHeaders(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Func<string, bool> shouldRedactHeaderValue) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder RemoveAllLoggers(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder RemoveAsKeyed(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder SetHandlerLifetime(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.TimeSpan handlerLifetime) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder UseSocketsHttpHandler(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Action<System.Net.Http.SocketsHttpHandler, System.IServiceProvider> configureHandler = default(System.Action<System.Net.Http.SocketsHttpHandler, System.IServiceProvider>)) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder UseSocketsHttpHandler(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Action<Microsoft.Extensions.DependencyInjection.ISocketsHttpHandlerBuilder> configureBuilder) => throw null;

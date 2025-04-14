@@ -1,0 +1,1 @@
+Note that the CustomRouteBuilder method is regarded as "dead" because it would normally override a public library method and so be a `LibOverrideMethodEntry`, but because our library stubs are implemented as source code this isn't recognised. Similarly parts of our stubs appear dead. To confirm this is in fact ok, replace the stubs directory with a real Camel jar file.

@@ -12,7 +12,7 @@ edges
 | tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:14:111:19 | *ptr | provenance |  |
 | tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:17:111:19 | *ptr | provenance |  |
 | tests2.cpp:111:17:111:19 | *ptr | tests2.cpp:111:14:111:19 | *ptr | provenance |  |
-| tests2.cpp:120:5:120:21 | [summary param] 1 indirection in zmq_msg_init_data | tests2.cpp:120:5:120:21 | [summary] to write: Argument[0 indirection] in zmq_msg_init_data | provenance |  |
+| tests2.cpp:120:5:120:21 | [summary param] *1 in zmq_msg_init_data | tests2.cpp:120:5:120:21 | [summary param] *0 in zmq_msg_init_data [Return] | provenance |  |
 | tests2.cpp:134:2:134:30 | *... = ... | tests2.cpp:138:23:138:34 | *message_data | provenance |  |
 | tests2.cpp:134:2:134:30 | *... = ... | tests2.cpp:143:34:143:45 | *message_data | provenance |  |
 | tests2.cpp:134:17:134:22 | *call to getenv | tests2.cpp:134:2:134:30 | *... = ... | provenance |  |
@@ -20,7 +20,7 @@ edges
 | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument | tests2.cpp:147:20:147:27 | *& ... | provenance |  |
 | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument | tests2.cpp:155:32:155:39 | *& ... | provenance |  |
 | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument | tests2.cpp:158:20:158:27 | *& ... | provenance |  |
-| tests2.cpp:143:34:143:45 | *message_data | tests2.cpp:120:5:120:21 | [summary param] 1 indirection in zmq_msg_init_data | provenance |  |
+| tests2.cpp:143:34:143:45 | *message_data | tests2.cpp:120:5:120:21 | [summary param] *1 in zmq_msg_init_data | provenance |  |
 | tests2.cpp:143:34:143:45 | *message_data | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument | provenance |  |
 | tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:26:15:26:20 | *call to getenv | provenance |  |
 | tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:39:19:39:22 | *path | provenance |  |
@@ -52,8 +52,8 @@ nodes
 | tests2.cpp:111:14:111:15 | *c1 [*ptr] | semmle.label | *c1 [*ptr] |
 | tests2.cpp:111:14:111:19 | *ptr | semmle.label | *ptr |
 | tests2.cpp:111:17:111:19 | *ptr | semmle.label | *ptr |
-| tests2.cpp:120:5:120:21 | [summary param] 1 indirection in zmq_msg_init_data | semmle.label | [summary param] 1 indirection in zmq_msg_init_data |
-| tests2.cpp:120:5:120:21 | [summary] to write: Argument[0 indirection] in zmq_msg_init_data | semmle.label | [summary] to write: Argument[0 indirection] in zmq_msg_init_data |
+| tests2.cpp:120:5:120:21 | [summary param] *0 in zmq_msg_init_data [Return] | semmle.label | [summary param] *0 in zmq_msg_init_data [Return] |
+| tests2.cpp:120:5:120:21 | [summary param] *1 in zmq_msg_init_data | semmle.label | [summary param] *1 in zmq_msg_init_data |
 | tests2.cpp:134:2:134:30 | *... = ... | semmle.label | *... = ... |
 | tests2.cpp:134:17:134:22 | *call to getenv | semmle.label | *call to getenv |
 | tests2.cpp:138:23:138:34 | *message_data | semmle.label | *message_data |
@@ -74,7 +74,7 @@ nodes
 | tests_sysconf.cpp:36:21:36:27 | confstr output argument | semmle.label | confstr output argument |
 | tests_sysconf.cpp:39:19:39:25 | *pathbuf | semmle.label | *pathbuf |
 subpaths
-| tests2.cpp:143:34:143:45 | *message_data | tests2.cpp:120:5:120:21 | [summary param] 1 indirection in zmq_msg_init_data | tests2.cpp:120:5:120:21 | [summary] to write: Argument[0 indirection] in zmq_msg_init_data | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument |
+| tests2.cpp:143:34:143:45 | *message_data | tests2.cpp:120:5:120:21 | [summary param] *1 in zmq_msg_init_data | tests2.cpp:120:5:120:21 | [summary param] *0 in zmq_msg_init_data [Return] | tests2.cpp:143:24:143:31 | zmq_msg_init_data output argument |
 #select
 | tests2.cpp:63:13:63:26 | *call to getenv | tests2.cpp:63:13:63:26 | *call to getenv | tests2.cpp:63:13:63:26 | *call to getenv | This operation exposes system data from $@. | tests2.cpp:63:13:63:26 | *call to getenv | *call to getenv |
 | tests2.cpp:64:13:64:26 | *call to getenv | tests2.cpp:64:13:64:26 | *call to getenv | tests2.cpp:64:13:64:26 | *call to getenv | This operation exposes system data from $@. | tests2.cpp:64:13:64:26 | *call to getenv | *call to getenv |

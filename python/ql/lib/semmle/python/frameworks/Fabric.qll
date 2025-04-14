@@ -29,8 +29,8 @@ private module FabricV1 {
     // -------------------------------------------------------------------------
     // fabric.api
     // -------------------------------------------------------------------------
-    /** Gets a reference to the `fabric.api` module. */
-    API::Node api() { result = fabric().getMember("api") }
+    /** Gets a reference to the `fabric.api` module. Also known as `fabric.operations` */
+    API::Node api() { result = fabric().getMember(["api", "operations"]) }
 
     /** Provides models for the `fabric.api` module */
     module Api {
@@ -71,7 +71,7 @@ private module FabricV1 {
  * Provides classes modeling security-relevant aspects of the `fabric` PyPI package, for
  * version 2.x.
  *
- * See http://docs.fabfile.org/en/2.5/getting-st  arted.html.
+ * See http://docs.fabfile.org/en/2.5/getting-started.html.
  */
 module FabricV2 {
   /** Gets a reference to the `fabric` module. */
@@ -93,7 +93,9 @@ module FabricV2 {
        * See https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.
        */
       module ConnectionClass {
-        /** Gets a reference to the `fabric.connection.Connection` class. */
+        /**
+         *  Gets a reference to the `fabric.connection.Connection` class.
+         */
         API::Node classRef() {
           result = fabric().getMember("Connection")
           or
@@ -109,40 +111,16 @@ module FabricV2 {
          * This can include instantiations of the class, return values from function
          * calls, or a special parameter that will be set when functions are called by an external
          * library.
-         *
-         * Use the predicate `Connection::instance()` to get references to instances of `fabric.connection.Connection`.
          */
-        abstract class InstanceSource extends DataFlow::LocalSourceNode { }
-
-        private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-          ClassInstantiation() { this = classRef().getACall() }
+        abstract class Instance extends API::Node {
+          override string toString() { result = this.(API::Node).toString() }
         }
-
-        /** Gets a reference to an instance of `fabric.connection.Connection`. */
-        private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
-          t.start() and
-          result instanceof InstanceSource
-          or
-          exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
-        }
-
-        /** Gets a reference to an instance of `fabric.connection.Connection`. */
-        DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
         /**
-         * Gets a reference to either `run`, `sudo`, or `local` method on a
-         * `fabric.connection.Connection` instance.
-         *
-         * See
-         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.run
-         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
-         * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
+         *  A reference to the `fabric.connection.Connection` class.
          */
-        private DataFlow::TypeTrackingNode instanceRunMethods(DataFlow::TypeTracker t) {
-          t.startInAttr(["run", "sudo", "local"]) and
-          result = instance()
-          or
-          exists(DataFlow::TypeTracker t2 | result = instanceRunMethods(t2).track(t2, t))
+        class ClassInstantiation extends Instance {
+          ClassInstantiation() { this = classRef().getReturn() }
         }
 
         /**
@@ -154,8 +132,8 @@ module FabricV2 {
          * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.sudo
          * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
          */
-        DataFlow::Node instanceRunMethods() {
-          instanceRunMethods(DataFlow::TypeTracker::end()).flowsTo(result)
+        API::CallNode instanceRunMethods() {
+          result = any(Instance is).getMember(["run", "sudo", "local"]).getACall()
         }
       }
     }
@@ -168,17 +146,36 @@ module FabricV2 {
      * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
      */
     private class FabricConnectionRunSudoLocalCall extends SystemCommandExecution::Range,
-      DataFlow::CallCfgNode
+      API::CallNode
     {
       FabricConnectionRunSudoLocalCall() {
-        this.getFunction() = Fabric::Connection::ConnectionClass::instanceRunMethods()
+        this = Fabric::Connection::ConnectionClass::instanceRunMethods()
       }
 
-      override DataFlow::Node getCommand() {
-        result = [this.getArg(0), this.getArgByName("command")]
-      }
+      override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
 
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
+    }
+
+    /**
+     * A `gateway` parameter of `fabric.connection.Connection` instance is considered as ssh proxy_command option and can execute command.
+     * See https://docs.fabfile.org/en/latest/api/connection.html#fabric.connection.Connection
+     */
+    private class FabricConnectionProxyCommand extends SystemCommandExecution::Range, API::CallNode {
+      FabricConnectionProxyCommand() {
+        this = Fabric::Connection::ConnectionClass::classRef().getACall() and
+        // we want to make sure that the connection is established otherwise the command of proxy_command won't run.
+        exists(
+          this.getAMethodCall([
+              "run", "get", "sudo", "open_gateway", "open", "create_session", "forward_local",
+              "forward_remote", "put", "shell", "sftp"
+            ])
+        )
+      }
+
+      override DataFlow::Node getCommand() { result = this.getParameter(4, "gateway").asSink() }
+
+      override predicate isShellInterpreted(DataFlow::Node arg) { none() }
     }
 
     // -------------------------------------------------------------------------
@@ -193,14 +190,10 @@ module FabricV2 {
       API::Node task() { result in [tasks().getMember("task"), fabric().getMember("task")] }
     }
 
-    class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::InstanceSource,
-      DataFlow::ParameterNode
+    class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::Instance
     {
       FabricTaskFirstParamConnectionInstance() {
-        exists(Function func |
-          func.getADecorator() = Fabric::Tasks::task().getAValueReachableFromSource().asExpr() and
-          this.getParameter() = func.getArg(0)
-        )
+        this = Fabric::Tasks::task().getParameter(0).getParameter(0)
       }
     }
 
@@ -242,11 +235,14 @@ module FabricV2 {
         API::Node subclassInstance() { result = any(ModeledSubclass m).getASubclass*().getReturn() }
 
         /**
-         * Gets a reference to the `run` method on an instance of a subclass of `fabric.group.Group`.
+         * Gets a reference to the `run` and `sudo` methods on an instance of a subclass of `fabric.group.Group`.
          *
          * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.Group.run
+         * See https://docs.fabfile.org/en/latest/api/group.html#fabric.group.Group.sudo
          */
-        API::Node subclassInstanceRunMethod() { result = subclassInstance().getMember("run") }
+        API::Node subclassInstanceRunMethod() {
+          result = subclassInstance().getMember(["run", "sudo"])
+        }
       }
 
       /**
@@ -254,14 +250,12 @@ module FabricV2 {
        *
        * See https://docs.fabfile.org/en/2.5/api/group.html#fabric.group.Group.run
        */
-      private class FabricGroupRunCall extends SystemCommandExecution::Range, DataFlow::CallCfgNode {
+      private class FabricGroupRunCall extends SystemCommandExecution::Range, API::CallNode {
         FabricGroupRunCall() {
           this = Fabric::Group::GroupClass::subclassInstanceRunMethod().getACall()
         }
 
-        override DataFlow::Node getCommand() {
-          result = [this.getArg(0), this.getArgByName("command")]
-        }
+        override DataFlow::Node getCommand() { result = this.getParameter(0, "command").asSink() }
 
         override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
       }

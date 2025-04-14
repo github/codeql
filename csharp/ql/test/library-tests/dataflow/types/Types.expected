@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | Types.cs:7:21:7:25 | this : D | Types.cs:7:32:7:35 | this access : D | provenance |  |
 | Types.cs:7:32:7:35 | this access : D | Types.cs:16:30:16:30 | this : D | provenance |  |
@@ -136,6 +136,7 @@ nodes
 subpaths
 | Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:130:34:130:34 | x : A | Types.cs:130:40:130:40 | access to parameter x : A | Types.cs:122:22:122:31 | call to method Through |
 | Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | Types.cs:130:34:130:34 | x : Types+E<D>.E2 | Types.cs:130:40:130:40 | access to parameter x : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through |
+testFailures
 #select
 | Types.cs:23:12:23:18 | object creation of type C : C | Types.cs:23:12:23:18 | object creation of type C : C | Types.cs:50:18:50:18 | access to local variable c | $@ | Types.cs:50:18:50:18 | access to local variable c | access to local variable c |
 | Types.cs:25:12:25:18 | object creation of type C : C | Types.cs:25:12:25:18 | object creation of type C : C | Types.cs:63:33:63:36 | (...) ... | $@ | Types.cs:63:33:63:36 | (...) ... | (...) ... |

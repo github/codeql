@@ -1,36 +1,44 @@
-def lfs_smudge(repository_ctx, srcs, extract = False, stripPrefix = None):
-    for src in srcs:
-        repository_ctx.watch(src)
-    script = Label("//misc/bazel/internal:git_lfs_probe.py")
+def lfs_smudge(repository_ctx, srcs, *, extract = False, stripPrefix = None, executable = False):
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
-    repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
-    res = repository_ctx.execute([python, script] + srcs, quiet = True)
-    if res.return_code != 0:
-        fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
-    promises = []
-    for src, loc in zip(srcs, res.stdout.splitlines()):
-        if loc == "local":
-            if extract:
-                repository_ctx.report_progress("extracting local %s" % src.basename)
-                repository_ctx.extract(src, stripPrefix = stripPrefix)
-            else:
-                repository_ctx.report_progress("symlinking local %s" % src.basename)
-                repository_ctx.symlink(src, src.basename)
+    script = Label("//misc/bazel/internal:git_lfs_probe.py")
+
+    def probe(srcs, hash_only = False):
+        repository_ctx.report_progress("querying LFS url(s) for: %s" % ", ".join([src.basename for src in srcs]))
+        cmd = [python, script]
+        if hash_only:
+            cmd.append("--hash-only")
+        cmd.extend(srcs)
+        res = repository_ctx.execute(cmd, quiet = True)
+        if res.return_code != 0:
+            fail("git LFS probing failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
+        return res.stdout.splitlines()
+
+    for src in srcs:
+        repository_ctx.watch(src)
+    infos = probe(srcs, hash_only = True)
+    remote = []
+    for src, info in zip(srcs, infos):
+        if info == "local":
+            repository_ctx.report_progress("symlinking local %s" % src.basename)
+            repository_ctx.symlink(src, src.basename)
         else:
-            sha256, _, url = loc.partition(" ")
-            if extract:
-                # we can't use skylib's `paths.split_extension`, as that only gets the last extension, so `.tar.gz`
-                # or similar wouldn't work
-                # it doesn't matter if file is something like some.name.zip and possible_extension == "name.zip",
-                # download_and_extract will just append ".name.zip" its internal temporary name, so extraction works
-                possible_extension = ".".join(src.basename.rsplit(".", 2)[-2:])
-                repository_ctx.report_progress("downloading and extracting remote %s" % src.basename)
-                repository_ctx.download_and_extract(url, sha256 = sha256, stripPrefix = stripPrefix, type = possible_extension)
-            else:
+            repository_ctx.report_progress("trying cache for remote %s" % src.basename)
+            res = repository_ctx.download([], src.basename, sha256 = info, allow_fail = True, executable = executable)
+            if not res.success:
+                remote.append(src)
+        if remote:
+            infos = probe(remote)
+            for src, info in zip(remote, infos):
+                sha256, _, url = info.partition(" ")
                 repository_ctx.report_progress("downloading remote %s" % src.basename)
-                repository_ctx.download(url, src.basename, sha256 = sha256)
+                repository_ctx.download(url, src.basename, sha256 = sha256, executable = executable)
+        if extract:
+            for src in srcs:
+                repository_ctx.report_progress("extracting %s" % src.basename)
+                repository_ctx.extract(src.basename, stripPrefix = stripPrefix)
+                repository_ctx.delete(src.basename)
 
 def _download_and_extract_lfs(repository_ctx):
     attr = repository_ctx.attr
@@ -54,19 +62,26 @@ def _download_lfs(repository_ctx):
         if not dir.is_dir:
             fail("`dir` not a directory in @%s" % repository_ctx.name)
         srcs = [f for f in dir.readdir() if not f.is_dir]
-    lfs_smudge(repository_ctx, srcs)
+    lfs_smudge(repository_ctx, srcs, executable = repository_ctx.attr.executable)
 
-    # with bzlmod the name is qualified with `~` separators, and we want the base name here
-    name = repository_ctx.name.split("~")[-1]
-    repository_ctx.file("BUILD.bazel", """
-exports_files({files})
+    # with bzlmod the name is qualified with `+` separators, and we want the base name here
+    name = repository_ctx.name.split("+")[-1]
+    basenames = [src.basename for src in srcs]
+    build = "exports_files(%s)\n" % repr(basenames)
 
-filegroup(
-    name = "{name}",
-    srcs = {files},
-    visibility = ["//visibility:public"],
-)
-""".format(name = name, files = repr([src.basename for src in srcs])))
+    # add a main `name` filegroup only if it doesn't conflict with existing exported files
+    if name not in basenames:
+        build += 'filegroup(name = "%s", srcs = %s, visibility = ["//visibility:public"])\n' % (
+            name,
+            basenames,
+        )
+    repository_ctx.file("BUILD.bazel", build)
+
+    # this is for drop-in compatibility with `http_file`
+    repository_ctx.file(
+        "file/BUILD.bazel",
+        'alias(name = "file", actual = "//:%s", visibility = ["//visibility:public"])\n' % name,
+    )
 
 lfs_archive = repository_rule(
     doc = "Export the contents from an on-demand LFS archive. The corresponding path should be added to be ignored " +
@@ -90,5 +105,6 @@ lfs_files = repository_rule(
         "srcs": attr.label_list(doc = "Local paths to the LFS files to export."),
         "dir": attr.label(doc = "Local path to a directory containing LFS files to export. Only the direct contents " +
                                 "of the directory are exported"),
+        "executable": attr.bool(doc = "Whether files should be marked as executable"),
     },
 )

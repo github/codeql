@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/antchfx/htmlquery", "", False, "Find", "", "", "Argument[1]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/htmlquery", "", False, "FindOne", "", "", "Argument[1]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/htmlquery", "", False, "Query", "", "", "Argument[1]", "xpath-injection", "manual"]
+      - ["github.com/antchfx/htmlquery", "", False, "QueryAll", "", "", "Argument[1]", "xpath-injection", "manual"]

@@ -9,9 +9,11 @@ invalidModelRow
 | Sources.cs:17:17:17:33 | call to method TaggedSrcMethod | local |
 | Sources.cs:18:17:18:30 | access to field TaggedSrcField | local |
 | Sources.cs:20:17:20:33 | call to method SrcTwoArg | local |
-| Sources.cs:24:14:24:20 | this | local |
-| Sources.cs:24:29:24:45 | taggedMethodParam | local |
-| Sources.cs:28:49:28:62 | taggedSrcParam | local |
-| Sources.cs:40:45:40:45 | p | local |
-| Sources.cs:47:50:47:50 | p | local |
-| Sources.cs:53:16:53:30 | this | local |
+| Sources.cs:22:17:22:39 | access to property TaggedSrcPropertyGetter | local |
+| Sources.cs:23:17:23:23 | access to indexer | local |
+| Sources.cs:27:14:27:20 | this | local |
+| Sources.cs:27:29:27:45 | taggedMethodParam | local |
+| Sources.cs:31:47:31:60 | taggedSrcParam | local |
+| Sources.cs:43:45:43:45 | p | local |
+| Sources.cs:50:50:50:50 | p | local |
+| Sources.cs:56:16:56:30 | this | local |

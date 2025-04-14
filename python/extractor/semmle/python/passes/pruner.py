@@ -196,6 +196,25 @@ class SkippedVisitor(ASTVisitor):
         if isinstance(node.value, ast.Name):
             self.nodes.add(node.value)
 
+class NotBooleanTestVisitor(ASTVisitor):
+    """Visitor that checks if a test is not a boolean test."""
+
+    def __init__(self):
+        self.nodes = set()
+
+    def visit_MatchLiteralPattern(self, node):
+        # MatchLiteralPatterns _look_ like boolean tests in that they have both a true ("matched")
+        # and false ("didn't match") successor, but are not.
+        # Thus, without this check, we would interpret
+        #
+        # match x:
+        #    case False:
+        #        pass
+        #
+        # (and similarly for True) as if it was a boolean test. This would cause the true edge
+        # (leading to pass) to be pruned later on.
+        self.nodes.add(node.literal)
+
 class NonlocalVisitor(ASTVisitor):
     def __init__(self):
         self.names = set()
@@ -306,6 +325,8 @@ def effective_constants_definitions(bool_const_defns, graph, branching_edges):
 def do_pruning(tree, graph):
     v = BoolConstVisitor()
     v.visit(tree)
+    not_boolean_test = NotBooleanTestVisitor()
+    not_boolean_test.visit(tree)
     nonlocals = NonlocalVisitor()
     nonlocals.visit(tree)
     global_vars = GlobalVisitor()
@@ -352,6 +373,8 @@ def do_pruning(tree, graph):
                 continue
             b = const_value(pred.node)
             if b is None:
+                continue
+            if pred.node in not_boolean_test.nodes:
                 continue
             if b.contradicts(val):
                 to_be_removed.add((pred, succ))

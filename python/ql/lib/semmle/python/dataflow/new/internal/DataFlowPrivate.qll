@@ -169,6 +169,26 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 }
 
 /**
+ * Holds if `nodeFrom` is the value yielded by the `yield` found at `nodeTo`.
+ *
+ * For example, in
+ * ```python
+ * for x in l:
+ *   yield x.name
+ * ```
+ * data from `x.name` is stored into the `yield` (and can subsequently be read out of the iterable).
+ */
+predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+  exists(Yield yield |
+    nodeTo.asCfgNode() = yield.getAFlowNode() and
+    nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    // TODO: Consider if this will also need to transfer dictionary content
+    // once dictionary comprehensions are supported.
+    c instanceof ListElementContent
+  )
+}
+
+/**
  * Ensures that the a `**kwargs` parameter will not contain elements with names of
  * keyword parameters.
  *
@@ -256,6 +276,12 @@ abstract class PostUpdateNodeImpl extends Node {
   abstract Node getPreUpdateNode();
 }
 
+/**
+ * A post-update node synthesised for an existing control flow node.
+ * Add to `TSyntheticPostUpdateNode` to get the synthetic post-update node synthesised.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
   ControlFlowNode node;
 
@@ -270,6 +296,11 @@ class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNo
   override Location getLocation() { result = node.getLocation() }
 }
 
+/**
+ * An existsing control flow node being the post-update node of a synthetic pre-update node.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
   SyntheticPreUpdateNode pre;
 
@@ -534,7 +565,7 @@ newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowType" }
+  string toString() { result = "" }
 }
 
 /** A node that performs a type cast. */
@@ -564,7 +595,6 @@ predicate neverSkipInPathGraph(Node n) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
@@ -576,12 +606,8 @@ predicate localMustFlowStep(Node nodeFrom, Node nodeTo) { none() }
  */
 DataFlowType getNodeType(Node node) {
   result = TAnyFlow() and
-  // Suppress unused variable warning
-  node = node
+  exists(node)
 }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
@@ -673,8 +699,6 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   or
   setStoreStep(nodeFrom, c, nodeTo)
   or
-  comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
   matchStoreStep(nodeFrom, c, nodeTo)
@@ -687,6 +711,8 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  yieldStoreStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::storeStep(nodeFrom, c, nodeTo)
 }
@@ -848,31 +874,6 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
   )
 }
 
-/** Data flows from an element expression in a comprehension to the comprehension. */
-predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // Comprehension
-  //   `[x+1 for x in l]`
-  //   nodeFrom is `x+1`, cfg node
-  //   nodeTo is `[x+1 for x in l]`, cfg node
-  //   c denotes list or set or dictionary without index
-  //
-  // List
-  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
-  or
-  // Set
-  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof SetElementContent
-  or
-  // Dictionary
-  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof DictionaryElementAnyContent
-  or
-  // Generator
-  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
-}
-
 /**
  * Holds if `nodeFrom` flows into the attribute `c` of `nodeTo` via an attribute assignment.
  *
@@ -1023,13 +1024,19 @@ predicate attributeClearStep(Node n, AttributeContent c) {
   exists(PostUpdateNode post | post.getPreUpdateNode() = n | attributeStoreStep(_, c, post))
 }
 
+class NodeRegion instanceof Unit {
+  string toString() { result = "NodeRegion" }
+
+  predicate contains(Node n) { none() }
+}
+
 //--------
 // Fancy context-sensitive guards
 //--------
 /**
- * Holds if the node `n` is unreachable when the call context is `call`.
+ * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
-predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
+predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) { none() }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

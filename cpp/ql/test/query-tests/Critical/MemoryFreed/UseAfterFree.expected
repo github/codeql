@@ -1,6 +1,9 @@
 edges
-| test.cpp:208:7:208:7 | pointer to free output argument | test.cpp:209:2:209:2 | a | provenance |  |
-| test.cpp:214:7:214:7 | pointer to free output argument | test.cpp:215:2:215:2 | a | provenance |  |
+| test.cpp:213:7:213:7 | pointer to free output argument | test.cpp:214:2:214:2 | a | provenance |  |
+| test.cpp:219:7:219:7 | pointer to free output argument | test.cpp:220:2:220:2 | a | provenance |  |
+| test.cpp:228:12:228:12 | *p [post update] [data1] | test.cpp:229:2:229:2 | *p [data1] | provenance |  |
+| test.cpp:228:14:228:18 | pointer to operator delete[] output argument | test.cpp:228:12:228:12 | *p [post update] [data1] | provenance |  |
+| test.cpp:229:2:229:2 | *p [data1] | test.cpp:229:4:229:8 | data1 | provenance |  |
 | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:12:5:12:5 | a | provenance |  |
 | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:13:5:13:6 | * ... | provenance |  |
 | test_free.cpp:42:27:42:27 | pointer to free output argument | test_free.cpp:45:5:45:5 | a | provenance |  |
@@ -13,7 +16,6 @@ edges
 | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:153:5:153:5 | a | provenance |  |
 | test_free.cpp:233:14:233:15 | pointer to free output argument | test_free.cpp:234:9:234:11 | *... ++ | provenance |  |
 | test_free.cpp:234:9:234:11 | *... ++ | test_free.cpp:236:9:236:10 | * ... | provenance |  |
-| test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
 | test_free.cpp:238:15:238:17 | *... ++ | test_free.cpp:241:9:241:10 | * ... | provenance |  |
 | test_free.cpp:239:14:239:15 | pointer to free output argument | test_free.cpp:238:15:238:17 | *... ++ | provenance |  |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | test_free.cpp:246:9:246:10 | * ... | provenance |  |
@@ -33,10 +35,14 @@ edges
 | test_free.cpp:322:12:322:12 | pointer to operator delete output argument | test_free.cpp:324:5:324:6 | * ... | provenance |  |
 | test_free.cpp:331:12:331:12 | pointer to operator delete output argument | test_free.cpp:332:5:332:6 | * ... | provenance |  |
 nodes
-| test.cpp:208:7:208:7 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test.cpp:209:2:209:2 | a | semmle.label | a |
-| test.cpp:214:7:214:7 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test.cpp:215:2:215:2 | a | semmle.label | a |
+| test.cpp:213:7:213:7 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.cpp:214:2:214:2 | a | semmle.label | a |
+| test.cpp:219:7:219:7 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test.cpp:220:2:220:2 | a | semmle.label | a |
+| test.cpp:228:12:228:12 | *p [post update] [data1] | semmle.label | *p [post update] [data1] |
+| test.cpp:228:14:228:18 | pointer to operator delete[] output argument | semmle.label | pointer to operator delete[] output argument |
+| test.cpp:229:2:229:2 | *p [data1] | semmle.label | *p [data1] |
+| test.cpp:229:4:229:8 | data1 | semmle.label | data1 |
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
 | test_free.cpp:13:5:13:6 | * ... | semmle.label | * ... |
@@ -88,8 +94,9 @@ nodes
 | test_free.cpp:332:5:332:6 | * ... | semmle.label | * ... |
 subpaths
 #select
-| test.cpp:209:2:209:2 | a | test.cpp:208:7:208:7 | pointer to free output argument | test.cpp:209:2:209:2 | a | Memory may have been previously freed by $@. | test.cpp:208:2:208:5 | call to free | call to free |
-| test.cpp:215:2:215:2 | a | test.cpp:214:7:214:7 | pointer to free output argument | test.cpp:215:2:215:2 | a | Memory may have been previously freed by $@. | test.cpp:214:2:214:5 | call to free | call to free |
+| test.cpp:214:2:214:2 | a | test.cpp:213:7:213:7 | pointer to free output argument | test.cpp:214:2:214:2 | a | Memory may have been previously freed by $@. | test.cpp:213:2:213:5 | call to free | call to free |
+| test.cpp:220:2:220:2 | a | test.cpp:219:7:219:7 | pointer to free output argument | test.cpp:220:2:220:2 | a | Memory may have been previously freed by $@. | test.cpp:219:2:219:5 | call to free | call to free |
+| test.cpp:229:4:229:8 | data1 | test.cpp:228:14:228:18 | pointer to operator delete[] output argument | test.cpp:229:4:229:8 | data1 | Memory may have been previously freed by $@. | test.cpp:228:2:228:18 | delete[] | delete[] |
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
 | test_free.cpp:13:5:13:6 | * ... | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:13:5:13:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
 | test_free.cpp:45:5:45:5 | a | test_free.cpp:42:27:42:27 | pointer to free output argument | test_free.cpp:45:5:45:5 | a | Memory may have been previously freed by $@. | test_free.cpp:42:22:42:25 | call to free | call to free |

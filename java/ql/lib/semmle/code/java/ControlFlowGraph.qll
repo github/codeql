@@ -1,10 +1,10 @@
 /**
  * Provides classes and predicates for computing expression-level intra-procedural control flow graphs.
  *
- * The only API exported by this library are the toplevel classes `ControlFlowNode`
+ * The only API exported by this library are the toplevel classes `ControlFlow::Node`
  * and its subclass `ConditionNode`, which wrap the successor relation and the
  * concept of true- and false-successors of conditions. A cfg node may either be a
- * statement, an expression, or the enclosing callable, indicating that
+ * statement, an expression, or an exit node for a callable, indicating that
  * execution of the callable terminates.
  */
 
@@ -84,45 +84,148 @@ private import Completion
 private import controlflow.internal.Preconditions
 private import controlflow.internal.SwitchCases
 
-/** A node in the expression-level control-flow graph. */
-class ControlFlowNode extends Top, @exprparent {
-  /** Gets the statement containing this node, if any. */
-  Stmt getEnclosingStmt() {
-    result = this or
-    result = this.(Expr).getEnclosingStmt()
+/** Provides the definition of control flow nodes. */
+module ControlFlow {
+  private predicate hasControlFlow(Expr e) {
+    not exists(ConstCase cc | e = cc.getValue(_)) and
+    not e.getParent*() instanceof Annotation and
+    not e instanceof TypeAccess and
+    not e instanceof ArrayTypeAccess and
+    not e instanceof UnionTypeAccess and
+    not e instanceof IntersectionTypeAccess and
+    not e instanceof WildcardTypeAccess and
+    not exists(AssignExpr ae | ae.getDest() = e)
   }
 
-  /** Gets the immediately enclosing callable whose body contains this node. */
-  Callable getEnclosingCallable() {
-    result = this or
-    result = this.(Stmt).getEnclosingCallable() or
-    result = this.(Expr).getEnclosingCallable()
+  private newtype TNode =
+    TExprNode(Expr e) { hasControlFlow(e) } or
+    TStmtNode(Stmt s) or
+    TExitNode(Callable c) { exists(c.getBody()) }
+
+  /** A node in the expression-level control-flow graph. */
+  class Node extends TNode {
+    /** Gets an immediate successor of this node. */
+    Node getASuccessor() { result = succ(this) }
+
+    /** Gets an immediate predecessor of this node. */
+    Node getAPredecessor() { this = succ(result) }
+
+    /** Gets an exception successor of this node. */
+    Node getAnExceptionSuccessor() { result = succ(this, ThrowCompletion(_)) }
+
+    /** Gets a successor of this node that is neither an exception successor nor a jump (break, continue, return). */
+    Node getANormalSuccessor() {
+      result = succ(this, BooleanCompletion(_, _)) or
+      result = succ(this, NormalCompletion())
+    }
+
+    /** Gets the basic block that contains this node. */
+    BasicBlock getBasicBlock() { result.getANode() = this }
+
+    /** Gets the statement containing this node, if any. */
+    Stmt getEnclosingStmt() { none() }
+
+    /** Gets the immediately enclosing callable whose body contains this node. */
+    Callable getEnclosingCallable() { none() }
+
+    /** Gets the statement this `Node` corresponds to, if any. */
+    Stmt asStmt() { this = TStmtNode(result) }
+
+    /** Gets the expression this `Node` corresponds to, if any. */
+    Expr asExpr() { this = TExprNode(result) }
+
+    /** Gets the call this `Node` corresponds to, if any. */
+    Call asCall() {
+      result = this.asExpr() or
+      result = this.asStmt()
+    }
+
+    /** Gets a textual representation of this element. */
+    string toString() { none() }
+
+    /** Gets the source location for this element. */
+    Location getLocation() { none() }
+
+    /**
+     * Gets the most appropriate AST node for this control flow node, if any.
+     */
+    ExprParent getAstNode() { none() }
   }
 
-  /** Gets an immediate successor of this node. */
-  ControlFlowNode getASuccessor() { result = succ(this) }
+  /** A control-flow node that represents the evaluation of an expression. */
+  class ExprNode extends Node, TExprNode {
+    Expr e;
 
-  /** Gets an immediate predecessor of this node. */
-  ControlFlowNode getAPredecessor() { this = succ(result) }
+    ExprNode() { this = TExprNode(e) }
 
-  /** Gets an exception successor of this node. */
-  ControlFlowNode getAnExceptionSuccessor() { result = succ(this, ThrowCompletion(_)) }
+    override Stmt getEnclosingStmt() { result = e.getEnclosingStmt() }
 
-  /** Gets a successor of this node that is neither an exception successor nor a jump (break, continue, return). */
-  ControlFlowNode getANormalSuccessor() {
-    result = succ(this, BooleanCompletion(_, _)) or
-    result = succ(this, NormalCompletion())
+    override Callable getEnclosingCallable() { result = e.getEnclosingCallable() }
+
+    override ExprParent getAstNode() { result = e }
+
+    /** Gets a textual representation of this element. */
+    override string toString() { result = e.toString() }
+
+    /** Gets the source location for this element. */
+    override Location getLocation() { result = e.getLocation() }
   }
 
-  /** Gets the basic block that contains this node. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  /** A control-flow node that represents a statement. */
+  class StmtNode extends Node, TStmtNode {
+    Stmt s;
+
+    StmtNode() { this = TStmtNode(s) }
+
+    override Stmt getEnclosingStmt() { result = s }
+
+    override Callable getEnclosingCallable() { result = s.getEnclosingCallable() }
+
+    override ExprParent getAstNode() { result = s }
+
+    override string toString() { result = s.toString() }
+
+    override Location getLocation() { result = s.getLocation() }
+  }
+
+  /** A control flow node indicating the termination of a callable. */
+  class ExitNode extends Node, TExitNode {
+    Callable c;
+
+    ExitNode() { this = TExitNode(c) }
+
+    override Callable getEnclosingCallable() { result = c }
+
+    override ExprParent getAstNode() { result = c }
+
+    /** Gets a textual representation of this element. */
+    override string toString() { result = "Exit" }
+
+    /** Gets the source location for this element. */
+    override Location getLocation() { result = c.getLocation() }
+  }
 }
+
+class ControlFlowNode = ControlFlow::Node;
 
 /** Gets the intra-procedural successor of `n`. */
 private ControlFlowNode succ(ControlFlowNode n) { result = succ(n, _) }
 
 cached
 private module ControlFlowGraphImpl {
+  private import ControlFlow
+
+  private class AstNode extends ExprParent {
+    AstNode() { this instanceof Expr or this instanceof Stmt }
+
+    Stmt getEnclosingStmt() {
+      result = this or
+      result = this.(Expr).getEnclosingStmt()
+    }
+
+    Node getCfgNode() { result.asExpr() = this or result.asStmt() = this }
+  }
+
   /**
    * Gets a label that applies to this statement.
    */
@@ -167,7 +270,7 @@ private module ControlFlowGraphImpl {
    * `ClassCastException` is expected, or because it is a Kotlin not-null check
    * and a `NullPointerException` is expected.
    */
-  private predicate mayThrow(ControlFlowNode n, ThrowableType t) {
+  private predicate mayThrow(AstNode n, ThrowableType t) {
     t = n.(ThrowStmt).getThrownExceptionType()
     or
     exists(Call c | c = n |
@@ -200,7 +303,7 @@ private module ControlFlowGraphImpl {
    * Bind `t` to an unchecked exception that may transfer control to a finally
    * block inside which `n` is nested.
    */
-  private predicate uncheckedExceptionFromFinally(ControlFlowNode n, ThrowableType t) {
+  private predicate uncheckedExceptionFromFinally(AstNode n, ThrowableType t) {
     exists(TryStmt try |
       n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
@@ -214,7 +317,7 @@ private module ControlFlowGraphImpl {
    * Bind `t` to all unchecked exceptions that may be caught by some
    * `try-catch` inside which `n` is nested.
    */
-  private predicate uncheckedExceptionFromCatch(ControlFlowNode n, ThrowableType t) {
+  private predicate uncheckedExceptionFromCatch(AstNode n, ThrowableType t) {
     exists(TryStmt try, UncheckedThrowableSuperType caught |
       n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
@@ -229,7 +332,7 @@ private module ControlFlowGraphImpl {
    * body or the resources (if any) of `try`.
    */
   private ThrowableType thrownInBody(TryStmt try) {
-    exists(ControlFlowNode n | mayThrow(n, result) |
+    exists(AstNode n | mayThrow(n, result) |
       n.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
       n.(Expr).getParent*() = try.getAResource()
     )
@@ -287,7 +390,7 @@ private module ControlFlowGraphImpl {
    * That is, contexts where the control-flow edges depend on `value` given that `b` ends
    * with a `booleanCompletion(value, _)`.
    */
-  private predicate inBooleanContext(ControlFlowNode b) {
+  private predicate inBooleanContext(AstNode b) {
     exists(LogicExpr logexpr |
       logexpr.(BinaryExpr).getLeftOperand() = b
       or
@@ -493,9 +596,7 @@ private module ControlFlowGraphImpl {
    * immediately before either falling through to execute successor statements or execute a rule body
    * if present. `completion` is the completion kind of the last operation.
    */
-  private predicate lastPatternCaseMatchingOp(
-    PatternCase pc, ControlFlowNode last, Completion completion
-  ) {
+  private predicate lastPatternCaseMatchingOp(PatternCase pc, Node last, Completion completion) {
     last(pc.getAPattern(), last, completion) and
     completion = NormalCompletion() and
     not exists(pc.getGuard())
@@ -514,7 +615,7 @@ private module ControlFlowGraphImpl {
    * and `ThrowStmt`. CFG nodes without child nodes in the CFG that may complete
    * normally are also included.
    */
-  private class PostOrderNode extends ControlFlowNode {
+  private class PostOrderNode extends AstNode {
     PostOrderNode() {
       // For VarAccess and ArrayAccess only read accesses (r-values) are included,
       // as write accesses aren't included in the CFG.
@@ -576,7 +677,7 @@ private module ControlFlowGraphImpl {
     }
 
     /** Gets child nodes in their order of execution. Indexing starts at either -1 or 0. */
-    ControlFlowNode getChildNode(int index) {
+    AstNode getChildNode(int index) {
       exists(ArrayAccess e | e = this |
         index = 0 and result = e.getArray()
         or
@@ -649,7 +750,7 @@ private module ControlFlowGraphImpl {
     }
 
     /** Gets the first child node, if any. */
-    ControlFlowNode firstChild() {
+    AstNode firstChild() {
       result = this.getChildNode(-1)
       or
       result = this.getChildNode(0) and not exists(this.getChildNode(-1))
@@ -687,18 +788,18 @@ private module ControlFlowGraphImpl {
   /**
    * Determine the part of the AST node `n` that will be executed first.
    */
-  private ControlFlowNode first(ControlFlowNode n) {
-    result = n and n instanceof LogicExpr
+  private Node first(AstNode n) {
+    result.asExpr() = n and n instanceof LogicExpr
     or
-    result = n and n instanceof ConditionalExpr
+    result.asExpr() = n and n instanceof ConditionalExpr
     or
-    result = n and n instanceof WhenExpr
+    result.asExpr() = n and n instanceof WhenExpr
     or
-    result = n and n instanceof WhenBranch
+    result.asStmt() = n and n instanceof WhenBranch
     or
-    result = n and n instanceof StmtExpr
+    result.asExpr() = n and n instanceof StmtExpr
     or
-    result = n and n.(PostOrderNode).isLeafNode()
+    result = n.getCfgNode() and n.(PostOrderNode).isLeafNode()
     or
     result = first(n.(PostOrderNode).firstChild())
     or
@@ -706,12 +807,11 @@ private module ControlFlowGraphImpl {
     or
     result = first(n.(SynchronizedStmt).getExpr())
     or
-    result = n and
-    n instanceof Stmt and
+    result.asStmt() = n and
     not n instanceof PostOrderNode and
     not n instanceof SynchronizedStmt
     or
-    result = n and n instanceof SwitchExpr
+    result.asExpr() = n and n instanceof SwitchExpr
   }
 
   /**
@@ -722,9 +822,7 @@ private module ControlFlowGraphImpl {
    * node in the `try` block that may not complete normally, or a node in
    * the `try` block that has no control flow successors inside the block.
    */
-  private predicate catchOrFinallyCompletion(
-    TryStmt try, ControlFlowNode last, Completion completion
-  ) {
+  private predicate catchOrFinallyCompletion(TryStmt try, Node last, Completion completion) {
     last(try.getBlock(), last, completion)
     or
     last(try.getAResource(), last, completion) and completion = ThrowCompletion(_)
@@ -737,7 +835,7 @@ private module ControlFlowGraphImpl {
    * In other words, if `last` throws an exception it is possibly not caught by any
    * of the catch clauses.
    */
-  private predicate uncaught(TryStmt try, ControlFlowNode last, Completion completion) {
+  private predicate uncaught(TryStmt try, Node last, Completion completion) {
     catchOrFinallyCompletion(try, last, completion) and
     (
       exists(ThrowableType thrown |
@@ -767,12 +865,12 @@ private module ControlFlowGraphImpl {
    * This is similar to `uncaught`, but also includes final statements of `catch`
    * clauses.
    */
-  private predicate finallyPred(TryStmt try, ControlFlowNode last, Completion completion) {
+  private predicate finallyPred(TryStmt try, Node last, Completion completion) {
     uncaught(try, last, completion) or
     last(try.getACatchClause(), last, completion)
   }
 
-  private predicate lastInFinally(TryStmt try, ControlFlowNode last) {
+  private predicate lastInFinally(TryStmt try, Node last) {
     last(try.getFinally(), last, NormalCompletion())
   }
 
@@ -796,7 +894,7 @@ private module ControlFlowGraphImpl {
    * A `booleanCompletion` implies that `n` is an `Expr`. Any abnormal
    * completion besides `throwCompletion` implies that `n` is a `Stmt`.
    */
-  private predicate last(ControlFlowNode n, ControlFlowNode last, Completion completion) {
+  private predicate last(AstNode n, Node last, Completion completion) {
     // Exceptions are propagated from any sub-expression.
     // As are any break, yield, continue, or return completions.
     exists(Expr e | e.getParent() = n |
@@ -853,15 +951,17 @@ private module ControlFlowGraphImpl {
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() and ioe = n |
-      last = n and completion = basicBooleanCompletion(false)
+      last.asExpr() = n and completion = basicBooleanCompletion(false)
       or
       last(ioe.getPattern(), last, NormalCompletion()) and completion = basicBooleanCompletion(true)
     )
     or
     // The last node of a node executed in post-order is the node itself.
-    n.(PostOrderNode).mayCompleteNormally() and last = n and completion = NormalCompletion()
+    exists(PostOrderNode p | p = n |
+      p.mayCompleteNormally() and last = p.getCfgNode() and completion = NormalCompletion()
+    )
     or
-    last = n and completion = basicBooleanCompletion(n.(BooleanLiteral).getBooleanValue())
+    last.asExpr() = n and completion = basicBooleanCompletion(n.(BooleanLiteral).getBooleanValue())
     or
     // The last statement in a block is any statement that does not complete normally,
     // or the last statement.
@@ -997,7 +1097,7 @@ private module ControlFlowGraphImpl {
     // * On success of its guard test, if it is not a rule (boolean true)
     // (the latter two cases are accounted for by lastPatternCaseMatchingOp)
     exists(PatternCase pc | n = pc |
-      last = pc and completion = basicBooleanCompletion(false)
+      last.asStmt() = pc and completion = basicBooleanCompletion(false)
       or
       last(pc.getGuard(), last, completion) and
       completion = BooleanCompletion(false, _)
@@ -1010,13 +1110,15 @@ private module ControlFlowGraphImpl {
     last(n.(SynchronizedStmt).getBlock(), last, completion)
     or
     // `return` statements give rise to a `Return` completion
-    last = n.(ReturnStmt) and completion = ReturnCompletion()
+    last.asStmt() = n.(ReturnStmt) and completion = ReturnCompletion()
     or
     // `throw` statements or throwing calls give rise to ` Throw` completion
-    exists(ThrowableType tt | mayThrow(n, tt) | last = n and completion = ThrowCompletion(tt))
+    exists(ThrowableType tt | mayThrow(n, tt) |
+      last = n.getCfgNode() and completion = ThrowCompletion(tt)
+    )
     or
     // `break` statements give rise to a `Break` completion
-    exists(BreakStmt break | break = n and last = n |
+    exists(BreakStmt break | break = n and last.asStmt() = n |
       completion = labelledBreakCompletion(MkLabel(break.getLabel()))
       or
       not exists(break.getLabel()) and completion = anonymousBreakCompletion()
@@ -1031,7 +1133,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // `continue` statements give rise to a `Continue` completion
-    exists(ContinueStmt cont | cont = n and last = n |
+    exists(ContinueStmt cont | cont = n and last.asStmt() = n |
       completion = labelledContinueCompletion(MkLabel(cont.getLabel()))
       or
       not exists(cont.getLabel()) and completion = anonymousContinueCompletion()
@@ -1067,7 +1169,7 @@ private module ControlFlowGraphImpl {
     // the last node of the condition of the last branch in the absence of an else-branch.
     exists(WhenExpr whenexpr | whenexpr = n |
       // If we have no branches then we are the last node
-      last = n and
+      last.asExpr() = n and
       completion = NormalCompletion() and
       not exists(whenexpr.getBranch(_))
       or
@@ -1117,17 +1219,19 @@ private module ControlFlowGraphImpl {
    * execution finishes with the given completion.
    */
   cached
-  ControlFlowNode succ(ControlFlowNode n, Completion completion) {
-    // Callables serve as their own exit nodes.
-    exists(Callable c | last(c.getBody(), n, completion) | result = c)
+  Node succ(Node n, Completion completion) {
+    // After executing the callable body, the final node is the exit node.
+    exists(Callable c | last(c.getBody(), n, completion) |
+      result.(ExitNode).getEnclosingCallable() = c
+    )
     or
     // Logic expressions and conditional expressions execute in AST pre-order.
     completion = NormalCompletion() and
     (
-      result = first(n.(AndLogicalExpr).getLeftOperand()) or
-      result = first(n.(OrLogicalExpr).getLeftOperand()) or
-      result = first(n.(LogNotExpr).getExpr()) or
-      result = first(n.(ConditionalExpr).getCondition())
+      result = first(n.asExpr().(AndLogicalExpr).getLeftOperand()) or
+      result = first(n.asExpr().(OrLogicalExpr).getLeftOperand()) or
+      result = first(n.asExpr().(LogNotExpr).getExpr()) or
+      result = first(n.asExpr().(ConditionalExpr).getCondition())
     )
     or
     // If a logic expression doesn't short-circuit then control flows from its left operand to its right.
@@ -1151,9 +1255,11 @@ private module ControlFlowGraphImpl {
     )
     or
     exists(InstanceOfExpr ioe | ioe.isPattern() |
-      last(ioe.getExpr(), n, completion) and completion = NormalCompletion() and result = ioe
+      last(ioe.getExpr(), n, completion) and
+      completion = NormalCompletion() and
+      result.asExpr() = ioe
       or
-      n = ioe and
+      n.asExpr() = ioe and
       result = first(ioe.getPattern()) and
       completion = basicBooleanCompletion(true)
     )
@@ -1164,11 +1270,11 @@ private module ControlFlowGraphImpl {
     |
       result = first(p.getChildNode(i + 1))
       or
-      not exists(p.getChildNode(i + 1)) and result = p
+      not exists(p.getChildNode(i + 1)) and result = p.getCfgNode()
     )
     or
     // Statements within a block execute sequentially.
-    result = first(n.(BlockStmt).getStmt(0)) and completion = NormalCompletion()
+    result = first(n.asStmt().(BlockStmt).getStmt(0)) and completion = NormalCompletion()
     or
     exists(BlockStmt blk, int i |
       last(blk.getStmt(i), n, completion) and
@@ -1178,7 +1284,7 @@ private module ControlFlowGraphImpl {
     or
     // Control flows to the corresponding branch depending on the boolean completion of the condition.
     exists(IfStmt s |
-      n = s and result = first(s.getCondition()) and completion = NormalCompletion()
+      n.asStmt() = s and result = first(s.getCondition()) and completion = NormalCompletion()
       or
       last(s.getCondition(), n, completion) and
       completion = BooleanCompletion(true, _) and
@@ -1190,7 +1296,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // For statements:
-    exists(ForStmt for, ControlFlowNode condentry |
+    exists(ForStmt for, Node condentry |
       // Any part of the control flow that aims for the condition needs to hit either the condition...
       condentry = first(for.getCondition())
       or
@@ -1198,10 +1304,10 @@ private module ControlFlowGraphImpl {
       not exists(for.getCondition()) and condentry = first(for.getStmt())
     |
       // From the entry point, which is the for statement itself, control goes to either the first init expression...
-      n = for and result = first(for.getInit(0)) and completion = NormalCompletion()
+      n.asStmt() = for and result = first(for.getInit(0)) and completion = NormalCompletion()
       or
       // ...or the condition if the for doesn't include init expressions.
-      n = for and
+      n.asStmt() = for and
       not exists(for.getAnInit()) and
       result = condentry and
       completion = NormalCompletion()
@@ -1238,27 +1344,29 @@ private module ControlFlowGraphImpl {
     // Enhanced for statements:
     exists(EnhancedForStmt for |
       // First the expression gets evaluated...
-      n = for and result = first(for.getExpr()) and completion = NormalCompletion()
+      n.asStmt() = for and result = first(for.getExpr()) and completion = NormalCompletion()
       or
       // ...then the variable gets assigned...
       last(for.getExpr(), n, completion) and
       completion = NormalCompletion() and
-      result = for.getVariable()
+      result.asExpr() = for.getVariable()
       or
       // ...and then control goes to the body of the loop.
-      n = for.getVariable() and result = first(for.getStmt()) and completion = NormalCompletion()
+      n.asExpr() = for.getVariable() and
+      result = first(for.getStmt()) and
+      completion = NormalCompletion()
       or
       // Finally, the back edge of the loop goes to reassign the variable.
       last(for.getStmt(), n, completion) and
       continues(completion, for) and
-      result = for.getVariable()
+      result.asExpr() = for.getVariable()
     )
     or
     // While loops start at the condition...
-    result = first(n.(WhileStmt).getCondition()) and completion = NormalCompletion()
+    result = first(n.asStmt().(WhileStmt).getCondition()) and completion = NormalCompletion()
     or
     // ...and do-while loops start at the body.
-    result = first(n.(DoStmt).getStmt()) and completion = NormalCompletion()
+    result = first(n.asStmt().(DoStmt).getStmt()) and completion = NormalCompletion()
     or
     exists(LoopStmt loop | loop instanceof WhileStmt or loop instanceof DoStmt |
       // Control goes from the condition via a true-completion to the body...
@@ -1282,7 +1390,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // After the last resource declaration, control transfers to the body.
-    exists(TryStmt try | n = try and completion = NormalCompletion() |
+    exists(TryStmt try | n.asStmt() = try and completion = NormalCompletion() |
       result = first(try.getResource(0))
       or
       not exists(try.getAResource()) and result = first(try.getBlock())
@@ -1310,7 +1418,7 @@ private module ControlFlowGraphImpl {
     or
     // Catch clauses first assign their variable and then execute their block
     exists(CatchClause cc | completion = NormalCompletion() |
-      n = cc and result = first(cc.getVariable())
+      n.asStmt() = cc and result = first(cc.getVariable())
       or
       last(cc.getVariable(), n, completion) and result = first(cc.getBlock())
     )
@@ -1321,7 +1429,9 @@ private module ControlFlowGraphImpl {
         switchExpr = switch.(SwitchStmt).getExpr() or switchExpr = switch.(SwitchExpr).getExpr()
       |
         // From the entry point control is transferred first to the expression...
-        n = switch and result = first(switchExpr) and completion = NormalCompletion()
+        n.getAstNode() = switch and
+        result = first(switchExpr) and
+        completion = NormalCompletion()
         or
         // ...and then to any case up to and including the first pattern case, if any.
         last(switchExpr, n, completion) and
@@ -1345,7 +1455,7 @@ private module ControlFlowGraphImpl {
       or
       // A pattern case that completes boolean false (type test or guard failure) continues to consider other cases:
       exists(PatternCase case | completion = BooleanCompletion(false, _) |
-        last(case, n, completion) and result = getASuccessorSwitchCase(case, switch)
+        last(case, n, completion) and result.asStmt() = getASuccessorSwitchCase(case, switch)
       )
     )
     or
@@ -1358,7 +1468,7 @@ private module ControlFlowGraphImpl {
     // * Variable declarations -normal-> rule execution (when there is no guard)
     // * Guard success -true-> rule execution
     exists(PatternCase pc |
-      n = pc and
+      n.asStmt() = pc and
       completion = basicBooleanCompletion(true) and
       result = first(pc.getAPattern())
       or
@@ -1375,7 +1485,7 @@ private module ControlFlowGraphImpl {
     )
     or
     // Non-pattern cases have an internal edge leading to their rule body if any when the case matches.
-    exists(SwitchCase case | n = case |
+    exists(SwitchCase case | n.asStmt() = case |
       not case instanceof PatternCase and
       completion = NormalCompletion() and
       (
@@ -1387,32 +1497,32 @@ private module ControlFlowGraphImpl {
     or
     // Yield
     exists(YieldStmt yield | completion = NormalCompletion() |
-      n = yield and result = first(yield.getValue())
+      n.asStmt() = yield and result = first(yield.getValue())
     )
     or
     // Synchronized statements execute their expression _before_ synchronization, so the CFG reflects that.
     exists(SynchronizedStmt synch | completion = NormalCompletion() |
-      last(synch.getExpr(), n, completion) and result = synch
+      last(synch.getExpr(), n, completion) and result.asStmt() = synch
       or
-      n = synch and result = first(synch.getBlock())
+      n.asStmt() = synch and result = first(synch.getBlock())
     )
     or
-    result = first(n.(ExprStmt).getExpr()) and completion = NormalCompletion()
+    result = first(n.asStmt().(ExprStmt).getExpr()) and completion = NormalCompletion()
     or
-    result = first(n.(StmtExpr).getStmt()) and completion = NormalCompletion()
+    result = first(n.asExpr().(StmtExpr).getStmt()) and completion = NormalCompletion()
     or
-    result = first(n.(LabeledStmt).getStmt()) and completion = NormalCompletion()
+    result = first(n.asStmt().(LabeledStmt).getStmt()) and completion = NormalCompletion()
     or
     // Variable declarations in a variable declaration statement are executed sequentially.
     exists(LocalVariableDeclStmt s | completion = NormalCompletion() |
-      n = s and result = first(s.getVariable(1))
+      n.asStmt() = s and result = first(s.getVariable(1))
       or
       exists(int i | last(s.getVariable(i), n, completion) and result = first(s.getVariable(i + 1)))
     )
     or
     // When expressions:
     exists(WhenExpr whenexpr |
-      n = whenexpr and
+      n.asExpr() = whenexpr and
       result = first(whenexpr.getBranch(0)) and
       completion = NormalCompletion()
       or
@@ -1425,7 +1535,7 @@ private module ControlFlowGraphImpl {
     or
     // When branches:
     exists(WhenBranch whenbranch |
-      n = whenbranch and
+      n.asStmt() = whenbranch and
       completion = NormalCompletion() and
       result = first(whenbranch.getCondition())
       or
@@ -1463,7 +1573,7 @@ private module ControlFlowGraphImpl {
    * predicate `finallyPred`, since their completion is resumed after normal
    * completion of the `finally`.
    */
-  private Completion resumption(ControlFlowNode n) {
+  private Completion resumption(Node n) {
     exists(TryStmt try | lastInFinally(try, n) and finallyPred(try, _, result))
     or
     not lastInFinally(_, n) and result = NormalCompletion()
@@ -1474,9 +1584,7 @@ private module ControlFlowGraphImpl {
    *
    * That is, the `booleanCompletion` is the label of the edge in the CFG.
    */
-  private ControlFlowNode mainBranchSucc(ControlFlowNode n, boolean b) {
-    result = succ(n, BooleanCompletion(_, b))
-  }
+  private Node mainBranchSucc(Node n, boolean b) { result = succ(n, BooleanCompletion(_, b)) }
 
   /**
    * A true- or false-successor that is not tagged with a `booleanCompletion`.
@@ -1487,8 +1595,8 @@ private module ControlFlowGraphImpl {
    * In the latter case, when `n` occurs as the last node in a finally block, there might be
    * multiple different such successors.
    */
-  private ControlFlowNode otherBranchSucc(ControlFlowNode n, boolean b) {
-    exists(ControlFlowNode main | main = mainBranchSucc(n, b.booleanNot()) |
+  private Node otherBranchSucc(Node n, boolean b) {
+    exists(Node main | main = mainBranchSucc(n, b.booleanNot()) |
       result = succ(n, resumption(n)) and
       not result = main and
       (b = true or b = false)
@@ -1497,7 +1605,7 @@ private module ControlFlowGraphImpl {
 
   /** Gets a true- or false-successor of `n`. */
   cached
-  ControlFlowNode branchSuccessor(ControlFlowNode n, boolean branch) {
+  Node branchSuccessor(Node n, boolean branch) {
     result = mainBranchSucc(n, branch) or
     result = otherBranchSucc(n, branch)
   }
@@ -1506,18 +1614,18 @@ private module ControlFlowGraphImpl {
 private import ControlFlowGraphImpl
 
 /** A control-flow node that branches based on a condition. */
-class ConditionNode extends ControlFlowNode {
+class ConditionNode extends ControlFlow::Node {
   ConditionNode() { exists(branchSuccessor(this, _)) }
 
   /** Gets a true- or false-successor of the `ConditionNode`. */
-  ControlFlowNode getABranchSuccessor(boolean branch) { result = branchSuccessor(this, branch) }
+  ControlFlow::Node getABranchSuccessor(boolean branch) { result = branchSuccessor(this, branch) }
 
   /** Gets a true-successor of the `ConditionNode`. */
-  ControlFlowNode getATrueSuccessor() { result = this.getABranchSuccessor(true) }
+  ControlFlow::Node getATrueSuccessor() { result = this.getABranchSuccessor(true) }
 
   /** Gets a false-successor of the `ConditionNode`. */
-  ControlFlowNode getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
+  ControlFlow::Node getAFalseSuccessor() { result = this.getABranchSuccessor(false) }
 
-  /** Gets the condition of this `ConditionNode`. This is equal to the node itself. */
-  ExprParent getCondition() { result = this }
+  /** Gets the condition of this `ConditionNode`. */
+  ExprParent getCondition() { result = this.asExpr() or result = this.asStmt() }
 }

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.FragmentInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module FragmentInjectionInPreferenceActivityTest implements TestSig {
   string getARelevantTag() { result = "hasPreferenceFragmentInjection" }

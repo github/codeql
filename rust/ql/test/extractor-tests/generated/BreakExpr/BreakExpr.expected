@@ -1,0 +1,3 @@
+| gen_break_expr.rs:7:13:7:17 | break | getNumberOfAttrs: | 0 | hasExpr: | no | hasLifetime: | no |
+| gen_break_expr.rs:12:13:12:27 | break ''label 42 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasLifetime: | yes |
+| gen_break_expr.rs:17:13:17:27 | break ''label 42 | getNumberOfAttrs: | 0 | hasExpr: | yes | hasLifetime: | yes |

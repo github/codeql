@@ -1,0 +1,13 @@
+edges
+| Cors.py:7:9:7:14 | ControlFlowNode for origin | Cors.py:8:12:8:17 | ControlFlowNode for origin | provenance |  |
+| Cors.py:7:18:7:32 | ControlFlowNode for Attribute | Cors.py:7:18:7:52 | ControlFlowNode for Attribute() | provenance | Config |
+| Cors.py:7:18:7:32 | ControlFlowNode for Attribute | Cors.py:7:18:7:52 | ControlFlowNode for Attribute() | provenance | dict.get |
+| Cors.py:7:18:7:52 | ControlFlowNode for Attribute() | Cors.py:7:9:7:14 | ControlFlowNode for origin | provenance |  |
+nodes
+| Cors.py:7:9:7:14 | ControlFlowNode for origin | semmle.label | ControlFlowNode for origin |
+| Cors.py:7:18:7:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| Cors.py:7:18:7:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| Cors.py:8:12:8:17 | ControlFlowNode for origin | semmle.label | ControlFlowNode for origin |
+subpaths
+#select
+| Cors.py:8:12:8:17 | ControlFlowNode for origin | Cors.py:7:18:7:32 | ControlFlowNode for Attribute | Cors.py:8:12:8:17 | ControlFlowNode for origin | Potentially incorrect string comparison which could lead to a CORS bypass. |

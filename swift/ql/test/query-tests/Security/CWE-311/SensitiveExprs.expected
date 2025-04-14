@@ -141,6 +141,12 @@
 | testGRDB.swift:210:85:210:85 | password | label:password, type:password |
 | testGRDB.swift:212:99:212:99 | password | label:password, type:password |
 | testRealm2.swift:18:11:18:11 | myPassword | label:myPassword, type:password |
+| testRealm2.swift:24:11:24:11 | socialSecurityNumber | label:socialSecurityNumber, type:private information |
+| testRealm2.swift:25:11:25:11 | ssn | label:ssn, type:private information |
+| testRealm2.swift:26:18:26:18 | ssn_int | label:ssn_int, type:private information |
+| testRealm2.swift:32:11:32:11 | creditCardNumber | label:creditCardNumber, type:private information |
+| testRealm2.swift:33:11:33:11 | CCN | label:CCN, type:private information |
+| testRealm2.swift:34:18:34:18 | int_ccn | label:int_ccn, type:private information |
 | testRealm.swift:31:20:31:20 | .password | label:password, type:password |
 | testRealm.swift:41:11:41:11 | myPassword | label:myPassword, type:password |
 | testRealm.swift:49:11:49:11 | myPassword | label:myPassword, type:password |
@@ -176,3 +182,14 @@
 | testURL.swift:75:53:75:69 | call to get_cert_string() | label:get_cert_string, type:credential |
 | testURL.swift:96:51:96:51 | certificate | label:certificate, type:credential |
 | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:password, type:password |
+| testURL.swift:116:52:116:52 | email | label:email, type:private information |
+| testURL.swift:117:28:117:28 | email | label:email, type:private information |
+| testURL.swift:118:53:118:53 | secret_key | label:secret_key, type:credential |
+| testURL.swift:119:60:119:60 | email | label:email, type:private information |
+| testURL.swift:123:52:123:52 | phone_number | label:phone_number, type:private information |
+| testURL.swift:124:25:124:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:125:31:125:31 | phone_number | label:phone_number, type:private information |
+| testURL.swift:126:28:126:28 | phone_number | label:phone_number, type:private information |
+| testURL.swift:127:25:127:25 | phone_number | label:phone_number, type:private information |
+| testURL.swift:131:37:131:37 | account_no | label:account_no, type:private information |
+| testURL.swift:132:39:132:39 | account_no | label:account_no, type:private information |

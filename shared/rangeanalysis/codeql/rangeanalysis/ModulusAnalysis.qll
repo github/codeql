@@ -14,9 +14,9 @@ private import codeql.util.Location
 private import RangeAnalysis
 
 module ModulusAnalysis<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds>
+  LocationSig Location, Semantic<Location> Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds>
 {
-  private import internal.RangeUtils::MakeUtils<Sem, D>
+  private import internal.RangeUtils::MakeUtils<Location, Sem, D>
 
   bindingset[pos, v]
   pragma[inline_late]

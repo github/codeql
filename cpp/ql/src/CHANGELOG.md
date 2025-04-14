@@ -1,3 +1,151 @@
+## 1.3.7
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the models for Microsoft's Active Template Library (ATL).
+* The query "Use of basic integral type" (`cpp/jpl-c/basic-int-types`) no longer produces alerts for the standard fixed width integer types (`int8_t`, `uint8_t`, etc.), and the `_Bool` and `bool` types.
+
+## 1.3.6
+
+No user-facing changes.
+
+## 1.3.5
+
+### Minor Analysis Improvements
+
+* Due to changes in libraries the query "Static array access may cause overflow" (`cpp/static-buffer-overflow`) will no longer report cases where multiple fields of a struct or class are written with a single `memset` or similar operation.
+* The query "Call to memory access function may overflow buffer" (`cpp/overflow-buffer`) has been added to the security-extended query suite. The query detects a range of buffer overflow and underflow issues.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+### Minor Analysis Improvements
+
+* The "Wrong type of arguments to formatting function" query (`cpp/wrong-type-format-argument`) now produces fewer FPs if the formatting function has multiple definitions.
+* The "Call to memory access function may overflow buffer" query (`cpp/overflow-buffer`) now produces fewer FPs involving non-static member variables.
+
+## 1.3.2
+
+### Minor Analysis Improvements
+
+* Added dataflow models for `SysAllocString` and related functions.
+* The `cpp/badly-bounded-write`, `cpp/equality-on-floats`, `cpp/short-global-name`, `cpp/static-buffer-overflow`, `cpp/too-few-arguments`, `cpp/useless-expression`, `cpp/world-writable-file-creation` queries no longer produce alerts on files created by CMake to test the build configuration.
+
+## 1.3.1
+
+### Minor Analysis Improvements
+
+* The "Returning stack-allocated memory" query (`cpp/return-stack-allocated-memory`) no longer produces results if there is an extraction error in the returned expression.
+* The "Badly bounded write" query (`cpp/badly-bounded-write`) no longer produces results if there is an extraction error in the type of the output buffer.
+* The "Too few arguments to formatting function" query (`cpp/wrong-number-format-arguments`) no longer produces results if an argument has an extraction error.
+* The "Wrong type of arguments to formatting function" query (`cpp/wrong-type-format-argument`) no longer produces results when an argument type has an extraction error.
+* Added dataflow models and flow sources for Microsoft's Active Template Library (ATL).
+
+## 1.3.0
+
+### New Queries
+
+* Added a new high-precision quality query, `cpp/guarded-free`, which detects useless NULL pointer checks before calls to `free`. A variation of this query was originally contributed as an [experimental query by @mario-campos](https://github.com/github/codeql/pull/16331).
+
+### Minor Analysis Improvements
+
+* The "Call to function with fewer arguments than declared parameters" query (`cpp/too-few-arguments`) no longer produces results if the function has been implicitly declared.
+
+## 1.2.7
+
+No user-facing changes.
+
+## 1.2.6
+
+### Minor Analysis Improvements
+
+* Remove results from the `cpp/wrong-type-format-argument` ("Wrong type of arguments to formatting function") query if the argument is the return value of an implicitly declared function.
+
+## 1.2.5
+
+### Minor Analysis Improvements
+
+* The `cpp/unclear-array-index-validation` ("Unclear validation of array index") query has been improved to reduce false positives and increase true positives.
+* Fixed false positives in the `cpp/uninitialized-local` ("Potentially uninitialized local variable") query if there are extraction errors in the function.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to detect byte arrays.
+* The `cpp/incorrect-string-type-conversion` query now produces fewer false positives caused by failure to recognize dynamic checks prior to possible dangerous widening.
+
+## 1.2.4
+
+### Minor Analysis Improvements
+
+* Fixed false positives in the `cpp/wrong-number-format-arguments` ("Too few arguments to formatting function") query when the formatting function has been declared implicitly.
+
+## 1.2.3
+
+### Minor Analysis Improvements
+
+* Removed false positives caused by buffer accesses in unreachable code
+* Removed false positives caused by inconsistent type checking
+* Add modeling of C functions that don't throw, thereby increasing the precision of the `cpp/incorrect-allocation-error-handling` ("Incorrect allocation-error handling") query. The query now produces additional true positives.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The `cpp/uncontrolled-allocation-size` ("Uncontrolled allocation size") query now considers arithmetic operations that might reduce the size of user input as a barrier. The query therefore produces fewer false positive results.
+
+## 1.2.0
+
+### Query Metadata Changes
+
+* The precision of `cpp/unsigned-difference-expression-compared-zero` ("Unsigned difference expression compared to zero") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+
+### Minor Analysis Improvements
+
+* Fixed false positives in the `cpp/memory-may-not-be-freed` ("Memory may not be freed") query involving class methods that returned an allocated field of that class being misidentified as allocators.
+* The `cpp/incorrectly-checked-scanf` ("Incorrect return-value check for a 'scanf'-like function") query now produces fewer false positive results.
+* The `cpp/incorrect-allocation-error-handling` ("Incorrect allocation-error handling") query no longer produces occasional false positive results inside template instantiations.
+* The `cpp/suspicious-allocation-size` ("Not enough memory allocated for array of pointer type") query no longer produces false positives on "variable size" `struct`s.
+
+## 1.1.0
+
+### Query Metadata Changes
+
+* The precision of `cpp/iterator-to-expired-container` ("Iterator to expired container") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+* The precision of `cpp/unsafe-strncat` ("Potentially unsafe call to strncat") has been increased to `high`. As a result, it will be run by default as part of the Code Scanning suite.
+
+### Minor Analysis Improvements
+
+* The `cpp/unsigned-difference-expression-compared-zero` ("Unsigned difference expression compared to zero") query now produces fewer false positives.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* The `cpp/dangerous-function-overflow` no longer produces a false positive alert when the `gets` function does not have exactly one parameter.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* The "Use of unique pointer after lifetime ends" query (`cpp/use-of-unique-pointer-after-lifetime-ends`) no longer reports an alert when the pointer is converted to a boolean
+* The "Variable not initialized before use" query (`cpp/not-initialised`) no longer reports an alert on static variables.
+
 ## 0.9.12
 
 ### New Queries

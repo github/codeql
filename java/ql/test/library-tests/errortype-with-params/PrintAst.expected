@@ -2,5 +2,5 @@ Test.java:
 #    0| [CompilationUnit] Test
 #    1|   1: [Class] Test
 #-----|     -1: (Base Types)
-#    1|       0: [TypeAccess] <any>
+#    1|       0: [TypeAccess] Unavailable<String>
 #    1|         0: [TypeAccess] String

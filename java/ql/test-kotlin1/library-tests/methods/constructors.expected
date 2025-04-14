@@ -1,0 +1,18 @@
+| dataClass.kt:1:21:1:47 | DataClass | dataClass.kt:1:1:1:47 | DataClass | file://:0:0:0:0 | void |
+| delegates.kt:3:1:12:1 | MyClass | delegates.kt:3:1:12:1 | MyClass | file://:0:0:0:0 | void |
+| delegates.kt:4:18:6:5 |  | delegates.kt:4:18:6:5 | new KProperty1<MyClass,Integer>(...) { ... } | file://:0:0:0:0 | void |
+| delegates.kt:4:26:6:5 |  | delegates.kt:4:26:6:5 | new Function0<Integer>(...) { ... } | file://:0:0:0:0 | void |
+| delegates.kt:8:32:11:5 |  | delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | file://:0:0:0:0 | void |
+| delegates.kt:8:32:11:5 |  | delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | file://:0:0:0:0 | void |
+| delegates.kt:8:66:11:5 |  | delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | file://:0:0:0:0 | void |
+| enumClass.kt:1:21:1:32 | EnumClass | enumClass.kt:1:1:4:1 | EnumClass | file://:0:0:0:0 | void |
+| enumClass.kt:6:6:16:1 | EnumWithFunctions | enumClass.kt:6:1:16:1 | EnumWithFunctions | file://:0:0:0:0 | void |
+| enumClass.kt:8:3:11:4 | VAL | enumClass.kt:8:3:11:4 | VAL | file://:0:0:0:0 | void |
+| methods2.kt:7:1:10:1 | Class2 | methods2.kt:7:1:10:1 | Class2 | file://:0:0:0:0 | void |
+| methods3.kt:5:1:7:1 | Class3 | methods3.kt:5:1:7:1 | Class3 | file://:0:0:0:0 | void |
+| methods4.kt:3:1:11:1 | NestedTest | methods4.kt:3:1:11:1 | NestedTest | file://:0:0:0:0 | void |
+| methods4.kt:5:3:9:3 | InsideNestedTest | methods4.kt:5:3:9:3 | InsideNestedTest | file://:0:0:0:0 | void |
+| methods5.kt:5:3:5:27 |  | methods5.kt:5:3:5:27 |  | file://:0:0:0:0 | void |
+| methods5.kt:9:3:9:32 |  | methods5.kt:9:3:9:32 |  | file://:0:0:0:0 | void |
+| methods5.kt:13:1:13:14 | C1 | methods5.kt:13:1:13:14 | C1 | file://:0:0:0:0 | void |
+| methods.kt:5:1:20:1 | Class | methods.kt:5:1:20:1 | Class | file://:0:0:0:0 | void |

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["github/codeql-action", "*", "input.latest_tag", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "input.major_version", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "input.version", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "input.use-all-platform-bundle", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "input.expected-config-file-contents", "code-injection", "generated"]

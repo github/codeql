@@ -16,8 +16,6 @@ edges
 | main.cpp:8:34:8:37 | **argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument | provenance |  |
 | main.cpp:8:34:8:37 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | provenance |  |
 | main.cpp:8:34:8:37 | *argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument | provenance |  |
-| main.cpp:8:34:8:37 | *argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument | provenance |  |
-| main.cpp:8:34:8:37 | *argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | provenance |  |
 | main.cpp:8:34:8:37 | *argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | provenance |  |
 | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument | main.cpp:9:29:9:32 | **argv | provenance |  |
 | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument | main.cpp:9:29:9:32 | *argv | provenance |  |
@@ -26,32 +24,29 @@ edges
 | main.cpp:9:29:9:32 | **argv | main.cpp:9:29:9:32 | tests_restrict_main output argument | provenance |  |
 | main.cpp:9:29:9:32 | **argv | tests_restrict.c:15:41:15:44 | **argv | provenance |  |
 | main.cpp:9:29:9:32 | *argv | main.cpp:9:29:9:32 | tests_restrict_main output argument | provenance |  |
-| main.cpp:9:29:9:32 | *argv | main.cpp:9:29:9:32 | tests_restrict_main output argument | provenance |  |
-| main.cpp:9:29:9:32 | *argv | tests_restrict.c:15:41:15:44 | **argv | provenance |  |
 | main.cpp:9:29:9:32 | *argv | tests_restrict.c:15:41:15:44 | *argv | provenance |  |
 | main.cpp:9:29:9:32 | tests_restrict_main output argument | main.cpp:10:20:10:23 | **argv | provenance |  |
 | main.cpp:9:29:9:32 | tests_restrict_main output argument | main.cpp:10:20:10:23 | *argv | provenance |  |
-| main.cpp:10:20:10:23 | **argv | tests.cpp:657:32:657:35 | **argv | provenance |  |
-| main.cpp:10:20:10:23 | *argv | tests.cpp:657:32:657:35 | **argv | provenance |  |
-| main.cpp:10:20:10:23 | *argv | tests.cpp:657:32:657:35 | *argv | provenance |  |
+| main.cpp:10:20:10:23 | **argv | tests.cpp:1060:32:1060:35 | **argv | provenance |  |
+| main.cpp:10:20:10:23 | *argv | tests.cpp:1060:32:1060:35 | *argv | provenance |  |
 | overflowdestination.cpp:23:45:23:48 | **argv | overflowdestination.cpp:23:45:23:48 | **argv | provenance |  |
 | overflowdestination.cpp:23:45:23:48 | **argv | overflowdestination.cpp:23:45:23:48 | *argv | provenance |  |
 | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | provenance |  |
 | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | provenance |  |
 | test_buffer_overrun.cpp:32:46:32:49 | *argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | provenance |  |
-| tests.cpp:613:19:613:24 | *source | tests.cpp:615:17:615:22 | *source | provenance |  |
-| tests.cpp:622:19:622:24 | *source | tests.cpp:625:2:625:16 | *... = ... | provenance |  |
-| tests.cpp:625:2:625:2 | *s [post update] [*home] | tests.cpp:628:14:628:14 | *s [*home] | provenance |  |
-| tests.cpp:625:2:625:16 | *... = ... | tests.cpp:625:2:625:2 | *s [post update] [*home] | provenance |  |
-| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home | provenance |  |
-| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home | provenance |  |
-| tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home | provenance |  |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:682:9:682:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:683:9:683:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | *argv | tests.cpp:682:9:682:15 | *access to array | provenance |  |
-| tests.cpp:657:32:657:35 | *argv | tests.cpp:683:9:683:15 | *access to array | provenance |  |
-| tests.cpp:682:9:682:15 | *access to array | tests.cpp:613:19:613:24 | *source | provenance |  |
-| tests.cpp:683:9:683:15 | *access to array | tests.cpp:622:19:622:24 | *source | provenance |  |
+| tests.cpp:634:19:634:24 | *source | tests.cpp:636:17:636:22 | *source | provenance |  |
+| tests.cpp:643:19:643:24 | *source | tests.cpp:646:2:646:16 | *... = ... | provenance |  |
+| tests.cpp:646:2:646:2 | *s [post update] [*home] | tests.cpp:649:14:649:14 | *s [*home] | provenance |  |
+| tests.cpp:646:2:646:16 | *... = ... | tests.cpp:646:2:646:2 | *s [post update] [*home] | provenance |  |
+| tests.cpp:649:14:649:14 | *s [*home] | tests.cpp:649:14:649:19 | *home | provenance |  |
+| tests.cpp:649:14:649:14 | *s [*home] | tests.cpp:649:16:649:19 | *home | provenance |  |
+| tests.cpp:649:16:649:19 | *home | tests.cpp:649:14:649:19 | *home | provenance |  |
+| tests.cpp:1060:32:1060:35 | **argv | tests.cpp:1085:9:1085:15 | *access to array | provenance |  |
+| tests.cpp:1060:32:1060:35 | **argv | tests.cpp:1086:9:1086:15 | *access to array | provenance |  |
+| tests.cpp:1060:32:1060:35 | *argv | tests.cpp:1085:9:1085:15 | *access to array | provenance |  |
+| tests.cpp:1060:32:1060:35 | *argv | tests.cpp:1086:9:1086:15 | *access to array | provenance |  |
+| tests.cpp:1085:9:1085:15 | *access to array | tests.cpp:634:19:634:24 | *source | provenance |  |
+| tests.cpp:1086:9:1086:15 | *access to array | tests.cpp:643:19:643:24 | *source | provenance |  |
 | tests_restrict.c:15:41:15:44 | **argv | tests_restrict.c:15:41:15:44 | **argv | provenance |  |
 | tests_restrict.c:15:41:15:44 | *argv | tests_restrict.c:15:41:15:44 | *argv | provenance |  |
 nodes
@@ -77,18 +72,18 @@ nodes
 | test_buffer_overrun.cpp:32:46:32:49 | *argv | semmle.label | *argv |
 | test_buffer_overrun.cpp:32:46:32:49 | *argv | semmle.label | *argv |
 | test_buffer_overrun.cpp:32:46:32:49 | *argv | semmle.label | *argv |
-| tests.cpp:613:19:613:24 | *source | semmle.label | *source |
-| tests.cpp:615:17:615:22 | *source | semmle.label | *source |
-| tests.cpp:622:19:622:24 | *source | semmle.label | *source |
-| tests.cpp:625:2:625:2 | *s [post update] [*home] | semmle.label | *s [post update] [*home] |
-| tests.cpp:625:2:625:16 | *... = ... | semmle.label | *... = ... |
-| tests.cpp:628:14:628:14 | *s [*home] | semmle.label | *s [*home] |
-| tests.cpp:628:14:628:19 | *home | semmle.label | *home |
-| tests.cpp:628:16:628:19 | *home | semmle.label | *home |
-| tests.cpp:657:32:657:35 | **argv | semmle.label | **argv |
-| tests.cpp:657:32:657:35 | *argv | semmle.label | *argv |
-| tests.cpp:682:9:682:15 | *access to array | semmle.label | *access to array |
-| tests.cpp:683:9:683:15 | *access to array | semmle.label | *access to array |
+| tests.cpp:634:19:634:24 | *source | semmle.label | *source |
+| tests.cpp:636:17:636:22 | *source | semmle.label | *source |
+| tests.cpp:643:19:643:24 | *source | semmle.label | *source |
+| tests.cpp:646:2:646:2 | *s [post update] [*home] | semmle.label | *s [post update] [*home] |
+| tests.cpp:646:2:646:16 | *... = ... | semmle.label | *... = ... |
+| tests.cpp:649:14:649:14 | *s [*home] | semmle.label | *s [*home] |
+| tests.cpp:649:14:649:19 | *home | semmle.label | *home |
+| tests.cpp:649:16:649:19 | *home | semmle.label | *home |
+| tests.cpp:1060:32:1060:35 | **argv | semmle.label | **argv |
+| tests.cpp:1060:32:1060:35 | *argv | semmle.label | *argv |
+| tests.cpp:1085:9:1085:15 | *access to array | semmle.label | *access to array |
+| tests.cpp:1086:9:1086:15 | *access to array | semmle.label | *access to array |
 | tests_restrict.c:15:41:15:44 | **argv | semmle.label | **argv |
 | tests_restrict.c:15:41:15:44 | **argv | semmle.label | **argv |
 | tests_restrict.c:15:41:15:44 | *argv | semmle.label | *argv |
@@ -98,12 +93,9 @@ subpaths
 | main.cpp:7:33:7:36 | **argv | overflowdestination.cpp:23:45:23:48 | **argv | overflowdestination.cpp:23:45:23:48 | *argv | main.cpp:7:33:7:36 | overflowdesination_main output argument |
 | main.cpp:8:34:8:37 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument |
 | main.cpp:8:34:8:37 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument |
-| main.cpp:8:34:8:37 | *argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument |
-| main.cpp:8:34:8:37 | *argv | test_buffer_overrun.cpp:32:46:32:49 | **argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument |
 | main.cpp:8:34:8:37 | *argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | test_buffer_overrun.cpp:32:46:32:49 | *argv | main.cpp:8:34:8:37 | test_buffer_overrun_main output argument |
 | main.cpp:9:29:9:32 | **argv | tests_restrict.c:15:41:15:44 | **argv | tests_restrict.c:15:41:15:44 | **argv | main.cpp:9:29:9:32 | tests_restrict_main output argument |
-| main.cpp:9:29:9:32 | *argv | tests_restrict.c:15:41:15:44 | **argv | tests_restrict.c:15:41:15:44 | **argv | main.cpp:9:29:9:32 | tests_restrict_main output argument |
 | main.cpp:9:29:9:32 | *argv | tests_restrict.c:15:41:15:44 | *argv | tests_restrict.c:15:41:15:44 | *argv | main.cpp:9:29:9:32 | tests_restrict_main output argument |
 #select
-| tests.cpp:615:2:615:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:615:17:615:22 | *source | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |
-| tests.cpp:628:2:628:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:628:14:628:19 | *home | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |
+| tests.cpp:636:2:636:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:636:17:636:22 | *source | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |
+| tests.cpp:649:2:649:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:649:14:649:19 | *home | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |

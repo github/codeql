@@ -1,0 +1,546 @@
+/** Auto-generated dbscheme; do not edit. */
+
+
+/** Duplicate code **/
+
+duplicateCode(
+  unique int id : @duplication,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+similarCode(
+  unique int id : @similarity,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+@duplication_or_similarity = @duplication | @similarity;
+
+tokens(
+  int id : @duplication_or_similarity ref,
+  int offset : int ref,
+  int beginLine : int ref,
+  int beginColumn : int ref,
+  int endLine : int ref,
+  int endColumn : int ref);
+
+/** External data **/
+
+externalData(
+  int id : @externalDataElement,
+  varchar(900) path : string ref,
+  int column: int ref,
+  varchar(900) value : string ref
+);
+
+snapshotDate(unique date snapshotDate : date ref);
+
+sourceLocationPrefix(varchar(900) prefix : string ref);
+
+
+/*
+ * XML Files
+ */
+
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
+
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
+
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
+
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
+
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
+
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
+
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+
+compilations(unique int id: @compilation, string cwd: string ref);
+
+#keyset[id, num]
+compilation_args(int id: @compilation ref, int num: int ref, string arg: string ref);
+
+#keyset[id, num, kind]
+compilation_time(int id: @compilation ref, int num: int ref, int kind: int ref, float secs: float ref);
+
+diagnostic_for(unique int diagnostic: @diagnostic ref, int compilation: @compilation ref, int file_number: int ref, int file_number_diagnostic_number: int ref);
+
+compilation_finished(unique int id: @compilation ref, float cpu_seconds: float ref, float elapsed_seconds: float ref);
+
+#keyset[id, num]
+compilation_compiling_files(int id: @compilation ref, int num: int ref, int file: @file ref);
+
+diagnostics(unique int id: @diagnostic, int severity: int ref, string error_tag: string ref, string error_message: string ref,
+            string full_error_message: string ref, int location: @location ref);
+
+locations_default(unique int id: @location_default, int file: @file ref, int beginLine: int ref, int beginColumn: int ref,
+                  int endLine: int ref, int endColumn: int ref);
+
+numlines(int element_id: @sourceline ref, int num_lines: int ref, int num_code: int ref, int num_comment: int ref);
+
+files(unique int id: @file, string name: string ref);
+
+folders(unique int id: @folder, string name: string ref);
+
+containerparent(int parent: @container ref, unique int child: @container ref);
+
+has_location(unique int locatable: @locatable ref, int location: @location ref);
+
+#keyset[parent, idx]
+comment_groups(unique int id: @comment_group, int parent: @file ref, int idx: int ref);
+
+comments(unique int id: @comment, int kind: int ref, int parent: @comment_group ref, int idx: int ref, string text: string ref);
+
+doc_comments(unique int node: @documentable ref, int comment: @comment_group ref);
+
+#keyset[parent, idx]
+exprs(unique int id: @expr, int kind: int ref, int parent: @exprparent ref, int idx: int ref);
+
+literals(unique int expr: @expr ref, string value: string ref, string raw: string ref);
+
+constvalues(unique int expr: @expr ref, string value: string ref, string exact: string ref);
+
+fields(unique int id: @field, int parent: @fieldparent ref, int idx: int ref);
+
+typeparamdecls(unique int id: @typeparamdecl, int parent: @typeparamdeclparent ref, int idx: int ref);
+
+#keyset[parent, idx]
+stmts(unique int id: @stmt, int kind: int ref, int parent: @stmtparent ref, int idx: int ref);
+
+#keyset[parent, idx]
+decls(unique int id: @decl, int kind: int ref, int parent: @declparent ref, int idx: int ref);
+
+#keyset[parent, idx]
+specs(unique int id: @spec, int kind: int ref, int parent: @gendecl ref, int idx: int ref);
+
+scopes(unique int id: @scope, int kind: int ref);
+
+scopenesting(unique int inner: @scope ref, int outer: @scope ref);
+
+scopenodes(unique int node: @scopenode ref, int scope: @localscope ref);
+
+objects(unique int id: @object, int kind: int ref, string name: string ref);
+
+objectscopes(unique int object: @object ref, int scope: @scope ref);
+
+objecttypes(unique int object: @object ref, int tp: @type ref);
+
+methodreceivers(unique int method: @object ref, int receiver: @object ref);
+
+fieldstructs(unique int field: @object ref, int struct: @structtype ref);
+
+methodhosts(int method: @object ref, int host: @namedtype ref);
+
+defs(int ident: @ident ref, int object: @object ref);
+
+uses(int ident: @ident ref, int object: @object ref);
+
+types(unique int id: @type, int kind: int ref);
+
+type_of(unique int expr: @expr ref, int tp: @type ref);
+
+typename(unique int tp: @type ref, string name: string ref);
+
+key_type(unique int map: @maptype ref, int tp: @type ref);
+
+element_type(unique int container: @containertype ref, int tp: @type ref);
+
+base_type(unique int ptr: @pointertype ref, int tp: @type ref);
+
+underlying_type(unique int named: @namedtype ref, int tp: @type ref);
+
+#keyset[parent, index]
+component_types(int parent: @compositetype ref, int index: int ref, string name: string ref, int tp: @type ref);
+
+array_length(unique int tp: @arraytype ref, string len: string ref);
+
+type_objects(unique int tp: @type ref, int object: @object ref);
+
+packages(unique int id: @package, string name: string ref, string path: string ref, int scope: @packagescope ref);
+
+#keyset[parent, idx]
+modexprs(unique int id: @modexpr, int kind: int ref, int parent: @modexprparent ref, int idx: int ref);
+
+#keyset[parent, idx]
+modtokens(string token: string ref, int parent: @modexpr ref, int idx: int ref);
+
+#keyset[package, idx]
+errors(unique int id: @error, int kind: int ref, string msg: string ref, string rawpos: string ref,
+       string file: string ref, int line: int ref, int col: int ref, int package: @package ref, int idx: int ref);
+
+has_ellipsis(int id: @callorconversionexpr ref);
+
+variadic(int id: @signaturetype ref);
+
+#keyset[parent, idx]
+typeparam(unique int tp: @typeparamtype ref, string name: string ref, int bound: @compositetype ref,
+          int parent: @typeparamparentobject ref, int idx: int ref);
+
+@container = @file | @folder;
+
+@locatable = @xmllocatable | @node | @localscope;
+
+@node = @documentable | @exprparent | @modexprparent | @fieldparent | @stmtparent | @declparent | @typeparamdeclparent
+      | @scopenode | @comment_group | @comment;
+
+@documentable = @file | @field | @typeparamdecl | @spec | @gendecl | @funcdecl | @modexpr;
+
+@exprparent = @funcdef | @file | @expr | @field | @stmt | @decl | @typeparamdecl | @spec;
+
+@modexprparent = @file | @modexpr;
+
+@fieldparent = @decl | @structtypeexpr | @functypeexpr | @interfacetypeexpr;
+
+@stmtparent = @funcdef | @stmt | @decl;
+
+@declparent = @file | @declstmt;
+
+@typeparamdeclparent = @funcdecl | @typespec;
+
+@funcdef = @funclit | @funcdecl;
+
+@scopenode = @file | @functypeexpr | @blockstmt | @ifstmt | @caseclause | @switchstmt | @commclause | @loopstmt;
+
+@location = @location_default;
+
+@sourceline = @locatable;
+
+case @comment.kind of
+  0 = @slashslashcomment
+| 1 = @slashstarcomment;
+
+case @expr.kind of
+  0 = @badexpr
+| 1 = @ident
+| 2 = @ellipsis
+| 3 = @intlit
+| 4 = @floatlit
+| 5 = @imaglit
+| 6 = @charlit
+| 7 = @stringlit
+| 8 = @funclit
+| 9 = @compositelit
+| 10 = @parenexpr
+| 11 = @selectorexpr
+| 12 = @indexexpr
+| 13 = @genericfunctioninstantiationexpr
+| 14 = @generictypeinstantiationexpr
+| 15 = @sliceexpr
+| 16 = @typeassertexpr
+| 17 = @callorconversionexpr
+| 18 = @starexpr
+| 19 = @keyvalueexpr
+| 20 = @arraytypeexpr
+| 21 = @structtypeexpr
+| 22 = @functypeexpr
+| 23 = @interfacetypeexpr
+| 24 = @maptypeexpr
+| 25 = @typesetliteralexpr
+| 26 = @plusexpr
+| 27 = @minusexpr
+| 28 = @notexpr
+| 29 = @complementexpr
+| 30 = @derefexpr
+| 31 = @addressexpr
+| 32 = @arrowexpr
+| 33 = @lorexpr
+| 34 = @landexpr
+| 35 = @eqlexpr
+| 36 = @neqexpr
+| 37 = @lssexpr
+| 38 = @leqexpr
+| 39 = @gtrexpr
+| 40 = @geqexpr
+| 41 = @addexpr
+| 42 = @subexpr
+| 43 = @orexpr
+| 44 = @xorexpr
+| 45 = @mulexpr
+| 46 = @quoexpr
+| 47 = @remexpr
+| 48 = @shlexpr
+| 49 = @shrexpr
+| 50 = @andexpr
+| 51 = @andnotexpr
+| 52 = @sendchantypeexpr
+| 53 = @recvchantypeexpr
+| 54 = @sendrcvchantypeexpr;
+
+@basiclit = @intlit | @floatlit | @imaglit | @charlit | @stringlit;
+
+@operatorexpr = @logicalexpr | @arithmeticexpr | @bitwiseexpr | @unaryexpr | @binaryexpr;
+
+@logicalexpr = @logicalunaryexpr | @logicalbinaryexpr;
+
+@arithmeticexpr = @arithmeticunaryexpr | @arithmeticbinaryexpr;
+
+@bitwiseexpr = @bitwiseunaryexpr | @bitwisebinaryexpr;
+
+@unaryexpr = @logicalunaryexpr | @bitwiseunaryexpr | @arithmeticunaryexpr | @derefexpr | @addressexpr | @arrowexpr;
+
+@logicalunaryexpr = @notexpr;
+
+@bitwiseunaryexpr = @complementexpr;
+
+@arithmeticunaryexpr = @plusexpr | @minusexpr;
+
+@binaryexpr = @logicalbinaryexpr | @bitwisebinaryexpr | @arithmeticbinaryexpr | @comparison;
+
+@logicalbinaryexpr = @lorexpr | @landexpr;
+
+@bitwisebinaryexpr = @shiftexpr | @orexpr | @xorexpr | @andexpr | @andnotexpr;
+
+@arithmeticbinaryexpr = @addexpr | @subexpr | @mulexpr | @quoexpr | @remexpr;
+
+@shiftexpr = @shlexpr | @shrexpr;
+
+@comparison = @equalitytest | @relationalcomparison;
+
+@equalitytest = @eqlexpr | @neqexpr;
+
+@relationalcomparison = @lssexpr | @leqexpr | @gtrexpr | @geqexpr;
+
+@chantypeexpr = @sendchantypeexpr | @recvchantypeexpr | @sendrcvchantypeexpr;
+
+case @stmt.kind of
+  0 = @badstmt
+| 1 = @declstmt
+| 2 = @emptystmt
+| 3 = @labeledstmt
+| 4 = @exprstmt
+| 5 = @sendstmt
+| 6 = @incstmt
+| 7 = @decstmt
+| 8 = @gostmt
+| 9 = @deferstmt
+| 10 = @returnstmt
+| 11 = @breakstmt
+| 12 = @continuestmt
+| 13 = @gotostmt
+| 14 = @fallthroughstmt
+| 15 = @blockstmt
+| 16 = @ifstmt
+| 17 = @caseclause
+| 18 = @exprswitchstmt
+| 19 = @typeswitchstmt
+| 20 = @commclause
+| 21 = @selectstmt
+| 22 = @forstmt
+| 23 = @rangestmt
+| 24 = @assignstmt
+| 25 = @definestmt
+| 26 = @addassignstmt
+| 27 = @subassignstmt
+| 28 = @mulassignstmt
+| 29 = @quoassignstmt
+| 30 = @remassignstmt
+| 31 = @andassignstmt
+| 32 = @orassignstmt
+| 33 = @xorassignstmt
+| 34 = @shlassignstmt
+| 35 = @shrassignstmt
+| 36 = @andnotassignstmt;
+
+@incdecstmt = @incstmt | @decstmt;
+
+@assignment = @simpleassignstmt | @compoundassignstmt;
+
+@simpleassignstmt = @assignstmt | @definestmt;
+
+@compoundassignstmt = @addassignstmt | @subassignstmt | @mulassignstmt | @quoassignstmt | @remassignstmt
+                    | @andassignstmt | @orassignstmt | @xorassignstmt | @shlassignstmt | @shrassignstmt | @andnotassignstmt;
+
+@branchstmt = @breakstmt | @continuestmt | @gotostmt | @fallthroughstmt;
+
+@switchstmt = @exprswitchstmt | @typeswitchstmt;
+
+@loopstmt = @forstmt | @rangestmt;
+
+case @decl.kind of
+  0 = @baddecl
+| 1 = @importdecl
+| 2 = @constdecl
+| 3 = @typedecl
+| 4 = @vardecl
+| 5 = @funcdecl;
+
+@gendecl = @importdecl | @constdecl | @typedecl | @vardecl;
+
+case @spec.kind of
+  0 = @importspec
+| 1 = @valuespec
+| 2 = @typedefspec
+| 3 = @aliasspec;
+
+@typespec = @typedefspec | @aliasspec;
+
+case @object.kind of
+  0 = @pkgobject
+| 1 = @decltypeobject
+| 2 = @builtintypeobject
+| 3 = @declconstobject
+| 4 = @builtinconstobject
+| 5 = @declvarobject
+| 6 = @declfunctionobject
+| 7 = @builtinfunctionobject
+| 8 = @labelobject;
+
+@typeparamparentobject = @decltypeobject | @declfunctionobject;
+
+@declobject = @decltypeobject | @declconstobject | @declvarobject | @declfunctionobject;
+
+@builtinobject = @builtintypeobject | @builtinconstobject | @builtinfunctionobject;
+
+@typeobject = @decltypeobject | @builtintypeobject;
+
+@valueobject = @constobject | @varobject | @functionobject;
+
+@constobject = @declconstobject | @builtinconstobject;
+
+@varobject = @declvarobject;
+
+@functionobject = @declfunctionobject | @builtinfunctionobject;
+
+case @scope.kind of
+  0 = @universescope
+| 1 = @packagescope
+| 2 = @localscope;
+
+case @type.kind of
+  0 = @invalidtype
+| 1 = @boolexprtype
+| 2 = @inttype
+| 3 = @int8type
+| 4 = @int16type
+| 5 = @int32type
+| 6 = @int64type
+| 7 = @uinttype
+| 8 = @uint8type
+| 9 = @uint16type
+| 10 = @uint32type
+| 11 = @uint64type
+| 12 = @uintptrtype
+| 13 = @float32type
+| 14 = @float64type
+| 15 = @complex64type
+| 16 = @complex128type
+| 17 = @stringexprtype
+| 18 = @unsafepointertype
+| 19 = @boolliteraltype
+| 20 = @intliteraltype
+| 21 = @runeliteraltype
+| 22 = @floatliteraltype
+| 23 = @complexliteraltype
+| 24 = @stringliteraltype
+| 25 = @nilliteraltype
+| 26 = @typeparamtype
+| 27 = @arraytype
+| 28 = @slicetype
+| 29 = @structtype
+| 30 = @pointertype
+| 31 = @interfacetype
+| 32 = @tupletype
+| 33 = @signaturetype
+| 34 = @maptype
+| 35 = @sendchantype
+| 36 = @recvchantype
+| 37 = @sendrcvchantype
+| 38 = @namedtype
+| 39 = @typesetliteraltype;
+
+@basictype = @booltype | @numerictype | @stringtype | @literaltype | @invalidtype | @unsafepointertype;
+
+@booltype = @boolexprtype | @boolliteraltype;
+
+@numerictype = @integertype | @floattype | @complextype;
+
+@integertype = @signedintegertype | @unsignedintegertype;
+
+@signedintegertype = @inttype | @int8type | @int16type | @int32type | @int64type | @intliteraltype | @runeliteraltype;
+
+@unsignedintegertype = @uinttype | @uint8type | @uint16type | @uint32type | @uint64type | @uintptrtype;
+
+@floattype = @float32type | @float64type | @floatliteraltype;
+
+@complextype = @complex64type | @complex128type | @complexliteraltype;
+
+@stringtype = @stringexprtype | @stringliteraltype;
+
+@literaltype = @boolliteraltype | @intliteraltype | @runeliteraltype | @floatliteraltype | @complexliteraltype
+             | @stringliteraltype | @nilliteraltype;
+
+@compositetype = @typeparamtype | @containertype | @structtype | @pointertype | @interfacetype | @tupletype
+               | @signaturetype | @namedtype | @typesetliteraltype;
+
+@containertype = @arraytype | @slicetype | @maptype | @chantype;
+
+@chantype = @sendchantype | @recvchantype | @sendrcvchantype;
+
+case @modexpr.kind of
+  0 = @modcommentblock
+| 1 = @modline
+| 2 = @modlineblock
+| 3 = @modlparen
+| 4 = @modrparen;
+
+case @error.kind of
+  0 = @unknownerror
+| 1 = @listerror
+| 2 = @parseerror
+| 3 = @typeerror;
+

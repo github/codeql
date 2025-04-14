@@ -1,3 +1,2 @@
-| Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;local;df-generated |
-| Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;local;df-generated |
-| Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;local;df-generated |
+unexpectedModel
+expectedModel

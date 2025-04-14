@@ -39,3 +39,4 @@
 | variables.cpp:51:9:51:12 | town | file://:0:0:0:0 | char * | Field |  |  |
 | variables.cpp:52:16:52:22 | country | file://:0:0:0:0 | char * | MemberVariable, StaticStorageDurationVariable |  | static |
 | variables.cpp:56:14:56:29 | externInFunction | file://:0:0:0:0 | int | GlobalLikeVariable, GlobalVariable, StaticStorageDurationVariable |  |  |
+| variables.cpp:60:10:60:17 | __func__ | file://:0:0:0:0 | const char[9] | GlobalLikeVariable, StaticInitializedStaticLocalVariable |  | static |

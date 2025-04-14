@@ -1,3 +1,120 @@
+## 1.4.6
+
+### Minor Analysis Improvements
+
+- The `py/special-method-wrong-signature` has been modernized and rewritten to no longer rely on outdated APIs. Moreover, the query no longer flags cases where a default value is never used, as these alerts were rarely useful.
+
+### Bug Fixes
+
+- The `py/unused-global-variable` now no longer flags variables that are only used in forward references (e.g. the `Foo` in `def bar(x: "Foo"): ...`).
+
+## 1.4.5
+
+No user-facing changes.
+
+## 1.4.4
+
+No user-facing changes.
+
+## 1.4.3
+
+No user-facing changes.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* The Server Side Template Injection query (`py/template-injection`), originally contributed to the experimental query pack by @porcupineyhairs, has been promoted to the main query suite. This query finds instances of templates for a template engine such as Jinja being constructed with user input.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+No user-facing changes.
+
+## 1.3.2
+
+### Minor Analysis Improvements
+
+* Improved modelling for the `pycurl` framework.
+
+## 1.3.1
+
+No user-facing changes.
+
+## 1.3.0
+
+### New Queries
+
+* The experimental `py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.
+
+## 1.2.2
+
+### Minor Analysis Improvements
+
+* The `py/clear-text-logging-sensitive-data` and `py/clear-text-storage-sensitive-data` queries have been updated to exclude the `certificate` classification of sensitive sources, which often do not contain sensitive data.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### New Queries
+
+* The `py/cookie-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack. This query finds instances of cookies being set without the `Secure`, `HttpOnly`, or `SameSite` attributes set to secure values.
+
+## 1.1.0
+
+### New Queries
+
+* The `py/cookie-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack. This query finds instances of cookies being constructed from user input. 
+
+### Minor Analysis Improvements
+
+* Added models of `streamlit` PyPI package.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Adding Python support for Hardcoded Credentials as Models as Data
+* Additional sanitizers have been added to the `py/full-ssrf` and `py/partial-ssrf` queries for methods that verify a string contains only a certain set of characters, such as `.isalnum()` as well as regular expression tests.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* Added models for `opml` library.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Added models of `gradio` PyPI package.
+
 ## 0.9.16
 
 ### New Queries

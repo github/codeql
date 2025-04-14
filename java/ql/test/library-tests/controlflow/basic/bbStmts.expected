@@ -1,7 +1,7 @@
 | Test.java:3:14:3:17 | { ... } | 0 | Test.java:3:14:3:17 | { ... } |
 | Test.java:3:14:3:17 | { ... } | 1 | Test.java:3:14:3:17 | super(...) |
-| Test.java:3:14:3:17 | { ... } | 2 | Test.java:3:14:3:17 | Test |
-| Test.java:4:14:4:17 | test | 0 | Test.java:4:14:4:17 | test |
+| Test.java:3:14:3:17 | { ... } | 2 | Test.java:3:14:3:17 | Exit |
+| Test.java:4:14:4:17 | Exit | 0 | Test.java:4:14:4:17 | Exit |
 | Test.java:4:21:76:2 | { ... } | 0 | Test.java:4:21:76:2 | { ... } |
 | Test.java:4:21:76:2 | { ... } | 1 | Test.java:5:3:5:12 | var ...; |
 | Test.java:4:21:76:2 | { ... } | 2 | Test.java:5:11:5:11 | 0 |

@@ -66,6 +66,9 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       e1 = e2.(InterpolatedStringExpr).getAChild() and
       scope = e2
       or
+      e1 = e2.(InterpolatedStringInsertExpr).getInsert() and
+      scope = e2
+      or
       e2 =
         any(OperatorCall oc |
           oc.getTarget().(ConversionOperator).fromLibrary() and
@@ -119,28 +122,25 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo,
-        any(DataFlowSummarizedCallable sc))
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
       or
       // Taint collection by adding a tainted element
-      exists(DataFlow::ElementContent c |
+      exists(DataFlow::ContentSet c | c.isElement() |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo,
-          any(DataFlowSummarizedCallable sc))
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo, _)
       )
       or
-      exists(DataFlow::Content c |
+      exists(DataFlow::ContentSet c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo,
-          any(DataFlowSummarizedCallable sc))
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo, _)
       |
         // Taint members
-        c = any(TaintedMember m).(FieldOrProperty).getContent()
+        c = any(TaintedMember m).(FieldOrProperty).getContentSet()
         or
         // Read from a tainted collection
-        c = TElementContent()
+        c.isElement()
       )
     )
   }
@@ -155,12 +155,12 @@ private module Cached {
       localTaintStepCommon(nodeFrom, nodeTo)
       or
       // Taint members
-      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
+      readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContentSet(), nodeTo)
       or
       // Although flow through collections is modeled precisely using stores/reads, we still
       // allow flow out of a _tainted_ collection. This is needed in order to support taint-
       // tracking configurations where the source is a collection
-      readStep(nodeFrom, TElementContent(), nodeTo)
+      readStep(nodeFrom, any(DataFlow::ContentSet c | c.isElement()), nodeTo)
       or
       nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
     ) and
@@ -172,3 +172,43 @@ private module Cached {
 }
 
 import Cached
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
+  private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as Impl
+
+  private predicate hasTarget(Call call) {
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = call)
+    or
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = call)
+    or
+    call.getTarget().getUnboundDeclaration() instanceof ExternalFlow::SinkCallable
+    or
+    exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, Call srcCall, ArgumentPosition argpos |
+      not exists(viableCallable(call)) and
+      not hasTarget(srcCall) and
+      call.(NonDelegateDataFlowCall).getDispatchCall().getCall() = srcCall and
+      (srcCall instanceof ConstructorInitializer or srcCall instanceof MethodCall) and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      not src instanceof PostUpdateNodes::ObjectInitializerNode and
+      not src instanceof MallocNode
+    |
+      not argpos.isQualifier() and
+      sink.(PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(call, any(ArgumentPosition qualpos | qualpos.isQualifier()))
+      or
+      sink.(OutNode).getCall(_) = call
+    )
+  }
+}

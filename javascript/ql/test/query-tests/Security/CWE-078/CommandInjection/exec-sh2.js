@@ -7,10 +7,10 @@ function getShell() {
 }
 
 function execSh(command, options) {
-    return cp.spawn(getShell(), ["-c", command], options) // BAD
+    return cp.spawn(getShell(), ["-c", command], options) // $ Alert Sink
 };
 
 http.createServer(function (req, res) {
-    let cmd = url.parse(req.url, true).query.path;
+    let cmd = url.parse(req.url, true).query.path; // $ Source
     execSh(cmd);
 });

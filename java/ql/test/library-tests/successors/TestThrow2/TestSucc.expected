@@ -1,15 +1,15 @@
 | TestThrow2.java:3:7:3:16 | <Expr>; | TestThrow2.java:3:7:3:16 | <obinit>(...) |
-| TestThrow2.java:3:7:3:16 | <obinit>(...) | TestThrow2.java:3:7:3:16 | TestThrow2 |
+| TestThrow2.java:3:7:3:16 | <obinit>(...) | TestThrow2.java:3:7:3:16 | Exit |
 | TestThrow2.java:3:7:3:16 | super(...) | TestThrow2.java:3:7:3:16 | <Expr>; |
 | TestThrow2.java:3:7:3:16 | { ... } | TestThrow2.java:3:7:3:16 | super(...) |
 | TestThrow2.java:3:7:3:16 | { ... } | TestThrow2.java:5:2:11:2 | { ... } |
 | TestThrow2.java:5:2:11:2 | { ... } | TestThrow2.java:6:3:10:3 | try ... |
 | TestThrow2.java:6:3:10:3 | try ... | TestThrow2.java:6:7:8:3 | { ... } |
 | TestThrow2.java:6:7:8:3 | { ... } | TestThrow2.java:7:4:7:13 | <Expr>; |
-| TestThrow2.java:7:4:7:12 | thrower(...) | TestThrow2.java:3:7:3:16 | <obinit> |
+| TestThrow2.java:7:4:7:12 | thrower(...) | TestThrow2.java:3:7:3:16 | Exit |
 | TestThrow2.java:7:4:7:12 | thrower(...) | TestThrow2.java:8:5:8:23 | catch (...) |
 | TestThrow2.java:7:4:7:13 | <Expr>; | TestThrow2.java:7:4:7:12 | thrower(...) |
 | TestThrow2.java:8:5:8:23 | catch (...) | TestThrow2.java:8:22:8:22 | e |
 | TestThrow2.java:8:22:8:22 | e | TestThrow2.java:8:25:10:3 | { ... } |
 | TestThrow2.java:8:25:10:3 | { ... } | TestThrow2.java:9:4:9:4 | ; |
-| TestThrow2.java:9:4:9:4 | ; | TestThrow2.java:3:7:3:16 | <obinit> |
+| TestThrow2.java:9:4:9:4 | ; | TestThrow2.java:3:7:3:16 | Exit |

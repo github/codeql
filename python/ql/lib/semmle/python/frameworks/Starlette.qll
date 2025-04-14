@@ -26,6 +26,74 @@ private import semmle.python.frameworks.data.ModelsAsData
  */
 module Starlette {
   /**
+   * Provides models for the `starlette.app` class
+   */
+  module App {
+    /** Gets import of `starlette.app`. */
+    API::Node cls() { result = API::moduleImport("starlette").getMember("app") }
+
+    /** Gets a reference to a Starlette application (an instance of `starlette.app`). */
+    API::Node instance() { result = cls().getAnInstance() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware`.
+   */
+  class AddMiddlewareCall extends DataFlow::CallCfgNode {
+    AddMiddlewareCall() {
+      this = [App::instance().getMember("add_middleware").getACall(), Middleware::instance()]
+    }
+
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+  }
+
+  /**
+   * A call to any of the execute methods on a `app.add_middleware` with CORSMiddleware.
+   */
+  class AddCorsMiddlewareCall extends AddMiddlewareCall, Http::Server::CorsMiddleware::Range {
+    /**
+     * Gets the string corresponding to the middleware
+     */
+    override string getMiddlewareName() { result = this.getArg(0).asExpr().(Name).getId() }
+
+    override DataFlow::Node getOrigins() { result = this.getArgByName("allow_origins") }
+
+    override DataFlow::Node getCredentialsAllowed() {
+      result = this.getArgByName("allow_credentials")
+    }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS methods
+     */
+    DataFlow::Node getMethods() { result = this.getArgByName("allow_methods") }
+
+    /**
+     * Gets the dataflow node corresponding to the allowed CORS headers
+     */
+    DataFlow::Node getHeaders() { result = this.getArgByName("allow_headers") }
+  }
+
+  /**
+   * Provides models for the `starlette.middleware.Middleware` class
+   *
+   * See https://www.starlette.io/.
+   */
+  module Middleware {
+    /** Gets a reference to the `starlette.middleware.Middleware` class. */
+    API::Node classRef() {
+      result = API::moduleImport("starlette").getMember("middleware").getMember("Middleware")
+      or
+      result = ModelOutput::getATypeNode("starlette.middleware.Middleware~Subclass").getASubclass*()
+    }
+
+    /** Gets a reference to an instance of `starlette.middleware.Middleware`. */
+    DataFlow::Node instance() { result = classRef().getACall() }
+  }
+
+  /**
    * Provides models for the `starlette.websockets.WebSocket` class
    *
    * See https://www.starlette.io/websockets/.
@@ -176,5 +244,61 @@ module Starlette {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
+
+  /**
+   * Provides models for the `starlette.requests.Request` class
+   *
+   * See https://www.starlette.io/requests/.
+   */
+  module Request {
+    /** Gets a reference to the `starlette.requests.Request` class. */
+    API::Node classRef() {
+      result = API::moduleImport("starlette").getMember("requests").getMember("Request")
+      or
+      result = API::moduleImport("fastapi").getMember("Request")
+    }
+
+    /**
+     * A source of instances of `starlette.requests.Request`, extend this class to model new instances.
+     *
+     * This can include instantiations of the class, return values from function
+     * calls, or a special parameter that will be set when functions are called by an external
+     * library.
+     *
+     * Use the predicate `Request::instance()` to get references to instances of `starlette.requests.Request`.
+     */
+    abstract class InstanceSource extends DataFlow::LocalSourceNode { }
+
+    /** A direct instantiation of `starlette.requests.Request`. */
+    private class ClassInstantiation extends InstanceSource {
+      ClassInstantiation() { this = classRef().getAnInstance().asSource() }
+    }
+
+    /** Gets a reference to an instance of `starlette.requests.Request`. */
+    private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
+      t.start() and
+      result instanceof InstanceSource
+      or
+      exists(DataFlow::TypeTracker t2 | result = instance(t2).track(t2, t))
+    }
+
+    /** Gets a reference to an instance of `starlette.requests.Request`. */
+    DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
+
+    /**
+     * Taint propagation for `starlette.requests.Request`.
+     */
+    private class InstanceTaintSteps extends InstanceTaintStepsHelper {
+      InstanceTaintSteps() { this = "starlette.requests.Request" }
+
+      override DataFlow::Node getInstance() { result = instance() }
+
+      override string getAttributeName() { result in ["cookies"] }
+
+      override string getMethodName() { none() }
+
+      override string getAsyncMethodName() { result in ["body", "json", "form", "stream"] }
+    }
   }
 }

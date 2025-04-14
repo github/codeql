@@ -31,21 +31,6 @@ abstract class Sink extends ApiSinkExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ConditionalBypass` instead.
- *
- * A taint-tracking configuration for user-controlled bypass of sensitive method.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UserControlledBypassOfSensitiveMethodConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for user-controlled bypass of sensitive method.
  */
 private module ConditionalBypassConfig implements DataFlow::ConfigSig {
@@ -69,7 +54,7 @@ module ConditionalBypass = TaintTracking::Global<ConditionalBypassConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The result of a reverse dns may be user-controlled. */
 class ReverseDnsSource extends Source {

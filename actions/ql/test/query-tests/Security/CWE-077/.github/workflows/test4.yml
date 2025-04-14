@@ -1,0 +1,71 @@
+name: Test
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE=$TITLE" >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE=${TITLE}" >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo PR_TITLE=$(echo $TITLE) >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PR_TITLE<<EOF" >> $GITHUB_ENV
+          echo "$TITLE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "PACKAGES_FILE_LIST<<EOF" >> "${GITHUB_ENV}"
+          echo "$TITLE" >> "${GITHUB_ENV}"
+          echo "EOF" >> "${GITHUB_ENV}"
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          {
+            echo 'JSON_RESPONSE<<EOF'
+            echo "$TITLE"
+            echo EOF
+          } >> "$GITHUB_ENV"
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          cat <<-EOF >> "$GITHUB_ENV"
+          FOO=$TITLE
+          EOF
+      - env:
+          TITLE: ${{ github.event.pull_request.head.ref }}
+        run: |
+          echo "PR_TITLE=$TITLE" >> $GITHUB_ENV
+      - run: echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+      - run: echo "BRANCH=$(echo ${TARGET_BRANCH##*/})" >> $GITHUB_ENV
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.title }}
+      - run: echo ISSUE_KEY=$(echo "${TITLE}" | grep -oP 'ISPN-(?P<id>[0-9]+)') >> $GITHUB_ENV
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+      - env:
+          TITLE: |-
+            ${{ github.event.pull_request.title }}
+        run: |
+          cat > issue.txt << EOL
+          ${TITLE}
+          EOL
+          echo REPO_NAME=$(cat issue.txt | sed 's/\r/\n/g' | grep -ioE '\s*[a-z0-9_-]+/[a-z0-9_-]+\s*$' | tr -d ' ') >> $GITHUB_ENV
+
+
+

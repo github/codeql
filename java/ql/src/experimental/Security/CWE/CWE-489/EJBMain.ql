@@ -12,10 +12,10 @@
 
 import java
 import semmle.code.java.J2EE
-import TestLib
+deprecated import TestLib
 
 /** The `main` method in an Enterprise Java Bean. */
-class EnterpriseBeanMainMethod extends Method {
+deprecated class EnterpriseBeanMainMethod extends Method {
   EnterpriseBeanMainMethod() {
     this.getDeclaringType() instanceof EnterpriseBean and
     this instanceof MainMethod and
@@ -23,5 +23,6 @@ class EnterpriseBeanMainMethod extends Method {
   }
 }
 
-from EnterpriseBeanMainMethod sm
-select sm, "Java EE application has a main method."
+deprecated query predicate problems(EnterpriseBeanMainMethod sm, string message) {
+  exists(sm) and message = "Java EE application has a main method."
+}

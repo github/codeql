@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["golang.org/x/net/websocket", "Codec", True, "Receive", "", "", "Argument[1]", "remote", "manual"]
+      - ["golang.org/x/net/websocket", "Conn", True, "Read", "", "", "Argument[0]", "remote", "manual"]

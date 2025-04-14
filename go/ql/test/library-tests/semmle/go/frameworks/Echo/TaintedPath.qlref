@@ -1,1 +1,2 @@
-Security/CWE-022/TaintedPath.ql
+query: Security/CWE-022/TaintedPath.ql
+postprocess: utils/test/PrettyPrintModels.ql

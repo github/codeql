@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.stage", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.targets_optional", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.targets", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/macos.yml", "*", "input.targets_pre", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker_hub.yml", "*", "input.dockerhub_repository", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker.yml", "*", "input.timeout", "code-injection", "generated"]
+     - ["sagemath/sage/.github/workflows/docker.yml", "*", "input.docker_push_repository", "code-injection", "generated"]

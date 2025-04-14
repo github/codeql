@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["anchore/scan-action", "*", "input.grype-version", "command-injection", "manual"]

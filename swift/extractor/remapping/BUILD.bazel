@@ -8,7 +8,7 @@ swift_cc_library(
     deps = [
         "//swift/extractor/config",
         "//swift/extractor/infra/file",
-        "//swift/third_party/swift-llvm-support",
+        "//swift/third_party/resources:prebuilt",
         "@picosha2",
     ],
 )

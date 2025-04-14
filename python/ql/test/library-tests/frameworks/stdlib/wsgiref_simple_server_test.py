@@ -18,7 +18,7 @@ def func(environ, start_response): # $ requestHandler
         environ, # $ tainted
         environ["PATH_INFO"], # $ tainted
     )
-    write = start_response("200 OK", [("Content-Type", "text/plain")]) # $ headerWriteBulk=List headerWriteNameUnsanitized headerWriteValueUnsanitized
+    write = start_response("200 OK", [("Content-Type", "text/plain")]) # $ headerWriteBulk=List headerWriteBulkUnsanitized=name,value headerWriteNameUnsanitized="Content-Type" headerWriteValueUnsanitized="text/plain"
     write(b"hello") # $ HttpResponse responseBody=b"hello"
     write(data=b" ") # $ HttpResponse responseBody=b" "
 
@@ -33,19 +33,19 @@ class MyServer(wsgiref.simple_server.WSGIServer):
         self.set_app(self.my_method)
 
     def my_method(self, _env, start_response): # $ requestHandler
-        start_response("200 OK", []) # $ headerWriteBulk=List headerWriteNameUnsanitized headerWriteValueUnsanitized
+        start_response("200 OK", []) # $ headerWriteBulk=List headerWriteBulkUnsanitized=name,value
         return [b"my_method"] # $ HttpResponse responseBody=List
 
 def func2(environ, start_response): # $ requestHandler
-    headers = wsgiref.headers.Headers([("Content-Type", "text/plain")]) # $ headerWriteBulk=List headerWriteNameUnsanitized headerWriteValueUnsanitized
+    headers = wsgiref.headers.Headers([("Content-Type", "text/plain")]) # $ headerWriteBulk=List headerWriteBulkUnsanitized=name,value headerWriteNameUnsanitized="Content-Type" headerWriteValueUnsanitized="text/plain"
     headers.add_header("X-MyHeader", "a") # $ headerWriteNameUnsanitized="X-MyHeader" headerWriteValueUnsanitized="a"
     headers.setdefault("X-MyHeader2", "b") # $ headerWriteNameUnsanitized="X-MyHeader2" headerWriteValueUnsanitized="b"
     headers.__setitem__("X-MyHeader3", "c") # $ headerWriteNameUnsanitized="X-MyHeader3" headerWriteValueUnsanitized="c"
     headers["X-MyHeader4"] = "d" # $ headerWriteNameUnsanitized="X-MyHeader4" headerWriteValueUnsanitized="d"
-    start_response(status, headers) # $ headerWriteBulk=headers headerWriteNameUnsanitized headerWriteValueUnsanitized
+    start_response(status, headers) # $ headerWriteBulk=headers headerWriteBulkUnsanitized=name,value
     return [b"Hello"] # $ HttpResponse responseBody=List
 
-case = sys.argv[1]
+case = sys.argv[1] # $ threatModelSource[commandargs]=sys.argv
 if case == "1":
     server = wsgiref.simple_server.WSGIServer(ADDRESS, wsgiref.simple_server.WSGIRequestHandler)
     server.set_app(func)
@@ -54,7 +54,7 @@ elif case == "2":
 elif case == "3":
     server = MyServer()
     def func3(_env, start_response): # $ requestHandler
-        start_response("200 OK", []) # $ headerWriteBulk=List headerWriteNameUnsanitized headerWriteValueUnsanitized
+        start_response("200 OK", []) # $ headerWriteBulk=List headerWriteBulkUnsanitized=name,value
         return [b"foo"] # $ HttpResponse responseBody=List
     server.set_app(func3)
 elif case == "4":

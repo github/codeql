@@ -18,7 +18,7 @@ predicate hasName(Element e, string name) {
   or
   methods(e, name, _, _, _, _)
   or
-  fields(e, name, _, _, _)
+  fields(e, name, _, _)
   or
   packages(e, name)
   or
@@ -34,7 +34,7 @@ predicate hasName(Element e, string name) {
   or
   localvars(e, name, _, _)
   or
-  typeVars(e, name, _, _, _)
+  typeVars(e, name, _, _)
   or
   wildcards(e, name, _)
   or

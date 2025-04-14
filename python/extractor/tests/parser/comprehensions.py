@@ -55,3 +55,20 @@
 t = tuple(x for y in z)
 
 [(  t,  ) for v in w]
+
+[# comment
+    a for b in c # comment
+    # comment
+] # comment
+
+[# comment
+    d for e in f if g # comment
+    # comment
+] # comment
+
+# Generator expression with comments
+(# comment
+    alpha # comment
+    for beta in gamma # comment
+    # comment
+)

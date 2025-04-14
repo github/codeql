@@ -103,24 +103,24 @@ classes.kt:
 #   25|       3: [TypeAccess] Unit
 #   25|       5: [BlockStmt] { ... }
 #   28|   9: [Class] ClassSix
-#   28|     1: [Constructor] ClassSix
-#   28|       5: [BlockStmt] { ... }
-#   28|         0: [SuperConstructorInvocationStmt] super(...)
-#   28|         1: [BlockStmt] { ... }
-#   28|     2: [Method] funIF1
+#   28|     1: [Method] funIF1
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
 #   28|           0: [MethodCall] funIF1(...)
 #   28|             -1: [SuperAccess] IF1.super
 #   28|               0: [TypeAccess] IF1
-#   28|     3: [Method] funIF2
+#   28|     2: [Method] funIF2
 #   28|       3: [TypeAccess] Unit
 #   28|       5: [BlockStmt] { ... }
 #   28|         0: [ReturnStmt] return ...
 #   28|           0: [MethodCall] funIF2(...)
 #   28|             -1: [SuperAccess] IF2.super
 #   28|               0: [TypeAccess] IF2
+#   28|     3: [Constructor] ClassSix
+#   28|       5: [BlockStmt] { ... }
+#   28|         0: [SuperConstructorInvocationStmt] super(...)
+#   28|         1: [BlockStmt] { ... }
 #   29|     4: [Constructor] ClassSix
 #-----|       4: (Parameters)
 #   29|         0: [Parameter] i

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-python.yml", "*", "input.marks", "code-injection", "generated"]
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-python.yml", "*", "input.python-version", "code-injection", "generated"]
+     - ["sqlfluff/sqlfluff/.github/workflows/ci-test-dbt.yml", "*", "input.dbt-version", "code-injection", "generated"]

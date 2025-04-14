@@ -1,4 +1,4 @@
-testFailures
+models
 edges
 | params_flow.rb:9:16:9:17 | p1 | params_flow.rb:10:10:10:11 | p1 | provenance |  |
 | params_flow.rb:9:20:9:21 | p2 | params_flow.rb:11:10:11:11 | p2 | provenance |  |
@@ -13,180 +13,195 @@ edges
 | params_flow.rb:23:16:23:23 | call to taint | params_flow.rb:16:18:16:19 | p2 | provenance |  |
 | params_flow.rb:23:33:23:40 | call to taint | params_flow.rb:16:13:16:14 | p1 | provenance |  |
 | params_flow.rb:25:12:25:13 | p1 | params_flow.rb:26:10:26:11 | p1 | provenance |  |
-| params_flow.rb:25:17:25:24 | **kwargs [element :p2] | params_flow.rb:28:11:28:16 | kwargs [element :p2] | provenance |  |
-| params_flow.rb:25:17:25:24 | **kwargs [element :p3] | params_flow.rb:29:11:29:16 | kwargs [element :p3] | provenance |  |
-| params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p2] | params_flow.rb:28:11:28:16 | kwargs [hash-splat position :p2] | provenance |  |
-| params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p3] | params_flow.rb:29:11:29:16 | kwargs [hash-splat position :p3] | provenance |  |
-| params_flow.rb:28:11:28:16 | kwargs [element :p2] | params_flow.rb:28:11:28:21 | ...[...] | provenance |  |
-| params_flow.rb:28:11:28:16 | kwargs [hash-splat position :p2] | params_flow.rb:28:11:28:21 | ...[...] | provenance |  |
+| params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p2] | params_flow.rb:28:11:28:16 | kwargs : Hash [element :p2] | provenance |  |
+| params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p3] | params_flow.rb:29:11:29:16 | kwargs : Hash [element :p3] | provenance |  |
+| params_flow.rb:28:11:28:16 | kwargs : Hash [element :p2] | params_flow.rb:28:11:28:21 | ...[...] | provenance |  |
 | params_flow.rb:28:11:28:21 | ...[...] | params_flow.rb:28:10:28:22 | ( ... ) | provenance |  |
-| params_flow.rb:29:11:29:16 | kwargs [element :p3] | params_flow.rb:29:11:29:21 | ...[...] | provenance |  |
-| params_flow.rb:29:11:29:16 | kwargs [hash-splat position :p3] | params_flow.rb:29:11:29:21 | ...[...] | provenance |  |
+| params_flow.rb:29:11:29:16 | kwargs : Hash [element :p3] | params_flow.rb:29:11:29:21 | ...[...] | provenance |  |
 | params_flow.rb:29:11:29:21 | ...[...] | params_flow.rb:29:10:29:22 | ( ... ) | provenance |  |
 | params_flow.rb:33:12:33:19 | call to taint | params_flow.rb:25:12:25:13 | p1 | provenance |  |
-| params_flow.rb:33:26:33:34 | call to taint | params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p2] | provenance |  |
-| params_flow.rb:33:41:33:49 | call to taint | params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p3] | provenance |  |
-| params_flow.rb:34:1:34:4 | args [element :p3] | params_flow.rb:35:25:35:28 | args [element :p3] | provenance |  |
-| params_flow.rb:34:8:34:32 | call to [] [element :p3] | params_flow.rb:34:1:34:4 | args [element :p3] | provenance |  |
-| params_flow.rb:34:14:34:22 | call to taint | params_flow.rb:34:8:34:32 | call to [] [element :p3] | provenance |  |
+| params_flow.rb:33:26:33:34 | call to taint | params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p2] | provenance |  |
+| params_flow.rb:33:41:33:49 | call to taint | params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p3] | provenance |  |
+| params_flow.rb:34:1:34:4 | args : Hash [element :p3] | params_flow.rb:35:25:35:28 | args : Hash [element :p3] | provenance |  |
+| params_flow.rb:34:8:34:32 | call to [] : Hash [element :p3] | params_flow.rb:34:1:34:4 | args : Hash [element :p3] | provenance |  |
+| params_flow.rb:34:14:34:22 | call to taint | params_flow.rb:34:8:34:32 | call to [] : Hash [element :p3] | provenance |  |
 | params_flow.rb:35:12:35:20 | call to taint | params_flow.rb:25:12:25:13 | p1 | provenance |  |
-| params_flow.rb:35:23:35:28 | ** ... [element :p3] | params_flow.rb:25:17:25:24 | **kwargs [element :p3] | provenance |  |
-| params_flow.rb:35:25:35:28 | args [element :p3] | params_flow.rb:35:23:35:28 | ** ... [element :p3] | provenance |  |
-| params_flow.rb:37:1:37:4 | args [element :p1] | params_flow.rb:38:10:38:13 | args [element :p1] | provenance |  |
-| params_flow.rb:37:1:37:4 | args [element :p2] | params_flow.rb:38:10:38:13 | args [element :p2] | provenance |  |
-| params_flow.rb:37:8:37:44 | call to [] [element :p1] | params_flow.rb:37:1:37:4 | args [element :p1] | provenance |  |
-| params_flow.rb:37:8:37:44 | call to [] [element :p2] | params_flow.rb:37:1:37:4 | args [element :p2] | provenance |  |
-| params_flow.rb:37:16:37:24 | call to taint | params_flow.rb:37:8:37:44 | call to [] [element :p1] | provenance |  |
-| params_flow.rb:37:34:37:42 | call to taint | params_flow.rb:37:8:37:44 | call to [] [element :p2] | provenance |  |
-| params_flow.rb:38:8:38:13 | ** ... [element :p1] | params_flow.rb:25:12:25:13 | p1 | provenance |  |
-| params_flow.rb:38:8:38:13 | ** ... [element :p2] | params_flow.rb:25:17:25:24 | **kwargs [element :p2] | provenance |  |
-| params_flow.rb:38:10:38:13 | args [element :p1] | params_flow.rb:38:8:38:13 | ** ... [element :p1] | provenance |  |
-| params_flow.rb:38:10:38:13 | args [element :p2] | params_flow.rb:38:8:38:13 | ** ... [element :p2] | provenance |  |
-| params_flow.rb:40:1:40:4 | args [element :p1] | params_flow.rb:41:26:41:29 | args [element :p1] | provenance |  |
-| params_flow.rb:40:8:40:26 | call to [] [element :p1] | params_flow.rb:40:1:40:4 | args [element :p1] | provenance |  |
-| params_flow.rb:40:16:40:24 | call to taint | params_flow.rb:40:8:40:26 | call to [] [element :p1] | provenance |  |
+| params_flow.rb:35:23:35:28 | ** ... : Hash [element :p3] | params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p3] | provenance |  |
+| params_flow.rb:35:25:35:28 | args : Hash [element :p3] | params_flow.rb:35:23:35:28 | ** ... : Hash [element :p3] | provenance |  |
+| params_flow.rb:37:1:37:4 | args : Hash [element :p1] | params_flow.rb:38:10:38:13 | args : Hash [element :p1] | provenance |  |
+| params_flow.rb:37:1:37:4 | args : Hash [element :p2] | params_flow.rb:38:10:38:13 | args : Hash [element :p2] | provenance |  |
+| params_flow.rb:37:8:37:44 | call to [] : Hash [element :p1] | params_flow.rb:37:1:37:4 | args : Hash [element :p1] | provenance |  |
+| params_flow.rb:37:8:37:44 | call to [] : Hash [element :p2] | params_flow.rb:37:1:37:4 | args : Hash [element :p2] | provenance |  |
+| params_flow.rb:37:16:37:24 | call to taint | params_flow.rb:37:8:37:44 | call to [] : Hash [element :p1] | provenance |  |
+| params_flow.rb:37:34:37:42 | call to taint | params_flow.rb:37:8:37:44 | call to [] : Hash [element :p2] | provenance |  |
+| params_flow.rb:38:8:38:13 | ** ... : Hash [element :p1] | params_flow.rb:25:12:25:13 | p1 | provenance |  |
+| params_flow.rb:38:8:38:13 | ** ... : Hash [element :p2] | params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p2] | provenance |  |
+| params_flow.rb:38:10:38:13 | args : Hash [element :p1] | params_flow.rb:38:8:38:13 | ** ... : Hash [element :p1] | provenance |  |
+| params_flow.rb:38:10:38:13 | args : Hash [element :p2] | params_flow.rb:38:8:38:13 | ** ... : Hash [element :p2] | provenance |  |
+| params_flow.rb:40:1:40:4 | args : Hash [element :p1] | params_flow.rb:41:26:41:29 | args : Hash [element :p1] | provenance |  |
+| params_flow.rb:40:8:40:26 | call to [] : Hash [element :p1] | params_flow.rb:40:1:40:4 | args : Hash [element :p1] | provenance |  |
+| params_flow.rb:40:16:40:24 | call to taint | params_flow.rb:40:8:40:26 | call to [] : Hash [element :p1] | provenance |  |
 | params_flow.rb:41:13:41:21 | call to taint | params_flow.rb:16:18:16:19 | p2 | provenance |  |
-| params_flow.rb:41:24:41:29 | ** ... [element :p1] | params_flow.rb:16:13:16:14 | p1 | provenance |  |
-| params_flow.rb:41:26:41:29 | args [element :p1] | params_flow.rb:41:24:41:29 | ** ... [element :p1] | provenance |  |
-| params_flow.rb:43:1:43:4 | args [element 0] | params_flow.rb:44:24:44:27 | args [element 0] | provenance |  |
-| params_flow.rb:43:8:43:18 | call to [] [element 0] | params_flow.rb:43:1:43:4 | args [element 0] | provenance |  |
-| params_flow.rb:43:9:43:17 | call to taint | params_flow.rb:43:8:43:18 | call to [] [element 0] | provenance |  |
+| params_flow.rb:41:24:41:29 | ** ... : Hash [element :p1] | params_flow.rb:16:13:16:14 | p1 | provenance |  |
+| params_flow.rb:41:26:41:29 | args : Hash [element :p1] | params_flow.rb:41:24:41:29 | ** ... : Hash [element :p1] | provenance |  |
+| params_flow.rb:43:1:43:4 | args : Array [element 0] | params_flow.rb:44:24:44:27 | args : Array [element 0] | provenance |  |
+| params_flow.rb:43:8:43:18 | call to [] : Array [element 0] | params_flow.rb:43:1:43:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:43:9:43:17 | call to taint | params_flow.rb:43:8:43:18 | call to [] : Array [element 0] | provenance |  |
 | params_flow.rb:44:12:44:20 | call to taint | params_flow.rb:9:16:9:17 | p1 | provenance |  |
-| params_flow.rb:44:23:44:27 | * ... [element 0] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
-| params_flow.rb:44:24:44:27 | args [element 0] | params_flow.rb:44:23:44:27 | * ... [element 0] | provenance |  |
-| params_flow.rb:46:1:46:4 | args [element 0] | params_flow.rb:47:13:47:16 | args [element 0] | provenance |  |
-| params_flow.rb:46:1:46:4 | args [element 1] | params_flow.rb:47:13:47:16 | args [element 1] | provenance |  |
-| params_flow.rb:46:8:46:29 | call to [] [element 0] | params_flow.rb:46:1:46:4 | args [element 0] | provenance |  |
-| params_flow.rb:46:8:46:29 | call to [] [element 1] | params_flow.rb:46:1:46:4 | args [element 1] | provenance |  |
-| params_flow.rb:46:9:46:17 | call to taint | params_flow.rb:46:8:46:29 | call to [] [element 0] | provenance |  |
-| params_flow.rb:46:20:46:28 | call to taint | params_flow.rb:46:8:46:29 | call to [] [element 1] | provenance |  |
-| params_flow.rb:47:12:47:16 | * ... [element 0] | params_flow.rb:9:16:9:17 | p1 | provenance |  |
-| params_flow.rb:47:12:47:16 | * ... [element 1] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
-| params_flow.rb:47:13:47:16 | args [element 0] | params_flow.rb:47:12:47:16 | * ... [element 0] | provenance |  |
-| params_flow.rb:47:13:47:16 | args [element 1] | params_flow.rb:47:12:47:16 | * ... [element 1] | provenance |  |
+| params_flow.rb:44:23:44:27 | * ... : Array [element 0] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
+| params_flow.rb:44:24:44:27 | args : Array [element 0] | params_flow.rb:44:23:44:27 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:46:1:46:4 | args : Array [element 0] | params_flow.rb:47:13:47:16 | args : Array [element 0] | provenance |  |
+| params_flow.rb:46:1:46:4 | args : Array [element 1] | params_flow.rb:47:13:47:16 | args : Array [element 1] | provenance |  |
+| params_flow.rb:46:8:46:29 | call to [] : Array [element 0] | params_flow.rb:46:1:46:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:46:8:46:29 | call to [] : Array [element 1] | params_flow.rb:46:1:46:4 | args : Array [element 1] | provenance |  |
+| params_flow.rb:46:9:46:17 | call to taint | params_flow.rb:46:8:46:29 | call to [] : Array [element 0] | provenance |  |
+| params_flow.rb:46:20:46:28 | call to taint | params_flow.rb:46:8:46:29 | call to [] : Array [element 1] | provenance |  |
+| params_flow.rb:47:12:47:16 | * ... : Array [element 0] | params_flow.rb:9:16:9:17 | p1 | provenance |  |
+| params_flow.rb:47:12:47:16 | * ... : Array [element 1] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
+| params_flow.rb:47:13:47:16 | args : Array [element 0] | params_flow.rb:47:12:47:16 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:47:13:47:16 | args : Array [element 1] | params_flow.rb:47:12:47:16 | * ... : Array [element 1] | provenance |  |
 | params_flow.rb:49:13:49:14 | p1 | params_flow.rb:50:10:50:11 | p1 | provenance |  |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | params_flow.rb:51:11:51:17 | posargs [element 0] | provenance |  |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | params_flow.rb:51:11:51:17 | posargs [element 0] | provenance |  |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
+| params_flow.rb:49:17:49:24 | *posargs : Array [element 0] | params_flow.rb:51:11:51:17 | posargs : Array [element 0] | provenance |  |
+| params_flow.rb:49:17:49:24 | *posargs : [collection] [element 0] | params_flow.rb:51:11:51:17 | posargs : [collection] [element 0] | provenance |  |
+| params_flow.rb:51:11:51:17 | posargs : Array [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
+| params_flow.rb:51:11:51:17 | posargs : [collection] [element 0] | params_flow.rb:51:11:51:20 | ...[...] | provenance |  |
 | params_flow.rb:51:11:51:20 | ...[...] | params_flow.rb:51:10:51:21 | ( ... ) | provenance |  |
 | params_flow.rb:55:9:55:17 | call to taint | params_flow.rb:49:13:49:14 | p1 | provenance |  |
-| params_flow.rb:55:20:55:28 | call to taint | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
-| params_flow.rb:57:1:57:4 | args [element 0] | params_flow.rb:58:21:58:24 | args [element 0] | provenance |  |
-| params_flow.rb:57:8:57:18 | call to [] [element 0] | params_flow.rb:57:1:57:4 | args [element 0] | provenance |  |
-| params_flow.rb:57:9:57:17 | call to taint | params_flow.rb:57:8:57:18 | call to [] [element 0] | provenance |  |
+| params_flow.rb:55:20:55:28 | call to taint | params_flow.rb:49:17:49:24 | *posargs : [collection] [element 0] | provenance |  |
+| params_flow.rb:57:1:57:4 | args : Array [element 0] | params_flow.rb:58:21:58:24 | args : Array [element 0] | provenance |  |
+| params_flow.rb:57:8:57:18 | call to [] : Array [element 0] | params_flow.rb:57:1:57:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:57:9:57:17 | call to taint | params_flow.rb:57:8:57:18 | call to [] : Array [element 0] | provenance |  |
 | params_flow.rb:58:9:58:17 | call to taint | params_flow.rb:49:13:49:14 | p1 | provenance |  |
-| params_flow.rb:58:20:58:24 | * ... [element 0] | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
-| params_flow.rb:58:20:58:24 | * ... [element 0] | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
-| params_flow.rb:58:21:58:24 | args [element 0] | params_flow.rb:58:20:58:24 | * ... [element 0] | provenance |  |
-| params_flow.rb:60:1:60:4 | args [element 0] | params_flow.rb:61:10:61:13 | args [element 0] | provenance |  |
-| params_flow.rb:60:1:60:4 | args [element 1] | params_flow.rb:61:10:61:13 | args [element 1] | provenance |  |
-| params_flow.rb:60:8:60:29 | call to [] [element 0] | params_flow.rb:60:1:60:4 | args [element 0] | provenance |  |
-| params_flow.rb:60:8:60:29 | call to [] [element 1] | params_flow.rb:60:1:60:4 | args [element 1] | provenance |  |
-| params_flow.rb:60:9:60:17 | call to taint | params_flow.rb:60:8:60:29 | call to [] [element 0] | provenance |  |
-| params_flow.rb:60:20:60:28 | call to taint | params_flow.rb:60:8:60:29 | call to [] [element 1] | provenance |  |
-| params_flow.rb:61:9:61:13 | * ... [element 0] | params_flow.rb:49:13:49:14 | p1 | provenance |  |
-| params_flow.rb:61:9:61:13 | * ... [element 1] | params_flow.rb:49:17:49:24 | *posargs [element 0] | provenance |  |
-| params_flow.rb:61:10:61:13 | args [element 0] | params_flow.rb:61:9:61:13 | * ... [element 0] | provenance |  |
-| params_flow.rb:61:10:61:13 | args [element 1] | params_flow.rb:61:9:61:13 | * ... [element 1] | provenance |  |
+| params_flow.rb:58:20:58:24 | * ... : Array [element 0] | params_flow.rb:49:17:49:24 | *posargs : Array [element 0] | provenance |  |
+| params_flow.rb:58:21:58:24 | args : Array [element 0] | params_flow.rb:58:20:58:24 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:60:1:60:4 | args : Array [element 0] | params_flow.rb:61:10:61:13 | args : Array [element 0] | provenance |  |
+| params_flow.rb:60:1:60:4 | args : Array [element 1] | params_flow.rb:61:10:61:13 | args : Array [element 1] | provenance |  |
+| params_flow.rb:60:8:60:29 | call to [] : Array [element 0] | params_flow.rb:60:1:60:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:60:8:60:29 | call to [] : Array [element 1] | params_flow.rb:60:1:60:4 | args : Array [element 1] | provenance |  |
+| params_flow.rb:60:9:60:17 | call to taint | params_flow.rb:60:8:60:29 | call to [] : Array [element 0] | provenance |  |
+| params_flow.rb:60:20:60:28 | call to taint | params_flow.rb:60:8:60:29 | call to [] : Array [element 1] | provenance |  |
+| params_flow.rb:61:9:61:13 | * ... : Array [element 0] | params_flow.rb:49:13:49:14 | p1 | provenance |  |
+| params_flow.rb:61:9:61:13 | * ... : Array [element 1] | params_flow.rb:49:17:49:24 | *posargs : [collection] [element 0] | provenance |  |
+| params_flow.rb:61:10:61:13 | args : Array [element 0] | params_flow.rb:61:9:61:13 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:61:10:61:13 | args : Array [element 1] | params_flow.rb:61:9:61:13 | * ... : Array [element 1] | provenance |  |
 | params_flow.rb:63:1:63:4 | args | params_flow.rb:67:13:67:16 | args | provenance |  |
 | params_flow.rb:63:8:63:16 | call to taint | params_flow.rb:63:1:63:4 | args | provenance |  |
-| params_flow.rb:64:16:64:17 | *x [element 0] | params_flow.rb:65:10:65:10 | x [element 0] | provenance |  |
-| params_flow.rb:65:10:65:10 | x [element 0] | params_flow.rb:65:10:65:13 | ...[...] | provenance |  |
-| params_flow.rb:67:12:67:16 | * ... [element 0] | params_flow.rb:64:16:64:17 | *x [element 0] | provenance |  |
-| params_flow.rb:67:13:67:16 | args | params_flow.rb:67:12:67:16 | * ... [element 0] | provenance |  |
+| params_flow.rb:64:16:64:17 | *x : [collection] [element 0] | params_flow.rb:65:10:65:10 | x : [collection] [element 0] | provenance |  |
+| params_flow.rb:65:10:65:10 | x : [collection] [element 0] | params_flow.rb:65:10:65:13 | ...[...] | provenance |  |
+| params_flow.rb:67:12:67:16 | * ... : [collection] [element 0] | params_flow.rb:64:16:64:17 | *x : [collection] [element 0] | provenance |  |
+| params_flow.rb:67:13:67:16 | args | params_flow.rb:67:12:67:16 | * ... : [collection] [element 0] | provenance |  |
 | params_flow.rb:69:14:69:14 | x | params_flow.rb:70:10:70:10 | x | provenance |  |
 | params_flow.rb:69:17:69:17 | y | params_flow.rb:71:10:71:10 | y | provenance |  |
-| params_flow.rb:69:24:69:24 | w | params_flow.rb:74:10:74:10 | w | provenance |  |
-| params_flow.rb:69:27:69:27 | r | params_flow.rb:75:10:75:10 | r | provenance |  |
 | params_flow.rb:78:10:78:18 | call to taint | params_flow.rb:69:14:69:14 | x | provenance |  |
 | params_flow.rb:78:21:78:29 | call to taint | params_flow.rb:69:17:69:17 | y | provenance |  |
-| params_flow.rb:78:43:78:51 | call to taint | params_flow.rb:69:24:69:24 | w | provenance |  |
-| params_flow.rb:78:54:78:62 | call to taint | params_flow.rb:69:27:69:27 | r | provenance |  |
-| params_flow.rb:80:1:80:4 | args [element 0] | params_flow.rb:81:22:81:25 | args [element 0] | provenance |  |
-| params_flow.rb:80:8:80:51 | call to [] [element 0] | params_flow.rb:80:1:80:4 | args [element 0] | provenance |  |
-| params_flow.rb:80:9:80:17 | call to taint | params_flow.rb:80:8:80:51 | call to [] [element 0] | provenance |  |
+| params_flow.rb:80:1:80:4 | args : Array [element 0] | params_flow.rb:81:22:81:25 | args : Array [element 0] | provenance |  |
+| params_flow.rb:80:8:80:51 | call to [] : Array [element 0] | params_flow.rb:80:1:80:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:80:9:80:17 | call to taint | params_flow.rb:80:8:80:51 | call to [] : Array [element 0] | provenance |  |
 | params_flow.rb:81:10:81:18 | call to taint | params_flow.rb:69:14:69:14 | x | provenance |  |
-| params_flow.rb:81:21:81:25 | * ... [element 0] | params_flow.rb:69:17:69:17 | y | provenance |  |
-| params_flow.rb:81:22:81:25 | args [element 0] | params_flow.rb:81:21:81:25 | * ... [element 0] | provenance |  |
+| params_flow.rb:81:21:81:25 | * ... : Array [element 0] | params_flow.rb:69:17:69:17 | y | provenance |  |
+| params_flow.rb:81:22:81:25 | args : Array [element 0] | params_flow.rb:81:21:81:25 | * ... : Array [element 0] | provenance |  |
 | params_flow.rb:83:14:83:14 | t | params_flow.rb:84:10:84:10 | t | provenance |  |
 | params_flow.rb:83:17:83:17 | u | params_flow.rb:85:10:85:10 | u | provenance |  |
 | params_flow.rb:83:20:83:20 | v | params_flow.rb:86:10:86:10 | v | provenance |  |
 | params_flow.rb:83:23:83:23 | w | params_flow.rb:87:10:87:10 | w | provenance |  |
 | params_flow.rb:83:26:83:26 | x | params_flow.rb:88:10:88:10 | x | provenance |  |
 | params_flow.rb:83:29:83:29 | y | params_flow.rb:89:10:89:10 | y | provenance |  |
-| params_flow.rb:93:1:93:4 | args [element 0] | params_flow.rb:94:33:94:36 | args [element 0] | provenance |  |
-| params_flow.rb:93:1:93:4 | args [element 1] | params_flow.rb:94:33:94:36 | args [element 1] | provenance |  |
-| params_flow.rb:93:1:93:4 | args [element 2] | params_flow.rb:94:33:94:36 | args [element 2] | provenance |  |
-| params_flow.rb:93:1:93:4 | args [element 3] | params_flow.rb:94:33:94:36 | args [element 3] | provenance |  |
-| params_flow.rb:93:8:93:51 | call to [] [element 0] | params_flow.rb:93:1:93:4 | args [element 0] | provenance |  |
-| params_flow.rb:93:8:93:51 | call to [] [element 1] | params_flow.rb:93:1:93:4 | args [element 1] | provenance |  |
-| params_flow.rb:93:8:93:51 | call to [] [element 2] | params_flow.rb:93:1:93:4 | args [element 2] | provenance |  |
-| params_flow.rb:93:8:93:51 | call to [] [element 3] | params_flow.rb:93:1:93:4 | args [element 3] | provenance |  |
-| params_flow.rb:93:9:93:17 | call to taint | params_flow.rb:93:8:93:51 | call to [] [element 0] | provenance |  |
-| params_flow.rb:93:20:93:28 | call to taint | params_flow.rb:93:8:93:51 | call to [] [element 1] | provenance |  |
-| params_flow.rb:93:31:93:39 | call to taint | params_flow.rb:93:8:93:51 | call to [] [element 2] | provenance |  |
-| params_flow.rb:93:42:93:50 | call to taint | params_flow.rb:93:8:93:51 | call to [] [element 3] | provenance |  |
+| params_flow.rb:93:1:93:4 | args : Array [element 0] | params_flow.rb:94:33:94:36 | args : Array [element 0] | provenance |  |
+| params_flow.rb:93:1:93:4 | args : Array [element 1] | params_flow.rb:94:33:94:36 | args : Array [element 1] | provenance |  |
+| params_flow.rb:93:1:93:4 | args : Array [element 2] | params_flow.rb:94:33:94:36 | args : Array [element 2] | provenance |  |
+| params_flow.rb:93:1:93:4 | args : Array [element 3] | params_flow.rb:94:33:94:36 | args : Array [element 3] | provenance |  |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 0] | params_flow.rb:93:1:93:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 1] | params_flow.rb:93:1:93:4 | args : Array [element 1] | provenance |  |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 2] | params_flow.rb:93:1:93:4 | args : Array [element 2] | provenance |  |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 3] | params_flow.rb:93:1:93:4 | args : Array [element 3] | provenance |  |
+| params_flow.rb:93:9:93:17 | call to taint | params_flow.rb:93:8:93:51 | call to [] : Array [element 0] | provenance |  |
+| params_flow.rb:93:20:93:28 | call to taint | params_flow.rb:93:8:93:51 | call to [] : Array [element 1] | provenance |  |
+| params_flow.rb:93:31:93:39 | call to taint | params_flow.rb:93:8:93:51 | call to [] : Array [element 2] | provenance |  |
+| params_flow.rb:93:42:93:50 | call to taint | params_flow.rb:93:8:93:51 | call to [] : Array [element 3] | provenance |  |
 | params_flow.rb:94:10:94:18 | call to taint | params_flow.rb:83:14:83:14 | t | provenance |  |
 | params_flow.rb:94:21:94:29 | call to taint | params_flow.rb:83:17:83:17 | u | provenance |  |
-| params_flow.rb:94:32:94:36 | * ... [element 0] | params_flow.rb:83:20:83:20 | v | provenance |  |
-| params_flow.rb:94:32:94:36 | * ... [element 1] | params_flow.rb:83:23:83:23 | w | provenance |  |
-| params_flow.rb:94:32:94:36 | * ... [element 2] | params_flow.rb:83:26:83:26 | x | provenance |  |
-| params_flow.rb:94:32:94:36 | * ... [element 3] | params_flow.rb:83:29:83:29 | y | provenance |  |
-| params_flow.rb:94:33:94:36 | args [element 0] | params_flow.rb:94:32:94:36 | * ... [element 0] | provenance |  |
-| params_flow.rb:94:33:94:36 | args [element 1] | params_flow.rb:94:32:94:36 | * ... [element 1] | provenance |  |
-| params_flow.rb:94:33:94:36 | args [element 2] | params_flow.rb:94:32:94:36 | * ... [element 2] | provenance |  |
-| params_flow.rb:94:33:94:36 | args [element 3] | params_flow.rb:94:32:94:36 | * ... [element 3] | provenance |  |
-| params_flow.rb:94:39:94:47 | call to taint | params_flow.rb:83:23:83:23 | w | provenance |  |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 0] | params_flow.rb:83:20:83:20 | v | provenance |  |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 1] | params_flow.rb:83:23:83:23 | w | provenance |  |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 2] | params_flow.rb:83:26:83:26 | x | provenance |  |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 3] | params_flow.rb:83:29:83:29 | y | provenance |  |
+| params_flow.rb:94:33:94:36 | args : Array [element 0] | params_flow.rb:94:32:94:36 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:94:33:94:36 | args : Array [element 1] | params_flow.rb:94:32:94:36 | * ... : Array [element 1] | provenance |  |
+| params_flow.rb:94:33:94:36 | args : Array [element 2] | params_flow.rb:94:32:94:36 | * ... : Array [element 2] | provenance |  |
+| params_flow.rb:94:33:94:36 | args : Array [element 3] | params_flow.rb:94:32:94:36 | * ... : Array [element 3] | provenance |  |
 | params_flow.rb:96:10:96:18 | call to taint | params_flow.rb:69:14:69:14 | x | provenance |  |
 | params_flow.rb:96:21:96:29 | call to taint | params_flow.rb:69:17:69:17 | y | provenance |  |
-| params_flow.rb:96:68:96:76 | call to taint | params_flow.rb:69:24:69:24 | w | provenance |  |
-| params_flow.rb:96:79:96:87 | call to taint | params_flow.rb:69:27:69:27 | r | provenance |  |
 | params_flow.rb:98:19:98:19 | a | params_flow.rb:99:10:99:10 | a | provenance |  |
-| params_flow.rb:98:31:98:31 | b | params_flow.rb:102:10:102:10 | b | provenance |  |
 | params_flow.rb:105:15:105:23 | call to taint | params_flow.rb:98:19:98:19 | a | provenance |  |
 | params_flow.rb:106:15:106:23 | call to taint | params_flow.rb:98:19:98:19 | a | provenance |  |
-| params_flow.rb:106:37:106:45 | call to taint | params_flow.rb:98:31:98:31 | b | provenance |  |
 | params_flow.rb:108:37:108:37 | a | params_flow.rb:109:10:109:10 | a | provenance |  |
-| params_flow.rb:108:40:108:41 | *b [element 0] | params_flow.rb:110:10:110:10 | b [element 0] | provenance |  |
+| params_flow.rb:108:40:108:41 | *b : [collection] [element 0] | params_flow.rb:110:10:110:10 | b : [collection] [element 0] | provenance |  |
 | params_flow.rb:108:44:108:44 | c | params_flow.rb:111:10:111:10 | c | provenance |  |
-| params_flow.rb:110:10:110:10 | b [element 0] | params_flow.rb:110:10:110:13 | ...[...] | provenance |  |
+| params_flow.rb:110:10:110:10 | b : [collection] [element 0] | params_flow.rb:110:10:110:13 | ...[...] | provenance |  |
 | params_flow.rb:114:33:114:41 | call to taint | params_flow.rb:108:37:108:37 | a | provenance |  |
-| params_flow.rb:114:44:114:52 | call to taint | params_flow.rb:108:40:108:41 | *b [element 0] | provenance |  |
+| params_flow.rb:114:44:114:52 | call to taint | params_flow.rb:108:40:108:41 | *b : [collection] [element 0] | provenance |  |
 | params_flow.rb:114:58:114:66 | call to taint | params_flow.rb:108:44:108:44 | c | provenance |  |
-| params_flow.rb:117:1:117:1 | [post] x [element] | params_flow.rb:118:13:118:13 | x [element] | provenance |  |
-| params_flow.rb:117:19:117:27 | call to taint | params_flow.rb:117:1:117:1 | [post] x [element] | provenance |  |
-| params_flow.rb:118:12:118:13 | * ... [element] | params_flow.rb:9:16:9:17 | p1 | provenance |  |
-| params_flow.rb:118:12:118:13 | * ... [element] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
-| params_flow.rb:118:13:118:13 | x [element] | params_flow.rb:118:12:118:13 | * ... [element] | provenance |  |
-| params_flow.rb:130:1:130:4 | args [element 0] | params_flow.rb:131:11:131:14 | args [element 0] | provenance |  |
-| params_flow.rb:130:1:130:4 | args [element 1] | params_flow.rb:131:11:131:14 | args [element 1] | provenance |  |
-| params_flow.rb:130:8:130:29 | call to [] [element 0] | params_flow.rb:130:1:130:4 | args [element 0] | provenance |  |
-| params_flow.rb:130:8:130:29 | call to [] [element 1] | params_flow.rb:130:1:130:4 | args [element 1] | provenance |  |
-| params_flow.rb:130:9:130:17 | call to taint | params_flow.rb:130:8:130:29 | call to [] [element 0] | provenance |  |
-| params_flow.rb:130:20:130:28 | call to taint | params_flow.rb:130:8:130:29 | call to [] [element 1] | provenance |  |
-| params_flow.rb:131:10:131:14 | * ... [element 0] | params_flow.rb:83:14:83:14 | t | provenance |  |
-| params_flow.rb:131:10:131:14 | * ... [element 1] | params_flow.rb:83:17:83:17 | u | provenance |  |
-| params_flow.rb:131:11:131:14 | args [element 0] | params_flow.rb:131:10:131:14 | * ... [element 0] | provenance |  |
-| params_flow.rb:131:11:131:14 | args [element 1] | params_flow.rb:131:10:131:14 | * ... [element 1] | provenance |  |
-| params_flow.rb:131:17:131:25 | call to taint | params_flow.rb:83:17:83:17 | u | provenance |  |
-| params_flow.rb:133:14:133:18 | *args [element 1] | params_flow.rb:134:10:134:13 | args [element 1] | provenance |  |
-| params_flow.rb:134:10:134:13 | args [element 1] | params_flow.rb:134:10:134:16 | ...[...] | provenance |  |
-| params_flow.rb:137:10:137:43 | * ... [element 1] | params_flow.rb:133:14:133:18 | *args [element 1] | provenance |  |
-| params_flow.rb:137:11:137:43 | call to [] [element 1] | params_flow.rb:137:10:137:43 | * ... [element 1] | provenance |  |
-| params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:137:11:137:43 | call to [] [element 1] | provenance |  |
+| params_flow.rb:117:1:117:1 | [post] x : [collection] [element] | params_flow.rb:118:13:118:13 | x : [collection] [element] | provenance |  |
+| params_flow.rb:117:19:117:27 | call to taint | params_flow.rb:117:1:117:1 | [post] x : [collection] [element] | provenance |  |
+| params_flow.rb:118:12:118:13 | * ... : [collection] [element] | params_flow.rb:9:16:9:17 | p1 | provenance |  |
+| params_flow.rb:118:12:118:13 | * ... : [collection] [element] | params_flow.rb:9:20:9:21 | p2 | provenance |  |
+| params_flow.rb:118:13:118:13 | x : [collection] [element] | params_flow.rb:118:12:118:13 | * ... : [collection] [element] | provenance |  |
+| params_flow.rb:130:1:130:4 | args : Array [element 0] | params_flow.rb:131:11:131:14 | args : Array [element 0] | provenance |  |
+| params_flow.rb:130:1:130:4 | args : Array [element 1] | params_flow.rb:131:11:131:14 | args : Array [element 1] | provenance |  |
+| params_flow.rb:130:8:130:29 | call to [] : Array [element 0] | params_flow.rb:130:1:130:4 | args : Array [element 0] | provenance |  |
+| params_flow.rb:130:8:130:29 | call to [] : Array [element 1] | params_flow.rb:130:1:130:4 | args : Array [element 1] | provenance |  |
+| params_flow.rb:130:9:130:17 | call to taint | params_flow.rb:130:8:130:29 | call to [] : Array [element 0] | provenance |  |
+| params_flow.rb:130:20:130:28 | call to taint | params_flow.rb:130:8:130:29 | call to [] : Array [element 1] | provenance |  |
+| params_flow.rb:131:10:131:14 | * ... : Array [element 0] | params_flow.rb:83:14:83:14 | t | provenance |  |
+| params_flow.rb:131:10:131:14 | * ... : Array [element 1] | params_flow.rb:83:17:83:17 | u | provenance |  |
+| params_flow.rb:131:11:131:14 | args : Array [element 0] | params_flow.rb:131:10:131:14 | * ... : Array [element 0] | provenance |  |
+| params_flow.rb:131:11:131:14 | args : Array [element 1] | params_flow.rb:131:10:131:14 | * ... : Array [element 1] | provenance |  |
+| params_flow.rb:133:14:133:18 | *args : Array [element 1] | params_flow.rb:134:10:134:13 | args : Array [element 1] | provenance |  |
+| params_flow.rb:134:10:134:13 | args : Array [element 1] | params_flow.rb:134:10:134:16 | ...[...] | provenance |  |
+| params_flow.rb:137:10:137:43 | * ... : Array [element 1] | params_flow.rb:133:14:133:18 | *args : Array [element 1] | provenance |  |
+| params_flow.rb:137:11:137:43 | call to [] : Array [element 1] | params_flow.rb:137:10:137:43 | * ... : Array [element 1] | provenance |  |
+| params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:137:11:137:43 | call to [] : Array [element 1] | provenance |  |
 | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:154:18:154:19 | p2 | provenance |  |
-| params_flow.rb:154:18:154:19 | p2 | params_flow.rb:154:5:154:6 | [post] p1 [element 0] | provenance |  |
-| params_flow.rb:164:23:164:24 | [post] p1 [element 0] | params_flow.rb:165:6:165:7 | p1 [element 0] | provenance |  |
+| params_flow.rb:154:5:154:6 | [post] p1 : [collection] [element 0] | params_flow.rb:153:23:153:24 | p1 [Return] : [collection] [element 0] | provenance |  |
+| params_flow.rb:154:18:154:19 | p2 | params_flow.rb:154:5:154:6 | [post] p1 : [collection] [element 0] | provenance |  |
+| params_flow.rb:164:23:164:24 | [post] p1 : [collection] [element 0] | params_flow.rb:165:6:165:7 | p1 : [collection] [element 0] | provenance |  |
 | params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | provenance |  |
-| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:164:23:164:24 | [post] p1 [element 0] | provenance |  |
-| params_flow.rb:165:6:165:7 | p1 [element 0] | params_flow.rb:165:6:165:10 | ...[...] | provenance |  |
+| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:164:23:164:24 | [post] p1 : [collection] [element 0] | provenance |  |
+| params_flow.rb:165:6:165:7 | p1 : [collection] [element 0] | params_flow.rb:165:6:165:10 | ...[...] | provenance |  |
 | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:182:18:182:19 | p2 | provenance |  |
-| params_flow.rb:182:18:182:19 | p2 | params_flow.rb:182:5:182:6 | [post] p1 [element 0] | provenance |  |
-| params_flow.rb:192:20:192:21 | [post] p1 [element 0] | params_flow.rb:193:6:193:7 | p1 [element 0] | provenance |  |
+| params_flow.rb:182:5:182:6 | [post] p1 : [collection] [element 0] | params_flow.rb:181:24:181:25 | p1 [Return] : [collection] [element 0] | provenance |  |
+| params_flow.rb:182:18:182:19 | p2 | params_flow.rb:182:5:182:6 | [post] p1 : [collection] [element 0] | provenance |  |
+| params_flow.rb:192:20:192:21 | [post] p1 : [collection] [element 0] | params_flow.rb:193:6:193:7 | p1 : [collection] [element 0] | provenance |  |
 | params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | provenance |  |
-| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:192:20:192:21 | [post] p1 [element 0] | provenance |  |
-| params_flow.rb:193:6:193:7 | p1 [element 0] | params_flow.rb:193:6:193:10 | ...[...] | provenance |  |
+| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:192:20:192:21 | [post] p1 : [collection] [element 0] | provenance |  |
+| params_flow.rb:193:6:193:7 | p1 : [collection] [element 0] | params_flow.rb:193:6:193:10 | ...[...] | provenance |  |
+| params_flow.rb:210:11:210:11 | x | params_flow.rb:211:14:211:14 | x | provenance |  |
+| params_flow.rb:210:14:210:18 | *rest : [collection] [element 0] | params_flow.rb:212:14:212:17 | rest : [collection] [element 0] | provenance |  |
+| params_flow.rb:210:14:210:18 | *rest : [collection] [element 2] | params_flow.rb:214:14:214:17 | rest : [collection] [element 2] | provenance |  |
+| params_flow.rb:210:21:210:22 | k1 | params_flow.rb:215:14:215:15 | k1 | provenance |  |
+| params_flow.rb:210:26:210:33 | **kwargs : Hash [element :k2] | params_flow.rb:216:14:216:19 | kwargs : Hash [element :k2] | provenance |  |
+| params_flow.rb:212:14:212:17 | rest : [collection] [element 0] | params_flow.rb:212:14:212:20 | ...[...] | provenance |  |
+| params_flow.rb:214:14:214:17 | rest : [collection] [element 2] | params_flow.rb:214:14:214:20 | ...[...] | provenance |  |
+| params_flow.rb:216:14:216:19 | kwargs : Hash [element :k2] | params_flow.rb:216:14:216:24 | ...[...] | provenance |  |
+| params_flow.rb:217:15:217:23 | call to taint | params_flow.rb:227:81:227:81 | x | provenance |  |
+| params_flow.rb:222:11:222:11 | x | params_flow.rb:223:9:223:13 | x | provenance |  |
+| params_flow.rb:222:14:222:18 | *rest : [collection] [element 0] | params_flow.rb:223:9:223:13 | rest : [collection] [element 0] | provenance |  |
+| params_flow.rb:222:14:222:18 | *rest : [collection] [element 2] | params_flow.rb:223:9:223:13 | rest : [collection] [element 2] | provenance |  |
+| params_flow.rb:222:21:222:22 | k1 | params_flow.rb:223:9:223:13 | k1 | provenance |  |
+| params_flow.rb:222:26:222:33 | **kwargs : Hash [element :k2] | params_flow.rb:223:9:223:13 | kwargs : Hash [element :k2] | provenance |  |
+| params_flow.rb:223:9:223:13 | * ... : [collection] [element 0] | params_flow.rb:210:14:210:18 | *rest : [collection] [element 0] | provenance |  |
+| params_flow.rb:223:9:223:13 | * ... : [collection] [element 2] | params_flow.rb:210:14:210:18 | *rest : [collection] [element 2] | provenance |  |
+| params_flow.rb:223:9:223:13 | ** ... : Hash [element :k2] | params_flow.rb:210:26:210:33 | **kwargs : Hash [element :k2] | provenance |  |
+| params_flow.rb:223:9:223:13 | k1 | params_flow.rb:210:21:210:22 | k1 | provenance |  |
+| params_flow.rb:223:9:223:13 | kwargs : Hash [element :k2] | params_flow.rb:223:9:223:13 | ** ... : Hash [element :k2] | provenance |  |
+| params_flow.rb:223:9:223:13 | rest : [collection] [element 0] | params_flow.rb:223:9:223:13 | * ... : [collection] [element 0] | provenance |  |
+| params_flow.rb:223:9:223:13 | rest : [collection] [element 2] | params_flow.rb:223:9:223:13 | * ... : [collection] [element 2] | provenance |  |
+| params_flow.rb:223:9:223:13 | x | params_flow.rb:210:11:210:11 | x | provenance |  |
+| params_flow.rb:227:11:227:19 | call to taint | params_flow.rb:222:11:222:11 | x | provenance |  |
+| params_flow.rb:227:22:227:30 | call to taint | params_flow.rb:222:14:222:18 | *rest : [collection] [element 0] | provenance |  |
+| params_flow.rb:227:36:227:44 | call to taint | params_flow.rb:222:14:222:18 | *rest : [collection] [element 2] | provenance |  |
+| params_flow.rb:227:51:227:59 | call to taint | params_flow.rb:222:21:222:22 | k1 | provenance |  |
+| params_flow.rb:227:66:227:74 | call to taint | params_flow.rb:222:26:222:33 | **kwargs : Hash [element :k2] | provenance |  |
+| params_flow.rb:227:81:227:81 | x | params_flow.rb:228:10:228:10 | x | provenance |  |
 nodes
 | params_flow.rb:9:16:9:17 | p1 | semmle.label | p1 |
 | params_flow.rb:9:20:9:21 | p2 | semmle.label | p2 |
@@ -205,111 +220,101 @@ nodes
 | params_flow.rb:23:16:23:23 | call to taint | semmle.label | call to taint |
 | params_flow.rb:23:33:23:40 | call to taint | semmle.label | call to taint |
 | params_flow.rb:25:12:25:13 | p1 | semmle.label | p1 |
-| params_flow.rb:25:17:25:24 | **kwargs [element :p2] | semmle.label | **kwargs [element :p2] |
-| params_flow.rb:25:17:25:24 | **kwargs [element :p3] | semmle.label | **kwargs [element :p3] |
-| params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p2] | semmle.label | **kwargs [hash-splat position :p2] |
-| params_flow.rb:25:17:25:24 | **kwargs [hash-splat position :p3] | semmle.label | **kwargs [hash-splat position :p3] |
+| params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p2] | semmle.label | **kwargs : Hash [element :p2] |
+| params_flow.rb:25:17:25:24 | **kwargs : Hash [element :p3] | semmle.label | **kwargs : Hash [element :p3] |
 | params_flow.rb:26:10:26:11 | p1 | semmle.label | p1 |
 | params_flow.rb:28:10:28:22 | ( ... ) | semmle.label | ( ... ) |
-| params_flow.rb:28:11:28:16 | kwargs [element :p2] | semmle.label | kwargs [element :p2] |
-| params_flow.rb:28:11:28:16 | kwargs [hash-splat position :p2] | semmle.label | kwargs [hash-splat position :p2] |
+| params_flow.rb:28:11:28:16 | kwargs : Hash [element :p2] | semmle.label | kwargs : Hash [element :p2] |
 | params_flow.rb:28:11:28:21 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:29:10:29:22 | ( ... ) | semmle.label | ( ... ) |
-| params_flow.rb:29:11:29:16 | kwargs [element :p3] | semmle.label | kwargs [element :p3] |
-| params_flow.rb:29:11:29:16 | kwargs [hash-splat position :p3] | semmle.label | kwargs [hash-splat position :p3] |
+| params_flow.rb:29:11:29:16 | kwargs : Hash [element :p3] | semmle.label | kwargs : Hash [element :p3] |
 | params_flow.rb:29:11:29:21 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:33:12:33:19 | call to taint | semmle.label | call to taint |
 | params_flow.rb:33:26:33:34 | call to taint | semmle.label | call to taint |
 | params_flow.rb:33:41:33:49 | call to taint | semmle.label | call to taint |
-| params_flow.rb:34:1:34:4 | args [element :p3] | semmle.label | args [element :p3] |
-| params_flow.rb:34:8:34:32 | call to [] [element :p3] | semmle.label | call to [] [element :p3] |
+| params_flow.rb:34:1:34:4 | args : Hash [element :p3] | semmle.label | args : Hash [element :p3] |
+| params_flow.rb:34:8:34:32 | call to [] : Hash [element :p3] | semmle.label | call to [] : Hash [element :p3] |
 | params_flow.rb:34:14:34:22 | call to taint | semmle.label | call to taint |
 | params_flow.rb:35:12:35:20 | call to taint | semmle.label | call to taint |
-| params_flow.rb:35:23:35:28 | ** ... [element :p3] | semmle.label | ** ... [element :p3] |
-| params_flow.rb:35:25:35:28 | args [element :p3] | semmle.label | args [element :p3] |
-| params_flow.rb:37:1:37:4 | args [element :p1] | semmle.label | args [element :p1] |
-| params_flow.rb:37:1:37:4 | args [element :p2] | semmle.label | args [element :p2] |
-| params_flow.rb:37:8:37:44 | call to [] [element :p1] | semmle.label | call to [] [element :p1] |
-| params_flow.rb:37:8:37:44 | call to [] [element :p2] | semmle.label | call to [] [element :p2] |
+| params_flow.rb:35:23:35:28 | ** ... : Hash [element :p3] | semmle.label | ** ... : Hash [element :p3] |
+| params_flow.rb:35:25:35:28 | args : Hash [element :p3] | semmle.label | args : Hash [element :p3] |
+| params_flow.rb:37:1:37:4 | args : Hash [element :p1] | semmle.label | args : Hash [element :p1] |
+| params_flow.rb:37:1:37:4 | args : Hash [element :p2] | semmle.label | args : Hash [element :p2] |
+| params_flow.rb:37:8:37:44 | call to [] : Hash [element :p1] | semmle.label | call to [] : Hash [element :p1] |
+| params_flow.rb:37:8:37:44 | call to [] : Hash [element :p2] | semmle.label | call to [] : Hash [element :p2] |
 | params_flow.rb:37:16:37:24 | call to taint | semmle.label | call to taint |
 | params_flow.rb:37:34:37:42 | call to taint | semmle.label | call to taint |
-| params_flow.rb:38:8:38:13 | ** ... [element :p1] | semmle.label | ** ... [element :p1] |
-| params_flow.rb:38:8:38:13 | ** ... [element :p2] | semmle.label | ** ... [element :p2] |
-| params_flow.rb:38:10:38:13 | args [element :p1] | semmle.label | args [element :p1] |
-| params_flow.rb:38:10:38:13 | args [element :p2] | semmle.label | args [element :p2] |
-| params_flow.rb:40:1:40:4 | args [element :p1] | semmle.label | args [element :p1] |
-| params_flow.rb:40:8:40:26 | call to [] [element :p1] | semmle.label | call to [] [element :p1] |
+| params_flow.rb:38:8:38:13 | ** ... : Hash [element :p1] | semmle.label | ** ... : Hash [element :p1] |
+| params_flow.rb:38:8:38:13 | ** ... : Hash [element :p2] | semmle.label | ** ... : Hash [element :p2] |
+| params_flow.rb:38:10:38:13 | args : Hash [element :p1] | semmle.label | args : Hash [element :p1] |
+| params_flow.rb:38:10:38:13 | args : Hash [element :p2] | semmle.label | args : Hash [element :p2] |
+| params_flow.rb:40:1:40:4 | args : Hash [element :p1] | semmle.label | args : Hash [element :p1] |
+| params_flow.rb:40:8:40:26 | call to [] : Hash [element :p1] | semmle.label | call to [] : Hash [element :p1] |
 | params_flow.rb:40:16:40:24 | call to taint | semmle.label | call to taint |
 | params_flow.rb:41:13:41:21 | call to taint | semmle.label | call to taint |
-| params_flow.rb:41:24:41:29 | ** ... [element :p1] | semmle.label | ** ... [element :p1] |
-| params_flow.rb:41:26:41:29 | args [element :p1] | semmle.label | args [element :p1] |
-| params_flow.rb:43:1:43:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:43:8:43:18 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| params_flow.rb:41:24:41:29 | ** ... : Hash [element :p1] | semmle.label | ** ... : Hash [element :p1] |
+| params_flow.rb:41:26:41:29 | args : Hash [element :p1] | semmle.label | args : Hash [element :p1] |
+| params_flow.rb:43:1:43:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:43:8:43:18 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
 | params_flow.rb:43:9:43:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:44:12:44:20 | call to taint | semmle.label | call to taint |
-| params_flow.rb:44:23:44:27 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:44:24:44:27 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:46:1:46:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:46:1:46:4 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:46:8:46:29 | call to [] [element 0] | semmle.label | call to [] [element 0] |
-| params_flow.rb:46:8:46:29 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| params_flow.rb:44:23:44:27 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:44:24:44:27 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:46:1:46:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:46:1:46:4 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:46:8:46:29 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
+| params_flow.rb:46:8:46:29 | call to [] : Array [element 1] | semmle.label | call to [] : Array [element 1] |
 | params_flow.rb:46:9:46:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:46:20:46:28 | call to taint | semmle.label | call to taint |
-| params_flow.rb:47:12:47:16 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:47:12:47:16 | * ... [element 1] | semmle.label | * ... [element 1] |
-| params_flow.rb:47:13:47:16 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:47:13:47:16 | args [element 1] | semmle.label | args [element 1] |
+| params_flow.rb:47:12:47:16 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:47:12:47:16 | * ... : Array [element 1] | semmle.label | * ... : Array [element 1] |
+| params_flow.rb:47:13:47:16 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:47:13:47:16 | args : Array [element 1] | semmle.label | args : Array [element 1] |
 | params_flow.rb:49:13:49:14 | p1 | semmle.label | p1 |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | semmle.label | *posargs [element 0] |
-| params_flow.rb:49:17:49:24 | *posargs [element 0] | semmle.label | *posargs [element 0] |
+| params_flow.rb:49:17:49:24 | *posargs : Array [element 0] | semmle.label | *posargs : Array [element 0] |
+| params_flow.rb:49:17:49:24 | *posargs : [collection] [element 0] | semmle.label | *posargs : [collection] [element 0] |
 | params_flow.rb:50:10:50:11 | p1 | semmle.label | p1 |
 | params_flow.rb:51:10:51:21 | ( ... ) | semmle.label | ( ... ) |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | semmle.label | posargs [element 0] |
-| params_flow.rb:51:11:51:17 | posargs [element 0] | semmle.label | posargs [element 0] |
+| params_flow.rb:51:11:51:17 | posargs : Array [element 0] | semmle.label | posargs : Array [element 0] |
+| params_flow.rb:51:11:51:17 | posargs : [collection] [element 0] | semmle.label | posargs : [collection] [element 0] |
 | params_flow.rb:51:11:51:20 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:55:9:55:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:55:20:55:28 | call to taint | semmle.label | call to taint |
-| params_flow.rb:57:1:57:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:57:8:57:18 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| params_flow.rb:57:1:57:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:57:8:57:18 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
 | params_flow.rb:57:9:57:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:58:9:58:17 | call to taint | semmle.label | call to taint |
-| params_flow.rb:58:20:58:24 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:58:21:58:24 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:60:1:60:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:60:1:60:4 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:60:8:60:29 | call to [] [element 0] | semmle.label | call to [] [element 0] |
-| params_flow.rb:60:8:60:29 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| params_flow.rb:58:20:58:24 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:58:21:58:24 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:60:1:60:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:60:1:60:4 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:60:8:60:29 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
+| params_flow.rb:60:8:60:29 | call to [] : Array [element 1] | semmle.label | call to [] : Array [element 1] |
 | params_flow.rb:60:9:60:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:60:20:60:28 | call to taint | semmle.label | call to taint |
-| params_flow.rb:61:9:61:13 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:61:9:61:13 | * ... [element 1] | semmle.label | * ... [element 1] |
-| params_flow.rb:61:10:61:13 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:61:10:61:13 | args [element 1] | semmle.label | args [element 1] |
+| params_flow.rb:61:9:61:13 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:61:9:61:13 | * ... : Array [element 1] | semmle.label | * ... : Array [element 1] |
+| params_flow.rb:61:10:61:13 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:61:10:61:13 | args : Array [element 1] | semmle.label | args : Array [element 1] |
 | params_flow.rb:63:1:63:4 | args | semmle.label | args |
 | params_flow.rb:63:8:63:16 | call to taint | semmle.label | call to taint |
-| params_flow.rb:64:16:64:17 | *x [element 0] | semmle.label | *x [element 0] |
-| params_flow.rb:65:10:65:10 | x [element 0] | semmle.label | x [element 0] |
+| params_flow.rb:64:16:64:17 | *x : [collection] [element 0] | semmle.label | *x : [collection] [element 0] |
+| params_flow.rb:65:10:65:10 | x : [collection] [element 0] | semmle.label | x : [collection] [element 0] |
 | params_flow.rb:65:10:65:13 | ...[...] | semmle.label | ...[...] |
-| params_flow.rb:67:12:67:16 | * ... [element 0] | semmle.label | * ... [element 0] |
+| params_flow.rb:67:12:67:16 | * ... : [collection] [element 0] | semmle.label | * ... : [collection] [element 0] |
 | params_flow.rb:67:13:67:16 | args | semmle.label | args |
 | params_flow.rb:69:14:69:14 | x | semmle.label | x |
 | params_flow.rb:69:17:69:17 | y | semmle.label | y |
-| params_flow.rb:69:24:69:24 | w | semmle.label | w |
-| params_flow.rb:69:27:69:27 | r | semmle.label | r |
 | params_flow.rb:70:10:70:10 | x | semmle.label | x |
 | params_flow.rb:71:10:71:10 | y | semmle.label | y |
-| params_flow.rb:74:10:74:10 | w | semmle.label | w |
-| params_flow.rb:75:10:75:10 | r | semmle.label | r |
 | params_flow.rb:78:10:78:18 | call to taint | semmle.label | call to taint |
 | params_flow.rb:78:21:78:29 | call to taint | semmle.label | call to taint |
-| params_flow.rb:78:43:78:51 | call to taint | semmle.label | call to taint |
-| params_flow.rb:78:54:78:62 | call to taint | semmle.label | call to taint |
-| params_flow.rb:80:1:80:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:80:8:80:51 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| params_flow.rb:80:1:80:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:80:8:80:51 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
 | params_flow.rb:80:9:80:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:81:10:81:18 | call to taint | semmle.label | call to taint |
-| params_flow.rb:81:21:81:25 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:81:22:81:25 | args [element 0] | semmle.label | args [element 0] |
+| params_flow.rb:81:21:81:25 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:81:22:81:25 | args : Array [element 0] | semmle.label | args : Array [element 0] |
 | params_flow.rb:83:14:83:14 | t | semmle.label | t |
 | params_flow.rb:83:17:83:17 | u | semmle.label | u |
 | params_flow.rb:83:20:83:20 | v | semmle.label | v |
@@ -322,88 +327,118 @@ nodes
 | params_flow.rb:87:10:87:10 | w | semmle.label | w |
 | params_flow.rb:88:10:88:10 | x | semmle.label | x |
 | params_flow.rb:89:10:89:10 | y | semmle.label | y |
-| params_flow.rb:93:1:93:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:93:1:93:4 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:93:1:93:4 | args [element 2] | semmle.label | args [element 2] |
-| params_flow.rb:93:1:93:4 | args [element 3] | semmle.label | args [element 3] |
-| params_flow.rb:93:8:93:51 | call to [] [element 0] | semmle.label | call to [] [element 0] |
-| params_flow.rb:93:8:93:51 | call to [] [element 1] | semmle.label | call to [] [element 1] |
-| params_flow.rb:93:8:93:51 | call to [] [element 2] | semmle.label | call to [] [element 2] |
-| params_flow.rb:93:8:93:51 | call to [] [element 3] | semmle.label | call to [] [element 3] |
+| params_flow.rb:93:1:93:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:93:1:93:4 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:93:1:93:4 | args : Array [element 2] | semmle.label | args : Array [element 2] |
+| params_flow.rb:93:1:93:4 | args : Array [element 3] | semmle.label | args : Array [element 3] |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 1] | semmle.label | call to [] : Array [element 1] |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 2] | semmle.label | call to [] : Array [element 2] |
+| params_flow.rb:93:8:93:51 | call to [] : Array [element 3] | semmle.label | call to [] : Array [element 3] |
 | params_flow.rb:93:9:93:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:93:20:93:28 | call to taint | semmle.label | call to taint |
 | params_flow.rb:93:31:93:39 | call to taint | semmle.label | call to taint |
 | params_flow.rb:93:42:93:50 | call to taint | semmle.label | call to taint |
 | params_flow.rb:94:10:94:18 | call to taint | semmle.label | call to taint |
 | params_flow.rb:94:21:94:29 | call to taint | semmle.label | call to taint |
-| params_flow.rb:94:32:94:36 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:94:32:94:36 | * ... [element 1] | semmle.label | * ... [element 1] |
-| params_flow.rb:94:32:94:36 | * ... [element 2] | semmle.label | * ... [element 2] |
-| params_flow.rb:94:32:94:36 | * ... [element 3] | semmle.label | * ... [element 3] |
-| params_flow.rb:94:33:94:36 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:94:33:94:36 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:94:33:94:36 | args [element 2] | semmle.label | args [element 2] |
-| params_flow.rb:94:33:94:36 | args [element 3] | semmle.label | args [element 3] |
-| params_flow.rb:94:39:94:47 | call to taint | semmle.label | call to taint |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 1] | semmle.label | * ... : Array [element 1] |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 2] | semmle.label | * ... : Array [element 2] |
+| params_flow.rb:94:32:94:36 | * ... : Array [element 3] | semmle.label | * ... : Array [element 3] |
+| params_flow.rb:94:33:94:36 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:94:33:94:36 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:94:33:94:36 | args : Array [element 2] | semmle.label | args : Array [element 2] |
+| params_flow.rb:94:33:94:36 | args : Array [element 3] | semmle.label | args : Array [element 3] |
 | params_flow.rb:96:10:96:18 | call to taint | semmle.label | call to taint |
 | params_flow.rb:96:21:96:29 | call to taint | semmle.label | call to taint |
-| params_flow.rb:96:68:96:76 | call to taint | semmle.label | call to taint |
-| params_flow.rb:96:79:96:87 | call to taint | semmle.label | call to taint |
 | params_flow.rb:98:19:98:19 | a | semmle.label | a |
-| params_flow.rb:98:31:98:31 | b | semmle.label | b |
 | params_flow.rb:99:10:99:10 | a | semmle.label | a |
-| params_flow.rb:102:10:102:10 | b | semmle.label | b |
 | params_flow.rb:105:15:105:23 | call to taint | semmle.label | call to taint |
 | params_flow.rb:106:15:106:23 | call to taint | semmle.label | call to taint |
-| params_flow.rb:106:37:106:45 | call to taint | semmle.label | call to taint |
 | params_flow.rb:108:37:108:37 | a | semmle.label | a |
-| params_flow.rb:108:40:108:41 | *b [element 0] | semmle.label | *b [element 0] |
+| params_flow.rb:108:40:108:41 | *b : [collection] [element 0] | semmle.label | *b : [collection] [element 0] |
 | params_flow.rb:108:44:108:44 | c | semmle.label | c |
 | params_flow.rb:109:10:109:10 | a | semmle.label | a |
-| params_flow.rb:110:10:110:10 | b [element 0] | semmle.label | b [element 0] |
+| params_flow.rb:110:10:110:10 | b : [collection] [element 0] | semmle.label | b : [collection] [element 0] |
 | params_flow.rb:110:10:110:13 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:111:10:111:10 | c | semmle.label | c |
 | params_flow.rb:114:33:114:41 | call to taint | semmle.label | call to taint |
 | params_flow.rb:114:44:114:52 | call to taint | semmle.label | call to taint |
 | params_flow.rb:114:58:114:66 | call to taint | semmle.label | call to taint |
-| params_flow.rb:117:1:117:1 | [post] x [element] | semmle.label | [post] x [element] |
+| params_flow.rb:117:1:117:1 | [post] x : [collection] [element] | semmle.label | [post] x : [collection] [element] |
 | params_flow.rb:117:19:117:27 | call to taint | semmle.label | call to taint |
-| params_flow.rb:118:12:118:13 | * ... [element] | semmle.label | * ... [element] |
-| params_flow.rb:118:13:118:13 | x [element] | semmle.label | x [element] |
-| params_flow.rb:130:1:130:4 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:130:1:130:4 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:130:8:130:29 | call to [] [element 0] | semmle.label | call to [] [element 0] |
-| params_flow.rb:130:8:130:29 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| params_flow.rb:118:12:118:13 | * ... : [collection] [element] | semmle.label | * ... : [collection] [element] |
+| params_flow.rb:118:13:118:13 | x : [collection] [element] | semmle.label | x : [collection] [element] |
+| params_flow.rb:130:1:130:4 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:130:1:130:4 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:130:8:130:29 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
+| params_flow.rb:130:8:130:29 | call to [] : Array [element 1] | semmle.label | call to [] : Array [element 1] |
 | params_flow.rb:130:9:130:17 | call to taint | semmle.label | call to taint |
 | params_flow.rb:130:20:130:28 | call to taint | semmle.label | call to taint |
-| params_flow.rb:131:10:131:14 | * ... [element 0] | semmle.label | * ... [element 0] |
-| params_flow.rb:131:10:131:14 | * ... [element 1] | semmle.label | * ... [element 1] |
-| params_flow.rb:131:11:131:14 | args [element 0] | semmle.label | args [element 0] |
-| params_flow.rb:131:11:131:14 | args [element 1] | semmle.label | args [element 1] |
-| params_flow.rb:131:17:131:25 | call to taint | semmle.label | call to taint |
-| params_flow.rb:133:14:133:18 | *args [element 1] | semmle.label | *args [element 1] |
-| params_flow.rb:134:10:134:13 | args [element 1] | semmle.label | args [element 1] |
+| params_flow.rb:131:10:131:14 | * ... : Array [element 0] | semmle.label | * ... : Array [element 0] |
+| params_flow.rb:131:10:131:14 | * ... : Array [element 1] | semmle.label | * ... : Array [element 1] |
+| params_flow.rb:131:11:131:14 | args : Array [element 0] | semmle.label | args : Array [element 0] |
+| params_flow.rb:131:11:131:14 | args : Array [element 1] | semmle.label | args : Array [element 1] |
+| params_flow.rb:133:14:133:18 | *args : Array [element 1] | semmle.label | *args : Array [element 1] |
+| params_flow.rb:134:10:134:13 | args : Array [element 1] | semmle.label | args : Array [element 1] |
 | params_flow.rb:134:10:134:16 | ...[...] | semmle.label | ...[...] |
-| params_flow.rb:137:10:137:43 | * ... [element 1] | semmle.label | * ... [element 1] |
-| params_flow.rb:137:11:137:43 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| params_flow.rb:137:10:137:43 | * ... : Array [element 1] | semmle.label | * ... : Array [element 1] |
+| params_flow.rb:137:11:137:43 | call to [] : Array [element 1] | semmle.label | call to [] : Array [element 1] |
 | params_flow.rb:137:23:137:31 | call to taint | semmle.label | call to taint |
+| params_flow.rb:153:23:153:24 | p1 [Return] : [collection] [element 0] | semmle.label | p1 [Return] : [collection] [element 0] |
 | params_flow.rb:153:28:153:29 | p2 | semmle.label | p2 |
-| params_flow.rb:154:5:154:6 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
+| params_flow.rb:154:5:154:6 | [post] p1 : [collection] [element 0] | semmle.label | [post] p1 : [collection] [element 0] |
 | params_flow.rb:154:18:154:19 | p2 | semmle.label | p2 |
-| params_flow.rb:164:23:164:24 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
+| params_flow.rb:164:23:164:24 | [post] p1 : [collection] [element 0] | semmle.label | [post] p1 : [collection] [element 0] |
 | params_flow.rb:164:31:164:39 | call to taint | semmle.label | call to taint |
-| params_flow.rb:165:6:165:7 | p1 [element 0] | semmle.label | p1 [element 0] |
+| params_flow.rb:165:6:165:7 | p1 : [collection] [element 0] | semmle.label | p1 : [collection] [element 0] |
 | params_flow.rb:165:6:165:10 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:181:24:181:25 | p1 [Return] : [collection] [element 0] | semmle.label | p1 [Return] : [collection] [element 0] |
 | params_flow.rb:181:28:181:29 | p2 | semmle.label | p2 |
-| params_flow.rb:182:5:182:6 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
+| params_flow.rb:182:5:182:6 | [post] p1 : [collection] [element 0] | semmle.label | [post] p1 : [collection] [element 0] |
 | params_flow.rb:182:18:182:19 | p2 | semmle.label | p2 |
-| params_flow.rb:192:20:192:21 | [post] p1 [element 0] | semmle.label | [post] p1 [element 0] |
+| params_flow.rb:192:20:192:21 | [post] p1 : [collection] [element 0] | semmle.label | [post] p1 : [collection] [element 0] |
 | params_flow.rb:192:24:192:32 | call to taint | semmle.label | call to taint |
-| params_flow.rb:193:6:193:7 | p1 [element 0] | semmle.label | p1 [element 0] |
+| params_flow.rb:193:6:193:7 | p1 : [collection] [element 0] | semmle.label | p1 : [collection] [element 0] |
 | params_flow.rb:193:6:193:10 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:210:11:210:11 | x | semmle.label | x |
+| params_flow.rb:210:14:210:18 | *rest : [collection] [element 0] | semmle.label | *rest : [collection] [element 0] |
+| params_flow.rb:210:14:210:18 | *rest : [collection] [element 2] | semmle.label | *rest : [collection] [element 2] |
+| params_flow.rb:210:21:210:22 | k1 | semmle.label | k1 |
+| params_flow.rb:210:26:210:33 | **kwargs : Hash [element :k2] | semmle.label | **kwargs : Hash [element :k2] |
+| params_flow.rb:211:14:211:14 | x | semmle.label | x |
+| params_flow.rb:212:14:212:17 | rest : [collection] [element 0] | semmle.label | rest : [collection] [element 0] |
+| params_flow.rb:212:14:212:20 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:214:14:214:17 | rest : [collection] [element 2] | semmle.label | rest : [collection] [element 2] |
+| params_flow.rb:214:14:214:20 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:215:14:215:15 | k1 | semmle.label | k1 |
+| params_flow.rb:216:14:216:19 | kwargs : Hash [element :k2] | semmle.label | kwargs : Hash [element :k2] |
+| params_flow.rb:216:14:216:24 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:217:15:217:23 | call to taint | semmle.label | call to taint |
+| params_flow.rb:222:11:222:11 | x | semmle.label | x |
+| params_flow.rb:222:14:222:18 | *rest : [collection] [element 0] | semmle.label | *rest : [collection] [element 0] |
+| params_flow.rb:222:14:222:18 | *rest : [collection] [element 2] | semmle.label | *rest : [collection] [element 2] |
+| params_flow.rb:222:21:222:22 | k1 | semmle.label | k1 |
+| params_flow.rb:222:26:222:33 | **kwargs : Hash [element :k2] | semmle.label | **kwargs : Hash [element :k2] |
+| params_flow.rb:223:9:223:13 | * ... : [collection] [element 0] | semmle.label | * ... : [collection] [element 0] |
+| params_flow.rb:223:9:223:13 | * ... : [collection] [element 2] | semmle.label | * ... : [collection] [element 2] |
+| params_flow.rb:223:9:223:13 | ** ... : Hash [element :k2] | semmle.label | ** ... : Hash [element :k2] |
+| params_flow.rb:223:9:223:13 | k1 | semmle.label | k1 |
+| params_flow.rb:223:9:223:13 | kwargs : Hash [element :k2] | semmle.label | kwargs : Hash [element :k2] |
+| params_flow.rb:223:9:223:13 | rest : [collection] [element 0] | semmle.label | rest : [collection] [element 0] |
+| params_flow.rb:223:9:223:13 | rest : [collection] [element 2] | semmle.label | rest : [collection] [element 2] |
+| params_flow.rb:223:9:223:13 | x | semmle.label | x |
+| params_flow.rb:227:11:227:19 | call to taint | semmle.label | call to taint |
+| params_flow.rb:227:22:227:30 | call to taint | semmle.label | call to taint |
+| params_flow.rb:227:36:227:44 | call to taint | semmle.label | call to taint |
+| params_flow.rb:227:51:227:59 | call to taint | semmle.label | call to taint |
+| params_flow.rb:227:66:227:74 | call to taint | semmle.label | call to taint |
+| params_flow.rb:227:81:227:81 | x | semmle.label | x |
+| params_flow.rb:228:10:228:10 | x | semmle.label | x |
 subpaths
-| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:154:5:154:6 | [post] p1 [element 0] | params_flow.rb:164:23:164:24 | [post] p1 [element 0] |
-| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:182:5:182:6 | [post] p1 [element 0] | params_flow.rb:192:20:192:21 | [post] p1 [element 0] |
+| params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:153:28:153:29 | p2 | params_flow.rb:153:23:153:24 | p1 [Return] : [collection] [element 0] | params_flow.rb:164:23:164:24 | [post] p1 : [collection] [element 0] |
+| params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:181:28:181:29 | p2 | params_flow.rb:181:24:181:25 | p1 [Return] : [collection] [element 0] | params_flow.rb:192:20:192:21 | [post] p1 : [collection] [element 0] |
+testFailures
 #select
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:14:12:14:19 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:14:12:14:19 | call to taint | call to taint |
 | params_flow.rb:10:10:10:11 | p1 | params_flow.rb:44:12:44:20 | call to taint | params_flow.rb:10:10:10:11 | p1 | $@ | params_flow.rb:44:12:44:20 | call to taint | call to taint |
@@ -441,26 +476,25 @@ subpaths
 | params_flow.rb:71:10:71:10 | y | params_flow.rb:78:21:78:29 | call to taint | params_flow.rb:71:10:71:10 | y | $@ | params_flow.rb:78:21:78:29 | call to taint | call to taint |
 | params_flow.rb:71:10:71:10 | y | params_flow.rb:80:9:80:17 | call to taint | params_flow.rb:71:10:71:10 | y | $@ | params_flow.rb:80:9:80:17 | call to taint | call to taint |
 | params_flow.rb:71:10:71:10 | y | params_flow.rb:96:21:96:29 | call to taint | params_flow.rb:71:10:71:10 | y | $@ | params_flow.rb:96:21:96:29 | call to taint | call to taint |
-| params_flow.rb:74:10:74:10 | w | params_flow.rb:78:43:78:51 | call to taint | params_flow.rb:74:10:74:10 | w | $@ | params_flow.rb:78:43:78:51 | call to taint | call to taint |
-| params_flow.rb:74:10:74:10 | w | params_flow.rb:96:68:96:76 | call to taint | params_flow.rb:74:10:74:10 | w | $@ | params_flow.rb:96:68:96:76 | call to taint | call to taint |
-| params_flow.rb:75:10:75:10 | r | params_flow.rb:78:54:78:62 | call to taint | params_flow.rb:75:10:75:10 | r | $@ | params_flow.rb:78:54:78:62 | call to taint | call to taint |
-| params_flow.rb:75:10:75:10 | r | params_flow.rb:96:79:96:87 | call to taint | params_flow.rb:75:10:75:10 | r | $@ | params_flow.rb:96:79:96:87 | call to taint | call to taint |
 | params_flow.rb:84:10:84:10 | t | params_flow.rb:94:10:94:18 | call to taint | params_flow.rb:84:10:84:10 | t | $@ | params_flow.rb:94:10:94:18 | call to taint | call to taint |
 | params_flow.rb:84:10:84:10 | t | params_flow.rb:130:9:130:17 | call to taint | params_flow.rb:84:10:84:10 | t | $@ | params_flow.rb:130:9:130:17 | call to taint | call to taint |
 | params_flow.rb:85:10:85:10 | u | params_flow.rb:94:21:94:29 | call to taint | params_flow.rb:85:10:85:10 | u | $@ | params_flow.rb:94:21:94:29 | call to taint | call to taint |
 | params_flow.rb:85:10:85:10 | u | params_flow.rb:130:20:130:28 | call to taint | params_flow.rb:85:10:85:10 | u | $@ | params_flow.rb:130:20:130:28 | call to taint | call to taint |
-| params_flow.rb:85:10:85:10 | u | params_flow.rb:131:17:131:25 | call to taint | params_flow.rb:85:10:85:10 | u | $@ | params_flow.rb:131:17:131:25 | call to taint | call to taint |
 | params_flow.rb:86:10:86:10 | v | params_flow.rb:93:9:93:17 | call to taint | params_flow.rb:86:10:86:10 | v | $@ | params_flow.rb:93:9:93:17 | call to taint | call to taint |
 | params_flow.rb:87:10:87:10 | w | params_flow.rb:93:20:93:28 | call to taint | params_flow.rb:87:10:87:10 | w | $@ | params_flow.rb:93:20:93:28 | call to taint | call to taint |
-| params_flow.rb:87:10:87:10 | w | params_flow.rb:94:39:94:47 | call to taint | params_flow.rb:87:10:87:10 | w | $@ | params_flow.rb:94:39:94:47 | call to taint | call to taint |
 | params_flow.rb:88:10:88:10 | x | params_flow.rb:93:31:93:39 | call to taint | params_flow.rb:88:10:88:10 | x | $@ | params_flow.rb:93:31:93:39 | call to taint | call to taint |
 | params_flow.rb:89:10:89:10 | y | params_flow.rb:93:42:93:50 | call to taint | params_flow.rb:89:10:89:10 | y | $@ | params_flow.rb:93:42:93:50 | call to taint | call to taint |
 | params_flow.rb:99:10:99:10 | a | params_flow.rb:105:15:105:23 | call to taint | params_flow.rb:99:10:99:10 | a | $@ | params_flow.rb:105:15:105:23 | call to taint | call to taint |
 | params_flow.rb:99:10:99:10 | a | params_flow.rb:106:15:106:23 | call to taint | params_flow.rb:99:10:99:10 | a | $@ | params_flow.rb:106:15:106:23 | call to taint | call to taint |
-| params_flow.rb:102:10:102:10 | b | params_flow.rb:106:37:106:45 | call to taint | params_flow.rb:102:10:102:10 | b | $@ | params_flow.rb:106:37:106:45 | call to taint | call to taint |
 | params_flow.rb:109:10:109:10 | a | params_flow.rb:114:33:114:41 | call to taint | params_flow.rb:109:10:109:10 | a | $@ | params_flow.rb:114:33:114:41 | call to taint | call to taint |
 | params_flow.rb:110:10:110:13 | ...[...] | params_flow.rb:114:44:114:52 | call to taint | params_flow.rb:110:10:110:13 | ...[...] | $@ | params_flow.rb:114:44:114:52 | call to taint | call to taint |
 | params_flow.rb:111:10:111:10 | c | params_flow.rb:114:58:114:66 | call to taint | params_flow.rb:111:10:111:10 | c | $@ | params_flow.rb:114:58:114:66 | call to taint | call to taint |
 | params_flow.rb:134:10:134:16 | ...[...] | params_flow.rb:137:23:137:31 | call to taint | params_flow.rb:134:10:134:16 | ...[...] | $@ | params_flow.rb:137:23:137:31 | call to taint | call to taint |
 | params_flow.rb:165:6:165:10 | ...[...] | params_flow.rb:164:31:164:39 | call to taint | params_flow.rb:165:6:165:10 | ...[...] | $@ | params_flow.rb:164:31:164:39 | call to taint | call to taint |
 | params_flow.rb:193:6:193:10 | ...[...] | params_flow.rb:192:24:192:32 | call to taint | params_flow.rb:193:6:193:10 | ...[...] | $@ | params_flow.rb:192:24:192:32 | call to taint | call to taint |
+| params_flow.rb:211:14:211:14 | x | params_flow.rb:227:11:227:19 | call to taint | params_flow.rb:211:14:211:14 | x | $@ | params_flow.rb:227:11:227:19 | call to taint | call to taint |
+| params_flow.rb:212:14:212:20 | ...[...] | params_flow.rb:227:22:227:30 | call to taint | params_flow.rb:212:14:212:20 | ...[...] | $@ | params_flow.rb:227:22:227:30 | call to taint | call to taint |
+| params_flow.rb:214:14:214:20 | ...[...] | params_flow.rb:227:36:227:44 | call to taint | params_flow.rb:214:14:214:20 | ...[...] | $@ | params_flow.rb:227:36:227:44 | call to taint | call to taint |
+| params_flow.rb:215:14:215:15 | k1 | params_flow.rb:227:51:227:59 | call to taint | params_flow.rb:215:14:215:15 | k1 | $@ | params_flow.rb:227:51:227:59 | call to taint | call to taint |
+| params_flow.rb:216:14:216:24 | ...[...] | params_flow.rb:227:66:227:74 | call to taint | params_flow.rb:216:14:216:24 | ...[...] | $@ | params_flow.rb:227:66:227:74 | call to taint | call to taint |
+| params_flow.rb:228:10:228:10 | x | params_flow.rb:217:15:217:23 | call to taint | params_flow.rb:228:10:228:10 | x | $@ | params_flow.rb:217:15:217:23 | call to taint | call to taint |

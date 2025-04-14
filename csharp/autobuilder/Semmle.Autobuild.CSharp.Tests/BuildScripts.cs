@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.Build.Construction;
 using Semmle.Util;
 using Semmle.Autobuild.Shared;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.CSharp.Tests
 {
@@ -203,7 +204,7 @@ namespace Semmle.Autobuild.CSharp.Tests
                 throw new ArgumentException($"Missing CreateDirectory, {path}");
         }
 
-        public void DownloadFile(string address, string fileName)
+        public void DownloadFile(string address, string fileName, ILogger logger)
         {
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
@@ -215,9 +216,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
     internal class TestDiagnosticWriter : IDiagnosticsWriter
     {
-        public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
+        public IList<Semmle.Util.DiagnosticMessage> Diagnostics { get; } = new List<Semmle.Util.DiagnosticMessage>();
 
-        public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+        public void AddEntry(Semmle.Util.DiagnosticMessage message) => this.Diagnostics.Add(message);
 
         public void Dispose() { }
     }
@@ -423,8 +424,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return new CSharpAutobuilder(actions, options);
         }
 
-        [Fact]
-        public void TestDefaultCSharpAutoBuilder()
+        private void SetupActionForDotnet()
         {
             actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet clean C:\Project\test.csproj"] = 0;
@@ -437,18 +437,78 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
-            var xml = new XmlDocument();
-            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
+        }
 
-</Project>");
+        private void CreateAndVerifyDotnetScript(XmlDocument xml)
+        {
             actions.LoadXml[@"C:\Project\test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder(true);
             TestAutobuilderScript(autobuilder, 0, 4);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder1()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+            xml.LoadXml(
+            """
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>netcoreapp2.1</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """);
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder2()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Sdk Name="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder3()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+              <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
         }
 
         [Fact]
@@ -544,51 +604,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal(2, vcvarsfiles.Length);
         }
 
-        [Fact]
-        public void TestLinuxBuildlessExtractionSuccess()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
-        [Fact]
-        public void TestLinuxBuildlessExtractionFailed()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 10, 1);
-        }
-
-        [Fact]
-        public void TestLinuxBuildlessExtractionSolution()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
         private void TestAutobuilderScript(CSharpAutobuilder autobuilder, int expectedOutput, int commandsRun)
         {
             Assert.Equal(expectedOutput, autobuilder.GetBuildScript().Run(actions, StartCallback, EndCallback));
@@ -674,21 +689,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = true;
 
             var autobuilder = CreateAutoBuilder(true);
-            TestAutobuilderScript(autobuilder, 0, 1);
-        }
-
-        [Fact]
-        public void TestSkipNugetBuildless()
-        {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
-            actions.FileExists["csharp.log"] = true;
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
-            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
-            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
-            actions.EnumerateDirectories[@"C:\Project"] = "";
-
-            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 

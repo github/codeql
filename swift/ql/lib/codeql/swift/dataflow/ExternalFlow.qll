@@ -191,8 +191,10 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -571,22 +573,4 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   override predicate hasProvenance(Provenance provenance) {
     interpretSummary(this, _, _, _, provenance, _)
   }
-}
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Swift.
-    none() and
-    exists(this) and
-    exists(kind) and
-    exists(provenance_)
-  }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }

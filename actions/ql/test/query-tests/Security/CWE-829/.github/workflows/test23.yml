@@ -1,0 +1,47 @@
+on:
+  schedule:
+    - cron: "0 3 * * 2-6" # Tuesdays - Saturdays, at 3am UTC
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "PR Number"
+        required: false
+        type: number
+  release:
+    types: [ published ]
+
+jobs:
+  resolve-required-data:
+    name: Resolve Required Data
+    if: ${{ github.repository_owner == 'test' }}
+    runs-on: ubuntu-latest
+    outputs:
+      ref: ${{ steps.script.outputs.ref }}
+    steps:
+      - name: Resolve and set checkout and version data to use for release
+        id: script
+        uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ github.event.inputs.pr }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const script = require('${{ github.workspace }}/scripts/publish-resolve-data.js');
+            await script({ github, context, core });
+
+  build:
+    needs: [ resolve-required-data ]
+    if: ${{ github.repository_owner == 'test' }}
+    name: stable 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ needs.resolve-required-data.outputs.repo }}
+          ref: ${{ needs.resolve-required-data.outputs.ref }}
+
+      - name: Build
+        shell: bash
+        run: | 
+          ./cmd
+

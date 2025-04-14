@@ -5,10 +5,24 @@ extensions:
     data:
       - ["java.util.zip", "GZIPInputStream", False, "GZIPInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util.zip", "ZipEntry", True, "ZipEntry", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(File,Charset)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(File,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(File,int,Charset)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(String,Charset)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "entries", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "getComment", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "getEntry", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "getEntry", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util.zip", "ZipFile", True, "getInputStream", "(ZipEntry)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["java.util.zip", "ZipFile", True, "getInputStream", "(ZipEntry)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.util.zip", "ZipFile", True, "stream", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util.zip", "ZipInputStream", False, "ZipInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel
     data:
       - ["java.util.zip", "ZipOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "file-content-store", "ai-manual"]
+      - ["java.util.zip", "ZipFile", True, "ZipFile", "(String)", "", "Argument[0]", "path-injection", "manual"]

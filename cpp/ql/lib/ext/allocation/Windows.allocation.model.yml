@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: allocationFunctionModel
+    data:
+      - ["", "", False, "MmAllocateContiguousMemory", "0", "", "", True]
+      - ["", "", False, "MmAllocateContiguousNodeMemory", "0", "", "", True]
+      - ["", "", False, "MmAllocateContiguousMemorySpecifyCache", "0", "", "", True]
+      - ["", "", False, "MmAllocateContiguousMemorySpecifyCacheNode", "0", "", "", True]
+      - ["", "", False, "MmAllocateNonCachedMemory", "0", "", "", True]
+      - ["", "", False, "MmAllocateMappingAddress", "0", "", "", True]
+      - ["", "", False, "CoTaskMemAlloc", "0", "", "", True]
+      - ["", "", False, "ExAllocatePool", "1", "", "", True]
+      - ["", "", False, "ExAllocatePool2", "1", "", "", True]
+      - ["", "", False, "ExAllocatePool3", "1", "", "", True]
+      - ["", "", False, "ExAllocatePoolWithTag", "1", "", "", True]
+      - ["", "", False, "ExAllocatePoolWithTagPriority", "1", "", "", True]
+      - ["", "", False, "ExAllocatePoolWithQuota", "1", "", "", True]
+      - ["", "", False, "ExAllocatePoolWithQuotaTag", "1", "", "", True]
+      - ["", "", False, "ExAllocatePoolZero", "1", "", "", True]
+      - ["", "", False, "IoAllocateMdl", "1", "", "", True]
+      - ["", "", False, "IoAllocateErrorLogEntry", "1", "", "", True]
+      - ["", "", False, "LocalAlloc", "1", "", "", True]
+      - ["", "", False, "GlobalAlloc", "1", "", "", True]
+      - ["", "", False, "VirtualAlloc", "1", "", "", True]
+      - ["", "", False, "HeapAlloc", "2", "", "", True]
+      - ["", "", False, "MmAllocatePagesForMdl", "3", "", "", True]
+      - ["", "", False, "MmAllocatePagesForMdlEx", "3", "", "", True]
+      - ["", "", False, "MmAllocateNodePagesForMdlEx", "3", "", "", True]

@@ -5,8 +5,6 @@
 import java
 import semmle.code.java.Maps
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow2
-private import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The class `com.cedarsoftware.util.io.JsonReader`.
@@ -40,34 +38,6 @@ class JsonIoUseMapsSetter extends MethodCall {
     this.getMethod().hasName("put") and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "USE_MAPS" and
     this.getArgument(1).(CompileTimeConstantExpr).getBooleanValue() = true
-  }
-}
-
-/**
- * DEPRECATED: Use `SafeJsonIoFlow` instead.
- *
- * A data flow configuration tracing flow from JsonIo safe settings.
- */
-deprecated class SafeJsonIoConfig extends DataFlow2::Configuration {
-  SafeJsonIoConfig() { this = "UnsafeDeserialization::SafeJsonIoConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(MethodCall ma |
-      ma instanceof JsonIoUseMapsSetter and
-      src.asExpr() = ma.getQualifier()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall ma |
-      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-      sink.asExpr() = ma.getArgument(1)
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
-      sink.asExpr() = cie.getArgument(1)
-    )
   }
 }
 

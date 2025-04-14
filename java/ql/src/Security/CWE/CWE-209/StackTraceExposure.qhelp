@@ -12,11 +12,7 @@ final state of the software when the error occurred.</p>
 
 <p>Unfortunately, the same information can be useful to an attacker.
 The sequence of class names in a stack trace can reveal the structure
-of the application as well as any internal components it relies on.
-Furthermore, the error message at the top of a stack trace can include
-information such as server-side file names and SQL code that the
-application relies on, allowing an attacker to fine-tune a subsequent
-injection attack.</p>
+of the application as well as any internal components it relies on.</p>
 </overview>
 
 <recommendation>

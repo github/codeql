@@ -1,0 +1,1 @@
+| gen_offset_of_expr.rs:5:5:5:38 | OffsetOfExpr | getNumberOfAttrs: | 0 | getNumberOfFields: | 1 | hasTypeRepr: | yes |

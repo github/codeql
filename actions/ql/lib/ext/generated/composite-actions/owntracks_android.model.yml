@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["owntracks/android", "*", "input.name", "code-injection", "generated"]
+     - ["owntracks/android", "*", "input.path", "code-injection", "generated"]

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.UnsafeCertTrustQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module UnsafeCertTrustTest implements TestSig {
   string getARelevantTag() { result = "hasUnsafeCertTrust" }

@@ -207,12 +207,14 @@ class PostMessageEventHandler extends Function {
  * An event parameter for a `postMessage` event handler, considered as an untrusted
  * source of data.
  */
-private class PostMessageEventParameter extends RemoteFlowSource {
+private class PostMessageEventParameter extends ClientSideRemoteFlowSource {
   PostMessageEventParameter() {
     this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
   }
 
   override string getSourceType() { result = "postMessage event" }
+
+  override ClientSideRemoteFlowKind getKind() { result.isMessageEvent() }
 }
 
 /**

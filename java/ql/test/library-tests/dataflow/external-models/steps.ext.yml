@@ -9,13 +9,17 @@ extensions:
       - ["my.qltest", "C", False, "stepQualRes", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["my.qltest", "C", False, "stepQualArg", "(Object)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["my.qltest", "C", False, "stepArgResGenerated", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
-      - ["my.qltest", "C", False, "stepArgQualGenerated", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["my.qltest", "C", False, "stepArgQualGeneratedIgnored", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["my.qltest", "C$MyGenericLibrary", True, "get", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "apiStepArgResGenerated", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "apiStepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "apiStepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["my.qltest.external", "Library", False, "apiStepArgQualGenerated", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "apiStepArgQualGeneratedIgnored", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "id", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["my.qltest.external", "Library", False, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["my.qltest", "C", "stepArgQualGenerated", "(Object)", "summary", "df-generated"]
-      - ["my.qltest", "C", "stepArgQualGeneratedIgnored", "(Object)", "summary", "manual"]
+      - ["my.qltest.external", "Library", "apiStepArgQualGenerated", "(Object)", "summary", "df-generated"]
+      - ["my.qltest.external", "Library", "apiStepArgQualGeneratedIgnored", "(Object)", "summary", "manual"]

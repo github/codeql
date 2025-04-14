@@ -1,0 +1,2 @@
+| gen_closure_expr.rs:8:6:9:15 | \|...\| ... | 0 | gen_closure_expr.rs:8:6:8:17 | Attr |
+| gen_closure_expr.rs:10:6:11:23 | \|...\| ... | 0 | gen_closure_expr.rs:10:6:10:17 | Attr |

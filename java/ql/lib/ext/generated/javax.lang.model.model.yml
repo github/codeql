@@ -2,6 +2,11 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.lang.model", "AnnotatedConstruct", True, "getAnnotationMirrors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["javax.lang.model", "SourceVersion", "isIdentifier", "(CharSequence)", "summary", "df-generated"]

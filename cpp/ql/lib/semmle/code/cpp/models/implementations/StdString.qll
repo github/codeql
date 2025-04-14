@@ -7,6 +7,8 @@
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Iterator
 import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.Alias
 
 /**
  * The `std::basic_string` template class instantiations.
@@ -66,7 +68,7 @@ abstract private class StdStringTaintFunction extends TaintFunction {
    * Gets the index of a parameter to this function that is an iterator.
    */
   final int getAnIteratorParameterIndex() {
-    this.getParameter(result).getType() instanceof Iterator
+    this.getParameter(result).getUnspecifiedType() instanceof Iterator
   }
 }
 
@@ -78,7 +80,9 @@ abstract private class StdStringTaintFunction extends TaintFunction {
  * std::string b(a.begin(), a.end());
  * ```
  */
-private class StdStringConstructor extends Constructor, StdStringTaintFunction {
+private class StdStringConstructor extends Constructor, StdStringTaintFunction, SideEffectFunction,
+  AliasFunction
+{
   StdStringConstructor() { this.getDeclaringType() instanceof StdBasicString }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -93,6 +97,42 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction {
       or
       output.isQualifierObject()
     )
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+}
+
+private class StdStringDestructor extends Destructor, SideEffectFunction, AliasFunction {
+  StdStringDestructor() { this.getDeclaringType() instanceof StdBasicString }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 }
 
@@ -164,7 +204,7 @@ private class StdStringFrontBack extends StdStringTaintFunction {
 /**
  * The (non-member) `std::string` function `operator+`.
  */
-private class StdStringPlus extends StdStringTaintFunction {
+private class StdStringPlus extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
   StdStringPlus() {
     this.hasQualifiedName(["std", "bsl"], "operator+") and
     this.getUnspecifiedType() instanceof StdBasicString
@@ -178,6 +218,22 @@ private class StdStringPlus extends StdStringTaintFunction {
     ) and
     output.isReturnValue()
   }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    this.getParameter(i).getUnspecifiedType() instanceof ReferenceType and
+    buffer = false
+    or
+    this.getParameter(i).getUnspecifiedType() instanceof PointerType and
+    buffer = true
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = [0, 1] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 }
 
 /**
@@ -185,7 +241,7 @@ private class StdStringPlus extends StdStringTaintFunction {
  * All of these functions combine the existing string with a new
  * string (or character) from one of the arguments.
  */
-private class StdStringAppend extends StdStringTaintFunction {
+private class StdStringAppend extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
   StdStringAppend() {
     this.getClassAndName(["operator+=", "append", "replace"]) instanceof StdBasicString
   }
@@ -210,6 +266,22 @@ private class StdStringAppend extends StdStringTaintFunction {
   }
 
   override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and mustWrite = false and buffer = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = [-1, 0] and buffer = true
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = [-1, 0] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
 }
 
 /**
@@ -301,7 +373,7 @@ private class StdStringSubstr extends StdStringTaintFunction {
 /**
  * The `std::string` functions `at` and `operator[]`.
  */
-private class StdStringAt extends StdStringTaintFunction {
+private class StdStringAt extends StdStringTaintFunction, SideEffectFunction, AliasFunction {
   StdStringAt() { this.getClassAndName(["at", "operator[]"]) instanceof StdBasicString }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -315,6 +387,22 @@ private class StdStringAt extends StdStringTaintFunction {
   }
 
   override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
 }
 
 /**
@@ -322,6 +410,54 @@ private class StdStringAt extends StdStringTaintFunction {
  */
 private class StdBasicIStream extends ClassTemplateInstantiation {
   StdBasicIStream() { this.hasQualifiedName(["std", "bsl"], "basic_istream") }
+}
+
+private class StdBasicIfStream extends ClassTemplateInstantiation {
+  StdBasicIfStream() { this.hasQualifiedName(["std", "bsl"], "basic_ifstream") }
+}
+
+class StdBasicIfStreamConstructor extends Constructor, SideEffectFunction, AliasFunction {
+  StdBasicIfStreamConstructor() { this.getDeclaringType() instanceof StdBasicIfStream }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    exists(Type t | t = this.getParameter(i).getUnspecifiedType() |
+      t instanceof PointerType and buffer = true
+      or
+      t instanceof ReferenceType and buffer = false
+    )
+  }
+}
+
+class StdBasicIfStreamDestructor extends Destructor, SideEffectFunction, AliasFunction {
+  StdBasicIfStreamDestructor() { this.getDeclaringType() instanceof StdBasicIfStream }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
 }
 
 /**
@@ -540,6 +676,33 @@ private class StdGetLine extends DataFlowFunction, TaintFunction {
  */
 private class StdBasicOStream extends ClassTemplateInstantiation {
   StdBasicOStream() { this.hasQualifiedName(["std", "bsl"], "basic_ostream") }
+}
+
+private class StdStringLessThan extends Function, AliasFunction, SideEffectFunction {
+  StdStringLessThan() {
+    this.hasQualifiedName(["std", "bsl"], "operator<") and
+    this.getNumberOfParameters() = 2 and
+    this.getParameter(0).getUnspecifiedType().(ReferenceType).getBaseType() instanceof
+      StdBasicString and
+    this.getParameter(1).getUnspecifiedType().(ReferenceType).getBaseType() instanceof
+      StdBasicString
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = [0, 1] }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = [0, 1] and buffer = false
+  }
 }
 
 /**

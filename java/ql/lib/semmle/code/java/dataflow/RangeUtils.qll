@@ -9,7 +9,7 @@ private import semmle.code.java.Constants
 private import semmle.code.java.dataflow.RangeAnalysis
 private import codeql.rangeanalysis.internal.RangeUtils
 
-private module U = MakeUtils<Sem, IntDelta>;
+private module U = MakeUtils<Location, Sem, IntDelta>;
 
 private predicate backEdge = U::backEdge/3;
 

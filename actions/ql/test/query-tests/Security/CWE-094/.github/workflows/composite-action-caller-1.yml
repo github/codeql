@@ -1,0 +1,10 @@
+name: Issue Workflow
+on: 
+  pull_request_target:
+jobs: 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: .github/actions/action1
+

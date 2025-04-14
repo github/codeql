@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-094/JShellInjection.ql
+query: experimental/Security/CWE/CWE-094/JShellInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

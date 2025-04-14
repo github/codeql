@@ -115,7 +115,7 @@ public class Identifiers {
   // rare.
   private static boolean isInAstralSet(int code, int[] set) {
     int pos = 0x10000;
-    for (int i = 0; i < set.length; i += 2) {
+    for (int i = 0; i < set.length - 1; i += 2) {
       pos += set[i];
       if (pos > code) return false;
       pos += set[i + 1];

@@ -1,0 +1,80 @@
+name: "Rust"
+
+on:
+  pull_request:
+    paths:
+      - "rust/**"
+      - "misc/bazel/**"
+      - "misc/codegen/**"
+      - "shared/**"
+      - "MODULE.bazel"
+      - .github/workflows/rust.yml
+      - .github/actions/**
+      - codeql-workspace.yml
+      - "!**/*.md"
+      - "!**/*.qhelp"
+    branches:
+      - rust-experiment
+      - main
+      - rc/*
+      - codeql-cli-*
+
+permissions:
+  contents: read
+
+jobs:
+  rust-ast-generator:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rust/ast-generator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Inject sources
+        shell: bash
+        run: |
+          bazel run //rust/ast-generator:inject-sources
+      - name: Format
+        shell: bash
+        run: |
+          cargo fmt --check
+      - name: Compilation
+        shell: bash
+        run: cargo check
+      - name: Clippy
+        shell: bash
+        run: |
+          cargo clippy --no-deps -- -D warnings
+  rust-code:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rust/extractor
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Format
+        shell: bash
+        run: |
+          cargo fmt --check
+      - name: Compilation
+        shell: bash
+        run: cargo check
+      - name: Clippy
+        shell: bash
+        run: |
+          cargo clippy --no-deps -- -D warnings
+  rust-codegen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install CodeQL
+        uses: ./.github/actions/fetch-codeql
+      - name: Code generation
+        shell: bash
+        run: |
+          bazel run //rust/codegen
+          git add .
+          git diff --exit-code HEAD

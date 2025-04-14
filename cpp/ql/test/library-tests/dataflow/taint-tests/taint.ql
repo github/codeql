@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 
 module TaintModels {
   class SetMemberFunction extends TaintFunction {

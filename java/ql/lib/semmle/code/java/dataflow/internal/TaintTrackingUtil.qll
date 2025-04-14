@@ -161,6 +161,7 @@ private module Cached {
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
@@ -316,9 +317,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodCall sink, string mo
  * Methods that return tainted data when called on tainted data.
  */
 private predicate taintPreservingQualifierToMethod(Method m, string model) {
-  model = "" and
-  m instanceof CloneMethod
-  or
   model = "%StringWriter" and
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
   (
@@ -486,9 +484,6 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
-
-  /** DEPRECATED: Alias for `getAWriteObjectMethodCall`. */
-  deprecated MethodCall getAWriteObjectMethodAccess() { result = this.getAWriteObjectMethodCall() }
 }
 
 /** Flow through string formatting. */
@@ -643,7 +638,7 @@ private MethodCall callReturningSameType(Expr ref) {
 }
 
 private SrcRefType entrypointType() {
-  exists(ThreatModelFlowSource s, RefType t |
+  exists(ActiveThreatModelSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
@@ -660,4 +655,54 @@ private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
     not fa.getField().isStatic()
   ) and
   src.getType().(RefType).getSourceDeclaration() = entrypointType()
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
+  private import semmle.code.java.dataflow.internal.DataFlowNodes
+  private import semmle.code.java.dataflow.internal.FlowSummaryImpl as Impl
+  private import semmle.code.java.dispatch.VirtualDispatch
+  private import semmle.code.java.security.Sanitizers
+
+  private predicate hasTarget(Call call) {
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = call)
+    or
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = call)
+    or
+    call.getCallee().getSourceDeclaration() instanceof ExternalFlow::SinkCallable
+    or
+    exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
+    or
+    exists(viableCallable(call))
+    or
+    call.getQualifier().getType() instanceof Array
+    or
+    call.getCallee().getSourceDeclaration() instanceof CloneMethod
+    or
+    call.getCallee()
+        .getSourceDeclaration()
+        .getDeclaringType()
+        .getPackage()
+        .hasName("java.util.function")
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, Call srcCall, int argpos |
+      not hasTarget(srcCall) and
+      call.asCall() = srcCall and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      not src instanceof SimpleTypeSanitizer
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode).getPreUpdateNode() = Public::getInstanceArgument(srcCall)
+      or
+      sink.(OutNode).getCall() = call
+    )
+  }
 }

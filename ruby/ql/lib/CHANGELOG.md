@@ -1,3 +1,128 @@
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getCallNode` predicate from `API::Node`, use `asCall()` instead.
+* Deleted the deprecated `getASubclass`, `getAnImmediateSubclass`, `getASuccessor`, `getAPredecessor`, `getASuccessor`, `getDepth`, and `getPath` predicates from `API::Node`. 
+* Deleted the deprecated `Root`, `Use`, and `Def` classes from `ApiGraphs.qll`.
+* Deleted the deprecated `Label` module from `ApiGraphs.qll`.
+* Deleted the deprecated `getAUse`, `getAnImmediateUse`, `getARhs`, and `getAValueReachingRhs` predicates from `API::Node`, use `getAValueReachableFromSource`, `asSource`, `asSink`, and `getAValueReachingSink` instead.
+* Deleted the deprecated `getAVariable` predicate from the `ExprNode` class, use `getVariable` instead.
+* Deleted the deprecated `getAPotentialFieldAccessMethod` predicate from the `ActiveRecordModelClass` class.
+* Deleted the deprecated `ActiveRecordModelClassMethodCall` class from `ActiveRecord.qll`, use `ActiveRecordModelClass.getClassNode().trackModule().getMethod()` instead.
+* Deleted the deprecated `PotentiallyUnsafeSqlExecutingMethodCall` class from `ActiveRecord.qll`, use the `SqlExecution` concept instead.
+* Deleted the deprecated `ModelClass` and `ModelInstance` classes from `ActiveResource.qll`, use `ModelClassNode` and `ModelClassNode.getAnInstanceReference()` instead.
+* Deleted the deprecated `Collection` class from `ActiveResource.qll`, use `CollectionSource` instead.
+* Deleted the deprecated `ServiceInstantiation` and `ClientInstantiation` classes from `Twirp.qll`.
+* Deleted a lot of deprecated dataflow modules from "*Query.qll" files.
+* Deleted the old deprecated TypeTracking library.
+
+## 3.0.2
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+* Types are now being tracked in data flow, but only when the type of an object is obvious from the context. For example, `C.new` has guaranteed type `C`, while in `def add(x, y) { x + y }` we cannot assign a type to `x + y` (it could, for instance, be both `String` and `Integer`). Tracking types allows us to remove false-positive results when type incompatibility can be established.
+
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+## 2.0.4
+
+No user-facing changes.
+
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* The `ExtractionError` class has been split into `ExtractionError` and `ExtractionWarning`, reporting extraction errors and warnings respectively.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getURL` predicate the `Http::Request` class, use `getAUrlPart` instead.
+* Deleted the deprecated `getNode` predicate from the `CfgNode` class, use `getAstNode` instead. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Element references with blocks, such as `foo[:bar] { |x| puts x}`, are now parsed correctly.
+* The `CleartextSources.qll` library, used by `rb/clear-text-logging-sensitive-data` and `rb/clear-text-logging-sensitive-data`, has been updated to consider heuristics for additional categories of sensitive data. 
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+### Minor Analysis Improvements
+
+* Additional heuristics for a new sensitive data classification for private information (e.g. credit card numbers) have been added to the shared `SensitiveDataHeuristics.qll` library. This may result in additional results for queries that use sensitive data such as `rb/sensitive-get-query`.
+
 ## 0.9.1
 
 No user-facing changes.

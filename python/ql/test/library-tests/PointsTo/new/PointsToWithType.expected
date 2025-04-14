@@ -572,14 +572,6 @@
 | i_imports.py:31 | ControlFlowNode for Attribute | builtin-class _io.BytesIO | builtin-class type | 31 |
 | i_imports.py:31 | ControlFlowNode for BytesIO | builtin-class _io.BytesIO | builtin-class type | 31 |
 | i_imports.py:31 | ControlFlowNode for _io | Module _io | builtin-class module | 29 |
-| i_imports.py:33 | ControlFlowNode for ImportExpr | Module io | builtin-class module | 33 |
-| i_imports.py:33 | ControlFlowNode for io | Module io | builtin-class module | 33 |
-| i_imports.py:34 | ControlFlowNode for Attribute | builtin-class _io.StringIO | builtin-class type | 55 |
-| i_imports.py:34 | ControlFlowNode for StringIO | builtin-class _io.StringIO | builtin-class type | 55 |
-| i_imports.py:34 | ControlFlowNode for io | Module io | builtin-class module | 33 |
-| i_imports.py:35 | ControlFlowNode for Attribute | builtin-class _io.BytesIO | builtin-class type | 55 |
-| i_imports.py:35 | ControlFlowNode for BytesIO | builtin-class _io.BytesIO | builtin-class type | 55 |
-| i_imports.py:35 | ControlFlowNode for io | Module io | builtin-class module | 33 |
 | i_imports.py:37 | ControlFlowNode for ImportExpr | Module code | builtin-class module | 37 |
 | i_imports.py:37 | ControlFlowNode for code | Module code | builtin-class module | 37 |
 | i_imports.py:38 | ControlFlowNode for Attribute | Function f2 | builtin-class function | 24 |

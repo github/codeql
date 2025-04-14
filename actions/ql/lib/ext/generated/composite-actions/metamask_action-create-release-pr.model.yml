@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["metamask/action-create-release-pr", "*", "input.artifacts-path", "code-injection", "generated"]
+     - ["metamask/action-create-release-pr", "*", "input.created-pr-status", "code-injection", "generated"]
+     - ["metamask/action-create-release-pr", "*", "input.release-branch-prefix", "code-injection", "generated"]

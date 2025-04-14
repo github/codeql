@@ -1,1 +1,1 @@
-semmle-extractor-options: -R . --path no-such-path --filter exclude:**/src_archive/** --respect-init=False --max-context-cost=11 --dont-split-graph
+semmle-extractor-options: -R . --path no-such-path --filter exclude:**/*.testproj/** --respect-init=False --max-context-cost=11 --dont-split-graph

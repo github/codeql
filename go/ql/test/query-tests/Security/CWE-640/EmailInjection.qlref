@@ -1,1 +1,2 @@
-Security/CWE-640/EmailInjection.ql
+query: Security/CWE-640/EmailInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

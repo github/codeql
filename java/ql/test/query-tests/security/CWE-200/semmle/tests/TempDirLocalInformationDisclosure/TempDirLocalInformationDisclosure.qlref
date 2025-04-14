@@ -1,1 +1,2 @@
-Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql
+query: Security/CWE/CWE-200/TempDirLocalInformationDisclosure.ql
+postprocess: utils/test/PrettyPrintModels.ql

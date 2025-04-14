@@ -3,3 +3,11 @@
 | WcharCharConversion.cpp:24:22:24:27 | lpChar | Conversion from char * to wchar_t *. Use of invalid string can lead to undefined behavior. |
 | WcharCharConversion.cpp:26:23:26:28 | lpChar | Conversion from char * to LPCWSTR. Use of invalid string can lead to undefined behavior. |
 | WcharCharConversion.cpp:27:17:27:22 | lpChar | Conversion from char * to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:82:21:82:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:87:21:87:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:90:21:90:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:96:21:96:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:98:21:98:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:103:21:103:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:106:21:106:26 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
+| WcharCharConversion.cpp:110:20:110:25 | buffer | Conversion from LPTSTR to LPWSTR. Use of invalid string can lead to undefined behavior. |
