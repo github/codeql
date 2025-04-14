@@ -135,9 +135,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
           ExternalFlow::getParameterTypeWithoutTemplateArguments(functionTemplate, i, true), ","
           order by
             i
-        )
-    |
-      if params = "" then result = "()" else result = "(" + params + ")"
+        ) and
+      result = "(" + params + ")"
     )
   }
 
