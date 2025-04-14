@@ -170,7 +170,12 @@ module TypeResolution {
     )
   }
 
-  private predicate contextualType(Node value, Node type) {
+  predicate contextualType(Node value, Node type) {
+    exists(LocalVariable v |
+      type = v.getADeclaration().getTypeAnnotation() and
+      value = v.getAnAssignedExpr()
+    )
+    or
     exists(InvokeExpr call, Function target, int i |
       callTarget(call, target) and
       value = call.getArgument(i) and
