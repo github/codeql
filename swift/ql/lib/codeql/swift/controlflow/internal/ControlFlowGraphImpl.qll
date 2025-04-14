@@ -1866,6 +1866,15 @@ module Exprs {
     }
   }
 
+  private class ExtractFunctionIsolationTree extends AstStandardPostOrderTree {
+    override ExtractFunctionIsolationExpr ast;
+
+    final override ControlFlowElement getChildNode(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getFunctionExpr().getFullyConverted()
+    }
+  }
+
   module Conversions {
     class ConversionOrIdentity =
       Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or
