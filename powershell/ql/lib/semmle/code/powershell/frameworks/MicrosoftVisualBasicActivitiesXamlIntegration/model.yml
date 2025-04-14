@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsConverter", "Method[CanConvertTo].ReturnValue"]
-    - ["System.Boolean", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsConverter", "Method[CanConvertFrom].ReturnValue"]
-    - ["System.String", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsValueSerializer", "Method[ConvertToString].ReturnValue"]
-    - ["System.Boolean", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsValueSerializer", "Method[CanConvertToString].ReturnValue"]
-    - ["System.Object", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsConverter", "Method[ConvertFrom].ReturnValue"]
-    - ["System.Object", "Microsoft.VisualBasic.Activities.XamlIntegration.VisualBasicSettingsConverter", "Method[ConvertTo].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsvalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.object", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.object", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[convertto].ReturnValue"]

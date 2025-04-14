@@ -28,4 +28,11 @@ class Pipeline extends Expr, TPipeline {
   Expr getAComponent() { result = this.getComponent(_) }
 
   int getNumberOfComponents() { result = getRawAst(this).(Raw::Pipeline).getNumberOfComponents() }
+
+  Expr getLastComponent() {
+    exists(int i |
+      result = this.getComponent(i) and
+      not exists(this.getComponent(i + 1))
+    )
+  }
 }

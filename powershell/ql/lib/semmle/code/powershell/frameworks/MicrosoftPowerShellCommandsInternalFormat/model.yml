@@ -3,17 +3,26 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Management.Automation.PSObject", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Method[InputObjectCall].ReturnValue"]
-    - ["System.Management.Automation.PSCmdlet", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Method[OuterCmdletCall].ReturnValue"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[ShowError]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[HideTableHeaders]"]
-    - ["System.String", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[Expand]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[AutoSize]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[Wrap]"]
-    - ["System.Management.Automation.PSObject", "Microsoft.PowerShell.Commands.Internal.Format.FrontEndCommandBase", "Property[InputObject]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[Force]"]
-    - ["System.Object", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[GroupBy]"]
-    - ["System.Object[]", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableAndListBase", "Property[Property]"]
-    - ["System.String", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[View]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatTableBase", "Property[RepeatHeader]"]
-    - ["System.Management.Automation.SwitchParameter", "Microsoft.PowerShell.Commands.Internal.Format.OuterFormatShapeCommandBase", "Property[DisplayError]"]
+    - ["system.management.automation.psobject", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall].ReturnValue"]
+    - ["system.management.automation.pscmdlet", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall].ReturnValue"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[showerror]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Property[hidetableheaders]"]
+    - ["system.string", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[expand]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Property[autosize]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Property[wrap]"]
+    - ["system.management.automation.psobject", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Property[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[force]"]
+    - ["system.object", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[groupby]"]
+    - ["system.object[]", "microsoft.powershell.commands.internal.format.outerformattableandlistbase", "property[property]"]
+    - ["system.string", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[view]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Property[repeatheader]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Property[displayerror]"]
+
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall]", "Argument[this]", "ReturnValue", "value"]

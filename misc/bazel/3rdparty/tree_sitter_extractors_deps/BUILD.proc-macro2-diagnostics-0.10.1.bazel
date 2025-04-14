@@ -87,11 +87,11 @@ rust_library(
     }),
     version = "0.10.1",
     deps = [
-        "@vendor__proc-macro2-1.0.93//:proc_macro2",
-        "@vendor__proc-macro2-diagnostics-0.10.1//:build_script_build",
-        "@vendor__quote-1.0.38//:quote",
-        "@vendor__syn-2.0.96//:syn",
-        "@vendor__yansi-1.0.1//:yansi",
+        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+        "@vendor_ts__proc-macro2-diagnostics-0.10.1//:build_script_build",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.100//:syn",
+        "@vendor_ts__yansi-1.0.1//:yansi",
     ],
 )
 
@@ -148,7 +148,7 @@ cargo_build_script(
     version = "0.10.1",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__version_check-0.9.5//:version_check",
+        "@vendor_ts__version_check-0.9.5//:version_check",
     ],
 )
 

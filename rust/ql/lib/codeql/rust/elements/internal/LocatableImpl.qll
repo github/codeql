@@ -41,6 +41,9 @@ module Impl {
      * Gets the primary file where this element occurs.
      */
     File getFile() { result = this.getLocation().getFile() }
+
+    /** Holds if this element is from source code. */
+    predicate fromSource() { exists(this.getFile().getRelativePath()) }
   }
 
   /** Gets the non-synthesized location of `l`, if any. */

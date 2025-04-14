@@ -5,20 +5,20 @@ namespace f {
   export function inner() {}
 }
 
-f(); // OK
-f.inner(); // OK
+f();
+f.inner();
 
 class C {}
 namespace C {
   export function inner() {}
 }
 
-new C(); // OK
-C.inner(); // OK
+new C();
+C.inner();
 
 namespace g {
   export function inner() {}
 }
 
-g(); // NOT OK
-g.inner(); // OK
+g(); // $ Alert
+g.inner();

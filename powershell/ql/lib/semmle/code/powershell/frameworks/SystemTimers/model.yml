@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Timers.Timer", "Property[AutoReset]"]
-    - ["System.String", "System.Timers.TimersDescriptionAttribute", "Property[Description]"]
-    - ["System.Boolean", "System.Timers.Timer", "Property[Enabled]"]
-    - ["System.ComponentModel.ISynchronizeInvoke", "System.Timers.Timer", "Property[SynchronizingObject]"]
-    - ["System.ComponentModel.ISite", "System.Timers.Timer", "Property[Site]"]
-    - ["System.DateTime", "System.Timers.ElapsedEventArgs", "Property[SignalTime]"]
-    - ["System.Double", "System.Timers.Timer", "Property[Interval]"]
+    - ["system.boolean", "system.timers.timer", "Property[autoreset]"]
+    - ["system.string", "system.timers.timersdescriptionattribute", "Property[description]"]
+    - ["system.boolean", "system.timers.timer", "Property[enabled]"]
+    - ["system.componentmodel.isynchronizeinvoke", "system.timers.timer", "Property[synchronizingobject]"]
+    - ["system.componentmodel.isite", "system.timers.timer", "Property[site]"]
+    - ["system.datetime", "system.timers.elapsedeventargs", "Property[signaltime]"]
+    - ["system.double", "system.timers.timer", "Property[interval]"]

@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Configuration.IConfigurationProvider", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Method[Build].ReturnValue"]
-    - ["Microsoft.Extensions.FileProviders.IFileProvider", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[FileProvider]"]
-    - ["System.Int32", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[ReloadDelay]"]
-    - ["System.Func<System.String,System.Boolean>", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[IgnoreCondition]"]
-    - ["System.String", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationProvider", "Method[ToString].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[IgnorePrefix]"]
-    - ["System.Boolean", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[ReloadOnChange]"]
-    - ["System.Boolean", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[Optional]"]
-    - ["System.String", "Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource", "Property[SectionDelimiter]"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Method[build].ReturnValue"]
+    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[fileprovider]"]
+    - ["system.int32", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[reloaddelay]"]
+    - ["system.func<system.string,system.boolean>", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[ignorecondition]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationprovider", "Method[tostring].ReturnValue"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[ignoreprefix]"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[reloadonchange]"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[optional]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[sectiondelimiter]"]

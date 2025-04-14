@@ -81,9 +81,9 @@ rust_library(
     }),
     version = "0.3.37",
     deps = [
-        "@vendor__deranged-0.3.11//:deranged",
-        "@vendor__num-conv-0.1.0//:num_conv",
-        "@vendor__powerfmt-0.2.0//:powerfmt",
-        "@vendor__time-core-0.1.2//:time_core",
+        "@vendor_ts__deranged-0.3.11//:deranged",
+        "@vendor_ts__num-conv-0.1.0//:num_conv",
+        "@vendor_ts__powerfmt-0.2.0//:powerfmt",
+        "@vendor_ts__time-core-0.1.2//:time_core",
     ],
 )

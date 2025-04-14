@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.completionresult", "Method[get_completiontext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.completionresult", "Method[get_listitemtext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.completionresult", "Method[get_tooltip]", "Argument[this]", "ReturnValue", "taint"]
+      

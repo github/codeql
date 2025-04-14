@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "Microsoft.VisualStudio.Text.AdornmentLibrary.Squiggles.Implementation.IErrorTypeMetadata", "Property[DisplayName]"]
+    - ["system.string", "microsoft.visualstudio.text.adornmentlibrary.squiggles.implementation.ierrortypemetadata", "Property[displayname]"]

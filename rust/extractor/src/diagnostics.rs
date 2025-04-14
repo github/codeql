@@ -2,8 +2,8 @@ use crate::config::Config;
 use anyhow::Context;
 use chrono::{DateTime, Utc};
 use ra_ap_project_model::ProjectManifest;
-use serde::ser::SerializeMap;
 use serde::Serialize;
+use serde::ser::SerializeMap;
 use std::collections::HashMap;
 use std::fmt::Display;
 use std::fs::File;
@@ -83,6 +83,7 @@ pub enum ExtractionStepKind {
     LoadSource,
     Parse,
     Extract,
+    CrateGraph,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -126,6 +127,10 @@ impl ExtractionStep {
             ExtractionStepKind::Extract,
             Some(PathBuf::from(target)),
         )
+    }
+
+    pub fn crate_graph(start: Instant) -> Self {
+        Self::new(start, ExtractionStepKind::CrateGraph, None)
     }
 
     pub fn load_source(start: Instant, target: &Path) -> Self {

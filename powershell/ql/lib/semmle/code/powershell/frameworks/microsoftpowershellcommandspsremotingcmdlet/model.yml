@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolveappname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolvecomputername]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolveshell]", "Argument[0]", "ReturnValue", "taint"]
+      

@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Exception", "System.Net.Http.Metrics.HttpMetricsEnrichmentContext", "Property[Exception]"]
-    - ["System.Net.Http.HttpRequestMessage", "System.Net.Http.Metrics.HttpMetricsEnrichmentContext", "Property[Request]"]
-    - ["System.Net.Http.HttpResponseMessage", "System.Net.Http.Metrics.HttpMetricsEnrichmentContext", "Property[Response]"]
+    - ["system.exception", "system.net.http.metrics.httpmetricsenrichmentcontext", "Property[exception]"]
+    - ["system.net.http.httprequestmessage", "system.net.http.metrics.httpmetricsenrichmentcontext", "Property[request]"]
+    - ["system.net.http.httpresponsemessage", "system.net.http.metrics.httpmetricsenrichmentcontext", "Property[response]"]

@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Configuration.IConfigurationProvider", "Microsoft.Extensions.Configuration.Ini.IniStreamConfigurationSource", "Method[Build].ReturnValue"]
-    - ["System.Collections.Generic.IDictionary<System.String,System.String>", "Microsoft.Extensions.Configuration.Ini.IniStreamConfigurationProvider!", "Method[Read].ReturnValue"]
-    - ["Microsoft.Extensions.Configuration.IConfigurationProvider", "Microsoft.Extensions.Configuration.Ini.IniConfigurationSource", "Method[Build].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.ini.inistreamconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.collections.generic.idictionary<system.string,system.string>", "microsoft.extensions.configuration.ini.inistreamconfigurationprovider!", "Method[read].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.ini.iniconfigurationsource", "Method[build].ReturnValue"]

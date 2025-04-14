@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[get_defaultsession]", "Argument[this]", "ReturnValue", "taint"]

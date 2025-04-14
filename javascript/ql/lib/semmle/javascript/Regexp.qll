@@ -302,6 +302,51 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
 }
 
 /**
+ * An intersection term, that is, a term of the form `[[a]&&[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]&&[bcd]]/v - which matches 'b' and 'c' only.
+ * ```
+ */
+class RegExpIntersection extends RegExpTerm, @regexp_intersection {
+  /** Gets an intersected term of this term. */
+  RegExpTerm getAnElement() { result = this.getAChild() }
+
+  /** Gets the number of intersected terms of this term. */
+  int getNumIntersectedTerm() { result = this.getNumChild() }
+
+  override predicate isNullable() { this.getAnElement().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpIntersection" }
+}
+
+/**
+ * A subtraction term, that is, a term of the form `[[a]--[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]--[bc]]/v - which matches 'a' only.
+ * ```
+ */
+class RegExpSubtraction extends RegExpTerm, @regexp_subtraction {
+  /** Gets the minuend (left operand) of this subtraction. */
+  RegExpTerm getFirstTerm() { result = this.getChild(0) }
+
+  /** Gets the number of subtractions terms of this term. */
+  int getNumSubtractedTerm() { result = this.getNumChild() - 1 }
+
+  /** Gets a subtrahend (right operand) of this subtraction. */
+  RegExpTerm getASubtractedTerm() { exists(int i | i > 0 and result = this.getChild(i)) }
+
+  override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpSubtraction" }
+}
+
+/**
  * A sequence term.
  *
  * Example:
@@ -1140,6 +1185,28 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = this.getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
+}
+
+/**
+ * A quoted string escape in a regular expression, using the `\q` syntax.
+ * The only operation supported inside a quoted string is alternation, using `|`.
+ *
+ * Example:
+ *
+ * ```
+ * \q{foo}
+ * \q{a|b|c}
+ * ```
+ */
+class RegExpQuotedString extends RegExpTerm, @regexp_quoted_string {
+  /** Gets the term representing the contents of this quoted string. */
+  RegExpTerm getTerm() { result = this.getAChild() }
+
+  override predicate isNullable() { none() }
+
+  override string getAMatchedString() { result = this.getTerm().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpQuotedString" }
 }
 
 module RegExp {

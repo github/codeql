@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "System.Web.Script.Services.ProxyGenerator!", "Method[GetClientProxyScript].ReturnValue"]
-    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ScriptMethodAttribute", "Property[ResponseFormat]"]
-    - ["System.String", "System.Web.Script.Services.GenerateScriptTypeAttribute", "Property[ScriptTypeId]"]
-    - ["System.Boolean", "System.Web.Script.Services.ScriptMethodAttribute", "Property[XmlSerializeString]"]
-    - ["System.Boolean", "System.Web.Script.Services.ScriptMethodAttribute", "Property[UseHttpGet]"]
-    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ResponseFormat!", "Field[Xml]"]
-    - ["System.Web.Script.Services.ResponseFormat", "System.Web.Script.Services.ResponseFormat!", "Field[Json]"]
-    - ["System.Type", "System.Web.Script.Services.GenerateScriptTypeAttribute", "Property[Type]"]
+    - ["system.string", "system.web.script.services.proxygenerator!", "Method[getclientproxyscript].ReturnValue"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.scriptmethodattribute", "Property[responseformat]"]
+    - ["system.string", "system.web.script.services.generatescripttypeattribute", "Property[scripttypeid]"]
+    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Property[xmlserializestring]"]
+    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Property[usehttpget]"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Field[xml]"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Field[json]"]
+    - ["system.type", "system.web.script.services.generatescripttypeattribute", "Property[type]"]

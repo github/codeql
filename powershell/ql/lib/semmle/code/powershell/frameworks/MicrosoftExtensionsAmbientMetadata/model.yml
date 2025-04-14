@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "Microsoft.Extensions.AmbientMetadata.ApplicationMetadata", "Property[DeploymentRing]"]
-    - ["System.String", "Microsoft.Extensions.AmbientMetadata.ApplicationMetadata", "Property[EnvironmentName]"]
-    - ["System.String", "Microsoft.Extensions.AmbientMetadata.ApplicationMetadata", "Property[ApplicationName]"]
-    - ["System.String", "Microsoft.Extensions.AmbientMetadata.ApplicationMetadata", "Property[BuildVersion]"]
+    - ["system.string", "microsoft.extensions.ambientmetadata.applicationmetadata", "Property[deploymentring]"]
+    - ["system.string", "microsoft.extensions.ambientmetadata.applicationmetadata", "Property[environmentname]"]
+    - ["system.string", "microsoft.extensions.ambientmetadata.applicationmetadata", "Property[applicationname]"]
+    - ["system.string", "microsoft.extensions.ambientmetadata.applicationmetadata", "Property[buildversion]"]

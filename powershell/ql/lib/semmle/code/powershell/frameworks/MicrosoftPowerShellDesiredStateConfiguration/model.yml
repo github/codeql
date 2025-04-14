@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Object", "Microsoft.PowerShell.DesiredStateConfiguration.ArgumentToConfigurationDataTransformationAttribute", "Method[Transform].ReturnValue"]
+    - ["system.object", "microsoft.powershell.desiredstateconfiguration.argumenttoconfigurationdatatransformationattribute", "Method[transform].ReturnValue"]

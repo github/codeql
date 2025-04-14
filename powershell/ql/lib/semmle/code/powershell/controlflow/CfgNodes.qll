@@ -291,11 +291,11 @@ class ProcessBlockCfgNode extends NamedBlockCfgNode {
 
   ScriptBlockCfgNode getScriptBlock() { result.getProcessBlock() = this }
 
-  PipelineVariable getPipelineVariable() {
+  PipelineParameter getPipelineParameter() {
     result.getScriptBlock() = this.getScriptBlock().getAstNode()
   }
 
-  ExprNodes::VarReadAccessCfgNode getPipelineVariableAccess() {
+  ExprNodes::VarReadAccessCfgNode getPipelineParameterAccess() {
     block.hasCfgChild(block.getPipelineParameterAccess(), this, result)
   }
 
@@ -587,7 +587,7 @@ module ExprNodes {
   }
 
   private class CallOperatorChildMapping extends CallExprChildMapping instanceof CallOperator {
-    override predicate relevantChild(Ast child) { none() }
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class CallOperatorCfgNode extends CallExprCfgNode {
@@ -598,6 +598,18 @@ module ExprNodes {
     override CallOperator getExpr() { result = e }
 
     ExprCfgNode getCommand() { result = this.getArgument(0) }
+  }
+
+  private class ToStringCallChildmapping extends CallExprChildMapping instanceof ToStringCall {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
+  }
+
+  class ToStringCallCfgNode extends CallExprCfgNode {
+    override string getAPrimaryQlClass() { result = "ToStringCallCfgNode" }
+
+    override ToStringCallChildmapping e;
+
+    override ToStringCall getExpr() { result = e }
   }
 
   private class MemberExprChildMapping extends ExprChildMapping, MemberExpr {
@@ -685,14 +697,24 @@ module ExprNodes {
     string getPossiblyQualifiedName() { result = e.getPossiblyQualifiedName() }
 
     predicate isQualified() { e.isQualified() }
+
+    predicate hasQualifiedName(string namespace, string typename) {
+      e.hasQualifiedName(namespace, typename)
+    }
+  }
+
+  private class QualifiedTypeNameExprChildMapping extends TypeNameExprChildMapping,
+    QualifiedTypeNameExpr
+  {
+    override predicate relevantChild(Ast child) { super.relevantChild(child) }
   }
 
   class QualifiedTypeNameExprCfgNode extends TypeNameExprCfgNode {
-    QualifiedTypeNameExprCfgNode() { e.isQualified() }
+    override QualifiedTypeNameExprChildMapping e;
+
+    override TypeNameExpr getExpr() { result = e }
 
     override string getAPrimaryQlClass() { result = "QualifiedTypeNameExprCfgNode" }
-
-    override QualifiedTypeNameExpr getExpr() { result = e }
   }
 
   private class ErrorExprChildMapping extends ExprChildMapping, ErrorExpr {
@@ -837,6 +859,8 @@ module ExprNodes {
     ExprCfgNode getComponent(int i) { e.hasCfgChild(e.getComponent(i), this, result) }
 
     ExprCfgNode getAComponent() { result = this.getComponent(_) }
+
+    ExprCfgNode getLastComponent() { e.hasCfgChild(e.getLastComponent(), this, result) }
   }
 
   private class PipelineChainChildMapping extends ExprChildMapping, PipelineChain {
@@ -1060,6 +1084,20 @@ module ExprNodes {
     override Operation getExpr() { result = e }
 
     ExprCfgNode getAnOperand() { e.hasCfgChild(e.getAnOperand(), this, result) }
+  }
+
+  private class AutomaticVariableChildMapping extends ExprChildMapping, AutomaticVariable {
+    override predicate relevantChild(Ast child) { none() }
+  }
+
+  class AutomaticVariableCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "AutomaticVariableCfgNode" }
+
+    override AutomaticVariableChildMapping e;
+
+    override AutomaticVariable getExpr() { result = e }
+
+    string getName() { result = e.getName() }
   }
 }
 

@@ -168,7 +168,7 @@ predicate localMustFlowStep(Node node1, Node node2) {
       node2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable()
   )
   or
-  SsaFlow::localMustFlowStep(_, node1, node2)
+  SsaFlow::localMustFlowStep(node1, node2)
   or
   node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
   or

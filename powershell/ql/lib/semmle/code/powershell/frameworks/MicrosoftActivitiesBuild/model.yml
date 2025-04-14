@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "Microsoft.Activities.Build.WorkflowBuildMessageTask", "Method[Execute].ReturnValue"]
-    - ["System.String", "Microsoft.Activities.Build.WorkflowBuildMessageTask", "Property[ResourceName]"]
-    - ["System.String", "Microsoft.Activities.Build.WorkflowBuildMessageTask", "Property[MessageType]"]
+    - ["system.boolean", "microsoft.activities.build.workflowbuildmessagetask", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Property[resourcename]"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Property[messagetype]"]

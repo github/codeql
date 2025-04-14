@@ -1,1 +1,2 @@
-Security/CWE-400/DeepObjectResourceExhaustion.ql
+query: Security/CWE-400/DeepObjectResourceExhaustion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

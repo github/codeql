@@ -1,0 +1,87 @@
+#10000=@"/test.view.json;sourcefile"
+files(#10000,"/test.view.json")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json(#20000,5,#10000,0,"{\n    "" ...     ]\n}")
+#20001=@"loc,{#10000},1,1,16,1"
+locations_default(#20001,#10000,1,1,16,1)
+json_locations(#20000,#20001)
+#20002=*
+json(#20002,3,#20000,0,"""sap.ui ... ONView""")
+#20003=@"loc,{#10000},2,13,2,38"
+locations_default(#20003,#10000,2,13,2,38)
+json_locations(#20002,#20003)
+json_literals("sap.ui.core.mvc.JSONView","""sap.ui.core.mvc.JSONView""",#20002)
+json_properties(#20000,"Type",#20002)
+#20004=*
+json(#20004,3,#20000,1,"""codeql ... er.app""")
+#20005=@"loc,{#10000},3,23,3,52"
+locations_default(#20005,#10000,3,23,3,52)
+json_locations(#20004,#20005)
+json_literals("codeql-sap-js.controller.app","""codeql-sap-js.controller.app""",#20004)
+json_properties(#20000,"controllerName",#20004)
+#20006=*
+json(#20006,4,#20000,2,"[\n      ... }\n    ]")
+#20007=@"loc,{#10000},4,16,15,5"
+locations_default(#20007,#10000,4,16,15,5)
+json_locations(#20006,#20007)
+#20008=*
+json(#20008,5,#20006,0,"{\n      ...       }")
+#20009=@"loc,{#10000},5,9,10,9"
+locations_default(#20009,#10000,5,9,10,9)
+json_locations(#20008,#20009)
+#20010=*
+json(#20010,3,#20008,0,"""sap.m.Input""")
+#20011=@"loc,{#10000},6,21,6,33"
+locations_default(#20011,#10000,6,21,6,33)
+json_locations(#20010,#20011)
+json_literals("sap.m.Input","""sap.m.Input""",#20010)
+json_properties(#20008,"Type",#20010)
+#20012=*
+json(#20012,3,#20008,1,"""Enter Payload""")
+#20013=@"loc,{#10000},7,28,7,42"
+locations_default(#20013,#10000,7,28,7,42)
+json_locations(#20012,#20013)
+json_literals("Enter Payload","""Enter Payload""",#20012)
+json_properties(#20008,"placeholder",#20012)
+#20014=*
+json(#20014,3,#20008,2,"""Try: < ... SS\"")>""")
+#20015=@"loc,{#10000},8,28,8,68"
+locations_default(#20015,#10000,8,28,8,68)
+json_locations(#20014,#20015)
+json_literals("Try: <img src=x onerror=alert(""XSS"")>","""Try: <img src=x onerror=alert(\""XSS\"")>""",#20014)
+json_properties(#20008,"description",#20014)
+#20016=*
+json(#20016,3,#20008,3,"""{/input}""")
+#20017=@"loc,{#10000},9,22,9,31"
+locations_default(#20017,#10000,9,22,9,31)
+json_locations(#20016,#20017)
+json_literals("{/input}","""{/input}""",#20016)
+json_properties(#20008,"value",#20016)
+#20018=*
+json(#20018,5,#20006,1,"{\n      ...       }")
+#20019=@"loc,{#10000},11,9,14,9"
+locations_default(#20019,#10000,11,9,14,9)
+json_locations(#20018,#20019)
+#20020=*
+json(#20020,3,#20018,0,"""sap.ui.core.HTML""")
+#20021=@"loc,{#10000},12,21,12,38"
+locations_default(#20021,#10000,12,21,12,38)
+json_locations(#20020,#20021)
+json_literals("sap.ui.core.HTML","""sap.ui.core.HTML""",#20020)
+json_properties(#20018,"Type",#20020)
+#20022=*
+json(#20022,3,#20018,1,"""{/input}""")
+#20023=@"loc,{#10000},13,24,13,33"
+locations_default(#20023,#10000,13,24,13,33)
+json_locations(#20022,#20023)
+json_literals("{/input}","""{/input}""",#20022)
+json_properties(#20018,"content",#20022)
+json_properties(#20000,"content",#20006)
+numlines(#10000,16,0,0)
+filetype(#10000,"json")

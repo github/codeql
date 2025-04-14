@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "System.Resources.Tools.ITargetAwareCodeDomProvider", "Method[SupportsProperty].ReturnValue"]
-    - ["System.String", "System.Resources.Tools.StronglyTypedResourceBuilder!", "Method[VerifyResourceName].ReturnValue"]
-    - ["System.CodeDom.CodeCompileUnit", "System.Resources.Tools.StronglyTypedResourceBuilder!", "Method[Create].ReturnValue"]
+    - ["system.boolean", "system.resources.tools.itargetawarecodedomprovider", "Method[supportsproperty].ReturnValue"]
+    - ["system.string", "system.resources.tools.stronglytypedresourcebuilder!", "Method[verifyresourcename].ReturnValue"]
+    - ["system.codedom.codecompileunit", "system.resources.tools.stronglytypedresourcebuilder!", "Method[create].ReturnValue"]

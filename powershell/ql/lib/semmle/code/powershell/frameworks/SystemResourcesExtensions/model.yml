@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.IEnumerator", "System.Resources.Extensions.DeserializingResourceReader", "Method[System.Collections.IEnumerable.GetEnumerator].ReturnValue"]
-    - ["System.Collections.IDictionaryEnumerator", "System.Resources.Extensions.DeserializingResourceReader", "Method[GetEnumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.resources.extensions.deserializingresourcereader", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]
+    - ["system.collections.idictionaryenumerator", "system.resources.extensions.deserializingresourcereader", "Method[getenumerator].ReturnValue"]

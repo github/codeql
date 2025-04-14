@@ -35,10 +35,15 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
     or
     pos.isThis() and
     result = "this"
+    or
+    pos.isPipeline() and
+    result = "pipeline"
   }
 
   string encodeArgumentPosition(ArgumentPosition pos) {
     pos.isThis() and result = "this"
+    or
+    pos.isPipeline() and result = "pipeline"
     or
     exists(int i |
       pos.isPositional(i, emptyNamedSet()) and
@@ -52,20 +57,20 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    exists(Content c | cs = TSingletonContentSet(c) |
+    exists(Content c | cs.isSingleton(c) |
       c = TFieldContent(arg) and result = "Field"
       or
       exists(ConstantValue cv | c = TKnownKeyContent(cv) or c = TKnownPositionalContent(cv) |
         result = "Element" and
         arg = cv.serialize() + "!"
       )
-      or
-      (c = TUnknownPositionalContent() or c = TUnknownKeyContent()) and
-      result = "Element" and
-      arg = "?"
     )
     or
-    cs = TAnyElementContentSet() and result = "Element" and arg = "any"
+    cs.isAnyPositional() and result = "Element" and arg = "?"
+    or
+    cs.isUnknownKeyContent() and result = "Element" and arg = "#"
+    or
+    cs.isAnyElement() and result = "Element" and arg = "any"
     or
     exists(Content::KnownElementContent kec |
       cs = TKnownOrUnknownKeyContentSet(kec) or cs = TKnownOrUnknownPositionalContentSet(kec)

@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.ObjectModel.ReadOnlyCollection<System.Type>", "System.Web.UI.Design.Directives.DirectiveRegistry!", "Method[GetDirectives].ReturnValue"]
-    - ["System.Boolean", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[ServerLanguageNames]"]
-    - ["System.Boolean", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[Culture]"]
-    - ["System.Boolean", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[ServerLanguageExtensions]"]
-    - ["System.String", "System.Web.UI.Design.Directives.SchemaElementNameAttribute", "Property[Value]"]
-    - ["System.String", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[RenameType]"]
-    - ["System.String", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[BuilderType]"]
-    - ["System.Boolean", "System.Web.UI.Design.Directives.DirectiveAttribute", "Property[AllowedOnMobilePages]"]
+    - ["system.collections.objectmodel.readonlycollection<system.type>", "system.web.ui.design.directives.directiveregistry!", "Method[getdirectives].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Property[serverlanguagenames]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Property[culture]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Property[serverlanguageextensions]"]
+    - ["system.string", "system.web.ui.design.directives.schemaelementnameattribute", "Property[value]"]
+    - ["system.string", "system.web.ui.design.directives.directiveattribute", "Property[renametype]"]
+    - ["system.string", "system.web.ui.design.directives.directiveattribute", "Property[buildertype]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Property[allowedonmobilepages]"]

@@ -3,8 +3,8 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Guid", "System.ServiceModel.Activities.Tracking.SendMessageRecord", "Property[E2EActivityId]"]
-    - ["System.Guid", "System.ServiceModel.Activities.Tracking.ReceiveMessageRecord", "Property[E2EActivityId]"]
-    - ["System.Activities.Tracking.TrackingRecord", "System.ServiceModel.Activities.Tracking.ReceiveMessageRecord", "Method[Clone].ReturnValue"]
-    - ["System.Guid", "System.ServiceModel.Activities.Tracking.ReceiveMessageRecord", "Property[MessageId]"]
-    - ["System.Activities.Tracking.TrackingRecord", "System.ServiceModel.Activities.Tracking.SendMessageRecord", "Method[Clone].ReturnValue"]
+    - ["system.guid", "system.servicemodel.activities.tracking.sendmessagerecord", "Property[e2eactivityid]"]
+    - ["system.guid", "system.servicemodel.activities.tracking.receivemessagerecord", "Property[e2eactivityid]"]
+    - ["system.activities.tracking.trackingrecord", "system.servicemodel.activities.tracking.receivemessagerecord", "Method[clone].ReturnValue"]
+    - ["system.guid", "system.servicemodel.activities.tracking.receivemessagerecord", "Property[messageid]"]
+    - ["system.activities.tracking.trackingrecord", "system.servicemodel.activities.tracking.sendmessagerecord", "Method[clone].ReturnValue"]

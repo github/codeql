@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Activities.Tracking.TrackingRecord", "System.Activities.Statements.Tracking.StateMachineStateRecord", "Method[Clone].ReturnValue"]
-    - ["System.String", "System.Activities.Statements.Tracking.StateMachineStateRecord", "Property[StateMachineName]"]
-    - ["System.String", "System.Activities.Statements.Tracking.StateMachineStateRecord", "Property[StateName]"]
-    - ["System.String", "System.Activities.Statements.Tracking.StateMachineStateQuery", "Property[Name]"]
+    - ["system.activities.tracking.trackingrecord", "system.activities.statements.tracking.statemachinestaterecord", "Method[clone].ReturnValue"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Property[statemachinename]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Property[statename]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestatequery", "Property[name]"]

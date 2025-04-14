@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Extensions.Configuration.IConfiguration", "Microsoft.Extensions.Logging.Configuration.ILoggerProviderConfigurationFactory", "Method[GetConfiguration].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfiguration", "microsoft.extensions.logging.configuration.iloggerproviderconfigurationfactory", "Method[getconfiguration].ReturnValue"]

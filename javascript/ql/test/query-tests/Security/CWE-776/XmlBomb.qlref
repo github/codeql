@@ -1,1 +1,2 @@
-Security/CWE-776/XmlBomb.ql
+query: Security/CWE-776/XmlBomb.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

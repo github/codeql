@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.TimeSpan", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Property[AutoAdvanceAmount]"]
-    - ["System.Threading.ITimer", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Method[CreateTimer].ReturnValue"]
-    - ["System.DateTimeOffset", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Method[GetUtcNow].ReturnValue"]
-    - ["System.TimeZoneInfo", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Property[LocalTimeZone]"]
-    - ["System.DateTimeOffset", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Property[Start]"]
-    - ["System.Int64", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Property[TimestampFrequency]"]
-    - ["System.Int64", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Method[GetTimestamp].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.Time.Testing.FakeTimeProvider", "Method[ToString].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.time.testing.faketimeprovider", "Property[autoadvanceamount]"]
+    - ["system.threading.itimer", "microsoft.extensions.time.testing.faketimeprovider", "Method[createtimer].ReturnValue"]
+    - ["system.datetimeoffset", "microsoft.extensions.time.testing.faketimeprovider", "Method[getutcnow].ReturnValue"]
+    - ["system.timezoneinfo", "microsoft.extensions.time.testing.faketimeprovider", "Property[localtimezone]"]
+    - ["system.datetimeoffset", "microsoft.extensions.time.testing.faketimeprovider", "Property[start]"]
+    - ["system.int64", "microsoft.extensions.time.testing.faketimeprovider", "Property[timestampfrequency]"]
+    - ["system.int64", "microsoft.extensions.time.testing.faketimeprovider", "Method[gettimestamp].ReturnValue"]
+    - ["system.string", "microsoft.extensions.time.testing.faketimeprovider", "Method[tostring].ReturnValue"]

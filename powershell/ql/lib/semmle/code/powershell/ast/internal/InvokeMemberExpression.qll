@@ -72,3 +72,14 @@ class ConstructorCall extends InvokeMemberExpr {
   /** Gets the name of the type being constructed by this constructor call. */
   string getConstructedTypeName() { result = typename.getName() }
 }
+
+/**
+ * A call to a `toString` method. For example:
+ *
+ * ```powershell
+ * $x.ToString()
+ * ```
+ */
+class ToStringCall extends InvokeMemberExpr {
+  ToStringCall() { this.getName().toLowerCase() = "toString" }
+}

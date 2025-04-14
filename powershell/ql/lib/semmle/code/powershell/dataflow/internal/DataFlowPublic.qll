@@ -534,6 +534,13 @@ class CallOperatorNode extends CallNode {
   Node getCommand() { result.asExpr() = call.getCommand() } // TODO: Alternatively, we could remap calls to & as command expressions.
 }
 
+/**
+ * A call to `ToString`, viewed as a node in a data flow graph.
+ */
+class ToStringCallNode extends CallNode {
+  override CfgNodes::ExprNodes::ToStringCallCfgNode call;
+}
+
 /** A use of a type name, viewed as a node in a data flow graph. */
 class TypeNameNode extends ExprNode {
   override CfgNodes::ExprNodes::TypeNameExprCfgNode n;
@@ -543,6 +550,10 @@ class TypeNameNode extends ExprNode {
   string getName() { result = n.getName() }
 
   predicate isQualified() { n.isQualified() }
+
+  predicate hasQualifiedName(string namespace, string typename) {
+    n.hasQualifiedName(namespace, typename)
+  }
 
   string getNamespace() { result = n.getNamespace() }
 
@@ -554,4 +565,13 @@ class QualifiedTypeNameNode extends TypeNameNode {
   override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode n;
 
   final override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode getExprNode() { result = n }
+}
+
+/** A use of an automatic variable, viewed as a node in a data flow graph. */
+class AutomaticVariableNode extends ExprNode {
+  override CfgNodes::ExprNodes::AutomaticVariableCfgNode n;
+
+  final override CfgNodes::ExprNodes::AutomaticVariableCfgNode getExprNode() { result = n }
+
+  string getName() { result = n.getName() }
 }

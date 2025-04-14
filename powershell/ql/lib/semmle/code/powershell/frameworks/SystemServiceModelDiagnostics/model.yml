@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[Off]"]
-    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[Default]"]
-    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[All]"]
-    - ["System.ServiceModel.Diagnostics.PerformanceCounterScope", "System.ServiceModel.Diagnostics.PerformanceCounterScope!", "Field[ServiceOnly]"]
+    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Field[off]"]
+    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Field[default]"]
+    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Field[all]"]
+    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Field[serviceonly]"]

@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Web.Globalization.IStringLocalizerProvider", "System.Web.Globalization.StringLocalizerProviders!", "Property[DataAnnotationStringLocalizerProvider]"]
-    - ["System.String", "System.Web.Globalization.IStringLocalizerProvider", "Method[GetLocalizedString].ReturnValue"]
-    - ["System.String", "System.Web.Globalization.ResourceFileStringLocalizerProvider!", "Field[ResourceFileName]"]
-    - ["System.String", "System.Web.Globalization.ResourceFileStringLocalizerProvider", "Method[GetLocalizedString].ReturnValue"]
+    - ["system.web.globalization.istringlocalizerprovider", "system.web.globalization.stringlocalizerproviders!", "Property[dataannotationstringlocalizerprovider]"]
+    - ["system.string", "system.web.globalization.istringlocalizerprovider", "Method[getlocalizedstring].ReturnValue"]
+    - ["system.string", "system.web.globalization.resourcefilestringlocalizerprovider!", "Field[resourcefilename]"]
+    - ["system.string", "system.web.globalization.resourcefilestringlocalizerprovider", "Method[getlocalizedstring].ReturnValue"]

@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "Microsoft.VisualStudio.Utilities.Implementation.IFileExtensionToContentTypeMetadata", "Property[FileExtension]"]
-    - ["System.Collections.Generic.IEnumerable<System.String>", "Microsoft.VisualStudio.Utilities.Implementation.IContentTypeDefinitionMetadata", "Property[BaseDefinition]"]
-    - ["System.Collections.Generic.IEnumerable<System.String>", "Microsoft.VisualStudio.Utilities.Implementation.IFileExtensionToContentTypeMetadata", "Property[ContentTypes]"]
-    - ["System.String", "Microsoft.VisualStudio.Utilities.Implementation.IContentTypeDefinitionMetadata", "Property[Name]"]
+    - ["system.string", "microsoft.visualstudio.utilities.implementation.ifileextensiontocontenttypemetadata", "Property[fileextension]"]
+    - ["system.collections.generic.ienumerable<system.string>", "microsoft.visualstudio.utilities.implementation.icontenttypedefinitionmetadata", "Property[basedefinition]"]
+    - ["system.collections.generic.ienumerable<system.string>", "microsoft.visualstudio.utilities.implementation.ifileextensiontocontenttypemetadata", "Property[contenttypes]"]
+    - ["system.string", "microsoft.visualstudio.utilities.implementation.icontenttypedefinitionmetadata", "Property[name]"]

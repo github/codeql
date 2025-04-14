@@ -135,7 +135,7 @@ struct Point {
 
 fn struct_field() {
     let p = Point { x: source(9), y: 2 };
-    sink(p.x); // $ MISSING: hasValueFlow=9
+    sink(p.x); // $ hasValueFlow=9
     sink(p.y);
 }
 
@@ -143,7 +143,7 @@ fn struct_mutation() {
     let mut p = Point { x: source(9), y: 2 };
     sink(p.y);
     p.y = source(54);
-    sink(p.y); // $ MISSING: hasValueFlow=54
+    sink(p.y); // $ hasValueFlow=54
 }
 
 fn struct_pattern_match() {
@@ -170,7 +170,7 @@ fn struct_nested_field() {
         z: 4,
     };
     sink(p.plane.x);
-    sink(p.plane.y); // $ MISSING: hasValueFlow=77
+    sink(p.plane.y); // $ hasValueFlow=77
     sink(p.z);
 }
 
@@ -196,7 +196,7 @@ struct MyTupleStruct(i64, i64);
 
 fn tuple_struct() {
     let s = MyTupleStruct(source(94), 2);
-    sink(s.0); // $ MISSING: hasValueFlow=94
+    sink(s.0); // $ hasValueFlow=94
     sink(s.1);
 
     match s {
@@ -503,7 +503,7 @@ fn iterators() {
 
     let mut vs_mut = [source(92), 2, 3, 4];
 
-    sink(vs_mut[0]); // $ MISSING: hasValueFlow=92
+    sink(vs_mut[0]); // $ hasValueFlow=92
     sink(*vs_mut.iter().next().unwrap()); // $ MISSING: hasValueFlow=92
     sink(*vs_mut.iter().nth(0).unwrap()); // $ MISSING: hasValueFlow=92
 
@@ -522,6 +522,20 @@ fn references() {
     sink_ref(&b); // $ hasTaintFlow=41
     sink_ref(c_ref); // $ hasTaintFlow=42
     sink(*c_ref); // $ hasValueFlow=42
+}
+
+fn conversions() {
+    let a: i64 = source(50);
+
+    sink(a as i64); // $ hasTaintFlow=50
+    sink(a.into()); // $ MISSING: hasValueFlow=50
+    sink(i64::from(a)); // $ hasValueFlow=50
+
+    let b: i32 = source(51) as i32;
+
+    sink(b as i64); // $ hasTaintFlow=51
+    sink(b.into()); // $ MISSING: hasTaintFlow=51
+    sink(i64::from(b)); // $ hasTaintFlow=51
 }
 
 fn main() {
@@ -565,4 +579,5 @@ fn main() {
     parse();
     iterators();
     references();
+    conversions();
 }

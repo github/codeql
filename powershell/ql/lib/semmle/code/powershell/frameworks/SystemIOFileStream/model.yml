@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["System.IO.FileStream", "Instance", "file"]
-      - ["System.IO.FileStream", "Instance", "file-write"]
+      - ["system.io.fileStream", "Instance", "file"]
+      - ["system.io.fileStream", "Instance", "file-write"]

@@ -434,7 +434,7 @@ module NodeJSLib {
    * method might represent a file path.
    */
   private predicate fsExtraExtensionFileParam(string methodName, int i) {
-    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
+    methodName = ["copy", "copySync", "copyFile", "cp", "copyFileSync", "cpSync"] and i = [0, 1]
     or
     methodName = ["move", "moveSync"] and i = [0, 1]
     or
@@ -450,10 +450,13 @@ module NodeJSLib {
     or
     methodName = ["readJson", "readJSON", "readJsonSync", "readJSONSync"] and i = 0
     or
-    methodName = ["remove", "removeSync"] and i = 0
+    methodName = ["remove", "removeSync", "rmSync", "rm", "rmdir", "rmdirSync"] and i = 0
     or
     methodName =
-      ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
+      [
+        "outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync",
+        "outputJSONSync", "outputJsonSync"
+      ] and
     i = 0
     or
     methodName = ["ensureFile", "ensureFileSync"] and i = 0
@@ -462,9 +465,15 @@ module NodeJSLib {
     or
     methodName = ["ensureSymlink", "ensureSymlinkSync"] and i = [0, 1]
     or
-    methodName = ["emptyDir", "emptyDirSync"] and i = 0
+    methodName = ["emptyDir", "emptyDirSync", "emptydir", "emptydirSync"] and i = 0
     or
     methodName = ["pathExists", "pathExistsSync"] and i = 0
+    or
+    methodName = ["lutimes", "lutimesSync"] and i = 0
+    or
+    methodName =
+      ["opendir", "opendirSync", "openAsBlob", "statfs", "statfsSync", "open", "openSync"] and
+    i = 0
   }
 
   /**
@@ -592,6 +601,13 @@ module NodeJSLib {
     }
   }
 
+  /** A vectored write to the file system using `writev` or `writevSync` methods. */
+  private class NodeJSFileSystemVectorWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemVectorWrite() { methodName = ["writev", "writevSync"] }
+
+    override DataFlow::Node getADataNode() { result = this.getArgument(1) }
+  }
+
   /** A file system read. */
   private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
     NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
@@ -599,7 +615,7 @@ module NodeJSLib {
     override DataFlow::Node getADataNode() {
       if methodName.matches("%Sync")
       then result = this
-      else
+      else (
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
           if paramName = "callback"
           then
@@ -610,6 +626,28 @@ module NodeJSLib {
             )
           else result = this.getArgument(i)
         )
+        or
+        exists(AwaitExpr await |
+          this.getEnclosingExpr() = await.getOperand() and
+          result = DataFlow::valueNode(await)
+        )
+      )
+    }
+  }
+
+  /** A vectored read to the file system. */
+  private class NodeJSFileSystemAccessVectorRead extends FileSystemReadAccess,
+    NodeJSFileSystemAccess
+  {
+    NodeJSFileSystemAccessVectorRead() { methodName = ["readv", "readvSync"] }
+
+    override DataFlow::Node getADataNode() {
+      result = this.getArgument(1)
+      or
+      exists(DataFlow::ArrayCreationNode array |
+        array.flowsTo(this.getArgument(1)) and
+        result = array.getAnElement()
+      )
     }
   }
 

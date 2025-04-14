@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.remotingprogressrecord", "Method[get_origininfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.remotingprogressrecord", "Method[remotingprogressrecord]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.runspaces.remotingprogressrecord", "Method[remotingprogressrecord]", "Argument[1]", "Argument[this]", "taint"]
+      

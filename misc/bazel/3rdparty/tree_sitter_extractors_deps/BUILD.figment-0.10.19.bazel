@@ -89,53 +89,53 @@ rust_library(
     }),
     version = "0.10.19",
     deps = [
-        "@vendor__figment-0.10.19//:build_script_build",
-        "@vendor__pear-0.2.9//:pear",
-        "@vendor__serde-1.0.217//:serde",
-        "@vendor__serde_yaml-0.9.34-deprecated//:serde_yaml",
-        "@vendor__uncased-0.9.10//:uncased",
+        "@vendor_ts__figment-0.10.19//:build_script_build",
+        "@vendor_ts__pear-0.2.9//:pear",
+        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml",
+        "@vendor_ts__uncased-0.9.10//:uncased",
     ] + select({
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:riscv32imc-unknown-none-elf": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:thumbv7em-none-eabi": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:thumbv8m.main-none-eabi": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "@rules_rust//rust/platform:wasm32-wasip1": [
-            "@vendor__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
+            "@vendor_ts__atomic-0.6.0//:atomic",  # cfg(any(target_pointer_width = "8", target_pointer_width = "16", target_pointer_width = "32"))
         ],
         "//conditions:default": [],
     }),
@@ -196,7 +196,7 @@ cargo_build_script(
     version = "0.10.19",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor__version_check-0.9.5//:version_check",
+        "@vendor_ts__version_check-0.9.5//:version_check",
     ],
 )
 

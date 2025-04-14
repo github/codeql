@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Int32", "System.Web.Instrumentation.PageExecutionContext", "Property[Length]"]
-    - ["System.Int32", "System.Web.Instrumentation.PageExecutionContext", "Property[StartPosition]"]
-    - ["System.Collections.Generic.IList<System.Web.Instrumentation.PageExecutionListener>", "System.Web.Instrumentation.PageInstrumentationService", "Property[ExecutionListeners]"]
-    - ["System.Boolean", "System.Web.Instrumentation.PageExecutionContext", "Property[IsLiteral]"]
-    - ["System.IO.TextWriter", "System.Web.Instrumentation.PageExecutionContext", "Property[TextWriter]"]
-    - ["System.Boolean", "System.Web.Instrumentation.PageInstrumentationService!", "Property[IsEnabled]"]
-    - ["System.String", "System.Web.Instrumentation.PageExecutionContext", "Property[VirtualPath]"]
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Property[length]"]
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Property[startposition]"]
+    - ["system.collections.generic.ilist<system.web.instrumentation.pageexecutionlistener>", "system.web.instrumentation.pageinstrumentationservice", "Property[executionlisteners]"]
+    - ["system.boolean", "system.web.instrumentation.pageexecutioncontext", "Property[isliteral]"]
+    - ["system.io.textwriter", "system.web.instrumentation.pageexecutioncontext", "Property[textwriter]"]
+    - ["system.boolean", "system.web.instrumentation.pageinstrumentationservice!", "Property[isenabled]"]
+    - ["system.string", "system.web.instrumentation.pageexecutioncontext", "Property[virtualpath]"]

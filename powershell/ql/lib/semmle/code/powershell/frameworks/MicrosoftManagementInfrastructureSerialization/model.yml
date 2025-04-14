@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["Microsoft.Management.Infrastructure.CimInstance", "Microsoft.Management.Infrastructure.Serialization.CimDeserializer", "Method[DeserializeInstance].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Management.Infrastructure.Serialization.CimSerializer", "Method[Serialize].ReturnValue"]
-    - ["Microsoft.Management.Infrastructure.Serialization.InstanceSerializationOptions", "Microsoft.Management.Infrastructure.Serialization.InstanceSerializationOptions!", "Field[IncludeClasses]"]
-    - ["Microsoft.Management.Infrastructure.Serialization.CimSerializer", "Microsoft.Management.Infrastructure.Serialization.CimSerializer!", "Method[Create].ReturnValue"]
-    - ["Microsoft.Management.Infrastructure.Serialization.InstanceSerializationOptions", "Microsoft.Management.Infrastructure.Serialization.InstanceSerializationOptions!", "Field[None]"]
-    - ["Microsoft.Management.Infrastructure.Serialization.ClassSerializationOptions", "Microsoft.Management.Infrastructure.Serialization.ClassSerializationOptions!", "Field[IncludeParentClasses]"]
-    - ["Microsoft.Management.Infrastructure.Serialization.CimDeserializer", "Microsoft.Management.Infrastructure.Serialization.CimDeserializer!", "Method[Create].ReturnValue"]
-    - ["System.Byte[]", "Microsoft.Management.Infrastructure.Serialization.CimSerializer", "Method[Serialize].ReturnValue"]
-    - ["Microsoft.Management.Infrastructure.CimClass", "Microsoft.Management.Infrastructure.Serialization.CimDeserializer", "Method[DeserializeClass].ReturnValue"]
-    - ["Microsoft.Management.Infrastructure.Serialization.ClassSerializationOptions", "Microsoft.Management.Infrastructure.Serialization.ClassSerializationOptions!", "Field[None]"]
+    - ["microsoft.management.infrastructure.ciminstance", "microsoft.management.infrastructure.serialization.cimdeserializer", "Method[deserializeinstance].ReturnValue"]
+    - ["system.boolean", "microsoft.management.infrastructure.serialization.cimserializer", "Method[serialize].ReturnValue"]
+    - ["microsoft.management.infrastructure.serialization.instanceserializationoptions", "microsoft.management.infrastructure.serialization.instanceserializationoptions!", "Field[includeclasses]"]
+    - ["microsoft.management.infrastructure.serialization.cimserializer", "microsoft.management.infrastructure.serialization.cimserializer!", "Method[create].ReturnValue"]
+    - ["microsoft.management.infrastructure.serialization.instanceserializationoptions", "microsoft.management.infrastructure.serialization.instanceserializationoptions!", "Field[none]"]
+    - ["microsoft.management.infrastructure.serialization.classserializationoptions", "microsoft.management.infrastructure.serialization.classserializationoptions!", "Field[includeparentclasses]"]
+    - ["microsoft.management.infrastructure.serialization.cimdeserializer", "microsoft.management.infrastructure.serialization.cimdeserializer!", "Method[create].ReturnValue"]
+    - ["system.byte[]", "microsoft.management.infrastructure.serialization.cimserializer", "Method[serialize].ReturnValue"]
+    - ["microsoft.management.infrastructure.cimclass", "microsoft.management.infrastructure.serialization.cimdeserializer", "Method[deserializeclass].ReturnValue"]
+    - ["microsoft.management.infrastructure.serialization.classserializationoptions", "microsoft.management.infrastructure.serialization.classserializationoptions!", "Field[none]"]

@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingOption", "System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingOption!", "Field[Sequential]"]
-    - ["System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingOption", "System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingAttribute", "Property[SteppingOption]"]
-    - ["System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingOption", "System.Workflow.Runtime.DebugEngine.WorkflowDebuggerSteppingOption!", "Field[Concurrent]"]
-    - ["System.Int32", "System.Workflow.Runtime.DebugEngine.ActivityHandlerDescriptor", "Field[Token]"]
-    - ["System.Object", "System.Workflow.Runtime.DebugEngine.DebugController", "Method[InitializeLifetimeService].ReturnValue"]
-    - ["System.String", "System.Workflow.Runtime.DebugEngine.ActivityHandlerDescriptor", "Field[Name]"]
-    - ["System.Workflow.ComponentModel.Activity", "System.Workflow.Runtime.DebugEngine.IInstanceTable", "Method[GetActivity].ReturnValue"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Field[sequential]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingattribute", "Property[steppingoption]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Field[concurrent]"]
+    - ["system.int32", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Field[token]"]
+    - ["system.object", "system.workflow.runtime.debugengine.debugcontroller", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.string", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Field[name]"]
+    - ["system.workflow.componentmodel.activity", "system.workflow.runtime.debugengine.iinstancetable", "Method[getactivity].ReturnValue"]

@@ -3,6 +3,7 @@ private import DataFlowPrivate
 private import TaintTrackingPublic
 private import semmle.code.powershell.Cfg
 private import semmle.code.powershell.dataflow.DataFlow
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -56,8 +57,20 @@ private module Cached {
         or
         c.isAnyElement()
       )
+      or
+      nodeTo.(DataFlow::ToStringCallNode).getQualifier() = nodeFrom
     ) and
     model = ""
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
+  }
+
+  cached
+  predicate summaryThroughStepTaint(
+    DataFlow::Node arg, DataFlow::Node out, FlowSummaryImpl::Public::SummarizedCallable sc
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(arg, out, sc)
   }
 
   /**
@@ -67,7 +80,10 @@ private module Cached {
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     DataFlow::localFlowStep(nodeFrom, nodeTo) or
-    defaultAdditionalTaintStep(nodeFrom, nodeTo, _)
+    defaultAdditionalTaintStep(nodeFrom, nodeTo, _) or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

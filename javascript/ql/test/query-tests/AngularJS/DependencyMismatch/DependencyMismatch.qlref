@@ -1,1 +1,2 @@
-AngularJS/DependencyMismatch.ql
+query: AngularJS/DependencyMismatch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

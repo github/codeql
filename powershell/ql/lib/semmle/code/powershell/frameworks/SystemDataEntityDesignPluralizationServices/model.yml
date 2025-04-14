@@ -3,9 +3,9 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Data.Entity.Design.PluralizationServices.PluralizationService", "System.Data.Entity.Design.PluralizationServices.PluralizationService!", "Method[CreateService].ReturnValue"]
-    - ["System.Boolean", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[IsSingular].ReturnValue"]
-    - ["System.Boolean", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[IsPlural].ReturnValue"]
-    - ["System.String", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[Pluralize].ReturnValue"]
-    - ["System.Globalization.CultureInfo", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Property[Culture]"]
-    - ["System.String", "System.Data.Entity.Design.PluralizationServices.PluralizationService", "Method[Singularize].ReturnValue"]
+    - ["system.data.entity.design.pluralizationservices.pluralizationservice", "system.data.entity.design.pluralizationservices.pluralizationservice!", "Method[createservice].ReturnValue"]
+    - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[issingular].ReturnValue"]
+    - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[isplural].ReturnValue"]
+    - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[pluralize].ReturnValue"]
+    - ["system.globalization.cultureinfo", "system.data.entity.design.pluralizationservices.pluralizationservice", "Property[culture]"]
+    - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[singularize].ReturnValue"]

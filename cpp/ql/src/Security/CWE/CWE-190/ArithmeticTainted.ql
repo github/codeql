@@ -75,9 +75,11 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _) }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(StoreInstruction store | store = node.asInstruction() |
+    exists(StoreInstruction store, Expr e |
+      store = node.asInstruction() and e = node.asCertainDefinition()
+    |
       // Block flow to "likely small expressions"
-      bounded(store.getSourceValue().getUnconvertedResultExpression())
+      bounded(e)
       or
       // Block flow to "small types"
       store.getResultType().getUnspecifiedType().(IntegralType).getSize() <= 1

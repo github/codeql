@@ -10,6 +10,8 @@ private import semmle.code.powershell.dataflow.DataFlow
 private import semmle.code.powershell.typetracking.ApiGraphShared
 private import semmle.code.powershell.typetracking.internal.TypeTrackingImpl
 private import semmle.code.powershell.controlflow.Cfg
+private import frameworks.data.internal.ApiGraphModelsExtensions as Extensions
+private import frameworks.data.internal.ApiGraphModelsSpecific as Specific
 private import semmle.code.powershell.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.powershell.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
@@ -514,12 +516,48 @@ module API {
       )
     }
 
+    bindingset[name]
+    private string memberOrMethodReturnValue(string name) {
+      // This predicate is a bit ad-hoc, but it's okay for now.
+      // We can delete it once we no longer use the typeModel and summaryModel
+      // tables to represent implicit root members.
+      result = "Method[" + name + "]"
+      or
+      result = "Method[" + name + "].ReturnValue"
+      or
+      result = "Member[" + name + "]"
+    }
+
+    private Node getAnImplicitRootMember(string name) {
+      exists(DataFlow::CallNode call |
+        Extensions::typeModel(_, Specific::getAnImplicitImport(), memberOrMethodReturnValue(name))
+        or
+        Extensions::summaryModel(Specific::getAnImplicitImport(), memberOrMethodReturnValue(name),
+          _, _, _, _)
+        or
+        Extensions::sourceModel(Specific::getAnImplicitImport(), memberOrMethodReturnValue(name), _,
+          _)
+      |
+        result = MkMethodAccessNode(call) and
+        name = call.getName().toLowerCase()
+      )
+    }
+
     cached
     predicate memberEdge(Node pred, string name, Node succ) {
-      exists(StringConstExpr read |
-        succ = getForwardStartNode(getNodeFromExpr(read)) and
-        pred = MkRoot() and
-        name = read.getValueString()
+      pred = API::root() and
+      (
+        exists(StringConstExpr read |
+          succ = getForwardStartNode(getNodeFromExpr(read)) and
+          name = read.getValueString()
+        )
+        or
+        exists(DataFlow::AutomaticVariableNode automatic |
+          automatic.getName() = name and
+          succ = getForwardStartNode(automatic)
+        )
+        or
+        succ = getAnImplicitRootMember(name)
       )
       or
       exists(DataFlow::QualifiedTypeNameNode typeName |
@@ -527,15 +565,24 @@ module API {
         pred = MkNamespaceOfTypeNameNode(typeName) and
         succ = getForwardStartNode(typeName)
       )
-      // or
-      // TODO: Handle getAMember when the predecessor is a MkUsingNode?
+      or
+      exists(MemberExprReadAccess read |
+        read.getMemberName().toLowerCase() = name and
+        pred = getForwardEndNode(getALocalSourceStrict(getNodeFromExpr(read.getQualifier()))) and
+        succ = getForwardStartNode(getNodeFromExpr(read))
+      )
     }
 
     cached
     predicate methodEdge(Node pred, string name, Node succ) {
-      exists(DataFlow::CallNode call | succ = MkMethodAccessNode(call) and name = call.getName() |
+      exists(DataFlow::CallNode call |
+        succ = MkMethodAccessNode(call) and name = call.getName().toLowerCase()
+      |
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier()))
       )
+      or
+      pred = API::root() and
+      succ = getAnImplicitRootMember(name)
     }
 
     cached

@@ -86,7 +86,7 @@ rust_library(
     }),
     version = "0.8.21",
     deps = [
-        "@vendor__crossbeam-utils-0.8.21//:build_script_build",
+        "@vendor_ts__crossbeam-utils-0.8.21//:build_script_build",
     ],
 )
 

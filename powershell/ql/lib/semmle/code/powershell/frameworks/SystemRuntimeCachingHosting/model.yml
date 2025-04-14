@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.String", "System.Runtime.Caching.Hosting.IApplicationIdentifier", "Method[GetApplicationId].ReturnValue"]
+    - ["system.string", "system.runtime.caching.hosting.iapplicationidentifier", "Method[getapplicationid].ReturnValue"]

@@ -3,32 +3,32 @@ var fs = require('fs'),
     url = require('url');
 
 var server = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
+  let path = url.parse(req.url, true).query.path; // $ Source
   
-  fs.readFileSync(path); // NOT OK
+  fs.readFileSync(path); // $ Alert
 
   var obj = bla ? something() : path;
 
-  fs.readFileSync(obj.sub); // NOT OK
+  fs.readFileSync(obj.sub); // $ Alert
 
   obj.sub = "safe";
 
-  fs.readFileSync(obj.sub); // OK
+  fs.readFileSync(obj.sub);
 
   obj.sub2 = "safe";
   if (random()) {
-    fs.readFileSync(obj.sub2); // OK
+    fs.readFileSync(obj.sub2);
   }
 
   if (random()) {
     obj.sub3 = "safe"
   }
-  fs.readFileSync(obj.sub3); // NOT OK
+  fs.readFileSync(obj.sub3); // $ Alert
 
   obj.sub4 = 
-    fs.readFileSync(obj.sub4) ? // NOT OK
-      fs.readFileSync(obj.sub4) : // NOT OK
-      fs.readFileSync(obj.sub4); // NOT OK
+    fs.readFileSync(obj.sub4) ? // $ Alert
+      fs.readFileSync(obj.sub4) : // $ Alert
+      fs.readFileSync(obj.sub4); // $ Alert
 });
 
 server.listen();
@@ -36,8 +36,8 @@ server.listen();
 var nodefs = require('node:fs');
 
 var server2 = http.createServer(function(req, res) {
-  let path = url.parse(req.url, true).query.path;
-  nodefs.readFileSync(path); // NOT OK
+  let path = url.parse(req.url, true).query.path; // $ Source
+  nodefs.readFileSync(path); // $ Alert
 });
 
 server2.listen();
@@ -45,6 +45,6 @@ server2.listen();
 const chownr = require("chownr");
 
 var server3 = http.createServer(function (req, res) {
-  let path = url.parse(req.url, true).query.path;
-  chownr(path, "someuid", "somegid", function (err) {}); // NOT OK
+  let path = url.parse(req.url, true).query.path; // $ Source
+  chownr(path, "someuid", "somegid", function (err) {}); // $ Alert
 });

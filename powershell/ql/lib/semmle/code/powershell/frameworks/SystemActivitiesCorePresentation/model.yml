@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Object", "System.Activities.Core.Presentation.GenericTypeArgumentConverter", "Method[ConvertBack].ReturnValue"]
-    - ["System.Activities.Core.Presentation.ConnectionPointType", "System.Activities.Core.Presentation.ConnectionPointType!", "Field[Default]"]
-    - ["System.Windows.Point", "System.Activities.Core.Presentation.LocationChangedEventArgs", "Property[NewLocation]"]
-    - ["System.Activities.Core.Presentation.ConnectionPointType", "System.Activities.Core.Presentation.ConnectionPointType!", "Field[Incoming]"]
-    - ["System.Activities.Core.Presentation.ConnectionPointType", "System.Activities.Core.Presentation.ConnectionPointType!", "Field[Outgoing]"]
-    - ["System.Object", "System.Activities.Core.Presentation.GenericTypeArgumentConverter", "Method[Convert].ReturnValue"]
-    - ["System.Windows.Input.RoutedCommand", "System.Activities.Core.Presentation.FlowchartDesignerCommands!", "Field[ConnectNodesCommand]"]
+    - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convertback].ReturnValue"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[default]"]
+    - ["system.windows.point", "system.activities.core.presentation.locationchangedeventargs", "Property[newlocation]"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[incoming]"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[outgoing]"]
+    - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convert].ReturnValue"]
+    - ["system.windows.input.routedcommand", "system.activities.core.presentation.flowchartdesignercommands!", "Field[connectnodescommand]"]

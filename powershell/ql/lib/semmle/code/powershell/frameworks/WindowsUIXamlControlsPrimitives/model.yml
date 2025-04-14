@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[Equals].ReturnValue"]
-    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[GetHashCode].ReturnValue"]
-    - ["System.String", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Method[ToString].ReturnValue"]
-    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Property[Index]"]
-    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition!", "Method[op_Equality].ReturnValue"]
-    - ["System.Int32", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition", "Property[Offset]"]
-    - ["System.Boolean", "Windows.UI.Xaml.Controls.Primitives.GeneratorPosition!", "Method[op_Inequality].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition", "Method[equals].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Method[gethashcode].ReturnValue"]
+    - ["system.string", "windows.ui.xaml.controls.primitives.generatorposition", "Method[tostring].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Property[index]"]
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition!", "Method[op_equality].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Property[offset]"]
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition!", "Method[op_inequality].ReturnValue"]

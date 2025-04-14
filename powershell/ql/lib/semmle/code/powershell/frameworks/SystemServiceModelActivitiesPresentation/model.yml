@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Type", "System.ServiceModel.Activities.Presentation.ServiceContractImporter!", "Method[SelectContractType].ReturnValue"]
-    - ["System.Collections.Generic.IEnumerable<System.Activities.Presentation.Toolbox.ActivityTemplateFactoryBuilder>", "System.ServiceModel.Activities.Presentation.ServiceContractImporter!", "Method[GenerateActivityTemplates].ReturnValue"]
-    - ["System.String", "System.ServiceModel.Activities.Presentation.ServiceContractImporter!", "Method[SaveActivityTemplate].ReturnValue"]
-    - ["System.String", "System.ServiceModel.Activities.Presentation.ServiceContractImporter!", "Field[ContractTypeViewStateKey]"]
+    - ["system.type", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[selectcontracttype].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.activities.presentation.toolbox.activitytemplatefactorybuilder>", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[generateactivitytemplates].ReturnValue"]
+    - ["system.string", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[saveactivitytemplate].ReturnValue"]
+    - ["system.string", "system.servicemodel.activities.presentation.servicecontractimporter!", "Field[contracttypeviewstatekey]"]

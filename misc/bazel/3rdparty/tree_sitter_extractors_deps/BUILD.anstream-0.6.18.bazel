@@ -86,21 +86,21 @@ rust_library(
     }),
     version = "0.6.18",
     deps = [
-        "@vendor__anstyle-1.0.10//:anstyle",
-        "@vendor__anstyle-parse-0.2.6//:anstyle_parse",
-        "@vendor__anstyle-query-1.1.2//:anstyle_query",
-        "@vendor__colorchoice-1.0.3//:colorchoice",
-        "@vendor__is_terminal_polyfill-1.70.1//:is_terminal_polyfill",
-        "@vendor__utf8parse-0.2.2//:utf8parse",
+        "@vendor_ts__anstyle-1.0.10//:anstyle",
+        "@vendor_ts__anstyle-parse-0.2.6//:anstyle_parse",
+        "@vendor_ts__anstyle-query-1.1.2//:anstyle_query",
+        "@vendor_ts__colorchoice-1.0.3//:colorchoice",
+        "@vendor_ts__is_terminal_polyfill-1.70.1//:is_terminal_polyfill",
+        "@vendor_ts__utf8parse-0.2.2//:utf8parse",
     ] + select({
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor__anstyle-wincon-3.0.6//:anstyle_wincon",  # aarch64-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.7//:anstyle_wincon",  # aarch64-pc-windows-msvc
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor__anstyle-wincon-3.0.6//:anstyle_wincon",  # i686-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.7//:anstyle_wincon",  # i686-pc-windows-msvc
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor__anstyle-wincon-3.0.6//:anstyle_wincon",  # x86_64-pc-windows-msvc
+            "@vendor_ts__anstyle-wincon-3.0.7//:anstyle_wincon",  # x86_64-pc-windows-msvc
         ],
         "//conditions:default": [],
     }),

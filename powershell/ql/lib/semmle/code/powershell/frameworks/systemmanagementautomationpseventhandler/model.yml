@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[3]", "Argument[this]", "taint"]
+      

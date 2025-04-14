@@ -25,6 +25,11 @@ class TypeNameExpr extends Expr, TTypeNameExpr {
   override string toString() { result = this.getName() }
 
   predicate isQualified() { this.getNamespace() != "" }
+
+  predicate hasQualifiedName(string namespace, string typename) {
+    this.isQualified() and
+    this.parseName(namespace, typename)
+  }
 }
 
 class QualifiedTypeNameExpr extends TypeNameExpr {

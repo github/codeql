@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Object", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetPropertyValue].ReturnValue"]
-    - ["System.Collections.ObjectModel.Collection<System.Management.Automation.PSAdaptedProperty>", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetProperties].ReturnValue"]
-    - ["System.Collections.ObjectModel.Collection<System.String>", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetTypeNameHierarchy].ReturnValue"]
-    - ["System.Management.Automation.PSAdaptedProperty", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetFirstPropertyOrDefault].ReturnValue"]
-    - ["System.Management.Automation.PSAdaptedProperty", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetProperty].ReturnValue"]
-    - ["System.Boolean", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[IsGettable].ReturnValue"]
-    - ["System.Boolean", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[IsSettable].ReturnValue"]
-    - ["System.String", "Microsoft.PowerShell.Cim.CimInstanceAdapter", "Method[GetPropertyTypeName].ReturnValue"]
+    - ["system.object", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertyvalue].ReturnValue"]
+    - ["system.collections.objectmodel.collection<system.management.automation.psadaptedproperty>", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperties].ReturnValue"]
+    - ["system.collections.objectmodel.collection<system.string>", "microsoft.powershell.cim.ciminstanceadapter", "Method[gettypenamehierarchy].ReturnValue"]
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getfirstpropertyordefault].ReturnValue"]
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperty].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[isgettable].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[issettable].ReturnValue"]
+    - ["system.string", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertytypename].ReturnValue"]

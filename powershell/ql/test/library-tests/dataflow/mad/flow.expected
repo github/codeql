@@ -1,0 +1,50 @@
+models
+edges
+| file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | provenance |  |
+| file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | provenance |  |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
+| file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | provenance |  |
+| file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | provenance |  |
+| test.ps1:1:6:1:15 | Call to Source | test.ps1:2:94:2:95 | x | provenance |  |
+| test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | test.ps1:3:6:3:7 | y | provenance |  |
+| test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | provenance |  |
+| test.ps1:2:94:2:95 | x | test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | provenance |  |
+| test.ps1:5:6:5:15 | Call to Source | test.ps1:7:6:7:7 | x | provenance |  |
+| test.ps1:6:6:6:15 | Call to Source | test.ps1:7:10:7:11 | y | provenance |  |
+| test.ps1:7:6:7:7 | x | test.ps1:7:6:7:11 | ...,... [element 0] | provenance |  |
+| test.ps1:7:6:7:11 | ...,... [element 0] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | provenance |  |
+| test.ps1:7:6:7:11 | ...,... [element 0] | test.ps1:7:15:7:25 | Call to Join-String | provenance |  |
+| test.ps1:7:6:7:11 | ...,... [element 1] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | provenance |  |
+| test.ps1:7:6:7:11 | ...,... [element 1] | test.ps1:7:15:7:25 | Call to Join-String | provenance |  |
+| test.ps1:7:10:7:11 | y | test.ps1:7:6:7:11 | ...,... [element 1] | provenance |  |
+| test.ps1:7:15:7:25 | Call to Join-String | test.ps1:8:6:8:7 | z | provenance |  |
+nodes
+| file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | semmle.label | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] |
+| file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | semmle.label | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] |
+| file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] |
+| file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] read: Argument[pipeline].Element[?] in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | semmle.label | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] |
+| file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | semmle.label | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] |
+| test.ps1:1:6:1:15 | Call to Source | semmle.label | Call to Source |
+| test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent | semmle.label | Call to EscapeSingleQuotedStringContent |
+| test.ps1:2:94:2:95 | x | semmle.label | x |
+| test.ps1:3:6:3:7 | y | semmle.label | y |
+| test.ps1:5:6:5:15 | Call to Source | semmle.label | Call to Source |
+| test.ps1:6:6:6:15 | Call to Source | semmle.label | Call to Source |
+| test.ps1:7:6:7:7 | x | semmle.label | x |
+| test.ps1:7:6:7:11 | ...,... [element 0] | semmle.label | ...,... [element 0] |
+| test.ps1:7:6:7:11 | ...,... [element 1] | semmle.label | ...,... [element 1] |
+| test.ps1:7:10:7:11 | y | semmle.label | y |
+| test.ps1:7:15:7:25 | Call to Join-String | semmle.label | Call to Join-String |
+| test.ps1:8:6:8:7 | z | semmle.label | z |
+subpaths
+| test.ps1:2:94:2:95 | x | file://:0:0:0:0 | [summary param] pos(0, {}) in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | file://:0:0:0:0 | [summary] to write: ReturnValue in system.management.automation.language.codegeneration!;Method[escapesinglequotedstringcontent] | test.ps1:2:6:2:96 | Call to EscapeSingleQuotedStringContent |
+| test.ps1:7:6:7:11 | ...,... [element 0] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 0] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | test.ps1:7:15:7:25 | Call to Join-String |
+| test.ps1:7:6:7:11 | ...,... [element 1] | file://:0:0:0:0 | [summary param] pipeline in microsoft.powershell.utility!;Method[join-string] [element 1] | file://:0:0:0:0 | [summary] to write: ReturnValue in microsoft.powershell.utility!;Method[join-string] | test.ps1:7:15:7:25 | Call to Join-String |
+testFailures
+#select
+| test.ps1:3:6:3:7 | y | test.ps1:1:6:1:15 | Call to Source | test.ps1:3:6:3:7 | y | $@ | test.ps1:1:6:1:15 | Call to Source | Call to Source |
+| test.ps1:8:6:8:7 | z | test.ps1:5:6:5:15 | Call to Source | test.ps1:8:6:8:7 | z | $@ | test.ps1:5:6:5:15 | Call to Source | Call to Source |
+| test.ps1:8:6:8:7 | z | test.ps1:6:6:6:15 | Call to Source | test.ps1:8:6:8:7 | z | $@ | test.ps1:6:6:6:15 | Call to Source | Call to Source |

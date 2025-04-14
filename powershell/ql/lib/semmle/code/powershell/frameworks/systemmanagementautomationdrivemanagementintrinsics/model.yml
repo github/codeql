@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.drivemanagementintrinsics", "Method[get]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.drivemanagementintrinsics", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.drivemanagementintrinsics", "Method[getatscope]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.drivemanagementintrinsics", "Method[new]", "Argument[0]", "ReturnValue", "taint"]
+      

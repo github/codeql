@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Func<System.Object,System.Object,System.Boolean>", "Microsoft.Extensions.DiagnosticAdapter.IDiagnosticSourceMethodAdapter", "Method[Adapt].ReturnValue"]
-    - ["System.Boolean", "Microsoft.Extensions.DiagnosticAdapter.DiagnosticSourceAdapter", "Method[IsEnabled].ReturnValue"]
-    - ["System.String", "Microsoft.Extensions.DiagnosticAdapter.DiagnosticNameAttribute", "Property[Name]"]
-    - ["System.Func<System.Object,System.Object,System.Boolean>", "Microsoft.Extensions.DiagnosticAdapter.ProxyDiagnosticSourceMethodAdapter", "Method[Adapt].ReturnValue"]
+    - ["system.func<system.object,system.object,system.boolean>", "microsoft.extensions.diagnosticadapter.idiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.diagnosticadapter.diagnosticsourceadapter", "Method[isenabled].ReturnValue"]
+    - ["system.string", "microsoft.extensions.diagnosticadapter.diagnosticnameattribute", "Property[name]"]
+    - ["system.func<system.object,system.object,system.boolean>", "microsoft.extensions.diagnosticadapter.proxydiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]

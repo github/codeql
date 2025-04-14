@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Windows.Xps.XpsDocumentNotificationLevel", "System.Windows.Xps.XpsDocumentNotificationLevel!", "Field[None]"]
-    - ["System.Windows.Documents.Serialization.SerializerWriterCollator", "System.Windows.Xps.XpsDocumentWriter", "Method[CreateVisualsCollator].ReturnValue"]
-    - ["System.Windows.Xps.XpsDocumentNotificationLevel", "System.Windows.Xps.XpsDocumentNotificationLevel!", "Field[ReceiveNotificationEnabled]"]
-    - ["System.Windows.Xps.XpsDocumentNotificationLevel", "System.Windows.Xps.XpsDocumentNotificationLevel!", "Field[ReceiveNotificationDisabled]"]
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Field[none]"]
+    - ["system.windows.documents.serialization.serializerwritercollator", "system.windows.xps.xpsdocumentwriter", "Method[createvisualscollator].ReturnValue"]
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Field[receivenotificationenabled]"]
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Field[receivenotificationdisabled]"]

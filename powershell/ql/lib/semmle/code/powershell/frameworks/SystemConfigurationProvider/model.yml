@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Collections.IEnumerator", "System.Configuration.Provider.ProviderCollection", "Method[GetEnumerator].ReturnValue"]
-    - ["System.Configuration.Provider.ProviderBase", "System.Configuration.Provider.ProviderCollection", "Property[Item]"]
-    - ["System.String", "System.Configuration.Provider.ProviderBase", "Property[Description]"]
-    - ["System.Int32", "System.Configuration.Provider.ProviderCollection", "Property[Count]"]
-    - ["System.Object", "System.Configuration.Provider.ProviderCollection", "Property[SyncRoot]"]
-    - ["System.Boolean", "System.Configuration.Provider.ProviderCollection", "Property[IsSynchronized]"]
-    - ["System.String", "System.Configuration.Provider.ProviderBase", "Property[Name]"]
+    - ["system.collections.ienumerator", "system.configuration.provider.providercollection", "Method[getenumerator].ReturnValue"]
+    - ["system.configuration.provider.providerbase", "system.configuration.provider.providercollection", "Property[item]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Property[description]"]
+    - ["system.int32", "system.configuration.provider.providercollection", "Property[count]"]
+    - ["system.object", "system.configuration.provider.providercollection", "Property[syncroot]"]
+    - ["system.boolean", "system.configuration.provider.providercollection", "Property[issynchronized]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Property[name]"]

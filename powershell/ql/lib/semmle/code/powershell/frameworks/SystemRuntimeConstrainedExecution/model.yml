@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[MayFail]"]
-    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.ReliabilityContractAttribute", "Property[Cer]"]
-    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[Success]"]
-    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptProcess]"]
-    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[WillNotCorruptState]"]
-    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptInstance]"]
-    - ["System.Runtime.ConstrainedExecution.Cer", "System.Runtime.ConstrainedExecution.Cer!", "Field[None]"]
-    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.ReliabilityContractAttribute", "Property[ConsistencyGuarantee]"]
-    - ["System.Runtime.ConstrainedExecution.Consistency", "System.Runtime.ConstrainedExecution.Consistency!", "Field[MayCorruptAppDomain]"]
+    - ["system.runtime.constrainedexecution.cer", "system.runtime.constrainedexecution.cer!", "Field[mayfail]"]
+    - ["system.runtime.constrainedexecution.cer", "system.runtime.constrainedexecution.reliabilitycontractattribute", "Property[cer]"]
+    - ["system.runtime.constrainedexecution.cer", "system.runtime.constrainedexecution.cer!", "Field[success]"]
+    - ["system.runtime.constrainedexecution.consistency", "system.runtime.constrainedexecution.consistency!", "Field[maycorruptprocess]"]
+    - ["system.runtime.constrainedexecution.consistency", "system.runtime.constrainedexecution.consistency!", "Field[willnotcorruptstate]"]
+    - ["system.runtime.constrainedexecution.consistency", "system.runtime.constrainedexecution.consistency!", "Field[maycorruptinstance]"]
+    - ["system.runtime.constrainedexecution.cer", "system.runtime.constrainedexecution.cer!", "Field[none]"]
+    - ["system.runtime.constrainedexecution.consistency", "system.runtime.constrainedexecution.reliabilitycontractattribute", "Property[consistencyguarantee]"]
+    - ["system.runtime.constrainedexecution.consistency", "system.runtime.constrainedexecution.consistency!", "Field[maycorruptappdomain]"]

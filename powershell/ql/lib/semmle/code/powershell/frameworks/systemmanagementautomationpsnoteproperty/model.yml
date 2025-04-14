@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psnoteproperty", "Method[psnoteproperty]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psnoteproperty", "Method[psnoteproperty]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.psnoteproperty", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

@@ -3,10 +3,10 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["System.Xml.Serialization.Advanced.SchemaImporterExtension", "System.Xml.Serialization.Advanced.SchemaImporterExtensionCollection", "Property[Item]"]
-    - ["System.CodeDom.CodeExpression", "System.Xml.Serialization.Advanced.SchemaImporterExtension", "Method[ImportDefaultValue].ReturnValue"]
-    - ["System.Int32", "System.Xml.Serialization.Advanced.SchemaImporterExtensionCollection", "Method[Add].ReturnValue"]
-    - ["System.String", "System.Xml.Serialization.Advanced.SchemaImporterExtension", "Method[ImportAnyElement].ReturnValue"]
-    - ["System.Boolean", "System.Xml.Serialization.Advanced.SchemaImporterExtensionCollection", "Method[Contains].ReturnValue"]
-    - ["System.String", "System.Xml.Serialization.Advanced.SchemaImporterExtension", "Method[ImportSchemaType].ReturnValue"]
-    - ["System.Int32", "System.Xml.Serialization.Advanced.SchemaImporterExtensionCollection", "Method[IndexOf].ReturnValue"]
+    - ["system.xml.serialization.advanced.schemaimporterextension", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Property[item]"]
+    - ["system.codedom.codeexpression", "system.xml.serialization.advanced.schemaimporterextension", "Method[importdefaultvalue].ReturnValue"]
+    - ["system.int32", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[add].ReturnValue"]
+    - ["system.string", "system.xml.serialization.advanced.schemaimporterextension", "Method[importanyelement].ReturnValue"]
+    - ["system.boolean", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[contains].ReturnValue"]
+    - ["system.string", "system.xml.serialization.advanced.schemaimporterextension", "Method[importschematype].ReturnValue"]
+    - ["system.int32", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[indexof].ReturnValue"]

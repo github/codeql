@@ -30,6 +30,7 @@ rust_library(
     ),
     crate_features = [
         "default",
+        "serde",
         "std",
     ],
     crate_root = "src/lib.rs",
@@ -85,7 +86,8 @@ rust_library(
     }),
     version = "2.7.0",
     deps = [
-        "@vendor__equivalent-1.0.1//:equivalent",
-        "@vendor__hashbrown-0.15.2//:hashbrown",
+        "@vendor_ts__equivalent-1.0.1//:equivalent",
+        "@vendor_ts__hashbrown-0.15.2//:hashbrown",
+        "@vendor_ts__serde-1.0.219//:serde",
     ],
 )

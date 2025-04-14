@@ -225,5 +225,25 @@ def test_synth_properties_ignored(generate):
     ]
 
 
+def test_properties_with_custom_db_table_names(generate):
+    assert generate([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == [
+        cpp.Class(name="Obj", final=True, trap_name="Objs", fields=[
+            cpp.Field("x", "a", is_optional=True, trap_name="Foo"),
+            cpp.Field("y", "b", is_repeated=True, trap_name="Bar"),
+            cpp.Field("z", "c", is_repeated=True, is_optional=True, trap_name="Baz"),
+            cpp.Field("p", "bool", is_predicate=True, trap_name="Hello"),
+            cpp.Field("q", "d", is_repeated=True, is_unordered=True, trap_name="World"),
+        ]),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))
