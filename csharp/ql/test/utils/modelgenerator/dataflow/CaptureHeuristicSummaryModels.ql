@@ -5,7 +5,7 @@ import utils.test.InlineMadTest
 module InlineMadTestConfig implements InlineMadTestConfigSig {
   string getCapturedModel(Callable c) { result = Heuristic::captureFlow(c) }
 
-  string getKind() { result = "summary" }
+  string getKind() { result = "heuristic-summary" }
 }
 
 import InlineMadTest<InlineMadTestConfig>
