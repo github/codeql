@@ -84,11 +84,6 @@ Requirements: `codeql` should appear on your path.
             generator.printHelp()
             sys.exit(0)
 
-        # Convert --with-mixed-summaries to --with-summaries for backward compatibility
-        if "--with-mixed-summaries" in sys.argv:
-            sys.argv.remove("--with-mixed-summaries")
-            sys.argv.append("--with-summaries")
-
         if "--with-sinks" in sys.argv:
             sys.argv.remove("--with-sinks")
             generator.generateSinks = True
