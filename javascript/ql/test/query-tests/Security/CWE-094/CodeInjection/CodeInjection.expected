@@ -27,6 +27,26 @@
 | express.js:20:34:20:38 | taint | express.js:19:17:19:35 | req.param("wobble") | express.js:20:34:20:38 | taint | This code execution depends on a $@. | express.js:19:17:19:35 | req.param("wobble") | user-provided value |
 | express.js:36:15:36:19 | taint | express.js:27:17:27:35 | req.param("wobble") | express.js:36:15:36:19 | taint | This code execution depends on a $@. | express.js:27:17:27:35 | req.param("wobble") | user-provided value |
 | express.js:43:10:43:12 | msg | express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | This code execution depends on a $@. | express.js:42:30:42:32 | msg | user-provided value |
+| fastify.js:5:44:5:52 | userInput | fastify.js:4:21:4:33 | request.query | fastify.js:5:44:5:52 | userInput | This code execution depends on a $@. | fastify.js:4:21:4:33 | request.query | user-provided value |
+| fastify.js:5:44:5:52 | userInput | fastify.js:4:21:4:43 | request ... Request | fastify.js:5:44:5:52 | userInput | This code execution depends on a $@. | fastify.js:4:21:4:43 | request ... Request | user-provided value |
+| fastify.js:10:44:10:52 | userInput | fastify.js:9:21:9:33 | request.query | fastify.js:10:44:10:52 | userInput | This code execution depends on a $@. | fastify.js:9:21:9:33 | request.query | user-provided value |
+| fastify.js:10:44:10:52 | userInput | fastify.js:9:21:9:40 | request.query.onSend | fastify.js:10:44:10:52 | userInput | This code execution depends on a $@. | fastify.js:9:21:9:40 | request.query.onSend | user-provided value |
+| fastify.js:16:44:16:52 | userInput | fastify.js:15:21:15:33 | request.query | fastify.js:16:44:16:52 | userInput | This code execution depends on a $@. | fastify.js:15:21:15:33 | request.query | user-provided value |
+| fastify.js:16:44:16:52 | userInput | fastify.js:15:21:15:44 | request ... Parsing | fastify.js:16:44:16:52 | userInput | This code execution depends on a $@. | fastify.js:15:21:15:44 | request ... Parsing | user-provided value |
+| fastify.js:22:44:22:52 | userInput | fastify.js:21:21:21:33 | request.query | fastify.js:22:44:22:52 | userInput | This code execution depends on a $@. | fastify.js:21:21:21:33 | request.query | user-provided value |
+| fastify.js:22:44:22:52 | userInput | fastify.js:21:21:21:47 | request ... idation | fastify.js:22:44:22:52 | userInput | This code execution depends on a $@. | fastify.js:21:21:21:47 | request ... idation | user-provided value |
+| fastify.js:27:44:27:52 | userInput | fastify.js:26:21:26:33 | request.query | fastify.js:27:44:27:52 | userInput | This code execution depends on a $@. | fastify.js:26:21:26:33 | request.query | user-provided value |
+| fastify.js:27:44:27:52 | userInput | fastify.js:26:21:26:44 | request ... Handler | fastify.js:27:44:27:52 | userInput | This code execution depends on a $@. | fastify.js:26:21:26:44 | request ... Handler | user-provided value |
+| fastify.js:32:44:32:52 | userInput | fastify.js:31:21:31:33 | request.query | fastify.js:32:44:32:52 | userInput | This code execution depends on a $@. | fastify.js:31:21:31:33 | request.query | user-provided value |
+| fastify.js:32:44:32:52 | userInput | fastify.js:31:21:31:50 | request ... ization | fastify.js:32:44:32:52 | userInput | This code execution depends on a $@. | fastify.js:31:21:31:50 | request ... ization | user-provided value |
+| fastify.js:38:44:38:52 | userInput | fastify.js:37:21:37:33 | request.query | fastify.js:38:44:38:52 | userInput | This code execution depends on a $@. | fastify.js:37:21:37:33 | request.query | user-provided value |
+| fastify.js:38:44:38:52 | userInput | fastify.js:37:21:37:44 | request ... esponse | fastify.js:38:44:38:52 | userInput | This code execution depends on a $@. | fastify.js:37:21:37:44 | request ... esponse | user-provided value |
+| fastify.js:43:44:43:52 | userInput | fastify.js:42:21:42:33 | request.query | fastify.js:43:44:43:52 | userInput | This code execution depends on a $@. | fastify.js:42:21:42:33 | request.query | user-provided value |
+| fastify.js:43:44:43:52 | userInput | fastify.js:42:21:42:41 | request ... onError | fastify.js:43:44:43:52 | userInput | This code execution depends on a $@. | fastify.js:42:21:42:41 | request ... onError | user-provided value |
+| fastify.js:48:44:48:52 | userInput | fastify.js:47:21:47:33 | request.query | fastify.js:48:44:48:52 | userInput | This code execution depends on a $@. | fastify.js:47:21:47:33 | request.query | user-provided value |
+| fastify.js:48:44:48:52 | userInput | fastify.js:47:21:47:43 | request ... Timeout | fastify.js:48:44:48:52 | userInput | This code execution depends on a $@. | fastify.js:47:21:47:43 | request ... Timeout | user-provided value |
+| fastify.js:53:46:53:54 | userInput | fastify.js:52:23:52:35 | request.query | fastify.js:53:46:53:54 | userInput | This code execution depends on a $@. | fastify.js:52:23:52:35 | request.query | user-provided value |
+| fastify.js:53:46:53:54 | userInput | fastify.js:52:23:52:50 | request ... stAbort | fastify.js:53:46:53:54 | userInput | This code execution depends on a $@. | fastify.js:52:23:52:50 | request ... stAbort | user-provided value |
 | fastify.js:58:44:58:52 | userInput | fastify.js:57:21:57:33 | request.query | fastify.js:58:44:58:52 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:33 | request.query | user-provided value |
 | fastify.js:58:44:58:52 | userInput | fastify.js:57:21:57:39 | request.query.input | fastify.js:58:44:58:52 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:39 | request.query.input | user-provided value |
 | fastify.js:59:23:59:31 | userInput | fastify.js:57:21:57:33 | request.query | fastify.js:59:23:59:31 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:33 | request.query | user-provided value |
@@ -79,6 +99,36 @@ edges
 | express.js:27:9:27:35 | taint | express.js:36:15:36:19 | taint | provenance |  |
 | express.js:27:17:27:35 | req.param("wobble") | express.js:27:9:27:35 | taint | provenance |  |
 | express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | provenance |  |
+| fastify.js:4:9:4:43 | userInput | fastify.js:5:44:5:52 | userInput | provenance |  |
+| fastify.js:4:21:4:33 | request.query | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:4:21:4:43 | request ... Request | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:9:9:9:40 | userInput | fastify.js:10:44:10:52 | userInput | provenance |  |
+| fastify.js:9:21:9:33 | request.query | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:9:21:9:40 | request.query.onSend | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:15:9:15:44 | userInput | fastify.js:16:44:16:52 | userInput | provenance |  |
+| fastify.js:15:21:15:33 | request.query | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:15:21:15:44 | request ... Parsing | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:21:9:21:47 | userInput | fastify.js:22:44:22:52 | userInput | provenance |  |
+| fastify.js:21:21:21:33 | request.query | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:21:21:21:47 | request ... idation | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:26:9:26:44 | userInput | fastify.js:27:44:27:52 | userInput | provenance |  |
+| fastify.js:26:21:26:33 | request.query | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:26:21:26:44 | request ... Handler | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:31:9:31:50 | userInput | fastify.js:32:44:32:52 | userInput | provenance |  |
+| fastify.js:31:21:31:33 | request.query | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:31:21:31:50 | request ... ization | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:37:9:37:44 | userInput | fastify.js:38:44:38:52 | userInput | provenance |  |
+| fastify.js:37:21:37:33 | request.query | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:37:21:37:44 | request ... esponse | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:42:9:42:41 | userInput | fastify.js:43:44:43:52 | userInput | provenance |  |
+| fastify.js:42:21:42:33 | request.query | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:42:21:42:41 | request ... onError | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:47:9:47:43 | userInput | fastify.js:48:44:48:52 | userInput | provenance |  |
+| fastify.js:47:21:47:33 | request.query | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:47:21:47:43 | request ... Timeout | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:52:11:52:50 | userInput | fastify.js:53:46:53:54 | userInput | provenance |  |
+| fastify.js:52:23:52:35 | request.query | fastify.js:52:11:52:50 | userInput | provenance |  |
+| fastify.js:52:23:52:50 | request ... stAbort | fastify.js:52:11:52:50 | userInput | provenance |  |
 | fastify.js:57:9:57:39 | userInput | fastify.js:58:44:58:52 | userInput | provenance |  |
 | fastify.js:57:9:57:39 | userInput | fastify.js:59:23:59:31 | userInput | provenance |  |
 | fastify.js:57:21:57:33 | request.query | fastify.js:57:9:57:39 | userInput | provenance |  |
@@ -152,6 +202,46 @@ nodes
 | express.js:36:15:36:19 | taint | semmle.label | taint |
 | express.js:42:30:42:32 | msg | semmle.label | msg |
 | express.js:43:10:43:12 | msg | semmle.label | msg |
+| fastify.js:4:9:4:43 | userInput | semmle.label | userInput |
+| fastify.js:4:21:4:33 | request.query | semmle.label | request.query |
+| fastify.js:4:21:4:43 | request ... Request | semmle.label | request ... Request |
+| fastify.js:5:44:5:52 | userInput | semmle.label | userInput |
+| fastify.js:9:9:9:40 | userInput | semmle.label | userInput |
+| fastify.js:9:21:9:33 | request.query | semmle.label | request.query |
+| fastify.js:9:21:9:40 | request.query.onSend | semmle.label | request.query.onSend |
+| fastify.js:10:44:10:52 | userInput | semmle.label | userInput |
+| fastify.js:15:9:15:44 | userInput | semmle.label | userInput |
+| fastify.js:15:21:15:33 | request.query | semmle.label | request.query |
+| fastify.js:15:21:15:44 | request ... Parsing | semmle.label | request ... Parsing |
+| fastify.js:16:44:16:52 | userInput | semmle.label | userInput |
+| fastify.js:21:9:21:47 | userInput | semmle.label | userInput |
+| fastify.js:21:21:21:33 | request.query | semmle.label | request.query |
+| fastify.js:21:21:21:47 | request ... idation | semmle.label | request ... idation |
+| fastify.js:22:44:22:52 | userInput | semmle.label | userInput |
+| fastify.js:26:9:26:44 | userInput | semmle.label | userInput |
+| fastify.js:26:21:26:33 | request.query | semmle.label | request.query |
+| fastify.js:26:21:26:44 | request ... Handler | semmle.label | request ... Handler |
+| fastify.js:27:44:27:52 | userInput | semmle.label | userInput |
+| fastify.js:31:9:31:50 | userInput | semmle.label | userInput |
+| fastify.js:31:21:31:33 | request.query | semmle.label | request.query |
+| fastify.js:31:21:31:50 | request ... ization | semmle.label | request ... ization |
+| fastify.js:32:44:32:52 | userInput | semmle.label | userInput |
+| fastify.js:37:9:37:44 | userInput | semmle.label | userInput |
+| fastify.js:37:21:37:33 | request.query | semmle.label | request.query |
+| fastify.js:37:21:37:44 | request ... esponse | semmle.label | request ... esponse |
+| fastify.js:38:44:38:52 | userInput | semmle.label | userInput |
+| fastify.js:42:9:42:41 | userInput | semmle.label | userInput |
+| fastify.js:42:21:42:33 | request.query | semmle.label | request.query |
+| fastify.js:42:21:42:41 | request ... onError | semmle.label | request ... onError |
+| fastify.js:43:44:43:52 | userInput | semmle.label | userInput |
+| fastify.js:47:9:47:43 | userInput | semmle.label | userInput |
+| fastify.js:47:21:47:33 | request.query | semmle.label | request.query |
+| fastify.js:47:21:47:43 | request ... Timeout | semmle.label | request ... Timeout |
+| fastify.js:48:44:48:52 | userInput | semmle.label | userInput |
+| fastify.js:52:11:52:50 | userInput | semmle.label | userInput |
+| fastify.js:52:23:52:35 | request.query | semmle.label | request.query |
+| fastify.js:52:23:52:50 | request ... stAbort | semmle.label | request ... stAbort |
+| fastify.js:53:46:53:54 | userInput | semmle.label | userInput |
 | fastify.js:57:9:57:39 | userInput | semmle.label | userInput |
 | fastify.js:57:21:57:33 | request.query | semmle.label | request.query |
 | fastify.js:57:21:57:39 | request.query.input | semmle.label | request.query.input |

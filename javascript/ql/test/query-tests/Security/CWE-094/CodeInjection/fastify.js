@@ -1,56 +1,56 @@
 const fastify = require('fastify')({ logger: true });
 
 fastify.addHook('onRequest', async (request, reply) => {
-  const userInput = request.query.onRequest; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.onRequest; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('onSend', async (request, reply, payload) => {
-  const userInput = request.query.onSend; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.onSend; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
   return JSON.stringify({ ...JSON.parse(payload), onSend: request.evalResult });
 });
 
 fastify.addHook('preParsing', async (request, reply, payload) => {
-  const userInput = request.query.preParsing; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.preParsing; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
   return payload;
 });
 
 fastify.addHook('preValidation', async (request, reply) => {
-  const userInput = request.query.preValidation; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.preValidation; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('preHandler', async (request, reply) => {
-  const userInput = request.query.preHandler; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.preHandler; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('preSerialization', async (request, reply, payload) => {
-  const userInput = request.query.preSerialization; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.preSerialization; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
   return payload;
 });
 
 fastify.addHook('onResponse', async (request, reply) => {
-  const userInput = request.query.onResponse; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.onResponse; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('onError', async (request, reply, error) => {
-  const userInput = request.query.onError; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.onError; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('onTimeout', async (request, reply) => {
-  const userInput = request.query.onTimeout; // $ MISSING: Source[js/code-injection]
-  if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.onTimeout; // $ Source[js/code-injection]
+  if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.addHook('onRequestAbort', (request, done) => {
-    const userInput = request.query.onRequestAbort; // $ MISSING: Source[js/code-injection]
-    if (userInput) request.evalResult = eval(userInput); // $ MISSING: Alert[js/code-injection]
+    const userInput = request.query.onRequestAbort; // $ Source[js/code-injection]
+    if (userInput) request.evalResult = eval(userInput); // $ Alert[js/code-injection]
 });
 
 fastify.get('/dangerous', async (request, reply) => {
