@@ -113,6 +113,7 @@
 /lib/codeql/swift/elements/decl/internal/TopLevelCodeDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TypeAliasDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AppliedPropertyWrapperExpr.qll linguist-generated
@@ -145,6 +146,7 @@
 /lib/codeql/swift/elements/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DerivedToBaseExpr.qll linguist-generated
@@ -166,6 +168,7 @@
 /lib/codeql/swift/elements/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/Expr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceValueExpr.qll linguist-generated
@@ -231,6 +234,7 @@
 /lib/codeql/swift/elements/expr/TypeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedMemberChainResultExpr.qll linguist-generated
@@ -241,6 +245,8 @@
 /lib/codeql/swift/elements/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyTryExprImpl.qll linguist-generated
@@ -286,6 +292,8 @@
 /lib/codeql/swift/elements/expr/internal/CovariantFunctionConversionExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DefaultArgumentExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DerivedToBaseExprConstructor.qll linguist-generated
@@ -313,6 +321,8 @@
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExplicitClosureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceTryExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceValueExprConstructor.qll linguist-generated
@@ -403,6 +413,8 @@
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDotExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedMemberChainResultExprConstructor.qll linguist-generated
@@ -764,6 +776,7 @@
 /lib/codeql/swift/generated/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/generated/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AppliedPropertyWrapperExpr.qll linguist-generated
@@ -796,6 +809,7 @@
 /lib/codeql/swift/generated/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DerivedToBaseExpr.qll linguist-generated
@@ -818,6 +832,7 @@
 /lib/codeql/swift/generated/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/Expr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceValueExpr.qll linguist-generated
@@ -885,6 +900,7 @@
 /lib/codeql/swift/generated/expr/TypeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedMemberChainResultExpr.qll linguist-generated
@@ -1146,6 +1162,8 @@
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/ExplicitClosureExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/FloatLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceTryExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceValueExpr/MISSING_SOURCE.txt linguist-generated

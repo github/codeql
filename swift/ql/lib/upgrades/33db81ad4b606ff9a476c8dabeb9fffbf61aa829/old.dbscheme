@@ -778,7 +778,6 @@ arguments(  //dir=expr
 | @collection_expr
 | @consume_expr
 | @copy_expr
-| @current_context_isolation_expr
 | @decl_ref_expr
 | @default_argument_expr
 | @discard_assignment_expr
@@ -787,7 +786,6 @@ arguments(  //dir=expr
 | @enum_is_case_expr
 | @error_expr
 | @explicit_cast_expr
-| @extract_function_isolation_expr
 | @force_value_expr
 | @identity_expr
 | @if_expr
@@ -916,11 +914,6 @@ copy_exprs(  //dir=expr
   int sub_expr: @expr_or_none ref
 );
 
-current_context_isolation_exprs(  //dir=expr
-  unique int id: @current_context_isolation_expr,
-  int actor: @expr_or_none ref
-);
-
 decl_ref_exprs(  //dir=expr
   unique int id: @decl_ref_expr,
   int decl: @decl_or_none ref
@@ -1001,11 +994,6 @@ explicit_cast_exprs(  //dir=expr
   int sub_expr: @expr_or_none ref
 );
 
-extract_function_isolation_exprs(  //dir=expr
-  unique int id: @extract_function_isolation_expr,
-  int function_expr: @expr_or_none ref
-);
-
 force_value_exprs(  //dir=expr
   unique int id: @force_value_expr,
   int sub_expr: @expr_or_none ref
@@ -1034,7 +1022,6 @@ if_exprs(  //dir=expr
 
 @implicit_conversion_expr =
   @abi_safe_conversion_expr
-| @actor_isolation_erasure_expr
 | @any_hashable_erasure_expr
 | @archetype_to_super_expr
 | @array_to_pointer_expr
@@ -1065,7 +1052,6 @@ if_exprs(  //dir=expr
 | @string_to_pointer_expr
 | @underlying_to_opaque_expr
 | @unevaluated_instance_expr
-| @unreachable_expr
 | @unresolved_type_conversion_expr
 ;
 
@@ -1318,10 +1304,6 @@ vararg_expansion_exprs(  //dir=expr
 
 abi_safe_conversion_exprs(  //dir=expr
   unique int id: @abi_safe_conversion_expr
-);
-
-actor_isolation_erasure_exprs(  //dir=expr
-  unique int id: @actor_isolation_erasure_expr
 );
 
 any_hashable_erasure_exprs(  //dir=expr
@@ -1642,10 +1624,6 @@ underlying_to_opaque_exprs(  //dir=expr
 
 unevaluated_instance_exprs(  //dir=expr
   unique int id: @unevaluated_instance_expr
-);
-
-unreachable_exprs(  //dir=expr
-  unique int id: @unreachable_expr
 );
 
 unresolved_member_chain_result_exprs(  //dir=expr
