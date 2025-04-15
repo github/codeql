@@ -1,3 +1,10 @@
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* Enums and `System.DateTimeOffset` are now treated as *simple* types, which means that they are considered to have a sanitizing effect. This impacts many queries, among others the `cs/log-forging` query.
+* The MaD models for the .NET 9 Runtime have been re-generated after a fix related to `out`/`ref` parameters.
+
 ## 1.1.0
 
 ### New Queries
