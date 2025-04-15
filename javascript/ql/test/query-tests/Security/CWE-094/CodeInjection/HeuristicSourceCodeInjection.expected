@@ -82,6 +82,12 @@ nodes
 | express.js:36:15:36:19 | taint | semmle.label | taint |
 | express.js:42:30:42:32 | msg | semmle.label | msg |
 | express.js:43:10:43:12 | msg | semmle.label | msg |
+| firebase-server.js:7:10:7:16 | x.val() | semmle.label | x.val() |
+| firebase-server.js:8:10:8:22 | x.exportVal() | semmle.label | x.exportVal() |
+| firebase-server.js:10:14:10:33 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-server.js:14:10:14:23 | x.before.val() | semmle.label | x.before.val() |
+| firebase-server.js:15:10:15:22 | x.after.val() | semmle.label | x.after.val() |
+| firebase-server.js:17:14:17:38 | grandPa ... t.val() | semmle.label | grandPa ... t.val() |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |

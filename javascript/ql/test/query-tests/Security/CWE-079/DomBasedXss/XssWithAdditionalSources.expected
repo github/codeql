@@ -154,6 +154,26 @@ nodes
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
 | express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| firebase-client.js:7:59:7:65 | x.val() | semmle.label | x.val() |
+| firebase-client.js:8:59:8:71 | x.exportVal() | semmle.label | x.exportVal() |
+| firebase-client.js:8:59:8:79 | x.expor ... message | semmle.label | x.expor ... message |
+| firebase-client.js:10:63:10:82 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-client.js:14:54:14:70 | bioSnapshot.val() | semmle.label | bioSnapshot.val() |
+| firebase-client.js:18:13:18:38 | data | semmle.label | data |
+| firebase-client.js:18:20:18:38 | childSnapshot.val() | semmle.label | childSnapshot.val() |
+| firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | semmle.label | `<div>$ ... </div>` |
+| firebase-client.js:19:64:19:67 | data | semmle.label | data |
+| firebase-client.js:19:64:19:76 | data.username | semmle.label | data.username |
+| firebase-client.js:25:59:25:65 | x.val() | semmle.label | x.val() |
+| firebase-client.js:26:59:26:71 | x.exportVal() | semmle.label | x.exportVal() |
+| firebase-client.js:26:59:26:79 | x.expor ... message | semmle.label | x.expor ... message |
+| firebase-client.js:28:63:28:82 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-client.js:33:52:33:65 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:37:11:37:35 | userData | semmle.label | userData |
+| firebase-client.js:37:22:37:35 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:38:56:38:63 | userData | semmle.label | userData |
+| firebase-client.js:38:56:38:67 | userData.bio | semmle.label | userData.bio |
+| firebase-client.js:44:55:44:74 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
 | hana.js:11:37:11:40 | rows | semmle.label | rows |
 | hana.js:11:37:11:51 | rows[0].comment | semmle.label | rows[0].comment |
 | hana.js:16:37:16:40 | rows | semmle.label | rows |
@@ -820,6 +840,15 @@ edges
 | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance | Config |
+| firebase-client.js:8:59:8:71 | x.exportVal() | firebase-client.js:8:59:8:79 | x.expor ... message | provenance |  |
+| firebase-client.js:18:13:18:38 | data | firebase-client.js:19:64:19:67 | data | provenance |  |
+| firebase-client.js:18:20:18:38 | childSnapshot.val() | firebase-client.js:18:13:18:38 | data | provenance |  |
+| firebase-client.js:19:64:19:67 | data | firebase-client.js:19:64:19:76 | data.username | provenance |  |
+| firebase-client.js:19:64:19:76 | data.username | firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | provenance |  |
+| firebase-client.js:26:59:26:71 | x.exportVal() | firebase-client.js:26:59:26:79 | x.expor ... message | provenance |  |
+| firebase-client.js:37:11:37:35 | userData | firebase-client.js:38:56:38:63 | userData | provenance |  |
+| firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:37:11:37:35 | userData | provenance |  |
+| firebase-client.js:38:56:38:63 | userData | firebase-client.js:38:56:38:67 | userData.bio | provenance |  |
 | hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | provenance |  |
 | hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | provenance |  |
 | hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | provenance |  |

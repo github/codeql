@@ -62,6 +62,17 @@
 | dragAndDrop.ts:73:29:73:39 | droppedHtml | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:73:29:73:39 | droppedHtml | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | user-provided value |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | Cross-site scripting vulnerability due to $@. | event-handler-receiver.js:2:49:2:61 | location.href | user-provided value |
 | express.js:6:15:6:33 | req.param("wobble") | express.js:6:15:6:33 | req.param("wobble") | express.js:6:15:6:33 | req.param("wobble") | Cross-site scripting vulnerability due to $@. | express.js:6:15:6:33 | req.param("wobble") | user-provided value |
+| firebase-client.js:7:59:7:65 | x.val() | firebase-client.js:7:59:7:65 | x.val() | firebase-client.js:7:59:7:65 | x.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:7:59:7:65 | x.val() | user-provided value |
+| firebase-client.js:8:59:8:79 | x.expor ... message | firebase-client.js:8:59:8:71 | x.exportVal() | firebase-client.js:8:59:8:79 | x.expor ... message | Cross-site scripting vulnerability due to $@. | firebase-client.js:8:59:8:71 | x.exportVal() | user-provided value |
+| firebase-client.js:10:63:10:82 | parentSnapshot.val() | firebase-client.js:10:63:10:82 | parentSnapshot.val() | firebase-client.js:10:63:10:82 | parentSnapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:10:63:10:82 | parentSnapshot.val() | user-provided value |
+| firebase-client.js:14:54:14:70 | bioSnapshot.val() | firebase-client.js:14:54:14:70 | bioSnapshot.val() | firebase-client.js:14:54:14:70 | bioSnapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:14:54:14:70 | bioSnapshot.val() | user-provided value |
+| firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | firebase-client.js:18:20:18:38 | childSnapshot.val() | firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | Cross-site scripting vulnerability due to $@. | firebase-client.js:18:20:18:38 | childSnapshot.val() | user-provided value |
+| firebase-client.js:25:59:25:65 | x.val() | firebase-client.js:25:59:25:65 | x.val() | firebase-client.js:25:59:25:65 | x.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:25:59:25:65 | x.val() | user-provided value |
+| firebase-client.js:26:59:26:79 | x.expor ... message | firebase-client.js:26:59:26:71 | x.exportVal() | firebase-client.js:26:59:26:79 | x.expor ... message | Cross-site scripting vulnerability due to $@. | firebase-client.js:26:59:26:71 | x.exportVal() | user-provided value |
+| firebase-client.js:28:63:28:82 | parentSnapshot.val() | firebase-client.js:28:63:28:82 | parentSnapshot.val() | firebase-client.js:28:63:28:82 | parentSnapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:28:63:28:82 | parentSnapshot.val() | user-provided value |
+| firebase-client.js:33:52:33:65 | snapshot.val() | firebase-client.js:33:52:33:65 | snapshot.val() | firebase-client.js:33:52:33:65 | snapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:33:52:33:65 | snapshot.val() | user-provided value |
+| firebase-client.js:38:56:38:67 | userData.bio | firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:38:56:38:67 | userData.bio | Cross-site scripting vulnerability due to $@. | firebase-client.js:37:22:37:35 | snapshot.val() | user-provided value |
+| firebase-client.js:44:55:44:74 | parentSnapshot.val() | firebase-client.js:44:55:44:74 | parentSnapshot.val() | firebase-client.js:44:55:44:74 | parentSnapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:44:55:44:74 | parentSnapshot.val() | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:40 | documen ... .search | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |
@@ -352,6 +363,15 @@ edges
 | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance | Config |
+| firebase-client.js:8:59:8:71 | x.exportVal() | firebase-client.js:8:59:8:79 | x.expor ... message | provenance |  |
+| firebase-client.js:18:13:18:38 | data | firebase-client.js:19:64:19:67 | data | provenance |  |
+| firebase-client.js:18:20:18:38 | childSnapshot.val() | firebase-client.js:18:13:18:38 | data | provenance |  |
+| firebase-client.js:19:64:19:67 | data | firebase-client.js:19:64:19:76 | data.username | provenance |  |
+| firebase-client.js:19:64:19:76 | data.username | firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | provenance |  |
+| firebase-client.js:26:59:26:71 | x.exportVal() | firebase-client.js:26:59:26:79 | x.expor ... message | provenance |  |
+| firebase-client.js:37:11:37:35 | userData | firebase-client.js:38:56:38:63 | userData | provenance |  |
+| firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:37:11:37:35 | userData | provenance |  |
+| firebase-client.js:38:56:38:63 | userData | firebase-client.js:38:56:38:67 | userData.bio | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:5:13:5:19 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:6:11:6:17 | tainted | provenance |  |
@@ -954,6 +974,26 @@ nodes
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
 | express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| firebase-client.js:7:59:7:65 | x.val() | semmle.label | x.val() |
+| firebase-client.js:8:59:8:71 | x.exportVal() | semmle.label | x.exportVal() |
+| firebase-client.js:8:59:8:79 | x.expor ... message | semmle.label | x.expor ... message |
+| firebase-client.js:10:63:10:82 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-client.js:14:54:14:70 | bioSnapshot.val() | semmle.label | bioSnapshot.val() |
+| firebase-client.js:18:13:18:38 | data | semmle.label | data |
+| firebase-client.js:18:20:18:38 | childSnapshot.val() | semmle.label | childSnapshot.val() |
+| firebase-client.js:19:56:19:84 | `<div>$ ... </div>` | semmle.label | `<div>$ ... </div>` |
+| firebase-client.js:19:64:19:67 | data | semmle.label | data |
+| firebase-client.js:19:64:19:76 | data.username | semmle.label | data.username |
+| firebase-client.js:25:59:25:65 | x.val() | semmle.label | x.val() |
+| firebase-client.js:26:59:26:71 | x.exportVal() | semmle.label | x.exportVal() |
+| firebase-client.js:26:59:26:79 | x.expor ... message | semmle.label | x.expor ... message |
+| firebase-client.js:28:63:28:82 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-client.js:33:52:33:65 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:37:11:37:35 | userData | semmle.label | userData |
+| firebase-client.js:37:22:37:35 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:38:56:38:63 | userData | semmle.label | userData |
+| firebase-client.js:38:56:38:67 | userData.bio | semmle.label | userData.bio |
+| firebase-client.js:44:55:44:74 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |
