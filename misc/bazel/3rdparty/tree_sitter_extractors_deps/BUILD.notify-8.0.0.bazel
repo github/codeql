@@ -87,13 +87,13 @@ rust_library(
     version = "8.0.0",
     deps = [
         "@vendor_ts__filetime-0.2.25//:filetime",
-        "@vendor_ts__libc-0.2.169//:libc",
-        "@vendor_ts__log-0.4.25//:log",
+        "@vendor_ts__libc-0.2.171//:libc",
+        "@vendor_ts__log-0.4.27//:log",
         "@vendor_ts__notify-types-2.0.0//:notify_types",
         "@vendor_ts__walkdir-2.5.0//:walkdir",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__bitflags-2.8.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # aarch64-apple-darwin
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
@@ -132,7 +132,7 @@ rust_library(
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__bitflags-2.8.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # i686-apple-darwin
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
@@ -159,7 +159,7 @@ rust_library(
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__bitflags-2.8.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # x86_64-apple-darwin
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
