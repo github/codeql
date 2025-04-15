@@ -9,5 +9,5 @@
 import internal.CaptureModels
 
 from DataFlowSourceTargetApi api, string source
-where source = captureSource(api)
+where source = Heuristic::captureSource(api)
 select source order by source
