@@ -10,6 +10,7 @@
 
 import csharp
 import utils.modelgenerator.internal.CaptureModels
+import Heuristic
 import PropagateFlow::PathGraph
 
 from
