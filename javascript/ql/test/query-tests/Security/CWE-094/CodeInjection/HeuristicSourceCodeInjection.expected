@@ -161,6 +161,9 @@ nodes
 | fastify.js:57:21:57:39 | request.query.input | semmle.label | request.query.input |
 | fastify.js:58:44:58:52 | userInput | semmle.label | userInput |
 | fastify.js:59:23:59:31 | userInput | semmle.label | userInput |
+| fastify.js:71:34:71:51 | request.storedCode | semmle.label | request.storedCode |
+| fastify.js:84:30:84:43 | reply.userCode | semmle.label | reply.userCode |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |

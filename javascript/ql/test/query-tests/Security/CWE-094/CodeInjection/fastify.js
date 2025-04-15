@@ -68,7 +68,7 @@ fastify.addHook('preHandler', async (request, reply) => {
 fastify.get('/flow-through-request', async (request, reply) => {
   // Use the stored code from previous hook
   if (request.storedCode) {
-    const evaluatedResult = eval(request.storedCode); // $ MISSING: Alert[js/code-injection]
+    const evaluatedResult = eval(request.storedCode); // $ Alert[js/code-injection]
     return { result: evaluatedResult };
   }
   return { result: null };
@@ -81,7 +81,7 @@ fastify.addHook('onRequest', async (request, reply) => {
 fastify.get('/flow-through-reply', async (request, reply) => {
   // Use the code stored in reply object
   if (reply.userCode) {
-    const replyResult = eval(reply.userCode); // $ MISSING: Alert[js/code-injection]
+    const replyResult = eval(reply.userCode); // $ Alert[js/code-injection]
     return { result: replyResult };
   }
   return { result: null };
@@ -96,7 +96,7 @@ fastify.addHook('onRequest', async (request, reply) => {
 fastify.get('/flow-through-reply', async (request, reply) => {
   // Use the code stored in reply object
   if (reply.locals && reply.locals.nestedCode) {
-    const replyResult = eval(reply.locals.nestedCode); // $ MISSING: Alert[js/code-injection]
+    const replyResult = eval(reply.locals.nestedCode); // $ Alert[js/code-injection]
     return { result: replyResult };
   }
   return { result: null };

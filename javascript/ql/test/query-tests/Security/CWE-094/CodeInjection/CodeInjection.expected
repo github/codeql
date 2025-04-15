@@ -51,6 +51,9 @@
 | fastify.js:58:44:58:52 | userInput | fastify.js:57:21:57:39 | request.query.input | fastify.js:58:44:58:52 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:39 | request.query.input | user-provided value |
 | fastify.js:59:23:59:31 | userInput | fastify.js:57:21:57:33 | request.query | fastify.js:59:23:59:31 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:33 | request.query | user-provided value |
 | fastify.js:59:23:59:31 | userInput | fastify.js:57:21:57:39 | request.query.input | fastify.js:59:23:59:31 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:39 | request.query.input | user-provided value |
+| fastify.js:71:34:71:51 | request.storedCode | fastify.js:71:34:71:51 | request.storedCode | fastify.js:71:34:71:51 | request.storedCode | This code execution depends on a $@. | fastify.js:71:34:71:51 | request.storedCode | user-provided value |
+| fastify.js:84:30:84:43 | reply.userCode | fastify.js:84:30:84:43 | reply.userCode | fastify.js:84:30:84:43 | reply.userCode | This code execution depends on a $@. | fastify.js:84:30:84:43 | reply.userCode | user-provided value |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:99:30:99:52 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:99:30:99:52 | reply.l ... tedCode | user-provided value |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
@@ -247,6 +250,9 @@ nodes
 | fastify.js:57:21:57:39 | request.query.input | semmle.label | request.query.input |
 | fastify.js:58:44:58:52 | userInput | semmle.label | userInput |
 | fastify.js:59:23:59:31 | userInput | semmle.label | userInput |
+| fastify.js:71:34:71:51 | request.storedCode | semmle.label | request.storedCode |
+| fastify.js:84:30:84:43 | reply.userCode | semmle.label | reply.userCode |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
