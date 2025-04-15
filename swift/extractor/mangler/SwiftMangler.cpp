@@ -353,9 +353,10 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
 }
 
 SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
-  llvm::SmallVector<char> uuid;
-  type->getOpenedExistentialID().toString(uuid);
-  return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());
+  // llvm::SmallVector<char> uuid;
+  // type->getOpenedExistentialID().toString(uuid);  // <- doesn't compile any more
+  // return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());
+  return visitArchetypeType(type);
 }
 
 SwiftMangledName SwiftMangler::visitProtocolCompositionType(
@@ -368,10 +369,6 @@ SwiftMangledName SwiftMangler::visitProtocolCompositionType(
     ret << "&AnyObject";
   }
   return ret;
-}
-
-SwiftMangledName SwiftMangler::visitParenType(const swift::ParenType* type) {
-  return initMangled(type) << fetch(type->getUnderlyingType());
 }
 
 SwiftMangledName SwiftMangler::visitLValueType(const swift::LValueType* type) {

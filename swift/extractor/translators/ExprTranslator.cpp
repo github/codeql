@@ -624,7 +624,7 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
 codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
     const swift::RegexLiteralExpr& expr) {
   auto entry = createExprEntry(expr);
-  auto pattern = expr.getRegexText();
+  auto pattern = expr.getParsedRegexText();  // TODO: there is now this and getRegexToEmit
   // the pattern has enclosing '/' delimiters, we'd rather get it without
   entry.pattern = pattern.substr(1, pattern.size() - 2);
   entry.version = expr.getVersion();
