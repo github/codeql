@@ -34,7 +34,6 @@ class Generator:
         self.generateSources = False
         self.generateSummaries = False
         self.generateNeutrals = False
-        self.generateMixedNeutrals = False
         self.generateTypeBasedSummaries = False
         self.dryRun = False
         self.dirname = "modelgenerator"
@@ -52,7 +51,6 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-neutrals
-    --with-mixed-neutrals. Should only be used in conjunction with --with-summaries.
     --with-typebased-summaries (Experimental)
 If none of these flags are specified, all models are generated except for the type based models.
 
@@ -100,10 +98,6 @@ Requirements: `codeql` should appear on your path.
             sys.argv.remove("--with-neutrals")
             generator.generateNeutrals = True
 
-        if "--with-mixed-neutrals" in sys.argv:
-            sys.argv.remove("--with-mixed-neutrals")
-            generator.generateMixedNeutrals = True
-
         if "--with-typebased-summaries" in sys.argv:
             sys.argv.remove("--with-typebased-summaries")
             generator.generateTypeBasedSummaries = True
@@ -116,8 +110,7 @@ Requirements: `codeql` should appear on your path.
            not generator.generateSources and
            not generator.generateSummaries and
            not generator.generateNeutrals and
-           not generator.generateTypeBasedSummaries and
-           not generator.generateMixedNeutrals):
+           not generator.generateTypeBasedSummaries):
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNeutrals = True
 
         n = len(sys.argv)
@@ -171,11 +164,7 @@ Requirements: `codeql` should appear on your path.
         if self.generateNeutrals:
             neutralAddsTo = self.getAddsTo("CaptureNeutralModels.ql", helpers.neutralModelPredicate)
 
-        mixedNeutralAddsTo = {}
-        if self.generateMixedNeutrals:
-            mixedNeutralAddsTo = self.getAddsTo("CaptureMixedNeutralModels.ql", helpers.neutralModelPredicate)
-
-        return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo, mixedNeutralAddsTo)
+        return helpers.merge(summaryAddsTo, sinkAddsTo, sourceAddsTo, neutralAddsTo)
 
     def makeTypeBasedContent(self):
         if self.generateTypeBasedSummaries:
@@ -210,8 +199,7 @@ extensions:
         if (self.generateSinks or
            self.generateSources or
            self.generateSummaries or
-           self.generateNeutrals or
-           self.generateMixedNeutrals):
+           self.generateNeutrals):
             self.save(content, ".model.yml")
 
         if self.generateTypeBasedSummaries:
