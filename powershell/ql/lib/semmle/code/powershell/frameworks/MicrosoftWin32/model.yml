@@ -7,10 +7,6 @@ extensions:
       - ["microsoft.win32.registrykey", "Method[getvalue].ReturnValue", "windows-registry"]
       - ["microsoft.win32.registrykey", "Method[getvaluenames].ReturnValue", "windows-registry"]
       - ["microsoft.win32.registrykey", "Method[getsubkeynames].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registry!", "Method[getvalue].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registrykey", "Method[getvalue].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registrykey", "Method[getvaluenames].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registrykey", "Method[getsubkeynames].ReturnValue", "windows-registry"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all

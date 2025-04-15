@@ -9,7 +9,7 @@ extensions:
       - ["system.environment!", "Method[expandenvironmentvariables].ReturnValue", "environment"]
       - ["system.environment!", "Method[getcommandlineargs].ReturnValue", "command-line"]
       - ["system.environment!", "Method[getenvironmentvariable].ReturnValue", "environment"]
-      - ["system.environment!", "Method[getenvironmentvariables].ReturnValue", "environment"]      
+      - ["system.environment!", "Method[getenvironmentvariables].ReturnValue", "environment"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all

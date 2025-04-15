@@ -4,13 +4,13 @@ extensions:
       extensible: sinkModel
     data:
       - ["system.management.automation.powershell", "Method[addscript].Argument[0]", "command-injection"]
-      - ["System.Management.Automation.ScriptBlock!", "Method[create].Argument[0]", "command-injection"]
+      - ["system.management.automation.scriptblock!", "Method[create].Argument[0]", "command-injection"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.management.automation.powershell","system.management.automation.powershell!","Method[create].ReturnValue"]
+    - ["system.management.automation.powershell", "system.management.automation.powershell!","Method[create].ReturnValue"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all
