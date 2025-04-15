@@ -162,6 +162,10 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
+        public bool IsMonoInstalled { get; set; }
+
+        bool IBuildActions.IsMonoInstalled() => IsMonoInstalled;
+
         public string PathCombine(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
@@ -856,11 +860,32 @@ namespace Semmle.Autobuild.CSharp.Tests
         }
 
         [Fact]
-        public void TestDirsProjLinux()
+        public void TestDirsProjLinux_WithMono()
         {
+            actions.IsMonoInstalled = true;
+
             actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"mono scratch/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
             actions.RunProcess[@"msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 3);
+        }
+
+        [Fact]
+        public void TestDirsProjLinux_WithoutMono()
+        {
+            actions.IsMonoInstalled = false;
+
+            actions.RunProcess[@"dotnet msbuild /t:restore C:\Project/dirs.proj"] = 0;
+            actions.RunProcess[@"dotnet msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 2);
+        }
+
+        private CSharpAutobuilder TestDirsProjLinux()
+        {
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/a/test.csproj"] = true;
             actions.FileExists[@"C:\Project/dirs.proj"] = true;
@@ -889,8 +914,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 </Project>");
             actions.LoadXml[@"C:\Project/dirs.proj"] = dirsproj;
 
-            var autobuilder = CreateAutoBuilder(false);
-            TestAutobuilderScript(autobuilder, 0, 3);
+            return CreateAutoBuilder(false);
         }
 
         [Fact]
