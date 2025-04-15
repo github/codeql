@@ -8,6 +8,7 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
+/rust/ @github/codeql-rust
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
@@ -41,6 +42,7 @@ MODULE.bazel @github/codeql-ci-reviewers
 /.github/workflows/go-* @github/codeql-go
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
+/.github/workflows/rust.yml @github/codeql-rust
 /.github/workflows/swift.yml @github/codeql-swift
 
 # Misc
