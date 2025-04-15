@@ -1217,6 +1217,21 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that extracts the actor isolation of the current context, of type `(any Actor)?`.
+   * This is synthesized by the type checker and does not have any way to be expressed explicitly in
+   * the source.
+   */
+  class CurrentContextIsolationExpr extends @current_context_isolation_expr, Expr {
+    override string toString() { result = "CurrentContextIsolationExpr" }
+
+    /**
+     * Gets the actor of this current context isolation expression.
+     */
+    Expr getActor() { current_context_isolation_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -1344,6 +1359,27 @@ module Raw {
      * Gets the sub expression of this explicit cast expression.
      */
     Expr getSubExpr() { explicit_cast_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that extracts the function isolation of an expression with `@isolated(any)`
+   * function type.
+   *
+   * For example:
+   * ```
+   * func foo(x: @isolated(any) () -> ()) {
+   *     let isolation = x.isolation
+   * }
+   * ```
+   */
+  class ExtractFunctionIsolationExpr extends @extract_function_isolation_expr, Expr {
+    override string toString() { result = "ExtractFunctionIsolationExpr" }
+
+    /**
+     * Gets the function expression of this extract function isolation expression.
+     */
+    Expr getFunctionExpr() { extract_function_isolation_exprs(this, result) }
   }
 
   /**
@@ -1903,6 +1939,15 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+   * type.
+   */
+  class ActorIsolationErasureExpr extends @actor_isolation_erasure_expr, ImplicitConversionExpr {
+    override string toString() { result = "ActorIsolationErasureExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "AnyHashableErasureExpr" }
@@ -2415,6 +2460,14 @@ module Raw {
    */
   class UnevaluatedInstanceExpr extends @unevaluated_instance_expr, ImplicitConversionExpr {
     override string toString() { result = "UnevaluatedInstanceExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A conversion from the uninhabited type to any other type. It's never evaluated.
+   */
+  class UnreachableExpr extends @unreachable_expr, ImplicitConversionExpr {
+    override string toString() { result = "UnreachableExpr" }
   }
 
   /**
