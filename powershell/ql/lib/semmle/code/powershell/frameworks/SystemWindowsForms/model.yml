@@ -5164,7 +5164,7 @@ extensions:
     - ["system.windows.forms.ibuttoncontrol", "system.windows.forms.printpreviewdialog", "Property[acceptbutton]"]
     - ["system.int32", "system.windows.forms.textboxbase", "Method[getcharindexfromposition].ReturnValue"]
     - ["system.nullable<system.guid>", "system.windows.forms.filedialog", "Property[clientguid]"]
-    - ["t", "system.windows.forms.control", "Method[Invoke<t>].ReturnValue"]
+    - ["t", "system.windows.forms.control", "Method[invoke<t>].ReturnValue"]
     - ["system.drawing.size", "system.windows.forms.radiobutton", "Property[defaultsize]"]
     - ["system.windows.forms.datagridviewpaintparts", "system.windows.forms.datagridviewcellpaintingeventargs", "Property[paintparts]"]
     - ["system.windows.forms.listviewitem+listviewsubitem", "system.windows.forms.drawlistviewsubitemeventargs", "Property[subitem]"]

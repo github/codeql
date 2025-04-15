@@ -710,7 +710,7 @@ extensions:
     - ["system.windows.input.cursor", "system.windows.input.cursors!", "Property[scrollnw]"]
     - ["system.double", "system.windows.input.inertiaexpansionbehavior", "Property[initialradius]"]
     - ["system.collections.ilist", "system.windows.input.inputscope", "Property[names]"]
-    - ["system.boolean", "system.windows.input.touchpoint", "Method[System.IEquatable<system.windows.input.touchpoint>.Equals].ReturnValue"]
+    - ["system.boolean", "system.windows.input.touchpoint", "Method[system.iequatable<system.windows.input.touchpoint>.equals].ReturnValue"]
     - ["system.windows.input.cursor", "system.windows.input.cursors!", "Property[sizenwse]"]
     - ["system.windows.input.inputscopenamevalue", "system.windows.input.inputscopenamevalue!", "Field[currencyamount]"]
     - ["system.object", "system.windows.input.commandbindingcollection", "Property[system.collections.ilist.item]"]

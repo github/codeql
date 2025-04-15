@@ -17,7 +17,7 @@ extensions:
     - ["system.nullable<system.timespan>", "system.servicemodel.msmqintegration.msmqintegrationmessageproperty", "Property[timetoreachqueue]"]
     - ["system.nullable<system.messaging.acknowledgment>", "system.servicemodel.msmqintegration.msmqintegrationmessageproperty", "Property[acknowledgment]"]
     - ["system.nullable<system.messaging.acknowledgetypes>", "system.servicemodel.msmqintegration.msmqintegrationmessageproperty", "Property[acknowledgetype]"]
-    - ["t", "system.servicemodel.msmqintegration.msmqintegrationbindingelement", "Method[GetProperty<t>].ReturnValue"]
+    - ["t", "system.servicemodel.msmqintegration.msmqintegrationbindingelement", "Method[getproperty<t>].ReturnValue"]
     - ["system.servicemodel.msmqintegration.msmqmessageserializationformat", "system.servicemodel.msmqintegration.msmqmessageserializationformat!", "Field[activex]"]
     - ["system.uri", "system.servicemodel.msmqintegration.msmqintegrationmessageproperty", "Property[destinationqueue]"]
     - ["system.servicemodel.msmqintegration.msmqmessageserializationformat", "system.servicemodel.msmqintegration.msmqmessageserializationformat!", "Field[stream]"]

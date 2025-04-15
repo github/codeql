@@ -49,7 +49,7 @@ extensions:
     - ["system.int32", "system.threading.tasks.valuetask", "Method[gethashcode].ReturnValue"]
     - ["system.threading.tasks.taskcontinuationoptions", "system.threading.tasks.taskcontinuationoptions!", "Field[onlyonrantocompletion]"]
     - ["system.threading.tasks.taskcreationoptions", "system.threading.tasks.taskcreationoptions!", "Field[denychildattach]"]
-    - ["tresult", "system.threading.tasks.tasktoasyncresult!", "Method[End<tresult>].ReturnValue"]
+    - ["tresult", "system.threading.tasks.tasktoasyncresult!", "Method[end<tresult>].ReturnValue"]
     - ["system.boolean", "system.threading.tasks.parallelloopstate", "Property[isexceptional]"]
     - ["system.threading.tasks.taskstatus", "system.threading.tasks.taskstatus!", "Field[waitingtorun]"]
     - ["system.threading.tasks.task", "system.threading.tasks.parallel!", "Method[forasync<t>].ReturnValue"]

@@ -19,7 +19,7 @@ extensions:
     - ["system.workflow.componentmodel.activityexecutionstatus", "system.workflow.componentmodel.activity", "Method[handlefault].ReturnValue"]
     - ["system.workflow.componentmodel.activitycollection", "system.workflow.componentmodel.compositeactivity", "Property[activities]"]
     - ["system.workflow.componentmodel.dependencyproperty", "system.workflow.componentmodel.activity!", "Field[executingevent]"]
-    - ["t", "system.workflow.componentmodel.activityexecutioncontext", "Method[GetService<t>].ReturnValue"]
+    - ["t", "system.workflow.componentmodel.activityexecutioncontext", "Method[getservice<t>].ReturnValue"]
     - ["system.int32", "system.workflow.componentmodel.dependencyproperty", "Method[gethashcode].ReturnValue"]
     - ["system.workflow.componentmodel.activityexecutionstatus", "system.workflow.componentmodel.throwactivity", "Method[execute].ReturnValue"]
     - ["system.int32", "system.workflow.componentmodel.addedactivityaction", "Property[index]"]

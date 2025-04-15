@@ -38,7 +38,7 @@ extensions:
     - ["system.boolean", "system.servicemodel.dispatcher.dispatchruntime", "Property[impersonatecallerforalloperations]"]
     - ["system.string", "system.servicemodel.dispatcher.faultcontractinfo", "Property[action]"]
     - ["system.boolean", "system.servicemodel.dispatcher.channeldispatcher", "Property[istransactedaccept]"]
-    - ["tresult", "system.servicemodel.dispatcher.messagequery", "Method[Evaluate<tresult>].ReturnValue"]
+    - ["tresult", "system.servicemodel.dispatcher.messagequery", "Method[evaluate<tresult>].ReturnValue"]
     - ["system.collections.generic.synchronizedcollection<system.servicemodel.dispatcher.iparameterinspector>", "system.servicemodel.dispatcher.clientoperation", "Property[parameterinspectors]"]
     - ["system.servicemodel.dispatcher.clientruntime", "system.servicemodel.dispatcher.clientoperation", "Property[parent]"]
     - ["system.boolean", "system.servicemodel.dispatcher.endpointdispatcher", "Property[issystemendpoint]"]

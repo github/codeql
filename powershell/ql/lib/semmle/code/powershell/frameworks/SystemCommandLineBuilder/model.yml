@@ -5,7 +5,7 @@ extensions:
     data:
     - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[cancelonprocesstermination].ReturnValue"]
     - ["system.commandline.command", "system.commandline.builder.commandlinebuilder", "Property[command]"]
-    - ["tbuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[UseHelpBuilder<tbuilder>].ReturnValue"]
+    - ["tbuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usehelpbuilder<tbuilder>].ReturnValue"]
     - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[enabledirectives].ReturnValue"]
     - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[enablelegacydoubledashbehavior].ReturnValue"]
     - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[uselocalizationresources].ReturnValue"]

@@ -92,7 +92,7 @@ extensions:
     - ["system.func<targ0,targ1,targ2,targ3,targ4,tresult>", "system.data.linq.compiledquery!", "Method[compile<targ0,targ1,targ2,targ3,targ4,tresult>].ReturnValue"]
     - ["system.boolean", "system.data.linq.objectchangeconflict", "Property[isresolved]"]
     - ["system.int32", "system.data.linq.datacontext", "Method[executecommand].ReturnValue"]
-    - ["t", "system.data.linq.dbconvert!", "Method[Changetype<t>].ReturnValue"]
+    - ["t", "system.data.linq.dbconvert!", "Method[changetype<t>].ReturnValue"]
     - ["system.object", "system.data.linq.memberchangeconflict", "Property[currentvalue]"]
     - ["system.data.linq.dataloadoptions", "system.data.linq.datacontext", "Property[loadoptions]"]
     - ["system.collections.generic.ilist<system.object>", "system.data.linq.changeset", "Property[inserts]"]

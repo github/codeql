@@ -27,7 +27,7 @@ extensions:
     - ["system.servicemodel.federation.wstrusttokenparameters", "system.servicemodel.federation.wstrusttokenparameters!", "Method[createws2007federationtokenparameters].ReturnValue"]
     - ["system.servicemodel.channels.bindingelementcollection", "system.servicemodel.federation.wsfederationhttpbinding", "Method[createbindingelements].ReturnValue"]
     - ["system.iasyncresult", "system.servicemodel.federation.wstrustchannelsecuritytokenprovider", "Method[system.servicemodel.icommunicationobject.beginclose].ReturnValue"]
-    - ["t", "System.ServiceModel.Federation.WStrustChannel", "Method[GetProperty<t>].ReturnValue"]
+    - ["t", "System.ServiceModel.Federation.WStrustChannel", "Method[getproperty<t>].ReturnValue"]
     - ["system.collections.generic.icollection<system.xml.xmlelement>", "system.servicemodel.federation.wstrusttokenparameters", "Property[additionalrequestparameters]"]
     - ["system.boolean", "system.servicemodel.federation.wstrusttokenparameters!", "Field[defaultcacheissuedtokens]"]
     - ["system.int32", "system.servicemodel.federation.wstrusttokenparameters", "Property[issuedtokenrenewalthresholdpercentage]"]

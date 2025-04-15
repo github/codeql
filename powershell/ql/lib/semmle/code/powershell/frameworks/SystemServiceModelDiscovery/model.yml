@@ -10,7 +10,7 @@ extensions:
     - ["system.servicemodel.discovery.discoveryendpoint", "system.servicemodel.discovery.discoveryendpointProvider", "Method[getdiscoveryendpoint].ReturnValue"]
     - ["system.servicemodel.channels.ichannelfactory<tchannel>", "system.servicemodel.discovery.discoveryclientbindingelement", "Method[buildchannelfactory<tchannel>].ReturnValue"]
     - ["system.boolean", "system.servicemodel.discovery.discoverymessagesequence", "Method[cancompareto].ReturnValue"]
-    - ["t", "system.servicemodel.discovery.discoveryclientbindingelement", "Method[GetProperty<t>].ReturnValue"]
+    - ["t", "system.servicemodel.discovery.discoveryclientbindingelement", "Method[getproperty<t>].ReturnValue"]
     - ["system.servicemodel.discovery.findcriteria", "system.servicemodel.discovery.findcriteria!", "Method[createmetadataexchangeendpointcriteria].ReturnValue"]
     - ["system.string", "system.servicemodel.discovery.udptransportsettings", "Property[multicastinterfaceid]"]
     - ["system.collections.objectmodel.collection<system.uri>", "system.servicemodel.discovery.findcriteria", "Property[scopes]"]

@@ -46,7 +46,7 @@ extensions:
     - ["system.boolean", "system.componentmodel.composition.attributedmodelservices!", "Method[exports<t>].ReturnValue"]
     - ["system.string", "system.componentmodel.composition.partmetadataattribute", "Property[name]"]
     - ["system.string", "system.componentmodel.composition.exportattribute", "Property[contractname]"]
-    - ["tmetadataview", "system.componentmodel.composition.attributedmodelservices!", "Method[GetMetadataView<tmetadataview>].ReturnValue"]
+    - ["tmetadataview", "system.componentmodel.composition.attributedmodelservices!", "Method[getmetadataview<tmetadataview>].ReturnValue"]
     - ["system.componentmodel.composition.primitives.composablepart", "system.componentmodel.composition.attributedmodelservices!", "Method[satisfyimportsonce].ReturnValue"]
     - ["system.type", "system.componentmodel.composition.importmanyattribute", "Property[contracttype]"]
     - ["system.boolean", "system.componentmodel.composition.importattribute", "Property[allowdefault]"]

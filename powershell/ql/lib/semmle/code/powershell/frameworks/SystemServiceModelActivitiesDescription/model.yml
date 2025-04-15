@@ -4,7 +4,7 @@ extensions:
       extensible: typeModel
     data:
     - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionaction!", "Field[cancel]"]
-    - ["t", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[GetService<t>].ReturnValue"]
+    - ["t", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[getservice<t>].ReturnValue"]
     - ["system.timespan", "system.servicemodel.activities.description.workflowidlebehavior", "Property[timetopersist]"]
     - ["system.timespan", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Property[hostlockrenewalperiod]"]
     - ["system.activities.durableinstancing.instancecompletionaction", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Property[instancecompletionaction]"]

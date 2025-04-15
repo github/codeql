@@ -383,7 +383,7 @@ extensions:
     - ["system.web.readentitybodymode", "system.web.readentitybodymode!", "Field[bufferless]"]
     - ["system.web.processshutdownreason", "system.web.processshutdownreason!", "Field[timeout]"]
     - ["system.string", "system.web.httpruntime!", "Property[appdomainid]"]
-    - ["system.web.ui.ihierarchydata", "system.web.sitemapnode", "Method[system.web.ui.ihierarchydata.GetParent].ReturnValue"]
+    - ["system.web.ui.ihierarchydata", "system.web.sitemapnode", "Method[system.web.ui.ihierarchydata.getparent].ReturnValue"]
     - ["system.web.applicationshutdownreason", "system.web.applicationshutdownreason!", "Field[unloadappdomaincalled]"]
     - ["system.version", "system.web.httpbrowsercapabilitieswrapper", "Property[ecmascriptversion]"]
     - ["system.boolean", "system.web.parsererrorcollection", "Method[contains].ReturnValue"]

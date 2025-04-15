@@ -144,7 +144,7 @@ extensions:
     - ["system.threading.tasks.valuetask", "system.text.json.utf8jsonwriter", "Method[disposeasync].ReturnValue"]
     - ["system.int64", "system.text.json.utf8jsonreader", "Property[tokenstartindex]"]
     - ["system.boolean", "system.text.json.jsonwriteroptions", "Property[indented]"]
-    - ["tvalue", "system.text.json.jsonserializer!", "Method[Deserialize<tvalue>].ReturnValue"]
+    - ["tvalue", "system.text.json.jsonserializer!", "Method[deserialize<tvalue>].ReturnValue"]
     - ["system.text.json.jsonvaluekind", "system.text.json.jsonvaluekind!", "Field[number]"]
     - ["system.text.json.jsontokentype", "system.text.json.jsontokentype!", "Field[false]"]
     - ["system.collections.generic.iasyncenumerable<tvalue>", "system.text.json.jsonserializer!", "Method[deserializeasyncenumerable<tvalue>].ReturnValue"]

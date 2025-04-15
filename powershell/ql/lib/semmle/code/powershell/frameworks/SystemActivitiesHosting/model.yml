@@ -29,7 +29,7 @@ extensions:
     - ["system.activities.locationreferenceenvironment", "system.activities.hosting.symbolresolver", "Method[aslocationreferenceenvironment].ReturnValue"]
     - ["system.activities.activity", "system.activities.hosting.workflowinstanceproxy", "Property[workflowdefinition]"]
     - ["system.iasyncresult", "system.activities.hosting.workflowinstance", "Method[onbeginassociatekeys].ReturnValue"]
-    - ["t", "system.activities.hosting.workflowinstance", "Method[GetExtension<t>].ReturnValue"]
+    - ["t", "system.activities.hosting.workflowinstance", "Method[getextension<t>].ReturnValue"]
     - ["system.activities.activity", "system.activities.hosting.workflowinstance", "Property[workflowdefinition]"]
     - ["system.guid", "system.activities.hosting.bookmarkscopeinfo", "Property[id]"]
     - ["system.boolean", "system.activities.hosting.symbolresolver", "Property[isreadonly]"]

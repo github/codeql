@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["microsoft.powershell.utility!", "Method[Read-Host].ReturnValue", "stdin"]
+      - ["microsoft.powershell.utility!", "Method[read-host].ReturnValue", "stdin"]
       - ["microsoft.powershell.utility!", "Method[select-xml].ReturnValue[path]", "file"]
       - ["microsoft.powershell.utility!", "Method[format-hex].ReturnValue[path]", "file"]
 

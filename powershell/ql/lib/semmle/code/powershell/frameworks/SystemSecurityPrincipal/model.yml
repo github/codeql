@@ -149,7 +149,7 @@ extensions:
     - ["system.security.principal.windowsbuiltinrole", "system.security.principal.windowsbuiltinrole!", "Field[guest]"]
     - ["system.boolean", "system.security.principal.identityreferencecollection", "Method[contains].ReturnValue"]
     - ["system.security.principal.iidentity", "system.security.principal.windowsprincipal", "Property[identity]"]
-    - ["t", "system.security.principal.windowsidentity!", "Method[RunImpersonated<t>].ReturnValue"]
+    - ["t", "system.security.principal.windowsidentity!", "Method[runimpersonated<t>].ReturnValue"]
     - ["system.string", "system.security.principal.windowsidentity!", "Field[defaultissuer]"]
     - ["system.security.principal.wellknownsidtype", "system.security.principal.wellknownsidtype!", "Field[builtinaccountoperatorssid]"]
     - ["system.security.principal.wellknownsidtype", "system.security.principal.wellknownsidtype!", "Field[wincreatorownerrightssid]"]

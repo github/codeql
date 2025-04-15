@@ -23,7 +23,7 @@ extensions:
     - ["system.boolean", "system.servicemodel.security.securityalgorithmsuite", "Method[isasymmetricsignaturealgorithmsupported].ReturnValue"]
     - ["system.security.cryptography.x509certificates.x509certificate2", "system.servicemodel.security.x509certificateinitiatorclientcredential", "Property[certificate]"]
     - ["system.int32", "system.servicemodel.security.basic192securityalgorithmsuite", "Property[defaultsymmetrickeylength]"]
-    - ["t", "System.ServiceModel.Security.WStrustChannel", "Method[GetProperty<t>].ReturnValue"]
+    - ["t", "System.ServiceModel.Security.WStrustChannel", "Method[getproperty<t>].ReturnValue"]
     - ["system.boolean", "system.servicemodel.security.identityverifier", "Method[checkaccess].ReturnValue"]
     - ["system.identitymodel.protocols.wstrust.requestsecuritytokenresponse", "system.servicemodel.security.wstrustchannel", "Method[cancel].ReturnValue"]
     - ["system.servicemodel.channels.message", "system.servicemodel.security.iwstrustfeb2005synccontract", "Method[processtrustfeb2005validate].ReturnValue"]

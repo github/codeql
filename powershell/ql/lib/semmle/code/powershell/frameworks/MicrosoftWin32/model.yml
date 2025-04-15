@@ -3,10 +3,14 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sourceModel
     data:
-      - ["microsoft.win32.registry!", "Method[GetValue]", "windows-registry"]
-      - ["microsoft.win32.registrykey	", "Method[GetValue].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registrykey	", "Method[GetValueNames].ReturnValue", "windows-registry"]
-      - ["microsoft.win32.registrykey	", "Method[GetSubKeyNames].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registry!", "Method[getvalue].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getvalue].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getvaluenames].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getsubkeynames].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registry!", "Method[getvalue].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getvalue].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getvaluenames].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey", "Method[getsubkeynames].ReturnValue", "windows-registry"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all

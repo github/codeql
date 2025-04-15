@@ -56,7 +56,7 @@ extensions:
     - ["system.guid", "system.workflow.runtime.timereventsubscription", "Property[subscriptionid]"]
     - ["system.object", "system.workflow.runtime.correlationproperty", "Property[value]"]
     - ["system.workflow.runtime.workflowinstance", "system.workflow.runtime.workflowruntime", "Method[getworkflow].ReturnValue"]
-    - ["t", "system.workflow.runtime.workflowruntime", "Method[GetService<t>].ReturnValue"]
+    - ["t", "system.workflow.runtime.workflowruntime", "Method[getservice<t>].ReturnValue"]
     - ["system.boolean", "system.workflow.runtime.ipendingwork", "Method[mustcommit].ReturnValue"]
     - ["system.boolean", "system.workflow.runtime.correlationtokeneventargs", "Property[isinitializing]"]
     - ["system.boolean", "system.workflow.runtime.workflowruntimeeventargs", "Property[isstarted]"]

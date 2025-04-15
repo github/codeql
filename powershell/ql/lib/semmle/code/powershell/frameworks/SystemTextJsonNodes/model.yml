@@ -35,7 +35,7 @@ extensions:
     - ["system.nullable<system.text.json.nodes.jsonnodeoptions>", "system.text.json.nodes.jsonnode", "Property[options]"]
     - ["system.nullable<system.uint32>", "system.text.json.nodes.jsonnode!", "Method[op_explicit].ReturnValue"]
     - ["system.uint16", "system.text.json.nodes.jsonnode!", "Method[op_explicit].ReturnValue"]
-    - ["t", "System.text.Json.Nodes.JsonNode", "Method[GetValue<t>].ReturnValue"]
+    - ["t", "System.text.Json.Nodes.JsonNode", "Method[getvalue<t>].ReturnValue"]
     - ["system.nullable<system.boolean>", "system.text.json.nodes.jsonnode!", "Method[op_explicit].ReturnValue"]
     - ["system.nullable<system.byte>", "system.text.json.nodes.jsonnode!", "Method[op_explicit].ReturnValue"]
     - ["system.nullable<system.decimal>", "system.text.json.nodes.jsonnode!", "Method[op_explicit].ReturnValue"]

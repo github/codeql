@@ -449,7 +449,7 @@ extensions:
     - ["system.data.common.dbdatasourceenumerator", "system.data.sqlclient.sqlclientfactory", "Method[createdatasourceenumerator].ReturnValue"]
     - ["system.string", "system.data.sqlclient.sqlinfomessageeventargs", "Property[source]"]
     - ["system.int32", "system.data.sqlclient.sqlenclaveattestationparameters", "Property[protocol]"]
-    - ["t", "system.data.sqlclient.sqldatareader", "Method[GetFieldValue<t>].ReturnValue"]
+    - ["t", "system.data.sqlclient.sqldatareader", "Method[getfieldvalue<t>].ReturnValue"]
     - ["system.boolean", "system.data.sqlclient.sqlparameter", "Property[isnullable]"]
     - ["system.boolean", "system.data.sqlclient.sqlconnectionstringbuilder", "Property[trustservercertificate]"]
     - ["system.data.common.dbcommandbuilder", "system.data.sqlclient.sqlclientfactory", "Method[createcommandbuilder].ReturnValue"]

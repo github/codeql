@@ -249,7 +249,7 @@ extensions:
     - ["system.collections.generic.ienumerable<microsoft.visualstudio.text.editor.textrange>", "microsoft.visualstudio.text.editor.textbuffer", "Property[lines]"]
     - ["system.int32", "microsoft.visualstudio.text.editor.displaytextpoint", "Property[displaycolumn]"]
     - ["microsoft.visualstudio.text.editor.editoroptionkey<system.boolean>", "microsoft.visualstudio.text.editor.defaulttextviewhostoptions!", "Field[selectionmarginid]"]
-    - ["t", "Microsoft.VisualStudio.text.Editor.IEditorOptions", "Method[GetOptionValue<t>].ReturnValue"]
+    - ["t", "Microsoft.VisualStudio.text.Editor.IEditorOptions", "Method[getoptionvalue<t>].ReturnValue"]
     - ["system.boolean", "microsoft.visualstudio.text.editor.keyprocessor", "Property[isinterestedinhandledevents]"]
     - ["system.string", "microsoft.visualstudio.text.editor.margincontainerattribute", "Property[margincontainer]"]
     - ["system.boolean", "microsoft.visualstudio.text.editor.editoroptiondefinition", "Method[isapplicabletoscope].ReturnValue"]

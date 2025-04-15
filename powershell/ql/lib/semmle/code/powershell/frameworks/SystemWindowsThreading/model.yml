@@ -48,7 +48,7 @@ extensions:
     - ["system.boolean", "system.windows.threading.dispatcherframe", "Property[continue]"]
     - ["system.windows.threading.dispatcherpriority", "system.windows.threading.dispatcherpriority!", "Field[systemidle]"]
     - ["system.windows.threading.dispatcherpriority", "system.windows.threading.dispatcherpriority!", "Field[contextidle]"]
-    - ["tresult", "system.windows.threading.dispatcher", "Method[Invoke<tresult>].ReturnValue"]
+    - ["tresult", "system.windows.threading.dispatcher", "Method[invoke<tresult>].ReturnValue"]
     - ["system.windows.threading.dispatcheroperation", "system.windows.threading.dispatcherextensions!", "Method[begininvoke].ReturnValue"]
     - ["system.exception", "system.windows.threading.dispatcherunhandledexceptioneventargs", "Property[exception]"]
     - ["system.windows.threading.dispatcherhooks", "system.windows.threading.dispatcher", "Property[hooks]"]

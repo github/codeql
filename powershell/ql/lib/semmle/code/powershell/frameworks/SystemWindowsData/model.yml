@@ -27,7 +27,7 @@ extensions:
     - ["system.windows.data.bindingmode", "system.windows.data.bindingmode!", "Field[onetime]"]
     - ["system.string", "system.windows.data.bindinglistcollectionview", "Property[customfilter]"]
     - ["system.boolean", "system.windows.data.collectionviewsource", "Property[islivegroupingrequested]"]
-    - ["system.componentmodel.icollectionview", "system.windows.data.compositecollection", "Method[system.componentmodel.icollectionviewFactory.CreateView].ReturnValue"]
+    - ["system.componentmodel.icollectionview", "system.windows.data.compositecollection", "Method[system.componentmodel.icollectionviewfactory.createview].ReturnValue"]
     - ["system.windows.data.prioritybindingexpression", "system.windows.data.bindingoperations!", "Method[getprioritybindingexpression].ReturnValue"]
     - ["system.string", "system.windows.data.binding", "Property[elementname]"]
     - ["system.int32", "system.windows.data.xmlnamespacemapping", "Method[gethashcode].ReturnValue"]

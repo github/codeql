@@ -16,7 +16,7 @@ extensions:
     - ["system.timeprovider", "microsoft.extensions.logging.testing.fakelogcollectoroptions", "Property[timeprovider]"]
     - ["system.object", "microsoft.extensions.logging.testing.fakelogrecord", "Property[state]"]
     - ["system.boolean", "microsoft.extensions.logging.testing.fakelogcollectoroptions", "Property[collectrecordsfordisabledloglevels]"]
-    - ["microsoft.extensions.logging.ilogger", "microsoft.extensions.logging.testing.fakeloggerprovider", "Method[microsoft.extensions.logging.iloggerProvider.CreateLogger].ReturnValue"]
+    - ["microsoft.extensions.logging.ilogger", "microsoft.extensions.logging.testing.fakeloggerprovider", "Method[microsoft.extensions.logging.iloggerprovider.createlogger].ReturnValue"]
     - ["system.action<system.string>", "microsoft.extensions.logging.testing.fakelogcollectoroptions", "Property[outputsink]"]
     - ["system.func<microsoft.extensions.logging.testing.fakelogrecord,system.string>", "microsoft.extensions.logging.testing.fakelogcollectoroptions", "Property[outputformatter]"]
     - ["system.string", "microsoft.extensions.logging.testing.fakelogger", "Property[category]"]

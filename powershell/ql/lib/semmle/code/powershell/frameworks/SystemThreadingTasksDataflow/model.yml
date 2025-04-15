@@ -24,7 +24,7 @@ extensions:
     - ["system.int32", "system.threading.tasks.dataflow.dataflowmessageheader", "Method[gethashcode].ReturnValue"]
     - ["system.iobserver<tinput>", "system.threading.tasks.dataflow.dataflowblock!", "Method[asobserver<tinput>].ReturnValue"]
     - ["system.boolean", "system.threading.tasks.dataflow.dataflowlinkoptions", "Property[propagatecompletion]"]
-    - ["toutput", "system.threading.tasks.dataflow.dataflowblock!", "Method[Receive<toutput>].ReturnValue"]
+    - ["toutput", "system.threading.tasks.dataflow.dataflowblock!", "Method[receive<toutput>].ReturnValue"]
     - ["system.threading.cancellationtoken", "system.threading.tasks.dataflow.dataflowblockoptions", "Property[cancellationtoken]"]
     - ["system.threading.tasks.task", "system.threading.tasks.dataflow.idataflowblock", "Property[completion]"]
     - ["system.int64", "system.threading.tasks.dataflow.groupingdataflowblockoptions", "Property[maxnumberofgroups]"]
