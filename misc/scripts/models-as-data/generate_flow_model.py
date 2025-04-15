@@ -157,7 +157,7 @@ Requirements: `codeql` should appear on your path.
     def makeContent(self):
         summaryAddsTo = {}
         if self.generateSummaries:
-            summaryAddsTo = self.getAddsTo("CaptureMixedSummaryModels.ql", helpers.summaryModelPredicate)
+            summaryAddsTo = self.getAddsTo("CaptureSummaryModels.ql", helpers.summaryModelPredicate)
 
         sinkAddsTo = {}
         if self.generateSinks:
