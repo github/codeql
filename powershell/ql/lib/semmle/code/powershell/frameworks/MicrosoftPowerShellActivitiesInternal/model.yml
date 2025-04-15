@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.activities.argument", "microsoft.powershell.activities.internal.isargumentset", "Property[argument]"]
+    - ["system.activities.argument", "microsoft.powershell.activities.internal.isargumentset", "Member[argument]"]
     - ["system.boolean", "microsoft.powershell.activities.internal.isargumentset", "Method[execute].ReturnValue"]

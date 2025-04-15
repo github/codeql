@@ -3,21 +3,21 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.boolean", "microsoft.powershell.cmdletization.methodparameter", "Property[isvaluepresent]"]
-    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Field[silentlycontinue]"]
-    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Field[in]"]
-    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Property[name]"]
-    - ["system.type", "microsoft.powershell.cmdletization.methodparameter", "Property[parametertype]"]
-    - ["microsoft.powershell.cmdletization.methodparameter", "microsoft.powershell.cmdletization.methodinvocationinfo", "Property[returnvalue]"]
-    - ["system.collections.objectmodel.keyedcollection<system.string,microsoft.powershell.cmdletization.methodparameter>", "microsoft.powershell.cmdletization.methodinvocationinfo", "Property[parameters]"]
-    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameter", "Property[bindings]"]
-    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Field[out]"]
-    - ["system.object", "microsoft.powershell.cmdletization.methodparameter", "Property[value]"]
-    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Field[default]"]
-    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Field[error]"]
-    - ["system.string", "microsoft.powershell.cmdletization.methodinvocationinfo", "Property[methodname]"]
-    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Property[parametertypename]"]
-    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Field[reporterrors]"]
+    - ["system.boolean", "microsoft.powershell.cmdletization.methodparameter", "Member[isvaluepresent]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[silentlycontinue]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[in]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Member[name]"]
+    - ["system.type", "microsoft.powershell.cmdletization.methodparameter", "Member[parametertype]"]
+    - ["microsoft.powershell.cmdletization.methodparameter", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[returnvalue]"]
+    - ["system.collections.objectmodel.keyedcollection<system.string,microsoft.powershell.cmdletization.methodparameter>", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[parameters]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameter", "Member[bindings]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[out]"]
+    - ["system.object", "microsoft.powershell.cmdletization.methodparameter", "Member[value]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[default]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[error]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[methodname]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Member[parametertypename]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[reporterrors]"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all

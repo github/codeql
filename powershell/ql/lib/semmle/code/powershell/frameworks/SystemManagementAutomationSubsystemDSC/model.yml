@@ -4,7 +4,7 @@ extensions:
       extensible: typeModel
     data:
     - ["system.string", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[getdscresourceusagestring].ReturnValue"]
-    - ["system.collections.generic.dictionary<system.string,system.string>", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Property[system.management.automation.subsystem.isubsystem.functionstodefine]"]
-    - ["system.management.automation.subsystem.subsystemkind", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Property[system.management.automation.subsystem.isubsystem.kind]"]
+    - ["system.collections.generic.dictionary<system.string,system.string>", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Member[system.management.automation.subsystem.isubsystem.functionstodefine]"]
+    - ["system.management.automation.subsystem.subsystemkind", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Member[system.management.automation.subsystem.isubsystem.kind]"]
     - ["system.boolean", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[isdefaultmodulenameformetaconfigresource].ReturnValue"]
     - ["system.boolean", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[issystemresourcename].ReturnValue"]

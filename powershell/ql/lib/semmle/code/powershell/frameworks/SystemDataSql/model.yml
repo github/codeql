@@ -3,8 +3,8 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.int32", "system.data.sql.sqlnotificationrequest", "Property[timeout]"]
+    - ["system.int32", "system.data.sql.sqlnotificationrequest", "Member[timeout]"]
     - ["system.data.datatable", "system.data.sql.sqldatasourceenumerator", "Method[getdatasources].ReturnValue"]
-    - ["system.string", "system.data.sql.sqlnotificationrequest", "Property[options]"]
-    - ["system.string", "system.data.sql.sqlnotificationrequest", "Property[userdata]"]
-    - ["system.data.sql.sqldatasourceenumerator", "system.data.sql.sqldatasourceenumerator!", "Property[instance]"]
+    - ["system.string", "system.data.sql.sqlnotificationrequest", "Member[options]"]
+    - ["system.string", "system.data.sql.sqlnotificationrequest", "Member[userdata]"]
+    - ["system.data.sql.sqldatasourceenumerator", "system.data.sql.sqldatasourceenumerator!", "Member[instance]"]

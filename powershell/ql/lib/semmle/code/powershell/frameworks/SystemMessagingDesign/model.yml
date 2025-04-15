@@ -5,4 +5,4 @@ extensions:
     data:
     - ["system.drawing.design.uitypeeditoreditstyle", "system.messaging.design.queuepatheditor", "Method[geteditstyle].ReturnValue"]
     - ["system.object", "system.messaging.design.queuepatheditor", "Method[editvalue].ReturnValue"]
-    - ["system.string", "system.messaging.design.queuepathdialog", "Property[path]"]
+    - ["system.string", "system.messaging.design.queuepathdialog", "Member[path]"]

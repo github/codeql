@@ -11,4 +11,4 @@ extensions:
     - ["system.int32", "system.collections.generic.referenceequalitycomparer", "Method[gethashcode].ReturnValue"]
     - ["system.boolean", "system.collections.generic.referenceequalitycomparer", "Method[equals].ReturnValue"]
     - ["system.collections.objectmodel.readonlycollection<t>", "system.collections.generic.collectionextensions!", "Method[asreadonly<t>].ReturnValue"]
-    - ["system.collections.generic.referenceequalitycomparer", "system.collections.generic.referenceequalitycomparer!", "Property[instance]"]
+    - ["system.collections.generic.referenceequalitycomparer", "system.collections.generic.referenceequalitycomparer!", "Member[instance]"]

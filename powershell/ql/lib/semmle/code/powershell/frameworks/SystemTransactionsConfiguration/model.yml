@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.transactions.configuration.machinesettingssection", "system.transactions.configuration.transactionssectiongroup", "Property[machinesettings]"]
-    - ["system.string", "system.transactions.configuration.defaultsettingssection", "Property[distributedtransactionmanagername]"]
+    - ["system.transactions.configuration.machinesettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[machinesettings]"]
+    - ["system.string", "system.transactions.configuration.defaultsettingssection", "Member[distributedtransactionmanagername]"]
     - ["system.transactions.configuration.transactionssectiongroup", "system.transactions.configuration.transactionssectiongroup!", "Method[getsectiongroup].ReturnValue"]
-    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.machinesettingssection", "Property[properties]"]
-    - ["system.timespan", "system.transactions.configuration.defaultsettingssection", "Property[timeout]"]
-    - ["system.transactions.configuration.defaultsettingssection", "system.transactions.configuration.transactionssectiongroup", "Property[defaultsettings]"]
-    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.defaultsettingssection", "Property[properties]"]
-    - ["system.timespan", "system.transactions.configuration.machinesettingssection", "Property[maxtimeout]"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.machinesettingssection", "Member[properties]"]
+    - ["system.timespan", "system.transactions.configuration.defaultsettingssection", "Member[timeout]"]
+    - ["system.transactions.configuration.defaultsettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[defaultsettings]"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.defaultsettingssection", "Member[properties]"]
+    - ["system.timespan", "system.transactions.configuration.machinesettingssection", "Member[maxtimeout]"]

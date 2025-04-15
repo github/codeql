@@ -4,5 +4,5 @@ extensions:
       extensible: typeModel
     data:
     - ["system.boolean", "system.workflow.activities.rules.design.rulesetdialog", "Method[processcmdkey].ReturnValue"]
-    - ["system.workflow.activities.rules.ruleset", "system.workflow.activities.rules.design.rulesetdialog", "Property[ruleset]"]
-    - ["system.codedom.codeexpression", "system.workflow.activities.rules.design.ruleconditiondialog", "Property[expression]"]
+    - ["system.workflow.activities.rules.ruleset", "system.workflow.activities.rules.design.rulesetdialog", "Member[ruleset]"]
+    - ["system.codedom.codeexpression", "system.workflow.activities.rules.design.ruleconditiondialog", "Member[expression]"]

@@ -4,4 +4,4 @@ extensions:
       extensible: typeModel
     data:
     - ["system.servicemodel.servicehostbase", "system.servicemodel.comintegration.washostedcomplusfactory", "Method[createservicehost].ReturnValue"]
-    - ["system.runtime.serialization.extensiondataobject", "system.servicemodel.comintegration.persiststreamtypewrapper", "Property[extensiondata]"]
+    - ["system.runtime.serialization.extensiondataobject", "system.servicemodel.comintegration.persiststreamtypewrapper", "Member[extensiondata]"]

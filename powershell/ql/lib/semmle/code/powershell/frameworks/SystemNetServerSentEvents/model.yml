@@ -5,4 +5,4 @@ extensions:
     data:
     - ["system.net.serversentevents.sseparser<t>", "system.net.serversentevents.sseparser!", "Method[create<t>].ReturnValue"]
     - ["system.net.serversentevents.sseparser<system.string>", "system.net.serversentevents.sseparser!", "Method[create].ReturnValue"]
-    - ["system.string", "system.net.serversentevents.sseparser!", "Field[eventtypedefault]"]
+    - ["system.string", "system.net.serversentevents.sseparser!", "Member[eventtypedefault]"]

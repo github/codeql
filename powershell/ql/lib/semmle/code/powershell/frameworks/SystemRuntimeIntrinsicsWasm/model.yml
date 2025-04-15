@@ -378,7 +378,7 @@ extensions:
     - ["system.runtime.intrinsics.vector128<system.uint64>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[signextendwideninglower].ReturnValue"]
     - ["system.runtime.intrinsics.vector128<system.double>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[comparelessthan].ReturnValue"]
     - ["system.runtime.intrinsics.vector128<system.int64>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[comparegreaterthan].ReturnValue"]
-    - ["system.boolean", "system.runtime.intrinsics.wasm.packedsimd!", "Property[issupported]"]
+    - ["system.boolean", "system.runtime.intrinsics.wasm.packedsimd!", "Member[issupported]"]
     - ["system.runtime.intrinsics.vector128<system.double>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[comparenotequal].ReturnValue"]
     - ["system.runtime.intrinsics.vector128<system.single>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[comparelessthanorequal].ReturnValue"]
     - ["system.runtime.intrinsics.vector128<system.uintptr>", "system.runtime.intrinsics.wasm.packedsimd!", "Method[loadscalarvector128].ReturnValue"]

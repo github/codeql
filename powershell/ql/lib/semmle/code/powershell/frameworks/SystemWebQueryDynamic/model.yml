@@ -4,5 +4,5 @@ extensions:
       extensible: typeModel
     data:
     - ["system.string", "system.web.query.dynamic.parseexception", "Method[tostring].ReturnValue"]
-    - ["system.int32", "system.web.query.dynamic.parseexception", "Property[position]"]
+    - ["system.int32", "system.web.query.dynamic.parseexception", "Member[position]"]
     - ["system.string", "system.web.query.dynamic.dynamicclass", "Method[tostring].ReturnValue"]
