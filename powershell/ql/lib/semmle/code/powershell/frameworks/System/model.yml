@@ -1766,7 +1766,7 @@ extensions:
     - ["system.uint32", "system.single", "Method[system.iconvertible.touint32].ReturnValue"]
     - ["system.double", "system.char", "Method[system.iconvertible.todouble].ReturnValue"]
     - ["system.datetimeoffset", "system.datetimeoffset", "Method[tolocaltime].ReturnValue"]
-    - ["t", "system.binarydata", "Method[toObjectFromJson<t>].ReturnValue"]
+    - ["t", "system.binarydata", "Method[toobjectfromjson<t>].ReturnValue"]
     - ["system.boolean", "system.sbyte!", "Method[system.numerics.inumberbase<system.sbyte>.tryconverttotruncating<tother>].ReturnValue"]
     - ["system.boolean", "system.int16", "Method[System.Numerics.IBinaryInteger<system.int16>.TryWriteBigEndian].ReturnValue"]
     - ["system.double", "system.math!", "Method[reciprocalsqrtestimate].ReturnValue"]
