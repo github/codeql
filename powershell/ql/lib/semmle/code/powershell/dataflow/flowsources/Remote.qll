@@ -6,6 +6,7 @@
 private import semmle.code.powershell.dataflow.internal.DataFlowPublic as DataFlow
 // Need to import since frameworks can extend `RemoteFlowSource::Range`
 private import semmle.code.powershell.Frameworks
+private import semmle.code.powershell.dataflow.flowsources.FlowSources
 
 /**
  * A data flow source of remote user input.
@@ -13,9 +14,10 @@ private import semmle.code.powershell.Frameworks
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RemoteFlowSource::Range` instead.
  */
-class RemoteFlowSource extends DataFlow::Node instanceof RemoteFlowSource::Range {
-  /** Gets a string that describes the type of this remote flow source. */
-  string getSourceType() { result = super.getSourceType() }
+class RemoteFlowSource extends SourceNode instanceof RemoteFlowSource::Range {
+  override string getSourceType() { result = "remote flow source" }
+
+  override string getThreatModel() { result = "remote" }
 }
 
 /** Provides a class for modeling new sources of remote user input. */
@@ -30,4 +32,10 @@ module RemoteFlowSource {
     /** Gets a string that describes the type of this remote flow source. */
     abstract string getSourceType();
   }
+}
+
+private class ExternalRemoteFlowSource extends RemoteFlowSource::Range {
+  ExternalRemoteFlowSource() { this = ModelOutput::getASourceNode("remote", _).asSource() }
+
+  override string getSourceType() { result = "remote flow" }
 }
