@@ -18,18 +18,17 @@ use ra_ap_hir_def::{
 };
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
+use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
 use ra_ap_hir_ty::WhereClause;
+use ra_ap_hir_ty::db::InternedCallableDefId;
+use ra_ap_hir_ty::from_assoc_type_id;
 use ra_ap_hir_ty::{Binders, FnPointer};
 use ra_ap_hir_ty::{Interner, ProjectionTy};
-use ra_ap_hir_ty::{TraitRefExt, from_assoc_type_id};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_vfs::{Vfs, VfsPath};
 
-use ra_ap_hir_def::data::ConstFlags;
-use ra_ap_hir_def::item_tree::StaticFlags;
-use ra_ap_hir_ty::db::InternedCallableDefId;
 use std::hash::Hasher;
 use std::{cmp::Ordering, collections::HashMap, path::PathBuf};
 use std::{hash::Hash, vec};
@@ -377,7 +376,7 @@ fn emit_const(
             attrs: vec![],
             body: None,
             is_const: true,
-            is_default: konst.flags.contains(ConstFlags::HAS_BODY),
+            is_default: konst.has_body(),
             type_repr,
             visibility,
         })
@@ -410,9 +409,9 @@ fn emit_static(
             body: None,
             type_repr,
             visibility,
-            is_mut: statik.flags.contains(StaticFlags::MUTABLE),
+            is_mut: statik.mutable(),
             is_static: true,
-            is_unsafe: statik.flags.contains(StaticFlags::HAS_UNSAFE_KW),
+            is_unsafe: statik.has_unsafe_kw(),
         })
         .into(),
     );
@@ -1307,7 +1306,7 @@ fn emit_variant_data(trap: &mut TrapFile, db: &dyn HirDatabase, variant_id: Vari
                     trap.emit(generated::StructField {
                         id: trap::TrapId::Star,
                         attrs: vec![],
-                        is_unsafe: false,
+                        is_unsafe: field_data[field_id].is_unsafe,
                         name,
                         type_repr,
                         visibility,
