@@ -87,7 +87,7 @@ rust_library(
     version = "8.0.0",
     deps = [
         "@vendor_ts__filetime-0.2.25//:filetime",
-        "@vendor_ts__libc-0.2.171//:libc",
+        "@vendor_ts__libc-0.2.172//:libc",
         "@vendor_ts__log-0.4.27//:log",
         "@vendor_ts__notify-types-2.0.0//:notify_types",
         "@vendor_ts__walkdir-2.5.0//:walkdir",

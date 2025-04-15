@@ -88,7 +88,7 @@ rust_library(
         "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
         "@vendor_ts__hashbrown-0.14.5//:hashbrown",
         "@vendor_ts__lock_api-0.4.12//:lock_api",
-        "@vendor_ts__once_cell-1.20.3//:once_cell",
+        "@vendor_ts__once_cell-1.21.3//:once_cell",
         "@vendor_ts__parking_lot_core-0.9.10//:parking_lot_core",
     ],
 )
