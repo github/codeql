@@ -306,6 +306,39 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    rubyzip, Compression library
    typhoeus, HTTP client
 
+Rust built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/rust-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/src>`__)
+and the CodeQL library pack ``codeql/rust-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/rust/ql/lib>`__).
+All support is experimental.
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   alloc, Standard library
+   core, Standard library
+   `digest <https://crates.io/crates/digest>`__, Cryptography library
+   `futures-executor <https://crates.io/crates/futures-executor>`__, Utility library
+   `hyper <https://crates.io/crates/hyper>`__, HTTP library
+   `hyper-util <https://crates.io/crates/hyper-util>`__, HTTP library
+   `libc <https://crates.io/crates/libc>`__, Utility library
+   `log <https://crates.io/crates/log>`__, Logging library
+   `md5 <https://crates.io/crates/md5>`__, Utility library
+   `postgres <https://crates.io/crates/postgres>`__, Database
+   proc_macro, Standard library
+   `regex <https://crates.io/crates/regex>`__, Utility library
+   `reqwest <https://crates.io/crates/reqwest>`__, HTTP client
+   `rusqlite <https://crates.io/crates/rusqlite>`__, Database
+   std, Standard library
+   `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
+   `url <https://crates.io/crates/url>`__, Utility library
+
 Swift built-in support
 ================================
 
