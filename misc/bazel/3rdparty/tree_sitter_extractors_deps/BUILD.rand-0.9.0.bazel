@@ -91,7 +91,7 @@ rust_library(
     version = "0.9.0",
     deps = [
         "@vendor_ts__rand_chacha-0.9.0//:rand_chacha",
-        "@vendor_ts__rand_core-0.9.2//:rand_core",
-        "@vendor_ts__zerocopy-0.8.20//:zerocopy",
+        "@vendor_ts__rand_core-0.9.3//:rand_core",
+        "@vendor_ts__zerocopy-0.8.24//:zerocopy",
     ],
 )

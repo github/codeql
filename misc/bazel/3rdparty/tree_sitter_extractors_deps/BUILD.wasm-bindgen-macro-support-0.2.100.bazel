@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "libredox",
+    name = "wasm_bindgen_macro_support",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=libredox",
+        "crate-name=wasm-bindgen-macro-support",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,10 +79,12 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.1.3",
+    version = "0.2.100",
     deps = [
-        "@vendor_ts__bitflags-2.9.0//:bitflags",
-        "@vendor_ts__libc-0.2.172//:libc",
-        "@vendor_ts__redox_syscall-0.5.11//:syscall",
+        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.100//:syn",
+        "@vendor_ts__wasm-bindgen-backend-0.2.100//:wasm_bindgen_backend",
+        "@vendor_ts__wasm-bindgen-shared-0.2.100//:wasm_bindgen_shared",
     ],
 )

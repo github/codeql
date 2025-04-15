@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "libredox",
+    name = "darling_core",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,6 +28,10 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "strsim",
+        "suggestions",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -35,7 +39,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=libredox",
+        "crate-name=darling_core",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,10 +83,13 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.1.3",
+    version = "0.20.11",
     deps = [
-        "@vendor_ts__bitflags-2.9.0//:bitflags",
-        "@vendor_ts__libc-0.2.172//:libc",
-        "@vendor_ts__redox_syscall-0.5.11//:syscall",
+        "@vendor_ts__fnv-1.0.7//:fnv",
+        "@vendor_ts__ident_case-1.0.1//:ident_case",
+        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__strsim-0.11.1//:strsim",
+        "@vendor_ts__syn-2.0.100//:syn",
     ],
 )

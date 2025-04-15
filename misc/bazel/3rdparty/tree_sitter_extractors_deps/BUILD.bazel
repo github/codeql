@@ -56,14 +56,14 @@ alias(
 )
 
 alias(
-    name = "chalk-ir-0.101.0",
-    actual = "@vendor_ts__chalk-ir-0.101.0//:chalk_ir",
+    name = "chalk-ir-0.100.0",
+    actual = "@vendor_ts__chalk-ir-0.100.0//:chalk_ir",
     tags = ["manual"],
 )
 
 alias(
     name = "chalk-ir",
-    actual = "@vendor_ts__chalk-ir-0.101.0//:chalk_ir",
+    actual = "@vendor_ts__chalk-ir-0.100.0//:chalk_ir",
     tags = ["manual"],
 )
 
@@ -140,14 +140,14 @@ alias(
 )
 
 alias(
-    name = "flate2-1.1.0",
-    actual = "@vendor_ts__flate2-1.1.0//:flate2",
+    name = "flate2-1.1.1",
+    actual = "@vendor_ts__flate2-1.1.1//:flate2",
     tags = ["manual"],
 )
 
 alias(
     name = "flate2",
-    actual = "@vendor_ts__flate2-1.1.0//:flate2",
+    actual = "@vendor_ts__flate2-1.1.1//:flate2",
     tags = ["manual"],
 )
 
@@ -164,14 +164,14 @@ alias(
 )
 
 alias(
-    name = "globset-0.4.15",
-    actual = "@vendor_ts__globset-0.4.15//:globset",
+    name = "globset-0.4.16",
+    actual = "@vendor_ts__globset-0.4.16//:globset",
     tags = ["manual"],
 )
 
 alias(
     name = "globset",
-    actual = "@vendor_ts__globset-0.4.15//:globset",
+    actual = "@vendor_ts__globset-0.4.16//:globset",
     tags = ["manual"],
 )
 
@@ -590,14 +590,14 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-0.24.6",
-    actual = "@vendor_ts__tree-sitter-0.24.6//:tree_sitter",
+    name = "tree-sitter-0.25.3",
+    actual = "@vendor_ts__tree-sitter-0.25.3//:tree_sitter",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor_ts__tree-sitter-0.24.6//:tree_sitter",
+    actual = "@vendor_ts__tree-sitter-0.25.3//:tree_sitter",
     tags = ["manual"],
 )
 

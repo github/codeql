@@ -37,7 +37,7 @@ bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
 RUST_EDITION = "2024"
 
-RUST_VERSION = "1.85.0"
+RUST_VERSION = "1.86.0"
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -73,16 +73,16 @@ use_repo(
     tree_sitter_extractors_deps,
     "vendor_ts__anyhow-1.0.98",
     "vendor_ts__argfile-0.2.1",
-    "vendor_ts__chalk-ir-0.101.0",
+    "vendor_ts__chalk-ir-0.100.0",
     "vendor_ts__chrono-0.4.40",
     "vendor_ts__clap-4.5.36",
     "vendor_ts__dunce-1.0.5",
     "vendor_ts__either-1.15.0",
     "vendor_ts__encoding-0.2.33",
     "vendor_ts__figment-0.10.19",
-    "vendor_ts__flate2-1.1.0",
+    "vendor_ts__flate2-1.1.1",
     "vendor_ts__glob-0.3.2",
-    "vendor_ts__globset-0.4.15",
+    "vendor_ts__globset-0.4.16",
     "vendor_ts__itertools-0.14.0",
     "vendor_ts__lazy_static-1.5.0",
     "vendor_ts__mustache-0.9.0",
@@ -117,7 +117,7 @@ use_repo(
     "vendor_ts__tracing-0.1.41",
     "vendor_ts__tracing-flame-0.2.0",
     "vendor_ts__tracing-subscriber-0.3.19",
-    "vendor_ts__tree-sitter-0.24.6",
+    "vendor_ts__tree-sitter-0.25.3",
     "vendor_ts__tree-sitter-embedded-template-0.23.2",
     "vendor_ts__tree-sitter-json-0.24.8",
     "vendor_ts__tree-sitter-ql-0.23.1",
