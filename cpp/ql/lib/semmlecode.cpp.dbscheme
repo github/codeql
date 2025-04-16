@@ -2039,7 +2039,8 @@ aggregate_field_init(
     int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
     int field: @membervariable ref,
-    int position: int ref
+    int position: int ref,
+    boolean is_designated: boolean ref
 );
 
 /**
@@ -2051,7 +2052,8 @@ aggregate_array_init(
     int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
     int element_index: int ref,
-    int position: int ref
+    int position: int ref,
+    boolean is_designated: boolean ref
 );
 
 @ctorinit = @ctordirectinit
