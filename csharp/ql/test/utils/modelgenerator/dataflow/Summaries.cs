@@ -510,14 +510,12 @@ public class SimpleTypes
 // the content based model generation is able to produce flow summaries for them.
 public class HigherOrderParameters
 {
-    // neutral=Models;HigherOrderParameters;M1;(System.String,System.Func<System.String,System.String>);summary;df-generated
     // contentbased-summary=Models;HigherOrderParameters;false;M1;(System.String,System.Func<System.String,System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public string M1(string s, Func<string, string> map)
     {
         return s;
     }
 
-    // neutral=Models;HigherOrderParameters;Apply;(System.Func<System.Object,System.Object>,System.Object);summary;df-generated
     // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
     // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Func<System.Object,System.Object>,System.Object);;Argument[0].ReturnValue;ReturnValue;value;dfc-generated
     public object Apply(Func<object, object> f, object o)
@@ -525,7 +523,6 @@ public class HigherOrderParameters
         return f(o);
     }
 
-    // neutral=Models;HigherOrderParameters;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);summary;df-generated
     // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[0];Argument[1].Parameter[1];value;dfc-generated
     // contentbased-summary=Models;HigherOrderParameters;false;Apply2;(System.Object,System.Func<System.Object,System.Object,System.Object>);;Argument[1].ReturnValue;ReturnValue;value;dfc-generated
     public object Apply2(object o, Func<object, object, object> f)
@@ -534,7 +531,6 @@ public class HigherOrderParameters
         return x;
     }
 
-    // neutral=Models;HigherOrderParameters;Apply;(System.Action<System.Object>,System.Object);summary;df-generated
     // contentbased-summary=Models;HigherOrderParameters;false;Apply;(System.Action<System.Object>,System.Object);;Argument[1];Argument[0].Parameter[0];value;dfc-generated
     public void Apply(Action<object> a, object o)
     {
@@ -544,7 +540,6 @@ public class HigherOrderParameters
 
 public static class HigherOrderExtensionMethods
 {
-    // neutral=Models;HigherOrderExtensionMethods;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);summary;df-generated
     // contentbased-summary=Models;HigherOrderExtensionMethods;false;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);;Argument[0].Element;Argument[1].Parameter[0];value;dfc-generated
     // contentbased-summary=Models;HigherOrderExtensionMethods;false;Select<TSource,TResult>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>);;Argument[1].ReturnValue;ReturnValue.Element;value;dfc-generated
     public static IEnumerable<TResult> Select<TSource, TResult>(
@@ -661,11 +656,13 @@ public class Inheritance
 
     public interface IPublic3
     {
+        // neutral=Models;Inheritance+IPublic3;get_Prop;();summary;df-generated
         string Prop { get; }
     }
 
     public abstract class D : IPublic3
     {
+        // neutral=Models;Inheritance+D;get_Prop;();summary;df-generated
         public abstract string Prop { get; }
     }
 
@@ -826,7 +823,6 @@ public class SyntheticFields
         chainBegin = v;
     }
 
-    // neutral=Models;SyntheticFields;CopyChainValue;();summary;df-generated
     // contentbased-summary=Models;SyntheticFields;false;CopyChainValue;();;Argument[this].SyntheticField[Models.SyntheticFields.chainBegin];Argument[this].SyntheticField[Models.SyntheticFields.chainEnd];value;dfc-generated
     public void CopyChainValue()
     {
@@ -933,6 +929,7 @@ public class Fanout
 
     public abstract class Base1
     {
+        // neutral=Models;Fanout+Base1;GetValue;();summary;df-generated
         public abstract string GetValue();
     }
 
