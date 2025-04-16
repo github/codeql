@@ -7,14 +7,16 @@ extensions:
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[once,on].Argument[1].Parameter[0]"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[once,on].ReturnValue.Member[then].Argument[0].Parameter[0]"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[ref,root,parent,before,after]"]
-      - ["FirebaseDBRef", "FirebaseDBRef", "Member[child].ReturnValue"]
-
+      - ["FirebaseDBRef", "FirebaseDBRef", "Member[child,once,on,orderByChild,equalTo,endAt,startAt,limitToLast,orderByKey].ReturnValue"]
       - ["FirebaseDBRef", "firebase-functions", "Member[database].Member[ref,refFromURL].ReturnValue"]
-      - ["FirebaseDBRef", "FirebaseDBRef", "Member[onCreate,onUpdate].Argument[0].Parameter[0]"]
+      - ["FirebaseDBRef", "FirebaseDBRef", "Member[onCreate,onUpdate,onWrite,onDelete,transaction].Argument[0].Parameter[0]"]
+      - ["FirebaseDBRef", "firebase-admin", "Member[database].ReturnValue.Member[ref,refFromURL].ReturnValue"]
+      - ["FirebaseApp", "firebase-admin", "Member[initializeApp,app].ReturnValue"]
+      - ["FirebaseDBRef", "FirebaseApp", "Member[database].ReturnValue.Member[ref,refFromURL].ReturnValue"]
+
   - addsTo:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
       - ["FirebaseDBRef", "Member[val,exportVal].ReturnValue", 'remote']
       - ["FirebaseDBRef", "Member[forEach].Argument[0].Parameter[0].Member[val,exportVal].ReturnValue", 'remote']
-  

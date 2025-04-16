@@ -174,6 +174,7 @@ nodes
 | firebase-client.js:38:56:38:63 | userData | semmle.label | userData |
 | firebase-client.js:38:56:38:67 | userData.bio | semmle.label | userData.bio |
 | firebase-client.js:44:55:44:74 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
+| firebase-client.js:52:57:52:70 | snapshot.val() | semmle.label | snapshot.val() |
 | hana.js:11:37:11:40 | rows | semmle.label | rows |
 | hana.js:11:37:11:51 | rows[0].comment | semmle.label | rows[0].comment |
 | hana.js:16:37:16:40 | rows | semmle.label | rows |
