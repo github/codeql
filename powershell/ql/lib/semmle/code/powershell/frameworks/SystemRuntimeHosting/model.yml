@@ -5,7 +5,7 @@ extensions:
     data:
     - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator!", "Method[createinstancehelper].ReturnValue"]
     - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator", "Method[createinstance].ReturnValue"]
-    - ["system.string[]", "system.runtime.hosting.activationarguments", "Property[activationdata]"]
-    - ["system.applicationidentity", "system.runtime.hosting.activationarguments", "Property[applicationidentity]"]
-    - ["system.activationcontext", "system.runtime.hosting.activationarguments", "Property[activationcontext]"]
+    - ["system.string[]", "system.runtime.hosting.activationarguments", "Member[activationdata]"]
+    - ["system.applicationidentity", "system.runtime.hosting.activationarguments", "Member[applicationidentity]"]
+    - ["system.activationcontext", "system.runtime.hosting.activationarguments", "Member[activationcontext]"]
     - ["system.security.policy.evidencebase", "system.runtime.hosting.activationarguments", "Method[clone].ReturnValue"]

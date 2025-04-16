@@ -4,4 +4,4 @@ extensions:
       extensible: typeModel
     data:
     - ["microsoft.extensions.filesystemglobbing.internal.ipattern", "microsoft.extensions.filesystemglobbing.internal.patterns.patternbuilder", "Method[build].ReturnValue"]
-    - ["system.stringcomparison", "microsoft.extensions.filesystemglobbing.internal.patterns.patternbuilder", "Property[comparisontype]"]
+    - ["system.stringcomparison", "microsoft.extensions.filesystemglobbing.internal.patterns.patternbuilder", "Member[comparisontype]"]

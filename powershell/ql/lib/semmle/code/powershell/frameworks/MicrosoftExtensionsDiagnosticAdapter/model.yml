@@ -5,5 +5,5 @@ extensions:
     data:
     - ["system.func<system.object,system.object,system.boolean>", "microsoft.extensions.diagnosticadapter.idiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.diagnosticadapter.diagnosticsourceadapter", "Method[isenabled].ReturnValue"]
-    - ["system.string", "microsoft.extensions.diagnosticadapter.diagnosticnameattribute", "Property[name]"]
+    - ["system.string", "microsoft.extensions.diagnosticadapter.diagnosticnameattribute", "Member[name]"]
     - ["system.func<system.object,system.object,system.boolean>", "microsoft.extensions.diagnosticadapter.proxydiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]

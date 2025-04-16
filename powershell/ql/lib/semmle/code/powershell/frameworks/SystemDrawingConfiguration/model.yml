@@ -3,5 +3,5 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.string", "system.drawing.configuration.systemdrawingsection", "Property[bitmapsuffix]"]
-    - ["system.configuration.configurationpropertycollection", "system.drawing.configuration.systemdrawingsection", "Property[properties]"]
+    - ["system.string", "system.drawing.configuration.systemdrawingsection", "Member[bitmapsuffix]"]
+    - ["system.configuration.configurationpropertycollection", "system.drawing.configuration.systemdrawingsection", "Member[properties]"]

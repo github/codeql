@@ -3,8 +3,8 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.boolean", "system.web.handlers.scriptresourcehandler", "Property[system.web.ihttphandler.isreusable]"]
-    - ["system.boolean", "system.web.handlers.tracehandler", "Property[isreusable]"]
-    - ["system.boolean", "system.web.handlers.scriptresourcehandler", "Property[isreusable]"]
-    - ["system.boolean", "system.web.handlers.assemblyresourceloader", "Property[system.web.ihttphandler.isreusable]"]
-    - ["system.boolean", "system.web.handlers.tracehandler", "Property[system.web.ihttphandler.isreusable]"]
+    - ["system.boolean", "system.web.handlers.scriptresourcehandler", "Member[system.web.ihttphandler.isreusable]"]
+    - ["system.boolean", "system.web.handlers.tracehandler", "Member[isreusable]"]
+    - ["system.boolean", "system.web.handlers.scriptresourcehandler", "Member[isreusable]"]
+    - ["system.boolean", "system.web.handlers.assemblyresourceloader", "Member[system.web.ihttphandler.isreusable]"]
+    - ["system.boolean", "system.web.handlers.tracehandler", "Member[system.web.ihttphandler.isreusable]"]

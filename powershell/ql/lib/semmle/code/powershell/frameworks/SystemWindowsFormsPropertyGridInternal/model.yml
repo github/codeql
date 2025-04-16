@@ -3,14 +3,14 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[reset]"]
-    - ["system.componentmodel.attributecollection", "system.windows.forms.propertygridinternal.irootgridentry", "Property[browsableattributes]"]
+    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[reset]"]
+    - ["system.componentmodel.attributecollection", "system.windows.forms.propertygridinternal.irootgridentry", "Member[browsableattributes]"]
     - ["system.componentmodel.propertydescriptor", "system.windows.forms.propertygridinternal.propertiestab", "Method[getdefaultproperty].ReturnValue"]
-    - ["system.guid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[wfcmenucommand]"]
-    - ["system.string", "system.windows.forms.propertygridinternal.propertiestab", "Property[tabname]"]
-    - ["system.guid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[wfcmenugroup]"]
-    - ["system.string", "system.windows.forms.propertygridinternal.propertiestab", "Property[helpkeyword]"]
+    - ["system.guid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[wfcmenucommand]"]
+    - ["system.string", "system.windows.forms.propertygridinternal.propertiestab", "Member[tabname]"]
+    - ["system.guid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[wfcmenugroup]"]
+    - ["system.string", "system.windows.forms.propertygridinternal.propertiestab", "Member[helpkeyword]"]
     - ["system.componentmodel.propertydescriptorcollection", "system.windows.forms.propertygridinternal.propertiestab", "Method[getproperties].ReturnValue"]
-    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[commands]"]
-    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[hide]"]
-    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Field[description]"]
+    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[commands]"]
+    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[hide]"]
+    - ["system.componentmodel.design.commandid", "system.windows.forms.propertygridinternal.propertygridcommands!", "Member[description]"]

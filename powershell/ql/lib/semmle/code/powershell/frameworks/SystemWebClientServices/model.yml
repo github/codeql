@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.boolean", "system.web.clientservices.clientformsidentity", "Property[isauthenticated]"]
-    - ["system.web.security.membershipprovider", "system.web.clientservices.clientformsidentity", "Property[provider]"]
-    - ["system.string", "system.web.clientservices.clientformsidentity", "Property[authenticationtype]"]
+    - ["system.boolean", "system.web.clientservices.clientformsidentity", "Member[isauthenticated]"]
+    - ["system.web.security.membershipprovider", "system.web.clientservices.clientformsidentity", "Member[provider]"]
+    - ["system.string", "system.web.clientservices.clientformsidentity", "Member[authenticationtype]"]
     - ["system.boolean", "system.web.clientservices.clientroleprincipal", "Method[isinrole].ReturnValue"]
-    - ["system.string", "system.web.clientservices.clientformsidentity", "Property[name]"]
-    - ["system.security.principal.iidentity", "system.web.clientservices.clientroleprincipal", "Property[identity]"]
-    - ["system.net.cookiecontainer", "system.web.clientservices.clientformsidentity", "Property[authenticationcookies]"]
-    - ["system.boolean", "system.web.clientservices.connectivitystatus!", "Property[isoffline]"]
+    - ["system.string", "system.web.clientservices.clientformsidentity", "Member[name]"]
+    - ["system.security.principal.iidentity", "system.web.clientservices.clientroleprincipal", "Member[identity]"]
+    - ["system.net.cookiecontainer", "system.web.clientservices.clientformsidentity", "Member[authenticationcookies]"]
+    - ["system.boolean", "system.web.clientservices.connectivitystatus!", "Member[isoffline]"]

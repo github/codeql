@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["microsoft.extensions.filesystemglobbing.internal.ilinearpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Property[pattern]"]
+    - ["microsoft.extensions.filesystemglobbing.internal.ilinearpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Member[pattern]"]
     - ["microsoft.extensions.filesystemglobbing.internal.patterntestresult", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[test].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextraggedinclude", "Method[test].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextraggedexclude", "Method[test].ReturnValue"]
@@ -14,7 +14,7 @@ extensions:
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[testmatchinggroup].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[testmatchingsegment].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinearexclude", "Method[test].ReturnValue"]
-    - ["microsoft.extensions.filesystemglobbing.internal.iraggedpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Property[pattern]"]
+    - ["microsoft.extensions.filesystemglobbing.internal.iraggedpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Member[pattern]"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[islastsegment].ReturnValue"]
     - ["system.string", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[calculatestem].ReturnValue"]
     - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[isendinggroup].ReturnValue"]

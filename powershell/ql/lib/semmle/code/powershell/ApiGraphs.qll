@@ -153,6 +153,16 @@ module API {
     Node getReturn() { Impl::returnEdge(this.getAnEpsilonSuccessor(), result) }
 
     /**
+     * Gets the result of this call when there is a named argument with the
+     * name `name`, or the return value of this callable.
+     */
+    bindingset[this]
+    pragma[inline_late]
+    Node getReturnWithArg(string name) {
+      Impl::returnEdgeWithArg(this.getAnEpsilonSuccessor(), name, result)
+    }
+
+    /**
      * Gets the result of a call to `method` with this value as the receiver, or the return value of `method` defined on
      * an object that can reach this sink.
      *
@@ -689,6 +699,21 @@ module API {
         succ = getForwardStartNode(call)
       )
       or
+      exists(DataFlow::CallableNode callable |
+        pred = getBackwardEndNode(callable) and
+        succ = MkSinkNode(callable.getAReturnNode())
+      )
+    }
+
+    cached
+    predicate returnEdgeWithArg(Node pred, string arg, Node succ) {
+      exists(DataFlow::CallNode call |
+        pred = MkMethodAccessNode(call) and
+        exists(call.getNamedArgument(arg)) and
+        succ = getForwardStartNode(call)
+      )
+      or
+      arg = "" and // TODO
       exists(DataFlow::CallableNode callable |
         pred = getBackwardEndNode(callable) and
         succ = MkSinkNode(callable.getAReturnNode())

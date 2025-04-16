@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Property[statusmessage]"]
-    - ["system.boolean", "system.management.automation.pstasks.pstaskjob", "Property[hasmoredata]"]
-    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Property[location]"]
-    - ["system.int32", "system.management.automation.pstasks.pstaskjob", "Property[allocatedrunspacecount]"]
+    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Member[statusmessage]"]
+    - ["system.boolean", "system.management.automation.pstasks.pstaskjob", "Member[hasmoredata]"]
+    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Member[location]"]
+    - ["system.int32", "system.management.automation.pstasks.pstaskjob", "Member[allocatedrunspacecount]"]

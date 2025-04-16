@@ -3,11 +3,11 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.timespan", "microsoft.extensions.time.testing.faketimeprovider", "Property[autoadvanceamount]"]
+    - ["system.timespan", "microsoft.extensions.time.testing.faketimeprovider", "Member[autoadvanceamount]"]
     - ["system.threading.itimer", "microsoft.extensions.time.testing.faketimeprovider", "Method[createtimer].ReturnValue"]
     - ["system.datetimeoffset", "microsoft.extensions.time.testing.faketimeprovider", "Method[getutcnow].ReturnValue"]
-    - ["system.timezoneinfo", "microsoft.extensions.time.testing.faketimeprovider", "Property[localtimezone]"]
-    - ["system.datetimeoffset", "microsoft.extensions.time.testing.faketimeprovider", "Property[start]"]
-    - ["system.int64", "microsoft.extensions.time.testing.faketimeprovider", "Property[timestampfrequency]"]
+    - ["system.timezoneinfo", "microsoft.extensions.time.testing.faketimeprovider", "Member[localtimezone]"]
+    - ["system.datetimeoffset", "microsoft.extensions.time.testing.faketimeprovider", "Member[start]"]
+    - ["system.int64", "microsoft.extensions.time.testing.faketimeprovider", "Member[timestampfrequency]"]
     - ["system.int64", "microsoft.extensions.time.testing.faketimeprovider", "Method[gettimestamp].ReturnValue"]
     - ["system.string", "microsoft.extensions.time.testing.faketimeprovider", "Method[tostring].ReturnValue"]

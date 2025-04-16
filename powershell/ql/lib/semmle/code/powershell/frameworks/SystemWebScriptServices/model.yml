@@ -4,10 +4,10 @@ extensions:
       extensible: typeModel
     data:
     - ["system.string", "system.web.script.services.proxygenerator!", "Method[getclientproxyscript].ReturnValue"]
-    - ["system.web.script.services.responseformat", "system.web.script.services.scriptmethodattribute", "Property[responseformat]"]
-    - ["system.string", "system.web.script.services.generatescripttypeattribute", "Property[scripttypeid]"]
-    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Property[xmlserializestring]"]
-    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Property[usehttpget]"]
-    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Field[xml]"]
-    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Field[json]"]
-    - ["system.type", "system.web.script.services.generatescripttypeattribute", "Property[type]"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.scriptmethodattribute", "Member[responseformat]"]
+    - ["system.string", "system.web.script.services.generatescripttypeattribute", "Member[scripttypeid]"]
+    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Member[xmlserializestring]"]
+    - ["system.boolean", "system.web.script.services.scriptmethodattribute", "Member[usehttpget]"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Member[xml]"]
+    - ["system.web.script.services.responseformat", "system.web.script.services.responseformat!", "Member[json]"]
+    - ["system.type", "system.web.script.services.generatescripttypeattribute", "Member[type]"]

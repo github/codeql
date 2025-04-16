@@ -4,5 +4,5 @@ extensions:
       extensible: typeModel
     data:
     - ["system.collections.ienumerator", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]
-    - ["system.boolean", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Property[exists]"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Member[exists]"]
     - ["system.collections.generic.ienumerator<microsoft.extensions.fileproviders.ifileinfo>", "microsoft.extensions.fileproviders.internal.physicaldirectorycontents", "Method[getenumerator].ReturnValue"]

@@ -3,13 +3,13 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sinkModel
     data:
-      - ["system.management.automation.commandinvocationintrinsics", "Method[ExpandString].Argument[0]", "command-injection"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[expandstring].Argument[0]", "command-injection"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.management.automation.commandinvocationintrinsics","System.Management.Automation.EngineIntrinsics","Member[InvokeCommand]"]
+    - ["system.management.automation.commandinvocationintrinsics", "System.Management.Automation.EngineIntrinsics","Member[InvokeCommand]"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all

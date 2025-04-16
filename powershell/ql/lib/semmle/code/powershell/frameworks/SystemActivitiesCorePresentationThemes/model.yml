@@ -3,4 +3,4 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.windows.style", "system.activities.core.presentation.themes.designerstylesdictionary!", "Property[sequencestyle]"]
+    - ["system.windows.style", "system.activities.core.presentation.themes.designerstylesdictionary!", "Member[sequencestyle]"]

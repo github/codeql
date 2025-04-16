@@ -5,7 +5,7 @@ extensions:
     data:
     - ["system.boolean", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[equals].ReturnValue"]
     - ["system.lazy<system.type>", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getparttype].ReturnValue"]
-    - ["system.reflection.membertypes", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Property[membertype]"]
+    - ["system.reflection.membertypes", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Member[membertype]"]
     - ["system.boolean", "system.componentmodel.composition.reflectionmodel.lazymemberinfo!", "Method[op_inequality].ReturnValue"]
     - ["system.lazy<system.reflection.parameterinfo>", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getimportingparameter].ReturnValue"]
     - ["system.boolean", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[trymakegenericpartdefinition].ReturnValue"]

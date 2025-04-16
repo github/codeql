@@ -4,11 +4,11 @@ extensions:
       extensible: typeModel
     data:
     - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Method[build].ReturnValue"]
-    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[fileprovider]"]
-    - ["system.int32", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[reloaddelay]"]
-    - ["system.func<system.string,system.boolean>", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[ignorecondition]"]
+    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[fileprovider]"]
+    - ["system.int32", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[reloaddelay]"]
+    - ["system.func<system.string,system.boolean>", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[ignorecondition]"]
     - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationprovider", "Method[tostring].ReturnValue"]
-    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[ignoreprefix]"]
-    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[reloadonchange]"]
-    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[optional]"]
-    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Property[sectiondelimiter]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[ignoreprefix]"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[reloadonchange]"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[optional]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[sectiondelimiter]"]

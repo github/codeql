@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft-sdl/powershell-all
-      extensible: sourceModel
-    data:
-      - ["microsoft.win32.registry!", "Method[GetValue]", "windows-registry"]

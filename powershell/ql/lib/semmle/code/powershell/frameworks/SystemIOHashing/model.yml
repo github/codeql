@@ -5,7 +5,7 @@ extensions:
     data:
     - ["system.byte[]", "system.io.hashing.xxhash64!", "Method[hash].ReturnValue"]
     - ["system.boolean", "system.io.hashing.xxhash32!", "Method[tryhash].ReturnValue"]
-    - ["system.int32", "system.io.hashing.noncryptographichashalgorithm", "Property[hashlengthinbytes]"]
+    - ["system.int32", "system.io.hashing.noncryptographichashalgorithm", "Member[hashlengthinbytes]"]
     - ["system.int32", "system.io.hashing.xxhash32!", "Method[hash].ReturnValue"]
     - ["system.uint64", "system.io.hashing.crc64", "Method[getcurrenthashasuint64].ReturnValue"]
     - ["system.uint32", "system.io.hashing.xxhash32", "Method[getcurrenthashasuint32].ReturnValue"]

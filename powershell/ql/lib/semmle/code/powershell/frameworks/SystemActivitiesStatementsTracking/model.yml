@@ -4,6 +4,6 @@ extensions:
       extensible: typeModel
     data:
     - ["system.activities.tracking.trackingrecord", "system.activities.statements.tracking.statemachinestaterecord", "Method[clone].ReturnValue"]
-    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Property[statemachinename]"]
-    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Property[statename]"]
-    - ["system.string", "system.activities.statements.tracking.statemachinestatequery", "Property[name]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Member[statemachinename]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Member[statename]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestatequery", "Member[name]"]

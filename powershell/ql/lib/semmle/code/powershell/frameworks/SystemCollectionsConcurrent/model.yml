@@ -5,6 +5,6 @@ extensions:
     data:
     - ["system.collections.concurrent.orderablepartitioner<system.tuple<system.int32,system.int32>>", "system.collections.concurrent.partitioner!", "Method[create].ReturnValue"]
     - ["system.collections.concurrent.orderablepartitioner<system.tuple<system.int64,system.int64>>", "system.collections.concurrent.partitioner!", "Method[create].ReturnValue"]
-    - ["system.collections.concurrent.enumerablepartitioneroptions", "system.collections.concurrent.enumerablepartitioneroptions!", "Field[nobuffering]"]
+    - ["system.collections.concurrent.enumerablepartitioneroptions", "system.collections.concurrent.enumerablepartitioneroptions!", "Member[nobuffering]"]
     - ["system.collections.concurrent.orderablepartitioner<tsource>", "system.collections.concurrent.partitioner!", "Method[create<tsource>].ReturnValue"]
-    - ["system.collections.concurrent.enumerablepartitioneroptions", "system.collections.concurrent.enumerablepartitioneroptions!", "Field[none]"]
+    - ["system.collections.concurrent.enumerablepartitioneroptions", "system.collections.concurrent.enumerablepartitioneroptions!", "Member[none]"]

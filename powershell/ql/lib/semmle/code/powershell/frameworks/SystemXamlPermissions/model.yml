@@ -5,8 +5,8 @@ extensions:
     data:
     - ["system.int32", "system.xaml.permissions.xamlloadpermission", "Method[gethashcode].ReturnValue"]
     - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[issubsetof].ReturnValue"]
-    - ["system.reflection.assemblyname", "system.xaml.permissions.xamlaccesslevel", "Property[assemblyaccesstoassemblyname]"]
-    - ["system.string", "system.xaml.permissions.xamlaccesslevel", "Property[privateaccesstotypename]"]
+    - ["system.reflection.assemblyname", "system.xaml.permissions.xamlaccesslevel", "Member[assemblyaccesstoassemblyname]"]
+    - ["system.string", "system.xaml.permissions.xamlaccesslevel", "Member[privateaccesstotypename]"]
     - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[isunrestricted].ReturnValue"]
     - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[assemblyaccessto].ReturnValue"]
     - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[equals].ReturnValue"]
@@ -14,6 +14,6 @@ extensions:
     - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[privateaccessto].ReturnValue"]
     - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[includes].ReturnValue"]
     - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[intersect].ReturnValue"]
-    - ["system.collections.generic.ilist<system.xaml.permissions.xamlaccesslevel>", "system.xaml.permissions.xamlloadpermission", "Property[allowedaccess]"]
+    - ["system.collections.generic.ilist<system.xaml.permissions.xamlaccesslevel>", "system.xaml.permissions.xamlloadpermission", "Member[allowedaccess]"]
     - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[copy].ReturnValue"]
     - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[union].ReturnValue"]
