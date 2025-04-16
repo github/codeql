@@ -2180,8 +2180,6 @@ variable_vla(
     int decl: @stmt_vla_decl ref
 );
 
-type_is_vla(unique int type_id: @derivedtype ref)
-
 if_initialization(
     unique int if_stmt: @stmt_if ref,
     int init_id: @stmt ref
