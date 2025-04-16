@@ -6,4 +6,4 @@ extensions:
     - ["system.type", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[selectcontracttype].ReturnValue"]
     - ["system.collections.generic.ienumerable<system.activities.presentation.toolbox.activitytemplatefactorybuilder>", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[generateactivitytemplates].ReturnValue"]
     - ["system.string", "system.servicemodel.activities.presentation.servicecontractimporter!", "Method[saveactivitytemplate].ReturnValue"]
-    - ["system.string", "system.servicemodel.activities.presentation.servicecontractimporter!", "Field[contracttypeviewstatekey]"]
+    - ["system.string", "system.servicemodel.activities.presentation.servicecontractimporter!", "Member[contracttypeviewstatekey]"]

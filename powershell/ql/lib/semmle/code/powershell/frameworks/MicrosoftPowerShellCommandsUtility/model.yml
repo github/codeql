@@ -3,12 +3,12 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Property[doublequote]"]
-    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Property[formatstring]"]
-    - ["system.management.automation.psobject[]", "microsoft.powershell.commands.utility.joinstringcommand", "Property[inputobject]"]
-    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Property[singlequote]"]
-    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Property[separator]"]
-    - ["microsoft.powershell.commands.pspropertyexpression", "microsoft.powershell.commands.utility.joinstringcommand", "property[property]"]
-    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Property[outputsuffix]"]
-    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Property[outputprefix]"]
-    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Property[useculture]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[doublequote]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[formatstring]"]
+    - ["system.management.automation.psobject[]", "microsoft.powershell.commands.utility.joinstringcommand", "Member[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[singlequote]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[separator]"]
+    - ["microsoft.powershell.commands.pspropertyexpression", "microsoft.powershell.commands.utility.joinstringcommand", "Member[property]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[outputsuffix]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[outputprefix]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[useculture]"]

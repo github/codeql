@@ -4,5 +4,5 @@ extensions:
       extensible: typeModel
     data:
     - ["system.boolean", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy", "Method[testcompatiblepolicy].ReturnValue"]
-    - ["microsoft.visualstudio.text.operations.imergetextundotransactionpolicy", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy!", "Property[instance]"]
+    - ["microsoft.visualstudio.text.operations.imergetextundotransactionpolicy", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy!", "Member[instance]"]
     - ["system.boolean", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy", "Method[canmerge].ReturnValue"]

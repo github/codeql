@@ -4,9 +4,9 @@ extensions:
       extensible: typeModel
     data:
     - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convertback].ReturnValue"]
-    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[default]"]
-    - ["system.windows.point", "system.activities.core.presentation.locationchangedeventargs", "Property[newlocation]"]
-    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[incoming]"]
-    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Field[outgoing]"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[default]"]
+    - ["system.windows.point", "system.activities.core.presentation.locationchangedeventargs", "Member[newlocation]"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[incoming]"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[outgoing]"]
     - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convert].ReturnValue"]
-    - ["system.windows.input.routedcommand", "system.activities.core.presentation.flowchartdesignercommands!", "Field[connectnodescommand]"]
+    - ["system.windows.input.routedcommand", "system.activities.core.presentation.flowchartdesignercommands!", "Member[connectnodescommand]"]

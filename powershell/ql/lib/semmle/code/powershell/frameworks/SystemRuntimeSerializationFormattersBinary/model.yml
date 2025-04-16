@@ -4,12 +4,12 @@ extensions:
       extensible: typeModel
     data:
     - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[deserializemethodresponse].ReturnValue"]
-    - ["system.runtime.serialization.streamingcontext", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[context]"]
-    - ["system.runtime.serialization.isurrogateselector", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[surrogateselector]"]
-    - ["system.runtime.serialization.formatters.formatterassemblystyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[assemblyformat]"]
+    - ["system.runtime.serialization.streamingcontext", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[context]"]
+    - ["system.runtime.serialization.isurrogateselector", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[surrogateselector]"]
+    - ["system.runtime.serialization.formatters.formatterassemblystyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[assemblyformat]"]
     - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[deserialize].ReturnValue"]
-    - ["system.runtime.serialization.formatters.typefilterlevel", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[filterlevel]"]
+    - ["system.runtime.serialization.formatters.typefilterlevel", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[filterlevel]"]
     - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[unsafedeserializemethodresponse].ReturnValue"]
-    - ["system.runtime.serialization.formatters.formattertypestyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[typeformat]"]
+    - ["system.runtime.serialization.formatters.formattertypestyle", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[typeformat]"]
     - ["system.object", "system.runtime.serialization.formatters.binary.binaryformatter", "Method[unsafedeserialize].ReturnValue"]
-    - ["system.runtime.serialization.serializationbinder", "system.runtime.serialization.formatters.binary.binaryformatter", "Property[binder]"]
+    - ["system.runtime.serialization.serializationbinder", "system.runtime.serialization.formatters.binary.binaryformatter", "Member[binder]"]

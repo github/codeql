@@ -3,6 +3,6 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: typeModel
     data:
-    - ["system.string", "system.xml.xmlconfiguration.xmlreadersection", "Property[collapsewhitespaceintoemptystringstring]"]
-    - ["system.string", "system.xml.xmlconfiguration.xsltconfigsection", "Property[prohibitdefaultresolverstring]"]
-    - ["system.string", "system.xml.xmlconfiguration.xmlreadersection", "Property[prohibitdefaultresolverstring]"]
+    - ["system.string", "system.xml.xmlconfiguration.xmlreadersection", "Member[collapsewhitespaceintoemptystringstring]"]
+    - ["system.string", "system.xml.xmlconfiguration.xsltconfigsection", "Member[prohibitdefaultresolverstring]"]
+    - ["system.string", "system.xml.xmlconfiguration.xmlreadersection", "Member[prohibitdefaultresolverstring]"]

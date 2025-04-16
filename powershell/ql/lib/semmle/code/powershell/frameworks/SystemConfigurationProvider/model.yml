@@ -4,9 +4,9 @@ extensions:
       extensible: typeModel
     data:
     - ["system.collections.ienumerator", "system.configuration.provider.providercollection", "Method[getenumerator].ReturnValue"]
-    - ["system.configuration.provider.providerbase", "system.configuration.provider.providercollection", "Property[item]"]
-    - ["system.string", "system.configuration.provider.providerbase", "Property[description]"]
-    - ["system.int32", "system.configuration.provider.providercollection", "Property[count]"]
-    - ["system.object", "system.configuration.provider.providercollection", "Property[syncroot]"]
-    - ["system.boolean", "system.configuration.provider.providercollection", "Property[issynchronized]"]
-    - ["system.string", "system.configuration.provider.providerbase", "Property[name]"]
+    - ["system.configuration.provider.providerbase", "system.configuration.provider.providercollection", "Member[item]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Member[description]"]
+    - ["system.int32", "system.configuration.provider.providercollection", "Member[count]"]
+    - ["system.object", "system.configuration.provider.providercollection", "Member[syncroot]"]
+    - ["system.boolean", "system.configuration.provider.providercollection", "Member[issynchronized]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Member[name]"]

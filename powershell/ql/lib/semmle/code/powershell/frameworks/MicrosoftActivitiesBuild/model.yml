@@ -4,5 +4,5 @@ extensions:
       extensible: typeModel
     data:
     - ["system.boolean", "microsoft.activities.build.workflowbuildmessagetask", "Method[execute].ReturnValue"]
-    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Property[resourcename]"]
-    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Property[messagetype]"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[resourcename]"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[messagetype]"]

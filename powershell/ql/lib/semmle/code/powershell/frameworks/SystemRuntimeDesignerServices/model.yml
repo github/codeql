@@ -5,4 +5,4 @@ extensions:
     data:
     - ["system.type", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[gettype].ReturnValue"]
     - ["system.reflection.assembly", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[getassembly].ReturnValue"]
-    - ["system.string", "system.runtime.designerservices.windowsruntimedesignercontext", "Property[name]"]
+    - ["system.string", "system.runtime.designerservices.windowsruntimedesignercontext", "Member[name]"]

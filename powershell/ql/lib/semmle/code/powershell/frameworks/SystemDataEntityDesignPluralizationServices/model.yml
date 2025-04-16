@@ -7,5 +7,5 @@ extensions:
     - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[issingular].ReturnValue"]
     - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[isplural].ReturnValue"]
     - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[pluralize].ReturnValue"]
-    - ["system.globalization.cultureinfo", "system.data.entity.design.pluralizationservices.pluralizationservice", "Property[culture]"]
+    - ["system.globalization.cultureinfo", "system.data.entity.design.pluralizationservices.pluralizationservice", "Member[culture]"]
     - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[singularize].ReturnValue"]

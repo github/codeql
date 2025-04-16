@@ -3,7 +3,7 @@ extensions:
       pack: microsoft-sdl/powershell-all
       extensible: sinkModel
     data:
-      - ["System.Management.Automation.ScriptBlock!", "Method[Create].Argument[0]", "command-injection"]
+      - ["system.management.automation.scriptblock!", "Method[create].Argument[0]", "command-injection"]
 
   - addsTo:
       pack: microsoft-sdl/powershell-all
