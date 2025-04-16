@@ -1,6 +1,6 @@
 /**
  * @name User Input to Invoke-Expression 
- * @description Finding cases where the user input is passed an Invoke-Expression command
+ * @description Finding cases where the user input is passed an dangerous method that can lead to RCE
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
@@ -15,14 +15,17 @@ import powershell
 import semmle.code.powershell.dataflow.TaintTracking
 import semmle.code.powershell.dataflow.DataFlow
 import semmle.code.powershell.ApiGraphs
+import semmle.code.powershell.dataflow.flowsources.FlowSources
+
+import Sanitizers
 
 private module TestConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { 
-        exists(CmdCall c | 
-            c.getName() = "Read-Host" and
-            source.asExpr().getExpr() = c) }
+        source instanceof SourceNode or 
+        source instanceof Source
+    }
   
-    predicate isSink(DataFlow::Node sink) { any()}//sink instanceof Sink }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
     predicate isBarrier(DataFlow::Node node) {node instanceof Sanitizer}
 }
 
@@ -65,22 +68,19 @@ class InvokeExpressionCall extends Sink {
 
 class InvokeScriptSink extends Sink {
     InvokeScriptSink() { 
-        exists(InvokeMemberExpr ie | 
-            this.asExpr().getExpr() = ie.getAnArgument() and
-            ie.getName() = "InvokeScript" and
-            ie.getQualifier().toString() = "InvokeCommand" and
-            ie.getQualifier().getAChild().toString() = "executioncontext"
+        exists(API::Node call | 
+            API::getTopLevelMember("executioncontext").getMember("invokecommand").getMethod("invokescript") = call and
+            this = call.getArgument(_).asSink()
         )
     }
 }
 
 class CreateNestedPipelineSink extends Sink {
     CreateNestedPipelineSink() { 
-        exists(InvokeMemberExpr ie | 
-            this.asExpr().getExpr() = ie.getAnArgument() and
-            ie.getName() = "CreateNestedPipeline" and
-            ie.getQualifier().toString() = "InvokeCommand" and
-            ie.getQualifier().getAChild().toString() = "executioncontext")
+        exists(API::Node call | 
+            API::getTopLevelMember("host").getMember("runspace").getMethod("createnestedpipeline") = call and
+            this = call.getArgument(_).asSink()
+        )
     }
 }
 
@@ -96,35 +96,105 @@ class AddScriptInvokeSink extends Sink {
     }
 }
 
-abstract class Sanitizer extends DataFlow::Node {}
+class PowershellSink extends Sink {
+    PowershellSink() { 
+        exists( CmdCall c |        
+            c.getName() = "powershell" | 
+            (
+                this.asExpr().getExpr() = c.getArgument(1) and
+                c.getArgument(0).getValue().toString() = "-command"
+            ) or 
+            (
+                this.asExpr().getExpr() = c.getArgument(0)
+            )
+        )
+    }
+}
 
-// class TypedParameterSanitizer extends Sanitizer {
-//     TypedParameterSanitizer() {
-//       exists(Function f, Parameter p |
-//         p = f.getAParameter() and
-//         p.getStaticType() != "Object" and
-//         this.asParameter() = p
-//       )
-//     }
-// }
+class CmdSink extends Sink {
+    CmdSink() { 
+        exists(CmdCall c | 
+            this.asExpr().getExpr() = c.getArgument(1) and
+            c.getName() = "cmd" and
+            c.getArgument(0).getValue().toString() = "/c" 
+        )
+    }   
+}
 
-// class SingleQuoteSanitizer extends Sanitizer {
-//     SingleQuoteSanitizer() { 
-//         exists(Expr e, VarReadAccess v | 
-//             e = this.asExpr().getExpr().getParent() and
-//             e.toString().matches("%'$" + v.getVariable().getName() + "'%")
-//         )
-//     }
-// }
+class ForEachObjectSink extends Sink {
+    ForEachObjectSink() { 
+        exists(CmdCall c | 
+            this.asExpr().getExpr() = c.getAnArgument() and
+            c.getName() = "Foreach-Object" 
+        )
+    }   
+}
+
+class InvokeSink extends Sink {
+    InvokeSink() { 
+        exists(InvokeMemberExpr ie | 
+            this.asExpr().getExpr() = ie.getCallee() or 
+            this.asExpr().getExpr() = ie.getQualifier().getAChild*()
+        )
+    }   
+}
+
+class CreateScriptBlockSink extends Sink {
+    CreateScriptBlockSink() { 
+        exists(InvokeMemberExpr ie | 
+            this.asExpr().getExpr() = ie.getAnArgument() and
+            ie.getName() = "Create" and
+            ie.getQualifier().toString() = "ScriptBlock"
+        )
+    }   
+}
+
+class NewScriptBlockSink extends Sink {
+    NewScriptBlockSink() { 
+        exists(API::Node call | 
+            API::getTopLevelMember("executioncontext").getMember("invokecommand").getMethod("newscriptblock") = call and
+            this = call.getArgument(_).asSink()
+        )
+    }   
+}
+
+class ExpandStringSink extends Sink {
+    ExpandStringSink() { 
+        exists(API::Node call | this = call.getArgument(_).asSink() |
+            API::getTopLevelMember("executioncontext").getMember("invokecommand").getMethod("expandstring") = call or
+            API::getTopLevelMember("executioncontext").getMember("sessionstate").getMember("invokecommand").getMethod("expandstring") = call 
+            
+        )
+    }   
+}
 
 module TestFlow = TaintTracking::Global<TestConfig>;
 import TestFlow::PathGraph
 
 from TestFlow::PathNode source, TestFlow::PathNode sink
 where
-    TestFlow::flowPath(source, sink) and 
-    sink.getNode().asExpr().getExpr().getLocation().getFile().getBaseName() = "sanitizers.ps1" 
-select sink.getNode(), source, sink, "Flow from user input to Invoke-Expression"
+    TestFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "Flow from user input to dangerous method"
+
+// from CmdCall c 
+// where c.getName() = "cmd" 
+// and c.getArgument(0).getValue().toString() = "/c" 
+// select c.getArgument(1)
+
+// from InvokeMemberExpr ie 
+// where ie.getName() = "Create" and 
+// ie.getQualifier().toString() = "ScriptBlock"
+// select ie, ie.getQualifier(), ie.getAnArgument()
+
+// from API::Node call 
+// where API::getTopLevelMember("executioncontext").getMember("invokecommand").getMethod("newscriptblock") = call
+// select call, call.getArgument(_).asSink()
+
+// from Expr e 
+// where e.getLocation().getFile().getBaseName() = "InjectionHunterTests.ps1"
+// and e.getLocation().getStartLine() = 106
+// select e, e.getAQlClass()
+
 
 // from Function f, CmdCall c 
 // where f.getLocation().getFile().getBaseName() = "sanitizers.ps1" 
