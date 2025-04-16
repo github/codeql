@@ -100,7 +100,7 @@ class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceo
     // where typical algorithms are specified, but EC specifically means set up a
     // default curve container, that will later be specified explicitly (or if not a default)
     // curve is used.
-    this = any(Literal l | l.getValue() != "EC")
+    this.getValue() != "EC"
   }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
@@ -194,6 +194,12 @@ module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
+    exists(MethodCall m |
+      m.getMethod().hasQualifiedName("java.lang", "String", "getBytes") and
+      node1.asExpr() = m.getQualifier() and
+      node2.asExpr() = m
+    )
   }
 }
 

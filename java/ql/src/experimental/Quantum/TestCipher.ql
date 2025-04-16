@@ -5,7 +5,7 @@
 import experimental.Quantum.Language
 
 from
-  Crypto::CipherOperationNode op, Crypto::KeyOperationAlgorithmNode a,
+  Crypto::KeyOperationNode op, Crypto::KeyOperationAlgorithmNode a,
   Crypto::ModeOfOperationAlgorithmNode m, Crypto::PaddingAlgorithmNode p,
   Crypto::NonceArtifactNode nonce, Crypto::KeyArtifactNode k
 where
@@ -15,4 +15,4 @@ where
   nonce = op.getANonce() and
   k = op.getAKey()
 select op, op.getKeyOperationSubtype(), a, a.getRawAlgorithmName(), m, m.getRawAlgorithmName(), p,
-  p.getRawAlgorithmName(), nonce, k, k.getSourceElement()
+  p.getRawAlgorithmName(), nonce, k
