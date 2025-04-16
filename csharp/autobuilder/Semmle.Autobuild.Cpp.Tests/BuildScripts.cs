@@ -150,6 +150,10 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
+        public bool IsMonoInstalled { get; set; }
+
+        bool IBuildActions.IsMonoInstalled() => IsMonoInstalled;
+
         string IBuildActions.PathCombine(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));

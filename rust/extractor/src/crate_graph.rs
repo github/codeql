@@ -18,15 +18,18 @@ use ra_ap_hir_def::{
 };
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
-use ra_ap_hir_ty::TraitRefExt;
 use ra_ap_hir_ty::Ty;
 use ra_ap_hir_ty::TyExt;
 use ra_ap_hir_ty::WhereClause;
 use ra_ap_hir_ty::{Binders, FnPointer};
 use ra_ap_hir_ty::{Interner, ProjectionTy};
+use ra_ap_hir_ty::{TraitRefExt, from_assoc_type_id};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_vfs::{Vfs, VfsPath};
 
+use ra_ap_hir_def::data::ConstFlags;
+use ra_ap_hir_def::item_tree::StaticFlags;
+use ra_ap_hir_ty::db::InternedCallableDefId;
 use std::hash::Hasher;
 use std::{cmp::Ordering, collections::HashMap, path::PathBuf};
 use std::{hash::Hash, vec};
@@ -374,7 +377,7 @@ fn emit_const(
             attrs: vec![],
             body: None,
             is_const: true,
-            is_default: konst.has_body,
+            is_default: konst.flags.contains(ConstFlags::HAS_BODY),
             type_repr,
             visibility,
         })
@@ -407,9 +410,9 @@ fn emit_static(
             body: None,
             type_repr,
             visibility,
-            is_mut: statik.mutable,
+            is_mut: statik.flags.contains(StaticFlags::MUTABLE),
             is_static: true,
-            is_unsafe: statik.has_unsafe_kw,
+            is_unsafe: statik.flags.contains(StaticFlags::HAS_UNSAFE_KW),
         })
         .into(),
     );
@@ -774,7 +777,9 @@ fn const_or_function(
     let type_: &chalk_ir::Ty<Interner> = type_.skip_binders();
     match type_.kind(ra_ap_hir_ty::Interner) {
         chalk_ir::TyKind::FnDef(fn_def_id, parameters) => {
-            let data = db.fn_def_datum(*fn_def_id);
+            let callable_def_id =
+                db.lookup_intern_callable_def(InternedCallableDefId::from(*fn_def_id));
+            let data = db.fn_def_datum(callable_def_id);
 
             let sig = ra_ap_hir_ty::CallableSig::from_def(db, *fn_def_id, parameters);
             let params = sig
@@ -1200,7 +1205,7 @@ fn emit_hir_ty(
             substitution: _,
         }))
         | chalk_ir::TyKind::AssociatedType(associated_ty_id, _) => {
-            let assoc_ty_data = db.associated_ty_data(*associated_ty_id);
+            let assoc_ty_data = db.associated_ty_data(from_assoc_type_id(*associated_ty_id));
 
             let _name = db
                 .type_alias_data(assoc_ty_data.name)
@@ -1302,6 +1307,7 @@ fn emit_variant_data(trap: &mut TrapFile, db: &dyn HirDatabase, variant_id: Vari
                     trap.emit(generated::StructField {
                         id: trap::TrapId::Star,
                         attrs: vec![],
+                        is_unsafe: false,
                         name,
                         type_repr,
                         visibility,

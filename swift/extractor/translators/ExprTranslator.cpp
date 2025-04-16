@@ -671,4 +671,18 @@ codeql::MaterializePackExpr ExprTranslator::translateMaterializePackExpr(
   return entry;
 }
 
+codeql::ExtractFunctionIsolationExpr ExprTranslator::translateExtractFunctionIsolationExpr(
+    const swift::ExtractFunctionIsolationExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.function_expr = dispatcher.fetchLabel(expr.getFunctionExpr());
+  return entry;
+}
+
+codeql::CurrentContextIsolationExpr ExprTranslator::translateCurrentContextIsolationExpr(
+    const swift::CurrentContextIsolationExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.actor = dispatcher.fetchLabel(expr.getActor());
+  return entry;
+}
+
 }  // namespace codeql

@@ -1425,3 +1425,41 @@ class DiscardStmt(Stmt):
     ```
     """
     sub_expr: Expr | child
+
+
+class ExtractFunctionIsolationExpr(Expr):
+    """
+    An expression that extracts the function isolation of an expression with `@isolated(any)`
+    function type.
+
+    For example:
+    ```
+    func foo(x: @isolated(any) () -> ()) {
+        let isolation = x.isolation
+    }
+    ```
+    """
+    function_expr: Expr | child
+
+
+@qltest.skip
+class CurrentContextIsolationExpr(Expr):
+    """
+    An expression that extracts the actor isolation of the current context, of type `(any Actor)?`.
+    This is synthesized by the type checker and does not have any way to be expressed explicitly in
+    the source.
+    """
+    actor: Expr
+
+
+class ActorIsolationErasureExpr(ImplicitConversionExpr):
+    """
+    A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+    type.
+    """
+
+
+class UnreachableExpr(ImplicitConversionExpr):
+    """
+    A conversion from the uninhabited type to any other type. It's never evaluated.
+    """
