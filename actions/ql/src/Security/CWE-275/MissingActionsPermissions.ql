@@ -1,6 +1,6 @@
 /**
  * @name Workflow does not contain permissions
- * @description Workflows should contain permissions to provide a clear understanding has permissions to run the workflow.
+ * @description Workflows should contain explicit permissions to restrict the scope of the default GITHUB_TOKEN.
  * @kind problem
  * @security-severity 5.0
  * @problem.severity warning
