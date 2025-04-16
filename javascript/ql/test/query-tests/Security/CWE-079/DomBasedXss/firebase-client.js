@@ -53,3 +53,16 @@ function fun2(category){
         return dbRef.remove();
     }); 
 }
+
+function fun3(){
+  const messagesRef = firebase.database().ref("messages");
+  const userInput = "<script>alert('XSS');</script>"; 
+  const newMessageRef = messagesRef.push({ 
+      message: userInput 
+  });
+
+  newMessageRef.once("value", (snapshot) => {
+      const message = snapshot.val().message; // $ Source
+      document.body.innerHTML += "<p>" + message + "</p>"; // $ Alert
+  });
+}

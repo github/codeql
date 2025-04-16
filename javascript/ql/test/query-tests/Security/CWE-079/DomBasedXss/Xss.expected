@@ -74,6 +74,7 @@
 | firebase-client.js:38:56:38:67 | userData.bio | firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:38:56:38:67 | userData.bio | Cross-site scripting vulnerability due to $@. | firebase-client.js:37:22:37:35 | snapshot.val() | user-provided value |
 | firebase-client.js:44:55:44:74 | parentSnapshot.val() | firebase-client.js:44:55:44:74 | parentSnapshot.val() | firebase-client.js:44:55:44:74 | parentSnapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:44:55:44:74 | parentSnapshot.val() | user-provided value |
 | firebase-client.js:52:57:52:70 | snapshot.val() | firebase-client.js:52:57:52:70 | snapshot.val() | firebase-client.js:52:57:52:70 | snapshot.val() | Cross-site scripting vulnerability due to $@. | firebase-client.js:52:57:52:70 | snapshot.val() | user-provided value |
+| firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | firebase-client.js:65:23:65:36 | snapshot.val() | firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | firebase-client.js:65:23:65:36 | snapshot.val() | user-provided value |
 | jquery.js:7:5:7:34 | "<div i ... + "\\">" | jquery.js:2:17:2:40 | documen ... .search | jquery.js:7:5:7:34 | "<div i ... + "\\">" | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:8:18:8:34 | "XSS: " + tainted | jquery.js:2:17:2:40 | documen ... .search | jquery.js:8:18:8:34 | "XSS: " + tainted | Cross-site scripting vulnerability due to $@. | jquery.js:2:17:2:40 | documen ... .search | user-provided value |
 | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | jquery.js:10:13:10:20 | location | jquery.js:10:5:10:40 | "<b>" + ...  "</b>" | Cross-site scripting vulnerability due to $@. | jquery.js:10:13:10:20 | location | user-provided value |
@@ -373,6 +374,9 @@ edges
 | firebase-client.js:37:11:37:35 | userData | firebase-client.js:38:56:38:63 | userData | provenance |  |
 | firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:37:11:37:35 | userData | provenance |  |
 | firebase-client.js:38:56:38:63 | userData | firebase-client.js:38:56:38:67 | userData.bio | provenance |  |
+| firebase-client.js:65:13:65:44 | message | firebase-client.js:66:42:66:48 | message | provenance |  |
+| firebase-client.js:65:23:65:36 | snapshot.val() | firebase-client.js:65:13:65:44 | message | provenance |  |
+| firebase-client.js:66:42:66:48 | message | firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:5:13:5:19 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:6:11:6:17 | tainted | provenance |  |
@@ -996,6 +1000,10 @@ nodes
 | firebase-client.js:38:56:38:67 | userData.bio | semmle.label | userData.bio |
 | firebase-client.js:44:55:44:74 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
 | firebase-client.js:52:57:52:70 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:65:13:65:44 | message | semmle.label | message |
+| firebase-client.js:65:23:65:36 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | semmle.label | "<p>" + ...  "</p>" |
+| firebase-client.js:66:42:66:48 | message | semmle.label | message |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |

@@ -175,6 +175,10 @@ nodes
 | firebase-client.js:38:56:38:67 | userData.bio | semmle.label | userData.bio |
 | firebase-client.js:44:55:44:74 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
 | firebase-client.js:52:57:52:70 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:65:13:65:44 | message | semmle.label | message |
+| firebase-client.js:65:23:65:36 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | semmle.label | "<p>" + ...  "</p>" |
+| firebase-client.js:66:42:66:48 | message | semmle.label | message |
 | hana.js:11:37:11:40 | rows | semmle.label | rows |
 | hana.js:11:37:11:51 | rows[0].comment | semmle.label | rows[0].comment |
 | hana.js:16:37:16:40 | rows | semmle.label | rows |
@@ -850,6 +854,9 @@ edges
 | firebase-client.js:37:11:37:35 | userData | firebase-client.js:38:56:38:63 | userData | provenance |  |
 | firebase-client.js:37:22:37:35 | snapshot.val() | firebase-client.js:37:11:37:35 | userData | provenance |  |
 | firebase-client.js:38:56:38:63 | userData | firebase-client.js:38:56:38:67 | userData.bio | provenance |  |
+| firebase-client.js:65:13:65:44 | message | firebase-client.js:66:42:66:48 | message | provenance |  |
+| firebase-client.js:65:23:65:36 | snapshot.val() | firebase-client.js:65:13:65:44 | message | provenance |  |
+| firebase-client.js:66:42:66:48 | message | firebase-client.js:66:34:66:57 | "<p>" + ...  "</p>" | provenance |  |
 | hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | provenance |  |
 | hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | provenance |  |
 | hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | provenance |  |
