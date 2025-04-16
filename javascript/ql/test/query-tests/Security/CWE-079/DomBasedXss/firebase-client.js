@@ -44,3 +44,12 @@ firebase.database().ref("users/12345/profile").once("value", (snapshot) => {
       document.getElementById("userData").innerHTML = parentSnapshot.val(); // $ Alert
     });
 });
+
+function fun2(category){
+    dbPath = 'users/' + firebase.auth().currentUser.uid;
+    dbRef = firebase.database().ref(dbPath);
+    dbRef.set({'test': randomString}).then(function() {return dbRef.once('value');}).then(function(snapshot) {
+        document.getElementById("userData").innerHTML = snapshot.val(); // $ MISSING: Alert
+        return dbRef.remove();
+    }); 
+}

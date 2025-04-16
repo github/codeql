@@ -17,3 +17,40 @@ functions.database.ref('x').onUpdate(x => {
         eval(grandParentSnapshot.val()); // $ Alert[js/code-injection]
     });
 });
+functions.database.ref('/messages/{messageId}').onWrite((change, context) => {
+    eval(change.after.val()); // $ MISSING: Alert[js/code-injection]
+    eval(change.before.val()); // $ MISSING: Alert[js/code-injection]
+});
+
+functions.database.ref('/messages/{messageId}').onDelete((change, context) => {
+    eval(change.val()); // $ MISSING: Alert[js/code-injection]
+    eval(change.val()); // $ MISSING: Alert[js/code-injection]
+});
+
+functions.database.ref('/status/{uid}').onUpdate(async (change, context) => {
+    const eventStatus = change.after.val();
+    const statusSnapshot = await change.after.ref.once('value');
+    const status = eval(statusSnapshot.val()); // $ MISSING: Alert[js/code-injection]
+    return null;
+});
+  
+function fun(category){
+    let query = admin.database().ref(`/users/messages`);
+    query = query.orderByChild('category').equalTo(category);
+    const snapshot = query.once('value');
+    let messages = [];
+    snapshot.forEach((childSnapshot) => {
+      messages.push({key: childSnapshot.key, message: childSnapshot.val().message});
+      eval(childSnapshot.val()); // $ MISSING: Alert[js/code-injection]
+    });
+}
+  
+async function fun3(uid, postId, size) {
+    let app;
+    const config = JSON.parse(process.env.FIREBASE_CONFIG);
+    config.databaseAuthVariableOverride = {uid: uid};
+    app = admin.initializeApp(config, uid);
+    const imageUrlRef = app.database().ref(`/posts`);
+    const snap = await imageUrlRef.once('value');
+    eval(snap.val()); // $ MISSING: Alert[js/code-injection]
+}
