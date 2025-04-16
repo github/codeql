@@ -141,7 +141,6 @@ public final class Pojo {
     this.stringValue1 = value;
   }
 
-  // neutral=p;Pojo;copyStringValue;();summary;df-generated
   // contentbased-summary=p;Pojo;false;copyStringValue;();;Argument[this].SyntheticField[p.Pojo.stringValue1];Argument[this].SyntheticField[p.Pojo.stringValue2];value;dfc-generated
   public void copyStringValue() {
     this.stringValue2 = this.stringValue1;
