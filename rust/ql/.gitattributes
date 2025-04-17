@@ -742,6 +742,7 @@
 /test/extractor-tests/generated/Const/Const_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getBody.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Const/Const_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getName.ql linguist-generated
 /test/extractor-tests/generated/Const/Const_getTypeRepr.ql linguist-generated
@@ -764,6 +765,7 @@
 /test/extractor-tests/generated/Enum/Enum.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Enum/Enum_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Enum/Enum_getName.ql linguist-generated
@@ -776,11 +778,13 @@
 /test/extractor-tests/generated/ExternBlock/ExternBlock_getAbi.ql linguist-generated
 /test/extractor-tests/generated/ExternBlock/ExternBlock_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ExternBlock/ExternBlock_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/ExternBlock/ExternBlock_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/ExternBlock/ExternBlock_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/ExternBlock/ExternBlock_getExternItemList.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/ExternCrate/ExternCrate_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getIdentifier.ql linguist-generated
 /test/extractor-tests/generated/ExternCrate/ExternCrate_getRename.ql linguist-generated
@@ -825,6 +829,7 @@
 /test/extractor-tests/generated/Function/Function_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getBody.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Function/Function_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getName.ql linguist-generated
@@ -849,6 +854,7 @@
 /test/extractor-tests/generated/Impl/Impl_getAssocItemList.ql linguist-generated
 /test/extractor-tests/generated/Impl/Impl_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Impl/Impl_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Impl/Impl_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Impl/Impl_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Impl/Impl_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Impl/Impl_getSelfTy.ql linguist-generated
@@ -908,6 +914,7 @@
 /test/extractor-tests/generated/MacroDef/MacroDef_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef_getBody.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/MacroDef/MacroDef_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef_getName.ql linguist-generated
 /test/extractor-tests/generated/MacroDef/MacroDef_getVisibility.ql linguist-generated
@@ -920,6 +927,7 @@
 /test/extractor-tests/generated/MacroRules/MacroRules.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/MacroRules/MacroRules_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getName.ql linguist-generated
 /test/extractor-tests/generated/MacroRules/MacroRules_getTokenTree.ql linguist-generated
@@ -958,6 +966,7 @@
 /test/extractor-tests/generated/Module/Module.ql linguist-generated
 /test/extractor-tests/generated/Module/Module_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Module/Module_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Module/Module_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Module/Module_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Module/Module_getItemList.ql linguist-generated
 /test/extractor-tests/generated/Module/Module_getName.ql linguist-generated
@@ -1059,6 +1068,7 @@
 /test/extractor-tests/generated/Static/Static_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Static/Static_getBody.ql linguist-generated
 /test/extractor-tests/generated/Static/Static_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Static/Static_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Static/Static_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Static/Static_getName.ql linguist-generated
 /test/extractor-tests/generated/Static/Static_getTypeRepr.ql linguist-generated
@@ -1070,6 +1080,7 @@
 /test/extractor-tests/generated/Struct/Struct.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Struct/Struct_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getFieldList.ql linguist-generated
 /test/extractor-tests/generated/Struct/Struct_getGenericParamList.ql linguist-generated
@@ -1117,6 +1128,7 @@
 /test/extractor-tests/generated/Trait/Trait_getAssocItemList.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Trait/Trait_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait_getName.ql linguist-generated
@@ -1126,6 +1138,7 @@
 /test/extractor-tests/generated/TraitAlias/TraitAlias.ql linguist-generated
 /test/extractor-tests/generated/TraitAlias/TraitAlias_getAttr.ql linguist-generated
 /test/extractor-tests/generated/TraitAlias/TraitAlias_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/TraitAlias/TraitAlias_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/TraitAlias/TraitAlias_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/TraitAlias/TraitAlias_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/TraitAlias/TraitAlias_getName.ql linguist-generated
@@ -1156,6 +1169,7 @@
 /test/extractor-tests/generated/TypeAlias/TypeAlias.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getAttr.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/TypeAlias/TypeAlias_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/TypeAlias/TypeAlias_getName.ql linguist-generated
@@ -1181,6 +1195,7 @@
 /test/extractor-tests/generated/Union/Union.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Union/Union_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Union/Union_getName.ql linguist-generated
@@ -1190,6 +1205,7 @@
 /test/extractor-tests/generated/Use/Use.ql linguist-generated
 /test/extractor-tests/generated/Use/Use_getAttr.ql linguist-generated
 /test/extractor-tests/generated/Use/Use_getCrateOrigin.ql linguist-generated
+/test/extractor-tests/generated/Use/Use_getExpanded.ql linguist-generated
 /test/extractor-tests/generated/Use/Use_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Use/Use_getUseTree.ql linguist-generated
 /test/extractor-tests/generated/Use/Use_getVisibility.ql linguist-generated

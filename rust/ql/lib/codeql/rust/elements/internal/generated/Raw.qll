@@ -2180,7 +2180,12 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt, Addressable { }
+  class Item extends @item, Stmt, Addressable {
+    /**
+     * Gets the expanded attribute macro call of this item, if it exists.
+     */
+    AstNode getExpanded() { item_expandeds(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.

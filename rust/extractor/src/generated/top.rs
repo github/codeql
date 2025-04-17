@@ -5818,6 +5818,12 @@ pub struct Item {
     _unused: ()
 }
 
+impl Item {
+    pub fn emit_expanded(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
+        out.add_tuple("item_expandeds", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Item {
     fn class_name() -> &'static str { "Item" }
 }

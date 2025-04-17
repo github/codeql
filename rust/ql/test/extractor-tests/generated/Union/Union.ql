@@ -3,9 +3,9 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Union x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasGenericParamList, string hasName, string hasStructFieldList, string hasVisibility,
-  string hasWhereClause
+  Union x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
+  int getNumberOfAttrs, string hasGenericParamList, string hasName, string hasStructFieldList,
+  string hasVisibility, string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,6 +15,7 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
@@ -22,6 +23,6 @@ where
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "hasName:",
-  hasName, "hasStructFieldList:", hasStructFieldList, "hasVisibility:", hasVisibility,
-  "hasWhereClause:", hasWhereClause
+  "hasExpanded:", hasExpanded, "getNumberOfAttrs:", getNumberOfAttrs, "hasGenericParamList:",
+  hasGenericParamList, "hasName:", hasName, "hasStructFieldList:", hasStructFieldList,
+  "hasVisibility:", hasVisibility, "hasWhereClause:", hasWhereClause
