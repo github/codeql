@@ -5,7 +5,7 @@
 
 private import internal.MacroRoleImpl
 import codeql.swift.elements.AstNode
-import codeql.swift.elements.expr.TypeExpr
+import codeql.swift.elements.expr.Expr
 
 /**
  * The role of a macro, for example #freestanding(declaration) or @attached(member).

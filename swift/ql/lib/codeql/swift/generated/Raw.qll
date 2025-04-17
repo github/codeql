@@ -266,7 +266,7 @@ module Raw {
     /**
      * Gets the `index`th conformance of this macro role (0-based).
      */
-    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+    Expr getConformance(int index) { macro_role_conformances(this, index, result) }
 
     /**
      * Gets the `index`th name of this macro role (0-based).

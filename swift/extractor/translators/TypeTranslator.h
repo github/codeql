@@ -24,7 +24,6 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
       const swift::ExistentialMetatypeType& type);
   codeql::TypeAliasType translateTypeAliasType(const swift::TypeAliasType& type);
   codeql::DependentMemberType translateDependentMemberType(const swift::DependentMemberType& type);
-  codeql::ParenType translateParenType(const swift::ParenType& type);
   codeql::UnarySyntaxSugarType translateUnarySyntaxSugarType(
       const swift::UnarySyntaxSugarType& type);
   codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
