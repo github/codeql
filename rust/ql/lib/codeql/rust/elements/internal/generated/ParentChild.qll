@@ -616,26 +616,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfMacroStmts(MacroStmts e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int n, int nExpr, int nStatement |
-      b = 0 and
-      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      n = bAstNode and
-      nExpr = n + 1 and
-      nStatement = nExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
-        or
-        result = e.getStatement(index - nExpr) and
-        partialPredicateCall = "Statement(" + (index - nExpr).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfMatchArm(MatchArm e, int index, string partialPredicateCall) {
     exists(int b, int bAstNode, int n, int nAttr, int nExpr, int nGuard, int nPat |
       b = 0 and
@@ -2420,6 +2400,26 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMacroStmts(MacroStmts e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nExpr, int nStatement |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nExpr = n + 1 and
+      nStatement = nExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
+        or
+        result = e.getStatement(index - nExpr) and
+        partialPredicateCall = "Statement(" + (index - nExpr).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfMacroTypeRepr(
     MacroTypeRepr e, int index, string partialPredicateCall
   ) {
@@ -4156,8 +4156,6 @@ private module Impl {
     or
     result = getImmediateChildOfMacroItems(e, index, partialAccessor)
     or
-    result = getImmediateChildOfMacroStmts(e, index, partialAccessor)
-    or
     result = getImmediateChildOfMatchArm(e, index, partialAccessor)
     or
     result = getImmediateChildOfMatchArmList(e, index, partialAccessor)
@@ -4303,6 +4301,8 @@ private module Impl {
     result = getImmediateChildOfMacroExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroPat(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMacroStmts(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroTypeRepr(e, index, partialAccessor)
     or

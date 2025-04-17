@@ -10,12 +10,14 @@ localStep
 | main.rs:6:9:6:9 | s | main.rs:6:9:6:9 | s |
 | main.rs:6:9:6:14 | ...: i64 | main.rs:6:9:6:9 | s |
 | main.rs:7:14:7:20 | FormatArgsExpr | main.rs:7:14:7:20 | MacroExpr |
+| main.rs:7:14:7:20 | MacroStmts | main.rs:7:5:7:21 | MacroExpr |
 | main.rs:7:14:7:20 | [post] MacroExpr | main.rs:7:14:7:20 | [post] FormatArgsExpr |
 | main.rs:10:13:10:14 | [SSA] sr | main.rs:11:20:11:21 | sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | [SSA] sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | sr |
 | main.rs:10:13:10:20 | ...: ... | main.rs:10:13:10:14 | sr |
 | main.rs:11:14:11:21 | FormatArgsExpr | main.rs:11:14:11:21 | MacroExpr |
+| main.rs:11:14:11:21 | MacroStmts | main.rs:11:5:11:22 | MacroExpr |
 | main.rs:11:14:11:21 | [post] MacroExpr | main.rs:11:14:11:21 | [post] FormatArgsExpr |
 | main.rs:22:9:22:9 | [SSA] s | main.rs:23:10:23:10 | s |
 | main.rs:22:9:22:9 | s | main.rs:22:9:22:9 | [SSA] s |
@@ -680,6 +682,7 @@ localStep
 | main.rs:462:16:462:16 | s | main.rs:462:16:462:16 | s |
 | main.rs:462:16:462:24 | ...: String | main.rs:462:16:462:16 | s |
 | main.rs:463:14:463:20 | FormatArgsExpr | main.rs:463:14:463:20 | MacroExpr |
+| main.rs:463:14:463:20 | MacroStmts | main.rs:463:5:463:21 | MacroExpr |
 | main.rs:463:14:463:20 | [post] MacroExpr | main.rs:463:14:463:20 | [post] FormatArgsExpr |
 | main.rs:467:9:467:9 | [SSA] a | main.rs:468:13:468:13 | a |
 | main.rs:467:9:467:9 | a | main.rs:467:9:467:9 | [SSA] a |

@@ -716,14 +716,14 @@ module Synth {
         TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItem or TAssocItemList or TAttr or
         TCallable or TClosureBinder or TExpr or TExternItem or TExternItemList or TFieldList or
         TFormatArgsArg or TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or
-        TItemList or TLabel or TLetElse or TMacroItems or TMacroStmts or TMatchArm or
-        TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or TParamList or
-        TParenthesizedArgList or TPat or TPath or TPathSegment or TRename or TResolvable or
-        TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
-        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
-        TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
-        TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
-        TUseTreeList or TVariantDef or TVariantList or TVisibility or TWhereClause or TWherePred;
+        TItemList or TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or
+        TMatchGuard or TMeta or TName or TParamBase or TParamList or TParenthesizedArgList or
+        TPat or TPath or TPathSegment or TRename or TResolvable or TRetTypeRepr or
+        TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or TStructExprField or
+        TStructExprFieldList or TStructField or TStructPatField or TStructPatFieldList or TToken or
+        TTokenTree or TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or
+        TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantDef or
+        TVariantList or TVisibility or TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -742,9 +742,9 @@ module Synth {
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or TPrefixExpr or
-        TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or TTryExpr or TTupleExpr or
-        TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TMacroExpr or TMacroStmts or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
+        TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or TTryExpr or
+        TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1973,8 +1973,6 @@ module Synth {
     or
     result = convertMacroItemsFromRaw(e)
     or
-    result = convertMacroStmtsFromRaw(e)
-    or
     result = convertMatchArmFromRaw(e)
     or
     result = convertMatchArmListFromRaw(e)
@@ -2128,6 +2126,8 @@ module Synth {
     result = convertLiteralExprFromRaw(e)
     or
     result = convertMacroExprFromRaw(e)
+    or
+    result = convertMacroStmtsFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
     or
@@ -3573,8 +3573,6 @@ module Synth {
     or
     result = convertMacroItemsToRaw(e)
     or
-    result = convertMacroStmtsToRaw(e)
-    or
     result = convertMatchArmToRaw(e)
     or
     result = convertMatchArmListToRaw(e)
@@ -3728,6 +3726,8 @@ module Synth {
     result = convertLiteralExprToRaw(e)
     or
     result = convertMacroExprToRaw(e)
+    or
+    result = convertMacroStmtsToRaw(e)
     or
     result = convertMatchExprToRaw(e)
     or

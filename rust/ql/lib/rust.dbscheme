@@ -182,7 +182,6 @@ named_crates(
 | @label
 | @let_else
 | @macro_items
-| @macro_stmts
 | @match_arm
 | @match_arm_list
 | @match_guard
@@ -439,6 +438,7 @@ closure_binder_generic_param_lists(
 | @let_expr
 | @literal_expr
 | @macro_expr
+| @macro_stmts
 | @match_expr
 | @offset_of_expr
 | @paren_expr
@@ -583,23 +583,6 @@ macro_items_items(
   int id: @macro_items ref,
   int index: int ref,
   int item: @item ref
-);
-
-macro_stmts(
-  unique int id: @macro_stmts
-);
-
-#keyset[id]
-macro_stmts_exprs(
-  int id: @macro_stmts ref,
-  int expr: @expr ref
-);
-
-#keyset[id, index]
-macro_stmts_statements(
-  int id: @macro_stmts ref,
-  int index: int ref,
-  int statement: @stmt ref
 );
 
 match_arms(
@@ -2116,6 +2099,23 @@ macro_pats(
 macro_pat_macro_calls(
   int id: @macro_pat ref,
   int macro_call: @macro_call ref
+);
+
+macro_stmts(
+  unique int id: @macro_stmts
+);
+
+#keyset[id]
+macro_stmts_exprs(
+  int id: @macro_stmts ref,
+  int expr: @expr ref
+);
+
+#keyset[id, index]
+macro_stmts_statements(
+  int id: @macro_stmts ref,
+  int index: int ref,
+  int statement: @stmt ref
 );
 
 macro_type_reprs(

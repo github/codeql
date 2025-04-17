@@ -560,9 +560,9 @@ dominates
 | test.rs:355:13:355:22 | Err(...) | test.rs:355:13:355:22 | Err(...) |
 | test.rs:362:5:365:5 | enter fn test_let_match | test.rs:362:5:365:5 | enter fn test_let_match |
 | test.rs:362:5:365:5 | enter fn test_let_match | test.rs:363:18:363:18 | n |
-| test.rs:362:5:365:5 | enter fn test_let_match | test.rs:363:39:363:53 | MacroStmts |
+| test.rs:362:5:365:5 | enter fn test_let_match | test.rs:363:39:363:53 | ExprStmt |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | n |
-| test.rs:363:39:363:53 | MacroStmts | test.rs:363:39:363:53 | MacroStmts |
+| test.rs:363:39:363:53 | ExprStmt | test.rs:363:39:363:53 | ExprStmt |
 | test.rs:367:5:373:5 | enter fn test_let_with_return | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:367:5:373:5 | enter fn test_let_with_return | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) |
 | test.rs:367:5:373:5 | enter fn test_let_with_return | test.rs:369:18:369:20 | ret |
@@ -1258,7 +1258,7 @@ postDominance
 | test.rs:362:5:365:5 | enter fn test_let_match | test.rs:362:5:365:5 | enter fn test_let_match |
 | test.rs:363:18:363:18 | n | test.rs:362:5:365:5 | enter fn test_let_match |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | n |
-| test.rs:363:39:363:53 | MacroStmts | test.rs:363:39:363:53 | MacroStmts |
+| test.rs:363:39:363:53 | ExprStmt | test.rs:363:39:363:53 | ExprStmt |
 | test.rs:367:5:373:5 | enter fn test_let_with_return | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) |
@@ -1629,7 +1629,7 @@ immediateDominator
 | test.rs:354:16:354:20 | value | test.rs:352:5:357:5 | enter fn test_match_with_no_arms |
 | test.rs:355:13:355:22 | Err(...) | test.rs:352:5:357:5 | enter fn test_match_with_no_arms |
 | test.rs:363:18:363:18 | n | test.rs:362:5:365:5 | enter fn test_let_match |
-| test.rs:363:39:363:53 | MacroStmts | test.rs:362:5:365:5 | enter fn test_let_match |
+| test.rs:363:39:363:53 | ExprStmt | test.rs:362:5:365:5 | enter fn test_let_match |
 | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:369:18:369:20 | ret | test.rs:367:5:373:5 | enter fn test_let_with_return |
 | test.rs:370:13:370:16 | None | test.rs:367:5:373:5 | enter fn test_let_with_return |

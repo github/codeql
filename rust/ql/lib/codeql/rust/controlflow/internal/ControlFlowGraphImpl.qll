@@ -146,7 +146,7 @@ class MacroCallTree extends StandardPostOrderTree, MacroCall {
   override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
 }
 
-class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {
+class MacroStmtsTree extends StandardPostOrderTree, MacroStmts {
   override AstNode getChildNode(int i) {
     result = this.getStatement(i)
     or

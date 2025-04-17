@@ -8,15 +8,15 @@ edges
 | main.rs:4:5:4:21 | ...::_print | main.rs:4:14:4:17 | "{}\\n" |  |
 | main.rs:4:5:4:21 | MacroExpr | main.rs:3:23:5:1 | { ... } |  |
 | main.rs:4:5:4:21 | println!... | main.rs:4:5:4:21 | MacroExpr |  |
-| main.rs:4:5:4:22 | ExprStmt | main.rs:4:14:4:20 | MacroStmts |  |
+| main.rs:4:5:4:22 | ExprStmt | main.rs:4:14:4:20 | ExprStmt |  |
 | main.rs:4:14:4:17 | "{}\\n" | main.rs:4:20:4:20 | s |  |
 | main.rs:4:14:4:20 | ...::_print(...) | main.rs:4:14:4:20 | { ... } |  |
 | main.rs:4:14:4:20 | ...::format_args_nl!... | main.rs:4:14:4:20 | MacroExpr |  |
 | main.rs:4:14:4:20 | ExprStmt | main.rs:4:5:4:21 | ...::_print |  |
 | main.rs:4:14:4:20 | FormatArgsExpr | main.rs:4:14:4:20 | ...::format_args_nl!... |  |
 | main.rs:4:14:4:20 | MacroExpr | main.rs:4:14:4:20 | ...::_print(...) |  |
-| main.rs:4:14:4:20 | MacroStmts | main.rs:4:14:4:20 | ExprStmt |  |
-| main.rs:4:14:4:20 | { ... } | main.rs:4:5:4:21 | println!... |  |
+| main.rs:4:14:4:20 | MacroStmts | main.rs:4:5:4:21 | println!... |  |
+| main.rs:4:14:4:20 | { ... } | main.rs:4:14:4:20 | MacroStmts |  |
 | main.rs:4:20:4:20 | s | main.rs:4:14:4:20 | FormatArgsExpr |  |
 | main.rs:7:1:9:1 | enter fn print_i64 | main.rs:7:14:7:14 | i |  |
 | main.rs:7:1:9:1 | exit fn print_i64 (normal) | main.rs:7:1:9:1 | exit fn print_i64 |  |
@@ -27,15 +27,15 @@ edges
 | main.rs:8:5:8:21 | ...::_print | main.rs:8:14:8:17 | "{}\\n" |  |
 | main.rs:8:5:8:21 | MacroExpr | main.rs:7:22:9:1 | { ... } |  |
 | main.rs:8:5:8:21 | println!... | main.rs:8:5:8:21 | MacroExpr |  |
-| main.rs:8:5:8:22 | ExprStmt | main.rs:8:14:8:20 | MacroStmts |  |
+| main.rs:8:5:8:22 | ExprStmt | main.rs:8:14:8:20 | ExprStmt |  |
 | main.rs:8:14:8:17 | "{}\\n" | main.rs:8:20:8:20 | i |  |
 | main.rs:8:14:8:20 | ...::_print(...) | main.rs:8:14:8:20 | { ... } |  |
 | main.rs:8:14:8:20 | ...::format_args_nl!... | main.rs:8:14:8:20 | MacroExpr |  |
 | main.rs:8:14:8:20 | ExprStmt | main.rs:8:5:8:21 | ...::_print |  |
 | main.rs:8:14:8:20 | FormatArgsExpr | main.rs:8:14:8:20 | ...::format_args_nl!... |  |
 | main.rs:8:14:8:20 | MacroExpr | main.rs:8:14:8:20 | ...::_print(...) |  |
-| main.rs:8:14:8:20 | MacroStmts | main.rs:8:14:8:20 | ExprStmt |  |
-| main.rs:8:14:8:20 | { ... } | main.rs:8:5:8:21 | println!... |  |
+| main.rs:8:14:8:20 | MacroStmts | main.rs:8:5:8:21 | println!... |  |
+| main.rs:8:14:8:20 | { ... } | main.rs:8:14:8:20 | MacroStmts |  |
 | main.rs:8:20:8:20 | i | main.rs:8:14:8:20 | FormatArgsExpr |  |
 | main.rs:11:1:13:1 | enter fn print_i64_ref | main.rs:11:18:11:18 | i |  |
 | main.rs:11:1:13:1 | exit fn print_i64_ref (normal) | main.rs:11:1:13:1 | exit fn print_i64_ref |  |
@@ -234,7 +234,7 @@ edges
 | main.rs:93:19:99:1 | { ... } | main.rs:93:1:99:1 | exit fn let_pattern4 (normal) |  |
 | main.rs:94:5:97:10 | let ... = ... else {...} | main.rs:94:34:94:37 | Some |  |
 | main.rs:94:9:94:16 | Some(...) | main.rs:94:14:94:15 | x5 | match |
-| main.rs:94:9:94:16 | Some(...) | main.rs:96:13:96:19 | MacroStmts | no-match |
+| main.rs:94:9:94:16 | Some(...) | main.rs:96:13:96:19 | ...::panic | no-match |
 | main.rs:94:14:94:15 | x5 | main.rs:94:14:94:15 | x5 |  |
 | main.rs:94:14:94:15 | x5 | main.rs:98:5:98:18 | ExprStmt | match |
 | main.rs:94:34:94:37 | Some | main.rs:94:39:94:42 | "x5" |  |
@@ -242,9 +242,9 @@ edges
 | main.rs:94:39:94:42 | "x5" | main.rs:94:34:94:43 | Some(...) |  |
 | main.rs:96:13:96:19 | "not yet implemented" | main.rs:96:13:96:19 | ...::panic(...) |  |
 | main.rs:96:13:96:19 | ...::panic | main.rs:96:13:96:19 | "not yet implemented" |  |
-| main.rs:96:13:96:19 | ...::panic(...) | main.rs:96:13:96:19 | todo!... |  |
+| main.rs:96:13:96:19 | ...::panic(...) | main.rs:96:13:96:19 | MacroStmts |  |
 | main.rs:96:13:96:19 | MacroExpr | main.rs:95:14:97:9 | { ... } |  |
-| main.rs:96:13:96:19 | MacroStmts | main.rs:96:13:96:19 | ...::panic |  |
+| main.rs:96:13:96:19 | MacroStmts | main.rs:96:13:96:19 | todo!... |  |
 | main.rs:96:13:96:19 | todo!... | main.rs:96:13:96:19 | MacroExpr |  |
 | main.rs:98:5:98:13 | print_str | main.rs:98:15:98:16 | x5 |  |
 | main.rs:98:5:98:17 | print_str(...) | main.rs:93:19:99:1 | { ... } |  |
@@ -417,7 +417,7 @@ edges
 | main.rs:175:30:175:31 | 10 | main.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | main.rs:175:30:175:36 | RangePat | main.rs:175:30:175:31 | 10 | match |
 | main.rs:175:35:175:36 | 12 | main.rs:175:35:175:36 | 12 |  |
-| main.rs:175:35:175:36 | 12 | main.rs:176:22:176:51 | MacroStmts | match |
+| main.rs:175:35:175:36 | 12 | main.rs:176:22:176:51 | ExprStmt | match |
 | main.rs:175:35:175:36 | 12 | main.rs:178:9:178:29 | ...::Hello {...} | no-match |
 | main.rs:175:43:177:9 | { ... } | main.rs:171:5:180:5 | match msg { ... } |  |
 | main.rs:176:13:176:52 | ...::_print | main.rs:176:22:176:51 | "Found an id in another range\\... |  |
@@ -429,8 +429,8 @@ edges
 | main.rs:176:22:176:51 | ExprStmt | main.rs:176:13:176:52 | ...::_print |  |
 | main.rs:176:22:176:51 | FormatArgsExpr | main.rs:176:22:176:51 | ...::format_args_nl!... |  |
 | main.rs:176:22:176:51 | MacroExpr | main.rs:176:22:176:51 | ...::_print(...) |  |
-| main.rs:176:22:176:51 | MacroStmts | main.rs:176:22:176:51 | ExprStmt |  |
-| main.rs:176:22:176:51 | { ... } | main.rs:176:13:176:52 | println!... |  |
+| main.rs:176:22:176:51 | MacroStmts | main.rs:176:13:176:52 | println!... |  |
+| main.rs:176:22:176:51 | { ... } | main.rs:176:22:176:51 | MacroStmts |  |
 | main.rs:178:9:178:29 | ...::Hello {...} | main.rs:178:26:178:27 | id | match |
 | main.rs:178:26:178:27 | id | main.rs:178:26:178:27 | id |  |
 | main.rs:178:26:178:27 | id | main.rs:179:13:179:21 | print_i64 | match |
