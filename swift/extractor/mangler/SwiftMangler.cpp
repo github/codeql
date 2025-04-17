@@ -298,6 +298,12 @@ SwiftMangledName SwiftMangler::visitAnyMetatypeType(const swift::AnyMetatypeType
   return initMangled(type) << fetch(type->getInstanceType());
 }
 
+SwiftMangledName SwiftMangler::visitExistentialMetatypeType(
+    const swift::ExistentialMetatypeType* type) {
+  return visitAnyMetatypeType(type)
+         << fetch(const_cast<swift::ExistentialMetatypeType*>(type)->getExistentialInstanceType());
+}
+
 SwiftMangledName SwiftMangler::visitDependentMemberType(const swift::DependentMemberType* type) {
   return initMangled(type) << fetch(type->getBase()) << fetch(type->getAssocType());
 }
@@ -353,7 +359,7 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
 }
 
 SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
-  auto *env = type->getGenericEnvironment();
+  auto* env = type->getGenericEnvironment();
   llvm::SmallVector<char> uuid;
   env->getOpenedExistentialUUID().toString(uuid);
   return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());

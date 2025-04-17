@@ -84,6 +84,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitGenericFunctionType(const swift::GenericFunctionType* type);
   SwiftMangledName visitGenericTypeParamType(const swift::GenericTypeParamType* type);
   SwiftMangledName visitAnyMetatypeType(const swift::AnyMetatypeType* type);
+  SwiftMangledName visitExistentialMetatypeType(const swift::ExistentialMetatypeType* type);
   SwiftMangledName visitDependentMemberType(const swift::DependentMemberType* type);
   SwiftMangledName visitInOutType(const swift::InOutType* type);
   SwiftMangledName visitExistentialType(const swift::ExistentialType* type);
