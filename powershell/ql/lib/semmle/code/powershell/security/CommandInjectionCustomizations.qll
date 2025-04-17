@@ -91,18 +91,19 @@ class CreateNestedPipelineSink extends Sink {
 }
 
 class AddScriptInvokeSink extends Sink {
-    AddScriptInvokeSink() { 
-        exists(InvokeMemberExpr ie | 
-            this.asExpr().getExpr() = ie.getAnArgument() and
-            ie.getName() = "AddScript" and
-            ie.getQualifier().(InvokeMemberExpr).getName() = "Create" and
-            ie.getQualifier().getAChild().toString() = "PowerShell" and
-            ie.getParent().(InvokeMemberExpr).getName() = "Invoke"
-        )
-    }
-    override string getSinkType(){
-        result = "call to AddScript"
-    }
+  AddScriptInvokeSink() { 
+      exists(InvokeMemberExpr addscript, InvokeMemberExpr create | 
+          this.asExpr().getExpr() = addscript.getAnArgument() and
+          addscript.getName() = "AddScript" and
+          create.getName() = "Create" and
+
+          addscript.getQualifier().(InvokeMemberExpr) = create and
+          create.getQualifier().(TypeNameExpr).getName() = "PowerShell"
+      )
+  }
+  override string getSinkType(){
+      result = "call to AddScript"
+  }
 }
 
 class PowershellSink extends Sink {
@@ -111,7 +112,7 @@ class PowershellSink extends Sink {
             c.getName() = "powershell" | 
             (
                 this.asExpr().getExpr() = c.getArgument(1) and
-                c.getArgument(0).getValue().toString() = "-command"
+                c.getArgument(0).getValue().asString() = "-command"
             ) or 
             (
                 this.asExpr().getExpr() = c.getArgument(0)
@@ -128,7 +129,7 @@ class CmdSink extends Sink {
         exists(CmdCall c | 
             this.asExpr().getExpr() = c.getArgument(1) and
             c.getName() = "cmd" and
-            c.getArgument(0).getValue().toString() = "/c" 
+            c.getArgument(0).getValue().asString() = "/c" 
         )
     }   
     override string getSinkType(){
@@ -165,7 +166,7 @@ class CreateScriptBlockSink extends Sink {
         exists(InvokeMemberExpr ie | 
             this.asExpr().getExpr() = ie.getAnArgument() and
             ie.getName() = "Create" and
-            ie.getQualifier().toString() = "ScriptBlock"
+            ie.getQualifier().(TypeNameExpr).getName() = "ScriptBlock"
         )
     }   
     override string getSinkType(){
@@ -219,9 +220,10 @@ class ExpandStringSink extends Sink {
   
   class SingleQuoteSanitizer extends Sanitizer {
     SingleQuoteSanitizer() { 
-        exists(Expr e, VarReadAccess v | 
-            e = this.asExpr().getExpr().getParent() and
-            e.toString().matches("%'$" + v.getVariable().getName() + "'%")
+        exists(ExpandableStringExpr e, VarReadAccess v | 
+            v = this.asExpr().getExpr()  and
+            e.getUnexpandedValue().matches("%'$" + v.getVariable().getName() + "'%") and
+            e.getAnExpr() = v
         )
     }
   }
