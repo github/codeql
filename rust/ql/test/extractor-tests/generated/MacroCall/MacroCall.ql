@@ -3,8 +3,8 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MacroCall x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasPath, string hasTokenTree, string hasExpanded
+  MacroCall x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
+  int getNumberOfAttrs, string hasPath, string hasTokenTree
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,10 +14,10 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
-  (if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no") and
-  if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no"
+  if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasPath:", hasPath, "hasTokenTree:", hasTokenTree,
-  "hasExpanded:", hasExpanded
+  "hasExpanded:", hasExpanded, "getNumberOfAttrs:", getNumberOfAttrs, "hasPath:", hasPath,
+  "hasTokenTree:", hasTokenTree

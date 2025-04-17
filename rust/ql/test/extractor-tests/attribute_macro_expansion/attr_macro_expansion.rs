@@ -1,0 +1,2 @@
+#[ctor::ctor]
+fn foo() {}

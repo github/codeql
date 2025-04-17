@@ -3,9 +3,10 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Trait x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasAssocItemList,
-  int getNumberOfAttrs, string hasGenericParamList, string isAuto, string isUnsafe, string hasName,
-  string hasTypeBoundList, string hasVisibility, string hasWhereClause
+  Trait x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
+  string hasAssocItemList, int getNumberOfAttrs, string hasGenericParamList, string isAuto,
+  string isUnsafe, string hasName, string hasTypeBoundList, string hasVisibility,
+  string hasWhereClause
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,6 +16,7 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
   (if x.hasAssocItemList() then hasAssocItemList = "yes" else hasAssocItemList = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasGenericParamList() then hasGenericParamList = "yes" else hasGenericParamList = "no") and
@@ -25,7 +27,7 @@ where
   (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
   if x.hasWhereClause() then hasWhereClause = "yes" else hasWhereClause = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasAssocItemList:", hasAssocItemList, "getNumberOfAttrs:", getNumberOfAttrs,
-  "hasGenericParamList:", hasGenericParamList, "isAuto:", isAuto, "isUnsafe:", isUnsafe, "hasName:",
-  hasName, "hasTypeBoundList:", hasTypeBoundList, "hasVisibility:", hasVisibility,
-  "hasWhereClause:", hasWhereClause
+  "hasExpanded:", hasExpanded, "hasAssocItemList:", hasAssocItemList, "getNumberOfAttrs:",
+  getNumberOfAttrs, "hasGenericParamList:", hasGenericParamList, "isAuto:", isAuto, "isUnsafe:",
+  isUnsafe, "hasName:", hasName, "hasTypeBoundList:", hasTypeBoundList, "hasVisibility:",
+  hasVisibility, "hasWhereClause:", hasWhereClause

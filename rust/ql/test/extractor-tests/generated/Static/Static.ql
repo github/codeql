@@ -3,9 +3,9 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Static x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasBody, string isMut, string isStatic, string isUnsafe, string hasName,
-  string hasTypeRepr, string hasVisibility
+  Static x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
+  int getNumberOfAttrs, string hasBody, string isMut, string isStatic, string isUnsafe,
+  string hasName, string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,6 +15,7 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasBody() then hasBody = "yes" else hasBody = "no") and
   (if x.isMut() then isMut = "yes" else isMut = "no") and
@@ -24,6 +25,6 @@ where
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody, "isMut:", isMut, "isStatic:",
-  isStatic, "isUnsafe:", isUnsafe, "hasName:", hasName, "hasTypeRepr:", hasTypeRepr,
-  "hasVisibility:", hasVisibility
+  "hasExpanded:", hasExpanded, "getNumberOfAttrs:", getNumberOfAttrs, "hasBody:", hasBody, "isMut:",
+  isMut, "isStatic:", isStatic, "isUnsafe:", isUnsafe, "hasName:", hasName, "hasTypeRepr:",
+  hasTypeRepr, "hasVisibility:", hasVisibility

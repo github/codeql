@@ -3,8 +3,8 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  MacroRules x, string hasExtendedCanonicalPath, string hasCrateOrigin, int getNumberOfAttrs,
-  string hasName, string hasTokenTree, string hasVisibility
+  MacroRules x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
+  int getNumberOfAttrs, string hasName, string hasTokenTree, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,10 +14,11 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
+  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasTokenTree() then hasTokenTree = "yes" else hasTokenTree = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "getNumberOfAttrs:", getNumberOfAttrs, "hasName:", hasName, "hasTokenTree:", hasTokenTree,
-  "hasVisibility:", hasVisibility
+  "hasExpanded:", hasExpanded, "getNumberOfAttrs:", getNumberOfAttrs, "hasName:", hasName,
+  "hasTokenTree:", hasTokenTree, "hasVisibility:", hasVisibility

@@ -1818,16 +1818,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getTokenTree()` exists.
        */
       predicate hasTokenTree() { exists(this.getTokenTree()) }
-
-      /**
-       * Gets the expanded of this macro call, if it exists.
-       */
-      AstNode getExpanded() { result = node.getExpanded() }
-
-      /**
-       * Holds if `getExpanded()` exists.
-       */
-      predicate hasExpanded() { exists(this.getExpanded()) }
     }
 
     final private class ParentMacroExpr extends ParentAstNode, MacroExpr {

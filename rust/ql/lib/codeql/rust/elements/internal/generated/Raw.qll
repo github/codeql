@@ -2180,7 +2180,12 @@ module Raw {
    * todo!()
    * ```
    */
-  class Item extends @item, Stmt, Addressable { }
+  class Item extends @item, Stmt, Addressable {
+    /**
+     * Gets the expanded attribute or procedural macro call of this item, if it exists.
+     */
+    AstNode getExpanded() { item_expandeds(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3620,11 +3625,6 @@ module Raw {
      * Gets the token tree of this macro call, if it exists.
      */
     TokenTree getTokenTree() { macro_call_token_trees(this, result) }
-
-    /**
-     * Gets the expanded of this macro call, if it exists.
-     */
-    AstNode getExpanded() { macro_call_expandeds(this, result) }
   }
 
   /**

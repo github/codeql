@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
+import codeql.rust.elements.AstNode
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 
 /**
@@ -22,5 +23,17 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.
    */
-  class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable { }
+  class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable {
+    /**
+     * Gets the expanded attribute or procedural macro call of this item, if it exists.
+     */
+    AstNode getExpanded() {
+      result = Synth::convertAstNodeFromRaw(Synth::convertItemToRaw(this).(Raw::Item).getExpanded())
+    }
+
+    /**
+     * Holds if `getExpanded()` exists.
+     */
+    final predicate hasExpanded() { exists(this.getExpanded()) }
+  }
 }
