@@ -99,7 +99,7 @@ module EnvironmentSource {
  * An externally modeled source for data from the program's environment.
  */
 class ModeledEnvironmentSource extends EnvironmentSource::Range {
-  ModeledEnvironmentSource() { sourceNode(this, "environment-source") }
+  ModeledEnvironmentSource() { sourceNode(this, "environment") }
 }
 
 /**
