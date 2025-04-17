@@ -6,8 +6,8 @@
 #include <swift/AST/Module.h>
 #include <swift/AST/ParameterList.h>
 #include <swift/AST/ASTContext.h>
+#include <swift/AST/GenericEnvironment.h>
 #include <swift/AST/GenericParamList.h>
-#include <sstream>
 
 using namespace codeql;
 
@@ -353,10 +353,10 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
 }
 
 SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
-  // llvm::SmallVector<char> uuid;
-  // type->getOpenedExistentialID().toString(uuid);  // <- doesn't compile any more
-  // return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());
-  return visitArchetypeType(type);
+  auto *env = type->getGenericEnvironment();
+  llvm::SmallVector<char> uuid;
+  env->getOpenedExistentialUUID().toString(uuid);
+  return visitArchetypeType(type) << std::string_view(uuid.data(), uuid.size());
 }
 
 SwiftMangledName SwiftMangler::visitProtocolCompositionType(
