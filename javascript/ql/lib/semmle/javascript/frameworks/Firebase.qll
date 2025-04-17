@@ -282,20 +282,18 @@ module Firebase {
    * `firebase.database().ref().on('value', x => {...})`.
    */
   DataFlow::SourceNode snapshot() { result = snapshot(DataFlow::TypeTracker::end()) }
-
-  /**
-   * A reference to a value obtained from a Firebase database.
-   */
-  class FirebaseVal extends RemoteFlowSource {
-    FirebaseVal() {
-      exists(string name | this = snapshot().getAMethodCall(name) |
-        name = "val" or
-        name = "exportVal"
-      )
-      or
-      this = Database::transactionCallback().(DataFlow::FunctionNode).getParameter(0)
-    }
-
-    override string getSourceType() { result = "Firebase database" }
-  }
+  // /**
+  //  * A reference to a value obtained from a Firebase database.
+  //  */
+  // deprecated class FirebaseVal extends RemoteFlowSource {
+  //   FirebaseVal() {
+  //     exists(string name | this = snapshot().getAMethodCall(name) |
+  //       name = "val" or
+  //       name = "exportVal"
+  //     )
+  //     or
+  //     this = Database::transactionCallback().(DataFlow::FunctionNode).getParameter(0)
+  //   }
+  //   override string getSourceType() { result = "Firebase database" }
+  // }
 }
