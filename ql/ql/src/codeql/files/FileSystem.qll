@@ -30,6 +30,8 @@ class Container = Impl::Container;
 
 class Folder = Impl::Folder;
 
+module Folder = Impl::Folder;
+
 /** A file. */
 class File extends Container, Impl::File {
   /** Gets a token in this file. */
