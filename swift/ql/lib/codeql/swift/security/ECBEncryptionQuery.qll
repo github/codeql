@@ -22,6 +22,8 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(EcbEncryptionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module EcbEncryptionFlow = DataFlow::Global<EcbEncryptionConfig>;
