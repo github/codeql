@@ -73,7 +73,7 @@ module CommandLineArgsSource {
  * An externally modeled source for command line arguments.
  */
 class ModeledCommandLineArgsSource extends CommandLineArgsSource::Range {
-  ModeledCommandLineArgsSource() { sourceNode(this, "command-line-source") }
+  ModeledCommandLineArgsSource() { sourceNode(this, "commandargs") }
 }
 
 /**
