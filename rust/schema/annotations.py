@@ -1945,4 +1945,4 @@ class FormatArgument(Locatable):
 
 @annotate(Item, add_bases=(Addressable,))
 class _:
-    pass
+    expanded: optional[AstNode] | child | rust.detach | doc("expanded attribute macro call of this item")

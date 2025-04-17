@@ -89,7 +89,7 @@ impl<'a> Extractor<'a> {
                 no_location,
             );
         }
-        translator.emit_source_file(ast);
+        translator.emit_source_file(&ast);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",

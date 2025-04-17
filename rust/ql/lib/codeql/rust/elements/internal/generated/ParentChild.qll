@@ -2204,18 +2204,21 @@ private module Impl {
   }
 
   private Element getImmediateChildOfItem(Item e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int bAddressable, int n |
+    exists(int b, int bStmt, int bAddressable, int n, int nExpanded |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       bAddressable =
         bStmt + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
       n = bAddressable and
+      nExpanded = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfAddressable(e, index - bStmt, partialPredicateCall)
+        or
+        index = n and result = e.getExpanded() and partialPredicateCall = "Expanded()"
       )
     )
   }

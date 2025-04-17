@@ -46,8 +46,7 @@ codeql_rust_binary(
     ) + [":codegen"],
     aliases = aliases(),
     args = ["$(rlocationpath :rust.ungram)"],
-    compile_data = glob(["src/templates/*.mustache"]),
-    data = [":rust.ungram"],
+    data = [":rust.ungram"] + glob(["templates/*.mustache"]),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),

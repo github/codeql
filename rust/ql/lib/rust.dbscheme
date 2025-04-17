@@ -1959,6 +1959,12 @@ infer_type_reprs(
 | @use
 ;
 
+#keyset[id]
+item_expandeds(
+  int id: @item ref,
+  int expanded: @ast_node ref
+);
+
 @labelable_expr =
   @block_expr
 | @looping_expr
