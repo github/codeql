@@ -37,7 +37,12 @@ class MemberExpr extends Expr, TMemberExpr {
 
   predicate isStatic() { getRawAst(this).(Raw::MemberExpr).isStatic() }
 
-  final override string toString() { result = this.getMemberName() }
+  final override string toString() {
+    result = this.getMemberName()
+    or
+    not exists(this.getMemberName()) and
+    result = "..."
+  }
 
   predicate isExplicitWrite(Ast assignment) {
     explicitAssignment(getRawAst(this), getRawAst(assignment))
