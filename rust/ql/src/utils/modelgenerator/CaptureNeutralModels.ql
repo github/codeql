@@ -9,5 +9,5 @@
 import internal.CaptureModels
 
 from DataFlowSummaryTargetApi api, string noflow
-where noflow = captureNoFlow(api)
+where noflow = Heuristic::captureNoFlow(api)
 select noflow order by noflow
