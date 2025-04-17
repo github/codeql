@@ -106,10 +106,10 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
 
     // make the request
     println!("sending request...");
-    if (case == 0) {
+    if case == 0 {
         // simple flow case
         let request = http::Request::builder().uri(url).body(String::from(""))?;
-        let mut response = sender.send_request(request).await?; // $ Alert[rust/summary/taint-sources]
+        let response = sender.send_request(request).await?; // $ Alert[rust/summary/taint-sources]
         sink(&response); // $ hasTaintFlow=request
         sink(response); // $ hasTaintFlow=request
         return Ok(())
@@ -198,6 +198,104 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+use std::io::Read;
+use std::io::BufRead;
+
+fn test_io_stdin() -> std::io::Result<()> {
+    // --- stdin ---
+
+    {
+        let mut buffer = [0u8; 100];
+        let _bytes = std::io::stdin().read(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
+        sink(&buffer); // $ hasTaintFlow
+    }
+
+    {
+        let mut buffer = Vec::<u8>::new();
+        let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
+        sink(&buffer); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let mut buffer = String::new();
+        let _bytes = std::io::stdin().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
+        sink(&buffer); // $ hasTaintFlow
+    }
+
+    {
+        let mut buffer = String::new();
+        let _bytes = std::io::stdin().lock().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
+        sink(&buffer); // $ hasTaintFlow
+    }
+
+    {
+        let mut buffer = [0; 100];
+        std::io::stdin().read_exact(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
+        sink(&buffer); // $ hasTaintFlow
+    }
+
+    for byte in std::io::stdin().bytes() { // $ Alert[rust/summary/taint-sources]
+        sink(byte); // $ hasTaintFlow
+    }
+
+    // --- BufReader ---
+
+    {
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        let data = reader.fill_buf()?;
+        sink(&data); // $ hasTaintFlow
+    }
+
+    {
+        let reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        let data = reader.buffer();
+        sink(&data); // $ hasTaintFlow
+    }
+
+    {
+        let mut buffer = String::new();
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        reader.read_line(&mut buffer)?;
+        sink(&buffer); // $ hasTaintFlow
+    }
+
+    {
+        let mut buffer = Vec::<u8>::new();
+        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        reader.read_until(b',', &mut buffer)?;
+        sink(&buffer); // $ hasTaintFlow
+        sink(buffer[0]); // $ hasTaintFlow
+    }
+
+    {
+        let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
+        while let Some(chunk) = reader_split.next() {
+            sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
+        }
+    }
+
+    {
+        let reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        for line in reader.lines() {
+            sink(line); // $ hasTaintFlow
+        }
+    }
+
+    {
+        let reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        let line = reader.lines().nth(1).unwrap();
+        sink(line.unwrap().clone()); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
+        let lines: Vec<_> = reader.lines().collect();
+        sink(lines[1].as_ref().unwrap().clone()); // $ MISSING: hasTaintFlow
+    }
+
+    Ok(())
+}
+
 use std::fs;
 
 fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
@@ -232,40 +330,7 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-use std::io::Read;
-use std::io::BufRead;
-
-fn test_io_fs() -> std::io::Result<()> {
-    // --- stdin ---
-
-    {
-        let mut buffer = [0u8; 100];
-        let _bytes = std::io::stdin().read(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ hasTaintFlow
-    }
-
-    {
-        let mut buffer = Vec::<u8>::new();
-        let _bytes = std::io::stdin().read_to_end(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ MISSING: hasTaintFlow
-    }
-
-    {
-        let mut buffer = String::new();
-        let _bytes = std::io::stdin().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ hasTaintFlow
-    }
-
-    {
-        let mut buffer = [0; 100];
-        std::io::stdin().read_exact(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ hasTaintFlow
-    }
-
-    for byte in std::io::stdin().bytes() { // $ Alert[rust/summary/taint-sources]
-        sink(byte); // $ hasTaintFlow
-    }
-
+fn test_io_file() -> std::io::Result<()> {
     // --- file ---
 
     let mut file = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
@@ -298,67 +363,12 @@ fn test_io_fs() -> std::io::Result<()> {
         sink(byte); // $ hasTaintFlow="file.txt"
     }
 
-    // --- BufReader ---
-
-    {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        let data = reader.fill_buf()?;
-        sink(&data); // $ hasTaintFlow
-    }
-
-    {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        let data = reader.buffer();
-        sink(&data); // $ hasTaintFlow
-    }
-
-    {
-        let mut buffer = String::new();
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        reader.read_line(&mut buffer)?;
-        sink(&buffer); // $ hasTaintFlow
-    }
-
-    {
-        let mut buffer = Vec::<u8>::new();
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        reader.read_until(b',', &mut buffer)?;
-        sink(&buffer); // $ hasTaintFlow
-    }
-
-    {
-        let mut buffer = Vec::<u8>::new();
-        let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
-        while let Some(chunk) = reader_split.next() {
-            sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
-        }
-    }
-
-    {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        for line in reader.lines() {
-            sink(line); // $ hasTaintFlow
-        }
-    }
-
-    {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        let line = reader.lines().nth(1).unwrap();
-        sink(line.unwrap().clone()); // $ MISSING: hasTaintFlow
-    }
-
-    {
-        let mut reader = std::io::BufReader::new(std::io::stdin()); // $ Alert[rust/summary/taint-sources]
-        let lines: Vec<_> = reader.lines().collect();
-        sink(lines[1].as_ref().unwrap().clone()); // $ MISSING: hasTaintFlow
-    }
-
     // --- misc operations ---
 
     {
         let mut buffer = String::new();
-        let mut file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
-        let mut file2 = std::fs::File::open("another_file.txt")?; // $ Alert[rust/summary/taint-sources]
+        let file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
+        let file2 = std::fs::File::open("another_file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer)?;
         sink(&buffer); // $ hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
@@ -366,16 +376,10 @@ fn test_io_fs() -> std::io::Result<()> {
 
     {
         let mut buffer = String::new();
-        let mut file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
+        let file1 = std::fs::File::open("file.txt")?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer)?;
         sink(&buffer); // $ hasTaintFlow="file.txt"
-    }
-
-    {
-        let mut buffer = String::new();
-        let _bytes = std::io::stdin().lock().read_to_string(&mut buffer)?; // $ Alert[rust/summary/taint-sources]
-        sink(&buffer); // $ hasTaintFlow
     }
 
     Ok(())
@@ -385,12 +389,44 @@ fn test_io_fs() -> std::io::Result<()> {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let case = std::env::args().nth(1).unwrap_or(String::from("1")).parse::<i64>().unwrap(); // $ Alert[rust/summary/taint-sources]
 
+    println!("test_env_vars...");
+    test_env_vars();
+
+    /*println!("test_env_args...");
+    test_env_args();*/
+
+    println!("test_env_dirs...");
+    test_env_dirs();
+
+    /*println!("test_reqwest...");
+    match futures::executor::block_on(test_reqwest()) {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }*/
+
     println!("test_hyper_http...");
     match futures::executor::block_on(test_hyper_http(case)) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
-    println!("");
+
+    /*println!("test_io_stdin...");
+    match test_io_stdin() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }*/
+
+    println!("test_fs...");
+    match test_fs() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_io_file...");
+    match test_io_file() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
 
     Ok(())
 }
