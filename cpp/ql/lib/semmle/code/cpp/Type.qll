@@ -1369,6 +1369,11 @@ class ArrayType extends DerivedType {
   override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() } // No such thing as a const array type
 
   override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConst() }
+
+  /**
+   * Holds if this array is a variable-length array (VLA).
+   */
+  predicate isVla() { type_is_vla(underlyingElement(this)) }
 }
 
 /**

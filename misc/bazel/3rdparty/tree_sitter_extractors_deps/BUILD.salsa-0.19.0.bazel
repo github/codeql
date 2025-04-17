@@ -95,7 +95,7 @@ rust_library(
         "@vendor_ts__dashmap-6.1.0//:dashmap",
         "@vendor_ts__hashbrown-0.15.2//:hashbrown",
         "@vendor_ts__hashlink-0.10.0//:hashlink",
-        "@vendor_ts__indexmap-2.7.0//:indexmap",
+        "@vendor_ts__indexmap-2.9.0//:indexmap",
         "@vendor_ts__parking_lot-0.12.3//:parking_lot",
         "@vendor_ts__portable-atomic-1.11.0//:portable_atomic",
         "@vendor_ts__rayon-1.10.0//:rayon",
