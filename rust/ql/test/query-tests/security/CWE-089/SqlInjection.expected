@@ -55,7 +55,7 @@ edges
 | sqlx.rs:74:25:74:38 | unsafe_query_1 [&ref] | sqlx.rs:74:25:74:47 | unsafe_query_1.as_str() | provenance | MaD:3 |
 | sqlx.rs:76:29:76:42 | unsafe_query_2 [&ref] | sqlx.rs:76:29:76:51 | unsafe_query_2.as_str() | provenance | MaD:3 |
 models
-| 1 | Source: lang:std; crate::env::args; command-line-source; ReturnValue.Element |
+| 1 | Source: lang:std; crate::env::args; commandargs; ReturnValue.Element |
 | 2 | Source: repo:https://github.com/seanmonstar/reqwest:reqwest; crate::blocking::get; remote; ReturnValue.Field[crate::result::Result::Ok(0)] |
 | 3 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 4 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
