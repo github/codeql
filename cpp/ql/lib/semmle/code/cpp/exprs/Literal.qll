@@ -218,20 +218,17 @@ class ClassAggregateLiteral extends AggregateLiteral {
 
   /**
    * Holds if the `position`-th initialization of `field` in this aggregate initializer
-   * uses a designator (e.g., `.x =`, `[42] =`) rather than a positional initializer.
+   * uses a designated (e.g., `.x = ...`) rather than a positional initializer.
    *
-   * This can be used to distinguish explicitly designated initializations from
-   * implicit positional ones.
-   *
-   * For example, in the initializer:
+   * For example, in:
    * ```c
    * struct S { int x, y; };
    * struct S s = { .x = 1, 2 };
    * ```
-   * - `.x = 1` is a designator init, therefore `isDesignatorInit(x, 0)` holds.
-   * - `2` is a positional init for `.y`, therefore `isDesignatorInit(y, 1)` does **not** hold.
+   * - `.x = 1` is a designated initializer, therefore `hasDesignator(x, 0)` holds.
+   * - `2` is a positional initializer for `s.y`, therefore `hasDesignator(y, 1)` does not hold.
    */
-  predicate isDesignatorInit(Field field, int position) {
+  predicate hasDesignator(Field field, int position) {
     field = classType.getAField() and
     aggregate_field_init(underlyingElement(this), _, unresolveElement(field), position, true)
   }
@@ -330,17 +327,17 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
 
   /**
    * Holds if the `position`-th initialization of the array element at `elementIndex`
-   * in this aggregate initializer uses a designator (e.g., `[0] = ...`) rather than
-   * an implicit positional initializer.
+   * in this aggregate initializer uses a designated (e.g., `[0] = ...`) rather than
+   * a positional initializer.
    *
    * For example, in:
    * ```c
    * int x[] = { [0] = 1, 2 };
    * ```
-   * - `[0] = 1` is a designator init, therefore `isDesignatorInit(0, 0)` holds.
-   * - `2` is a positional init for `x[1]`, therefore `isDesignatorInit(1, 1)` does **not** hold.
+   * - `[0] = 1` is a designated initializer, therefore `hasDesignator(0, 0)` holds.
+   * - `2` is a positional initializer for `x[1]`, therefore `hasDesignator(1, 1)` does not hold.
    */
-  predicate isDesignatorInit(int elementIndex, int position) {
+  predicate hasDesignator(int elementIndex, int position) {
     aggregate_array_init(underlyingElement(this), _, elementIndex, position, true)
   }
 
