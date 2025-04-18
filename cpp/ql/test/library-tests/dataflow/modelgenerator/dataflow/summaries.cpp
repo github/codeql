@@ -128,3 +128,56 @@ namespace Models {
         intFlow.templated_function<int>(nullptr, nullptr);
     }
 }
+
+//summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;df-generated
+//summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;taint;df-generated
+//contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;dfc-generated
+//contentbased-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;value;dfc-generated
+int toplevel_function(int* p) {
+    return *p;
+}
+
+//No model as static functions are excluded from model generation.
+static int static_toplevel_function(int* p) {
+    return *p;
+}
+
+struct NonFinalStruct {
+    //summary=;NonFinalStruct;true;public_not_final_member_function;(int);;Argument[0];ReturnValue;taint;df-generated
+    //contentbased-summary=;NonFinalStruct;true;public_not_final_member_function;(int);;Argument[0];ReturnValue;value;dfc-generated
+    virtual int public_not_final_member_function(int x) {
+        return x;
+    }
+
+    //summary=;NonFinalStruct;false;public_final_member_function;(int);;Argument[0];ReturnValue;taint;df-generated
+    //contentbased-summary=;NonFinalStruct;false;public_final_member_function;(int);;Argument[0];ReturnValue;value;dfc-generated
+    virtual int public_final_member_function(int x) final {
+        return x;
+    }
+
+private:
+    //No model as private members are excluded from model generation.
+    int private_member_function(int x) {
+        return x;
+    }
+
+protected:
+    //No model as protected members are excluded from model generation.
+    int protected_member_function(int x) {
+        return x;
+    }
+};
+
+struct FinalStruct final {
+    //summary=;FinalStruct;false;public_not_final_member_function_2;(int);;Argument[0];ReturnValue;taint;df-generated
+    //contentbased-summary=;FinalStruct;false;public_not_final_member_function_2;(int);;Argument[0];ReturnValue;value;dfc-generated
+    virtual int public_not_final_member_function_2(int x) {
+        return x;
+    }
+
+    //summary=;FinalStruct;false;public_final_member_function_2;(int);;Argument[0];ReturnValue;taint;df-generated
+    //contentbased-summary=;FinalStruct;false;public_final_member_function_2;(int);;Argument[0];ReturnValue;value;dfc-generated
+    virtual int public_final_member_function_2(int x) final {
+        return x;
+    }
+};
