@@ -29,22 +29,26 @@ class MemberExpr extends Expr, TMemberExpr {
 
   /** Gets the name of the member being looked up, if any. */
   string getMemberName() {
-    result = getRawAst(this).(Raw::MemberExpr).getMember().(Raw::StringConstExpr).getValue().getValue()
+    result =
+      getRawAst(this).(Raw::MemberExpr).getMember().(Raw::StringConstExpr).getValue().getValue()
   }
 
   predicate isNullConditional() { getRawAst(this).(Raw::MemberExpr).isNullConditional() }
 
   predicate isStatic() { getRawAst(this).(Raw::MemberExpr).isStatic() }
 
-  final override string toString() { result = this.getMemberName() }
+  final override string toString() {
+    result = this.getMemberName()
+    or
+    not exists(this.getMemberName()) and
+    result = "..."
+  }
 
   predicate isExplicitWrite(Ast assignment) {
     explicitAssignment(getRawAst(this), getRawAst(assignment))
   }
 
-  predicate isImplicitWrite() {
-    implicitAssignment(getRawAst(this))
-  }
+  predicate isImplicitWrite() { implicitAssignment(getRawAst(this)) }
 }
 
 /** A `MemberExpr` that is being written to. */
