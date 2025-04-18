@@ -35,6 +35,9 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     result = n.asExpr().getEnclosingDeclaration()
   }
 
+  /** Gets `api` if it is relevant. */
+  private Callable liftedImpl(Callable api) { result = api and relevant(api) }
+
   private predicate hasManualSummaryModel(Callable api) {
     api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
@@ -48,13 +51,49 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
   }
 
-  private predicate relevant(Callable api) { api.fromSource() }
+  /**
+   * Holds if `f` is a "private" function.
+   *
+   * A "private" function does not contribute any models as it is assumed
+   * to be an implementation detail of some other "public" function for which
+   * we will generate a summary.
+   */
+  private predicate isPrivate(Function f) {
+    f.getNamespace().getParentNamespace*().isAnonymous()
+    or
+    exists(MemberFunction mf | mf = f |
+      mf.isPrivate()
+      or
+      mf.isProtected()
+    )
+    or
+    f.isStatic()
+  }
+
+  private predicate isUninterestingForModels(Callable api) {
+    // Note: This also makes all global/static-local variables
+    // not relevant (which is good!)
+    not api.(Function).hasDefinition()
+    or
+    isPrivate(api)
+    or
+    api instanceof Destructor
+    or
+    api = any(LambdaExpression lambda).getLambdaFunction()
+    or
+    api.isFromUninstantiatedTemplate(_)
+  }
+
+  private predicate relevant(Callable api) {
+    api.fromSource() and
+    not isUninterestingForModels(api)
+  }
 
   class SummaryTargetApi extends Callable {
     private Callable lift;
 
     SummaryTargetApi() {
-      lift = this and
+      lift = liftedImpl(this) and
       not hasManualSummaryModel(lift)
     }
 
@@ -327,34 +366,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     )
   }
 
-  /**
-   * Holds if `f` is a "private" function.
-   *
-   * A "private" function does not contribute any models as it is assumed
-   * to be an implementation detail of some other "public" function for which
-   * we will generate a summary.
-   */
-  private predicate isPrivate(Function f) {
-    f.getNamespace().getParentNamespace*().isAnonymous()
-    or
-    f.(MemberFunction).isPrivate()
-    or
-    f.isStatic()
-  }
-
-  predicate isUninterestingForDataFlowModels(Callable api) {
-    // Note: This also makes all global/static-local variables
-    // uninteresting (which is good!)
-    not api.(Function).hasDefinition()
-    or
-    isPrivate(api)
-    or
-    api instanceof Destructor
-    or
-    api = any(LambdaExpression lambda).getLambdaFunction()
-    or
-    api.isFromUninstantiatedTemplate(_)
-  }
+  predicate isUninterestingForDataFlowModels(Callable api) { none() }
 
   predicate isUninterestingForHeuristicDataFlowModels(Callable api) {
     isUninterestingForDataFlowModels(api)
