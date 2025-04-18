@@ -6,6 +6,7 @@ go_library(
     name = "util",
     srcs = [
         "extractvendordirs.go",
+        "registryproxy.go",
         "semver.go",
         "util.go",
     ],
@@ -17,6 +18,7 @@ go_library(
 go_test(
     name = "util_test",
     srcs = [
+        "registryproxy_test.go",
         "semver_test.go",
         "util_test.go",
     ],
