@@ -87,7 +87,8 @@ class _:
     foo::bar;
     ```
     """
-    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
+    segment: _ | ql.db_table_name("path_segments_") | doc(
+        "last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -1288,7 +1289,7 @@ class _:
     """
 
 
-@annotate(MacroStmts)
+@annotate(MacroStmts, replace_bases={AstNode: Expr}, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -1446,6 +1447,7 @@ class _:
     """
     type_repr: optional["TypeRepr"] | child | rust.detach
     trait_type_repr: optional["PathTypeRepr"] | child | rust.detach
+
 
 @annotate(PathTypeRepr)
 @qltest.test_with(Path)

@@ -4,7 +4,6 @@
  */
 
 private import internal.MacroStmtsImpl
-import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 import codeql.rust.elements.Stmt
 

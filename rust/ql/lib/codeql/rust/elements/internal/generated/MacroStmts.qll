@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Expr
+import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 import codeql.rust.elements.Stmt
 
 /**
@@ -25,7 +25,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::MacroStmts` class directly.
    * Use the subclass `MacroStmts`, where the following predicates are available.
    */
-  class MacroStmts extends Synth::TMacroStmts, AstNodeImpl::AstNode {
+  class MacroStmts extends Synth::TMacroStmts, ExprImpl::Expr {
     override string getAPrimaryQlClass() { result = "MacroStmts" }
 
     /**
