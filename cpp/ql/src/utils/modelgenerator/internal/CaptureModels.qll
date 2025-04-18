@@ -58,7 +58,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
    * to be an implementation detail of some other "public" function for which
    * we will generate a summary.
    */
-  private predicate isPrivate(Function f) {
+  private predicate isPrivateOrProtected(Function f) {
     f.getNamespace().getParentNamespace*().isAnonymous()
     or
     exists(MemberFunction mf | mf = f |
@@ -75,7 +75,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     // not relevant (which is good!)
     not api.(Function).hasDefinition()
     or
-    isPrivate(api)
+    isPrivateOrProtected(api)
     or
     api instanceof Destructor
     or
