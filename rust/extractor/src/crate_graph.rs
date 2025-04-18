@@ -11,17 +11,15 @@ use ra_ap_base_db::{Crate, RootQueryDb};
 use ra_ap_cfg::CfgAtom;
 use ra_ap_hir::{DefMap, ModuleDefId, PathKind, db::HirDatabase};
 use ra_ap_hir::{VariantId, Visibility, db::DefDatabase};
-use ra_ap_hir_def::GenericDefId;
 use ra_ap_hir_def::Lookup;
+use ra_ap_hir_def::item_tree::FieldsShape;
+use ra_ap_hir_def::signatures::StaticFlags;
 use ra_ap_hir_def::{
     AssocItemId, ConstParamId, LocalModuleId, TypeOrConstParamId,
-    data::adt::VariantData,
-    generics::{GenericParams, TypeOrConstParamData},
-    item_scope::ImportOrGlob,
-    item_tree::ImportKind,
-    nameres::ModuleData,
-    path::ImportAlias,
+    hir::generics::TypeOrConstParamData, item_scope::ImportOrGlob, item_tree::ImportAlias,
+    item_tree::ImportKind, nameres::ModuleData,
 };
+use ra_ap_hir_def::{GenericDefId, hir::generics::GenericParams};
 use ra_ap_hir_def::{HasModule, visibility::VisibilityExplicitness};
 use ra_ap_hir_def::{ModuleId, resolver::HasResolver};
 use ra_ap_hir_ty::GenericArg;
@@ -198,9 +196,8 @@ fn emit_reexport(
         ImportOrGlob::Glob(import) => (import.use_, import.idx),
         ImportOrGlob::Import(import) => (import.use_, import.idx),
     };
-    let def_db = db.upcast();
-    let loc = use_.lookup(def_db);
-    let use_ = &loc.id.item_tree(def_db)[loc.id.value];
+    let loc = use_.lookup(db);
+    let use_ = &loc.id.item_tree(db)[loc.id.value];
 
     use_.use_tree.expand(|id, path, kind, alias| {
         if id == idx {
@@ -413,13 +410,8 @@ fn emit_function(
         id: trap::TrapId::Star,
         text: Some(name.as_str().to_owned()),
     }));
-    let data = db.function_data(function);
-    let visibility = emit_visibility(
-        db,
-        trap,
-        data.visibility
-            .resolve(db.upcast(), &function.resolver(db.upcast())),
-    );
+    let data = db.function_signature(function);
+    let visibility = emit_visibility(db, trap, db.function_visibility(function));
     let generic_param_list = emit_generic_param_list(trap, db, ty_vars, function.into());
     trap.emit(generated::Function {
         id: trap::TrapId::Star,
@@ -492,7 +484,7 @@ fn emit_const(
         id: trap::TrapId::Star,
         text: Some(name.to_owned()),
     }));
-    let konst = db.const_data(konst);
+    let konst = db.const_signature(konst);
     let visibility = emit_visibility(db, trap, visibility);
     Some(trap.emit(generated::Const {
         id: trap::TrapId::Star,
@@ -527,7 +519,7 @@ fn emit_static(
         id: trap::TrapId::Star,
         text: Some(name.to_owned()),
     }));
-    let statik = db.static_data(statik);
+    let statik = db.static_signature(statik);
     let visibility = emit_visibility(db, trap, visibility);
     Some(
         trap.emit(generated::Static {
@@ -537,9 +529,9 @@ fn emit_static(
             body: None,
             type_repr,
             visibility,
-            is_mut: statik.mutable(),
+            is_mut: statik.flags.contains(StaticFlags::MUTABLE),
             is_static: true,
-            is_unsafe: statik.has_unsafe_kw(),
+            is_unsafe: statik.flags.contains(StaticFlags::UNSAFE),
         })
         .into(),
     )
@@ -563,13 +555,13 @@ fn emit_type_alias(
         text: Some(name.to_owned()),
     }));
     let visibility = emit_visibility(db, trap, visibility);
-    let alias = db.type_alias_data(alias_id);
+    let alias = db.type_alias_signature(alias_id);
     let generic_param_list = emit_generic_param_list(trap, db, ty_vars, alias_id.into());
     Some(trap.emit(generated::TypeAlias {
         id: trap::TrapId::Star,
         name,
         attrs: vec![],
-        is_default: container.is_some() && alias.type_ref.is_some(),
+        is_default: container.is_some() && alias.ty.is_some(),
         type_repr,
         visibility,
         generic_param_list,
@@ -584,7 +576,7 @@ fn emit_generic_param_list(
     ty_vars: &[Vec<String>],
     def: GenericDefId,
 ) -> Option<trap::Label<generated::GenericParamList>> {
-    let params = db.generic_params(def);
+    let (params, store) = db.generic_params_and_store(def);
     let trait_self_param = params.trait_self_param();
     if params.is_empty() || params.len() == 1 && trait_self_param.is_some() {
         return None;
@@ -620,13 +612,8 @@ fn emit_generic_param_list(
                                 id: trap::TrapId::Star,
                                 text: param.name.as_ref().map(|name| name.as_str().to_owned()),
                             }));
-                            let resolver = def.resolver(db.upcast());
-                            let mut ctx = TyLoweringContext::new(
-                                db,
-                                &resolver,
-                                &params.types_map,
-                                def.into(),
-                            );
+                            let resolver = def.resolver(db);
+                            let mut ctx = TyLoweringContext::new(db, &resolver, &store, def);
 
                             let default_type = param
                                 .default
@@ -687,7 +674,7 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let field_list = emit_variant_data(trap, db, ty_vars, struct_id.into()).into();
+            let field_list = emit_variant_signature(trap, db, ty_vars, struct_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
             let generic_param_list = emit_generic_param_list(trap, db, ty_vars, adt_id.into());
             Some(
@@ -713,7 +700,8 @@ fn emit_adt(
                         id: trap::TrapId::Star,
                         text: Some(name.as_str().to_owned()),
                     }));
-                    let field_list = emit_variant_data(trap, db, ty_vars, (*enum_id).into()).into();
+                    let field_list =
+                        emit_variant_signature(trap, db, ty_vars, (*enum_id).into()).into();
                     let visibility = None;
                     trap.emit(generated::Variant {
                         id: trap::TrapId::Star,
@@ -753,7 +741,8 @@ fn emit_adt(
                 id: trap::TrapId::Star,
                 text: Some(name.to_owned()),
             }));
-            let struct_field_list = emit_variant_data(trap, db, ty_vars, union_id.into()).into();
+            let struct_field_list =
+                emit_variant_signature(trap, db, ty_vars, union_id.into()).into();
             let visibility = emit_visibility(db, trap, visibility);
             let generic_param_list = emit_generic_param_list(trap, db, ty_vars, adt_id.into());
             Some(
@@ -908,7 +897,7 @@ fn emit_visibility(
 ) -> Option<trap::Label<generated::Visibility>> {
     let path = match visibility {
         Visibility::Module(module_id, VisibilityExplicitness::Explicit) => {
-            Some(make_path_mod(db.upcast(), module_id))
+            Some(make_path_mod(db, module_id))
         }
         Visibility::Public => Some(vec![]),
         Visibility::Module(_, VisibilityExplicitness::Implicit) => None,
@@ -970,7 +959,7 @@ fn trait_path(
 ) -> Option<trap::Label<generated::Path>> {
     let mut path = make_path(db, trait_ref.hir_trait_id());
     path.push(
-        db.trait_data(trait_ref.hir_trait_id())
+        db.trait_signature(trait_ref.hir_trait_id())
             .name
             .as_str()
             .to_owned(),
@@ -1063,7 +1052,6 @@ fn scalar_to_str(scalar: &Scalar) -> &'static str {
 }
 
 fn make_path(db: &dyn HirDatabase, item: impl HasModule) -> Vec<String> {
-    let db = db.upcast();
     let module = item.module(db);
     make_path_mod(db, module)
 }
@@ -1219,13 +1207,13 @@ fn emit_hir_ty(
             let mut path = make_path(db, adt_id.0);
             let name = match adt_id.0 {
                 ra_ap_hir_def::AdtId::StructId(struct_id) => {
-                    db.struct_data(struct_id).name.as_str().to_owned()
+                    db.struct_signature(struct_id).name.as_str().to_owned()
                 }
                 ra_ap_hir_def::AdtId::UnionId(union_id) => {
-                    db.union_data(union_id).name.as_str().to_owned()
+                    db.union_signature(union_id).name.as_str().to_owned()
                 }
                 ra_ap_hir_def::AdtId::EnumId(enum_id) => {
-                    db.enum_data(enum_id).name.as_str().to_owned()
+                    db.enum_signature(enum_id).name.as_str().to_owned()
                 }
             };
             path.push(name);
@@ -1347,7 +1335,7 @@ fn emit_hir_ty(
             if let Some(trait_ref) = trait_ref {
                 generated::PathSegment::emit_trait_type_repr(qualifier, trait_ref, &mut trap.writer)
             }
-            let data = db.type_alias_data(from_assoc_type_id(*associated_ty_id));
+            let data = db.type_alias_signature(from_assoc_type_id(*associated_ty_id));
 
             let identifier = Some(trap.emit(generated::NameRef {
                 id: trap::TrapId::Star,
@@ -1517,40 +1505,37 @@ impl From<Variant> for Option<trap::Label<generated::FieldList>> {
     }
 }
 
-fn emit_variant_data(
+fn emit_variant_signature(
     trap: &mut TrapFile,
     db: &dyn HirDatabase,
     ty_vars: &[Vec<String>],
     variant_id: VariantId,
 ) -> Variant {
     let parameters_len = ty_vars.last().map_or(0, Vec::len);
-    let variant = variant_id.variant_data(db.upcast());
-    match variant.as_ref() {
-        VariantData::Record {
-            fields: field_data,
-            types_map: _,
-        } => {
-            let field_types = db.field_types(variant_id);
-            let fields = field_types
+    let variant = variant_id.variant_data(db);
+    let field_types = db.field_types(variant_id);
+    match variant.shape {
+        FieldsShape::Record => {
+            let fields = variant
+                .fields()
                 .iter()
-                .map(|(field_id, ty)| {
+                .map(|(field_id, data)| {
                     let name = Some(trap.emit(generated::Name {
                         id: trap::TrapId::Star,
-                        text: Some(field_data[field_id].name.as_str().to_owned()),
+                        text: Some(data.name.as_str().to_owned()),
                     }));
+                    let ty = &field_types[field_id];
                     assert_eq!(ty.binders.len(Interner), parameters_len);
                     let type_repr = emit_hir_ty(trap, db, ty_vars, ty.skip_binders());
                     let visibility = emit_visibility(
                         db,
                         trap,
-                        field_data[field_id]
-                            .visibility
-                            .resolve(db.upcast(), &variant_id.resolver(db.upcast())),
+                        Visibility::resolve(db, &variant_id.resolver(db), &data.visibility),
                     );
                     trap.emit(generated::StructField {
                         id: trap::TrapId::Star,
                         attrs: vec![],
-                        is_unsafe: field_data[field_id].is_unsafe,
+                        is_unsafe: data.is_unsafe,
                         name,
                         type_repr,
                         visibility,
@@ -1563,21 +1548,18 @@ fn emit_variant_data(
                 fields,
             }))
         }
-        VariantData::Tuple {
-            fields: field_data, ..
-        } => {
-            let field_types = db.field_types(variant_id);
-            let fields = field_types
+        FieldsShape::Tuple => {
+            let fields = variant
+                .fields()
                 .iter()
-                .map(|(field_id, ty)| {
+                .map(|(field_id, data)| {
+                    let ty = &field_types[field_id];
                     assert_eq!(ty.binders.len(Interner), parameters_len);
                     let type_repr = emit_hir_ty(trap, db, ty_vars, ty.skip_binders());
                     let visibility = emit_visibility(
                         db,
                         trap,
-                        field_data[field_id]
-                            .visibility
-                            .resolve(db.upcast(), &variant_id.resolver(db.upcast())),
+                        Visibility::resolve(db, &variant_id.resolver(db), &data.visibility),
                     );
 
                     trap.emit(generated::TupleField {
@@ -1593,7 +1575,7 @@ fn emit_variant_data(
                 fields,
             }))
         }
-        VariantData::Unit => Variant::Unit,
+        FieldsShape::Unit => Variant::Unit,
     }
 }
 
