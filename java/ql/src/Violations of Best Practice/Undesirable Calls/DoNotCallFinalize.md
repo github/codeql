@@ -1,6 +1,6 @@
 ## Overview
 
-Triggering garbage collection by directly calling `finalize()` may either have no effect or may trigger unnecessary garbage collection, leading to erratic behavior, performance issues, or deadlock.
+Triggering garbage collection by directly calling `finalize()` may either have no effect or trigger unnecessary garbage collection, leading to erratic behavior, performance issues, or deadlock.
 
 ## Recommendation
 
