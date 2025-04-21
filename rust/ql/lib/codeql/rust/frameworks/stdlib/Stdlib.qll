@@ -21,3 +21,48 @@ private class StartswithCall extends Path::SafeAccessCheck::Range, CfgNodes::Met
     branch = true
   }
 }
+
+/**
+ * The [`Option` enum][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/option/enum.Option.html
+ */
+class OptionEnum extends Enum {
+  OptionEnum() {
+    // todo: replace with canonical path, once calculated in QL
+    exists(Crate core, Module m |
+      core.getName() = "core" and
+      m = core.getModule().getItemList().getAnItem() and
+      m.getName().getText() = "option" and
+      this = m.getItemList().getAnItem() and
+      this.getName().getText() = "Option"
+    )
+  }
+
+  /** Gets the `Some` variant. */
+  Variant getSome() { result = this.getVariant("Some") }
+}
+
+/**
+ * The [`Result` enum][1].
+ *
+ * [1]: https://doc.rust-lang.org/stable/std/result/enum.Result.html
+ */
+class ResultEnum extends Enum {
+  ResultEnum() {
+    // todo: replace with canonical path, once calculated in QL
+    exists(Crate core, Module m |
+      core.getName() = "core" and
+      m = core.getModule().getItemList().getAnItem() and
+      m.getName().getText() = "result" and
+      this = m.getItemList().getAnItem() and
+      this.getName().getText() = "Result"
+    )
+  }
+
+  /** Gets the `Ok` variant. */
+  Variant getOk() { result = this.getVariant("Ok") }
+
+  /** Gets the `Err` variant. */
+  Variant getErr() { result = this.getVariant("Err") }
+}

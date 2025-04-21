@@ -24,7 +24,7 @@ module Impl {
 
     private string toAbbreviatedStringPart(int index) {
       index = 0 and
-      if this.hasTypeRepr() then result = "<...>" else result = this.getNameRef().getText()
+      if this.hasTypeRepr() then result = "<...>" else result = this.getIdentifier().getText()
       or
       index = 1 and result = this.getGenericArgList().toAbbreviatedString()
     }

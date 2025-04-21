@@ -1,6 +1,6 @@
 /**
  * @name Workflow does not contain permissions
- * @description Workflows should contain permissions to provide a clear understanding has permissions to run the workflow.
+ * @description Workflows should contain explicit permissions to restrict the scope of the default GITHUB_TOKEN.
  * @kind problem
  * @security-severity 5.0
  * @problem.severity warning
@@ -14,7 +14,19 @@
 
 import actions
 
-from Job job
+Step stepInJob(Job job) { result = job.(LocalJob).getAStep() }
+
+string jobNeedsPermission(Job job) {
+  actionsPermissionsDataModel(stepInJob(job).(UsesStep).getCallee(), result)
+}
+
+/** Gets a suggestion for the minimal token permissions for `job`, as a JSON string. */
+string permissionsForJob(Job job) {
+  result =
+    "{" + concat(string permission | permission = jobNeedsPermission(job) | permission, ", ") + "}"
+}
+
+from Job job, string permissions
 where
   not exists(job.getPermissions()) and
   not exists(job.getEnclosingWorkflow().getPermissions()) and
@@ -22,5 +34,8 @@ where
   exists(Event e |
     e = job.getATriggerEvent() and
     not e.getName() = "workflow_call"
-  )
-select job, "Actions Job or Workflow does not set permissions"
+  ) and
+  permissions = permissionsForJob(job)
+select job,
+  "Actions job or workflow does not limit the permissions of the GITHUB_TOKEN. Consider setting an explicit permissions block, using the following as a minimal starting point: "
+    + permissions

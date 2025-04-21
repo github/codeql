@@ -1,3 +1,19 @@
+## 1.4.7
+
+### Minor Analysis Improvements
+
+- The `py/mixed-tuple-returns` query no longer flags instances where the tuple is passed into the function as an argument, as this led to too many false positives.
+
+## 1.4.6
+
+### Minor Analysis Improvements
+
+- The `py/special-method-wrong-signature` has been modernized and rewritten to no longer rely on outdated APIs. Moreover, the query no longer flags cases where a default value is never used, as these alerts were rarely useful.
+
+### Bug Fixes
+
+- The `py/unused-global-variable` now no longer flags variables that are only used in forward references (e.g. the `Foo` in `def bar(x: "Foo"): ...`).
+
 ## 1.4.5
 
 No user-facing changes.

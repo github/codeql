@@ -10,13 +10,18 @@
 
 #-----| fn fmt
 
+#-----| fn from
+
 #-----| fn length
+
+#-----| impl ...::AsString for ...::X { ... }
+#-----|  -> fn as_string
 
 #-----| impl ...::Display for ...::X { ... }
 #-----|  -> fn fmt
 
-#-----| impl AsString for ...::X { ... }
-#-----|  -> fn as_string
+#-----| impl ...::From::<...> for ...::Thing::<...> { ... }
+#-----|  -> fn from
 
 lib.rs:
 #    0| mod crate
@@ -27,12 +32,109 @@ lib.rs:
 #-----|  -> Static
 #-----|  -> enum X
 #-----|  -> fn length
+#-----|  -> impl ...::AsString for ...::X { ... }
 #-----|  -> impl ...::Display for ...::X { ... }
-#-----|  -> impl AsString for ...::X { ... }
+#-----|  -> impl ...::From::<...> for ...::Thing::<...> { ... }
+#-----|  -> struct LocalKey<T>
+#-----|  -> struct Thing<T>
 #-----|  -> struct X_List
 #-----|  -> trait AsString
+#-----|  -> use ...::DirBuilder
+#-----|  -> use ...::DirEntry
+#-----|  -> use ...::File
+#-----|  -> use ...::FileTimes
+#-----|  -> use ...::FileType
+#-----|  -> use ...::Metadata
+#-----|  -> use ...::OpenOptions
+#-----|  -> use ...::PathBuf
+#-----|  -> use ...::Permissions
+#-----|  -> use ...::ReadDir
+#-----|  -> use ...::canonicalize
+#-----|  -> use ...::copy
+#-----|  -> use ...::create_dir
+#-----|  -> use ...::create_dir as mkdir
+#-----|  -> use ...::create_dir_all
+#-----|  -> use ...::exists
+#-----|  -> use ...::hard_link
+#-----|  -> use ...::metadata
+#-----|  -> use ...::read
+#-----|  -> use ...::read_dir
+#-----|  -> use ...::read_link
+#-----|  -> use ...::read_to_string
+#-----|  -> use ...::remove_dir
+#-----|  -> use ...::remove_dir_all
+#-----|  -> use ...::remove_file
+#-----|  -> use ...::rename
+#-----|  -> use ...::set_permissions
+#-----|  -> use ...::soft_link
+#-----|  -> use ...::symlink_metadata
+#-----|  -> use ...::write
+
+#-----| struct LocalKey<T>
+
+#-----| struct Thing<T>
 
 #-----| struct X_List
 
 #-----| trait AsString
 #-----|  -> fn as_string
+
+#-----| use ...::DirBuilder
+
+#-----| use ...::DirEntry
+
+#-----| use ...::File
+
+#-----| use ...::FileTimes
+
+#-----| use ...::FileType
+
+#-----| use ...::Metadata
+
+#-----| use ...::OpenOptions
+
+#-----| use ...::PathBuf
+
+#-----| use ...::Permissions
+
+#-----| use ...::ReadDir
+
+#-----| use ...::canonicalize
+
+#-----| use ...::copy
+
+#-----| use ...::create_dir
+
+#-----| use ...::create_dir as mkdir
+
+#-----| use ...::create_dir_all
+
+#-----| use ...::exists
+
+#-----| use ...::hard_link
+
+#-----| use ...::metadata
+
+#-----| use ...::read
+
+#-----| use ...::read_dir
+
+#-----| use ...::read_link
+
+#-----| use ...::read_to_string
+
+#-----| use ...::remove_dir
+
+#-----| use ...::remove_dir_all
+
+#-----| use ...::remove_file
+
+#-----| use ...::rename
+
+#-----| use ...::set_permissions
+
+#-----| use ...::soft_link
+
+#-----| use ...::symlink_metadata
+
+#-----| use ...::write

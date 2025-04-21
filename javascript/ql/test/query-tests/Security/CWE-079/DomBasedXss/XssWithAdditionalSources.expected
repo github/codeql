@@ -138,6 +138,7 @@ nodes
 | dates.js:61:31:61:88 | `Time i ... aint)}` | semmle.label | `Time i ... aint)}` |
 | dates.js:61:42:61:86 | dayjs.s ... (taint) | semmle.label | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint | semmle.label | taint |
+| dom.js:4:20:4:30 | window.name | semmle.label | window.name |
 | dragAndDrop.ts:8:11:8:50 | html | semmle.label | html |
 | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | semmle.label | dataTra ... /html') |
 | dragAndDrop.ts:15:25:15:28 | html | semmle.label | html |
@@ -153,6 +154,34 @@ nodes
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
 | express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| hana.js:11:37:11:40 | rows | semmle.label | rows |
+| hana.js:11:37:11:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:16:37:16:40 | rows | semmle.label | rows |
+| hana.js:16:37:16:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:19:37:19:40 | rows | semmle.label | rows |
+| hana.js:19:37:19:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:22:37:22:38 | rs | semmle.label | rs |
+| hana.js:22:37:22:49 | rs[0].comment | semmle.label | rs[0].comment |
+| hana.js:38:31:38:32 | rs | semmle.label | rs |
+| hana.js:38:31:38:43 | rs[0].comment | semmle.label | rs[0].comment |
+| hana.js:43:33:43:41 | dummyRows | semmle.label | dummyRows |
+| hana.js:43:33:43:52 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:44:33:44:42 | tablesRows | semmle.label | tablesRows |
+| hana.js:44:33:44:53 | tablesR ... comment | semmle.label | tablesR ... comment |
+| hana.js:50:33:50:41 | dummyRows | semmle.label | dummyRows |
+| hana.js:50:33:50:52 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:51:33:51:42 | tablesRows | semmle.label | tablesRows |
+| hana.js:51:33:51:53 | tablesR ... comment | semmle.label | tablesR ... comment |
+| hana.js:70:33:70:36 | rows | semmle.label | rows |
+| hana.js:70:33:70:47 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:73:33:73:36 | rows | semmle.label | rows |
+| hana.js:73:33:73:47 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:84:35:84:43 | dummyRows | semmle.label | dummyRows |
+| hana.js:84:35:84:54 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:85:35:85:43 | tableRows | semmle.label | tableRows |
+| hana.js:85:35:85:54 | tableRows[0].comment | semmle.label | tableRows[0].comment |
+| hana.js:90:33:90:34 | rs | semmle.label | rs |
+| hana.js:90:33:90:45 | rs[0].comment | semmle.label | rs[0].comment |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |
@@ -791,6 +820,20 @@ edges
 | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance | Config |
+| hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | provenance |  |
+| hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | provenance |  |
+| hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | provenance |  |
+| hana.js:22:37:22:38 | rs | hana.js:22:37:22:49 | rs[0].comment | provenance |  |
+| hana.js:38:31:38:32 | rs | hana.js:38:31:38:43 | rs[0].comment | provenance |  |
+| hana.js:43:33:43:41 | dummyRows | hana.js:43:33:43:52 | dummyRows[0].comment | provenance |  |
+| hana.js:44:33:44:42 | tablesRows | hana.js:44:33:44:53 | tablesR ... comment | provenance |  |
+| hana.js:50:33:50:41 | dummyRows | hana.js:50:33:50:52 | dummyRows[0].comment | provenance |  |
+| hana.js:51:33:51:42 | tablesRows | hana.js:51:33:51:53 | tablesR ... comment | provenance |  |
+| hana.js:70:33:70:36 | rows | hana.js:70:33:70:47 | rows[0].comment | provenance |  |
+| hana.js:73:33:73:36 | rows | hana.js:73:33:73:47 | rows[0].comment | provenance |  |
+| hana.js:84:35:84:43 | dummyRows | hana.js:84:35:84:54 | dummyRows[0].comment | provenance |  |
+| hana.js:85:35:85:43 | tableRows | hana.js:85:35:85:54 | tableRows[0].comment | provenance |  |
+| hana.js:90:33:90:34 | rs | hana.js:90:33:90:45 | rs[0].comment | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:5:13:5:19 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:6:11:6:17 | tainted | provenance |  |
@@ -1274,6 +1317,20 @@ subpaths
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 #select
+| hana.js:11:37:11:51 | rows[0].comment | hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:11:37:11:40 | rows | user-provided value |
+| hana.js:16:37:16:51 | rows[0].comment | hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:16:37:16:40 | rows | user-provided value |
+| hana.js:19:37:19:51 | rows[0].comment | hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:19:37:19:40 | rows | user-provided value |
+| hana.js:22:37:22:49 | rs[0].comment | hana.js:22:37:22:38 | rs | hana.js:22:37:22:49 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:22:37:22:38 | rs | user-provided value |
+| hana.js:38:31:38:43 | rs[0].comment | hana.js:38:31:38:32 | rs | hana.js:38:31:38:43 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:38:31:38:32 | rs | user-provided value |
+| hana.js:43:33:43:52 | dummyRows[0].comment | hana.js:43:33:43:41 | dummyRows | hana.js:43:33:43:52 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:43:33:43:41 | dummyRows | user-provided value |
+| hana.js:44:33:44:53 | tablesR ... comment | hana.js:44:33:44:42 | tablesRows | hana.js:44:33:44:53 | tablesR ... comment | Cross-site scripting vulnerability due to $@. | hana.js:44:33:44:42 | tablesRows | user-provided value |
+| hana.js:50:33:50:52 | dummyRows[0].comment | hana.js:50:33:50:41 | dummyRows | hana.js:50:33:50:52 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:50:33:50:41 | dummyRows | user-provided value |
+| hana.js:51:33:51:53 | tablesR ... comment | hana.js:51:33:51:42 | tablesRows | hana.js:51:33:51:53 | tablesR ... comment | Cross-site scripting vulnerability due to $@. | hana.js:51:33:51:42 | tablesRows | user-provided value |
+| hana.js:70:33:70:47 | rows[0].comment | hana.js:70:33:70:36 | rows | hana.js:70:33:70:47 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:70:33:70:36 | rows | user-provided value |
+| hana.js:73:33:73:47 | rows[0].comment | hana.js:73:33:73:36 | rows | hana.js:73:33:73:47 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:73:33:73:36 | rows | user-provided value |
+| hana.js:84:35:84:54 | dummyRows[0].comment | hana.js:84:35:84:43 | dummyRows | hana.js:84:35:84:54 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:84:35:84:43 | dummyRows | user-provided value |
+| hana.js:85:35:85:54 | tableRows[0].comment | hana.js:85:35:85:43 | tableRows | hana.js:85:35:85:54 | tableRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:85:35:85:43 | tableRows | user-provided value |
+| hana.js:90:33:90:45 | rs[0].comment | hana.js:90:33:90:34 | rs | hana.js:90:33:90:45 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:90:33:90:34 | rs | user-provided value |
 | jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |
 | xmlRequest.js:9:28:9:39 | json.message | xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:9:28:9:39 | json.message | Cross-site scripting vulnerability due to $@. | xmlRequest.js:8:31:8:46 | xhr.responseText | user-provided value |

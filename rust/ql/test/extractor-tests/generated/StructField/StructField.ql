@@ -3,15 +3,16 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  StructField x, int getNumberOfAttrs, string hasExpr, string hasName, string hasTypeRepr,
-  string hasVisibility
+  StructField x, int getNumberOfAttrs, string hasDefault, string isUnsafe, string hasName,
+  string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfAttrs = x.getNumberOfAttrs() and
-  (if x.hasExpr() then hasExpr = "yes" else hasExpr = "no") and
+  (if x.hasDefault() then hasDefault = "yes" else hasDefault = "no") and
+  (if x.isUnsafe() then isUnsafe = "yes" else isUnsafe = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
-select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasExpr:", hasExpr, "hasName:", hasName,
-  "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility
+select x, "getNumberOfAttrs:", getNumberOfAttrs, "hasDefault:", hasDefault, "isUnsafe:", isUnsafe,
+  "hasName:", hasName, "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility

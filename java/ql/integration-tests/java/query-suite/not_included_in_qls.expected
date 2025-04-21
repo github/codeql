@@ -1,0 +1,285 @@
+ql/java/ql/src/Advisory/Declarations/NonFinalImmutableField.ql
+ql/java/ql/src/Advisory/Declarations/NonPrivateField.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocMethods.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocParameters.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocReturnValues.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocThrows.ql
+ql/java/ql/src/Advisory/Documentation/MissingJavadocTypes.ql
+ql/java/ql/src/Advisory/Java Objects/AvoidCloneMethodAccess.ql
+ql/java/ql/src/Advisory/Java Objects/AvoidCloneOverride.ql
+ql/java/ql/src/Advisory/Java Objects/AvoidCloneableInterface.ql
+ql/java/ql/src/Advisory/Java Objects/AvoidFinalizeOverride.ql
+ql/java/ql/src/Advisory/Naming/NamingConventionsConstants.ql
+ql/java/ql/src/Advisory/Naming/NamingConventionsMethods.ql
+ql/java/ql/src/Advisory/Naming/NamingConventionsPackages.ql
+ql/java/ql/src/Advisory/Naming/NamingConventionsRefTypes.ql
+ql/java/ql/src/Advisory/Naming/NamingConventionsVariables.ql
+ql/java/ql/src/Advisory/Statements/MissingDefaultInSwitch.ql
+ql/java/ql/src/Advisory/Statements/OneStatementPerLine.ql
+ql/java/ql/src/Advisory/Statements/TerminateIfElseIfWithElse.ql
+ql/java/ql/src/Advisory/Types/GenericsConstructor.ql
+ql/java/ql/src/Advisory/Types/GenericsReturnType.ql
+ql/java/ql/src/Advisory/Types/GenericsVariable.ql
+ql/java/ql/src/AlertSuppression.ql
+ql/java/ql/src/AlertSuppressionAnnotations.ql
+ql/java/ql/src/Architecture/Dependencies/MutualDependency.ql
+ql/java/ql/src/Architecture/Dependencies/UnusedMavenDependencyBinary.ql
+ql/java/ql/src/Architecture/Dependencies/UnusedMavenDependencySource.ql
+ql/java/ql/src/Architecture/Refactoring Opportunities/DeeplyNestedClass.ql
+ql/java/ql/src/Architecture/Refactoring Opportunities/FeatureEnvy.ql
+ql/java/ql/src/Architecture/Refactoring Opportunities/HubClasses.ql
+ql/java/ql/src/Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
+ql/java/ql/src/Complexity/BlockWithTooManyStatements.ql
+ql/java/ql/src/Complexity/ComplexCondition.ql
+ql/java/ql/src/DeadCode/DeadClass.ql
+ql/java/ql/src/DeadCode/DeadEnumConstant.ql
+ql/java/ql/src/DeadCode/DeadField.ql
+ql/java/ql/src/DeadCode/DeadMethod.ql
+ql/java/ql/src/DeadCode/FLinesOfDeadCode.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbContainerInterference.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbFileIO.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbGraphics.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbNative.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbReflection.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbSecurityConfiguration.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbSerialization.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbSetSocketOrUrlFactory.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbSocketAsServer.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbStaticFieldNonFinal.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbSynchronization.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbThis.ql
+ql/java/ql/src/Frameworks/JavaEE/EJB/EjbThreads.ql
+ql/java/ql/src/Frameworks/Spring/Architecture/Refactoring Opportunities/MissingParentBean.ql
+ql/java/ql/src/Frameworks/Spring/Architecture/Refactoring Opportunities/TooManyBeans.ql
+ql/java/ql/src/Frameworks/Spring/Architecture/Refactoring Opportunities/UnusedBean.ql
+ql/java/ql/src/Frameworks/Spring/Architecture/Refactoring Opportunities/UselessPropertyOverride.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/AvoidAutowiring.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/DontUseConstructorArgIndex.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/ImportsFirst.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/NoBeanDescription.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/ParentShouldNotUseAbstractClass.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/UseIdInsteadOfName.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/UseLocalRef.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/UseSetterInjection.ql
+ql/java/ql/src/Frameworks/Spring/Violations of Best Practice/UseShortcutForms.ql
+ql/java/ql/src/Frameworks/Spring/XML Configuration Errors/MissingSetters.ql
+ql/java/ql/src/Language Abuse/CastThisToTypeParameter.ql
+ql/java/ql/src/Language Abuse/DubiousDowncastOfThis.ql
+ql/java/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
+ql/java/ql/src/Language Abuse/EmptyMethod.ql
+ql/java/ql/src/Language Abuse/EmptyStatement.ql
+ql/java/ql/src/Language Abuse/EnumIdentifier.ql
+ql/java/ql/src/Language Abuse/ImplementsAnnotation.ql
+ql/java/ql/src/Language Abuse/MissedTernaryOpportunity.ql
+ql/java/ql/src/Language Abuse/UselessUpcast.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/BadCheckOdd.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/CondExprTypes.ql
+ql/java/ql/src/Likely Bugs/Arithmetic/OctalLiteral.ql
+ql/java/ql/src/Likely Bugs/Comparison/BitwiseSignCheck.ql
+ql/java/ql/src/Likely Bugs/Comparison/DefineEqualsWhenAddingFields.ql
+ql/java/ql/src/Likely Bugs/Comparison/EqualsUsesInstanceOf.ql
+ql/java/ql/src/Likely Bugs/Comparison/NoAssignInBooleanExprs.ql
+ql/java/ql/src/Likely Bugs/Comparison/NoComparisonOnFloats.ql
+ql/java/ql/src/Likely Bugs/Comparison/ObjectComparison.ql
+ql/java/ql/src/Likely Bugs/Concurrency/BusyWait.ql
+ql/java/ql/src/Likely Bugs/Concurrency/EmptyRunMethodInThread.ql
+ql/java/ql/src/Likely Bugs/Concurrency/InconsistentAccess.ql
+ql/java/ql/src/Likely Bugs/Concurrency/LazyInitStaticField.ql
+ql/java/ql/src/Likely Bugs/Concurrency/NotifyWithoutSynch.ql
+ql/java/ql/src/Likely Bugs/Concurrency/PriorityCalls.ql
+ql/java/ql/src/Likely Bugs/Concurrency/WaitOutsideLoop.ql
+ql/java/ql/src/Likely Bugs/Concurrency/WaitWithTwoLocks.ql
+ql/java/ql/src/Likely Bugs/Concurrency/YieldCalls.ql
+ql/java/ql/src/Likely Bugs/Frameworks/JUnit/TearDownNoSuper.ql
+ql/java/ql/src/Likely Bugs/Frameworks/JUnit/TestCaseNoTests.ql
+ql/java/ql/src/Likely Bugs/Frameworks/Swing/ThreadSafety.ql
+ql/java/ql/src/Likely Bugs/I18N/MissingLocaleArgument.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/ConstructorTypo.ql
+ql/java/ql/src/Likely Bugs/Likely Typos/NestedLoopsSameVariable.ql
+ql/java/ql/src/Likely Bugs/Serialization/NonSerializableComparator.ql
+ql/java/ql/src/Likely Bugs/Serialization/NonSerializableField.ql
+ql/java/ql/src/Likely Bugs/Serialization/TransientNotSerializable.ql
+ql/java/ql/src/Likely Bugs/Statements/EmptyBlock.ql
+ql/java/ql/src/Likely Bugs/Statements/EmptySynchronizedBlock.ql
+ql/java/ql/src/Likely Bugs/Statements/ImpossibleCast.ql
+ql/java/ql/src/Likely Bugs/Statements/InconsistentCallOnResult.ql
+ql/java/ql/src/Likely Bugs/Statements/ReturnValueIgnored.ql
+ql/java/ql/src/Likely Bugs/Statements/StaticFieldWrittenByInstance.ql
+ql/java/ql/src/Metrics/Authors/AuthorsPerFile.ql
+ql/java/ql/src/Metrics/Callables/CCyclomaticComplexity.ql
+ql/java/ql/src/Metrics/Callables/CLinesOfCode.ql
+ql/java/ql/src/Metrics/Callables/CLinesOfComment.ql
+ql/java/ql/src/Metrics/Callables/CNumberOfCalls.ql
+ql/java/ql/src/Metrics/Callables/CNumberOfParameters.ql
+ql/java/ql/src/Metrics/Callables/CNumberOfStatements.ql
+ql/java/ql/src/Metrics/Callables/StatementNestingDepth.ql
+ql/java/ql/src/Metrics/Dependencies/ExternalDependencies.ql
+ql/java/ql/src/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+ql/java/ql/src/Metrics/Files/FAfferentCoupling.ql
+ql/java/ql/src/Metrics/Files/FCommentRatio.ql
+ql/java/ql/src/Metrics/Files/FCyclomaticComplexity.ql
+ql/java/ql/src/Metrics/Files/FEfferentCoupling.ql
+ql/java/ql/src/Metrics/Files/FLines.ql
+ql/java/ql/src/Metrics/Files/FLinesOfCode.ql
+ql/java/ql/src/Metrics/Files/FLinesOfComment.ql
+ql/java/ql/src/Metrics/Files/FLinesOfCommentedCode.ql
+ql/java/ql/src/Metrics/Files/FLinesOfDuplicatedCode.ql
+ql/java/ql/src/Metrics/Files/FLinesOfSimilarCode.ql
+ql/java/ql/src/Metrics/Files/FNumberOfClasses.ql
+ql/java/ql/src/Metrics/Files/FNumberOfInterfaces.ql
+ql/java/ql/src/Metrics/Files/FNumberOfTests.ql
+ql/java/ql/src/Metrics/Files/FSelfContainedness.ql
+ql/java/ql/src/Metrics/RefTypes/TAfferentCoupling.ql
+ql/java/ql/src/Metrics/RefTypes/TEfferentCoupling.ql
+ql/java/ql/src/Metrics/RefTypes/TEfferentSourceCoupling.ql
+ql/java/ql/src/Metrics/RefTypes/TInheritanceDepth.ql
+ql/java/ql/src/Metrics/RefTypes/TLackOfCohesionCK.ql
+ql/java/ql/src/Metrics/RefTypes/TLackOfCohesionHS.ql
+ql/java/ql/src/Metrics/RefTypes/TLinesOfCode.ql
+ql/java/ql/src/Metrics/RefTypes/TLinesOfComment.ql
+ql/java/ql/src/Metrics/RefTypes/TNumberOfCallables.ql
+ql/java/ql/src/Metrics/RefTypes/TNumberOfFields.ql
+ql/java/ql/src/Metrics/RefTypes/TNumberOfStatements.ql
+ql/java/ql/src/Metrics/RefTypes/TPercentageOfComments.ql
+ql/java/ql/src/Metrics/RefTypes/TPercentageOfComplexCode.ql
+ql/java/ql/src/Metrics/RefTypes/TResponse.ql
+ql/java/ql/src/Metrics/RefTypes/TSelfContainedness.ql
+ql/java/ql/src/Metrics/RefTypes/TSizeOfAPI.ql
+ql/java/ql/src/Metrics/RefTypes/TSpecialisationIndex.ql
+ql/java/ql/src/Metrics/Summaries/FrameworkCoverage.ql
+ql/java/ql/src/Metrics/Summaries/GeneratedVsManualCoverage.ql
+ql/java/ql/src/Performance/ConcatenationInLoops.ql
+ql/java/ql/src/Security/CWE/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
+ql/java/ql/src/Security/CWE/CWE-020/UntrustedDataToExternalAPI.ql
+ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayConstructionCodeSpecified.ql
+ql/java/ql/src/Security/CWE/CWE-129/ImproperValidationOfArrayIndexCodeSpecified.ql
+ql/java/ql/src/Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql
+ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageClass.ql
+ql/java/ql/src/Security/CWE/CWE-319/HttpsUrls.ql
+ql/java/ql/src/Security/CWE/CWE-319/UseSSL.ql
+ql/java/ql/src/Security/CWE/CWE-319/UseSSLSocketFactories.ql
+ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsComparison.ql
+ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsSourceCall.ql
+ql/java/ql/src/Security/CWE/CWE-798/HardcodedPasswordField.ql
+ql/java/ql/src/Security/CWE/CWE-833/LockOrderInconsistency.ql
+ql/java/ql/src/Violations of Best Practice/Boolean Logic/SimplifyBoolExpr.ql
+ql/java/ql/src/Violations of Best Practice/Comments/CommentedCode.ql
+ql/java/ql/src/Violations of Best Practice/Comments/TodoComments.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/AssignmentInReturn.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/DeadStoreOfLocal.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/DeadStoreOfLocalUnread.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/EmptyFinalize.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/FinalizerNullsFields.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/LocalInitialisedButNotUsed.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/LocalNotRead.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/NonAssignedFields.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/PointlessForwardingMethod.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnusedField.ql
+ql/java/ql/src/Violations of Best Practice/Dead Code/UnusedLocal.ql
+ql/java/ql/src/Violations of Best Practice/Declarations/BreakInSwitchCase.ql
+ql/java/ql/src/Violations of Best Practice/Declarations/MakeImportsExplicit.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/DroppedExceptions.ql
+ql/java/ql/src/Violations of Best Practice/Exception Handling/ExceptionCatch.ql
+ql/java/ql/src/Violations of Best Practice/Implementation Hiding/StaticArray.ql
+ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicConstantsNumbers.ql
+ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicConstantsString.ql
+ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicNumbersUseConstant.ql
+ql/java/ql/src/Violations of Best Practice/Magic Constants/MagicStringsUseConstant.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/ConfusingOverridesNames.ql
+ql/java/ql/src/Violations of Best Practice/Naming Conventions/LocalShadowsField.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/CallsToSystemExit.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/GarbageCollection.ql
+ql/java/ql/src/Violations of Best Practice/legacy/AutoBoxing.ql
+ql/java/ql/src/Violations of Best Practice/legacy/FinallyMayNotComplete.ql
+ql/java/ql/src/Violations of Best Practice/legacy/InexactVarArg.ql
+ql/java/ql/src/Violations of Best Practice/legacy/ParameterAssignment.ql
+ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryCast.ql
+ql/java/ql/src/Violations of Best Practice/legacy/UnnecessaryImport.ql
+ql/java/ql/src/definitions.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-016/InsecureSpringActuatorConfig.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-020/Log4jJndiInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-036/OpenStream.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-073/FilePathInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-078/CommandInjectionRuntimeExec.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-078/CommandInjectionRuntimeExecLocal.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-078/ExecTainted.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-089/MyBatisAnnotationSqlInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-089/MyBatisMapperXmlSqlInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/BeanShellInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/InsecureDexLoading.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/JShellInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/JakartaExpressionInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/JythonInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/ScriptInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringImplicitViewManipulation.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-094/SpringViewManipulation.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-1004/InsecureTomcatConfig.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-1004/SensitiveCookieNotHttpOnly.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-200/InsecureWebResourceResponse.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-200/SensitiveAndroidFileLeak.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstSignature.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-208/TimingAttackAgainstHeader.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-208/TimingAttackAgainstSignature.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-295/JxBrowserWithoutCertValidation.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-297/IgnoredHostnameVerification.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-297/InsecureLdapEndpoint.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-299/DisabledRevocationChecking.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-327/Azure/UnsafeUsageOfClientSideEncryptionVersion.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-327/UnsafeTlsVersion.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-346/UnvalidatedCors.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-347/Auth0NoVerifier.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-348/ClientSuppliedIpUsedInSecurityCheck.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-352/JsonpInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-470/LoadClassNoSignatureCheck.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-470/UnsafeReflection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-489/EJBMain.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-489/WebComponentMain.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-489/devMode.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-502/UnsafeDeserializationRmi.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-502/UnsafeSpringExporterInConfigurationClass.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-502/UnsafeSpringExporterInXMLConfiguration.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-522-DecompressionBombs/DecompressionBomb.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-548/InsecureDirectoryConfig.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-555/CredentialsInPropertiesFile.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-555/PasswordInConfigurationFile.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-598/SensitiveGetQuery.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-600/UncaughtServletException.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-601/SpringUrlRedirect.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-625/PermissiveDotRegex.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-652/XQueryInjection.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-665/InsecureRmiJmxEnvironmentConfiguration.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-755/NFEAndroidDoS.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-759/HashWithoutSalt.ql
+ql/java/ql/src/experimental/Security/CWE/CWE-939/IncorrectURLVerification.ql
+ql/java/ql/src/external/DuplicateAnonymous.ql
+ql/java/ql/src/external/DuplicateBlock.ql
+ql/java/ql/src/external/DuplicateMethod.ql
+ql/java/ql/src/external/MostlyDuplicateClass.ql
+ql/java/ql/src/external/MostlyDuplicateFile.ql
+ql/java/ql/src/external/MostlyDuplicateMethod.ql
+ql/java/ql/src/external/MostlySimilarFile.ql
+ql/java/ql/src/filters/ClassifyFiles.ql
+ql/java/ql/src/meta/frameworks/Coverage.ql
+ql/java/ql/src/meta/ssa/AmbiguousToString.ql
+ql/java/ql/src/meta/ssa/TooFewPhiInputs.ql
+ql/java/ql/src/meta/ssa/UncertainDefWithoutPrior.ql
+ql/java/ql/src/meta/ssa/UseWithoutUniqueSsaVariable.ql
+ql/java/ql/src/utils/modelconverter/ExtractNeutrals.ql
+ql/java/ql/src/utils/modelconverter/ExtractSinks.ql
+ql/java/ql/src/utils/modelconverter/ExtractSources.ql
+ql/java/ql/src/utils/modelconverter/ExtractSummaries.ql
+ql/java/ql/src/utils/modeleditor/ApplicationModeEndpoints.ql
+ql/java/ql/src/utils/modeleditor/FrameworkModeEndpoints.ql
+ql/java/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureMixedNeutralModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureMixedSummaryModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureSinkModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureSourceModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureSummaryModels.ql
+ql/java/ql/src/utils/modelgenerator/CaptureTypeBasedSummaryModels.ql
+ql/java/ql/src/utils/modelgenerator/debug/CaptureSummaryModelsPartialPath.ql
+ql/java/ql/src/utils/modelgenerator/debug/CaptureSummaryModelsPath.ql
+ql/java/ql/src/utils/stub-generator/MinimalStubsFromSource.ql

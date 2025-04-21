@@ -1,3 +1,17 @@
+## 0.5.4
+
+### Bug Fixes
+
+* Alerts produced by the query `actions/missing-workflow-permissions` now include a minimal set of recommended permissions in the alert message, based on well-known actions seen within the workflow file.
+
+## 0.5.3
+
+### Bug Fixes
+
+* Fixed typos in the query and alert titles for the queries
+  `actions/envpath-injection/critical`, `actions/envpath-injection/medium`,
+  `actions/envvar-injection/critical`, and `actions/envvar-injection/medium`.
+
 ## 0.5.2
 
 No user-facing changes.
@@ -7,9 +21,10 @@ No user-facing changes.
 ### Bug Fixes
 
 * The `actions/unversioned-immutable-action` query will no longer report any alerts, since the
-  Immutable Actions feature is not yet available for customer use. The query remains in the
-  default Code Scanning suites for use internal to GitHub. Once the Immutable Actions feature is
-  available, the query will be updated to report alerts again.
+  Immutable Actions feature is not yet available for customer use. The query has also been moved
+  to the experimental folder and will not be used in code scanning unless it is explicitly added
+  to a code scanning configuration. Once the Immutable Actions feature is available, the query will
+  be updated to report alerts again.
 
 ## 0.5.0
 

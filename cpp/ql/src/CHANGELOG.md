@@ -1,3 +1,14 @@
+## 1.3.8
+
+No user-facing changes.
+
+## 1.3.7
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the models for Microsoft's Active Template Library (ATL).
+* The query "Use of basic integral type" (`cpp/jpl-c/basic-int-types`) no longer produces alerts for the standard fixed width integer types (`int8_t`, `uint8_t`, etc.), and the `_Bool` and `bool` types.
+
 ## 1.3.6
 
 No user-facing changes.

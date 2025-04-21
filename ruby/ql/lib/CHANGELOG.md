@@ -1,3 +1,13 @@
+## 4.1.4
+
+### Minor Analysis Improvements
+
+* Calls to `super` without explict arguments now have their implicit arguments generated. For example, in `def foo(x, y) { super } end` the call to `super` becomes `super(x, y)`.
+
+## 4.1.3
+
+No user-facing changes.
+
 ## 4.1.2
 
 No user-facing changes.

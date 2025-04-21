@@ -109,7 +109,7 @@ An attacker could craft a malicious artifact that writes dangerous environment v
 
 ### Exploitation
 
-An attacker is be able to run arbitrary code by injecting environment variables such as `LD_PRELOAD`, `BASH_ENV`, etc.
+An attacker would be able to run arbitrary code by injecting environment variables such as `LD_PRELOAD`, `BASH_ENV`, etc.
 
 ## References
 

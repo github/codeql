@@ -5,10 +5,12 @@
  * @kind problem
  * @problem.severity warning
  * @id js/useless-expression
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
+ *       useless-code
  * @precision very-high
  */
 

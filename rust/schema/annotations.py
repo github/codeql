@@ -87,6 +87,7 @@ class _:
     foo::bar;
     ```
     """
+    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -1488,7 +1489,7 @@ class _:
     """
 
 
-@annotate(RecordFieldList)
+@annotate(StructFieldList)
 class _:
     """
     A field list of a struct expression. For example:
@@ -1626,6 +1627,7 @@ class _:
     todo!()
     ```
     """
+    field_list: _ | ql.db_table_name("struct_field_lists_")
 
 
 @annotate(TokenTree)
@@ -1803,7 +1805,7 @@ class _:
     """
 
 
-@annotate(Variant, replace_bases={AstNode: Addressable})
+@annotate(Variant, add_bases=(Addressable,))
 class _:
     """
     A Variant. For example:

@@ -9,7 +9,7 @@ final class CloneCallable extends SummarizedCallable::Range {
     // NOTE: The function target may not exist in the database, so we base this
     // on method calls.
     exists(MethodCallExpr c |
-      c.getNameRef().getText() = "clone" and
+      c.getIdentifier().getText() = "clone" and
       c.getArgList().getNumberOfArgs() = 0 and
       this = c.getResolvedCrateOrigin() + "::_::" + c.getResolvedPath()
     )

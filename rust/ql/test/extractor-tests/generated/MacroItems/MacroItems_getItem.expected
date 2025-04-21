@@ -1,2 +1,2 @@
-| gen_macro_items.rs:5:5:5:38 | MacroItems | 0 | file://:0:0:0:0 | Use |
-| gen_macro_items.rs:5:5:5:38 | MacroItems | 1 | file://:0:0:0:0 | fn get_parent |
+| gen_macro_items.rs:5:5:5:38 | MacroItems | 0 | gen_macro_items.rs:5:5:5:38 | use ...::Path |
+| gen_macro_items.rs:5:5:5:38 | MacroItems | 1 | gen_macro_items.rs:5:5:5:38 | fn get_parent |

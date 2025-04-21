@@ -1,3 +1,17 @@
+## 4.2.3
+
+### Minor Analysis Improvements
+
+* Local source models for APIs reading from databases have been added for `github.com/gogf/gf/database/gdb` and `github.com/uptrace/bun`.
+
+## 4.2.2
+
+### Minor Analysis Improvements
+
+* We no longer track taint into a `sync.Map` via the key of a key-value pair, since we do not model any way in which keys can be read from a `sync.Map`.
+* `database` source models have been added for v1 and v2 of the `github.com/couchbase/gocb` package.
+* Added `database` source models for the `github.com/Masterminds/squirrel` ORM package.
+
 ## 4.2.1
 
 No user-facing changes.

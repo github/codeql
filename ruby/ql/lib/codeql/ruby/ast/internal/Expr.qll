@@ -120,3 +120,38 @@ class LeftAssignmentListImpl extends DestructuredLhsExprImpl, Ruby::LeftAssignme
       )
   }
 }
+
+abstract class PairImpl extends Expr, TPair {
+  abstract Expr getKey();
+
+  abstract Expr getValue();
+
+  final override string toString() { result = "Pair" }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getKey" and result = this.getKey()
+    or
+    pred = "getValue" and result = this.getValue()
+  }
+}
+
+class PairReal extends PairImpl, TPairReal {
+  private Ruby::Pair g;
+
+  PairReal() { this = TPairReal(g) }
+
+  final override Expr getKey() { toGenerated(result) = g.getKey() }
+
+  final override Expr getValue() {
+    toGenerated(result) = g.getValue() or
+    synthChild(this, 0, result)
+  }
+}
+
+class PairSynth extends PairImpl, TPairSynth {
+  final override Expr getKey() { synthChild(this, 0, result) }
+
+  final override Expr getValue() { synthChild(this, 1, result) }
+}
