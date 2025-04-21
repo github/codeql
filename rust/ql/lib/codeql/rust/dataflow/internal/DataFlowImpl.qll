@@ -95,7 +95,7 @@ final class DataFlowCall extends TDataFlowCall {
 
   //** TODO JB1: Move to subclass, monkey patching for #153 */
   DataFlowCallable getARuntimeTarget(){ none() }
-  Node::ArgumentNode getAnArgumentNode(){ none() }
+  ArgumentNode getAnArgumentNode(){ none() }
   int totalorder(){ none() }
   //** TODO JB1: end stubs for #153 */
 }
