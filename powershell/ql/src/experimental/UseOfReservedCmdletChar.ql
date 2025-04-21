@@ -1,12 +1,11 @@
 /**
- * @name Hardcoded Computer Name
- * @description Using externally controlled strings in a command line may allow a malicious
- *              user to change the meaning of the command.
+ * @name Reserved Characters in Function Name
+ * @description Do not use reserved characters in function names
  * @kind problem
  * @problem.severity error
- * @security-severity 9.8
+ * @security-severity 7.0
  * @precision high
- * @id powershell/microsoft/public/command-injection
+ * @id powershell/microsoft/public/reserved-characters-in-function-name
  * @tags correctness
  *       security
  *       external/cwe/cwe-078
