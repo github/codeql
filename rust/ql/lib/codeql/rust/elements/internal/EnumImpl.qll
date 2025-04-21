@@ -11,6 +11,8 @@ private import codeql.rust.elements.internal.generated.Enum
  * be referenced directly.
  */
 module Impl {
+  private import rust
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A Enum. For example:
@@ -20,5 +22,12 @@ module Impl {
    */
   class Enum extends Generated::Enum {
     override string toStringImpl() { result = "enum " + this.getName().getText() }
+
+    /** Gets the variant named `name`, if any. */
+    pragma[nomagic]
+    Variant getVariant(string name) {
+      result = this.getVariantList().getAVariant() and
+      result.getName().getText() = name
+    }
   }
 }

@@ -10,7 +10,8 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
 import codeql.rust.elements.Name
-import codeql.rust.elements.RecordFieldList
+import codeql.rust.elements.StructFieldList
+import codeql.rust.elements.internal.VariantDefImpl::Impl as VariantDefImpl
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
@@ -27,7 +28,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Union` class directly.
    * Use the subclass `Union`, where the following predicates are available.
    */
-  class Union extends Synth::TUnion, ItemImpl::Item {
+  class Union extends Synth::TUnion, ItemImpl::Item, VariantDefImpl::VariantDef {
     override string getAPrimaryQlClass() { result = "Union" }
 
     /**
@@ -77,9 +78,9 @@ module Generated {
     /**
      * Gets the struct field list of this union, if it exists.
      */
-    RecordFieldList getStructFieldList() {
+    StructFieldList getStructFieldList() {
       result =
-        Synth::convertRecordFieldListFromRaw(Synth::convertUnionToRaw(this)
+        Synth::convertStructFieldListFromRaw(Synth::convertUnionToRaw(this)
               .(Raw::Union)
               .getStructFieldList())
     }

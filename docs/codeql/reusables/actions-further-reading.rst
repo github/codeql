@@ -1,0 +1,2 @@
+- `CodeQL queries for GitHub Actions <https://github.com/github/codeql/tree/main/actions/ql/src>`__
+- `CodeQL library reference for GitHub Actions <https://codeql.github.com/codeql-standard-libraries/actions/>`__

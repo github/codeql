@@ -1,3 +1,16 @@
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
 ## 4.0.3
 
 No user-facing changes.

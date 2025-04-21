@@ -13,6 +13,33 @@ class RelevantNode extends Item {
     this.getParentNode*() =
       any(Crate m | m.getName() = "test" and m.getVersion() = "0.0.1").getModule()
   }
+
+  string label() { result = this.toString() }
+}
+
+class HasGenericParams extends RelevantNode {
+  private GenericParamList params;
+
+  HasGenericParams() {
+    params = this.(Function).getGenericParamList() or
+    params = this.(Enum).getGenericParamList() or
+    params = this.(Struct).getGenericParamList() or
+    params = this.(Union).getGenericParamList() or
+    params = this.(Impl).getGenericParamList() or
+    params = this.(Enum).getGenericParamList() or
+    params = this.(Trait).getGenericParamList() or
+    params = this.(TraitAlias).getGenericParamList()
+  }
+
+  override string label() {
+    result =
+      super.toString() + "<" +
+        strictconcat(string part, int index |
+          part = params.getGenericParam(index).toString()
+        |
+          part, ", " order by index
+        ) + ">"
+  }
 }
 
 predicate edges(RelevantNode container, RelevantNode element) {
@@ -25,7 +52,7 @@ query predicate nodes(RelevantNode node, string attr, string val) {
   nodes(node) and
   (
     attr = "semmle.label" and
-    val = node.toString()
+    val = node.label()
     or
     attr = "semmle.order" and
     val =

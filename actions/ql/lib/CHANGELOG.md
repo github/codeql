@@ -1,3 +1,14 @@
+## 0.4.7
+
+No user-facing changes.
+
+## 0.4.6
+
+### Bug Fixes
+
+* The query `actions/code-injection/medium` now produces alerts for injection
+  vulnerabilities on `pull_request` events.
+
 ## 0.4.5
 
 No user-facing changes.

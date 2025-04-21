@@ -5,4 +5,17 @@ import TestUtils
 
 query predicate mod(Module m) { toBeTested(m) }
 
-query predicate resolvePath(Path p, ItemNode i) { toBeTested(p) and i = resolvePath(p) }
+class ItemNodeLoc extends Locatable instanceof ItemNode {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(string file |
+      super.getLocation().hasLocationInfo(file, startline, startcolumn, endline, endcolumn) and
+      filepath = file.regexpReplaceAll("^/.*/.rustup/toolchains/[^/]+/", "/RUSTUP_HOME/toolchain/")
+    )
+  }
+}
+
+query predicate resolvePath(Path p, ItemNodeLoc i) {
+  toBeTested(p) and not p.isInMacroExpansion() and i = resolvePath(p)
+}

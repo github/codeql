@@ -40,6 +40,23 @@ and the CodeQL library pack ``codeql/csharp-all`` (`changelog <https://github.co
    NHibernate, Database ORM
    WinForms, User interface
 
+GitHub Actions built-in support
+================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/actions-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/actions/ql/src>`__)
+and the CodeQL library pack ``codeql/actions-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/actions/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+   :align: left
+
+   Name, Category
+   `GitHub Actions workflow YAML files <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>`__, Workflows
+   `GitHub Actions action metadata YAML files <https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions>`__, Actions
+
 Go built-in support
 ================================
 

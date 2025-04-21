@@ -150,7 +150,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 
   override FieldExprCfgNode getAnAccess() {
     // TODO: limit to tuple types
-    result.getNameRef().getText().toInt() = pos
+    result.getIdentifier().getText().toInt() = pos
   }
 
   override string toString() { result = "tuple." + pos.toString() }
@@ -255,14 +255,12 @@ cached
 newtype TContent =
   TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
   TStructFieldContent(StructField field) or
-  // TODO: Remove once library types are extracted
-  TVariantInLibTupleFieldContent(VariantInLib::VariantInLib v, int pos) { pos = v.getAPosition() } or
   TElementContent() or
   TFutureContent() or
   TTuplePositionContent(int pos) {
     pos in [0 .. max([
               any(TuplePat pat).getNumberOfFields(),
-              any(FieldExpr access).getNameRef().getText().toInt()
+              any(FieldExpr access).getIdentifier().getText().toInt()
             ]
         )]
   } or

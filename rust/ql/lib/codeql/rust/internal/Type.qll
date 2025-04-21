@@ -2,21 +2,23 @@
 
 private import rust
 private import PathResolution
-private import TypeInference
 private import TypeMention
 private import codeql.rust.internal.CachedStages
+private import codeql.rust.elements.internal.generated.Raw
+private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
-  TStruct(Struct s) { Stages::TypeInference::ref() } or
+  TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
   TImpl(Impl i) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TTypeParamTypeParameter(TypeParam t) or
+  TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TRefTypeParameter() or
-  TSelfTypeParameter()
+  TSelfTypeParameter(Trait t)
 
 /**
  * A type without type arguments.
@@ -104,7 +106,7 @@ class StructType extends StructOrEnumType, TStruct {
     result = TTypeParamTypeParameter(struct.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = struct.toString() }
+  override string toString() { result = struct.getName().getText() }
 
   override Location getLocation() { result = struct.getLocation() }
 }
@@ -125,7 +127,7 @@ class EnumType extends StructOrEnumType, TEnum {
     result = TTypeParamTypeParameter(enum.getGenericParamList().getTypeParam(i))
   }
 
-  override string toString() { result = enum.toString() }
+  override string toString() { result = enum.getName().getText() }
 
   override Location getLocation() { result = enum.getLocation() }
 }
@@ -145,8 +147,8 @@ class TraitType extends Type, TTrait {
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(trait.getGenericParamList().getTypeParam(i))
     or
-    result = TSelfTypeParameter() and
-    i = -1
+    result =
+      any(AssociatedTypeTypeParameter param | param.getTrait() = trait and param.getIndex() = i)
   }
 
   pragma[nomagic]
@@ -226,11 +228,9 @@ class ImplType extends Type, TImpl {
 
   override TypeParameter getTypeParameter(int i) {
     result = TTypeParamTypeParameter(impl.getGenericParamList().getTypeParam(i))
-    or
-    result = TSelfTypeParameter() and
-    i = -1
   }
 
+  /** Get the trait implemented by this `impl` block, if any. */
   override TypeMention getABaseTypeMention() { result = impl.getTrait() }
 
   override string toString() { result = impl.toString() }
@@ -302,6 +302,14 @@ abstract class TypeParameter extends Type {
   override TypeParameter getTypeParameter(int i) { none() }
 }
 
+private class RawTypeParameter = @type_param or @trait or @type_alias;
+
+private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
+
+private predicate idOfRaw(RawTypeParameter x, int y) = equivalenceRelation(id/2)(x, y)
+
+int idOfTypeParameterAstNode(AstNode node) { idOfRaw(Synth::convertAstNodeToRaw(node), result) }
+
 /** A type parameter from source code. */
 class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   private TypeParam typeParam;
@@ -325,6 +333,59 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
   }
 }
 
+/**
+ * Gets the type alias that is the `i`th type parameter of `trait`. Type aliases
+ * are numbered consecutively but in arbitrary order, starting from the index
+ * following the last ordinary type parameter.
+ */
+predicate traitAliasIndex(Trait trait, int i, TypeAlias typeAlias) {
+  typeAlias =
+    rank[i + 1 - trait.getNumberOfGenericParams()](TypeAlias alias |
+      trait.(TraitItemNode).getADescendant() = alias
+    |
+      alias order by idOfTypeParameterAstNode(alias)
+    )
+}
+
+/**
+ * A type parameter corresponding to an associated type in a trait.
+ *
+ * We treat associated type declarations in traits as type parameters. E.g., a
+ * trait such as
+ * ```rust
+ * trait ATrait {
+ *   type AssociatedType;
+ *   // ...
+ * }
+ * ```
+ * is treated as if it was
+ * ```rust
+ * trait ATrait<AssociatedType> {
+ *   // ...
+ * }
+ * ```
+ */
+class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypeParameter {
+  private TypeAlias typeAlias;
+
+  AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(typeAlias) }
+
+  TypeAlias getTypeAlias() { result = typeAlias }
+
+  /** Gets the trait that contains this associated type declaration. */
+  TraitItemNode getTrait() { result.getAnAssocItem() = typeAlias }
+
+  int getIndex() { traitAliasIndex(_, result, typeAlias) }
+
+  override Function getMethod(string name) { none() }
+
+  override string toString() { result = typeAlias.getName().getText() }
+
+  override Location getLocation() { result = typeAlias.getLocation() }
+
+  override TypeMention getABaseTypeMention() { none() }
+}
+
 /** An implicit reference type parameter. */
 class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override Function getMethod(string name) { none() }
@@ -334,11 +395,29 @@ class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
-/** An implicit `Self` type parameter. */
+/**
+ * The implicit `Self` type parameter of a trait, that refers to the
+ * implementing type of the trait.
+ *
+ * The Rust Reference on the implicit `Self` parameter:
+ * https://doc.rust-lang.org/reference/items/traits.html#r-items.traits.self-param
+ */
 class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
-  override Function getMethod(string name) { none() }
+  private Trait trait;
 
-  override string toString() { result = "(Self)" }
+  SelfTypeParameter() { this = TSelfTypeParameter(trait) }
 
-  override Location getLocation() { result instanceof EmptyLocation }
+  Trait getTrait() { result = trait }
+
+  override TypeMention getABaseTypeMention() { result = trait }
+
+  override Function getMethod(string name) {
+    // The `Self` type parameter is an implementation of the trait, so it has
+    // all the trait's methods.
+    result = trait.(ItemNode).getASuccessor(name)
+  }
+
+  override string toString() { result = "Self [" + trait.toString() + "]" }
+
+  override Location getLocation() { result = trait.getLocation() }
 }

@@ -5,7 +5,7 @@
 | utf8_identifiers.rs:1:1:12:2 | SourceFile |
 | utf8_identifiers.rs:1:4:1:6 | foo |
 | utf8_identifiers.rs:1:7:4:1 | <...> |
-| utf8_identifiers.rs:2:5:2:6 | ''\u03b2 |
+| utf8_identifiers.rs:2:5:2:6 | '\u03b2 |
 | utf8_identifiers.rs:2:5:2:6 | LifetimeParam |
 | utf8_identifiers.rs:3:5:3:5 | \u03b3 |
 | utf8_identifiers.rs:3:5:3:5 | \u03b3 |
@@ -14,7 +14,7 @@
 | utf8_identifiers.rs:4:5:4:6 | { ... } |
 | utf8_identifiers.rs:6:1:8:1 | struct X |
 | utf8_identifiers.rs:6:8:6:8 | X |
-| utf8_identifiers.rs:6:10:8:1 | RecordFieldList |
+| utf8_identifiers.rs:6:10:8:1 | StructFieldList |
 | utf8_identifiers.rs:7:5:7:5 | \u03b4 |
 | utf8_identifiers.rs:7:5:7:13 | StructField |
 | utf8_identifiers.rs:7:9:7:13 | usize |

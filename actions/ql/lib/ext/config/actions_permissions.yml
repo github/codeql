@@ -1,0 +1,37 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsPermissionsDataModel
+    data:
+      - ["actions/checkout", "contents: read"]
+      - ["actions/setup-node", "contents: read"]
+      - ["actions/setup-python", "contents: read"]
+      - ["actions/setup-java", "contents: read"]
+      - ["actions/setup-go", "contents: read"]
+      - ["actions/setup-dotnet", "contents: read"]
+      - ["actions/labeler", "contents: read"]
+      - ["actions/labeler", "pull-requests: write"]
+      - ["actions/attest", "id-token: write"]
+      - ["actions/attest", "attestations: write"]
+      # No permissions needed for actions/add-to-project
+      - ["actions/dependency-review-action", "contents: read"]
+      - ["actions/attest-sbom", "id-token: write"]
+      - ["actions/attest-sbom", "attestations: write"]
+      - ["actions/stale", "contents: write"]
+      - ["actions/stale", "issues: write"]
+      - ["actions/stale", "pull-requests: write"]
+      - ["actions/attest-build-provenance", "id-token: write"]
+      - ["actions/attest-build-provenance", "attestations: write"]
+      - ["actions/jekyll-build-pages", "contents: read"]
+      - ["actions/jekyll-build-pages", "pages: write"]
+      - ["actions/jekyll-build-pages", "id-token: write"]
+      - ["actions/publish-action", "contents: write"]
+      - ["actions/versions-package-tools", "contents: read"]      
+      - ["actions/versions-package-tools", "actions: read"]
+      - ["actions/reusable-workflows", "contents: read"]      
+      - ["actions/reusable-workflows", "actions: read"]
+      # TODO: Add permissions for actions/download-artifact
+      # TODO: Add permissions for actions/upload-artifact
+      # TODO: Add permissions for actions/cache
+
+      

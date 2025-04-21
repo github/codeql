@@ -1,10 +1,10 @@
 {
-  "markdownMessage": "Build tool(s) should have been able to provide a recommended classpath but the attempt failed. Extraction will continue, but external dependencies will be inferred from the Java package names used. Consider troubleshooting the build tool error or using a build mode other than 'none'.",
-  "severity": "note",
+  "markdownMessage": "Analyzed a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
+  "severity": "warning",
   "source": {
     "extractorName": "java",
-    "id": "java/autobuilder/buildless/classpath-from-tool-failed",
-    "name": "Failed to extract dependency information from build tool tool Gradle"
+    "id": "java/autobuilder/guessed-gradle-version",
+    "name": "Required Gradle version not specified"
   },
   "visibility": {
     "cliSummaryTable": true,
@@ -13,12 +13,12 @@
   }
 }
 {
-  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
-  "severity": "warning",
+  "markdownMessage": "Build tool(s) should have been able to provide a recommended classpath but the attempt failed. Extraction will continue, but external dependencies will be inferred from the Java package names used. Consider troubleshooting the build tool error or using a build mode other than 'none'.",
+  "severity": "note",
   "source": {
     "extractorName": "java",
-    "id": "java/autobuilder/guessed-gradle-version",
-    "name": "Required Gradle version not specified"
+    "id": "java/autobuilder/buildless/classpath-from-tool-failed",
+    "name": "Failed to extract dependency information from build tool tool Gradle"
   },
   "visibility": {
     "cliSummaryTable": true,

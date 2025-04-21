@@ -119,10 +119,10 @@ edges
 | test.rs:49:24:51:17 | if b {...} | test.rs:47:17:51:17 | if b {...} else {...} |  |
 | test.rs:49:27:49:27 | b | test.rs:49:24:51:17 | if b {...} | false |
 | test.rs:49:27:49:27 | b | test.rs:50:21:50:33 | ExprStmt | true |
-| test.rs:50:21:50:32 | break ''outer | test.rs:45:9:54:9 | 'outer: loop { ... } | break |
-| test.rs:50:21:50:33 | ExprStmt | test.rs:50:21:50:32 | break ''outer |  |
-| test.rs:52:17:52:28 | break ''inner | test.rs:46:13:53:13 | 'inner: loop { ... } | break |
-| test.rs:52:17:52:29 | ExprStmt | test.rs:52:17:52:28 | break ''inner |  |
+| test.rs:50:21:50:32 | break 'outer | test.rs:45:9:54:9 | 'outer: loop { ... } | break |
+| test.rs:50:21:50:33 | ExprStmt | test.rs:50:21:50:32 | break 'outer |  |
+| test.rs:52:17:52:28 | break 'inner | test.rs:46:13:53:13 | 'inner: loop { ... } | break |
+| test.rs:52:17:52:29 | ExprStmt | test.rs:52:17:52:28 | break 'inner |  |
 | test.rs:55:9:55:12 | true | test.rs:44:48:56:5 | { ... } |  |
 | test.rs:58:5:70:5 | enter fn test_continue_with_labels | test.rs:58:34:58:34 | b |  |
 | test.rs:58:34:58:34 | b | test.rs:58:34:58:34 | b |  |
@@ -205,8 +205,8 @@ edges
 | test.rs:99:19:99:25 | Some(...) | test.rs:99:24:99:24 | x | match |
 | test.rs:99:24:99:24 | x | test.rs:99:24:99:24 | x |  |
 | test.rs:99:24:99:24 | x | test.rs:100:17:100:17 | x | match |
-| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next(...) |  |
-| test.rs:99:29:99:39 | iter.next(...) | test.rs:99:19:99:25 | Some(...) |  |
+| test.rs:99:29:99:32 | iter | test.rs:99:29:99:39 | iter.next() |  |
+| test.rs:99:29:99:39 | iter.next() | test.rs:99:19:99:25 | Some(...) |  |
 | test.rs:99:41:103:9 | { ... } | test.rs:99:15:99:39 | let ... = ... |  |
 | test.rs:100:13:102:13 | if ... {...} | test.rs:99:41:103:9 | { ... } |  |
 | test.rs:100:17:100:17 | x | test.rs:100:22:100:22 | 5 |  |
@@ -534,12 +534,12 @@ edges
 | test.rs:228:16:228:20 | ... > ... | test.rs:228:13:230:13 | if ... {...} | false |
 | test.rs:228:16:228:20 | ... > ... | test.rs:229:17:229:36 | ExprStmt | true |
 | test.rs:228:20:228:20 | 0 | test.rs:228:16:228:20 | ... > ... |  |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:227:13:232:9 | [boolean(false)] 'label: loop { ... } | break |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:227:13:232:9 | [boolean(true)] 'label: loop { ... } | break |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:227:13:232:9 | [boolean(false)] 'label: loop { ... } | break |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:227:13:232:9 | [boolean(true)] 'label: loop { ... } | break |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:229:30:229:30 | a |  |
 | test.rs:229:30:229:30 | a | test.rs:229:34:229:35 | 10 |  |
-| test.rs:229:30:229:35 | ... > ... | test.rs:229:17:229:35 | [boolean(false)] break ''label ... | false |
-| test.rs:229:30:229:35 | ... > ... | test.rs:229:17:229:35 | [boolean(true)] break ''label ... | true |
+| test.rs:229:30:229:35 | ... > ... | test.rs:229:17:229:35 | [boolean(false)] break 'label ... | false |
+| test.rs:229:30:229:35 | ... > ... | test.rs:229:17:229:35 | [boolean(true)] break 'label ... | true |
 | test.rs:229:34:229:35 | 10 | test.rs:229:30:229:35 | ... > ... |  |
 | test.rs:231:13:231:13 | a | test.rs:231:17:231:18 | 10 |  |
 | test.rs:231:13:231:18 | ... < ... | test.rs:227:26:232:9 | { ... } |  |
@@ -558,12 +558,12 @@ edges
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:239:43:247:5 | { ... } |  |
 | test.rs:240:13:242:9 | [boolean(false)] 'block: { ... } | test.rs:245:13:245:13 | 0 | false |
 | test.rs:240:13:242:9 | [boolean(true)] 'block: { ... } | test.rs:243:13:243:13 | 1 | true |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:240:13:242:9 | [boolean(false)] 'block: { ... } | break |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:240:13:242:9 | [boolean(true)] 'block: { ... } | break |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:240:13:242:9 | [boolean(false)] 'block: { ... } | break |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:240:13:242:9 | [boolean(true)] 'block: { ... } | break |
 | test.rs:241:13:241:31 | ExprStmt | test.rs:241:26:241:26 | a |  |
 | test.rs:241:26:241:26 | a | test.rs:241:30:241:30 | 0 |  |
-| test.rs:241:26:241:30 | ... > ... | test.rs:241:13:241:30 | [boolean(false)] break ''block ... | false |
-| test.rs:241:26:241:30 | ... > ... | test.rs:241:13:241:30 | [boolean(true)] break ''block ... | true |
+| test.rs:241:26:241:30 | ... > ... | test.rs:241:13:241:30 | [boolean(false)] break 'block ... | false |
+| test.rs:241:26:241:30 | ... > ... | test.rs:241:13:241:30 | [boolean(true)] break 'block ... | true |
 | test.rs:241:30:241:30 | 0 | test.rs:241:26:241:30 | ... > ... |  |
 | test.rs:242:12:244:9 | { ... } | test.rs:240:9:246:9 | if ... {...} else {...} |  |
 | test.rs:243:13:243:13 | 1 | test.rs:242:12:244:9 | { ... } |  |
@@ -760,8 +760,8 @@ edges
 | test.rs:311:87:313:5 | { ... } | test.rs:311:5:313:5 | exit fn test_question_mark_operator_1 (normal) |  |
 | test.rs:312:9:312:10 | Ok | test.rs:312:12:312:12 | s |  |
 | test.rs:312:9:312:33 | Ok(...) | test.rs:311:87:313:5 | { ... } |  |
-| test.rs:312:12:312:12 | s | test.rs:312:12:312:27 | s.parse(...) |  |
-| test.rs:312:12:312:27 | s.parse(...) | test.rs:312:12:312:28 | TryExpr |  |
+| test.rs:312:12:312:12 | s | test.rs:312:12:312:27 | s.parse() |  |
+| test.rs:312:12:312:27 | s.parse() | test.rs:312:12:312:28 | TryExpr |  |
 | test.rs:312:12:312:28 | TryExpr | test.rs:311:5:313:5 | exit fn test_question_mark_operator_1 (normal) | return |
 | test.rs:312:12:312:28 | TryExpr | test.rs:312:32:312:32 | 4 | match |
 | test.rs:312:12:312:32 | ... + ... | test.rs:312:9:312:33 | Ok(...) |  |
@@ -1364,9 +1364,9 @@ edges
 | test.rs:571:12:571:28 | condition_not_met | test.rs:571:12:571:30 | condition_not_met(...) |  |
 | test.rs:571:12:571:30 | condition_not_met(...) | test.rs:571:9:573:9 | if ... {...} | false |
 | test.rs:571:12:571:30 | condition_not_met(...) | test.rs:572:13:572:27 | ExprStmt | true |
-| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:580:5 | 'block: { ... } | break |
+| test.rs:572:13:572:26 | break 'block 1 | test.rs:569:18:580:5 | 'block: { ... } | break |
 | test.rs:572:13:572:27 | ExprStmt | test.rs:572:26:572:26 | 1 |  |
-| test.rs:572:26:572:26 | 1 | test.rs:572:13:572:26 | break ''block 1 |  |
+| test.rs:572:26:572:26 | 1 | test.rs:572:13:572:26 | break 'block 1 |  |
 | test.rs:574:9:574:21 | do_next_thing | test.rs:574:9:574:23 | do_next_thing(...) |  |
 | test.rs:574:9:574:23 | do_next_thing(...) | test.rs:575:9:577:9 | ExprStmt |  |
 | test.rs:574:9:574:24 | ExprStmt | test.rs:574:9:574:21 | do_next_thing |  |
@@ -1375,9 +1375,9 @@ edges
 | test.rs:575:12:575:28 | condition_not_met | test.rs:575:12:575:30 | condition_not_met(...) |  |
 | test.rs:575:12:575:30 | condition_not_met(...) | test.rs:575:9:577:9 | if ... {...} | false |
 | test.rs:575:12:575:30 | condition_not_met(...) | test.rs:576:13:576:27 | ExprStmt | true |
-| test.rs:576:13:576:26 | break ''block 2 | test.rs:569:18:580:5 | 'block: { ... } | break |
+| test.rs:576:13:576:26 | break 'block 2 | test.rs:569:18:580:5 | 'block: { ... } | break |
 | test.rs:576:13:576:27 | ExprStmt | test.rs:576:26:576:26 | 2 |  |
-| test.rs:576:26:576:26 | 2 | test.rs:576:13:576:26 | break ''block 2 |  |
+| test.rs:576:26:576:26 | 2 | test.rs:576:13:576:26 | break 'block 2 |  |
 | test.rs:578:9:578:21 | do_last_thing | test.rs:578:9:578:23 | do_last_thing(...) |  |
 | test.rs:578:9:578:23 | do_last_thing(...) | test.rs:579:9:579:9 | 3 |  |
 | test.rs:578:9:578:24 | ExprStmt | test.rs:578:9:578:21 | do_last_thing |  |
@@ -1400,9 +1400,9 @@ edges
 | test.rs:587:18:587:18 | y | test.rs:587:18:587:18 | y |  |
 | test.rs:587:18:587:18 | y | test.rs:590:9:590:9 | 0 | match |
 | test.rs:587:23:587:23 | x | test.rs:587:13:587:19 | Some(...) |  |
-| test.rs:588:13:588:26 | break ''block 1 | test.rs:585:18:591:5 | 'block: { ... } | break |
+| test.rs:588:13:588:26 | break 'block 1 | test.rs:585:18:591:5 | 'block: { ... } | break |
 | test.rs:588:13:588:27 | ExprStmt | test.rs:588:26:588:26 | 1 |  |
-| test.rs:588:26:588:26 | 1 | test.rs:588:13:588:26 | break ''block 1 |  |
+| test.rs:588:26:588:26 | 1 | test.rs:588:13:588:26 | break 'block 1 |  |
 | test.rs:590:9:590:9 | 0 | test.rs:585:18:591:5 | 'block: { ... } |  |
 | test.rs:594:1:600:1 | enter fn test_nested_function2 | test.rs:595:5:595:18 | let ... = 0 |  |
 | test.rs:594:1:600:1 | exit fn test_nested_function2 (normal) | test.rs:594:1:600:1 | exit fn test_nested_function2 |  |
@@ -1468,18 +1468,18 @@ edges
 breakTarget
 | test.rs:34:17:34:21 | break | test.rs:28:9:40:9 | loop { ... } |
 | test.rs:48:21:48:25 | break | test.rs:46:13:53:13 | 'inner: loop { ... } |
-| test.rs:50:21:50:32 | break ''outer | test.rs:45:9:54:9 | 'outer: loop { ... } |
-| test.rs:52:17:52:28 | break ''inner | test.rs:46:13:53:13 | 'inner: loop { ... } |
+| test.rs:50:21:50:32 | break 'outer | test.rs:45:9:54:9 | 'outer: loop { ... } |
+| test.rs:52:17:52:28 | break 'inner | test.rs:46:13:53:13 | 'inner: loop { ... } |
 | test.rs:91:17:91:21 | break | test.rs:88:9:94:9 | while b { ... } |
 | test.rs:101:17:101:21 | break | test.rs:99:9:103:9 | while ... { ... } |
 | test.rs:109:17:109:21 | break | test.rs:107:9:112:9 | for ... in ... { ... } |
 | test.rs:117:13:117:26 | break ... | test.rs:116:9:118:9 | loop { ... } |
 | test.rs:216:17:216:28 | break ... | test.rs:214:13:219:9 | loop { ... } |
-| test.rs:229:17:229:35 | break ''label ... | test.rs:227:13:232:9 | 'label: loop { ... } |
-| test.rs:241:13:241:30 | break ''block ... | test.rs:240:13:242:9 | 'block: { ... } |
-| test.rs:572:13:572:26 | break ''block 1 | test.rs:569:18:580:5 | 'block: { ... } |
-| test.rs:576:13:576:26 | break ''block 2 | test.rs:569:18:580:5 | 'block: { ... } |
-| test.rs:588:13:588:26 | break ''block 1 | test.rs:585:18:591:5 | 'block: { ... } |
+| test.rs:229:17:229:35 | break 'label ... | test.rs:227:13:232:9 | 'label: loop { ... } |
+| test.rs:241:13:241:30 | break 'block ... | test.rs:240:13:242:9 | 'block: { ... } |
+| test.rs:572:13:572:26 | break 'block 1 | test.rs:569:18:580:5 | 'block: { ... } |
+| test.rs:576:13:576:26 | break 'block 2 | test.rs:569:18:580:5 | 'block: { ... } |
+| test.rs:588:13:588:26 | break 'block 1 | test.rs:585:18:591:5 | 'block: { ... } |
 continueTarget
 | test.rs:37:17:37:24 | continue | test.rs:28:9:40:9 | loop { ... } |
 | test.rs:63:21:63:28 | continue | test.rs:61:13:68:13 | 'inner: loop { ... } |

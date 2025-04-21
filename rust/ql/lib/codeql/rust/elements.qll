@@ -134,7 +134,6 @@ import codeql.rust.elements.PrefixExpr
 import codeql.rust.elements.PtrTypeRepr
 import codeql.rust.elements.RangeExpr
 import codeql.rust.elements.RangePat
-import codeql.rust.elements.RecordFieldList
 import codeql.rust.elements.RefExpr
 import codeql.rust.elements.RefPat
 import codeql.rust.elements.RefTypeRepr
@@ -156,6 +155,7 @@ import codeql.rust.elements.StructExpr
 import codeql.rust.elements.StructExprField
 import codeql.rust.elements.StructExprFieldList
 import codeql.rust.elements.StructField
+import codeql.rust.elements.StructFieldList
 import codeql.rust.elements.StructPat
 import codeql.rust.elements.StructPatField
 import codeql.rust.elements.StructPatFieldList
@@ -186,6 +186,7 @@ import codeql.rust.elements.UseBoundGenericArgs
 import codeql.rust.elements.UseTree
 import codeql.rust.elements.UseTreeList
 import codeql.rust.elements.Variant
+import codeql.rust.elements.VariantDef
 import codeql.rust.elements.VariantList
 import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
