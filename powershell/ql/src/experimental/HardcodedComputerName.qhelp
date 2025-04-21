@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The names of computers should never be hard coded as this will expose sensitive information. The ComputerName parameter should never have a hard coded value.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Remove hardcoded computer names.</p>
+
+</recommendation>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+<li>
+PSScriptAnalyzer:
+<a href="https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/avoidusingcomputernamehardcoded?view=ps-modules">AvoidUsingComputerNameHardcoded</a>.
+</li>
+<!--  LocalWords:  CWE untrusted unsanitized Runtime
+ -->
+
+</references>
+</qhelp>

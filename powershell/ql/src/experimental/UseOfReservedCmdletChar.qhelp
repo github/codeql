@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+You cannot use following reserved characters in a function or cmdlet name as these can cause parsing or runtime errors.
+
+Reserved Characters include: #,(){}[]&/\\$^;:\"'<>|?@`*%+=~
+</p>
+
+</overview>
+<recommendation>
+
+<p>Remove reserved characters from names.</p>
+
+</recommendation>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+<li>
+PSScriptAnalyzer:
+<a href="https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/reservedcmdletchar?view=ps-modules">ReservedCmdletChar</a>.
+</li>
+<!--  LocalWords:  CWE untrusted unsanitized Runtime
+ -->
+
+</references>
+</qhelp>
