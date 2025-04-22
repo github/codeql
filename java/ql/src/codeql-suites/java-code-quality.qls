@@ -6,6 +6,7 @@
       - java/inconsistent-equals-and-hashcode
       - java/input-resource-leak
       - java/integer-multiplication-cast-to-long
+      - java/junit5-missing-nested-annotation
       - java/output-resource-leak
       - java/reference-equality-of-boxed-types
       - java/string-replace-all-with-non-regex
