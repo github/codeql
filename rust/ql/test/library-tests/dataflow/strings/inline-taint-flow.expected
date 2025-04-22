@@ -18,11 +18,11 @@ edges
 | main.rs:52:6:52:7 | s2 | main.rs:53:7:53:8 | s2 | provenance |  |
 | main.rs:52:11:52:26 | ...::from(...) | main.rs:52:6:52:7 | s2 | provenance |  |
 | main.rs:52:24:52:25 | s1 | main.rs:52:11:52:26 | ...::from(...) | provenance | MaD:2 |
-| main.rs:57:6:57:7 | s1 | main.rs:58:11:58:24 | s1.to_string(...) | provenance | MaD:1 |
+| main.rs:57:6:57:7 | s1 | main.rs:58:11:58:24 | s1.to_string() | provenance | MaD:1 |
 | main.rs:57:11:57:26 | source_slice(...) | main.rs:57:6:57:7 | s1 | provenance |  |
 | main.rs:58:6:58:7 | s2 | main.rs:59:7:59:8 | s2 | provenance |  |
-| main.rs:58:11:58:24 | s1.to_string(...) | main.rs:58:6:58:7 | s2 | provenance |  |
-| main.rs:63:9:63:9 | s | main.rs:64:16:64:25 | s.as_str(...) | provenance | MaD:3 |
+| main.rs:58:11:58:24 | s1.to_string() | main.rs:58:6:58:7 | s2 | provenance |  |
+| main.rs:63:9:63:9 | s | main.rs:64:16:64:25 | s.as_str() | provenance | MaD:3 |
 | main.rs:63:13:63:22 | source(...) | main.rs:63:9:63:9 | s | provenance |  |
 | main.rs:68:9:68:9 | s | main.rs:70:34:70:61 | MacroExpr | provenance |  |
 | main.rs:68:9:68:9 | s | main.rs:73:34:73:59 | MacroExpr | provenance |  |
@@ -71,11 +71,11 @@ nodes
 | main.rs:57:6:57:7 | s1 | semmle.label | s1 |
 | main.rs:57:11:57:26 | source_slice(...) | semmle.label | source_slice(...) |
 | main.rs:58:6:58:7 | s2 | semmle.label | s2 |
-| main.rs:58:11:58:24 | s1.to_string(...) | semmle.label | s1.to_string(...) |
+| main.rs:58:11:58:24 | s1.to_string() | semmle.label | s1.to_string() |
 | main.rs:59:7:59:8 | s2 | semmle.label | s2 |
 | main.rs:63:9:63:9 | s | semmle.label | s |
 | main.rs:63:13:63:22 | source(...) | semmle.label | source(...) |
-| main.rs:64:16:64:25 | s.as_str(...) | semmle.label | s.as_str(...) |
+| main.rs:64:16:64:25 | s.as_str() | semmle.label | s.as_str() |
 | main.rs:68:9:68:9 | s | semmle.label | s |
 | main.rs:68:13:68:22 | source(...) | semmle.label | source(...) |
 | main.rs:70:9:70:18 | formatted1 | semmle.label | formatted1 |
@@ -113,7 +113,7 @@ testFailures
 | main.rs:38:10:38:11 | s4 | main.rs:32:14:32:23 | source(...) | main.rs:38:10:38:11 | s4 | $@ | main.rs:32:14:32:23 | source(...) | source(...) |
 | main.rs:53:7:53:8 | s2 | main.rs:51:11:51:26 | source_slice(...) | main.rs:53:7:53:8 | s2 | $@ | main.rs:51:11:51:26 | source_slice(...) | source_slice(...) |
 | main.rs:59:7:59:8 | s2 | main.rs:57:11:57:26 | source_slice(...) | main.rs:59:7:59:8 | s2 | $@ | main.rs:57:11:57:26 | source_slice(...) | source_slice(...) |
-| main.rs:64:16:64:25 | s.as_str(...) | main.rs:63:13:63:22 | source(...) | main.rs:64:16:64:25 | s.as_str(...) | $@ | main.rs:63:13:63:22 | source(...) | source(...) |
+| main.rs:64:16:64:25 | s.as_str() | main.rs:63:13:63:22 | source(...) | main.rs:64:16:64:25 | s.as_str() | $@ | main.rs:63:13:63:22 | source(...) | source(...) |
 | main.rs:71:10:71:19 | formatted1 | main.rs:68:13:68:22 | source(...) | main.rs:71:10:71:19 | formatted1 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |
 | main.rs:74:10:74:19 | formatted2 | main.rs:68:13:68:22 | source(...) | main.rs:74:10:74:19 | formatted2 | $@ | main.rs:68:13:68:22 | source(...) | source(...) |
 | main.rs:78:10:78:19 | formatted3 | main.rs:76:17:76:32 | source_usize(...) | main.rs:78:10:78:19 | formatted3 | $@ | main.rs:76:17:76:32 | source_usize(...) | source_usize(...) |

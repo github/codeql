@@ -9,7 +9,7 @@ extensions:
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", False, "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)", "", "Argument[0]", "Argument[this].Property[System.Text.RegularExpressions.GeneratedRegexAttribute.Pattern]", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "GeneratedRegexAttribute", False, "GeneratedRegexAttribute", "(System.String,System.Text.RegularExpressions.RegexOptions,System.Int32,System.String)", "", "Argument[3]", "Argument[this].Property[System.Text.RegularExpressions.GeneratedRegexAttribute.CultureName]", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "Group", False, "Synchronized", "(System.Text.RegularExpressions.Group)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Text.RegularExpressions", "GroupCollection", False, "TryGetValue", "(System.String,System.Text.RegularExpressions.Group)", "", "Argument[this].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.RegularExpressions", "GroupCollection", False, "TryGetValue", "(System.String,System.Text.RegularExpressions.Group)", "", "Argument[this].Element", "Argument[1]", "value", "dfc-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Keys", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "GroupCollection", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Text.RegularExpressions", "Match", False, "NextMatch", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

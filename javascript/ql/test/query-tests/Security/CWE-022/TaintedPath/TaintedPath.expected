@@ -52,6 +52,19 @@
 | handlebars.js:11:32:11:39 | filePath | handlebars.js:29:46:29:60 | req.params.path | handlebars.js:11:32:11:39 | filePath | This path depends on a $@. | handlebars.js:29:46:29:60 | req.params.path | user-provided value |
 | handlebars.js:15:25:15:32 | filePath | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:15:25:15:32 | filePath | This path depends on a $@. | handlebars.js:43:15:43:29 | req.params.path | user-provided value |
 | hapi.js:15:44:15:51 | filepath | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:15:44:15:51 | filepath | This path depends on a $@. | hapi.js:14:30:14:51 | request ... ilepath | user-provided value |
+| make-dir.js:9:25:9:28 | file | make-dir.js:7:18:7:31 | req.query.file | make-dir.js:9:25:9:28 | file | This path depends on a $@. | make-dir.js:7:18:7:31 | req.query.file | user-provided value |
+| make-dir.js:10:23:10:26 | file | make-dir.js:7:18:7:31 | req.query.file | make-dir.js:10:23:10:26 | file | This path depends on a $@. | make-dir.js:7:18:7:31 | req.query.file | user-provided value |
+| mkdirp.js:11:12:11:18 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:11:12:11:18 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:12:17:12:23 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:12:17:12:23 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:13:23:13:29 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:13:23:13:29 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:14:19:14:25 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:14:19:14:25 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:15:19:15:25 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:15:19:15:25 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:16:23:16:29 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:16:23:16:29 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:17:25:17:31 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:17:25:17:31 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:18:25:18:31 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:18:25:18:31 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:19:29:19:35 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:19:29:19:35 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:20:29:20:35 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:20:29:20:35 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
+| mkdirp.js:21:23:21:29 | dirPath | mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:21:23:21:29 | dirPath | This path depends on a $@. | mkdirp.js:9:42:9:59 | req.query.filename | user-provided value |
 | more-fs-extra.js:10:15:10:22 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:10:15:10:22 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
 | more-fs-extra.js:11:11:11:18 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:11:11:11:18 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
 | more-fs-extra.js:12:14:12:21 | filename | more-fs-extra.js:8:26:8:33 | req.body | more-fs-extra.js:12:14:12:21 | filename | This path depends on a $@. | more-fs-extra.js:8:26:8:33 | req.body | user-provided value |
@@ -140,6 +153,8 @@
 | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | normalizedPaths.js:408:38:408:48 | req.query.x | normalizedPaths.js:408:19:408:60 | pathMod ... t('/')) | This path depends on a $@. | normalizedPaths.js:408:38:408:48 | req.query.x | user-provided value |
 | normalizedPaths.js:415:19:415:22 | path | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:415:19:415:22 | path | This path depends on a $@. | normalizedPaths.js:412:35:412:45 | req.query.x | user-provided value |
 | normalizedPaths.js:426:21:426:24 | path | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:426:21:426:24 | path | This path depends on a $@. | normalizedPaths.js:412:35:412:45 | req.query.x | user-provided value |
+| open.js:9:10:9:13 | file | open.js:7:18:7:31 | req.query.file | open.js:9:10:9:13 | file | This path depends on a $@. | open.js:7:18:7:31 | req.query.file | user-provided value |
+| open.js:10:13:10:16 | file | open.js:7:18:7:31 | req.query.file | open.js:10:13:10:16 | file | This path depends on a $@. | open.js:7:18:7:31 | req.query.file | user-provided value |
 | other-fs-libraries.js:11:19:11:22 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:11:19:11:22 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
 | other-fs-libraries.js:12:27:12:30 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:12:27:12:30 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
 | other-fs-libraries.js:13:24:13:27 | path | other-fs-libraries.js:9:24:9:30 | req.url | other-fs-libraries.js:13:24:13:27 | path | This path depends on a $@. | other-fs-libraries.js:9:24:9:30 | req.url | user-provided value |
@@ -168,6 +183,26 @@
 | prettier.js:11:44:11:44 | p | prettier.js:6:13:6:13 | p | prettier.js:11:44:11:44 | p | This path depends on a $@. | prettier.js:6:13:6:13 | p | user-provided value |
 | pupeteer.js:9:28:9:34 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:9:28:9:34 | tainted | This path depends on a $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | user-provided value |
 | pupeteer.js:13:37:13:43 | tainted | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:13:37:13:43 | tainted | This path depends on a $@. | pupeteer.js:5:28:5:53 | parseTo ... t).name | user-provided value |
+| rimraf.js:10:17:10:20 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:10:17:10:20 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:11:23:11:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:11:23:11:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:12:19:12:22 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:12:19:12:22 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:13:25:13:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:13:25:13:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:14:24:14:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:14:24:14:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:15:23:15:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:15:23:15:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:16:25:16:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:16:25:16:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:17:19:17:22 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:17:19:17:22 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:18:24:18:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:18:24:18:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:19:23:19:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:19:23:19:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:20:26:20:29 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:20:26:20:29 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:21:20:21:23 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:21:20:21:23 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:22:25:22:28 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:22:25:22:28 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:23:24:23:27 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:23:24:23:27 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:24:23:24:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:24:23:24:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:25:28:25:31 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:25:28:25:31 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:26:27:26:30 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:26:27:26:30 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:27:22:27:25 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:27:22:27:25 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:28:18:28:21 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:28:18:28:21 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
+| rimraf.js:29:23:29:26 | path | rimraf.js:8:22:8:29 | req.body | rimraf.js:29:23:29:26 | path | This path depends on a $@. | rimraf.js:8:22:8:29 | req.body | user-provided value |
 | sharedlib-repro.js:22:18:22:25 | filepath | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | sharedlib-repro.js:22:18:22:25 | filepath | This path depends on a $@. | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | user-provided value |
 | tainted-access-paths.js:8:19:8:22 | path | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:8:19:8:22 | path | This path depends on a $@. | tainted-access-paths.js:6:24:6:30 | req.url | user-provided value |
 | tainted-access-paths.js:12:19:12:25 | obj.sub | tainted-access-paths.js:6:24:6:30 | req.url | tainted-access-paths.js:12:19:12:25 | obj.sub | This path depends on a $@. | tainted-access-paths.js:6:24:6:30 | req.url | user-provided value |
@@ -370,6 +405,23 @@ edges
 | handlebars.js:43:15:43:29 | req.params.path | handlebars.js:13:73:13:80 | filePath | provenance |  |
 | hapi.js:14:19:14:51 | filepath | hapi.js:15:44:15:51 | filepath | provenance |  |
 | hapi.js:14:30:14:51 | request ... ilepath | hapi.js:14:19:14:51 | filepath | provenance |  |
+| make-dir.js:7:11:7:31 | file | make-dir.js:9:25:9:28 | file | provenance |  |
+| make-dir.js:7:11:7:31 | file | make-dir.js:10:23:10:26 | file | provenance |  |
+| make-dir.js:7:18:7:31 | req.query.file | make-dir.js:7:11:7:31 | file | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:11:12:11:18 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:12:17:12:23 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:13:23:13:29 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:14:19:14:25 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:15:19:15:25 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:16:23:16:29 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:17:25:17:31 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:18:25:18:31 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:19:29:19:35 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:20:29:20:35 | dirPath | provenance |  |
+| mkdirp.js:9:11:9:76 | dirPath | mkdirp.js:21:23:21:29 | dirPath | provenance |  |
+| mkdirp.js:9:21:9:76 | path.jo ... ltDir') | mkdirp.js:9:11:9:76 | dirPath | provenance |  |
+| mkdirp.js:9:42:9:59 | req.query.filename | mkdirp.js:9:42:9:75 | req.que ... ultDir' | provenance |  |
+| mkdirp.js:9:42:9:75 | req.que ... ultDir' | mkdirp.js:9:21:9:76 | path.jo ... ltDir') | provenance | Config |
 | more-fs-extra.js:8:11:8:22 | { filename } | more-fs-extra.js:8:13:8:20 | filename | provenance | Config |
 | more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:10:15:10:22 | filename | provenance |  |
 | more-fs-extra.js:8:11:8:33 | filename | more-fs-extra.js:11:11:11:18 | filename | provenance |  |
@@ -541,6 +593,9 @@ edges
 | normalizedPaths.js:412:7:412:46 | path | normalizedPaths.js:426:21:426:24 | path | provenance |  |
 | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | normalizedPaths.js:412:7:412:46 | path | provenance |  |
 | normalizedPaths.js:412:35:412:45 | req.query.x | normalizedPaths.js:412:14:412:46 | pathMod ... uery.x) | provenance | Config |
+| open.js:7:11:7:31 | file | open.js:9:10:9:13 | file | provenance |  |
+| open.js:7:11:7:31 | file | open.js:10:13:10:16 | file | provenance |  |
+| open.js:7:18:7:31 | req.query.file | open.js:7:11:7:31 | file | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:11:19:11:22 | path | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:12:27:12:30 | path | provenance |  |
 | other-fs-libraries.js:9:7:9:48 | path | other-fs-libraries.js:13:24:13:27 | path | provenance |  |
@@ -594,6 +649,29 @@ edges
 | pupeteer.js:5:9:5:71 | tainted | pupeteer.js:13:37:13:43 | tainted | provenance |  |
 | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | pupeteer.js:5:9:5:71 | tainted | provenance |  |
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | pupeteer.js:5:19:5:71 | "dir/"  ... t.data" | provenance | Config |
+| rimraf.js:8:11:8:18 | { path } | rimraf.js:8:13:8:16 | path | provenance | Config |
+| rimraf.js:8:11:8:29 | path | rimraf.js:10:17:10:20 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:11:23:11:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:12:19:12:22 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:13:25:13:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:14:24:14:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:15:23:15:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:16:25:16:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:17:19:17:22 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:18:24:18:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:19:23:19:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:20:26:20:29 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:21:20:21:23 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:22:25:22:28 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:23:24:23:27 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:24:23:24:26 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:25:28:25:31 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:26:27:26:30 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:27:22:27:25 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:28:18:28:21 | path | provenance |  |
+| rimraf.js:8:11:8:29 | path | rimraf.js:29:23:29:26 | path | provenance |  |
+| rimraf.js:8:13:8:16 | path | rimraf.js:8:11:8:29 | path | provenance |  |
+| rimraf.js:8:22:8:29 | req.body | rimraf.js:8:11:8:18 | { path } | provenance |  |
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | sharedlib-repro.js:21:27:21:34 | filepath | provenance |  |
 | sharedlib-repro.js:21:27:21:34 | filepath | sharedlib-repro.js:22:18:22:25 | filepath | provenance |  |
 | tainted-access-paths.js:6:7:6:48 | path | tainted-access-paths.js:8:19:8:22 | path | provenance |  |
@@ -876,6 +954,25 @@ nodes
 | hapi.js:14:19:14:51 | filepath | semmle.label | filepath |
 | hapi.js:14:30:14:51 | request ... ilepath | semmle.label | request ... ilepath |
 | hapi.js:15:44:15:51 | filepath | semmle.label | filepath |
+| make-dir.js:7:11:7:31 | file | semmle.label | file |
+| make-dir.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
+| make-dir.js:9:25:9:28 | file | semmle.label | file |
+| make-dir.js:10:23:10:26 | file | semmle.label | file |
+| mkdirp.js:9:11:9:76 | dirPath | semmle.label | dirPath |
+| mkdirp.js:9:21:9:76 | path.jo ... ltDir') | semmle.label | path.jo ... ltDir') |
+| mkdirp.js:9:42:9:59 | req.query.filename | semmle.label | req.query.filename |
+| mkdirp.js:9:42:9:75 | req.que ... ultDir' | semmle.label | req.que ... ultDir' |
+| mkdirp.js:11:12:11:18 | dirPath | semmle.label | dirPath |
+| mkdirp.js:12:17:12:23 | dirPath | semmle.label | dirPath |
+| mkdirp.js:13:23:13:29 | dirPath | semmle.label | dirPath |
+| mkdirp.js:14:19:14:25 | dirPath | semmle.label | dirPath |
+| mkdirp.js:15:19:15:25 | dirPath | semmle.label | dirPath |
+| mkdirp.js:16:23:16:29 | dirPath | semmle.label | dirPath |
+| mkdirp.js:17:25:17:31 | dirPath | semmle.label | dirPath |
+| mkdirp.js:18:25:18:31 | dirPath | semmle.label | dirPath |
+| mkdirp.js:19:29:19:35 | dirPath | semmle.label | dirPath |
+| mkdirp.js:20:29:20:35 | dirPath | semmle.label | dirPath |
+| mkdirp.js:21:23:21:29 | dirPath | semmle.label | dirPath |
 | more-fs-extra.js:8:11:8:22 | { filename } | semmle.label | { filename } |
 | more-fs-extra.js:8:11:8:33 | filename | semmle.label | filename |
 | more-fs-extra.js:8:13:8:20 | filename | semmle.label | filename |
@@ -1073,6 +1170,10 @@ nodes
 | normalizedPaths.js:412:35:412:45 | req.query.x | semmle.label | req.query.x |
 | normalizedPaths.js:415:19:415:22 | path | semmle.label | path |
 | normalizedPaths.js:426:21:426:24 | path | semmle.label | path |
+| open.js:7:11:7:31 | file | semmle.label | file |
+| open.js:7:18:7:31 | req.query.file | semmle.label | req.query.file |
+| open.js:9:10:9:13 | file | semmle.label | file |
+| open.js:10:13:10:16 | file | semmle.label | file |
 | other-fs-libraries.js:9:7:9:48 | path | semmle.label | path |
 | other-fs-libraries.js:9:14:9:37 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other-fs-libraries.js:9:14:9:43 | url.par ... ).query | semmle.label | url.par ... ).query |
@@ -1133,6 +1234,30 @@ nodes
 | pupeteer.js:5:28:5:53 | parseTo ... t).name | semmle.label | parseTo ... t).name |
 | pupeteer.js:9:28:9:34 | tainted | semmle.label | tainted |
 | pupeteer.js:13:37:13:43 | tainted | semmle.label | tainted |
+| rimraf.js:8:11:8:18 | { path } | semmle.label | { path } |
+| rimraf.js:8:11:8:29 | path | semmle.label | path |
+| rimraf.js:8:13:8:16 | path | semmle.label | path |
+| rimraf.js:8:22:8:29 | req.body | semmle.label | req.body |
+| rimraf.js:10:17:10:20 | path | semmle.label | path |
+| rimraf.js:11:23:11:26 | path | semmle.label | path |
+| rimraf.js:12:19:12:22 | path | semmle.label | path |
+| rimraf.js:13:25:13:28 | path | semmle.label | path |
+| rimraf.js:14:24:14:27 | path | semmle.label | path |
+| rimraf.js:15:23:15:26 | path | semmle.label | path |
+| rimraf.js:16:25:16:28 | path | semmle.label | path |
+| rimraf.js:17:19:17:22 | path | semmle.label | path |
+| rimraf.js:18:24:18:27 | path | semmle.label | path |
+| rimraf.js:19:23:19:26 | path | semmle.label | path |
+| rimraf.js:20:26:20:29 | path | semmle.label | path |
+| rimraf.js:21:20:21:23 | path | semmle.label | path |
+| rimraf.js:22:25:22:28 | path | semmle.label | path |
+| rimraf.js:23:24:23:27 | path | semmle.label | path |
+| rimraf.js:24:23:24:26 | path | semmle.label | path |
+| rimraf.js:25:28:25:31 | path | semmle.label | path |
+| rimraf.js:26:27:26:30 | path | semmle.label | path |
+| rimraf.js:27:22:27:25 | path | semmle.label | path |
+| rimraf.js:28:18:28:21 | path | semmle.label | path |
+| rimraf.js:29:23:29:26 | path | semmle.label | path |
 | sharedlib-repro.js:13:22:13:43 | req.par ... spaceId | semmle.label | req.par ... spaceId |
 | sharedlib-repro.js:21:27:21:34 | filepath | semmle.label | filepath |
 | sharedlib-repro.js:22:18:22:25 | filepath | semmle.label | filepath |

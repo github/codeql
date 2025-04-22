@@ -14,6 +14,9 @@
 /java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
+# Experimental CodeQL cryptography
+**/experimental/quantum/ @github/ps-codeql
+
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
 /docs/codeql/codeql-for-visual-studio-code/ @github/codeql-vscode-reviewers

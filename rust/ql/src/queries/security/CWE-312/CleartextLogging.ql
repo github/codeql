@@ -14,9 +14,9 @@
  */
 
 import rust
-import codeql.rust.security.CleartextLoggingExtensions
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.CleartextLoggingExtensions
 
 /**
  * A taint-tracking configuration for cleartext logging vulnerabilities.

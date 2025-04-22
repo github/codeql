@@ -20,14 +20,16 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, RustDataF
   class Callable = R::Callable;
 
   class NodeExtended extends DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getScope() }
-
     Type getType() { any() }
-
-    Callable getEnclosingCallable() {
-      result = this.(Node::Node).getEnclosingCallable().asCfgScope()
-    }
   }
+
+  Callable getAsExprEnclosingCallable(NodeExtended node) { result = node.asExpr().getScope() }
+
+  Callable getEnclosingCallable(NodeExtended node) {
+    result = node.(Node::Node).getEnclosingCallable().asCfgScope()
+  }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   private predicate relevant(Function api) {
     // Only include functions that have a resolved path.

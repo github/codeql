@@ -1430,7 +1430,10 @@ module Trees {
   }
 
   private class StringlikeLiteralTree extends StandardPostOrderTree instanceof StringlikeLiteral {
-    StringlikeLiteralTree() { not this instanceof HereDoc }
+    StringlikeLiteralTree() {
+      not this instanceof HereDoc and
+      not this instanceof AstInternal::TSimpleSymbolLiteralSynth
+    }
 
     final override ControlFlowTree getChildNode(int i) { result = super.getComponent(i) }
   }

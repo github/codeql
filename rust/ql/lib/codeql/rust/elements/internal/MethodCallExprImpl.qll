@@ -42,12 +42,22 @@ module Impl {
       )
     }
 
+    private string toStringPart(int index) {
+      index = 0 and
+      result = this.getReceiver().toAbbreviatedString()
+      or
+      index = 1 and
+      (if this.getReceiver().toAbbreviatedString() = "..." then result = " ." else result = ".")
+      or
+      index = 2 and
+      result = this.getIdentifier().toStringImpl()
+      or
+      index = 3 and
+      if this.getArgList().getNumberOfArgs() = 0 then result = "()" else result = "(...)"
+    }
+
     override string toStringImpl() {
-      exists(string base, string separator |
-        base = this.getReceiver().toAbbreviatedString() and
-        (if base = "..." then separator = " ." else separator = ".") and
-        result = base + separator + this.getIdentifier().toStringImpl() + "(...)"
-      )
+      result = strictconcat(int i | | this.toStringPart(i) order by i)
     }
   }
 }

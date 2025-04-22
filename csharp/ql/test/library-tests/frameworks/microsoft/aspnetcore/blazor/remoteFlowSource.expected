@@ -2,6 +2,9 @@
 | Components_Pages_TestPage_razor.g.cs:138:15:138:22 | access to property UrlParam | ASP.NET Core component route parameter |
 | Components_Pages_TestPage_razor.g.cs:176:1:176:10 | access to property QueryParam | external |
 | Components_Pages_TestPage_razor.g.cs:188:18:188:27 | access to property QueryParam | external |
+| NameList2.cs:31:57:31:60 | access to property Name | ASP.NET Core component route parameter |
+| NameList2.cs:41:17:41:20 | access to property Name | ASP.NET Core component route parameter |
+| NameList2.cs:43:27:43:30 | access to property Name | ASP.NET Core component route parameter |
 | NameList.cs:31:99:31:102 | access to property Name | ASP.NET Core component route parameter |
 | NameList.cs:41:17:41:20 | access to property Name | ASP.NET Core component route parameter |
 | NameList.cs:43:27:43:30 | access to property Name | ASP.NET Core component route parameter |
