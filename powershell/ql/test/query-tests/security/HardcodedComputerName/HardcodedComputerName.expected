@@ -1,0 +1,2 @@
+| test.ps1:3:44:3:65 | hardcoderemotehostname | ComputerName argument is hardcoded tohardcoderemotehostname |
+| test.ps1:13:44:13:64 | hardcodelocalhostname | ComputerName argument is hardcoded tohardcodelocalhostname |
