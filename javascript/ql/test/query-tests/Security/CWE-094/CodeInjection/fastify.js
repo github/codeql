@@ -63,7 +63,7 @@ fastify.get('/dangerous', async (request, reply) => {
 
 // Store user input in request object
 fastify.addHook('preHandler', async (request, reply) => {
-  request.storedCode = request.query.storedCode;
+  request.storedCode = request.query.storedCode; // $ Source[js/code-injection]
 });
 fastify.get('/flow-through-request', async (request, reply) => {
   // Use the stored code from previous hook
@@ -76,7 +76,7 @@ fastify.get('/flow-through-request', async (request, reply) => {
 
 // Store user input in reply object
 fastify.addHook('onRequest', async (request, reply) => {
-  reply.userCode = request.query.replyCode;
+  reply.userCode = request.query.replyCode; // $ Source[js/code-injection]
 });
 fastify.get('/flow-through-reply', async (request, reply) => {
   // Use the code stored in reply object
@@ -91,7 +91,7 @@ fastify.get('/flow-through-reply', async (request, reply) => {
 // Store user input in reply object
 fastify.addHook('onRequest', async (request, reply) => {
   reply.locals = reply.locals || {};
-  reply.locals.nestedCode = request.query.replyCode;
+  reply.locals.nestedCode = request.query.replyCode; // $ Source[js/code-injection]
 });
 fastify.get('/flow-through-reply', async (request, reply) => {
   // Use the code stored in reply object
