@@ -88,6 +88,16 @@ class QlPackDocument extends YamlDocument {
   }
 }
 
+/**
+ * Holds if `qlref` is a `.qlref` YAML document referencing a query
+ * at relative path `relativePath`, and `f` is a candidate folder
+ * in which to lookup the referenced query.
+ *
+ * `f` is either:
+ * - the root of the QL pack containing `qlref`,
+ * - the root of a QL pack that is a dependency of the QL pack containing `qlref`, or
+ * - the folder containing `qlref`.
+ */
 private predicate shouldAppend(QlRefDocument qlref, Folder f, string relativePath) {
   relativePath = qlref.getRelativeQueryPath() and
   (
