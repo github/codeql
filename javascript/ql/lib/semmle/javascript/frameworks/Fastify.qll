@@ -164,11 +164,17 @@ module Fastify {
 
   private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup
   {
-    ShorthandRoutingTreeSetup() { not this.getMethodName() = "route" }
+    ShorthandRoutingTreeSetup() { not this.getMethodName() = ["route", "addHook"] }
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
     override Http::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
+  }
+
+  private class AddHookRouteSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
+    AddHookRouteSetup() { this.getMethodName() = "addHook" }
+
+    override predicate isMiddlewareSetup() { any() }
   }
 
   /** Gets the name of the `n`th handler function that can be installed a route setup, in order of execution. */
