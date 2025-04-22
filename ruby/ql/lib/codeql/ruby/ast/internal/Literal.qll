@@ -608,14 +608,30 @@ class BareStringLiteral extends StringLiteralImpl, TBareStringLiteral {
 
 abstract class SymbolLiteralImpl extends StringlikeLiteralImpl, TSymbolLiteral { }
 
-class SimpleSymbolLiteral extends SymbolLiteralImpl, TSimpleSymbolLiteral {
+abstract class SimpleSymbolLiteralImpl extends SymbolLiteralImpl, TSimpleSymbolLiteral { }
+
+class SimpleSymbolLiteralReal extends SimpleSymbolLiteralImpl, TSimpleSymbolLiteral {
   private Ruby::SimpleSymbol g;
 
-  SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
+  SimpleSymbolLiteralReal() { this = TSimpleSymbolLiteralReal(g) }
 
   final override StringComponent getComponentImpl(int n) { n = 0 and toGenerated(result) = g }
 
   final override string toString() { result = g.getValue() }
+}
+
+class SimpleSymbolLiteralSynth extends SimpleSymbolLiteralImpl, TSimpleSymbolLiteralSynth,
+  StringComponentImpl
+{
+  private string value;
+
+  SimpleSymbolLiteralSynth() { this = TSimpleSymbolLiteralSynth(_, _, value) }
+
+  final override string getValue() { result = value }
+
+  final override StringComponent getComponentImpl(int n) { n = 0 and result = this }
+
+  final override string toString() { result = value }
 }
 
 abstract class ComplexSymbolLiteral extends SymbolLiteralImpl, TComplexSymbolLiteral { }

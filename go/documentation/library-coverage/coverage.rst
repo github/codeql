@@ -8,7 +8,7 @@ Go framework & library support
 
    Framework / library,Package,Flow sources,Taint & value steps,Sinks (total)
    `Afero <https://github.com/spf13/afero>`_,``github.com/spf13/afero*``,,,34
-   `Bun <https://bun.uptrace.dev/>`_,``github.com/uptrace/bun*``,,,63
+   `Bun <https://bun.uptrace.dev/>`_,``github.com/uptrace/bun*``,8,,63
    `CleverGo <https://github.com/clevergo/clevergo>`_,"``clevergo.tech/clevergo*``, ``github.com/clevergo/clevergo*``",,,2
    `Couchbase official client(gocb) <https://github.com/couchbase/gocb>`_,"``github.com/couchbase/gocb*``, ``gopkg.in/couchbase/gocb*``",44,96,16
    `Couchbase unofficial client <http://www.github.com/couchbase/go-couchbase>`_,``github.com/couchbaselabs/gocb*``,22,48,8
@@ -22,7 +22,7 @@ Go framework & library support
    `Go kit <https://gokit.io/>`_,``github.com/go-kit/kit*``,,,1
    `Go-spew <https://github.com/davecgh/go-spew>`_,``github.com/davecgh/go-spew/spew*``,,,9
    `GoDotEnv <https://github.com/joho/godotenv>`_,``github.com/joho/godotenv*``,4,,
-   `GoFrame <https://goframe.org/en/>`_,``github.com/gogf/gf*``,,,51
+   `GoFrame <https://goframe.org/en/>`_,``github.com/gogf/gf*``,39,21,51
    `Gokogiri <https://github.com/moovweb/gokogiri>`_,"``github.com/jbowtie/gokogiri*``, ``github.com/moovweb/gokogiri*``",,,10
    `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,14
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
@@ -74,5 +74,5 @@ Go framework & library support
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,33
    Others,``github.com/kanikanema/gorqlite``,8,2,24
-   Totals,,641,1048,1556
+   Totals,,688,1069,1556
 

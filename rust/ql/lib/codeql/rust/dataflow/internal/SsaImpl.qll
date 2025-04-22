@@ -189,7 +189,7 @@ private predicate capturedCallRead(Expr call, BasicBlock bb, int i, Variable v) 
     hasCapturedRead(pragma[only_bind_into](v), pragma[only_bind_into](scope)) and
     (
       variableWriteInOuterScope(bb, any(int j | j < i), v, scope) or
-      variableWriteInOuterScope(bb.getAPredecessor+(), _, v, scope)
+      variableWriteInOuterScope(bb.getImmediateDominator+(), _, v, scope)
     ) and
     call = bb.getNode(i).getAstNode()
   )

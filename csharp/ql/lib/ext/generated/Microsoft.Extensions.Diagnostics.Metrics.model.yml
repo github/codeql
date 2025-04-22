@@ -5,7 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "Initialize", "(Microsoft.Extensions.Diagnostics.Metrics.IObservableInstrumentsSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "InstrumentPublished", "(System.Diagnostics.Metrics.Instrument,System.Object)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.Diagnostics.Metrics", "IMetricsListener", True, "InstrumentPublished", "(System.Diagnostics.Metrics.Instrument,System.Object)", "", "Argument[this]", "Argument[1]", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderConfigurationExtensions", False, "AddConfiguration", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Configuration.IConfiguration)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "AddListener", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder,Microsoft.Extensions.Diagnostics.Metrics.IMetricsListener)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Diagnostics.Metrics", "MetricsBuilderExtensions", False, "AddListener<T>", "(Microsoft.Extensions.Diagnostics.Metrics.IMetricsBuilder)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]

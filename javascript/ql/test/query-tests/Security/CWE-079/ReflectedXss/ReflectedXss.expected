@@ -27,6 +27,14 @@
 | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | ReflectedXssContentTypes.js:39:13:39:35 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:39:23:39:35 | req.params.id | user-provided value |
 | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | ReflectedXssContentTypes.js:70:12:70:34 | "FOO: " ... rams.id | Cross-site scripting vulnerability due to a $@. | ReflectedXssContentTypes.js:70:22:70:34 | req.params.id | user-provided value |
 | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | Cross-site scripting vulnerability due to a $@. | ReflectedXssGood3.js:135:15:135:27 | req.params.id | user-provided value |
+| app/api/route.ts:5:18:5:21 | body | app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:5:18:5:21 | body | Cross-site scripting vulnerability due to a $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
+| app/api/route.ts:13:18:13:21 | body | app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:13:18:13:21 | body | Cross-site scripting vulnerability due to a $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
+| app/api/route.ts:25:18:25:21 | body | app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:25:18:25:21 | body | Cross-site scripting vulnerability due to a $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
+| app/api/route.ts:29:25:29:28 | body | app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:29:25:29:28 | body | Cross-site scripting vulnerability due to a $@. | app/api/route.ts:2:24:2:33 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:7:20:7:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:7:20:7:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:15:20:15:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:27:20:27:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/api/routeNextRequest.ts:31:27:31:30 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to a $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
@@ -40,6 +48,15 @@
 | partial.js:28:14:28:18 | x + y | partial.js:31:47:31:53 | req.url | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:31:47:31:53 | req.url | user-provided value |
 | partial.js:37:14:37:18 | x + y | partial.js:40:43:40:49 | req.url | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:40:43:40:49 | req.url | user-provided value |
 | promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to a $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
+| response-object.js:9:18:9:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:9:18:9:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:10:18:10:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:10:18:10:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:11:18:11:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:11:18:11:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:14:18:14:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:14:18:14:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:17:18:17:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:17:18:17:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:23:18:23:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:23:18:23:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:26:18:26:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:26:18:26:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:34:18:34:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:34:18:34:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
+| response-object.js:38:18:38:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:38:18:38:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:6:9:6:9 | p | user-provided value |
 | tst2.js:8:12:8:12 | r | tst2.js:6:12:6:15 | q: r | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to a $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
 | tst2.js:18:12:18:12 | p | tst2.js:14:9:14:9 | p | tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
@@ -119,6 +136,18 @@ edges
 | ReflectedXssGood3.js:135:15:135:27 | req.params.id | ReflectedXssGood3.js:135:9:135:27 | url | provenance |  |
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:68:22:68:26 | value | provenance |  |
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | provenance |  |
+| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:5:18:5:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:13:18:13:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:25:18:25:21 | body | provenance |  |
+| app/api/route.ts:2:11:2:33 | body | app/api/route.ts:29:25:29:28 | body | provenance |  |
+| app/api/route.ts:2:18:2:33 | await req.json() | app/api/route.ts:2:11:2:33 | body | provenance |  |
+| app/api/route.ts:2:24:2:33 | req.json() | app/api/route.ts:2:18:2:33 | await req.json() | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:7:20:7:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:15:20:15:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:27:20:27:23 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:9:4:31 | body | app/api/routeNextRequest.ts:31:27:31:30 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | app/api/routeNextRequest.ts:4:9:4:31 | body | provenance |  |
+| app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | provenance |  |
 | etherpad.js:9:5:9:53 | response | etherpad.js:11:12:11:19 | response | provenance |  |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:5:9:53 | response | provenance |  |
 | formatting.js:4:9:4:29 | evil | formatting.js:6:43:6:46 | evil | provenance |  |
@@ -149,6 +178,16 @@ edges
 | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | promises.js:5:16:5:22 | resolve [Return] [resolve-value] | provenance |  |
 | promises.js:5:44:5:57 | req.query.data | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | provenance |  |
 | promises.js:6:11:6:11 | x | promises.js:6:25:6:25 | x | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:9:18:9:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:10:18:10:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:11:18:11:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:14:18:14:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:17:18:17:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:23:18:23:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:26:18:26:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:34:18:34:21 | data | provenance |  |
+| response-object.js:7:11:7:25 | data | response-object.js:38:18:38:21 | data | provenance |  |
+| response-object.js:7:18:7:25 | req.body | response-object.js:7:11:7:25 | data | provenance |  |
 | tst2.js:6:7:6:30 | p | tst2.js:7:12:7:12 | p | provenance |  |
 | tst2.js:6:7:6:30 | r | tst2.js:8:12:8:12 | r | provenance |  |
 | tst2.js:6:9:6:9 | p | tst2.js:6:7:6:30 | p | provenance |  |
@@ -290,6 +329,20 @@ nodes
 | ReflectedXssGood3.js:135:15:135:27 | req.params.id | semmle.label | req.params.id |
 | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) | semmle.label | escapeHtml3(url) |
 | ReflectedXssGood3.js:139:24:139:26 | url | semmle.label | url |
+| app/api/route.ts:2:11:2:33 | body | semmle.label | body |
+| app/api/route.ts:2:18:2:33 | await req.json() | semmle.label | await req.json() |
+| app/api/route.ts:2:24:2:33 | req.json() | semmle.label | req.json() |
+| app/api/route.ts:5:18:5:21 | body | semmle.label | body |
+| app/api/route.ts:13:18:13:21 | body | semmle.label | body |
+| app/api/route.ts:25:18:25:21 | body | semmle.label | body |
+| app/api/route.ts:29:25:29:28 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:4:9:4:31 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | semmle.label | await req.json() |
+| app/api/routeNextRequest.ts:4:22:4:31 | req.json() | semmle.label | req.json() |
+| app/api/routeNextRequest.ts:7:20:7:23 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:15:20:15:23 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:27:20:27:23 | body | semmle.label | body |
+| app/api/routeNextRequest.ts:31:27:31:30 | body | semmle.label | body |
 | etherpad.js:9:5:9:53 | response | semmle.label | response |
 | etherpad.js:9:16:9:30 | req.query.jsonp | semmle.label | req.query.jsonp |
 | etherpad.js:11:12:11:19 | response | semmle.label | response |
@@ -332,6 +385,17 @@ nodes
 | promises.js:5:44:5:57 | req.query.data | semmle.label | req.query.data |
 | promises.js:6:11:6:11 | x | semmle.label | x |
 | promises.js:6:25:6:25 | x | semmle.label | x |
+| response-object.js:7:11:7:25 | data | semmle.label | data |
+| response-object.js:7:18:7:25 | req.body | semmle.label | req.body |
+| response-object.js:9:18:9:21 | data | semmle.label | data |
+| response-object.js:10:18:10:21 | data | semmle.label | data |
+| response-object.js:11:18:11:21 | data | semmle.label | data |
+| response-object.js:14:18:14:21 | data | semmle.label | data |
+| response-object.js:17:18:17:21 | data | semmle.label | data |
+| response-object.js:23:18:23:21 | data | semmle.label | data |
+| response-object.js:26:18:26:21 | data | semmle.label | data |
+| response-object.js:34:18:34:21 | data | semmle.label | data |
+| response-object.js:38:18:38:21 | data | semmle.label | data |
 | tst2.js:6:7:6:30 | p | semmle.label | p |
 | tst2.js:6:7:6:30 | r | semmle.label | r |
 | tst2.js:6:9:6:9 | p | semmle.label | p |

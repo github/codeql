@@ -4,6 +4,8 @@
 
    * - Language
      - Identifier
+   * - GitHub Actions
+     - ``actions``
    * - C/C++ 
      - ``cpp``
    * - C# 

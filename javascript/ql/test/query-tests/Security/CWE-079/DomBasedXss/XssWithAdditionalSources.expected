@@ -138,6 +138,7 @@ nodes
 | dates.js:61:31:61:88 | `Time i ... aint)}` | semmle.label | `Time i ... aint)}` |
 | dates.js:61:42:61:86 | dayjs.s ... (taint) | semmle.label | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint | semmle.label | taint |
+| dom.js:4:20:4:30 | window.name | semmle.label | window.name |
 | dragAndDrop.ts:8:11:8:50 | html | semmle.label | html |
 | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | semmle.label | dataTra ... /html') |
 | dragAndDrop.ts:15:25:15:28 | html | semmle.label | html |

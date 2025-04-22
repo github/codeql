@@ -2,7 +2,7 @@
 
 ## Description
 
-Secrets derived from other secrets are not know to the workflow runner and therefore not masked unless explicitly registered.
+Secrets derived from other secrets are not known to the workflow runner and therefore not masked unless explicitly registered.
 
 ## Recommendations
 

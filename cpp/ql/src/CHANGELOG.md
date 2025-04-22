@@ -1,3 +1,7 @@
+## 1.3.8
+
+No user-facing changes.
+
 ## 1.3.7
 
 ### Minor Analysis Improvements
