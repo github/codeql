@@ -53,9 +53,15 @@ class Cmd extends @command, CmdBase {
 
   Redirection getARedirection() { result = this.getRedirection(_) }
 
-  Expr getArgument(int i) {
+  /**
+   * Gets the `i`th argument to this command.
+   *
+   * This is either an expression, or a CmdParameter with no expression.
+   * The latter is only used to denote switch parameters.
+   */
+  CmdElement getArgument(int i) {
     result =
-      rank[i + 1](CmdElement e, Expr r, int j |
+      rank[i + 1](CmdElement e, CmdElement r, int j |
         (
           // For most commands the 0'th element is the command name ...
           j > 0
@@ -71,7 +77,25 @@ class Cmd extends @command, CmdBase {
           not e instanceof CmdParameter and
           r = e
           or
-          r = e.(CmdParameter).getExpr()
+          exists(CmdParameter p | e = p |
+            // If it has an expression, use that
+            p.getExpr() = r
+            or
+            // Otherwise, if it doesn't have an expression it's either
+            // because it's of the form (1) `-Name x`, (2) `-Name -SomethingElse`,
+            // or (3) `-Name` (with no other elements).
+            // In (1) we use `x` as the argument, and in (2) and (3) we use
+            // `-Name` as the argument.
+            not exists(p.getExpr()) and
+            (
+              this.getElement(j + 1) instanceof CmdParameter and
+              p = r
+              or
+              // Case 3
+              not exists(this.getElement(j + 1)) and
+              r = p
+            )
+          )
         )
       |
         r order by j
@@ -80,16 +104,23 @@ class Cmd extends @command, CmdBase {
 
   Expr getNamedArgument(string name) {
     exists(CmdParameter p, int index |
-      result = this.getArgument(index) and
-      p.getName() = name
+      p = this.getElement(index) and
+      p.getName().toLowerCase() = name
     |
-      p.getExpr() = result
+      result = p.getExpr()
       or
-      exists(int jndex |
-        not exists(p.getExpr()) and
-        this.getElement(jndex) = p and
-        this.getElement(jndex + 1) = result
-      )
+      not exists(p.getExpr()) and
+      // `not result instanceof CmdParameter` is implied
+      result = this.getElement(index + 1)
+    )
+  }
+
+  CmdParameter getSwitchArgument(string name) {
+    not exists(this.getNamedArgument(name)) and
+    exists(int index |
+      result = this.getElement(index) and
+      result.getName().toLowerCase() = name and
+      not exists(result.getExpr())
     )
   }
 }
