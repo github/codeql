@@ -1,3 +1,36 @@
+| Arguments/arguments.ps1:1:1:1:3 | Foo | Arguments/arguments.ps1:1:1:1:5 | Call to Foo |
+| Arguments/arguments.ps1:1:1:1:5 | Call to Foo | Arguments/arguments.ps1:1:1:1:5 | [Stmt] Call to Foo |
+| Arguments/arguments.ps1:1:1:1:5 | [Stmt] Call to Foo | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:1:1:8:13 | {...} | Arguments/arguments.ps1:1:1:8:13 | toplevel function for arguments.ps1 |
+| Arguments/arguments.ps1:1:1:8:13 | {...} | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:1:5:1:5 | 1 | Arguments/arguments.ps1:1:1:1:5 | Call to Foo |
+| Arguments/arguments.ps1:2:1:2:3 | Foo | Arguments/arguments.ps1:2:1:2:8 | Call to Foo |
+| Arguments/arguments.ps1:2:1:2:8 | Call to Foo | Arguments/arguments.ps1:2:1:2:8 | [Stmt] Call to Foo |
+| Arguments/arguments.ps1:2:1:2:8 | [Stmt] Call to Foo | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:2:8:2:8 | 1 | Arguments/arguments.ps1:2:1:2:8 | Call to Foo |
+| Arguments/arguments.ps1:3:1:3:3 | Foo | Arguments/arguments.ps1:3:1:3:8 | Call to Foo |
+| Arguments/arguments.ps1:3:1:3:8 | Call to Foo | Arguments/arguments.ps1:3:1:3:8 | [Stmt] Call to Foo |
+| Arguments/arguments.ps1:3:1:3:8 | [Stmt] Call to Foo | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:3:8:3:8 | 1 | Arguments/arguments.ps1:3:1:3:8 | Call to Foo |
+| Arguments/arguments.ps1:4:1:4:3 | Foo | Arguments/arguments.ps1:4:1:4:6 | Call to Foo |
+| Arguments/arguments.ps1:4:1:4:6 | Call to Foo | Arguments/arguments.ps1:4:1:4:6 | [Stmt] Call to Foo |
+| Arguments/arguments.ps1:4:1:4:6 | [Stmt] Call to Foo | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:4:5:4:6 | true | Arguments/arguments.ps1:4:1:4:6 | Call to Foo |
+| Arguments/arguments.ps1:6:1:6:3 | Bar | Arguments/arguments.ps1:6:1:6:9 | Call to Bar |
+| Arguments/arguments.ps1:6:1:6:9 | Call to Bar | Arguments/arguments.ps1:6:1:6:9 | [Stmt] Call to Bar |
+| Arguments/arguments.ps1:6:1:6:9 | [Stmt] Call to Bar | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:6:5:6:6 | true | Arguments/arguments.ps1:6:1:6:9 | Call to Bar |
+| Arguments/arguments.ps1:6:8:6:9 | true | Arguments/arguments.ps1:6:1:6:9 | Call to Bar |
+| Arguments/arguments.ps1:7:1:7:3 | Bar | Arguments/arguments.ps1:7:1:7:13 | Call to Bar |
+| Arguments/arguments.ps1:7:1:7:13 | Call to Bar | Arguments/arguments.ps1:7:1:7:13 | [Stmt] Call to Bar |
+| Arguments/arguments.ps1:7:1:7:13 | [Stmt] Call to Bar | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:7:8:7:8 | 1 | Arguments/arguments.ps1:7:1:7:13 | Call to Bar |
+| Arguments/arguments.ps1:7:13:7:13 | 2 | Arguments/arguments.ps1:7:1:7:13 | Call to Bar |
+| Arguments/arguments.ps1:8:1:8:3 | Bar | Arguments/arguments.ps1:8:1:8:13 | Call to Bar |
+| Arguments/arguments.ps1:8:1:8:13 | Call to Bar | Arguments/arguments.ps1:8:1:8:13 | [Stmt] Call to Bar |
+| Arguments/arguments.ps1:8:1:8:13 | [Stmt] Call to Bar | Arguments/arguments.ps1:1:1:8:13 | {...} |
+| Arguments/arguments.ps1:8:8:8:8 | 1 | Arguments/arguments.ps1:8:1:8:13 | Call to Bar |
+| Arguments/arguments.ps1:8:13:8:13 | 2 | Arguments/arguments.ps1:8:1:8:13 | Call to Bar |
 | Arrays/Arrays.ps1:0:0:0:-1 | {...} | Arrays/Arrays.ps1:14:41:14:43 | @(...) |
 | Arrays/Arrays.ps1:1:1:1:7 | array1 | Arrays/Arrays.ps1:1:1:1:36 | ...=... |
 | Arrays/Arrays.ps1:1:1:1:7 | array1 | Arrays/Arrays.ps1:1:1:15:14 | {...} |
@@ -189,6 +222,8 @@
 | Expressions/ConvertWithSecureString.ps1:2:19:2:40 | ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:19:2:79 | Call to ConvertTo-SecureString |
 | Expressions/ConvertWithSecureString.ps1:2:19:2:79 | Call to ConvertTo-SecureString | Expressions/ConvertWithSecureString.ps1:2:1:2:79 | ...=... |
 | Expressions/ConvertWithSecureString.ps1:2:50:2:59 | UserInput | Expressions/ConvertWithSecureString.ps1:2:19:2:79 | Call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:61:2:72 | true | Expressions/ConvertWithSecureString.ps1:2:19:2:79 | Call to ConvertTo-SecureString |
+| Expressions/ConvertWithSecureString.ps1:2:74:2:79 | true | Expressions/ConvertWithSecureString.ps1:2:19:2:79 | Call to ConvertTo-SecureString |
 | Expressions/ExpandableString.ps1:1:1:1:39 | Date: $([DateTime]::Now)\nName: $name | Expressions/ExpandableString.ps1:1:1:1:39 | [Stmt] Date: $([DateTime]::Now)\nName: $name |
 | Expressions/ExpandableString.ps1:1:1:1:39 | [Stmt] Date: $([DateTime]::Now)\nName: $name | Expressions/ExpandableString.ps1:1:1:1:39 | {...} |
 | Expressions/ExpandableString.ps1:1:1:1:39 | {...} | Expressions/ExpandableString.ps1:1:1:1:39 | toplevel function for ExpandableString.ps1 |
@@ -199,6 +234,14 @@
 | Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] Now | Expressions/ExpandableString.ps1:1:23:1:37 | {...} |
 | Expressions/ExpandableString.ps1:1:23:1:37 | {...} | Expressions/ExpandableString.ps1:1:21:1:38 | $(...) |
 | Expressions/ExpandableString.ps1:1:35:1:37 | Now | Expressions/ExpandableString.ps1:1:23:1:37 | Now |
+| Expressions/MemberExpression.ps1:1:1:2:14 | [synth] pipeline | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | toplevel function for MemberExpression.ps1 |
+| Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:1:7:1:8 | x | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:2:1:2:10 | DateTime | Expressions/MemberExpression.ps1:2:1:2:14 | ... |
+| Expressions/MemberExpression.ps1:2:1:2:14 | ... | Expressions/MemberExpression.ps1:2:1:2:14 | [Stmt] ... |
+| Expressions/MemberExpression.ps1:2:1:2:14 | [Stmt] ... | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:2:13:2:14 | x | Expressions/MemberExpression.ps1:2:1:2:14 | ... |
 | Expressions/SubExpression.ps1:1:1:1:11 | $(...) | Expressions/SubExpression.ps1:1:1:1:23 | Call to AddDays |
 | Expressions/SubExpression.ps1:1:1:1:23 | Call to AddDays | Expressions/SubExpression.ps1:1:1:1:23 | [Stmt] Call to AddDays |
 | Expressions/SubExpression.ps1:1:1:1:23 | [Stmt] Call to AddDays | Expressions/SubExpression.ps1:1:1:2:21 | {...} |
