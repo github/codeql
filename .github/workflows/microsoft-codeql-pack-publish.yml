@@ -1,0 +1,148 @@
+name: Microsoft CodeQL Pack Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-branch:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This workflow can only run on the 'main' branch." && exit 1
+  codeqlversion:
+    needs: check-branch
+    runs-on: ubuntu-latest
+    outputs:
+      codeql_version: ${{ steps.set_codeql_version.outputs.codeql_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+      - name: Set CodeQL Version
+        id: set_codeql_version
+        run: |
+            git fetch
+            git fetch --tags
+            CURRENT_COMMIT=$(git rev-list -1 HEAD)
+            CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'codeql-cli/v*' $CURRENT_COMMIT)
+            CODEQL_VERSION="${CURRENT_TAG#codeql-cli/}"
+            echo "CODEQL_VERSION=$CODEQL_VERSION" >> $GITHUB_OUTPUT
+  publishlibs:
+    environment: secure-publish
+    needs: codeqlversion
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ['powershell']
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Install CodeQL
+      shell: bash
+      run: |
+        gh extension install github/gh-codeql
+        gh codeql download "${{ needs.codeqlversion.outputs.codeql_version }}"
+        gh codeql set-version "${{ needs.codeqlversion.outputs.codeql_version }}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Publish OS Microsoft CodeQL Lib Pack
+      shell: bash
+      run: |
+        # Download latest qlpack
+        gh codeql pack download "microsoft/$LANGUAGE-all"
+        PACK_DIR="$HOME/.codeql/packages/microsoft/$LANGUAGE-all"
+        VERSION_COUNT=$(ls -d "$PACK_DIR"/*/ | wc -l)
+        [[ "$VERSION_COUNT" -ne 1 ]] && { echo "Expected exactly one version in $PACK_DIR, but found $VERSION_COUNT. Exiting."; exit 1; }
+
+        # Increment version
+        CURRENT_VERSION=$(ls -v "$PACK_DIR" | tail -n 1)
+        MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+        MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+        PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
+        NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+
+        # Extract dependencies from the existing qlpack.yml before deleting
+        DEPENDENCIES=$(yq 'select(has("dependencies")) | .dependencies | {"dependencies": .}' "$LANGUAGE/ql/lib/qlpack.yml" 2>/dev/null)
+        DATAEXTENSIONS=$(yq 'select(has("dataExtensions")) | .dataExtensions | {"dataExtensions": .}' "$LANGUAGE/ql/lib/qlpack.yml" 2>/dev/null)
+        rm -f "$LANGUAGE/ql/lib/qlpack.yml" "$LANGUAGE/ql/lib/qlpack.lock"
+
+        # Create new qlpack.yml with modified content
+        cat <<EOF > "$LANGUAGE/ql/lib/qlpack.yml"
+        name: microsoft/$LANGUAGE-all
+        version: $NEXT_VERSION
+        extractor: $LANGUAGE
+        groups:
+          - $LANGUAGE
+          - microsoft-all
+        dbscheme: semmlecode.$LANGUAGE.dbscheme
+        extractor: $LANGUAGE
+        library: true
+        upgrades: upgrades
+        $DEPENDENCIES
+        $DATAEXTENSIONS
+        warnOnImplicitThis: true
+        EOF
+
+        # Publish pack
+        cat "$LANGUAGE/ql/lib/qlpack.yml"
+        gh codeql pack publish "$LANGUAGE/ql/lib"
+      env:
+        LANGUAGE: ${{ matrix.language }}
+        GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
+  publish:
+    environment: secure-publish
+    needs: codeqlversion
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ['csharp', 'cpp', 'java', 'javascript', 'python', 'ruby', 'go', 'rust', 'swift', 'powershell']
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Install CodeQL
+      shell: bash
+      run: |
+        gh extension install github/gh-codeql
+        gh codeql download "${{ needs.codeqlversion.outputs.codeql_version }}"
+        gh codeql set-version "${{ needs.codeqlversion.outputs.codeql_version }}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - name: Publish OS Microsoft CodeQL Pack
+      shell: bash
+      run: |
+        # Download latest qlpack
+        gh codeql pack download "microsoft/$LANGUAGE-queries"
+        PACK_DIR="$HOME/.codeql/packages/microsoft/$LANGUAGE-queries"
+        VERSION_COUNT=$(ls -d "$PACK_DIR"/*/ | wc -l)
+        [[ "$VERSION_COUNT" -ne 1 ]] && { echo "Expected exactly one version in $PACK_DIR, but found $VERSION_COUNT. Exiting."; exit 1; }
+
+        # Increment version
+        CURRENT_VERSION=$(ls -v "$PACK_DIR" | tail -n 1)
+        MAJOR=$(echo "$CURRENT_VERSION" | cut -d. -f1)
+        MINOR=$(echo "$CURRENT_VERSION" | cut -d. -f2)
+        PATCH=$(echo "$CURRENT_VERSION" | cut -d. -f3)
+        NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+
+        # Extract dependencies from the existing qlpack.yml before deleting
+        DEPENDENCIES=$(yq 'select(has("dependencies")) | .dependencies | {"dependencies": .}' "$LANGUAGE/ql/src/qlpack.yml" 2>/dev/null)
+        rm -f "$LANGUAGE/ql/src/qlpack.yml" "$LANGUAGE/ql/src/qlpack.lock"
+
+        # Create new qlpack.yml with modified content
+        cat <<EOF > "$LANGUAGE/ql/src/qlpack.yml"
+        name: microsoft/$LANGUAGE-queries
+        version: $NEXT_VERSION
+        extractor: $LANGUAGE
+        groups:
+          - $LANGUAGE
+          - queries
+        $DEPENDENCIES
+        EOF
+
+        # Publish pack
+        cat "$LANGUAGE/ql/src/qlpack.yml"
+        gh codeql pack publish "$LANGUAGE/ql/src"
+      env:
+        LANGUAGE: ${{ matrix.language }}
+        GITHUB_TOKEN: ${{ secrets.PACKAGE_PUBLISH }}
+
