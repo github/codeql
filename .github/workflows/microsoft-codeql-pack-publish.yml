@@ -5,10 +5,14 @@ on:
 
 jobs:
   check-branch:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - run: echo "This workflow can only run on the 'main' branch." && exit 1
+    - name: Fail if not on main branch
+      run: |
+        if [ "$GITHUB_REF" != "refs/heads/main" ]; then
+          echo "This workflow can only run on the 'main' branch."
+          exit 1
+        fi
   codeqlversion:
     needs: check-branch
     runs-on: ubuntu-latest
