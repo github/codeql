@@ -8,8 +8,6 @@
  * @id powershell/microsoft/public/username-or-password-parameter
  * @tags correctness
  *       security
- *       external/cwe/cwe-078
- *       external/cwe/cwe-088
  */
 
  import powershell

@@ -1,6 +1,6 @@
 /**
  * @name Hardcoded Computer Name
- * @description Do not hardcode computer names in powershell scripts.
+ * @description Do not hardcode computer names
  * @kind problem
  * @problem.severity error
  * @security-severity 7.0
@@ -8,8 +8,6 @@
  * @id powershell/microsoft/public/hardcoded-computer-name
  * @tags correctness
  *       security
- *       external/cwe/cwe-078
- *       external/cwe/cwe-088
  */
 
 import powershell
