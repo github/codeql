@@ -199,6 +199,14 @@
 | Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] Now | Expressions/ExpandableString.ps1:1:23:1:37 | {...} |
 | Expressions/ExpandableString.ps1:1:23:1:37 | {...} | Expressions/ExpandableString.ps1:1:21:1:38 | $(...) |
 | Expressions/ExpandableString.ps1:1:35:1:37 | Now | Expressions/ExpandableString.ps1:1:23:1:37 | Now |
+| Expressions/MemberExpression.ps1:1:1:2:14 | [synth] pipeline | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | toplevel function for MemberExpression.ps1 |
+| Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:1:7:1:8 | x | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:2:1:2:10 | DateTime | Expressions/MemberExpression.ps1:2:1:2:14 | ... |
+| Expressions/MemberExpression.ps1:2:1:2:14 | ... | Expressions/MemberExpression.ps1:2:1:2:14 | [Stmt] ... |
+| Expressions/MemberExpression.ps1:2:1:2:14 | [Stmt] ... | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
+| Expressions/MemberExpression.ps1:2:13:2:14 | x | Expressions/MemberExpression.ps1:2:1:2:14 | ... |
 | Expressions/SubExpression.ps1:1:1:1:11 | $(...) | Expressions/SubExpression.ps1:1:1:1:23 | Call to AddDays |
 | Expressions/SubExpression.ps1:1:1:1:23 | Call to AddDays | Expressions/SubExpression.ps1:1:1:1:23 | [Stmt] Call to AddDays |
 | Expressions/SubExpression.ps1:1:1:1:23 | [Stmt] Call to AddDays | Expressions/SubExpression.ps1:1:1:2:21 | {...} |
