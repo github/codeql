@@ -8,8 +8,6 @@
  * @id powershell/microsoft/public/reserved-characters-in-function-name
  * @tags correctness
  *       security
- *       external/cwe/cwe-078
- *       external/cwe/cwe-088
  */
 
  import powershell

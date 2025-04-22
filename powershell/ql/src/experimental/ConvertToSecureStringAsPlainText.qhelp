@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The use of the AsPlainText parameter with the ConvertTo-SecureString command can expose secure information.</p>
+
+</overview>
+<recommendation>
+<p>
+If you do need an ability to retrieve the password from somewhere without prompting the user, consider using the <a href="https://www.powershellgallery.com/packages/Microsoft.PowerShell.SecretStore">SecretStore</a> module from the PowerShell Gallery.
+</p>
+</recommendation>
+<references>
+
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+<li>
+PSScriptAnalyzer:
+<a href="https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/avoidusingconverttosecurestringwithplaintext?view=ps-modules">AvoidUsingConvertToSecureStringWithPlainText</a>.
+</li>
+<!--  LocalWords:  CWE untrusted unsanitized Runtime
+ -->
+
+</references>
+</qhelp>
