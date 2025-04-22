@@ -18,15 +18,9 @@ Reserved Characters include: #,(){}[]&/\\$^;:\"'<>|?@`*%+=~
 <references>
 
 <li>
-OWASP:
-<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
-</li>
-<li>
 PSScriptAnalyzer:
 <a href="https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/reservedcmdletchar?view=ps-modules">ReservedCmdletChar</a>.
 </li>
-<!--  LocalWords:  CWE untrusted unsanitized Runtime
- -->
 
 </references>
 </qhelp>
