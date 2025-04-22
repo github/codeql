@@ -23,6 +23,7 @@ class SimpleTypeSanitizer extends DataFlow::Node {
     this.getType()
         .(RefType)
         .getASourceSupertype*()
-        .hasQualifiedName("java.time.temporal", "TemporalAccessor")
+        .hasQualifiedName("java.time.temporal", "TemporalAccessor") or
+    this.getType() instanceof EnumType
   }
 }

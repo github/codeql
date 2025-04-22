@@ -19,6 +19,6 @@ module Impl {
    * ```
    */
   class Use extends Generated::Use {
-    override string toStringImpl() { result = "use " + this.getUseTree() }
+    override string toStringImpl() { result = "use " + this.getUseTree().toAbbreviatedString() }
   }
 }

@@ -53,6 +53,7 @@
 | dates.js:57:31:57:101 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:57:31:57:101 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
 | dates.js:59:31:59:87 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:59:31:59:87 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
 | dates.js:61:31:61:88 | `Time i ... aint)}` | dates.js:54:36:54:55 | window.location.hash | dates.js:61:31:61:88 | `Time i ... aint)}` | Cross-site scripting vulnerability due to $@. | dates.js:54:36:54:55 | window.location.hash | user-provided value |
+| dom.js:4:20:4:30 | window.name | dom.js:4:20:4:30 | window.name | dom.js:4:20:4:30 | window.name | Cross-site scripting vulnerability due to $@. | dom.js:4:20:4:30 | window.name | user-provided value |
 | dragAndDrop.ts:15:25:15:28 | html | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | dragAndDrop.ts:15:25:15:28 | html | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | user-provided value |
 | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:24:23:24:57 | e.dataT ... /html') | user-provided value |
 | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | Cross-site scripting vulnerability due to $@. | dragAndDrop.ts:29:19:29:53 | e.dataT ... /html') | user-provided value |
@@ -937,6 +938,7 @@ nodes
 | dates.js:61:31:61:88 | `Time i ... aint)}` | semmle.label | `Time i ... aint)}` |
 | dates.js:61:42:61:86 | dayjs.s ... (taint) | semmle.label | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint | semmle.label | taint |
+| dom.js:4:20:4:30 | window.name | semmle.label | window.name |
 | dragAndDrop.ts:8:11:8:50 | html | semmle.label | html |
 | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | semmle.label | dataTra ... /html') |
 | dragAndDrop.ts:15:25:15:28 | html | semmle.label | html |

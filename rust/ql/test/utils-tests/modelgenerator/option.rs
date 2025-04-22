@@ -10,6 +10,7 @@ use core::{hint, mem};
 
 // summary=repo::test;crate::option::replace;Argument[0].Reference;ReturnValue;value;dfc-generated
 // summary=repo::test;crate::option::replace;Argument[1];Argument[0].Reference;value;dfc-generated
+// sink=repo::test;crate::option::replace;Argument[0];pointer-access;df-generated
 pub fn replace<T>(dest: &mut T, src: T) -> T {
     unsafe {
         let result = ptr::read(dest);
@@ -338,6 +339,7 @@ impl<T> MyOption<T> {
     }
 
     // summary=repo::test;<crate::option::MyOption>::take;Argument[self].Reference;ReturnValue;value;dfc-generated
+    // sink=repo::test;<crate::option::MyOption>::take;Argument[self];pointer-access;df-generated
     pub fn take(&mut self) -> MyOption<T> {
         // FIXME(const-hack) replace `mem::replace` by `mem::take` when the latter is const ready
         replace(self, MyNone)
@@ -345,6 +347,7 @@ impl<T> MyOption<T> {
 
     // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference;ReturnValue;value;dfc-generated
+    // sink=repo::test;<crate::option::MyOption>::take_if;Argument[self];pointer-access;df-generated
     pub fn take_if<P>(&mut self, predicate: P) -> MyOption<T>
     where
         P: FnOnce(&mut T) -> bool,
@@ -358,6 +361,7 @@ impl<T> MyOption<T> {
 
     // summary=repo::test;<crate::option::MyOption>::replace;Argument[0];Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     // summary=repo::test;<crate::option::MyOption>::replace;Argument[self].Reference;ReturnValue;value;dfc-generated
+    // sink=repo::test;<crate::option::MyOption>::replace;Argument[self];pointer-access;df-generated
     pub fn replace(&mut self, value: T) -> MyOption<T> {
         replace(self, MySome(value))
     }

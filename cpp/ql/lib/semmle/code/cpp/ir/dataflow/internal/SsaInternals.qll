@@ -1069,7 +1069,7 @@ module BarrierGuard<guardChecksNodeSig/3 guardChecksNode> {
 
 bindingset[result, v]
 pragma[inline_late]
-DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
+private DataFlowIntegrationImpl::Node fromDfNode(Node n, SourceVariable v) {
   result = n.(SsaSynthNode).getSynthNode()
   or
   exists(UseImpl use, IRBlock bb, int i |
