@@ -3109,16 +3109,13 @@ cfg.swift:
 #  467| [NamedFunction] testIfConfig()
 #  467|     InterfaceType = () -> ()
 #  467|   getBody(): [BraceStmt] { ... }
-#  468|     getElement(0): [IfConfigDecl] #if ...
-#  472|     getElement(1): [IntegerLiteralExpr] 3
-#  473|     getElement(2): [IntegerLiteralExpr] 4
-#  476|     getElement(3): [IntegerLiteralExpr] 5
-#  478|     getElement(4): [IfConfigDecl] #if ...
-#  483|     getElement(5): [IntegerLiteralExpr] 8
-#  485|     getElement(6): [IfConfigDecl] #if ...
-#  489|     getElement(7): [IntegerLiteralExpr] 11
-#  490|     getElement(8): [IntegerLiteralExpr] 12
-#  493|     getElement(9): [IntegerLiteralExpr] 13
+#  472|     getElement(0): [IntegerLiteralExpr] 3
+#  473|     getElement(1): [IntegerLiteralExpr] 4
+#  476|     getElement(2): [IntegerLiteralExpr] 5
+#  483|     getElement(3): [IntegerLiteralExpr] 8
+#  489|     getElement(4): [IntegerLiteralExpr] 11
+#  490|     getElement(5): [IntegerLiteralExpr] 12
+#  493|     getElement(6): [IntegerLiteralExpr] 13
 #  496| [NamedFunction] testAvailable()
 #  496|     InterfaceType = () -> Int
 #  496|   getBody(): [BraceStmt] { ... }
@@ -4587,14 +4584,11 @@ declarations.swift:
 #  157| [NamedFunction] ifConfig()
 #  157|     InterfaceType = () -> ()
 #  157|   getBody(): [BraceStmt] { ... }
-#  158|     getElement(0): [IfConfigDecl] #if ...
-#  163|     getElement(1): [IntegerLiteralExpr] 4
-#  164|     getElement(2): [IntegerLiteralExpr] 5
-#  165|     getElement(3): [IntegerLiteralExpr] 6
-#  168|     getElement(4): [IfConfigDecl] #if ...
-#  173|     getElement(5): [IfConfigDecl] #if ...
-#  174|     getElement(6): [IntegerLiteralExpr] 9
-#  175|     getElement(7): [IntegerLiteralExpr] 10
+#  163|     getElement(0): [IntegerLiteralExpr] 4
+#  164|     getElement(1): [IntegerLiteralExpr] 5
+#  165|     getElement(2): [IntegerLiteralExpr] 6
+#  174|     getElement(3): [IntegerLiteralExpr] 9
+#  175|     getElement(4): [IntegerLiteralExpr] 10
 #  182| [ClassDecl] B
 #  182|   getMember(0): [Deinitializer] B.deinit()
 #  182|       InterfaceType = (B) -> () -> ()
