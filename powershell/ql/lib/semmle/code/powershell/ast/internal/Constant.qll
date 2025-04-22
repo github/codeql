@@ -1,4 +1,5 @@
 private import AstImport
+private import codeql.util.Boolean
 
 private newtype TConstantValue =
   TConstInteger(int value) {
@@ -12,15 +13,7 @@ private newtype TConstantValue =
     )
   } or
   TConstString(string value) { exists(Raw::StringLiteral sl | sl.getValue() = value) } or
-  TConstBoolean(boolean value) {
-    exists(Raw::VarAccess va |
-      value = true and
-      va.getUserPath() = "true"
-      or
-      value = false and
-      va.getUserPath() = "false"
-    )
-  } or
+  TConstBoolean(Boolean b) or
   TNull()
 
 /** A constant value. */
@@ -61,9 +54,7 @@ class ConstInteger extends ConstantValue, TConstInteger {
 
   final override string serialize() { result = this.getValue() }
 
-  final override ConstExpr getAnExpr() {
-    result.getValueString() = this.getValue()
-  }
+  final override ConstExpr getAnExpr() { result.getValueString() = this.getValue() }
 }
 
 /** A constant floating point value. */

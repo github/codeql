@@ -8,6 +8,21 @@
 routine that executes a command, allows the user to execute malicious
 code.</p>
 
+<p>The following are considered dangerous sinks: </p>
+<ul>
+  <li>Invoke-Expression</li>
+  <li>InvokeScript</li>
+  <li>CreateNestedPipeline</li>
+  <li>AddScript</li>
+  <li>powershell</li>
+  <li>cmd</li>
+  <li>Foreach-Object</li>
+  <li>Invoke</li>
+  <li>CreateScriptBlock</li>
+  <li>NewScriptBlock</li>
+  <li>ExpandString</li>
+</ul>
+
 </overview>
 <recommendation>
 
@@ -36,7 +51,10 @@ without examining it first.</p>
 OWASP:
 <a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
 </li>
-
+<li>
+Injection Hunter:
+<a href="https://devblogs.microsoft.com/powershell/powershell-injection-hunter-security-auditing-for-powershell-scripts/">PowerShell Injection Hunter: Security Auditing for PowerShell Scripts</a>.
+</li>
 <!--  LocalWords:  CWE untrusted unsanitized Runtime
  -->
 
