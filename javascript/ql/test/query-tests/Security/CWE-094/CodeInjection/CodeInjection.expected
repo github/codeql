@@ -40,6 +40,7 @@
 | firebase-server.js:33:25:33:44 | statusSnapshot.val() | firebase-server.js:33:25:33:44 | statusSnapshot.val() | firebase-server.js:33:25:33:44 | statusSnapshot.val() | This code execution depends on a $@. | firebase-server.js:33:25:33:44 | statusSnapshot.val() | user-provided value |
 | firebase-server.js:44:12:44:30 | childSnapshot.val() | firebase-server.js:44:12:44:30 | childSnapshot.val() | firebase-server.js:44:12:44:30 | childSnapshot.val() | This code execution depends on a $@. | firebase-server.js:44:12:44:30 | childSnapshot.val() | user-provided value |
 | firebase-server.js:55:10:55:19 | snap.val() | firebase-server.js:55:10:55:19 | snap.val() | firebase-server.js:55:10:55:19 | snap.val() | This code execution depends on a $@. | firebase-server.js:55:10:55:19 | snap.val() | user-provided value |
+| firebase-server.js:70:12:70:21 | snap.val() | firebase-server.js:70:12:70:21 | snap.val() | firebase-server.js:70:12:70:21 | snap.val() | This code execution depends on a $@. | firebase-server.js:70:12:70:21 | snap.val() | user-provided value |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
@@ -170,6 +171,7 @@ nodes
 | firebase-server.js:33:25:33:44 | statusSnapshot.val() | semmle.label | statusSnapshot.val() |
 | firebase-server.js:44:12:44:30 | childSnapshot.val() | semmle.label | childSnapshot.val() |
 | firebase-server.js:55:10:55:19 | snap.val() | semmle.label | snap.val() |
+| firebase-server.js:70:12:70:21 | snap.val() | semmle.label | snap.val() |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |

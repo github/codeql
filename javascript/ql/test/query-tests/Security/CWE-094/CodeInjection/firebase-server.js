@@ -54,3 +54,19 @@ async function fun3(uid, postId, size) {
     const snap = await imageUrlRef.once('value');
     eval(snap.val()); // $ Alert[js/code-injection]
 }
+
+exports.sendFollowerNotification = functions.database.ref('/followers/{followedUid}/{followerUid}').onWrite(async (change, context) => {
+      const followerUid = context.params.followerUid;
+      const followedUid = context.params.followedUid;
+      const getDeviceTokensPromise = admin.database().ref(`/users/${followedUid}/notificationTokens`).once('value');
+
+      const getFollowerProfilePromise = admin.auth().getUser(followerUid);
+
+      const results = await Promise.all([getDeviceTokensPromise, getFollowerProfilePromise]);
+      let tokensSnapshot = results[0];
+      const follower = results[1];
+      eval(tokensSnapshot.val()); // $ MISSING: Alert[js/code-injection]
+      let snap = await getDeviceTokensPromise;
+      eval(snap.val()); // $ Alert[js/code-injection]
+      return follower;
+});
