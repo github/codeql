@@ -550,13 +550,18 @@ private module CmdExprRemoval {
 private module CmdArguments {
   private class CmdParameterRemoval extends Synthesis {
     override predicate child(Raw::Ast parent, ChildIndex i, Child child) {
-      exists(Raw::Expr e |
-        this.rawChild(parent, i, e) and
-        child = childRef(getResultAst(e))
+      exists(Raw::CmdElement elem | this.rawChild(parent, i, elem) |
+        elem instanceof Raw::Expr and
+        child = childRef(getResultAst(elem))
+        or
+        // By construction of `Cmd::getArgument` this `CmdParameter` does not
+        // have an expression attached to it.
+        elem instanceof Raw::CmdParameter and
+        child = SynthChild(BoolLiteralKind(true))
       )
     }
 
-    private predicate rawChild(Raw::Cmd cmd, ChildIndex i, Raw::Expr child) {
+    private predicate rawChild(Raw::Cmd cmd, ChildIndex i, Raw::CmdElement child) {
       exists(int index |
         i = cmdArgument(index) and
         child = cmd.getArgument(index)
@@ -564,19 +569,30 @@ private module CmdArguments {
     }
 
     override predicate isNamedArgument(CmdCall call, int i, string name) {
-      exists(Raw::Cmd cmd, Raw::Expr e, Raw::CmdParameter p |
-        this.rawChild(cmd, cmdArgument(i), e) and
+      exists(Raw::Cmd cmd, Raw::CmdElement elem |
         call = getResultAst(cmd) and
-        p.getName().toLowerCase() = name
+        cmd.getArgument(i) = elem
       |
-        p.getExpr() = e
-        or
-        exists(ChildIndex j, int jndex |
-          j = cmdElement_(jndex) and
-          not exists(p.getExpr()) and
-          cmd.getChild(toRawChildIndex(j)) = p and
-          cmd.getChild(toRawChildIndex(cmdElement_(jndex + 1))) = e
-        )
+        elem = cmd.getNamedArgument(name) or cmd.getSwitchArgument(name) = elem
+      )
+    }
+
+    final override predicate isRelevant(Raw::Ast a) {
+      a instanceof Raw::CmdParameter and
+      this.rawChild(_, _, a)
+    }
+
+    final override Expr getResultAstImpl(Raw::Ast r) {
+      exists(Raw::Cmd cmd, ChildIndex i |
+        this.rawChild(cmd, i, r) and
+        result = TBoolLiteral(cmd, i)
+      )
+    }
+
+    final override predicate booleanValue(BoolLiteral b, boolean value) {
+      exists(Raw::Ast parent, ChildIndex i |
+        b = TBoolLiteral(parent, i) and
+        this.child(parent, i, SynthChild(BoolLiteralKind(value)))
       )
     }
   }
