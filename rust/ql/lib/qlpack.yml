@@ -1,9 +1,10 @@
 name: codeql/rust-all
-version: 0.1.6
+version: 0.1.7-dev
 groups: rust
 extractor: rust
 dbscheme: rust.dbscheme
 library: true
+upgrades: upgrades
 dependencies:
   codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}

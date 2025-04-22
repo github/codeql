@@ -178,7 +178,7 @@ abstract class ItemNode extends Locatable {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
-    preludeEdge(this, name, result)
+    preludeEdge(this, name, result) and not declares(this, _, name)
     or
     name = "super" and
     if this instanceof Module or this instanceof SourceFile

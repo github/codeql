@@ -1,5 +1,5 @@
 name: codeql/xml
-version: 1.0.21
+version: 1.0.22-dev
 groups: shared
 library: true
 dependencies:

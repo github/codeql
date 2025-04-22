@@ -175,8 +175,8 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::LinearFunctionExtractOriginalExpr, LinearFunctionExtractOriginalExprTag)
     MAP(swift::LinearToDifferentiableFunctionExpr, LinearToDifferentiableFunctionExprTag)
     MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
-    MAP(swift::ActorIsolationErasureExpr, void)  // TODO swift 6.0
-    MAP(swift::UnreachableExpr, void)  // TODO swift 6.0
+    MAP(swift::ActorIsolationErasureExpr, ActorIsolationErasureExprTag)
+    MAP(swift::UnreachableExpr, UnreachableExprTag)
   MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
     MAP(swift::CheckedCastExpr, CheckedCastExprTag)
       MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)
@@ -202,8 +202,8 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::ConsumeExpr, ConsumeExprTag)
   MAP(swift::MaterializePackExpr, MaterializePackExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
-  MAP(swift::ExtractFunctionIsolationExpr, void)  // TODO swift 6.0
-  MAP(swift::CurrentContextIsolationExpr, void)  // TODO swift 6.0
+  MAP(swift::ExtractFunctionIsolationExpr, ExtractFunctionIsolationExprTag)
+  MAP(swift::CurrentContextIsolationExpr, CurrentContextIsolationExprTag)
 MAP(swift::Decl, DeclTag)
   MAP(swift::ValueDecl, ValueDeclTag)
     MAP(swift::TypeDecl, TypeDeclTag)
@@ -335,7 +335,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::PackExpansionType, PackExpansionTypeTag)
   MAP(swift::PackElementType, PackElementTypeTag)
   MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
-  MAP(swift::ErrorUnionType, void)  // TODO swift 6.0
+  MAP(swift::ErrorUnionType, void)  // created during type checking and only used for constraint checking
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::ParenType, ParenTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)

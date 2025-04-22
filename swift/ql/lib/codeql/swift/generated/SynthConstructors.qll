@@ -45,6 +45,7 @@ import codeql.swift.elements.decl.internal.SubscriptDeclConstructor
 import codeql.swift.elements.decl.internal.TopLevelCodeDeclConstructor
 import codeql.swift.elements.decl.internal.TypeAliasDeclConstructor
 import codeql.swift.elements.expr.internal.AbiSafeConversionExprConstructor
+import codeql.swift.elements.expr.internal.ActorIsolationErasureExprConstructor
 import codeql.swift.elements.expr.internal.AnyHashableErasureExprConstructor
 import codeql.swift.elements.expr.internal.AppliedPropertyWrapperExprConstructor
 import codeql.swift.elements.expr.internal.ArchetypeToSuperExprConstructor
@@ -71,6 +72,7 @@ import codeql.swift.elements.expr.internal.ConsumeExprConstructor
 import codeql.swift.elements.expr.internal.CopyExprConstructor
 import codeql.swift.elements.expr.internal.CovariantFunctionConversionExprConstructor
 import codeql.swift.elements.expr.internal.CovariantReturnConversionExprConstructor
+import codeql.swift.elements.expr.internal.CurrentContextIsolationExprConstructor
 import codeql.swift.elements.expr.internal.DeclRefExprConstructor
 import codeql.swift.elements.expr.internal.DefaultArgumentExprConstructor
 import codeql.swift.elements.expr.internal.DerivedToBaseExprConstructor
@@ -90,6 +92,7 @@ import codeql.swift.elements.expr.internal.ErasureExprConstructor
 import codeql.swift.elements.expr.internal.ErrorExprConstructor
 import codeql.swift.elements.expr.internal.ExistentialMetatypeToObjectExprConstructor
 import codeql.swift.elements.expr.internal.ExplicitClosureExprConstructor
+import codeql.swift.elements.expr.internal.ExtractFunctionIsolationExprConstructor
 import codeql.swift.elements.expr.internal.FloatLiteralExprConstructor
 import codeql.swift.elements.expr.internal.ForceTryExprConstructor
 import codeql.swift.elements.expr.internal.ForceValueExprConstructor
@@ -151,6 +154,7 @@ import codeql.swift.elements.expr.internal.TupleExprConstructor
 import codeql.swift.elements.expr.internal.TypeExprConstructor
 import codeql.swift.elements.expr.internal.UnderlyingToOpaqueExprConstructor
 import codeql.swift.elements.expr.internal.UnevaluatedInstanceExprConstructor
+import codeql.swift.elements.expr.internal.UnreachableExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedDeclRefExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedDotExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedMemberChainResultExprConstructor
