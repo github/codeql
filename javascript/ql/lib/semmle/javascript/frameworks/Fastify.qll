@@ -245,20 +245,6 @@ module Fastify {
   }
 
   /**
-   * Gets the property name where user-controlled input is written to a request or response object
-   * in a route handler. This is used to track taint flow through request and response object properties.
-   */
-  private string getUserControlledPropertyName() {
-    exists(DataFlow::PropWrite write, DataFlow::Node source, RouteHandler rh |
-      write.getBase*() =
-        [rh.getARequestSource().ref().getALocalUse(), rh.getAResponseSource().ref().getALocalUse()] and
-      write.getPropertyName() = result and
-      write.getRhs() = source and
-      source = any(Http::RequestInputAccess ria).getASuccessor*()
-    )
-  }
-
-  /**
    * An access to a user-controlled Fastify request input.
    */
   private class RequestInputAccess extends Http::RequestInputAccess {
@@ -272,20 +258,6 @@ module Fastify {
         or
         kind = "body" and
         name = "body"
-        or
-        kind = "stored" and
-        name = getUserControlledPropertyName()
-      )
-      or
-      // Handle reading from reply object with user input stored on it
-      exists(string name |
-        (
-          this = rh.getAResponseSource().ref().getAPropertyRead(name)
-          or
-          this = rh.getAResponseSource().ref().getAPropertyRead+().getAPropertyRead(name)
-        ) and
-        kind = "stored" and
-        name = getUserControlledPropertyName()
       )
     }
 
