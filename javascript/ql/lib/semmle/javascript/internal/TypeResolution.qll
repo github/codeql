@@ -111,7 +111,7 @@ module TypeResolution {
       member.(AST::ValueNode).flow(), contents)
   }
 
-  private predicate callTarget(InvokeExpr call, Function target) {
+  predicate callTarget(InvokeExpr call, Function target) {
     exists(ClassDefinition cls |
       valueHasType(call.(NewExpr).getCallee(), trackClassValue(cls)) and
       target = cls.getConstructor().getBody()
