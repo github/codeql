@@ -21,6 +21,7 @@ jobs:
           fetch-depth: 0
       - name: Push Tags
         run: |
+          git remote add upstream https://github.com/github/codeql.git
           git fetch upstream --tags --force
           git push --force origin --tags
         env:
