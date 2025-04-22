@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.tablecontrolbuilder", "Method[addheader]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.tablecontrolbuilder", "Method[endtable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.tablecontrolbuilder", "Method[groupbyproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.tablecontrolbuilder", "Method[groupbyscriptblock]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.tablecontrolbuilder", "Method[startrowdefinition]", "Argument[this]", "ReturnValue", "taint"]
+      

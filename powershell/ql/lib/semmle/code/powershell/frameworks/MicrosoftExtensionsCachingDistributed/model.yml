@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.byte[]", "microsoft.extensions.caching.distributed.memorydistributedcache", "Method[get].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.caching.distributed.ibufferdistributedcache", "Method[tryget].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.distributed.distributedcacheextensions!", "Method[getstring].ReturnValue"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.distributed.memorydistributedcache", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.distributedcacheextensions!", "Method[setasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.idistributedcache", "Method[removeasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask<system.boolean>", "microsoft.extensions.caching.distributed.ibufferdistributedcache", "Method[trygetasync].ReturnValue"]
+    - ["microsoft.extensions.caching.distributed.distributedcacheentryoptions", "microsoft.extensions.caching.distributed.distributedcacheentryextensions!", "Method[setslidingexpiration].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.idistributedcache", "Method[refreshasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.memorydistributedcache", "Method[removeasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.distributedcacheextensions!", "Method[setstringasync].ReturnValue"]
+    - ["system.nullable<system.timespan>", "microsoft.extensions.caching.distributed.distributedcacheentryoptions", "Member[absoluteexpirationrelativetonow]"]
+    - ["system.nullable<system.datetimeoffset>", "microsoft.extensions.caching.distributed.distributedcacheentryoptions", "Member[absoluteexpiration]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.idistributedcache", "Method[setasync].ReturnValue"]
+    - ["system.nullable<system.timespan>", "microsoft.extensions.caching.distributed.distributedcacheentryoptions", "Member[slidingexpiration]"]
+    - ["microsoft.extensions.caching.distributed.distributedcacheentryoptions", "microsoft.extensions.caching.distributed.distributedcacheentryextensions!", "Method[setabsoluteexpiration].ReturnValue"]
+    - ["system.byte[]", "microsoft.extensions.caching.distributed.idistributedcache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.task<system.string>", "microsoft.extensions.caching.distributed.distributedcacheextensions!", "Method[getstringasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.distributed.ibufferdistributedcache", "Method[setasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.memorydistributedcache", "Method[setasync].ReturnValue"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.distributed.idistributedcache", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.distributed.memorydistributedcache", "Method[refreshasync].ReturnValue"]

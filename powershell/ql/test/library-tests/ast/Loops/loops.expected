@@ -1,6 +1,6 @@
 doUntil
-| DoUntil.ps1:1:1:7:19 | DoUntil | DoUntil.ps1:7:10:7:18 | ... -le ... | DoUntil.ps1:2:1:7:2 | {...} |
+| DoUntil.ps1:1:1:7:18 | do...until... | DoUntil.ps1:7:10:7:17 | ... -le ... | DoUntil.ps1:2:1:7:1 | {...} |
 doWhile
-| DoWhile.ps1:1:1:7:19 | DoWhile | DoWhile.ps1:7:10:7:18 | ... -le ... | DoWhile.ps1:2:1:7:2 | {...} |
+| DoWhile.ps1:1:1:7:18 | do...while... | DoWhile.ps1:7:10:7:17 | ... -le ... | DoWhile.ps1:2:1:7:1 | {...} |
 while
-| While.ps1:2:1:13:2 | while(...) {...} | While.ps1:2:8:2:18 | ... -le ... | While.ps1:3:1:13:2 | {...} |
+| While.ps1:2:1:13:1 | while(...) {...} | While.ps1:2:8:2:17 | ... -le ... | While.ps1:3:1:13:1 | {...} |

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.security.authentication.extendedprotection.configuration.servicenameelement", "Member[name]"]
+    - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "system.security.authentication.extendedprotection.configuration.extendedprotectionpolicyelement", "Method[buildpolicy].ReturnValue"]
+    - ["system.security.authentication.extendedprotection.configuration.servicenameelement", "system.security.authentication.extendedprotection.configuration.servicenameelementcollection", "Member[item]"]
+    - ["system.configuration.configurationpropertycollection", "system.security.authentication.extendedprotection.configuration.servicenameelement", "Member[properties]"]
+    - ["system.security.authentication.extendedprotection.protectionscenario", "system.security.authentication.extendedprotection.configuration.extendedprotectionpolicyelement", "Member[protectionscenario]"]
+    - ["system.int32", "system.security.authentication.extendedprotection.configuration.servicenameelementcollection", "Method[indexof].ReturnValue"]
+    - ["system.security.authentication.extendedprotection.configuration.servicenameelementcollection", "system.security.authentication.extendedprotection.configuration.extendedprotectionpolicyelement", "Member[customservicenames]"]
+    - ["system.security.authentication.extendedprotection.policyenforcement", "system.security.authentication.extendedprotection.configuration.extendedprotectionpolicyelement", "Member[policyenforcement]"]
+    - ["system.configuration.configurationelement", "system.security.authentication.extendedprotection.configuration.servicenameelementcollection", "Method[createnewelement].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.security.authentication.extendedprotection.configuration.extendedprotectionpolicyelement", "Member[properties]"]
+    - ["system.object", "system.security.authentication.extendedprotection.configuration.servicenameelementcollection", "Method[getelementkey].ReturnValue"]

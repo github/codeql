@@ -1,5 +1,5 @@
 name: codeql/ssa
-version: 1.0.16
+version: 1.1.0
 groups: shared
 library: true
 dependencies:

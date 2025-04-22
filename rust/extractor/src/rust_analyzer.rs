@@ -1,14 +1,13 @@
 use itertools::Itertools;
-use log::{debug, error, info, warn};
-use ra_ap_base_db::SourceDatabase;
+use ra_ap_base_db::{EditionedFileId, RootQueryDb, SourceDatabase};
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
-use ra_ap_load_cargo::{load_workspace_at, LoadCargoConfig, ProcMacroServerChoice};
-use ra_ap_paths::Utf8PathBuf;
+use ra_ap_load_cargo::{LoadCargoConfig, load_workspace_at};
+use ra_ap_paths::{AbsPath, Utf8PathBuf};
 use ra_ap_project_model::ProjectManifest;
 use ra_ap_project_model::{CargoConfig, ManifestPath};
 use ra_ap_span::Edition;
-use ra_ap_span::EditionedFileId;
+use ra_ap_span::EditionedFileId as SpanEditionedFileId;
 use ra_ap_span::TextRange;
 use ra_ap_span::TextSize;
 use ra_ap_syntax::SourceFile;
@@ -22,6 +21,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
+use tracing::{debug, error, info, trace, warn};
 use triomphe::Arc;
 
 pub enum RustAnalyzer<'a> {
@@ -50,19 +50,15 @@ impl<'a> RustAnalyzer<'a> {
     pub fn load_workspace(
         project: &ProjectManifest,
         config: &CargoConfig,
+        load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
-        let progress = |t| (log::trace!("progress: {}", t));
-        let load_config = LoadCargoConfig {
-            load_out_dirs_from_check: true,
-            with_proc_macro_server: ProcMacroServerChoice::Sysroot,
-            prefill_caches: false,
-        };
+        let progress = |t| (trace!("progress: {}", t));
         let manifest = project.manifest_path();
 
-        match load_workspace_at(manifest.as_ref(), config, &load_config, &progress) {
+        match load_workspace_at(manifest.as_ref(), config, load_config, &progress) {
             Ok((db, vfs, _macro_server)) => Some((db, vfs)),
             Err(err) => {
-                log::error!("failed to load workspace for {}: {}", manifest, err);
+                error!("failed to load workspace for {}: {}", manifest, err);
                 None
             }
         }
@@ -77,7 +73,10 @@ impl<'a> RustAnalyzer<'a> {
                 if let Some(file_id) = path_to_file_id(path, vfs) {
                     if let Ok(input) = std::panic::catch_unwind(|| semantics.db.file_text(file_id))
                     {
-                        let file_id = EditionedFileId::current_edition(file_id);
+                        let file_id = EditionedFileId::new(
+                            semantics.db,
+                            SpanEditionedFileId::current_edition(file_id),
+                        );
                         let source_file = semantics.parse(file_id);
                         let errors = semantics
                             .db
@@ -88,7 +87,7 @@ impl<'a> RustAnalyzer<'a> {
 
                         return ParseResult {
                             ast: source_file,
-                            text: input,
+                            text: input.text(semantics.db),
                             errors,
                             semantics_info: Ok(FileSemanticInformation { file_id, semantics }),
                         };
@@ -136,6 +135,8 @@ impl<'a> RustAnalyzer<'a> {
 struct CargoManifestMembersSlice {
     #[serde(default)]
     members: Vec<String>,
+    #[serde(default)]
+    exclude: Vec<String>,
 }
 
 #[derive(Deserialize)]
@@ -171,6 +172,12 @@ impl TomlReader {
     }
 }
 
+fn workspace_members_match(workspace_dir: &AbsPath, members: &[String], target: &AbsPath) -> bool {
+    members.iter().any(|p| {
+        glob::Pattern::new(workspace_dir.join(p).as_str()).is_ok_and(|p| p.matches(target.as_str()))
+    })
+}
+
 fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option<ProjectManifest> {
     let ProjectManifest::CargoToml(cargo) = manifest else {
         return None;
@@ -200,9 +207,12 @@ fn find_workspace(reader: &mut TomlReader, manifest: &ProjectManifest) -> Option
                 if cargo.starts_with(other.parent())
                     && reader.read(other).is_ok_and(|it| {
                         it.workspace.as_ref().is_some_and(|w| {
-                            w.members
-                                .iter()
-                                .any(|m| other.parent().join(m) == cargo.parent())
+                            workspace_members_match(other.parent(), &w.members, cargo.parent())
+                                && !workspace_members_match(
+                                    other.parent(),
+                                    &w.exclude,
+                                    cargo.parent(),
+                                )
                         })
                     }) =>
             {
@@ -290,4 +300,5 @@ pub(crate) fn path_to_file_id(path: &Path, vfs: &Vfs) -> Option<FileId> {
         .and_then(|x| AbsPathBuf::try_from(x).ok())
         .map(VfsPath::from)
         .and_then(|x| vfs.file_id(&x))
+        .map(|(id, _excluded)| id)
 }

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.windows.baml2006.baml2006reader", "Member[iseof]"]
+    - ["system.xaml.xamlmember", "system.windows.baml2006.baml2006reader", "Member[member]"]
+    - ["system.int32", "system.windows.baml2006.baml2006reader", "Member[system.xaml.ixamllineinfo.lineposition]"]
+    - ["system.xaml.xamlnodetype", "system.windows.baml2006.baml2006reader", "Member[nodetype]"]
+    - ["system.boolean", "system.windows.baml2006.baml2006reader", "Method[read].ReturnValue"]
+    - ["system.xaml.xamlschemacontext", "system.windows.baml2006.baml2006reader", "Member[schemacontext]"]
+    - ["system.object", "system.windows.baml2006.baml2006reader", "Member[value]"]
+    - ["system.xaml.namespacedeclaration", "system.windows.baml2006.baml2006reader", "Member[namespace]"]
+    - ["system.int32", "system.windows.baml2006.baml2006reader", "Member[system.xaml.ixamllineinfo.linenumber]"]
+    - ["system.boolean", "system.windows.baml2006.baml2006reader", "Member[system.xaml.ixamllineinfo.haslineinfo]"]
+    - ["system.xaml.xamltype", "system.windows.baml2006.baml2006reader", "Member[type]"]

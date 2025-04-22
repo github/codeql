@@ -22,8 +22,8 @@ class InsecureIgnoreHostKey extends Function {
 /** An SSH host-key checking function. */
 class HostKeyCallbackFunc extends DataFlow::Node {
   HostKeyCallbackFunc() {
-    exists(NamedType nt | nt.hasQualifiedName(cryptoSshPackage(), "HostKeyCallback") |
-      this.getType().getUnderlyingType() = nt.getUnderlyingType()
+    exists(DefinedType dt | dt.hasQualifiedName(cryptoSshPackage(), "HostKeyCallback") |
+      this.getType().getUnderlyingType() = dt.getUnderlyingType()
     ) and
     // Restrict possible sources to either function definitions or
     // the result of some external function call (e.g. InsecureIgnoreHostKey())

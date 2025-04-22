@@ -144,36 +144,34 @@ class Entity extends @object {
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
 
-  private predicate hasRealLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    // take the location of the declaration if there is one
-    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable())
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  /** Gets the location of this entity. */
+  Location getLocation() {
+    result = this.getDeclaration().getLocation()
+    or
+    result = any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable()).getLocation()
   }
 
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    // take the location of the declaration if there is one
-    if this.hasRealLocationInfo(_, _, _, _, _)
-    then this.hasRealLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    else (
-      // otherwise fall back on dummy location
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    )
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    // otherwise fall back on dummy location
+    not exists(this.getLocation()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
   }
 }
 
@@ -194,19 +192,22 @@ class BuiltinEntity extends Entity, @builtinobject { }
 /** An imported package. */
 class PackageEntity extends Entity, @pkgobject { }
 
-/** A built-in or declared named type. */
+/**
+ * A named type: predeclared types, defined types, type parameters, and type
+ * aliases.
+ */
 class TypeEntity extends Entity, @typeobject { }
 
 /** The parent of a type parameter type, either a declared type or a declared function. */
 class TypeParamParentEntity extends Entity, @typeparamparentobject { }
 
-/** A declared named type. */
+/** A named type which has a declaration. */
 class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
-/** A built-in named type. */
+/** A built-in type. */
 class BuiltinType extends TypeEntity, BuiltinEntity, @builtintypeobject { }
 
 /** A built-in or declared constant, variable, field, method or function. */
@@ -522,7 +523,7 @@ class Method extends Function {
   Type getReceiverBaseType() { result = lookThroughPointerType(this.getReceiverType()) }
 
   /** Holds if this method has name `m` and belongs to the method set of type `tp` or `*tp`. */
-  private predicate isIn(NamedType tp, string m) {
+  private predicate isIn(DefinedType tp, string m) {
     this = tp.getMethod(m) or
     this = tp.getPointerType().getMethod(m)
   }
@@ -536,7 +537,7 @@ class Method extends Function {
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
   override predicate hasQualifiedName(string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       tp = t.getQualifiedName()
     )
@@ -552,7 +553,7 @@ class Method extends Function {
    */
   pragma[nomagic]
   predicate hasQualifiedName(string pkg, string tp, string m) {
-    exists(NamedType t |
+    exists(DefinedType t |
       this.isIn(t, m) and
       t.hasQualifiedName(pkg, tp)
     )
@@ -677,16 +678,22 @@ class Callable extends TCallable {
     result = this.asFuncLit().getName()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asFunction().getLocation() or result = this.asFuncLit().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this element is at the specified location.
    * The location spans column `sc` of line `sl` to
    * column `ec` of line `el` in file `fp`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-    this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or
-    this.asFuncLit().hasLocationInfo(fp, sl, sc, el, ec)
+  deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+    this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
   }
 }
 

@@ -17,7 +17,7 @@ provide:
   - "misc/legacy-support/*/qlpack.yml"
   - "misc/suite-helpers/qlpack.yml"
   - ".github/codeql/extensions/**/codeql-pack.yml"
-
+  - "actions/ql/extensions/**/qlpack.yml"
 versionPolicies:
   default:
     requireChangeNotes: true

@@ -16,5 +16,6 @@ extensions:
     data:
       - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw", "()", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "ExceptionDispatchInfo", "Throw", "(System.Exception)", "summary", "df-generated"]
+      - ["System.Runtime.ExceptionServices", "ExceptionHandling", "SetUnhandledExceptionHandler", "(System.Func<System.Exception,System.Boolean>)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "FirstChanceExceptionEventArgs", "(System.Exception)", "summary", "df-generated"]
       - ["System.Runtime.ExceptionServices", "FirstChanceExceptionEventArgs", "get_Exception", "()", "summary", "df-generated"]

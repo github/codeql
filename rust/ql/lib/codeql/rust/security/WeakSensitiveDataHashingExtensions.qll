@@ -14,7 +14,7 @@ private import codeql.rust.security.SensitiveData
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
-private import codeql.rust.dataflow.internal.DataFlowImpl
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * Provides default sources, sinks and sanitizers for detecting "use of a broken or weak
@@ -43,7 +43,9 @@ module NormalHashFunction {
    * data" vulnerabilities that applies to data that does not require computationally expensive
    * hashing. That is, a broken or weak hashing algorithm.
    */
-  abstract class Sink extends DataFlow::Node {
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "WeakSensitiveDataHashing" }
+
     /**
      * Gets the name of the weak hashing algorithm.
      */
@@ -114,7 +116,9 @@ module ComputationallyExpensiveHashFunction {
    * hashing. That is, a broken or weak hashing algorithm or one that is not computationally
    * expensive enough for password hashing.
    */
-  abstract class Sink extends DataFlow::Node {
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "WeakSensitiveDataHashing" }
+
     /**
      * Gets the name of the weak hashing algorithm.
      */
@@ -186,7 +190,7 @@ class ModeledHashOperation extends Cryptography::CryptographicOperation::Range {
       sinkNode(input, "hasher-input") and
       call = input.(Node::FlowSummaryNode).getSinkElement().getCall() and
       call = this.asExpr().getExpr() and
-      algorithmName = call.getFunction().(PathExpr).getPath().getQualifier().(Path).getText() // todo: remove infix cast when codegenerator has been fixed
+      algorithmName = call.getFunction().(PathExpr).getPath().getQualifier().getText()
     )
   }
 

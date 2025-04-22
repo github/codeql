@@ -1,1 +1,2 @@
-LanguageFeatures/ThisBeforeSuper.ql
+query: LanguageFeatures/ThisBeforeSuper.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.double", "system.data.mapping.storagemappingitemcollection", "Member[mappingversion]"]
+    - ["system.type", "system.data.mapping.entityviewgenerationattribute", "Member[viewgenerationtype]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[hashovermappingclosure]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[hashoverallextentviews]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[storeentitycontainername]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[edmentitycontainername]"]
+    - ["system.int32", "system.data.mapping.entityviewcontainer", "Member[viewcount]"]
+    - ["system.collections.generic.keyvaluepair<system.string,system.string>", "system.data.mapping.entityviewcontainer", "Method[getviewat].ReturnValue"]

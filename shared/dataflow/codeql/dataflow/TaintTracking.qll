@@ -5,6 +5,7 @@
 
 private import DataFlow as DF
 private import internal.DataFlowImpl
+private import internal.DataFlowImplStage1
 private import codeql.util.Location
 
 /**
@@ -25,7 +26,11 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
 
   /**
    * Holds if taint flow configurations should allow implicit reads of `c` at sinks
-   * and inputs to additional taint steps.
+   * and inputs to additional taint steps defined in the flow `Config`.
+   *
+   * Note that this (deliberately) does not include at additional taint steps defined
+   * globally in `defaultAdditionalTaintStep`. These models are expected to be precise
+   * and therefore to not require implicit reads.
    */
   bindingset[node]
   predicate defaultImplicitTaintRead(Lang::Node node, Lang::ContentSet c);
@@ -47,6 +52,7 @@ module TaintFlowMake<
   private import TaintTrackingLang
   private import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
   private import MakeImpl<Location, DataFlowLang> as DataFlowInternal
+  private import MakeImplStage1<Location, DataFlowLang> as DataFlowInternalStage1
 
   private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
     DataFlowInternal::FullStateConfigSig
@@ -94,7 +100,13 @@ module TaintFlowMake<
       import AddTaintDefaults<Config0>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
   }
 
   /**
@@ -122,7 +134,13 @@ module TaintFlowMake<
       import AddTaintDefaults<Config0>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   signature int speculationLimitSig();
@@ -218,7 +236,13 @@ module TaintFlowMake<
       import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   /**
@@ -250,6 +274,12 @@ module TaintFlowMake<
       import AddTaintDefaults<AddSpeculativeTaintSteps<Config0, speculationLimit/0>>
     }
 
-    import DataFlowInternal::Impl<C>
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 }

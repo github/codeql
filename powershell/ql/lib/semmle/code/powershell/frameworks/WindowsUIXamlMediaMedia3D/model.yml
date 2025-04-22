@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "windows.ui.xaml.media.media3d.matrix3d", "Method[system.iformattable.tostring].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.media3d.matrix3d!", "Method[op_inequality].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.media3d.matrix3d", "Member[hasinverse]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m24]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m12]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m11]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[offsetx]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[offsety]"]
+    - ["system.int32", "windows.ui.xaml.media.media3d.matrix3d", "Method[gethashcode].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m23]"]
+    - ["windows.ui.xaml.media.media3d.matrix3d", "windows.ui.xaml.media.media3d.matrix3d!", "Method[op_multiply].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.media3d.matrix3d", "Method[equals].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m44]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m14]"]
+    - ["system.boolean", "windows.ui.xaml.media.media3d.matrix3d", "Member[isidentity]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m33]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[offsetz]"]
+    - ["windows.ui.xaml.media.media3d.matrix3d", "windows.ui.xaml.media.media3d.matrix3d!", "Member[identity]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m32]"]
+    - ["system.string", "windows.ui.xaml.media.media3d.matrix3d", "Method[tostring].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m31]"]
+    - ["system.boolean", "windows.ui.xaml.media.media3d.matrix3d!", "Method[op_equality].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m22]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m21]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m13]"]
+    - ["system.double", "windows.ui.xaml.media.media3d.matrix3d", "Member[m34]"]

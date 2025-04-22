@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummarizer", "Method[summarize].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Method[gethashcode].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummaryprovider", "Method[describe].ReturnValue"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummarizationbuilder", "Member[services]"]
+    - ["system.string", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Member[exceptiontype]"]
+    - ["microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummarizationbuilder", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummarizationbuilderextensions!", "Method[addhttpprovider].ReturnValue"]
+    - ["system.string", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Member[description]"]
+    - ["microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummarizationbuilder", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummarizationbuilder", "Method[addprovider<t>].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.type>", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummaryprovider", "Member[supportedexceptiontypes]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Method[equals].ReturnValue"]
+    - ["system.string", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Member[additionaldetails]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary!", "Method[op_equality].ReturnValue"]
+    - ["system.string", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary", "Method[tostring].ReturnValue"]
+    - ["system.collections.generic.ireadonlylist<system.string>", "microsoft.extensions.diagnostics.exceptionsummarization.iexceptionsummaryprovider", "Member[descriptions]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.exceptionsummarization.exceptionsummary!", "Method[op_inequality].ReturnValue"]

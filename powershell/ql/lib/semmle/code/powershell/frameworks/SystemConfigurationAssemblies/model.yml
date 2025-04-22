@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.configuration.assemblies.assemblyversioncompatibility", "system.configuration.assemblies.assemblyversioncompatibility!", "Member[sameprocess]"]
+    - ["system.object", "system.configuration.assemblies.assemblyhash", "Method[clone].ReturnValue"]
+    - ["system.configuration.assemblies.assemblyhash", "system.configuration.assemblies.assemblyhash!", "Member[empty]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[sha256]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[md5]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[sha512]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[sha384]"]
+    - ["system.configuration.assemblies.assemblyversioncompatibility", "system.configuration.assemblies.assemblyversioncompatibility!", "Member[samedomain]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhash", "Member[algorithm]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[none]"]
+    - ["system.configuration.assemblies.assemblyhashalgorithm", "system.configuration.assemblies.assemblyhashalgorithm!", "Member[sha1]"]
+    - ["system.byte[]", "system.configuration.assemblies.assemblyhash", "Method[getvalue].ReturnValue"]
+    - ["system.configuration.assemblies.assemblyversioncompatibility", "system.configuration.assemblies.assemblyversioncompatibility!", "Member[samemachine]"]

@@ -29,6 +29,12 @@ private module FullServerSideRequestForgeryConfig implements DataFlow::ConfigSig
     or
     node instanceof FullUrlControlSanitizer
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // The partial request forgery query depends on `fullyControlledRequest` to reject alerts about
+    // such full-controlled requests, regardless of the associated source.
+    none()
+  }
 }
 
 /**
@@ -58,6 +64,13 @@ private module PartialServerSideRequestForgeryConfig implements DataFlow::Config
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    // Note: this query does not select the sink itself
+    result = sink.(Sink).getRequest().getLocation()
+  }
 }
 
 /**

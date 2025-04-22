@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "microsoft.visualbasic.activities.visualbasicimportreference", "Method[gethashcode].ReturnValue"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[recompilevisualbasicreference].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicimportreference", "Member[import]"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[recompilevisualbasicvalue].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicimportreference", "Member[assembly]"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[createprecompiledvisualbasicvalue].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicimportreference", "Method[equals].ReturnValue"]
+    - ["system.activities.validation.constraint", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Member[nameshadowingconstraint]"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasic!", "Method[shouldserializesettings].ReturnValue"]
+    - ["microsoft.visualbasic.activities.visualbasicsettings", "microsoft.visualbasic.activities.visualbasic!", "Method[getsettings].ReturnValue"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[createprecompiledvisualbasicreference].ReturnValue"]
+    - ["system.collections.generic.iset<microsoft.visualbasic.activities.visualbasicimportreference>", "microsoft.visualbasic.activities.visualbasicsettings", "Member[importreferences]"]
+    - ["microsoft.visualbasic.activities.visualbasicsettings", "microsoft.visualbasic.activities.visualbasicsettings!", "Member[default]"]

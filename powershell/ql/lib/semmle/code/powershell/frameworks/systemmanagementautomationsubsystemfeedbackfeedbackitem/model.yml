@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[2]", "Argument[this]", "taint"]
+      

@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.serialization.formatters.isoapmessage", "system.runtime.serialization.formatters.soap.soapformatter", "Member[topobject]"]
+    - ["system.runtime.serialization.formatters.formatterassemblystyle", "system.runtime.serialization.formatters.soap.soapformatter", "Member[assemblyformat]"]
+    - ["system.object", "system.runtime.serialization.formatters.soap.soapformatter", "Method[deserialize].ReturnValue"]
+    - ["system.runtime.serialization.serializationbinder", "system.runtime.serialization.formatters.soap.soapformatter", "Member[binder]"]
+    - ["system.runtime.serialization.streamingcontext", "system.runtime.serialization.formatters.soap.soapformatter", "Member[context]"]
+    - ["system.runtime.serialization.isurrogateselector", "system.runtime.serialization.formatters.soap.soapformatter", "Member[surrogateselector]"]
+    - ["system.runtime.serialization.formatters.formattertypestyle", "system.runtime.serialization.formatters.soap.soapformatter", "Member[typeformat]"]
+    - ["system.runtime.serialization.formatters.typefilterlevel", "system.runtime.serialization.formatters.soap.soapformatter", "Member[filterlevel]"]

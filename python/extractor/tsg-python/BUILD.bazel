@@ -5,7 +5,7 @@ codeql_rust_binary(
     name = "tsg-python",
     srcs = ["src/main.rs"],
     aliases = aliases(),
-    data = ["python.tsg"],
+    compile_data = ["python.tsg"],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),

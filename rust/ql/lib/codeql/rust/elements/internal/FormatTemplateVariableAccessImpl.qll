@@ -29,7 +29,7 @@ module Impl {
 
     override Location getLocation() { result = argument.getLocation() }
 
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
 
     /** Gets the name of the variable */
     string getName() { result = argument.getName() }

@@ -14,10 +14,9 @@
  */
 
 import rust
-import codeql.rust.security.CleartextLoggingExtensions
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.TaintTracking
-import codeql.rust.dataflow.internal.DataFlowImpl
+import codeql.rust.security.CleartextLoggingExtensions
 
 /**
  * A taint-tracking configuration for cleartext logging vulnerabilities.
@@ -36,7 +35,7 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
     isSource(node)
   }
 
-  predicate isAdditionalFlowStep(Node node1, Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from `a` to `&a`
     node2.asExpr().getExpr().(RefExpr).getExpr() = node1.asExpr().getExpr()
   }
@@ -44,7 +43,7 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from tuple content at sinks.
     isSink(node) and
-    c.getAReadContent() instanceof TuplePositionContent
+    c.getAReadContent() instanceof DataFlow::TuplePositionContent
   }
 }
 

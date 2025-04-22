@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.xml.resolvers.xmlpreloadedresolver", "Method[getentity].ReturnValue"]
+    - ["system.boolean", "system.xml.resolvers.xmlpreloadedresolver", "Method[supportstype].ReturnValue"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[all]"]
+    - ["system.threading.tasks.task<system.object>", "system.xml.resolvers.xmlpreloadedresolver", "Method[getentityasync].ReturnValue"]
+    - ["system.net.icredentials", "system.xml.resolvers.xmlpreloadedresolver", "Member[credentials]"]
+    - ["system.uri", "system.xml.resolvers.xmlpreloadedresolver", "Method[resolveuri].ReturnValue"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[none]"]
+    - ["system.collections.generic.ienumerable<system.uri>", "system.xml.resolvers.xmlpreloadedresolver", "Member[preloadeduris]"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[xhtml10]"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[rss091]"]

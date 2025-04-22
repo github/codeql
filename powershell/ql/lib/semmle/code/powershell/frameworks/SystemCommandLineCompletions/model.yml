@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.commandline.completions.completionitem", "Member[documentation]"]
+    - ["system.string", "system.commandline.completions.textcompletioncontext", "Member[commandlinetext]"]
+    - ["system.collections.generic.ienumerable<system.commandline.completions.completionitem>", "system.commandline.completions.icompletionsource", "Method[getcompletions].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[sorttext]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[inserttext]"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.completions.completioncontext", "Member[parseresult]"]
+    - ["system.boolean", "system.commandline.completions.completionitem", "Method[equals].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[kind]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[label]"]
+    - ["system.int32", "system.commandline.completions.textcompletioncontext", "Member[cursorposition]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Method[tostring].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[detail]"]
+    - ["system.string", "system.commandline.completions.completioncontext!", "Method[getwordtocomplete].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completioncontext", "Member[wordtocomplete]"]
+    - ["system.commandline.completions.textcompletioncontext", "system.commandline.completions.textcompletioncontext", "Method[atcursorposition].ReturnValue"]
+    - ["system.int32", "system.commandline.completions.completionitem", "Method[gethashcode].ReturnValue"]

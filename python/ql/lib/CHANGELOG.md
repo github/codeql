@@ -1,3 +1,32 @@
+## 4.0.5
+
+No user-facing changes.
+
+## 4.0.4
+
+### Minor Analysis Improvements
+
+- Added the methods `getMinArguments` and `getMaxArguments` to the `Function` class. These return the minimum and maximum positional arguments that the given function accepts.
+
+### Bug Fixes
+
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+No user-facing changes.
+
+## 4.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
+- Using the `break` and `continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
+
 ## 4.0.0
 
 ### Breaking Changes

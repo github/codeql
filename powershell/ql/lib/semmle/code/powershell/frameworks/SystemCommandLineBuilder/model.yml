@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[cancelonprocesstermination].ReturnValue"]
+    - ["system.commandline.command", "system.commandline.builder.commandlinebuilder", "Member[command]"]
+    - ["tbuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usehelpbuilder<tbuilder>].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[enabledirectives].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[enablelegacydoubledashbehavior].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[uselocalizationresources].ReturnValue"]
+    - ["system.boolean", "system.commandline.builder.commandlinebuilder", "Member[enablelegacydoubledashbehavior]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[registerwithdotnetsuggest].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[usedefaults].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[usesuggestdirective].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[useexceptionhandler].ReturnValue"]
+    - ["system.boolean", "system.commandline.builder.commandlinebuilder", "Member[enableposixbundling]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[useversionoption].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[useenvironmentvariabledirective].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[useparseerrorreporting].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[addmiddleware].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[parseresponsefileas].ReturnValue"]
+    - ["system.commandline.parsing.parser", "system.commandline.builder.commandlinebuilder", "Method[build].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[useparsedirective].ReturnValue"]
+    - ["system.commandline.parsing.responsefilehandling", "system.commandline.builder.commandlinebuilder", "Member[responsefilehandling]"]
+    - ["system.boolean", "system.commandline.builder.commandlinebuilder", "Member[enabledirectives]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[enableposixbundling].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[usetypocorrections].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderExtensions!", "Method[usehelp].ReturnValue"]

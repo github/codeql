@@ -27,19 +27,19 @@ class StreamCipherInit extends Cryptography::CryptographicOperation::Range {
       p.getResolvedCrateOrigin().matches("%/RustCrypto%") and
       p.getPath().getText() = ["new", "new_from_slice", "new_from_slices", "new_with_eff_key_len"] and
       (
-        rawAlgorithmName = p.getPath().getQualifier().(Path).getText() or // todo: remove infix cast when codegenerator has been fixed
+        rawAlgorithmName = p.getPath().getQualifier().getText() or
         rawAlgorithmName =
           p.getPath()
               .getQualifier()
-              .getPart()
+              .getSegment()
               .getGenericArgList()
               .getGenericArg(0)
               .(TypeArg)
               .getTypeRepr()
               .(PathTypeRepr)
               .getPath()
-              .getPart()
-              .getNameRef()
+              .getSegment()
+              .getIdentifier()
               .getText()
       ) and
       algorithmName = simplifyAlgorithmName(rawAlgorithmName)

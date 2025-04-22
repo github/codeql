@@ -25,12 +25,13 @@ models
 | 24 | Summary: any; Method[matchedByName]; Argument[0]; ReturnValue; taint |
 | 25 | Summary: any; Method[readElementOne]; Argument[self].Element[1]; ReturnValue; value |
 | 26 | Summary: any; Method[readExactlyElementOne]; Argument[self].Element[1!]; ReturnValue; value |
-| 27 | Summary: any; Method[set_value]; Argument[0]; Argument[self].Field[@value]; value |
-| 28 | Summary: any; Method[withElementOne]; Argument[self].WithElement[1]; ReturnValue; value |
-| 29 | Summary: any; Method[withExactlyElementOne]; Argument[self].WithElement[1!]; ReturnValue; value |
-| 30 | Summary: any; Method[withoutElementOneAndTwo]; Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any]; Argument[self]; value |
-| 31 | Summary: any; Method[withoutElementOne]; Argument[self].WithoutElement[1]; Argument[self]; value |
-| 32 | Summary: any; Method[withoutExactlyElementOne]; Argument[self].WithoutElement[1!]; Argument[self]; value |
+| 27 | Summary: any; Method[saveToDatabase]; Argument[self]; SyntheticGlobal[db]; value |
+| 28 | Summary: any; Method[set_value]; Argument[0]; Argument[self].Field[@value]; value |
+| 29 | Summary: any; Method[withElementOne]; Argument[self].WithElement[1]; ReturnValue; value |
+| 30 | Summary: any; Method[withExactlyElementOne]; Argument[self].WithElement[1!]; ReturnValue; value |
+| 31 | Summary: any; Method[withoutElementOneAndTwo]; Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any]; Argument[self]; value |
+| 32 | Summary: any; Method[withoutElementOne]; Argument[self].WithoutElement[1]; Argument[self]; value |
+| 33 | Summary: any; Method[withoutExactlyElementOne]; Argument[self].WithoutElement[1!]; Argument[self]; value |
 edges
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted | provenance |  |
 | summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted | provenance |  |
@@ -201,10 +202,10 @@ edges
 | summaries.rb:87:1:87:1 | b : [collection] [element] | summaries.rb:89:6:89:6 | b : [collection] [element] | provenance |  |
 | summaries.rb:87:1:87:1 | b : [collection] [element] | summaries.rb:90:6:90:6 | b : [collection] [element] | provenance |  |
 | summaries.rb:87:1:87:1 | b : [collection] [element] | summaries.rb:90:6:90:6 | b : [collection] [element] | provenance |  |
-| summaries.rb:87:5:87:5 | a : Array [element 1] | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | provenance | MaD:28 |
-| summaries.rb:87:5:87:5 | a : Array [element 1] | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | provenance | MaD:28 |
-| summaries.rb:87:5:87:5 | a : [collection] [element] | summaries.rb:87:5:87:22 | call to withElementOne : [collection] [element] | provenance | MaD:28 |
-| summaries.rb:87:5:87:5 | a : [collection] [element] | summaries.rb:87:5:87:22 | call to withElementOne : [collection] [element] | provenance | MaD:28 |
+| summaries.rb:87:5:87:5 | a : Array [element 1] | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | provenance | MaD:29 |
+| summaries.rb:87:5:87:5 | a : Array [element 1] | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | provenance | MaD:29 |
+| summaries.rb:87:5:87:5 | a : [collection] [element] | summaries.rb:87:5:87:22 | call to withElementOne : [collection] [element] | provenance | MaD:29 |
+| summaries.rb:87:5:87:5 | a : [collection] [element] | summaries.rb:87:5:87:22 | call to withElementOne : [collection] [element] | provenance | MaD:29 |
 | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | summaries.rb:87:1:87:1 | b : Array [element 1] | provenance |  |
 | summaries.rb:87:5:87:22 | call to withElementOne : Array [element 1] | summaries.rb:87:1:87:1 | b : Array [element 1] | provenance |  |
 | summaries.rb:87:5:87:22 | call to withElementOne : [collection] [element] | summaries.rb:87:1:87:1 | b : [collection] [element] | provenance |  |
@@ -219,8 +220,8 @@ edges
 | summaries.rb:90:6:90:6 | b : [collection] [element] | summaries.rb:90:6:90:9 | ...[...] | provenance |  |
 | summaries.rb:91:1:91:1 | c : Array [element 1] | summaries.rb:93:6:93:6 | c : Array [element 1] | provenance |  |
 | summaries.rb:91:1:91:1 | c : Array [element 1] | summaries.rb:93:6:93:6 | c : Array [element 1] | provenance |  |
-| summaries.rb:91:5:91:5 | a : Array [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | provenance | MaD:29 |
-| summaries.rb:91:5:91:5 | a : Array [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | provenance | MaD:29 |
+| summaries.rb:91:5:91:5 | a : Array [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | provenance | MaD:30 |
+| summaries.rb:91:5:91:5 | a : Array [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | provenance | MaD:30 |
 | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | summaries.rb:91:1:91:1 | c : Array [element 1] | provenance |  |
 | summaries.rb:91:5:91:29 | call to withExactlyElementOne : Array [element 1] | summaries.rb:91:1:91:1 | c : Array [element 1] | provenance |  |
 | summaries.rb:93:6:93:6 | c : Array [element 1] | summaries.rb:93:6:93:9 | ...[...] | provenance |  |
@@ -235,10 +236,10 @@ edges
 | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | summaries.rb:97:6:97:6 | a : [collection] [element] | provenance |  |
 | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | summaries.rb:98:6:98:6 | a : [collection] [element] | provenance |  |
 | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | summaries.rb:98:6:98:6 | a : [collection] [element] | provenance |  |
-| summaries.rb:95:1:95:1 | a : Array [element 2] | summaries.rb:95:1:95:1 | [post] a : Array [element 2] | provenance | MaD:32 |
-| summaries.rb:95:1:95:1 | a : Array [element 2] | summaries.rb:95:1:95:1 | [post] a : Array [element 2] | provenance | MaD:32 |
-| summaries.rb:95:1:95:1 | a : [collection] [element] | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | provenance | MaD:32 |
-| summaries.rb:95:1:95:1 | a : [collection] [element] | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | provenance | MaD:32 |
+| summaries.rb:95:1:95:1 | a : Array [element 2] | summaries.rb:95:1:95:1 | [post] a : Array [element 2] | provenance | MaD:33 |
+| summaries.rb:95:1:95:1 | a : Array [element 2] | summaries.rb:95:1:95:1 | [post] a : Array [element 2] | provenance | MaD:33 |
+| summaries.rb:95:1:95:1 | a : [collection] [element] | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | provenance | MaD:33 |
+| summaries.rb:95:1:95:1 | a : [collection] [element] | summaries.rb:95:1:95:1 | [post] a : [collection] [element] | provenance | MaD:33 |
 | summaries.rb:96:6:96:6 | a : [collection] [element] | summaries.rb:96:6:96:9 | ...[...] | provenance |  |
 | summaries.rb:96:6:96:6 | a : [collection] [element] | summaries.rb:96:6:96:9 | ...[...] | provenance |  |
 | summaries.rb:97:6:97:6 | a : [collection] [element] | summaries.rb:97:6:97:9 | ...[...] | provenance |  |
@@ -249,8 +250,8 @@ edges
 | summaries.rb:98:6:98:6 | a : [collection] [element] | summaries.rb:98:6:98:9 | ...[...] | provenance |  |
 | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | summaries.rb:102:6:102:6 | a : Array [element 2] | provenance |  |
 | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | summaries.rb:102:6:102:6 | a : Array [element 2] | provenance |  |
-| summaries.rb:99:1:99:1 | a : Array [element 2] | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | provenance | MaD:31 |
-| summaries.rb:99:1:99:1 | a : Array [element 2] | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | provenance | MaD:31 |
+| summaries.rb:99:1:99:1 | a : Array [element 2] | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | provenance | MaD:32 |
+| summaries.rb:99:1:99:1 | a : Array [element 2] | summaries.rb:99:1:99:1 | [post] a : Array [element 2] | provenance | MaD:32 |
 | summaries.rb:102:6:102:6 | a : Array [element 2] | summaries.rb:102:6:102:9 | ...[...] | provenance |  |
 | summaries.rb:102:6:102:6 | a : Array [element 2] | summaries.rb:102:6:102:9 | ...[...] | provenance |  |
 | summaries.rb:103:1:103:1 | [post] d : [collection] [element 3] | summaries.rb:104:1:104:1 | d : [collection] [element 3] | provenance |  |
@@ -259,14 +260,14 @@ edges
 | summaries.rb:103:8:103:22 | call to source | summaries.rb:103:1:103:1 | [post] d : [collection] [element 3] | provenance |  |
 | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | summaries.rb:108:6:108:6 | d : [collection] [element 3] | provenance |  |
 | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | summaries.rb:108:6:108:6 | d : [collection] [element 3] | provenance |  |
-| summaries.rb:104:1:104:1 | d : [collection] [element 3] | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | provenance | MaD:30 |
-| summaries.rb:104:1:104:1 | d : [collection] [element 3] | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | provenance | MaD:30 |
+| summaries.rb:104:1:104:1 | d : [collection] [element 3] | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | provenance | MaD:31 |
+| summaries.rb:104:1:104:1 | d : [collection] [element 3] | summaries.rb:104:1:104:1 | [post] d : [collection] [element 3] | provenance | MaD:31 |
 | summaries.rb:108:6:108:6 | d : [collection] [element 3] | summaries.rb:108:6:108:9 | ...[...] | provenance |  |
 | summaries.rb:108:6:108:6 | d : [collection] [element 3] | summaries.rb:108:6:108:9 | ...[...] | provenance |  |
 | summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] | provenance |  |
 | summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] | provenance |  |
-| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance | MaD:27 |
-| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance | MaD:27 |
+| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance | MaD:28 |
+| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance | MaD:28 |
 | summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value | provenance | MaD:22 |
 | summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value | provenance | MaD:22 |
 | summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:128:14:128:20 | tainted | provenance |  |
@@ -294,6 +295,24 @@ edges
 | summaries.rb:131:16:131:22 | tainted | summaries.rb:131:1:131:23 | synthetic splat argument | provenance | Sink:MaD:4 |
 | summaries.rb:157:14:160:3 | do ... end : [lambda] [captured tainted] | summaries.rb:158:15:158:21 | tainted | provenance | heuristic-callback Sink:MaD:6 |
 | summaries.rb:157:14:160:3 | do ... end : [lambda] [captured tainted] | summaries.rb:158:15:158:21 | tainted | provenance | heuristic-callback Sink:MaD:6 |
+| summaries.rb:172:5:172:6 | [post] @x [@someField] | summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | provenance |  |
+| summaries.rb:172:5:172:6 | [post] @x [@someField] | summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | provenance |  |
+| summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | provenance |  |
+| summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | provenance |  |
+| summaries.rb:172:20:172:36 | call to source | summaries.rb:172:5:172:6 | [post] @x [@someField] | provenance |  |
+| summaries.rb:172:20:172:36 | call to source | summaries.rb:172:5:172:6 | [post] @x [@someField] | provenance |  |
+| summaries.rb:173:5:173:6 | @x [@someField] | summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | provenance | MaD:27 |
+| summaries.rb:173:5:173:6 | @x [@someField] | summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | provenance | MaD:27 |
+| summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | summaries.rb:173:5:173:6 | @x [@someField] | provenance |  |
+| summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | summaries.rb:173:5:173:6 | @x [@someField] | provenance |  |
+| summaries.rb:177:5:177:6 | [post] self [@x, @someField] | summaries.rb:179:10:179:11 | self [@x, @someField] | provenance |  |
+| summaries.rb:177:5:177:6 | [post] self [@x, @someField] | summaries.rb:179:10:179:11 | self [@x, @someField] | provenance |  |
+| summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | summaries.rb:177:5:177:6 | [post] self [@x, @someField] | provenance |  |
+| summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | summaries.rb:177:5:177:6 | [post] self [@x, @someField] | provenance |  |
+| summaries.rb:179:10:179:11 | @x [@someField] | summaries.rb:179:10:179:21 | call to someField | provenance |  |
+| summaries.rb:179:10:179:11 | @x [@someField] | summaries.rb:179:10:179:21 | call to someField | provenance |  |
+| summaries.rb:179:10:179:11 | self [@x, @someField] | summaries.rb:179:10:179:11 | @x [@someField] | provenance |  |
+| summaries.rb:179:10:179:11 | self [@x, @someField] | summaries.rb:179:10:179:11 | @x [@someField] | provenance |  |
 nodes
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |
@@ -553,6 +572,26 @@ nodes
 | summaries.rb:163:20:163:36 | call to source | semmle.label | call to source |
 | summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
 | summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
+| summaries.rb:172:5:172:6 | [post] @x [@someField] | semmle.label | [post] @x [@someField] |
+| summaries.rb:172:5:172:6 | [post] @x [@someField] | semmle.label | [post] @x [@someField] |
+| summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | semmle.label | [post] self : SynthGlobalTest [@x, @someField] |
+| summaries.rb:172:5:172:6 | [post] self : SynthGlobalTest [@x, @someField] | semmle.label | [post] self : SynthGlobalTest [@x, @someField] |
+| summaries.rb:172:20:172:36 | call to source | semmle.label | call to source |
+| summaries.rb:172:20:172:36 | call to source | semmle.label | call to source |
+| summaries.rb:173:5:173:6 | @x [@someField] | semmle.label | @x [@someField] |
+| summaries.rb:173:5:173:6 | @x [@someField] | semmle.label | @x [@someField] |
+| summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | semmle.label | self : SynthGlobalTest [@x, @someField] |
+| summaries.rb:173:5:173:6 | self : SynthGlobalTest [@x, @someField] | semmle.label | self : SynthGlobalTest [@x, @someField] |
+| summaries.rb:177:5:177:6 | [post] self [@x, @someField] | semmle.label | [post] self [@x, @someField] |
+| summaries.rb:177:5:177:6 | [post] self [@x, @someField] | semmle.label | [post] self [@x, @someField] |
+| summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | semmle.label | call to readFromDatabase [@someField] |
+| summaries.rb:177:10:177:27 | call to readFromDatabase [@someField] | semmle.label | call to readFromDatabase [@someField] |
+| summaries.rb:179:10:179:11 | @x [@someField] | semmle.label | @x [@someField] |
+| summaries.rb:179:10:179:11 | @x [@someField] | semmle.label | @x [@someField] |
+| summaries.rb:179:10:179:11 | self [@x, @someField] | semmle.label | self [@x, @someField] |
+| summaries.rb:179:10:179:11 | self [@x, @someField] | semmle.label | self [@x, @someField] |
+| summaries.rb:179:10:179:21 | call to someField | semmle.label | call to someField |
+| summaries.rb:179:10:179:21 | call to someField | semmle.label | call to someField |
 subpaths
 | summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | summaries.rb:4:12:7:3 | call to apply_block |
 | summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | summaries.rb:4:12:7:3 | call to apply_block |
@@ -670,4 +709,6 @@ invalidSpecComponent
 | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | summaries.rb:163:20:163:36 | call to source | $@ | summaries.rb:163:20:163:36 | call to source | call to source |
 | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
 | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | summaries.rb:166:20:166:36 | call to source | $@ | summaries.rb:166:20:166:36 | call to source | call to source |
+| summaries.rb:179:10:179:21 | call to someField | summaries.rb:172:20:172:36 | call to source | summaries.rb:179:10:179:21 | call to someField | $@ | summaries.rb:172:20:172:36 | call to source | call to source |
+| summaries.rb:179:10:179:21 | call to someField | summaries.rb:172:20:172:36 | call to source | summaries.rb:179:10:179:21 | call to someField | $@ | summaries.rb:172:20:172:36 | call to source | call to source |
 warning

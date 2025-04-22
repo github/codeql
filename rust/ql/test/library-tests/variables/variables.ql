@@ -40,7 +40,7 @@ module VariableAccessTest implements TestSig {
       commmentAt(value, filepath, line) and inMacro = false
       or
       not (commmentAt(_, filepath, line) and inMacro = false) and
-      value = v.getName()
+      value = v.getText()
     )
   }
 

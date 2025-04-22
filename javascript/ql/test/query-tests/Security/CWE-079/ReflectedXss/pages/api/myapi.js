@@ -1,3 +1,3 @@
 export default function handler(req, res) {
-    res.send(req.url);
+    res.send(req.url); // $ Alert
 }

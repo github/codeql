@@ -7,20 +7,19 @@
 
 use std::path::Path;
 
-use anyhow::anyhow;
 use anyhow::Context as _;
 use anyhow::Result;
-use clap::App;
-use clap::Arg;
+use anyhow::anyhow;
+use clap::{Arg, ArgAction, Command};
 use tree_sitter::Parser;
-use tree_sitter_graph::ast::File;
-use tree_sitter_graph::functions::Functions;
 use tree_sitter_graph::ExecutionConfig;
 use tree_sitter_graph::Identifier;
 use tree_sitter_graph::NoCancellation;
 use tree_sitter_graph::Variables;
+use tree_sitter_graph::ast::File;
+use tree_sitter_graph::functions::Functions;
 
-const BUILD_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const BUILD_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub mod extra_functions {
     use tree_sitter_graph::functions::{Function, Parameters};
@@ -332,8 +331,8 @@ pub mod extra_functions {
                 None => {
                     return Err(ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Cannot call child-index on the root node"),
-                    ))
+                        "Cannot call child-index on the root node".to_string(),
+                    ));
                 }
             };
             let mut tree_cursor = parent.walk();
@@ -343,7 +342,7 @@ pub mod extra_functions {
                 .ok_or_else(|| {
                     ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Called child-index on a non-named child"),
+                        "Called child-index on a non-named child".to_string(),
                     )
                 })?;
             Ok(Value::Integer(index as u32))
@@ -401,7 +400,7 @@ pub mod extra_functions {
             let parent = node.parent().ok_or_else(|| {
                 ExecutionError::FunctionFailed(
                     "get-parent".into(),
-                    format!("Cannot call get-parent on the root node"),
+                    "Cannot call get-parent on the root node".to_string(),
                 )
             })?;
             Ok(Value::SyntaxNode(graph.add_syntax_node(parent)))
@@ -482,33 +481,30 @@ pub mod extra_functions {
 }
 
 fn main() -> Result<()> {
-    let matches = App::new("tsg-python")
+    let matches = Command::new("tsg-python")
         .version(BUILD_VERSION)
         .author("Taus Brock-Nannestad <tausbn@github.com>")
         .about("Extracts a Python AST from the parse tree given by tree-sitter-python")
         .arg(
-            Arg::with_name("tsg")
-                .short("t")
+            Arg::new("tsg")
+                .short('t')
                 .long("tsg")
-                .takes_value(true)
+                .action(ArgAction::Set)
                 .required(false),
         )
-        .arg(Arg::with_name("source").index(1).required(true))
+        .arg(Arg::new("source").index(1).required(true))
         .get_matches();
 
-    let tsg_path = if matches.is_present("tsg") {
-        Path::new(matches.value_of("tsg").unwrap())
-            .display()
-            .to_string()
-    } else {
-        "bundled `python.tsg`".to_owned()
-    };
-    let source_path = Path::new(matches.value_of("source").unwrap());
+    let tsg_path = matches
+        .get_one::<String>("tsg")
+        .map(|s| Path::new(s).display().to_string())
+        .unwrap_or_else(|| "bundled `python.tsg`".to_owned());
+    let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
     parser.set_language(language)?;
     // Statically include `python.tsg`:
-    let tsg = if matches.is_present("tsg") {
+    let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?
     } else {
         include_bytes!("../python.tsg").to_vec()

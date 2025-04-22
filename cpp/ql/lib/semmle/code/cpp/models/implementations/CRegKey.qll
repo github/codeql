@@ -5,7 +5,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 
 /** The `CRegKey` class from the Microsoft "Active Template Library". */
 class CRegKey extends Class {
-  CRegKey() { this.hasGlobalName("CRegKey") }
+  CRegKey() { this.hasQualifiedName("ATL", "CRegKey") }
 }
 
 module CRegKey {

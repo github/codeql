@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.cmdletinfo", "Method[get_defaultparameterset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.cmdletinfo", "Method[get_noun]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.cmdletinfo", "Method[get_pssnapin]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.cmdletinfo", "Method[get_verb]", "Argument[this]", "ReturnValue", "taint"]
+      

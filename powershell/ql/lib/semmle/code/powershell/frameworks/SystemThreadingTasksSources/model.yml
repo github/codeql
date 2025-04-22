@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[canceled]"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[flowexecutioncontext]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[faulted]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[succeeded]"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[useschedulingcontext]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[pending]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.ivaluetasksource", "Method[getstatus].ReturnValue"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[none]"]

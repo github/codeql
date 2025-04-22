@@ -14,10 +14,6 @@ module SsaConfig implements InputSig<js::DbLocation> {
 
   class BasicBlock = js::BasicBlock;
 
-  class ExitBasicBlock extends BasicBlock {
-    ExitBasicBlock() { this.isExitBlock() }
-  }
-
   class SourceVariable extends LocalVariableOrThis {
     SourceVariable() { not this.isCaptured() }
   }
@@ -60,14 +56,7 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
     predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    // This library only handles use-use flow after a post-update, there are no definitions, only uses.
-    none()
-  }
-
-  class Parameter = js::Parameter;
-
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) {
+  predicate ssaDefHasSource(WriteDefinition def) {
     // This library only handles use-use flow after a post-update, there are no definitions, only uses.
     none()
   }
@@ -85,22 +74,26 @@ module SsaDataflowInput implements DataFlowIntegrationInputSig {
   class Guard extends js::ControlFlowNode {
     Guard() { this = any(js::ConditionGuardNode g).getTest() }
 
-    predicate hasCfgNode(js::BasicBlock bb, int i) { this = bb.getNode(i) }
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(js::BasicBlock bb1, js::BasicBlock bb2, boolean branch) {
+      exists(js::ConditionGuardNode g |
+        g.getTest() = this and
+        bb1 = this.getBasicBlock() and
+        bb2 = g.getBasicBlock() and
+        branch = g.getOutcome()
+      )
+    }
   }
 
   pragma[inline]
-  predicate guardControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, js::BasicBlock bb, boolean branch) {
     exists(js::ConditionGuardNode g |
       g.getTest() = guard and
       g.dominates(bb) and
-      branch = g.getOutcome()
-    )
-  }
-
-  js::BasicBlock getAConditionalBasicBlockSuccessor(js::BasicBlock bb, boolean branch) {
-    exists(js::ConditionGuardNode g |
-      bb = g.getTest().getBasicBlock() and
-      result = g.getBasicBlock() and
       branch = g.getOutcome()
     )
   }

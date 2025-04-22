@@ -1,1 +1,1 @@
-require('../../test1/a');
+require('../../test1/a'); // $ Alert

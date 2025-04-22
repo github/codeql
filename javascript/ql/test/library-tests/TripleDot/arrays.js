@@ -20,3 +20,27 @@ function shiftTaint() {
     sink(array.shift()); // $ hasTaintFlow=shift.directly-tainted
     sink(array.shift()); // $ hasTaintFlow=shift.directly-tainted
 }
+
+function implicitToString() {
+    const array = [source('implicitToString.1')];
+    array.push(source('implicitToString.2'))
+
+    sink(array + "foo"); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink("foo" + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink("" + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array + 1); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(1 + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(unknown() + array); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array + unknown()); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+
+    sink(`${array}`); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(`${array} foo`); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+
+    sink(String(array)); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+
+    sink(array.toString()); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(array.toString("utf8")); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+
+    sink(Array.prototype.toString.call(array)); // $ hasTaintFlow=implicitToString.1 hasTaintFlow=implicitToString.2
+    sink(Object.prototype.toString.call(array)); // OK - returns "[object Array]"
+}

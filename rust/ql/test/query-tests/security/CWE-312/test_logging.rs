@@ -39,51 +39,51 @@ impl std::fmt::Display for MyStruct2 {
 
 fn test_log(harmless: String, password: String, encrypted_password: String) {
     // logging macros
-    debug!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    error!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    info!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    trace!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    warn!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    log!(Level::Error, "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    debug!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    error!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    info!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    trace!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    warn!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    log!(Level::Error, "message = {}", password); // $ Alert[rust/cleartext-logging]
 
     // debug! macro, various formatting
     debug!("message");
     debug!("message = {}", harmless);
-    debug!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    debug!("message = {}", password); // $ Alert[rust/cleartext-logging]
     debug!("message = {}", encrypted_password);
-    debug!("message = {} {}", harmless, password); // $ Source Alert[rust/cleartext-logging]
+    debug!("message = {} {}", harmless, password); // $ Alert[rust/cleartext-logging]
     debug!("message = {harmless}");
-    debug!("message = {harmless} {}", password); // $ Source Alert[rust/cleartext-logging]
-    debug!("message = {password}"); // $ Source Alert[rust/cleartext-logging]
-    debug!("message = {password:?}"); // $ Source Alert[rust/cleartext-logging]
+    debug!("message = {harmless} {}", password); // $ Alert[rust/cleartext-logging]
+    debug!("message = {password}"); // $ Alert[rust/cleartext-logging]
+    debug!("message = {password:?}"); // $ Alert[rust/cleartext-logging]
     debug!(target: "target", "message = {}", harmless);
-    debug!(target: "target", "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    debug!(target: &password, "message = {}", harmless); // $ Source Alert[rust/cleartext-logging]
+    debug!(target: "target", "message = {}", password); // $ Alert[rust/cleartext-logging]
+    debug!(target: &password, "message = {}", harmless); // $ Alert[rust/cleartext-logging]
 
     // log! macro, various formatting
     log!(Level::Error, "message = {}", harmless);
-    log!(Level::Error, "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    log!(Level::Error, "message = {}", password); // $ Alert[rust/cleartext-logging]
     log!(target: "target", Level::Error, "message = {}", harmless);
-    log!(target: "target", Level::Error, "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    log!(target: &password, Level::Error, "message = {}", harmless); // $ Source Alert[rust/cleartext-logging]
+    log!(target: "target", Level::Error, "message = {}", password); // $ Alert[rust/cleartext-logging]
+    log!(target: &password, Level::Error, "message = {}", harmless); // $ Alert[rust/cleartext-logging]
 
     // structured logging
     error!(value = 1; "message = {}", harmless);
-    error!(value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    error!(value = 1; "message = {}", password); // $ Alert[rust/cleartext-logging]
     error!(target: "target", value = 1; "message");
-    error!(target: "target", value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    error!(target: &password, value = 1; "message"); // $ Source Alert[rust/cleartext-logging]
-    error!(value = 1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    error!(target: "target", value = 1; "message = {}", password); // $ Alert[rust/cleartext-logging]
+    error!(target: &password, value = 1; "message"); // $ Alert[rust/cleartext-logging]
+    error!(value = 1; "message = {}", password); // $ Alert[rust/cleartext-logging]
     error!(value = password.as_str(); "message"); // $ MISSING: Alert[rust/cleartext-logging]
     error!(value:? = password.as_str(); "message"); // $ MISSING: Alert[rust/cleartext-logging]
 
     let value1 = 1;
     error!(value1; "message = {}", harmless);
-    error!(value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    error!(value1; "message = {}", password); // $ Alert[rust/cleartext-logging]
     error!(target: "target", value1; "message");
-    error!(target: "target", value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    error!(target: &password, value1; "message"); // $ Source Alert[rust/cleartext-logging]
-    error!(value1; "message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    error!(target: "target", value1; "message = {}", password); // $ Alert[rust/cleartext-logging]
+    error!(target: &password, value1; "message"); // $ Alert[rust/cleartext-logging]
+    error!(value1; "message = {}", password); // $ Alert[rust/cleartext-logging]
 
     let value2 = password.as_str();
     error!(value2; "message"); // $ MISSING: Alert[rust/cleartext-logging]
@@ -115,7 +115,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     }
 
     // logging with a call
-    trace!("message = {}", get_password()); // $ Source Alert[rust/cleartext-logging]
+    trace!("message = {}", get_password()); // $ Alert[rust/cleartext-logging]
 
     let str1 = "123456".to_string();
     trace!("message = {}", &str1); // $ MISSING: Alert[rust/cleartext-logging]
@@ -149,36 +149,36 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
 }
 
 fn test_std(password: String, i: i32, opt_i: Option<i32>) {
-    print!("message = {}\n", password); // $ Source Alert[rust/cleartext-logging]
-    println!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
-    eprint!("message = {}\n", password); // $ Source Alert[rust/cleartext-logging]
-    eprintln!("message = {}", password); // $ Source Alert[rust/cleartext-logging]
+    print!("message = {}\n", password); // $ Alert[rust/cleartext-logging]
+    println!("message = {}", password); // $ Alert[rust/cleartext-logging]
+    eprint!("message = {}\n", password); // $ Alert[rust/cleartext-logging]
+    eprintln!("message = {}", password); // $ Alert[rust/cleartext-logging]
 
     match i {
-        1 => { panic!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        2 => { todo!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        3 => { unimplemented!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        4 => { unreachable!("message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        5 => { assert!(false, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        6 => { assert_eq!(1, 2, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        7 => { assert_ne!(1, 1, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        8 => { debug_assert!(false, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ Source Alert[rust/cleartext-logging]
-        11 => { _ = opt_i.expect(format!("message = {}", password).as_str()); } // $ Source Alert[rust/cleartext-logging]
+        1 => { panic!("message = {}", password); } // $ Alert[rust/cleartext-logging]
+        2 => { todo!("message = {}", password); } // $ Alert[rust/cleartext-logging]
+        3 => { unimplemented!("message = {}", password); } // $ Alert[rust/cleartext-logging]
+        4 => { unreachable!("message = {}", password); } // $ Alert[rust/cleartext-logging]
+        5 => { assert!(false, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        6 => { assert_eq!(1, 2, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        7 => { assert_ne!(1, 1, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        8 => { debug_assert!(false, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ Alert[rust/cleartext-logging]
+        11 => { _ = opt_i.expect(format!("message = {}", password).as_str()); } // $ Alert[rust/cleartext-logging]
         _ => {}
     }
 
     std::io::stdout().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
     std::io::stderr().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write_all(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
+    std::io::stdout().lock().write_all(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut out = std::io::stdout().lock();
-    out.write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    out.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut err = std::io::stderr().lock();
-    err.write(format!("message = {}\n", password).as_bytes()); // $ Source Alert[rust/cleartext-logging]
+    err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
 fn main() {

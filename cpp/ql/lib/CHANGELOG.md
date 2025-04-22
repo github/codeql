@@ -1,3 +1,31 @@
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Modified the `getBufferSize` predicate in `commons/Buffer.qll` to be more tolerant in some cases involving member variables in a larger struct or class.
+* Fixed an issue where the `getBufferSize` predicate in `commons/Buffer.qll` was returning results for references inside `offsetof` expressions, which are not accesses to a buffer.
+
+## 4.0.1
+
+No user-facing changes.
+
 ## 4.0.0
 
 ### Breaking Changes

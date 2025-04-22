@@ -56,8 +56,8 @@ Python
 
 *   The Server Side Template Injection query (:code:`py/template-injection`), originally contributed to the experimental query pack by @porcupineyhairs, has been promoted to the main query suite. This query finds instances of templates for a template engine such as Jinja being constructed with user input.
 
-Actions
-"""""""
+GitHub Actions
+""""""""""""""
 
 *   Initial public preview release
 
@@ -149,8 +149,8 @@ Python
 
 *   Added support for parameter annotations in API graphs. This means that in a function definition such as :code:`def foo(x: Bar): ...`, you can now use the :code:`getInstanceFromAnnotation()` method to step from :code:`Bar` to :code:`x`. In addition to this, the :code:`getAnInstance` method now also includes instances arising from parameter annotations.
 
-Actions
-"""""""
+GitHub Actions
+""""""""""""""
 
 *   Initial public preview release
 

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.commandline.help.helpbuilder", "system.commandline.help.helpcontext", "Member[helpbuilder]"]
+    - ["system.string", "system.commandline.help.twocolumnhelprow", "Member[secondcolumntext]"]
+    - ["system.commandline.help.twocolumnhelprow", "system.commandline.help.helpbuilder", "Method[gettwocolumnrow].ReturnValue"]
+    - ["system.commandline.localizationresources", "system.commandline.help.helpbuilder", "Member[localizationresources]"]
+    - ["system.int32", "system.commandline.help.twocolumnhelprow", "Method[gethashcode].ReturnValue"]
+    - ["system.int32", "system.commandline.help.helpbuilder", "Member[maxwidth]"]
+    - ["system.commandline.command", "system.commandline.help.helpcontext", "Member[command]"]
+    - ["system.string", "system.commandline.help.twocolumnhelprow", "Member[firstcolumntext]"]
+    - ["system.boolean", "system.commandline.help.twocolumnhelprow", "Method[equals].ReturnValue"]
+    - ["system.io.textwriter", "system.commandline.help.helpcontext", "Member[output]"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.help.helpcontext", "Member[parseresult]"]

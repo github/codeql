@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[filename]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[valid]"]
+    - ["system.activities.validation.validationsettings", "system.activities.presentation.validation.validationservice", "Member[settings]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[warning]"]
+    - ["system.guid", "system.activities.presentation.validation.validationerrorinfo", "Member[sourcereferenceid]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[id]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[error]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[propertyname]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[message]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[childinvalid]"]
+    - ["system.boolean", "system.activities.presentation.validation.validationerrorinfo", "Member[iswarning]"]

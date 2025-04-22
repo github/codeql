@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systemscriptfileenforcement!", "Member[none]"]
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systemscriptfileenforcement!", "Member[allowconstrainedaudit]"]
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systemscriptfileenforcement!", "Member[allowconstrained]"]
+    - ["system.management.automation.security.systemenforcementmode", "system.management.automation.security.systemenforcementmode!", "Member[enforce]"]
+    - ["system.management.automation.security.systemenforcementmode", "system.management.automation.security.systempolicy!", "Method[getlockdownpolicy].ReturnValue"]
+    - ["system.management.automation.security.systemenforcementmode", "system.management.automation.security.systemenforcementmode!", "Member[audit]"]
+    - ["system.management.automation.security.systemenforcementmode", "system.management.automation.security.systemenforcementmode!", "Member[none]"]
+    - ["system.management.automation.security.systemenforcementmode", "system.management.automation.security.systempolicy!", "Method[getsystemlockdownpolicy].ReturnValue"]
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systempolicy!", "Method[getfilepolicyenforcement].ReturnValue"]
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systemscriptfileenforcement!", "Member[block]"]
+    - ["system.management.automation.security.systemscriptfileenforcement", "system.management.automation.security.systemscriptfileenforcement!", "Member[allow]"]

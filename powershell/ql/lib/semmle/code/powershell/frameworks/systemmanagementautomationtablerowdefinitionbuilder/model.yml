@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.tablerowdefinitionbuilder", "Method[addpropertycolumn]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.tablerowdefinitionbuilder", "Method[addscriptblockcolumn]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.tablerowdefinitionbuilder", "Method[endrowdefinition]", "Argument[this]", "ReturnValue", "taint"]
+      

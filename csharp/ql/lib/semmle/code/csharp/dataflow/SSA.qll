@@ -345,7 +345,7 @@ module Ssa {
      * - The read of `this.Field` on line 11 is a last read of the phi node
      *   between lines 9 and 10.
      */
-    final AssignableRead getALastRead() { result = this.getALastReadAtNode(_) }
+    deprecated final AssignableRead getALastRead() { result = this.getALastReadAtNode(_) }
 
     /**
      * Gets a last read of the source variable underlying this SSA definition at
@@ -375,7 +375,7 @@ module Ssa {
      * - The read of `this.Field` on line 11 is a last read of the phi node
      *   between lines 9 and 10.
      */
-    final AssignableRead getALastReadAtNode(ControlFlow::Node cfn) {
+    deprecated final AssignableRead getALastReadAtNode(ControlFlow::Node cfn) {
       SsaImpl::lastReadSameVar(this, cfn) and
       result.getAControlFlowNode() = cfn
     }

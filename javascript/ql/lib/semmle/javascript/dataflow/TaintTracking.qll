@@ -409,7 +409,7 @@ module TaintTracking {
         not assgn.getWriteNode() instanceof Property and // not a write inside an object literal
         pred = assgn.getRhs() and
         assgn = obj.getAPropertyWrite() and
-        succ = obj
+        succ = assgn.getBase().getPostUpdateNode()
       |
         obj instanceof DataFlow::ObjectLiteralNode
         or
@@ -494,7 +494,8 @@ module TaintTracking {
           succ = c and
           c =
             DataFlow::globalVarRef([
-                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent"
+                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent", "unescape",
+                "escape"
               ]).getACall() and
           pred = c.getArgument(0)
         )
@@ -656,7 +657,7 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends DataFlow::SharedFlowStep {
+  private class UrlSearchParamsTaintStep extends DataFlow::LegacyFlowStep {
     /**
      * Holds if `succ` is a `URLSearchParams` providing access to the
      * parameters encoded in `pred`.

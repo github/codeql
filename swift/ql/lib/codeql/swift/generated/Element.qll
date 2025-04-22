@@ -23,7 +23,19 @@ module Generated {
     /**
      * Gets the string representation of this element.
      */
-    string toString() { none() } // overridden by subclasses
+    cached
+    final string toString() {
+      result = this.toStringImpl() and
+      // recursion guard to prevent `toString` from being defined recursively
+      (exists(any(Element e).toStringImpl()) implies any())
+    }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * Gets the string representation of this element.
+     */
+    abstract string toStringImpl();
 
     /**
      * Gets the name of a primary CodeQL class to which this element belongs.

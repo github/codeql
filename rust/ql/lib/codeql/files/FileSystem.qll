@@ -34,6 +34,8 @@ class Container = Impl::Container;
 
 class Folder = Impl::Folder;
 
+module Folder = Impl::Folder;
+
 /** A file. */
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
@@ -55,7 +57,8 @@ class File extends Container, Impl::File {
         |
           node.getFile() = this and
           line = [/*loc.getStartLine(), */ loc.getEndLine()] and // ignore start locations for now as we're getting them wrong for things with a comment attached
-          not loc instanceof EmptyLocation
+          not loc instanceof EmptyLocation and
+          line > 0
         )
       )
   }

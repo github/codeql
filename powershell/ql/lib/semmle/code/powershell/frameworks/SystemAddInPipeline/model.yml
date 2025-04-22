@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.addin.pipeline.contractbase", "Method[remoteequals].ReturnValue"]
+    - ["system.string", "system.addin.pipeline.qualificationdataattribute", "Member[name]"]
+    - ["system.type[]", "system.addin.pipeline.addinbaseattribute", "Member[activatableas]"]
+    - ["system.string", "system.addin.pipeline.contractbase", "Method[remotetostring].ReturnValue"]
+    - ["system.collections.generic.ilist<t>", "system.addin.pipeline.collectionadapters!", "Method[toilist<t>].ReturnValue"]
+    - ["system.collections.generic.ilist<tview>", "system.addin.pipeline.collectionadapters!", "Method[toilist<tcontract,tview>].ReturnValue"]
+    - ["system.string", "system.addin.pipeline.qualificationdataattribute", "Member[value]"]
+    - ["system.timespan", "system.addin.pipeline.contractbase", "Method[renewal].ReturnValue"]
+    - ["system.windows.frameworkelement", "system.addin.pipeline.frameworkelementadapters!", "Method[contracttoviewadapter].ReturnValue"]
+    - ["system.int32", "system.addin.pipeline.contractbase", "Method[acquirelifetimetoken].ReturnValue"]
+    - ["system.addin.contract.ilistcontract<t>", "system.addin.pipeline.collectionadapters!", "Method[toilistcontract<t>].ReturnValue"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contractbase", "Method[querycontract].ReturnValue"]
+    - ["tview", "system.addin.pipeline.contractadapter!", "Method[ContractToViewAdapter<tview>].ReturnValue"]
+    - ["system.int32", "system.addin.pipeline.contractbase", "Method[getremotehashcode].ReturnValue"]
+    - ["system.boolean", "system.addin.pipeline.contracthandle!", "Method[contractownsappdomain].ReturnValue"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contracthandle!", "Method[appdomainowner].ReturnValue"]
+    - ["system.addin.contract.inativehandlecontract", "system.addin.pipeline.frameworkelementadapters!", "Method[viewtocontractadapter].ReturnValue"]
+    - ["system.addin.pipeline.contracthandle", "system.addin.pipeline.contractadapter!", "Method[viewtocontractadapter].ReturnValue"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contracthandle", "Member[contract]"]
+    - ["system.addin.contract.ilistcontract<tcontract>", "system.addin.pipeline.collectionadapters!", "Method[toilistcontract<tview,tcontract>].ReturnValue"]

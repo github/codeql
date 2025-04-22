@@ -13,6 +13,8 @@ import codeql.swift.elements.decl.PatternBindingDecl
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.VarDecl
 
+private class VarDeclAlias = VarDecl;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `VarDecl` and should not
  * be referenced directly.
@@ -189,7 +191,7 @@ module Generated {
      * ```
      * This predicate returns such variable declaration.
      */
-    VarDecl getPropertyWrapperBackingVar() {
+    VarDeclAlias getPropertyWrapperBackingVar() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
               .(Raw::VarDecl)
@@ -246,7 +248,7 @@ module Generated {
      * ```
      * This predicate returns such variable declaration.
      */
-    VarDecl getPropertyWrapperProjectionVar() {
+    VarDeclAlias getPropertyWrapperProjectionVar() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertVarDeclToRaw(this)
               .(Raw::VarDecl)

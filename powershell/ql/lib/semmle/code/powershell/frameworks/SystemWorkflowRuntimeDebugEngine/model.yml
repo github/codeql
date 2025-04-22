@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Member[sequential]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingattribute", "Member[steppingoption]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Member[concurrent]"]
+    - ["system.int32", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Member[token]"]
+    - ["system.object", "system.workflow.runtime.debugengine.debugcontroller", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.string", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Member[name]"]
+    - ["system.workflow.componentmodel.activity", "system.workflow.runtime.debugengine.iinstancetable", "Method[getactivity].ReturnValue"]

@@ -1,3 +1,29 @@
+## 1.3.8
+
+No user-facing changes.
+
+## 1.3.7
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the models for Microsoft's Active Template Library (ATL).
+* The query "Use of basic integral type" (`cpp/jpl-c/basic-int-types`) no longer produces alerts for the standard fixed width integer types (`int8_t`, `uint8_t`, etc.), and the `_Bool` and `bool` types.
+
+## 1.3.6
+
+No user-facing changes.
+
+## 1.3.5
+
+### Minor Analysis Improvements
+
+* Due to changes in libraries the query "Static array access may cause overflow" (`cpp/static-buffer-overflow`) will no longer report cases where multiple fields of a struct or class are written with a single `memset` or similar operation.
+* The query "Call to memory access function may overflow buffer" (`cpp/overflow-buffer`) has been added to the security-extended query suite. The query detects a range of buffer overflow and underflow issues.
+
+## 1.3.4
+
+No user-facing changes.
+
 ## 1.3.3
 
 ### Minor Analysis Improvements

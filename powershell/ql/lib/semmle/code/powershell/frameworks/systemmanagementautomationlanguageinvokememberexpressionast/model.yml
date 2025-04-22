@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.invokememberexpressionast", "Method[invokememberexpressionast]", "Argument[1]", "Argument[2]", "taint"]
+      - ["system.management.automation.language.invokememberexpressionast", "Method[invokememberexpressionast]", "Argument[5].Element", "Argument[this]", "taint"]
+      

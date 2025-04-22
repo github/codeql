@@ -3,22 +3,23 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  PathSegment x, string hasGenericArgList, string hasNameRef, string hasParenthesizedArgList,
-  string hasPathType, string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr
+  PathSegment x, string hasGenericArgList, string hasIdentifier, string hasParenthesizedArgList,
+  string hasRetType, string hasReturnTypeSyntax, string hasTypeRepr, string hasTraitTypeRepr
 where
   toBeTested(x) and
   not x.isUnknown() and
   (if x.hasGenericArgList() then hasGenericArgList = "yes" else hasGenericArgList = "no") and
-  (if x.hasNameRef() then hasNameRef = "yes" else hasNameRef = "no") and
+  (if x.hasIdentifier() then hasIdentifier = "yes" else hasIdentifier = "no") and
   (
     if x.hasParenthesizedArgList()
     then hasParenthesizedArgList = "yes"
     else hasParenthesizedArgList = "no"
   ) and
-  (if x.hasPathType() then hasPathType = "yes" else hasPathType = "no") and
   (if x.hasRetType() then hasRetType = "yes" else hasRetType = "no") and
   (if x.hasReturnTypeSyntax() then hasReturnTypeSyntax = "yes" else hasReturnTypeSyntax = "no") and
-  if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no"
-select x, "hasGenericArgList:", hasGenericArgList, "hasNameRef:", hasNameRef,
-  "hasParenthesizedArgList:", hasParenthesizedArgList, "hasPathType:", hasPathType, "hasRetType:",
-  hasRetType, "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr
+  (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
+  if x.hasTraitTypeRepr() then hasTraitTypeRepr = "yes" else hasTraitTypeRepr = "no"
+select x, "hasGenericArgList:", hasGenericArgList, "hasIdentifier:", hasIdentifier,
+  "hasParenthesizedArgList:", hasParenthesizedArgList, "hasRetType:", hasRetType,
+  "hasReturnTypeSyntax:", hasReturnTypeSyntax, "hasTypeRepr:", hasTypeRepr, "hasTraitTypeRepr:",
+  hasTraitTypeRepr

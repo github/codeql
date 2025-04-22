@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.composition.hosting.compositionhost", "system.composition.hosting.compositionhost!", "Method[createcompositionhost].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withprovider].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withassemblies].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withpart].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withparts].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withdefaultconventions].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withexport].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withexport<texport>].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withassembly].ReturnValue"]
+    - ["system.composition.hosting.compositionhost", "system.composition.hosting.containerconfiguration", "Method[createcontainer].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withpart<tpart>].ReturnValue"]
+    - ["system.boolean", "system.composition.hosting.compositionhost", "Method[trygetexport].ReturnValue"]

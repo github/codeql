@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.InstanceAccess
+private import semmle.code.java.dataflow.internal.SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import TaintTrackingUtil as TaintTrackingUtil
 private import DataFlowNodes
@@ -101,6 +102,10 @@ predicate hasNonlocalValue(FieldRead fr) {
   )
 }
 
+private predicate capturedVariableRead(Node n) {
+  n.asExpr().(VarRead).getVariable() instanceof CapturedVariable
+}
+
 cached
 private module Cached {
   /**
@@ -110,7 +115,7 @@ private module Cached {
   predicate localFlowStep(Node node1, Node node2) {
     simpleLocalFlowStep0(node1, node2, _)
     or
-    adjacentUseUse(node1.asExpr(), node2.asExpr())
+    SsaFlow::localFlowStep(_, node1, node2, _)
     or
     // Simple flow through library code is included in the exposed local
     // step relation, even though flow is technically inter-procedural
@@ -126,6 +131,20 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
     simpleLocalFlowStep0(node1, node2, model)
+    or
+    exists(boolean isUseStep |
+      SsaFlow::localFlowStep(_, node1, node2, isUseStep) and
+      not capturedVariableRead(node2) and
+      model = ""
+    |
+      isUseStep = false
+      or
+      isUseStep = true and
+      not exists(FieldRead fr |
+        hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
+      ) and
+      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
+    )
     or
     any(AdditionalValueStep a).step(node1, node2) and
     pragma[only_bind_out](node1.getEnclosingCallable()) =
@@ -149,14 +168,7 @@ predicate localMustFlowStep(Node node1, Node node2) {
       node2.(ImplicitInstanceAccess).getInstanceAccess().(OwnInstanceAccess).getEnclosingCallable()
   )
   or
-  exists(SsaImplicitInit init |
-    init.isParameterDefinition(node1.asParameter()) and init.getAUse() = node2.asExpr()
-  )
-  or
-  exists(SsaExplicitUpdate upd |
-    upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() and
-    upd.getAUse() = node2.asExpr()
-  )
+  SsaFlow::localMustFlowStep(node1, node2)
   or
   node2.asExpr().(CastingExpr).getExpr() = node1.asExpr()
   or
@@ -167,10 +179,6 @@ predicate localMustFlowStep(Node node1, Node node2) {
 }
 
 import Cached
-
-private predicate capturedVariableRead(Node n) {
-  n.asExpr().(VarRead).getVariable() instanceof CapturedVariable
-}
 
 /**
  * Holds if there is a data flow step from `e1` to `e2` that only steps from
@@ -213,33 +221,7 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
 private predicate simpleLocalFlowStep0(Node node1, Node node2, string model) {
   (
     TaintTrackingUtil::forceCachingInSameStage() and
-    // Variable flow steps through adjacent def-use and use-use pairs.
-    exists(SsaExplicitUpdate upd |
-      upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-      upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
-      upd.getDefiningExpr().(RecordBindingVariableExpr) = node1.asExpr()
-    |
-      node2.asExpr() = upd.getAFirstUse() and
-      not capturedVariableRead(node2)
-    )
-    or
-    exists(SsaImplicitInit init |
-      init.isParameterDefinition(node1.asParameter()) and
-      node2.asExpr() = init.getAFirstUse() and
-      not capturedVariableRead(node2)
-    )
-    or
-    adjacentUseUse(node1.asExpr(), node2.asExpr()) and
-    not exists(FieldRead fr |
-      hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
-    ) and
-    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _) and
-    not capturedVariableRead(node2)
-    or
     ThisFlow::adjacentThisRefs(node1, node2)
-    or
-    adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr()) and
-    not capturedVariableRead(node2)
     or
     ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
     or
@@ -404,11 +386,7 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(Guard g, SsaVariable v, boolean branch, VarRead use |
-      guardChecks(g, v.getAUse(), branch) and
-      use = v.getAUse() and
-      g.controls(use.getBasicBlock(), branch) and
-      result.asExpr() = use
-    )
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::BarrierGuard<guardChecks/3>::getABarrierNode()
   }
 }

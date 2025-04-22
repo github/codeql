@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.ienumerator", "mshtml.ihtmlelementcollection", "Method[getenumerator].ReturnValue"]
+    - ["system.string", "mshtml.ihtmldocument2", "Member[readystate]"]
+    - ["system.string", "mshtml.ihtmlformelement", "Member[action]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[innerhtml]"]
+    - ["system.collections.ienumerator", "mshtml.ihtmlformelement", "Method[getenumerator].ReturnValue"]
+    - ["mshtml.ihtmlelement", "mshtml.ihtmldocument2", "Member[body]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[all]"]
+    - ["system.string", "mshtml.ihtmlformelement", "Member[method]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[id]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[forms]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[links]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[outerhtml]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[scripts]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[images]"]
+    - ["system.string", "mshtml.ihtmlinputelement", "Member[value]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[outertext]"]
+    - ["system.string", "mshtml.ihtmlinputelement", "Member[name]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[innertext]"]
+    - ["system.string", "mshtml.ihtmlformelement", "Member[name]"]
+    - ["system.object", "mshtml.ihtmlelementcollection", "Method[item].ReturnValue"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[tagname]"]
+    - ["system.object", "mshtml.ihtmlformelement", "Method[item].ReturnValue"]

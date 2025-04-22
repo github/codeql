@@ -41,6 +41,10 @@ containerparent(
   unique int child: @container ref
 );
 
+is_in_psmodule_path(
+  int file: @file ref
+);
+
 /* Comments */
 comment_entity(
   unique int id: @comment_entity,
@@ -82,7 +86,7 @@ parent(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.commandbaseast?view=powershellsdk-7.3.0
 @command_base = @command | @command_expression;
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.chainableast?view=powershellsdk-7.3.0
-@chainable = @pipeline | @pipeline_chain;
+@chainable = @command_base | @pipeline | @pipeline_chain;
 //https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.pipelinebaseast?view=powershellsdk-7.3.0
 @pipeline_base = @chainable | @error_statement | @assignment_statement;
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.statementast?view=powershellsdk-7.3.0

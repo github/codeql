@@ -22,9 +22,9 @@ private newtype TCompletion =
   TMatchingCompletion(Boolean b) or
   TEmptinessCompletion(Boolean isEmpty)
 
-private predicate commandThrows(Cmd c, boolean unconditional) {
-  c.getNamedArgument("ErrorAction").(StringConstExpr).getValue().getValue() = "Stop" and
-  if c.getCommandName() = "Write-Error" then unconditional = true else unconditional = false
+private predicate commandThrows(CallExpr c, boolean unconditional) {
+  c.getNamedArgument("ErrorAction").getValue().asString() = "Stop" and
+  if c.getName() = "Write-Error" then unconditional = true else unconditional = false
 }
 
 pragma[noinline]
@@ -127,7 +127,7 @@ private predicate mustHaveMatchingCompletion(Ast n) { inMatchingContext(n) }
  * that `n` evaluates to determines a true/false branch successor.
  */
 private predicate inBooleanContext(Ast n) {
-  n = any(IfStmt ifStmt).getACondition()
+  n = any(If ifStmt).getACondition()
   or
   n = any(WhileStmt whileStmt).getCondition()
   or
@@ -165,10 +165,7 @@ private predicate inBooleanContext(Ast n) {
     n = pipeline.getComponent(pipeline.getNumberOfComponents() - 1)
   )
   or
-  exists(CmdExpr cmdExpr |
-    inBooleanContext(cmdExpr) and
-    n = cmdExpr.getExpr()
-  )
+  n = any(ParenExpr parent | inBooleanContext(parent)).getExpr()
 }
 
 /**
@@ -191,7 +188,11 @@ private predicate inMatchingContext(Ast n) {
  * Holds if a normal completion of `cfe` must be an emptiness completion. Thats is,
  * whether `cfe` determines whether to execute the body of a `foreach` statement.
  */
-private predicate mustHaveEmptinessCompletion(Ast n) { n instanceof ForEachStmt }
+private predicate mustHaveEmptinessCompletion(Ast n) {
+  n instanceof ForEachStmt
+  or
+  any(CfgImpl::Trees::ProcessBlockTree pbtree).lastEmptinessCheck(n)
+}
 
 /**
  * A completion that represents normal evaluation of a statement or an

@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.io.enumeration.filesystementry", "Member[rootdirectory]"]
+    - ["system.io.filesysteminfo", "system.io.enumeration.filesystementry", "Method[tofilesysteminfo].ReturnValue"]
+    - ["system.boolean", "system.io.enumeration.filesystementry", "Member[isdirectory]"]
+    - ["system.string", "system.io.enumeration.filesystementry", "Member[originalrootdirectory]"]
+    - ["system.io.fileattributes", "system.io.enumeration.filesystementry", "Member[attributes]"]
+    - ["system.datetimeoffset", "system.io.enumeration.filesystementry", "Member[lastaccesstimeutc]"]
+    - ["system.string", "system.io.enumeration.filesystemname!", "Method[translatewin32expression].ReturnValue"]
+    - ["system.int64", "system.io.enumeration.filesystementry", "Member[length]"]
+    - ["system.string", "system.io.enumeration.filesystementry", "Member[filename]"]
+    - ["system.boolean", "system.io.enumeration.filesystementry", "Member[ishidden]"]
+    - ["system.boolean", "system.io.enumeration.filesystemname!", "Method[matcheswin32expression].ReturnValue"]
+    - ["system.datetimeoffset", "system.io.enumeration.filesystementry", "Member[creationtimeutc]"]
+    - ["system.string", "system.io.enumeration.filesystementry", "Method[tospecifiedfullpath].ReturnValue"]
+    - ["system.string", "system.io.enumeration.filesystementry", "Member[directory]"]
+    - ["system.boolean", "system.io.enumeration.filesystemname!", "Method[matchessimpleexpression].ReturnValue"]
+    - ["system.string", "system.io.enumeration.filesystementry", "Method[tofullpath].ReturnValue"]
+    - ["system.datetimeoffset", "system.io.enumeration.filesystementry", "Member[lastwritetimeutc]"]

@@ -15,7 +15,8 @@ namespace Semmle.Extraction.PowerShell.Entities
         public ScriptBlockAst Fragment => Symbol.Item1;
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.script_block(this, Fragment.UsingStatements.Count, Fragment.ScriptRequirements?.RequiredModules.Count ?? 0, Fragment.ScriptRequirements?.RequiredAssemblies.Count ?? 0, Fragment.ScriptRequirements?.RequiredPSEditions.Count ?? 0, Fragment.ScriptRequirements?.RequiresPSSnapIns.Count ?? 0);
+            // RequiresPsSnapins Property was removed in System.Management package 7.4.x and later
+            trapFile.script_block(this, Fragment.UsingStatements.Count, Fragment.ScriptRequirements?.RequiredModules.Count ?? 0, Fragment.ScriptRequirements?.RequiredAssemblies.Count ?? 0, Fragment.ScriptRequirements?.RequiredPSEditions.Count ?? 0, 0);
             trapFile.script_block_location(this, TrapSuitableLocation);
             if (Fragment.ScriptRequirements is not null){
                 trapFile.script_block_requires_elevation(this, Fragment.ScriptRequirements.IsElevationRequired);
@@ -39,10 +40,6 @@ namespace Semmle.Extraction.PowerShell.Entities
                 for (int i = 0; i < Fragment.ScriptRequirements.RequiredPSEditions.Count; i++)
                 {
                     trapFile.script_block_required_ps_edition(this, i, Fragment.ScriptRequirements.RequiredPSEditions[i]);
-                }
-                for (int i = 0; i < Fragment.ScriptRequirements.RequiresPSSnapIns.Count; i++)
-                {
-                    trapFile.script_block_requires_ps_snapin(this, i, Fragment.ScriptRequirements.RequiresPSSnapIns[i].Name, Fragment.ScriptRequirements.RequiresPSSnapIns[i].Version.ToString());
                 }
             }
             if (Fragment.ParamBlock is not null)

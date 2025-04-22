@@ -1,3 +1,29 @@
+## 4.1.4
+
+### Minor Analysis Improvements
+
+* Calls to `super` without explict arguments now have their implicit arguments generated. For example, in `def foo(x, y) { super } end` the call to `super` becomes `super(x, y)`.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
 ## 4.0.0
 
 ### Breaking Changes

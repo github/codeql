@@ -5,7 +5,7 @@ var app = express();
 
 app.get('/user/:id', function(req, res) {
   if (!isValidUserId(req.params.id))
-    // GOOD: request parameter is sanitized before incorporating it into the response
+    // OK - request parameter is sanitized before incorporating it into the response
     res.send("Unknown user: " + escape(req.params.id));
   else
     // TODO: do something exciting
@@ -15,13 +15,13 @@ app.get('/user/:id', function(req, res) {
 
 app.get('/user/:id', function(req, res) {
   if (!isValidUserId(req.params.id))
-    // GOOD: templating prevents XSS
+    // OK - templating prevents XSS
     res.render(invalidUserIdTemplate, { id: req.params.id });
 });
 
 app.get('/user/:id', function(req, res) {
   if (!isValidUserId(req.params.id)) {
-    // GOOD: response content type set to text
+    // OK - response content type set to text
     res.set('Content-Type', 'text/plain');
     res.send("Unknown user: " + req.params.id);
   } else
@@ -35,7 +35,7 @@ function textContentType() {
 
 app.get('/user/:id', function(req, res) {
   if (!isValidUserId(req.params.id)) {
-    // GOOD: response content type set to text
+    // OK - response content type set to text
     res.set('Content-Type', textContentType());
     res.send("Unknown user: " + req.params.id);
   } else
@@ -53,7 +53,7 @@ app.get('/echo', function(req, res) {
 app.get('/user/:id', function(req, res) {
   const url = req.params.id;
   if (!/["'&<>]/.exec(url)) {
-    res.send(url); // OK
+    res.send(url);
   }
 });
 
@@ -66,7 +66,7 @@ function escapeHtml1 (str) {
 app.get('/user/:id', function(req, res) {
   const url = req.params.id;
 
-  res.send(escapeHtml1(url)); // OK
+  res.send(escapeHtml1(url));
 });
 
 const matchHtmlRegExp = /["'&<>]/;
@@ -82,6 +82,6 @@ function escapeHtml2 (string) {
 app.get('/user/:id', function(req, res) {
   const url = req.params.id;
 
-  res.send(escapeHtml2(url)); // OK
+  res.send(escapeHtml2(url));
 });
 

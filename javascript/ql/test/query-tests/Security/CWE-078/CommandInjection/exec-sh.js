@@ -12,10 +12,10 @@ function getShell() {
 
 function execSh(command, options) {
     var shell = getShell()
-    return cp.spawn(shell.cmd, [shell.arg, command], options) // BAD
+    return cp.spawn(shell.cmd, [shell.arg, command], options) // $ Alert Sink
 }
 
 http.createServer(function (req, res) {
-    let cmd = url.parse(req.url, true).query.path;
+    let cmd = url.parse(req.url, true).query.path; // $ Source
     execSh(cmd);
 });

@@ -34,10 +34,8 @@ private module Cached {
     TSsaDefNode(SsaDefinition d) or
     /** Use of a variable or 'this', with flow from a post-update node (from an earlier use) */
     TSsaUseNode(ControlFlowNode use) { use = any(Ssa2::SsaConfig::SourceVariable v).getAUse() } or
-    /** Phi-read node (new SSA library). Ordinary phi nodes are represented by TSsaDefNode. */
-    TSsaPhiReadNode(Ssa2::PhiReadNode phi) or
-    /** Input to a phi node (new SSA library) */
-    TSsaInputNode(Ssa2::SsaInputNode input) or
+    /** A synthesized variable read (new SSA library). Definitions are represented by TSsaDefNode. */
+    TSsaSynthReadNode(Ssa2::SsaSynthReadNode read) or
     TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
     TPropNode(@property p) or
     TRestPatternNode(DestructuringPattern dp, Expr rest) { rest = dp.getRest() } or

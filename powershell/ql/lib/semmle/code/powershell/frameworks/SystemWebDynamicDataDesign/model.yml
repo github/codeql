@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.web.dynamicdata.design.datacontrolreferenceidconverter", "Method[getstandardvaluesexclusive].ReturnValue"]
+    - ["system.string", "system.web.dynamicdata.design.dynamicfielddesigner", "Method[getnodetext].ReturnValue"]
+    - ["system.string", "system.web.dynamicdata.design.dynamicfielddesigner", "Member[defaultnodetext]"]
+    - ["system.boolean", "system.web.dynamicdata.design.dynamicfielddesigner", "Method[isenabled].ReturnValue"]
+    - ["system.componentmodel.typeconverter+standardvaluescollection", "system.web.dynamicdata.design.datacontrolreferenceidconverter", "Method[getstandardvalues].ReturnValue"]
+    - ["system.type", "system.web.dynamicdata.design.datacontrolreferencecollectioneditor", "Method[createcollectionitemtype].ReturnValue"]
+    - ["system.string", "system.web.dynamicdata.design.dynamicdatamanagerdesigner", "Method[getdesigntimehtml].ReturnValue"]
+    - ["system.web.ui.webcontrols.datacontrolfield", "system.web.dynamicdata.design.dynamicfielddesigner", "Method[createfield].ReturnValue"]
+    - ["system.boolean", "system.web.dynamicdata.design.datacontrolreferenceidconverter", "Method[getstandardvaluessupported].ReturnValue"]
+    - ["system.boolean", "system.web.dynamicdata.design.dynamicfielddesigner", "Member[usesschema]"]
+    - ["system.componentmodel.design.designeractionlistcollection", "system.web.dynamicdata.design.dynamicdatamanagerdesigner", "Member[actionlists]"]
+    - ["system.string", "system.web.dynamicdata.design.dynamicfielddesigner", "Method[gettemplatecontent].ReturnValue"]
+    - ["system.web.ui.webcontrols.templatefield", "system.web.dynamicdata.design.dynamicfielddesigner", "Method[createtemplatefield].ReturnValue"]

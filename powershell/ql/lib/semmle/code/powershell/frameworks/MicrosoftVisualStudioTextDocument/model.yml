@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[none]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[changedsincesaved]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetag", "Member[changetypes]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[changedsinceopened]"]

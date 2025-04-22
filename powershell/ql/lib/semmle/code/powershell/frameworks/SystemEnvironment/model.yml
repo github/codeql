@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft-sdl/powershell-all
-      extensible: sourceModel
-    data:
-      - ["System.Environment!", "Method[ExpandEnvironmentVariables].ReturnValue", "environment"]
-      - ["System.Environment!", "Method[GetCommandLineArgs].ReturnValue", "commandargs"]
-      - ["System.Environment!", "Method[GetEnvironmentVariable].ReturnValue", "environment"]
-      - ["System.Environment!", "Method[GetEnvironmentVariables].ReturnValue", "environment"]

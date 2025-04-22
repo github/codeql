@@ -18,8 +18,6 @@ module SsaInput implements SsaImplCommon::InputSig<Location> {
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-  class ExitBasicBlock extends BasicBlock, BasicBlocks::ExitBasicBlock { }
-
   class SourceVariable = LocalVariable;
 
   /**
@@ -76,12 +74,6 @@ class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
-
-module ExposedForTestingOnly {
-  predicate ssaDefReachesReadExt = Impl::ssaDefReachesReadExt/4;
-
-  predicate phiHasInputFromBlockExt = Impl::phiHasInputFromBlockExt/3;
-}
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(Cfg::EntryBasicBlock bb, int i, LocalVariable v) {
@@ -225,44 +217,19 @@ private predicate hasVariableReadWithCapturedWrite(
 }
 
 pragma[noinline]
-private predicate adjacentDefRead(
+deprecated private predicate adjacentDefReadExt(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-pragma[noinline]
-private predicate adjacentDefReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
   SsaInput::SourceVariable v
 ) {
   Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
   v = def.getSourceVariable()
 }
 
-private predicate adjacentDefReachesRead(
+deprecated private predicate adjacentDefReachesReadExt(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
-  exists(SsaInput::SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
-  )
-}
-
-private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
   exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
+    def.definesAt(v, bb1, i1)
     or
     SsaInput::variableRead(bb1, i1, v, true)
   )
@@ -274,17 +241,8 @@ private predicate adjacentDefReachesReadExt(
   )
 }
 
-/** Same as `adjacentDefRead`, but skips uncertain reads. */
-pragma[nomagic]
-private predicate adjacentDefSkipUncertainReads(
+deprecated private predicate adjacentDefReachesUncertainReadExt(
   Definition def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, true)
-}
-
-private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
 ) {
   adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
   SsaInput::variableRead(bb2, i2, _, false)
@@ -292,13 +250,29 @@ private predicate adjacentDefReachesUncertainReadExt(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-private predicate lastRefSkipUncertainReadsExt(DefinitionExt def, SsaInput::BasicBlock bb, int i) {
+deprecated private predicate lastRefSkipUncertainReadsExt(
+  Definition def, SsaInput::BasicBlock bb, int i
+) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
   exists(SsaInput::BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
+  )
+}
+
+/**
+ * Holds if the read of `def` at `read` may be a last read. That is, `read`
+ * can either reach another definition of the underlying source variable or
+ * the end of the CFG scope, without passing through another non-pseudo read.
+ */
+pragma[nomagic]
+deprecated predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
+  exists(Cfg::BasicBlock bb, int i |
+    lastRefSkipUncertainReadsExt(def, bb, i) and
+    variableReadActual(bb, i, _) and
+    read = bb.getNode(i)
   )
 }
 
@@ -377,11 +351,7 @@ private module Cached {
    */
   cached
   predicate firstRead(Definition def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
-      read = bb2.getNode(i2)
-    )
+    exists(Cfg::BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and read = bb.getNode(i))
   }
 
   /**
@@ -393,25 +363,11 @@ private module Cached {
   predicate adjacentReadPair(
     Definition def, VariableReadAccessCfgNode read1, VariableReadAccessCfgNode read2
   ) {
-    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2 |
+    exists(Cfg::BasicBlock bb1, int i1, Cfg::BasicBlock bb2, int i2, LocalVariable v |
+      Impl::ssaDefReachesRead(v, def, bb1, i1) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       read1 = bb1.getNode(i1) and
-      variableReadActual(bb1, i1, _) and
-      adjacentDefSkipUncertainReads(def, bb1, i1, bb2, i2) and
       read2 = bb2.getNode(i2)
-    )
-  }
-
-  /**
-   * Holds if the read of `def` at `read` may be a last read. That is, `read`
-   * can either reach another definition of the underlying source variable or
-   * the end of the CFG scope, without passing through another non-pseudo read.
-   */
-  cached
-  predicate lastRead(Definition def, VariableReadAccessCfgNode read) {
-    exists(Cfg::BasicBlock bb, int i |
-      lastRefSkipUncertainReadsExt(def, bb, i) and
-      variableReadActual(bb, i, _) and
-      read = bb.getNode(i)
     )
   }
 
@@ -425,13 +381,15 @@ private module Cached {
     import DataFlowIntegrationImpl
 
     cached
-    predicate localFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo, boolean isUseStep) {
-      DataFlowIntegrationImpl::localFlowStep(def, nodeFrom, nodeTo, isUseStep)
+    predicate localFlowStep(
+      SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo, boolean isUseStep
+    ) {
+      DataFlowIntegrationImpl::localFlowStep(v, nodeFrom, nodeTo, isUseStep)
     }
 
     cached
-    predicate localMustFlowStep(DefinitionExt def, Node nodeFrom, Node nodeTo) {
-      DataFlowIntegrationImpl::localMustFlowStep(def, nodeFrom, nodeTo)
+    predicate localMustFlowStep(SsaInput::SourceVariable v, Node nodeFrom, Node nodeTo) {
+      DataFlowIntegrationImpl::localMustFlowStep(v, nodeFrom, nodeTo)
     }
 
     signature predicate guardChecksSig(Cfg::CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
@@ -455,33 +413,6 @@ private module Cached {
 
 import Cached
 
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  VariableReadAccessCfgNode getARead() { result = getARead(this) }
-
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
-
-  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
-}
-
 class NormalParameter extends Parameter {
   NormalParameter() {
     this instanceof SimpleParameter or
@@ -495,10 +426,10 @@ class NormalParameter extends Parameter {
 
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-DefinitionExt getParameterDef(NamedParameter p) {
+Definition getParameterDef(NamedParameter p) {
   exists(Cfg::BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p.getDefiningAccess() and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 
@@ -542,35 +473,34 @@ class ParameterExt extends TParameterExt {
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.ruby.controlflow.internal.Guards as Guards
 
-  class Parameter = ParameterExt;
-
   class Expr extends Cfg::CfgNodes::ExprCfgNode {
     predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { result = Cached::getARead(def) }
 
-  predicate ssaDefAssigns(WriteDefinition def, Expr value) {
-    def.(Ssa::WriteDefinition).assigns(value)
+  predicate ssaDefHasSource(WriteDefinition def) {
+    any(ParameterExt p).isInitializedBy(def) or def.(Ssa::WriteDefinition).assigns(_)
   }
 
-  predicate ssaDefInitializesParam(WriteDefinition def, Parameter p) { p.isInitializedBy(def) }
-
   class Guard extends Cfg::CfgNodes::AstCfgNode {
-    predicate hasCfgNode(SsaInput::BasicBlock bb, int i) { this = bb.getNode(i) }
+    /**
+     * Holds if the control flow branching from `bb1` is dependent on this guard,
+     * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
+     * guard to `branch`.
+     */
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
+        this.getBasicBlock() = bb1 and
+        bb2 = bb1.getASuccessor(s) and
+        s.getValue() = branch
+      )
+    }
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
-  predicate guardControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
+  predicate guardDirectlyControlsBlock(Guard guard, SsaInput::BasicBlock bb, boolean branch) {
     Guards::guardControlsBlock(guard, bb, branch)
-  }
-
-  /** Gets an immediate conditional successor of basic block `bb`, if any. */
-  SsaInput::BasicBlock getAConditionalBasicBlockSuccessor(SsaInput::BasicBlock bb, boolean branch) {
-    exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
-      result = bb.getASuccessor(s) and
-      s.getValue() = branch
-    )
   }
 }
 

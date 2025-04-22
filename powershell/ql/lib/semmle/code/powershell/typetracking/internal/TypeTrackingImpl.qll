@@ -15,7 +15,8 @@ private import codeql.util.Unit
 
 pragma[noinline]
 private predicate sourceArgumentPositionMatch(
-  CallCfgNode call, DataFlowPrivate::ArgumentNode arg, DataFlowDispatch::ParameterPosition ppos
+  ExprNodes::CallExprCfgNode call, DataFlowPrivate::ArgumentNode arg,
+  DataFlowDispatch::ParameterPosition ppos
 ) {
   exists(DataFlowDispatch::ArgumentPosition apos |
     arg.sourceArgumentOf(call, apos) and
@@ -213,7 +214,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    * Holds if `nodeFrom` steps to `nodeTo` by being returned from a call.
    */
   predicate returnStep(Node nodeFrom, LocalSourceNode nodeTo) {
-    exists(CallCfgNode call |
+    exists(ExprNodes::CallExprCfgNode call |
       nodeFrom instanceof DataFlowPrivate::ReturnNode and
       nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() =
         DataFlowDispatch::getTarget(DataFlowDispatch::TNormalCall(call)) and

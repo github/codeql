@@ -2,12 +2,15 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", False, "Read", "(System.IO.Stream)", "", "Argument[0]", "ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", False, "Read", "(System.IO.Stream)", "", "Argument[0]", "ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "taint", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationProvider", "IniConfigurationProvider", "(Microsoft.Extensions.Configuration.Ini.IniConfigurationSource)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Ini", "IniConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "IniStreamConfigurationProvider", "(Microsoft.Extensions.Configuration.Ini.IniStreamConfigurationSource)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationProvider", "Read", "(System.IO.Stream)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Ini", "IniStreamConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

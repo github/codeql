@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.dependencymodel.resolution.icompilationassemblyresolver", "Method[tryresolveassemblypaths].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.dependencymodel.resolution.compositecompilationassemblyresolver", "Method[tryresolveassemblypaths].ReturnValue"]
+    - ["system.string", "microsoft.extensions.dependencymodel.resolution.dotnetreferenceassembliespathresolver!", "Method[resolve].ReturnValue"]
+    - ["system.string", "microsoft.extensions.dependencymodel.resolution.dotnetreferenceassembliespathresolver!", "Member[dotnetreferenceassembliespathenv]"]
+    - ["system.boolean", "microsoft.extensions.dependencymodel.resolution.referenceassemblypathresolver", "Method[tryresolveassemblypaths].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.dependencymodel.resolution.packagecompilationassemblyresolver", "Method[tryresolveassemblypaths].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.dependencymodel.resolution.appbasecompilationassemblyresolver", "Method[tryresolveassemblypaths].ReturnValue"]

@@ -11,7 +11,7 @@
 import powershell
 
 predicate containsScope(VarAccess outer, VarAccess inner) {
-  outer.getUserPath() = inner.getUserPath() and
+  outer.getVariable().getName() = inner.getVariable().getName() and
   outer != inner
 }
 
@@ -23,16 +23,16 @@ predicate constantBinaryExpression(BinaryExpr binary) {
   onlyConstantExpressions(binary.getLeft()) and onlyConstantExpressions(binary.getRight())
 }
 
-predicate onlyConstantExpressions(Expr expr){
-  expr instanceof StringConstExpr or constantBinaryExpression(expr) or constantTernaryExpression(expr)
+predicate onlyConstantExpressions(Expr expr) {
+  expr instanceof StringConstExpr or
+  constantBinaryExpression(expr) or
+  constantTernaryExpression(expr)
 }
 
 VarAccess getNonConstantVariableAssignment(VarAccess varexpr) {
-  (
-    exists(AssignStmt assignment |
-      not onlyConstantExpressions(assignment.getRightHandSide().(CmdExpr).getExpr()) and
-      result = assignment.getLeftHandSide()
-    )
+  exists(AssignStmt assignment |
+    not onlyConstantExpressions(assignment.getRightHandSide()) and
+    result = assignment.getLeftHandSide()
   ) and
   containsScope(result, varexpr)
 }
@@ -44,31 +44,35 @@ VarAccess getParameterWithVariableScope(VarAccess varexpr) {
   )
 }
 
-Expr getAllSubExpressions(Expr expr)
-{
+Expr getAllSubExpressions(Expr expr) {
   result = expr or
-  result = getAllSubExpressions(expr.(ArrayLiteral).getAnElement()) or
-  result = getAllSubExpressions(expr.(ArrayExpr).getStmtBlock().getAStmt().(Pipeline).getAComponent().(CmdExpr).getExpr())
+  result = getAllSubExpressions(expr.(ArrayLiteral).getAnExpr()) or
+  result =
+    getAllSubExpressions(expr.(ArrayExpr)
+          .getStmtBlock()
+          .getAStmt()
+          .(ExprStmt)
+          .getExpr()
+          .(Pipeline)
+          .getAComponent())
 }
 
-Expr dangerousCommandElement(Cmd command)
-{
+Expr dangerousCommandElement(CallExpr command) {
   (
-    command.getKind() = 28 or
-    command.getCommandName() = "Invoke-Expression"
+    command instanceof CallOperator or
+    command.getName() = "Invoke-Expression"
   ) and
   result = getAllSubExpressions(command.getAnArgument())
 }
 
 from Expr commandarg, VarAccess unknownDeclaration
 where
-  exists(Cmd command |
+  exists(CallExpr command |
     (
       unknownDeclaration = getNonConstantVariableAssignment(commandarg) or
       unknownDeclaration = getParameterWithVariableScope(commandarg)
-    )
-    and
+    ) and
     commandarg = dangerousCommandElement(command)
   )
 select commandarg.(VarAccess).getLocation(), "Unsafe flow to command argument from $@.",
-  unknownDeclaration, unknownDeclaration.getUserPath()
+  unknownDeclaration, unknownDeclaration.getVariable().getName()

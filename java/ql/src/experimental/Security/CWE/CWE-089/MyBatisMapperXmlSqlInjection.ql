@@ -15,7 +15,6 @@
 import java
 deprecated import MyBatisCommonLib
 deprecated import MyBatisMapperXmlSqlInjectionLib
-deprecated import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.Sanitizers
 deprecated import MyBatisMapperXmlSqlInjectionFlow::PathGraph

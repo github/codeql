@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Method[deletecharandsearch].ReturnValue"]
+    - ["system.string", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Member[searchstring]"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult!", "Method[op_inequality].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Method[equals].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Member[passedstartofbuffer]"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Member[isactive]"]
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchdirection", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchdirection!", "Member[forward]"]
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Method[selectnextresult].ReturnValue"]
+    - ["system.int32", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Method[gethashcode].ReturnValue"]
+    - ["microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearchFactoryService", "Method[getincrementalsearch].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult!", "Method[op_equality].ReturnValue"]
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchdirection", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Member[searchdirection]"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Member[passedstartofsearch]"]
+    - ["microsoft.visualstudio.text.editor.itextview", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Member[textview]"]
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "microsoft.visualstudio.text.incrementalsearch.iincrementalsearch", "Method[appendcharandsearch].ReturnValue"]
+    - ["microsoft.visualstudio.text.incrementalsearch.incrementalsearchdirection", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchdirection!", "Member[backward]"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Member[resultfound]"]
+    - ["system.boolean", "microsoft.visualstudio.text.incrementalsearch.incrementalsearchresult", "Member[passedendofbuffer]"]

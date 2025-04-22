@@ -44,22 +44,18 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
      * Gets the type of this node.
      */
     Type getType();
-
-    /**
-     * Gets the enclosing callable of this node.
-     */
-    Callable getEnclosingCallable();
-
-    /**
-     * Gets the enclosing callable of this node, when considered as an expression.
-     */
-    Callable getAsExprEnclosingCallable();
-
-    /**
-     * Gets the parameter corresponding to this node, if any.
-     */
-    Parameter asParameter();
   }
+
+  /** Gets the enclosing callable of `node`. */
+  Callable getEnclosingCallable(NodeExtended node);
+
+  /**
+   * Gets the enclosing callable of `node`, when considered as an expression.
+   */
+  Callable getAsExprEnclosingCallable(NodeExtended node);
+
+  /** Gets the parameter corresponding to this node, if any. */
+  Parameter asParameter(NodeExtended n);
 
   /**
    * A class of callables that are potentially relevant for generating summary or
@@ -222,6 +218,19 @@ signature module ModelGeneratorInputSig<LocationSig Location, InputSig<Location>
   string printContent(Lang::ContentSet c);
 
   /**
+   * Gets the parameter position of the return kind, if any.
+   */
+  default Lang::ParameterPosition getReturnKindParamPosition(Lang::ReturnKind node) { none() }
+
+  /**
+   * Gets the string that represents the return value corresponding to the
+   * return kind `kind`.
+   *
+   * For most languages this will be the string "ReturnValue".
+   */
+  default string getReturnValueString(Lang::ReturnKind kind) { result = "ReturnValue" }
+
+  /**
    * Holds if it is irrelevant to generate models for `api` based on data flow analysis.
    *
    * This serves as an extra filter for the `relevant` predicate.
@@ -301,6 +310,14 @@ module MakeModelGenerator<
      * Gets the kind of the return node.
      */
     DataFlow::ReturnKindExt getKind() { result = kind }
+
+    /**
+     * Gets the parameter position of the return node, if any.
+     */
+    DataFlow::ParameterPosition getPosition() {
+      result = this.getKind().(DataFlow::ParamUpdateReturnKind).getPosition() or
+      result = getReturnKindParamPosition(this.getKind().(DataFlow::ValueReturnKind).getKind())
+    }
   }
 
   bindingset[c]
@@ -308,11 +325,14 @@ module MakeModelGenerator<
 
   private module PrintReturnNodeExt<printCallableParamSig/2 printCallableParam> {
     string getOutput(ReturnNodeExt node) {
-      node.getKind() instanceof DataFlow::ValueReturnKind and
-      result = "ReturnValue"
+      exists(DataFlow::ValueReturnKind valueReturnKind |
+        valueReturnKind = node.getKind() and
+        not exists(node.getPosition()) and
+        result = getReturnValueString(valueReturnKind.getKind())
+      )
       or
       exists(DataFlow::ParameterPosition pos |
-        pos = node.getKind().(DataFlow::ParamUpdateReturnKind).getPosition() and
+        pos = node.getPosition() and
         result = printCallableParam(returnNodeEnclosingCallable(node), pos)
       )
     }
@@ -376,7 +396,7 @@ module MakeModelGenerator<
    * Gets the MaD string representation of the parameter node `p`.
    */
   string parameterNodeAsInput(DataFlow::ParameterNode p) {
-    result = parameterAccess(p.(NodeExtended).asParameter())
+    result = parameterAccess(asParameter(p))
     or
     result = qualifierString() and p instanceof InstanceParameterNode
   }
@@ -451,7 +471,7 @@ module MakeModelGenerator<
     predicate isSource(DataFlow::Node source, FlowState state) {
       source instanceof DataFlow::ParameterNode and
       exists(Callable c |
-        c = source.(NodeExtended).getEnclosingCallable() and
+        c = getEnclosingCallable(source) and
         c instanceof DataFlowSummaryTargetApi and
         not isUninterestingForHeuristicDataFlowModels(c)
       ) and
@@ -461,7 +481,7 @@ module MakeModelGenerator<
     predicate isSink(DataFlow::Node sink, FlowState state) {
       sink instanceof ReturnNodeExt and
       not isOwnInstanceAccessNode(sink) and
-      not exists(captureQualifierFlow(sink.(NodeExtended).getAsExprEnclosingCallable())) and
+      not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink))) and
       (state instanceof TaintRead or state instanceof TaintStore)
     }
 
@@ -505,8 +525,8 @@ module MakeModelGenerator<
     DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt
   ) {
     exists(string input, string output |
-      p.(NodeExtended).getEnclosingCallable() = api and
-      returnNodeExt.getEnclosingCallable() = api and
+      getEnclosingCallable(p) = api and
+      getEnclosingCallable(returnNodeExt) = api and
       input = parameterNodeAsInput(p) and
       output = getOutput(returnNodeExt) and
       input != output and
@@ -556,11 +576,12 @@ module MakeModelGenerator<
     private module PropagateContentFlowConfig implements ContentDataFlow::ConfigSig {
       predicate isSource(DataFlow::Node source) {
         source instanceof DataFlow::ParameterNode and
-        source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
+        getEnclosingCallable(source) instanceof DataFlowSummaryTargetApi
       }
 
       predicate isSink(DataFlow::Node sink) {
-        sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSummaryTargetApi
+        sink instanceof ReturnNodeExt and
+        getEnclosingCallable(sink) instanceof DataFlowSummaryTargetApi
       }
 
       predicate isAdditionalFlowStep = isAdditionalContentFlowStep/2;
@@ -599,7 +620,7 @@ module MakeModelGenerator<
      * when used in content flow.
      */
     private string parameterNodeAsContentInput(DataFlow::ParameterNode p) {
-      result = parameterContentAccess(p.(NodeExtended).asParameter())
+      result = parameterContentAccess(asParameter(p))
       or
       result = qualifierString() and p instanceof InstanceParameterNode
     }
@@ -653,8 +674,8 @@ module MakeModelGenerator<
       PropagateContentFlow::AccessPath stores, boolean preservesValue
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-      returnNodeExt.getEnclosingCallable() = api and
-      p.(NodeExtended).getEnclosingCallable() = api
+      getEnclosingCallable(returnNodeExt) = api and
+      getEnclosingCallable(p) = api
     }
 
     /**
@@ -673,7 +694,7 @@ module MakeModelGenerator<
       private DataFlow::ParameterNode parameter;
 
       ContentDataFlowSummaryTargetApi() {
-        count(string input, string output |
+        strictcount(string input, string output |
           exists(
             PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
             PropagateContentFlow::AccessPath stores
@@ -698,8 +719,8 @@ module MakeModelGenerator<
       PropagateContentFlow::AccessPath stores, boolean preservesValue
     ) {
       PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-      returnNodeExt.getEnclosingCallable() = api and
-      p.(NodeExtended).getEnclosingCallable() = api and
+      getEnclosingCallable(returnNodeExt) = api and
+      getEnclosingCallable(p) = api and
       p = api.getARelevantParameterNode()
     }
 
@@ -971,7 +992,8 @@ module MakeModelGenerator<
     }
 
     predicate isSink(DataFlow::Node sink) {
-      sink.(ReturnNodeExt).getEnclosingCallable() instanceof DataFlowSourceTargetApi
+      sink instanceof ReturnNodeExt and
+      getEnclosingCallable(sink) instanceof DataFlowSourceTargetApi
     }
 
     DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }
@@ -994,8 +1016,8 @@ module MakeModelGenerator<
     exists(NodeExtended source, ReturnNodeExt sink, string kind |
       PropagateFromSource::flow(source, sink) and
       sourceNode(source, kind) and
-      api = sink.getEnclosingCallable() and
-      not irrelevantSourceSinkApi(source.getEnclosingCallable(), api) and
+      api = getEnclosingCallable(sink) and
+      not irrelevantSourceSinkApi(getEnclosingCallable(source), api) and
       result = ModelPrinting::asSourceModel(api, getOutput(sink), kind)
     )
   }
@@ -1010,7 +1032,7 @@ module MakeModelGenerator<
   module PropagateToSinkConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       apiSource(source) and
-      source.(NodeExtended).getEnclosingCallable() instanceof DataFlowSinkTargetApi
+      getEnclosingCallable(source) instanceof DataFlowSinkTargetApi
     }
 
     predicate isSink(DataFlow::Node sink) {
@@ -1039,7 +1061,7 @@ module MakeModelGenerator<
     exists(NodeExtended src, NodeExtended sink, string kind |
       PropagateToSink::flow(src, sink) and
       sinkNode(sink, kind) and
-      api = src.getEnclosingCallable() and
+      api = getEnclosingCallable(src) and
       result = ModelPrinting::asSinkModel(api, asInputArgument(src), kind)
     )
   }

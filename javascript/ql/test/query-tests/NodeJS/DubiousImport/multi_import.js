@@ -10,10 +10,10 @@ if (cond) {
 }
 
 if (cond) {
-  mod1.call();  // OK: `mod1` is `./b`, which exports `call`
+  mod1.call();  // OK - `mod1` is `./b`, which exports `call`
 } else {
-  mod1.bar;     // OK: `mod1` is `./c`, which exports `bar`
-  mod2.bar;     // NOT OK: `mod2` is `./b`, which does not export `call`
+  mod1.bar;     // OK - `mod1` is `./c`, which exports `bar`
+  mod2.bar;     // $ Alert - `mod2` is `./b`, which does not export `call`
 }
 
 module.exports = {};

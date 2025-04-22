@@ -55,8 +55,6 @@ module BaseSsa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock extends BasicBlock, ControlFlow::BasicBlocks::ExitBlock { }
-
     class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {

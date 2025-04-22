@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.web.script.serialization.javascriptserializer", "Member[recursionlimit]"]
+    - ["system.string", "system.web.script.serialization.javascriptserializer", "Method[serialize].ReturnValue"]
+    - ["system.int32", "system.web.script.serialization.javascriptserializer", "Member[maxjsonlength]"]
+    - ["system.type", "system.web.script.serialization.simpletyperesolver", "Method[resolvetype].ReturnValue"]
+    - ["system.boolean", "system.web.script.serialization.scriptignoreattribute", "Member[applytooverrides]"]
+    - ["t", "system.web.script.serialization.javascriptserializer", "Method[converttotype<t>].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[deserializeobject].ReturnValue"]
+    - ["t", "system.web.script.serialization.javascriptserializer", "Method[deserialize<t>].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[converttotype].ReturnValue"]
+    - ["system.string", "system.web.script.serialization.javascripttyperesolver", "Method[resolvetypeid].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.type>", "system.web.script.serialization.javascriptconverter", "Member[supportedtypes]"]
+    - ["system.string", "system.web.script.serialization.simpletyperesolver", "Method[resolvetypeid].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[deserialize].ReturnValue"]
+    - ["system.collections.generic.idictionary<system.string,system.object>", "system.web.script.serialization.javascriptconverter", "Method[serialize].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptconverter", "Method[deserialize].ReturnValue"]
+    - ["system.type", "system.web.script.serialization.javascripttyperesolver", "Method[resolvetype].ReturnValue"]

@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.collections.generic.collectionextensions!", "Method[remove<tkey,tvalue>].ReturnValue"]
+    - ["system.collections.generic.keyvaluepair<tkey,tvalue>", "system.collections.generic.keyvaluepair!", "Method[create<tkey,tvalue>].ReturnValue"]
+    - ["tvalue", "system.collections.generic.collectionextensions!", "Method[GetValueOrDefault<TKey,tvalue>].ReturnValue"]
+    - ["system.boolean", "system.collections.generic.collectionextensions!", "Method[tryadd<tkey,tvalue>].ReturnValue"]
+    - ["system.collections.objectmodel.readonlydictionary<tkey,tvalue>", "system.collections.generic.collectionextensions!", "Method[asreadonly<tkey,tvalue>].ReturnValue"]
+    - ["system.int32", "system.collections.generic.referenceequalitycomparer", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "system.collections.generic.referenceequalitycomparer", "Method[equals].ReturnValue"]
+    - ["system.collections.objectmodel.readonlycollection<t>", "system.collections.generic.collectionextensions!", "Method[asreadonly<t>].ReturnValue"]
+    - ["system.collections.generic.referenceequalitycomparer", "system.collections.generic.referenceequalitycomparer!", "Member[instance]"]

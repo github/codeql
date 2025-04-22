@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.filesystemprovider!", "Method[namestring]", "Argument[0]", "ReturnValue", "taint"]
+      

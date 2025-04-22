@@ -28,6 +28,16 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getStringConstruction().getLocation()
+    or
+    result = sink.(Sink).getCommandExecution().getLocation()
+  }
 }
 
 /** Global taint-tracking for detecting "shell command constructed from library input" vulnerabilities. */

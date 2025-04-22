@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.entitymodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.mappingmodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.storagemodelbuildprovider", "Method[getresultflags].ReturnValue"]
+    - ["system.web.compilation.buildproviderresultflags", "system.data.entity.design.aspnet.entitydesignerbuildprovider", "Method[getresultflags].ReturnValue"]

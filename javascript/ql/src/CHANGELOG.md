@@ -1,3 +1,54 @@
+## 1.5.3
+
+### Minor Analysis Improvements
+
+* Data passed to the [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) constructor is now treated as a sink for `js/reflected-xss`.
+* Slightly improved detection of DOM element references, leading to XSS results being detected in more cases.
+
+### Bug Fixes
+
+* Fixed a bug that would prevent extraction of `tsconfig.json` files when it contained an array literal with a trailing comma.
+
+## 1.5.2
+
+### Bug Fixes
+
+* Fixed a bug, first introduced in `2.20.3`, that would prevent `v-html` attributes in Vue files
+  from being flagged by the `js/xss` query. The original behaviour has been restored and the `v-html`
+  attribute is once again functioning as a sink for the `js/xss` query.
+* Fixed a bug that would in rare cases cause some regexp-based checks
+  to be seen as generic taint sanitisers, even though the underlying regexp
+  is not restrictive enough. The regexps are now analysed more precisely,
+  and unrestrictive regexp checks will no longer block taint flow.
+* Fixed a recently-introduced bug that caused `js/server-side-unvalidated-url-redirection` to ignore
+  valid hostname checks and report spurious alerts after such a check. The original behaviour has been restored.
+
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### Major Analysis Improvements
+
+* Improved precision of data flow through arrays, fixing some spurious flows
+  that would sometimes cause the `length` property of an array to be seen as tainted.
+* Improved call resolution logic to better handle calls resolving "downwards", targeting
+  a method declared in a subclass of the enclosing class. Data flow analysis
+  has also improved to avoid spurious flow between unrelated classes in the class hierarchy.
+
+## 1.4.1
+
+### Bug Fixes
+
+* Fixed a recently-introduced bug that prevented taint tracking through `URLSearchParams` objects.
+  The original behaviour has been restored and taint should once again be tracked through such objects.
+* Fixed a rare issue that would occur when a function declaration inside a block statement was referenced before it was declared.
+  Such code is reliant on legacy web semantics, which is non-standard but nevertheless implemented by most engines.
+  CodeQL now takes legacy web semantics into account and resolves references to these functions correctly.
+* Fixed a bug that would cause parse errors in `.jsx` files in rare cases where the file
+  contained syntax that was misinterpreted as Flow syntax.
+
 ## 1.4.0
 
 ### Major Analysis Improvements

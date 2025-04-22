@@ -400,8 +400,8 @@ class ConstructorTag extends JSDocTag {
 abstract private class NamedTypeReferent extends JSDocTag {
   /** Gets the name of the type to which this tag refers. */
   string getTarget() {
-    result = this.getType().(JSDocNamedTypeExpr).getName() or
-    result = this.getType().(JSDocAppliedTypeExpr).getHead().(JSDocNamedTypeExpr).getName()
+    result = this.getType().(JSDocNamedTypeExpr).getRawName() or
+    result = this.getType().(JSDocAppliedTypeExpr).getHead().(JSDocNamedTypeExpr).getRawName()
   }
 
   /**
@@ -423,7 +423,7 @@ abstract private class NamedTypeReferent extends JSDocTag {
  * Gets the source declaration of the type to which `tp` refers, if any.
  */
 private ExternalType sourceDecl(JSDocTypeExpr tp) {
-  result.getQualifiedName() = tp.(JSDocNamedTypeExpr).getName() or
+  result.getQualifiedName() = tp.(JSDocNamedTypeExpr).getRawName() or
   result = sourceDecl(tp.(JSDocAppliedTypeExpr).getHead()) or
   result = sourceDecl(tp.(JSDocNullableTypeExpr).getTypeExpr()) or
   result = sourceDecl(tp.(JSDocNonNullableTypeExpr).getTypeExpr()) or

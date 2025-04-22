@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.webcmdletelementcollection", "Method[find]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.webcmdletelementcollection", "Method[findbyid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.webcmdletelementcollection", "Method[findbyname]", "Argument[this]", "ReturnValue", "taint"]
+      

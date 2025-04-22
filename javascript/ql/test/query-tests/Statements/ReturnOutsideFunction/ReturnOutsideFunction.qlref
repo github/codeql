@@ -1,1 +1,2 @@
-Statements/ReturnOutsideFunction.ql
+query: Statements/ReturnOutsideFunction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

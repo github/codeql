@@ -254,7 +254,12 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   result = node.getParameter(parseIntUnbounded(token.getAnArgument()))
   or
   token.getName() = "ReturnValue" and
-  result = node.getReturn()
+  (
+    not exists(token.getAnArgument()) and
+    result = node.getReturn()
+    or
+    result = node.getReturnWithArg(token.getAnArgument())
+  )
   or
   // Language-specific tokens
   result = Specific::getExtraSuccessorFromNode(node, token)
@@ -269,7 +274,12 @@ API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathTokenBas
   result = invoke.getParameter(parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
   or
   token.getName() = "ReturnValue" and
-  result = invoke.getReturn()
+  (
+    not exists(token.getAnArgument()) and
+    result = invoke.getReturn()
+    or
+    result = invoke.getReturnWithArg(token.getAnArgument())
+  )
   or
   // Language-specific tokens
   result = Specific::getExtraSuccessorFromInvoke(invoke, token)

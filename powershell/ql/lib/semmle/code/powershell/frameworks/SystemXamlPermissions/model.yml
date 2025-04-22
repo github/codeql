@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.xaml.permissions.xamlloadpermission", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[issubsetof].ReturnValue"]
+    - ["system.reflection.assemblyname", "system.xaml.permissions.xamlaccesslevel", "Member[assemblyaccesstoassemblyname]"]
+    - ["system.string", "system.xaml.permissions.xamlaccesslevel", "Member[privateaccesstotypename]"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[isunrestricted].ReturnValue"]
+    - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[assemblyaccessto].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[equals].ReturnValue"]
+    - ["system.security.securityelement", "system.xaml.permissions.xamlloadpermission", "Method[toxml].ReturnValue"]
+    - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[privateaccessto].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[includes].ReturnValue"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[intersect].ReturnValue"]
+    - ["system.collections.generic.ilist<system.xaml.permissions.xamlaccesslevel>", "system.xaml.permissions.xamlloadpermission", "Member[allowedaccess]"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[copy].ReturnValue"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[union].ReturnValue"]

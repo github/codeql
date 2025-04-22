@@ -1,1 +1,2 @@
-Statements/MisleadingIndentationAfterControlStmt.ql
+query: Statements/MisleadingIndentationAfterControlStmt.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

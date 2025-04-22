@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[templatefile]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[propertynames]"]
+    - ["system.collections.generic.list<system.management.automation.psobject>", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Member[example]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[inputobject]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[templatecontent]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[delimiter]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Member[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[updatetemplate]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[includeextent]"]

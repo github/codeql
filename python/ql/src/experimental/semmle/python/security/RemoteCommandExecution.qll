@@ -10,6 +10,8 @@ module RemoteCommandExecutionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink = any(RemoteCommandExecution rce).getCommand() }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "secondary server command injection" vulnerabilities. */

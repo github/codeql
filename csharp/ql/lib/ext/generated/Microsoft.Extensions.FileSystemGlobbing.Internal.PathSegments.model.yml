@@ -2,13 +2,20 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", False, "LiteralPathSegment", "(System.String,System.StringComparison)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.LiteralPathSegment.Value]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", False, "WildcardPathSegment", "(System.String,System.Collections.Generic.List<System.String>,System.String,System.StringComparison)", "", "Argument[0]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment.BeginsWith]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", False, "WildcardPathSegment", "(System.String,System.Collections.Generic.List<System.String>,System.String,System.StringComparison)", "", "Argument[1]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment.Contains]", "value", "dfc-generated"]
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", False, "WildcardPathSegment", "(System.String,System.Collections.Generic.List<System.String>,System.String,System.StringComparison)", "", "Argument[2]", "Argument[this].Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments.WildcardPathSegment.EndsWith]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "CurrentPathSegment", "Match", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "CurrentPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "GetHashCode", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "LiteralPathSegment", "(System.String,System.StringComparison)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "Match", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "LiteralPathSegment", "get_Value", "()", "summary", "df-generated"]
@@ -17,7 +24,6 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "RecursiveWildcardSegment", "Match", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "RecursiveWildcardSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "Match", "(System.String)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "WildcardPathSegment", "(System.String,System.Collections.Generic.List<System.String>,System.String,System.StringComparison)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_BeginsWith", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_CanProduceStem", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments", "WildcardPathSegment", "get_Contains", "()", "summary", "df-generated"]

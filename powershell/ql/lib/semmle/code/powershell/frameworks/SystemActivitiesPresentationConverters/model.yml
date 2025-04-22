@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.activities.presentation.converters.modelpropertyentrytoowneractivityconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.argumenttoexpressionconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.modelpropertyentrytomodelitemconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.modelpropertyentrytomodelitemconverter", "Method[convert].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.argumenttoexpressionconverter", "Method[convert].ReturnValue"]
+    - ["system.object[]", "system.activities.presentation.converters.objecttomodelvalueconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.objecttomodelvalueconverter", "Method[convert].ReturnValue"]
+    - ["system.object[]", "system.activities.presentation.converters.argumenttoexpressionmodelitemconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.modeltoobjectvalueconverter", "Method[convertback].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.modeltoobjectvalueconverter", "Method[convert].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.modelpropertyentrytoowneractivityconverter", "Method[convert].ReturnValue"]
+    - ["system.object", "system.activities.presentation.converters.argumenttoexpressionmodelitemconverter", "Method[convert].ReturnValue"]
+    - ["system.object[]", "system.activities.presentation.converters.modelpropertyentrytomodelitemconverter", "Method[convertback].ReturnValue"]

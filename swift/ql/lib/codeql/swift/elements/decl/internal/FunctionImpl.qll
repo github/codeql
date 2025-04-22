@@ -6,7 +6,7 @@ module Impl {
    * A function.
    */
   class Function extends Generated::Function {
-    override string toString() { result = this.getName() }
+    override string toStringImpl() { result = this.getName() }
 
     /**
      * Gets the name of this function, without the argument list. For example

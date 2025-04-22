@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.objectmodel.readonlycollection<system.type>", "system.web.ui.design.directives.directiveregistry!", "Method[getdirectives].ReturnValue"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Member[serverlanguagenames]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Member[culture]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Member[serverlanguageextensions]"]
+    - ["system.string", "system.web.ui.design.directives.schemaelementnameattribute", "Member[value]"]
+    - ["system.string", "system.web.ui.design.directives.directiveattribute", "Member[renametype]"]
+    - ["system.string", "system.web.ui.design.directives.directiveattribute", "Member[buildertype]"]
+    - ["system.boolean", "system.web.ui.design.directives.directiveattribute", "Member[allowedonmobilepages]"]

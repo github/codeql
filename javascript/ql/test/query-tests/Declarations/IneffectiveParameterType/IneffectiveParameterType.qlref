@@ -1,1 +1,2 @@
-Declarations/IneffectiveParameterType.ql
+query: Declarations/IneffectiveParameterType.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -2,6 +2,7 @@
 private import semmle.code.powershell.dataflow.internal.DataFlowPublic as DataFlow
 import semmle.code.powershell.dataflow.flowsources.Remote
 import semmle.code.powershell.dataflow.flowsources.Local
+import semmle.code.powershell.dataflow.flowsources.Stored
 import semmle.code.powershell.frameworks.data.internal.ApiGraphModels
 
 /**

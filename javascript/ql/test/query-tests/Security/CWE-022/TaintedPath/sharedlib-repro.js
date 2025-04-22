@@ -10,7 +10,7 @@ function getTree(req, res, options) {
     var workspaceId = req.params.workspaceId;
     var realfileRootPath = workspaceId; // getfileRoot(workspaceId);
     var filePath = workspaceId; // path.join(options.workspaceDir,realfileRootPath, req.params["0"]);
-    withStatsAndETag(req.params.workspaceId, function (err, stats, etag) {});
+    withStatsAndETag(req.params.workspaceId, function (err, stats, etag) {}); // $ Source
 }
 
 function getfileRoot(workspaceId) {
@@ -19,7 +19,7 @@ function getfileRoot(workspaceId) {
 }
 
 function withStatsAndETag(filepath, callback) {
-	fs.readFileSync(filepath); // NOT OK
+	fs.readFileSync(filepath); // $ Alert
 };
 
 function decodeUserIdFromWorkspaceId(workspaceId) {

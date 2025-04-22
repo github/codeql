@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a database query operation, for example a call to a query method in the Rails `ActiveRecord::Relation` class, is executed in a loop, this can lead to a performance issue known as an "n+1 query problem".
+The database query will be executed in each iteration of the loop.
+Performance can usually be improved by performing a single database query outside of a loop, which retrieves all the required objects in a single operation.
+</p>
+</overview>
+<recommendation>
+<p>If possible, pull the database query out of the loop and rewrite it to retrieve all the required objects. This replaces multiple database operations with a single one.
+</p>
+</recommendation>
+<example>
+<p>The following (suboptimal) example code queries the <code>User</code> object in each iteration of the loop:</p>
+<sample src="examples/straight_loop.rb" />
+<p>To improve the performance, we instead query the <code>User</code> object once outside the loop, gathering all necessary information in a single query:</p>
+<sample src="examples/preload.rb" />
+</example>
+</qhelp>

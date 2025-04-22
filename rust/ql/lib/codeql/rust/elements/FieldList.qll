@@ -7,7 +7,7 @@ private import internal.FieldListImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A FieldList. For example:
+ * A field of a variant. For example:
  * ```rust
  * todo!()
  * ```

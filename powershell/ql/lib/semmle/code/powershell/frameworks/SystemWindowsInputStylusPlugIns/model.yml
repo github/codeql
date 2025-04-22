@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.windows.rect", "system.windows.input.stylusplugins.stylusplugin", "Member[elementbounds]"]
+    - ["system.windows.media.visual", "system.windows.input.stylusplugins.dynamicrenderer", "Member[rootvisual]"]
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[tabletdeviceid]"]
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[timestamp]"]
+    - ["system.windows.input.styluspointcollection", "system.windows.input.stylusplugins.rawstylusinput", "Method[getstyluspoints].ReturnValue"]
+    - ["system.windows.threading.dispatcher", "system.windows.input.stylusplugins.dynamicrenderer", "Method[getdispatcher].ReturnValue"]
+    - ["system.windows.uielement", "system.windows.input.stylusplugins.stylusplugin", "Member[element]"]
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[stylusdeviceid]"]
+    - ["system.windows.ink.drawingattributes", "system.windows.input.stylusplugins.dynamicrenderer", "Member[drawingattributes]"]
+    - ["system.boolean", "system.windows.input.stylusplugins.stylusplugin", "Member[enabled]"]
+    - ["system.boolean", "system.windows.input.stylusplugins.stylusplugin", "Member[isactiveforinput]"]

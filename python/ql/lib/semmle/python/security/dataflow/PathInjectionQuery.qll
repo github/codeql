@@ -71,6 +71,8 @@ module PathInjectionConfig implements DataFlow::StateConfigSig {
     stateFrom instanceof NotNormalized and
     stateTo instanceof NormalizedUnchecked
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "path injection" vulnerabilities. */

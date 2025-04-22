@@ -112,7 +112,7 @@ private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
         bb.getANode().getNode().asAstNode().(IfStmt).getACondition() = getImmediateParent*(starts) and
         b.getValue() = true
       |
-        bb.controls(this.getCfgNode().getBasicBlock(), b)
+        bb.edgeDominates(this.getCfgNode().getBasicBlock(), b)
       )
     )
   }

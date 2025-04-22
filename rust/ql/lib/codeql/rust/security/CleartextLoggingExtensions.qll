@@ -7,6 +7,7 @@ import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.security.SensitiveData
+private import codeql.rust.Concepts
 
 /**
  * Provides default sources, sinks and barriers for detecting cleartext logging
@@ -21,7 +22,9 @@ module CleartextLogging {
   /**
    * A data flow sink for cleartext logging vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "CleartextLogging" }
+  }
 
   /**
    * A barrier for cleartext logging vulnerabilities.
@@ -33,8 +36,10 @@ module CleartextLogging {
    */
   private class SensitiveDataAsSource extends Source instanceof SensitiveData { }
 
-  /** A sink for logging from model data. */
-  private class ModelsAsDataSinks extends Sink {
-    ModelsAsDataSinks() { exists(string s | sinkNode(this, s) and s.matches("log-injection%")) }
+  /**
+   * A sink for logging from model data.
+   */
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { exists(string s | sinkNode(this, s) and s.matches("log-injection%")) }
   }
 }

@@ -2,21 +2,9 @@ extensions:
   - addsTo:
       pack: codeql/actions-all
       extensible: immutableActionsDataModel
-    data:
-      - ["actions/checkout"]
-      - ["actions/cache"]
-      - ["actions/setup-node"]
-      - ["actions/upload-artifact"]
-      - ["actions/setup-python"]
-      - ["actions/download-artifact"]
-      - ["actions/github-script"]
-      - ["actions/setup-java"]
-      - ["actions/setup-go"]
-      - ["actions/upload-pages-artifact"]
-      - ["actions/deploy-pages"]
-      - ["actions/setup-dotnet"]
-      - ["actions/stale"]
-      - ["actions/labeler"]
-      - ["actions/create-github-app-token"]
-      - ["actions/configure-pages"]
-      - ["octokit/request-action"]
+    # Since the Immutable Actions feature is not yet available to customers, we won't alert about
+    # any unversioned immutable action references for now. Within GitHub, we'll include the
+    # `codeql/immutable-actions-list` model pack, which will provide the necessary list of actions
+    # for internal use. Once the feature is available to customers, we'll move that list back into
+    # this file.
+    data: []

@@ -1,3 +1,5 @@
+param($a, $arr1, $arr2, $arr3, $arr4, $arr5, $arr6, $arr7, $arr8, $arr9, $unknown, $unknown1, $unknown2, $unknown3, $unknown4, $unknown5, $unknown6, $unknown7, $unknown8)
+
 $a.f = Source "1"
 Sink $a.f # $ hasValueFlow=1
 

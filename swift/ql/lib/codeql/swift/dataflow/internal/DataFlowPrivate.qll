@@ -111,10 +111,8 @@ private class CaptureNodeImpl extends CaptureNode, NodeImpl {
 }
 
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-  exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
-    def.definesAt(_, bb, i) and
-    def = nodeFrom.asDefinition()
-  )
+  next.(Ssa::PhiDefinition).getAPhiInput() = def and
+  def = nodeFrom.asDefinition()
 }
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */

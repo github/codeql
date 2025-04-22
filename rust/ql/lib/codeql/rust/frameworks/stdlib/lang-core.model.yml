@@ -3,31 +3,62 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      # Fmt
-      - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]
-      # Hint
-      - ["lang:core", "crate::hint::must_use", "Argument[0]", "ReturnValue", "value", "manual"]
-      # Option
-      - ["lang:core", "<crate::option::Option>::unwrap", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_or", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_or_default", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_or_else", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_or_else", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::unwrap_unchecked", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::option::Option>::expect", "Argument[self].Variant[crate::option::Option::Some(0)]", "ReturnValue", "value", "manual"]
-      # Result
-      - ["lang:core", "<crate::result::Result>::unwrap", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_or", "Argument[0]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_or_default", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_or_else", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_or_else", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_unchecked", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_err", "Argument[self].Variant[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::unwrap_err_unchecked", "Argument[self].Variant[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::expect", "Argument[self].Variant[crate::result::Result::Ok(0)]", "ReturnValue", "value", "manual"]
-      - ["lang:core", "<crate::result::Result>::expect_err", "Argument[self].Variant[crate::result::Result::Err(0)]", "ReturnValue", "value", "manual"]
-      # String
-      - ["lang:alloc", "<crate::string::String>::as_str", "Argument[self]", "ReturnValue", "taint", "manual"]
-      - ["lang:alloc", "<crate::string::String>::as_bytes", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Iterator
+      - ["lang:core", "<[_]>::iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::iter_mut", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<[_]>::into_iter", "Argument[Self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::next", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "crate::iter::traits::iterator::Iterator::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::nth", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::next", "Argument[self].Element", "ReturnValue.Field[crate::option::Option::Some(0)]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::collect", "Argument[self].Element", "ReturnValue.Element", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["lang:core", "<crate::slice::iter::Iter as crate::iter::traits::iterator::Iterator>::for_each", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
+      # Layout
+      - ["lang:core", "<crate::alloc::layout::Layout>::from_size_align", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::from_size_align_unchecked", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::array", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::repeat", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::repeat", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::repeat_packed", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::repeat_packed", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::extend", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::extend", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::extend_packed", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::extend_packed", "Argument[0]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::align_to", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::pad_to_align", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:core", "<crate::alloc::layout::Layout>::size", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Ptr
+      - ["lang:core", "crate::ptr::read", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["lang:core", "crate::ptr::read_unaligned", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["lang:core", "crate::ptr::read_volatile", "Argument[0].Reference", "ReturnValue", "value", "manual"]
+      - ["lang:core", "crate::ptr::write", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+      - ["lang:core", "crate::ptr::write_unaligned", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+      - ["lang:core", "crate::ptr::write_volatile", "Argument[1]", "Argument[0].Reference", "value", "manual"]
+      # Str
+      - ["lang:core", "<str>::parse", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Ptr
+      - ["lang:core", "crate::ptr::drop_in_place", "Argument[0]", "pointer-invalidate", "manual"]
+      - ["lang:core", "crate::ptr::dangling", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["lang:core", "crate::ptr::dangling_mut", "ReturnValue", "pointer-invalidate", "manual"]
+      - ["lang:core", "crate::ptr::null", "ReturnValue", "pointer-invalidate", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      # Ptr
+      - ["lang:core", "crate::ptr::read", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::read_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::read_volatile", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_bytes", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_unaligned", "Argument[0]", "pointer-access", "manual"]
+      - ["lang:core", "crate::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]

@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft-sdl/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.configuration.install.imanagedinstaller", "Method[managedinstall].ReturnValue"]
+    - ["system.boolean", "system.configuration.install.assemblyinstaller", "Member[usenewcontext]"]
+    - ["system.int32", "system.configuration.install.installercollection", "Method[indexof].ReturnValue"]
+    - ["system.configuration.install.installer", "system.configuration.install.installercollection", "Member[item]"]
+    - ["system.collections.specialized.stringdictionary", "system.configuration.install.installcontext!", "Method[parsecommandline].ReturnValue"]
+    - ["system.reflection.assembly", "system.configuration.install.assemblyinstaller", "Member[assembly]"]
+    - ["system.configuration.install.installercollection", "system.configuration.install.installer", "Member[installers]"]
+    - ["system.string[]", "system.configuration.install.assemblyinstaller", "Member[commandline]"]
+    - ["system.boolean", "system.configuration.install.installercollection", "Method[contains].ReturnValue"]
+    - ["system.int32", "system.configuration.install.installercollection", "Method[add].ReturnValue"]
+    - ["system.configuration.install.installer", "system.configuration.install.installer", "Member[parent]"]
+    - ["system.boolean", "system.configuration.install.installcontext", "Method[isparametertrue].ReturnValue"]
+    - ["system.boolean", "system.configuration.install.componentinstaller", "Method[isequivalentinstaller].ReturnValue"]
+    - ["system.configuration.install.uninstallaction", "system.configuration.install.uninstallaction!", "Member[remove]"]
+    - ["system.configuration.install.uninstallaction", "system.configuration.install.uninstallaction!", "Member[noaction]"]
+    - ["system.int32", "system.configuration.install.managedinstallerclass", "Method[system.configuration.install.imanagedinstaller.managedinstall].ReturnValue"]
+    - ["system.string", "system.configuration.install.installer", "Member[helptext]"]
+    - ["system.string", "system.configuration.install.assemblyinstaller", "Member[path]"]
+    - ["system.collections.specialized.stringdictionary", "system.configuration.install.installcontext", "Member[parameters]"]
+    - ["system.string", "system.configuration.install.assemblyinstaller", "Member[helptext]"]
+    - ["system.collections.idictionary", "system.configuration.install.installeventargs", "Member[savedstate]"]
+    - ["system.configuration.install.installcontext", "system.configuration.install.installer", "Member[context]"]
