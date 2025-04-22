@@ -11,3 +11,4 @@ ql/java/ql/src/Likely Bugs/Likely Typos/SuspiciousDateFormat.ql
 ql/java/ql/src/Likely Bugs/Resource Leaks/CloseReader.ql
 ql/java/ql/src/Likely Bugs/Resource Leaks/CloseWriter.ql
 ql/java/ql/src/Performance/StringReplaceAllWithNonRegex.ql
+ql/java/ql/src/Violations of Best Practice/Undesirable Calls/DoNotCallFinalize.ql

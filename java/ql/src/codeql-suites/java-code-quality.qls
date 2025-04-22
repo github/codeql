@@ -2,6 +2,7 @@
 - include:
     id:
       - java/contradictory-type-checks
+      - java/do-not-call-finalize
       - java/equals-on-unrelated-types
       - java/inconsistent-equals-and-hashcode
       - java/input-resource-leak
