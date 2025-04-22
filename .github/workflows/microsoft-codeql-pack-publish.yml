@@ -5,7 +5,7 @@ on:
 
 jobs:
   check-branch:
-    if: github.ref != 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - run: echo "This workflow can only run on the 'main' branch." && exit 1
