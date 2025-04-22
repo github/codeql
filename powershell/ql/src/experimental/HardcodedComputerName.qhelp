@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The names of computers should never be hard coded as this will expose sensitive information. The ComputerName parameter should never have a hard coded value.
+<p>The names of computers should never be hard coded as this will expose sensitive information. The <code>ComputerName</code> parameter should never have a hard coded value.
 </p>
 
 </overview>
