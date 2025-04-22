@@ -4,6 +4,7 @@ extensions:
       extensible: typeModel
     data:
       - ["FirebaseDBRef", "firebase/app", "Member[database].ReturnValue"]
+      - ["firebase/app", "global", "Member[firebase]"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[ref,refFromURL].ReturnValue"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[child,once,on,push,set,then].ReturnValue"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[ref,root,parent,before,after]"]

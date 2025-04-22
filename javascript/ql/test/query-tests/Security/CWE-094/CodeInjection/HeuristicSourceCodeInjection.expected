@@ -82,6 +82,8 @@ nodes
 | express.js:36:15:36:19 | taint | semmle.label | taint |
 | express.js:42:30:42:32 | msg | semmle.label | msg |
 | express.js:43:10:43:12 | msg | semmle.label | msg |
+| firebase-server2.js:4:10:4:23 | snapshot.val() | semmle.label | snapshot.val() |
+| firebase-server2.js:8:14:8:33 | followSnapshot.val() | semmle.label | followSnapshot.val() |
 | firebase-server.js:7:10:7:16 | x.val() | semmle.label | x.val() |
 | firebase-server.js:8:10:8:22 | x.exportVal() | semmle.label | x.exportVal() |
 | firebase-server.js:10:14:10:33 | parentSnapshot.val() | semmle.label | parentSnapshot.val() |
@@ -95,6 +97,7 @@ nodes
 | firebase-server.js:33:25:33:44 | statusSnapshot.val() | semmle.label | statusSnapshot.val() |
 | firebase-server.js:44:12:44:30 | childSnapshot.val() | semmle.label | childSnapshot.val() |
 | firebase-server.js:55:10:55:19 | snap.val() | semmle.label | snap.val() |
+| firebase-server.js:70:12:70:21 | snap.val() | semmle.label | snap.val() |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
