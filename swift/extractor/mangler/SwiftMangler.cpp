@@ -371,6 +371,9 @@ SwiftMangledName SwiftMangler::visitProtocolCompositionType(
   for (auto composed : type->getMembers()) {
     ret << fetch(composed);
   }
+  for (auto inverse : type->getInverses()) {
+    ret << (uint8_t)inverse << "_";
+  }
   if (type->hasExplicitAnyObject()) {
     ret << "&AnyObject";
   }
