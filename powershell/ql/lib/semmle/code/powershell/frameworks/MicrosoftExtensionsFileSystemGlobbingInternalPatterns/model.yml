@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["microsoft.extensions.filesystemglobbing.internal.ipattern", "microsoft.extensions.filesystemglobbing.internal.patterns.patternbuilder", "Method[build].ReturnValue"]

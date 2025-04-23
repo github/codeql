@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.text.encodings.web.javascriptencoder", "system.text.encodings.web.javascriptencoder!", "Member[unsaferelaxedjsonescaping]"]

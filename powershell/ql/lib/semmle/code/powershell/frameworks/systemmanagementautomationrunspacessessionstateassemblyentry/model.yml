@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.runspaces.sessionstateassemblyentry", "Method[sessionstateassemblyentry]", "Argument[1]", "Argument[this]", "taint"]

@@ -155,7 +155,7 @@ def writeModels():
         with open(filename, "x") as file:
             file.write("extensions:\n")
             file.write("  - addsTo:\n")
-            file.write("      pack: microsoft-sdl/powershell-all\n")
+            file.write("      pack: microsoft/powershell-all\n")
             file.write("      extensible: typeModel\n")
             file.write("    data:\n")
             for summary in s:

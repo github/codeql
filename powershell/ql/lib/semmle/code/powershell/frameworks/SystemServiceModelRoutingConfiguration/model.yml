@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.servicemodel.routing.configuration.filtertableentrycollection", "system.servicemodel.routing.configuration.filtertablecollection", "Member[item]"]

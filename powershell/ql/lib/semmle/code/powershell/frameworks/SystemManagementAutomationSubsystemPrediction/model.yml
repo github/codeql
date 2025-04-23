@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.management.automation.language.token", "system.management.automation.subsystem.prediction.predictioncontext", "Member[tokenatcursor]"]
@@ -33,7 +33,7 @@ extensions:
     - ["system.management.automation.subsystem.subsystemkind", "system.management.automation.subsystem.prediction.icommandpredictor", "Member[system.management.automation.subsystem.isubsystem.kind]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.subsystem.prediction.predictionclient", "Method[predictionclient]", "Argument[0]", "Argument[this]", "taint"]

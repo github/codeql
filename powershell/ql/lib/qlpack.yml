@@ -1,4 +1,4 @@
-name: microsoft-sdl/powershell-all
+name: microsoft/powershell-all
 version: 0.0.1
 groups: 
   - powershell

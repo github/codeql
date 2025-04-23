@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[invokesimplename]"]

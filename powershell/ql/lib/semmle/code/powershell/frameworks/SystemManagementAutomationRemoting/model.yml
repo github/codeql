@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.management.automation.remoting.transportmethodenum", "system.management.automation.remoting.transportmethodenum!", "Member[receiveshelloutputex]"]
@@ -81,7 +81,7 @@ extensions:
     - ["system.management.automation.remoting.sessiontype", "system.management.automation.remoting.sessiontype!", "Member[default]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.remoting.origininfo", "Method[get_pscomputername]", "Argument[this]", "ReturnValue", "taint"]

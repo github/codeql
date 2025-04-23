@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[psdscrunascredentialmergeerrorforcompositeresources].ReturnValue"]
@@ -36,7 +36,7 @@ extensions:
     - ["system.object", "microsoft.powershell.desiredstateconfiguration.internal.dscremoteoperationsclass!", "Method[convertciminstancetoobject].ReturnValue"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getdscresourceusagestring]", "Argument[0]", "ReturnValue", "taint"]

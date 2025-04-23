@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.windows.markup.localizer.bamllocalizableresource", "system.windows.markup.localizer.bamllocalizationdictionary", "Member[item]"]

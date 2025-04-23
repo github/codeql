@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.servicemodel.discovery.resolvecriteria", "system.servicemodel.discovery.versioncd1.resolvecriteriacd1", "Method[toresolvecriteria].ReturnValue"]

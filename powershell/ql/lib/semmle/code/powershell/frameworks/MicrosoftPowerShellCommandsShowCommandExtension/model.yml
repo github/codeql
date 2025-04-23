@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandparametersetinfo", "Member[name]"]
@@ -33,7 +33,7 @@ extensions:
     - ["system.int32", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[position]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Method[showcommandcommandinfo]", "Argument[0]", "Argument[this]", "taint"]

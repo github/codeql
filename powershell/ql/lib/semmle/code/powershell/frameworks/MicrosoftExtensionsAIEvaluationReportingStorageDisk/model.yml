@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.collections.generic.iasyncenumerable<microsoft.extensions.ai.evaluation.reporting.scenariorunresult>", "microsoft.extensions.ai.evaluation.reporting.storage.disk.diskbasedresultstore", "Method[readresultsasync].ReturnValue"]

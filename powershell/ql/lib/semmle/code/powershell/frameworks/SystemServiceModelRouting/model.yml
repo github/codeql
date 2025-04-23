@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.servicemodel.channels.message", "system.servicemodel.routing.irequestreplyrouter", "Method[endprocessrequest].ReturnValue"]

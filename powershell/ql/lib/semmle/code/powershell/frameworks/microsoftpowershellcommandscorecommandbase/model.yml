@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.commands.corecommandbase", "Method[get_retrieveddynamicparameters]", "Argument[this]", "ReturnValue", "taint"]
