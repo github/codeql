@@ -13,7 +13,10 @@ extensions:
       - ["actions/labeler", "pull-requests: write"]
       - ["actions/attest", "id-token: write"]
       - ["actions/attest", "attestations: write"]
-      # No permissions needed for actions/add-to-project
+      - ["actions/add-to-project", "repository-projects:read"]
+      - ["actions/add-to-project", "repository-projects:write"]
+      - ["actions/add-to-project", "issues:read"]
+      - ["actions/add-to-project", "pull-requests:read"]
       - ["actions/dependency-review-action", "contents: read"]
       - ["actions/attest-sbom", "id-token: write"]
       - ["actions/attest-sbom", "attestations: write"]
@@ -30,8 +33,8 @@ extensions:
       - ["actions/versions-package-tools", "actions: read"]
       - ["actions/reusable-workflows", "contents: read"]      
       - ["actions/reusable-workflows", "actions: read"]
-      # TODO: Add permissions for actions/download-artifact
-      # TODO: Add permissions for actions/upload-artifact
-      # TODO: Add permissions for actions/cache
+      # No permissions needed for actions/download-artifact
+      # No permissions needed for actions/upload-artifact
+      # No permissions needed for actions/cache
 
       
