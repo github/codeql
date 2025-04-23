@@ -27,10 +27,11 @@ extensions:
       - ["Snapshot", "FirebaseDBRef", "Member[once,on].Argument[1].Parameter[0]"]
       - ["Snapshot", "FirebaseDBRef", "Member[onCreate,onUpdate,onWrite,onDelete,transaction,then,forEach].Argument[0].Parameter[0]"]
 
+      - ["Snapshot", "Snapshot", "Awaited"]
+
   - addsTo:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
-      - ["FirebaseDBRef", "Member[val,exportVal].ReturnValue", 'remote']
       - ["FirebaseDBRef", "Member[transaction].Argument[0].Parameter[0]", 'remote']
       - ["Snapshot", "Member[val,exportVal].ReturnValue", 'remote']
