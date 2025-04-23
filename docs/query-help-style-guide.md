@@ -7,9 +7,12 @@ When you contribute a new [supported query](supported-queries.md) to this reposi
 * [C/C++ queries](https://codeql.github.com/codeql-query-help/cpp/)
 * [C# queries](https://codeql.github.com/codeql-query-help/csharp/)
 * [Go queries](https://codeql.github.com/codeql-query-help/go/)
-* [Java queries](https://codeql.github.com/codeql-query-help/java/)
-* [JavaScript queries](https://codeql.github.com/codeql-query-help/javascript/)
+* [GitHub Actions queries](https://codeql.github.com/codeql-query-help/actions/)
+* [Java/Kotlin queries](https://codeql.github.com/codeql-query-help/java/)
+* [JavaScript/TypeScript queries](https://codeql.github.com/codeql-query-help/javascript/)
 * [Python queries](https://codeql.github.com/codeql-query-help/python/)
+* [Ruby queries](https://codeql.github.com/codeql-query-help/ruby/)
+* [Swift queries](https://codeql.github.com/codeql-query-help/swift/)
 
 ### Location and file name
 

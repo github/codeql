@@ -66,6 +66,9 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       e1 = e2.(InterpolatedStringExpr).getAChild() and
       scope = e2
       or
+      e1 = e2.(InterpolatedStringInsertExpr).getInsert() and
+      scope = e2
+      or
       e2 =
         any(OperatorCall oc |
           oc.getTarget().(ConversionOperator).fromLibrary() and

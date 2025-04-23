@@ -307,125 +307,6 @@ module LocalFlow {
   }
 }
 
-/**
- * Provides temporary modeling of built-in variants, for which no source code
- * `Item`s are available.
- *
- * TODO: Remove once library code is extracted.
- */
-module VariantInLib {
-  private import codeql.util.Option
-
-  private class CrateOrigin extends string {
-    CrateOrigin() { this = any(Resolvable r).getResolvedCrateOrigin() }
-  }
-
-  private class CrateOriginOption = Option<CrateOrigin>::Option;
-
-  private CrateOriginOption langCoreCrate() { result.asSome() = "lang:core" }
-
-  private newtype TVariantInLib =
-    MkVariantInLib(CrateOriginOption crate, string path, string name) {
-      crate = langCoreCrate() and
-      (
-        path = "crate::option::Option" and
-        name = "Some"
-        or
-        path = "crate::result::Result" and
-        name = ["Ok", "Err"]
-      )
-    }
-
-  /** An enum variant from library code, represented by the enum's canonical path and the variant's name. */
-  class VariantInLib extends MkVariantInLib {
-    CrateOriginOption crate;
-    string path;
-    string name;
-
-    VariantInLib() { this = MkVariantInLib(crate, path, name) }
-
-    int getAPosition() {
-      this = MkVariantInLib(langCoreCrate(), "crate::option::Option", "Some") and
-      result = 0
-      or
-      this = MkVariantInLib(langCoreCrate(), "crate::result::Result", ["Ok", "Err"]) and
-      result = 0
-    }
-
-    string getExtendedCanonicalPath() { result = path + "::" + name }
-
-    string toString() { result = name }
-  }
-
-  /** A tuple variant from library code. */
-  class VariantInLibTupleFieldContent extends Content, TVariantInLibTupleFieldContent {
-    private VariantInLib::VariantInLib v;
-    private int pos_;
-
-    VariantInLibTupleFieldContent() { this = TVariantInLibTupleFieldContent(v, pos_) }
-
-    VariantInLib::VariantInLib getVariantInLib(int pos) { result = v and pos = pos_ }
-
-    string getExtendedCanonicalPath() { result = v.getExtendedCanonicalPath() }
-
-    int getPosition() { result = pos_ }
-
-    final override string toString() {
-      // only print indices when the arity is > 1
-      if exists(TVariantInLibTupleFieldContent(v, 1))
-      then result = v.toString() + "(" + pos_ + ")"
-      else result = v.toString()
-    }
-
-    final override Location getLocation() { result instanceof EmptyLocation }
-  }
-
-  pragma[nomagic]
-  private predicate resolveExtendedCanonicalPath(Resolvable r, CrateOriginOption crate, string path) {
-    path = r.getResolvedPath() and
-    (
-      crate.asSome() = r.getResolvedCrateOrigin()
-      or
-      crate.isNone() and
-      not r.hasResolvedCrateOrigin()
-    )
-  }
-
-  /** Holds if path `p` resolves to variant `v`. */
-  private predicate pathResolveToVariantInLib(PathAstNode p, VariantInLib v) {
-    exists(CrateOriginOption crate, string path, string name |
-      resolveExtendedCanonicalPath(p, pragma[only_bind_into](crate), path + "::" + name) and
-      v = MkVariantInLib(pragma[only_bind_into](crate), path, name)
-    )
-  }
-
-  /** Holds if `p` destructs an enum variant `v`. */
-  pragma[nomagic]
-  private predicate tupleVariantCanonicalDestruction(TupleStructPat p, VariantInLib v) {
-    pathResolveToVariantInLib(p, v)
-  }
-
-  bindingset[pos]
-  predicate tupleVariantCanonicalDestruction(
-    TupleStructPat pat, VariantInLibTupleFieldContent c, int pos
-  ) {
-    tupleVariantCanonicalDestruction(pat, c.getVariantInLib(pos))
-  }
-
-  /** Holds if `ce` constructs an enum value of type `v`. */
-  pragma[nomagic]
-  private predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLib v) {
-    pathResolveToVariantInLib(ce.getFunction().(PathExpr), v)
-  }
-
-  bindingset[pos]
-  predicate tupleVariantCanonicalConstruction(CallExpr ce, VariantInLibTupleFieldContent c, int pos) {
-    tupleVariantCanonicalConstruction(ce, c.getVariantInLib(pos))
-  }
-}
-
-class VariantInLibTupleFieldContent = VariantInLib::VariantInLibTupleFieldContent;
-
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind`. */
@@ -491,6 +372,7 @@ module RustDataFlow implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
   private import Node as Node
+  private import codeql.rust.frameworks.stdlib.Stdlib
 
   /**
    * An element, viewed as a node in a data flow graph. Either an expression
@@ -676,11 +558,8 @@ module RustDataFlow implements InputSig<Location> {
     exists(Content c | c = cs.(SingletonContentSet).getContent() |
       exists(TupleStructPatCfgNode pat, int pos |
         pat = node1.asPat() and
-        node2.asPat() = pat.getField(pos)
-      |
+        node2.asPat() = pat.getField(pos) and
         c = TTupleFieldContent(pat.getTupleStructPat().getTupleField(pos))
-        or
-        VariantInLib::tupleVariantCanonicalDestruction(pat.getPat(), c, pos)
       )
       or
       exists(TuplePatCfgNode pat, int pos |
@@ -725,8 +604,8 @@ module RustDataFlow implements InputSig<Location> {
       exists(TryExprCfgNode try |
         node1.asExpr() = try.getExpr() and
         node2.asExpr() = try and
-        c.(VariantInLibTupleFieldContent).getVariantInLib(0).getExtendedCanonicalPath() =
-          ["crate::option::Option::Some", "crate::result::Result::Ok"]
+        c.(TupleFieldContent)
+            .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
       )
       or
       exists(PrefixExprCfgNode deref |
@@ -802,11 +681,8 @@ module RustDataFlow implements InputSig<Location> {
   private predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
       node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
-      node2.asExpr() = call
-    |
+      node2.asExpr() = call and
       c = TTupleFieldContent(call.getCallExpr().getTupleField(pragma[only_bind_into](pos)))
-      or
-      VariantInLib::tupleVariantCanonicalConstruction(call.getCallExpr(), c, pos)
     )
     or
     exists(StructExprCfgNode re, string field |
@@ -985,9 +861,11 @@ module RustDataFlow implements InputSig<Location> {
 
 /** Provides logic related to captured variables. */
 module VariableCapture {
+  private import codeql.rust.internal.CachedStages
   private import codeql.dataflow.VariableCapture as SharedVariableCapture
 
   private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
+    Stages::DataFlowStage::ref() and
     e1 = getALastEvalNode(e2)
     or
     exists(Ssa::Definition def |

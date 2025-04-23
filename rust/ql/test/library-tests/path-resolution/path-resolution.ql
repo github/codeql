@@ -5,4 +5,6 @@ import TestUtils
 
 query predicate mod(Module m) { toBeTested(m) }
 
-query predicate resolvePath(Path p, ItemNode i) { toBeTested(p) and i = resolvePath(p) }
+query predicate resolvePath(Path p, ItemNode i) {
+  toBeTested(p) and not p.isInMacroExpansion() and i = resolvePath(p)
+}

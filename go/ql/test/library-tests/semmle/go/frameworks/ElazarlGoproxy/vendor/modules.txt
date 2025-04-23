@@ -3,3 +3,4 @@
 github.com/elazarl/goproxy
 # github.com/github/depstubber v0.0.0-20201214172518-12c3da4b7c9d
 ## explicit
+github.com/github/depstubber

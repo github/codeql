@@ -473,6 +473,80 @@ mod m17 {
     } // I99
 }
 
+mod m18 {
+    fn f() {
+        println!("m18::f");
+    } // I101
+
+    pub mod m19 {
+        fn f() {
+            println!("m18::m19::f");
+        } // I102
+
+        pub mod m20 {
+            pub fn g() {
+                println!("m18::m19::m20::g");
+                super::f(); // $ item=I102
+                super::super::f(); // $ item=I101
+            } // I103
+        }
+    }
+}
+
+mod m21 {
+    mod m22 {
+        pub enum MyEnum {
+            A, // I104
+        } // I105
+
+        pub struct MyStruct; // I106
+    } // I107
+
+    mod m33 {
+        #[rustfmt::skip]
+        use super::m22::MyEnum::{ // $ item=I105
+            self // $ item=I105
+        };
+
+        #[rustfmt::skip]
+        use super::m22::MyStruct::{ // $ item=I106
+            self // $ item=I106
+        };
+
+        fn f() {
+            let _ = MyEnum::A; // $ item=I104
+            let _ = MyStruct {}; // $ item=I106
+        }
+    }
+}
+
+mod m23 {
+    #[rustfmt::skip]
+    trait Trait1<
+      T // I1
+    > {
+        fn f(&self); // I3
+    } // I2
+
+    struct S; // I4
+
+    #[rustfmt::skip]
+    impl Trait1<
+      Self // $ item=I4
+    > // $ item=I2
+      for S { // $ item=I4
+        fn f(&self) {
+            println!("m23::<S as Trait1<S>>::f");
+        } // I5
+    }
+
+    #[rustfmt::skip]
+    pub fn f() {
+        let x = S; // $ item=I4
+        x.f(); // $ item=I5
+    } // I108
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -498,4 +572,7 @@ fn main() {
     nested6::f(); // $ item=I116
     nested8::f(); // $ item=I119
     my3::f(); // $ item=I200
+    nested_f(); // $ item=I201
+    m18::m19::m20::g(); // $ item=I103
+    m23::f(); // $ item=I108
 }

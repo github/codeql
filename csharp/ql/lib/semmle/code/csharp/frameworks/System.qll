@@ -756,6 +756,11 @@ class SystemDateTimeStruct extends SystemStruct {
   SystemDateTimeStruct() { this.hasName("DateTime") }
 }
 
+/** The `System.DateTimeOffset` struct. */
+class SystemDateTimeOffsetStruct extends SystemStruct {
+  SystemDateTimeOffsetStruct() { this.hasName("DateTimeOffset") }
+}
+
 /** The `System.Span<T>` struct. */
 class SystemSpanStruct extends SystemUnboundGenericStruct {
   SystemSpanStruct() {

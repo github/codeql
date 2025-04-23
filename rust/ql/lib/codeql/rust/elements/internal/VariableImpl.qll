@@ -68,36 +68,36 @@ module Impl {
    * where `definingNode` is the entire `Either::Left(x) | Either::Right(x)`
    * pattern.
    */
+  cached
   private predicate variableDecl(AstNode definingNode, Name name, string text) {
-    (
-      exists(SelfParam sp |
-        name = sp.getName() and
-        definingNode = name and
-        text = name.getText() and
-        // exclude self parameters from functions without a body as these are
-        // trait method declarations without implementations
-        not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
-      )
-      or
-      exists(IdentPat pat |
-        name = pat.getName() and
-        (
-          definingNode = getOutermostEnclosingOrPat(pat)
-          or
-          not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
-        ) and
-        text = name.getText() and
-        // exclude for now anything starting with an uppercase character, which may be a reference to
-        // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
-        // which we don't appear to recognize yet anyway. This also assumes programmers follow the
-        // naming guidelines, which they generally do, but they're not enforced.
-        not text.charAt(0).isUppercase() and
-        // exclude parameters from functions without a body as these are trait method declarations
-        // without implementations
-        not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
-        // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
-        not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
-      )
+    Cached::ref() and
+    exists(SelfParam sp |
+      name = sp.getName() and
+      definingNode = name and
+      text = name.getText() and
+      // exclude self parameters from functions without a body as these are
+      // trait method declarations without implementations
+      not exists(Function f | not f.hasBody() and f.getParamList().getSelfParam() = sp)
+    )
+    or
+    exists(IdentPat pat |
+      name = pat.getName() and
+      (
+        definingNode = getOutermostEnclosingOrPat(pat)
+        or
+        not exists(getOutermostEnclosingOrPat(pat)) and definingNode = name
+      ) and
+      text = name.getText() and
+      // exclude for now anything starting with an uppercase character, which may be a reference to
+      // an enum constant (e.g. `None`). This excludes static and constant variables (UPPERCASE),
+      // which we don't appear to recognize yet anyway. This also assumes programmers follow the
+      // naming guidelines, which they generally do, but they're not enforced.
+      not text.charAt(0).isUppercase() and
+      // exclude parameters from functions without a body as these are trait method declarations
+      // without implementations
+      not exists(Function f | not f.hasBody() and f.getParamList().getAParam().getPat() = pat) and
+      // exclude parameters from function pointer types (e.g. `x` in `fn(x: i32) -> i32`)
+      not exists(FnPtrTypeRepr fp | fp.getParamList().getParam(_).getPat() = pat)
     )
   }
 
@@ -156,8 +156,12 @@ module Impl {
     predicate isCaptured() { this.getAnAccess().isCapture() }
 
     /** Gets the parameter that introduces this variable, if any. */
+    cached
     ParamBase getParameter() {
-      result = this.getSelfParam() or result.(Param).getPat() = getAVariablePatAncestor(this)
+      Cached::ref() and
+      result = this.getSelfParam()
+      or
+      result.(Param).getPat() = getAVariablePatAncestor(this)
     }
 
     /** Hold is this variable is mutable. */
@@ -614,12 +618,18 @@ module Impl {
 
   /** A variable write. */
   class VariableWriteAccess extends VariableAccess {
-    VariableWriteAccess() { assignmentExprDescendant(this) }
+    cached
+    VariableWriteAccess() {
+      Cached::ref() and
+      assignmentExprDescendant(this)
+    }
   }
 
   /** A variable read. */
   class VariableReadAccess extends VariableAccess {
+    cached
     VariableReadAccess() {
+      Cached::ref() and
       not this instanceof VariableWriteAccess and
       not this = any(RefExpr re).getExpr() and
       not this = any(CompoundAssignmentExpr cae).getLhs()
@@ -638,6 +648,22 @@ module Impl {
 
   cached
   private module Cached {
+    cached
+    predicate ref() { 1 = 1 }
+
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      variableDecl(_, _, _)
+      or
+      exists(VariableReadAccess a)
+      or
+      exists(VariableWriteAccess a)
+      or
+      exists(any(Variable v).getParameter())
+    }
+
     cached
     newtype TVariable =
       MkVariable(AstNode definingNode, string name) { variableDecl(definingNode, _, name) }
