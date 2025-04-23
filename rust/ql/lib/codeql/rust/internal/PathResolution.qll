@@ -856,41 +856,54 @@ class RelevantPath extends Path {
   }
 }
 
+private predicate isModule(ItemNode m) { m instanceof Module }
+
+/** Holds if root module `root` contains the module `m`. */
+private predicate rootHasModule(ItemNode root, ItemNode m) =
+  doublyBoundedFastTC(hasChild/2, isRoot/1, isModule/1)(root, m)
+
+pragma[nomagic]
+private ItemNode getOuterScope(ItemNode i) {
+  // nested modules do not have unqualified access to items from outer modules,
+  // except for items declared at top-level in the root module
+  rootHasModule(result, i)
+  or
+  not i instanceof Module and
+  result = i.getImmediateParent()
+}
+
+pragma[nomagic]
+private ItemNode getAdjustedEnclosing(ItemNode encl0, Namespace ns) {
+  // functions in `impl` blocks need to use explicit `Self::` to access other
+  // functions in the `impl` block
+  if encl0 instanceof ImplOrTraitItemNode and ns.isValue()
+  then result = encl0.getImmediateParent()
+  else result = encl0
+}
+
 /**
  * Holds if the unqualified path `p` references an item named `name`, and `name`
  * may be looked up in the `ns` namespace inside enclosing item `encl`.
  */
 pragma[nomagic]
-private predicate unqualifiedPathLookup(RelevantPath p, string name, Namespace ns, ItemNode encl) {
-  exists(ItemNode encl0 |
+private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
+  exists(ItemNode encl0 | encl = getAdjustedEnclosing(encl0, ns) |
     // lookup in the immediately enclosing item
     p.isUnqualified(name) and
     encl0.getADescendant() = p and
     exists(ns) and
-    not name = ["crate", "$crate"]
+    not name = ["crate", "$crate", "super", "self"]
     or
     // lookup in an outer scope, but only if the item is not declared in inner scope
     exists(ItemNode mid |
-      unqualifiedPathLookup(p, name, ns, mid) and
+      unqualifiedPathLookup(mid, name, ns, p) and
       not declares(mid, ns, name) and
-      not name = ["super", "self"] and
       not (
         name = "Self" and
         mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
-      )
-    |
-      // nested modules do not have unqualified access to items from outer modules,
-      // except for items declared at top-level in the root module
-      if mid instanceof Module
-      then encl0 = mid.getImmediateParent+() and encl0.(ModuleLikeNode).isRoot()
-      else encl0 = mid.getImmediateParent()
+      ) and
+      encl0 = getOuterScope(mid)
     )
-  |
-    // functions in `impl` blocks need to use explicit `Self::` to access other
-    // functions in the `impl` block
-    if encl0 instanceof ImplOrTraitItemNode and ns.isValue()
-    then encl = encl0.getImmediateParent()
-    else encl = encl0
   )
 }
 
@@ -909,10 +922,12 @@ private predicate hasChild(ItemNode parent, ItemNode child) { child.getImmediate
 private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
   doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
 
+/**
+ * Holds if the unqualified path `p` references a keyword item named `name`, and
+ * `name` may be looked up in the `ns` namespace inside enclosing item `encl`.
+ */
 pragma[nomagic]
-private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace ns, ItemNode encl) {
-  unqualifiedPathLookup(p, name, ns, encl)
-  or
+private predicate keywordLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
   // For `($)crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
     encl.(ModuleLikeNode).isRoot() and
@@ -920,13 +935,21 @@ private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace 
     or
     rootHasCratePathTc(encl, i)
   )
+  or
+  name = ["super", "self"] and
+  p.isUnqualified(name) and
+  exists(ItemNode encl0 |
+    encl0.getADescendant() = p and
+    encl = getAdjustedEnclosing(encl0, ns)
+  )
 }
 
 pragma[nomagic]
-private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
-  exists(ItemNode encl, string name |
-    result = getASuccessor(encl, name, ns) and
-    unqualifiedPathLookup1(path, name, ns, encl)
+private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns) {
+  exists(ItemNode encl, string name | result = getASuccessor(encl, name, ns) |
+    unqualifiedPathLookup(encl, name, ns, p)
+    or
+    keywordLookup(encl, name, ns, p)
   )
 }
 
