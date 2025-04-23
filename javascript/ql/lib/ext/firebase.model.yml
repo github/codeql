@@ -3,21 +3,34 @@ extensions:
       pack: codeql/javascript-all
       extensible: typeModel
     data:
-      - ["FirebaseDBRef", "firebase/app", "Member[database].ReturnValue"]
       - ["firebase/app", "global", "Member[firebase]"]
-      - ["FirebaseDBRef", "FirebaseDBRef", "Member[ref,refFromURL].ReturnValue"]
+
+      - ["FirebaseDB", "firebase/app", "Member[database].ReturnValue"]
+      - ["FirebaseDB", "firebase-functions", "Member[database]"]
+      - ["FirebaseDB", "firebase-admin", "Member[database].ReturnValue"]
+      - ["FirebaseDB", "FirebaseDBApp", "Member[database].ReturnValue"]
+      - ["FirebaseDB", "firebase.database.Database", ""]
+
+      - ["FirebaseDBApp", "firebase-admin", "Member[initializeApp,app].ReturnValue"]
+      - ["FirebaseDBApp", "firebase/app", "Member[initializeApp,app].ReturnValue"]
+      - ["FirebaseDBApp", "firebase/app", "Member[initializeApp].ReturnValue"]
+
+      - ["FirebaseDBRef", "FirebaseDB", "Member[ref,refFromURL].ReturnValue"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[child,once,on,push,set,then].ReturnValue"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[ref,root,parent,before,after]"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[endAt,startAt,orderByChild,orderByKey,orderByValue,orderByPriority,equalTo,limitToLast,limitToFirst].ReturnValue"]
-      - ["FirebaseDBRef", "FirebaseDBRef", "Member[onCreate,onUpdate,onWrite,onDelete,transaction,then,forEach].Argument[0].Parameter[0]"]
+      - ["FirebaseDBRef", "FirebaseDBRef", "Member[onCreate,onUpdate,onWrite,onDelete,then,forEach].Argument[0].Parameter[0]"]
       - ["FirebaseDBRef", "FirebaseDBRef", "Member[once,on].Argument[1].Parameter[0]"]
-      - ["FirebaseDBRef", "firebase-functions", "Member[database]"]
-      - ["FirebaseDBRef", "firebase-admin", "Member[database].ReturnValue"]
-      - ["FirebaseApp", "firebase-admin", "Member[initializeApp,app].ReturnValue"]
-      - ["FirebaseDBRef", "FirebaseApp", "Member[database].ReturnValue"]
+
+      - ["Snapshot", "FirebaseDBRef", "Member[child,once,on,push,set,then].ReturnValue"]
+      - ["Snapshot", "FirebaseDBRef", "Member[before,after]"]
+      - ["Snapshot", "FirebaseDBRef", "Member[once,on].Argument[1].Parameter[0]"]
+      - ["Snapshot", "FirebaseDBRef", "Member[onCreate,onUpdate,onWrite,onDelete,transaction,then,forEach].Argument[0].Parameter[0]"]
 
   - addsTo:
       pack: codeql/javascript-all
       extensible: sourceModel
     data:
       - ["FirebaseDBRef", "Member[val,exportVal].ReturnValue", 'remote']
+      - ["FirebaseDBRef", "Member[transaction].Argument[0].Parameter[0]", 'remote']
+      - ["Snapshot", "Member[val,exportVal].ReturnValue", 'remote']

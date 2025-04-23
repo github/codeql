@@ -5,21 +5,21 @@ import * as functions from 'firebase-functions';
 fb.database().ref('x').once('value', x => { // $firebaseSnapshot $firebaseRef
   x.val(); // $firebaseVal
   x.ref.parent; // $firebaseRef
-}); // $firebaseSnapshot
+}); // $firebaseRef $firebaseSnapshot
 
 admin.database().ref('x').once('value', x => { // $firebaseSnapshot $firebaseRef
   x.val(); // $firebaseVal
   x.ref.parent; // $firebaseRef
-}); // $firebaseSnapshot
+}); // $firebaseRef $firebaseSnapshot
 
-functions.database.ref('x').onCreate(x => {// $firebaseSnapshot
+functions.database.ref('x').onCreate(x => {// $firebaseSnapshot $firebaseRef
   x.val(); // $firebaseVal
   x.ref.parent; // $firebaseRef
 });
 
-functions.database.ref('x').onUpdate(x => { // $firebaseSnapshot
-  x.before.val(); // $firebaseSnapshot $firebaseVal
-  x.after.val(); // $firebaseSnapshot $firebaseVal
+functions.database.ref('x').onUpdate(x => { // $firebaseSnapshot $firebaseRef
+  x.before.val(); // $firebaseRef $firebaseSnapshot $firebaseVal
+  x.after.val(); // $firebaseRef $firebaseSnapshot $firebaseVal
   x.ref.parent; // $firebaseRef
 });
 
@@ -55,10 +55,10 @@ class FirebaseWrapper2 {
   }
 }
 
-new FirebaseWrapper(firebase.initializeApp()).getRef('/news'); // $firebaseRef
-new FirebaseWrapper2().getRef('/news'); // $firebaseRef
-new FirebaseWrapper2().getNewsItem('x'); // $firebaseSnapshot
-new FirebaseWrapper2().adjustValue(x => x + 1); // $firebaseVal
+new FirebaseWrapper(firebase.initializeApp()).getRef('/news');
+new FirebaseWrapper2().getRef('/news');
+new FirebaseWrapper2().getNewsItem('x');
+new FirebaseWrapper2().adjustValue(x => x + 1); // $firebaseSnapshot $firebaseVal
 
 class Box {
   constructor(x) {
