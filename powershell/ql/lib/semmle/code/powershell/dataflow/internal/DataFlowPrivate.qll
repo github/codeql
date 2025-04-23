@@ -47,15 +47,6 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = this.getExprNode().toString() }
 }
 
-/** Gets the SSA definition node corresponding to parameter `p`. */
-pragma[nomagic]
-SsaImpl::DefinitionExt getParameterDef(Parameter p) {
-  exists(EntryBasicBlock bb, int i |
-    bb.getNode(i).getAstNode() = p and
-    result.definesAt(_, bb, i, _)
-  )
-}
-
 /** Provides logic related to SSA. */
 module SsaFlow {
   private module Impl = SsaImpl::DataFlowIntegration;
@@ -453,7 +444,7 @@ class SsaDefinitionNodeImpl extends SsaNode {
     exists(SsaImpl::Definition def | def = this.getDefinition() |
       not def instanceof Ssa::WriteDefinition
       or
-      def = getParameterDef(_)
+      def = SsaImpl::getParameterDef(_)
     )
   }
 }

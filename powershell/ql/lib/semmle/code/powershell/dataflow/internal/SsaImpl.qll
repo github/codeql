@@ -179,39 +179,12 @@ private module Cached {
 
 import Cached
 
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  VarReadAccessCfgNode getARead() { result = getARead(this) }
-
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
-
-  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
-}
-
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-DefinitionExt getParameterDef(Parameter p) {
+Definition getParameterDef(Parameter p) {
   exists(Cfg::BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 
