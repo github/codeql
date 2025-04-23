@@ -180,7 +180,7 @@ private module Cached {
   cached
   predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
     source.flowsTo(call.getQualifier()) and
-    call.getName() = name
+    call.getLowerCaseName() = name
   }
 
   cached
@@ -506,7 +506,7 @@ class CallNode extends ExprNode {
 
   CfgNodes::ExprNodes::CallExprCfgNode getCallNode() { result = call }
 
-  string getName() { result = call.getName() }
+  string getLowerCaseName() { result = call.getLowerCaseName() }
 
   Node getQualifier() { result.asExpr() = call.getQualifier() }
 

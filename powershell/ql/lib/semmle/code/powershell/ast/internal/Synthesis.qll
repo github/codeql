@@ -26,7 +26,7 @@ newtype VarKind =
   PipelineIteratorKind() or
   PipelineByPropertyNameIteratorKind(string name) {
     exists(Raw::ProcessBlock pb |
-      name = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getName()
+      name = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter().getLowerCaseName()
     )
   }
 
@@ -156,7 +156,7 @@ private module SetVariableAssignment {
     override predicate explicitAssignment(Raw::Ast dest, string name, Raw::Ast assignment) {
       exists(Raw::Cmd cmd |
         assignment = cmd and
-        cmd.getCommandName().toLowerCase() = "set-variable" and
+        cmd.getLowerCaseName() = "set-variable" and
         cmd.getNamedArgument("name") = dest and
         name = dest.(Raw::StringConstExpr).getValue().getValue()
       )
@@ -192,7 +192,7 @@ private module ParameterSynth {
     override predicate implicitAssignment(Raw::Ast dest, string name) {
       exists(Raw::Parameter p |
         dest = p and
-        name = p.getName()
+        name = p.getLowerCaseName()
       )
     }
 
@@ -200,7 +200,7 @@ private module ParameterSynth {
       exists(Raw::Ast parent, ChildIndex i | v = TVariableSynth(parent, i) |
         exists(Raw::Parameter p |
           this.parameter(parent, i, p, _) and
-          name = p.getName()
+          name = p.getLowerCaseName()
         )
         or
         this.isPipelineParameterChild(parent, _, i, _, true) and
@@ -765,7 +765,7 @@ private module IteratorAccessSynth {
       or
       // or
       // result = "psitem" // TODO: This is also an automatic variable
-      result = pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+      result = pb.getScriptBlock().getParamBlock().getPipelineParameter().getLowerCaseName()
     )
     or
     // TODO: We could join on something other than the string if we wanted (i.e., the raw parameter).
@@ -774,8 +774,7 @@ private module IteratorAccessSynth {
       pb.getScriptBlock()
           .getParamBlock()
           .getAPipelineByPropertyNameParameter()
-          .getName()
-          .toLowerCase()
+          .getLowerCaseName()
   }
 
   private class IteratorAccessSynth extends Synthesis {
@@ -787,14 +786,13 @@ private module IteratorAccessSynth {
         va.getUserPath() = "_"
         or
         va.getUserPath().toLowerCase() =
-          pb.getScriptBlock().getParamBlock().getPipelineParameter().getName().toLowerCase()
+          pb.getScriptBlock().getParamBlock().getPipelineParameter().getLowerCaseName()
         or
         va.getUserPath().toLowerCase() =
           pb.getScriptBlock()
               .getParamBlock()
               .getAPipelineByPropertyNameParameter()
-              .getName()
-              .toLowerCase()
+              .getLowerCaseName()
       )
     }
 
@@ -829,7 +827,7 @@ private module IteratorAccessSynth {
         or
         exists(Raw::Parameter p |
           p = pb.getScriptBlock().getParamBlock().getAPipelineByPropertyNameParameter() and
-          child = SynthChild(VarSynthKind(PipelineByPropertyNameIteratorKind(p.getName()))) and
+          child = SynthChild(VarSynthKind(PipelineByPropertyNameIteratorKind(p.getLowerCaseName()))) and
           i = PipelineByPropertyNameIteratorVar(p)
         )
       )
@@ -864,7 +862,7 @@ private module IteratorAccessSynth {
       or
       exists(Raw::PipelineByPropertyNameParameter p |
         v = TVariableSynth(_, PipelineByPropertyNameIteratorVar(p)) and
-        name = "__pipeline_iterator for " + p.getName()
+        name = "__pipeline_iterator for " + p.getLowerCaseName()
       )
     }
 
@@ -896,7 +894,7 @@ private module PipelineAccess {
         )
         or
         exists(PipelineByPropertyNameParameter pipelineVar, Raw::PipelineByPropertyNameParameter p |
-          i = processBlockPipelineByPropertyNameVarReadAccess(p.getName()) and
+          i = processBlockPipelineByPropertyNameVarReadAccess(p.getLowerCaseName()) and
           getResultAst(p) = pipelineVar and
           child = SynthChild(VarAccessSynthKind(pipelineVar))
         )

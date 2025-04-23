@@ -37,7 +37,7 @@ newtype ChildIndex =
   RealVar(string name) { name = variableNameInScope(_, _) } or
   ProcessBlockPipelineVarReadAccess() or
   ProcessBlockPipelineByPropertyNameVarReadAccess(string name) {
-    name = any(Raw::PipelineByPropertyNameParameter p).getName()
+    name = any(Raw::PipelineByPropertyNameParameter p).getLowerCaseName()
   }
 
 int synthPipelineParameterChildIndex(Raw::ScriptBlock sb) {

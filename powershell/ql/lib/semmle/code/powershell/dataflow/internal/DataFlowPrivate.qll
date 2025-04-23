@@ -556,7 +556,7 @@ private module ParameterNodes {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       parameter.getEnclosingScope() = c.asCfgScope() and
       (
-        pos.isKeyword(parameter.getName().toLowerCase())
+        pos.isKeyword(parameter.getLowerCaseName())
         or
         // Given a function f with parameters x, y we map
         // x to the positions:
@@ -574,14 +574,14 @@ private module ParameterNodes {
           parameter.getIndexExcludingPipelines() = i and
           f = parameter.getFunction() and
           f = ns.getAFunction() and
-          name = parameter.getName().toLowerCase() and
+          name = parameter.getLowerCaseName() and
           not name = ns.getAName() and
           j =
             i -
               count(int k, Parameter p |
                 k < i and
                 p = getNormalParameter(f, k) and
-                p.getName() = ns.getAName()
+                p.getLowerCaseName() = ns.getAName()
               )
         )
       )
@@ -652,7 +652,7 @@ private module ParameterNodes {
 
     override string toStringImpl() { result = this.getParameter().toString() }
 
-    string getPropertyName() { result = parameter.getPropertyName() }
+    string getPropertyName() { result = parameter.getLowerCaseName() }
   }
 
   /** A parameter for a library callable with a flow summary. */
@@ -721,7 +721,7 @@ module ArgumentNodes {
     ) {
       arg.getCall() = call and
       (
-        pos.isKeyword(arg.getName())
+        pos.isKeyword(arg.getLowerCaseName())
         or
         exists(NamedSet ns, int i |
           i = arg.getPosition() and
@@ -1009,7 +1009,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   exists(PipelineByPropertyNameParameter p, Content::KnownElementContent ec |
     c.isKnownOrUnknownElement(ec) and
-    ec.getIndex().asString() = p.getPropertyName() and
+    ec.getIndex().asString() = p.getLowerCaseName() and
     node1 = TProcessPropertyByNameNode(p, false) and
     node2 = TProcessPropertyByNameNode(p, true)
   )

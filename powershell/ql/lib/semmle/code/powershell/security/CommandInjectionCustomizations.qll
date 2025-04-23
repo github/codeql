@@ -219,12 +219,12 @@ class ExpandStringSink extends Sink {
   }
   
   class SingleQuoteSanitizer extends Sanitizer {
-    SingleQuoteSanitizer() { 
-        exists(ExpandableStringExpr e, VarReadAccess v | 
-            v = this.asExpr().getExpr()  and
-            e.getUnexpandedValue().matches("%'$" + v.getVariable().getName() + "'%") and
-            e.getAnExpr() = v
-        )
+    SingleQuoteSanitizer() {
+      exists(ExpandableStringExpr e, VarReadAccess v |
+        v = this.asExpr().getExpr() and
+        e.getUnexpandedValue().toLowerCase().matches("%'$" + v.getVariable().getLowerCaseName() + "'%") and
+        e.getAnExpr() = v
+      )
     }
   }
 }

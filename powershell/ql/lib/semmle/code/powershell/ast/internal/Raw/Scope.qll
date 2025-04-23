@@ -11,11 +11,11 @@ Scope scopeOf(Ast n) {
 
 module Parameter {
   abstract class Scope extends Ast {
-    abstract string getName();
+    abstract string getLowerCaseName();
   }
 
   private class ParameterScope extends Scope instanceof Parameter {
-    final override string getName() { result = Parameter.super.getName() }
+    final override string getLowerCaseName() { result = Parameter.super.getLowerCaseName() }
   }
 }
 

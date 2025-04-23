@@ -1,7 +1,7 @@
 private import AstImport
 
 class CmdCall extends CallExpr, TCmd {
-  final override string getName() { result = getRawAst(this).(Raw::Cmd).getCommandName() }
+  final override string getLowerCaseName() { result = getRawAst(this).(Raw::Cmd).getLowerCaseName() }
 
   final override Expr getArgument(int i) { synthChild(getRawAst(this), cmdArgument(i), result) }
 
@@ -85,7 +85,7 @@ class DotSourcingOperator extends CmdCall {
 }
 
 class JoinPath extends CmdCall {
-  JoinPath() { this.getName().toLowerCase() = "join-path" }
+  JoinPath() { this.getLowerCaseName() = "join-path" }
 
   Expr getPath() {
     result = this.getNamedArgument("path")
@@ -103,7 +103,7 @@ class JoinPath extends CmdCall {
 }
 
 class SplitPath extends CmdCall {
-  SplitPath() { this.getName().toLowerCase() = "split-path" }
+  SplitPath() { this.getLowerCaseName() = "split-path" }
 
   Expr getPath() {
     result = this.getNamedArgument("path")
@@ -131,7 +131,7 @@ class SplitPath extends CmdCall {
 }
 
 class GetVariable extends CmdCall {
-  GetVariable() { this.getName().toLowerCase() = "get-variable" }
+  GetVariable() { this.getLowerCaseName() = "get-variable" }
 
   Expr getVariable() { result = this.getPositionalArgument(0) }
 

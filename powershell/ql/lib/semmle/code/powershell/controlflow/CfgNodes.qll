@@ -538,9 +538,9 @@ module ExprNodes {
     ExprCfgNode getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the name that is used to select the callee. */
-    string getName() { result = e.getName() }
+    string getLowerCaseName() { result = e.getLowerCaseName() }
 
-    predicate hasName(string name) { this.getName() = name }
+    predicate hasLowerCaseName(string name) { this.getLowerCaseName() = name }
 
     /** Gets the i'th positional argument to this call. */
     ExprCfgNode getPositionalArgument(int i) {
@@ -1041,7 +1041,7 @@ module ExprNodes {
 
     CallExprCfgNode getCall() { result.getAnArgument() = this }
 
-    string getName() { result = e.getName() }
+    string getLowerCaseName() { result = e.getLowerCaseName() }
 
     int getPosition() { result = e.getPosition() }
   }

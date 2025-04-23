@@ -1,7 +1,7 @@
 private import AstImport
 
 class Parameter extends Variable instanceof ParameterImpl {
-  string getName() { result = super.getNameImpl() }
+  string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 
   final predicate hasName(string name) { name = this.getName() }
 

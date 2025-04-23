@@ -5,7 +5,17 @@ class CallExpr extends Expr, TCallExpr {
   Expr getArgument(int i) { none() }
 
   /** Gets the name that is used to select the callee. */
-  string getName() { none() }
+  string getLowerCaseName() { none() }
+
+  /** Holds if `name` is the name of this call. The name is case insensitive. */
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  /** Gets a name that case-insensitively matches the name of this call. */
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   /** Gets the i'th positional argument to this call. */
   Expr getPositionalArgument(int i) { none() }
@@ -32,7 +42,7 @@ class CallExpr extends Expr, TCallExpr {
     exists(Pipeline p, int i | this = p.getComponent(i + 1) and result = p.getComponent(i))
   }
 
-  final override string toString() { result = "Call to " + this.getName() }
+  final override string toString() { result = "Call to " + this.getLowerCaseName() }
 
   predicate isStatic() { none() }
 }
@@ -44,7 +54,15 @@ class Argument extends Expr {
 
   int getPosition() { this = call.getPositionalArgument(result) }
 
-  string getName() { this = call.getNamedArgument(result) }
+  string getLowerCaseName() { this = call.getNamedArgument(result) }
+
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   CallExpr getCall() { result = call }
 }
