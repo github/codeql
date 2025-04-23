@@ -6,9 +6,9 @@
 | conditionals.ps1:1:18:9:1 | [synth] pipeline | conditionals.ps1:2:5:8:13 | {...} |  |
 | conditionals.ps1:1:18:9:1 | enter {...} | conditionals.ps1:1:18:9:1 | {...} |  |
 | conditionals.ps1:1:18:9:1 | exit {...} (normal) | conditionals.ps1:1:18:9:1 | exit {...} |  |
-| conditionals.ps1:1:18:9:1 | {...} | conditionals.ps1:2:11:2:17 | myBool |  |
+| conditionals.ps1:1:18:9:1 | {...} | conditionals.ps1:2:11:2:17 | mybool |  |
 | conditionals.ps1:2:5:8:13 | {...} | conditionals.ps1:4:5:7:5 | [Stmt] if (...) {...} |  |
-| conditionals.ps1:2:11:2:17 | myBool | conditionals.ps1:1:18:9:1 | [synth] pipeline |  |
+| conditionals.ps1:2:11:2:17 | mybool | conditionals.ps1:1:18:9:1 | [synth] pipeline |  |
 | conditionals.ps1:4:5:7:5 | [Stmt] if (...) {...} | conditionals.ps1:4:8:4:14 | myBool |  |
 | conditionals.ps1:4:5:7:5 | if (...) {...} | conditionals.ps1:8:5:8:13 | return ... |  |
 | conditionals.ps1:4:8:4:14 | myBool | conditionals.ps1:4:5:7:5 | if (...) {...} | false |
@@ -22,9 +22,9 @@
 | conditionals.ps1:11:23:22:1 | [synth] pipeline | conditionals.ps1:12:5:21:5 | {...} |  |
 | conditionals.ps1:11:23:22:1 | enter {...} | conditionals.ps1:11:23:22:1 | {...} |  |
 | conditionals.ps1:11:23:22:1 | exit {...} (normal) | conditionals.ps1:11:23:22:1 | exit {...} |  |
-| conditionals.ps1:11:23:22:1 | {...} | conditionals.ps1:12:11:12:17 | myBool |  |
+| conditionals.ps1:11:23:22:1 | {...} | conditionals.ps1:12:11:12:17 | mybool |  |
 | conditionals.ps1:12:5:21:5 | {...} | conditionals.ps1:14:5:21:5 | [Stmt] if (...) {...} else {...} |  |
-| conditionals.ps1:12:11:12:17 | myBool | conditionals.ps1:11:23:22:1 | [synth] pipeline |  |
+| conditionals.ps1:12:11:12:17 | mybool | conditionals.ps1:11:23:22:1 | [synth] pipeline |  |
 | conditionals.ps1:14:5:21:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:14:8:14:14 | myBool |  |
 | conditionals.ps1:14:5:21:5 | if (...) {...} else {...} | conditionals.ps1:11:23:22:1 | exit {...} (normal) |  |
 | conditionals.ps1:14:8:14:14 | myBool | conditionals.ps1:15:5:17:5 | {...} | true |
@@ -39,10 +39,10 @@
 | conditionals.ps1:24:23:32:1 | [synth] pipeline | conditionals.ps1:25:5:31:13 | {...} |  |
 | conditionals.ps1:24:23:32:1 | enter {...} | conditionals.ps1:24:23:32:1 | {...} |  |
 | conditionals.ps1:24:23:32:1 | exit {...} (normal) | conditionals.ps1:24:23:32:1 | exit {...} |  |
-| conditionals.ps1:24:23:32:1 | {...} | conditionals.ps1:25:11:25:18 | myBool1 |  |
+| conditionals.ps1:24:23:32:1 | {...} | conditionals.ps1:25:11:25:18 | mybool1 |  |
 | conditionals.ps1:25:5:31:13 | {...} | conditionals.ps1:27:5:30:5 | [Stmt] if (...) {...} |  |
-| conditionals.ps1:25:11:25:18 | myBool1 | conditionals.ps1:25:21:25:28 | myBool2 |  |
-| conditionals.ps1:25:21:25:28 | myBool2 | conditionals.ps1:24:23:32:1 | [synth] pipeline |  |
+| conditionals.ps1:25:11:25:18 | mybool1 | conditionals.ps1:25:21:25:28 | mybool2 |  |
+| conditionals.ps1:25:21:25:28 | mybool2 | conditionals.ps1:24:23:32:1 | [synth] pipeline |  |
 | conditionals.ps1:27:5:30:5 | [Stmt] if (...) {...} | conditionals.ps1:27:8:27:15 | myBool1 |  |
 | conditionals.ps1:27:5:30:5 | if (...) {...} | conditionals.ps1:31:5:31:13 | return ... |  |
 | conditionals.ps1:27:8:27:15 | myBool1 | conditionals.ps1:27:22:27:29 | myBool2 | false, true |
@@ -59,10 +59,10 @@
 | conditionals.ps1:34:28:45:1 | [synth] pipeline | conditionals.ps1:35:5:44:5 | {...} |  |
 | conditionals.ps1:34:28:45:1 | enter {...} | conditionals.ps1:34:28:45:1 | {...} |  |
 | conditionals.ps1:34:28:45:1 | exit {...} (normal) | conditionals.ps1:34:28:45:1 | exit {...} |  |
-| conditionals.ps1:34:28:45:1 | {...} | conditionals.ps1:35:11:35:18 | myBool1 |  |
+| conditionals.ps1:34:28:45:1 | {...} | conditionals.ps1:35:11:35:18 | mybool1 |  |
 | conditionals.ps1:35:5:44:5 | {...} | conditionals.ps1:37:5:44:5 | [Stmt] if (...) {...} else {...} |  |
-| conditionals.ps1:35:11:35:18 | myBool1 | conditionals.ps1:35:21:35:28 | myBool2 |  |
-| conditionals.ps1:35:21:35:28 | myBool2 | conditionals.ps1:34:28:45:1 | [synth] pipeline |  |
+| conditionals.ps1:35:11:35:18 | mybool1 | conditionals.ps1:35:21:35:28 | mybool2 |  |
+| conditionals.ps1:35:21:35:28 | mybool2 | conditionals.ps1:34:28:45:1 | [synth] pipeline |  |
 | conditionals.ps1:37:5:44:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:37:8:37:15 | myBool1 |  |
 | conditionals.ps1:37:5:44:5 | if (...) {...} else {...} | conditionals.ps1:34:28:45:1 | exit {...} (normal) |  |
 | conditionals.ps1:37:8:37:15 | myBool1 | conditionals.ps1:37:22:37:29 | myBool2 | false, true |
@@ -80,10 +80,10 @@
 | conditionals.ps1:47:23:55:1 | [synth] pipeline | conditionals.ps1:48:5:54:13 | {...} |  |
 | conditionals.ps1:47:23:55:1 | enter {...} | conditionals.ps1:47:23:55:1 | {...} |  |
 | conditionals.ps1:47:23:55:1 | exit {...} (normal) | conditionals.ps1:47:23:55:1 | exit {...} |  |
-| conditionals.ps1:47:23:55:1 | {...} | conditionals.ps1:48:11:48:18 | myBool1 |  |
+| conditionals.ps1:47:23:55:1 | {...} | conditionals.ps1:48:11:48:18 | mybool1 |  |
 | conditionals.ps1:48:5:54:13 | {...} | conditionals.ps1:50:5:53:5 | [Stmt] if (...) {...} |  |
-| conditionals.ps1:48:11:48:18 | myBool1 | conditionals.ps1:48:21:48:28 | myBool2 |  |
-| conditionals.ps1:48:21:48:28 | myBool2 | conditionals.ps1:47:23:55:1 | [synth] pipeline |  |
+| conditionals.ps1:48:11:48:18 | mybool1 | conditionals.ps1:48:21:48:28 | mybool2 |  |
+| conditionals.ps1:48:21:48:28 | mybool2 | conditionals.ps1:47:23:55:1 | [synth] pipeline |  |
 | conditionals.ps1:50:5:53:5 | [Stmt] if (...) {...} | conditionals.ps1:50:8:50:15 | myBool1 |  |
 | conditionals.ps1:50:5:53:5 | if (...) {...} | conditionals.ps1:54:5:54:13 | return ... |  |
 | conditionals.ps1:50:8:50:15 | myBool1 | conditionals.ps1:50:21:50:28 | myBool2 | false, true |
@@ -100,10 +100,10 @@
 | conditionals.ps1:57:28:68:1 | [synth] pipeline | conditionals.ps1:58:5:67:5 | {...} |  |
 | conditionals.ps1:57:28:68:1 | enter {...} | conditionals.ps1:57:28:68:1 | {...} |  |
 | conditionals.ps1:57:28:68:1 | exit {...} (normal) | conditionals.ps1:57:28:68:1 | exit {...} |  |
-| conditionals.ps1:57:28:68:1 | {...} | conditionals.ps1:58:11:58:18 | myBool1 |  |
+| conditionals.ps1:57:28:68:1 | {...} | conditionals.ps1:58:11:58:18 | mybool1 |  |
 | conditionals.ps1:58:5:67:5 | {...} | conditionals.ps1:60:5:67:5 | [Stmt] if (...) {...} else {...} |  |
-| conditionals.ps1:58:11:58:18 | myBool1 | conditionals.ps1:58:21:58:28 | myBool2 |  |
-| conditionals.ps1:58:21:58:28 | myBool2 | conditionals.ps1:57:28:68:1 | [synth] pipeline |  |
+| conditionals.ps1:58:11:58:18 | mybool1 | conditionals.ps1:58:21:58:28 | mybool2 |  |
+| conditionals.ps1:58:21:58:28 | mybool2 | conditionals.ps1:57:28:68:1 | [synth] pipeline |  |
 | conditionals.ps1:60:5:67:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:60:8:60:15 | myBool1 |  |
 | conditionals.ps1:60:5:67:5 | if (...) {...} else {...} | conditionals.ps1:57:28:68:1 | exit {...} (normal) |  |
 | conditionals.ps1:60:8:60:15 | myBool1 | conditionals.ps1:60:21:60:28 | myBool2 | false, true |
@@ -121,10 +121,10 @@
 | conditionals.ps1:70:23:82:1 | [synth] pipeline | conditionals.ps1:71:5:81:13 | {...} |  |
 | conditionals.ps1:70:23:82:1 | enter {...} | conditionals.ps1:70:23:82:1 | {...} |  |
 | conditionals.ps1:70:23:82:1 | exit {...} (normal) | conditionals.ps1:70:23:82:1 | exit {...} |  |
-| conditionals.ps1:70:23:82:1 | {...} | conditionals.ps1:71:11:71:18 | myBool1 |  |
+| conditionals.ps1:70:23:82:1 | {...} | conditionals.ps1:71:11:71:18 | mybool1 |  |
 | conditionals.ps1:71:5:81:13 | {...} | conditionals.ps1:73:5:80:5 | [Stmt] if (...) {...} |  |
-| conditionals.ps1:71:11:71:18 | myBool1 | conditionals.ps1:71:21:71:28 | myBool2 |  |
-| conditionals.ps1:71:21:71:28 | myBool2 | conditionals.ps1:70:23:82:1 | [synth] pipeline |  |
+| conditionals.ps1:71:11:71:18 | mybool1 | conditionals.ps1:71:21:71:28 | mybool2 |  |
+| conditionals.ps1:71:21:71:28 | mybool2 | conditionals.ps1:70:23:82:1 | [synth] pipeline |  |
 | conditionals.ps1:73:5:80:5 | [Stmt] if (...) {...} | conditionals.ps1:73:8:73:15 | myBool1 |  |
 | conditionals.ps1:73:5:80:5 | if (...) {...} | conditionals.ps1:81:5:81:13 | return ... |  |
 | conditionals.ps1:73:8:73:15 | myBool1 | conditionals.ps1:73:5:80:5 | if (...) {...} | false |
@@ -138,10 +138,10 @@
 | conditionals.ps1:84:28:99:1 | [synth] pipeline | conditionals.ps1:85:5:98:5 | {...} |  |
 | conditionals.ps1:84:28:99:1 | enter {...} | conditionals.ps1:84:28:99:1 | {...} |  |
 | conditionals.ps1:84:28:99:1 | exit {...} (normal) | conditionals.ps1:84:28:99:1 | exit {...} |  |
-| conditionals.ps1:84:28:99:1 | {...} | conditionals.ps1:85:11:85:18 | myBool1 |  |
+| conditionals.ps1:84:28:99:1 | {...} | conditionals.ps1:85:11:85:18 | mybool1 |  |
 | conditionals.ps1:85:5:98:5 | {...} | conditionals.ps1:87:5:98:5 | [Stmt] if (...) {...} else {...} |  |
-| conditionals.ps1:85:11:85:18 | myBool1 | conditionals.ps1:85:21:85:28 | myBool2 |  |
-| conditionals.ps1:85:21:85:28 | myBool2 | conditionals.ps1:84:28:99:1 | [synth] pipeline |  |
+| conditionals.ps1:85:11:85:18 | mybool1 | conditionals.ps1:85:21:85:28 | mybool2 |  |
+| conditionals.ps1:85:21:85:28 | mybool2 | conditionals.ps1:84:28:99:1 | [synth] pipeline |  |
 | conditionals.ps1:87:5:98:5 | [Stmt] if (...) {...} else {...} | conditionals.ps1:87:8:87:15 | myBool1 |  |
 | conditionals.ps1:87:5:98:5 | if (...) {...} else {...} | conditionals.ps1:84:28:99:1 | exit {...} (normal) |  |
 | conditionals.ps1:87:8:87:15 | myBool1 | conditionals.ps1:88:5:90:5 | {...} | true |
@@ -202,11 +202,11 @@
 | conditionals.ps1:115:21:115:21 | 2 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
 | conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:110:34:121:1 | exit {...} (normal) | false |
 | conditionals.ps1:116:9:116:16 | default: | conditionals.ps1:116:18:119:9 | {...} | true |
-| conditionals.ps1:116:18:119:9 | {...} | conditionals.ps1:117:13:117:33 | [Stmt] Call to Write-Output |  |
+| conditionals.ps1:116:18:119:9 | {...} | conditionals.ps1:117:13:117:33 | [Stmt] Call to write-output |  |
 | conditionals.ps1:117:13:117:24 | Write-Output | conditionals.ps1:117:26:117:33 | Error! |  |
-| conditionals.ps1:117:13:117:33 | Call to Write-Output | conditionals.ps1:118:13:118:20 | return ... |  |
-| conditionals.ps1:117:13:117:33 | [Stmt] Call to Write-Output | conditionals.ps1:117:13:117:24 | Write-Output |  |
-| conditionals.ps1:117:26:117:33 | Error! | conditionals.ps1:117:13:117:33 | Call to Write-Output |  |
+| conditionals.ps1:117:13:117:33 | Call to write-output | conditionals.ps1:118:13:118:20 | return ... |  |
+| conditionals.ps1:117:13:117:33 | [Stmt] Call to write-output | conditionals.ps1:117:13:117:24 | Write-Output |  |
+| conditionals.ps1:117:26:117:33 | Error! | conditionals.ps1:117:13:117:33 | Call to write-output |  |
 | conditionals.ps1:118:13:118:20 | return ... | conditionals.ps1:118:20:118:20 | 3 |  |
 | conditionals.ps1:118:20:118:20 | 3 | conditionals.ps1:110:34:121:1 | exit {...} (normal) |  |
 | conditionals.ps1:123:1:129:1 | def of test-switch-assign | conditionals.ps1:1:1:129:1 | exit {...} (normal) |  |
@@ -498,11 +498,11 @@
 | try.ps1:1:25:8:1 | {...} | try.ps1:1:25:8:1 | [synth] pipeline |  |
 | try.ps1:2:5:6:5 | try {...} | try.ps1:2:9:4:5 | {...} |  |
 | try.ps1:2:5:7:12 | {...} | try.ps1:2:5:6:5 | try {...} |  |
-| try.ps1:2:9:4:5 | {...} | try.ps1:3:9:3:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:2:9:4:5 | {...} | try.ps1:3:9:3:29 | [Stmt] Call to write-output |  |
 | try.ps1:3:9:3:20 | Write-Output | try.ps1:3:22:3:29 | Hello! |  |
-| try.ps1:3:9:3:29 | Call to Write-Output | try.ps1:7:5:7:12 | return ... |  |
-| try.ps1:3:9:3:29 | [Stmt] Call to Write-Output | try.ps1:3:9:3:20 | Write-Output |  |
-| try.ps1:3:22:3:29 | Hello! | try.ps1:3:9:3:29 | Call to Write-Output |  |
+| try.ps1:3:9:3:29 | Call to write-output | try.ps1:7:5:7:12 | return ... |  |
+| try.ps1:3:9:3:29 | [Stmt] Call to write-output | try.ps1:3:9:3:20 | Write-Output |  |
+| try.ps1:3:22:3:29 | Hello! | try.ps1:3:9:3:29 | Call to write-output |  |
 | try.ps1:7:5:7:12 | return ... | try.ps1:7:12:7:12 | 1 |  |
 | try.ps1:7:12:7:12 | 1 | try.ps1:1:25:8:1 | exit {...} (normal) |  |
 | try.ps1:10:1:19:1 | def of test-try-with-throw-catch | try.ps1:21:1:30:1 | def of test-try-with-throw-catch-with-throw |  |
@@ -566,11 +566,11 @@
 | try.ps1:43:36:50:1 | {...} | try.ps1:43:36:50:1 | [synth] pipeline |  |
 | try.ps1:44:5:48:5 | try {...} | try.ps1:44:9:46:5 | {...} |  |
 | try.ps1:44:5:49:12 | {...} | try.ps1:44:5:48:5 | try {...} |  |
-| try.ps1:44:9:46:5 | {...} | try.ps1:45:9:45:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:44:9:46:5 | {...} | try.ps1:45:9:45:29 | [Stmt] Call to write-output |  |
 | try.ps1:45:9:45:20 | Write-Output | try.ps1:45:22:45:29 | Hello! |  |
-| try.ps1:45:9:45:29 | Call to Write-Output | try.ps1:49:5:49:12 | return ... |  |
-| try.ps1:45:9:45:29 | [Stmt] Call to Write-Output | try.ps1:45:9:45:20 | Write-Output |  |
-| try.ps1:45:22:45:29 | Hello! | try.ps1:45:9:45:29 | Call to Write-Output |  |
+| try.ps1:45:9:45:29 | Call to write-output | try.ps1:49:5:49:12 | return ... |  |
+| try.ps1:45:9:45:29 | [Stmt] Call to write-output | try.ps1:45:9:45:20 | Write-Output |  |
+| try.ps1:45:22:45:29 | Hello! | try.ps1:45:9:45:29 | Call to write-output |  |
 | try.ps1:49:5:49:12 | return ... | try.ps1:49:12:49:12 | 1 |  |
 | try.ps1:49:12:49:12 | 1 | try.ps1:43:36:50:1 | exit {...} (normal) |  |
 | try.ps1:52:1:59:1 | def of test-try-catch-specific-1 | try.ps1:61:1:70:1 | def of test-try-two-catch-specific-1 |  |
@@ -580,11 +580,11 @@
 | try.ps1:52:36:59:1 | {...} | try.ps1:52:36:59:1 | [synth] pipeline |  |
 | try.ps1:53:5:57:5 | try {...} | try.ps1:53:9:55:5 | {...} |  |
 | try.ps1:53:5:58:12 | {...} | try.ps1:53:5:57:5 | try {...} |  |
-| try.ps1:53:9:55:5 | {...} | try.ps1:54:9:54:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:53:9:55:5 | {...} | try.ps1:54:9:54:29 | [Stmt] Call to write-output |  |
 | try.ps1:54:9:54:20 | Write-Output | try.ps1:54:22:54:29 | Hello! |  |
-| try.ps1:54:9:54:29 | Call to Write-Output | try.ps1:58:5:58:12 | return ... |  |
-| try.ps1:54:9:54:29 | [Stmt] Call to Write-Output | try.ps1:54:9:54:20 | Write-Output |  |
-| try.ps1:54:22:54:29 | Hello! | try.ps1:54:9:54:29 | Call to Write-Output |  |
+| try.ps1:54:9:54:29 | Call to write-output | try.ps1:58:5:58:12 | return ... |  |
+| try.ps1:54:9:54:29 | [Stmt] Call to write-output | try.ps1:54:9:54:20 | Write-Output |  |
+| try.ps1:54:22:54:29 | Hello! | try.ps1:54:9:54:29 | Call to write-output |  |
 | try.ps1:58:5:58:12 | return ... | try.ps1:58:12:58:12 | 1 |  |
 | try.ps1:58:12:58:12 | 1 | try.ps1:52:36:59:1 | exit {...} (normal) |  |
 | try.ps1:61:1:70:1 | def of test-try-two-catch-specific-1 | try.ps1:72:1:79:1 | def of test-try-catch-specific-2 |  |
@@ -594,11 +594,11 @@
 | try.ps1:61:40:70:1 | {...} | try.ps1:61:40:70:1 | [synth] pipeline |  |
 | try.ps1:62:5:68:5 | try {...} | try.ps1:62:9:64:5 | {...} |  |
 | try.ps1:62:5:69:12 | {...} | try.ps1:62:5:68:5 | try {...} |  |
-| try.ps1:62:9:64:5 | {...} | try.ps1:63:9:63:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:62:9:64:5 | {...} | try.ps1:63:9:63:29 | [Stmt] Call to write-output |  |
 | try.ps1:63:9:63:20 | Write-Output | try.ps1:63:22:63:29 | Hello! |  |
-| try.ps1:63:9:63:29 | Call to Write-Output | try.ps1:69:5:69:12 | return ... |  |
-| try.ps1:63:9:63:29 | [Stmt] Call to Write-Output | try.ps1:63:9:63:20 | Write-Output |  |
-| try.ps1:63:22:63:29 | Hello! | try.ps1:63:9:63:29 | Call to Write-Output |  |
+| try.ps1:63:9:63:29 | Call to write-output | try.ps1:69:5:69:12 | return ... |  |
+| try.ps1:63:9:63:29 | [Stmt] Call to write-output | try.ps1:63:9:63:20 | Write-Output |  |
+| try.ps1:63:22:63:29 | Hello! | try.ps1:63:9:63:29 | Call to write-output |  |
 | try.ps1:69:5:69:12 | return ... | try.ps1:69:12:69:12 | 2 |  |
 | try.ps1:69:12:69:12 | 2 | try.ps1:61:40:70:1 | exit {...} (normal) |  |
 | try.ps1:72:1:79:1 | def of test-try-catch-specific-2 | try.ps1:81:1:90:1 | def of test-try-two-catch-specific-2 |  |
@@ -608,11 +608,11 @@
 | try.ps1:72:36:79:1 | {...} | try.ps1:72:36:79:1 | [synth] pipeline |  |
 | try.ps1:73:5:77:5 | try {...} | try.ps1:73:9:75:5 | {...} |  |
 | try.ps1:73:5:78:12 | {...} | try.ps1:73:5:77:5 | try {...} |  |
-| try.ps1:73:9:75:5 | {...} | try.ps1:74:9:74:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:73:9:75:5 | {...} | try.ps1:74:9:74:29 | [Stmt] Call to write-output |  |
 | try.ps1:74:9:74:20 | Write-Output | try.ps1:74:22:74:29 | Hello! |  |
-| try.ps1:74:9:74:29 | Call to Write-Output | try.ps1:78:5:78:12 | return ... |  |
-| try.ps1:74:9:74:29 | [Stmt] Call to Write-Output | try.ps1:74:9:74:20 | Write-Output |  |
-| try.ps1:74:22:74:29 | Hello! | try.ps1:74:9:74:29 | Call to Write-Output |  |
+| try.ps1:74:9:74:29 | Call to write-output | try.ps1:78:5:78:12 | return ... |  |
+| try.ps1:74:9:74:29 | [Stmt] Call to write-output | try.ps1:74:9:74:20 | Write-Output |  |
+| try.ps1:74:22:74:29 | Hello! | try.ps1:74:9:74:29 | Call to write-output |  |
 | try.ps1:78:5:78:12 | return ... | try.ps1:78:12:78:12 | 1 |  |
 | try.ps1:78:12:78:12 | 1 | try.ps1:72:36:79:1 | exit {...} (normal) |  |
 | try.ps1:81:1:90:1 | def of test-try-two-catch-specific-2 | try.ps1:92:1:103:1 | def of test-try-three-catch-specific-2 |  |
@@ -622,11 +622,11 @@
 | try.ps1:81:40:90:1 | {...} | try.ps1:81:40:90:1 | [synth] pipeline |  |
 | try.ps1:82:5:88:5 | try {...} | try.ps1:82:9:84:5 | {...} |  |
 | try.ps1:82:5:89:12 | {...} | try.ps1:82:5:88:5 | try {...} |  |
-| try.ps1:82:9:84:5 | {...} | try.ps1:83:9:83:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:82:9:84:5 | {...} | try.ps1:83:9:83:29 | [Stmt] Call to write-output |  |
 | try.ps1:83:9:83:20 | Write-Output | try.ps1:83:22:83:29 | Hello! |  |
-| try.ps1:83:9:83:29 | Call to Write-Output | try.ps1:89:5:89:12 | return ... |  |
-| try.ps1:83:9:83:29 | [Stmt] Call to Write-Output | try.ps1:83:9:83:20 | Write-Output |  |
-| try.ps1:83:22:83:29 | Hello! | try.ps1:83:9:83:29 | Call to Write-Output |  |
+| try.ps1:83:9:83:29 | Call to write-output | try.ps1:89:5:89:12 | return ... |  |
+| try.ps1:83:9:83:29 | [Stmt] Call to write-output | try.ps1:83:9:83:20 | Write-Output |  |
+| try.ps1:83:22:83:29 | Hello! | try.ps1:83:9:83:29 | Call to write-output |  |
 | try.ps1:89:5:89:12 | return ... | try.ps1:89:12:89:12 | 2 |  |
 | try.ps1:89:12:89:12 | 2 | try.ps1:81:40:90:1 | exit {...} (normal) |  |
 | try.ps1:92:1:103:1 | def of test-try-three-catch-specific-2 | try.ps1:105:1:114:1 | def of test-try-catch-finally |  |
@@ -636,11 +636,11 @@
 | try.ps1:92:42:103:1 | {...} | try.ps1:92:42:103:1 | [synth] pipeline |  |
 | try.ps1:93:5:101:5 | try {...} | try.ps1:93:9:95:5 | {...} |  |
 | try.ps1:93:5:102:12 | {...} | try.ps1:93:5:101:5 | try {...} |  |
-| try.ps1:93:9:95:5 | {...} | try.ps1:94:9:94:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:93:9:95:5 | {...} | try.ps1:94:9:94:29 | [Stmt] Call to write-output |  |
 | try.ps1:94:9:94:20 | Write-Output | try.ps1:94:22:94:29 | Hello! |  |
-| try.ps1:94:9:94:29 | Call to Write-Output | try.ps1:102:5:102:12 | return ... |  |
-| try.ps1:94:9:94:29 | [Stmt] Call to Write-Output | try.ps1:94:9:94:20 | Write-Output |  |
-| try.ps1:94:22:94:29 | Hello! | try.ps1:94:9:94:29 | Call to Write-Output |  |
+| try.ps1:94:9:94:29 | Call to write-output | try.ps1:102:5:102:12 | return ... |  |
+| try.ps1:94:9:94:29 | [Stmt] Call to write-output | try.ps1:94:9:94:20 | Write-Output |  |
+| try.ps1:94:22:94:29 | Hello! | try.ps1:94:9:94:29 | Call to write-output |  |
 | try.ps1:102:5:102:12 | return ... | try.ps1:102:12:102:12 | 3 |  |
 | try.ps1:102:12:102:12 | 3 | try.ps1:92:42:103:1 | exit {...} (normal) |  |
 | try.ps1:105:1:114:1 | def of test-try-catch-finally | try.ps1:116:1:123:1 | def of test-try-finally |  |
@@ -650,16 +650,16 @@
 | try.ps1:105:33:114:1 | {...} | try.ps1:105:33:114:1 | [synth] pipeline |  |
 | try.ps1:106:5:112:5 | try {...} | try.ps1:106:9:108:5 | {...} |  |
 | try.ps1:106:5:113:12 | {...} | try.ps1:106:5:112:5 | try {...} |  |
-| try.ps1:106:9:108:5 | {...} | try.ps1:107:9:107:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:106:9:108:5 | {...} | try.ps1:107:9:107:29 | [Stmt] Call to write-output |  |
 | try.ps1:107:9:107:20 | Write-Output | try.ps1:107:22:107:29 | Hello! |  |
-| try.ps1:107:9:107:29 | Call to Write-Output | try.ps1:110:15:112:5 | {...} |  |
-| try.ps1:107:9:107:29 | [Stmt] Call to Write-Output | try.ps1:107:9:107:20 | Write-Output |  |
-| try.ps1:107:22:107:29 | Hello! | try.ps1:107:9:107:29 | Call to Write-Output |  |
-| try.ps1:110:15:112:5 | {...} | try.ps1:111:9:111:31 | [Stmt] Call to Write-Output |  |
+| try.ps1:107:9:107:29 | Call to write-output | try.ps1:110:15:112:5 | {...} |  |
+| try.ps1:107:9:107:29 | [Stmt] Call to write-output | try.ps1:107:9:107:20 | Write-Output |  |
+| try.ps1:107:22:107:29 | Hello! | try.ps1:107:9:107:29 | Call to write-output |  |
+| try.ps1:110:15:112:5 | {...} | try.ps1:111:9:111:31 | [Stmt] Call to write-output |  |
 | try.ps1:111:9:111:20 | Write-Output | try.ps1:111:22:111:31 | Finally! |  |
-| try.ps1:111:9:111:31 | Call to Write-Output | try.ps1:113:5:113:12 | return ... |  |
-| try.ps1:111:9:111:31 | [Stmt] Call to Write-Output | try.ps1:111:9:111:20 | Write-Output |  |
-| try.ps1:111:22:111:31 | Finally! | try.ps1:111:9:111:31 | Call to Write-Output |  |
+| try.ps1:111:9:111:31 | Call to write-output | try.ps1:113:5:113:12 | return ... |  |
+| try.ps1:111:9:111:31 | [Stmt] Call to write-output | try.ps1:111:9:111:20 | Write-Output |  |
+| try.ps1:111:22:111:31 | Finally! | try.ps1:111:9:111:31 | Call to write-output |  |
 | try.ps1:113:5:113:12 | return ... | try.ps1:113:12:113:12 | 1 |  |
 | try.ps1:113:12:113:12 | 1 | try.ps1:105:33:114:1 | exit {...} (normal) |  |
 | try.ps1:116:1:123:1 | def of test-try-finally | try.ps1:125:1:134:1 | def of test-try-finally-catch-specific-1 |  |
@@ -669,16 +669,16 @@
 | try.ps1:116:27:123:1 | {...} | try.ps1:116:27:123:1 | [synth] pipeline |  |
 | try.ps1:117:5:121:5 | try {...} | try.ps1:117:9:119:5 | {...} |  |
 | try.ps1:117:5:122:12 | {...} | try.ps1:117:5:121:5 | try {...} |  |
-| try.ps1:117:9:119:5 | {...} | try.ps1:118:9:118:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:117:9:119:5 | {...} | try.ps1:118:9:118:29 | [Stmt] Call to write-output |  |
 | try.ps1:118:9:118:20 | Write-Output | try.ps1:118:22:118:29 | Hello! |  |
-| try.ps1:118:9:118:29 | Call to Write-Output | try.ps1:119:15:121:5 | {...} |  |
-| try.ps1:118:9:118:29 | [Stmt] Call to Write-Output | try.ps1:118:9:118:20 | Write-Output |  |
-| try.ps1:118:22:118:29 | Hello! | try.ps1:118:9:118:29 | Call to Write-Output |  |
-| try.ps1:119:15:121:5 | {...} | try.ps1:120:9:120:31 | [Stmt] Call to Write-Output |  |
+| try.ps1:118:9:118:29 | Call to write-output | try.ps1:119:15:121:5 | {...} |  |
+| try.ps1:118:9:118:29 | [Stmt] Call to write-output | try.ps1:118:9:118:20 | Write-Output |  |
+| try.ps1:118:22:118:29 | Hello! | try.ps1:118:9:118:29 | Call to write-output |  |
+| try.ps1:119:15:121:5 | {...} | try.ps1:120:9:120:31 | [Stmt] Call to write-output |  |
 | try.ps1:120:9:120:20 | Write-Output | try.ps1:120:22:120:31 | Finally! |  |
-| try.ps1:120:9:120:31 | Call to Write-Output | try.ps1:122:5:122:12 | return ... |  |
-| try.ps1:120:9:120:31 | [Stmt] Call to Write-Output | try.ps1:120:9:120:20 | Write-Output |  |
-| try.ps1:120:22:120:31 | Finally! | try.ps1:120:9:120:31 | Call to Write-Output |  |
+| try.ps1:120:9:120:31 | Call to write-output | try.ps1:122:5:122:12 | return ... |  |
+| try.ps1:120:9:120:31 | [Stmt] Call to write-output | try.ps1:120:9:120:20 | Write-Output |  |
+| try.ps1:120:22:120:31 | Finally! | try.ps1:120:9:120:31 | Call to write-output |  |
 | try.ps1:122:5:122:12 | return ... | try.ps1:122:12:122:12 | 1 |  |
 | try.ps1:122:12:122:12 | 1 | try.ps1:116:27:123:1 | exit {...} (normal) |  |
 | try.ps1:125:1:134:1 | def of test-try-finally-catch-specific-1 | try.ps1:136:1:147:1 | def of test-nested-try-inner-finally |  |
@@ -688,16 +688,16 @@
 | try.ps1:125:44:134:1 | {...} | try.ps1:125:44:134:1 | [synth] pipeline |  |
 | try.ps1:126:5:132:5 | try {...} | try.ps1:126:9:128:5 | {...} |  |
 | try.ps1:126:5:133:12 | {...} | try.ps1:126:5:132:5 | try {...} |  |
-| try.ps1:126:9:128:5 | {...} | try.ps1:127:9:127:29 | [Stmt] Call to Write-Output |  |
+| try.ps1:126:9:128:5 | {...} | try.ps1:127:9:127:29 | [Stmt] Call to write-output |  |
 | try.ps1:127:9:127:20 | Write-Output | try.ps1:127:22:127:29 | Hello! |  |
-| try.ps1:127:9:127:29 | Call to Write-Output | try.ps1:130:15:132:5 | {...} |  |
-| try.ps1:127:9:127:29 | [Stmt] Call to Write-Output | try.ps1:127:9:127:20 | Write-Output |  |
-| try.ps1:127:22:127:29 | Hello! | try.ps1:127:9:127:29 | Call to Write-Output |  |
-| try.ps1:130:15:132:5 | {...} | try.ps1:131:9:131:31 | [Stmt] Call to Write-Output |  |
+| try.ps1:127:9:127:29 | Call to write-output | try.ps1:130:15:132:5 | {...} |  |
+| try.ps1:127:9:127:29 | [Stmt] Call to write-output | try.ps1:127:9:127:20 | Write-Output |  |
+| try.ps1:127:22:127:29 | Hello! | try.ps1:127:9:127:29 | Call to write-output |  |
+| try.ps1:130:15:132:5 | {...} | try.ps1:131:9:131:31 | [Stmt] Call to write-output |  |
 | try.ps1:131:9:131:20 | Write-Output | try.ps1:131:22:131:31 | Finally! |  |
-| try.ps1:131:9:131:31 | Call to Write-Output | try.ps1:133:5:133:12 | return ... |  |
-| try.ps1:131:9:131:31 | [Stmt] Call to Write-Output | try.ps1:131:9:131:20 | Write-Output |  |
-| try.ps1:131:22:131:31 | Finally! | try.ps1:131:9:131:31 | Call to Write-Output |  |
+| try.ps1:131:9:131:31 | Call to write-output | try.ps1:133:5:133:12 | return ... |  |
+| try.ps1:131:9:131:31 | [Stmt] Call to write-output | try.ps1:131:9:131:20 | Write-Output |  |
+| try.ps1:131:22:131:31 | Finally! | try.ps1:131:9:131:31 | Call to write-output |  |
 | try.ps1:133:5:133:12 | return ... | try.ps1:133:12:133:12 | 1 |  |
 | try.ps1:133:12:133:12 | 1 | try.ps1:125:44:134:1 | exit {...} (normal) |  |
 | try.ps1:136:1:147:1 | def of test-nested-try-inner-finally | try.ps1:149:1:162:1 | def of test-nested-try-inner-finally |  |
@@ -709,11 +709,11 @@
 | try.ps1:137:5:146:12 | {...} | try.ps1:137:5:145:5 | try {...} |  |
 | try.ps1:137:9:143:5 | {...} | try.ps1:138:9:142:9 | try {...} |  |
 | try.ps1:138:9:142:9 | try {...} | try.ps1:138:13:140:9 | {...} |  |
-| try.ps1:138:13:140:9 | {...} | try.ps1:139:13:139:33 | [Stmt] Call to Write-Output |  |
+| try.ps1:138:13:140:9 | {...} | try.ps1:139:13:139:33 | [Stmt] Call to write-output |  |
 | try.ps1:139:13:139:24 | Write-Output | try.ps1:139:26:139:33 | Hello! |  |
-| try.ps1:139:13:139:33 | Call to Write-Output | try.ps1:146:5:146:12 | return ... |  |
-| try.ps1:139:13:139:33 | [Stmt] Call to Write-Output | try.ps1:139:13:139:24 | Write-Output |  |
-| try.ps1:139:26:139:33 | Hello! | try.ps1:139:13:139:33 | Call to Write-Output |  |
+| try.ps1:139:13:139:33 | Call to write-output | try.ps1:146:5:146:12 | return ... |  |
+| try.ps1:139:13:139:33 | [Stmt] Call to write-output | try.ps1:139:13:139:24 | Write-Output |  |
+| try.ps1:139:26:139:33 | Hello! | try.ps1:139:13:139:33 | Call to write-output |  |
 | try.ps1:146:5:146:12 | return ... | try.ps1:146:12:146:12 | 1 |  |
 | try.ps1:146:12:146:12 | 1 | try.ps1:136:40:147:1 | exit {...} (normal) |  |
 | try.ps1:149:1:162:1 | def of test-nested-try-inner-finally | try.ps1:164:1:177:1 | def of test-nested-try-outer-finally |  |
@@ -725,16 +725,16 @@
 | try.ps1:150:5:161:12 | {...} | try.ps1:150:5:160:5 | try {...} |  |
 | try.ps1:150:9:158:5 | {...} | try.ps1:151:9:157:9 | try {...} |  |
 | try.ps1:151:9:157:9 | try {...} | try.ps1:151:13:153:9 | {...} |  |
-| try.ps1:151:13:153:9 | {...} | try.ps1:152:13:152:33 | [Stmt] Call to Write-Output |  |
+| try.ps1:151:13:153:9 | {...} | try.ps1:152:13:152:33 | [Stmt] Call to write-output |  |
 | try.ps1:152:13:152:24 | Write-Output | try.ps1:152:26:152:33 | Hello! |  |
-| try.ps1:152:13:152:33 | Call to Write-Output | try.ps1:155:19:157:9 | {...} |  |
-| try.ps1:152:13:152:33 | [Stmt] Call to Write-Output | try.ps1:152:13:152:24 | Write-Output |  |
-| try.ps1:152:26:152:33 | Hello! | try.ps1:152:13:152:33 | Call to Write-Output |  |
-| try.ps1:155:19:157:9 | {...} | try.ps1:156:13:156:35 | [Stmt] Call to Write-Output |  |
+| try.ps1:152:13:152:33 | Call to write-output | try.ps1:155:19:157:9 | {...} |  |
+| try.ps1:152:13:152:33 | [Stmt] Call to write-output | try.ps1:152:13:152:24 | Write-Output |  |
+| try.ps1:152:26:152:33 | Hello! | try.ps1:152:13:152:33 | Call to write-output |  |
+| try.ps1:155:19:157:9 | {...} | try.ps1:156:13:156:35 | [Stmt] Call to write-output |  |
 | try.ps1:156:13:156:24 | Write-Output | try.ps1:156:26:156:35 | Finally! |  |
-| try.ps1:156:13:156:35 | Call to Write-Output | try.ps1:161:5:161:12 | return ... |  |
-| try.ps1:156:13:156:35 | [Stmt] Call to Write-Output | try.ps1:156:13:156:24 | Write-Output |  |
-| try.ps1:156:26:156:35 | Finally! | try.ps1:156:13:156:35 | Call to Write-Output |  |
+| try.ps1:156:13:156:35 | Call to write-output | try.ps1:161:5:161:12 | return ... |  |
+| try.ps1:156:13:156:35 | [Stmt] Call to write-output | try.ps1:156:13:156:24 | Write-Output |  |
+| try.ps1:156:26:156:35 | Finally! | try.ps1:156:13:156:35 | Call to write-output |  |
 | try.ps1:161:5:161:12 | return ... | try.ps1:161:12:161:12 | 1 |  |
 | try.ps1:161:12:161:12 | 1 | try.ps1:149:40:162:1 | exit {...} (normal) |  |
 | try.ps1:164:1:177:1 | def of test-nested-try-outer-finally | try.ps1:179:1:194:1 | def of test-nested-try-inner-outer-finally |  |
@@ -746,16 +746,16 @@
 | try.ps1:165:5:176:12 | {...} | try.ps1:165:5:175:5 | try {...} |  |
 | try.ps1:165:9:171:5 | {...} | try.ps1:166:9:170:9 | try {...} |  |
 | try.ps1:166:9:170:9 | try {...} | try.ps1:166:13:168:9 | {...} |  |
-| try.ps1:166:13:168:9 | {...} | try.ps1:167:13:167:33 | [Stmt] Call to Write-Output |  |
+| try.ps1:166:13:168:9 | {...} | try.ps1:167:13:167:33 | [Stmt] Call to write-output |  |
 | try.ps1:167:13:167:24 | Write-Output | try.ps1:167:26:167:33 | Hello! |  |
-| try.ps1:167:13:167:33 | Call to Write-Output | try.ps1:173:15:175:5 | {...} |  |
-| try.ps1:167:13:167:33 | [Stmt] Call to Write-Output | try.ps1:167:13:167:24 | Write-Output |  |
-| try.ps1:167:26:167:33 | Hello! | try.ps1:167:13:167:33 | Call to Write-Output |  |
-| try.ps1:173:15:175:5 | {...} | try.ps1:174:9:174:31 | [Stmt] Call to Write-Output |  |
+| try.ps1:167:13:167:33 | Call to write-output | try.ps1:173:15:175:5 | {...} |  |
+| try.ps1:167:13:167:33 | [Stmt] Call to write-output | try.ps1:167:13:167:24 | Write-Output |  |
+| try.ps1:167:26:167:33 | Hello! | try.ps1:167:13:167:33 | Call to write-output |  |
+| try.ps1:173:15:175:5 | {...} | try.ps1:174:9:174:31 | [Stmt] Call to write-output |  |
 | try.ps1:174:9:174:20 | Write-Output | try.ps1:174:22:174:31 | Finally! |  |
-| try.ps1:174:9:174:31 | Call to Write-Output | try.ps1:176:5:176:12 | return ... |  |
-| try.ps1:174:9:174:31 | [Stmt] Call to Write-Output | try.ps1:174:9:174:20 | Write-Output |  |
-| try.ps1:174:22:174:31 | Finally! | try.ps1:174:9:174:31 | Call to Write-Output |  |
+| try.ps1:174:9:174:31 | Call to write-output | try.ps1:176:5:176:12 | return ... |  |
+| try.ps1:174:9:174:31 | [Stmt] Call to write-output | try.ps1:174:9:174:20 | Write-Output |  |
+| try.ps1:174:22:174:31 | Finally! | try.ps1:174:9:174:31 | Call to write-output |  |
 | try.ps1:176:5:176:12 | return ... | try.ps1:176:12:176:12 | 1 |  |
 | try.ps1:176:12:176:12 | 1 | try.ps1:164:40:177:1 | exit {...} (normal) |  |
 | try.ps1:179:1:194:1 | def of test-nested-try-inner-outer-finally | try.ps1:1:1:194:1 | exit {...} (normal) |  |
@@ -767,20 +767,20 @@
 | try.ps1:180:5:193:12 | {...} | try.ps1:180:5:192:5 | try {...} |  |
 | try.ps1:180:9:188:5 | {...} | try.ps1:181:9:187:9 | try {...} |  |
 | try.ps1:181:9:187:9 | try {...} | try.ps1:181:13:183:9 | {...} |  |
-| try.ps1:181:13:183:9 | {...} | try.ps1:182:13:182:33 | [Stmt] Call to Write-Output |  |
+| try.ps1:181:13:183:9 | {...} | try.ps1:182:13:182:33 | [Stmt] Call to write-output |  |
 | try.ps1:182:13:182:24 | Write-Output | try.ps1:182:26:182:33 | Hello! |  |
-| try.ps1:182:13:182:33 | Call to Write-Output | try.ps1:185:19:187:9 | {...} |  |
-| try.ps1:182:13:182:33 | [Stmt] Call to Write-Output | try.ps1:182:13:182:24 | Write-Output |  |
-| try.ps1:182:26:182:33 | Hello! | try.ps1:182:13:182:33 | Call to Write-Output |  |
-| try.ps1:185:19:187:9 | {...} | try.ps1:186:13:186:35 | [Stmt] Call to Write-Output |  |
+| try.ps1:182:13:182:33 | Call to write-output | try.ps1:185:19:187:9 | {...} |  |
+| try.ps1:182:13:182:33 | [Stmt] Call to write-output | try.ps1:182:13:182:24 | Write-Output |  |
+| try.ps1:182:26:182:33 | Hello! | try.ps1:182:13:182:33 | Call to write-output |  |
+| try.ps1:185:19:187:9 | {...} | try.ps1:186:13:186:35 | [Stmt] Call to write-output |  |
 | try.ps1:186:13:186:24 | Write-Output | try.ps1:186:26:186:35 | Finally! |  |
-| try.ps1:186:13:186:35 | Call to Write-Output | try.ps1:190:15:192:5 | {...} |  |
-| try.ps1:186:13:186:35 | [Stmt] Call to Write-Output | try.ps1:186:13:186:24 | Write-Output |  |
-| try.ps1:186:26:186:35 | Finally! | try.ps1:186:13:186:35 | Call to Write-Output |  |
-| try.ps1:190:15:192:5 | {...} | try.ps1:191:9:191:31 | [Stmt] Call to Write-Output |  |
+| try.ps1:186:13:186:35 | Call to write-output | try.ps1:190:15:192:5 | {...} |  |
+| try.ps1:186:13:186:35 | [Stmt] Call to write-output | try.ps1:186:13:186:24 | Write-Output |  |
+| try.ps1:186:26:186:35 | Finally! | try.ps1:186:13:186:35 | Call to write-output |  |
+| try.ps1:190:15:192:5 | {...} | try.ps1:191:9:191:31 | [Stmt] Call to write-output |  |
 | try.ps1:191:9:191:20 | Write-Output | try.ps1:191:22:191:31 | Finally! |  |
-| try.ps1:191:9:191:31 | Call to Write-Output | try.ps1:193:5:193:12 | return ... |  |
-| try.ps1:191:9:191:31 | [Stmt] Call to Write-Output | try.ps1:191:9:191:20 | Write-Output |  |
-| try.ps1:191:22:191:31 | Finally! | try.ps1:191:9:191:31 | Call to Write-Output |  |
+| try.ps1:191:9:191:31 | Call to write-output | try.ps1:193:5:193:12 | return ... |  |
+| try.ps1:191:9:191:31 | [Stmt] Call to write-output | try.ps1:191:9:191:20 | Write-Output |  |
+| try.ps1:191:22:191:31 | Finally! | try.ps1:191:9:191:31 | Call to write-output |  |
 | try.ps1:193:5:193:12 | return ... | try.ps1:193:12:193:12 | 1 |  |
 | try.ps1:193:12:193:12 | 1 | try.ps1:179:46:194:1 | exit {...} (normal) |  |
