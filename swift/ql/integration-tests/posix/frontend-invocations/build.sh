@@ -27,3 +27,4 @@ invoke -c F5.swift -o F5.o -I.
 ( cd dir; invoke -c ../G.swift )
 invoke -c -primary-file H1.swift -primary-file H2.swift H3.swift -emit-module-path H1.swiftmodule -emit-module-path H2.swiftmodule -o H1.o -o H2.o
 invoke -emit-module -primary-file I1.swift -primary-file I2.swift -o I1.swiftmodule -o I2.swiftmodule
+invoke -c -filelist j1_j2.list -o J1J2.o
