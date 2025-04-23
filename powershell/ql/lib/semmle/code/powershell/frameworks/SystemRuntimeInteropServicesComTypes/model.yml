@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.int16", "system.runtime.interopservices.comtypes.typeattr", "Member[wmajorvernum]"]

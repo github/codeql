@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["microsoft.management.infrastructure.ciminstance", "microsoft.management.infrastructure.serialization.cimdeserializer", "Method[deserializeinstance].ReturnValue"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.runtime.remoting.channels.iclientchannelsinkprovider", "system.runtime.remoting.channels.binaryclientformattersinkprovider", "Member[next]"]

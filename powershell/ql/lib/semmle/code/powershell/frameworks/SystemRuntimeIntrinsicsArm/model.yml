@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.runtime.intrinsics.vector64<system.int16>", "system.runtime.intrinsics.arm.advsimd!", "Method[comparelessthanorequal].ReturnValue"]

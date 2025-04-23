@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.runtime.remoting.messaging.header[]", "system.runtime.serialization.formatters.soapmessage", "Member[headers]"]

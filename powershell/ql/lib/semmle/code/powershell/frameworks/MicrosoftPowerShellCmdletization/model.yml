@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.boolean", "microsoft.powershell.cmdletization.methodparameter", "Member[isvaluepresent]"]
@@ -20,7 +20,7 @@ extensions:
     - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[reporterrors]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_classname]", "Argument[this]", "ReturnValue", "taint"]

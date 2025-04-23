@@ -3,7 +3,7 @@ groups:
   - powershell
   - test
 dependencies:
-  microsoft-sdl/powershell-all: ${workspace}
+  microsoft/powershell-all: ${workspace}
   microsoft-sdl/powershell-queries: ${workspace}
 extractor: powershell
 tests: .

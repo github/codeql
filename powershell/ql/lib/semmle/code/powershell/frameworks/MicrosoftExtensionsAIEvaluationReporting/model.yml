@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.threading.tasks.valuetask<microsoft.extensions.ai.evaluation.reporting.scenariorun>", "microsoft.extensions.ai.evaluation.reporting.reportingconfiguration", "Method[createscenariorunasync].ReturnValue"]

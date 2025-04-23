@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.runtime.intrinsics.vector128<t>", "system.runtime.intrinsics.vector128!", "Method[subtract<t>].ReturnValue"]
