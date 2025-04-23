@@ -91,7 +91,7 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
   Function getFactoryFunction() { TValueNode(result) = this.getFactoryNodeInternal() }
 
   private EarlyStageNode getFactoryNodeInternal() {
-    result = TValueNode(this.getLastArgument())
+    result = TValueNode(this.getArgument(1))
     or
     DataFlow::localFlowStep(result, this.getFactoryNodeInternal())
   }
