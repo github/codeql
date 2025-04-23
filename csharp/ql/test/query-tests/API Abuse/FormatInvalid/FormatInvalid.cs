@@ -34,7 +34,7 @@ class FormatInvalid
         String.Format("{0:{}}", 1); // $ Alert
 
         // BAD: Invalid format string
-        String.Format("%d", 1); // $ Alert Sink
+        String.Format("%d", 1); // $ Alert
 
         // BAD: } { in the middle.
         String.Format("{{0}-{1}}", 0, 1); // $ Alert
