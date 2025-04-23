@@ -149,6 +149,14 @@ module Public {
 
     final override string toString() { result = this.getLowerCaseName() }
 
+    bindingset[name]
+    pragma[inline_late]
+    final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+    bindingset[result]
+    pragma[inline_late]
+    final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
+
     final override Location getLocation() { result = super.getLocationImpl() }
 
     Scope getDeclaringScope() { getRawAst(result) = super.getDeclaringScopeImpl() }

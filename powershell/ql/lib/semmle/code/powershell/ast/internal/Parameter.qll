@@ -3,7 +3,13 @@ private import AstImport
 class Parameter extends Variable instanceof ParameterImpl {
   string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 
-  final predicate hasName(string name) { name = this.getName() }
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   override Ast getChild(ChildIndex childIndex) {
     result = Variable.super.getChild(childIndex)

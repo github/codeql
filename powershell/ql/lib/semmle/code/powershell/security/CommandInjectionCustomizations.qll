@@ -42,7 +42,7 @@ module CommandInjection {
     SystemCommandExecutionSink() {
       // An argument to a call
       exists(DataFlow::CallNode call |
-        call.getName() = ["Invoke-Expression", "iex"] and
+        call.matchesName(["Invoke-Expression", "iex"]) and
         call.getAnArgument() = this
       )
       or
@@ -57,7 +57,7 @@ module CommandInjection {
   class AddTypeSink extends Sink {
     AddTypeSink() {
       exists(DataFlow::CallNode call |
-        call.getName() = "Add-Type" and
+        call.matchesName("Add-Type") and
         call.getAnArgument() = this
       )
     }
@@ -94,8 +94,8 @@ class AddScriptInvokeSink extends Sink {
   AddScriptInvokeSink() { 
       exists(InvokeMemberExpr addscript, InvokeMemberExpr create | 
           this.asExpr().getExpr() = addscript.getAnArgument() and
-          addscript.getName() = "AddScript" and
-          create.getName() = "Create" and
+          addscript.matchesName("AddScript") and
+          create.matchesName("Create") and
 
           addscript.getQualifier().(InvokeMemberExpr) = create and
           create.getQualifier().(TypeNameExpr).getName() = "PowerShell"
@@ -109,7 +109,7 @@ class AddScriptInvokeSink extends Sink {
 class PowershellSink extends Sink {
     PowershellSink() { 
         exists( CmdCall c |        
-            c.getName() = "powershell" | 
+          c.matchesName("powershell") | 
             (
                 this.asExpr().getExpr() = c.getArgument(1) and
                 c.getArgument(0).getValue().asString() = "-command"
@@ -125,28 +125,28 @@ class PowershellSink extends Sink {
 }
 
 class CmdSink extends Sink {
-    CmdSink() { 
-        exists(CmdCall c | 
-            this.asExpr().getExpr() = c.getArgument(1) and
-            c.getName() = "cmd" and
-            c.getArgument(0).getValue().asString() = "/c" 
-        )
-    }   
-    override string getSinkType(){
-        result = "call to Cmd"
-    }
+  CmdSink() { 
+      exists(CmdCall c | 
+          this.asExpr().getExpr() = c.getArgument(1) and
+          c.matchesName("cmd") and
+          c.getArgument(0).getValue().asString() = "/c" 
+      )
+  }   
+  override string getSinkType(){
+      result = "call to Cmd"
+  }
 }
 
 class ForEachObjectSink extends Sink {
-    ForEachObjectSink() { 
-        exists(CmdCall c | 
-            this.asExpr().getExpr() = c.getAnArgument() and
-            c.getName() = "Foreach-Object" 
-        )
-    }   
-    override string getSinkType(){
-        result = "call to ForEach-Object"
-    }
+  ForEachObjectSink() { 
+      exists(CmdCall c | 
+          this.asExpr().getExpr() = c.getAnArgument() and
+          c.matchesName("Foreach-Object")
+      )
+  }   
+  override string getSinkType(){
+      result = "call to ForEach-Object"
+  }
 }
 
 class InvokeSink extends Sink {
@@ -162,17 +162,17 @@ class InvokeSink extends Sink {
 }
 
 class CreateScriptBlockSink extends Sink {
-    CreateScriptBlockSink() { 
-        exists(InvokeMemberExpr ie | 
-            this.asExpr().getExpr() = ie.getAnArgument() and
-            ie.getName() = "Create" and
-            ie.getQualifier().(TypeNameExpr).getName() = "ScriptBlock"
-        )
-    }   
-    override string getSinkType(){
-        result = "call to CreateScriptBlock"
-    }
-}
+  CreateScriptBlockSink() { 
+      exists(InvokeMemberExpr ie | 
+          this.asExpr().getExpr() = ie.getAnArgument() and
+          ie.matchesName("Create") and
+          ie.getQualifier().(TypeNameExpr).getName() = "ScriptBlock"
+      )
+  }   
+  override string getSinkType(){
+      result = "call to CreateScriptBlock"
+  }
+}       
 
 class NewScriptBlockSink extends Sink {
     NewScriptBlockSink() { 
@@ -219,12 +219,12 @@ class ExpandStringSink extends Sink {
   }
   
   class SingleQuoteSanitizer extends Sanitizer {
-    SingleQuoteSanitizer() {
-      exists(ExpandableStringExpr e, VarReadAccess v |
-        v = this.asExpr().getExpr() and
-        e.getUnexpandedValue().toLowerCase().matches("%'$" + v.getVariable().getLowerCaseName() + "'%") and
-        e.getAnExpr() = v
-      )
+    SingleQuoteSanitizer() { 
+        exists(ExpandableStringExpr e, VarReadAccess v | 
+            v = this.asExpr().getExpr()  and
+            e.getUnexpandedValue().toLowerCase().matches("%'$" + v.getVariable().getLowerCaseName() + "'%") and
+            e.getAnExpr() = v
+        )
     }
   }
 }

@@ -14,6 +14,6 @@
 
  from CmdCall c 
  where 
- c.getName() = "ConvertTo-SecureString" and
+ c.matchesName("ConvertTo-SecureString") and
  c.hasNamedArgument("asplaintext")
  select c, "Use of AsPlainText parameter in ConvertTo-SecureString call"

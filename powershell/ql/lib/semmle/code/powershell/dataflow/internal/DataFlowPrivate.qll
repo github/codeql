@@ -514,7 +514,7 @@ class NamedSet extends NamedSet0 {
 
   /** Gets a function that has a parameter for each name in this set. */
   Function getAFunction() {
-    forex(string name | name = this.getAName() | result.getAParameter().hasName(name))
+    forex(string name | name = this.getAName() | result.getAParameter().matchesName(name))
     or
     this.isEmpty() and
     exists(result)

@@ -60,7 +60,7 @@ Expr getAllSubExpressions(Expr expr) {
 Expr dangerousCommandElement(CallExpr command) {
   (
     command instanceof CallOperator or
-    command.getName() = "Invoke-Expression"
+    command.matchesName("Invoke-Expression")
   ) and
   result = getAllSubExpressions(command.getAnArgument())
 }

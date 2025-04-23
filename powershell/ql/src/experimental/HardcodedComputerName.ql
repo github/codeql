@@ -13,5 +13,5 @@
 import powershell
 
 from Argument a 
-where a.getName() = "computername" and exists(a.getValue())
+where a.matchesName("computername") and exists(a.getValue())
 select a, "ComputerName argument is hardcoded to" + a.getValue()

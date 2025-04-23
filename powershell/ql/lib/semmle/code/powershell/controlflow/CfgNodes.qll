@@ -542,6 +542,14 @@ module ExprNodes {
 
     predicate hasLowerCaseName(string name) { this.getLowerCaseName() = name }
 
+    bindingset[name]
+    pragma[inline_late]
+    final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+    bindingset[result]
+    pragma[inline_late]
+    final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
+
     /** Gets the i'th positional argument to this call. */
     ExprCfgNode getPositionalArgument(int i) {
       e.hasCfgChild(e.getPositionalArgument(i), this, result)
@@ -1042,6 +1050,14 @@ module ExprNodes {
     CallExprCfgNode getCall() { result.getAnArgument() = this }
 
     string getLowerCaseName() { result = e.getLowerCaseName() }
+
+    bindingset[name]
+    pragma[inline_late]
+    final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+    bindingset[result]
+    pragma[inline_late]
+    final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
     int getPosition() { result = e.getPosition() }
   }

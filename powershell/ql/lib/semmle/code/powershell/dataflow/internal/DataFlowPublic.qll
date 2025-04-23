@@ -508,6 +508,14 @@ class CallNode extends ExprNode {
 
   string getLowerCaseName() { result = call.getLowerCaseName() }
 
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
+
   Node getQualifier() { result.asExpr() = call.getQualifier() }
 
   /** Gets the i'th argument to this call. */
