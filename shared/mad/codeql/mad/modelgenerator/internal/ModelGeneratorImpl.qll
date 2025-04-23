@@ -366,7 +366,7 @@ module MakeModelGenerator<
   }
 
   /**
-   * Provides classes and predicates related to capturing summary models
+   * Provides classes and predicates related to capturing models
    * based on heuristic data flow.
    */
   module Heuristic {
@@ -784,7 +784,7 @@ module MakeModelGenerator<
      * If an API produces more content flow on a parameter, it is likely that
      * 1. Types are not sufficiently constrained on the parameter leading to a combinatorial
      * explosion in dispatch and thus in the generated summaries.
-     * 2. It is a reasonable approximation to use the non-content based flow
+     * 2. It is a reasonable approximation to use the heuristic based flow
      * detection instead, as reads and stores would use a significant
      * part of an objects internal state.
      */
@@ -1039,7 +1039,7 @@ module MakeModelGenerator<
    * The following heuristic is applied:
    * 1. If content based flow yields at lease one summary for an API, then we use that.
    * 2. If content based flow does not yield any summary for an API, then we try and
-   * generate flow summaries using the non-content based summary generator.
+   * generate flow summaries using the heuristic based summary generator.
    */
   string captureFlow(DataFlowSummaryTargetApi api, boolean lift) {
     result = ContentSensitive::captureFlow(api, lift)
