@@ -181,3 +181,21 @@ struct FinalStruct final {
         return x;
     }
 };
+
+union U {
+    int x, y;
+};
+
+//summary=;;true;get_x_from_union;(U *);;Argument[0];ReturnValue;taint;df-generated
+//summary=;;true;get_x_from_union;(U *);;Argument[*0];ReturnValue;taint;df-generated
+//contentbased-summary=;;true;get_x_from_union;(U *);;Argument[0];ReturnValue;taint;dfc-generated
+//contentbased-summary=;;true;get_x_from_union;(U *);;Argument[*0].Union[*U];ReturnValue;value;dfc-generated
+int get_x_from_union(U* u) {
+    return u->x;
+}
+
+//summary=;;true;set_x_in_union;(U *,int);;Argument[1];Argument[*0];taint;df-generated
+//contentbased-summary=;;true;set_x_in_union;(U *,int);;Argument[1];Argument[*0].Union[*U];value;dfc-generated
+void set_x_in_union(U* u, int x) {
+    u->x = x;
+}
