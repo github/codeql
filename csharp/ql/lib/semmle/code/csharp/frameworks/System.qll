@@ -365,7 +365,7 @@ class SystemStringClass extends StringType {
   /** Gets a `Format(...)` method. */
   Method getFormatMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Format") and
+    result.getName().regexpMatch("Format(<.*>)?") and
     result.getNumberOfParameters() in [2 .. 5] and
     result.getReturnType() instanceof StringType
   }
@@ -749,6 +749,18 @@ class SystemGuid extends SystemStruct {
 /** The `System.NotImplementedException` class. */
 class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
+}
+
+/** The `System.MemoryExtensions` class. */
+class SystemMemoryExtensionsClass extends SystemClass {
+  SystemMemoryExtensionsClass() { this.hasName("MemoryExtensions") }
+
+  /** Gets a `TryWrite` method. */
+  Method getTryWriteMethod() {
+    result.getDeclaringType() = this and
+    result.getName().regexpMatch("TryWrite(<.*>)?") and
+    result.getParameter(0).getType().getUnboundDeclaration() instanceof SystemSpanStruct
+  }
 }
 
 /** The `System.DateTime` struct. */
