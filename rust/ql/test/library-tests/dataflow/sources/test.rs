@@ -434,6 +434,38 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+async fn test_tokio_fs() -> Result<(), Box<dyn std::error::Error>> {
+    {
+        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow="file.bin"
+    }
+
+    {
+        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow="file.bin"
+    }
+
+    {
+        let buffer = tokio::fs::read_to_string("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    let mut read_dir = tokio::fs::read_dir("directory").await?;
+    for entry in read_dir.next_entry().await? {
+        let path = entry.path(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let file_name = entry.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(path); // $ MISSING: hasTaintFlow
+        sink(file_name); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let target = tokio::fs::read_link("symlink.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(target); // $ MISSING: hasTaintFlow="symlink.txt"
+    }
+
+    Ok(())
+}
+
 fn test_io_file() -> std::io::Result<()> {
     // --- file ---
 
@@ -777,6 +809,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_fs...");
     match test_fs() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_tokio_fs...");
+    match futures::executor::block_on(test_tokio_fs()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }

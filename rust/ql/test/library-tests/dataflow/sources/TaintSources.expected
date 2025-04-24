@@ -42,8 +42,8 @@
 | test.rs:423:22:423:25 | path | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:424:27:424:35 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:430:22:430:34 | ...::read_link | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:440:20:440:38 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:474:21:474:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:475:21:475:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:483:21:483:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
-| test.rs:743:16:743:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:472:20:472:38 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:506:21:506:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:507:21:507:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:515:21:515:39 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:775:16:775:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
