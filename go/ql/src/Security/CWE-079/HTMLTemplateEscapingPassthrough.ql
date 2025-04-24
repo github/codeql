@@ -26,8 +26,8 @@ class UnescapedType extends Type {
 /**
  * Holds if the sink is a data value argument of a template execution call.
  */
-predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
-  exists(Method fn, string methodName |
+predicate isSinkToTemplateExec(DataFlow::Node sink) {
+  exists(Method fn, string methodName, DataFlow::CallNode call |
     fn.hasQualifiedName("html/template", "Template", methodName) and
     call = fn.getACall()
   |
@@ -69,7 +69,7 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    state.isAfterConversion(_) and isSinkToTemplateExec(sink, _)
+    state.isAfterConversion(_) and isSinkToTemplateExec(sink)
   }
 
   predicate isBarrier(DataFlow::Node node) {
