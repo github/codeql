@@ -507,8 +507,8 @@
     const swf = new AWS.SWF({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ Alert
     const stepfunctions = new AWS.StepFunctions({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ Alert
 
-    AWS.config.accessKeyId = "SOMEACCESSKEY"; // $ MISSING: Alert
-    AWS.config.secretAccessKey = "hgfedcba"; // $ MISSING: Alert
+    AWS.config.accessKeyId = "SOMEACCESSKEY"; // $ Alert
+    AWS.config.secretAccessKey = "hgfedcba"; // $ Alert
     
     const creds = new AWS.Credentials(
         "SOMEACCESSKEY", // $ MISSING: Alert

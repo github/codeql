@@ -42,6 +42,19 @@ module AWS {
   }
 
   /**
+   * Gets a node representing the AWS global config object.
+   */
+  private API::Node getAWSConfig() { result = getAWSImport().getMember("config") }
+
+  /**
+   * Gets a property write to the AWS config object.
+   * This captures assignments to AWS.config properties.
+   */
+  private DataFlow::PropWrite configAssigment() {
+    result = getAWSConfig().asSource().getAPropertyWrite()
+  }
+
+  /**
    * Holds if the `i`th argument of `invk` is an object hash for `AWS.Config`.
    */
   private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
@@ -81,6 +94,20 @@ module AWS {
         prop = "accessKeyId" and kind = "user name"
         or
         prop = "secretAccessKey" and kind = "password"
+      )
+      or
+      // `AWS.config.accessKeyId = <user>` or `AWS.config.secretAccessKey = <password>`
+      exists(string prop, DataFlow::PropWrite propWrite |
+        propWrite = configAssigment() and
+        this = propWrite.getRhs() and
+        prop = propWrite.getPropertyName() and
+        (
+          kind = "user name" and
+          prop = "accessKeyId"
+          or
+          kind = "password" and
+          prop = "secretAccessKey"
+        )
       )
     }
 
