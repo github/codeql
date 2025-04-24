@@ -323,7 +323,16 @@ abstract private class AssocItemNode extends ItemNode, AssocItem {
 private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
 
-  override predicate hasImplementation() { super.hasBody() }
+  override predicate hasImplementation() {
+    super.hasBody()
+    or
+    // for trait items from library code, we do not currently know if they
+    // have default implementations or not, so we assume they do
+    exists(TraitItemNode t |
+      this = t.getAnAssocItem() and
+      not this.fromSource()
+    )
+  }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -359,7 +368,16 @@ private class VariantItemNode extends ItemNode instanceof Variant {
 class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
-  override predicate hasImplementation() { super.hasBody() }
+  override predicate hasImplementation() {
+    super.hasBody()
+    or
+    // for trait items from library code, we do not currently know if they
+    // have default implementations or not, so we assume they do
+    exists(TraitItemNode t |
+      this = t.getAnAssocItem() and
+      not this.fromSource()
+    )
+  }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -862,6 +880,12 @@ class RelevantPath extends Path {
     this.getQualifier().(RelevantPath).isCratePath("$crate", _) and
     this.getText() = name
   }
+
+  // TODO: Remove once the crate graph extractor generates publicly visible paths
+  predicate requiresExtractorWorkaround() {
+    not this.fromSource() and
+    this = any(RelevantPath p).getQualifier()
+  }
 }
 
 private predicate isModule(ItemNode m) { m instanceof Module }
@@ -1029,6 +1053,7 @@ pragma[nomagic]
 private ItemNode resolvePathPrivate(
   RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
 ) {
+  not path.requiresExtractorWorkaround() and
   result = resolvePath1(path) and
   itemParent = result.getImmediateParentModule() and
   not result.isPublic() and
@@ -1062,7 +1087,11 @@ private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
 cached
 ItemNode resolvePath(RelevantPath path) {
   result = resolvePath1(path) and
-  result.isPublic()
+  (
+    result.isPublic()
+    or
+    path.requiresExtractorWorkaround()
+  )
   or
   exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
     result = resolvePathPrivate(path, itemParent, pathParent) and
