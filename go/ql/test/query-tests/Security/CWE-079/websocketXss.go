@@ -27,32 +27,32 @@ func xss(w http.ResponseWriter, r *http.Request) {
 	origin := "test"
 	{
 		ws, _ := websocket.Dial(uri, "", origin)
-		var xnet = make([]byte, 512)
+		var xnet = make([]byte, 512) // $ Source[go/reflected-xss]
 		ws.Read(xnet)
-		fmt.Fprintf(w, "%v", xnet)
+		fmt.Fprintf(w, "%v", xnet) // $ Alert[go/reflected-xss]
 		codec := &websocket.Codec{marshal, unmarshal}
-		xnet2 := make([]byte, 512)
+		xnet2 := make([]byte, 512) // $ Source[go/reflected-xss]
 		codec.Receive(ws, xnet2)
-		fmt.Fprintf(w, "%v", xnet2)
+		fmt.Fprintf(w, "%v", xnet2) // $ Alert[go/reflected-xss]
 	}
 	{
 		n, _, _ := nhooyr.Dial(context.TODO(), uri, nil)
-		_, nhooyr, _ := n.Read(context.TODO())
-		fmt.Fprintf(w, "%v", nhooyr)
+		_, nhooyr, _ := n.Read(context.TODO()) // $ Source[go/reflected-xss]
+		fmt.Fprintf(w, "%v", nhooyr)           // $ Alert[go/reflected-xss]
 	}
 	{
 		dialer := gorilla.Dialer{}
 		conn, _, _ := dialer.Dial(uri, nil)
-		var gorillaMsg = make([]byte, 512)
+		var gorillaMsg = make([]byte, 512) // $ Source[go/reflected-xss]
 		gorilla.ReadJSON(conn, gorillaMsg)
-		fmt.Fprintf(w, "%v", gorillaMsg)
+		fmt.Fprintf(w, "%v", gorillaMsg) // $ Alert[go/reflected-xss]
 
-		gorilla2 := make([]byte, 512)
+		gorilla2 := make([]byte, 512) // $ Source[go/reflected-xss]
 		conn.ReadJSON(gorilla2)
-		fmt.Fprintf(w, "%v", gorilla2)
+		fmt.Fprintf(w, "%v", gorilla2) // $ Alert[go/reflected-xss]
 
-		_, gorilla3, _ := conn.ReadMessage()
-		fmt.Fprintf(w, "%v", gorilla3)
+		_, gorilla3, _ := conn.ReadMessage() // $ Source[go/reflected-xss]
+		fmt.Fprintf(w, "%v", gorilla3)       // $ Alert[go/reflected-xss]
 
 	}
 }

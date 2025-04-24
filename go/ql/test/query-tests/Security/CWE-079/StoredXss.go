@@ -10,6 +10,6 @@ func ListFiles(w http.ResponseWriter, r *http.Request) {
 	files, _ := ioutil.ReadDir(".")
 
 	for _, file := range files {
-		io.WriteString(w, file.Name()+"\n")
+		io.WriteString(w, file.Name()+"\n") // $ Alert[go/stored-xss]
 	}
 }
