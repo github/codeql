@@ -1,13 +1,14 @@
 /**
- * @name HTML template escaping passthrough
- * @description If a user-provided value is converted to a special type that avoids escaping when fed into a HTML
- *              template, it may result in XSS.
+ * @name HTML template escaping bypass cross-site scripting
+ * @description Converting user input to a special type that avoids escaping
+ *              when fed into an HTML template allows for a cross-site
+ *              scripting vulnerability.
  * @kind path-problem
- * @problem.severity warning
+ * @problem.severity error
  * @id go/html-template-escaping-bypass-xss
  * @tags security
- *       experimental
  *       external/cwe/cwe-079
+ *       external/cwe/cwe-116
  */
 
 import go
