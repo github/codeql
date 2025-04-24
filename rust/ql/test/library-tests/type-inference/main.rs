@@ -919,6 +919,99 @@ mod borrowed_typed {
     }
 }
 
+mod try_expressions {
+    use std::fmt::Debug;
+
+    #[derive(Debug)]
+    struct S1;
+
+    #[derive(Debug)]
+    struct S2;
+
+    #[derive(Debug)]
+    enum MyResult<T, E> {
+        MyOk(T),
+        MyErr(E),
+    }
+
+    impl<T, E> MyResult<T, E> {
+        fn map<U, F>(self, op: F) -> MyResult<U, E>
+        where
+            F: FnOnce(T) -> U,
+        {
+            match self {
+                MyResult::MyOk(t) => MyResult::MyOk(op(t)),
+                MyResult::MyErr(e) => MyResult::MyErr(e),
+            }
+        }
+
+        fn and_then<U, F>(self, op: F) -> MyResult<U, E>
+        where
+            F: FnOnce(T) -> MyResult<U, E>,
+        {
+            match self {
+                MyResult::MyOk(t) => op(t),
+                MyResult::MyErr(e) => MyResult::MyErr(e),
+            }
+        }
+    }
+
+    // For the try operator to work, we need to implement From<E> for OtherE
+    impl From<S1> for S2 {
+        fn from(s: S1) -> S2 {
+            S2
+        }
+    }
+
+    // Simple function using ? operator with same error types
+    fn try_same_error() -> MyResult<S1, S1> {
+        let x = MyResult::MyOk(S1)?; // $ type=x:S1
+        MyResult::MyOk(x)
+    }
+
+    // Function using ? operator with different error types that need conversion
+    fn try_convert_error() -> MyResult<S1, S2> {
+        let x: MyResult<S1, S1> = MyResult::MyOk(S1);
+        let y = x?; // $ type=y:S1
+        MyResult::MyOk(y)
+    }
+
+    // Chained ? operations
+    fn try_chained() -> MyResult<S1, S2> {
+        let x: MyResult<MyResult<S1, S1>, S1> = MyResult::MyOk(MyResult::MyOk(S1));
+        let y = x?.map(|s| s)?; // First ? returns MyResult<S1, S1>, second ? returns S1
+        MyResult::MyOk(y)
+    }
+
+    // Function that uses ? with closures and complex error cases
+    fn try_complex<T: Debug>(input: MyResult<T, S1>) -> MyResult<T, S2> {
+        let value = input?; // $ method=From::from
+        let mapped = MyResult::MyOk(value).and_then(|v| {
+            println!("{:?}", v);
+            MyResult::MyOk::<_, S1>(v)
+        })?; // $ method=From::from
+        MyResult::MyOk(mapped)
+    }
+
+    pub fn f() {
+        if let MyResult::MyOk(result) = try_same_error() {
+            println!("{:?}", result);
+        }
+
+        if let MyResult::MyOk(result) = try_convert_error() {
+            println!("{:?}", result);
+        }
+
+        if let MyResult::MyOk(result) = try_chained() {
+            println!("{:?}", result);
+        }
+
+        if let MyResult::MyOk(result) = try_complex(MyResult::MyOk(S1)) {
+            println!("{:?}", result);
+        }
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -935,4 +1028,5 @@ fn main() {
     trait_implicit_self_borrow::f();
     implicit_self_borrow::f();
     borrowed_typed::f();
+    try_expressions::f();
 }
