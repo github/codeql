@@ -4,7 +4,7 @@
  *              template, it may result in XSS.
  * @kind path-problem
  * @problem.severity warning
- * @id go/html-template-escaping-passthrough
+ * @id go/html-template-escaping-bypass-xss
  * @tags security
  *       experimental
  *       external/cwe/cwe-079

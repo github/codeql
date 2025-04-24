@@ -26,45 +26,45 @@ func bad(req *http.Request) {
 
 	{
 		{
-			var a = template.HTML(req.UserAgent()) // $ Source[go/html-template-escaping-passthrough]
-			checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-passthrough]
+			var a = template.HTML(req.UserAgent()) // $ Source[go/html-template-escaping-bypass-xss]
+			checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 		}
 		{
 			{
 				var a template.HTML
-				a = template.HTML(req.UserAgent())     // $ Source[go/html-template-escaping-passthrough]
-				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-passthrough]
+				a = template.HTML(req.UserAgent())     // $ Source[go/html-template-escaping-bypass-xss]
+				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 			}
 			{
 				var a HTMLAlias
-				a = HTMLAlias(req.UserAgent())         // $ Source[go/html-template-escaping-passthrough]
-				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-passthrough]
+				a = HTMLAlias(req.UserAgent())         // $ Source[go/html-template-escaping-bypass-xss]
+				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 			}
 		}
 	}
 	{
-		var c = template.HTMLAttr(req.UserAgent()) // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmplTag.Execute(os.Stdout, c))  // $ Alert[go/html-template-escaping-passthrough]
+		var c = template.HTMLAttr(req.UserAgent()) // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplTag.Execute(os.Stdout, c))  // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var d = template.JS(req.UserAgent())         // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmplScript.Execute(os.Stdout, d)) // $ Alert[go/html-template-escaping-passthrough]
+		var d = template.JS(req.UserAgent())         // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplScript.Execute(os.Stdout, d)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var e = template.JSStr(req.UserAgent())      // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmplScript.Execute(os.Stdout, e)) // $ Alert[go/html-template-escaping-passthrough]
+		var e = template.JSStr(req.UserAgent())      // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplScript.Execute(os.Stdout, e)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var b = template.CSS(req.UserAgent())  // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmpl.Execute(os.Stdout, b)) // $ Alert[go/html-template-escaping-passthrough]
+		var b = template.CSS(req.UserAgent())  // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmpl.Execute(os.Stdout, b)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var f = template.Srcset(req.UserAgent())     // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmplSrcset.Execute(os.Stdout, f)) // $ Alert[go/html-template-escaping-passthrough]
+		var f = template.Srcset(req.UserAgent())     // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplSrcset.Execute(os.Stdout, f)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var g = template.URL(req.UserAgent())  // $ Source[go/html-template-escaping-passthrough]
-		checkError(tmpl.Execute(os.Stdout, g)) // $ Alert[go/html-template-escaping-passthrough]
+		var g = template.URL(req.UserAgent())  // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmpl.Execute(os.Stdout, g)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 }
 
