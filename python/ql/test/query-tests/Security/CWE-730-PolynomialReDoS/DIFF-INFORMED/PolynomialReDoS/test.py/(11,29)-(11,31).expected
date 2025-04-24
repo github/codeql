@@ -1,3 +1,0 @@
-Filtering alerts to these ranges:
-  test.py:(11,29)-(11,31)
-Wrongly omitted: | test.py:12:17:12:20 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:11:29:11:31 | \s+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |

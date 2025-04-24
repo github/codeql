@@ -1,3 +1,0 @@
-Filtering alerts to these ranges:
-  test.py:(9,25)-(9,27)
-Wrongly omitted: | test.py:9:32:9:35 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | test.py:9:25:9:27 | \d+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
