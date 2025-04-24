@@ -3,9 +3,9 @@ import utils.modelgenerator.internal.CaptureModels
 import InlineModelsAsDataTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getCapturedModel(MadRelevantFunction c) { result = captureFlow(c) }
+  string getCapturedModel(MadRelevantFunction c) { result = Heuristic::captureFlow(c) }
 
-  string getKind() { result = "summary" }
+  string getKind() { result = "heuristic-summary" }
 }
 
 import InlineMadTest<InlineMadTestConfig>
