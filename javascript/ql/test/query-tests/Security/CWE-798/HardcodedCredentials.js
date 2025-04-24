@@ -511,8 +511,8 @@
     AWS.config.secretAccessKey = "hgfedcba"; // $ Alert
     
     const creds = new AWS.Credentials(
-        "SOMEACCESSKEY", // $ MISSING: Alert
-        "hgfedcba" // $ MISSING: Alert
+        "SOMEACCESSKEY", // $ Alert
+        "hgfedcba" // $ Alert
     ); 
     AWS.config.setCredentials(creds); 
     

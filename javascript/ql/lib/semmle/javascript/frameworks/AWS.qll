@@ -55,6 +55,13 @@ module AWS {
   }
 
   /**
+   * Gets a data flow node representing an instance of `new AWS.Credentials(accessKeyId, secretAccessKey)`.
+   */
+  private DataFlow::Node getCredentialsCreationNode() {
+    result = getAWSImport().getMember("Credentials").getAnInstantiation().getReturn().asSource()
+  }
+
+  /**
    * Holds if the `i`th argument of `invk` is an object hash for `AWS.Config`.
    */
   private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
@@ -107,6 +114,18 @@ module AWS {
           or
           kind = "password" and
           prop = "secretAccessKey"
+        )
+      )
+      or
+      // `new AWS.Credentials({ accessKeyId: <user>, secretAccessKey: <password> })`
+      exists(DataFlow::InvokeNode invk |
+        invk = getCredentialsCreationNode() and
+        (
+          this = invk.getArgument(0) and
+          kind = "user name"
+          or
+          this = invk.getArgument(1) and
+          kind = "password"
         )
       )
     }
