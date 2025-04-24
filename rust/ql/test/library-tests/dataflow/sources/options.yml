@@ -7,3 +7,4 @@ qltest_dependencies:
     - http = { version = "1.2.0" }
     - tokio = { version = "1.43.0", features = ["full"] }
     - futures = { version = "0.3" }
+    - bytes = { version = "1.10.1" }

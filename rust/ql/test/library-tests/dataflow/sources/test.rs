@@ -330,6 +330,25 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
         sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
+    {
+        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let v1 = stdin.read_u8().await?;
+        let v2 = stdin.read_i16().await?;
+        let v3 = stdin.read_f32().await?;
+        let v4 = stdin.read_i64_le().await?;
+        sink(v1); // $ MISSING: hasTaintFlow
+        sink(v2); // $ MISSING: hasTaintFlow
+        sink(v3); // $ MISSING: hasTaintFlow
+        sink(v4); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut buffer = bytes::BytesMut::new();
+        stdin.read_buf(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow
+    }
+
     // --- async reading from stdin (BufReader) ---
 
     {
@@ -493,6 +512,23 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let mut buffer = [0; 100];
         file.read_exact(&mut buffer).await?;
         sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    {
+        let v1 = file.read_u8().await?;
+        let v2 = file.read_i16().await?;
+        let v3 = file.read_f32().await?;
+        let v4 = file.read_i64_le().await?;
+        sink(v1); // $ MISSING: hasTaintFlow
+        sink(v2); // $ MISSING: hasTaintFlow
+        sink(v3); // $ MISSING: hasTaintFlow
+        sink(v4); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let mut buffer = bytes::BytesMut::new();
+        file.read_buf(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow
     }
 
     // --- misc operations ---
