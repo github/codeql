@@ -232,46 +232,143 @@ module Make<InputSig Input> {
 
     /** Provides the `append` predicate for appending a relative path onto a folder. */
     module Append<shouldAppendSig/2 shouldAppend> {
-      pragma[nomagic]
-      private string getComponent(string relativePath, int i) {
-        shouldAppend(_, relativePath) and
-        result = relativePath.replaceAll("\\", "/").regexpFind("[^/]+", i, _)
+      private module Config implements ResolveSig {
+        predicate shouldResolve(Container c, string name) { shouldAppend(c, name) }
       }
 
-      private int getNumberOfComponents(string relativePath) {
-        result = strictcount(int i | exists(getComponent(relativePath, i)) | i)
-        or
-        relativePath = "" and
-        result = 0
+      predicate append = Resolve<Config>::resolve/2;
+    }
+
+    /**
+     * Signature for modules to pass to `Resolve`.
+     */
+    signature module ResolveSig {
+      /**
+       * Holds if `path` should be resolved to a file or folder, relative to `base`.
+       */
+      predicate shouldResolve(Container base, string path);
+
+      /**
+       * Gets an additional file or folder to consider a child of `base`.
+       */
+      default Container getAnAdditionalChild(Container base, string name) { none() }
+
+      /**
+       * Holds if `component` may be treated as `.` if it does not match a child.
+       */
+      default predicate isOptionalPathComponent(string component) { none() }
+
+      /**
+       * Holds if globs should be interpreted in the paths being resolved.
+       *
+       * The following types of globs are supported:
+       * - `*` (matches any child)
+       * - `**` (matches any child recursively)
+       * - Complex patterns like `foo-*.txt` are also supported
+       */
+      default predicate allowGlobs() { none() }
+
+      /**
+       * Gets an alternative path segment to try if `segment` did not match a child.
+       *
+       * The motivating use-case is to map compiler-generated file names back to their sources files,
+       * for example, `foo.min.js` could be mapped to `foo.ts`.
+       */
+      bindingset[segment]
+      default string rewritePathSegment(string segment) { none() }
+    }
+
+    /**
+     * Provides a mechanism for resolving file paths relative to a given directory.
+     */
+    module Resolve<ResolveSig Config> {
+      private import Config
+
+      pragma[nomagic]
+      private string getPathSegment(string path, int n) {
+        shouldResolve(_, path) and
+        result = path.replaceAll("\\", "/").splitAt("/", n)
       }
 
       pragma[nomagic]
-      private Container appendStep(Folder f, string relativePath, int i) {
-        i = -1 and
-        shouldAppend(f, relativePath) and
-        result = f
+      private string getPathSegmentAsGlobRegexp(string segment) {
+        allowGlobs() and
+        segment = getPathSegment(_, _) and
+        segment.matches("%*%") and
+        not segment = ["*", "**"] and // these are special-cased
+        result = segment.regexpReplaceAll("[^a-zA-Z0-9*]", "\\\\$0").replaceAll("*", ".*")
+      }
+
+      pragma[nomagic]
+      private int getNumPathSegment(string path) {
+        result = strictcount(int n | exists(getPathSegment(path, n)))
+      }
+
+      private Container getChild(Container base, string name) {
+        result = getAChildContainer(base, name)
         or
-        exists(Container mid, string comp |
-          mid = appendStep(f, relativePath, i - 1) and
-          comp = getComponent(relativePath, i) and
-          if comp = ".."
-          then result = mid.getParentContainer()
-          else
-            if comp = "."
-            then result = mid
-            else result = getAChildContainer(mid, comp)
+        result = getAnAdditionalChild(base, name)
+      }
+
+      pragma[nomagic]
+      private Container resolve(Container base, string path, int n) {
+        shouldResolve(base, path) and n = 0 and result = base
+        or
+        exists(Container current, string segment |
+          current = resolve(base, path, n - 1) and
+          segment = getPathSegment(path, n - 1)
+        |
+          result = getChild(current, segment)
+          or
+          segment = [".", ""] and
+          result = current
+          or
+          segment = ".." and
+          result = current.getParentContainer()
+          or
+          not exists(getChild(current, segment)) and
+          (
+            isOptionalPathComponent(segment) and
+            result = current
+            or
+            result = getChild(current, rewritePathSegment(segment))
+          )
+          or
+          allowGlobs() and
+          (
+            segment = "*" and
+            result = getChild(current, _)
+            or
+            segment = "**" and // allow empty match
+            result = current
+            or
+            exists(string name |
+              result = getChild(current, name) and
+              name.regexpMatch(getPathSegmentAsGlobRegexp(segment))
+            )
+          )
+        )
+        or
+        exists(Container current, string segment |
+          current = resolve(base, path, n) and
+          segment = getPathSegment(path, n)
+        |
+          // Follow child without advancing 'n'
+          allowGlobs() and
+          segment = "**" and
+          result = getChild(current, _)
         )
       }
 
       /**
-       * Gets the file or folder obtained by appending `relativePath` onto `f`.
+       * Gets the file or folder that `path` resolves to when resolved from `base`.
+       *
+       * Only has results for the `(base, path)` pairs provided by `shouldResolve`
+       * in the instantiation of this module.
        */
       pragma[nomagic]
-      Container append(Folder f, string relativePath) {
-        exists(int last |
-          last = getNumberOfComponents(relativePath) - 1 and
-          result = appendStep(f, relativePath, last)
-        )
+      Container resolve(Container base, string path) {
+        result = resolve(base, path, getNumPathSegment(path))
       }
     }
   }
