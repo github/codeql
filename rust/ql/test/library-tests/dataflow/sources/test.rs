@@ -517,6 +517,105 @@ async fn test_tokio_file() -> std::io::Result<()> {
     Ok(())
 }
 
+use std::net::ToSocketAddrs;
+
+async fn test_std_tcpstream(case: i64) -> std::io::Result<()> { // Result<(), Box<dyn Error>>
+    // using std::net to fetch a web page
+    let address = "example.com:80";
+
+    if case == 1 {
+        // create the connection
+        let mut stream = std::net::TcpStream::connect(address)?;
+
+        // send request
+        let _ = stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n");
+
+        // read response
+        let mut buffer = vec![0; 32 * 1024];
+        let _ = stream.read(&mut buffer); // $ MISSING: Alert[rust/summary/taint-sources]
+
+        println!("data = {:?}", buffer);
+        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(buffer[0]); // $ MISSING: hasTaintFlow
+
+        let buffer_string = String::from_utf8_lossy(&buffer);
+        println!("string = {}", buffer_string);
+        sink(buffer_string); // $ MISSING: hasTaintFlow
+    } else {
+        // create the connection
+        let sock_addr = address.to_socket_addrs().unwrap().next().unwrap();
+        let mut stream = std::net::TcpStream::connect_timeout(&sock_addr, std::time::Duration::new(1, 0))?;
+
+        // send request
+        let _ = stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n");
+
+        // read response
+        match case {
+            2 => {
+                let mut reader = std::io::BufReader::new(stream).take(256);
+                let mut line = String::new();
+                loop {
+                    match reader.read_line(&mut line) { // $ MISSING: Alert[rust/summary/taint-sources]
+                        Ok(0) => {
+                            println!("end");
+                            break;
+                        }
+                        Ok(_n) => {
+                            println!("line = {}", line);
+                            sink(&line); // $ MISSING: hasTaintFlow
+                            line.clear();
+                        }
+                        Err(e) => {
+                            println!("error: {}", e);
+                            break;
+                        }
+                    }
+                }
+            }
+            3 => {
+                let reader = std::io::BufReader::new(stream.try_clone()?).take(256);
+                for line in reader.lines() { // $ MISSING: Alert[rust/summary/taint-sources]
+                    if let Ok(string) = line {
+                        println!("line = {}", string);
+                        sink(string); // $ MISSING: hasTaintFlow
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    Ok(())
+}
+
+use tokio::io::AsyncWriteExt;
+
+async fn test_tokio_tcpstream() -> std::io::Result<()> {
+    // using tokio::io to fetch a web page
+    let address = "example.com:80";
+
+    // create the connection
+    println!("connecting to {}...", address);
+    let mut tokio_stream = tokio::net::TcpStream::connect(address).await?;
+
+    // send request
+    tokio_stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n").await?;
+
+    // read response
+    let mut buffer = vec![0; 32 * 1024];
+    let n = tokio_stream.read(&mut buffer).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+
+    println!("data = {:?}", buffer);
+    sink(&buffer); // $ MISSING: hasTaintFlow
+    sink(buffer[0]); // $ MISSING: hasTaintFlow
+
+    let buffer_string = String::from_utf8_lossy(&buffer[..n]);
+    println!("string = {}", buffer_string);
+    sink(buffer_string); // $ MISSING: hasTaintFlow
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let case = std::env::args().nth(1).unwrap_or(String::from("1")).parse::<i64>().unwrap(); // $ Alert[rust/summary/taint-sources]
@@ -568,6 +667,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_tokio_file...");
     match futures::executor::block_on(test_tokio_file()) {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_std_tcpstream...");
+    match futures::executor::block_on(test_std_tcpstream(case)) {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_tokio_tcpstream...");
+    match futures::executor::block_on(test_tokio_tcpstream()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
