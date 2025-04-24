@@ -65,12 +65,14 @@ module AWS {
    * Holds if the `i`th argument of `invk` is an object hash for `AWS.Config`.
    */
   private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
-    exists(DataFlow::ModuleImportNode mod | mod.getPath() = "aws-sdk" |
+    exists(API::Node mod | mod = getAWSImport() |
       // `AWS.config.update(nd)`
-      invk = mod.getAPropertyRead("config").getAMemberCall("update") and
+      invk = mod.getMember("config").getMember("update").getACall() and
       i = 0
       or
-      exists(DataFlow::SourceNode cfg | cfg = mod.getAConstructorInvocation("Config") |
+      exists(DataFlow::SourceNode cfg |
+        cfg = mod.getMember("Config").getAnInstantiation().getReturn().asSource()
+      |
         // `new AWS.Config(nd)`
         invk = cfg and
         i = 0
