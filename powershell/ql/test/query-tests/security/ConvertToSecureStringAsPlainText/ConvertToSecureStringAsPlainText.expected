@@ -1,1 +1,1 @@
-| test.ps1:2:19:2:79 | Call to ConvertTo-SecureString | Use of AsPlainText parameter in ConvertTo-SecureString call |
+| test.ps1:2:19:2:79 | Call to convertto-securestring | Use of AsPlainText parameter in ConvertTo-SecureString call |

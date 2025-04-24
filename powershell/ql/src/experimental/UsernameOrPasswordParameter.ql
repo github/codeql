@@ -13,5 +13,5 @@
  import powershell
 
 from Parameter p
-where p.getName().toLowerCase() = ["username", "password"]
+where p.matchesName(["username", "password"])
 select p, "Do not use username or password parameters."

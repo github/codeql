@@ -180,7 +180,7 @@ private module Cached {
   cached
   predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
     source.flowsTo(call.getQualifier()) and
-    call.getName() = name
+    call.getLowerCaseName() = name
   }
 
   cached
@@ -506,7 +506,15 @@ class CallNode extends ExprNode {
 
   CfgNodes::ExprNodes::CallExprCfgNode getCallNode() { result = call }
 
-  string getName() { result = call.getName() }
+  string getLowerCaseName() { result = call.getLowerCaseName() }
+
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   Node getQualifier() { result.asExpr() = call.getQualifier() }
 

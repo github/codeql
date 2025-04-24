@@ -14,7 +14,7 @@ module TypeTrackingTest implements TestSig {
       tag = "type" and
       n = trackInstance(value, _) and
       isArgumentNode(n, c, _) and
-      c.asCall().hasName("Sink")
+      c.asCall().matchesName("Sink")
     )
   }
 }

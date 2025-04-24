@@ -56,7 +56,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   CallExpr c;
 
   bindingset[this]
-  SimpleSummarizedCallable() { c.getName() = this }
+  SimpleSummarizedCallable() { c.getLowerCaseName() = this }
 
   final override CallExpr getACall() { result = c }
 

@@ -11,7 +11,7 @@
 import powershell
 
 predicate containsScope(VarAccess outer, VarAccess inner) {
-  outer.getVariable().getName() = inner.getVariable().getName() and
+  outer.getVariable().getLowerCaseName() = inner.getVariable().getLowerCaseName() and
   outer != inner
 }
 
@@ -60,7 +60,7 @@ Expr getAllSubExpressions(Expr expr) {
 Expr dangerousCommandElement(CallExpr command) {
   (
     command instanceof CallOperator or
-    command.getName() = "Invoke-Expression"
+    command.matchesName("Invoke-Expression")
   ) and
   result = getAllSubExpressions(command.getAnArgument())
 }
@@ -75,4 +75,4 @@ where
     commandarg = dangerousCommandElement(command)
   )
 select commandarg.(VarAccess).getLocation(), "Unsafe flow to command argument from $@.",
-  unknownDeclaration, unknownDeclaration.getVariable().getName()
+  unknownDeclaration, unknownDeclaration.getVariable().getLowerCaseName()

@@ -35,13 +35,6 @@ module Ssa {
     final VarReadAccessCfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     */
-    deprecated final VarReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
-
-    /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
      * That is, `read2` can be reached from `read1` without passing through
      * another read.

@@ -200,7 +200,7 @@ private predicate qualifiedCall(
   CfgNodes::ExprNodes::CallExprCfgNode call, Node receiver, string method
 ) {
   call.getQualifier() = receiver.asExpr() and
-  call.getName() = method
+  call.getLowerCaseName() = method
 }
 
 Node trackInstance(string typename, boolean exact) {
@@ -287,7 +287,7 @@ private module Cached {
   newtype TArgumentPosition =
     TThisArgumentPosition() or
     TKeywordArgumentPosition(string name) {
-      name = any(Argument p).getName()
+      name = any(Argument p).getLowerCaseName()
       or
       FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
@@ -304,7 +304,7 @@ private module Cached {
   cached
   newtype TParameterPosition =
     TThisParameterPosition() or
-    TKeywordParameter(string name) { name = any(Argument p).getName() } or
+    TKeywordParameter(string name) { name = any(Argument p).getLowerCaseName() } or
     TPositionalParameter(int pos, NamedSet ns) {
       exists(CfgNodes::ExprNodes::CallExprCfgNode call |
         call = ns.getABindingCall() and

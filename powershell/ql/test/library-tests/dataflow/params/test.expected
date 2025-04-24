@@ -1,81 +1,77 @@
 models
 edges
-| global.ps1:1:7:1:22 | Source1 | global.ps1:3:6:3:13 | Source1 | provenance |  |
-| global.ps1:1:25:1:40 | Source2 | global.ps1:4:6:4:13 | Source2 | provenance |  |
-| global.ps1:1:43:1:58 | Source3 | global.ps1:5:6:5:13 | Source3 | provenance |  |
-| global.ps1:1:61:1:76 | Source4 | global.ps1:6:6:6:13 | Source4 | provenance |  |
 | test.ps1:1:14:1:15 | a | test.ps1:2:10:2:11 | a | provenance |  |
-| test.ps1:5:6:5:15 | Call to Source | test.ps1:6:5:6:6 | x | provenance |  |
+| test.ps1:5:6:5:15 | Call to source | test.ps1:6:5:6:6 | x | provenance |  |
 | test.ps1:6:5:6:6 | x | test.ps1:1:14:1:15 | a | provenance |  |
 | test.ps1:8:20:8:21 | x | test.ps1:9:10:9:11 | x | provenance |  |
 | test.ps1:8:24:8:25 | y | test.ps1:10:10:10:11 | y | provenance |  |
 | test.ps1:8:28:8:29 | z | test.ps1:11:10:11:11 | z | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:18:11:18:16 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:19:22:19:27 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:20:14:20:19 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:21:11:21:16 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:22:22:22:27 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:23:22:23:27 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:24:14:24:19 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:25:11:25:16 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:26:22:26:27 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:27:22:27:27 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:28:14:28:19 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:29:11:29:16 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:30:32:30:37 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:31:32:31:37 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:32:14:32:19 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:33:11:33:16 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:34:32:34:37 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:35:32:35:37 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:36:32:36:37 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:37:24:37:29 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:38:21:38:26 | first | provenance |  |
-| test.ps1:14:10:14:19 | Call to Source | test.ps1:39:32:39:37 | first | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:18:18:18:24 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:19:11:19:17 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:20:21:20:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:21:21:21:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:22:14:22:20 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:23:11:23:17 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:24:21:24:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:25:21:25:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:26:14:26:20 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:27:11:27:17 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:28:31:28:37 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:29:21:29:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:30:14:30:20 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:31:11:31:17 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:32:31:32:37 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:33:31:33:37 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:34:14:34:20 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:35:24:35:30 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:36:21:36:27 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:37:31:37:37 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:38:31:38:37 | second | provenance |  |
-| test.ps1:15:11:15:20 | Call to Source | test.ps1:39:24:39:30 | second | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:18:26:18:31 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:19:29:19:34 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:20:29:20:34 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:21:29:21:34 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:22:29:22:34 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:23:32:23:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:24:32:24:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:25:32:25:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:26:32:26:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:27:32:27:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:28:24:28:29 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:29:32:29:37 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:30:25:30:30 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:31:22:31:27 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:32:24:32:29 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:33:21:33:26 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:34:25:34:30 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:35:14:35:19 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:36:14:36:19 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:37:14:37:19 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:38:14:38:19 | third | provenance |  |
-| test.ps1:16:10:16:19 | Call to Source | test.ps1:39:14:39:19 | third | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:18:11:18:16 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:19:22:19:27 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:20:14:20:19 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:21:11:21:16 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:22:22:22:27 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:23:22:23:27 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:24:14:24:19 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:25:11:25:16 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:26:22:26:27 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:27:22:27:27 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:28:14:28:19 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:29:11:29:16 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:30:32:30:37 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:31:32:31:37 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:32:14:32:19 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:33:11:33:16 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:34:32:34:37 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:35:32:35:37 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:36:32:36:37 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:37:24:37:29 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:38:21:38:26 | first | provenance |  |
+| test.ps1:14:10:14:19 | Call to source | test.ps1:39:32:39:37 | first | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:18:18:18:24 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:19:11:19:17 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:20:21:20:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:21:21:21:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:22:14:22:20 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:23:11:23:17 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:24:21:24:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:25:21:25:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:26:14:26:20 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:27:11:27:17 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:28:31:28:37 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:29:21:29:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:30:14:30:20 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:31:11:31:17 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:32:31:32:37 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:33:31:33:37 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:34:14:34:20 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:35:24:35:30 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:36:21:36:27 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:37:31:37:37 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:38:31:38:37 | second | provenance |  |
+| test.ps1:15:11:15:20 | Call to source | test.ps1:39:24:39:30 | second | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:18:26:18:31 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:19:29:19:34 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:20:29:20:34 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:21:29:21:34 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:22:29:22:34 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:23:32:23:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:24:32:24:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:25:32:25:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:26:32:26:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:27:32:27:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:28:24:28:29 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:29:32:29:37 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:30:25:30:30 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:31:22:31:27 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:32:24:32:29 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:33:21:33:26 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:34:25:34:30 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:35:14:35:19 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:36:14:36:19 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:37:14:37:19 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:38:14:38:19 | third | provenance |  |
+| test.ps1:16:10:16:19 | Call to source | test.ps1:39:14:39:19 | third | provenance |  |
 | test.ps1:18:11:18:16 | first | test.ps1:8:20:8:21 | x | provenance |  |
 | test.ps1:18:18:18:24 | second | test.ps1:8:24:8:25 | y | provenance |  |
 | test.ps1:18:26:18:31 | third | test.ps1:8:28:8:29 | z | provenance |  |
@@ -142,21 +138,13 @@ edges
 | test.ps1:39:14:39:19 | third | test.ps1:8:28:8:29 | z | provenance |  |
 | test.ps1:39:24:39:30 | second | test.ps1:8:24:8:25 | y | provenance |  |
 | test.ps1:39:32:39:37 | first | test.ps1:8:20:8:21 | x | provenance |  |
-| test.ps1:43:11:43:20 | UserInput | test.ps1:44:10:44:19 | UserInput | provenance |  |
-| test.ps1:47:10:47:19 | Call to Source | test.ps1:48:46:48:51 | input | provenance |  |
-| test.ps1:48:46:48:51 | input | test.ps1:43:11:43:20 | UserInput | provenance |  |
+| test.ps1:43:11:43:20 | userinput | test.ps1:44:10:44:19 | UserInput | provenance |  |
+| test.ps1:47:10:47:19 | Call to source | test.ps1:48:46:48:51 | input | provenance |  |
+| test.ps1:48:46:48:51 | input | test.ps1:43:11:43:20 | userinput | provenance |  |
 nodes
-| global.ps1:1:7:1:22 | Source1 | semmle.label | Source1 |
-| global.ps1:1:25:1:40 | Source2 | semmle.label | Source2 |
-| global.ps1:1:43:1:58 | Source3 | semmle.label | Source3 |
-| global.ps1:1:61:1:76 | Source4 | semmle.label | Source4 |
-| global.ps1:3:6:3:13 | Source1 | semmle.label | Source1 |
-| global.ps1:4:6:4:13 | Source2 | semmle.label | Source2 |
-| global.ps1:5:6:5:13 | Source3 | semmle.label | Source3 |
-| global.ps1:6:6:6:13 | Source4 | semmle.label | Source4 |
 | test.ps1:1:14:1:15 | a | semmle.label | a |
 | test.ps1:2:10:2:11 | a | semmle.label | a |
-| test.ps1:5:6:5:15 | Call to Source | semmle.label | Call to Source |
+| test.ps1:5:6:5:15 | Call to source | semmle.label | Call to source |
 | test.ps1:6:5:6:6 | x | semmle.label | x |
 | test.ps1:8:20:8:21 | x | semmle.label | x |
 | test.ps1:8:24:8:25 | y | semmle.label | y |
@@ -164,9 +152,9 @@ nodes
 | test.ps1:9:10:9:11 | x | semmle.label | x |
 | test.ps1:10:10:10:11 | y | semmle.label | y |
 | test.ps1:11:10:11:11 | z | semmle.label | z |
-| test.ps1:14:10:14:19 | Call to Source | semmle.label | Call to Source |
-| test.ps1:15:11:15:20 | Call to Source | semmle.label | Call to Source |
-| test.ps1:16:10:16:19 | Call to Source | semmle.label | Call to Source |
+| test.ps1:14:10:14:19 | Call to source | semmle.label | Call to source |
+| test.ps1:15:11:15:20 | Call to source | semmle.label | Call to source |
+| test.ps1:16:10:16:19 | Call to source | semmle.label | Call to source |
 | test.ps1:18:11:18:16 | first | semmle.label | first |
 | test.ps1:18:18:18:24 | second | semmle.label | second |
 | test.ps1:18:26:18:31 | third | semmle.label | third |
@@ -233,19 +221,19 @@ nodes
 | test.ps1:39:14:39:19 | third | semmle.label | third |
 | test.ps1:39:24:39:30 | second | semmle.label | second |
 | test.ps1:39:32:39:37 | first | semmle.label | first |
-| test.ps1:43:11:43:20 | UserInput | semmle.label | UserInput |
+| test.ps1:43:11:43:20 | userinput | semmle.label | userinput |
 | test.ps1:44:10:44:19 | UserInput | semmle.label | UserInput |
-| test.ps1:47:10:47:19 | Call to Source | semmle.label | Call to Source |
+| test.ps1:47:10:47:19 | Call to source | semmle.label | Call to source |
 | test.ps1:48:46:48:51 | input | semmle.label | input |
 subpaths
 testFailures
+| global.ps1:3:15:3:32 | # $ hasValueFlow=1 | Missing result: hasValueFlow=1 |
+| global.ps1:4:15:4:32 | # $ hasValueFlow=2 | Missing result: hasValueFlow=2 |
+| global.ps1:5:15:5:32 | # $ hasValueFlow=3 | Missing result: hasValueFlow=3 |
+| global.ps1:6:15:6:32 | # $ hasValueFlow=4 | Missing result: hasValueFlow=4 |
 #select
-| global.ps1:3:6:3:13 | Source1 | global.ps1:1:7:1:22 | Source1 | global.ps1:3:6:3:13 | Source1 | $@ | global.ps1:1:7:1:22 | Source1 | Source1 |
-| global.ps1:4:6:4:13 | Source2 | global.ps1:1:25:1:40 | Source2 | global.ps1:4:6:4:13 | Source2 | $@ | global.ps1:1:25:1:40 | Source2 | Source2 |
-| global.ps1:5:6:5:13 | Source3 | global.ps1:1:43:1:58 | Source3 | global.ps1:5:6:5:13 | Source3 | $@ | global.ps1:1:43:1:58 | Source3 | Source3 |
-| global.ps1:6:6:6:13 | Source4 | global.ps1:1:61:1:76 | Source4 | global.ps1:6:6:6:13 | Source4 | $@ | global.ps1:1:61:1:76 | Source4 | Source4 |
-| test.ps1:2:10:2:11 | a | test.ps1:5:6:5:15 | Call to Source | test.ps1:2:10:2:11 | a | $@ | test.ps1:5:6:5:15 | Call to Source | Call to Source |
-| test.ps1:9:10:9:11 | x | test.ps1:14:10:14:19 | Call to Source | test.ps1:9:10:9:11 | x | $@ | test.ps1:14:10:14:19 | Call to Source | Call to Source |
-| test.ps1:10:10:10:11 | y | test.ps1:15:11:15:20 | Call to Source | test.ps1:10:10:10:11 | y | $@ | test.ps1:15:11:15:20 | Call to Source | Call to Source |
-| test.ps1:11:10:11:11 | z | test.ps1:16:10:16:19 | Call to Source | test.ps1:11:10:11:11 | z | $@ | test.ps1:16:10:16:19 | Call to Source | Call to Source |
-| test.ps1:44:10:44:19 | UserInput | test.ps1:47:10:47:19 | Call to Source | test.ps1:44:10:44:19 | UserInput | $@ | test.ps1:47:10:47:19 | Call to Source | Call to Source |
+| test.ps1:2:10:2:11 | a | test.ps1:5:6:5:15 | Call to source | test.ps1:2:10:2:11 | a | $@ | test.ps1:5:6:5:15 | Call to source | Call to source |
+| test.ps1:9:10:9:11 | x | test.ps1:14:10:14:19 | Call to source | test.ps1:9:10:9:11 | x | $@ | test.ps1:14:10:14:19 | Call to source | Call to source |
+| test.ps1:10:10:10:11 | y | test.ps1:15:11:15:20 | Call to source | test.ps1:10:10:10:11 | y | $@ | test.ps1:15:11:15:20 | Call to source | Call to source |
+| test.ps1:11:10:11:11 | z | test.ps1:16:10:16:19 | Call to source | test.ps1:11:10:11:11 | z | $@ | test.ps1:16:10:16:19 | Call to source | Call to source |
+| test.ps1:44:10:44:19 | UserInput | test.ps1:47:10:47:19 | Call to source | test.ps1:44:10:44:19 | UserInput | $@ | test.ps1:47:10:47:19 | Call to source | Call to source |

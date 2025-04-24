@@ -9,8 +9,8 @@
 | TrapStatement.ps1:2:5:2:25 | trap {...} |
 | TrapStatement.ps1:2:10:2:25 | {...} |
 | TrapStatement.ps1:2:11:2:24 | [Stmt] Error found. |
-| TrapStatement.ps1:3:5:3:18 | [Stmt] Call to nonsenseString |
-| TrapStatement.ps1:6:1:6:8 | [Stmt] Call to TrapTest |
+| TrapStatement.ps1:3:5:3:18 | [Stmt] Call to nonsensestring |
+| TrapStatement.ps1:6:1:6:8 | [Stmt] Call to traptest |
 | Try.ps1:1:1:13:1 | try {...} |
 | Try.ps1:1:5:4:1 | {...} |
 | Try.ps1:2:4:2:94 | ...=... |

@@ -5,11 +5,9 @@ class InvokeMemberExpr extends @invoke_member_expression, MemberExprBase {
 
   Expr getQualifier() { invoke_member_expression(this, result, _) }
 
-  string getName() { result = this.getCallee().(StringConstExpr).getValue().getValue() }
-
   Expr getCallee() { invoke_member_expression(this, _, result) }
 
-  string getMemberName() { result = this.getCallee().(StringConstExpr).getValue().getValue() }
+  string getLowerCaseName() { result = this.getCallee().(StringConstExpr).getValue().getValue().toLowerCase() }
 
   Expr getArgument(int i) { invoke_member_expression_argument(this, i, result) }
 
