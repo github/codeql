@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.commands.webcmdletelementcollection", "Method[find]", "Argument[this]", "ReturnValue", "taint"]

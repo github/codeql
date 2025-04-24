@@ -60,7 +60,7 @@ class ProcessBlock extends NamedBlock {
 
   PipelineByPropertyNameParameter getPipelineByPropertyNameParameter(string name) {
     result = scriptBlock.getAParameter() and
-    result.getPropertyName() = name
+    result.getLowerCaseName() = name
   }
 
   PipelineByPropertyNameParameter getAPipelineByPropertyNameParameter() {

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.object", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[system.management.automation.idynamicparameters.getdynamicparameters].ReturnValue"]
@@ -12,7 +12,7 @@ extensions:
     - ["system.management.automation.errorrecord", "microsoft.powershell.cmdletization.cim.cimjobexception", "Member[errorrecord]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[get_defaultsession]", "Argument[this]", "ReturnValue", "taint"]

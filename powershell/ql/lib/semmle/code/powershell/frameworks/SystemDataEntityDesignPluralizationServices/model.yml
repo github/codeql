@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.data.entity.design.pluralizationservices.pluralizationservice", "system.data.entity.design.pluralizationservices.pluralizationservice!", "Method[createservice].ReturnValue"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.linq.expressions.labelexpression", "system.linq.expressions.labelexpression", "Method[update].ReturnValue"]

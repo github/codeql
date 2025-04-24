@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["microsoft.visualstudio.text.differencing.idifferencecollection<microsoft.visualstudio.text.snapshotspan>", "microsoft.visualstudio.text.utilities.projectionspandifference", "Member[differencecollection]"]

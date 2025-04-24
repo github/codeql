@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.xml.xmlelement", "system.security.cryptography.xml.encryptedkey", "Method[getxml].ReturnValue"]

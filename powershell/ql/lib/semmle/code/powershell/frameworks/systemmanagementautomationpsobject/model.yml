@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.psobject!", "Method[aspsobject]", "Argument[0]", "ReturnValue", "taint"]
       
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.psobject", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,100 +1,100 @@
 edges
-| test.ps1:3:11:3:20 | UserInput | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:9:11:9:20 | UserInput | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:15:11:15:20 | UserInput | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:21:11:21:20 | UserInput | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:21:11:21:20 | UserInput | test.ps1:22:60:22:69 | UserInput | provenance |  |
-| test.ps1:27:11:27:20 | UserInput | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:27:11:27:20 | UserInput | test.ps1:28:57:28:66 | UserInput | provenance |  |
-| test.ps1:33:11:33:20 | UserInput | test.ps1:34:14:34:46 | public class Foo { $UserInput } | provenance |  |
-| test.ps1:39:11:39:20 | UserInput | test.ps1:40:30:40:62 | public class Foo { $UserInput } | provenance |  |
-| test.ps1:45:11:45:20 | UserInput | test.ps1:48:30:48:34 | code | provenance |  |
-| test.ps1:73:11:73:20 | UserInput | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:80:11:80:20 | UserInput | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:87:11:87:20 | UserInput | test.ps1:89:12:89:28 | ping $UserInput | provenance |  |
-| test.ps1:94:11:94:20 | UserInput | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:104:11:104:20 | UserInput | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | provenance |  |
-| test.ps1:114:11:114:20 | UserInput | test.ps1:116:34:116:43 | UserInput | provenance |  |
-| test.ps1:121:11:121:20 | UserInput | test.ps1:123:28:123:37 | UserInput | provenance |  |
-| test.ps1:128:11:128:20 | UserInput | test.ps1:130:28:130:37 | UserInput | provenance |  |
-| test.ps1:136:11:136:20 | UserInput | test.ps1:139:50:139:59 | UserInput | provenance |  |
-| test.ps1:144:11:144:20 | UserInput | test.ps1:147:63:147:72 | UserInput | provenance |  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:154:46:154:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:155:46:155:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:156:46:156:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:157:46:157:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:158:46:158:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:159:46:159:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:160:46:160:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:161:46:161:51 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:163:48:163:53 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:164:48:164:53 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:165:48:165:53 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:166:41:166:46 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:167:41:167:46 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:168:36:168:41 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:169:36:169:41 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:170:36:170:41 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:172:42:172:47 | input | provenance | Src:MaD:11464  |
-| test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:173:42:173:47 | input | provenance | Src:MaD:11464  |
-| test.ps1:154:46:154:51 | input | test.ps1:3:11:3:20 | UserInput | provenance |  |
-| test.ps1:155:46:155:51 | input | test.ps1:9:11:9:20 | UserInput | provenance |  |
-| test.ps1:156:46:156:51 | input | test.ps1:15:11:15:20 | UserInput | provenance |  |
-| test.ps1:157:46:157:51 | input | test.ps1:21:11:21:20 | UserInput | provenance |  |
-| test.ps1:158:46:158:51 | input | test.ps1:27:11:27:20 | UserInput | provenance |  |
-| test.ps1:159:46:159:51 | input | test.ps1:33:11:33:20 | UserInput | provenance |  |
-| test.ps1:160:46:160:51 | input | test.ps1:39:11:39:20 | UserInput | provenance |  |
-| test.ps1:161:46:161:51 | input | test.ps1:45:11:45:20 | UserInput | provenance |  |
-| test.ps1:163:48:163:53 | input | test.ps1:73:11:73:20 | UserInput | provenance |  |
-| test.ps1:164:48:164:53 | input | test.ps1:80:11:80:20 | UserInput | provenance |  |
-| test.ps1:165:48:165:53 | input | test.ps1:87:11:87:20 | UserInput | provenance |  |
-| test.ps1:166:41:166:46 | input | test.ps1:94:11:94:20 | UserInput | provenance |  |
-| test.ps1:167:41:167:46 | input | test.ps1:104:11:104:20 | UserInput | provenance |  |
-| test.ps1:168:36:168:41 | input | test.ps1:114:11:114:20 | UserInput | provenance |  |
-| test.ps1:169:36:169:41 | input | test.ps1:121:11:121:20 | UserInput | provenance |  |
-| test.ps1:170:36:170:41 | input | test.ps1:128:11:128:20 | UserInput | provenance |  |
-| test.ps1:172:42:172:47 | input | test.ps1:136:11:136:20 | UserInput | provenance |  |
-| test.ps1:173:42:173:47 | input | test.ps1:144:11:144:20 | UserInput | provenance |  |
+| test.ps1:3:11:3:20 | userinput | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:9:11:9:20 | userinput | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:15:11:15:20 | userinput | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:21:11:21:20 | userinput | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:21:11:21:20 | userinput | test.ps1:22:60:22:69 | UserInput | provenance |  |
+| test.ps1:27:11:27:20 | userinput | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:27:11:27:20 | userinput | test.ps1:28:57:28:66 | UserInput | provenance |  |
+| test.ps1:33:11:33:20 | userinput | test.ps1:34:14:34:46 | public class Foo { $UserInput } | provenance |  |
+| test.ps1:39:11:39:20 | userinput | test.ps1:40:30:40:62 | public class Foo { $UserInput } | provenance |  |
+| test.ps1:45:11:45:20 | userinput | test.ps1:48:30:48:34 | code | provenance |  |
+| test.ps1:73:11:73:20 | userinput | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:80:11:80:20 | userinput | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:87:11:87:20 | userinput | test.ps1:89:12:89:28 | ping $UserInput | provenance |  |
+| test.ps1:94:11:94:20 | userinput | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:104:11:104:20 | userinput | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | provenance |  |
+| test.ps1:114:11:114:20 | userinput | test.ps1:116:34:116:43 | UserInput | provenance |  |
+| test.ps1:121:11:121:20 | userinput | test.ps1:123:28:123:37 | UserInput | provenance |  |
+| test.ps1:128:11:128:20 | userinput | test.ps1:130:28:130:37 | UserInput | provenance |  |
+| test.ps1:136:11:136:20 | userinput | test.ps1:139:50:139:59 | UserInput | provenance |  |
+| test.ps1:144:11:144:20 | userinput | test.ps1:147:63:147:72 | UserInput | provenance |  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:154:46:154:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:155:46:155:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:156:46:156:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:157:46:157:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:158:46:158:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:159:46:159:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:160:46:160:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:161:46:161:51 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:163:48:163:53 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:164:48:164:53 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:165:48:165:53 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:166:41:166:46 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:167:41:167:46 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:168:36:168:41 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:169:36:169:41 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:170:36:170:41 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:172:42:172:47 | input | provenance | Src:MaD:11464  |
+| test.ps1:152:10:152:32 | Call to read-host | test.ps1:173:42:173:47 | input | provenance | Src:MaD:11464  |
+| test.ps1:154:46:154:51 | input | test.ps1:3:11:3:20 | userinput | provenance |  |
+| test.ps1:155:46:155:51 | input | test.ps1:9:11:9:20 | userinput | provenance |  |
+| test.ps1:156:46:156:51 | input | test.ps1:15:11:15:20 | userinput | provenance |  |
+| test.ps1:157:46:157:51 | input | test.ps1:21:11:21:20 | userinput | provenance |  |
+| test.ps1:158:46:158:51 | input | test.ps1:27:11:27:20 | userinput | provenance |  |
+| test.ps1:159:46:159:51 | input | test.ps1:33:11:33:20 | userinput | provenance |  |
+| test.ps1:160:46:160:51 | input | test.ps1:39:11:39:20 | userinput | provenance |  |
+| test.ps1:161:46:161:51 | input | test.ps1:45:11:45:20 | userinput | provenance |  |
+| test.ps1:163:48:163:53 | input | test.ps1:73:11:73:20 | userinput | provenance |  |
+| test.ps1:164:48:164:53 | input | test.ps1:80:11:80:20 | userinput | provenance |  |
+| test.ps1:165:48:165:53 | input | test.ps1:87:11:87:20 | userinput | provenance |  |
+| test.ps1:166:41:166:46 | input | test.ps1:94:11:94:20 | userinput | provenance |  |
+| test.ps1:167:41:167:46 | input | test.ps1:104:11:104:20 | userinput | provenance |  |
+| test.ps1:168:36:168:41 | input | test.ps1:114:11:114:20 | userinput | provenance |  |
+| test.ps1:169:36:169:41 | input | test.ps1:121:11:121:20 | userinput | provenance |  |
+| test.ps1:170:36:170:41 | input | test.ps1:128:11:128:20 | userinput | provenance |  |
+| test.ps1:172:42:172:47 | input | test.ps1:136:11:136:20 | userinput | provenance |  |
+| test.ps1:173:42:173:47 | input | test.ps1:144:11:144:20 | userinput | provenance |  |
 nodes
-| test.ps1:3:11:3:20 | UserInput | semmle.label | UserInput |
+| test.ps1:3:11:3:20 | userinput | semmle.label | userinput |
 | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:9:11:9:20 | UserInput | semmle.label | UserInput |
+| test.ps1:9:11:9:20 | userinput | semmle.label | userinput |
 | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:15:11:15:20 | UserInput | semmle.label | UserInput |
+| test.ps1:15:11:15:20 | userinput | semmle.label | userinput |
 | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:21:11:21:20 | UserInput | semmle.label | UserInput |
+| test.ps1:21:11:21:20 | userinput | semmle.label | userinput |
 | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
 | test.ps1:22:60:22:69 | UserInput | semmle.label | UserInput |
-| test.ps1:27:11:27:20 | UserInput | semmle.label | UserInput |
+| test.ps1:27:11:27:20 | userinput | semmle.label | userinput |
 | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
 | test.ps1:28:57:28:66 | UserInput | semmle.label | UserInput |
-| test.ps1:33:11:33:20 | UserInput | semmle.label | UserInput |
+| test.ps1:33:11:33:20 | userinput | semmle.label | userinput |
 | test.ps1:34:14:34:46 | public class Foo { $UserInput } | semmle.label | public class Foo { $UserInput } |
-| test.ps1:39:11:39:20 | UserInput | semmle.label | UserInput |
+| test.ps1:39:11:39:20 | userinput | semmle.label | userinput |
 | test.ps1:40:30:40:62 | public class Foo { $UserInput } | semmle.label | public class Foo { $UserInput } |
-| test.ps1:45:11:45:20 | UserInput | semmle.label | UserInput |
+| test.ps1:45:11:45:20 | userinput | semmle.label | userinput |
 | test.ps1:48:30:48:34 | code | semmle.label | code |
-| test.ps1:73:11:73:20 | UserInput | semmle.label | UserInput |
+| test.ps1:73:11:73:20 | userinput | semmle.label | userinput |
 | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:80:11:80:20 | UserInput | semmle.label | UserInput |
+| test.ps1:80:11:80:20 | userinput | semmle.label | userinput |
 | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:87:11:87:20 | UserInput | semmle.label | UserInput |
+| test.ps1:87:11:87:20 | userinput | semmle.label | userinput |
 | test.ps1:89:12:89:28 | ping $UserInput | semmle.label | ping $UserInput |
-| test.ps1:94:11:94:20 | UserInput | semmle.label | UserInput |
+| test.ps1:94:11:94:20 | userinput | semmle.label | userinput |
 | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:104:11:104:20 | UserInput | semmle.label | UserInput |
+| test.ps1:104:11:104:20 | userinput | semmle.label | userinput |
 | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | semmle.label | Get-Process -Name $UserInput |
-| test.ps1:114:11:114:20 | UserInput | semmle.label | UserInput |
+| test.ps1:114:11:114:20 | userinput | semmle.label | userinput |
 | test.ps1:116:34:116:43 | UserInput | semmle.label | UserInput |
-| test.ps1:121:11:121:20 | UserInput | semmle.label | UserInput |
+| test.ps1:121:11:121:20 | userinput | semmle.label | userinput |
 | test.ps1:123:28:123:37 | UserInput | semmle.label | UserInput |
-| test.ps1:128:11:128:20 | UserInput | semmle.label | UserInput |
+| test.ps1:128:11:128:20 | userinput | semmle.label | userinput |
 | test.ps1:130:28:130:37 | UserInput | semmle.label | UserInput |
-| test.ps1:136:11:136:20 | UserInput | semmle.label | UserInput |
+| test.ps1:136:11:136:20 | userinput | semmle.label | userinput |
 | test.ps1:139:50:139:59 | UserInput | semmle.label | UserInput |
-| test.ps1:144:11:144:20 | UserInput | semmle.label | UserInput |
+| test.ps1:144:11:144:20 | userinput | semmle.label | userinput |
 | test.ps1:147:63:147:72 | UserInput | semmle.label | UserInput |
-| test.ps1:152:10:152:32 | Call to Read-Host | semmle.label | Call to Read-Host |
+| test.ps1:152:10:152:32 | Call to read-host | semmle.label | Call to read-host |
 | test.ps1:154:46:154:51 | input | semmle.label | input |
 | test.ps1:155:46:155:51 | input | semmle.label | input |
 | test.ps1:156:46:156:51 | input | semmle.label | input |
@@ -115,23 +115,23 @@ nodes
 | test.ps1:173:42:173:47 | input | semmle.label | input |
 subpaths
 #select
-| test.ps1:4:23:4:52 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:10:9:10:38 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:16:50:16:79 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:22:41:22:70 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:22:60:22:69 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:22:60:22:69 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:28:38:28:67 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:28:57:28:66 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:28:57:28:66 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:34:14:34:46 | public class Foo { $UserInput } | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:34:14:34:46 | public class Foo { $UserInput } | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:40:30:40:62 | public class Foo { $UserInput } | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:40:30:40:62 | public class Foo { $UserInput } | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:48:30:48:34 | code | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:48:30:48:34 | code | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:75:25:75:54 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:82:16:82:45 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:89:12:89:28 | ping $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:89:12:89:28 | ping $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:98:33:98:62 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:108:58:108:87 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:116:34:116:43 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:116:34:116:43 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:123:28:123:37 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:123:28:123:37 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:130:28:130:37 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:130:28:130:37 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:139:50:139:59 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:139:50:139:59 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
-| test.ps1:147:63:147:72 | UserInput | test.ps1:152:10:152:32 | Call to Read-Host | test.ps1:147:63:147:72 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to Read-Host | user-provided value |
+| test.ps1:4:23:4:52 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:4:23:4:52 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:10:9:10:38 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:10:9:10:38 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:16:50:16:79 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:16:50:16:79 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:22:41:22:70 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:22:41:22:70 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:22:60:22:69 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:22:60:22:69 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:28:38:28:67 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:28:38:28:67 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:28:57:28:66 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:28:57:28:66 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:34:14:34:46 | public class Foo { $UserInput } | test.ps1:152:10:152:32 | Call to read-host | test.ps1:34:14:34:46 | public class Foo { $UserInput } | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:40:30:40:62 | public class Foo { $UserInput } | test.ps1:152:10:152:32 | Call to read-host | test.ps1:40:30:40:62 | public class Foo { $UserInput } | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:48:30:48:34 | code | test.ps1:152:10:152:32 | Call to read-host | test.ps1:48:30:48:34 | code | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:75:25:75:54 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:75:25:75:54 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:82:16:82:45 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:82:16:82:45 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:89:12:89:28 | ping $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:89:12:89:28 | ping $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:98:33:98:62 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:98:33:98:62 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:108:58:108:87 | Get-Process -Name $UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:108:58:108:87 | Get-Process -Name $UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:116:34:116:43 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:116:34:116:43 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:123:28:123:37 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:123:28:123:37 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:130:28:130:37 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:130:28:130:37 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:139:50:139:59 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:139:50:139:59 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |
+| test.ps1:147:63:147:72 | UserInput | test.ps1:152:10:152:32 | Call to read-host | test.ps1:147:63:147:72 | UserInput | This command depends on a $@. | test.ps1:152:10:152:32 | Call to read-host | user-provided value |

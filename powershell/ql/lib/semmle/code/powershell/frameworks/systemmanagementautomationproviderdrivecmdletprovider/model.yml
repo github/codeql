@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.provider.drivecmdletprovider", "Method[initializedefaultdrives]", "Argument[this]", "ReturnValue", "taint"]

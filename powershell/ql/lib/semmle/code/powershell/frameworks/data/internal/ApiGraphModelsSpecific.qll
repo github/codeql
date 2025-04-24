@@ -63,7 +63,7 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
   n = 1 and
   exists(string methodName, DataFlow::CallNode call |
     methodMatchedByName(path, methodName) and
-    call.getName() = methodName and
+    call.matchesName(methodName) and
     result.(API::MethodAccessNode).asCall() = call
   )
 }

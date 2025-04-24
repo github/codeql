@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.net.security.tlsciphersuite", "system.net.security.tlsciphersuite!", "Member[tls_dhe_psk_with_null_sha256]"]

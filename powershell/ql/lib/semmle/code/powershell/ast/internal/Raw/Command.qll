@@ -2,13 +2,13 @@ private import Raw
 
 private predicate parseCommandName(Cmd cmd, string namespace, string name) {
   exists(string qualified | command(cmd, qualified, _, _, _) |
-    namespace = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 1) and
-    name = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 2)
+    namespace = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 1).toLowerCase() and
+    name = qualified.regexpCapture("([^\\\\]+)\\\\([^\\\\]+)", 2).toLowerCase()
     or
     // Not a qualified name
     not exists(qualified.indexOf("\\")) and
     namespace = "" and
-    name = qualified
+    name = qualified.toLowerCase()
   )
 }
 
@@ -30,7 +30,15 @@ class Cmd extends @command, CmdBase {
   CmdElement getCallee() { result = this.getElement(0) }
 
   /** Gets the name of the command without any qualifiers. */
-  string getCommandName() { parseCommandName(this, _, result) }
+  string getLowerCaseName() { parseCommandName(this, _, result) }
+
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   /** Holds if the command is qualified. */
   predicate isQualified() { parseCommandName(this, any(string s | s != ""), _) }
@@ -70,7 +78,7 @@ class Cmd extends @command, CmdBase {
           // sourcing operator) the 0'th element is not the command name, but
           // rather the thing to invoke. These all appear to be commands with
           // an empty string as the command name.
-          this.getCommandName() = ""
+          this.matchesName("")
         ) and
         e = this.getElement(j) and
         (

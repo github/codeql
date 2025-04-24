@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.activities.tracking.trackingrecord", "system.activities.statements.tracking.statemachinestaterecord", "Method[clone].ReturnValue"]

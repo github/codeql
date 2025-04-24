@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.boolean", "microsoft.powershell.psconsolereadlineoptions", "Member[historynoduplicates]"]
@@ -200,7 +200,7 @@ extensions:
     - ["system.consolecolor", "microsoft.powershell.psconsolereadlineoptions!", "Member[defaultvariablecolor]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.deserializingtypeconverter!", "Method[getformatviewdefinitioninstanceid]", "Argument[0]", "ReturnValue", "taint"]

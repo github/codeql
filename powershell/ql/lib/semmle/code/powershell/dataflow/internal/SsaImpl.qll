@@ -78,66 +78,6 @@ private predicate variableReadActual(Cfg::BasicBlock bb, int i, Variable v) {
   )
 }
 
-pragma[noinline]
-deprecated private predicate adjacentDefReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
-) {
-  Impl::adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
-  v = def.getSourceVariable()
-}
-
-deprecated private predicate adjacentDefReachesReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  exists(SsaInput::SourceVariable v | adjacentDefReadExt(def, bb1, i1, bb2, i2, v) |
-    def.definesAt(v, bb1, i1, _)
-    or
-    SsaInput::variableRead(bb1, i1, v, true)
-  )
-  or
-  exists(SsaInput::BasicBlock bb3, int i3 |
-    adjacentDefReachesReadExt(def, bb1, i1, bb3, i3) and
-    SsaInput::variableRead(bb3, i3, _, false) and
-    Impl::adjacentDefReadExt(def, _, bb3, i3, bb2, i2)
-  )
-}
-
-deprecated private predicate adjacentDefReachesUncertainReadExt(
-  DefinitionExt def, SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2
-) {
-  adjacentDefReachesReadExt(def, bb1, i1, bb2, i2) and
-  SsaInput::variableRead(bb2, i2, _, false)
-}
-
-/** Same as `lastRefRedef`, but skips uncertain reads. */
-pragma[nomagic]
-deprecated private predicate lastRefSkipUncertainReadsExt(
-  DefinitionExt def, SsaInput::BasicBlock bb, int i
-) {
-  Impl::lastRef(def, bb, i) and
-  not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
-  or
-  exists(SsaInput::BasicBlock bb0, int i0 |
-    Impl::lastRef(def, bb0, i0) and
-    adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
-  )
-}
-
-/**
- * Holds if the read of `def` at `read` may be a last read. That is, `read`
- * can either reach another definition of the underlying source variable or
- * the end of the CFG scope, without passing through another non-pseudo read.
- */
-pragma[nomagic]
-deprecated predicate lastRead(Definition def, VarReadAccessCfgNode read) {
-  exists(Cfg::BasicBlock bb, int i |
-    lastRefSkipUncertainReadsExt(def, bb, i) and
-    variableReadActual(bb, i, _) and
-    read = bb.getNode(i)
-  )
-}
-
 cached
 private module Cached {
   /**
@@ -239,39 +179,12 @@ private module Cached {
 
 import Cached
 
-/**
- * An extended static single assignment (SSA) definition.
- *
- * This is either a normal SSA definition (`Definition`) or a
- * phi-read node (`PhiReadNode`).
- *
- * Only intended for internal use.
- */
-class DefinitionExt extends Impl::DefinitionExt {
-  VarReadAccessCfgNode getARead() { result = getARead(this) }
-
-  override string toString() { result = this.(Ssa::Definition).toString() }
-
-  override Location getLocation() { result = this.(Ssa::Definition).getLocation() }
-}
-
-/**
- * A phi-read node.
- *
- * Only intended for internal use.
- */
-class PhiReadNode extends DefinitionExt, Impl::PhiReadNode {
-  override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
-
-  override Location getLocation() { result = Impl::PhiReadNode.super.getLocation() }
-}
-
 /** Gets the SSA definition node corresponding to parameter `p`. */
 pragma[nomagic]
-DefinitionExt getParameterDef(Parameter p) {
+Definition getParameterDef(Parameter p) {
   exists(Cfg::BasicBlock bb, int i |
     bb.getNode(i).getAstNode() = p and
-    result.definesAt(_, bb, i, _)
+    result.definesAt(_, bb, i)
   )
 }
 

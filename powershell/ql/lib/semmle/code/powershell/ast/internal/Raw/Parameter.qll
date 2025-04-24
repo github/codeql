@@ -1,10 +1,11 @@
 private import Raw
 
 class Parameter extends @parameter, Ast {
-  string getName() {
-    exists(@variable_expression va |
+  string getLowerCaseName() {
+    exists(@variable_expression va, string userPath |
       parameter(this, va, _, _) and
-      variable_expression(va, result, _, _, _, _, _, _, _, _, _, _)
+      variable_expression(va, userPath, _, _, _, _, _, _, _, _, _, _) and
+      result = userPath.toLowerCase()
     )
   }
 

@@ -511,7 +511,7 @@ module API {
     predicate toplevelCall(string name, Node node) {
       exists(DataFlow::CallNode call |
         call.asExpr().getExpr().getEnclosingScope() instanceof TopLevelScriptBlock and
-        call.getName() = name and
+        call.getLowerCaseName() = name and
         node = MkMethodAccessNode(call)
       )
     }
@@ -522,7 +522,7 @@ module API {
         // from receiver to method call node
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier())) and
         succ = MkMethodAccessNode(call) and
-        name = call.getName()
+        name = call.getLowerCaseName()
       )
     }
 
@@ -549,7 +549,7 @@ module API {
           _)
       |
         result = MkMethodAccessNode(call) and
-        name = call.getName().toLowerCase()
+        name = call.getLowerCaseName()
       )
     }
 
@@ -586,7 +586,7 @@ module API {
     cached
     predicate methodEdge(Node pred, string name, Node succ) {
       exists(DataFlow::CallNode call |
-        succ = MkMethodAccessNode(call) and name = call.getName().toLowerCase()
+        succ = MkMethodAccessNode(call) and name = call.getLowerCaseName()
       |
         pred = getForwardEndNode(getALocalSourceStrict(call.getQualifier()))
       )

@@ -1,7 +1,9 @@
 private import AstImport
 
 class InvokeMemberExpr extends CallExpr, TInvokeMemberExpr {
-  final override string getName() { result = getRawAst(this).(Raw::InvokeMemberExpr).getName() }
+  final override string getLowerCaseName() {
+    result = getRawAst(this).(Raw::InvokeMemberExpr).getLowerCaseName()
+  }
 
   final override Ast getChild(ChildIndex i) {
     result = super.getChild(i)
@@ -66,7 +68,7 @@ class ConstructorCall extends InvokeMemberExpr {
   TypeNameExpr typename;
 
   ConstructorCall() {
-    this.isStatic() and typename = this.getQualifier() and this.getName() = "new"
+    this.isStatic() and typename = this.getQualifier() and this.getLowerCaseName() = "new"
   }
 
   /** Gets the name of the type being constructed by this constructor call. */
@@ -81,5 +83,5 @@ class ConstructorCall extends InvokeMemberExpr {
  * ```
  */
 class ToStringCall extends InvokeMemberExpr {
-  ToStringCall() { this.getName().toLowerCase() = "toString" }
+  ToStringCall() { this.getLowerCaseName() = "tostring" }
 }

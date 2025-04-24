@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.collections.objectmodel.readonlycollection<microsoft.visualstudio.text.snapshotpoint>", "microsoft.visualstudio.text.projection.iprojectionsnapshot", "Method[maptosourcesnapshots].ReturnValue"]

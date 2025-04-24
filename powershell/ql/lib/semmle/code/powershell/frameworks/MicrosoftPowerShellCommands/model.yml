@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.string", "microsoft.powershell.commands.enhancedkeyusagerepresentation", "Method[tostring].ReturnValue"]
@@ -2900,7 +2900,7 @@ extensions:
     - ["system.int32[]", "microsoft.powershell.commands.psrunspacecmdlet", "Member[id]"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["microsoft.powershell.commands.basichtmlwebresponseobject", "Method[basichtmlwebresponseobject]", "Argument[0]", "Argument[this]", "taint"]

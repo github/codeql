@@ -9,16 +9,6 @@ Scope scopeOf(Ast n) {
   )
 }
 
-module Parameter {
-  abstract class Scope extends Ast {
-    abstract string getName();
-  }
-
-  private class ParameterScope extends Scope instanceof Parameter {
-    final override string getName() { result = Parameter.super.getName() }
-  }
-}
-
 abstract private class ScopeImpl extends Ast {
   abstract Scope getOuterScopeImpl();
 

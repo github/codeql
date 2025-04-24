@@ -1,9 +1,15 @@
 private import AstImport
 
 class Parameter extends Variable instanceof ParameterImpl {
-  string getName() { result = super.getNameImpl() }
+  string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 
-  final predicate hasName(string name) { name = this.getName() }
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   override Ast getChild(ChildIndex childIndex) {
     result = Variable.super.getChild(childIndex)
@@ -41,7 +47,7 @@ class PipelineParameter extends Parameter instanceof PipelineParameterImpl {
 
 /**
  * The iterator variable associated with a pipeline parameter.
- * 
+ *
  * This is the variable that is bound to the current element in the pipeline.
  */
 class PipelineIteratorVariable extends Variable instanceof PipelineIteratorVariableImpl {
@@ -55,8 +61,6 @@ class PipelineByPropertyNameParameter extends Parameter instanceof PipelineByPro
 {
   ScriptBlock getScriptBlock() { result = super.getScriptBlock() }
 
-  string getPropertyName() { result = super.getName() }
-
   /**
    * Gets the iterator variable that is used to iterate over the elements in the pipeline.
    */
@@ -65,7 +69,7 @@ class PipelineByPropertyNameParameter extends Parameter instanceof PipelineByPro
 
 /**
  * The iterator variable associated with a pipeline-by-property-name parameter.
- * 
+ *
  * This is the variable that is bound to the current element in the pipeline.
  */
 class PipelineByPropertyNameIteratorVariable extends Variable instanceof PipelineByPropertyNameIteratorVariableImpl

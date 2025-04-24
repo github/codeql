@@ -28,7 +28,7 @@ class NewObjectCreation extends AbstractObjectCreation, ConstructorCall {
  * ```
  */
 class DotNetObjectCreation extends AbstractObjectCreation, CmdCall {
-  DotNetObjectCreation() { this.getName() = "New-Object" }
+  DotNetObjectCreation() { this.getLowerCaseName() = "new-object" }
 
   final override string getConstructedTypeName() {
     result = this.getConstructedTypeExpr().(StringConstExpr).getValueString()

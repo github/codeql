@@ -5,9 +5,9 @@ module Private {
   class TVariable = TVariableReal or TVariableSynth;
 
   class VariableImpl extends Ast, TVariable {
-    abstract string getNameImpl();
+    abstract string getLowerCaseNameImpl();
 
-    final override string toString() { result = this.getNameImpl() }
+    final override string toString() { result = this.getLowerCaseNameImpl() }
 
     abstract Location getLocationImpl();
 
@@ -21,7 +21,7 @@ module Private {
 
     VariableReal() { this = TVariableReal(scope, name, n) }
 
-    override string getNameImpl() { result = name }
+    override string getLowerCaseNameImpl() { result = name }
 
     override Location getLocationImpl() { result = n.getLocation() }
 
@@ -36,7 +36,7 @@ module Private {
 
     VariableSynth() { this = TVariableSynth(scope, i) }
 
-    override string getNameImpl() { any(Synthesis s).variableSynthName(this, result) }
+    override string getLowerCaseNameImpl() { any(Synthesis s).variableSynthName(this, result) }
 
     override Location getLocationImpl() { result = any(Synthesis s).getLocation(this) }
 
@@ -92,7 +92,7 @@ module Private {
     string getPropertyName() {
       exists(Raw::PipelineByPropertyNameParameter p |
         i = PipelineByPropertyNameIteratorVar(p) and
-        result = p.getName()
+        result = p.getLowerCaseName()
       )
     }
 
@@ -100,7 +100,7 @@ module Private {
       exists(Raw::PipelineByPropertyNameParameter p |
         i = PipelineByPropertyNameIteratorVar(p) and
         p.getScriptBlock() = getRawAst(result.getEnclosingFunction().getBody()) and
-        p.getName() = result.getName()
+        p.getLowerCaseName() = result.getLowerCaseName()
       )
     }
   }
@@ -127,7 +127,7 @@ module Private {
 
     final override Variable getVariableImpl() { any(Synthesis s).getAnAccess(this, result) }
 
-    final override string toString() { result = this.getVariableImpl().getName() }
+    final override string toString() { result = this.getVariableImpl().getLowerCaseName() }
 
     final override Location getLocation() { result = parent.getLocation() }
   }
@@ -145,9 +145,17 @@ private import Private
 
 module Public {
   class Variable extends Ast instanceof VariableImpl {
-    final string getName() { result = super.getNameImpl() }
+    final string getLowerCaseName() { result = super.getLowerCaseNameImpl() }
 
-    final override string toString() { result = this.getName() }
+    final override string toString() { result = this.getLowerCaseName() }
+
+    bindingset[name]
+    pragma[inline_late]
+    final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+    bindingset[result]
+    pragma[inline_late]
+    final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
     final override Location getLocation() { result = super.getLocationImpl() }
 

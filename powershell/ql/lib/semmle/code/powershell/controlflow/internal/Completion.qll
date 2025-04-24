@@ -24,7 +24,7 @@ private newtype TCompletion =
 
 private predicate commandThrows(CallExpr c, boolean unconditional) {
   c.getNamedArgument("ErrorAction").getValue().asString() = "Stop" and
-  if c.getName() = "Write-Error" then unconditional = true else unconditional = false
+  if c.matchesName("Write-Error") then unconditional = true else unconditional = false
 }
 
 pragma[noinline]

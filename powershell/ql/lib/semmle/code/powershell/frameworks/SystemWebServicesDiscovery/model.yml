@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.web.services.discovery.discoveryreference", "system.web.services.discovery.discoveryclientreferencecollection", "Member[item]"]

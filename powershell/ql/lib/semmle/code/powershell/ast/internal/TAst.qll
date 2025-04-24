@@ -13,9 +13,9 @@ private predicate mkSynthChild(SynthKind kind, Raw::Ast parent, ChildIndex i) {
 string variableNameInScope(Raw::Ast n, Scope::Range scope) {
   scope = Raw::scopeOf(n) and
   (
-    result = n.(Raw::VarAccess).getUserPath() and
-    not scope.getAParameter().(Raw::PipelineByPropertyNameParameter).getName() = result and
-    not result.toLowerCase() = ["_", "this", "false", "true", "null"] and
+    result = n.(Raw::VarAccess).getUserPath().toLowerCase() and
+    not scope.getAParameter().(Raw::PipelineByPropertyNameParameter).getLowerCaseName() = result and
+    not result = ["_", "this", "false", "true", "null"] and
     not parameter(_, n, _, _) and
     not Raw::isEnvVariableAccess(n, _)
     or
@@ -56,7 +56,7 @@ private predicate inherits(Scope::Range scope, string name, Scope::Range outer) 
 
 pragma[nomagic]
 private predicate hasScopeAndName(VariableImpl variable, Scope::Range scope, string name) {
-  variable.getNameImpl() = name and
+  variable.getLowerCaseNameImpl() = name and
   scope = variable.getDeclaringScopeImpl()
 }
 

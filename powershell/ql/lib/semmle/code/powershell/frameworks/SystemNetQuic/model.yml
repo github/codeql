@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.threading.tasks.valuetask<system.net.quic.quiclistener>", "system.net.quic.quiclistener!", "Method[listenasync].ReturnValue"]

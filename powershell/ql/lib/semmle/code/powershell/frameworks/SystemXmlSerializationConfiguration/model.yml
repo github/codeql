@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
     - ["system.xml.serialization.configuration.schemaimporterextensionelement", "system.xml.serialization.configuration.schemaimporterextensionelementcollection", "Member[item]"]
