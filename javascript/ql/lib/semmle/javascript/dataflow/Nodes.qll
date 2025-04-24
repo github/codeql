@@ -1242,11 +1242,12 @@ module ClassNode {
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override AST::ValueNode astNode;
-    AbstractFunction function;
+    AbstractCallable function;
 
     FunctionStyleClass() {
       // ES6 class case
-      astNode instanceof ClassDefinition
+      astNode instanceof ClassDefinition and
+      function.(AbstractClass).getClass() = astNode
       or
       // Function-style class case
       astNode instanceof Function and
