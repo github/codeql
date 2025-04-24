@@ -270,7 +270,7 @@ fn test_io_stdin() -> std::io::Result<()> {
 
     {
         let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
-        sink(reader_split.next().unwrap().unwrap()); // $ MISSING: hasTaintFlow
+        sink(reader_split.next().unwrap().unwrap()); // $ hasTaintFlow
         while let Some(chunk) = reader_split.next() {
             sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
         }
