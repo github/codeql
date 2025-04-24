@@ -301,9 +301,14 @@ public class Main {
     // only extract HTML and JS by default
     addIncludesFor(includes, FileType.HTML);
     addIncludesFor(includes, FileType.JS);
+    includes.add("**/.babelrc*.json");
+
 
     // extract TypeScript if `--typescript` or `--typescript-full` was specified
-    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) addIncludesFor(includes, FileType.TYPESCRIPT);
+    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) {
+      addIncludesFor(includes, FileType.TYPESCRIPT);
+      includes.add("**/tsconfig*.json");
+    }
 
     // add explicit include patterns
     for (String pattern : ap.getZeroOrMore(P_INCLUDE))
