@@ -284,15 +284,13 @@ private predicate output(Callable callable, TypeVariable tv, string output) {
   functionalSink(callable, tv, output)
 }
 
-module ModelPrintingInput implements ModelPrintingSig {
+module ModelPrintingInput implements ModelPrintingSummarySig {
   class SummaryApi = TypeBasedFlowTargetApi;
-
-  class SourceOrSinkApi = ModelGeneratorInput::SourceOrSinkTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
 
-private module Printing = ModelPrinting<ModelPrintingInput>;
+private module Printing = ModelPrintingSummary<ModelPrintingInput>;
 
 /**
  * A class of callables that are relevant generating summaries for based

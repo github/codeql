@@ -177,15 +177,13 @@ private predicate output(Callable callable, TypeParameter tp, string output) {
   delegateSink(callable, tp, output)
 }
 
-private module ModelPrintingInput implements ModelPrintingSig {
+private module ModelPrintingInput implements ModelPrintingSummarySig {
   class SummaryApi = TypeBasedFlowTargetApi;
-
-  class SourceOrSinkApi = TypeBasedFlowTargetApi;
 
   string getProvenance() { result = "tb-generated" }
 }
 
-private module Printing = ModelPrinting<ModelPrintingInput>;
+private module Printing = ModelPrintingSummary<ModelPrintingInput>;
 
 /**
  * A class of callables that are relevant generating summaries for based

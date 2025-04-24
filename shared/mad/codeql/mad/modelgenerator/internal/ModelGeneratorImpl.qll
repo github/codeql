@@ -370,19 +370,26 @@ module MakeModelGenerator<
    * based on heuristic data flow.
    */
   module Heuristic {
-    private module ModelPrintingInput implements Printing::ModelPrintingSig {
+    private module ModelPrintingSummaryInput implements Printing::ModelPrintingSummarySig {
       class SummaryApi = DataFlowSummaryTargetApi;
 
+      string getProvenance() { result = "df-generated" }
+    }
+
+    module ModelPrintingSummary = Printing::ModelPrintingSummary<ModelPrintingSummaryInput>;
+
+    private module ModelPrintingSourceOrSinkInput implements Printing::ModelPrintingSourceOrSinkSig {
       class SourceOrSinkApi = SourceOrSinkTargetApi;
 
       string getProvenance() { result = "df-generated" }
     }
 
-    module ModelPrinting = Printing::ModelPrinting<ModelPrintingInput>;
-
     private string getOutput(ReturnNodeExt node) {
       result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
     }
+
+    private module ModelPrintingSourceOrSink =
+      Printing::ModelPrintingSourceOrSink<ModelPrintingSourceOrSinkInput>;
 
     /**
      * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
@@ -419,7 +426,7 @@ module MakeModelGenerator<
         api = returnNodeEnclosingCallable(ret) and
         isOwnInstanceAccessNode(ret)
       ) and
-      result = ModelPrinting::asLiftedValueModel(api, qualifierString(), "ReturnValue")
+      result = ModelPrintingSummary::asLiftedValueModel(api, qualifierString(), "ReturnValue")
     }
 
     private int accessPathLimit0() { result = 2 }
@@ -539,7 +546,7 @@ module MakeModelGenerator<
         input = parameterNodeAsInput(p) and
         output = getOutput(returnNodeExt) and
         input != output and
-        result = ModelPrinting::asLiftedTaintModel(api, input, output)
+        result = ModelPrintingSummary::asLiftedTaintModel(api, input, output)
       )
     }
 
@@ -572,7 +579,7 @@ module MakeModelGenerator<
         exists(captureFlow(api0)) and api0.lift() = api.lift()
       ) and
       api.isRelevant() and
-      result = ModelPrinting::asNeutralSummaryModel(api)
+      result = ModelPrintingSummary::asNeutralSummaryModel(api)
     }
 
     /**
@@ -617,7 +624,7 @@ module MakeModelGenerator<
         sourceNode(source, kind) and
         api = getEnclosingCallable(sink) and
         not irrelevantSourceSinkApi(getEnclosingCallable(source), api) and
-        result = ModelPrinting::asSourceModel(api, getOutput(sink), kind)
+        result = ModelPrintingSourceOrSink::asSourceModel(api, getOutput(sink), kind)
       )
     }
 
@@ -663,7 +670,7 @@ module MakeModelGenerator<
         PropagateToSink::flow(src, sink) and
         sinkNode(sink, kind) and
         api = getEnclosingCallable(src) and
-        result = ModelPrinting::asSinkModel(api, asInputArgument(src), kind)
+        result = ModelPrintingSourceOrSink::asSinkModel(api, asInputArgument(src), kind)
       )
     }
   }
@@ -703,15 +710,13 @@ module MakeModelGenerator<
 
     private module PropagateContentFlow = ContentDataFlow::Global<PropagateContentFlowConfig>;
 
-    private module ContentModelPrintingInput implements Printing::ModelPrintingSig {
+    private module ContentModelPrintingInput implements Printing::ModelPrintingSummarySig {
       class SummaryApi = DataFlowSummaryTargetApi;
-
-      class SourceOrSinkApi = SourceOrSinkTargetApi;
 
       string getProvenance() { result = "dfc-generated" }
     }
 
-    private module ContentModelPrinting = Printing::ModelPrinting<ContentModelPrintingInput>;
+    private module ContentModelPrinting = Printing::ModelPrintingSummary<ContentModelPrintingInput>;
 
     private string getContentOutput(ReturnNodeExt node) {
       result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
@@ -1075,6 +1080,6 @@ module MakeModelGenerator<
       )
     ) and
     api.isRelevant() and
-    result = Heuristic::ModelPrinting::asNeutralSummaryModel(api)
+    result = Heuristic::ModelPrintingSummary::asNeutralSummaryModel(api)
   }
 }
