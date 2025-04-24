@@ -38,8 +38,8 @@ predicate isSinkToTemplateExec(DataFlow::Node sink) {
 }
 
 /**
- * Data flow configuration that tracks flows from untrusted sources (A) to template execution calls (C),
- * and tracks whether a conversion to a passthrough type (B) has occurred.
+ * Data flow configuration that tracks flows from untrusted sources to template execution calls
+ * which go through a conversion to an unescaped type.
  */
 module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateConfigSig {
   private newtype TConversionState =
@@ -47,7 +47,7 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
     TConverted(UnescapedType unescapedType)
 
   /**
-   * Flow state for tracking whether a conversion to a passthrough type has occurred.
+   * Flow state for tracking whether a conversion to an unescaped type has occurred.
    */
   class FlowState extends TConversionState {
     predicate isBeforeConversion() { this instanceof TUnconverted }
