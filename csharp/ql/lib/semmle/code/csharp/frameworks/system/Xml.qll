@@ -167,6 +167,12 @@ private module SettingsDataFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof XmlReaderSettingsCreation }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof XmlReaderSettingsInstance }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/code/csharp/frameworks/system/Xml.qll:190: Flow call outside 'select' clause
+    none()
+  }
 }
 
 private module SettingsDataFlow = DataFlow::Global<SettingsDataFlowConfig>;

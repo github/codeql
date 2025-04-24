@@ -34,6 +34,12 @@ private module FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassVa
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security Features/JsonWebTokenHandler/security-validation-disabled.ql:22: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation =

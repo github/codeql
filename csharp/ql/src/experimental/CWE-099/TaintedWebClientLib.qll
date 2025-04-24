@@ -48,6 +48,12 @@ private module TaintedWebClientConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/CWE-099/TaintedWebClient.ql:25: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**

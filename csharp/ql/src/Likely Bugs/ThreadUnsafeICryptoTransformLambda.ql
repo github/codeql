@@ -24,6 +24,13 @@ module NotThreadSafeCryptoUsageIntoParallelInvokeConfig implements DataFlow::Con
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ParallelSink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql:37: Column 1 does not select a source or sink originating from the flow call on line 34
+    // ql/src/Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql:37: Column 3 does not select a source or sink originating from the flow call on line 34
+    none()
+  }
 }
 
 module NotThreadSafeCryptoUsageIntoParallelInvoke =

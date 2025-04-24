@@ -100,6 +100,12 @@ module DisposeCallOnLocalIDisposableConfig implements DataFlow::ConfigSig {
     isSink(node) and
     not node instanceof ReturnNode
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/API Abuse/NoDisposeCallOnLocalIDisposable.ql:100: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module DisposeCallOnLocalIDisposable = DataFlow::Global<DisposeCallOnLocalIDisposableConfig>;
