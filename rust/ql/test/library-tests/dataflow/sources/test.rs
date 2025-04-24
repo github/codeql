@@ -96,7 +96,7 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
 
     // create the connection
     println!("connecting to {}...", address);
-    let stream = tokio::net::TcpStream::connect(address).await?;
+    let stream = tokio::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
     let io = hyper_util::rt::TokioIo::new(stream);
     let (mut sender, conn) = hyper::client::conn::http1::handshake(io).await?;
 
@@ -597,18 +597,18 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> { // Result<(), Bo
 
     if case == 1 {
         // create the connection
-        let mut stream = std::net::TcpStream::connect(address)?;
+        let mut stream = std::net::TcpStream::connect(address)?; // $ Alert[rust/summary/taint-sources]
 
         // send request
         let _ = stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n");
 
         // read response
         let mut buffer = vec![0; 32 * 1024];
-        let _ = stream.read(&mut buffer); // $ MISSING: Alert[rust/summary/taint-sources]
+        let _ = stream.read(&mut buffer);
 
         println!("data = {:?}", buffer);
-        sink(&buffer); // $ MISSING: hasTaintFlow
-        sink(buffer[0]); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow=address
+        sink(buffer[0]); // $ hasTaintFlow=address
 
         let buffer_string = String::from_utf8_lossy(&buffer);
         println!("string = {}", buffer_string);
@@ -616,7 +616,7 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> { // Result<(), Bo
     } else {
         // create the connection
         let sock_addr = address.to_socket_addrs().unwrap().next().unwrap();
-        let mut stream = std::net::TcpStream::connect_timeout(&sock_addr, std::time::Duration::new(1, 0))?;
+        let mut stream = std::net::TcpStream::connect_timeout(&sock_addr, std::time::Duration::new(1, 0))?; // $ Alert[rust/summary/taint-sources]
 
         // send request
         let _ = stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n");
@@ -627,14 +627,14 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> { // Result<(), Bo
                 let mut reader = std::io::BufReader::new(stream).take(256);
                 let mut line = String::new();
                 loop {
-                    match reader.read_line(&mut line) { // $ MISSING: Alert[rust/summary/taint-sources]
+                    match reader.read_line(&mut line) {
                         Ok(0) => {
                             println!("end");
                             break;
                         }
                         Ok(_n) => {
                             println!("line = {}", line);
-                            sink(&line); // $ MISSING: hasTaintFlow
+                            sink(&line); // $ hasTaintFlow=&sock_addr
                             line.clear();
                         }
                         Err(e) => {
@@ -668,7 +668,7 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
 
     // create the connection
     println!("connecting to {}...", address);
-    let mut tokio_stream = tokio::net::TcpStream::connect(address).await?;
+    let mut tokio_stream = tokio::net::TcpStream::connect(address).await?; // $ Alert[rust/summary/taint-sources]
 
     // send request
     tokio_stream.write_all(b"GET / HTTP/1.1\nHost:example.com\n\n").await?;
@@ -676,19 +676,19 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
     if case == 1 {
         // peek response
         let mut buffer1 = vec![0; 2 * 1024];
-        let _ = tokio_stream.peek(&mut buffer1).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let _ = tokio_stream.peek(&mut buffer1).await?;
 
         // read response
         let mut buffer2 = vec![0; 2 * 1024];
-        let n2 = tokio_stream.read(&mut buffer2).await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let n2 = tokio_stream.read(&mut buffer2).await?;
 
         println!("buffer1 = {:?}", buffer1);
-        sink(&buffer1); // $ MISSING: hasTaintFlow
-        sink(buffer1[0]); // $ MISSING: hasTaintFlow
+        sink(&buffer1); // $ hasTaintFlow=address
+        sink(buffer1[0]); // $ hasTaintFlow=address
 
         println!("buffer2 = {:?}", buffer2);
-        sink(&buffer2); // $ MISSING: hasTaintFlow
-        sink(buffer2[0]); // $ MISSING: hasTaintFlow
+        sink(&buffer2); // $ hasTaintFlow=address
+        sink(buffer2[0]); // $ hasTaintFlow=address
 
         let buffer_string = String::from_utf8_lossy(&buffer2[..n2]);
         println!("string = {}", buffer_string);
@@ -703,7 +703,7 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
                 }
                 Ok(_n) => {
                     println!("buffer = {:?}", buffer);
-                    sink(&buffer); // $ MISSING: hasTaintFlow
+                    sink(&buffer); // $ hasTaintFlow=address
                     break; // (or we could wait for more data)
                 }
                 Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
@@ -726,7 +726,7 @@ async fn test_tokio_tcpstream(case: i64) -> std::io::Result<()> {
                 }
                 Ok(_n) => {
                     println!("buffer = {:?}", buffer);
-                    sink(&buffer); // $ MISSING: hasTaintFlow
+                    sink(&buffer); // $ hasTaintFlow=address
                     break; // (or we could wait for more data)
                 }
                 Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {
@@ -750,7 +750,7 @@ async fn test_std_to_tokio_tcpstream() -> std::io::Result<()> {
 
     // create the connection
     println!("connecting to {}...", address);
-    let std_stream = std::net::TcpStream::connect(address)?;
+    let std_stream = std::net::TcpStream::connect(address)?; // $ Alert[rust/summary/taint-sources]
 
     // convert to tokio stream
     std_stream.set_nonblocking(true)?;
