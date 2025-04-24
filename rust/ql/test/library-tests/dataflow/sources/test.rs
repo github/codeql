@@ -305,93 +305,93 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
     // --- async reading from stdin ---
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0u8; 100];
         let _bytes = stdin.read(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = Vec::<u8>::new();
         let _bytes = stdin.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = String::new();
         let _bytes = stdin.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = [0; 100];
         stdin.read_exact(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let v1 = stdin.read_u8().await?;
         let v2 = stdin.read_i16().await?;
         let v3 = stdin.read_f32().await?;
         let v4 = stdin.read_i64_le().await?;
-        sink(v1); // $ MISSING: hasTaintFlow
-        sink(v2); // $ MISSING: hasTaintFlow
-        sink(v3); // $ MISSING: hasTaintFlow
-        sink(v4); // $ MISSING: hasTaintFlow
+        sink(v1); // $ hasTaintFlow
+        sink(v2); // $ hasTaintFlow
+        sink(v3); // $ hasTaintFlow
+        sink(v4); // $ hasTaintFlow
     }
 
     {
-        let mut stdin = tokio::io::stdin(); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut stdin = tokio::io::stdin(); // $ Alert[rust/summary/taint-sources]
         let mut buffer = bytes::BytesMut::new();
         stdin.read_buf(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     // --- async reading from stdin (BufReader) ---
 
     {
-        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.fill_buf().await?;
-        sink(&data); // $ MISSING: hasTaintFlow
+        sink(&data); // $ hasTaintFlow
     }
 
     {
-        let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let data = reader.buffer();
-        sink(&data); // $ MISSING: hasTaintFlow
+        sink(&data); // $ hasTaintFlow
     }
 
     {
         let mut buffer = String::new();
-        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_line(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
     }
 
     {
         let mut buffer = Vec::<u8>::new();
-        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         reader.read_until(b',', &mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
-        sink(buffer[0]); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow
+        sink(buffer[0]); // $ hasTaintFlow
     }
 
     {
-        let mut reader_split = tokio::io::BufReader::new(tokio::io::stdin()).split(b','); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(reader_split.next_segment().await?.unwrap()); // $ MISSING: hasTaintFlow
+        let mut reader_split = tokio::io::BufReader::new(tokio::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
+        sink(reader_split.next_segment().await?.unwrap()); // $ hasTaintFlow
         while let Some(chunk) = reader_split.next_segment().await? {
             sink(chunk); // $ MISSING: hasTaintFlow
         }
     }
 
     {
-        let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
+        let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ Alert[rust/summary/taint-sources]
         let mut lines = reader.lines();
-        sink(lines.next_line().await?.unwrap()); // $ MISSING: hasTaintFlow
+        sink(lines.next_line().await?.unwrap()); // $ hasTaintFlow
         while let Some(line) = lines.next_line().await? {
             sink(line); // $ MISSING: hasTaintFlow
         }
