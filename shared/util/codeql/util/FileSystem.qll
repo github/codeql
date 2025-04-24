@@ -221,6 +221,12 @@ module Make<InputSig Input> {
 
   /** Provides logic related to `Folder`s. */
   module Folder {
+    pragma[nomagic]
+    private Container getAChildContainer(Container c, string baseName) {
+      result = c.getAChildContainer() and
+      baseName = result.getBaseName()
+    }
+
     /** Holds if `relativePath` needs to be appended to `f`. */
     signature predicate shouldAppendSig(Folder f, string relativePath);
 
@@ -237,12 +243,6 @@ module Make<InputSig Input> {
         or
         relativePath = "" and
         result = 0
-      }
-
-      pragma[nomagic]
-      private Container getAChildContainer(Container c, string baseName) {
-        result = c.getAChildContainer() and
-        baseName = result.getBaseName()
       }
 
       pragma[nomagic]
