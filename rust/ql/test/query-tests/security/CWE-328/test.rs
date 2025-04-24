@@ -78,9 +78,9 @@ fn test_hash_code_patterns(
 
     // hash transformed data
     _ = md5::Md5::digest(harmless.trim());
-    _ = md5::Md5::digest(password.trim()); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password.trim()); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5::Md5::digest(harmless.as_bytes());
-    _ = md5::Md5::digest(password.as_bytes()); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::digest(password.as_bytes()); // $ Alert[rust/weak-sensitive-data-hashing]
     _ = md5::Md5::digest(std::str::from_utf8(harmless_arr).unwrap());
     _ = md5::Md5::digest(std::str::from_utf8(password_arr).unwrap()); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
 }

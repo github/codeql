@@ -34,9 +34,9 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// According to https://learn.microsoft.com/en-us/visualstudio/msbuild/how-to-use-project-sdk?view=vs-2022#reference-a-project-sdk
         /// there are three ways to reference a project SDK:
-        ///  1. As an attribute on the <Project/>.
-        ///  2. As a top level element of <Project>.
-        ///  3. As an attribute on an <Import> element.
+        ///  1. As an attribute on the &lt;Project/&gt;.
+        ///  2. As a top level element of &lt;Project&gt;.
+        ///  3. As an attribute on an &lt;Import&gt; element.
         ///
         /// Returns true, if the Sdk attribute is used, otherwise false.
         /// </summary>

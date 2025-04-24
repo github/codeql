@@ -2,7 +2,14 @@ extensions:
   - addsTo:
       pack: codeql/rust-all
       extensible: sourceModel
-    data: []
+    data:
+      - ["lang:std", "crate::fs::read", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "crate::fs::read_to_string", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "crate::fs::read_link", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "<crate::fs::DirEntry>::path", "ReturnValue", "file", "manual"]
+      - ["lang:std", "<crate::fs::DirEntry>::file_name", "ReturnValue", "file", "manual"]
+      - ["lang:std", "<crate::fs::File>::open", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "<crate::fs::File>::open_buffered", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -34,7 +41,6 @@ extensions:
       - ["lang:std", "<crate::fs::File>::create_new", "Argument[0]", "path-injection", "manual"]
       - ["lang:std", "<crate::fs::File>::open", "Argument[0]", "path-injection", "manual"]
       - ["lang:std", "<crate::fs::File>::open_buffered", "Argument[0]", "path-injection", "manual"]
-
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel

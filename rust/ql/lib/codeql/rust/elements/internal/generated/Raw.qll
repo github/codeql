@@ -956,6 +956,11 @@ module Raw {
     Expr getDefault() { struct_field_defaults(this, result) }
 
     /**
+     * Holds if this struct field is unsafe.
+     */
+    predicate isUnsafe() { struct_field_is_unsafe(this) }
+
+    /**
      * Gets the name of this struct field, if it exists.
      */
     Name getName() { struct_field_names(this, result) }

@@ -1,3 +1,9 @@
+## 1.4.7
+
+### Minor Analysis Improvements
+
+- The `py/mixed-tuple-returns` query no longer flags instances where the tuple is passed into the function as an argument, as this led to too many false positives.
+
 ## 1.4.6
 
 ### Minor Analysis Improvements

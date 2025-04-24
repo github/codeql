@@ -178,7 +178,7 @@ abstract class ItemNode extends Locatable {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
-    preludeEdge(this, name, result)
+    preludeEdge(this, name, result) and not declares(this, _, name)
     or
     name = "super" and
     if this instanceof Module or this instanceof SourceFile
@@ -581,9 +581,21 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
 }
 
 class TypeParamItemNode extends ItemNode instanceof TypeParam {
+  private WherePred getAWherePred() {
+    exists(ItemNode declaringItem |
+      this = resolveTypeParamPathTypeRepr(result.getTypeRepr()) and
+      result = declaringItem.getADescendant() and
+      this = declaringItem.getADescendant()
+    )
+  }
+
   pragma[nomagic]
   Path getABoundPath() {
-    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+    exists(TypeBoundList tbl | result = tbl.getABound().getTypeRepr().(PathTypeRepr).getPath() |
+      tbl = super.getTypeBoundList()
+      or
+      tbl = this.getAWherePred().getTypeBoundList()
+    )
   }
 
   pragma[nomagic]
@@ -605,11 +617,7 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
     Stages::PathResolutionStage::ref() and
     exists(this.getABoundPath())
     or
-    exists(ItemNode declaringItem, WherePred wp |
-      this = resolveTypeParamPathTypeRepr(wp.getTypeRepr()) and
-      wp = declaringItem.getADescendant() and
-      this = declaringItem.getADescendant()
-    )
+    exists(this.getAWherePred())
   }
 
   /**
