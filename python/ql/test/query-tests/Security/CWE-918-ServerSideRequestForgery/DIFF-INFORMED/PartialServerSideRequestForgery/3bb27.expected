@@ -1,0 +1,6 @@
+Filtering alerts to these ranges:
+  full_partial_test.py:all
+  test_http_client.py:2-21
+  test_http_client.py:23-37
+  test_requests.py:all
+Wrongly included: | test_http_client.py:22:5:22:31 | ControlFlowNode for Attribute() | Part of the URL of this request depends on a $@. | test_http_client.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

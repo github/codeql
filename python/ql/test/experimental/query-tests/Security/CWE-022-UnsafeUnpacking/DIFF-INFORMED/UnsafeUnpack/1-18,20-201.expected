@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  UnsafeUnpack.py:1-18
+  UnsafeUnpack.py:20-201
+Wrongly included: | UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |

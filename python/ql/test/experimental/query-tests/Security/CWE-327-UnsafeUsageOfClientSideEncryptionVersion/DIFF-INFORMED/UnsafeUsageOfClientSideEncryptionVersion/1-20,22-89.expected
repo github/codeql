@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  test.py:1-20
+  test.py:22-89
+Wrongly included: | test.py:21:9:21:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |

@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  UnsafeUnpack.py:1-200
+Wrongly included: | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | Unsafe extraction from a malicious tarball retrieved from a remote location. |

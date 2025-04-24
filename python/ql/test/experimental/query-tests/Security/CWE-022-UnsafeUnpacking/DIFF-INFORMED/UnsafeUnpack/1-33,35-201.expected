@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  UnsafeUnpack.py:1-33
+  UnsafeUnpack.py:35-201
+Wrongly included: | UnsafeUnpack.py:34:23:34:38 | ControlFlowNode for local_ziped_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |

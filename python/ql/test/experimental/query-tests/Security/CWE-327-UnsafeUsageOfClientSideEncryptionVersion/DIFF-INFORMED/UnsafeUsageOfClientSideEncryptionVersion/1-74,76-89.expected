@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  test.py:1-74
+  test.py:76-89
+Wrongly included: | test.py:75:9:75:10 | ControlFlowNode for bc | Unsafe usage of v1 version of Azure Storage client-side encryption |

@@ -1,0 +1,7 @@
+Filtering alerts to these ranges:
+  ldap2_private.py:all
+  ldap2_remote.py:all
+  ldap3_private.py:all
+  ldap3_remote.py:1-101
+  ldap3_remote.py:103-146
+Wrongly included: | ldap3_remote.py:102:18:102:21 | ControlFlowNode for host | This LDAP host is authenticated insecurely. |

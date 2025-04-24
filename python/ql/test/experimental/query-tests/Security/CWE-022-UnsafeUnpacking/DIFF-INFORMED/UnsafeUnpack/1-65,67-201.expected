@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  UnsafeUnpack.py:1-65
+  UnsafeUnpack.py:67-201
+Wrongly included: | UnsafeUnpack.py:66:23:66:37 | ControlFlowNode for compressed_file | Unsafe extraction from a malicious tarball retrieved from a remote location. |

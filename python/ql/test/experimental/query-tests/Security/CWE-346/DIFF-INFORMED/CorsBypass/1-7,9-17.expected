@@ -1,0 +1,4 @@
+Filtering alerts to these ranges:
+  Cors.py:1-7
+  Cors.py:9-17
+Wrongly included: | Cors.py:8:12:8:17 | ControlFlowNode for origin | Potentially incorrect string comparison which could lead to a CORS bypass. |
