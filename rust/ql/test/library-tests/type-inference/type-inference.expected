@@ -1008,8 +1008,10 @@ inferType
 | main.rs:932:43:935:5 | { ... } |  | file://:0:0:0:0 | Result |
 | main.rs:932:43:935:5 | { ... } | E | main.rs:925:5:926:14 | S1 |
 | main.rs:932:43:935:5 | { ... } | T | main.rs:925:5:926:14 | S1 |
+| main.rs:933:13:933:13 | x |  | main.rs:925:5:926:14 | S1 |
 | main.rs:933:17:933:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
 | main.rs:933:17:933:30 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:933:17:933:31 | TryExpr |  | main.rs:925:5:926:14 | S1 |
 | main.rs:933:28:933:29 | S1 |  | main.rs:925:5:926:14 | S1 |
 | main.rs:934:9:934:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
 | main.rs:934:9:934:22 | ...::Ok(...) | E | main.rs:925:5:926:14 | S1 |
@@ -1023,8 +1025,10 @@ inferType
 | main.rs:939:17:939:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
 | main.rs:939:17:939:30 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
 | main.rs:939:28:939:29 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:940:13:940:13 | y |  | main.rs:925:5:926:14 | S1 |
 | main.rs:940:17:940:17 | x |  | file://:0:0:0:0 | Result |
 | main.rs:940:17:940:17 | x | T | main.rs:925:5:926:14 | S1 |
+| main.rs:940:17:940:18 | TryExpr |  | main.rs:925:5:926:14 | S1 |
 | main.rs:941:9:941:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
 | main.rs:941:9:941:22 | ...::Ok(...) | E | main.rs:928:5:929:14 | S2 |
 | main.rs:941:9:941:22 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
@@ -1044,6 +1048,9 @@ inferType
 | main.rs:948:17:948:17 | x |  | file://:0:0:0:0 | Result |
 | main.rs:948:17:948:17 | x | T | file://:0:0:0:0 | Result |
 | main.rs:948:17:948:17 | x | T.T | main.rs:925:5:926:14 | S1 |
+| main.rs:948:17:948:18 | TryExpr |  | file://:0:0:0:0 | Result |
+| main.rs:948:17:948:18 | TryExpr | T | main.rs:925:5:926:14 | S1 |
+| main.rs:948:17:948:29 | ... .map(...) |  | file://:0:0:0:0 | Result |
 | main.rs:949:9:949:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
 | main.rs:949:9:949:22 | ...::Ok(...) | E | main.rs:928:5:929:14 | S2 |
 | main.rs:949:9:949:22 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
@@ -1054,11 +1061,15 @@ inferType
 | main.rs:953:69:960:5 | { ... } |  | file://:0:0:0:0 | Result |
 | main.rs:953:69:960:5 | { ... } | E | main.rs:925:5:926:14 | S1 |
 | main.rs:953:69:960:5 | { ... } | T | main.rs:953:20:953:27 | T |
+| main.rs:954:13:954:17 | value |  | main.rs:953:20:953:27 | T |
 | main.rs:954:21:954:25 | input |  | file://:0:0:0:0 | Result |
 | main.rs:954:21:954:25 | input | E | main.rs:925:5:926:14 | S1 |
 | main.rs:954:21:954:25 | input | T | main.rs:953:20:953:27 | T |
+| main.rs:954:21:954:26 | TryExpr |  | main.rs:953:20:953:27 | T |
 | main.rs:955:22:955:38 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:955:22:955:38 | ...::Ok(...) | T | main.rs:953:20:953:27 | T |
 | main.rs:955:22:958:10 | ... .and_then(...) |  | file://:0:0:0:0 | Result |
+| main.rs:955:33:955:37 | value |  | main.rs:953:20:953:27 | T |
 | main.rs:955:53:958:9 | { ... } |  | file://:0:0:0:0 | Result |
 | main.rs:955:53:958:9 | { ... } | E | main.rs:925:5:926:14 | S1 |
 | main.rs:957:13:957:34 | ...::Ok::<...>(...) |  | file://:0:0:0:0 | Result |

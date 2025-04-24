@@ -930,14 +930,14 @@ mod try_expressions {
 
     // Simple function using ? operator with same error types
     fn try_same_error() -> Result<S1, S1> {
-        let x = Result::Ok(S1)?; // $ MISSING: type=x:S1
+        let x = Result::Ok(S1)?; // $ type=x:S1
         Result::Ok(S1)
     }
 
     // Function using ? operator with different error types that need conversion
     fn try_convert_error() -> Result<S1, S2> {
         let x = Result::Ok(S1);
-        let y = x?; // $ MISSING: type=y:S1
+        let y = x?; // $ type=y:S1
         Result::Ok(S1)
     }
 
@@ -945,7 +945,7 @@ mod try_expressions {
     fn try_chained() -> Result<S1, S2> {
         let x = Result::Ok(Result::Ok(S1));
         // First ? returns Result<S1, S2>, second ? returns S1
-        let y = x?.map(|s| s)?; // $ MISSING: method=map
+        let y = x?.map(|s| s)?; // $ method=map
         Result::Ok(S1)
     }
 
