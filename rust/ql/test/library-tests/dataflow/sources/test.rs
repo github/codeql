@@ -466,6 +466,57 @@ fn test_io_file() -> std::io::Result<()> {
     Ok(())
 }
 
+async fn test_tokio_file() -> std::io::Result<()> {
+    // --- file ---
+
+    let mut file = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+
+    {
+        let mut buffer = [0u8; 100];
+        let _bytes = file.read(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    {
+        let mut buffer = Vec::<u8>::new();
+        let _bytes = file.read_to_end(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    {
+        let mut buffer = String::new();
+        let _bytes = file.read_to_string(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    {
+        let mut buffer = [0; 100];
+        file.read_exact(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    // --- misc operations ---
+
+    {
+        let mut buffer = String::new();
+        let file1 = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let file2 = tokio::fs::File::open("another_file.txt").await?; // $ MISSING: [rust/summary/taint-sources]
+        let mut reader = file1.chain(file2);
+        reader.read_to_string(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
+    }
+
+    {
+        let mut buffer = String::new();
+        let file1 = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let mut reader = file1.take(100);
+        reader.read_to_string(&mut buffer).await?;
+        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+    }
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let case = std::env::args().nth(1).unwrap_or(String::from("1")).parse::<i64>().unwrap(); // $ Alert[rust/summary/taint-sources]
@@ -511,6 +562,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_io_file...");
     match test_io_file() {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_tokio_file...");
+    match futures::executor::block_on(test_tokio_file()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
