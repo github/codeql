@@ -8,7 +8,7 @@ module AWS {
   /**
    * Gets the name of a supported AWS service.
    */
-  private string getAWSServiceName() {
+  private string getAwsServiceName() {
     result =
       [
         "EC2", "Lambda", "ECS", "EKS", "Batch", "ElasticBeanstalk", "Lightsail", "AppRunner", "S3",
@@ -31,41 +31,41 @@ module AWS {
   /**
    * Gets a node representing an import of the AWS SDK.
    */
-  private API::Node getAWSImport() { result = API::moduleImport("aws-sdk") }
+  private API::Node getAwsImport() { result = API::moduleImport("aws-sdk") }
 
   /**
    * Gets a data flow node representing an instantiation of an AWS service.
    */
   private DataFlow::Node getServiceInstantation() {
     result =
-      getAWSImport().getMember(getAWSServiceName()).getAnInstantiation().getReturn().asSource()
+      getAwsImport().getMember(getAwsServiceName()).getAnInstantiation().getReturn().asSource()
   }
 
   /**
    * Gets a node representing the AWS global config object.
    */
-  private API::Node getAWSConfig() { result = getAWSImport().getMember("config") }
+  private API::Node getAwsConfig() { result = getAwsImport().getMember("config") }
 
   /**
    * Gets a property write to the AWS config object.
    * This captures assignments to AWS.config properties.
    */
   private DataFlow::PropWrite configAssigment() {
-    result = getAWSConfig().asSource().getAPropertyWrite()
+    result = getAwsConfig().asSource().getAPropertyWrite()
   }
 
   /**
    * Gets a data flow node representing an instance of `new AWS.Credentials(accessKeyId, secretAccessKey)`.
    */
   private DataFlow::Node getCredentialsCreationNode() {
-    result = getAWSImport().getMember("Credentials").getAnInstantiation().getReturn().asSource()
+    result = getAwsImport().getMember("Credentials").getAnInstantiation().getReturn().asSource()
   }
 
   /**
    * Holds if the `i`th argument of `invk` is an object hash for `AWS.Config`.
    */
   private predicate takesConfigurationObject(DataFlow::InvokeNode invk, int i) {
-    exists(API::Node mod | mod = getAWSImport() |
+    exists(API::Node mod | mod = getAwsImport() |
       // `AWS.config.update(nd)`
       invk = mod.getMember("config").getMember("update").getACall() and
       i = 0
