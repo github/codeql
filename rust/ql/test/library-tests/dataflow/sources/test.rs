@@ -436,31 +436,31 @@ fn test_fs() -> Result<(), Box<dyn std::error::Error>> {
 
 async fn test_tokio_fs() -> Result<(), Box<dyn std::error::Error>> {
     {
-        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow="file.bin"
+        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.bin"
     }
 
     {
-        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow="file.bin"
+        let buffer: Vec<u8> = tokio::fs::read("file.bin").await?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.bin"
     }
 
     {
-        let buffer = tokio::fs::read_to_string("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(buffer); // $ MISSING: hasTaintFlow="file.txt"
+        let buffer = tokio::fs::read_to_string("file.txt").await?; // $ Alert[rust/summary/taint-sources]
+        sink(buffer); // $ hasTaintFlow="file.txt"
     }
 
     let mut read_dir = tokio::fs::read_dir("directory").await?;
     for entry in read_dir.next_entry().await? {
-        let path = entry.path(); // $ MISSING: Alert[rust/summary/taint-sources]
-        let file_name = entry.file_name(); // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(path); // $ MISSING: hasTaintFlow
-        sink(file_name); // $ MISSING: hasTaintFlow
+        let path = entry.path(); // $ Alert[rust/summary/taint-sources]
+        let file_name = entry.file_name(); // $ Alert[rust/summary/taint-sources]
+        sink(path); // $ hasTaintFlow
+        sink(file_name); // $ hasTaintFlow
     }
 
     {
-        let target = tokio::fs::read_link("symlink.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
-        sink(target); // $ MISSING: hasTaintFlow="symlink.txt"
+        let target = tokio::fs::read_link("symlink.txt").await?; // $ Alert[rust/summary/taint-sources]
+        sink(target); // $ hasTaintFlow="symlink.txt"
     }
 
     Ok(())
@@ -524,30 +524,30 @@ fn test_io_file() -> std::io::Result<()> {
 async fn test_tokio_file() -> std::io::Result<()> {
     // --- file ---
 
-    let mut file = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut file = tokio::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
 
     {
         let mut buffer = [0u8; 100];
         let _bytes = file.read(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = file.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = String::new();
         let _bytes = file.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = [0; 100];
         file.read_exact(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     {
@@ -555,35 +555,35 @@ async fn test_tokio_file() -> std::io::Result<()> {
         let v2 = file.read_i16().await?;
         let v3 = file.read_f32().await?;
         let v4 = file.read_i64_le().await?;
-        sink(v1); // $ MISSING: hasTaintFlow
-        sink(v2); // $ MISSING: hasTaintFlow
-        sink(v3); // $ MISSING: hasTaintFlow
-        sink(v4); // $ MISSING: hasTaintFlow
+        sink(v1); // $ hasTaintFlow="file.txt"
+        sink(v2); // $ hasTaintFlow="file.txt"
+        sink(v3); // $ hasTaintFlow="file.txt"
+        sink(v4); // $ hasTaintFlow="file.txt"
     }
 
     {
         let mut buffer = bytes::BytesMut::new();
         file.read_buf(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     // --- misc operations ---
 
     {
         let mut buffer = String::new();
-        let file1 = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
-        let file2 = tokio::fs::File::open("another_file.txt").await?; // $ MISSING: [rust/summary/taint-sources]
+        let file1 = tokio::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
+        let file2 = tokio::fs::File::open("another_file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.chain(file2);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt" hasTaintFlow="another_file.txt"
     }
 
     {
         let mut buffer = String::new();
-        let file1 = tokio::fs::File::open("file.txt").await?; // $ MISSING: Alert[rust/summary/taint-sources]
+        let file1 = tokio::fs::File::open("file.txt").await?; // $ Alert[rust/summary/taint-sources]
         let mut reader = file1.take(100);
         reader.read_to_string(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow="file.txt"
+        sink(&buffer); // $ hasTaintFlow="file.txt"
     }
 
     Ok(())

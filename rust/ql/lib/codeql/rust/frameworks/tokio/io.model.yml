@@ -46,3 +46,6 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::read_f32_le", "Argument[self]", "ReturnValue.Future.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::read_f64", "Argument[self]", "ReturnValue.Future.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::read_f64_le", "Argument[self]", "ReturnValue.Future.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio", "crate::io::util::async_read_ext::AsyncReadExt::take", "Argument[self]", "ReturnValue", "taint", "manual"]
