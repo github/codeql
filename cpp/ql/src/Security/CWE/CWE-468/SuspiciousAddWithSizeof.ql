@@ -24,6 +24,7 @@ private predicate isCharSzPtrExpr(Expr e) {
 
 from Expr sizeofExpr, Expr e
 where
+  not any(Compilation c).buildModeNone() and
   // If we see an addWithSizeof then we expect the type of
   // the pointer expression to be `char*` or `void*`. Otherwise it
   // is probably a mistake.
