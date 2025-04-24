@@ -415,3 +415,109 @@
 
     app.use(jwt({ secret: secretKey })); // $ Sink
 })();
+
+
+(function(usr, passwd) {
+    const AWS = require("aws-sdk");
+
+    const ec2 = new AWS.EC2({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const lambda = new AWS.Lambda({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const ecs = new AWS.ECS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const eks = new AWS.EKS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const batch = new AWS.Batch({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const elasticbeanstalk = new AWS.ElasticBeanstalk({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const lightsail = new AWS.Lightsail({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const apprunner = new AWS.AppRunner({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const s3 = new AWS.S3({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const efs = new AWS.EFS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const glacier = new AWS.Glacier({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const s3control = new AWS.S3Control({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const storagegateway = new AWS.StorageGateway({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const backup = new AWS.Backup({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const dynamodb = new AWS.DynamoDB({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const dynamodbstreams = new AWS.DynamoDBStreams({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const rds = new AWS.RDS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const redshift = new AWS.Redshift({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const elasticache = new AWS.ElastiCache({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const neptune = new AWS.Neptune({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const qldb = new AWS.QLDB({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const athena = new AWS.Athena({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const route53 = new AWS.Route53({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cloudfront = new AWS.CloudFront({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const apigateway = new AWS.APIGateway({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const apigatewayv2 = new AWS.ApiGatewayV2({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const directconnect = new AWS.DirectConnect({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const globalaccelerator = new AWS.GlobalAccelerator({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cloudwatch = new AWS.CloudWatch({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cloudformation = new AWS.CloudFormation({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cloudtrail = new AWS.CloudTrail({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const config = new AWS.Config({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ Alert
+    const organizations = new AWS.Organizations({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const servicecatalog = new AWS.ServiceCatalog({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const ssm = new AWS.SSM({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const resourcegroups = new AWS.ResourceGroups({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const iam = new AWS.IAM({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cognitoidentity = new AWS.CognitoIdentity({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const guardduty = new AWS.GuardDuty({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const inspector = new AWS.Inspector({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const kms = new AWS.KMS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const secretsmanager = new AWS.SecretsManager({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const securityhub = new AWS.SecurityHub({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const sts = new AWS.STS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const waf = new AWS.WAF({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const wafregional = new AWS.WAFRegional({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const sagemaker = new AWS.SageMaker({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const rekognition = new AWS.Rekognition({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const comprehend = new AWS.Comprehend({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const textract = new AWS.Textract({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const translate = new AWS.Translate({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const polly = new AWS.Polly({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const lexmodelbuildingservice = new AWS.LexModelBuildingService({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const machinelearning = new AWS.MachineLearning({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const personalize = new AWS.Personalize({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const emr = new AWS.EMR({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const kinesis = new AWS.Kinesis({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const kinesisanalytics = new AWS.KinesisAnalytics({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const kinesisvideo = new AWS.KinesisVideo({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const quicksight = new AWS.QuickSight({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const datapipeline = new AWS.DataPipeline({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const glue = new AWS.Glue({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const lakeformation = new AWS.LakeFormation({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const sns = new AWS.SNS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const sqs = new AWS.SQS({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const ses = new AWS.SES({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const pinpoint = new AWS.Pinpoint({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const chime = new AWS.Chime({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const connect = new AWS.Connect({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const amplify = new AWS.Amplify({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const appsync = new AWS.AppSync({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const devicefarm = new AWS.DeviceFarm({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const iotanalytics = new AWS.IoTAnalytics({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const iotevents = new AWS.IoTEvents({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const iot1clickdevicesservice = new AWS.IoT1ClickDevicesService({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const iotsitewise = new AWS.IoTSiteWise({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const mediaconvert = new AWS.MediaConvert({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const medialive = new AWS.MediaLive({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const mediapackage = new AWS.MediaPackage({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const mediastore = new AWS.MediaStore({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const elastictranscoder = new AWS.ElasticTranscoder({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const eventbridge = new AWS.EventBridge({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const mq = new AWS.MQ({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const swf = new AWS.SWF({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING: Alert
+    const stepfunctions = new AWS.StepFunctions({accessKeyId: "AccessID1", secretAccessKey: "NotSoSecretKey1"}); // $ MISSING:Alert
+
+    AWS.config.accessKeyId = "SOMEACCESSKEY"; // $ MISSING: Alert
+    AWS.config.secretAccessKey = "hgfedcba"; // $ MISSING: Alert
+    
+    const creds = new AWS.Credentials(
+        "SOMEACCESSKEY", // $ MISSING: Alert
+        "hgfedcba" // $ MISSING: Alert
+    ); 
+    AWS.config.setCredentials(creds); 
+    
+    AWS.config.update({
+      accessKeyId: "SOMEACCESSKEY", // $ Alert
+      secretAccessKey: "hgfedcba" // $ Alert
+    });
+})();
