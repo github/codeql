@@ -425,7 +425,7 @@ func installDependencies(workspace project.GoWorkspace) {
 	} else {
 		if workspace.Modules == nil {
 			project.InitGoModForLegacyProject(workspace.BaseDir)
-			workspace.Modules = project.LoadGoModules(true, []string{filepath.Join(workspace.BaseDir, "go.mod")})
+			workspace.Modules = project.LoadGoModules([]string{filepath.Join(workspace.BaseDir, "go.mod")})
 		}
 
 		// get dependencies for all modules
