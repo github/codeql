@@ -1,0 +1,11 @@
+ql/actions/ql/src/Debug/partial.ql
+ql/actions/ql/src/experimental/Security/CWE-074/OutputClobberingHigh.ql
+ql/actions/ql/src/experimental/Security/CWE-078/CommandInjectionCritical.ql
+ql/actions/ql/src/experimental/Security/CWE-078/CommandInjectionMedium.ql
+ql/actions/ql/src/experimental/Security/CWE-088/ArgumentInjectionCritical.ql
+ql/actions/ql/src/experimental/Security/CWE-088/ArgumentInjectionMedium.ql
+ql/actions/ql/src/experimental/Security/CWE-200/SecretExfiltration.ql
+ql/actions/ql/src/experimental/Security/CWE-284/CodeExecutionOnSelfHostedRunner.ql
+ql/actions/ql/src/experimental/Security/CWE-829/ArtifactPoisoningPathTraversal.ql
+ql/actions/ql/src/experimental/Security/CWE-829/UnversionedImmutableAction.ql
+ql/actions/ql/src/experimental/Security/CWE-918/RequestForgery.ql
