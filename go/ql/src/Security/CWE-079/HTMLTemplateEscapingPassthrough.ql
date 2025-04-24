@@ -14,11 +14,13 @@
 import go
 
 /**
- * A name of a type that will not be escaped when passed to
- * a `html/template` template.
+ * A type that will not be escaped when passed to a `html/template` template.
  */
-class PassthroughTypeName extends string {
-  PassthroughTypeName() { this = ["HTML", "HTMLAttr", "JS", "JSStr", "CSS", "Srcset", "URL"] }
+class UnescapedType extends Type {
+  UnescapedType() {
+    this.hasQualifiedName("html/template",
+      ["CSS", "HTML", "HTMLAttr", "JS", "JSStr", "Srcset", "URL"])
+  }
 }
 
 /**
@@ -42,7 +44,7 @@ predicate isSinkToTemplateExec(DataFlow::Node sink, DataFlow::CallNode call) {
 module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateConfigSig {
   private newtype TConversionState =
     TUnconverted() or
-    TConverted(PassthroughTypeName x)
+    TConverted(UnescapedType unescapedType)
 
   /**
    * Flow state for tracking whether a conversion to a passthrough type has occurred.
@@ -50,14 +52,14 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
   class FlowState extends TConversionState {
     predicate isBeforeConversion() { this instanceof TUnconverted }
 
-    predicate isAfterConversion(PassthroughTypeName x) { this = TConverted(x) }
+    predicate isAfterConversion(UnescapedType unescapedType) { this = TConverted(unescapedType) }
 
     /** Gets a textual representation of this element. */
     string toString() {
       this.isBeforeConversion() and result = "Unconverted"
       or
-      exists(PassthroughTypeName x | this.isAfterConversion(x) |
-        result = "Converted to template." + x
+      exists(UnescapedType unescapedType | this.isAfterConversion(unescapedType) |
+        result = "Converted to " + unescapedType.getQualifiedName()
       )
     }
   }
@@ -82,13 +84,13 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
   predicate isAdditionalFlowStep(
     DataFlow::Node pred, FlowState predState, DataFlow::Node succ, FlowState succState
   ) {
-    exists(ConversionExpr conversion, PassthroughTypeName name |
+    exists(ConversionExpr conversion, UnescapedType unescapedType |
       // If not yet converted, look for a conversion to a passthrough type
       predState.isBeforeConversion() and
-      succState.isAfterConversion(name) and
+      succState.isAfterConversion(unescapedType) and
       succ.(DataFlow::TypeCastNode).getExpr() = conversion and
       pred.asExpr() = conversion.getOperand() and
-      conversion.getType().getUnderlyingType*().hasQualifiedName("html/template", name)
+      conversion.getType().getUnderlyingType*() = unescapedType
     )
   }
 }
@@ -100,11 +102,10 @@ import UntrustedToTemplateExecWithConversionFlow::PathGraph
 
 from
   UntrustedToTemplateExecWithConversionFlow::PathNode untrustedSource,
-  UntrustedToTemplateExecWithConversionFlow::PathNode templateExecCall,
-  PassthroughTypeName targetTypeName
+  UntrustedToTemplateExecWithConversionFlow::PathNode templateExecCall, UnescapedType unescapedType
 where
   UntrustedToTemplateExecWithConversionFlow::flowPath(untrustedSource, templateExecCall) and
-  templateExecCall.getState().isAfterConversion(targetTypeName)
+  templateExecCall.getState().isAfterConversion(unescapedType)
 select templateExecCall.getNode(), untrustedSource, templateExecCall,
-  "Data from an $@ will not be auto-escaped because it was converted to template." + targetTypeName,
-  untrustedSource.getNode(), "untrusted source"
+  "Data from an $@ will not be auto-escaped because it was converted to template." +
+    unescapedType.getName(), untrustedSource.getNode(), "untrusted source"
