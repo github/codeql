@@ -72,15 +72,15 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
     sink(remote_string4); // $ hasTaintFlow="example.com"
 
     let remote_string5 = reqwest::get("example.com").await?.text().await?; // $ Alert[rust/summary/taint-sources]
-    sink(remote_string5); // $ MISSING: hasTaintFlow
+    sink(remote_string5); // $ hasTaintFlow="example.com"
 
     let remote_string6 = reqwest::get("example.com").await?.bytes().await?; // $ Alert[rust/summary/taint-sources]
-    sink(remote_string6); // $ MISSING: hasTaintFlow
+    sink(remote_string6); // $ hasTaintFlow="example.com"
 
     let mut request1 = reqwest::get("example.com").await?; // $ Alert[rust/summary/taint-sources]
-    sink(request1.chunk().await?.unwrap()); // $ MISSING: hasTaintFlow
+    sink(request1.chunk().await?.unwrap()); // $ hasTaintFlow="example.com"
     while let Some(chunk) = request1.chunk().await? {
-        sink(chunk); // $ MISSING: hasTaintFlow
+        sink(chunk); // $ MISSING: hasTaintFlow="example.com"
     }
 
     Ok(())
