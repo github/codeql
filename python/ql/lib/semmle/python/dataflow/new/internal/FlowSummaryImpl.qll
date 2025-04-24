@@ -62,21 +62,23 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    cs = TListElementContent() and result = "ListElement" and arg = ""
-    or
-    cs = TSetElementContent() and result = "SetElement" and arg = ""
-    or
-    exists(int index |
-      cs = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+    exists(Content c | cs.isSingleton(c) |
+      c = TListElementContent() and result = "ListElement" and arg = ""
+      or
+      c = TSetElementContent() and result = "SetElement" and arg = ""
+      or
+      exists(int index |
+        c = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+      )
+      or
+      exists(string key |
+        c = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
+      )
+      or
+      c = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+      or
+      exists(string attr | c = TAttributeContent(attr) and result = "Attribute" and arg = attr)
     )
-    or
-    exists(string key |
-      cs = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
-    )
-    or
-    cs = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
-    or
-    exists(string attr | cs = TAttributeContent(attr) and result = "Attribute" and arg = attr)
   }
 
   bindingset[token]
@@ -132,27 +134,35 @@ module Private {
     predicate withContent = SC::withContent/1;
 
     /** Gets a summary component that represents a list element. */
-    SummaryComponent listElement() { result = content(any(ListElementContent c)) }
+    SummaryComponent listElement() { result = content(TSingletonContent(TListElementContent())) }
 
     /** Gets a summary component that represents a set element. */
-    SummaryComponent setElement() { result = content(any(SetElementContent c)) }
+    SummaryComponent setElement() { result = content(TSingletonContent(TSetElementContent())) }
 
     /** Gets a summary component that represents a tuple element. */
     SummaryComponent tupleElement(int index) {
-      exists(TupleElementContent c | c.getIndex() = index and result = content(c))
+      exists(TupleElementContent c |
+        c.getIndex() = index and result = content(TSingletonContent(c))
+      )
     }
 
     /** Gets a summary component that represents a dictionary element. */
     SummaryComponent dictionaryElement(string key) {
-      exists(DictionaryElementContent c | c.getKey() = key and result = content(c))
+      exists(DictionaryElementContent c |
+        c.getKey() = key and result = content(TSingletonContent(c))
+      )
     }
 
     /** Gets a summary component that represents a dictionary element at any key. */
-    SummaryComponent dictionaryElementAny() { result = content(any(DictionaryElementAnyContent c)) }
+    SummaryComponent dictionaryElementAny() {
+      result = content(TSingletonContent(TDictionaryElementAnyContent()))
+    }
 
     /** Gets a summary component that represents an attribute element. */
     SummaryComponent attribute(string attr) {
-      exists(AttributeContent c | c.getAttribute() = attr and result = content(c))
+      exists(AttributeContent c |
+        c.getAttribute() = attr and result = content(TSingletonContent(c))
+      )
     }
 
     /** Gets a summary component that represents the return value of a call. */
