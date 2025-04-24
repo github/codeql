@@ -29,6 +29,8 @@ private module Impl = Make<FsInput>;
 
 class Container = Impl::Container;
 
+module Folder = Impl::Folder;
+
 /** A folder. */
 class Folder extends Container, Impl::Folder {
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
