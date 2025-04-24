@@ -78,6 +78,7 @@ async fn test_reqwest() -> Result<(), reqwest::Error> {
     sink(remote_string6); // $ MISSING: hasTaintFlow
 
     let mut request1 = reqwest::get("example.com").await?; // $ Alert[rust/summary/taint-sources]
+    sink(request1.chunk().await?.unwrap()); // $ MISSING: hasTaintFlow
     while let Some(chunk) = request1.chunk().await? {
         sink(chunk); // $ MISSING: hasTaintFlow
     }
@@ -269,6 +270,7 @@ fn test_io_stdin() -> std::io::Result<()> {
 
     {
         let mut reader_split = std::io::BufReader::new(std::io::stdin()).split(b','); // $ Alert[rust/summary/taint-sources]
+        sink(reader_split.next().unwrap().unwrap()); // $ MISSING: hasTaintFlow
         while let Some(chunk) = reader_split.next() {
             sink(chunk.unwrap()); // $ MISSING: hasTaintFlow
         }
@@ -380,6 +382,7 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
 
     {
         let mut reader_split = tokio::io::BufReader::new(tokio::io::stdin()).split(b','); // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(reader_split.next_segment().await?.unwrap()); // $ MISSING: hasTaintFlow
         while let Some(chunk) = reader_split.next_segment().await? {
             sink(chunk); // $ MISSING: hasTaintFlow
         }
@@ -388,8 +391,9 @@ async fn test_tokio_stdin() -> Result<(), Box<dyn std::error::Error>> {
     {
         let reader = tokio::io::BufReader::new(tokio::io::stdin()); // $ MISSING: Alert[rust/summary/taint-sources]
         let mut lines = reader.lines();
+        sink(lines.next_line().await?.unwrap()); // $ MISSING: hasTaintFlow
         while let Some(line) = lines.next_line().await? {
-            sink(line); // $ hasTai
+            sink(line); // $ MISSING: hasTaintFlow
         }
     }
 
