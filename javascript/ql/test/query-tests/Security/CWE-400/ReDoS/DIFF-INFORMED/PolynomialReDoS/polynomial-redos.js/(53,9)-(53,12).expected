@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  polynomial-redos.js:(53,9)-(53,12)
+Wrongly included: | polynomial-redos.js:53:2:53:28 | /(B|Y)+ ... ainted) | This $@ that depends on $@ may run slow on strings with many repetitions of 'B'. | polynomial-redos.js:53:3:53:8 | (B|Y)+ | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

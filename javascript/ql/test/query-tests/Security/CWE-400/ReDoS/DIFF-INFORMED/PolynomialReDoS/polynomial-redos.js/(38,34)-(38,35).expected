@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  polynomial-redos.js:(38,34)-(38,35)
+Wrongly included: | polynomial-redos.js:38:2:38:38 | tainted ... )".*>/) | This $@ that depends on $@ may run slow on strings starting with '<' and with many repetitions of '<'. | polynomial-redos.js:38:18:38:19 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

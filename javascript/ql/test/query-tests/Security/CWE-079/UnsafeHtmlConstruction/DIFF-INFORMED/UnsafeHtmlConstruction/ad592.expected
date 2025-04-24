@@ -1,0 +1,13 @@
+Filtering alerts to these ranges:
+  jquery-plugin.js:all
+  lib/package.json:all
+  lib/src/MyNode.ts:all
+  lib2/index.ts:all
+  lib2/package.json:all
+  lib2/src/MyNode.ts:all
+  main.js:1-10
+  main.js:13-15
+  main.js:17-119
+  package.json:all
+  typed.ts:all
+Wrongly included: | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:16:21:16:35 | xml.cloneNode() | cross-site scripting |

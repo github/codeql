@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  polynomial-redos.js:(38,18)-(38,19)
+Wrongly included: | polynomial-redos.js:38:2:38:38 | tainted ... )".*>/) | This $@ that depends on $@ may run slow on strings starting with '<href="!"' and with many repetitions of 'href="!"'. | polynomial-redos.js:38:34:38:35 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |

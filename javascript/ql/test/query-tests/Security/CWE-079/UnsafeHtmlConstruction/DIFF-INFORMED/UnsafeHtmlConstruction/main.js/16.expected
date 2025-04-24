@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  main.js:16
+Wrongly included: | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:17:48:17:50 | tmp | cross-site scripting |

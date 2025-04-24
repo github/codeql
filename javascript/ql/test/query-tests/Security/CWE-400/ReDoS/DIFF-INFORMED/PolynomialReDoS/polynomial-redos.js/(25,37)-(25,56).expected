@@ -1,0 +1,3 @@
+Filtering alerts to these ranges:
+  polynomial-redos.js:(25,37)-(25,56)
+Wrongly included: | polynomial-redos.js:25:2:25:68 | tainted ... (.*)$/) | This $@ that depends on $@ may run slow on strings starting with '-\t\t' and with many repetitions of '='. | polynomial-redos.js:25:63:25:64 | .* | regular expression | polynomial-redos.js:5:16:5:32 | req.query.tainted | a user-provided value |
