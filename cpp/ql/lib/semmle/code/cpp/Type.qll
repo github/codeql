@@ -92,8 +92,9 @@ class Type extends Locatable, @type {
   /**
    * Gets this type after typedefs have been resolved.
    *
-   * The result of this predicate will be the type itself, except in the case of a TypedefType or a Decltype,
-   * in which case the result will be type which results from (possibly recursively) resolving typedefs.
+   * The result of this predicate will be the type itself, except in the case of a TypedefType, a Decltype,
+   * or a TypeofType, in which case the result will be type which results from (possibly recursively)
+   * resolving typedefs.
    */
   pragma[nomagic]
   Type getUnderlyingType() { result = this }
@@ -1117,18 +1118,20 @@ class DerivedType extends Type, @derivedtype {
  * decltype(a) b;
  * ```
  */
-class Decltype extends Type, @decltype {
+class Decltype extends Type {
+  Decltype() { decltypes(underlyingElement(this), _, 0, _, _) }
+
   override string getAPrimaryQlClass() { result = "Decltype" }
 
   /**
-   * The expression whose type is being obtained by this decltype.
+   * Gets the expression whose type is being obtained by this decltype.
    */
-  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _) }
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
 
   /**
-   * The type immediately yielded by this decltype.
+   * Gets the type immediately yielded by this decltype.
    */
-  Type getBaseType() { decltypes(underlyingElement(this), _, unresolveElement(result), _) }
+  Type getBaseType() { decltypes(underlyingElement(this), _, _, unresolveElement(result), _) }
 
   /**
    * Whether an extra pair of parentheses around the expression would change the semantics of this decltype.
@@ -1142,7 +1145,7 @@ class Decltype extends Type, @decltype {
    * ```
    * Please consult the C++11 standard for more details.
    */
-  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, true) }
+  predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, _, true) }
 
   override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
 
@@ -1168,6 +1171,215 @@ class Decltype extends Type, @decltype {
 
   override string explain() {
     result = "decltype resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofType extends Type {
+  TypeofType() {
+    decltypes(underlyingElement(this), _, 1, _, _) or
+    type_operators(underlyingElement(this), _, 0, _)
+  }
+
+  /**
+   * Gets the type immediately yielded by this typeof.
+   */
+  Type getBaseType() {
+    decltypes(underlyingElement(this), _, _, unresolveElement(result), _)
+    or
+    type_operators(underlyingElement(this), _, _, unresolveElement(result))
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string toString() { result = "typeof(...)" }
+
+  override string getName() { none() }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result = "typeof resulting in {" + this.getBaseType().explain() + "}"
+  }
+
+  override predicate involvesReference() { this.getBaseType().involvesReference() }
+
+  override predicate involvesTemplateParameter() { this.getBaseType().involvesTemplateParameter() }
+
+  override predicate isDeeplyConst() { this.getBaseType().isDeeplyConst() }
+
+  override predicate isDeeplyConstBelow() { this.getBaseType().isDeeplyConstBelow() }
+
+  override Specifier internal_getAnAdditionalSpecifier() {
+    result = this.getBaseType().getASpecifier()
+  }
+}
+
+/**
+ * An instance of the C23 `typeof` or `typeof_unqual` operator taking an expression
+ * as its argument. For example:
+ * ```
+ * int a;
+ * typeof(a) b;
+ * ```
+ */
+class TypeofExprType extends TypeofType {
+  TypeofExprType() { decltypes(underlyingElement(this), _, 1, _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofExprType" }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Expr getExpr() { decltypes(underlyingElement(this), unresolveElement(result), _, _, _) }
+
+  override Location getLocation() { result = this.getExpr().getLocation() }
+}
+
+/**
+ * A type obtained by C23 `typeof` or `typeof_unqual` operator taking a type as its
+ * argument. For example:
+ * ```
+ * typeof_unqual(const int) b;
+ * ```
+ */
+class TypeofTypeType extends TypeofType {
+  TypeofTypeType() { type_operators(underlyingElement(this), _, 0, _) }
+
+  /**
+   * Gets the expression whose type is being obtained by this typeof.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string getAPrimaryQlClass() { result = "TypeofTypeType" }
+
+  override string toString() { result = "typeof(...)" }
+}
+
+/**
+ * A type obtained by applying a type transforming intrinsic. For example:
+ * ```
+ * __make_unsigned(int) x;
+ * ```
+ */
+class IntrinsicTransformedType extends Type {
+  int intrinsic;
+
+  IntrinsicTransformedType() {
+    type_operators(underlyingElement(this), _, intrinsic, _) and
+    intrinsic in [1 .. 19]
+  }
+
+  override string getAPrimaryQlClass() { result = "IntrinsicTransformedType" }
+
+  override string toString() { result = this.getIntrinsicName() + "(...)" }
+
+  /**
+   * Gets the type immediately yielded by this transformation.
+   */
+  Type getBaseType() { type_operators(underlyingElement(this), _, _, unresolveElement(result)) }
+
+  /**
+   * Gets the type that is transformed.
+   */
+  Type getType() { type_operators(underlyingElement(this), unresolveElement(result), _, _) }
+
+  /**
+   * Gets the name of the intrinsic used to transform the type.
+   */
+  string getIntrinsicName() {
+    intrinsic = 1 and result = "__underlying_type"
+    or
+    intrinsic = 2 and result = "__bases"
+    or
+    intrinsic = 3 and result = "__direct_bases"
+    or
+    intrinsic = 4 and result = "__add_lvalue_reference"
+    or
+    intrinsic = 5 and result = "__add_pointer"
+    or
+    intrinsic = 6 and result = "__add_rvalue_reference"
+    or
+    intrinsic = 7 and result = "__decay"
+    or
+    intrinsic = 8 and result = "__make_signed"
+    or
+    intrinsic = 9 and result = "__make_unsigned"
+    or
+    intrinsic = 10 and result = "__remove_all_extents"
+    or
+    intrinsic = 11 and result = "__remove_const"
+    or
+    intrinsic = 12 and result = "__remove_cv"
+    or
+    intrinsic = 13 and result = "__remove_cvref"
+    or
+    intrinsic = 14 and result = "__remove_extent"
+    or
+    intrinsic = 15 and result = "__remove_pointer"
+    or
+    intrinsic = 16 and result = "__remove_reference_t"
+    or
+    intrinsic = 17 and result = "__remove_restrict"
+    or
+    intrinsic = 18 and result = "__remove_volatile"
+    or
+    intrinsic = 19 and result = "__remove_reference"
+  }
+
+  override Type getUnderlyingType() { result = this.getBaseType().getUnderlyingType() }
+
+  override Type stripTopLevelSpecifiers() { result = this.getBaseType().stripTopLevelSpecifiers() }
+
+  override Type stripType() { result = this.getBaseType().stripType() }
+
+  override Type resolveTypedefs() { result = this.getBaseType().resolveTypedefs() }
+
+  override string getName() { none() }
+
+  override int getSize() { result = this.getBaseType().getSize() }
+
+  override int getAlignment() { result = this.getBaseType().getAlignment() }
+
+  override int getPointerIndirectionLevel() {
+    result = this.getBaseType().getPointerIndirectionLevel()
+  }
+
+  override string explain() {
+    result =
+      "application of " + this.getIntrinsicName() + " resulting in {" + this.getBaseType().explain()
+        + "}"
   }
 
   override predicate involvesReference() { this.getBaseType().involvesReference() }

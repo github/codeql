@@ -1,5 +1,5 @@
 name: codeql/cpp-all
-version: 4.1.1-dev
+version: 4.2.1-dev
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
@@ -16,6 +16,7 @@ dependencies:
   codeql/xml: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+  - ext/generated/*.model.yml
   - ext/deallocation/*.model.yml
   - ext/allocation/*.model.yml
 warnOnImplicitThis: true

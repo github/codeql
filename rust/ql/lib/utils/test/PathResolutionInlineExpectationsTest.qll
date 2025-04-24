@@ -18,7 +18,7 @@ private module ResolveTest implements TestSig {
   private predicate commmentAt(string text, string filepath, int line) {
     exists(Comment c |
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
-      c.getCommentText() = text
+      c.getCommentText().trim() = text
     )
   }
 
