@@ -477,7 +477,11 @@ codeql::ErrorExpr ExprTranslator::translateErrorExpr(const swift::ErrorExpr& exp
 void ExprTranslator::fillClosureExpr(const swift::AbstractClosureExpr& expr,
                                      codeql::ClosureExpr& entry) {
   entry.body = dispatcher.fetchLabel(expr.getBody());
-  entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  if (expr.getCaptureInfo().hasBeenComputed()) {
+    entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  } else {
+    LOG_ERROR("Unable to get CaptureInfo");
+  }
   CODEQL_EXPECT_OR(return, expr.getParameters(), "AbstractClosureExpr has null getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
 }
