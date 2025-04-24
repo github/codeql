@@ -1005,7 +1005,85 @@ inferType
 | main.rs:918:15:918:16 | &x |  | file://:0:0:0:0 | & |
 | main.rs:918:15:918:16 | &x | &T | main.rs:894:5:894:13 | S |
 | main.rs:918:16:918:16 | x |  | main.rs:894:5:894:13 | S |
-| main.rs:924:5:924:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:5:925:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:20:925:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:41:925:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:932:43:935:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:932:43:935:5 | { ... } | E | main.rs:925:5:926:14 | S1 |
+| main.rs:932:43:935:5 | { ... } | T | main.rs:925:5:926:14 | S1 |
+| main.rs:933:17:933:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:933:17:933:30 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:933:28:933:29 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:934:9:934:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:934:9:934:22 | ...::Ok(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:934:9:934:22 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:934:20:934:21 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:938:46:942:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:938:46:942:5 | { ... } | E | main.rs:928:5:929:14 | S2 |
+| main.rs:938:46:942:5 | { ... } | T | main.rs:925:5:926:14 | S1 |
+| main.rs:939:13:939:13 | x |  | file://:0:0:0:0 | Result |
+| main.rs:939:13:939:13 | x | T | main.rs:925:5:926:14 | S1 |
+| main.rs:939:17:939:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:939:17:939:30 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:939:28:939:29 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:940:17:940:17 | x |  | file://:0:0:0:0 | Result |
+| main.rs:940:17:940:17 | x | T | main.rs:925:5:926:14 | S1 |
+| main.rs:941:9:941:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:941:9:941:22 | ...::Ok(...) | E | main.rs:928:5:929:14 | S2 |
+| main.rs:941:9:941:22 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:941:20:941:21 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:945:40:950:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:945:40:950:5 | { ... } | E | main.rs:928:5:929:14 | S2 |
+| main.rs:945:40:950:5 | { ... } | T | main.rs:925:5:926:14 | S1 |
+| main.rs:946:13:946:13 | x |  | file://:0:0:0:0 | Result |
+| main.rs:946:13:946:13 | x | T | file://:0:0:0:0 | Result |
+| main.rs:946:13:946:13 | x | T.T | main.rs:925:5:926:14 | S1 |
+| main.rs:946:17:946:42 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:946:17:946:42 | ...::Ok(...) | T | file://:0:0:0:0 | Result |
+| main.rs:946:17:946:42 | ...::Ok(...) | T.T | main.rs:925:5:926:14 | S1 |
+| main.rs:946:28:946:41 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:946:28:946:41 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:946:39:946:40 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:948:17:948:17 | x |  | file://:0:0:0:0 | Result |
+| main.rs:948:17:948:17 | x | T | file://:0:0:0:0 | Result |
+| main.rs:948:17:948:17 | x | T.T | main.rs:925:5:926:14 | S1 |
+| main.rs:949:9:949:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:949:9:949:22 | ...::Ok(...) | E | main.rs:928:5:929:14 | S2 |
+| main.rs:949:9:949:22 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:949:20:949:21 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:953:30:953:34 | input |  | file://:0:0:0:0 | Result |
+| main.rs:953:30:953:34 | input | E | main.rs:925:5:926:14 | S1 |
+| main.rs:953:30:953:34 | input | T | main.rs:953:20:953:27 | T |
+| main.rs:953:69:960:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:953:69:960:5 | { ... } | E | main.rs:925:5:926:14 | S1 |
+| main.rs:953:69:960:5 | { ... } | T | main.rs:953:20:953:27 | T |
+| main.rs:954:21:954:25 | input |  | file://:0:0:0:0 | Result |
+| main.rs:954:21:954:25 | input | E | main.rs:925:5:926:14 | S1 |
+| main.rs:954:21:954:25 | input | T | main.rs:953:20:953:27 | T |
+| main.rs:955:22:955:38 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:955:22:958:10 | ... .and_then(...) |  | file://:0:0:0:0 | Result |
+| main.rs:955:53:958:9 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:955:53:958:9 | { ... } | E | main.rs:925:5:926:14 | S1 |
+| main.rs:957:13:957:34 | ...::Ok::<...>(...) |  | file://:0:0:0:0 | Result |
+| main.rs:957:13:957:34 | ...::Ok::<...>(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:959:9:959:23 | ...::Err(...) |  | file://:0:0:0:0 | Result |
+| main.rs:959:9:959:23 | ...::Err(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:959:9:959:23 | ...::Err(...) | T | main.rs:953:20:953:27 | T |
+| main.rs:959:21:959:22 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:963:37:963:52 | try_same_error(...) |  | file://:0:0:0:0 | Result |
+| main.rs:963:37:963:52 | try_same_error(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:963:37:963:52 | try_same_error(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:967:37:967:55 | try_convert_error(...) |  | file://:0:0:0:0 | Result |
+| main.rs:967:37:967:55 | try_convert_error(...) | E | main.rs:928:5:929:14 | S2 |
+| main.rs:967:37:967:55 | try_convert_error(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:971:37:971:49 | try_chained(...) |  | file://:0:0:0:0 | Result |
+| main.rs:971:37:971:49 | try_chained(...) | E | main.rs:928:5:929:14 | S2 |
+| main.rs:971:37:971:49 | try_chained(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:975:37:975:63 | try_complex(...) |  | file://:0:0:0:0 | Result |
+| main.rs:975:37:975:63 | try_complex(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:975:37:975:63 | try_complex(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:975:49:975:62 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:975:49:975:62 | ...::Ok(...) | E | main.rs:925:5:926:14 | S1 |
+| main.rs:975:49:975:62 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:975:60:975:61 | S1 |  | main.rs:925:5:926:14 | S1 |
+| main.rs:983:5:983:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:984:5:984:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:984:20:984:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:984:41:984:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

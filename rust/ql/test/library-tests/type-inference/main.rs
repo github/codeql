@@ -928,85 +928,51 @@ mod try_expressions {
     #[derive(Debug)]
     struct S2;
 
-    #[derive(Debug)]
-    enum MyResult<T, E> {
-        MyOk(T),
-        MyErr(E),
-    }
-
-    impl<T, E> MyResult<T, E> {
-        fn map<U, F>(self, op: F) -> MyResult<U, E>
-        where
-            F: FnOnce(T) -> U,
-        {
-            match self {
-                MyResult::MyOk(t) => MyResult::MyOk(op(t)),
-                MyResult::MyErr(e) => MyResult::MyErr(e),
-            }
-        }
-
-        fn and_then<U, F>(self, op: F) -> MyResult<U, E>
-        where
-            F: FnOnce(T) -> MyResult<U, E>,
-        {
-            match self {
-                MyResult::MyOk(t) => op(t),
-                MyResult::MyErr(e) => MyResult::MyErr(e),
-            }
-        }
-    }
-
-    // For the try operator to work, we need to implement From<E> for OtherE
-    impl From<S1> for S2 {
-        fn from(s: S1) -> S2 {
-            S2
-        }
-    }
-
     // Simple function using ? operator with same error types
-    fn try_same_error() -> MyResult<S1, S1> {
-        let x = MyResult::MyOk(S1)?; // $ type=x:S1
-        MyResult::MyOk(x)
+    fn try_same_error() -> Result<S1, S1> {
+        let x = Result::Ok(S1)?; // $ MISSING: type=x:S1
+        Result::Ok(S1)
     }
 
     // Function using ? operator with different error types that need conversion
-    fn try_convert_error() -> MyResult<S1, S2> {
-        let x: MyResult<S1, S1> = MyResult::MyOk(S1);
-        let y = x?; // $ type=y:S1
-        MyResult::MyOk(y)
+    fn try_convert_error() -> Result<S1, S2> {
+        let x = Result::Ok(S1);
+        let y = x?; // $ MISSING: type=y:S1
+        Result::Ok(S1)
     }
 
     // Chained ? operations
-    fn try_chained() -> MyResult<S1, S2> {
-        let x: MyResult<MyResult<S1, S1>, S1> = MyResult::MyOk(MyResult::MyOk(S1));
-        let y = x?.map(|s| s)?; // First ? returns MyResult<S1, S1>, second ? returns S1
-        MyResult::MyOk(y)
+    fn try_chained() -> Result<S1, S2> {
+        let x = Result::Ok(Result::Ok(S1));
+        // First ? returns Result<S1, S2>, second ? returns S1
+        let y = x?.map(|s| s)?; // $ MISSING: method=map
+        Result::Ok(S1)
     }
 
     // Function that uses ? with closures and complex error cases
-    fn try_complex<T: Debug>(input: MyResult<T, S1>) -> MyResult<T, S2> {
-        let value = input?; // $ method=From::from
-        let mapped = MyResult::MyOk(value).and_then(|v| {
+    fn try_complex<T: Debug>(input: Result<T, S1>) -> Result<T, S1> {
+        let value = input?;
+        let mapped = Result::Ok(value).and_then(|v| {
             println!("{:?}", v);
-            MyResult::MyOk::<_, S1>(v)
-        })?; // $ method=From::from
-        MyResult::MyOk(mapped)
+            Result::Ok::<_, S1>(v)
+        })?; // $ method=and_then
+        Result::Err(S1)
     }
 
     pub fn f() {
-        if let MyResult::MyOk(result) = try_same_error() {
+        if let Result::Ok(result) = try_same_error() {
             println!("{:?}", result);
         }
 
-        if let MyResult::MyOk(result) = try_convert_error() {
+        if let Result::Ok(result) = try_convert_error() {
             println!("{:?}", result);
         }
 
-        if let MyResult::MyOk(result) = try_chained() {
+        if let Result::Ok(result) = try_chained() {
             println!("{:?}", result);
         }
 
-        if let MyResult::MyOk(result) = try_complex(MyResult::MyOk(S1)) {
+        if let Result::Ok(result) = try_complex(Result::Ok(S1)) {
             println!("{:?}", result);
         }
     }
