@@ -123,10 +123,6 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
-
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
-
   predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
 
   predicate isField(DataFlow::ContentSet c) {
@@ -169,12 +165,6 @@ private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig
     SourceTargetApi() { relevant(this) }
   }
 
-  bindingset[sourceEnclosing, api]
-  predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) { none() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
-
   predicate sourceNode(DataFlow::Node node, string kind) { FlowSource::sourceNode(node, kind) }
 }
 
@@ -182,8 +172,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   class SinkTargetApi extends Callable {
     SinkTargetApi() { relevant(this) }
   }
-
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
   /**
    * Holds if `source` is an API entrypoint, i.e., a source of input where data
@@ -196,9 +184,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   string getInputArgument(DataFlow::Node source) {
     result = "Argument[" + source.(Node::SourceParameterNode).getPosition().toString() + "]"
   }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
 
   predicate sinkNode(DataFlow::Node node, string kind) { FlowSink::sinkNode(node, kind) }
 }

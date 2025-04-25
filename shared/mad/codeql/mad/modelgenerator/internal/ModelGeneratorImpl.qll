@@ -295,7 +295,7 @@ module MakeModelGeneratorFactory<
      *
      * This serves as an extra filter for the `relevant` predicate.
      */
-    predicate isUninterestingForDataFlowModels(Callable api);
+    default predicate isUninterestingForDataFlowModels(Callable api) { none() }
 
     /**
      * Holds if it is irrelevant to generate models for `api` based on the heuristic
@@ -304,7 +304,7 @@ module MakeModelGeneratorFactory<
      * This serves as an extra filter for the `relevant`
      * and `isUninterestingForDataFlowModels` predicates.
      */
-    predicate isUninterestingForHeuristicDataFlowModels(Callable api);
+    default predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
   }
 
   /**
@@ -941,23 +941,19 @@ module MakeModelGeneratorFactory<
     class SourceTargetApi extends Callable;
 
     /**
-     * Holds if it is not relevant to generate a source model for `api`, even
-     * if flow is detected from a node within `source` to a sink within `api`.
-     */
-    bindingset[sourceEnclosing, api]
-    predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api);
-
-    /**
-     * Holds if `kind` is a relevant source kind for creating source models.
-     */
-    bindingset[kind]
-    predicate isRelevantSourceKind(string kind);
-
-    /**
      * Holds if `node` is specified as a source with the given kind in a MaD flow
      * model.
      */
     predicate sourceNode(Lang::Node node, string kind);
+
+    /**
+     * Holds if it is not relevant to generate a source model for `api`, even
+     * if flow is detected from a node within `source` to a sink within `api`.
+     */
+    bindingset[sourceEnclosing, api]
+    default predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) {
+      none()
+    }
   }
 
   /**
@@ -970,14 +966,15 @@ module MakeModelGeneratorFactory<
     class SinkTargetApi extends Callable;
 
     /**
+     * Holds if `node` is specified as a sink with the given kind in a MaD flow
+     * model.
+     */
+    predicate sinkNode(Lang::Node node, string kind);
+
+    /**
      * Gets the MaD input string representation of `source`.
      */
     string getInputArgument(Lang::Node source);
-
-    /**
-     * Holds if `node` is a sanitizer for sink model construction.
-     */
-    predicate sinkModelSanitizer(Lang::Node node);
 
     /**
      * Holds if `source` is an api entrypoint relevant for creating sink models.
@@ -985,16 +982,15 @@ module MakeModelGeneratorFactory<
     predicate apiSource(Lang::Node source);
 
     /**
+     * Holds if `node` is a sanitizer for sink model construction.
+     */
+    default predicate sinkModelSanitizer(Lang::Node node) { none() }
+
+    /**
      * Holds if `kind` is a relevant sink kind for creating sink models.
      */
     bindingset[kind]
-    predicate isRelevantSinkKind(string kind);
-
-    /**
-     * Holds if `node` is specified as a sink with the given kind in a MaD flow
-     * model.
-     */
-    predicate sinkNode(Lang::Node node, string kind);
+    default predicate isRelevantSinkKind(string kind) { any() }
   }
 
   /**
@@ -1029,12 +1025,7 @@ module MakeModelGeneratorFactory<
        * via its return (then the API itself becomes a source).
        */
       module PropagateFromSourceConfig implements DataFlow::ConfigSig {
-        predicate isSource(DataFlow::Node source) {
-          exists(string kind |
-            isRelevantSourceKind(kind) and
-            sourceNode(source, kind)
-          )
-        }
+        predicate isSource(DataFlow::Node source) { sourceNode(source, _) }
 
         predicate isSink(DataFlow::Node sink) {
           sink instanceof ReturnNodeExt and

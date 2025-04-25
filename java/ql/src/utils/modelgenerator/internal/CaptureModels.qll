@@ -211,8 +211,6 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
     api.getDeclaringType() instanceof J::Interface and not exists(api.getBody())
   }
 
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { none() }
-
   predicate isAdditionalContentFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     TaintTracking::defaultAdditionalTaintStep(node1, node2, _) and
     not exists(DataFlow::Content f |
@@ -263,11 +261,6 @@ private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig
   class SourceTargetApi extends Callable {
     SourceTargetApi() { relevant(this) and not hasManualSourceModel(this) }
   }
-
-  predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
 }

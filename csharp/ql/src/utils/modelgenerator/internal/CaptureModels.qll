@@ -234,8 +234,6 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
   }
 
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
-
   predicate isUninterestingForHeuristicDataFlowModels(Callable api) { isHigherOrder(api) }
 
   class SummaryTargetApi extends Callable {
@@ -356,9 +354,6 @@ private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig
     )
   }
 
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
-
   predicate sourceNode = ExternalFlow::sourceNode/2;
 }
 
@@ -371,8 +366,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   class SinkTargetApi extends Callable {
     SinkTargetApi() { relevant(this) and not hasManualSinkModel(this) }
   }
-
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
   private predicate isRelevantMemberAccess(DataFlow::Node node) {
     exists(CS::MemberAccess access | access = node.asExpr() |
@@ -399,9 +392,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
     source.asExpr() instanceof DataFlowPrivate::FieldOrPropertyAccess and
     result = qualifierString()
   }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
 
   predicate sinkNode = ExternalFlow::sinkNode/2;
 }

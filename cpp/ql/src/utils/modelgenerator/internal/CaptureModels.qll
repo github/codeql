@@ -360,12 +360,6 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
       result = "Element[" + ec.getIndirectionIndex() + "]"
     )
   }
-
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
-
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) {
-    isUninterestingForDataFlowModels(api)
-  }
 }
 
 private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
@@ -376,11 +370,6 @@ private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig
   class SourceTargetApi extends Callable {
     SourceTargetApi() { relevant(this) and not hasManualSourceModel(this) }
   }
-
-  predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
 }
@@ -395,8 +384,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   class SinkTargetApi extends Callable {
     SinkTargetApi() { relevant(this) and not hasManualSinkModel(this) }
   }
-
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
 
   predicate apiSource(DataFlow::Node source) {
     DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
@@ -415,9 +402,6 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
     DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
     result = qualifierString()
   }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
 
   predicate sinkNode = ExternalFlow::sinkNode/2;
 }
