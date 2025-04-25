@@ -74,13 +74,29 @@ abstract class Type extends TType {
 abstract private class StructOrEnumType extends Type {
   abstract ItemNode asItemNode();
 
-  final override Function getMethod(string name) {
+  pragma[nomagic]
+  private Function getMethodCand(ImplOrTraitItemNode impl, string name) {
     result = this.asItemNode().getASuccessor(name) and
-    exists(ImplOrTraitItemNode impl | result = impl.getAnAssocItem() |
+    result = impl.getAnAssocItem() and
+    (
       impl instanceof Trait
       or
       impl.(ImplItemNode).isFullyParametric()
     )
+  }
+
+  pragma[nomagic]
+  private Function getImplMethod(ImplOrTraitItemNode impl, string name) {
+    result = this.getMethodCand(impl, name) and
+    impl = any(Impl i | not i.hasTrait())
+  }
+
+  final override Function getMethod(string name) {
+    result = this.getImplMethod(_, name)
+    or
+    // methods from `impl` blocks shadow functions from `impl Trait` blocks
+    result = this.getMethodCand(_, name) and
+    not exists(this.getImplMethod(_, name))
   }
 
   /** Gets all of the fully parametric `impl` blocks that target this type. */

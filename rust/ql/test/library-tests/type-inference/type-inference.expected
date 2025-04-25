@@ -1,5 +1,4 @@
 testFailures
-| main.rs:945:26:945:31 | x.m1() | Unexpected result: method=m1 |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
