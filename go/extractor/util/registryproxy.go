@@ -48,13 +48,6 @@ func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
 }
 
 func getEnvVars() []string {
-	// If `proxy_vars` has been initialised, then we have already performed
-	// these checks and don't need to do so again. We assume that the environment
-	// variables are constant throughout the run of the autobuilder.
-	if proxy_vars != nil {
-		return proxy_vars
-	}
-
 	var result []string
 
 	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set {
