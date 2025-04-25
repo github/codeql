@@ -4151,10 +4151,10 @@
 | Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:165:17:165:17 | access to parameter i |  |
 | Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:167:13:167:19 | case ...: |  |
 | Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:18:167:18 | 1 |  |
-| Switch.cs:167:18:167:18 | 1 | Switch.cs:168:13:168:19 | case ...: | match, no-match |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:168:13:168:19 | case ...: | no-match |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:169:17:169:51 | ...; | match |
 | Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:18:168:18 | 2 |  |
 | Switch.cs:168:18:168:18 | 2 | Switch.cs:169:17:169:51 | ...; | match |
-| Switch.cs:168:18:168:18 | 2 | Switch.cs:170:17:170:22 | break; | no-match |
 | Switch.cs:168:18:168:18 | 2 | Switch.cs:171:13:171:19 | case ...: | no-match |
 | Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:170:17:170:22 | break; |  |
 | Switch.cs:169:17:169:51 | ...; | Switch.cs:169:42:169:49 | "1 or 2" |  |

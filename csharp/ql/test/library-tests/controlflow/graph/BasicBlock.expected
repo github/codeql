@@ -1081,8 +1081,7 @@
 | Switch.cs:163:10:163:12 | enter M16 | Switch.cs:167:18:167:18 | 1 | 6 |
 | Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | exit M16 | 2 |
 | Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:18:168:18 | 2 | 2 |
-| Switch.cs:169:17:169:51 | ...; | Switch.cs:169:17:169:50 | call to method WriteLine | 3 |
-| Switch.cs:170:17:170:22 | break; | Switch.cs:170:17:170:22 | break; | 1 |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:170:17:170:22 | break; | 4 |
 | Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:18:171:18 | 3 | 2 |
 | Switch.cs:172:17:172:46 | ...; | Switch.cs:173:17:173:22 | break; | 4 |
 | Switch.cs:174:13:174:20 | default: | Switch.cs:176:17:176:22 | break; | 5 |

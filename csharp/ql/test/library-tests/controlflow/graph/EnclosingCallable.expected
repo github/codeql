@@ -5942,7 +5942,6 @@ blockEnclosing
 | Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:169:17:169:51 | ...; | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:170:17:170:22 | break; | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:171:13:171:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:172:17:172:46 | ...; | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:174:13:174:20 | default: | Switch.cs:163:10:163:12 | M16 |

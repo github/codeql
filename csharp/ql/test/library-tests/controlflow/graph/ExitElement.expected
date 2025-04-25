@@ -3589,7 +3589,6 @@
 | Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:176:17:176:22 | break; | normal [break] (0) |
 | Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:165:17:165:17 | access to parameter i | normal |
 | Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:18:167:18 | 1 | no-match |
-| Switch.cs:167:13:167:19 | case ...: | Switch.cs:168:18:168:18 | 2 | no-match |
 | Switch.cs:167:13:167:19 | case ...: | Switch.cs:169:17:169:50 | call to method WriteLine | normal |
 | Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | 1 | match |
 | Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | 1 | no-match |
