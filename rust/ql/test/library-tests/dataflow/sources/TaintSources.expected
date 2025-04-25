@@ -47,3 +47,4 @@
 | test.rs:369:25:369:43 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:377:22:377:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:386:16:386:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:386:16:386:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
