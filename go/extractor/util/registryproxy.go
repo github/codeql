@@ -114,6 +114,8 @@ func getEnvVars() []string {
 			}
 		}
 	}
+
+	return result
 }
 
 // Applies private package proxy related environment variables to `cmd`.

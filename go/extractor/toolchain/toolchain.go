@@ -266,7 +266,7 @@ func GetPkgsInfo(patterns []string, includingDeps bool, extractTests bool, flags
 			break
 		}
 		if decErr != nil {
-			log.Printf("Error decoding output of go list -json: %s", err.Error())
+			log.Printf("Error decoding output of go list -json: %s", decErr.Error())
 			return nil, decErr
 		}
 		pkgAbsDir, err := filepath.Abs(pkgInfo.Dir)

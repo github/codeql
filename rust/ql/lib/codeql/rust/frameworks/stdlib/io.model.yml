@@ -1,0 +1,38 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["lang:std", "crate::io::stdio::stdin", "ReturnValue", "stdin", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["lang:std", "<crate::io::buffered::bufreader::BufReader>::new", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::io::buffered::bufreader::BufReader as crate::io::BufRead>::fill_buf", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:std", "<crate::io::buffered::bufreader::BufReader>::buffer", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::Stdin as crate::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::StdinLock as crate::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::fs::File as crate::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::Stdin as crate::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::StdinLock as crate::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::fs::File as crate::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", ":<crate::io::stdio::Stdin as crate::io::Read>::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", ":<crate::io::stdio::StdinLock as crate::io::Read>::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::fs::File as crate::io::Read>::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::Stdin as crate::io::Read>::read_exact", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::StdinLock as crate::io::Read>::read_exact", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "<crate::fs::File as crate::io::Read>::read_exact", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::read_exact", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::BufRead::read_line", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::BufRead::read_until", "Argument[self]", "Argument[1].Reference", "taint", "manual"]
+      - ["lang:std", "crate::io::BufRead::split", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "crate::io::BufRead::lines", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::bytes", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "crate::io::Read::take", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["lang:std", "<crate::io::stdio::Stdin>::lock", "Argument[self]", "ReturnValue", "taint", "manual"]

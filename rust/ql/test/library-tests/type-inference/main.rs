@@ -329,9 +329,21 @@ mod function_trait_bounds {
 }
 
 mod trait_associated_type {
+    #[derive(Debug)]
+    struct Wrapper<A> {
+        field: A,
+    }
+
+    impl<A> Wrapper<A> {
+        fn unwrap(self) -> A {
+            self.field // $ fieldof=Wrapper
+        }
+    }
+
     trait MyTrait {
         type AssociatedType;
 
+        // MyTrait::m1
         fn m1(self) -> Self::AssociatedType;
 
         fn m2(self) -> Self::AssociatedType
@@ -339,28 +351,129 @@ mod trait_associated_type {
             Self::AssociatedType: Default,
             Self: Sized,
         {
+            self.m1(); // $ method=MyTrait::m1 type=self.m1():AssociatedType
             Self::AssociatedType::default()
         }
+    }
+
+    trait MyTraitAssoc2 {
+        type GenericAssociatedType<AssociatedParam>;
+
+        // MyTrait::put
+        fn put<A>(&self, a: A) -> Self::GenericAssociatedType<A>;
+
+        fn putTwo<A>(&self, a: A, b: A) -> Self::GenericAssociatedType<A> {
+            self.put(a); // $ method=MyTrait::put
+            self.put(b) // $ method=MyTrait::put
+        }
+    }
+
+    // A generic trait with multiple associated types.
+    trait TraitMultipleAssoc<TrG> {
+        type Assoc1;
+        type Assoc2;
+
+        fn get_zero(&self) -> TrG;
+
+        fn get_one(&self) -> Self::Assoc1;
+
+        fn get_two(&self) -> Self::Assoc2;
     }
 
     #[derive(Debug, Default)]
     struct S;
 
+    #[derive(Debug, Default)]
+    struct S2;
+
+    #[derive(Debug, Default)]
+    struct AT;
+
     impl MyTrait for S {
-        type AssociatedType = S;
+        type AssociatedType = AT;
 
         // S::m1
         fn m1(self) -> Self::AssociatedType {
+            AT
+        }
+    }
+
+    impl MyTraitAssoc2 for S {
+        // Associated type with a type parameter
+        type GenericAssociatedType<AssociatedParam> = Wrapper<AssociatedParam>;
+
+        // S::put
+        fn put<A>(&self, a: A) -> Wrapper<A> {
+            Wrapper { field: a }
+        }
+    }
+
+    impl MyTrait for S2 {
+        // Associated type definition with a type argument
+        type AssociatedType = Wrapper<S2>;
+
+        fn m1(self) -> Self::AssociatedType {
+            Wrapper { field: self }
+        }
+    }
+
+    // NOTE: This implementation is just to make it possible to call `m2` on `S2.`
+    impl Default for Wrapper<S2> {
+        fn default() -> Self {
+            Wrapper { field: S2 }
+        }
+    }
+
+    // Function that returns an associated type from a trait bound
+    fn g<T: MyTrait>(thing: T) -> <T as MyTrait>::AssociatedType {
+        thing.m1() // $ method=MyTrait::m1
+    }
+
+    impl TraitMultipleAssoc<AT> for AT {
+        type Assoc1 = S;
+        type Assoc2 = S2;
+
+        fn get_zero(&self) -> AT {
+            AT
+        }
+
+        fn get_one(&self) -> Self::Assoc1 {
             S
+        }
+
+        fn get_two(&self) -> Self::Assoc2 {
+            S2
         }
     }
 
     pub fn f() {
-        let x = S;
-        println!("{:?}", x.m1()); // $ method=S::m1
+        let x1 = S;
+        // Call to method in `impl` block
+        println!("{:?}", x1.m1()); // $ method=S::m1 type=x1.m1():AT
 
-        let x = S;
-        println!("{:?}", x.m2()); // $ method=m2
+        let x2 = S;
+        // Call to default method in `trait` block
+        let y = x2.m2(); // $ method=m2 type=y:AT
+        println!("{:?}", y);
+
+        let x3 = S;
+        // Call to the method in `impl` block
+        println!("{:?}", x3.put(1).unwrap()); // $ method=S::put method=unwrap
+
+        // Call to default implementation in `trait` block
+        println!("{:?}", x3.putTwo(2, 3).unwrap()); // $ method=putTwo MISSING: method=unwrap
+
+        let x4 = g(S); // $ MISSING: type=x4:AT
+        println!("{:?}", x4);
+
+        let x5 = S2;
+        println!("{:?}", x5.m1()); // $ method=m1 type=x5.m1():A.S2
+        let x6 = S2;
+        println!("{:?}", x6.m2()); // $ method=m2 type=x6.m2():A.S2
+
+        let assoc_zero = AT.get_zero(); // $ method=get_zero type=assoc_zero:AT
+        let assoc_one = AT.get_one(); // $ method=get_one type=assoc_one:S
+        let assoc_two = AT.get_two(); // $ method=get_two type=assoc_two:S2
     }
 }
 
@@ -510,7 +623,7 @@ mod function_trait_bounds_2 {
     where
         T1: Into<T2>,
     {
-        x.into()
+        x.into() // $ method=into
     }
 
     pub fn f() {

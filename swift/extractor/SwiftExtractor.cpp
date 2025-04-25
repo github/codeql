@@ -155,7 +155,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   if (primaryFile && primaryFile->getBufferID()) {
     auto& sourceManager = compiler.getSourceMgr();
     auto tokens = swift::tokenize(compiler.getInvocation().getLangOptions(), sourceManager,
-                                  *primaryFile->getBufferID());
+                                  primaryFile->getBufferID());
     for (auto& token : tokens) {
       if (token.getKind() == swift::tok::comment) {
         comments.push_back(token);
