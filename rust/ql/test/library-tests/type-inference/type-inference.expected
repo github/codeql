@@ -1,4 +1,5 @@
 testFailures
+| main.rs:945:26:945:31 | x.m1() | Unexpected result: method=m1 |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
@@ -1005,7 +1006,17 @@ inferType
 | main.rs:918:15:918:16 | &x |  | file://:0:0:0:0 | & |
 | main.rs:918:15:918:16 | &x | &T | main.rs:894:5:894:13 | S |
 | main.rs:918:16:918:16 | x |  | main.rs:894:5:894:13 | S |
-| main.rs:924:5:924:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:5:925:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:20:925:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:925:41:925:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:927:15:927:18 | SelfParam |  | main.rs:926:5:928:5 | Self [trait MyTrait] |
+| main.rs:931:15:931:18 | SelfParam |  | main.rs:923:5:924:14 | S1 |
+| main.rs:931:27:933:9 | { ... } |  | main.rs:923:5:924:14 | S1 |
+| main.rs:938:15:938:18 | SelfParam |  | main.rs:923:5:924:14 | S1 |
+| main.rs:938:27:940:9 | { ... } |  | main.rs:923:5:924:14 | S1 |
+| main.rs:939:13:939:16 | self |  | main.rs:923:5:924:14 | S1 |
+| main.rs:944:13:944:13 | x |  | main.rs:923:5:924:14 | S1 |
+| main.rs:944:17:944:18 | S1 |  | main.rs:923:5:924:14 | S1 |
+| main.rs:945:26:945:26 | x |  | main.rs:923:5:924:14 | S1 |
+| main.rs:945:26:945:31 | x.m1() |  | main.rs:923:5:924:14 | S1 |
+| main.rs:951:5:951:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:952:5:952:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:952:20:952:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:952:41:952:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

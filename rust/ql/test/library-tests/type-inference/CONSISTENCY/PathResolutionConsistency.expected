@@ -1,0 +1,3 @@
+multipleMethodCallTargets
+| main.rs:945:26:945:31 | x.m1() | main.rs:931:9:933:9 | fn m1 |
+| main.rs:945:26:945:31 | x.m1() | main.rs:938:9:940:9 | fn m1 |

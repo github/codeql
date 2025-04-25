@@ -919,6 +919,33 @@ mod borrowed_typed {
     }
 }
 
+mod impl_overlap {
+    #[derive(Debug)]
+    struct S1;
+
+    trait MyTrait {
+        fn m1(self) -> S1;
+    }
+
+    impl MyTrait for S1 {
+        fn m1(self) -> S1 {
+            panic!("not called");
+        }
+    }
+
+    #[rustfmt::skip]
+    impl S1 {
+        fn m1(self) -> S1 { // target
+            self
+        }
+    }
+
+    pub fn f() {
+        let x = S1;
+        println!("{:?}", x.m1()); // $ method=target
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -935,4 +962,5 @@ fn main() {
     trait_implicit_self_borrow::f();
     implicit_self_borrow::f();
     borrowed_typed::f();
+    impl_overlap::f();
 }
