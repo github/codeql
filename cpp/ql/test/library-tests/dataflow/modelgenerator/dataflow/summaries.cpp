@@ -199,3 +199,13 @@ int get_x_from_union(U* u) {
 void set_x_in_union(U* u, int x) {
     u->x = x;
 }
+
+struct HasInt {
+    int x;
+};
+
+
+int copy_struct(HasInt *out, const HasInt *in) {
+    *out = *in;
+    return 1;
+}
