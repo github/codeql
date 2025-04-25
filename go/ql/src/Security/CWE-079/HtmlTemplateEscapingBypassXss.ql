@@ -25,6 +25,11 @@ class UnescapedType extends Type {
 
 /**
  * Holds if the sink is a data value argument of a template execution call.
+ *
+ * Note that this is slightly more general than
+ * `SharedXss::HtmlTemplateSanitizer` because it uses `Function.getACall()`,
+ * which finds calls through interfaces which the receiver implements. This
+ * finds more results in practice.
  */
 predicate isSinkToTemplateExec(DataFlow::Node sink) {
   exists(Method fn, string methodName, DataFlow::CallNode call |
