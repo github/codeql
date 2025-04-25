@@ -210,7 +210,7 @@ macro_roles(
 macro_role_conformances(
   int id: @macro_role ref,
   int index: int ref,
-  int conformance: @expr_or_none ref
+  int conformance: @type_expr_or_none ref
 );
 
 #keyset[id, index]
@@ -2791,6 +2791,11 @@ variadic_sequence_types(  //dir=type
 
 @type_alias_decl_or_none =
   @type_alias_decl
+| @unspecified_element
+;
+
+@type_expr_or_none =
+  @type_expr
 | @unspecified_element
 ;
 

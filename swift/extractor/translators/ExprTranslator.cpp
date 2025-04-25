@@ -477,7 +477,11 @@ codeql::ErrorExpr ExprTranslator::translateErrorExpr(const swift::ErrorExpr& exp
 void ExprTranslator::fillClosureExpr(const swift::AbstractClosureExpr& expr,
                                      codeql::ClosureExpr& entry) {
   entry.body = dispatcher.fetchLabel(expr.getBody());
-  entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  if (expr.getCaptureInfo().hasBeenComputed()) {
+    entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  } else {
+    LOG_ERROR("Unable to get CaptureInfo");
+  }
   CODEQL_EXPECT_OR(return, expr.getParameters(), "AbstractClosureExpr has null getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
 }
@@ -624,7 +628,7 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
 codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
     const swift::RegexLiteralExpr& expr) {
   auto entry = createExprEntry(expr);
-  auto pattern = expr.getRegexText();
+  auto pattern = expr.getParsedRegexText();
   // the pattern has enclosing '/' delimiters, we'd rather get it without
   entry.pattern = pattern.substr(1, pattern.size() - 2);
   entry.version = expr.getVersion();
