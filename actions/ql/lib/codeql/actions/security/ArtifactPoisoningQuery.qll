@@ -262,8 +262,9 @@ class ArtifactPoisoningSink extends DataFlow::Node {
 
   ArtifactPoisoningSink() {
     download.getAFollowingStep() = poisonable and
-    // excluding artifacts downloaded to /tmp
+    // excluding artifacts downloaded to /tmp and runner.tmp
     not download.getPath().regexpMatch("^/tmp.*") and
+    not download.getPath().regexpMatch("^\${{\s?runner.temp\s?}}.*") and
     (
       poisonable.(Run).getScript() = this.asExpr() and
       (
