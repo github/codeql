@@ -131,6 +131,8 @@ namespace Models {
 
 //summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;df-generated
 //summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;taint;df-generated
+//summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;df-generated
+//contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;dfc-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;dfc-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;value;dfc-generated
 int toplevel_function(int* p) {
@@ -204,7 +206,12 @@ struct HasInt {
     int x;
 };
 
-
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*0];taint;dfc-generated
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*1];taint;dfc-generated
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];value;dfc-generated
+//summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*0];taint;df-generated
+//summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*1];taint;df-generated
+//summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];taint;df-generated
 int copy_struct(HasInt *out, const HasInt *in) {
     *out = *in;
     return 1;
