@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 )
 
@@ -29,7 +29,7 @@ func ErrTest(w http.ResponseWriter, r http.Request) {
 	w.Write([]byte(fmt.Sprintf("Cookie check error: %v", err)))  // GOOD: Cookie's err return is harmless
 	http.Error(w, fmt.Sprintf("Cookie result: %v", cookie), 500) // Good: only plain text is written.
 	file, header, err := r.FormFile("someFile")                  // $ Source[go/reflected-xss]
-	content, err2 := ioutil.ReadAll(file)
+	content, err2 := io.ReadAll(file)
 	w.Write([]byte(fmt.Sprintf("File content: %v", content)))      // $ Alert[go/reflected-xss] // BAD: file content is user-controlled
 	w.Write([]byte(fmt.Sprintf("File name: %v", header.Filename))) // $ Alert[go/reflected-xss] // BAD: file header is user-controlled
 	w.Write([]byte(fmt.Sprintf("FormFile error: %v", err)))        // GOOD: FormFile's err return is harmless

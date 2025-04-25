@@ -15,10 +15,10 @@ import (
 	nhooyr "nhooyr.io/websocket"
 )
 
-func marshal(v interface{}) (data []byte, payloadType byte, err error) {
+func marshal(v any) (data []byte, payloadType byte, err error) {
 	return nil, 0, nil
 }
-func unmarshal(data []byte, payloadType byte, v interface{}) (err error) {
+func unmarshal(data []byte, payloadType byte, v any) (err error) {
 	return nil
 }
 
@@ -30,7 +30,7 @@ func xss(w http.ResponseWriter, r *http.Request) {
 		var xnet = make([]byte, 512) // $ Source[go/reflected-xss]
 		ws.Read(xnet)
 		fmt.Fprintf(w, "%v", xnet) // $ Alert[go/reflected-xss]
-		codec := &websocket.Codec{marshal, unmarshal}
+		codec := &websocket.Codec{Marshal: marshal, Unmarshal: unmarshal}
 		xnet2 := make([]byte, 512) // $ Source[go/reflected-xss]
 		codec.Receive(ws, xnet2)
 		fmt.Fprintf(w, "%v", xnet2) // $ Alert[go/reflected-xss]
