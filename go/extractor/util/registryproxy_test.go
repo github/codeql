@@ -23,7 +23,7 @@ func parseRegistryConfigsSuccess(t *testing.T, str string) []RegistryConfig {
 }
 
 func TestParseRegistryConfigs(t *testing.T) {
-	// parseRegistryConfigsFail(t, "")
+	parseRegistryConfigsFail(t, "")
 
 	empty := parseRegistryConfigsSuccess(t, "[]")
 
