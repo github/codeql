@@ -20,9 +20,22 @@ type RegistryConfig struct {
 	URL  string `json:"url"`
 }
 
+// The address of the proxy including protocol and port (e.g. http://localhost:1234)
 var proxy_address string
+
+// The path to the temporary file that stores the proxy certificate, if any.
 var proxy_cert_file string
+
+// An array of registry configurations that are relevant to Go.
+// This excludes other registry configurations that may be available, but are not relevant to Go.
 var proxy_configs []RegistryConfig
+
+// Stores the environment variables that we wish to pass on to `go` commands.
+var proxy_vars []string = nil
+
+// Keeps track of whether we have inspected the proxy environment variables.
+// Needed since `proxy_vars` may be nil either way.
+var proxy_vars_checked bool = false
 
 // Tries to parse the given string value into an array of RegistryConfig values.
 func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
@@ -34,10 +47,21 @@ func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
 	return configs, nil
 }
 
-func checkEnvVars() {
+func getEnvVars() []string {
+	// If `proxy_vars` has been initialised, then we have already performed
+	// these checks and don't need to do so again. We assume that the environment
+	// variables are constant throughout the run of the autobuilder.
+	if proxy_vars != nil {
+		return proxy_vars
+	}
+
+	var result []string
+
 	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set {
 		if proxy_port, proxy_port_set := os.LookupEnv(PROXY_PORT); proxy_port_set {
 			proxy_address = fmt.Sprintf("http://%s:%s", proxy_host, proxy_port)
+			result = append(result, fmt.Sprintf("HTTP_PROXY=%s", proxy_address), fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
+
 			slog.Info("Found private registry proxy", slog.String("proxy_address", proxy_address))
 		}
 	}
@@ -61,6 +85,7 @@ func checkEnvVars() {
 			slog.Error("Failed to close the temporary certificate file", slog.String("error", err.Error()))
 		} else {
 			proxy_cert_file = f.Name()
+			result = append(result, fmt.Sprintf("SSL_CERT_FILE=%s", proxy_cert_file))
 		}
 	}
 
@@ -71,12 +96,21 @@ func checkEnvVars() {
 		} else {
 			// We only care about private registry configurations that are relevant to Go and
 			// filter others out at this point.
-			proxy_configs = make([]RegistryConfig, 0)
 			for _, cfg := range val {
 				if cfg.Type == GOPROXY_SERVER {
 					proxy_configs = append(proxy_configs, cfg)
 					slog.Info("Found GOPROXY server", slog.String("url", cfg.URL))
 				}
+			}
+
+			if len(proxy_configs) > 0 {
+				goproxy_val := "https://proxy.golang.org,direct"
+
+				for _, cfg := range proxy_configs {
+					goproxy_val = cfg.URL + "," + goproxy_val
+				}
+
+				result = append(result, fmt.Sprintf("GOPROXY=%s", goproxy_val), "GOPRIVATE=", "GONOPROXY=")
 			}
 		}
 	}
@@ -84,34 +118,21 @@ func checkEnvVars() {
 
 // Applies private package proxy related environment variables to `cmd`.
 func ApplyProxyEnvVars(cmd *exec.Cmd) {
-	slog.Info(
+	slog.Debug(
 		"Applying private registry proxy environment variables",
 		slog.String("cmd_args", strings.Join(cmd.Args, " ")),
 	)
 
-	checkEnvVars()
-
-	// Preserve environment variables
-	cmd.Env = os.Environ()
-
-	if proxy_address != "" {
-		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTP_PROXY=%s", proxy_address))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
-	}
-	if proxy_cert_file != "" {
-		slog.Info("Setting SSL_CERT_FILE", slog.String("proxy_cert_file", proxy_cert_file))
-		cmd.Env = append(cmd.Env, fmt.Sprintf("SSL_CERT_FILE=%s", proxy_cert_file))
+	// If we haven't done so yet, check whether the proxy environment variables are set
+	// and extract information from them.
+	if !proxy_vars_checked {
+		proxy_vars = getEnvVars()
+		proxy_vars_checked = true
 	}
 
-	if len(proxy_configs) > 0 {
-		goproxy_val := "https://proxy.golang.org,direct"
-
-		for _, cfg := range proxy_configs {
-			goproxy_val = cfg.URL + "," + goproxy_val
-		}
-
-		cmd.Env = append(cmd.Env, fmt.Sprintf("GOPROXY=%s", goproxy_val))
-		cmd.Env = append(cmd.Env, "GOPRIVATE=")
-		cmd.Env = append(cmd.Env, "GONOPROXY=")
+	// If the proxy is configured, `proxy_vars` will be not `nil`. We append those
+	// variables Preserve environment variables
+	if proxy_vars != nil {
+		cmd.Env = append(os.Environ(), proxy_vars...)
 	}
 }
