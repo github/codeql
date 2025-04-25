@@ -1,0 +1,16 @@
+ql/rust/ql/src/queries/summary/CryptographicOperations.ql
+ql/rust/ql/src/queries/summary/LinesOfUserCodeInFiles.ql
+ql/rust/ql/src/queries/summary/QuerySinks.ql
+ql/rust/ql/src/queries/summary/SensitiveData.ql
+ql/rust/ql/src/queries/summary/TaintSources.ql
+ql/rust/ql/src/queries/unusedentities/UnreachableCode.ql
+ql/rust/ql/src/queries/unusedentities/UnusedValue.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureMixedNeutralModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureMixedSummaryModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureSinkModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureSourceModels.ql
+ql/rust/ql/src/utils/modelgenerator/CaptureSummaryModels.ql
+ql/rust/ql/src/utils/modelgenerator/debug/CaptureSummaryModelsPartialPath.ql
+ql/rust/ql/src/utils/modelgenerator/debug/CaptureSummaryModelsPath.ql
