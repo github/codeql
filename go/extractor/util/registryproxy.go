@@ -65,7 +65,7 @@ func getEnvVars() []string {
 
 		f, err := os.CreateTemp("", "codeql-proxy.crt")
 		if err != nil {
-			slog.Error("Unable to create temporary file for the proxy certificate", slog.String("error", err.Error()))
+			slog.Error("Failed to create temporary file for the proxy certificate", slog.String("error", err.Error()))
 		}
 
 		_, err = f.WriteString(proxy_cert)
