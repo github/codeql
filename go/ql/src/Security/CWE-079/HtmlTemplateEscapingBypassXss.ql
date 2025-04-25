@@ -52,7 +52,8 @@ module UntrustedToTemplateExecWithConversionConfig implements DataFlow::StateCon
     TConverted(UnescapedType unescapedType)
 
   /**
-   * Flow state for tracking whether a conversion to an unescaped type has occurred.
+   * The flow state for tracking whether a conversion to an unescaped type has
+   * occurred.
    */
   class FlowState extends TConversionState {
     predicate isBeforeConversion() { this instanceof TUnconverted }
