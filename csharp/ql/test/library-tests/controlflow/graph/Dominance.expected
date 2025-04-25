@@ -3678,6 +3678,29 @@ dominance
 | Switch.cs:160:40:160:43 | "b = " | Switch.cs:160:45:160:45 | access to local variable s |
 | Switch.cs:160:44:160:46 | {...} | Switch.cs:160:38:160:47 | $"..." |
 | Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:160:44:160:46 | {...} |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:164:5:178:5 | {...} |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | exit M16 |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:165:9:177:9 | switch (...) {...} |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:165:17:165:17 | access to parameter i |
+| Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:167:13:167:19 | case ...: |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:18:167:18 | 1 |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:18:168:18 | 2 |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:169:42:169:49 | "1 or 2" |
+| Switch.cs:169:42:169:49 | "1 or 2" | Switch.cs:169:17:169:50 | call to method WriteLine |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:18:171:18 | 3 |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:173:17:173:22 | break; |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:172:42:172:44 | "3" |
+| Switch.cs:172:42:172:44 | "3" | Switch.cs:172:17:172:45 | call to method WriteLine |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:175:17:175:48 | ...; |
+| Switch.cs:175:17:175:47 | call to method WriteLine | Switch.cs:176:17:176:22 | break; |
+| Switch.cs:175:17:175:48 | ...; | Switch.cs:175:42:175:46 | "def" |
+| Switch.cs:175:42:175:46 | "def" | Switch.cs:175:17:175:47 | call to method WriteLine |
 | TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | {...} |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | call to constructor Object |
 | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses (normal) | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses |
@@ -7854,6 +7877,28 @@ postDominance
 | Switch.cs:160:40:160:43 | "b = " | Switch.cs:160:13:160:49 | ...; |
 | Switch.cs:160:44:160:46 | {...} | Switch.cs:160:45:160:45 | access to local variable s |
 | Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:160:40:160:43 | "b = " |
+| Switch.cs:163:10:163:12 | exit M16 | Switch.cs:163:10:163:12 | exit M16 (normal) |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:173:17:173:22 | break; |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:176:17:176:22 | break; |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:163:10:163:12 | enter M16 |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:164:5:178:5 | {...} |
+| Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:165:9:177:9 | switch (...) {...} |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:165:17:165:17 | access to parameter i |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:167:13:167:19 | case ...: |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:167:18:167:18 | 1 |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:169:42:169:49 | "1 or 2" |
+| Switch.cs:169:42:169:49 | "1 or 2" | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:169:17:169:50 | call to method WriteLine |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:172:42:172:44 | "3" |
+| Switch.cs:172:42:172:44 | "3" | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:173:17:173:22 | break; | Switch.cs:172:17:172:45 | call to method WriteLine |
+| Switch.cs:175:17:175:47 | call to method WriteLine | Switch.cs:175:42:175:46 | "def" |
+| Switch.cs:175:17:175:48 | ...; | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:175:42:175:46 | "def" | Switch.cs:175:17:175:48 | ...; |
+| Switch.cs:176:17:176:22 | break; | Switch.cs:175:17:175:47 | call to method WriteLine |
 | TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses |
 | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses (normal) |
 | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses (normal) | TypeAccesses.cs:1:7:1:18 | {...} |
@@ -12467,6 +12512,29 @@ blockDominance
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:50:156:52 | "b" |
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:158:13:158:49 | ...; |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:160:13:160:49 | ...; |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:163:10:163:12 | enter M16 |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:163:10:163:12 | exit M16 (normal) |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | exit M16 (normal) |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | exit M16 (normal) |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:174:13:174:20 | default: |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | [false] ... is ... |
@@ -15794,6 +15862,23 @@ postBlockDominance
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:50:156:52 | "b" |
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:158:13:158:49 | ...; |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:160:13:160:49 | ...; |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:163:10:163:12 | enter M16 |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | enter M16 |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | exit M16 (normal) |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:174:13:174:20 | default: |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | enter M16 |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:13:168:19 | case ...: |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:169:17:169:51 | ...; |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:170:17:170:22 | break; |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:13:171:19 | case ...: |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:172:17:172:46 | ...; |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:174:13:174:20 | default: |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:7:13:7:22 | [false] ... is ... |
