@@ -2,7 +2,8 @@ private import csharp
 private import semmle.code.csharp.frameworks.system.collections.Generic as GenericCollections
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.system.linq.Expressions
-private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
+private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
+private import CaptureModels::SummaryModelGeneratorInput as SummaryModelGeneratorInput
 private import CaptureModelsPrinting
 
 /**
@@ -189,7 +190,7 @@ private module Printing = ModelPrintingSummary<ModelPrintingInput>;
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TypeBasedFlowTargetApi extends ModelGeneratorInput::SummaryTargetApi {
+class TypeBasedFlowTargetApi extends SummaryModelGeneratorInput::SummaryTargetApi {
   /**
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
