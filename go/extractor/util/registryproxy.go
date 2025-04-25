@@ -133,7 +133,8 @@ func ApplyProxyEnvVars(cmd *exec.Cmd) {
 	}
 
 	// If the proxy is configured, `proxy_vars` will be not `nil`. We append those
-	// variables Preserve environment variables
+	// variables to the existing environment to preserve those environment variables.
+	// If `cmd.Env` is not changed, then the existing environment is also preserved.
 	if proxy_vars != nil {
 		cmd.Env = append(os.Environ(), proxy_vars...)
 	}
