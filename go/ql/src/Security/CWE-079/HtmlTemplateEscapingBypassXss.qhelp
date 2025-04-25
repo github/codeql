@@ -19,10 +19,10 @@
 		<p>
 			In the first example you can see the special types and how they are used in a template:
 		</p>
-		<sample src="HTMLTemplateEscapingPassthroughBad.go" />
+		<sample src="HtmlTemplateEscapingBypassXssBad.go" />
 		<p>
 			To avoid XSS, all user input should be a normal string type.
 		</p>
-		<sample src="HTMLTemplateEscapingPassthroughGood.go" />
+		<sample src="HtmlTemplateEscapingBypassXssGood.go" />
 	</example>
 </qhelp>
