@@ -5,6 +5,8 @@
  *              scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
+ * @precision high
  * @id go/html-template-escaping-bypass-xss
  * @tags security
  *       external/cwe/cwe-079
