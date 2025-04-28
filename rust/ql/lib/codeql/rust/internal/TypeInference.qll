@@ -18,6 +18,8 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeParameter = T::TypeParameter;
 
+  class TypeAbstraction = T::TypeAbstraction;
+
   private newtype TTypeArgumentPosition =
     // method type parameters are matched by position instead of by type
     // parameter entity, to avoid extra recursion through method call resolution
@@ -107,7 +109,45 @@ private module Input2 implements InputSig2 {
 
   class TypeMention = TM::TypeMention;
 
-  TypeMention getABaseTypeMention(Type t) { result = t.getABaseTypeMention() }
+  TypeMention getABaseTypeMention(Type t) { none() }
+
+  TypeMention getTypeParameterConstraint(TypeParameter tp) {
+    result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
+    or
+    result = tp.(SelfTypeParameter).getTrait()
+  }
+
+  predicate conditionSatisfiesConstraint(
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+  ) {
+    // `impl` blocks implementing traits
+    exists(Impl impl |
+      abs = impl and
+      condition = impl.getSelfTy() and
+      constraint = impl.getTrait()
+    )
+    or
+    // supertraits
+    exists(Trait trait |
+      abs = trait and
+      condition = trait and
+      constraint = trait.getTypeBoundList().getABound().getTypeRepr()
+    )
+    or
+    // trait bounds on type parameters
+    exists(TypeParam param |
+      abs = param.getTypeBoundList().getABound() and
+      condition = param and
+      constraint = param.getTypeBoundList().getABound().getTypeRepr()
+    )
+    or
+    // the implicit `Self` type parameter satisfies the trait
+    exists(SelfTypeParameterMention self |
+      abs = self and
+      condition = self and
+      constraint = self.getTrait()
+    )
+  }
 }
 
 private module M2 = Make2<Input2>;
@@ -226,7 +266,7 @@ private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type 
 }
 
 pragma[nomagic]
-private Type inferImplSelfType(Impl i, TypePath path) {
+private Type resolveImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
 }
 
@@ -238,7 +278,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
     self = f.getParamList().getSelfParam() and
     result = getRefAdjustImplicitSelfType(self, suffix, t, path)
   |
-    t = inferImplSelfType(i, suffix)
+    t = resolveImplSelfType(i, suffix)
     or
     t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
@@ -895,36 +935,94 @@ cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
 
+  pragma[nomagic]
+  private Type receiverRootType(Expr e) {
+    any(MethodCallExpr mce).getReceiver() = e and
+    result = inferType(e)
+  }
+
+  pragma[nomagic]
+  private Type inferReceiverType(Expr e, TypePath path) {
+    exists(Type root | root = receiverRootType(e) |
+      // for reference types, lookup members in the type being referenced
+      if root = TRefType()
+      then result = inferType(e, TypePath::cons(TRefTypeParameter(), path))
+      else result = inferType(e, path)
+    )
+  }
+
+  private class ReceiverExpr extends Expr {
+    MethodCallExpr mce;
+
+    ReceiverExpr() { mce.getReceiver() = this }
+
+    string getField() { result = mce.getIdentifier().getText() }
+
+    Type resolveTypeAt(TypePath path) { result = inferReceiverType(this, path) }
+  }
+
+  private module IsInstantiationOfInput implements IsInstantiationOfSig<ReceiverExpr> {
+    predicate potentialInstantiationOf(ReceiverExpr receiver, TypeAbstraction impl, TypeMention sub) {
+      sub.resolveType() = receiver.resolveTypeAt(TypePath::nil()) and
+      sub = impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention) and
+      exists(impl.(ImplItemNode).getASuccessor(receiver.getField()))
+    }
+  }
+
+  bindingset[item, name]
+  pragma[inline_late]
+  private Function getMethodSuccessor(ItemNode item, string name) {
+    result = item.getASuccessor(name)
+  }
+
+  bindingset[tp, name]
+  pragma[inline_late]
+  private Function getTypeParameterMethod(TypeParameter tp, string name) {
+    result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
+    or
+    result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
+  }
+
+  /**
+   * Gets the method from an `impl` block with an implementing type that matches
+   * the type of `receiver` and with a name of the method call in which
+   * `receiver` occurs, if any.
+   */
+  private Function getMethodFromImpl(ReceiverExpr receiver) {
+    exists(Impl impl |
+      IsInstantiationOf<ReceiverExpr, IsInstantiationOfInput>::isInstantiationOf(receiver, impl,
+        impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention)) and
+      result = getMethodSuccessor(impl, receiver.getField())
+    )
+  }
+
+  /** Gets a method that the method call `mce` resolves to, if any. */
+  cached
+  Function resolveMethodCallExpr(MethodCallExpr mce) {
+    exists(ReceiverExpr receiver | mce.getReceiver() = receiver |
+      // The method comes from an `impl` block targeting the type of `receiver`.
+      result = getMethodFromImpl(receiver)
+      or
+      // The type of `receiver` is a type parameter and the method comes from a
+      // trait bound on the type parameter.
+      result = getTypeParameterMethod(receiver.resolveTypeAt(TypePath::nil()), receiver.getField())
+    )
+  }
+
   pragma[inline]
-  private Type getLookupType(AstNode n) {
+  private Type inferRootTypeDeref(AstNode n) {
     exists(Type t |
       t = inferType(n) and
+      // for reference types, lookup members in the type being referenced
       if t = TRefType()
-      then
-        // for reference types, lookup members in the type being referenced
-        result = inferType(n, TypePath::singleton(TRefTypeParameter()))
+      then result = inferType(n, TypePath::singleton(TRefTypeParameter()))
       else result = t
     )
   }
 
   pragma[nomagic]
-  private Type getMethodCallExprLookupType(MethodCallExpr mce, string name) {
-    result = getLookupType(mce.getReceiver()) and
-    name = mce.getIdentifier().getText()
-  }
-
-  /**
-   * Gets a method that the method call `mce` resolves to, if any.
-   */
-  cached
-  Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
-  }
-
-  pragma[nomagic]
   private Type getFieldExprLookupType(FieldExpr fe, string name) {
-    result = getLookupType(fe.getContainer()) and
-    name = fe.getIdentifier().getText()
+    result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
   }
 
   /**
