@@ -2,7 +2,10 @@
 
 ### Minor Analysis Improvements
 
-* Changes to the MaD model generation infrastructure: Changed the query `java/utils/modelgenerator/summary-models` to use the implementation from `java/utils/modelgenerator/mixed-summary-models`. Removed the now-redundant `java/utils/modelgenerator/mixed-summary-models` query. Similar replacement was made for `java/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries` combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `java/utils/modelgenerator/summary-models` to use the implementation from `java/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `java/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `java/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
 
 ## 1.4.1
 
