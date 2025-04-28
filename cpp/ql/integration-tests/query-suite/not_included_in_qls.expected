@@ -1,0 +1,449 @@
+ql/cpp/ql/src/AlertSuppression.ql
+ql/cpp/ql/src/Architecture/FeatureEnvy.ql
+ql/cpp/ql/src/Architecture/General Class-Level Information/ClassHierarchies.ql
+ql/cpp/ql/src/Architecture/General Class-Level Information/HubClasses.ql
+ql/cpp/ql/src/Architecture/General Class-Level Information/InheritanceDepthDistribution.ql
+ql/cpp/ql/src/Architecture/General Namespace-Level Information/CyclicNamespaces.ql
+ql/cpp/ql/src/Architecture/General Namespace-Level Information/GlobalNamespaceClasses.ql
+ql/cpp/ql/src/Architecture/General Namespace-Level Information/NamespaceDependencies.ql
+ql/cpp/ql/src/Architecture/General Top-Level Information/GeneralStatistics.ql
+ql/cpp/ql/src/Architecture/InappropriateIntimacy.ql
+ql/cpp/ql/src/Architecture/Refactoring Opportunities/ClassesWithManyDependencies.ql
+ql/cpp/ql/src/Architecture/Refactoring Opportunities/ClassesWithManyFields.ql
+ql/cpp/ql/src/Architecture/Refactoring Opportunities/ComplexFunctions.ql
+ql/cpp/ql/src/Architecture/Refactoring Opportunities/CyclomaticComplexity.ql
+ql/cpp/ql/src/Architecture/Refactoring Opportunities/FunctionsWithManyParameters.ql
+ql/cpp/ql/src/Best Practices/Magic Constants/JapaneseEraDate.ql
+ql/cpp/ql/src/Best Practices/Magic Constants/MagicConstantsNumbers.ql
+ql/cpp/ql/src/Best Practices/Magic Constants/MagicConstantsString.ql
+ql/cpp/ql/src/Best Practices/Magic Constants/MagicNumbersUseConstant.ql
+ql/cpp/ql/src/Best Practices/Magic Constants/MagicStringsUseConstant.ql
+ql/cpp/ql/src/Best Practices/NVI.ql
+ql/cpp/ql/src/Best Practices/NVIHub.ql
+ql/cpp/ql/src/Best Practices/RuleOfThree.ql
+ql/cpp/ql/src/Best Practices/Unused Entities/UnusedIncludes.ql
+ql/cpp/ql/src/Critical/DeadCodeCondition.ql
+ql/cpp/ql/src/Critical/DeadCodeFunction.ql
+ql/cpp/ql/src/Critical/DescriptorMayNotBeClosed.ql
+ql/cpp/ql/src/Critical/DescriptorNeverClosed.ql
+ql/cpp/ql/src/Critical/FileMayNotBeClosed.ql
+ql/cpp/ql/src/Critical/FileNeverClosed.ql
+ql/cpp/ql/src/Critical/GlobalUseBeforeInit.ql
+ql/cpp/ql/src/Critical/InconsistentNullnessTesting.ql
+ql/cpp/ql/src/Critical/InitialisationNotRun.ql
+ql/cpp/ql/src/Critical/LateNegativeTest.ql
+ql/cpp/ql/src/Critical/MemoryMayNotBeFreed.ql
+ql/cpp/ql/src/Critical/MemoryNeverFreed.ql
+ql/cpp/ql/src/Critical/MissingNegativityTest.ql
+ql/cpp/ql/src/Critical/MissingNullTest.ql
+ql/cpp/ql/src/Critical/NotInitialised.ql
+ql/cpp/ql/src/Critical/OverflowCalculated.ql
+ql/cpp/ql/src/Critical/OverflowDestination.ql
+ql/cpp/ql/src/Critical/ReturnStackAllocatedObject.ql
+ql/cpp/ql/src/Critical/ReturnValueIgnored.ql
+ql/cpp/ql/src/Critical/Unused.ql
+ql/cpp/ql/src/Diagnostics/Internal/ExtractionErrors.ql
+ql/cpp/ql/src/Documentation/DocumentApi.ql
+ql/cpp/ql/src/Documentation/TodoComments.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 03/ExitNonterminatingLoop.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 03/LoopBounds.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 04/Recursion.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 05/HeapMemory.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 07/ThreadSafety.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 09/AvoidNestedSemaphores.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 09/AvoidSemaphores.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 09/OutOfOrderLocks.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 09/ReleaseLocksWhenAcquired.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 11/SimpleControlFlowGoto.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 11/SimpleControlFlowJmp.ql
+ql/cpp/ql/src/JPL_C/LOC-2/Rule 12/EnumInitialization.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 13/ExternDeclsInHeader.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 13/LimitedScopeFile.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 13/LimitedScopeFunction.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 13/LimitedScopeLocalHidesGlobal.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 14/CheckingReturnValues.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 15/CheckingParameterValues.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 16/UseOfAssertionsConstant.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 16/UseOfAssertionsDensity.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 16/UseOfAssertionsNonBoolean.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 16/UseOfAssertionsSideEffect.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 17/BasicIntTypes.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 18/CompoundExpressions.ql
+ql/cpp/ql/src/JPL_C/LOC-3/Rule 19/NoBooleanSideEffects.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 20/PreprocessorUse.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 20/PreprocessorUseIfdef.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 20/PreprocessorUsePartial.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 20/PreprocessorUseUndisciplined.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 21/MacroInBlock.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 22/UseOfUndef.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 23/MismatchedIfdefs.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 24/MultipleStmtsPerLine.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 24/MultipleVarDeclsPerLine.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 25/FunctionSizeLimits.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 26/DeclarationPointerNesting.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 27/PointerDereferenceInStmt.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 28/HiddenPointerDereferenceMacro.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 28/HiddenPointerIndirectionTypedef.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 29/NonConstFunctionPointer.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 30/FunctionPointerConversions.ql
+ql/cpp/ql/src/JPL_C/LOC-4/Rule 31/IncludesFirst.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/ComparisonWithCancelingSubExpr.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/ConversionChangesSign.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/NonzeroValueCastToPointer.ql
+ql/cpp/ql/src/Likely Bugs/JapaneseEra/ConstructorOrMethodWithExactEraDate.ql
+ql/cpp/ql/src/Likely Bugs/JapaneseEra/StructWithExactEraDate.ql
+ql/cpp/ql/src/Likely Bugs/Leap Year/UnsafeArrayForDaysOfYear.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/BoolValueInBitOp.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/LogicalExprCouldBeSimplified.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/ImproperNullTermination.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/NtohlArrayNoBound.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/Padding/More64BitWaste.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/Padding/NonPortablePrintf.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/Padding/Suboptimal64BitType.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/PotentialBufferOverflow.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/SuspiciousCallToMemset.ql
+ql/cpp/ql/src/Likely Bugs/OO/NonVirtualDestructor.ql
+ql/cpp/ql/src/Likely Bugs/OO/SelfAssignmentCheck.ql
+ql/cpp/ql/src/Likely Bugs/OO/VirtualCallInStructor.ql
+ql/cpp/ql/src/Likely Bugs/ShortLoopVarName.ql
+ql/cpp/ql/src/Metrics/Classes/CAfferentCoupling.ql
+ql/cpp/ql/src/Metrics/Classes/CEfferentCoupling.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadBugs.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadDifficulty.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadEffort.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadLength.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadVocabulary.ql
+ql/cpp/ql/src/Metrics/Classes/CHalsteadVolume.ql
+ql/cpp/ql/src/Metrics/Classes/CInheritanceDepth.ql
+ql/cpp/ql/src/Metrics/Classes/CLackOfCohesionCK.ql
+ql/cpp/ql/src/Metrics/Classes/CLackOfCohesionHS.ql
+ql/cpp/ql/src/Metrics/Classes/CLinesOfCode.ql
+ql/cpp/ql/src/Metrics/Classes/CNumberOfFields.ql
+ql/cpp/ql/src/Metrics/Classes/CNumberOfFunctions.ql
+ql/cpp/ql/src/Metrics/Classes/CNumberOfStatements.ql
+ql/cpp/ql/src/Metrics/Classes/CPercentageOfComplexCode.ql
+ql/cpp/ql/src/Metrics/Classes/CResponse.ql
+ql/cpp/ql/src/Metrics/Classes/CSizeOfAPI.ql
+ql/cpp/ql/src/Metrics/Classes/CSpecialisation.ql
+ql/cpp/ql/src/Metrics/Dependencies/ExternalDependencies.ql
+ql/cpp/ql/src/Metrics/Dependencies/ExternalDependenciesSourceLinks.ql
+ql/cpp/ql/src/Metrics/External/FileCompilationDisplayStrings.ql
+ql/cpp/ql/src/Metrics/External/FileCompilationSourceLinks.ql
+ql/cpp/ql/src/Metrics/Files/AutogeneratedLOC.ql
+ql/cpp/ql/src/Metrics/Files/ConditionalSegmentConditions.ql
+ql/cpp/ql/src/Metrics/Files/ConditionalSegmentLines.ql
+ql/cpp/ql/src/Metrics/Files/FAfferentCoupling.ql
+ql/cpp/ql/src/Metrics/Files/FCommentRatio.ql
+ql/cpp/ql/src/Metrics/Files/FCyclomaticComplexity.ql
+ql/cpp/ql/src/Metrics/Files/FDirectIncludes.ql
+ql/cpp/ql/src/Metrics/Files/FEfferentCoupling.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadBugs.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadDifficulty.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadEffort.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadLength.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadVocabulary.ql
+ql/cpp/ql/src/Metrics/Files/FHalsteadVolume.ql
+ql/cpp/ql/src/Metrics/Files/FLines.ql
+ql/cpp/ql/src/Metrics/Files/FLinesOfCode.ql
+ql/cpp/ql/src/Metrics/Files/FLinesOfCommentedOutCode.ql
+ql/cpp/ql/src/Metrics/Files/FLinesOfComments.ql
+ql/cpp/ql/src/Metrics/Files/FMacroRatio.ql
+ql/cpp/ql/src/Metrics/Files/FNumberOfClasses.ql
+ql/cpp/ql/src/Metrics/Files/FNumberOfTests.ql
+ql/cpp/ql/src/Metrics/Files/FTimeInFrontend.ql
+ql/cpp/ql/src/Metrics/Files/FTodoComments.ql
+ql/cpp/ql/src/Metrics/Files/FTransitiveIncludes.ql
+ql/cpp/ql/src/Metrics/Files/FTransitiveSourceIncludes.ql
+ql/cpp/ql/src/Metrics/Files/FunctionLength.ql
+ql/cpp/ql/src/Metrics/Files/NumberOfFunctions.ql
+ql/cpp/ql/src/Metrics/Files/NumberOfGlobals.ql
+ql/cpp/ql/src/Metrics/Files/NumberOfParameters.ql
+ql/cpp/ql/src/Metrics/Files/NumberOfPublicFunctions.ql
+ql/cpp/ql/src/Metrics/Files/NumberOfPublicGlobals.ql
+ql/cpp/ql/src/Metrics/Functions/FunCyclomaticComplexity.ql
+ql/cpp/ql/src/Metrics/Functions/FunIterationNestingDepth.ql
+ql/cpp/ql/src/Metrics/Functions/FunLinesOfCode.ql
+ql/cpp/ql/src/Metrics/Functions/FunLinesOfComments.ql
+ql/cpp/ql/src/Metrics/Functions/FunNumberOfCalls.ql
+ql/cpp/ql/src/Metrics/Functions/FunNumberOfParameters.ql
+ql/cpp/ql/src/Metrics/Functions/FunNumberOfStatements.ql
+ql/cpp/ql/src/Metrics/Functions/FunPercentageOfComments.ql
+ql/cpp/ql/src/Metrics/Functions/StatementNestingDepth.ql
+ql/cpp/ql/src/Metrics/Internal/ASTConsistency.ql
+ql/cpp/ql/src/Metrics/Internal/CallableDisplayStrings.ql
+ql/cpp/ql/src/Metrics/Internal/CallableExtents.ql
+ql/cpp/ql/src/Metrics/Internal/CallableSourceLinks.ql
+ql/cpp/ql/src/Metrics/Internal/DiagnosticsSumElapsedTimes.ql
+ql/cpp/ql/src/Metrics/Internal/IRConsistency.ql
+ql/cpp/ql/src/Metrics/Internal/IncludeResolutionStatus.ql
+ql/cpp/ql/src/Metrics/Internal/ReftypeDisplayStrings.ql
+ql/cpp/ql/src/Metrics/Internal/ReftypeSourceLinks.ql
+ql/cpp/ql/src/Metrics/Namespaces/AbstractNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/ConcreteNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/HighAfferentCouplingNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/HighDistanceFromMainLineNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/HighEfferentCouplingNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/StableNamespaces.ql
+ql/cpp/ql/src/Metrics/Namespaces/UnstableNamespaces.ql
+ql/cpp/ql/src/Microsoft/CallWithNullSAL.ql
+ql/cpp/ql/src/Microsoft/IgnoreReturnValueSAL.ql
+ql/cpp/ql/src/Microsoft/InconsistentSAL.ql
+ql/cpp/ql/src/PointsTo/Debug.ql
+ql/cpp/ql/src/PointsTo/PreparedStagedPointsTo.ql
+ql/cpp/ql/src/PointsTo/Stats.ql
+ql/cpp/ql/src/PointsTo/TaintedFormatStrings.ql
+ql/cpp/ql/src/Power of 10/Rule 1/UseOfGoto.ql
+ql/cpp/ql/src/Power of 10/Rule 1/UseOfJmp.ql
+ql/cpp/ql/src/Power of 10/Rule 1/UseOfRecursion.ql
+ql/cpp/ql/src/Power of 10/Rule 2/BoundedLoopIterations.ql
+ql/cpp/ql/src/Power of 10/Rule 2/ExitPermanentLoop.ql
+ql/cpp/ql/src/Power of 10/Rule 3/DynamicAllocAfterInit.ql
+ql/cpp/ql/src/Power of 10/Rule 4/FunctionTooLong.ql
+ql/cpp/ql/src/Power of 10/Rule 4/OneStmtPerLine.ql
+ql/cpp/ql/src/Power of 10/Rule 5/AssertionDensity.ql
+ql/cpp/ql/src/Power of 10/Rule 5/AssertionSideEffect.ql
+ql/cpp/ql/src/Power of 10/Rule 5/ConstantAssertion.ql
+ql/cpp/ql/src/Power of 10/Rule 5/NonBooleanAssertion.ql
+ql/cpp/ql/src/Power of 10/Rule 6/GlobalCouldBeStatic.ql
+ql/cpp/ql/src/Power of 10/Rule 6/VariableScopeTooLarge.ql
+ql/cpp/ql/src/Power of 10/Rule 7/CheckArguments.ql
+ql/cpp/ql/src/Power of 10/Rule 7/CheckReturnValues.ql
+ql/cpp/ql/src/Power of 10/Rule 8/AvoidConditionalCompilation.ql
+ql/cpp/ql/src/Power of 10/Rule 8/PartialMacro.ql
+ql/cpp/ql/src/Power of 10/Rule 8/RestrictPreprocessor.ql
+ql/cpp/ql/src/Power of 10/Rule 8/UndisciplinedMacro.ql
+ql/cpp/ql/src/Power of 10/Rule 9/FunctionPointer.ql
+ql/cpp/ql/src/Power of 10/Rule 9/HiddenPointerIndirection.ql
+ql/cpp/ql/src/Power of 10/Rule 9/PointerNesting.ql
+ql/cpp/ql/src/Security/CWE/CWE-020/CountUntrustedDataToExternalAPI.ql
+ql/cpp/ql/src/Security/CWE/CWE-020/IRCountUntrustedDataToExternalAPI.ql
+ql/cpp/ql/src/Security/CWE/CWE-020/IRUntrustedDataToExternalAPI.ql
+ql/cpp/ql/src/Security/CWE/CWE-020/UntrustedDataToExternalAPI.ql
+ql/cpp/ql/src/Security/CWE/CWE-129/ImproperArrayIndexValidation.ql
+ql/cpp/ql/src/Security/CWE/CWE-170/ImproperNullTerminationTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticWithExtremeValues.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/IntegerOverflowTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-457/ConditionallyUninitializedVariable.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/IncorrectPointerScalingChar.ql
+ql/cpp/ql/src/Security/CWE/CWE-764/LockOrderCycle.ql
+ql/cpp/ql/src/Security/CWE/CWE-764/TwiceLocked.ql
+ql/cpp/ql/src/Security/CWE/CWE-764/UnreleasedLock.ql
+ql/cpp/ql/src/Security/CWE/CWE-835/InfiniteLoopWithUnsatisfiableExitCondition.ql
+ql/cpp/ql/src/definitions.ql
+ql/cpp/ql/src/experimental/Best Practices/UselessTest.ql
+ql/cpp/ql/src/experimental/Best Practices/WrongUintAccess.ql
+ql/cpp/ql/src/experimental/Likely Bugs/ArrayAccessProductFlow.ql
+ql/cpp/ql/src/experimental/Likely Bugs/DerefNullResult.ql
+ql/cpp/ql/src/experimental/Likely Bugs/RedundantNullCheckParam.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-020/LateCheckOfFunctionArgument.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-020/NoCheckBeforeUnsafePutUser.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-078/WordexpTainted.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-1041/FindWrapperFunctions.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-1126/DeclarationOfVariableWithUnnecessarilyWideScope.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-120/MemoryUnsafeFunctionScan.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-1240/CustomCryptographicPrimitive.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-125/DangerousWorksWithMultibyteOrWideCharacters.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-190/AllocMultiplicationOverflow.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-190/DangerousUseOfTransformationAfterOperation.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-190/IfStatementAdditionOverflow.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-193/ConstantSizeArrayOffByOne.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-200/ExposureSensitiveInformationUnauthorizedActor.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-243/IncorrectChangingWorkingDirectory.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-266/IncorrectPrivilegeAssignment.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-273/PrivilegeDroppingOutoforder.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-285/PamAuthorization.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-295/CurlSSL.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-359/PrivateCleartextWrite.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-362/double-fetch.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-369/DivideByZeroUsingReturnValue.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-377/InsecureTemporaryFile.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-401/MemoryLeakOnFailedCallToRealloc.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-409/DecompressionBombs.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-415/DoubleFree.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-416/UseAfterExpiredLifetime.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-476/DangerousUseOfExceptionBlocks.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-561/FindIncorrectlyUsedSwitch.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-670/DangerousUseSSL_shutdown.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-675/DoubleRelease.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-691/InsufficientControlFlowManagementAfterRefactoringTheCode.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-691/InsufficientControlFlowManagementWhenUsingBitOperations.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-703/FindIncorrectlyUsedExceptions.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-754/ImproperCheckReturnValueScanf.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-758/UndefinedOrImplementationDefinedBehavior.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-783/OperatorPrecedenceLogicErrorWhenUseBitwiseOrLogicalOperations.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-783/OperatorPrecedenceLogicErrorWhenUseBoolType.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-787/UnsignedToSignedPointerArith.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-788/AccessOfMemoryLocationAfterEndOfBufferUsingStrlen.ql
+ql/cpp/ql/src/experimental/Security/CWE/CWE-805/BufferAccessWithIncorrectLengthValue.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/UnknownAsymmetricKeyGen.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/WeakAsymmetricKeyGen.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/WeakBlockMode.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/WeakEllipticCurve.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/WeakEncryption.ql
+ql/cpp/ql/src/experimental/cryptography/example_alerts/WeakHashes.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/AllAsymmetricAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/AllCryptoAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/AsymmetricEncryptionAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/AsymmetricPaddingAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/AuthenticatedEncryptionAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/BlockModeAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/BlockModeKnownIVsOrNonces.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/BlockModeUnknownIVsOrNonces.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/EllipticCurveAlgorithmSize.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/EllipticCurveAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/HashingAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/KeyExchangeAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/KnownAsymmetricKeyGeneration.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SigningAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SymmetricEncryptionAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SymmetricPaddingAlgorithms.ql
+ql/cpp/ql/src/experimental/cryptography/inventory/new_models/UnknownAsymmetricKeyGeneration.ql
+ql/cpp/ql/src/external/examples/filters/BumpMetricBy10.ql
+ql/cpp/ql/src/external/examples/filters/EditDefectMessage.ql
+ql/cpp/ql/src/external/examples/filters/ExcludeGeneratedCode.ql
+ql/cpp/ql/src/filters/ClassifyFiles.ql
+ql/cpp/ql/src/jsf/3.02 Code Size and Complexity/AV Rule 1.ql
+ql/cpp/ql/src/jsf/3.02 Code Size and Complexity/AV Rule 2.ql
+ql/cpp/ql/src/jsf/3.02 Code Size and Complexity/AV Rule 3.ql
+ql/cpp/ql/src/jsf/4.04 Environment/AV Rule 11.ql
+ql/cpp/ql/src/jsf/4.04 Environment/AV Rule 12.ql
+ql/cpp/ql/src/jsf/4.04 Environment/AV Rule 13.ql
+ql/cpp/ql/src/jsf/4.04 Environment/AV Rule 14.ql
+ql/cpp/ql/src/jsf/4.04 Environment/AV Rule 9.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 17.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 18.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 19.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 20.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 21.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 22.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 23.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 24.ql
+ql/cpp/ql/src/jsf/4.05 Libraries/AV Rule 25.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 26.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 27.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 28.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 29.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 30.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 31.ql
+ql/cpp/ql/src/jsf/4.07 Header Files/AV Rule 33.ql
+ql/cpp/ql/src/jsf/4.07 Header Files/AV Rule 39.ql
+ql/cpp/ql/src/jsf/4.08 Implementation Files/AV Rule 40.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 41.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 42.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 43.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 44.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 45.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 46.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 47.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 48.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 49.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 50.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 51.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 52.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 53.1.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 53.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 54.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 57.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 58.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 59.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 60.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 61.ql
+ql/cpp/ql/src/jsf/4.09 Style/AV Rule 63.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 68.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 69.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 70.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 71.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 73.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 74.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 75.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 76.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 77.1.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 78.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 81.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 85.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 88.1.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 94.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 96.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 97.1.ql
+ql/cpp/ql/src/jsf/4.11 Namespaces/AV Rule 99.ql
+ql/cpp/ql/src/jsf/4.12 Templates/AV Rule 104.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 108.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 110.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 111.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 113.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 115.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 119.ql
+ql/cpp/ql/src/jsf/4.14 Comments/AV Rule 126.ql
+ql/cpp/ql/src/jsf/4.14 Comments/AV Rule 127.ql
+ql/cpp/ql/src/jsf/4.14 Comments/AV Rule 133.ql
+ql/cpp/ql/src/jsf/4.15 Declarations and Definitions/AV Rule 135.ql
+ql/cpp/ql/src/jsf/4.15 Declarations and Definitions/AV Rule 138.ql
+ql/cpp/ql/src/jsf/4.15 Declarations and Definitions/AV Rule 139.ql
+ql/cpp/ql/src/jsf/4.15 Declarations and Definitions/AV Rule 140.ql
+ql/cpp/ql/src/jsf/4.16 Initialization/AV Rule 142.ql
+ql/cpp/ql/src/jsf/4.16 Initialization/AV Rule 143.ql
+ql/cpp/ql/src/jsf/4.17 Types/AV Rule 147.ql
+ql/cpp/ql/src/jsf/4.18 Constants/AV Rule 149.ql
+ql/cpp/ql/src/jsf/4.18 Constants/AV Rule 150.ql
+ql/cpp/ql/src/jsf/4.18 Constants/AV Rule 151.1.ql
+ql/cpp/ql/src/jsf/4.18 Constants/AV Rule 151.ql
+ql/cpp/ql/src/jsf/4.19 Variables/AV Rule 152.ql
+ql/cpp/ql/src/jsf/4.20 Unions and Bit Fields/AV Rule 153.ql
+ql/cpp/ql/src/jsf/4.20 Unions and Bit Fields/AV Rule 154.ql
+ql/cpp/ql/src/jsf/4.20 Unions and Bit Fields/AV Rule 155.ql
+ql/cpp/ql/src/jsf/4.20 Unions and Bit Fields/AV Rule 156.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 157.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 158.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 159.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 160.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 162.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 163.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 164.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 165.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 168.ql
+ql/cpp/ql/src/jsf/4.22 Pointers and References/AV Rule 170.ql
+ql/cpp/ql/src/jsf/4.22 Pointers and References/AV Rule 171.ql
+ql/cpp/ql/src/jsf/4.22 Pointers and References/AV Rule 173.ql
+ql/cpp/ql/src/jsf/4.22 Pointers and References/AV Rule 175.ql
+ql/cpp/ql/src/jsf/4.22 Pointers and References/AV Rule 176.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 178.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 179.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 180.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 181.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 182.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 184.ql
+ql/cpp/ql/src/jsf/4.23 Type Conversions/AV Rule 185.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 186.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 187.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 188.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 189.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 190.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 191.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 192.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 193.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 194.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 195.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 198.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 199.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 200.ql
+ql/cpp/ql/src/jsf/4.25 Expressions/AV Rule 202.ql
+ql/cpp/ql/src/jsf/4.25 Expressions/AV Rule 204.1.ql
+ql/cpp/ql/src/jsf/4.25 Expressions/AV Rule 204.ql
+ql/cpp/ql/src/jsf/4.25 Expressions/AV Rule 205.ql
+ql/cpp/ql/src/jsf/4.26 Memory Allocation/AV Rule 206.ql
+ql/cpp/ql/src/jsf/4.26 Memory Allocation/AV Rule 207.ql
+ql/cpp/ql/src/jsf/4.27 Fault Handling/AV Rule 208.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 209.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 210.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 212.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 213.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 214.ql
+ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 215.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureMixedNeutralModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureMixedSummaryModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureSinkModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureSourceModels.ql
+ql/cpp/ql/src/utils/modelgenerator/CaptureSummaryModels.ql
