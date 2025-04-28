@@ -14,3 +14,4 @@
       - cs/non-short-circuit
       - cs/useless-assignment-to-local
       - cs/invalid-string-formatting
+      - cs/equality-on-floats
