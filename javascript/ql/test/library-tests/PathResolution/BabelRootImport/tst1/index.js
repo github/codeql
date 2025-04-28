@@ -1,1 +1,1 @@
-import f from '~/a'; // $ MISSING: importTarget=BabelRootImport/tst1/a.js
+import f from '~/a'; // $ importTarget=BabelRootImport/tst1/a.js

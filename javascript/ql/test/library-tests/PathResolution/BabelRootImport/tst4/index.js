@@ -1,2 +1,2 @@
-import g from '~/b.js'; // $ MISSING: importTarget=BabelRootImport/tst4/src/js/b.js
-import f from '#/a'; // $ MISSING: importTarget=BabelRootImport/tst1/a.js
+import g from '~/b.js'; // $ importTarget=BabelRootImport/tst4/src/js/b.js
+import f from '#/a'; // $ importTarget=BabelRootImport/tst1/a.js

@@ -1,3 +1,10 @@
+| BabelRootImport/tst1/index.js:1:1:1:20 | import f from '~/a'; | BabelRootImport/tst1/a.js |
+| BabelRootImport/tst1/nested/tst.js:1:1:1:20 | import f from '~/a'; | BabelRootImport/tst1/a.js |
+| BabelRootImport/tst2/index.js:1:1:1:23 | import  ... /b.js'; | BabelRootImport/tst2/src/js/b.js |
+| BabelRootImport/tst2/index.js:2:1:2:20 | import f from '#/a'; | BabelRootImport/tst1/a.js |
+| BabelRootImport/tst3/index.js:1:1:1:30 | import  ... /b.js'; | BabelRootImport/tst3/src/b.js |
+| BabelRootImport/tst4/index.js:1:1:1:23 | import  ... /b.js'; | BabelRootImport/tst4/src/js/b.js |
+| BabelRootImport/tst4/index.js:2:1:2:20 | import f from '#/a'; | BabelRootImport/tst1/a.js |
 | BaseUrl/src/main.ts:2:1:2:26 | import  ... /file"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:3:1:3:29 | import  ... le.ts"; | BaseUrl/base/lib/file.ts |
 | BaseUrl/src/main.ts:4:1:4:29 | import  ... le.js"; | BaseUrl/base/lib/file.ts |

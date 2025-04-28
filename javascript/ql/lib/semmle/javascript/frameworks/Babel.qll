@@ -3,6 +3,7 @@
  */
 
 import javascript
+private import semmle.javascript.internal.paths.PathMapping
 
 module Babel {
   /**
@@ -200,6 +201,14 @@ module Babel {
         pred = call.getArgument(0) and
         succ = [call, call.getParameter(2).getParameter(0).asSource()]
       )
+    }
+  }
+
+  private class BabelPathMapping extends PathMapping, RootImportConfig {
+    override File getAnAffectedFile() { result = this.getConfig().getAContainerInScope() }
+
+    override predicate hasPrefixPathMapping(string pattern, Container newContext, string newPath) {
+      newPath = this.getRoot(pattern) and newContext = this.getFolder()
     }
   }
 }
