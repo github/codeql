@@ -96,27 +96,22 @@ private class ConsPath extends Path, TConsPath {
 private string pathRegex() { result = "(.*)(?:/|^)(([^/]*?)(\\.([^.]*))?)" }
 
 /**
- * A string value that represents a (relative or absolute) file system path.
- *
- * Each path string is associated with one or more root folders relative to
- * which the path may be resolved. For instance, paths inside a module are
- * usually resolved relative to the module's folder, with a default
- * lookup path as the fallback.
+ * A `string` with some additional member predicates for extracting parts of a file path.
  */
-abstract class PathString extends string {
+class FilePath extends string {
   bindingset[this]
-  PathString() { any() }
-
-  /** Gets a root folder relative to which this path can be resolved. */
-  abstract Folder getARootFolder();
+  FilePath() { any() }
 
   /** Gets the `i`th component of this path. */
+  bindingset[this]
   string getComponent(int i) { result = this.splitAt("/", i) }
 
   /** Gets the number of components of this path. */
+  bindingset[this]
   int getNumComponent() { result = count(int i | exists(this.getComponent(i))) }
 
   /** Gets the base name of the folder or file this path refers to. */
+  bindingset[this]
   string getBaseName() { result = this.regexpCapture(pathRegex(), 2) }
 
   /**
@@ -124,9 +119,11 @@ abstract class PathString extends string {
    * up to (but not including) the last dot character if there is one, or the entire
    * base name if there is not
    */
+  bindingset[this]
   string getStem() { result = this.regexpCapture(pathRegex(), 3) }
 
   /** Gets the path of the parent folder of the folder or file this path refers to. */
+  bindingset[this]
   string getDirName() { result = this.regexpCapture(pathRegex(), 1) }
 
   /**
@@ -135,7 +132,25 @@ abstract class PathString extends string {
    *
    * Has no result if the base name does not contain a dot.
    */
+  bindingset[this]
   string getExtension() { result = this.regexpCapture(pathRegex(), 4) }
+
+}
+
+/**
+ * A string value that represents a (relative or absolute) file system path.
+ *
+ * Each path string is associated with one or more root folders relative to
+ * which the path may be resolved. For instance, paths inside a module are
+ * usually resolved relative to the module's folder, with a default
+ * lookup path as the fallback.
+ */
+abstract class PathString extends FilePath {
+  bindingset[this]
+  PathString() { any() }
+
+  /** Gets a root folder relative to which this path can be resolved. */
+  abstract Folder getARootFolder();
 
   /**
    * Gets the absolute path that the sub-path consisting of the first `n`
