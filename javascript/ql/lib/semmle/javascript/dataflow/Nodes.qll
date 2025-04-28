@@ -1318,7 +1318,6 @@ module ClassNode {
       )
       or
       // Function-style class methods via prototype
-      astNode instanceof Function and
       kind = MemberKind::method() and
       exists(DataFlow::SourceNode proto |
         proto = this.getAPrototypeReference() and
@@ -1361,7 +1360,6 @@ module ClassNode {
       )
       or
       // Function-style class methods via prototype
-      astNode instanceof Function and
       kind = MemberKind::method() and
       exists(DataFlow::SourceNode proto |
         proto = this.getAPrototypeReference() and
@@ -1415,7 +1413,6 @@ module ClassNode {
      * Only applies to function-style classes.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      astNode instanceof Function and
       (
         exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
           result = base.getAPropertyRead("prototype")
