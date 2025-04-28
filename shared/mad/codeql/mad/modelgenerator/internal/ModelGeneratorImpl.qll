@@ -11,6 +11,7 @@ private import codeql.dataflow.internal.ContentDataFlowImpl
 private import codeql.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Location
 private import ModelPrinting
+private import codeql.util.Unit
 
 /**
  * Provides language-specific model generator parameters.
@@ -464,14 +465,22 @@ module MakeModelGenerator<
       override string toString() { result = "TaintStore(" + step + ")" }
     }
 
-    /**
-     * A data flow configuration for tracking flow through APIs.
-     * The sources are the parameters of an API and the sinks are the return values (excluding `this`) and parameters.
-     *
-     * This can be used to generate Flow summaries for APIs from parameter to return.
-     */
-    private module PropagateFlowConfig implements DataFlow::StateConfigSig {
-      class FlowState = TaintState;
+    private signature module PropagateFlowConfigInputSig {
+      class FlowState;
+
+      FlowState initialState();
+
+      default predicate isAdditionalFlowStep(
+        DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+      ) {
+        none()
+      }
+    }
+
+    private module PropagateFlowConfig<PropagateFlowConfigInputSig PropagateFlowConfigInput>
+      implements DataFlow::StateConfigSig
+    {
+      import PropagateFlowConfigInput
 
       predicate isSource(DataFlow::Node source, FlowState state) {
         source instanceof DataFlow::ParameterNode and
@@ -480,7 +489,7 @@ module MakeModelGenerator<
           c instanceof DataFlowSummaryTargetApi and
           not isUninterestingForHeuristicDataFlowModels(c)
         ) and
-        state.(TaintRead).getStep() = 0
+        state = initialState()
       }
 
       predicate isSink(DataFlow::Node sink, FlowState state) {
@@ -493,6 +502,31 @@ module MakeModelGenerator<
         not isOwnInstanceAccessNode(sink) and
         not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink)))
       }
+
+      predicate isAdditionalFlowStep = PropagateFlowConfigInput::isAdditionalFlowStep/4;
+
+      predicate isBarrier(DataFlow::Node n) {
+        exists(Type t | t = n.(NodeExtended).getType() and not isRelevantType(t))
+      }
+
+      DataFlow::FlowFeature getAFeature() {
+        result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+      }
+    }
+
+    /**
+     * A module used to construct a data flow configuration for tracking taint-
+     * flow through APIs.
+     * The sources are the parameters of an API and the sinks are the return
+     * values (excluding `this`) and parameters.
+     *
+     * This can be used to generate flow summaries for APIs from parameter to
+     * return.
+     */
+    module PropagateFlowConfigInputTaintInput implements PropagateFlowConfigInputSig {
+      class FlowState = TaintState;
+
+      FlowState initialState() { result.(TaintRead).getStep() = 0 }
 
       predicate isAdditionalFlowStep(
         DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
@@ -515,51 +549,107 @@ module MakeModelGenerator<
           state1.(TaintRead).getStep() + 1 = state2.(TaintRead).getStep()
         )
       }
-
-      predicate isBarrier(DataFlow::Node n) {
-        exists(Type t | t = n.(NodeExtended).getType() and not isRelevantType(t))
-      }
-
-      DataFlow::FlowFeature getAFeature() {
-        result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-      }
     }
 
-    module PropagateFlow = TaintTracking::GlobalWithState<PropagateFlowConfig>;
+    /**
+     * A data flow configuration for tracking taint-flow through APIs.
+     * The sources are the parameters of an API and the sinks are the return
+     * values (excluding `this`) and parameters.
+     *
+     * This can be used to generate flow summaries for APIs from parameter to
+     * return.
+     */
+    private module PropagateTaintFlowConfig =
+      PropagateFlowConfig<PropagateFlowConfigInputTaintInput>;
+
+    module PropagateTaintFlow = TaintTracking::GlobalWithState<PropagateTaintFlowConfig>;
 
     /**
-     * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
+     * A module used to construct a data flow configuration for tracking
+     * data flow through APIs.
+     * The sources are the parameters of an API and the sinks are the return
+     * values (excluding `this`) and parameters.
+     *
+     * This can be used to generate value-preserving flow summaries for APIs
+     * from parameter to return.
      */
-    string captureThroughFlow0(
+    module PropagateFlowConfigInputDataFlowInput implements PropagateFlowConfigInputSig {
+      class FlowState = Unit;
+
+      FlowState initialState() { any() }
+    }
+
+    /**
+     * A data flow configuration for tracking data flow through APIs.
+     * The sources are the parameters of an API and the sinks are the return
+     * values (excluding `this`) and parameters.
+     *
+     * This can be used to generate flow summaries for APIs from parameter to
+     * return.
+     */
+    private module PropagateDataFlowConfig =
+      PropagateFlowConfig<PropagateFlowConfigInputDataFlowInput>;
+
+    module PropagateDataFlow = DataFlow::GlobalWithState<PropagateDataFlowConfig>;
+
+    /**
+     * Holds if there should be a summary of `api` specifying flow from `p`
+     * to `returnNodeExt`.
+     */
+    predicate captureThroughFlow0(
       DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt
     ) {
-      exists(string input, string output |
-        getEnclosingCallable(p) = api and
-        getEnclosingCallable(returnNodeExt) = api and
-        input = parameterNodeAsInput(p) and
-        output = getOutput(returnNodeExt) and
-        input != output and
-        result = ModelPrinting::asLiftedTaintModel(api, input, output)
-      )
+      captureThroughFlow0(api, p, _, returnNodeExt, _, _)
+    }
+
+    /**
+     * Holds if there should be a summary of `api` specifying flow
+     * from `p` (with summary component `input`) to `returnNodeExt` (with
+     * summary component `output`).
+     *
+     * `preservesValue` is true if the summary is value-preserving, or `false`
+     * otherwise.
+     */
+    private predicate captureThroughFlow0(
+      DataFlowSummaryTargetApi api, DataFlow::ParameterNode p, string input,
+      ReturnNodeExt returnNodeExt, string output, boolean preservesValue
+    ) {
+      (
+        PropagateDataFlow::flow(p, returnNodeExt) and preservesValue = true
+        or
+        not PropagateDataFlow::flow(p, returnNodeExt) and
+        PropagateTaintFlow::flow(p, returnNodeExt) and
+        preservesValue = false
+      ) and
+      getEnclosingCallable(p) = api and
+      getEnclosingCallable(returnNodeExt) = api and
+      input = parameterNodeAsInput(p) and
+      output = getOutput(returnNodeExt) and
+      input != output
     }
 
     /**
      * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
+     *
+     * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
      */
-    private string captureThroughFlow(DataFlowSummaryTargetApi api) {
-      exists(DataFlow::ParameterNode p, ReturnNodeExt returnNodeExt |
-        PropagateFlow::flow(p, returnNodeExt) and
-        result = captureThroughFlow0(api, p, returnNodeExt)
+    private string captureThroughFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
+      exists(string input, string output |
+        preservesValue = max(boolean b | captureThroughFlow0(api, _, input, _, output, b)) and
+        result = ModelPrinting::asLiftedTaintModel(api, input, output, preservesValue)
       )
     }
 
     /**
      * Gets the summary model(s) of `api`, if there is flow from parameters to the
      * return value or parameter or if `api` is a fluent API.
+     *
+     * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
      */
-    string captureFlow(DataFlowSummaryTargetApi api) {
-      result = captureQualifierFlow(api) or
-      result = captureThroughFlow(api)
+    string captureHeuristicFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
+      result = captureQualifierFlow(api) and preservesValue = true
+      or
+      result = captureThroughFlow(api, preservesValue)
     }
 
     /**
@@ -569,7 +659,7 @@ module MakeModelGenerator<
      */
     string captureNoFlow(DataFlowSummaryTargetApi api) {
       not exists(DataFlowSummaryTargetApi api0 |
-        exists(captureFlow(api0)) and api0.lift() = api.lift()
+        exists(captureFlow(api0, _)) and api0.lift() = api.lift()
       ) and
       api.isRelevant() and
       result = ModelPrinting::asNeutralSummaryModel(api)
@@ -1024,12 +1114,13 @@ module MakeModelGenerator<
     /**
      * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
      * the return value or a parameter). `lift` is true, if the model should be lifted, otherwise false.
+     * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
      *
      * Models are lifted to the best type in case the read and store access paths do not
      * contain a field or synthetic field access.
      */
-    string captureFlow(ContentDataFlowSummaryTargetApi api, boolean lift) {
-      exists(string input, string output, boolean preservesValue |
+    string captureFlow(ContentDataFlowSummaryTargetApi api, boolean lift, boolean preservesValue) {
+      exists(string input, string output |
         captureFlow0(api, input, output, _, lift) and
         preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
         result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
@@ -1046,17 +1137,25 @@ module MakeModelGenerator<
    * generate flow summaries using the heuristic based summary generator.
    */
   string captureFlow(DataFlowSummaryTargetApi api, boolean lift) {
-    result = ContentSensitive::captureFlow(api, lift)
-    or
-    not exists(DataFlowSummaryTargetApi api0 |
-      (api0 = api or api.lift() = api0) and
-      exists(ContentSensitive::captureFlow(api0, false))
+    exists(boolean preservesValue |
+      result = ContentSensitive::captureFlow(api, lift, preservesValue)
       or
-      api0.lift() = api.lift() and
-      exists(ContentSensitive::captureFlow(api0, true))
-    ) and
-    result = Heuristic::captureFlow(api) and
-    lift = true
+      not exists(DataFlowSummaryTargetApi api0 |
+        // If the heuristic summary is value-preserving then we keep both
+        // summaries. However, if we can generate any content-sensitive
+        // summary (value-preserving or not) then we don't include any taint-
+        // based heuristic summary.
+        preservesValue = false
+      |
+        (api0 = api or api.lift() = api0) and
+        exists(ContentSensitive::captureFlow(api0, false, _))
+        or
+        api0.lift() = api.lift() and
+        exists(ContentSensitive::captureFlow(api0, true, _))
+      ) and
+      result = Heuristic::captureHeuristicFlow(api, preservesValue) and
+      lift = true
+    )
   }
 
   /**
