@@ -441,8 +441,6 @@ ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 213.ql
 ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 214.ql
 ql/cpp/ql/src/jsf/4.28 Portable Code/AV Rule 215.ql
 ql/cpp/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
-ql/cpp/ql/src/utils/modelgenerator/CaptureMixedNeutralModels.ql
-ql/cpp/ql/src/utils/modelgenerator/CaptureMixedSummaryModels.ql
 ql/cpp/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
 ql/cpp/ql/src/utils/modelgenerator/CaptureSinkModels.ql
 ql/cpp/ql/src/utils/modelgenerator/CaptureSourceModels.ql
