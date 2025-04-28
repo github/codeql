@@ -135,6 +135,31 @@ class FilePath extends string {
   bindingset[this]
   string getExtension() { result = this.regexpCapture(pathRegex(), 4) }
 
+  /**
+   * Holds if this is a relative path starting with an explicit `./` or similar syntax meaning it
+   * must be resolved relative to its enclosing folder.
+   *
+   * Specifically this holds when the string is `.` or `..`, or starts with `./` or `../` or
+   * `.\` or `..\`.
+   */
+  bindingset[this]
+  pragma[inline_late]
+  predicate isDotRelativePath() { this.regexpMatch("\\.\\.?(?:[/\\\\].*)?") }
+
+  /**
+   * Gets the NPM package name from the beginning of the given import path.
+   *
+   * Has no result for paths starting with a `.` or `/`
+   *
+   * For example:
+   * - `foo/bar` maps to `foo`
+   * - `@example/foo/bar` maps to `@example/foo`
+   * - `./foo` maps to nothing.
+   */
+  bindingset[this]
+  string getPackagePrefix() {
+    result = this.regexpFind("^(@[^/\\\\]+[/\\\\])?[^@./\\\\][^/\\\\]*", _, _)
+  }
 }
 
 /**
