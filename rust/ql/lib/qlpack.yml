@@ -1,5 +1,5 @@
 name: codeql/rust-all
-version: 0.1.7-dev
+version: 0.1.7
 groups: rust
 extractor: rust
 dbscheme: rust.dbscheme
