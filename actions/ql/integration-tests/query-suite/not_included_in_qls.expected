@@ -1,4 +1,10 @@
 ql/actions/ql/src/Debug/partial.ql
+ql/actions/ql/src/Models/CompositeActionsSinks.ql
+ql/actions/ql/src/Models/CompositeActionsSources.ql
+ql/actions/ql/src/Models/CompositeActionsSummaries.ql
+ql/actions/ql/src/Models/ReusableWorkflowsSinks.ql
+ql/actions/ql/src/Models/ReusableWorkflowsSources.ql
+ql/actions/ql/src/Models/ReusableWorkflowsSummaries.ql
 ql/actions/ql/src/experimental/Security/CWE-074/OutputClobberingHigh.ql
 ql/actions/ql/src/experimental/Security/CWE-078/CommandInjectionCritical.ql
 ql/actions/ql/src/experimental/Security/CWE-078/CommandInjectionMedium.ql

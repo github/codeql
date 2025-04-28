@@ -1,4 +1,6 @@
-### Breaking Changes
+---
+category: breaking
+---
 
 * The following queries have been removed from the `security-and-quality` suite.
   They are not intended to produce user-facing
