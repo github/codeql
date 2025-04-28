@@ -1,6 +1,6 @@
 /**
  * @name Detects known elliptic curve algorithms
- * @id java/crypto_inventory_slices/known_elliptic_curvee_algorithm
+ * @id java/crypto_inventory_slices/known_elliptic_curve_algorithm
  * @kind problem
  */
 
