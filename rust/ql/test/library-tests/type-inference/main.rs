@@ -129,8 +129,8 @@ mod method_non_parametric_impl {
         println!("{:?}", x.a); // $ fieldof=MyThing
         println!("{:?}", y.a); // $ fieldof=MyThing
 
-        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1 fieldof=MyThing
+        println!("{:?}", x.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -295,22 +295,22 @@ mod method_non_parametric_trait_impl {
 
         // Tests for method resolution
 
-        println!("{:?}", thing_s1.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", thing_s2.m1().a); // $ MISSING: method=MyThing<S2>::m1 fieldof=MyThing
-        let s3: S3 = thing_s3.m1(); // $ MISSING: method=MyThing<S3>::m1
+        println!("{:?}", thing_s1.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", thing_s2.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
+        let s3: S3 = thing_s3.m1(); // $ method=MyThing<S3>::m1
         println!("{:?}", s3);
 
         let p1 = MyPair { p1: S1, p2: S1 };
-        println!("{:?}", p1.m1()); // $ MISSING: method=MyTrait<I>::m1
+        println!("{:?}", p1.m1()); // $ method=MyTrait<I>::m1
 
         let p2 = MyPair { p1: S1, p2: S2 };
-        println!("{:?}", p2.m1()); // $ MISSING: method=MyTrait<S3>::m1
+        println!("{:?}", p2.m1()); // $ method=MyTrait<S3>::m1
 
         let p3 = MyPair {
             p1: MyThing { a: S1 },
             p2: S3,
         };
-        println!("{:?}", p3.m1()); // $ MISSING: method=MyTrait<TT>::m1
+        println!("{:?}", p3.m1()); // $ method=MyTrait<TT>::m1
 
         // These calls go to the first implementation of `MyProduct` for `MyPair`
         let a = MyPair { p1: S1, p2: S1 };
@@ -324,17 +324,17 @@ mod method_non_parametric_trait_impl {
         // parameters of the implementation enforce that the two generics must
         // be equal.
         let b = MyPair { p1: S2, p2: S1 };
-        let x = b.fst(); // $ MISSING: method=MyPair<S2,S1>::fst SPURIOUS: method=MyPair<A,A>::fst
+        let x = b.fst(); // $ method=MyPair<S2,S1>::fst
         println!("{:?}", x);
-        let y = b.snd(); // $ MISSING: method=MyPair<S2,S1>::snd SPURIOUS: method=MyPair<A,A>::snd
+        let y = b.snd(); // $ method=MyPair<S2,S1>::snd
         println!("{:?}", y);
 
         // Tests for inference of type parameters based on trait implementations.
 
-        let x = call_trait_m1(thing_s1); // $ MISSING: type=x:S1
+        let x = call_trait_m1(thing_s1); // $ type=x:S1
         println!("{:?}", x);
-        let y = call_trait_m1(thing_s2); // $ MISSING: type=y:MyThing type=y.A:S2
-        println!("{:?}", y.a); // $ MISSING: fieldof=MyThing
+        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2
+        println!("{:?}", y.a); // $ fieldof=MyThing
 
         // First implementation
         let a = MyPair { p1: S1, p2: S1 };
@@ -345,20 +345,20 @@ mod method_non_parametric_trait_impl {
 
         // Second implementation
         let b = MyPair { p1: S2, p2: S1 };
-        let x = get_fst(b); // $ type=x:S1 SPURIOUS: type=x:S2
+        let x = get_fst(b); // $ type=x:S1
         println!("{:?}", x);
-        let y = get_snd(b); // $ type=y:S2 SPURIOUS: type=y:S1
+        let y = get_snd(b); // $ type=y:S2
         println!("{:?}", y);
 
         let c = MyPair {
             p1: S3,
             p2: MyPair { p1: S2, p2: S1 },
         };
-        let x = get_snd_fst(c); // $ type=x:S1 SPURIOUS: type=x:S2
+        let x = get_snd_fst(c); // $ type=x:S1
 
         let thing = MyThing { a: S1 };
-        let i = thing.convert_to(); // $ MISSING: type=i:S1 MISSING: method=T::convert_to
-        let j = convert_to(thing); // $ MISSING: type=j:S1
+        let i = thing.convert_to(); // $ MISSING: type=i:S1 method=T::convert_to
+        let j = convert_to(thing); // $ type=j:S1
     }
 }
 
@@ -936,7 +936,7 @@ mod option_methods {
         println!("{:?}", x4);
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", x5.flatten()); // $ MISSING: method=flatten
+        println!("{:?}", x5.flatten()); // $ method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
