@@ -2122,6 +2122,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     KeyOpAlg::Algorithm getAlgorithmType() { result = instance.asAlg().getAlgorithmType() }
 
+    predicate isAsymmetric() {
+      this.getAlgorithmType() instanceof KeyOpAlg::TAsymmetricCipher
+      or
+      this.getAlgorithmType() instanceof KeyOpAlg::TSignature
+    }
+
     /**
      * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
      */
@@ -2441,5 +2447,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       value = instance.asAlg().getParsedEllipticCurveName() and
       location = this.getLocation()
     }
+  }
+
+  predicate isAsymmetricAlgorithm(AlgorithmNode node) {
+    node instanceof EllipticCurveNode
+    or
+    node instanceof KeyOperationAlgorithmNode and node.(KeyOperationAlgorithmNode).isAsymmetric()
+    // TODO: get unknown algorithms from known asymmetric operations
   }
 }
