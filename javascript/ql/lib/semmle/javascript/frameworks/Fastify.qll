@@ -328,7 +328,11 @@ module Fastify {
     ResponseSendArgument() {
       this = rh.getAResponseSource().ref().getAMethodCall("send").getArgument(0)
       or
-      this = rh.(DataFlow::FunctionNode).getAReturn()
+      exists(RouteSetup setup |
+        rh = setup.getARouteHandler() and
+        this = rh.(DataFlow::FunctionNode).getAReturn() and
+        setup.getMethodName() != "addHook"
+      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
