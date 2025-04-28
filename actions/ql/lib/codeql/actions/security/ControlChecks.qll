@@ -37,8 +37,7 @@ string actor_not_attacker_event() {
       // actor and attacker can be different
       // actor may be a collaborator, but the attacker is may be the author of the PR that gets commented
       // therefore it may be vulnerable to TOCTOU races where the actor reviews one thing and the attacker changes it
-      "issue_comment",
-      "pull_request_comment",
+      "pull_request_comment", "issue_comment"
     ]
 }
 

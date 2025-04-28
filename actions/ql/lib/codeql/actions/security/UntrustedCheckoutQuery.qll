@@ -3,7 +3,11 @@ private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.FlowSources
 private import codeql.actions.TaintTracking
 
-string checkoutTriggers() {
+string checkoutTriggers() { result = ["pull_request_target", "workflow_run", "workflow_call"] }
+
+string issueCommentTriggers() { result = ["issue_comment"] }
+
+string allCheckoutTriggers() {
   result = ["pull_request_target", "workflow_run", "workflow_call", "issue_comment"]
 }
 
@@ -76,8 +80,7 @@ module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCh
 
 private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source.asExpr().getATriggerEvent().getName() =
-      ["pull_request_target", "workflow_run", "workflow_call", "issue_comment"] and
+    source.asExpr().getATriggerEvent().getName() = allCheckoutTriggers() and
     (
       // `ref` argument contains the PR head/merge commit sha
       exists(Expression e |

@@ -4,10 +4,10 @@
  *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
  *              that is able to push to the base repository and to access secrets.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
- * @security-severity 7.5
- * @id actions/untrusted-checkout/high
+ * @security-severity 0.0
+ * @id actions/untrusted-checkout-issue-comment/high
  * @tags actions
  *       security
  *       external/cwe/cwe-829
@@ -24,7 +24,7 @@ where
   not checkout.getAFollowingStep() instanceof PoisonableStep and
   // the checkout occurs in a privileged context
   inPrivilegedContext(checkout, event) and
-  event.getName() = checkoutTriggers() and
+  event.getName() = issueCommentTriggers() and
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
-select checkout, "Potential execution of untrusted code on a privileged workflow ($@)", event,
+select checkout, "Potential execution of untrusted code on a privileged workflow ($@).", event,
   event.getName()
