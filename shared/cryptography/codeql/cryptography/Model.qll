@@ -1249,7 +1249,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A generic source node is a source of data that is not resolvable to a specific asset.
    */
-  private class GenericSourceNode extends NodeBase, TGenericSourceNode {
+  final class GenericSourceNode extends NodeBase, TGenericSourceNode {
     GenericSourceInstance instance;
 
     GenericSourceNode() { this = TGenericSourceNode(instance) }
@@ -2449,10 +2449,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  predicate isAsymmetricAlgorithm(AlgorithmNode node) {
+  predicate isKnownAsymmetricAlgorithm(AlgorithmNode node) {
     node instanceof EllipticCurveNode
     or
     node instanceof KeyOperationAlgorithmNode and node.(KeyOperationAlgorithmNode).isAsymmetric()
-    // TODO: get unknown algorithms from known asymmetric operations
   }
 }
