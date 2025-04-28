@@ -242,7 +242,7 @@ private class RequireVariable extends Variable {
 private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
 private predicate isModuleModule(EarlyStageNode nd) {
-  exists(ImportDeclaration imp | imp.getImportedPath().getValue() = "module" |
+  exists(ImportDeclaration imp | imp.getRawImportPath() = "module" |
     nd = TDestructuredModuleImportNode(imp)
     or
     nd = TValueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
@@ -268,7 +268,7 @@ private predicate isCreateRequire(EarlyStageNode nd) {
   )
   or
   exists(ImportDeclaration decl, NamedImportSpecifier spec |
-    decl.getImportedPath().getValue() = "module" and
+    decl.getRawImportPath() = "module" and
     spec = decl.getASpecifier() and
     spec.getImportedName() = "createRequire" and
     nd = TValueNode(spec)

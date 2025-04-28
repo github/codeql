@@ -95,6 +95,11 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
   override PathExpr getImportedPath() { result = this.getChildExpr(-1) }
 
   /**
+   * INTERNAL USE ONLY. DO NOT USE.
+   */
+  string getRawImportPath() { result = this.getChildExpr(-1).getStringValue() }
+
+  /**
    * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
    *
    * For example, this gets the `{ type: "json" }` object literal in the following:
