@@ -9,5 +9,5 @@
 import internal.CaptureModels
 
 from DataFlowSinkTargetApi api, string sink
-where sink = captureSink(api)
+where sink = Heuristic::captureSink(api)
 select sink order by sink
