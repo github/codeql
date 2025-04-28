@@ -659,6 +659,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
       TSymmetricCipherType getType() { result = type }
     }
+
+    class AsymmetricCipherAlgorithm extends Algorithm, TAsymmetricCipher {
+      TAsymmetricCipherType type;
+
+      AsymmetricCipherAlgorithm() { this = TAsymmetricCipher(type) }
+
+      TAsymmetricCipherType getType() { result = type }
+    }
   }
 
   /**
