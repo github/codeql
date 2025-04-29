@@ -145,12 +145,12 @@ abstract class Import extends AstNode {
   /**
    * Gets the module the path of this import resolves to.
    */
-  Module resolveImportedPath() { result.getFile() = this.getTargetFile() }
+  Module resolveImportedPath() { result.getFile() = this.getImportedFile() }
 
   /**
    * Gets the module the path of this import resolves to.
    */
-  File getTargetFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
+  File getImportedFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
 
   /**
    * DEPRECATED. Use `getImportedModule()` instead.
