@@ -3,8 +3,6 @@ missingCallee
 | constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
 | constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
 | prototypes.js:7:5:7:16 | this.greet() | prototypes.js:59:8:63:3 | () { \\n  ... ); \\n  } | -1 | calls |
-| prototypes.js:62:5:62:34 | Baz.pro ... l(this) | prototypes.js:10:8:10:39 | () { co ... et"); } | -1 | calls |
-| prototypes.js:77:3:77:32 | Baz.pro ... l(this) | prototypes.js:14:23:14:62 | functio ... ut"); } | -1 | calls |
 badAnnotation
 accessorCall
 | accessors.js:12:1:12:5 | obj.f | accessors.js:5:8:5:12 | () {} |
