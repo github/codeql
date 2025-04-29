@@ -89,3 +89,21 @@ function barbar(bazExtented){
 }
 
 barbar(new BazExtented());
+
+class Base {
+  constructor() {
+    /** calls:Base.read calls:Derived1.read calls:Derived2.read */
+    this.read();
+  }
+  /** name:Base.read */
+  read() { }
+}
+
+class Derived1 extends Base {}
+/** name:Derived1.read */
+Derived1.prototype.read = function() {};
+
+class Derived2 {}
+Derived2.prototype = Object.create(Base.prototype);
+/** name:Derived2.read */
+Derived2.prototype.read = function() {};
