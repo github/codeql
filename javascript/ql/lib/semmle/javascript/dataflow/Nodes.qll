@@ -1240,11 +1240,11 @@ module ClassNode {
    * A function definition, targeted by a `new`-call or with prototype manipulation, seen as a `ClassNode` instance.
    * Or An ES6 class as a `ClassNode` instance.
    */
-  class FunctionStyleClass extends Range, DataFlow::ValueNode {
+  class StandardClassNode extends Range, DataFlow::ValueNode {
     override AST::ValueNode astNode;
     AbstractCallable function;
 
-    FunctionStyleClass() {
+    StandardClassNode() {
       // ES6 class case
       astNode instanceof ClassDefinition and
       function.(AbstractClass).getClass() = astNode
