@@ -3,7 +3,7 @@ import utils.modelgenerator.internal.CaptureModels
 import utils.test.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
-  string getCapturedModel(Callable c) { result = ContentSensitive::captureFlow(c, _) }
+  string getCapturedModel(Callable c) { result = ContentSensitive::captureFlow(c, _, _) }
 
   string getKind() { result = "contentbased-summary" }
 }
