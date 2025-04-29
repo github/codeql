@@ -2,6 +2,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * An ECMAScript 2015 module.
@@ -725,22 +726,7 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   cached
   Module getReExportedModule() {
     Stages::Imports::ref() and
-    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
-    or
-    result = this.resolveFromTypeRoot()
-  }
-
-  /**
-   * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
-   */
-  private Module resolveFromTypeRoot() {
-    result.getFile() =
-      min(TypeRootFolder typeRoot |
-        |
-        typeRoot.getModuleFile(this.getImportedPath().getStringValue())
-        order by
-          typeRoot.getSearchPriority(this.getFile().getParentContainer())
-      )
+    result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
 }
 

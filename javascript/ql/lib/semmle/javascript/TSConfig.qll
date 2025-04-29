@@ -3,6 +3,7 @@
  */
 
 private import javascript
+private import semmle.javascript.internal.paths.PathMapping
 
 /**
  * A TypeScript configuration file, usually named `tsconfig.json`.
@@ -178,3 +179,44 @@ private module ResolverConfig implements Folder::ResolveSig {
 }
 
 private module Resolver = Folder::Resolve<ResolverConfig>;
+
+/**
+ * Gets a tsconfig file to use as fallback for handling paths in `c`.
+ *
+ * This holds for files and folders where no tsconfig seems to include it,
+ * but it has one or more tsconfig files in parent directories.
+ */
+private TSConfig getFallbackTSConfig(Container c) {
+  not c = any(TSConfig t).getAnIncludedContainer() and
+  (
+    c = result.getFolder()
+    or
+    result = getFallbackTSConfig(c.getParentContainer())
+  )
+}
+
+private class TSConfigPathMapping extends PathMapping, TSConfig {
+  override File getAnAffectedFile() {
+    result = this.getAnIncludedContainer()
+    or
+    this = getFallbackTSConfig(result)
+  }
+
+  override predicate hasExactPathMapping(string pattern, Container newContext, string newPath) {
+    exists(TSConfig tsconfig |
+      tsconfig = this.getExtendedTSConfig*() and
+      tsconfig.hasExactPathMapping(pattern, newPath) and
+      newContext = tsconfig.getBaseUrlFolderOrOwnFolder()
+    )
+  }
+
+  override predicate hasPrefixPathMapping(string pattern, Container newContext, string newPath) {
+    exists(TSConfig tsconfig |
+      tsconfig = this.getExtendedTSConfig*() and
+      tsconfig.hasPrefixPathMapping(pattern, newPath) and
+      newContext = tsconfig.getBaseUrlFolderOrOwnFolder()
+    )
+  }
+
+  override predicate hasBaseUrl(Container base) { base = this.getBaseUrlFolder() }
+}

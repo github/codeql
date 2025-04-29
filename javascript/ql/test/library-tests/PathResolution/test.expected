@@ -40,7 +40,6 @@
 | DeclarationFiles/src/main.ts:5:1:5:27 | import  ... cript"; | DeclarationFiles/lib/typescript.ts |
 | DeclarationFiles/src/main.ts:6:1:6:30 | import  ... pt.js"; | DeclarationFiles/lib/typescript.ts |
 | DeclarationFiles/src/main.ts:7:1:7:32 | import  ... .d.ts"; | DeclarationFiles/lib/typescript.d.ts |
-| DeclarationFiles/src/main.ts:7:1:7:32 | import  ... .d.ts"; | DeclarationFiles/lib/typescript.ts |
 | DirnameImports/main.js:4:1:4:33 | require ... et.js') | DirnameImports/target.js |
 | DirnameImports/main.js:5:1:5:40 | require ... et.js') | DirnameImports/nested/target.js |
 | DirnameImports/main.js:6:1:6:45 | require ... es.ts') | import-packages.ts |
@@ -69,12 +68,17 @@
 | Extended/src/main.ts:25:1:25:20 | import "@/index.ts"; | Extended/lib/index.ts |
 | Extended/src/main.ts:26:1:26:20 | import "@/index.js"; | Extended/lib/index.ts |
 | Fallback/src/main.ts:1:1:1:15 | import "@/both" | Fallback/lib1/both.ts |
+| Fallback/src/main.ts:1:1:1:15 | import "@/both" | Fallback/lib2/both.ts |
 | Fallback/src/main.ts:2:1:2:16 | import "@/only1" | Fallback/lib1/only1.ts |
 | Fallback/src/main.ts:3:1:3:16 | import "@/only2" | Fallback/lib2/only2.ts |
+| Fallback/src/main.ts:4:1:4:29 | import  ... ension" | Fallback/lib1/differentExtension.js |
 | Fallback/src/main.ts:4:1:4:29 | import  ... ension" | Fallback/lib2/differentExtension.ts |
+| Fallback/src/main.ts:5:1:5:32 | import  ... ion.js" | Fallback/lib1/differentExtension.js |
 | Fallback/src/main.ts:5:1:5:32 | import  ... ion.js" | Fallback/lib2/differentExtension.ts |
 | Fallback/src/main.ts:7:1:7:17 | import "@/subdir" | Fallback/lib1/subdir/index.ts |
+| Fallback/src/main.ts:7:1:7:17 | import "@/subdir" | Fallback/lib2/subdir/index.ts |
 | Fallback/src/main.ts:8:1:8:22 | import  ... r/both" | Fallback/lib1/subdir/both.ts |
+| Fallback/src/main.ts:8:1:8:22 | import  ... r/both" | Fallback/lib2/subdir/both.ts |
 | Fallback/src/main.ts:9:1:9:23 | import  ... /only1" | Fallback/lib1/subdir/only1.ts |
 | Fallback/src/main.ts:10:1:10:23 | import  ... /only2" | Fallback/lib2/subdir/only2.ts |
 | JSDocProvide/main.js:1:1:1:43 | import  ... r/baz'; | JSDocProvide/lib.js |
@@ -98,14 +102,22 @@
 | NodeModules/subfolder/src/main.ts:2:1:2:13 | import 'bar'; | NodeModules/subfolder/node_modules/bar/index.js |
 | import-packages.ts:1:1:1:32 | import  ... /main'; | PackageWithMain/main.js |
 | import-packages.ts:2:1:2:36 | import  ... -main'; | PackageWithMain/main.js |
+| import-packages.ts:4:1:4:33 | import  ... eMain'; | PackageWithModuleMain/main.js |
 | import-packages.ts:5:1:5:43 | import  ... -main'; | PackageWithModuleMain/main.js |
 | import-packages.ts:10:1:10:39 | import  ... ports'; | PackageWithExports/main.js |
+| import-packages.ts:11:1:11:49 | import  ... -file'; | PackageWithExports/fake-file-impl.js |
+| import-packages.ts:12:1:12:48 | import  ... r/foo'; | PackageWithExports/star-impl/foo.js |
 | import-packages.ts:14:1:14:28 | import  ... xFile'; | PackageIndexFile/index.js |
 | import-packages.ts:15:1:15:42 | import  ... -file'; | PackageIndexFile/index.js |
+| import-packages.ts:17:1:17:25 | import  ... uess1'; | PackageGuess1/src/index.ts |
 | import-packages.ts:18:1:18:33 | import  ... uess1'; | PackageGuess1/src/index.ts |
+| import-packages.ts:20:1:20:25 | import  ... uess2'; | PackageGuess2/blah/stuff.ts |
 | import-packages.ts:21:1:21:33 | import  ... uess2'; | PackageGuess2/blah/stuff.ts |
 | import-packages.ts:23:1:23:30 | import  ... inExt'; | PackageWithMainExt/lib/main.ts |
 | import-packages.ts:24:1:24:40 | import  ... n-ext'; | PackageWithMainExt/lib/main.ts |
 | import-packages.ts:26:1:26:46 | import  ... oo.js'; | TSConfigOutDir/src/foo.ts |
+| import-packages.ts:28:1:28:24 | import  ... older'; | MainIsFolder/src/index.ts |
 | import-packages.ts:29:1:29:33 | import  ... older'; | MainIsFolder/src/index.ts |
+| import-packages.ts:31:1:31:27 | import  ... nsSrc'; | DistContainsSrc/src/foo.ts |
+| import-packages.ts:33:1:33:24 | import  ... dMain'; | MinifiedMain/src/library.ts |
 | import-packages.ts:35:1:35:33 | import  ... oo.js'; | RootDir/my-root/foo.ts |
