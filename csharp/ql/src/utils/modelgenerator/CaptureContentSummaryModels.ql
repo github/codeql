@@ -9,5 +9,5 @@
 import internal.CaptureModels
 
 from DataFlowSummaryTargetApi api, string flow
-where flow = ContentSensitive::captureFlow(api, _)
+where flow = ContentSensitive::captureFlow(api, _, _)
 select flow order by flow
