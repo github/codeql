@@ -1437,8 +1437,6 @@ module ClassNode {
       astNode instanceof ClassDefinition and
       result = astNode.(ClassDefinition).getSuperClass().flow()
       or
-      // Function-style class superclass patterns
-      astNode instanceof Function and
       (
         // C.prototype = Object.create(D.prototype)
         exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
