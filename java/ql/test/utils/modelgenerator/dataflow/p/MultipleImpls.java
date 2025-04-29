@@ -9,7 +9,7 @@ public class MultipleImpls {
   }
 
   public static class Strat1 implements Strategy {
-    // heuristic-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;value;dfc-generated
     public String doSomething(String value) {
       return value;
