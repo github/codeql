@@ -5,7 +5,7 @@
  * @precision low
  * @id java/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import java
