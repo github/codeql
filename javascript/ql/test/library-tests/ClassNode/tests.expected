@@ -15,6 +15,7 @@ getAReceiverNode
 | tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:4:17:4:16 | this |
 | tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:7:6:7:5 | this |
 | tst.js:3:1:10:1 | class A ... () {}\\n} | tst.js:9:10:9:9 | this |
+| tst.js:3:9:3:8 | () {} | tst.js:3:9:3:8 | this |
 | tst.js:13:1:13:21 | class A ... ds A {} | tst.js:13:20:13:19 | this |
 | tst.js:15:1:15:15 | function B() {} | tst.js:15:1:15:0 | this |
 | tst.js:15:1:15:15 | function B() {} | tst.js:17:19:17:18 | this |

@@ -1233,7 +1233,7 @@ module ClassNode {
   private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
     exists(result.getAPropertyReference("prototype")) and
     result.analyze().getAValue() = pragma[only_bind_into](func) and
-    func instanceof AbstractFunction // the join-order goes bad if `func` has type `AbstractFunction`.
+    func instanceof AbstractCallable // the join-order goes bad if `func` has type `AbstractFunction`.
   }
 
   /**
@@ -1413,22 +1413,26 @@ module ClassNode {
      * Only applies to function-style classes.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      (
-        exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
-          result = base.getAPropertyRead("prototype")
-          or
-          result = base.getAPropertySource("prototype")
-        )
+      exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
+        result = base.getAPropertyRead("prototype")
         or
-        exists(string name |
-          this = AccessPath::getAnAssignmentTo(name) and
-          result = getAPrototypeReferenceInFile(name, this.getFile())
-        )
-        or
-        exists(ExtendCall call |
-          call.getDestinationOperand() = this.getAPrototypeReference() and
-          result = call.getASourceOperand()
-        )
+        result = base.getAPropertySource("prototype")
+      )
+      or
+      exists(string name |
+        this = AccessPath::getAnAssignmentTo(name) and
+        result = getAPrototypeReferenceInFile(name, this.getFile())
+      )
+      or
+      exists(string name, DataFlow::SourceNode root |
+        result =
+          AccessPath::getAReferenceOrAssignmentTo(root, name + ".prototype").getALocalSource() and
+        this = AccessPath::getAnAssignmentTo(root, name)
+      )
+      or
+      exists(ExtendCall call |
+        call.getDestinationOperand() = this.getAPrototypeReference() and
+        result = call.getASourceOperand()
       )
     }
 
