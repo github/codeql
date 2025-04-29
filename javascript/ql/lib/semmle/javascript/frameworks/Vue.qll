@@ -442,7 +442,7 @@ module Vue {
 
     override DataFlow::SourceNode getASource() {
       exists(Import imprt |
-        imprt.getImportedPath().resolve() instanceof VueFile and
+        imprt.getTargetFile() instanceof VueFile and
         result = imprt.getImportedModuleNode()
       )
     }
@@ -494,7 +494,7 @@ module Vue {
       // There is no explicit `new Vue()` call in .vue files, so instead get all the imports
       // of the .vue file.
       exists(Import imprt |
-        imprt.getImportedPath().resolve() = file and
+        imprt.getTargetFile() = file and
         result.asSource() = imprt.getImportedModuleNode()
       )
     }

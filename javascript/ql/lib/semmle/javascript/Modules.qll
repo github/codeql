@@ -69,7 +69,7 @@ abstract class Module extends TopLevel {
    * This predicate is not part of the public API, it is only exposed to allow
    * overriding by subclasses.
    */
-  predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
+  deprecated predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     priority = 0 and
     exists(string v | v = path.getValue() |
@@ -90,7 +90,7 @@ abstract class Module extends TopLevel {
    * resolves to a folder containing a main module (such as `index.js`), then
    * that file is the result.
    */
-  File resolve(PathExpr path) {
+  deprecated File resolve(PathExpr path) {
     path.getEnclosingModule() = this and
     (
       // handle the case where the import path is complete
@@ -123,8 +123,14 @@ abstract class Import extends AstNode {
   /** Gets the module in which this import appears. */
   abstract Module getEnclosingModule();
 
+  /** DEPRECATED. Use `getImportedPathExpr` instead. */
+  deprecated PathExpr getImportedPath() { result = this.getImportedPathExpr() }
+
   /** Gets the (unresolved) path that this import refers to. */
-  abstract PathExpr getImportedPath();
+  abstract Expr getImportedPathExpr();
+
+  /** Gets the imported path as a string. */
+  final string getImportedPathString() { result = this.getImportedPathExpr().getStringValue() }
 
   /**
    * Gets an externs module the path of this import resolves to.
@@ -133,7 +139,7 @@ abstract class Import extends AstNode {
    * path is assumed to be a possible target of the import.
    */
   Module resolveExternsImport() {
-    result.isExterns() and result.getName() = this.getImportedPath().getValue()
+    result.isExterns() and result.getName() = this.getImportedPathString()
   }
 
   /**
@@ -144,7 +150,7 @@ abstract class Import extends AstNode {
   /**
    * Gets the module the path of this import resolves to.
    */
-  File getTargetFile() { result = ImportPathResolver::resolveExpr(this.getImportedPath()) }
+  File getTargetFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
 
   /**
    * DEPRECATED. Use `getImportedModule()` instead.

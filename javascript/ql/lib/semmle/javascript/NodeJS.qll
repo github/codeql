@@ -146,7 +146,7 @@ class NodeModule extends Module {
     )
   }
 
-  override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
+  deprecated override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     exists(string pathval | pathval = path.getValue() |
       // paths starting with `./` or `../` are resolved relative to the importing
@@ -236,11 +236,6 @@ private class RequireVariable extends Variable {
   }
 }
 
-/**
- * Holds if module `m` is in file `f`.
- */
-private predicate moduleInFile(Module m, File f) { m.getFile() = f }
-
 private predicate isModuleModule(EarlyStageNode nd) {
   exists(ImportDeclaration imp | imp.getRawImportPath() = "module" |
     nd = TDestructuredModuleImportNode(imp)
@@ -328,16 +323,9 @@ private predicate isRequire(EarlyStageNode nd) {
 class Require extends CallExpr, Import {
   Require() { isRequire(TValueNode(this.getCallee())) }
 
-  override PathExpr getImportedPath() { result = this.getArgument(0) }
+  override Expr getImportedPathExpr() { result = this.getArgument(0) }
 
   override Module getEnclosingModule() { this = result.getAnImport() }
-
-  override Module resolveImportedPath() {
-    moduleInFile(result, this.load(min(int prio | moduleInFile(_, this.load(prio)))))
-    or
-    not moduleInFile(_, this.load(_)) and
-    result = Import.super.resolveImportedPath()
-  }
 
   /**
    * Gets the file that is imported by this `require`.
@@ -345,7 +333,7 @@ class Require extends CallExpr, Import {
    * The result can be a JavaScript file, a JSON file or a `.node` file.
    * Externs files are not treated differently from other files by this predicate.
    */
-  File getImportedFile() { result = this.load(min(int prio | exists(this.load(prio)))) }
+  deprecated File getImportedFile() { result = this.load(min(int prio | exists(this.load(prio)))) }
 
   /**
    * Gets the file that this `require` refers to (which may not be a JavaScript file),
@@ -402,8 +390,8 @@ class Require extends CallExpr, Import {
    * predicate `tryExtensions` that handles the repeated distinction between
    * `.js`, `.json` and `.node`.
    */
-  private File load(int priority) {
-    exists(int r | this.getEnclosingModule().searchRoot(this.getImportedPath(), _, r) |
+  deprecated private File load(int priority) {
+    exists(int r | this.getEnclosingModule().searchRoot(this.getImportedPathExpr(), _, r) |
       result = loadAsFile(this, r, priority - prioritiesPerCandidate() * r) or
       result =
         loadAsDirectory(this, r,
@@ -415,7 +403,7 @@ class Require extends CallExpr, Import {
 }
 
 /** An argument to `require` or `require.resolve`, considered as a path expression. */
-private class RequirePath extends PathExprCandidate {
+deprecated private class RequirePath extends PathExprCandidate {
   RequirePath() {
     this = any(Require req).getArgument(0)
     or
@@ -428,14 +416,14 @@ private class RequirePath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in a call to `require` or `require.resolve`. */
-private class ConstantRequirePathElement extends PathExpr, ConstantString {
+deprecated private class ConstantRequirePathElement extends PathExpr, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
   override string getValue() { result = this.getStringValue() }
 }
 
 /** A `__dirname` path expression. */
-private class DirNamePath extends PathExpr, VarAccess {
+deprecated private class DirNamePath extends PathExpr, VarAccess {
   DirNamePath() {
     this.getName() = "__dirname" and
     this.getVariable().getScope() instanceof ModuleScope
@@ -445,7 +433,7 @@ private class DirNamePath extends PathExpr, VarAccess {
 }
 
 /** A `__filename` path expression. */
-private class FileNamePath extends PathExpr, VarAccess {
+deprecated private class FileNamePath extends PathExpr, VarAccess {
   FileNamePath() {
     this.getName() = "__filename" and
     this.getVariable().getScope() instanceof ModuleScope
@@ -458,7 +446,7 @@ private class FileNamePath extends PathExpr, VarAccess {
  * A path expression of the form `path.join(p, "...")` where
  * `p` is also a path expression.
  */
-private class JoinedPath extends PathExpr, @call_expr {
+deprecated private class JoinedPath extends PathExpr, @call_expr {
   JoinedPath() {
     exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and

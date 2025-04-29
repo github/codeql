@@ -9,13 +9,13 @@ private import semmle.javascript.dataflow.internal.DataFlowNode
 /**
  * Internal representation of paths as lists of components.
  */
-private newtype TPath =
+deprecated private newtype TPath =
   /** A root path. */
   TRootPath(string root) {
     root = any(Folder f | not exists(f.getParentContainer())).getAbsolutePath()
   } or
   /** A path of the form `<parent>/<component>`. */
-  TConsPath(Path parent, string component) {
+  deprecated TConsPath(Path parent, string component) {
     // make sure we can represent paths of files in snapshot
     exists(Folder f | f = parent.getContainer() | exists(f.getChildContainer(component)))
     or
@@ -32,7 +32,7 @@ private newtype TPath =
  * Gets a textual representation of path `p` using slashes as delimiters;
  * the empty path is represented as the empty string `""`.
  */
-private string pp(TPath p) {
+deprecated private string pp(TPath p) {
   p = TRootPath(result + "/")
   or
   exists(TPath parent, string component | p = TConsPath(parent, component) |
@@ -45,7 +45,7 @@ private string pp(TPath p) {
  * which may (but does not have to) correspond to a file or folder included
  * in the snapshot.
  */
-class Path extends TPath {
+deprecated class Path extends TPath {
   /**
    * Gets the file or folder referred to by this path, if it exists.
    */
@@ -60,14 +60,14 @@ class Path extends TPath {
 /**
  * The empty path, which refers to the file system root.
  */
-private class RootPath extends Path, TRootPath {
+deprecated private class RootPath extends Path, TRootPath {
   override string toString() { this = TRootPath(result) }
 }
 
 /**
  * A non-empty path of the form `<parent>/<component>`.
  */
-private class ConsPath extends Path, TConsPath {
+deprecated private class ConsPath extends Path, TConsPath {
   /** Gets the parent path of this path. */
   Path getParent() { this = TConsPath(result, _) }
 
@@ -170,7 +170,7 @@ class FilePath extends string {
  * usually resolved relative to the module's folder, with a default
  * lookup path as the fallback.
  */
-abstract class PathString extends FilePath {
+abstract deprecated class PathString extends FilePath {
   bindingset[this]
   PathString() { any() }
 
@@ -196,7 +196,7 @@ abstract class PathString extends FilePath {
  * components of this path refers to when resolved relative to the
  * given `root` folder.
  */
-private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
+deprecated private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
   n = 0 and result.getContainer() = root and root = p.getARootFolder() and inTS = false
   or
   exists(Path base, string next | next = getComponent(p, n - 1, base, root, inTS) |
@@ -225,7 +225,7 @@ private Path resolveUpTo(PathString p, int n, Folder root, boolean inTS) {
  * Supports that the root directory might be compiled output from TypeScript.
  * `inTS` is true if the result is TypeScript that is compiled into the path specified by `str`.
  */
-private string getComponent(PathString str, int n, Path base, Folder root, boolean inTS) {
+deprecated private string getComponent(PathString str, int n, Path base, Folder root, boolean inTS) {
   exists(boolean prevTS |
     base = resolveUpTo(str, n, root, prevTS) and
     (
@@ -248,7 +248,7 @@ private string getComponent(PathString str, int n, Path base, Folder root, boole
 /**
  * Predicates for resolving imports to compiled TypeScript.
  */
-private module TypeScriptOutDir {
+deprecated private module TypeScriptOutDir {
   /**
    * Gets a folder of TypeScript files that is compiled to JavaScript files in `outdir` relative to a `parent`.
    */
@@ -340,7 +340,7 @@ private module TypeScriptOutDir {
  * as their highest-priority root, with default library paths as additional roots
  * of lower priority.
  */
-abstract class PathExpr extends Locatable {
+abstract deprecated class PathExpr extends Locatable {
   /** Gets the (unresolved) path represented by this expression. */
   abstract string getValue();
 
@@ -413,7 +413,7 @@ abstract class PathExpr extends Locatable {
 }
 
 /** A path string derived from a path expression. */
-private class PathExprString extends PathString {
+deprecated private class PathExprString extends PathString {
   PathExprString() { this = any(PathExpr pe).getValue() }
 
   override Folder getARootFolder() {
@@ -422,13 +422,13 @@ private class PathExprString extends PathString {
 }
 
 pragma[nomagic]
-private EarlyStageNode getAPathExprAlias(PathExpr expr) {
+deprecated private EarlyStageNode getAPathExprAlias(PathExpr expr) {
   DataFlow::Impl::earlyStageImmediateFlowStep(TValueNode(expr), result)
   or
   DataFlow::Impl::earlyStageImmediateFlowStep(getAPathExprAlias(expr), result)
 }
 
-private class PathExprFromAlias extends PathExpr {
+deprecated private class PathExprFromAlias extends PathExpr {
   private PathExpr other;
 
   PathExprFromAlias() { TValueNode(this) = getAPathExprAlias(other) }
@@ -444,7 +444,7 @@ private class PathExprFromAlias extends PathExpr {
  * A path expression of the form `p + q`, where both `p` and `q`
  * are path expressions.
  */
-private class ConcatPath extends PathExpr {
+deprecated private class ConcatPath extends PathExpr {
   ConcatPath() {
     exists(AddExpr add | this = add |
       add.getLeftOperand() instanceof PathExpr and

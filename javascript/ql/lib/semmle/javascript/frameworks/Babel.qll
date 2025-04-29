@@ -139,7 +139,7 @@ module Babel {
   /**
    * An import path expression that may be transformed by `babel-plugin-root-import`.
    */
-  private class BabelRootTransformedPathExpr extends PathExpr, Expr {
+  deprecated private class BabelRootTransformedPathExpr extends PathExpr, Expr {
     RootImportConfig plugin;
     string prefix;
     string mappedPrefix;
@@ -167,7 +167,7 @@ module Babel {
   /**
    * An import path transformed by `babel-plugin-root-import`.
    */
-  private class BabelRootTransformedPath extends PathString {
+  deprecated private class BabelRootTransformedPath extends PathString {
     BabelRootTransformedPathExpr pathExpr;
 
     BabelRootTransformedPath() { this = pathExpr.getValue() }

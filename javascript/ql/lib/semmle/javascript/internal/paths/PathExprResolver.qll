@@ -240,7 +240,7 @@ module ResolveExpr<exprSig/1 shouldResolveExpr> {
 }
 
 private predicate isImportPathExpr(Expr e) {
-  e = any(Import imprt).getImportedPath()
+  e = any(Import imprt).getImportedPathExpr()
   or
   e = any(ReExportDeclaration decl).getImportedPath()
 }

@@ -58,7 +58,7 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 predicate isPackageUsed(string package) {
   package = "global"
   or
-  package = any(JS::Import imp).getImportedPath().getValue()
+  package = any(JS::Import imp).getImportedPathString()
   or
   any(JS::TypeName t).hasQualifiedName(package, _)
   or
