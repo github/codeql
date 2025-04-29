@@ -77,6 +77,7 @@ resolvePath
 | illegal/main.rs:59:13:59:20 | ...::S | illegal/main.rs:2:5:2:15 | struct S |
 | illegal/main.rs:61:13:61:17 | super | illegal/main.rs:1:1:71:1 | mod m1 |
 | illegal/main.rs:61:13:61:20 | ...::S | illegal/main.rs:2:5:2:15 | struct S |
+| illegal/main.rs:61:13:61:24 | ...::f1 | illegal/main.rs:27:24:30:13 | fn f1 |
 | illegal/main.rs:62:17:62:21 | super | illegal/main.rs:1:1:71:1 | mod m1 |
 | illegal/main.rs:62:17:62:24 | ...::S | illegal/main.rs:2:5:2:15 | struct S |
 | illegal/main.rs:64:13:64:17 | super | illegal/main.rs:1:1:71:1 | mod m1 |

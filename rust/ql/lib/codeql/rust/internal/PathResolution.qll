@@ -87,10 +87,32 @@ abstract class ItemNode extends Locatable {
   /** Gets the `i`th type parameter of this item, if any. */
   abstract TypeParam getTypeParam(int i);
 
+  /** Gets the parent item from which this node inherits visibility, if any. */
+  abstract ItemNode getVisibilityParent();
+
+  /** Holds if this item has a visibility parent. */
+  // Cannot be defined as `exists(this.getVisibilityParent())` because of non-monotonicity
+  abstract predicate hasVisibilityParent();
+
   /** Holds if this item is declared as `pub`. */
-  bindingset[this]
-  pragma[inline_late]
-  predicate isPublic() { exists(this.getVisibility()) }
+  pragma[nomagic]
+  predicate isPublic() {
+    exists(this.getVisibility())
+    or
+    this.getVisibilityParent().isPublic()
+  }
+
+  /** Holds if this item is not declared as `pub`. */
+  pragma[nomagic]
+  predicate isPrivate() {
+    // Cannot be defined as `not this.isPublic()` because of non-monotonicity
+    not exists(this.getVisibility()) and
+    (
+      not this.hasVisibilityParent()
+      or
+      this.getVisibilityParent().isPrivate()
+    )
+  }
 
   /** Gets an element that has this item as immediately enclosing item. */
   pragma[nomagic]
@@ -264,9 +286,15 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
     result.isType() // can be referenced with `super`
   }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { none() }
 
   override predicate isPublic() { any() }
+
+  override predicate isPrivate() { none() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -328,9 +356,15 @@ class CrateItemNode extends ItemNode instanceof Crate {
     result.isType() // can be referenced with `crate`
   }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { none() }
 
   override predicate isPublic() { any() }
+
+  override predicate isPrivate() { none() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -339,6 +373,28 @@ class CrateItemNode extends ItemNode instanceof Crate {
 abstract private class AssocItemNode extends ItemNode, AssocItem {
   /** Holds if this associated item has an implementation. */
   abstract predicate hasImplementation();
+
+  override ItemNode getVisibilityParent() {
+    exists(ImplItemNode i | this = i.getAnAssocItem() |
+      // trait implementations inherit visibility from the trait
+      result = i.resolveTraitTy()
+      or
+      // for  inherent implementations that are not explicitly marked as
+      // `pub`, the `impl` block itself must be visible
+      not i.(Impl).hasTrait() and
+      not exists(this.getVisibility()) and
+      result = i
+    )
+  }
+
+  override predicate hasVisibilityParent() {
+    exists(ImplItemNode i | this = i.getAnAssocItem() |
+      i.(Impl).hasTrait()
+      or
+      not i.(Impl).hasTrait() and
+      not exists(this.getVisibility())
+    )
+  }
 }
 
 private class ConstItemNode extends AssocItemNode instanceof Const {
@@ -365,6 +421,10 @@ private class EnumItemNode extends ItemNode instanceof Enum {
 
   override Namespace getNamespace() { result.isType() }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { result = Enum.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
@@ -381,7 +441,11 @@ private class VariantItemNode extends ItemNode instanceof Variant {
     result = super.getEnum().getGenericParamList().getTypeParam(i)
   }
 
-  override Visibility getVisibility() { result = super.getEnum().getVisibility() }
+  override predicate hasVisibilityParent() { any() }
+
+  override ItemNode getVisibilityParent() { result = super.getEnum() }
+
+  override Visibility getVisibility() { none() }
 }
 
 class FunctionItemNode extends AssocItemNode instanceof Function {
@@ -513,6 +577,10 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
 }
 
@@ -533,6 +601,10 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
 
   override Namespace getNamespace() { result.isType() }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { result = Module.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
@@ -547,6 +619,10 @@ private class StructItemNode extends ItemNode instanceof Struct {
     not super.getFieldList() instanceof StructFieldList and
     result.isValue() // the constructor
   }
+
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
 
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
 
@@ -567,6 +643,10 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   override string getName() { result = Trait.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
+
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
 
   override Visibility getVisibility() { result = Trait.super.getVisibility() }
 
@@ -590,6 +670,10 @@ private class UnionItemNode extends ItemNode instanceof Union {
 
   override Namespace getNamespace() { result.isType() }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { result = Union.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
@@ -600,6 +684,10 @@ private class UseItemNode extends ItemNode instanceof Use {
 
   override Namespace getNamespace() { none() }
 
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
+
   override Visibility getVisibility() { result = Use.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
@@ -609,6 +697,10 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override string getName() { result = "(block expr)" }
 
   override Namespace getNamespace() { none() }
+
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
 
   override Visibility getVisibility() { none() }
 
@@ -672,6 +764,10 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
   override string getName() { result = TypeParam.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
+
+  override ItemNode getVisibilityParent() { none() }
+
+  override predicate hasVisibilityParent() { none() }
 
   override Visibility getVisibility() { none() }
 
@@ -1072,12 +1168,17 @@ private ItemNode resolvePathPrivate(
 ) {
   not path.requiresExtractorWorkaround() and
   result = resolvePath1(path) and
-  itemParent = result.getImmediateParentModule() and
-  not result.isPublic() and
+  result.isPrivate() and
   (
     pathParent.getADescendant() = path
     or
     pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
+  ) and
+  (
+    itemParent = result.getVisibilityParent().getImmediateParentModule()
+    or
+    not result.hasVisibilityParent() and
+    itemParent = result.getImmediateParentModule()
   )
 }
 
@@ -1222,17 +1323,9 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test_logging.rs") and
-      startline = 163
+      filepath.matches("%/illegal/main.rs") and
+      startline = 51
     )
-  }
-
-  predicate debugUnqualifiedPathLookup(
-    RelevantPath p, string name, Namespace ns, ItemNode encl, string path
-  ) {
-    p = getRelevantLocatable() and
-    unqualifiedPathLookup(p, name, ns, encl) and
-    path = p.toStringDebug()
   }
 
   ItemNode debugResolvePath(RelevantPath path) {

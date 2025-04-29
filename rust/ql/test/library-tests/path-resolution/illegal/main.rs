@@ -58,7 +58,7 @@ mod m1 {
             );
             super::S(). // $ item=I1
                 f1(); // $ item=I6
-            super::S::f1( // $ MISSING: item=I6
+            super::S::f1( // $ item=I6
                 super::S() // $ item=I1
             );
             super::S(). // $ item=I1
