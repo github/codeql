@@ -1,9 +1,9 @@
 private import AstImport
 
 class TypeDefinitionStmt extends Stmt, TTypeDefinitionStmt {
-  string getName() { result = getRawAst(this).(Raw::TypeStmt).getName() }
+  string getLowerCaseName() { result = getRawAst(this).(Raw::TypeStmt).getName().toLowerCase() }
 
-  override string toString() { result = this.getName() }
+  override string toString() { result = this.getLowerCaseName() }
 
   Member getMember(int i) {
     exists(ChildIndex index, Raw::Ast r | index = typeStmtMember(i) and r = getRawAst(this) |
@@ -24,7 +24,7 @@ class TypeDefinitionStmt extends Stmt, TTypeDefinitionStmt {
 
   Constructor getAConstructor() {
     result = this.getAMethod() and
-    result.getName() = this.getName()
+    result.getLowerCaseName() = this.getLowerCaseName()
   }
 
   TypeConstraint getBaseType(int i) {
@@ -38,7 +38,7 @@ class TypeDefinitionStmt extends Stmt, TTypeDefinitionStmt {
 
   TypeConstraint getABaseType() { result = this.getBaseType(_) }
 
-  TypeDefinitionStmt getASubtype() { result.getABaseType().getName() = this.getName() }
+  TypeDefinitionStmt getASubtype() { result.getABaseType().getName() = this.getLowerCaseName() }
 
   Type getType() { synthChild(getRawAst(this), typeDefType(), result) }
 

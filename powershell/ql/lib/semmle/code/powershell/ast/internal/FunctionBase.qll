@@ -2,11 +2,13 @@ private import AstImport
 private import semmle.code.powershell.controlflow.BasicBlocks
 
 class FunctionBase extends Ast, TFunctionBase {
-  final override string toString() { result = this.getName() }
+  final override string toString() { result = this.getLowerCaseName() }
 
-  string getName() { none() }
+  string getLowerCaseName() { none() }
 
-  final predicate hasName(string name) { name = this.getName() }
+  bindingset[name]
+  pragma[inline_late]
+  predicate nameMatches(string name) { this.getLowerCaseName() = name.toLowerCase() }
 
   ScriptBlock getBody() { none() }
 

@@ -1,7 +1,7 @@
 private import AstImport
 
 class PropertyMember extends Member, TPropertyMember {
-  final override string getName() { result = getRawAst(this).(Raw::PropertyMember).getName() }
+  final override string getLowerCaseName() { result = getRawAst(this).(Raw::PropertyMember).getName().toLowerCase() }
 
-  final override string toString() { result = this.getName() }
+  final override string toString() { result = this.getLowerCaseName() }
 }

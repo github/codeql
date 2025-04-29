@@ -24,6 +24,10 @@ class ConstantValue extends TConstantValue {
   /** Gets the value of this consant. */
   string getValue() { none() }
 
+  bindingset[s]
+  pragma[inline_late]
+  final predicate stringMatches(string s) { this.asString().toLowerCase() = s.toLowerCase() }
+
   /** Gets the integer value of this constant, if any. */
   int asInt() { none() }
 

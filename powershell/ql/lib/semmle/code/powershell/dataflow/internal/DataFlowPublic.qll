@@ -301,7 +301,7 @@ module Content {
     FieldContent() { this = TFieldContent(name) }
 
     /** Gets the name of the field. */
-    string getName() { result = name }
+    string getLowerCaseName() { result = name }
 
     override string toString() { result = name }
   }
@@ -526,6 +526,9 @@ class CallNode extends ExprNode {
 
   /** Gets the argument with the name `name`, if any. */
   Node getNamedArgument(string name) { result.asExpr() = call.getNamedArgument(name) }
+
+  /** Holds if an argument with name `name` is provided to this call. */
+  predicate hasNamedArgument(string name) { call.hasNamedArgument(name) }
 
   /**
    * Gets any argument of this call.

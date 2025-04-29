@@ -1,7 +1,7 @@
 private import AstImport
 
 class Function extends FunctionBase, TFunction {
-  final override string getName() { any(Synthesis s).functionName(this, result) }
+  final override string getLowerCaseName() { any(Synthesis s).functionName(this, result) }
 
   final override ScriptBlock getBody() { any(Synthesis s).functionScriptBlock(this, result) }
 

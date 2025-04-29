@@ -1,21 +1,21 @@
 private import AstImport
 
 class Type extends Ast, TTypeSynth {
-  override string toString() { result = this.getName() }
+  override string toString() { result = this.getLowerCaseName() }
 
   Member getMember(int i) { any(Synthesis s).typeMember(this, i, result) }
 
-  string getName() { any(Synthesis s).typeName(this, result) }
+  string getLowerCaseName() { any(Synthesis s).typeName(this, result) }
 
   Member getAMember() { result = this.getMember(_) }
 
-  Method getMethod(string name) { result = this.getAMember() and result.getName() = name }
+  Method getMethod(string name) { result = this.getAMember() and result.getLowerCaseName() = name }
 
   Method getAMethod() { result = this.getMethod(_) }
 
   Constructor getAConstructor() {
     result = this.getAMethod() and
-    result.getName() = this.getName()
+    result.getLowerCaseName() = this.getLowerCaseName()
   }
 
   TypeConstraint getBaseType(int i) { none() }

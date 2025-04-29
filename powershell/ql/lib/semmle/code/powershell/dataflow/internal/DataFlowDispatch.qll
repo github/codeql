@@ -210,10 +210,10 @@ Node trackInstance(string typename, boolean exact) {
 }
 
 private Type getTypeWithName(string s, boolean exact) {
-  result.getName() = s and
+  result.getLowerCaseName() = s and
   exact = true
   or
-  result.getASubtype+().getName() = s and
+  result.getASubtype+().getLowerCaseName() = s and
   exact = false
 }
 
