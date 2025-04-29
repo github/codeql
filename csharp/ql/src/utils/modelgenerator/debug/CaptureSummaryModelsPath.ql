@@ -5,7 +5,7 @@
  * @precision low
  * @id csharp/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import csharp

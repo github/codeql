@@ -5,7 +5,7 @@
  * @precision low
  * @id rust/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 private import codeql.rust.dataflow.DataFlow
