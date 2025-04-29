@@ -13,4 +13,3 @@ static int h2() {
   return 32;
 }
 #endif
-// semmle-extractor-options: --clang -include-pch ${testdir}/clang-pch.testproj/h.pch
