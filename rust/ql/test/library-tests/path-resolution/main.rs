@@ -606,8 +606,8 @@ mod m24 {
         let impl_obj = Implementor; // $ item=I118
         let generic = GenericStruct { data: impl_obj }; // $ item=I115
         
-        generic.call_trait_a(); // $ MISSING: item=I116
-        generic.call_both(); // $ MISSING: item=I117
+        generic.call_trait_a(); // $ item=I116
+        generic.call_both(); // $ item=I117
         
         // Access through where clause type parameter constraint
         GenericStruct::<Implementor>::call_trait_a(&generic); // $ item=I116 item=I118
