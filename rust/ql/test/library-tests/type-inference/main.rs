@@ -362,6 +362,47 @@ mod method_non_parametric_trait_impl {
     }
 }
 
+mod impl_overlap {
+    #[derive(Debug, Clone, Copy)]
+    struct S1;
+
+    trait OverlappingTrait {
+        fn common_method(self) -> S1;
+
+        fn common_method_2(self, s1: S1) -> S1;
+    }
+
+    impl OverlappingTrait for S1 {
+        // <S1_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            panic!("not called");
+        }
+
+        // <S1_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            panic!("not called");
+        }
+    }
+
+    impl S1 {
+        // S1::common_method
+        fn common_method(self) -> S1 {
+            self
+        }
+
+        // S1::common_method_2
+        fn common_method_2(self) -> S1 {
+            self
+        }
+    }
+
+    pub fn f() {
+        let x = S1;
+        println!("{:?}", x.common_method()); // $ method=S1::common_method SPURIOUS: method=<S1_as_OverlappingTrait>::common_method
+        println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2 SPURIOUS: method=<S1_as_OverlappingTrait>::common_method_2
+    }
+}
+
 mod type_parameter_bounds {
     use std::fmt::Debug;
 
