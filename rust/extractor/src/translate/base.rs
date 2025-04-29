@@ -328,7 +328,11 @@ impl<'a> Translator<'a> {
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
             if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
-                generated::Item::emit_expanded(label.into(), value, &mut self.trap.writer);
+                generated::MacroCall::emit_macro_call_expansion(
+                    label,
+                    value,
+                    &mut self.trap.writer,
+                );
             } else {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
@@ -655,8 +659,9 @@ impl<'a> Translator<'a> {
             } = semantics.expand_attr_macro(node)?;
             // TODO emit err?
             self.emit_macro_expansion_parse_errors(node, &expanded);
-            let expanded = self.emit_expanded_as(ExpandTo::Items, expanded)?;
-            generated::Item::emit_expanded(label, expanded, &mut self.trap.writer);
+            let macro_items = ast::MacroItems::cast(expanded)?;
+            let expanded = self.emit_macro_items(&macro_items)?;
+            generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
             Some(())
         })();
     }

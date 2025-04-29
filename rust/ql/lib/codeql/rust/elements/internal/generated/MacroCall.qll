@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AssocItemImpl::Impl as AssocItemImpl
+import codeql.rust.elements.AstNode
 import codeql.rust.elements.Attr
 import codeql.rust.elements.internal.ExternItemImpl::Impl as ExternItemImpl
 import codeql.rust.elements.internal.ItemImpl::Impl as ItemImpl
@@ -76,5 +77,20 @@ module Generated {
      * Holds if `getTokenTree()` exists.
      */
     final predicate hasTokenTree() { exists(this.getTokenTree()) }
+
+    /**
+     * Gets the macro call expansion of this macro call, if it exists.
+     */
+    AstNode getMacroCallExpansion() {
+      result =
+        Synth::convertAstNodeFromRaw(Synth::convertMacroCallToRaw(this)
+              .(Raw::MacroCall)
+              .getMacroCallExpansion())
+    }
+
+    /**
+     * Holds if `getMacroCallExpansion()` exists.
+     */
+    final predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
   }
 }

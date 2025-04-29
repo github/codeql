@@ -3,8 +3,9 @@ import codeql.rust.elements
 import TestUtils
 
 from
-  Module x, string hasExtendedCanonicalPath, string hasCrateOrigin, string hasExpanded,
-  int getNumberOfAttrs, string hasItemList, string hasName, string hasVisibility
+  Module x, string hasExtendedCanonicalPath, string hasCrateOrigin,
+  string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasItemList, string hasName,
+  string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,11 +15,15 @@ where
     else hasExtendedCanonicalPath = "no"
   ) and
   (if x.hasCrateOrigin() then hasCrateOrigin = "yes" else hasCrateOrigin = "no") and
-  (if x.hasExpanded() then hasExpanded = "yes" else hasExpanded = "no") and
+  (
+    if x.hasAttributeMacroExpansion()
+    then hasAttributeMacroExpansion = "yes"
+    else hasAttributeMacroExpansion = "no"
+  ) and
   getNumberOfAttrs = x.getNumberOfAttrs() and
   (if x.hasItemList() then hasItemList = "yes" else hasItemList = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
-  "hasExpanded:", hasExpanded, "getNumberOfAttrs:", getNumberOfAttrs, "hasItemList:", hasItemList,
-  "hasName:", hasName, "hasVisibility:", hasVisibility
+  "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
+  "hasItemList:", hasItemList, "hasName:", hasName, "hasVisibility:", hasVisibility

@@ -1960,9 +1960,9 @@ infer_type_reprs(
 ;
 
 #keyset[id]
-item_expandeds(
+item_attribute_macro_expansions(
   int id: @item ref,
-  int expanded: @ast_node ref
+  int attribute_macro_expansion: @macro_items ref
 );
 
 @labelable_expr =
@@ -3086,6 +3086,12 @@ macro_call_paths(
 macro_call_token_trees(
   int id: @macro_call ref,
   int token_tree: @token_tree ref
+);
+
+#keyset[id]
+macro_call_macro_call_expansions(
+  int id: @macro_call ref,
+  int macro_call_expansion: @ast_node ref
 );
 
 macro_defs(

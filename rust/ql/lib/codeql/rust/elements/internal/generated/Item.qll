@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
-import codeql.rust.elements.AstNode
+import codeql.rust.elements.MacroItems
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 
 /**
@@ -25,15 +25,18 @@ module Generated {
    */
   class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable {
     /**
-     * Gets the expanded attribute or procedural macro call of this item, if it exists.
+     * Gets the attribute macro expansion of this item, if it exists.
      */
-    AstNode getExpanded() {
-      result = Synth::convertAstNodeFromRaw(Synth::convertItemToRaw(this).(Raw::Item).getExpanded())
+    MacroItems getAttributeMacroExpansion() {
+      result =
+        Synth::convertMacroItemsFromRaw(Synth::convertItemToRaw(this)
+              .(Raw::Item)
+              .getAttributeMacroExpansion())
     }
 
     /**
-     * Holds if `getExpanded()` exists.
+     * Holds if `getAttributeMacroExpansion()` exists.
      */
-    final predicate hasExpanded() { exists(this.getExpanded()) }
+    final predicate hasAttributeMacroExpansion() { exists(this.getAttributeMacroExpansion()) }
   }
 }

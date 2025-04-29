@@ -5819,8 +5819,8 @@ pub struct Item {
 }
 
 impl Item {
-    pub fn emit_expanded(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
-        out.add_tuple("item_expandeds", vec![id.into(), value.into()]);
+    pub fn emit_attribute_macro_expansion(id: trap::Label<Self>, value: trap::Label<MacroItems>, out: &mut trap::Writer) {
+        out.add_tuple("item_attribute_macro_expansions", vec![id.into(), value.into()]);
     }
 }
 
@@ -9768,6 +9768,12 @@ impl trap::TrapEntry for MacroCall {
         if let Some(v) = self.token_tree {
             out.add_tuple("macro_call_token_trees", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl MacroCall {
+    pub fn emit_macro_call_expansion(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_macro_call_expansions", vec![id.into(), value.into()]);
     }
 }
 
