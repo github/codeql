@@ -974,14 +974,27 @@ private module Cached {
 
     string getField() { result = mce.getIdentifier().getText() }
 
+    int getNumberOfArgs() { result = mce.getArgList().getNumberOfArgs() }
+
     Type resolveTypeAt(TypePath path) { result = inferReceiverType(this, path) }
+  }
+
+  /** Holds if a method for `type` with the name `name` and the arity `arity` exists in `impl`. */
+  pragma[nomagic]
+  private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
+    type = impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention).resolveType() and
+    exists(Function f |
+      f = impl.(ImplItemNode).getASuccessor(name) and
+      f.getParamList().hasSelfParam() and
+      arity = f.getParamList().getNumberOfParams()
+    )
   }
 
   private module IsInstantiationOfInput implements IsInstantiationOfSig<ReceiverExpr> {
     predicate potentialInstantiationOf(ReceiverExpr receiver, TypeAbstraction impl, TypeMention sub) {
-      sub.resolveType() = receiver.resolveTypeAt(TypePath::nil()) and
-      sub = impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention) and
-      exists(impl.(ImplItemNode).getASuccessor(receiver.getField()))
+      methodCandidate(receiver.resolveTypeAt(TypePath::nil()), receiver.getField(),
+        receiver.getNumberOfArgs(), impl) and
+      sub = impl.(ImplTypeAbstraction).getSelfTy()
     }
   }
 

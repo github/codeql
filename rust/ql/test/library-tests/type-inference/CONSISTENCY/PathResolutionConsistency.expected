@@ -1,5 +1,0 @@
-multipleMethodCallTargets
-| main.rs:401:26:401:42 | x.common_method() | main.rs:376:9:379:9 | fn common_method |
-| main.rs:401:26:401:42 | x.common_method() | main.rs:388:9:391:9 | fn common_method |
-| main.rs:402:26:402:44 | x.common_method_2() | main.rs:381:9:384:9 | fn common_method_2 |
-| main.rs:402:26:402:44 | x.common_method_2() | main.rs:393:9:396:9 | fn common_method_2 |

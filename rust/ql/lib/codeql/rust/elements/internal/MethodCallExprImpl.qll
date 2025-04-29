@@ -14,7 +14,13 @@ private import codeql.rust.internal.TypeInference
  * be referenced directly.
  */
 module Impl {
-  private predicate isImplFunction(Function f) { f = any(ImplItemNode impl).getAnAssocItem() }
+  private predicate isInherentImplFunction(Function f) {
+    f = any(Impl impl | not impl.hasTrait()).(ImplItemNode).getAnAssocItem()
+  }
+
+  private predicate isTraitImplFunction(Function f) {
+    f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
+  }
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -28,16 +34,22 @@ module Impl {
     override Function getStaticTarget() {
       result = resolveMethodCallExpr(this) and
       (
-        // prioritize `impl` methods first
-        isImplFunction(result)
+        // prioritize inherent implementation methods first
+        isInherentImplFunction(result)
         or
-        not isImplFunction(resolveMethodCallExpr(this)) and
+        not isInherentImplFunction(resolveMethodCallExpr(this)) and
         (
-          // then trait methods with default implementations
-          result.hasBody()
+          // then trait implementation methods
+          isTraitImplFunction(result)
           or
-          // and finally trait methods without default implementations
-          not resolveMethodCallExpr(this).hasBody()
+          not isTraitImplFunction(resolveMethodCallExpr(this)) and
+          (
+            // then trait methods with default implementations
+            result.hasBody()
+            or
+            // and finally trait methods without default implementations
+            not resolveMethodCallExpr(this).hasBody()
+          )
         )
       )
     }
