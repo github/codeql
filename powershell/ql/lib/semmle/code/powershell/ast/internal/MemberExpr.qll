@@ -28,19 +28,29 @@ class MemberExpr extends Expr, TMemberExpr {
   }
 
   /** Gets the name of the member being looked up, if any. */
-  string getMemberName() {
+  string getLowerCaseMemberName() {
     result =
-      getRawAst(this).(Raw::MemberExpr).getMember().(Raw::StringConstExpr).getValue().getValue()
+      getRawAst(this)
+          .(Raw::MemberExpr)
+          .getMember()
+          .(Raw::StringConstExpr)
+          .getValue()
+          .getValue()
+          .toLowerCase()
   }
+
+  bindingset[name]
+  pragma[inline_late]
+  predicate memberNameMatches(string name) { this.getLowerCaseMemberName() = name.toLowerCase() }
 
   predicate isNullConditional() { getRawAst(this).(Raw::MemberExpr).isNullConditional() }
 
   predicate isStatic() { getRawAst(this).(Raw::MemberExpr).isStatic() }
 
   final override string toString() {
-    result = this.getMemberName()
+    result = this.getLowerCaseMemberName()
     or
-    not exists(this.getMemberName()) and
+    not exists(this.getLowerCaseMemberName()) and
     result = "..."
   }
 

@@ -353,9 +353,9 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(string name) {
-      name = any(PropertyMember member).getName()
+      name = any(PropertyMember member).getLowerCaseName()
       or
-      name = any(MemberExpr me).getMemberName()
+      name = any(MemberExpr me).getLowerCaseMemberName()
     } or
     // A known map key
     TKnownKeyContent(ConstantValue cv) { exists(cv.asString()) } or
@@ -892,7 +892,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNodes::ExprNodes::MemberExprWriteAccessCfgNode var, Content::FieldContent fc |
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = var.getQualifier() and
     node1.asExpr() = var.getAssignStmt().getRightHandSide() and
-    fc.getName() = var.getMemberName() and
+    fc.getLowerCaseName() = var.getLowerCaseMemberName() and
     c.isSingleton(fc)
   )
   or
@@ -961,7 +961,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(CfgNodes::ExprNodes::MemberExprReadAccessCfgNode var, Content::FieldContent fc |
     node2.asExpr() = var and
     node1.asExpr() = var.getQualifier() and
-    fc.getName() = var.getMemberName() and
+    fc.getLowerCaseName() = var.getLowerCaseMemberName() and
     c.isSingleton(fc)
   )
   or
@@ -1310,7 +1310,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   exists(kind) and
   exists(FunctionBase f |
     f.getBody() = c.asCfgScope() and
-    creation.asExpr().(CmdName).getName() = f.getName()
+    creation.asExpr().(CmdName).getName() = f.getLowerCaseName()
   )
 }
 

@@ -1,7 +1,7 @@
 private import AstImport
 
 class Method extends Member, FunctionBase, TMethod {
-  final override string getName() { result = Member.super.getName() }
+  final override string getLowerCaseName() { result = Member.super.getLowerCaseName() }
 
   final override ScriptBlock getBody() {
     exists(Raw::Ast r | r = getRawAst(this) |
@@ -24,9 +24,7 @@ class Method extends Member, FunctionBase, TMethod {
 
   predicate isConstructor() { getRawAst(this).(Raw::Method).isConstructor() }
 
-  ThisParameter getThisParameter() {
-    result.getFunction() = this
-  }
+  ThisParameter getThisParameter() { result.getFunction() = this }
 }
 
 /** A constructor definition. */

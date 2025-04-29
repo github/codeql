@@ -26,5 +26,5 @@ class ReservedCharacter extends string {
 }
 
 from Function f, ReservedCharacter r
-where f.getName().matches("%"+ r + "%")
+where f.getLowerCaseName().matches("%"+ r + "%")
 select f, "Function name contains a reserved character: " + r

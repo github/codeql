@@ -577,7 +577,7 @@ module API {
       )
       or
       exists(MemberExprReadAccess read |
-        read.getMemberName().toLowerCase() = name and
+        read.getLowerCaseMemberName().toLowerCase() = name and
         pred = getForwardEndNode(getALocalSourceStrict(getNodeFromExpr(read.getQualifier()))) and
         succ = getForwardStartNode(getNodeFromExpr(read))
       )

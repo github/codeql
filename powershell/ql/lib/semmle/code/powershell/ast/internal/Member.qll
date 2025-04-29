@@ -1,11 +1,15 @@
 private import AstImport
 
 class Member extends Ast, TMember {
-  string getName() {
-    result = getRawAst(this).(Raw::Member).getName()
+  string getLowerCaseName() {
+    result = getRawAst(this).(Raw::Member).getName().toLowerCase()
     or
     any(Synthesis s).memberName(this, result)
   }
+
+  bindingset[name]
+  pragma[inline_late]
+  predicate memberNameMatches(string name) { this.getLowerCaseName() = name.toLowerCase() }
 
   Type getDeclaringType() { result.getAMember() = this }
 

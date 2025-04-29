@@ -639,7 +639,11 @@ module ExprNodes {
 
     ExprCfgNode getMemberExpr() { e.hasCfgChild(e.getMemberExpr(), this, result) }
 
-    string getMemberName() { result = e.getMemberName() }
+    string getLowerCaseMemberName() { result = e.getLowerCaseMemberName() }
+
+    bindingset[name]
+    pragma[inline_late]
+    predicate memberNameMatches(string name) { this.getLowerCaseMemberName() = name.toLowerCase() }
 
     predicate isStatic() { e.isStatic() }
   }
@@ -1504,7 +1508,7 @@ module StmtNodes {
 
     Type getType() { result = s.getType() }
 
-    string getName() { result = s.getName() }
+    string getLowerCaseName() { result = s.getLowerCaseName() }
   }
 
   private class FunctionDefinitionChildMapping extends NonExprChildMapping, FunctionDefinitionStmt {

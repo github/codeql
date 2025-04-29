@@ -229,11 +229,11 @@
 | Expressions/ExpandableString.ps1:1:1:1:39 | {...} | Expressions/ExpandableString.ps1:1:1:1:39 | toplevel function for ExpandableString.ps1 |
 | Expressions/ExpandableString.ps1:1:1:1:39 | {...} | Expressions/ExpandableString.ps1:1:1:1:39 | {...} |
 | Expressions/ExpandableString.ps1:1:21:1:38 | $(...) | Expressions/ExpandableString.ps1:1:1:1:39 | Date: $([DateTime]::Now)\nName: $name |
-| Expressions/ExpandableString.ps1:1:23:1:32 | DateTime | Expressions/ExpandableString.ps1:1:23:1:37 | Now |
-| Expressions/ExpandableString.ps1:1:23:1:37 | Now | Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] Now |
-| Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] Now | Expressions/ExpandableString.ps1:1:23:1:37 | {...} |
+| Expressions/ExpandableString.ps1:1:23:1:32 | DateTime | Expressions/ExpandableString.ps1:1:23:1:37 | now |
+| Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] now | Expressions/ExpandableString.ps1:1:23:1:37 | {...} |
+| Expressions/ExpandableString.ps1:1:23:1:37 | now | Expressions/ExpandableString.ps1:1:23:1:37 | [Stmt] now |
 | Expressions/ExpandableString.ps1:1:23:1:37 | {...} | Expressions/ExpandableString.ps1:1:21:1:38 | $(...) |
-| Expressions/ExpandableString.ps1:1:35:1:37 | Now | Expressions/ExpandableString.ps1:1:23:1:37 | Now |
+| Expressions/ExpandableString.ps1:1:35:1:37 | Now | Expressions/ExpandableString.ps1:1:23:1:37 | now |
 | Expressions/MemberExpression.ps1:1:1:2:14 | [synth] pipeline | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
 | Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | toplevel function for MemberExpression.ps1 |
 | Expressions/MemberExpression.ps1:1:1:2:14 | {...} | Expressions/MemberExpression.ps1:1:1:2:14 | {...} |
