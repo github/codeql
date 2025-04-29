@@ -307,7 +307,7 @@ public class Main {
     // extract TypeScript if `--typescript` or `--typescript-full` was specified
     if (getTypeScriptMode(ap) != TypeScriptMode.NONE) {
       addIncludesFor(includes, FileType.TYPESCRIPT);
-      includes.add("**/tsconfig*.json");
+      includes.add("**/*tsconfig*.json");
     }
 
     // add explicit include patterns
