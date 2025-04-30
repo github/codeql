@@ -3,7 +3,7 @@ import os
 
 def test(codeql, cpp):
     os.mkdir("pch")
-    extractor = f"{cpp.get_tool("extractor")}" 
+    extractor = cpp.get_tool("extractor")
     codeql.database.create(command=[
         f'"{extractor}" --mimic-clang -emit-pch -o pch/a.pch a.c',
         f'"{extractor}" --mimic-clang -include-pch pch/a.pch -Iextra_dummy_path b.c',
