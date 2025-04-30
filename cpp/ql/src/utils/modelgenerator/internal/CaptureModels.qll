@@ -295,6 +295,14 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     result = qualifierString()
   }
 
+  DataFlowPrivate::ParameterPosition getReturnKindParamPosition(DataFlowPrivate::ReturnKind k) {
+    exists(int argumentIndex, int indirectionIndex |
+      k.isIndirectReturn(argumentIndex) and
+      k.getIndirectionIndex() = indirectionIndex and
+      result = DataFlowPrivate::TIndirectionPosition(argumentIndex, indirectionIndex)
+    )
+  }
+
   string getReturnValueString(DataFlowPrivate::ReturnKind k) {
     k.isNormalReturn() and
     exists(int indirectionIndex | indirectionIndex = k.getIndirectionIndex() |
