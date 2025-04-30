@@ -44,7 +44,7 @@ mod my_clone {
         }
         let u = w.clone();
         match u {
-            Wrapper { n: n } => sink(n), // $ MISSING: hasValueFlow=73 - lack of expanded derives means that we cannot resolve clone call above, and hence not insert implicit borrow
+            Wrapper { n: n } => sink(n), // $ hasValueFlow=73
         }
     }
 }
