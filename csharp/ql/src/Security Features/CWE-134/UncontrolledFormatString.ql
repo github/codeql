@@ -19,9 +19,7 @@ import FormatString::PathGraph
 module FormatStringConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(FormatStringParseCall call).getFormatExpr()
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(FormatCall call).getFormatExpr() }
 }
 
 module FormatString = TaintTracking::Global<FormatStringConfig>;

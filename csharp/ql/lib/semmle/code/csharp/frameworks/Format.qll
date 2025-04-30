@@ -7,7 +7,7 @@ private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
 
-/** A method that formats a string, for example `string.Format()`. */
+/** A method that formats a string (or parses a format string), for example `string.Format()` */
 abstract private class FormatMethodImpl extends Method {
   /**
    * Gets the argument containing the format string. For example, the argument of
@@ -120,6 +120,17 @@ private class SystemDiagnosticsFormatMethods extends FormatMethodImpl {
       )
     )
   }
+
+  override int getFormatArgument() { result = 0 }
+}
+
+/**
+ * The `System.Text.CompositeFormat.Parse` method.
+ *
+ * Note that this method is not an ordinary format method, but it parses the format argument.
+ */
+class CompositeFormatParseMethod extends FormatMethodImpl {
+  CompositeFormatParseMethod() { this = any(SystemTextCompositeFormatClass x).getParseMethod() }
 
   override int getFormatArgument() { result = 0 }
 }
@@ -288,32 +299,4 @@ class FormatCall extends MethodCall {
     index = this.getASuppliedArgument() and
     result = this.getArgument(this.getFirstArgument() + index)
   }
-}
-
-/**
- * A method call to a method that parses a format string, for example a call
- * to `string.Format()`.
- */
-abstract private class FormatStringParseCallImpl extends MethodCall {
-  /**
-   * Gets the expression used as the format string.
-   */
-  abstract Expr getFormatExpr();
-}
-
-final class FormatStringParseCall = FormatStringParseCallImpl;
-
-private class OrdinaryFormatCall extends FormatStringParseCallImpl instanceof FormatCall {
-  override Expr getFormatExpr() { result = FormatCall.super.getFormatExpr() }
-}
-
-/**
- * A method call to `System.Text.CompositeFormat.Parse`.
- */
-class ParseFormatStringCall extends FormatStringParseCallImpl {
-  ParseFormatStringCall() {
-    this.getTarget() = any(SystemTextCompositeFormatClass x).getParseMethod()
-  }
-
-  override Expr getFormatExpr() { result = this.getArgument(0) }
 }
