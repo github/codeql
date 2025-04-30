@@ -1153,7 +1153,7 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePath1(RelevantPath path) {
+private ItemNode resolvePathCand(AstNode path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
@@ -1162,59 +1162,70 @@ private ItemNode resolvePath1(RelevantPath path) {
   )
 }
 
-pragma[nomagic]
-private ItemNode resolvePathPrivate(
-  RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
-) {
-  not path.requiresExtractorWorkaround() and
-  result = resolvePath1(path) and
-  result.isPrivate() and
-  (
-    pathParent.getADescendant() = path
-    or
-    pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
-  ) and
-  (
-    itemParent = result.getVisibilityParent().getImmediateParentModule()
-    or
-    not result.hasVisibilityParent() and
-    itemParent = result.getImmediateParentModule()
-  )
-}
+/** Gets an item that `n` may resolve to, not taking visibility into account. */
+signature ItemNode resolveCandidateSig(AstNode n);
 
-pragma[nomagic]
-private predicate isItemParent(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _))
-}
+/** Provides the predicate `resolve` for resolving items while taking visibility into account. */
+module ResolveWithVisibility<resolveCandidateSig/1 resolvePrivateCandidate> {
+  pragma[nomagic]
+  private ItemNode resolvePathPrivate(
+    AstNode n, ModuleLikeNode itemParent, ModuleLikeNode pathParent
+  ) {
+    not n.(RelevantPath).requiresExtractorWorkaround() and
+    result = resolvePrivateCandidate(n) and
+    result.isPrivate() and
+    (
+      pathParent.getADescendant() = n
+      or
+      pathParent = any(ItemNode mid | n = mid.getADescendant()).getImmediateParentModule()
+    ) and
+    (
+      itemParent = result.getVisibilityParent().getImmediateParentModule()
+      or
+      not result.hasVisibilityParent() and
+      itemParent = result.getImmediateParentModule()
+    )
+  }
 
-/**
- * Gets a module that has access to private items defined inside `itemParent`.
- *
- * According to [The Rust Reference][1] this is either `itemParent` itself or any
- * descendant of `itemParent`.
- *
- * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
- */
-pragma[nomagic]
-private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  isItemParent(itemParent) and
-  result.getImmediateParentModule*() = itemParent
+  pragma[nomagic]
+  private predicate isItemParent(ModuleLikeNode itemParent) {
+    exists(resolvePathPrivate(_, itemParent, _))
+  }
+
+  /**
+   * Gets a module that has access to private items defined inside `itemParent`.
+   *
+   * According to [The Rust Reference][1] this is either `itemParent` itself or any
+   * descendant of `itemParent`.
+   *
+   * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
+   */
+  pragma[nomagic]
+  private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
+    isItemParent(itemParent) and
+    result.getImmediateParentModule*() = itemParent
+  }
+
+  /** Gets an item that `n` may resolve to, taking visibility into account. */
+  ItemNode resolve(AstNode n) {
+    result = resolvePrivateCandidate(n) and
+    (
+      result.isPublic()
+      or
+      n.(RelevantPath).requiresExtractorWorkaround()
+    )
+    or
+    exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
+      result = resolvePathPrivate(n, itemParent, pathParent) and
+      pathParent = getAPrivateVisibleModule(itemParent)
+    )
+  }
 }
 
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
-  result = resolvePath1(path) and
-  (
-    result.isPublic()
-    or
-    path.requiresExtractorWorkaround()
-  )
-  or
-  exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
-    result = resolvePathPrivate(path, itemParent, pathParent) and
-    pathParent = getAPrivateVisibleModule(itemParent)
-  )
+  result = ResolveWithVisibility<resolvePathCand/1>::resolve(path)
 }
 
 pragma[nomagic]

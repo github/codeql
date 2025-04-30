@@ -913,12 +913,16 @@ private module Cached {
     name = mce.getIdentifier().getText()
   }
 
+  private ItemNode resolveMethodCallExprCand(AstNode mce) {
+    exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
+  }
+
   /**
    * Gets a method that the method call `mce` resolves to, if any.
    */
   cached
   Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
+    result = ResolveWithVisibility<resolveMethodCallExprCand/1>::resolve(mce)
   }
 
   pragma[nomagic]

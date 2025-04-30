@@ -47,7 +47,7 @@ mod m1 {
         pub fn f() {
             println!("m1::nested2::f");
             super::S(). // $ item=I1
-                f(); // $ SPURIOUS: item=I4 (private)
+                f(); // illegal: private
             super::S::f( // illegal: private
                 super::S() // $ item=I1
             );
@@ -62,7 +62,7 @@ mod m1 {
                 super::S() // $ item=I1
             );
             super::S(). // $ item=I1
-                f2(); // $ SPURIOUS: item=I7 (private)
+                f2(); // illegal: private
             super::S::f2(
                 super::S() // $ item=I1
             ); // illegal: private
