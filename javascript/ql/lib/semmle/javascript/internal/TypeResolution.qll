@@ -34,9 +34,9 @@ module TypeResolution {
   }
 
   /**
-   * Holds if `host` is a type with a `content` of type `memberType`.
+   * Holds if `host` is a type with a `content` of type `memberType`, not counting inherited members.
    */
-  private predicate typeMember(Node host, DataFlow::Content content, Node memberType) {
+  private predicate typeOwnMember(Node host, DataFlow::Content content, Node memberType) {
     exists(MemberDeclaration decl | host = getMemberBase(decl) |
       exists(FieldDeclaration field |
         decl = field and
@@ -46,8 +46,13 @@ module TypeResolution {
       or
       exists(MethodDeclaration method |
         decl = method and
-        content.asPropertyName() = method.getName() and
+        content.asPropertyName() = method.getName()
+      |
+        not method instanceof AccessorMethodDeclaration and
         memberType = method.getBody() // use the Function as representative for the function type
+        or
+        method instanceof GetterMethodDeclaration and
+        memberType = method.getBody().getReturnTypeAnnotation()
       )
       or
       decl instanceof IndexSignature and
@@ -72,8 +77,16 @@ module TypeResolution {
         memberType = type.getArgument(0)
       )
     )
+  }
+
+  /**
+   * Holds if `host` is a type with a `content` of type `memberType`, possible due to inheritance.
+   */
+  private predicate typeMember(Node host, DataFlow::Content content, Node memberType) {
+    typeOwnMember(host, content, memberType)
     or
     // Inherit members from base types
+    not typeOwnMember(host, content, _) and
     exists(ClassOrInterface baseType | typeMember(baseType, content, memberType) |
       host.(ClassDefinition).getSuperClass() = trackClassValue(baseType)
       or
