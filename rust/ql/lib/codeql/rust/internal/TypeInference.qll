@@ -662,15 +662,6 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       tAdj = t
     )
   }
-
-  pragma[nomagic]
-  additional Type inferReceiverType(AstNode n) {
-    exists(Access a, AccessPosition apos |
-      result = inferType(n) and
-      n = a.getNodeAt(apos) and
-      apos.isSelf()
-    )
-  }
 }
 
 private module CallExprBaseMatching = Matching<CallExprBaseMatchingInput>;
@@ -811,15 +802,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
     else (
       pathAdj = path and
       tAdj = t
-    )
-  }
-
-  pragma[nomagic]
-  additional Type inferReceiverType(AstNode n) {
-    exists(Access a, AccessPosition apos |
-      result = inferType(n) and
-      n = a.getNodeAt(apos) and
-      apos.isSelf()
     )
   }
 }
