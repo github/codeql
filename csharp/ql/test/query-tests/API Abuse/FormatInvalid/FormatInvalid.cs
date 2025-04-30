@@ -140,21 +140,21 @@ class FormatInvalid
         var format = CompositeFormat.Parse("}"); // $ Alert
 
         // GOOD: Format is invalid and this flagged during parsing.
-        String.Format<string>(null, format, "");
-        String.Format<string, string>(null, format, "", "");
-        String.Format<string, string, string>(null, format, "", "", "");
+        String.Format<string>(null, format, ""); // $ Sink
+        String.Format<string, string>(null, format, "", ""); // $ Sink
+        String.Format<string, string, string>(null, format, "", "", ""); // $ Sink
 
-        sb.AppendFormat(null, format, "");
-        sb.AppendFormat<string>(null, format, "");
-        sb.AppendFormat<string, string>(null, format, "", "");
-        sb.AppendFormat<string, string, string>(null, format, "", "", "");
+        sb.AppendFormat(null, format, ""); // $ Sink
+        sb.AppendFormat<string>(null, format, ""); // $ Sink
+        sb.AppendFormat<string, string>(null, format, "", ""); // $ Sink
+        sb.AppendFormat<string, string, string>(null, format, "", "", ""); // $ Sink
 
 
         var span = new Span<char>();
-        span.TryWrite(null, format, out _);
-        span.TryWrite<object>(null, format, out _, new object());
-        span.TryWrite<object, object>(null, format, out _, new object(), new object());
-        span.TryWrite<object, object, object>(null, format, out _, "", "", "");
+        span.TryWrite(null, format, out _); // $ Sink
+        span.TryWrite<object>(null, format, out _, new object()); // $ Sink
+        span.TryWrite<object, object>(null, format, out _, new object(), new object()); // $ Sink
+        span.TryWrite<object, object, object>(null, format, out _, "", "", ""); // $ Sink
     }
 
     System.IO.StringWriter sw;
