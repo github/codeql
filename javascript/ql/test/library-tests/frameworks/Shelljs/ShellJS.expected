@@ -55,8 +55,8 @@ test_FileSystemAccess
 | tst.js:60:1:60:17 | shelljs.cat(file) |
 | tst.js:60:1:60:41 | shelljs ... cement) |
 | tst.js:61:1:61:17 | shelljs.cat(file) |
+| tst.js:65:1:65:19 | shelljs.which(file) |
 test_MissingFileSystemAccess
-| tst.js:65:15:65:18 | file |
 test_SystemCommandExecution
 | tst.js:14:1:14:27 | shelljs ... ts, cb) |
 | tst.js:60:1:60:51 | shelljs ... ec(cmd) |
@@ -67,3 +67,4 @@ test_FileNameSource
 | tst.js:25:1:25:22 | shelljs ... , file) |
 | tst.js:26:1:26:30 | shelljs ...  file2) |
 | tst.js:27:1:27:24 | shelljs ...  file2) |
+| tst.js:65:1:65:19 | shelljs.which(file) |

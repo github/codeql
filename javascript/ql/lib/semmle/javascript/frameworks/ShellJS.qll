@@ -14,7 +14,8 @@ module ShellJS {
       shellJSMember()
           .getMember([
               "exec", "cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv",
-              "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo"
+              "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo",
+              "which",
             ])
           .getReturn()
   }
@@ -99,7 +100,8 @@ module ShellJS {
    */
   private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
     ShellJSGenericFileAccess() {
-      name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
+      name =
+        ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm", "which"]
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getAnArgument() }
@@ -111,7 +113,8 @@ module ShellJS {
   private class ShellJSFilenameSource extends FileNameSource, ShellJSCall {
     ShellJSFilenameSource() {
       name = "find" or
-      name = "ls"
+      name = "ls" or
+      name = "which"
     }
   }
 
