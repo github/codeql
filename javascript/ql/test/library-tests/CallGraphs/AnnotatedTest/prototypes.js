@@ -107,3 +107,36 @@ class Derived2 {}
 Derived2.prototype = Object.create(Base.prototype);
 /** name:Derived2.read */
 Derived2.prototype.read = function() {};
+
+
+/** name:BanClass.tmpClass */
+function tmpClass() {}
+
+function callerClass() {
+    /** calls:BanClass.tmpClass */
+    this.tmpClass();
+}
+class BanClass {
+    constructor() {
+      this.tmpClass = tmpClass;
+      this.callerClass = callerClass;
+    }
+}
+
+/** name:BanProtytpe.tmpPrototype */
+function tmpPrototype() {}
+
+function callerPrototype() {
+    /** calls:BanProtytpe.tmpPrototype */
+    this.tmpPrototype();
+}
+
+function BanProtytpe() {
+    this.tmpPrototype = tmpPrototype;
+    this.callerPrototype = callerPrototype;
+}
+
+function banInstantiation(){
+  const instance = new BanProtytpe();
+  instance.callerPrototype();
+}

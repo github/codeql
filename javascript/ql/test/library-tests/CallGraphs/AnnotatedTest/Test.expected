@@ -2,6 +2,8 @@ spuriousCallee
 missingCallee
 | constructor-field.ts:40:5:40:14 | f3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
 | constructor-field.ts:71:1:71:11 | bf3.build() | constructor-field.ts:13:3:13:12 | build() {} | -1 | calls |
+| prototypes.js:117:5:117:19 | this.tmpClass() | prototypes.js:113:1:113:22 | functio ... ss() {} | -1 | calls |
+| prototypes.js:131:5:131:23 | this.tmpPrototype() | prototypes.js:127:1:127:26 | functio ... pe() {} | -1 | calls |
 badAnnotation
 accessorCall
 | accessors.js:12:1:12:5 | obj.f | accessors.js:5:8:5:12 | () {} |
