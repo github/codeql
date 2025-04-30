@@ -1309,8 +1309,7 @@ module ClassNode {
         result = method.getBody().flow()
       )
       or
-      // ES6 class property in constructor
-      astNode instanceof ClassDefinition and
+      // ES6 class property or Function-style class methods via constructor
       kind = MemberKind::method() and
       exists(ThisNode receiver |
         receiver = this.getConstructor().getReceiver() and
@@ -1322,14 +1321,6 @@ module ClassNode {
       exists(DataFlow::SourceNode proto |
         proto = this.getAPrototypeReference() and
         proto.hasPropertyWrite(name, result)
-      )
-      or
-      // Function-style class methods via constructor
-      astNode instanceof Function and
-      kind = MemberKind::method() and
-      exists(ThisNode receiver |
-        receiver = this.getConstructor().getReceiver() and
-        receiver.hasPropertyWrite(name, result)
       )
       or
       // Function-style class accessors
@@ -1351,8 +1342,7 @@ module ClassNode {
         result = method.getBody().flow()
       )
       or
-      // ES6 class property in constructor
-      astNode instanceof ClassDefinition and
+      // ES6 class property or Function-style class methods via constructor
       kind = MemberKind::method() and
       exists(ThisNode receiver |
         receiver = this.getConstructor().getReceiver() and
@@ -1364,14 +1354,6 @@ module ClassNode {
       exists(DataFlow::SourceNode proto |
         proto = this.getAPrototypeReference() and
         result = proto.getAPropertySource()
-      )
-      or
-      // Function-style class methods via constructor
-      astNode instanceof Function and
-      kind = MemberKind::method() and
-      exists(ThisNode receiver |
-        receiver = this.getConstructor().getReceiver() and
-        result = receiver.getAPropertySource()
       )
       or
       // Function-style class accessors
