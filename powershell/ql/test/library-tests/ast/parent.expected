@@ -429,3 +429,25 @@
 | Statements/UseProcessBlockForPipelineCommand.ps1:6:9:6:13 | int | Statements/UseProcessBlockForPipelineCommand.ps1:5:9:7:15 | number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | Number | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number |
 | Statements/UseProcessBlockForPipelineCommand.ps1:10:5:10:11 | [Stmt] Number | Statements/UseProcessBlockForPipelineCommand.ps1:4:5:10:11 | {...} |
+| Strings/String.ps1:1:1:1:2 | x | Strings/String.ps1:1:1:1:10 | ...=... |
+| Strings/String.ps1:1:1:1:2 | x | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:1:1:1:10 | ...=... | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:1:1:8:0 | {...} | Strings/String.ps1:1:1:8:0 | toplevel function for String.ps1 |
+| Strings/String.ps1:1:1:8:0 | {...} | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:1:6:1:10 | abc | Strings/String.ps1:1:1:1:10 | ...=... |
+| Strings/String.ps1:2:1:2:3 | Call to foo | Strings/String.ps1:2:1:2:3 | [Stmt] Call to foo |
+| Strings/String.ps1:2:1:2:3 | Foo | Strings/String.ps1:2:1:2:3 | Call to foo |
+| Strings/String.ps1:2:1:2:3 | [Stmt] Call to foo | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:3:1:3:2 | y | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:3:1:3:2 | y | Strings/String.ps1:3:1:3:10 | ...=... |
+| Strings/String.ps1:3:1:3:10 | ...=... | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:3:6:3:10 | def | Strings/String.ps1:3:1:3:10 | ...=... |
+| Strings/String.ps1:4:1:4:2 | z | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:4:1:4:2 | z | Strings/String.ps1:4:1:4:10 | ...=... |
+| Strings/String.ps1:4:1:4:10 | ...=... | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:4:6:4:10 |  | Strings/String.ps1:4:1:4:10 | ...=... |
+| Strings/String.ps1:5:1:6:9 | $t = @'j\n@ | Strings/String.ps1:5:1:6:9 | [Stmt] $t = @'j\n@ |
+| Strings/String.ps1:5:1:6:9 | [Stmt] $t = @'j\n@ | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:6:10:8:0 | '@\nkl | Strings/String.ps1:6:10:8:0 | Call to kl\r\n'@\r\n |
+| Strings/String.ps1:6:10:8:0 | Call to kl\r\n'@\r\n | Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\r\n'@\r\n |
+| Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\r\n'@\r\n | Strings/String.ps1:1:1:8:0 | {...} |

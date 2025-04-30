@@ -1,0 +1,12 @@
+stringLiteral
+| String.ps1:1:6:1:10 | abc |
+| String.ps1:2:1:2:3 | Foo |
+| String.ps1:3:6:3:10 | def |
+| String.ps1:4:6:4:10 |  |
+| String.ps1:6:10:8:0 | '@\nkl |
+stringConstantExpression
+| String.ps1:1:6:1:10 | abc |
+| String.ps1:2:1:2:3 | Foo |
+| String.ps1:3:6:3:10 | def |
+| String.ps1:4:6:4:10 |  |
+| String.ps1:6:10:8:0 | '@\nkl |
