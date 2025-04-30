@@ -8,7 +8,7 @@
 			that allow values to be rendered as-is in the template, avoiding the escaping that all the other strings go
 			through.
 		</p>
-		<p>Using them on user-provided values will result in an opportunity for XSS.</p>
+		<p>Using them on user-provided values allows for a cross-site scripting vulnerability.</p>
 	</overview>
 	<recommendation>
 		<p>
