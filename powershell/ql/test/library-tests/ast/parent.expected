@@ -448,6 +448,6 @@
 | Strings/String.ps1:4:6:4:10 |  | Strings/String.ps1:4:1:4:10 | ...=... |
 | Strings/String.ps1:5:1:6:9 | $t = @'j\n@ | Strings/String.ps1:5:1:6:9 | [Stmt] $t = @'j\n@ |
 | Strings/String.ps1:5:1:6:9 | [Stmt] $t = @'j\n@ | Strings/String.ps1:1:1:8:0 | {...} |
-| Strings/String.ps1:6:10:8:0 | '@\nkl | Strings/String.ps1:6:10:8:0 | Call to kl\r\n'@\r\n |
-| Strings/String.ps1:6:10:8:0 | Call to kl\r\n'@\r\n | Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\r\n'@\r\n |
-| Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\r\n'@\r\n | Strings/String.ps1:1:1:8:0 | {...} |
+| Strings/String.ps1:6:10:8:0 | '@\nkl | Strings/String.ps1:6:10:8:0 | Call to kl\n'@\n |
+| Strings/String.ps1:6:10:8:0 | Call to kl\n'@\n | Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\n'@\n |
+| Strings/String.ps1:6:10:8:0 | [Stmt] Call to kl\n'@\n | Strings/String.ps1:1:1:8:0 | {...} |
