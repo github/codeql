@@ -690,7 +690,7 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = CallExprBaseMatchingInput::inferReceiverType(n) |
+      exists(Type receiverType | receiverType = inferType(n) |
         if receiverType = TRefType()
         then
           path = path0 and
@@ -840,7 +840,7 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = FieldExprMatchingInput::inferReceiverType(n) |
+      exists(Type receiverType | receiverType = inferType(n) |
         if receiverType = TRefType()
         then
           // adjust for implicit deref
@@ -894,6 +894,28 @@ private Type inferRefExprType(Expr e, TypePath path) {
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
+
+  /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
+  cached
+  predicate receiverHasImplicitDeref(AstNode receiver) {
+    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
+      apos.isSelf() and
+      receiver = a.getNodeAt(apos) and
+      inferType(receiver) = TRefType() and
+      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
+    )
+  }
+
+  /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
+  cached
+  predicate receiverHasImplicitBorrow(AstNode receiver) {
+    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
+      apos.isSelf() and
+      receiver = a.getNodeAt(apos) and
+      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
+      inferType(receiver) != TRefType()
+    )
+  }
 
   pragma[inline]
   private Type getLookupType(AstNode n) {
