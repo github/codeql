@@ -66,6 +66,7 @@ module Public {
   import ParenExpr
   import Pipeline
   import StringConstantExpression
+  import StringLiteral
   import MemberExpr
   import InvokeMemberExpression
   import ObjectCreation
