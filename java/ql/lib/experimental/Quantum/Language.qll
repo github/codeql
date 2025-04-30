@@ -38,7 +38,7 @@ module CryptoInput implements InputSig<Language::Location> {
   predicate artifactOutputFlowsToGenericInput(
     DataFlow::Node artifactOutput, DataFlow::Node otherInput
   ) {
-    ArtifactUniversalFlow::flow(artifactOutput, otherInput)
+    ArtifactFlow::flow(artifactOutput, otherInput)
   }
 }
 
@@ -60,7 +60,7 @@ class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedPara
   }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
   }
 
   override DataFlow::Node getOutputNode() { result.asParameter() = this }
@@ -76,7 +76,7 @@ class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
   }
 
   override string getAdditionalDescription() { result = this.toString() }
@@ -88,7 +88,7 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
   }
 
   override string getAdditionalDescription() { result = this.toString() }
@@ -100,14 +100,14 @@ class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceo
     // where typical algorithms are specified, but EC specifically means set up a
     // default curve container, that will later be specified explicitly (or if not a default)
     // curve is used.
-    this = any(Literal l | l.getValue() != "EC")
+    this.getValue() != "EC"
   }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
   override predicate flowsTo(Crypto::FlowAwareElement other) {
     // TODO: separate config to avoid blowing up data-flow analysis
-    GenericDataSourceUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
   }
 
   override string getAdditionalDescription() { result = this.toString() }
@@ -122,15 +122,24 @@ abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance
 }
 
 class SecureRandomnessInstance extends RandomnessInstance {
+  RandomDataSource source;
+
   SecureRandomnessInstance() {
-    exists(RandomDataSource s | this = s.getOutput() |
-      s.getSourceOfRandomness() instanceof SecureRandomNumberGenerator
-    )
+    this = source.getOutput() and
+    source.getSourceOfRandomness() instanceof SecureRandomNumberGenerator
   }
+
+  override string getGeneratorName() { result = source.getSourceOfRandomness().getQualifiedName() }
 }
 
 class InsecureRandomnessInstance extends RandomnessInstance {
-  InsecureRandomnessInstance() { exists(InsecureRandomnessSource node | this = node.asExpr()) }
+  RandomDataSource source;
+
+  InsecureRandomnessInstance() {
+    any(InsecureRandomnessSource src).asExpr() = this and source.getOutput() = this
+  }
+
+  override string getGeneratorName() { result = source.getSourceOfRandomness().getQualifiedName() }
 }
 
 /**
@@ -142,12 +151,12 @@ abstract class AdditionalFlowInputStep extends DataFlow::Node {
   final DataFlow::Node getInput() { result = this }
 }
 
-module ArtifactUniversalFlow = DataFlow::Global<ArtifactUniversalFlowConfig>;
+module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 /**
  * Generic data source to node input configuration
  */
-module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
+module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source = any(Crypto::GenericSourceInstance i).getOutputNode()
   }
@@ -175,7 +184,7 @@ module GenericDataSourceUniversalFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
+module ArtifactFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source = any(Crypto::ArtifactInstance artifact).getOutputNode()
   }
@@ -194,10 +203,16 @@ module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
+    or
+    exists(MethodCall m |
+      m.getMethod().hasQualifiedName("java.lang", "String", "getBytes") and
+      node1.asExpr() = m.getQualifier() and
+      node2.asExpr() = m
+    )
   }
 }
 
-module GenericDataSourceUniversalFlow = TaintTracking::Global<GenericDataSourceUniversalFlowConfig>;
+module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
 // Import library-specific modeling
 import JCA
