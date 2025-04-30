@@ -1,6 +1,11 @@
 import rust
 import TestUtils
 
+query predicate canonicalPath(Addressable a, string path) {
+  toBeTested(a) and
+  path = a.getCanonicalPath(_)
+}
+
 query predicate canonicalPaths(Item i, string origin, string path) {
   toBeTested(i) and
   (
