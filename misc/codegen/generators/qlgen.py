@@ -258,7 +258,7 @@ def format(codeql, files):
     if not ql_files:
         return
     format_cmd = [codeql, "query", "format", "--in-place", "--"] + ql_files
-    if "/" in codeql:
+    if "/" in codeql or "\\" in codeql:
         if not pathlib.Path(codeql).exists():
             raise FormatError(f"Provided CodeQL binary `{codeql}` does not exist")
     else:
