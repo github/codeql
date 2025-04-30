@@ -218,6 +218,63 @@ module Make<InputSig Input> {
     /** Gets the URL of this file. */
     override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
   }
+
+  /** Provides logic related to `Folder`s. */
+  module Folder {
+    /** Holds if `relativePath` needs to be appended to `f`. */
+    signature predicate shouldAppendSig(Folder f, string relativePath);
+
+    /** Provides the `append` predicate for appending a relative path onto a folder. */
+    module Append<shouldAppendSig/2 shouldAppend> {
+      pragma[nomagic]
+      private string getComponent(string relativePath, int i) {
+        shouldAppend(_, relativePath) and
+        result = relativePath.replaceAll("\\", "/").regexpFind("[^/]+", i, _)
+      }
+
+      private int getNumberOfComponents(string relativePath) {
+        result = strictcount(int i | exists(getComponent(relativePath, i)) | i)
+        or
+        relativePath = "" and
+        result = 0
+      }
+
+      pragma[nomagic]
+      private Container getAChildContainer(Container c, string baseName) {
+        result = c.getAChildContainer() and
+        baseName = result.getBaseName()
+      }
+
+      pragma[nomagic]
+      private Container appendStep(Folder f, string relativePath, int i) {
+        i = -1 and
+        shouldAppend(f, relativePath) and
+        result = f
+        or
+        exists(Container mid, string comp |
+          mid = appendStep(f, relativePath, i - 1) and
+          comp = getComponent(relativePath, i) and
+          if comp = ".."
+          then result = mid.getParentContainer()
+          else
+            if comp = "."
+            then result = mid
+            else result = getAChildContainer(mid, comp)
+        )
+      }
+
+      /**
+       * Gets the file or folder obtained by appending `relativePath` onto `f`.
+       */
+      pragma[nomagic]
+      Container append(Folder f, string relativePath) {
+        exists(int last |
+          last = getNumberOfComponents(relativePath) - 1 and
+          result = appendStep(f, relativePath, last)
+        )
+      }
+    }
+  }
 }
 
 /** A file. */

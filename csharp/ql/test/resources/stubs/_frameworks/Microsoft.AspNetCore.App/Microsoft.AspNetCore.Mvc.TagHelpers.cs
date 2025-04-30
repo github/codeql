@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -298,6 +298,7 @@ namespace Microsoft
                     public string FallbackTestExpression { get => throw null; set { } }
                     protected Microsoft.AspNetCore.Mvc.TagHelpers.GlobbingUrlBuilder GlobbingUrlBuilder { get => throw null; set { } }
                     protected Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostingEnvironment { get => throw null; }
+                    public Microsoft.AspNetCore.Components.ImportMapDefinition ImportMap { get => throw null; set { } }
                     protected System.Text.Encodings.Web.JavaScriptEncoder JavaScriptEncoder { get => throw null; }
                     public override int Order { get => throw null; }
                     public override void Process(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context, Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput output) => throw null;
@@ -305,6 +306,7 @@ namespace Microsoft
                     public string SrcExclude { get => throw null; set { } }
                     public string SrcInclude { get => throw null; set { } }
                     public bool SuppressFallbackIntegrity { get => throw null; set { } }
+                    public string Type { get => throw null; set { } }
                 }
                 public class SelectTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                 {

@@ -6,6 +6,6 @@ predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean 
   exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
     guard = conditionBlock.getLastNode() and
     s.getValue() = branch and
-    conditionBlock.controls(bb, s)
+    conditionBlock.edgeDominates(bb, s)
   )
 }

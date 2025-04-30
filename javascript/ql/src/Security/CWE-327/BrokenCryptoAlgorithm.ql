@@ -14,13 +14,13 @@
 import javascript
 import semmle.javascript.security.dataflow.BrokenCryptoAlgorithmQuery
 import semmle.javascript.security.SensitiveActions
-import DataFlow::PathGraph
+import BrokenCryptoAlgorithmFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Source sourceNode,
-  Sink sinkNode
+  BrokenCryptoAlgorithmFlow::PathNode source, BrokenCryptoAlgorithmFlow::PathNode sink,
+  Source sourceNode, Sink sinkNode
 where
-  cfg.hasFlowPath(source, sink) and
+  BrokenCryptoAlgorithmFlow::flowPath(source, sink) and
   sourceNode = source.getNode() and
   sinkNode = sink.getNode() and
   not sourceNode instanceof CleartextPasswordExpr // flagged by js/insufficient-password-hash

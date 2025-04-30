@@ -8,7 +8,8 @@ pub fn normalize_path(path: &Path) -> String {
         // have to do a bit of work removing certain prefixes and replacing
         // backslashes.
         let mut components: Vec<String> = Vec::new();
-        for component in path.components() {
+        let mut path_components = path.components().peekable();
+        while let Some(component) = path_components.next() {
             match component {
                 std::path::Component::Prefix(prefix) => match prefix.kind() {
                     std::path::Prefix::Disk(letter) | std::path::Prefix::VerbatimDisk(letter) => {
@@ -26,7 +27,13 @@ pub fn normalize_path(path: &Path) -> String {
                 std::path::Component::Normal(n) => {
                     components.push(n.to_string_lossy().to_string());
                 }
-                std::path::Component::RootDir => {}
+                std::path::Component::RootDir => {
+                    if path_components.peek().is_none() {
+                        // The path points at a root directory, so we need to add a
+                        // trailing slash, e.g. `C:/` instead of `C:`.
+                        components.push("".to_string());
+                    }
+                }
                 std::path::Component::CurDir => {}
                 std::path::Component::ParentDir => {}
             }

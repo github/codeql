@@ -1,5 +1,5 @@
 name: codeql/csharp-all
-version: 4.0.2-dev
+version: 5.1.6-dev
 groups: csharp
 dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp

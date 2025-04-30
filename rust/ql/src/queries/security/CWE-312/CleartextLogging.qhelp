@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Sensitive user data and system information that is logged could be exposed to an attacker when it is
+displayed. Also, external processes often store the standard output and standard error streams of
+an application, which will include logged sensitive information.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not log sensitive data. If it is necessary to log sensitive data, encrypt it before logging.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example code logs user credentials (in this case, their password) in plaintext:
+</p>
+<sample src="CleartextLoggingBad.rs"/>
+<p>
+Instead, you should encrypt the credentials, or better still, omit them entirely:
+</p>
+<sample src="CleartextLoggingGood.rs"/>
+</example>
+
+<references>
+
+<li>M. Dowd, J. McDonald and J. Schuhm, <i>The Art of Software Security Assessment</i>, 1st Edition, Chapter 2 - 'Common Vulnerabilities of Encryption', p. 43. Addison Wesley, 2006.</li>
+<li>M. Howard and D. LeBlanc, <i>Writing Secure Code</i>, 2nd Edition, Chapter 9 - 'Protecting Secret Data', p. 299. Microsoft, 2002.</li>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html#data-to-exclude">Logging Cheat Sheet - Data to exclude</a>.</li>
+
+</references>
+</qhelp>

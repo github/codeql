@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2024-10-29";
+  public static final String EXTRACTOR_VERSION = "2025-04-10";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -177,6 +178,12 @@ public class Main {
       if (!extractedFiles.contains(f.getAbsoluteFile())
           && FileType.forFileExtension(f) == FileType.TYPESCRIPT) {
         remainingTypescriptFiles.add(f);
+      }
+    }
+    for (Map.Entry<Path, FileSnippet> entry : extractorState.getSnippets().entrySet()) {
+      if (!extractedFiles.contains(entry.getKey().toFile())
+          && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+        remainingTypescriptFiles.add(entry.getKey().toFile());
       }
     }
     if (!remainingTypescriptFiles.isEmpty()) {
@@ -532,7 +539,7 @@ public class Main {
       }
 
       if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && root.getName().equals("tsconfig.json")
+          && AutoBuild.treatAsTSConfig(root.getName())
           && !excludeMatcher.matches(path)) {
         projectFiles.add(root);
       }

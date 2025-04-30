@@ -465,7 +465,7 @@ private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
 }
 
 /** Gets the fully templated version of `f`. */
-private Function getFullyTemplatedFunction(Function f) {
+Function getFullyTemplatedFunction(Function f) {
   not f.isFromUninstantiatedTemplate(_) and
   (
     exists(Class c, Class templateClass, int i |
@@ -559,12 +559,15 @@ private string getTypeName(Type t, boolean needsSpace) {
 
 /**
  * Gets a type name for the `n`'th parameter of `f` without any template
- * arguments. The result may be a string representing a type for which the
- * typedefs have been resolved.
+ * arguments.
+ *
+ * If `canonical = false` then the result may be a string representing a type
+ * for which the typedefs have been resolved. If `canonical = true` then the
+ * result will be a string representing a type without resolving `typedefs`.
  */
 bindingset[f]
 pragma[inline_late]
-string getParameterTypeWithoutTemplateArguments(Function f, int n) {
+string getParameterTypeWithoutTemplateArguments(Function f, int n, boolean canonical) {
   exists(string s, string base, string specifiers, Type t |
     t = f.getParameter(n).getType() and
     // The name of the string can either be the possibly typedefed name
@@ -572,14 +575,19 @@ string getParameterTypeWithoutTemplateArguments(Function f, int n) {
     // `getTypeName(t, _)` is almost equal to `t.resolveTypedefs().getName()`,
     // except that `t.resolveTypedefs()` doesn't have a result when the
     // resulting type doesn't appear in the database.
-    s = [t.getName(), getTypeName(t, _)] and
+    (
+      s = t.getName() and canonical = true
+      or
+      s = getTypeName(t, _) and canonical = false
+    ) and
     parseAngles(s, base, _, specifiers) and
     result = base + specifiers
   )
   or
   f.isVarargs() and
   n = f.getNumberOfParameters() and
-  result = "..."
+  result = "..." and
+  canonical = true
 }
 
 /**
@@ -590,7 +598,7 @@ private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remain
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and
     remaining = templateFunction.getNumberOfTemplateArguments() and
-    result = getParameterTypeWithoutTemplateArguments(templateFunction, n)
+    result = getParameterTypeWithoutTemplateArguments(templateFunction, n, _)
   )
   or
   exists(string mid, TypeTemplateParameter tp, Function templateFunction |
@@ -627,7 +635,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
 }
 
 /** Gets the string representation of the `i`'th parameter of `c`. */
-private string getParameterTypeName(Function c, int i) {
+string getParameterTypeName(Function c, int i) {
   result = getTypeNameWithoutClassTemplates(c, i, 0)
 }
 
@@ -869,12 +877,11 @@ private predicate elementSpecMatchesSignature(
 bindingset[nameWithoutArgs]
 pragma[inline_late]
 private Class getClassAndNameImpl(Function method, string nameWithoutArgs) {
-  exists(string memberName | result = method.getClassAndName(memberName) |
-    nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
-    or
-    not method instanceof ConversionOperator and
-    memberName = nameWithoutArgs
-  )
+  result = method.getDeclaringType() and
+  nameWithoutArgs = "operator " + method.(ConversionOperator).getDestType()
+  or
+  result = method.getClassAndName(nameWithoutArgs) and
+  not method instanceof ConversionOperator
 }
 
 /**

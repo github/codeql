@@ -5,10 +5,10 @@ http.createServer(function onRequest(req, res) {
   try {
     body = handleRequest(req);
   }
-  catch (err) {
+  catch (err) { // $ Source
     res.statusCode = 500;
     res.setHeader("Content-Type", "text/plain");
-    res.end(err.stack); // NOT OK
+    res.end(err.stack); // $ Alert
     return;
   }
   res.statusCode = 200;
@@ -26,7 +26,7 @@ http.createServer(function onRequest(req, res) {
     res.statusCode = 500;
     res.setHeader("Content-Type", "text/plain");
     log("Exception occurred", err.stack);
-    res.end("An exception occurred"); // OK
+    res.end("An exception occurred");
     return;
   }
   res.statusCode = 200;

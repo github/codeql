@@ -3,5 +3,3 @@ src/main/resources/my-app.properties
 src/test/java/com/example/AppTest.java
 target/classes/my-app.properties
 target/maven-archiver/pom.properties
-test-db/log/ext/javac-1.properties
-test-db/log/ext/javac.properties

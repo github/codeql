@@ -87,11 +87,11 @@ module LiteralAlgorithmTracerConfig implements DataFlow::ConfigSig {
     // False positives in OpenSSL also observed for CRYPTO_strndup (filtering any CRYPTO_* function)
     // due to setting a null byte in the string
     (
-      isPossibleOpenSSLFunction(source.getEnclosingCallable())
+      isPossibleOpenSSLFunction(source.getFunction())
       implies
       (
-        not source.getEnclosingCallable().getName().matches("OBJ_%") and
-        not source.getEnclosingCallable().getName().matches("CRYPTO_%")
+        not source.getFunction().getName().matches("OBJ_%") and
+        not source.getFunction().getName().matches("CRYPTO_%")
       )
     )
   }

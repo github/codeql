@@ -28,14 +28,12 @@
  *     - `Parameter[n]`: the `n`-th parameter of a callback. May be a range of form `x..y` (inclusive)
  *                       and/or a comma-separated list.
  *     - `ReturnValue`: the value returned by a function call.
- *     - `ArrayElement`: an element of an array.
- *     - `Variant[v::f]`: field `f` of the variant with canonical path `v`, for example
- *                        `Variant[crate::ihex::Record::Data::value]`.
- *     - `Variant[v(i)]`: position `i` inside the variant with canonical path `v`, for example
- *                        `Variant[crate::option::Option::Some(0)]`.
- *     - `Struct[s::f]`: field `f` of the struct with canonical path `v`, for example
- *                       `Struct[crate::process::Child::stdin]`.
- *     - `Tuple[i]`: the `i`th element of a tuple.
+ *     - `Element`: an element in a collection.
+ *     - `Field[t::f]`: field `f` of the variant/struct with canonical path `t`, for example
+ *                      `Field[crate::ihex::Record::Data::value]`.
+ *     - `Field[t(i)]`: position `i` inside the variant/struct with canonical path `v`, for example
+ *                      `Field[crate::option::Option::Some(0)]`.
+ *     - `Field[i]`: the `i`th element of a tuple.
  * 4. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources `"remote"` indicates a default remote flow source, and for summaries

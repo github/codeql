@@ -16,7 +16,8 @@ signature class PathNodeSig {
 
 private signature predicate provenanceSig(string model);
 
-private module TranslateModels<
+/** Translates models-as-data provenance information into a format that can be used in tests. */
+module TranslateModels<
   interpretModelForTestSig/2 interpretModelForTest0, provenanceSig/1 provenance>
 {
   private predicate madIds(string madId) {
@@ -79,6 +80,7 @@ private module TranslateModels<
     )
   }
 
+  /** Holds if the model `model1` should be translated to `model2`. */
   predicate translateModels(string model1, string model2) {
     exists(int i |
       translateModelsPart(model1, model2, i) and

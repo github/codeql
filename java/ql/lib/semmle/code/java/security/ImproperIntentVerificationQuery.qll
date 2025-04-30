@@ -25,6 +25,25 @@ private module VerifiedIntentConfig implements DataFlow::ConfigSig {
       sink.asExpr() = ma.getQualifier()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node src) {
+    exists(AndroidReceiverXmlElement rec, OnReceiveMethod orm, SystemActionName sa |
+      src.asParameter() = orm.getIntentParameter() and
+      anySystemReceiver(rec, orm, sa)
+    |
+      result = rec.getLocation()
+      or
+      result = orm.getLocation()
+      or
+      result = sa.getLocation()
+    )
+  }
+
+  // All sinks are set to have no locations because sinks aren't selected in
+  // the query. This effectively means that we're filtering on sources only.
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 private module VerifiedIntentFlow = DataFlow::Global<VerifiedIntentConfig>;
@@ -32,7 +51,9 @@ private module VerifiedIntentFlow = DataFlow::Global<VerifiedIntentConfig>;
 /** An `onReceive` method that doesn't verify the action of the intent it receives. */
 private class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
-    not VerifiedIntentFlow::flow(DataFlow::parameterNode(this.getIntentParameter()), _)
+    not VerifiedIntentFlow::flow(DataFlow::parameterNode(this.getIntentParameter()), _) and
+    // Empty methods do not need to be verified since they do not perform any actions.
+    this.getBody().getNumStmt() > 0
   }
 }
 
@@ -67,13 +88,20 @@ class SystemActionName extends AndroidActionXmlElement {
   string getSystemActionName() { result = name }
 }
 
-/** Holds if the XML element `rec` declares a receiver `orm` to receive the system action named `sa` that doesn't verify intents it receives. */
-predicate unverifiedSystemReceiver(
-  AndroidReceiverXmlElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
+private predicate anySystemReceiver(
+  AndroidReceiverXmlElement rec, OnReceiveMethod orm, SystemActionName sa
 ) {
   exists(Class ormty |
     ormty = orm.getDeclaringType() and
     rec.getComponentName() = ["." + ormty.getName(), ormty.getQualifiedName()] and
     rec.getAnIntentFilterElement().getAnActionElement() = sa
   )
+}
+
+/** Holds if the XML element `rec` declares a receiver `orm` to receive the system action named `sa` that doesn't verify intents it receives. */
+predicate unverifiedSystemReceiver(
+  AndroidReceiverXmlElement rec, UnverifiedOnReceiveMethod orm, SystemActionName sa
+) {
+  // The type of `orm` is different in these two predicates
+  anySystemReceiver(rec, orm, sa)
 }

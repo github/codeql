@@ -122,7 +122,7 @@ module NetHttp {
         |
           lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
           varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
-          arrayContentSC = SummaryComponent::content(arrayContent) and
+          arrayContentSC = SummaryComponent::content(arrayContent.asContentSet()) and
           stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
         )
       else stack = SummaryComponentStack::argument(n)

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.Numerics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.Numerics, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Numerics
@@ -81,6 +81,7 @@ namespace System
             public static System.Numerics.BigInteger ModPow(System.Numerics.BigInteger value, System.Numerics.BigInteger exponent, System.Numerics.BigInteger modulus) => throw null;
             static System.Numerics.BigInteger System.Numerics.IMultiplicativeIdentity<System.Numerics.BigInteger, System.Numerics.BigInteger>.MultiplicativeIdentity { get => throw null; }
             public static System.Numerics.BigInteger Multiply(System.Numerics.BigInteger left, System.Numerics.BigInteger right) => throw null;
+            static System.Numerics.BigInteger System.Numerics.INumberBase<System.Numerics.BigInteger>.MultiplyAddEstimate(System.Numerics.BigInteger left, System.Numerics.BigInteger right, System.Numerics.BigInteger addend) => throw null;
             public static System.Numerics.BigInteger Negate(System.Numerics.BigInteger value) => throw null;
             static System.Numerics.BigInteger System.Numerics.ISignedNumber<System.Numerics.BigInteger>.NegativeOne { get => throw null; }
             static System.Numerics.BigInteger System.Numerics.INumberBase<System.Numerics.BigInteger>.One { get => throw null; }
@@ -265,6 +266,7 @@ namespace System
             public static System.Numerics.Complex Multiply(double left, System.Numerics.Complex right) => throw null;
             public static System.Numerics.Complex Multiply(System.Numerics.Complex left, double right) => throw null;
             public static System.Numerics.Complex Multiply(System.Numerics.Complex left, System.Numerics.Complex right) => throw null;
+            static System.Numerics.Complex System.Numerics.INumberBase<System.Numerics.Complex>.MultiplyAddEstimate(System.Numerics.Complex left, System.Numerics.Complex right, System.Numerics.Complex addend) => throw null;
             public static readonly System.Numerics.Complex NaN;
             public static System.Numerics.Complex Negate(System.Numerics.Complex value) => throw null;
             static System.Numerics.Complex System.Numerics.ISignedNumber<System.Numerics.Complex>.NegativeOne { get => throw null; }

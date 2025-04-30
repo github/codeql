@@ -3,11 +3,10 @@
 | Number of calls with missing call target | 0 |
 | Number of expressions with known type | 1 |
 | Number of expressions with unknown type | 0 |
-| Number of files | 543 |
+| Number of files | 542 |
 | Number of files with extension class | 538 |
 | Number of files with extension jar | 1 |
 | Number of files with extension java | 2 |
-| Number of files with extension properties | 1 |
 | Number of lines of code | 7 |
 | Number of lines of code with extension java | 7 |
 | Percentage of calls with call target | 100 |

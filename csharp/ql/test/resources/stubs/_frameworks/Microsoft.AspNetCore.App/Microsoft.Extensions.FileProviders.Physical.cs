@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.FileProviders.Physical, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.FileProviders.Physical, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -28,11 +28,13 @@ namespace Microsoft
                     System = 4,
                     Sensitive = 7,
                 }
-                public class PhysicalDirectoryInfo : Microsoft.Extensions.FileProviders.IFileInfo
+                public class PhysicalDirectoryInfo : Microsoft.Extensions.FileProviders.IDirectoryContents, System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileProviders.IFileInfo>, System.Collections.IEnumerable, Microsoft.Extensions.FileProviders.IFileInfo
                 {
                     public System.IO.Stream CreateReadStream() => throw null;
                     public PhysicalDirectoryInfo(System.IO.DirectoryInfo info) => throw null;
                     public bool Exists { get => throw null; }
+                    public System.Collections.Generic.IEnumerator<Microsoft.Extensions.FileProviders.IFileInfo> GetEnumerator() => throw null;
+                    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                     public bool IsDirectory { get => throw null; }
                     public System.DateTimeOffset LastModified { get => throw null; }
                     public long Length { get => throw null; }

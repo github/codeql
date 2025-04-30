@@ -6,6 +6,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.Concepts
 private import codeql.util.Unit
 
@@ -22,7 +23,9 @@ module SqlInjection {
   /**
    * A data flow sink for SQL injection vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { }
+  abstract class Sink extends QuerySink::Range {
+    override string getSinkType() { result = "SqlInjection" }
+  }
 
   /**
    * A barrier for SQL injection vulnerabilities.
@@ -46,5 +49,12 @@ module SqlInjection {
    */
   class SqlExecutionAsSink extends Sink {
     SqlExecutionAsSink() { this = any(SqlExecution e).getSql() }
+  }
+
+  /**
+   * A sink for sql-injection from model data.
+   */
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() { sinkNode(this, "sql-injection") }
   }
 }

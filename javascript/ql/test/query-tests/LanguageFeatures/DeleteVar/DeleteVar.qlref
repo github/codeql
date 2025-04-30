@@ -1,1 +1,2 @@
-LanguageFeatures/DeleteVar.ql
+query: LanguageFeatures/DeleteVar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

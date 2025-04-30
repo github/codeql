@@ -82,7 +82,13 @@ module InsecureLoadFlow = TaintTracking::Global<InsecureLoadingConfig>;
 
 import InsecureLoadFlow::PathGraph
 
-from InsecureLoadFlow::PathNode source, InsecureLoadFlow::PathNode sink
-where InsecureLoadFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Class loaded from a $@ without signature check",
-  source.getNode(), "third party library"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, InsecureLoadFlow::PathNode source, InsecureLoadFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  InsecureLoadFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Class loaded from a $@ without signature check" and
+  sourceNode = source.getNode() and
+  message2 = "third party library"
+}

@@ -156,6 +156,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 return new ImplicitCast(info);
             }
 
+            if (info.ImplicitToString)
+            {
+                // x -> x.ToString() in "abc" + x
+                return ImplicitToString.Wrap(info);
+            }
+
             // Default: Just create the expression without a conversion.
             return Factory.Create(info);
         }

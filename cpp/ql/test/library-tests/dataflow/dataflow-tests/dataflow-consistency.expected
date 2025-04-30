@@ -185,6 +185,8 @@ postWithInFlow
 | test.cpp:1138:5:1138:8 | data [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1139:3:1139:7 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1139:4:1139:7 | data [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1153:5:1153:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1153:6:1153:6 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

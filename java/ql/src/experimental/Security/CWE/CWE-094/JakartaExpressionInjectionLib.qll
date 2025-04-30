@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import FlowUtils
 import semmle.code.java.dataflow.FlowSources

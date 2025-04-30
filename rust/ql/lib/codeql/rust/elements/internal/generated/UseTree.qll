@@ -19,13 +19,21 @@ module Generated {
   /**
    * A UseTree. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
+   * use std::collections::*;
+   * use std::collections::HashMap as MyHashMap;
+   * use std::collections::{self, HashMap, HashSet};
    * ```
    * INTERNAL: Do not reference the `Generated::UseTree` class directly.
    * Use the subclass `UseTree`, where the following predicates are available.
    */
   class UseTree extends Synth::TUseTree, AstNodeImpl::AstNode {
     override string getAPrimaryQlClass() { result = "UseTree" }
+
+    /**
+     * Holds if this use tree is glob.
+     */
+    predicate isGlob() { Synth::convertUseTreeToRaw(this).(Raw::UseTree).isGlob() }
 
     /**
      * Gets the path of this use tree, if it exists.

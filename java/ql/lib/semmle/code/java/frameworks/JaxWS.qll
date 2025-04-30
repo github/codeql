@@ -148,6 +148,21 @@ private predicate hasPathAnnotation(Annotatable annotatable) {
 }
 
 /**
+ * Holds if the class has or inherits the JaxRs `@Path` annotation.
+ */
+private predicate hasOrInheritsPathAnnotation(Class c) {
+  hasPathAnnotation(c)
+  or
+  // Note that by the JAX-RS spec, JAX-RS annotations on classes and interfaces
+  // are not inherited, but some implementations, like Apache CXF, do inherit
+  // them. I think this only applies if there are no JaxRS annotations on the
+  // class itself, as that is the rule in the JAX-RS spec for method
+  // annotations.
+  hasPathAnnotation(c.getAnAncestor()) and
+  not exists(c.getAnAnnotation().(JaxRSAnnotation))
+}
+
+/**
  * A method which is annotated with one or more JaxRS resource type annotations e.g. `@GET`, `@POST` etc.
  */
 class JaxRsResourceMethod extends Method {
@@ -191,7 +206,7 @@ class JaxRsResourceMethod extends Method {
 class JaxRsResourceClass extends Class {
   JaxRsResourceClass() {
     // A root resource class has a @Path annotation on the class.
-    hasPathAnnotation(this)
+    hasOrInheritsPathAnnotation(this)
     or
     // A sub-resource
     exists(JaxRsResourceClass resourceClass, Method method |
@@ -227,7 +242,7 @@ class JaxRsResourceClass extends Class {
   /**
    * Holds if this class is a "root resource" class
    */
-  predicate isRootResource() { hasPathAnnotation(this) }
+  predicate isRootResource() { hasOrInheritsPathAnnotation(this) }
 
   /**
    * Gets a `Constructor` that may be called by a JaxRS container to construct this class reflectively.
@@ -411,18 +426,33 @@ private class JaxRSXssSink extends XssSink {
     |
       not exists(resourceMethod.getProducesAnnotation())
       or
-      isXssVulnerableContentType(getContentTypeString(resourceMethod
-              .getProducesAnnotation()
-              .getADeclaredContentTypeExpr()))
+      isXssVulnerableContentTypeExpr(resourceMethod
+            .getProducesAnnotation()
+            .getADeclaredContentTypeExpr())
     )
   }
 }
 
-private predicate isXssVulnerableContentTypeExpr(Expr e) {
-  isXssVulnerableContentType(getContentTypeString(e))
+pragma[nomagic]
+private predicate contentTypeString(string s) { s = getContentTypeString(_) }
+
+pragma[nomagic]
+private predicate isXssVulnerableContentTypeString(string s) {
+  contentTypeString(s) and isXssVulnerableContentType(s)
 }
 
-private predicate isXssSafeContentTypeExpr(Expr e) { isXssSafeContentType(getContentTypeString(e)) }
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  contentTypeString(s) and isXssSafeContentType(s)
+}
+
+private predicate isXssVulnerableContentTypeExpr(Expr e) {
+  isXssVulnerableContentTypeString(getContentTypeString(e))
+}
+
+private predicate isXssSafeContentTypeExpr(Expr e) {
+  isXssSafeContentTypeString(getContentTypeString(e))
+}
 
 /**
  * Gets a builder expression or related type that is configured to use the given `contentType`.

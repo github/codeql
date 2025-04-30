@@ -55,7 +55,7 @@
     sink(ary); // OK - its the array itself, not an element.
   });
 
-  sink(arr[0]); // OK - tuple like usage.
+  sink(arr[0]); // NOT OK
 
   for (const x of arr) {
     sink(x); // NOT OK
@@ -92,9 +92,10 @@
 
   sink(arr.at(-1)); // NOT OK
 
-  sink(["source"].filter((x) => x)); // NOT OK
-  sink(["source"].filter((x) => !!x)); // NOT OK
-  
+  sink(["source"]); // OK - for now, array element do not taint the entire array
+  sink(["source"].filter((x) => x).pop()); // NOT OK
+  sink(["source"].filter((x) => !!x).pop()); // NOT OK
+
   var arr8 = [];
   arr8 = arr8.toSpliced(0, 0, "source");
   sink(arr8.pop()); // NOT OK

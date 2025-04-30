@@ -62,7 +62,7 @@ module HeuristicNames {
    */
   string maybeAccountInfo() {
     result = "(?is).*acc(ou)?nt.*" or
-    result = "(?is).*(puid|username|userid|session(id|key)).*" or
+    result = "(?is).*(puid|user.?name|user.?id|session.?(id|key)).*" or
     result = "(?s).*([uU]|^|_|[a-z](?=U))([uU][iI][dD]).*"
   }
 
@@ -71,8 +71,8 @@ module HeuristicNames {
    * a password or an authorization key.
    */
   string maybePassword() {
-    result = "(?is).*pass(wd|word|code|phrase)(?!.*question).*" or
-    result = "(?is).*(auth(entication|ori[sz]ation)?)key.*"
+    result = "(?is).*pass(wd|word|code|.?phrase)(?!.*question).*" or
+    result = "(?is).*(auth(entication|ori[sz]ation)?).?key.*"
   }
 
   /**

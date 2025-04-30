@@ -57,6 +57,8 @@ module BombsConfig implements DataFlow::ConfigSig {
       nodeTo = cn
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Bombs = TaintTracking::Global<BombsConfig>;

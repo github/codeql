@@ -7,8 +7,7 @@ module SourceTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(ActiveThreatModelSource s |
-      s.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      s.getLocation() = location and
       element = s.toString() and
       value = "" and
       tag = "source"

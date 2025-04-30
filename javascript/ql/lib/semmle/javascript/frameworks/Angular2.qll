@@ -8,6 +8,7 @@ private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.ViewComponentInput
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -189,13 +190,16 @@ module Angular2 {
     result.hasUnderlyingType("@angular/common/http", "HttpClient")
   }
 
+  /** Gets a reference to an `HttpClient` object using the API graph. */
+  API::Node httpClientApiNode() { result = API::Node::ofType("@angular/common/http", "HttpClient") }
+
   private class AngularClientRequest extends ClientRequest::Range, DataFlow::MethodCallNode {
     int argumentOffset;
 
     AngularClientRequest() {
-      this = httpClient().getAMethodCall("request") and argumentOffset = 1
+      this = httpClientApiNode().getMember("request").getACall() and argumentOffset = 1
       or
-      this = httpClient().getAMethodCall() and
+      this = httpClientApiNode().getAMember().getACall() and
       not this.getMethodName() = "request" and
       argumentOffset = 0
     }
@@ -553,5 +557,74 @@ module Angular2 {
     DomValueSources() {
       this = API::Node::ofType("@angular/core", "ElementRef").getMember("nativeElement").asSource()
     }
+  }
+
+  /**
+   * A DOM attribute write, using the AngularJS Renderer2 API: a call to `Renderer2.setProperty`.
+   */
+  class AngularRenderer2AttributeDefinition extends DOM::AttributeDefinition {
+    DataFlow::Node propertyNode;
+    DataFlow::Node valueNode;
+    DataFlow::Node elementNode;
+
+    AngularRenderer2AttributeDefinition() {
+      exists(API::CallNode setProperty |
+        setProperty =
+          API::moduleImport("@angular/core")
+              .getMember("Renderer2")
+              .getInstance()
+              .getMember("setProperty")
+              .getACall() and
+        elementNode = setProperty.getArgument(0) and
+        propertyNode = setProperty.getArgument(1) and
+        valueNode = setProperty.getArgument(2) and
+        this = setProperty.asExpr()
+      )
+    }
+
+    override string getName() { result = propertyNode.getStringValue() }
+
+    /**
+     * Get the `DataFlow::Node` that is affected by this Attribute Definition.
+     *
+     *  Defined instead of defining `getElement()`, which requires returning a DOM element definition, `ElementDefinition`.
+     */
+    DataFlow::Node getElementNode() { result = elementNode }
+
+    override DataFlow::Node getValueNode() { result = valueNode }
+  }
+
+  /**
+   * A source of DOM events originating from the `$event` variable in an event handler installed in an Angular template.
+   */
+  private class DomEventSources extends DOM::DomEventSource::Range {
+    DomEventSources() {
+      exists(HTML::Element elm, string attributeName |
+        elm = any(ComponentClass cls).getATemplateElement() and
+        // Ignore instantiations of known element (mainly focus on native DOM elements)
+        not elm = any(ComponentClass cls).getATemplateInstantiation() and
+        not elm.getName().matches("ng-%") and
+        this =
+          elm.getAttributeByName(attributeName)
+              .getCodeInAttribute()
+              .(TemplateTopLevel)
+              .getAVariableUse("$event") and
+        attributeName.matches("(%)") and // event handler attribute
+        not attributeName.matches("(ng%)") // exclude NG events which aren't necessarily DOM events
+      )
+    }
+  }
+
+  private class InputFieldAsViewComponentInput extends ViewComponentInput {
+    InputFieldAsViewComponentInput() {
+      this =
+        API::moduleImport("@angular/core")
+            .getMember("Input")
+            .getReturn()
+            .getADecoratedMember()
+            .asSource()
+    }
+
+    override string getSourceType() { result = "Angular component input field" }
   }
 }

@@ -48,7 +48,7 @@ pub enum DbColumnType {
     String,
 }
 
-impl<'a> fmt::Display for Case<'a> {
+impl fmt::Display for Case<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
         let mut sep = " ";
@@ -60,7 +60,7 @@ impl<'a> fmt::Display for Case<'a> {
     }
 }
 
-impl<'a> fmt::Display for Table<'a> {
+impl fmt::Display for Table<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(keyset) = &self.keysets {
             write!(f, "#keyset[")?;
@@ -102,7 +102,7 @@ impl<'a> fmt::Display for Table<'a> {
     }
 }
 
-impl<'a> fmt::Display for Union<'a> {
+impl fmt::Display for Union<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "@{} = ", self.name)?;
         let mut first = true;

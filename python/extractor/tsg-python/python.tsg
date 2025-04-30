@@ -22,7 +22,7 @@
 (assignment !type) @assign
 { let @assign.node = (ast-node @assign "Assign") }
 
-[ (expression_list) (tuple) (tuple_pattern) (pattern_list) ] @tuple
+[ (expression_list) (tuple) (tuple_pattern) (pattern_list) (index_expression_list) ] @tuple
 { let @tuple.node = (ast-node @tuple "Tuple") }
 
 (list_pattern) @list
@@ -2543,66 +2543,16 @@
 
 (subscript
     value: (_) @value
+    subscript: (_) @index
 ) @subscript
 {
     attr (@subscript.node) value = @value.node
     attr (@value.node) ctx = "load"
-}
 
-; Single subscript
-(subscript
-    value: (_)
-    .
-    subscript: (_) @index
-    .
-) @subscript
-{
     attr (@subscript.node) index = @index.node
     attr (@index.node) ctx = "load"
 }
 
-; For expressions of the form `a[b, c]` we must explicitly synthesize an internal tuple node
-; We do this and also hook it up:
-(subscript
-    value: (_)
-    .
-    subscript: (_) @first
-    .
-    subscript: (_)
-) @subscript
-{
-    let @subscript.tuple = (ast-node @first "Tuple")
-    attr (@subscript.tuple) ctx = "load"
-    attr (@subscript.node) index = @subscript.tuple
-    edge @subscript.tuple -> @first.node
-    attr (@subscript.tuple -> @first.node) elts = (named-child-index @first)
-    attr (@first.node) ctx = "load"
-}
-
-(subscript
-    value: (_)
-    .
-    subscript: (_)
-    subscript: (_) @elt
-) @subscript
-{
-    edge @subscript.tuple -> @elt.node
-    attr (@subscript.tuple -> @elt.node) elts = (named-child-index @elt)
-    attr (@elt.node) ctx = "load"
-}
-
-
-; Set the end position correctly
-(subscript
-    value: (_)
-    .
-    subscript: (_)
-    subscript: (_) @last
-    .
-) @subscript
-{
-    attr (@subscript.tuple) _location_end = (location-end @last)
-}
 
 
 
@@ -3448,8 +3398,11 @@
     ; Left hand side of an assignment such as `[foo, bar] = ...`
     (list_pattern element: (_) @elt) @parent
 
-    ; An unadorned tuple (such as in `x = y, z`)
+    ; An unadorned tuple such as in `x = y, z`
     (expression_list element: (_) @elt) @parent
+
+    ; An index containing multiple indices such as in `x[y, z]`
+    (index_expression_list element: (_) @elt) @parent
 
     ; A regular tuple such as `(x, y, z)`
     (tuple element: (_) @elt) @parent
@@ -3486,6 +3439,7 @@
     (pattern_list element: (_) @elt)
     (list_pattern element: (_) @elt)
     (expression_list element: (_) @elt)
+    (index_expression_list element: (_) @elt)
     (parenthesized_expression inner: (_) @elt)
     (set element: (_) @elt)
     (match_sequence_pattern (_) @elt)

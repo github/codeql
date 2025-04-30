@@ -17,8 +17,6 @@ predicate relevantStep(DataFlow::Node pred, DataFlow::Node succ) {
     or
     DataFlow::SharedFlowStep::step(pred, succ)
     or
-    DataFlow::SharedFlowStep::step(pred, succ, _, _)
-    or
     DataFlow::SharedFlowStep::loadStep(pred, succ, _)
     or
     DataFlow::SharedFlowStep::storeStep(pred, succ, _)

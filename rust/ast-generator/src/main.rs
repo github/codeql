@@ -23,6 +23,7 @@ fn class_name(type_name: &str) -> String {
         "Literal" => "LiteralExpr".to_owned(),
         "ArrayExpr" => "ArrayExprInternal".to_owned(),
         "AsmOptions" => "AsmOptionsList".to_owned(),
+        _ if type_name.starts_with("Record") => type_name.replacen("Record", "Struct", 1),
         _ if type_name.ends_with("Type") => format!("{}Repr", type_name),
         _ => type_name.to_owned(),
     }
@@ -33,12 +34,17 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         ("CallExpr", "expr") => "function",
         ("LetExpr", "expr") => "scrutinee",
         ("MatchExpr", "expr") => "scrutinee",
-        ("Path", "segment") => "part",
+        ("Variant", "expr") => "discriminant",
+        ("FieldExpr", "expr") => "container",
+        (_, "name_ref") => "identifier",
         (_, "then_branch") => "then",
         (_, "else_branch") => "else_",
-        ("ArrayType", "ty") => "element_type_repr",
+        ("ArrayTypeRepr", "ty") => "element_type_repr",
         ("SelfParam", "is_amp") => "is_ref",
+        ("StructField", "expr") => "default",
+        ("UseTree", "is_star") => "is_glob",
         (_, "ty") => "type_repr",
+        _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
         _ => field_name,
     };
     name.to_owned()
@@ -99,25 +105,27 @@ fn node_src_to_schema_class(
     node: &AstNodeSrc,
     super_types: &BTreeMap<String, BTreeSet<String>>,
 ) -> SchemaClass {
+    let name = class_name(&node.name);
+    let fields = get_fields(node)
+        .iter()
+        .map(|f| {
+            let (ty, child) = match &f.ty {
+                FieldType::String => ("optional[string]".to_string(), false),
+                FieldType::Predicate => ("predicate".to_string(), false),
+                FieldType::Optional(ty) => (format!("optional[\"{}\"]", class_name(ty)), true),
+                FieldType::List(ty) => (format!("list[\"{}\"]", class_name(ty)), true),
+            };
+            SchemaField {
+                name: property_name(&name, &f.name),
+                ty,
+                child,
+            }
+        })
+        .collect();
     SchemaClass {
-        name: class_name(&node.name),
+        name,
+        fields,
         bases: get_bases(&node.name, super_types),
-        fields: get_fields(node)
-            .iter()
-            .map(|f| {
-                let (ty, child) = match &f.ty {
-                    FieldType::String => ("optional[string]".to_string(), false),
-                    FieldType::Predicate => ("predicate".to_string(), false),
-                    FieldType::Optional(ty) => (format!("optional[\"{}\"]", class_name(ty)), true),
-                    FieldType::List(ty) => (format!("list[\"{}\"]", class_name(ty)), true),
-                };
-                SchemaField {
-                    name: property_name(&node.name, &f.name),
-                    ty,
-                    child,
-                }
-            })
-            .collect(),
     }
 }
 
@@ -148,11 +156,7 @@ fn write_schema(
             .iter()
             .map(|node| node_src_to_schema_class(node, &super_types)),
     );
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/schema.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/schema.mustache"))?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
 }
@@ -168,6 +172,162 @@ enum FieldType {
 struct FieldInfo {
     name: String,
     ty: FieldType,
+}
+
+fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
+    match node.name.as_str() {
+        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo {
+            name: "text".to_string(),
+            ty: FieldType::String,
+        }],
+        "Abi" => vec![FieldInfo {
+            name: "abi_string".to_string(),
+            ty: FieldType::String,
+        }],
+        "Literal" => vec![FieldInfo {
+            name: "text_value".to_string(),
+            ty: FieldType::String,
+        }],
+        "PrefixExpr" => vec![FieldInfo {
+            name: "operator_name".to_string(),
+            ty: FieldType::String,
+        }],
+        "BinExpr" => vec![
+            FieldInfo {
+                name: "lhs".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "rhs".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "IfExpr" => vec![
+            FieldInfo {
+                name: "then_branch".to_string(),
+                ty: FieldType::Optional("BlockExpr".to_string()),
+            },
+            FieldInfo {
+                name: "else_branch".to_string(),
+                ty: FieldType::Optional("ElseBranch".to_string()),
+            },
+            FieldInfo {
+                name: "condition".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+        ],
+        "RangeExpr" => vec![
+            FieldInfo {
+                name: "start".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "end".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "RangePat" => vec![
+            FieldInfo {
+                name: "start".to_string(),
+                ty: FieldType::Optional("Pat".to_string()),
+            },
+            FieldInfo {
+                name: "end".to_string(),
+                ty: FieldType::Optional("Pat".to_string()),
+            },
+            FieldInfo {
+                name: "operator_name".to_string(),
+                ty: FieldType::String,
+            },
+        ],
+        "IndexExpr" => vec![
+            FieldInfo {
+                name: "index".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+            FieldInfo {
+                name: "base".to_string(),
+                ty: FieldType::Optional("Expr".to_string()),
+            },
+        ],
+        "Impl" => vec![
+            FieldInfo {
+                name: "trait_".to_string(),
+                ty: FieldType::Optional("Type".to_string()),
+            },
+            FieldInfo {
+                name: "self_ty".to_string(),
+                ty: FieldType::Optional("Type".to_string()),
+            },
+        ],
+        "ForExpr" => vec![FieldInfo {
+            name: "iterable".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "WhileExpr" => vec![FieldInfo {
+            name: "condition".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "MatchGuard" => vec![FieldInfo {
+            name: "condition".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "MacroDef" => vec![
+            FieldInfo {
+                name: "args".to_string(),
+                ty: FieldType::Optional("TokenTree".to_string()),
+            },
+            FieldInfo {
+                name: "body".to_string(),
+                ty: FieldType::Optional("TokenTree".to_string()),
+            },
+        ],
+        "FormatArgsExpr" => vec![FieldInfo {
+            name: "args".to_string(),
+            ty: FieldType::List("FormatArgsArg".to_string()),
+        }],
+        "ArgList" => vec![FieldInfo {
+            name: "args".to_string(),
+            ty: FieldType::List("Expr".to_string()),
+        }],
+        "Fn" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("BlockExpr".to_string()),
+        }],
+        "Const" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "Static" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "ClosureExpr" => vec![FieldInfo {
+            name: "body".to_string(),
+            ty: FieldType::Optional("Expr".to_string()),
+        }],
+        "ArrayExpr" => vec![FieldInfo {
+            name: "is_semicolon".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        "SelfParam" => vec![FieldInfo {
+            name: "is_amp".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        "UseTree" => vec![FieldInfo {
+            name: "is_star".to_string(),
+            ty: FieldType::Predicate,
+        }],
+        _ => vec![],
+    }
 }
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
@@ -186,190 +346,14 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         }
     }
 
-    match node.name.as_str() {
-        "Name" | "NameRef" | "Lifetime" => {
-            result.push(FieldInfo {
-                name: "text".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "Abi" => {
-            result.push(FieldInfo {
-                name: "abi_string".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "Literal" => {
-            result.push(FieldInfo {
-                name: "text_value".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "PrefixExpr" => {
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "BinExpr" => {
-            result.push(FieldInfo {
-                name: "lhs".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "rhs".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "IfExpr" => {
-            result.push(FieldInfo {
-                name: "then_branch".to_string(),
-                ty: FieldType::Optional("BlockExpr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "else_branch".to_string(),
-                ty: FieldType::Optional("ElseBranch".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "RangeExpr" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "RangePat" => {
-            result.push(FieldInfo {
-                name: "start".to_string(),
-                ty: FieldType::Optional("Pat".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "end".to_string(),
-                ty: FieldType::Optional("Pat".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "operator_name".to_string(),
-                ty: FieldType::String,
-            });
-        }
-        "IndexExpr" => {
-            result.push(FieldInfo {
-                name: "index".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "base".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "Impl" => {
-            result.push(FieldInfo {
-                name: "trait_".to_string(),
-                ty: FieldType::Optional("Type".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "self_ty".to_string(),
-                ty: FieldType::Optional("Type".to_string()),
-            });
-        }
-        "ForExpr" => {
-            result.push(FieldInfo {
-                name: "iterable".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "WhileExpr" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "MatchGuard" => {
-            result.push(FieldInfo {
-                name: "condition".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "MacroDef" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::Optional("TokenTree".to_string()),
-            });
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("TokenTree".to_string()),
-            });
-        }
-        "FormatArgsExpr" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::List("FormatArgsArg".to_string()),
-            });
-        }
-        "ArgList" => {
-            result.push(FieldInfo {
-                name: "args".to_string(),
-                ty: FieldType::List("Expr".to_string()),
-            });
-        }
-        "Fn" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("BlockExpr".to_string()),
-            });
-        }
-        "Const" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "Static" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "ClosureExpr" => {
-            result.push(FieldInfo {
-                name: "body".to_string(),
-                ty: FieldType::Optional("Expr".to_string()),
-            });
-        }
-        "ArrayExpr" => {
-            result.push(FieldInfo {
-                name: "is_semicolon".to_string(),
-                ty: FieldType::Predicate,
-            });
-        }
-        "SelfParam" => {
-            result.push(FieldInfo {
-                name: "is_amp".to_string(),
-                ty: FieldType::Predicate,
-            });
-        }
-        _ => {}
-    }
+    result.extend(get_additional_fields(node));
 
     for field in &node.fields {
-        // The ArrayExpr type also has an 'exprs' field
-        if node.name == "ArrayExpr" && field.method_name() == "expr" {
-            continue;
+        match (node.name.as_str(), field.method_name().as_str()) {
+            ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
+            | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            => continue,
+            _ => {}
         }
         let ty = match field {
             Field::Token(_) => continue,
@@ -448,6 +432,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
 struct EnumVariantInfo {
     name: String,
     snake_case_name: String,
+    variant_ast_name: String,
 }
 
 #[derive(Serialize)]
@@ -484,24 +469,33 @@ struct ExtractorInfo {
     nodes: Vec<ExtractorNodeInfo>,
 }
 
-fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
-    ExtractorEnumInfo {
+fn enum_to_extractor_info(node: &AstEnumSrc) -> Option<ExtractorEnumInfo> {
+    if node.name == "VariantDef" {
+        // currently defined but unused
+        return None;
+    }
+    Some(ExtractorEnumInfo {
         name: class_name(&node.name),
         snake_case_name: to_lower_snake_case(&node.name),
         ast_name: node.name.clone(),
         variants: node
             .variants
             .iter()
-            .map(|v| EnumVariantInfo {
-                name: v.clone(),
-                snake_case_name: to_lower_snake_case(v),
+            .map(|v| {
+                let name = class_name(v);
+                let snake_case_name = to_lower_snake_case(v);
+                EnumVariantInfo {
+                    name,
+                    snake_case_name,
+                    variant_ast_name: v.clone(),
+                }
             })
             .collect(),
-    }
+    })
 }
 
-fn field_info_to_extractor_info(node: &AstNodeSrc, field: &FieldInfo) -> ExtractorNodeFieldInfo {
-    let name = property_name(&node.name, &field.name);
+fn field_info_to_extractor_info(name: &str, field: &FieldInfo) -> ExtractorNodeFieldInfo {
+    let name = property_name(name, &field.name);
     match &field.ty {
         FieldType::String => ExtractorNodeFieldInfo {
             name,
@@ -533,28 +527,30 @@ fn field_info_to_extractor_info(node: &AstNodeSrc, field: &FieldInfo) -> Extract
 fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
     let fields = get_fields(node);
     let has_attrs = fields.iter().any(|f| f.name == "attrs");
+    let name = class_name(&node.name);
+    let fields = fields
+        .iter()
+        .map(|f| field_info_to_extractor_info(&name, f))
+        .collect();
     ExtractorNodeInfo {
-        name: class_name(&node.name),
+        name,
         snake_case_name: to_lower_snake_case(&node.name),
         ast_name: node.name.clone(),
-        fields: fields
-            .iter()
-            .map(|f| field_info_to_extractor_info(node, f))
-            .collect(),
+        fields,
         has_attrs,
     }
 }
 
 fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
     let extractor_info = ExtractorInfo {
-        enums: grammar.enums.iter().map(enum_to_extractor_info).collect(),
+        enums: grammar
+            .enums
+            .iter()
+            .filter_map(enum_to_extractor_info)
+            .collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
-    // the concat dance is currently required by bazel
-    let template = mustache::compile_str(include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/src/templates/extractor.mustache"
-    )))?;
+    let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
     let res = template.render_to_string(&extractor_info)?;
     Ok(fix_blank_lines(&res))
 }

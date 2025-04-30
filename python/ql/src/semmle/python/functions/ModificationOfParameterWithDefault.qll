@@ -50,6 +50,8 @@ module ModificationOfParameterWithDefault {
       or
       node.(DataFlow::MethodCallNode).calls(_, "copy")
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global data-flow for detecting modifications of a parameters default value. */

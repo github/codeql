@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -748,7 +748,8 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Mvc.PhysicalFileResult PhysicalFile(string physicalPath, string contentType, System.DateTimeOffset? lastModified, Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag, bool enableRangeProcessing) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.PhysicalFileResult PhysicalFile(string physicalPath, string contentType, string fileDownloadName, System.DateTimeOffset? lastModified, Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.PhysicalFileResult PhysicalFile(string physicalPath, string contentType, string fileDownloadName, System.DateTimeOffset? lastModified, Microsoft.Net.Http.Headers.EntityTagHeaderValue entityTag, bool enableRangeProcessing) => throw null;
-                public virtual Microsoft.AspNetCore.Mvc.ObjectResult Problem(string detail = default(string), string instance = default(string), int? statusCode = default(int?), string title = default(string), string type = default(string)) => throw null;
+                public virtual Microsoft.AspNetCore.Mvc.ObjectResult Problem(string detail, string instance, int? statusCode, string title, string type) => throw null;
+                public virtual Microsoft.AspNetCore.Mvc.ObjectResult Problem(string detail = default(string), string instance = default(string), int? statusCode = default(int?), string title = default(string), string type = default(string), System.Collections.Generic.IDictionary<string, object> extensions = default(System.Collections.Generic.IDictionary<string, object>)) => throw null;
                 public Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory ProblemDetailsFactory { get => throw null; set { } }
                 public virtual Microsoft.AspNetCore.Mvc.RedirectResult Redirect(string url) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.RedirectResult RedirectPermanent(string url) => throw null;
@@ -828,7 +829,8 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem(Microsoft.AspNetCore.Mvc.ValidationProblemDetails descriptor) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary) => throw null;
                 public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem() => throw null;
-                public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem(string detail = default(string), string instance = default(string), int? statusCode = default(int?), string title = default(string), string type = default(string), Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary = default(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)) => throw null;
+                public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem(string detail, string instance, int? statusCode, string title, string type, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary) => throw null;
+                public virtual Microsoft.AspNetCore.Mvc.ActionResult ValidationProblem(string detail = default(string), string instance = default(string), int? statusCode = default(int?), string title = default(string), string type = default(string), Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary = default(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary), System.Collections.Generic.IDictionary<string, object> extensions = default(System.Collections.Generic.IDictionary<string, object>)) => throw null;
             }
             public class ControllerContext : Microsoft.AspNetCore.Mvc.ActionContext
             {
@@ -1638,6 +1640,12 @@ namespace Microsoft
                 {
                     public DefaultOutputFormatterSelector(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions> options, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
                     public override Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter SelectFormatter(Microsoft.AspNetCore.Mvc.Formatters.OutputFormatterCanWriteContext context, System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter> formatters, Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection contentTypes) => throw null;
+                }
+                public sealed class DefaultProblemDetailsFactory : Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory
+                {
+                    public override Microsoft.AspNetCore.Mvc.ProblemDetails CreateProblemDetails(Microsoft.AspNetCore.Http.HttpContext httpContext, int? statusCode = default(int?), string title = default(string), string type = default(string), string detail = default(string), string instance = default(string)) => throw null;
+                    public override Microsoft.AspNetCore.Mvc.ValidationProblemDetails CreateValidationProblemDetails(Microsoft.AspNetCore.Http.HttpContext httpContext, Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary modelStateDictionary, int? statusCode = default(int?), string title = default(string), string type = default(string), string detail = default(string), string instance = default(string)) => throw null;
+                    public DefaultProblemDetailsFactory(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions> options, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.ProblemDetailsOptions> problemDetailsOptions = default(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.ProblemDetailsOptions>)) => throw null;
                 }
                 [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
                 public sealed class DefaultStatusCodeAttribute : System.Attribute

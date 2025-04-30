@@ -26,6 +26,11 @@ class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Ran
 
   /** Gets a string that describes the type of this threat-model source. */
   string getSourceType() { result = super.getSourceType() }
+
+  /**
+   * Holds if this is a source of data that is specific to the web browser environment.
+   */
+  predicate isClientSideSource() { super.isClientSideSource() }
 }
 
 /** Provides a class for modeling new sources for specific threat-models. */
@@ -48,6 +53,11 @@ module ThreatModelSource {
 
     /** Gets a string that describes the type of this threat-model source. */
     abstract string getSourceType();
+
+    /**
+     * Holds if this is a source of data that is specific to the web browser environment.
+     */
+    predicate isClientSideSource() { this.getThreatModel() = "view-component-input" }
   }
 }
 

@@ -10,6 +10,45 @@ import Apollo::Apollo
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
+  private newtype TFlowState =
+    TTaint() or
+    TTrueOrNull() or
+    TWildcard()
+
+  /** A flow state to asociate with a tracked value. */
+  class FlowState extends TFlowState {
+    /** Gets a string representation of this flow state. */
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TTrueOrNull() and result = "true-or-null"
+      or
+      this = TWildcard() and result = "wildcard"
+    }
+
+    deprecated DataFlow::FlowLabel toFlowLabel() {
+      this = TTaint() and result.isTaint()
+      or
+      this = TTrueOrNull() and result instanceof TrueAndNull
+      or
+      this = TWildcard() and result instanceof Wildcard
+    }
+  }
+
+  /** Predicates for working with flow states. */
+  module FlowState {
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
+
+    /** A tainted value. */
+    FlowState taint() { result = TTaint() }
+
+    /** A `true` or `null` value. */
+    FlowState trueOrNull() { result = TTrueOrNull() }
+
+    /** A `"*"` value. */
+    FlowState wildcard() { result = TWildcard() }
+  }
+
   /**
    * A data flow source for permissive CORS configuration.
    */
@@ -38,18 +77,18 @@ module CorsPermissiveConfiguration {
   }
 
   /** A flow label representing `true` and `null` values. */
-  abstract class TrueAndNull extends DataFlow::FlowLabel {
+  abstract deprecated class TrueAndNull extends DataFlow::FlowLabel {
     TrueAndNull() { this = "TrueAndNull" }
   }
 
-  TrueAndNull truenullLabel() { any() }
+  deprecated TrueAndNull truenullLabel() { any() }
 
   /** A flow label representing `*` value. */
-  abstract class Wildcard extends DataFlow::FlowLabel {
+  abstract deprecated class Wildcard extends DataFlow::FlowLabel {
     Wildcard() { this = "Wildcard" }
   }
 
-  Wildcard wildcardLabel() { any() }
+  deprecated Wildcard wildcardLabel() { any() }
 
   /** An overly permissive value for `origin` (Apollo) */
   class TrueNullValue extends Source {

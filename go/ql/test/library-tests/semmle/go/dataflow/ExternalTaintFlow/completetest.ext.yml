@@ -37,6 +37,7 @@ extensions:
     data:
       - ["github.com/nonexistent/test", "", False, "SourceVariable", "", "", "", "qltest", "manual"]
       - ["github.com/nonexistent/test", "A", False, "Src1", "", "", "ReturnValue", "qltest", "manual"]
+      - ["semmle.go.Packages", "", True, "srcParam", "", "", "Parameter[0]", "qltest", "manual"]
   - addsTo:
       pack: codeql/go-all
       extensible: sinkModel

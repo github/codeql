@@ -24,16 +24,20 @@ module PostMessageStar {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED. This query no longer uses flow state.
+   *
    * A flow label representing an object with at least one tainted property.
    */
-  abstract class PartiallyTaintedObject extends DataFlow::FlowLabel {
+  abstract deprecated class PartiallyTaintedObject extends DataFlow::FlowLabel {
     PartiallyTaintedObject() { this = "partially tainted object" }
   }
 
   /**
+   * DEPRECATED. This query no longer uses flow state.
+   *
    * Gets either a standard flow label or the partial-taint label.
    */
-  DataFlow::FlowLabel anyLabel() {
+  deprecated DataFlow::FlowLabel anyLabel() {
     result.isDataOrTaint() or result instanceof PartiallyTaintedObject
   }
 

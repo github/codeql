@@ -106,7 +106,27 @@ jobs:
           COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')
           echo "comments=$COMMENTS" >> "$GITHUB_OUTPUT"
       - run: echo "${{ steps.comments.outputs.comments}}"
-
+  pulls3:
+    runs-on: ubuntu-latest
+    steps:
+      - id: title1
+        run: |
+          DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
+          TITLE=$(echo $DETAILS | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title1.outputs.title}}"
+      - id: title2
+        run: |
+          TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")
+          TITLE=$(echo $TITLE | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title2.outputs.title}}"
+      - id: title3
+        run: |
+          TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)
+          TITLE=$(echo $TITLE | jq -r '.title')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+      - run: echo "${{ steps.title3.outputs.title}}"
 
 
 

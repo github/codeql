@@ -1,4 +1,5 @@
 /** Provides sink models and classes related to pausing thread operations. */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

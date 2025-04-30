@@ -5,14 +5,20 @@
  */
 
 import javascript
+private import semmle.javascript.security.TaintedUrlSuffixCustomizations
 
 module ClientSideUrlRedirect {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for unvalidated URL redirect vulnerabilities.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label to associate with this source. */
-    DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
+    /** Gets a flow state to associate with this source. */
+    FlowState getAFlowState() { result.isTaint() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
@@ -31,12 +37,12 @@ module ClientSideUrlRedirect {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED. Replaced by functionality from the `TaintedUrlSuffix` library.
+   *
    * A flow label for values that represent the URL of the current document, and
    * hence are only partially user-controlled.
    */
-  abstract class DocumentUrl extends DataFlow::FlowLabel {
-    DocumentUrl() { this = "document.url" }
-  }
+  deprecated class DocumentUrl = TaintedUrlSuffix::TaintedUrlSuffixLabel;
 
   /**
    * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
@@ -49,18 +55,26 @@ module ClientSideUrlRedirect {
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
     ActiveThreatModelSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
-    override DataFlow::FlowLabel getAFlowLabel() {
-      if this.(ClientSideRemoteFlowSource).getKind().isUrl()
-      then result instanceof DocumentUrl
-      else result.isTaint()
+    override FlowState getAFlowState() {
+      if this = TaintedUrlSuffix::source() then result.isTaintedUrlSuffix() else result.isTaint()
     }
+  }
+
+  /**
+   * Holds if `node` extracts a part of a URL that does not contain the suffix.
+   */
+  pragma[inline]
+  deprecated predicate isPrefixExtraction(DataFlow::MethodCallNode node) {
+    // Block flow through prefix-extraction `substring(0, ...)` and `split("#")[0]`
+    node.getMethodName() = [StringOps::substringMethodName(), "split"] and
+    not untrustedUrlSubstring(_, node)
   }
 
   /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */
-  predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
+  deprecated predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
     exists(DataFlow::MethodCallNode mcn, string methodName |
       mcn = substring and mcn.calls(base, methodName)
     |

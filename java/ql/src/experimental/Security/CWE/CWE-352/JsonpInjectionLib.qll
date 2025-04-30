@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 private import JsonStringLib
 private import semmle.code.java.security.XSS

@@ -11,12 +11,12 @@
  */
 
 import java
-import ThreadResourceAbuse
+deprecated import ThreadResourceAbuse
 import semmle.code.java.dataflow.FlowSources
-import ThreadResourceAbuseFlow::PathGraph
+deprecated import ThreadResourceAbuseFlow::PathGraph
 
 /** Taint configuration of uncontrolled thread resource consumption. */
-module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
+deprecated module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
@@ -37,10 +37,16 @@ module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ThreadResourceAbuseFlow = TaintTracking::Global<ThreadResourceAbuseConfig>;
+deprecated module ThreadResourceAbuseFlow = TaintTracking::Global<ThreadResourceAbuseConfig>;
 
-from ThreadResourceAbuseFlow::PathNode source, ThreadResourceAbuseFlow::PathNode sink
-where ThreadResourceAbuseFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Vulnerability of uncontrolled resource consumption due to $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, ThreadResourceAbuseFlow::PathNode source,
+  ThreadResourceAbuseFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  ThreadResourceAbuseFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Vulnerability of uncontrolled resource consumption due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

@@ -27,6 +27,8 @@ private module Config implements DataFlow::ConfigSig {
     cs.isAny() and
     isSink(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

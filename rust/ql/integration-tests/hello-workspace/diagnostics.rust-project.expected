@@ -1,7 +1,15 @@
 {
   "attributes": {
     "durations": {
+      "crateGraph": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
       "extract": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "findManifests": {
         "ms": "__REDACTED__",
         "pretty": "__REDACTED__"
       },

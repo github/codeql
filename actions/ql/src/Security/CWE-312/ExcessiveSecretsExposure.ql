@@ -2,7 +2,9 @@
  * @name Excessive Secrets Exposure
  * @description All organization and repository secrets are passed to the workflow runner.
  * @kind problem
- * @problem.severity recommendation
+ * @precision high
+ * @security-severity 5.0
+ * @problem.severity warning
  * @id actions/excessive-secrets-exposure
  * @tags actions
  *       security

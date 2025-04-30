@@ -158,6 +158,8 @@ private module UnicodeBypassValidationConfig implements DataFlow::StateConfigSig
     ) and
     state = PostValidationState()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

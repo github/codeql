@@ -247,7 +247,7 @@ module DOM {
         ]
     |
       (
-        result = documentRef().getAMethodCall(collectionName) or
+        result = domValueRef().getAMethodCall(collectionName) or
         result = DataFlow::globalVarRef(collectionName).getACall()
       )
     )
@@ -296,7 +296,7 @@ module DOM {
               .getType()
               .getAnUnderlyingType()
               .(JSDocNamedTypeExpr)
-              .getName())
+              .getRawName())
       )
     }
 
@@ -388,23 +388,33 @@ module DOM {
     }
   }
 
-  /**
-   * Gets a reference to a DOM event.
-   */
-  private DataFlow::SourceNode domEventSource() {
-    // e.g. <form onSubmit={e => e.target}/>
-    exists(JsxAttribute attr | attr.getName().matches("on%") |
-      result = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
-    )
-    or
-    // node.addEventListener("submit", e => e.target)
-    result = domValueRef().getAMethodCall("addEventListener").getABoundCallbackParameter(1, 0)
-    or
-    // node.onSubmit = (e => e.target);
-    exists(DataFlow::PropWrite write | write = domValueRef().getAPropertyWrite() |
-      write.getPropertyName().matches("on%") and
-      result = write.getRhs().getAFunctionValue().getParameter(0)
-    )
+  /** A data flow node that is a source of DOM events. */
+  class DomEventSource extends DataFlow::Node instanceof DomEventSource::Range { }
+
+  /** Companion module to the `DomEventSource` class. */
+  module DomEventSource {
+    /**
+     * A data flow node that should be considered a source of DOM events.
+     */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        // e.g. <form onSubmit={e => e.target}/>
+        exists(JsxAttribute attr | attr.getName().matches("on%") |
+          this = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
+        )
+        or
+        // node.addEventListener("submit", e => e.target)
+        this = domValueRef().getAMethodCall("addEventListener").getABoundCallbackParameter(1, 0)
+        or
+        // node.onSubmit = (e => e.target);
+        exists(DataFlow::PropWrite write | write = domValueRef().getAPropertyWrite() |
+          write.getPropertyName().matches("on%") and
+          this = write.getRhs().getAFunctionValue().getParameter(0)
+        )
+      }
+    }
   }
 
   /** Gets a data flow node that refers directly to a value from the DOM. */
@@ -419,7 +429,7 @@ module DOM {
     result = domValueRef().getAMethodCall(["item", "namedItem"])
     or
     t.startInProp("target") and
-    result = domEventSource()
+    result instanceof DomEventSource
     or
     t.startInProp(DataFlow::PseudoProperties::arrayElement()) and
     result = domElementCollection()
@@ -431,9 +441,11 @@ module DOM {
   DataFlow::SourceNode domValueRef() {
     result = domValueRef(DataFlow::TypeTracker::end())
     or
-    result.hasUnderlyingType("Element")
+    result.hasUnderlyingType(["Element", "HTMLCollection", "HTMLCollectionOf"])
     or
     result.hasUnderlyingType(any(string s | s.matches("HTML%Element")))
+    or
+    result = documentRef()
     or
     exists(DataFlow::ClassNode cls |
       cls.getASuperClassNode().getALocalSource() =

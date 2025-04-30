@@ -17,17 +17,13 @@ predicate constructFormatTemplateVariableAccess(Raw::FormatArgsExpr parent, int 
   unboundNamedFormatArgument(parent, index, kind, _)
 }
 
-/**
- * A named format argument for which no binding is found in the parent `FormatArgsExpr::getArg(_)`.
- * INTERNAL: Do not use.
- */
-predicate unboundNamedFormatArgument(
-  Raw::FormatArgsExpr parent, int index, int kind, NamedFormatArgument arg
+pragma[nomagic]
+private predicate formatArgsHasArg(
+  Raw::FormatArgsExpr parent, NamedFormatArgument arg, string name, int index, int kind
 ) {
-  exists(Format format, string name |
-    not parent.getArg(_).getName().getText() = name and
+  exists(Format format |
+    parent = Synth::convertFormatArgsExprToRaw(format.getParent()) and
     name = arg.getName() and
-    Synth::convertFormatArgsExprToRaw(format.getParent()) = parent and
     format.getIndex() = index
   |
     arg = format.getArgumentRef() and kind = 0
@@ -35,5 +31,23 @@ predicate unboundNamedFormatArgument(
     arg = format.getWidthArgument() and kind = 1
     or
     arg = format.getPrecisionArgument() and kind = 2
+  )
+}
+
+pragma[nomagic]
+private predicate formatArgsHasArgName(Raw::FormatArgsExpr parent, string name) {
+  parent.getArg(_).getName().getText() = name
+}
+
+/**
+ * A named format argument for which no binding is found in the parent `FormatArgsExpr::getArg(_)`.
+ * INTERNAL: Do not use.
+ */
+predicate unboundNamedFormatArgument(
+  Raw::FormatArgsExpr parent, int index, int kind, NamedFormatArgument arg
+) {
+  exists(string name |
+    formatArgsHasArg(parent, arg, name, index, kind) and
+    not formatArgsHasArgName(parent, name)
   )
 }

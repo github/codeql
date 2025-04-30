@@ -1,5 +1,5 @@
 /**
- * @name Code injection
+ * @name Code injection from dynamically imported code
  * @description Interpreting unsanitized user input as code allows a malicious user arbitrary
  *              code execution.
  * @kind path-problem
@@ -15,13 +15,11 @@
  */
 
 import javascript
-import DataFlow
-import DataFlow::PathGraph
 
-abstract class Sanitizer extends DataFlow::Node { }
+abstract class Barrier extends DataFlow::Node { }
 
 /** A non-first leaf in a string-concatenation. Seen as a sanitizer for dynamic import code injection. */
-class NonFirstStringConcatLeaf extends Sanitizer {
+class NonFirstStringConcatLeaf extends Barrier {
   NonFirstStringConcatLeaf() {
     exists(StringOps::ConcatenationRoot root |
       this = root.getALeaf() and
@@ -51,39 +49,53 @@ class WorkerThreads extends DataFlow::Node {
   }
 }
 
-class UrlConstructorLabel extends FlowLabel {
-  UrlConstructorLabel() { this = "UrlConstructorLabel" }
-}
+newtype TFlowState =
+  TTaint() or
+  TUrlConstructor()
 
 /**
  * A taint-tracking configuration for reasoning about code injection vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CodeInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
-
-  override predicate isSink(DataFlow::Node sink, FlowLabel label) {
-    sink instanceof WorkerThreads and label instanceof UrlConstructorLabel
+module CodeInjectionConfig implements DataFlow::StateConfigSig {
+  class FlowState extends TFlowState {
+    string toString() {
+      this = TTaint() and result = "taint"
+      or
+      this = TUrlConstructor() and result = "url-constructor"
+    }
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source instanceof ActiveThreatModelSource and state = TTaint()
+  }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, FlowLabel predlbl, FlowLabel succlbl
+  predicate isSink(DataFlow::Node sink) { sink instanceof DynamicImport }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink instanceof WorkerThreads and state = TUrlConstructor()
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::NewNode newUrl | succ = newUrl |
+    exists(DataFlow::NewNode newUrl | node2 = newUrl |
       newUrl = DataFlow::globalVarRef("URL").getAnInstantiation() and
-      pred = newUrl.getArgument(0)
+      node1 = newUrl.getArgument(0)
     ) and
-    predlbl instanceof StandardFlowLabel and
-    succlbl instanceof UrlConstructorLabel
+    state1 = TTaint() and
+    state2 = TUrlConstructor()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+module CodeInjectionFlow = TaintTracking::GlobalWithState<CodeInjectionConfig>;
+
+import CodeInjectionFlow::PathGraph
+
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+where CodeInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

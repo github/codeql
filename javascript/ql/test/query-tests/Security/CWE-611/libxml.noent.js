@@ -2,18 +2,14 @@ const express = require('express');
 const libxmljs = require('libxmljs');
 
 express().get('/some/path', function (req) {
-  // NOT OK: unguarded entity expansion
-  libxmljs.parseXml(req.param("some-xml"), { noent: true }); // $ Alert
+  libxmljs.parseXml(req.param("some-xml"), { noent: true }); // $ Alert - unguarded entity expansion
 });
 
 express().post('/some/path', function (req, res) {
-  // NOT OK: unguarded entity expansion
-  libxmljs.parseXml(req.param("some-xml"), { noent: true }); // $ Alert
+  libxmljs.parseXml(req.param("some-xml"), { noent: true }); // $ Alert - unguarded entity expansion
 
-  // NOT OK: unguarded entity expansion
-  libxmljs.parseXmlString(req.param("some-xml"), { noent: true }) // $ Alert
-  // NOT OK: unguarded entity expansion
-  libxmljs.parseXmlString(req.files.products.data.toString('utf8'), { noent: true })// $ Source=files $ Alert=files
+  libxmljs.parseXmlString(req.param("some-xml"), { noent: true }) // $ Alert - unguarded entity expansion
+  libxmljs.parseXmlString(req.files.products.data.toString('utf8'), { noent: true })// $ Alert - unguarded entity expansion
 
   // OK - no entity expansion
   libxmljs.parseXmlString(req.files.products.data.toString('utf8'), { noent: false })

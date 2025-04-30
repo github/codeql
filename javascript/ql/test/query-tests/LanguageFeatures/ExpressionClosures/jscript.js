@@ -1,3 +1,3 @@
-function window::onload() {}
+function window::onload() {} // $ Alert
 
 window.onload = function onload() {}

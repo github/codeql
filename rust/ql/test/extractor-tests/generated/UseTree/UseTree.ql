@@ -2,11 +2,13 @@
 import codeql.rust.elements
 import TestUtils
 
-from UseTree x, string hasPath, string hasRename, string hasUseTreeList
+from UseTree x, string isGlob, string hasPath, string hasRename, string hasUseTreeList
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.isGlob() then isGlob = "yes" else isGlob = "no") and
   (if x.hasPath() then hasPath = "yes" else hasPath = "no") and
   (if x.hasRename() then hasRename = "yes" else hasRename = "no") and
   if x.hasUseTreeList() then hasUseTreeList = "yes" else hasUseTreeList = "no"
-select x, "hasPath:", hasPath, "hasRename:", hasRename, "hasUseTreeList:", hasUseTreeList
+select x, "isGlob:", isGlob, "hasPath:", hasPath, "hasRename:", hasRename, "hasUseTreeList:",
+  hasUseTreeList

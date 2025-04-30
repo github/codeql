@@ -3,5 +3,6 @@
  * for tracking types.
  */
 
+private import codeql.ruby.AST
 private import codeql.ruby.typetracking.internal.TypeTrackingImpl as Impl
-import Impl::Shared::TypeTracking<Impl::TypeTrackingInput>
+import Impl::Shared::TypeTracking<Location, Impl::TypeTrackingInput>

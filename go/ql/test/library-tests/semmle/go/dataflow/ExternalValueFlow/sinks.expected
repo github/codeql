@@ -50,3 +50,4 @@ invalidModelRow
 | test.go:206:10:206:26 | call to min | qltest |
 | test.go:207:10:207:26 | call to min | qltest |
 | test.go:210:22:210:25 | temp | qltest |
+| test.go:214:10:214:12 | src | qltest |

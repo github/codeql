@@ -1,355 +1,3 @@
-nodes
-| adm-zip.js:13:13:13:21 | req.files |
-| adm-zip.js:13:13:13:21 | req.files |
-| adm-zip.js:13:13:13:33 | req.fil ... ombFile |
-| adm-zip.js:17:18:17:24 | tarFile |
-| adm-zip.js:24:22:24:28 | tarFile |
-| adm-zip.js:24:22:24:33 | tarFile.data |
-| adm-zip.js:28:25:28:42 | zipEntry.getData() |
-| adm-zip.js:28:25:28:42 | zipEntry.getData() |
-| adm-zip.js:32:17:32:41 | admZip. ... "10GB") |
-| adm-zip.js:32:17:32:41 | admZip. ... "10GB") |
-| adm-zip.js:34:5:34:55 | admZip. ... , true) |
-| adm-zip.js:34:5:34:55 | admZip. ... , true) |
-| adm-zip.js:36:5:36:38 | admZip. ... , true) |
-| adm-zip.js:36:5:36:38 | admZip. ... , true) |
-| decompress.js:11:16:11:33 | req.query.filePath |
-| decompress.js:11:16:11:33 | req.query.filePath |
-| decompress.js:11:16:11:33 | req.query.filePath |
-| jszip.js:12:13:12:21 | req.files |
-| jszip.js:12:13:12:21 | req.files |
-| jszip.js:12:13:12:33 | req.fil ... ombFile |
-| jszip.js:12:13:12:38 | req.fil ... le.data |
-| jszip.js:32:18:32:24 | zipFile |
-| jszip.js:33:22:33:28 | zipFile |
-| jszip.js:33:22:33:33 | zipFile.data |
-| jszip.js:33:22:33:33 | zipFile.data |
-| node-tar.js:15:13:15:21 | req.files |
-| node-tar.js:15:13:15:21 | req.files |
-| node-tar.js:15:13:15:33 | req.fil ... ombFile |
-| node-tar.js:15:13:15:38 | req.fil ... le.data |
-| node-tar.js:19:18:19:24 | tarFile |
-| node-tar.js:21:23:21:49 | Readabl ... e.data) |
-| node-tar.js:21:37:21:43 | tarFile |
-| node-tar.js:21:37:21:48 | tarFile.data |
-| node-tar.js:24:9:24:15 | tar.x() |
-| node-tar.js:24:9:24:15 | tar.x() |
-| node-tar.js:29:5:29:37 | fs.crea ... e.name) |
-| node-tar.js:29:25:29:31 | tarFile |
-| node-tar.js:29:25:29:36 | tarFile.name |
-| node-tar.js:30:9:33:10 | tar.x({ ...      }) |
-| node-tar.js:30:9:33:10 | tar.x({ ...      }) |
-| node-tar.js:45:5:45:37 | fs.crea ... e.name) |
-| node-tar.js:45:25:45:31 | tarFile |
-| node-tar.js:45:25:45:36 | tarFile.name |
-| node-tar.js:46:9:46:20 | decompressor |
-| node-tar.js:48:9:50:10 | tar.x({ ...      }) |
-| node-tar.js:48:9:50:10 | tar.x({ ...      }) |
-| node-tar.js:58:19:58:25 | tarFile |
-| node-tar.js:58:19:58:30 | tarFile.name |
-| node-tar.js:58:19:58:30 | tarFile.name |
-| node-tar.js:59:25:59:31 | tarFile |
-| node-tar.js:59:25:59:36 | tarFile.name |
-| node-tar.js:59:25:59:36 | tarFile.name |
-| pako.js:12:14:12:22 | req.files |
-| pako.js:12:14:12:22 | req.files |
-| pako.js:12:14:12:34 | req.fil ... ombFile |
-| pako.js:12:14:12:39 | req.fil ... le.data |
-| pako.js:13:14:13:22 | req.files |
-| pako.js:13:14:13:22 | req.files |
-| pako.js:13:14:13:34 | req.fil ... ombFile |
-| pako.js:13:14:13:39 | req.fil ... le.data |
-| pako.js:17:19:17:25 | zipFile |
-| pako.js:18:11:18:68 | myArray |
-| pako.js:18:21:18:68 | Buffer. ... uffer)) |
-| pako.js:18:33:18:67 | new Uin ... buffer) |
-| pako.js:18:48:18:54 | zipFile |
-| pako.js:18:48:18:59 | zipFile.data |
-| pako.js:18:48:18:66 | zipFile.data.buffer |
-| pako.js:21:31:21:37 | myArray |
-| pako.js:21:31:21:37 | myArray |
-| pako.js:28:19:28:25 | zipFile |
-| pako.js:29:11:29:62 | myArray |
-| pako.js:29:21:29:55 | new Uin ... buffer) |
-| pako.js:29:21:29:62 | new Uin ... .buffer |
-| pako.js:29:36:29:42 | zipFile |
-| pako.js:29:36:29:47 | zipFile.data |
-| pako.js:29:36:29:54 | zipFile.data.buffer |
-| pako.js:32:31:32:37 | myArray |
-| pako.js:32:31:32:37 | myArray |
-| unbzip2.js:12:5:12:43 | fs.crea ... lePath) |
-| unbzip2.js:12:25:12:42 | req.query.FilePath |
-| unbzip2.js:12:25:12:42 | req.query.FilePath |
-| unbzip2.js:12:50:12:54 | bz2() |
-| unbzip2.js:12:50:12:54 | bz2() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) |
-| unzipper.js:13:40:13:48 | req.files |
-| unzipper.js:13:40:13:48 | req.files |
-| unzipper.js:13:40:13:56 | req.files.ZipFile |
-| unzipper.js:13:40:13:61 | req.fil ... le.data |
-| unzipper.js:16:23:16:63 | unzippe ... ath' }) |
-| unzipper.js:16:23:16:63 | unzippe ... ath' }) |
-| unzipper.js:19:23:19:41 | unzipper.ParseOne() |
-| unzipper.js:19:23:19:41 | unzipper.ParseOne() |
-| unzipper.js:24:15:24:30 | unzipper.Parse() |
-| unzipper.js:24:15:24:30 | unzipper.Parse() |
-| unzipper.js:34:15:34:30 | unzipper.Parse() |
-| unzipper.js:34:15:34:30 | unzipper.Parse() |
-| unzipper.js:41:35:41:71 | unzippe ... true }) |
-| unzipper.js:41:35:41:71 | unzippe ... true }) |
-| unzipper.js:51:36:51:72 | unzippe ... true }) |
-| unzipper.js:51:36:51:72 | unzippe ... true }) |
-| unzipper.js:60:23:60:38 | unzipper.Parse() |
-| unzipper.js:60:23:60:38 | unzipper.Parse() |
-| unzipper.js:73:23:73:38 | unzipper.Parse() |
-| unzipper.js:73:23:73:38 | unzipper.Parse() |
-| yauzl.js:12:18:12:26 | req.files |
-| yauzl.js:12:18:12:26 | req.files |
-| yauzl.js:12:18:12:34 | req.files.zipFile |
-| yauzl.js:12:18:12:39 | req.fil ... le.data |
-| yauzl.js:12:18:12:39 | req.fil ... le.data |
-| yauzl.js:13:22:13:30 | req.files |
-| yauzl.js:13:22:13:30 | req.files |
-| yauzl.js:13:22:13:38 | req.files.zipFile |
-| yauzl.js:13:22:13:43 | req.fil ... le.data |
-| yauzl.js:13:22:13:43 | req.fil ... le.data |
-| yauzl.js:14:34:14:42 | req.files |
-| yauzl.js:14:34:14:42 | req.files |
-| yauzl.js:14:34:14:50 | req.files.zipFile |
-| yauzl.js:14:34:14:55 | req.fil ... le.data |
-| yauzl.js:14:34:14:55 | req.fil ... le.data |
-| yauzl.js:37:16:37:33 | req.query.filePath |
-| yauzl.js:37:16:37:33 | req.query.filePath |
-| yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| zlib.js:15:19:15:27 | req.files |
-| zlib.js:15:19:15:27 | req.files |
-| zlib.js:15:19:15:39 | req.fil ... ombFile |
-| zlib.js:15:19:15:44 | req.fil ... le.data |
-| zlib.js:17:18:17:26 | req.files |
-| zlib.js:17:18:17:26 | req.files |
-| zlib.js:17:18:17:38 | req.fil ... ombFile |
-| zlib.js:17:18:17:43 | req.fil ... le.data |
-| zlib.js:19:24:19:32 | req.files |
-| zlib.js:19:24:19:32 | req.files |
-| zlib.js:19:24:19:44 | req.fil ... ombFile |
-| zlib.js:19:24:19:49 | req.fil ... le.data |
-| zlib.js:21:32:21:40 | req.files |
-| zlib.js:21:32:21:40 | req.files |
-| zlib.js:21:32:21:52 | req.fil ... ombFile |
-| zlib.js:21:32:21:57 | req.fil ... le.data |
-| zlib.js:27:24:27:30 | zipFile |
-| zlib.js:29:9:29:15 | zipFile |
-| zlib.js:29:9:29:20 | zipFile.data |
-| zlib.js:29:9:29:20 | zipFile.data |
-| zlib.js:33:9:33:15 | zipFile |
-| zlib.js:33:9:33:20 | zipFile.data |
-| zlib.js:33:9:33:20 | zipFile.data |
-| zlib.js:38:9:38:15 | zipFile |
-| zlib.js:38:9:38:20 | zipFile.data |
-| zlib.js:38:9:38:20 | zipFile.data |
-| zlib.js:62:23:62:29 | zipFile |
-| zlib.js:63:21:63:27 | zipFile |
-| zlib.js:63:21:63:32 | zipFile.data |
-| zlib.js:63:21:63:32 | zipFile.data |
-| zlib.js:64:20:64:26 | zipFile |
-| zlib.js:64:20:64:31 | zipFile.data |
-| zlib.js:64:20:64:31 | zipFile.data |
-| zlib.js:65:31:65:37 | zipFile |
-| zlib.js:65:31:65:42 | zipFile.data |
-| zlib.js:65:31:65:42 | zipFile.data |
-| zlib.js:74:29:74:35 | zipFile |
-| zlib.js:75:25:75:51 | Readabl ... e.data) |
-| zlib.js:75:39:75:45 | zipFile |
-| zlib.js:75:39:75:50 | zipFile.data |
-| zlib.js:77:22:77:40 | zlib.createGunzip() |
-| zlib.js:77:22:77:40 | zlib.createGunzip() |
-| zlib.js:78:22:78:39 | zlib.createUnzip() |
-| zlib.js:78:22:78:39 | zlib.createUnzip() |
-| zlib.js:79:22:79:50 | zlib.cr ... press() |
-| zlib.js:79:22:79:50 | zlib.cr ... press() |
-| zlib.js:82:43:82:49 | zipFile |
-| zlib.js:83:11:83:51 | inputStream |
-| zlib.js:83:25:83:51 | Readabl ... e.data) |
-| zlib.js:83:39:83:45 | zipFile |
-| zlib.js:83:39:83:50 | zipFile.data |
-| zlib.js:86:9:86:19 | inputStream |
-| zlib.js:87:9:87:27 | zlib.createGunzip() |
-| zlib.js:87:9:87:27 | zlib.createGunzip() |
-edges
-| adm-zip.js:13:13:13:21 | req.files | adm-zip.js:13:13:13:33 | req.fil ... ombFile |
-| adm-zip.js:13:13:13:21 | req.files | adm-zip.js:13:13:13:33 | req.fil ... ombFile |
-| adm-zip.js:13:13:13:33 | req.fil ... ombFile | adm-zip.js:17:18:17:24 | tarFile |
-| adm-zip.js:17:18:17:24 | tarFile | adm-zip.js:24:22:24:28 | tarFile |
-| adm-zip.js:24:22:24:28 | tarFile | adm-zip.js:24:22:24:33 | tarFile.data |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:28:25:28:42 | zipEntry.getData() |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:28:25:28:42 | zipEntry.getData() |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:32:17:32:41 | admZip. ... "10GB") |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:32:17:32:41 | admZip. ... "10GB") |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:34:5:34:55 | admZip. ... , true) |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:34:5:34:55 | admZip. ... , true) |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:36:5:36:38 | admZip. ... , true) |
-| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:36:5:36:38 | admZip. ... , true) |
-| decompress.js:11:16:11:33 | req.query.filePath | decompress.js:11:16:11:33 | req.query.filePath |
-| jszip.js:12:13:12:21 | req.files | jszip.js:12:13:12:33 | req.fil ... ombFile |
-| jszip.js:12:13:12:21 | req.files | jszip.js:12:13:12:33 | req.fil ... ombFile |
-| jszip.js:12:13:12:33 | req.fil ... ombFile | jszip.js:12:13:12:38 | req.fil ... le.data |
-| jszip.js:12:13:12:38 | req.fil ... le.data | jszip.js:32:18:32:24 | zipFile |
-| jszip.js:32:18:32:24 | zipFile | jszip.js:33:22:33:28 | zipFile |
-| jszip.js:33:22:33:28 | zipFile | jszip.js:33:22:33:33 | zipFile.data |
-| jszip.js:33:22:33:28 | zipFile | jszip.js:33:22:33:33 | zipFile.data |
-| node-tar.js:15:13:15:21 | req.files | node-tar.js:15:13:15:33 | req.fil ... ombFile |
-| node-tar.js:15:13:15:21 | req.files | node-tar.js:15:13:15:33 | req.fil ... ombFile |
-| node-tar.js:15:13:15:33 | req.fil ... ombFile | node-tar.js:15:13:15:38 | req.fil ... le.data |
-| node-tar.js:15:13:15:38 | req.fil ... le.data | node-tar.js:19:18:19:24 | tarFile |
-| node-tar.js:19:18:19:24 | tarFile | node-tar.js:21:37:21:43 | tarFile |
-| node-tar.js:19:18:19:24 | tarFile | node-tar.js:29:25:29:31 | tarFile |
-| node-tar.js:19:18:19:24 | tarFile | node-tar.js:45:25:45:31 | tarFile |
-| node-tar.js:19:18:19:24 | tarFile | node-tar.js:58:19:58:25 | tarFile |
-| node-tar.js:19:18:19:24 | tarFile | node-tar.js:59:25:59:31 | tarFile |
-| node-tar.js:21:23:21:49 | Readabl ... e.data) | node-tar.js:24:9:24:15 | tar.x() |
-| node-tar.js:21:23:21:49 | Readabl ... e.data) | node-tar.js:24:9:24:15 | tar.x() |
-| node-tar.js:21:37:21:43 | tarFile | node-tar.js:21:37:21:48 | tarFile.data |
-| node-tar.js:21:37:21:48 | tarFile.data | node-tar.js:21:23:21:49 | Readabl ... e.data) |
-| node-tar.js:29:5:29:37 | fs.crea ... e.name) | node-tar.js:30:9:33:10 | tar.x({ ...      }) |
-| node-tar.js:29:5:29:37 | fs.crea ... e.name) | node-tar.js:30:9:33:10 | tar.x({ ...      }) |
-| node-tar.js:29:25:29:31 | tarFile | node-tar.js:29:25:29:36 | tarFile.name |
-| node-tar.js:29:25:29:36 | tarFile.name | node-tar.js:29:5:29:37 | fs.crea ... e.name) |
-| node-tar.js:45:5:45:37 | fs.crea ... e.name) | node-tar.js:46:9:46:20 | decompressor |
-| node-tar.js:45:25:45:31 | tarFile | node-tar.js:45:25:45:36 | tarFile.name |
-| node-tar.js:45:25:45:36 | tarFile.name | node-tar.js:45:5:45:37 | fs.crea ... e.name) |
-| node-tar.js:46:9:46:20 | decompressor | node-tar.js:48:9:50:10 | tar.x({ ...      }) |
-| node-tar.js:46:9:46:20 | decompressor | node-tar.js:48:9:50:10 | tar.x({ ...      }) |
-| node-tar.js:58:19:58:25 | tarFile | node-tar.js:58:19:58:30 | tarFile.name |
-| node-tar.js:58:19:58:25 | tarFile | node-tar.js:58:19:58:30 | tarFile.name |
-| node-tar.js:59:25:59:31 | tarFile | node-tar.js:59:25:59:36 | tarFile.name |
-| node-tar.js:59:25:59:31 | tarFile | node-tar.js:59:25:59:36 | tarFile.name |
-| pako.js:12:14:12:22 | req.files | pako.js:12:14:12:34 | req.fil ... ombFile |
-| pako.js:12:14:12:22 | req.files | pako.js:12:14:12:34 | req.fil ... ombFile |
-| pako.js:12:14:12:34 | req.fil ... ombFile | pako.js:12:14:12:39 | req.fil ... le.data |
-| pako.js:12:14:12:39 | req.fil ... le.data | pako.js:17:19:17:25 | zipFile |
-| pako.js:13:14:13:22 | req.files | pako.js:13:14:13:34 | req.fil ... ombFile |
-| pako.js:13:14:13:22 | req.files | pako.js:13:14:13:34 | req.fil ... ombFile |
-| pako.js:13:14:13:34 | req.fil ... ombFile | pako.js:13:14:13:39 | req.fil ... le.data |
-| pako.js:13:14:13:39 | req.fil ... le.data | pako.js:28:19:28:25 | zipFile |
-| pako.js:17:19:17:25 | zipFile | pako.js:18:48:18:54 | zipFile |
-| pako.js:18:11:18:68 | myArray | pako.js:21:31:21:37 | myArray |
-| pako.js:18:11:18:68 | myArray | pako.js:21:31:21:37 | myArray |
-| pako.js:18:21:18:68 | Buffer. ... uffer)) | pako.js:18:11:18:68 | myArray |
-| pako.js:18:33:18:67 | new Uin ... buffer) | pako.js:18:21:18:68 | Buffer. ... uffer)) |
-| pako.js:18:48:18:54 | zipFile | pako.js:18:48:18:59 | zipFile.data |
-| pako.js:18:48:18:59 | zipFile.data | pako.js:18:48:18:66 | zipFile.data.buffer |
-| pako.js:18:48:18:66 | zipFile.data.buffer | pako.js:18:33:18:67 | new Uin ... buffer) |
-| pako.js:28:19:28:25 | zipFile | pako.js:29:36:29:42 | zipFile |
-| pako.js:29:11:29:62 | myArray | pako.js:32:31:32:37 | myArray |
-| pako.js:29:11:29:62 | myArray | pako.js:32:31:32:37 | myArray |
-| pako.js:29:21:29:55 | new Uin ... buffer) | pako.js:29:21:29:62 | new Uin ... .buffer |
-| pako.js:29:21:29:62 | new Uin ... .buffer | pako.js:29:11:29:62 | myArray |
-| pako.js:29:36:29:42 | zipFile | pako.js:29:36:29:47 | zipFile.data |
-| pako.js:29:36:29:47 | zipFile.data | pako.js:29:36:29:54 | zipFile.data.buffer |
-| pako.js:29:36:29:54 | zipFile.data.buffer | pako.js:29:21:29:55 | new Uin ... buffer) |
-| unbzip2.js:12:5:12:43 | fs.crea ... lePath) | unbzip2.js:12:50:12:54 | bz2() |
-| unbzip2.js:12:5:12:43 | fs.crea ... lePath) | unbzip2.js:12:50:12:54 | bz2() |
-| unbzip2.js:12:25:12:42 | req.query.FilePath | unbzip2.js:12:5:12:43 | fs.crea ... lePath) |
-| unbzip2.js:12:25:12:42 | req.query.FilePath | unbzip2.js:12:5:12:43 | fs.crea ... lePath) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:16:23:16:63 | unzippe ... ath' }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:16:23:16:63 | unzippe ... ath' }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:19:23:19:41 | unzipper.ParseOne() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:19:23:19:41 | unzipper.ParseOne() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:24:15:24:30 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:24:15:24:30 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:34:15:34:30 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:34:15:34:30 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:41:35:41:71 | unzippe ... true }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:41:35:41:71 | unzippe ... true }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:51:36:51:72 | unzippe ... true }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:51:36:51:72 | unzippe ... true }) |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:60:23:60:38 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:60:23:60:38 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:73:23:73:38 | unzipper.Parse() |
-| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:73:23:73:38 | unzipper.Parse() |
-| unzipper.js:13:40:13:48 | req.files | unzipper.js:13:40:13:56 | req.files.ZipFile |
-| unzipper.js:13:40:13:48 | req.files | unzipper.js:13:40:13:56 | req.files.ZipFile |
-| unzipper.js:13:40:13:56 | req.files.ZipFile | unzipper.js:13:40:13:61 | req.fil ... le.data |
-| unzipper.js:13:40:13:61 | req.fil ... le.data | unzipper.js:13:26:13:62 | Readabl ... e.data) |
-| yauzl.js:12:18:12:26 | req.files | yauzl.js:12:18:12:34 | req.files.zipFile |
-| yauzl.js:12:18:12:26 | req.files | yauzl.js:12:18:12:34 | req.files.zipFile |
-| yauzl.js:12:18:12:34 | req.files.zipFile | yauzl.js:12:18:12:39 | req.fil ... le.data |
-| yauzl.js:12:18:12:34 | req.files.zipFile | yauzl.js:12:18:12:39 | req.fil ... le.data |
-| yauzl.js:13:22:13:30 | req.files | yauzl.js:13:22:13:38 | req.files.zipFile |
-| yauzl.js:13:22:13:30 | req.files | yauzl.js:13:22:13:38 | req.files.zipFile |
-| yauzl.js:13:22:13:38 | req.files.zipFile | yauzl.js:13:22:13:43 | req.fil ... le.data |
-| yauzl.js:13:22:13:38 | req.files.zipFile | yauzl.js:13:22:13:43 | req.fil ... le.data |
-| yauzl.js:14:34:14:42 | req.files | yauzl.js:14:34:14:50 | req.files.zipFile |
-| yauzl.js:14:34:14:42 | req.files | yauzl.js:14:34:14:50 | req.files.zipFile |
-| yauzl.js:14:34:14:50 | req.files.zipFile | yauzl.js:14:34:14:55 | req.fil ... le.data |
-| yauzl.js:14:34:14:50 | req.files.zipFile | yauzl.js:14:34:14:55 | req.fil ... le.data |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:39:9:39:27 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:41:64:41:73 | readStream |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:43:21:43:39 | zipfile.readEntry() |
-| zlib.js:15:19:15:27 | req.files | zlib.js:15:19:15:39 | req.fil ... ombFile |
-| zlib.js:15:19:15:27 | req.files | zlib.js:15:19:15:39 | req.fil ... ombFile |
-| zlib.js:15:19:15:39 | req.fil ... ombFile | zlib.js:15:19:15:44 | req.fil ... le.data |
-| zlib.js:15:19:15:44 | req.fil ... le.data | zlib.js:27:24:27:30 | zipFile |
-| zlib.js:17:18:17:26 | req.files | zlib.js:17:18:17:38 | req.fil ... ombFile |
-| zlib.js:17:18:17:26 | req.files | zlib.js:17:18:17:38 | req.fil ... ombFile |
-| zlib.js:17:18:17:38 | req.fil ... ombFile | zlib.js:17:18:17:43 | req.fil ... le.data |
-| zlib.js:17:18:17:43 | req.fil ... le.data | zlib.js:62:23:62:29 | zipFile |
-| zlib.js:19:24:19:32 | req.files | zlib.js:19:24:19:44 | req.fil ... ombFile |
-| zlib.js:19:24:19:32 | req.files | zlib.js:19:24:19:44 | req.fil ... ombFile |
-| zlib.js:19:24:19:44 | req.fil ... ombFile | zlib.js:19:24:19:49 | req.fil ... le.data |
-| zlib.js:19:24:19:49 | req.fil ... le.data | zlib.js:74:29:74:35 | zipFile |
-| zlib.js:21:32:21:40 | req.files | zlib.js:21:32:21:52 | req.fil ... ombFile |
-| zlib.js:21:32:21:40 | req.files | zlib.js:21:32:21:52 | req.fil ... ombFile |
-| zlib.js:21:32:21:52 | req.fil ... ombFile | zlib.js:21:32:21:57 | req.fil ... le.data |
-| zlib.js:21:32:21:57 | req.fil ... le.data | zlib.js:82:43:82:49 | zipFile |
-| zlib.js:27:24:27:30 | zipFile | zlib.js:29:9:29:15 | zipFile |
-| zlib.js:27:24:27:30 | zipFile | zlib.js:33:9:33:15 | zipFile |
-| zlib.js:27:24:27:30 | zipFile | zlib.js:38:9:38:15 | zipFile |
-| zlib.js:29:9:29:15 | zipFile | zlib.js:29:9:29:20 | zipFile.data |
-| zlib.js:29:9:29:15 | zipFile | zlib.js:29:9:29:20 | zipFile.data |
-| zlib.js:33:9:33:15 | zipFile | zlib.js:33:9:33:20 | zipFile.data |
-| zlib.js:33:9:33:15 | zipFile | zlib.js:33:9:33:20 | zipFile.data |
-| zlib.js:38:9:38:15 | zipFile | zlib.js:38:9:38:20 | zipFile.data |
-| zlib.js:38:9:38:15 | zipFile | zlib.js:38:9:38:20 | zipFile.data |
-| zlib.js:62:23:62:29 | zipFile | zlib.js:63:21:63:27 | zipFile |
-| zlib.js:62:23:62:29 | zipFile | zlib.js:64:20:64:26 | zipFile |
-| zlib.js:62:23:62:29 | zipFile | zlib.js:65:31:65:37 | zipFile |
-| zlib.js:63:21:63:27 | zipFile | zlib.js:63:21:63:32 | zipFile.data |
-| zlib.js:63:21:63:27 | zipFile | zlib.js:63:21:63:32 | zipFile.data |
-| zlib.js:64:20:64:26 | zipFile | zlib.js:64:20:64:31 | zipFile.data |
-| zlib.js:64:20:64:26 | zipFile | zlib.js:64:20:64:31 | zipFile.data |
-| zlib.js:65:31:65:37 | zipFile | zlib.js:65:31:65:42 | zipFile.data |
-| zlib.js:65:31:65:37 | zipFile | zlib.js:65:31:65:42 | zipFile.data |
-| zlib.js:74:29:74:35 | zipFile | zlib.js:75:39:75:45 | zipFile |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:77:22:77:40 | zlib.createGunzip() |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:77:22:77:40 | zlib.createGunzip() |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:78:22:78:39 | zlib.createUnzip() |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:78:22:78:39 | zlib.createUnzip() |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:79:22:79:50 | zlib.cr ... press() |
-| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:79:22:79:50 | zlib.cr ... press() |
-| zlib.js:75:39:75:45 | zipFile | zlib.js:75:39:75:50 | zipFile.data |
-| zlib.js:75:39:75:50 | zipFile.data | zlib.js:75:25:75:51 | Readabl ... e.data) |
-| zlib.js:82:43:82:49 | zipFile | zlib.js:83:39:83:45 | zipFile |
-| zlib.js:83:11:83:51 | inputStream | zlib.js:86:9:86:19 | inputStream |
-| zlib.js:83:25:83:51 | Readabl ... e.data) | zlib.js:83:11:83:51 | inputStream |
-| zlib.js:83:39:83:45 | zipFile | zlib.js:83:39:83:50 | zipFile.data |
-| zlib.js:83:39:83:50 | zipFile.data | zlib.js:83:25:83:51 | Readabl ... e.data) |
-| zlib.js:86:9:86:19 | inputStream | zlib.js:87:9:87:27 | zlib.createGunzip() |
-| zlib.js:86:9:86:19 | inputStream | zlib.js:87:9:87:27 | zlib.createGunzip() |
 #select
 | adm-zip.js:28:25:28:42 | zipEntry.getData() | adm-zip.js:13:13:13:21 | req.files | adm-zip.js:28:25:28:42 | zipEntry.getData() | This Decompression depends on a $@. | adm-zip.js:13:13:13:21 | req.files | potentially untrusted source |
 | adm-zip.js:32:17:32:41 | admZip. ... "10GB") | adm-zip.js:13:13:13:21 | req.files | adm-zip.js:32:17:32:41 | admZip. ... "10GB") | This Decompression depends on a $@. | adm-zip.js:13:13:13:21 | req.files | potentially untrusted source |
@@ -389,3 +37,219 @@ edges
 | zlib.js:78:22:78:39 | zlib.createUnzip() | zlib.js:19:24:19:32 | req.files | zlib.js:78:22:78:39 | zlib.createUnzip() | This Decompression depends on a $@. | zlib.js:19:24:19:32 | req.files | potentially untrusted source |
 | zlib.js:79:22:79:50 | zlib.cr ... press() | zlib.js:19:24:19:32 | req.files | zlib.js:79:22:79:50 | zlib.cr ... press() | This Decompression depends on a $@. | zlib.js:19:24:19:32 | req.files | potentially untrusted source |
 | zlib.js:87:9:87:27 | zlib.createGunzip() | zlib.js:21:32:21:40 | req.files | zlib.js:87:9:87:27 | zlib.createGunzip() | This Decompression depends on a $@. | zlib.js:21:32:21:40 | req.files | potentially untrusted source |
+edges
+| adm-zip.js:13:13:13:21 | req.files | adm-zip.js:13:13:13:33 | req.fil ... ombFile | provenance |  |
+| adm-zip.js:13:13:13:33 | req.fil ... ombFile | adm-zip.js:17:18:17:24 | tarFile | provenance |  |
+| adm-zip.js:17:18:17:24 | tarFile | adm-zip.js:24:22:24:28 | tarFile | provenance |  |
+| adm-zip.js:24:22:24:28 | tarFile | adm-zip.js:24:22:24:33 | tarFile.data | provenance |  |
+| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:28:25:28:42 | zipEntry.getData() | provenance | Config |
+| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:32:17:32:41 | admZip. ... "10GB") | provenance | Config |
+| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:34:5:34:55 | admZip. ... , true) | provenance | Config |
+| adm-zip.js:24:22:24:33 | tarFile.data | adm-zip.js:36:5:36:38 | admZip. ... , true) | provenance | Config |
+| jszip.js:12:13:12:21 | req.files | jszip.js:12:13:12:38 | req.fil ... le.data | provenance |  |
+| jszip.js:12:13:12:38 | req.fil ... le.data | jszip.js:32:18:32:24 | zipFile | provenance |  |
+| jszip.js:32:18:32:24 | zipFile | jszip.js:33:22:33:28 | zipFile | provenance |  |
+| jszip.js:33:22:33:28 | zipFile | jszip.js:33:22:33:33 | zipFile.data | provenance |  |
+| node-tar.js:15:13:15:21 | req.files | node-tar.js:15:13:15:38 | req.fil ... le.data | provenance |  |
+| node-tar.js:15:13:15:38 | req.fil ... le.data | node-tar.js:19:18:19:24 | tarFile | provenance |  |
+| node-tar.js:19:18:19:24 | tarFile | node-tar.js:21:37:21:43 | tarFile | provenance |  |
+| node-tar.js:19:18:19:24 | tarFile | node-tar.js:29:25:29:31 | tarFile | provenance |  |
+| node-tar.js:19:18:19:24 | tarFile | node-tar.js:45:25:45:31 | tarFile | provenance |  |
+| node-tar.js:19:18:19:24 | tarFile | node-tar.js:58:19:58:25 | tarFile | provenance |  |
+| node-tar.js:19:18:19:24 | tarFile | node-tar.js:59:25:59:31 | tarFile | provenance |  |
+| node-tar.js:21:23:21:49 | Readabl ... e.data) | node-tar.js:24:9:24:15 | tar.x() | provenance | Config |
+| node-tar.js:21:37:21:43 | tarFile | node-tar.js:21:37:21:48 | tarFile.data | provenance |  |
+| node-tar.js:21:37:21:48 | tarFile.data | node-tar.js:21:23:21:49 | Readabl ... e.data) | provenance | Config |
+| node-tar.js:29:5:29:37 | fs.crea ... e.name) | node-tar.js:30:9:33:10 | tar.x({ ...      }) | provenance | Config |
+| node-tar.js:29:25:29:31 | tarFile | node-tar.js:29:25:29:36 | tarFile.name | provenance |  |
+| node-tar.js:29:25:29:36 | tarFile.name | node-tar.js:29:5:29:37 | fs.crea ... e.name) | provenance | Config |
+| node-tar.js:45:5:45:37 | fs.crea ... e.name) | node-tar.js:46:9:46:20 | decompressor | provenance | Config |
+| node-tar.js:45:25:45:31 | tarFile | node-tar.js:45:25:45:36 | tarFile.name | provenance |  |
+| node-tar.js:45:25:45:36 | tarFile.name | node-tar.js:45:5:45:37 | fs.crea ... e.name) | provenance | Config |
+| node-tar.js:46:9:46:20 | decompressor | node-tar.js:48:9:50:10 | tar.x({ ...      }) | provenance | Config |
+| node-tar.js:58:19:58:25 | tarFile | node-tar.js:58:19:58:30 | tarFile.name | provenance |  |
+| node-tar.js:59:25:59:31 | tarFile | node-tar.js:59:25:59:36 | tarFile.name | provenance |  |
+| pako.js:12:14:12:22 | req.files | pako.js:12:14:12:39 | req.fil ... le.data | provenance |  |
+| pako.js:12:14:12:39 | req.fil ... le.data | pako.js:17:19:17:25 | zipFile | provenance |  |
+| pako.js:13:14:13:22 | req.files | pako.js:13:14:13:39 | req.fil ... le.data | provenance |  |
+| pako.js:13:14:13:39 | req.fil ... le.data | pako.js:28:19:28:25 | zipFile | provenance |  |
+| pako.js:17:19:17:25 | zipFile | pako.js:18:48:18:54 | zipFile | provenance |  |
+| pako.js:18:11:18:68 | myArray | pako.js:21:31:21:37 | myArray | provenance |  |
+| pako.js:18:21:18:68 | Buffer. ... uffer)) | pako.js:18:11:18:68 | myArray | provenance |  |
+| pako.js:18:33:18:67 | new Uin ... buffer) | pako.js:18:21:18:68 | Buffer. ... uffer)) | provenance |  |
+| pako.js:18:48:18:54 | zipFile | pako.js:18:48:18:66 | zipFile.data.buffer | provenance |  |
+| pako.js:18:48:18:66 | zipFile.data.buffer | pako.js:18:33:18:67 | new Uin ... buffer) | provenance | Config |
+| pako.js:28:19:28:25 | zipFile | pako.js:29:36:29:42 | zipFile | provenance |  |
+| pako.js:29:11:29:62 | myArray | pako.js:32:31:32:37 | myArray | provenance |  |
+| pako.js:29:11:29:62 | myArray [ArrayElement] | pako.js:32:31:32:37 | myArray | provenance |  |
+| pako.js:29:21:29:55 | new Uin ... buffer) | pako.js:29:11:29:62 | myArray | provenance |  |
+| pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | pako.js:29:11:29:62 | myArray [ArrayElement] | provenance |  |
+| pako.js:29:36:29:42 | zipFile | pako.js:29:36:29:54 | zipFile.data.buffer | provenance |  |
+| pako.js:29:36:29:54 | zipFile.data.buffer | pako.js:29:21:29:55 | new Uin ... buffer) | provenance | Config |
+| pako.js:29:36:29:54 | zipFile.data.buffer | pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | provenance |  |
+| unbzip2.js:12:5:12:43 | fs.crea ... lePath) | unbzip2.js:12:50:12:54 | bz2() | provenance | Config |
+| unbzip2.js:12:25:12:42 | req.query.FilePath | unbzip2.js:12:5:12:43 | fs.crea ... lePath) | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:16:23:16:63 | unzippe ... ath' }) | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:19:23:19:41 | unzipper.ParseOne() | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:24:15:24:30 | unzipper.Parse() | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:34:15:34:30 | unzipper.Parse() | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:41:35:41:71 | unzippe ... true }) | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:51:36:51:72 | unzippe ... true }) | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:60:23:60:38 | unzipper.Parse() | provenance | Config |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | unzipper.js:73:23:73:38 | unzipper.Parse() | provenance | Config |
+| unzipper.js:13:40:13:48 | req.files | unzipper.js:13:40:13:61 | req.fil ... le.data | provenance |  |
+| unzipper.js:13:40:13:61 | req.fil ... le.data | unzipper.js:13:26:13:62 | Readabl ... e.data) | provenance | Config |
+| yauzl.js:12:18:12:26 | req.files | yauzl.js:12:18:12:39 | req.fil ... le.data | provenance |  |
+| yauzl.js:13:22:13:30 | req.files | yauzl.js:13:22:13:43 | req.fil ... le.data | provenance |  |
+| yauzl.js:14:34:14:42 | req.files | yauzl.js:14:34:14:55 | req.fil ... le.data | provenance |  |
+| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:39:9:39:27 | zipfile.readEntry() | provenance | Config |
+| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:41:64:41:73 | readStream | provenance | Config |
+| yauzl.js:37:16:37:33 | req.query.filePath | yauzl.js:43:21:43:39 | zipfile.readEntry() | provenance | Config |
+| zlib.js:15:19:15:27 | req.files | zlib.js:15:19:15:44 | req.fil ... le.data | provenance |  |
+| zlib.js:15:19:15:44 | req.fil ... le.data | zlib.js:27:24:27:30 | zipFile | provenance |  |
+| zlib.js:17:18:17:26 | req.files | zlib.js:17:18:17:43 | req.fil ... le.data | provenance |  |
+| zlib.js:17:18:17:43 | req.fil ... le.data | zlib.js:62:23:62:29 | zipFile | provenance |  |
+| zlib.js:19:24:19:32 | req.files | zlib.js:19:24:19:49 | req.fil ... le.data | provenance |  |
+| zlib.js:19:24:19:49 | req.fil ... le.data | zlib.js:74:29:74:35 | zipFile | provenance |  |
+| zlib.js:21:32:21:40 | req.files | zlib.js:21:32:21:57 | req.fil ... le.data | provenance |  |
+| zlib.js:21:32:21:57 | req.fil ... le.data | zlib.js:82:43:82:49 | zipFile | provenance |  |
+| zlib.js:27:24:27:30 | zipFile | zlib.js:29:9:29:15 | zipFile | provenance |  |
+| zlib.js:27:24:27:30 | zipFile | zlib.js:33:9:33:15 | zipFile | provenance |  |
+| zlib.js:27:24:27:30 | zipFile | zlib.js:38:9:38:15 | zipFile | provenance |  |
+| zlib.js:29:9:29:15 | zipFile | zlib.js:29:9:29:20 | zipFile.data | provenance |  |
+| zlib.js:33:9:33:15 | zipFile | zlib.js:33:9:33:20 | zipFile.data | provenance |  |
+| zlib.js:38:9:38:15 | zipFile | zlib.js:38:9:38:20 | zipFile.data | provenance |  |
+| zlib.js:62:23:62:29 | zipFile | zlib.js:63:21:63:27 | zipFile | provenance |  |
+| zlib.js:62:23:62:29 | zipFile | zlib.js:64:20:64:26 | zipFile | provenance |  |
+| zlib.js:62:23:62:29 | zipFile | zlib.js:65:31:65:37 | zipFile | provenance |  |
+| zlib.js:63:21:63:27 | zipFile | zlib.js:63:21:63:32 | zipFile.data | provenance |  |
+| zlib.js:64:20:64:26 | zipFile | zlib.js:64:20:64:31 | zipFile.data | provenance |  |
+| zlib.js:65:31:65:37 | zipFile | zlib.js:65:31:65:42 | zipFile.data | provenance |  |
+| zlib.js:74:29:74:35 | zipFile | zlib.js:75:39:75:45 | zipFile | provenance |  |
+| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:77:22:77:40 | zlib.createGunzip() | provenance | Config |
+| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:78:22:78:39 | zlib.createUnzip() | provenance | Config |
+| zlib.js:75:25:75:51 | Readabl ... e.data) | zlib.js:79:22:79:50 | zlib.cr ... press() | provenance | Config |
+| zlib.js:75:39:75:45 | zipFile | zlib.js:75:39:75:50 | zipFile.data | provenance |  |
+| zlib.js:75:39:75:50 | zipFile.data | zlib.js:75:25:75:51 | Readabl ... e.data) | provenance | Config |
+| zlib.js:82:43:82:49 | zipFile | zlib.js:83:39:83:45 | zipFile | provenance |  |
+| zlib.js:83:11:83:51 | inputStream | zlib.js:86:9:86:19 | inputStream | provenance |  |
+| zlib.js:83:25:83:51 | Readabl ... e.data) | zlib.js:83:11:83:51 | inputStream | provenance |  |
+| zlib.js:83:39:83:45 | zipFile | zlib.js:83:39:83:50 | zipFile.data | provenance |  |
+| zlib.js:83:39:83:50 | zipFile.data | zlib.js:83:25:83:51 | Readabl ... e.data) | provenance | Config |
+| zlib.js:86:9:86:19 | inputStream | zlib.js:87:9:87:27 | zlib.createGunzip() | provenance | Config |
+nodes
+| adm-zip.js:13:13:13:21 | req.files | semmle.label | req.files |
+| adm-zip.js:13:13:13:33 | req.fil ... ombFile | semmle.label | req.fil ... ombFile |
+| adm-zip.js:17:18:17:24 | tarFile | semmle.label | tarFile |
+| adm-zip.js:24:22:24:28 | tarFile | semmle.label | tarFile |
+| adm-zip.js:24:22:24:33 | tarFile.data | semmle.label | tarFile.data |
+| adm-zip.js:28:25:28:42 | zipEntry.getData() | semmle.label | zipEntry.getData() |
+| adm-zip.js:32:17:32:41 | admZip. ... "10GB") | semmle.label | admZip. ... "10GB") |
+| adm-zip.js:34:5:34:55 | admZip. ... , true) | semmle.label | admZip. ... , true) |
+| adm-zip.js:36:5:36:38 | admZip. ... , true) | semmle.label | admZip. ... , true) |
+| decompress.js:11:16:11:33 | req.query.filePath | semmle.label | req.query.filePath |
+| jszip.js:12:13:12:21 | req.files | semmle.label | req.files |
+| jszip.js:12:13:12:38 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| jszip.js:32:18:32:24 | zipFile | semmle.label | zipFile |
+| jszip.js:33:22:33:28 | zipFile | semmle.label | zipFile |
+| jszip.js:33:22:33:33 | zipFile.data | semmle.label | zipFile.data |
+| node-tar.js:15:13:15:21 | req.files | semmle.label | req.files |
+| node-tar.js:15:13:15:38 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| node-tar.js:19:18:19:24 | tarFile | semmle.label | tarFile |
+| node-tar.js:21:23:21:49 | Readabl ... e.data) | semmle.label | Readabl ... e.data) |
+| node-tar.js:21:37:21:43 | tarFile | semmle.label | tarFile |
+| node-tar.js:21:37:21:48 | tarFile.data | semmle.label | tarFile.data |
+| node-tar.js:24:9:24:15 | tar.x() | semmle.label | tar.x() |
+| node-tar.js:29:5:29:37 | fs.crea ... e.name) | semmle.label | fs.crea ... e.name) |
+| node-tar.js:29:25:29:31 | tarFile | semmle.label | tarFile |
+| node-tar.js:29:25:29:36 | tarFile.name | semmle.label | tarFile.name |
+| node-tar.js:30:9:33:10 | tar.x({ ...      }) | semmle.label | tar.x({ ...      }) |
+| node-tar.js:45:5:45:37 | fs.crea ... e.name) | semmle.label | fs.crea ... e.name) |
+| node-tar.js:45:25:45:31 | tarFile | semmle.label | tarFile |
+| node-tar.js:45:25:45:36 | tarFile.name | semmle.label | tarFile.name |
+| node-tar.js:46:9:46:20 | decompressor | semmle.label | decompressor |
+| node-tar.js:48:9:50:10 | tar.x({ ...      }) | semmle.label | tar.x({ ...      }) |
+| node-tar.js:58:19:58:25 | tarFile | semmle.label | tarFile |
+| node-tar.js:58:19:58:30 | tarFile.name | semmle.label | tarFile.name |
+| node-tar.js:59:25:59:31 | tarFile | semmle.label | tarFile |
+| node-tar.js:59:25:59:36 | tarFile.name | semmle.label | tarFile.name |
+| pako.js:12:14:12:22 | req.files | semmle.label | req.files |
+| pako.js:12:14:12:39 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| pako.js:13:14:13:22 | req.files | semmle.label | req.files |
+| pako.js:13:14:13:39 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| pako.js:17:19:17:25 | zipFile | semmle.label | zipFile |
+| pako.js:18:11:18:68 | myArray | semmle.label | myArray |
+| pako.js:18:21:18:68 | Buffer. ... uffer)) | semmle.label | Buffer. ... uffer)) |
+| pako.js:18:33:18:67 | new Uin ... buffer) | semmle.label | new Uin ... buffer) |
+| pako.js:18:48:18:54 | zipFile | semmle.label | zipFile |
+| pako.js:18:48:18:66 | zipFile.data.buffer | semmle.label | zipFile.data.buffer |
+| pako.js:21:31:21:37 | myArray | semmle.label | myArray |
+| pako.js:28:19:28:25 | zipFile | semmle.label | zipFile |
+| pako.js:29:11:29:62 | myArray | semmle.label | myArray |
+| pako.js:29:11:29:62 | myArray [ArrayElement] | semmle.label | myArray [ArrayElement] |
+| pako.js:29:21:29:55 | new Uin ... buffer) | semmle.label | new Uin ... buffer) |
+| pako.js:29:21:29:55 | new Uin ... buffer) [ArrayElement] | semmle.label | new Uin ... buffer) [ArrayElement] |
+| pako.js:29:36:29:42 | zipFile | semmle.label | zipFile |
+| pako.js:29:36:29:54 | zipFile.data.buffer | semmle.label | zipFile.data.buffer |
+| pako.js:32:31:32:37 | myArray | semmle.label | myArray |
+| unbzip2.js:12:5:12:43 | fs.crea ... lePath) | semmle.label | fs.crea ... lePath) |
+| unbzip2.js:12:25:12:42 | req.query.FilePath | semmle.label | req.query.FilePath |
+| unbzip2.js:12:50:12:54 | bz2() | semmle.label | bz2() |
+| unzipper.js:13:26:13:62 | Readabl ... e.data) | semmle.label | Readabl ... e.data) |
+| unzipper.js:13:40:13:48 | req.files | semmle.label | req.files |
+| unzipper.js:13:40:13:61 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| unzipper.js:16:23:16:63 | unzippe ... ath' }) | semmle.label | unzippe ... ath' }) |
+| unzipper.js:19:23:19:41 | unzipper.ParseOne() | semmle.label | unzipper.ParseOne() |
+| unzipper.js:24:15:24:30 | unzipper.Parse() | semmle.label | unzipper.Parse() |
+| unzipper.js:34:15:34:30 | unzipper.Parse() | semmle.label | unzipper.Parse() |
+| unzipper.js:41:35:41:71 | unzippe ... true }) | semmle.label | unzippe ... true }) |
+| unzipper.js:51:36:51:72 | unzippe ... true }) | semmle.label | unzippe ... true }) |
+| unzipper.js:60:23:60:38 | unzipper.Parse() | semmle.label | unzipper.Parse() |
+| unzipper.js:73:23:73:38 | unzipper.Parse() | semmle.label | unzipper.Parse() |
+| yauzl.js:12:18:12:26 | req.files | semmle.label | req.files |
+| yauzl.js:12:18:12:39 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| yauzl.js:13:22:13:30 | req.files | semmle.label | req.files |
+| yauzl.js:13:22:13:43 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| yauzl.js:14:34:14:42 | req.files | semmle.label | req.files |
+| yauzl.js:14:34:14:55 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| yauzl.js:37:16:37:33 | req.query.filePath | semmle.label | req.query.filePath |
+| yauzl.js:39:9:39:27 | zipfile.readEntry() | semmle.label | zipfile.readEntry() |
+| yauzl.js:41:64:41:73 | readStream | semmle.label | readStream |
+| yauzl.js:43:21:43:39 | zipfile.readEntry() | semmle.label | zipfile.readEntry() |
+| zlib.js:15:19:15:27 | req.files | semmle.label | req.files |
+| zlib.js:15:19:15:44 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| zlib.js:17:18:17:26 | req.files | semmle.label | req.files |
+| zlib.js:17:18:17:43 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| zlib.js:19:24:19:32 | req.files | semmle.label | req.files |
+| zlib.js:19:24:19:49 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| zlib.js:21:32:21:40 | req.files | semmle.label | req.files |
+| zlib.js:21:32:21:57 | req.fil ... le.data | semmle.label | req.fil ... le.data |
+| zlib.js:27:24:27:30 | zipFile | semmle.label | zipFile |
+| zlib.js:29:9:29:15 | zipFile | semmle.label | zipFile |
+| zlib.js:29:9:29:20 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:33:9:33:15 | zipFile | semmle.label | zipFile |
+| zlib.js:33:9:33:20 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:38:9:38:15 | zipFile | semmle.label | zipFile |
+| zlib.js:38:9:38:20 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:62:23:62:29 | zipFile | semmle.label | zipFile |
+| zlib.js:63:21:63:27 | zipFile | semmle.label | zipFile |
+| zlib.js:63:21:63:32 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:64:20:64:26 | zipFile | semmle.label | zipFile |
+| zlib.js:64:20:64:31 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:65:31:65:37 | zipFile | semmle.label | zipFile |
+| zlib.js:65:31:65:42 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:74:29:74:35 | zipFile | semmle.label | zipFile |
+| zlib.js:75:25:75:51 | Readabl ... e.data) | semmle.label | Readabl ... e.data) |
+| zlib.js:75:39:75:45 | zipFile | semmle.label | zipFile |
+| zlib.js:75:39:75:50 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:77:22:77:40 | zlib.createGunzip() | semmle.label | zlib.createGunzip() |
+| zlib.js:78:22:78:39 | zlib.createUnzip() | semmle.label | zlib.createUnzip() |
+| zlib.js:79:22:79:50 | zlib.cr ... press() | semmle.label | zlib.cr ... press() |
+| zlib.js:82:43:82:49 | zipFile | semmle.label | zipFile |
+| zlib.js:83:11:83:51 | inputStream | semmle.label | inputStream |
+| zlib.js:83:25:83:51 | Readabl ... e.data) | semmle.label | Readabl ... e.data) |
+| zlib.js:83:39:83:45 | zipFile | semmle.label | zipFile |
+| zlib.js:83:39:83:50 | zipFile.data | semmle.label | zipFile.data |
+| zlib.js:86:9:86:19 | inputStream | semmle.label | inputStream |
+| zlib.js:87:9:87:27 | zlib.createGunzip() | semmle.label | zlib.createGunzip() |
+subpaths

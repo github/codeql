@@ -225,6 +225,6 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     this.controlsBlockSplit(controlled, s, cb)
     or
     cb.getLastNode() = this.getAControlFlowNode() and
-    cb.controls(controlled, s)
+    cb.edgeDominates(controlled, s)
   }
 }

@@ -22,9 +22,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
 
   class Callable = CS::Callable;
 
-  class NodeExtended extends CS::DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
+  class NodeExtended = CS::DataFlow::Node;
+
+  Callable getAsExprEnclosingCallable(NodeExtended node) {
+    result = node.asExpr().getEnclosingCallable()
   }
+
+  Callable getEnclosingCallable(NodeExtended node) { result = node.getEnclosingCallable() }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   /**
    * Holds if any of the parameters of `api` are `System.Func<>`.
@@ -233,6 +239,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
   }
 
+  ParameterPosition getReturnKindParamPosition(ReturnKind kind) {
+    kind.(OutRefReturnKind).getPosition() = result.getPosition()
+  }
+
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
     result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable(_)
   }
@@ -361,7 +371,29 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     c.isDelegateCallReturn() and result = "ReturnValue"
   }
 
-  predicate partialModel = ExternalFlow::partialModel/6;
+  string partialModelRow(Callable api, int i) {
+    i = 0 and ExternalFlow::partialModel(api, result, _, _, _, _) // package
+    or
+    i = 1 and ExternalFlow::partialModel(api, _, result, _, _, _) // type
+    or
+    i = 2 and ExternalFlow::partialModel(api, _, _, result, _, _) // extensible
+    or
+    i = 3 and ExternalFlow::partialModel(api, _, _, _, result, _) // name
+    or
+    i = 4 and ExternalFlow::partialModel(api, _, _, _, _, result) // parameters
+    or
+    i = 5 and result = "" and exists(api) // ext
+  }
+
+  string partialNeutralModelRow(Callable api, int i) {
+    i = 0 and result = partialModelRow(api, 0) // package
+    or
+    i = 1 and result = partialModelRow(api, 1) // type
+    or
+    i = 2 and result = partialModelRow(api, 3) // name
+    or
+    i = 3 and result = partialModelRow(api, 4) // parameters
+  }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
 

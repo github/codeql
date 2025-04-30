@@ -12,10 +12,11 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.TemplateObjectInjectionQuery
+import DataFlow::DeduplicatePathGraph<TemplateObjectInjectionFlow::PathNode, TemplateObjectInjectionFlow::PathGraph>
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where
+  TemplateObjectInjectionFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink, "Template object depends on a $@.", source.getNode(),
   "user-provided value"

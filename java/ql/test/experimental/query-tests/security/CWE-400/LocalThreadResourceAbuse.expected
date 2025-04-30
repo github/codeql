@@ -1,5 +1,3 @@
-#select
-| ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Possible uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) | local user-provided value |
 edges
 | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | provenance | TaintPreservingCallable |
 | ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:71:15:71:17 | parameter this : UncheckedSyncAction [waitTime] : Number | provenance |  |
@@ -23,5 +21,7 @@ nodes
 | ThreadResourceAbuse.java:71:15:71:17 | parameter this : UncheckedSyncAction [waitTime] : Number | semmle.label | parameter this : UncheckedSyncAction [waitTime] : Number |
 | ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | semmle.label | this <.field> : UncheckedSyncAction [waitTime] : Number |
 | ThreadResourceAbuse.java:74:18:74:25 | waitTime | semmle.label | waitTime |
+problems
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Possible uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:37:25:37:73 | getInitParameter(...) | local user-provided value |
 subpaths
 | ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:66:10:66:28 | parameter this [Return] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) : UncheckedSyncAction [waitTime] : Number |

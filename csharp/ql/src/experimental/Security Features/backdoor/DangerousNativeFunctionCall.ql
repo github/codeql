@@ -48,8 +48,8 @@ predicate isExternMethod(Method externMethod) {
     SystemRuntimeInteropServicesComImportAttributeClass
 }
 
-from MethodCall mc
-where
+deprecated query predicate problems(MethodCall mc, string message) {
   isExternMethod(mc.getTarget()) and
-  isDangerousMethod(mc.getTarget())
-select mc, "Call to an external method '" + mc.getTarget().getName() + "'."
+  isDangerousMethod(mc.getTarget()) and
+  message = "Call to an external method '" + mc.getTarget().getName() + "'."
+}

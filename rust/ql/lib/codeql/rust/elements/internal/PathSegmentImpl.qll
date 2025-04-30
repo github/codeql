@@ -16,7 +16,7 @@ module Impl {
    * A path segment, which is one part of a whole path.
    */
   class PathSegment extends Generated::PathSegment {
-    override string toString() { result = this.toAbbreviatedString() }
+    override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() {
       result = strictconcat(int i | | this.toAbbreviatedStringPart(i), "::" order by i)
@@ -24,9 +24,7 @@ module Impl {
 
     private string toAbbreviatedStringPart(int index) {
       index = 0 and
-      if this.hasPathType() or this.hasTypeRepr()
-      then result = "<...>"
-      else result = this.getNameRef().getText()
+      if this.hasTypeRepr() then result = "<...>" else result = this.getIdentifier().getText()
       or
       index = 1 and result = this.getGenericArgList().toAbbreviatedString()
     }

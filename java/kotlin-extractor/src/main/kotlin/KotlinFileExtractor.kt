@@ -25,7 +25,19 @@ import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.classifierOrFail
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.types.isNullableAny
+import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeWithArguments
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
@@ -2293,7 +2305,7 @@ open class KotlinFileExtractor(
             // synthesised and inherit the annotation from the delegate (which given it has
             // @NotNull, is likely written in Java)
             JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless {
-                t.isNullable() ||
+                t.isNullableCodeQL() ||
                     primitiveTypeMapping.getPrimitiveInfo(t) != null ||
                     hasExistingAnnotation(it)
             }
@@ -3975,7 +3987,7 @@ open class KotlinFileExtractor(
                 target.parent
             } else {
                 val st = extensionReceiverParameter.type as? IrSimpleType
-                if (isNullable != null && st?.isNullable() != isNullable) {
+                if (isNullable != null && st?.isNullableCodeQL() != isNullable) {
                     verboseln("Nullablility of type didn't match")
                     return false
                 }
@@ -4621,9 +4633,9 @@ open class KotlinFileExtractor(
                     val isPrimitiveArrayCreation = !isBuiltinCallKotlin(c, "arrayOf")
                     val elementType =
                         if (isPrimitiveArrayCreation) {
-                            c.type.getArrayElementType(pluginContext.irBuiltIns)
+                            c.type.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
                         } else {
-                            // TODO: is there any reason not to always use getArrayElementType?
+                            // TODO: is there any reason not to always use getArrayElementTypeCodeQL?
                             if (c.typeArgumentsCount == 1) {
                                 c.getTypeArgument(0).also {
                                     if (it == null) {

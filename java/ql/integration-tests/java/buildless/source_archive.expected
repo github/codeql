@@ -3,4 +3,3 @@ src/main/resources/my-app.properties
 src/main/resources/page.xml
 src/main/resources/struts.xml
 src/test/java/com/example/AppTest.java
-test-db/log/ext/javac.properties

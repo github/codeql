@@ -630,10 +630,18 @@ private module Cached {
     Operand operand, int indirectionIndex, Operand operandRepr, int indirectionIndexRepr
   ) {
     indirectionIndex = [1 .. countIndirectionsForCppType(getLanguageType(operand))] and
-    exists(Instruction load |
-      isDereference(load, operand, false) and
-      operandRepr = unique( | | getAUse(load)) and
-      indirectionIndexRepr = indirectionIndex - 1
+    (
+      exists(Instruction load |
+        isDereference(load, operand, false) and
+        operandRepr = unique( | | getAUse(load)) and
+        indirectionIndexRepr = indirectionIndex - 1
+      )
+      or
+      exists(CopyValueInstruction copy |
+        copy.getSourceValueOperand() = operand and
+        operandRepr = unique( | | getAUse(copy)) and
+        indirectionIndexRepr = indirectionIndex
+      )
     )
   }
 
@@ -649,11 +657,19 @@ private module Cached {
     Instruction instr, int indirectionIndex, Instruction instrRepr, int indirectionIndexRepr
   ) {
     indirectionIndex = [1 .. countIndirectionsForCppType(getResultLanguageType(instr))] and
-    exists(Instruction load, Operand address |
-      address = unique( | | getAUse(instr)) and
-      isDereference(load, address, false) and
-      instrRepr = load and
-      indirectionIndexRepr = indirectionIndex - 1
+    (
+      exists(Instruction load, Operand address |
+        address = unique( | | getAUse(instr)) and
+        isDereference(load, address, false) and
+        instrRepr = load and
+        indirectionIndexRepr = indirectionIndex - 1
+      )
+      or
+      exists(CopyValueInstruction copy |
+        copy.getSourceValueOperand() = unique( | | getAUse(instr)) and
+        instrRepr = copy and
+        indirectionIndexRepr = indirectionIndex
+      )
     )
   }
 
@@ -769,8 +785,4 @@ module InputSigCommon {
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
   BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock extends BasicBlock {
-    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
-  }
 }

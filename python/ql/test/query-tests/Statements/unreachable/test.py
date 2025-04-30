@@ -141,8 +141,29 @@ def unreachable_catch_all_raise(x):
 def ok_match(x):
     match x:
         case False:
-            pass  # FP
+            pass
         case True:
             pass
+        case _:
+            pass
+
+    match x:
+        case "true":
+            pass
+        case _:
+            pass
+    match x:
+        case 42:
+            pass
         case _:  # FP
+            pass
+    match x:
+        case None:
+            pass  # FP
+        case _:
+            pass
+    match x:
+        case 0.0:
+            pass  # FP
+        case _:
             pass

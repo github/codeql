@@ -3,6 +3,3 @@ sourceTest
 | hello_world_server.rb:32:18:32:20 | req |
 ssrfSinkTest
 | hello_world_client.rb:6:47:6:75 | "http://localhost:8080/twirp" |
-serviceInstantiationTest
-| hello_world_server.rb:24:11:24:61 | call to new |
-| hello_world_server.rb:38:1:38:57 | call to new |

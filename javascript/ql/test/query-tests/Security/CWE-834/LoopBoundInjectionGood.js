@@ -23,7 +23,7 @@ function sanitized(val) {
     // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i] + 42);
     }
 }
@@ -35,7 +35,7 @@ function sanitized2(val) {
         return [];
     }
     // Val can only be a primitive. Therefore no issue!
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i] + 42);
     }
 }
@@ -53,7 +53,7 @@ function sanitized3(val) {
     // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i] + 42);
     }
 }
@@ -67,7 +67,7 @@ function sanitized4(val) {
     // At this point we know that val must be an Array, and an attacker is
     // therefore not able to send a cheap request that spends a lot of time
     // inside the loop.
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i] + 42);
     }
 }

@@ -1,3 +1,61 @@
+## 1.4.2
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `java/utils/modelgenerator/summary-models` to use the implementation from `java/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `java/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `java/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* Added a new quality query, `java/empty-method`, to detect empty methods.
+* The query `java/spring-boot-exposed-actuators` has been promoted from experimental to the main query pack. Its results will now appear by default, and the query itself will be removed from the [CodeQL Community Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs). This query was originally submitted as an experimental query [by @ggolawski](https://github.com/github/codeql/pull/2901).
+
+### Major Analysis Improvements
+
+* Updated the `java/unreleased-lock` query so that it no longer report alerts in cases where a boolean variable is used to track lock state.
+
+### Minor Analysis Improvements
+
+* Fixed a false positive in "Time-of-check time-of-use race condition" (`java/toctou-race-condition`) where a field of a non-static class was not considered always-locked if it was accessed in a constructor.
+* Overrides of `BroadcastReceiver::onReceive` with no statements in their body are no longer considered unverified by the `java/improper-intent-verification` query. This will reduce false positives from `onReceive` methods which do not perform any actions.
+
+## 1.3.1
+
+No user-facing changes.
+
+## 1.3.0
+
+### Major Analysis Improvements
+
+* Fixed false positive alerts in the java query "Cross-site scripting" (`java/xss`) when `javax.servlet.http.HttpServletResponse` is used with a content type which is not exploitable.
+
+## 1.2.0
+
+### New Queries
+
+* Added a new query, `java/csrf-unprotected-request-type`, to detect Cross-Site Request Forgery (CSRF) vulnerabilities due to using HTTP request types that are not default-protected from CSRF.
+
+## 1.1.13
+
+### Minor Analysis Improvements
+
+* All *experimental* queries have been deprecated. The queries are instead available as part of the *default* query suite in [CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs).
+
+## 1.1.12
+
+### Bug Fixes
+
+* Classes that define a `writeReplace` method are no longer flagged by the `java/missing-no-arg-constructor-on-serializable` query on the assumption they are unlikely to be deserialized using the default algorithm.
+* The query "Use of a broken or risky cryptographic algorithm" (`java/weak-cryptographic-algorithm`) now gives the reason why the cryptographic algorithm is considered weak.
+
 ## 1.1.11
 
 No user-facing changes.

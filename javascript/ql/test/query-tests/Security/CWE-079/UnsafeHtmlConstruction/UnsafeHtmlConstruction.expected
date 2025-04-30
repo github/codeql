@@ -1,287 +1,3 @@
-nodes
-| jquery-plugin.js:11:27:11:31 | stuff |
-| jquery-plugin.js:11:27:11:31 | stuff |
-| jquery-plugin.js:11:34:11:40 | options |
-| jquery-plugin.js:11:34:11:40 | options |
-| jquery-plugin.js:11:34:11:40 | options |
-| jquery-plugin.js:11:34:11:40 | options |
-| jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:14:31:14:35 | stuff |
-| jquery-plugin.js:14:31:14:35 | stuff |
-| lib2/index.ts:1:28:1:28 | s |
-| lib2/index.ts:1:28:1:28 | s |
-| lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:6:29:6:36 | settings |
-| lib2/index.ts:6:29:6:36 | settings |
-| lib2/index.ts:6:29:6:36 | settings |
-| lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:13:9:13:41 | name |
-| lib2/index.ts:13:16:13:23 | settings |
-| lib2/index.ts:13:16:13:33 | settings.mySetting |
-| lib2/index.ts:13:16:13:36 | setting ... ting[i] |
-| lib2/index.ts:13:16:13:41 | setting ... i].name |
-| lib2/index.ts:18:62:18:65 | name |
-| lib2/index.ts:18:62:18:65 | name |
-| lib2/src/MyNode.ts:1:28:1:28 | s |
-| lib2/src/MyNode.ts:1:28:1:28 | s |
-| lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s |
-| lib/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:2:29:2:29 | s |
-| main.js:1:55:1:55 | s |
-| main.js:1:55:1:55 | s |
-| main.js:2:29:2:29 | s |
-| main.js:2:29:2:29 | s |
-| main.js:6:49:6:49 | s |
-| main.js:6:49:6:49 | s |
-| main.js:7:49:7:49 | s |
-| main.js:7:49:7:49 | s |
-| main.js:11:60:11:60 | s |
-| main.js:11:60:11:60 | s |
-| main.js:12:49:12:49 | s |
-| main.js:12:49:12:49 | s |
-| main.js:21:47:21:47 | s |
-| main.js:21:47:21:47 | s |
-| main.js:22:34:22:34 | s |
-| main.js:22:34:22:34 | s |
-| main.js:41:17:41:17 | s |
-| main.js:42:21:42:21 | s |
-| main.js:47:65:47:73 | this.step |
-| main.js:47:65:47:73 | this.step |
-| main.js:52:41:52:41 | s |
-| main.js:52:41:52:41 | s |
-| main.js:53:20:53:20 | s |
-| main.js:56:28:56:34 | options |
-| main.js:56:28:56:34 | options |
-| main.js:56:28:56:34 | options |
-| main.js:56:28:56:34 | options |
-| main.js:57:11:59:5 | defaults |
-| main.js:57:11:59:5 | defaults |
-| main.js:57:11:59:5 | defaults |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:60:11:60:48 | settings |
-| main.js:60:11:60:48 | settings |
-| main.js:60:11:60:48 | settings |
-| main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:31:60:38 | defaults |
-| main.js:60:31:60:38 | defaults |
-| main.js:60:31:60:38 | defaults |
-| main.js:60:41:60:47 | options |
-| main.js:60:41:60:47 | options |
-| main.js:60:41:60:47 | options |
-| main.js:62:19:62:26 | settings |
-| main.js:62:19:62:26 | settings |
-| main.js:62:19:62:26 | settings |
-| main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:31 | settings.name |
-| main.js:66:35:66:41 | attrVal |
-| main.js:66:35:66:41 | attrVal |
-| main.js:67:63:67:69 | attrVal |
-| main.js:67:63:67:69 | attrVal |
-| main.js:79:34:79:36 | val |
-| main.js:79:34:79:36 | val |
-| main.js:81:35:81:37 | val |
-| main.js:81:35:81:37 | val |
-| main.js:89:21:89:21 | x |
-| main.js:90:23:90:23 | x |
-| main.js:90:23:90:23 | x |
-| main.js:93:43:93:43 | x |
-| main.js:93:43:93:43 | x |
-| main.js:94:31:94:31 | x |
-| main.js:98:43:98:43 | x |
-| main.js:98:43:98:43 | x |
-| main.js:99:28:99:28 | x |
-| main.js:99:28:99:28 | x |
-| main.js:103:43:103:43 | x |
-| main.js:103:43:103:43 | x |
-| main.js:105:26:105:26 | x |
-| main.js:105:26:105:26 | x |
-| main.js:109:41:109:41 | x |
-| main.js:109:41:109:41 | x |
-| main.js:111:37:111:37 | x |
-| main.js:111:37:111:37 | x |
-| main.js:116:47:116:47 | s |
-| main.js:116:47:116:47 | s |
-| main.js:117:34:117:34 | s |
-| main.js:117:34:117:34 | s |
-| typed.ts:1:39:1:39 | s |
-| typed.ts:1:39:1:39 | s |
-| typed.ts:2:29:2:29 | s |
-| typed.ts:2:29:2:29 | s |
-| typed.ts:6:43:6:43 | s |
-| typed.ts:6:43:6:43 | s |
-| typed.ts:8:40:8:40 | s |
-| typed.ts:8:40:8:40 | s |
-| typed.ts:11:20:11:20 | s |
-| typed.ts:11:20:11:20 | s |
-| typed.ts:12:12:12:12 | s |
-| typed.ts:16:11:16:21 | s |
-| typed.ts:16:15:16:21 | id("x") |
-| typed.ts:17:29:17:29 | s |
-| typed.ts:17:29:17:29 | s |
-edges
-| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff |
-| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff |
-| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff |
-| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo |
-| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:13:16:13:23 | settings |
-| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:13:16:13:23 | settings |
-| lib2/index.ts:13:9:13:41 | name | lib2/index.ts:18:62:18:65 | name |
-| lib2/index.ts:13:9:13:41 | name | lib2/index.ts:18:62:18:65 | name |
-| lib2/index.ts:13:16:13:23 | settings | lib2/index.ts:13:16:13:33 | settings.mySetting |
-| lib2/index.ts:13:16:13:33 | settings.mySetting | lib2/index.ts:13:16:13:36 | setting ... ting[i] |
-| lib2/index.ts:13:16:13:36 | setting ... ting[i] | lib2/index.ts:13:16:13:41 | setting ... i].name |
-| lib2/index.ts:13:16:13:41 | setting ... i].name | lib2/index.ts:13:9:13:41 | name |
-| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
-| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s |
-| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
-| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
-| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
-| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s |
-| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
-| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
-| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
-| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s |
-| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
-| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
-| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
-| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s |
-| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
-| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
-| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
-| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s |
-| main.js:41:17:41:17 | s | main.js:42:21:42:21 | s |
-| main.js:42:21:42:21 | s | main.js:47:65:47:73 | this.step |
-| main.js:42:21:42:21 | s | main.js:47:65:47:73 | this.step |
-| main.js:52:41:52:41 | s | main.js:53:20:53:20 | s |
-| main.js:52:41:52:41 | s | main.js:53:20:53:20 | s |
-| main.js:53:20:53:20 | s | main.js:41:17:41:17 | s |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options |
-| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults |
-| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults |
-| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults |
-| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults |
-| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings |
-| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings |
-| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings |
-| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings |
-| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings |
-| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } |
-| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name |
-| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
-| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
-| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
-| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal |
-| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
-| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
-| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
-| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val |
-| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x |
-| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x |
-| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x |
-| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x |
-| main.js:94:31:94:31 | x | main.js:89:21:89:21 | x |
-| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x |
-| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x |
-| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x |
-| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x |
-| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x |
-| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x |
-| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x |
-| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x |
-| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x |
-| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x |
-| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x |
-| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x |
-| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x |
-| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x |
-| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x |
-| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x |
-| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x |
-| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x |
-| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x |
-| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x |
-| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s |
-| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s |
-| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s |
-| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s |
-| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
-| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
-| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
-| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
-| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s |
-| typed.ts:11:20:11:20 | s | typed.ts:12:12:12:12 | s |
-| typed.ts:11:20:11:20 | s | typed.ts:12:12:12:12 | s |
-| typed.ts:12:12:12:12 | s | typed.ts:16:15:16:21 | id("x") |
-| typed.ts:16:11:16:21 | s | typed.ts:17:29:17:29 | s |
-| typed.ts:16:11:16:21 | s | typed.ts:17:29:17:29 | s |
-| typed.ts:16:15:16:21 | id("x") | typed.ts:16:11:16:21 | s |
 #select
 | jquery-plugin.js:12:31:12:41 | options.foo | jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:41 | options.foo | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:34:11:40 | options | library input | jquery-plugin.js:12:20:12:53 | "<span> ... /span>" | cross-site scripting |
 | jquery-plugin.js:14:31:14:35 | stuff | jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | This HTML construction which depends on $@ might later allow $@. | jquery-plugin.js:11:27:11:31 | stuff | library input | jquery-plugin.js:14:20:14:47 | "<span> ... /span>" | cross-site scripting |
@@ -295,7 +11,6 @@ edges
 | main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:16:21:16:35 | xml.cloneNode() | cross-site scripting |
 | main.js:12:49:12:49 | s | main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | This XML parsing which depends on $@ might later allow $@. | main.js:11:60:11:60 | s | library input | main.js:17:48:17:50 | tmp | cross-site scripting |
 | main.js:22:34:22:34 | s | main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:21:47:21:47 | s | library input | main.js:23:53:23:56 | html | cross-site scripting |
-| main.js:47:65:47:73 | this.step | main.js:52:41:52:41 | s | main.js:47:65:47:73 | this.step | This HTML construction which depends on $@ might later allow $@. | main.js:52:41:52:41 | s | library input | main.js:47:54:47:85 | "<span> ... /span>" | cross-site scripting |
 | main.js:62:19:62:31 | settings.name | main.js:56:28:56:34 | options | main.js:62:19:62:31 | settings.name | This HTML construction which depends on $@ might later allow $@. | main.js:56:28:56:34 | options | library input | main.js:62:11:62:40 | "<b>" + ...  "</b>" | cross-site scripting |
 | main.js:67:63:67:69 | attrVal | main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | This HTML construction which depends on $@ might later allow $@. | main.js:66:35:66:41 | attrVal | library input | main.js:67:47:67:78 | "<img a ...  "\\"/>" | cross-site scripting |
 | main.js:81:35:81:37 | val | main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | This HTML construction which depends on $@ might later allow $@. | main.js:79:34:79:36 | val | library input | main.js:81:24:81:49 | "<span> ... /span>" | cross-site scripting |
@@ -308,3 +23,111 @@ edges
 | main.js:117:34:117:34 | s | main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | This markdown rendering which depends on $@ might later allow $@. | main.js:116:47:116:47 | s | library input | main.js:118:53:118:56 | html | cross-site scripting |
 | typed.ts:2:29:2:29 | s | typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:1:39:1:39 | s | library input | typed.ts:3:31:3:34 | html | cross-site scripting |
 | typed.ts:8:40:8:40 | s | typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | This HTML construction which depends on $@ might later allow $@. | typed.ts:6:43:6:43 | s | library input | typed.ts:8:29:8:52 | "<span> ... /span>" | cross-site scripting |
+edges
+| jquery-plugin.js:11:27:11:31 | stuff | jquery-plugin.js:14:31:14:35 | stuff | provenance |  |
+| jquery-plugin.js:11:34:11:40 | options | jquery-plugin.js:12:31:12:37 | options | provenance |  |
+| jquery-plugin.js:12:31:12:37 | options | jquery-plugin.js:12:31:12:41 | options.foo | provenance | Config |
+| lib2/index.ts:1:28:1:28 | s | lib2/index.ts:2:27:2:27 | s | provenance |  |
+| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:7:58:7:65 | settings | provenance |  |
+| lib2/index.ts:6:29:6:36 | settings | lib2/index.ts:13:16:13:23 | settings | provenance |  |
+| lib2/index.ts:13:9:13:41 | name | lib2/index.ts:18:62:18:65 | name | provenance |  |
+| lib2/index.ts:13:16:13:23 | settings | lib2/index.ts:13:16:13:33 | settings.mySetting | provenance | Config |
+| lib2/index.ts:13:16:13:33 | settings.mySetting | lib2/index.ts:13:16:13:36 | setting ... ting[i] | provenance | Config |
+| lib2/index.ts:13:16:13:36 | setting ... ting[i] | lib2/index.ts:13:16:13:41 | setting ... i].name | provenance | Config |
+| lib2/index.ts:13:16:13:41 | setting ... i].name | lib2/index.ts:13:9:13:41 | name | provenance |  |
+| lib2/src/MyNode.ts:1:28:1:28 | s | lib2/src/MyNode.ts:2:29:2:29 | s | provenance |  |
+| lib/src/MyNode.ts:1:28:1:28 | s | lib/src/MyNode.ts:2:29:2:29 | s | provenance |  |
+| main.js:1:55:1:55 | s | main.js:2:29:2:29 | s | provenance |  |
+| main.js:6:49:6:49 | s | main.js:7:49:7:49 | s | provenance |  |
+| main.js:11:60:11:60 | s | main.js:12:49:12:49 | s | provenance |  |
+| main.js:21:47:21:47 | s | main.js:22:34:22:34 | s | provenance |  |
+| main.js:56:28:56:34 | options | main.js:60:41:60:47 | options | provenance |  |
+| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
+| main.js:57:11:59:5 | defaults | main.js:60:31:60:38 | defaults | provenance |  |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | main.js:57:11:59:5 | defaults | provenance |  |
+| main.js:60:11:60:48 | settings | main.js:62:19:62:26 | settings | provenance |  |
+| main.js:60:22:60:48 | $.exten ... ptions) | main.js:60:11:60:48 | settings | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:31:60:38 | defaults | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance |  |
+| main.js:60:41:60:47 | options | main.js:57:22:59:5 | {\\n      ... "\\n    } | provenance | Config |
+| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance |  |
+| main.js:60:41:60:47 | options | main.js:60:22:60:48 | $.exten ... ptions) | provenance | Config |
+| main.js:62:19:62:26 | settings | main.js:62:19:62:31 | settings.name | provenance | Config |
+| main.js:66:35:66:41 | attrVal | main.js:67:63:67:69 | attrVal | provenance |  |
+| main.js:79:34:79:36 | val | main.js:81:35:81:37 | val | provenance |  |
+| main.js:89:21:89:21 | x | main.js:90:23:90:23 | x | provenance |  |
+| main.js:93:43:93:43 | x | main.js:94:31:94:31 | x | provenance |  |
+| main.js:94:31:94:31 | x | main.js:89:21:89:21 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:99:28:99:28 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:103:43:103:43 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:105:26:105:26 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:109:41:109:41 | x | provenance |  |
+| main.js:98:43:98:43 | x | main.js:111:37:111:37 | x | provenance |  |
+| main.js:116:47:116:47 | s | main.js:117:34:117:34 | s | provenance |  |
+| typed.ts:1:39:1:39 | s | typed.ts:2:29:2:29 | s | provenance |  |
+| typed.ts:6:43:6:43 | s | typed.ts:8:40:8:40 | s | provenance |  |
+nodes
+| jquery-plugin.js:11:27:11:31 | stuff | semmle.label | stuff |
+| jquery-plugin.js:11:34:11:40 | options | semmle.label | options |
+| jquery-plugin.js:12:31:12:37 | options | semmle.label | options |
+| jquery-plugin.js:12:31:12:41 | options.foo | semmle.label | options.foo |
+| jquery-plugin.js:14:31:14:35 | stuff | semmle.label | stuff |
+| lib2/index.ts:1:28:1:28 | s | semmle.label | s |
+| lib2/index.ts:2:27:2:27 | s | semmle.label | s |
+| lib2/index.ts:6:29:6:36 | settings | semmle.label | settings |
+| lib2/index.ts:7:58:7:65 | settings | semmle.label | settings |
+| lib2/index.ts:13:9:13:41 | name | semmle.label | name |
+| lib2/index.ts:13:16:13:23 | settings | semmle.label | settings |
+| lib2/index.ts:13:16:13:33 | settings.mySetting | semmle.label | settings.mySetting |
+| lib2/index.ts:13:16:13:36 | setting ... ting[i] | semmle.label | setting ... ting[i] |
+| lib2/index.ts:13:16:13:41 | setting ... i].name | semmle.label | setting ... i].name |
+| lib2/index.ts:18:62:18:65 | name | semmle.label | name |
+| lib2/src/MyNode.ts:1:28:1:28 | s | semmle.label | s |
+| lib2/src/MyNode.ts:2:29:2:29 | s | semmle.label | s |
+| lib/src/MyNode.ts:1:28:1:28 | s | semmle.label | s |
+| lib/src/MyNode.ts:2:29:2:29 | s | semmle.label | s |
+| main.js:1:55:1:55 | s | semmle.label | s |
+| main.js:2:29:2:29 | s | semmle.label | s |
+| main.js:6:49:6:49 | s | semmle.label | s |
+| main.js:7:49:7:49 | s | semmle.label | s |
+| main.js:11:60:11:60 | s | semmle.label | s |
+| main.js:12:49:12:49 | s | semmle.label | s |
+| main.js:21:47:21:47 | s | semmle.label | s |
+| main.js:22:34:22:34 | s | semmle.label | s |
+| main.js:56:28:56:34 | options | semmle.label | options |
+| main.js:57:11:59:5 | defaults | semmle.label | defaults |
+| main.js:57:11:59:5 | defaults | semmle.label | defaults |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | semmle.label | {\\n      ... "\\n    } |
+| main.js:57:22:59:5 | {\\n      ... "\\n    } | semmle.label | {\\n      ... "\\n    } |
+| main.js:60:11:60:48 | settings | semmle.label | settings |
+| main.js:60:22:60:48 | $.exten ... ptions) | semmle.label | $.exten ... ptions) |
+| main.js:60:31:60:38 | defaults | semmle.label | defaults |
+| main.js:60:31:60:38 | defaults | semmle.label | defaults |
+| main.js:60:41:60:47 | options | semmle.label | options |
+| main.js:62:19:62:26 | settings | semmle.label | settings |
+| main.js:62:19:62:31 | settings.name | semmle.label | settings.name |
+| main.js:66:35:66:41 | attrVal | semmle.label | attrVal |
+| main.js:67:63:67:69 | attrVal | semmle.label | attrVal |
+| main.js:79:34:79:36 | val | semmle.label | val |
+| main.js:81:35:81:37 | val | semmle.label | val |
+| main.js:89:21:89:21 | x | semmle.label | x |
+| main.js:90:23:90:23 | x | semmle.label | x |
+| main.js:93:43:93:43 | x | semmle.label | x |
+| main.js:94:31:94:31 | x | semmle.label | x |
+| main.js:98:43:98:43 | x | semmle.label | x |
+| main.js:99:28:99:28 | x | semmle.label | x |
+| main.js:103:43:103:43 | x | semmle.label | x |
+| main.js:105:26:105:26 | x | semmle.label | x |
+| main.js:109:41:109:41 | x | semmle.label | x |
+| main.js:111:37:111:37 | x | semmle.label | x |
+| main.js:116:47:116:47 | s | semmle.label | s |
+| main.js:117:34:117:34 | s | semmle.label | s |
+| typed.ts:1:39:1:39 | s | semmle.label | s |
+| typed.ts:2:29:2:29 | s | semmle.label | s |
+| typed.ts:6:43:6:43 | s | semmle.label | s |
+| typed.ts:8:40:8:40 | s | semmle.label | s |
+subpaths

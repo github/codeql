@@ -1,3 +1,5 @@
+| file://:0:0:0:0 | CrateGraph |
+| file://:0:0:0:0 | FindManifests |
 | rust-project.json:0:0:0:0 | LoadManifest(rust-project.json) |
 | src/directory_module/mod.rs:0:0:0:0 | Extract(src/directory_module/mod.rs) |
 | src/directory_module/mod.rs:0:0:0:0 | LoadSource(src/directory_module/mod.rs) |

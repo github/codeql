@@ -68,9 +68,9 @@ public class JSParser {
   }
 
   public static Result parse(
-      ExtractorConfig config, SourceType sourceType, String source, ExtractionMetrics metrics) {
+      ExtractorConfig config, SourceType sourceType, String extension, String source, ExtractionMetrics metrics) {
     metrics.startPhase(ExtractionPhase.JSParser_parse);
-    Result result = JcornWrapper.parse(config, sourceType, source);
+    Result result = JcornWrapper.parse(config, sourceType, extension, source);
     metrics.stopPhase(ExtractionPhase.JSParser_parse);
     return result;
   }

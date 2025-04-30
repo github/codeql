@@ -56,8 +56,10 @@ public class JSExtractor {
 
     SourceType sourceType = establishSourceType(source, true);
 
+    String extension = textualExtractor.getLocationManager().getSourceFileExtension();
+
     JSParser.Result parserRes =
-        JSParser.parse(config, sourceType, source, textualExtractor.getMetrics());
+        JSParser.parse(config, sourceType, extension, source, textualExtractor.getMetrics());
 
     // Check if we guessed wrong with the regex in `establishSourceType`, (which could
     // happen due to a block-comment line starting with '  import').
@@ -74,7 +76,7 @@ public class JSExtractor {
       if (wrongGuess) {
         sourceType = SourceType.SCRIPT;
         parserRes =
-          JSParser.parse(config, sourceType, source, textualExtractor.getMetrics());
+          JSParser.parse(config, sourceType, extension, source, textualExtractor.getMetrics());
       }
     }
 

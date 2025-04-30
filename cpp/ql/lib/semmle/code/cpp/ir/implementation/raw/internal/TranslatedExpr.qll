@@ -59,9 +59,18 @@ abstract class TranslatedExpr extends TranslatedElement {
 
   final CppType getResultType() {
     if this.isResultGLValue()
-    then result = getTypeForGLValue(expr.getType())
-    else result = getTypeForPRValue(expr.getType())
+    then result = getTypeForGLValue(this.getExprType())
+    else result = getTypeForPRValue(this.getExprType())
   }
+
+  /**
+   * Gets the type of `expr`.
+   *
+   * This predicate can be overwritten in subclasses to modify the result
+   * of `getResultType` which determines the type of the instruction that
+   * generates the result of `expr`.
+   */
+  Type getExprType() { result = expr.getType() }
 
   /**
    * Holds if the result of this `TranslatedExpr` is a glvalue.
@@ -1262,9 +1271,10 @@ abstract class TranslatedSingleInstructionExpr extends TranslatedNonConstantExpr
 
 class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   TranslatedUnaryExpr() {
-    expr instanceof NotExpr or
-    expr instanceof ComplementExpr or
-    expr instanceof UnaryPlusExpr or
+    expr instanceof ComplementExpr
+    or
+    expr instanceof UnaryPlusExpr
+    or
     expr instanceof UnaryMinusExpr
   }
 
@@ -1298,8 +1308,6 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 
   final override Opcode getOpcode() {
-    expr instanceof NotExpr and result instanceof Opcode::LogicalNot
-    or
     expr instanceof ComplementExpr and result instanceof Opcode::BitComplement
     or
     expr instanceof UnaryPlusExpr and result instanceof Opcode::CopyValue
@@ -1309,6 +1317,100 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
 
   private TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.(UnaryOperation).getOperand().getFullyConverted())
+  }
+}
+
+/**
+ * The IR translation of a `NotExpr`.
+ *
+ * In C++ an operation such as `!x` where `x` is an `int` will generate
+ * ```
+ * r1(glval<int>) = VariableAddress[x] :
+ * r2(int)        = Load               : &r1
+ * r3(int)        = Constant[0]        :
+ * r4(bool)       = CompareNE          : r2, r3
+ * r5(bool)       = LogicalNot         : r4
+ * ```
+ * since C does not do implicit int-to-bool casts we need to generate the
+ * `Constant[0]`, `CompareNE`, and `LogicalNot` instructions manually, but
+ * we simplify this and generate `Constant[0]`, `CompareEQ` instead.
+ */
+class TranslatedNotExpr extends TranslatedNonConstantExpr {
+  override NotExpr expr;
+
+  override Type getExprType() { result instanceof BoolType }
+
+  private Type getOperandType() { result = this.getOperand().getExprType().getUnspecifiedType() }
+
+  predicate shouldGenerateEq() { not this.getOperandType() instanceof BoolType }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(NotExprOperationTag())
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getOperand()
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    this.shouldGenerateEq() and
+    tag = NotExprConstantTag() and
+    opcode instanceof Opcode::Constant and
+    resultType = getTypeForPRValue(this.getOperandType())
+    or
+    resultType = getBoolType() and
+    tag = NotExprOperationTag() and
+    if this.shouldGenerateEq()
+    then opcode instanceof Opcode::CompareEQ
+    else opcode instanceof Opcode::LogicalNot
+  }
+
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = NotExprOperationTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+    or
+    tag = NotExprConstantTag() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(NotExprOperationTag())
+  }
+
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getOperand() and
+    kind instanceof GotoEdge and
+    if this.shouldGenerateEq()
+    then result = this.getInstruction(NotExprConstantTag())
+    else result = this.getInstruction(NotExprOperationTag())
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = NotExprOperationTag() and
+    if this.shouldGenerateEq()
+    then (
+      result = this.getOperand().getResult() and
+      operandTag instanceof LeftOperandTag
+      or
+      result = this.getInstruction(NotExprConstantTag()) and
+      operandTag instanceof RightOperandTag
+    ) else (
+      operandTag instanceof UnaryOperandTag and
+      result = this.getOperand().getResult()
+    )
+  }
+
+  private TranslatedExpr getOperand() {
+    result = getTranslatedExpr(expr.getOperand().getFullyConverted())
+  }
+
+  final override Instruction getResult() { result = this.getInstruction(NotExprOperationTag()) }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    this.shouldGenerateEq() and
+    tag = NotExprConstantTag() and
+    result = "0"
   }
 }
 
@@ -1752,6 +1854,12 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
     result = binaryArithmeticOpcode(expr) or
     result = binaryBitwiseOpcode(expr) or
     result = comparisonOpcode(expr)
+  }
+
+  override Type getExprType() {
+    if exists(comparisonOpcode(expr))
+    then result instanceof BoolType
+    else result = super.getExprType()
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
@@ -2857,6 +2965,10 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     result = this.getCondition().getFirstInstruction(kind)
   }
 
+  private Type getConditionType() {
+    result = this.getCondition().getExprType().getUnspecifiedType()
+  }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     super.hasInstruction(opcode, tag, resultType)
     or
@@ -2864,10 +2976,34 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
+    or
+    exists(Type t |
+      t = this.getConditionType() and
+      not t instanceof BoolType
+    |
+      tag = ValueConditionConditionalConstantTag() and
+      opcode instanceof Opcode::Constant and
+      resultType = getTypeForPRValue(t)
+      or
+      tag = ValueConditionConditionalCompareTag() and
+      opcode instanceof Opcode::CompareNE and
+      resultType = getBoolType()
+    )
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     result = super.getInstructionSuccessorInternal(tag, kind)
+    or
+    not this.getConditionType() instanceof BoolType and
+    (
+      tag = ValueConditionConditionalConstantTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionConditionalCompareTag())
+      or
+      tag = ValueConditionConditionalCompareTag() and
+      kind instanceof GotoEdge and
+      result = this.getInstruction(ValueConditionConditionalBranchTag())
+    )
     or
     tag = ValueConditionConditionalBranchTag() and
     (
@@ -2884,7 +3020,19 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     or
     tag = ValueConditionConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = this.getCondition().getResult()
+    if this.getConditionType() instanceof BoolType
+    then result = this.getCondition().getResult()
+    else result = this.getInstruction(ValueConditionConditionalCompareTag())
+    or
+    not this.getConditionType() instanceof BoolType and
+    tag = ValueConditionConditionalCompareTag() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(ValueConditionConditionalConstantTag())
+    )
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
@@ -2892,7 +3040,9 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     or
     kind instanceof GotoEdge and
     child = this.getCondition() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag())
+    if this.getConditionType() instanceof BoolType
+    then result = this.getInstruction(ValueConditionConditionalBranchTag())
+    else result = this.getInstruction(ValueConditionConditionalConstantTag())
   }
 
   private TranslatedExpr getCondition() {
@@ -2908,6 +3058,11 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
     // so we'll still sometimes wind up with one operand as the wrong type. This is better than
     // always converting the "then" operand to `bool`, which is almost always the wrong type.
     result = getTranslatedExpr(expr.getThen().getExplicitlyConverted())
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = ValueConditionConditionalConstantTag() and
+    result = "0"
   }
 }
 

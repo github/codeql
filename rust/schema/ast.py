@@ -38,6 +38,9 @@ class TypeRepr(AstNode, ):
 class UseBoundGenericArg(AstNode, ):
     pass
 
+class VariantDef(AstNode, ):
+    pass
+
 class Item(Stmt, ):
     pass
 
@@ -94,7 +97,7 @@ class AsmRegOperand(AsmOperand, ):
     asm_reg_spec: optional["AsmRegSpec"] | child
 
 class AsmRegSpec(AstNode, ):
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
 
 class AsmSym(AsmOperand, ):
     path: optional["Path"] | child
@@ -106,7 +109,7 @@ class AssocItemList(AstNode, ):
 class AssocTypeArg(GenericArg, ):
     const_arg: optional["ConstArg"] | child
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     param_list: optional["ParamList"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
@@ -223,7 +226,7 @@ class ExternBlock(Item, ):
 
 class ExternCrate(Item, ):
     attrs: list["Attr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     rename: optional["Rename"] | child
     visibility: optional["Visibility"] | child
 
@@ -233,8 +236,8 @@ class ExternItemList(AstNode, ):
 
 class FieldExpr(Expr, ):
     attrs: list["Attr"] | child
-    expr: optional["Expr"] | child
-    name_ref: optional["NameRef"] | child
+    container: optional["Expr"] | child
+    identifier: optional["NameRef"] | child
 
 class Function(AssocItem, ExternItem, Item, ):
     abi: optional["Abi"] | child
@@ -429,7 +432,7 @@ class MethodCallExpr(Expr, ):
     arg_list: optional["ArgList"] | child
     attrs: list["Attr"] | child
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     receiver: optional["Expr"] | child
 
 class Module(Item, ):
@@ -479,7 +482,7 @@ class ParenthesizedArgList(AstNode, ):
 
 class Path(AstNode, ):
     qualifier: optional["Path"] | child
-    part: optional["PathSegment"] | child
+    segment: optional["PathSegment"] | child
 
 class PathExpr(Expr, ):
     attrs: list["Attr"] | child
@@ -490,12 +493,10 @@ class PathPat(Pat, ):
 
 class PathSegment(AstNode, ):
     generic_arg_list: optional["GenericArgList"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     parenthesized_arg_list: optional["ParenthesizedArgList"] | child
-    path_type: optional["PathTypeRepr"] | child
     ret_type: optional["RetTypeRepr"] | child
     return_type_syntax: optional["ReturnTypeSyntax"] | child
-    type_repr: optional["TypeRepr"] | child
 
 class PathTypeRepr(TypeRepr, ):
     path: optional["Path"] | child
@@ -521,40 +522,42 @@ class RangePat(Pat, ):
     operator_name: optional[string]
     start: optional["Pat"] | child
 
-class RecordExpr(Expr, ):
+class StructExpr(Expr, ):
     path: optional["Path"] | child
-    record_expr_field_list: optional["RecordExprFieldList"] | child
+    struct_expr_field_list: optional["StructExprFieldList"] | child
 
-class RecordExprField(AstNode, ):
+class StructExprField(AstNode, ):
     attrs: list["Attr"] | child
     expr: optional["Expr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
 
-class RecordExprFieldList(AstNode, ):
+class StructExprFieldList(AstNode, ):
     attrs: list["Attr"] | child
-    fields: list["RecordExprField"] | child
+    fields: list["StructExprField"] | child
     spread: optional["Expr"] | child
 
-class RecordField(AstNode, ):
+class StructField(AstNode, ):
     attrs: list["Attr"] | child
+    default: optional["Expr"] | child
+    is_unsafe: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
 
-class RecordFieldList(FieldList, ):
-    fields: list["RecordField"] | child
+class StructFieldList(FieldList, ):
+    fields: list["StructField"] | child
 
-class RecordPat(Pat, ):
+class StructPat(Pat, ):
     path: optional["Path"] | child
-    record_pat_field_list: optional["RecordPatFieldList"] | child
+    struct_pat_field_list: optional["StructPatFieldList"] | child
 
-class RecordPatField(AstNode, ):
+class StructPatField(AstNode, ):
     attrs: list["Attr"] | child
-    name_ref: optional["NameRef"] | child
+    identifier: optional["NameRef"] | child
     pat: optional["Pat"] | child
 
-class RecordPatFieldList(AstNode, ):
-    fields: list["RecordPatField"] | child
+class StructPatFieldList(AstNode, ):
+    fields: list["StructPatField"] | child
     rest_pat: optional["RestPat"] | child
 
 class RefExpr(Expr, ):
@@ -622,7 +625,7 @@ class StmtList(AstNode, ):
     statements: list["Stmt"] | child
     tail_expr: optional["Expr"] | child
 
-class Struct(Item, ):
+class Struct(Item, VariantDef, ):
     attrs: list["Attr"] | child
     field_list: optional["FieldList"] | child
     generic_param_list: optional["GenericParamList"] | child
@@ -710,11 +713,11 @@ class TypeParam(GenericParam, ):
 class UnderscoreExpr(Expr, ):
     attrs: list["Attr"] | child
 
-class Union(Item, ):
+class Union(Item, VariantDef, ):
     attrs: list["Attr"] | child
     generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
-    record_field_list: optional["RecordFieldList"] | child
+    struct_field_list: optional["StructFieldList"] | child
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
 
@@ -727,6 +730,7 @@ class UseBoundGenericArgs(AstNode, ):
     use_bound_generic_args: list["UseBoundGenericArg"] | child
 
 class UseTree(AstNode, ):
+    is_glob: predicate
     path: optional["Path"] | child
     rename: optional["Rename"] | child
     use_tree_list: optional["UseTreeList"] | child
@@ -734,9 +738,9 @@ class UseTree(AstNode, ):
 class UseTreeList(AstNode, ):
     use_trees: list["UseTree"] | child
 
-class Variant(AstNode, ):
+class Variant(VariantDef, ):
     attrs: list["Attr"] | child
-    expr: optional["Expr"] | child
+    discriminant: optional["Expr"] | child
     field_list: optional["FieldList"] | child
     name: optional["Name"] | child
     visibility: optional["Visibility"] | child

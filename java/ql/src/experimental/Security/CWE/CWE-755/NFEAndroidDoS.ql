@@ -42,8 +42,13 @@ module NfeLocalDoSConfig implements DataFlow::ConfigSig {
 
 module NfeLocalDoSFlow = TaintTracking::Global<NfeLocalDoSConfig>;
 
-from NfeLocalDoSFlow::PathNode source, NfeLocalDoSFlow::PathNode sink
-where NfeLocalDoSFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Uncaught NumberFormatException in an exported Android component due to $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, NfeLocalDoSFlow::PathNode source, NfeLocalDoSFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  NfeLocalDoSFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Uncaught NumberFormatException in an exported Android component due to $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

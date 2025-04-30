@@ -3969,6 +3969,42 @@
             <dependencies/>
         </relation>
         <relation>
+            <name>databaseMetadata</name>
+            <cardinality>1</cardinality>
+            <columnsizes>
+                <e>
+                    <k>metadataKey</k>
+                    <v>1</v>
+                </e>
+                <e>
+                    <k>value</k>
+                    <v>1</v>
+                </e>
+            </columnsizes>
+            <dependencies>
+                <dep>
+                    <src>metadataKey</src>
+                    <trg>value</trg>
+                    <val>
+                        <hist>
+                            <budget>12</budget>
+                            <bs/>
+                        </hist>
+                    </val>
+                </dep>
+                <dep>
+                    <src>value</src>
+                    <trg>metadataKey</trg>
+                    <val>
+                        <hist>
+                            <budget>12</budget>
+                            <bs/>
+                        </hist>
+                    </val>
+                </dep>
+            </dependencies>
+        </relation>
+        <relation>
             <name>smap_header</name>
             <cardinality>1</cardinality>
             <columnsizes>

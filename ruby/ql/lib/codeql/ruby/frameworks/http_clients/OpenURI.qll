@@ -110,6 +110,10 @@ private module OpenUriDisablesCertificateValidationConfig implements DataFlow::C
     or
     sink = any(OpenUriKernelOpenRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
 
 private module OpenUriDisablesCertificateValidationFlow =

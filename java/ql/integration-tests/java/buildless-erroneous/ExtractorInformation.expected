@@ -5,10 +5,9 @@
 | Number of diagnostics from CodeQL Java extractor with severity 6 | 2 |
 | Number of expressions with known type | 1 |
 | Number of expressions with unknown type | 6 |
-| Number of files | 607 |
+| Number of files | 606 |
 | Number of files with extension class | 604 |
 | Number of files with extension java | 1 |
-| Number of files with extension properties | 1 |
 | Number of lines of code | 7 |
 | Number of lines of code with extension java | 7 |
 | Percentage of calls with call target | 20 |

@@ -6,8 +6,8 @@ class C extends Q {
      */
     this.x = this.x; // OK - documentation
 
-    this.y = this.y; // NOT OK
+    this.y = this.y; // $ Alert
 
-    this.arg = this.arg; // NOT OK
+    this.arg = this.arg; // $ Alert
   }
 }

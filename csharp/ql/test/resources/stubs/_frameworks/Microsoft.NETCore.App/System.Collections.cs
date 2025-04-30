@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Collections, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Collections, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -37,13 +37,13 @@ namespace System
         {
             public static partial class CollectionExtensions
             {
-                public static void AddRange<T>(this System.Collections.Generic.List<T> list, System.ReadOnlySpan<T> source) => throw null;
+                public static void AddRange<T>(this System.Collections.Generic.List<T> list, params System.ReadOnlySpan<T> source) => throw null;
                 public static System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly<T>(this System.Collections.Generic.IList<T> list) => throw null;
                 public static System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
                 public static void CopyTo<T>(this System.Collections.Generic.List<T> list, System.Span<T> destination) => throw null;
                 public static TValue GetValueOrDefault<TKey, TValue>(this System.Collections.Generic.IReadOnlyDictionary<TKey, TValue> dictionary, TKey key) => throw null;
                 public static TValue GetValueOrDefault<TKey, TValue>(this System.Collections.Generic.IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue) => throw null;
-                public static void InsertRange<T>(this System.Collections.Generic.List<T> list, int index, System.ReadOnlySpan<T> source) => throw null;
+                public static void InsertRange<T>(this System.Collections.Generic.List<T> list, int index, params System.ReadOnlySpan<T> source) => throw null;
                 public static bool Remove<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> dictionary, TKey key, out TValue value) => throw null;
                 public static bool TryAdd<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> dictionary, TKey key, TValue value) => throw null;
             }
@@ -60,6 +60,18 @@ namespace System
                 public void Add(TKey key, TValue value) => throw null;
                 void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
                 void System.Collections.IDictionary.Add(object key, object value) => throw null;
+                public struct AlternateLookup<TAlternateKey>
+                {
+                    public bool ContainsKey(TAlternateKey key) => throw null;
+                    public System.Collections.Generic.Dictionary<TKey, TValue> Dictionary { get => throw null; }
+                    public bool Remove(TAlternateKey key) => throw null;
+                    public bool Remove(TAlternateKey key, out TKey actualKey, out TValue value) => throw null;
+                    public TValue this[TAlternateKey key] { get => throw null; set { } }
+                    public bool TryAdd(TAlternateKey key, TValue value) => throw null;
+                    public bool TryGetValue(TAlternateKey key, out TValue value) => throw null;
+                    public bool TryGetValue(TAlternateKey key, out TKey actualKey, out TValue value) => throw null;
+                }
+                public int Capacity { get => throw null; }
                 public void Clear() => throw null;
                 public System.Collections.Generic.IEqualityComparer<TKey> Comparer { get => throw null; }
                 bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> keyValuePair) => throw null;
@@ -90,6 +102,7 @@ namespace System
                     void System.Collections.IEnumerator.Reset() => throw null;
                     object System.Collections.IDictionaryEnumerator.Value { get => throw null; }
                 }
+                public System.Collections.Generic.Dictionary<TKey, TValue>.AlternateLookup<TAlternateKey> GetAlternateLookup<TAlternateKey>() => throw null;
                 public System.Collections.Generic.Dictionary<TKey, TValue>.Enumerator GetEnumerator() => throw null;
                 System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator() => throw null;
                 System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
@@ -139,6 +152,7 @@ namespace System
                 public void TrimExcess() => throw null;
                 public void TrimExcess(int capacity) => throw null;
                 public bool TryAdd(TKey key, TValue value) => throw null;
+                public bool TryGetAlternateLookup<TAlternateKey>(out System.Collections.Generic.Dictionary<TKey, TValue>.AlternateLookup<TAlternateKey> lookup) => throw null;
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
                 public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<TValue>
                 {
@@ -184,6 +198,15 @@ namespace System
             {
                 public bool Add(T item) => throw null;
                 void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
+                public struct AlternateLookup<TAlternate>
+                {
+                    public bool Add(TAlternate item) => throw null;
+                    public bool Contains(TAlternate item) => throw null;
+                    public bool Remove(TAlternate item) => throw null;
+                    public System.Collections.Generic.HashSet<T> Set { get => throw null; }
+                    public bool TryGetValue(TAlternate equalValue, out T actualValue) => throw null;
+                }
+                public int Capacity { get => throw null; }
                 public void Clear() => throw null;
                 public System.Collections.Generic.IEqualityComparer<T> Comparer { get => throw null; }
                 public bool Contains(T item) => throw null;
@@ -209,6 +232,7 @@ namespace System
                     void System.Collections.IEnumerator.Reset() => throw null;
                 }
                 public void ExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                public System.Collections.Generic.HashSet<T>.AlternateLookup<TAlternate> GetAlternateLookup<TAlternate>() => throw null;
                 public System.Collections.Generic.HashSet<T>.Enumerator GetEnumerator() => throw null;
                 System.Collections.Generic.IEnumerator<T> System.Collections.Generic.IEnumerable<T>.GetEnumerator() => throw null;
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
@@ -226,6 +250,8 @@ namespace System
                 public bool SetEquals(System.Collections.Generic.IEnumerable<T> other) => throw null;
                 public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
                 public void TrimExcess() => throw null;
+                public void TrimExcess(int capacity) => throw null;
+                public bool TryGetAlternateLookup<TAlternate>(out System.Collections.Generic.HashSet<T>.AlternateLookup<TAlternate> lookup) => throw null;
                 public bool TryGetValue(T equalValue, out T actualValue) => throw null;
                 public void UnionWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
             }
@@ -363,6 +389,165 @@ namespace System
                 public void TrimExcess() => throw null;
                 public bool TrueForAll(System.Predicate<T> match) => throw null;
             }
+            public class OrderedDictionary<TKey, TValue> : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.ICollection, System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerable, System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>, System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<TKey, TValue>>
+            {
+                public void Add(TKey key, TValue value) => throw null;
+                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                void System.Collections.IDictionary.Add(object key, object value) => throw null;
+                int System.Collections.IList.Add(object value) => throw null;
+                public int Capacity { get => throw null; }
+                public void Clear() => throw null;
+                public System.Collections.Generic.IEqualityComparer<TKey> Comparer { get => throw null; }
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                bool System.Collections.IDictionary.Contains(object key) => throw null;
+                bool System.Collections.IList.Contains(object value) => throw null;
+                public bool ContainsKey(TKey key) => throw null;
+                public bool ContainsValue(TValue value) => throw null;
+                void System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex) => throw null;
+                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
+                public int Count { get => throw null; }
+                public OrderedDictionary() => throw null;
+                public OrderedDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
+                public OrderedDictionary(System.Collections.Generic.IDictionary<TKey, TValue> dictionary, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                public OrderedDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection) => throw null;
+                public OrderedDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> collection, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                public OrderedDictionary(System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                public OrderedDictionary(int capacity) => throw null;
+                public OrderedDictionary(int capacity, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+                public int EnsureCapacity(int capacity) => throw null;
+                public struct Enumerator : System.Collections.IDictionaryEnumerator, System.IDisposable, System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>>, System.Collections.IEnumerator
+                {
+                    public System.Collections.Generic.KeyValuePair<TKey, TValue> Current { get => throw null; }
+                    object System.Collections.IEnumerator.Current { get => throw null; }
+                    void System.IDisposable.Dispose() => throw null;
+                    System.Collections.DictionaryEntry System.Collections.IDictionaryEnumerator.Entry { get => throw null; }
+                    object System.Collections.IDictionaryEnumerator.Key { get => throw null; }
+                    public bool MoveNext() => throw null;
+                    void System.Collections.IEnumerator.Reset() => throw null;
+                    object System.Collections.IDictionaryEnumerator.Value { get => throw null; }
+                }
+                public System.Collections.Generic.KeyValuePair<TKey, TValue> GetAt(int index) => throw null;
+                public System.Collections.Generic.OrderedDictionary<TKey, TValue>.Enumerator GetEnumerator() => throw null;
+                System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator() => throw null;
+                System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public int IndexOf(TKey key) => throw null;
+                int System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<TKey, TValue>>.IndexOf(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                int System.Collections.IList.IndexOf(object value) => throw null;
+                public void Insert(int index, TKey key, TValue value) => throw null;
+                void System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Insert(int index, System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                void System.Collections.IList.Insert(int index, object value) => throw null;
+                bool System.Collections.IDictionary.IsFixedSize { get => throw null; }
+                bool System.Collections.IList.IsFixedSize { get => throw null; }
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.IsReadOnly { get => throw null; }
+                bool System.Collections.IDictionary.IsReadOnly { get => throw null; }
+                bool System.Collections.IList.IsReadOnly { get => throw null; }
+                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
+                System.Collections.Generic.KeyValuePair<TKey, TValue> System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<TKey, TValue>>.this[int index] { get => throw null; set { } }
+                System.Collections.Generic.KeyValuePair<TKey, TValue> System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<TKey, TValue>>.this[int index] { get => throw null; }
+                object System.Collections.IDictionary.this[object key] { get => throw null; set { } }
+                object System.Collections.IList.this[int index] { get => throw null; set { } }
+                public sealed class KeyCollection : System.Collections.Generic.ICollection<TKey>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TKey>, System.Collections.IEnumerable, System.Collections.Generic.IList<TKey>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<TKey>, System.Collections.Generic.IReadOnlyList<TKey>
+                {
+                    void System.Collections.Generic.ICollection<TKey>.Add(TKey item) => throw null;
+                    int System.Collections.IList.Add(object value) => throw null;
+                    void System.Collections.Generic.ICollection<TKey>.Clear() => throw null;
+                    void System.Collections.IList.Clear() => throw null;
+                    public bool Contains(TKey key) => throw null;
+                    bool System.Collections.IList.Contains(object value) => throw null;
+                    public void CopyTo(TKey[] array, int arrayIndex) => throw null;
+                    void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
+                    public int Count { get => throw null; }
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TKey>, System.Collections.IEnumerator
+                    {
+                        public TKey Current { get => throw null; }
+                        object System.Collections.IEnumerator.Current { get => throw null; }
+                        void System.IDisposable.Dispose() => throw null;
+                        public bool MoveNext() => throw null;
+                        void System.Collections.IEnumerator.Reset() => throw null;
+                    }
+                    public System.Collections.Generic.OrderedDictionary<TKey, TValue>.KeyCollection.Enumerator GetEnumerator() => throw null;
+                    System.Collections.Generic.IEnumerator<TKey> System.Collections.Generic.IEnumerable<TKey>.GetEnumerator() => throw null;
+                    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                    int System.Collections.Generic.IList<TKey>.IndexOf(TKey item) => throw null;
+                    int System.Collections.IList.IndexOf(object value) => throw null;
+                    void System.Collections.Generic.IList<TKey>.Insert(int index, TKey item) => throw null;
+                    void System.Collections.IList.Insert(int index, object value) => throw null;
+                    bool System.Collections.IList.IsFixedSize { get => throw null; }
+                    bool System.Collections.Generic.ICollection<TKey>.IsReadOnly { get => throw null; }
+                    bool System.Collections.IList.IsReadOnly { get => throw null; }
+                    bool System.Collections.ICollection.IsSynchronized { get => throw null; }
+                    TKey System.Collections.Generic.IList<TKey>.this[int index] { get => throw null; set { } }
+                    TKey System.Collections.Generic.IReadOnlyList<TKey>.this[int index] { get => throw null; }
+                    object System.Collections.IList.this[int index] { get => throw null; set { } }
+                    bool System.Collections.Generic.ICollection<TKey>.Remove(TKey item) => throw null;
+                    void System.Collections.IList.Remove(object value) => throw null;
+                    void System.Collections.Generic.IList<TKey>.RemoveAt(int index) => throw null;
+                    void System.Collections.IList.RemoveAt(int index) => throw null;
+                    object System.Collections.ICollection.SyncRoot { get => throw null; }
+                }
+                public System.Collections.Generic.OrderedDictionary<TKey, TValue>.KeyCollection Keys { get => throw null; }
+                System.Collections.Generic.ICollection<TKey> System.Collections.Generic.IDictionary<TKey, TValue>.Keys { get => throw null; }
+                System.Collections.Generic.IEnumerable<TKey> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Keys { get => throw null; }
+                System.Collections.ICollection System.Collections.IDictionary.Keys { get => throw null; }
+                public bool Remove(TKey key) => throw null;
+                public bool Remove(TKey key, out TValue value) => throw null;
+                bool System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey, TValue>>.Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => throw null;
+                void System.Collections.IDictionary.Remove(object key) => throw null;
+                void System.Collections.IList.Remove(object value) => throw null;
+                public void RemoveAt(int index) => throw null;
+                public void SetAt(int index, TKey key, TValue value) => throw null;
+                public void SetAt(int index, TValue value) => throw null;
+                object System.Collections.ICollection.SyncRoot { get => throw null; }
+                public TValue this[TKey key] { get => throw null; set { } }
+                public void TrimExcess() => throw null;
+                public void TrimExcess(int capacity) => throw null;
+                public bool TryAdd(TKey key, TValue value) => throw null;
+                public bool TryGetValue(TKey key, out TValue value) => throw null;
+                public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IList<TValue>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.Generic.IReadOnlyList<TValue>
+                {
+                    void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;
+                    int System.Collections.IList.Add(object value) => throw null;
+                    void System.Collections.Generic.ICollection<TValue>.Clear() => throw null;
+                    void System.Collections.IList.Clear() => throw null;
+                    bool System.Collections.Generic.ICollection<TValue>.Contains(TValue item) => throw null;
+                    bool System.Collections.IList.Contains(object value) => throw null;
+                    public void CopyTo(TValue[] array, int arrayIndex) => throw null;
+                    void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
+                    public int Count { get => throw null; }
+                    public struct Enumerator : System.IDisposable, System.Collections.Generic.IEnumerator<TValue>, System.Collections.IEnumerator
+                    {
+                        public TValue Current { get => throw null; }
+                        object System.Collections.IEnumerator.Current { get => throw null; }
+                        void System.IDisposable.Dispose() => throw null;
+                        public bool MoveNext() => throw null;
+                        void System.Collections.IEnumerator.Reset() => throw null;
+                    }
+                    public System.Collections.Generic.OrderedDictionary<TKey, TValue>.ValueCollection.Enumerator GetEnumerator() => throw null;
+                    System.Collections.Generic.IEnumerator<TValue> System.Collections.Generic.IEnumerable<TValue>.GetEnumerator() => throw null;
+                    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                    int System.Collections.Generic.IList<TValue>.IndexOf(TValue item) => throw null;
+                    int System.Collections.IList.IndexOf(object value) => throw null;
+                    void System.Collections.Generic.IList<TValue>.Insert(int index, TValue item) => throw null;
+                    void System.Collections.IList.Insert(int index, object value) => throw null;
+                    bool System.Collections.IList.IsFixedSize { get => throw null; }
+                    bool System.Collections.Generic.ICollection<TValue>.IsReadOnly { get => throw null; }
+                    bool System.Collections.IList.IsReadOnly { get => throw null; }
+                    bool System.Collections.ICollection.IsSynchronized { get => throw null; }
+                    TValue System.Collections.Generic.IList<TValue>.this[int index] { get => throw null; set { } }
+                    TValue System.Collections.Generic.IReadOnlyList<TValue>.this[int index] { get => throw null; }
+                    object System.Collections.IList.this[int index] { get => throw null; set { } }
+                    bool System.Collections.Generic.ICollection<TValue>.Remove(TValue item) => throw null;
+                    void System.Collections.IList.Remove(object value) => throw null;
+                    void System.Collections.Generic.IList<TValue>.RemoveAt(int index) => throw null;
+                    void System.Collections.IList.RemoveAt(int index) => throw null;
+                    object System.Collections.ICollection.SyncRoot { get => throw null; }
+                }
+                System.Collections.Generic.ICollection<TValue> System.Collections.Generic.IDictionary<TKey, TValue>.Values { get => throw null; }
+                System.Collections.Generic.IEnumerable<TValue> System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>.Values { get => throw null; }
+                System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
+                public System.Collections.Generic.OrderedDictionary<TKey, TValue>.ValueCollection Values { get => throw null; }
+            }
             public class PriorityQueue<TElement, TPriority>
             {
                 public void Clear() => throw null;
@@ -382,6 +567,7 @@ namespace System
                 public void EnqueueRange(System.Collections.Generic.IEnumerable<TElement> elements, TPriority priority) => throw null;
                 public int EnsureCapacity(int capacity) => throw null;
                 public TElement Peek() => throw null;
+                public bool Remove(TElement element, out TElement removedElement, out TPriority priority, System.Collections.Generic.IEqualityComparer<TElement> equalityComparer = default(System.Collections.Generic.IEqualityComparer<TElement>)) => throw null;
                 public void TrimExcess() => throw null;
                 public bool TryDequeue(out TElement element, out TPriority priority) => throw null;
                 public bool TryPeek(out TElement element, out TPriority priority) => throw null;
@@ -408,6 +594,7 @@ namespace System
             }
             public class Queue<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>
             {
+                public int Capacity { get => throw null; }
                 public void Clear() => throw null;
                 public bool Contains(T item) => throw null;
                 public void CopyTo(T[] array, int arrayIndex) => throw null;
@@ -435,6 +622,7 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public T[] ToArray() => throw null;
                 public void TrimExcess() => throw null;
+                public void TrimExcess(int capacity) => throw null;
                 public bool TryDequeue(out T result) => throw null;
                 public bool TryPeek(out T result) => throw null;
             }
@@ -658,6 +846,7 @@ namespace System
             }
             public class Stack<T> : System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>
             {
+                public int Capacity { get => throw null; }
                 public void Clear() => throw null;
                 public bool Contains(T item) => throw null;
                 public void CopyTo(T[] array, int arrayIndex) => throw null;
@@ -685,8 +874,41 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
                 public T[] ToArray() => throw null;
                 public void TrimExcess() => throw null;
+                public void TrimExcess(int capacity) => throw null;
                 public bool TryPeek(out T result) => throw null;
                 public bool TryPop(out T result) => throw null;
+            }
+        }
+        namespace ObjectModel
+        {
+            public class ReadOnlySet<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.Generic.ISet<T>
+            {
+                void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
+                bool System.Collections.Generic.ISet<T>.Add(T item) => throw null;
+                void System.Collections.Generic.ICollection<T>.Clear() => throw null;
+                public bool Contains(T item) => throw null;
+                void System.Collections.Generic.ICollection<T>.CopyTo(T[] array, int arrayIndex) => throw null;
+                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
+                public int Count { get => throw null; }
+                public ReadOnlySet(System.Collections.Generic.ISet<T> set) => throw null;
+                public static System.Collections.ObjectModel.ReadOnlySet<T> Empty { get => throw null; }
+                void System.Collections.Generic.ISet<T>.ExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                public System.Collections.Generic.IEnumerator<T> GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                void System.Collections.Generic.ISet<T>.IntersectWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                public bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                public bool IsProperSupersetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                bool System.Collections.Generic.ICollection<T>.IsReadOnly { get => throw null; }
+                public bool IsSubsetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
+                public bool Overlaps(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                bool System.Collections.Generic.ICollection<T>.Remove(T item) => throw null;
+                protected System.Collections.Generic.ISet<T> Set { get => throw null; }
+                public bool SetEquals(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                void System.Collections.Generic.ISet<T>.SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
+                object System.Collections.ICollection.SyncRoot { get => throw null; }
+                void System.Collections.Generic.ISet<T>.UnionWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
             }
         }
         public static class StructuralComparisons

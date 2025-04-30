@@ -171,3 +171,39 @@ void test9(short s) {
         
     }
 }
+
+void test10(int a, int b) {
+    if(!(a < b)) {
+
+    }
+}
+
+void test11(double foo) {
+    if(!(foo >= 1e-6 && foo < 1.0)) {
+
+    }
+}
+
+void test12(int a, int b) {
+  int c = a != b;
+
+  if (!c) {
+
+  }
+}
+
+void test13(int a) {
+  int b = a > 10;
+
+  if (!b) {
+
+  }
+}
+
+void test14(int a, int b) {
+  int c = a > b;
+
+  if (!c) {
+
+  }
+}

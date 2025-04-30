@@ -1,7 +1,7 @@
 (function () {
   let source = source();
 
-  var str = "FALSE"; 
+  var str = "FALSE";
 
   console.log("=== access by index (init by ctor) ===");
   var arr = new Array(2);
@@ -35,7 +35,7 @@
   sink(arr[2]);      // OK
   sink(arr[3]);      // OK
   sink(arr[4]);      // OK
-  sink(arr[5]);      // NOT OK - but not flagged [INCONSISTENCY]
+  sink(arr[5]);      // NOT OK
 
   console.log("=== access in for (init by [...]) ===");
   var arr = [str, source];
@@ -58,6 +58,6 @@
   console.log("=== access in forof (init by [...]) ===");
   var arr = [str, source];
   for (const item of arr) {
-    sink(item);       // NOT OK    
+    sink(item);       // NOT OK
   }
 }());

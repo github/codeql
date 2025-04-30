@@ -9,9 +9,9 @@ private import {{import_prefix}}.Raw
 {{#imports}}
 import {{.}}
 {{/imports}}
-{{#root}}
+{{#needs_self_alias}}
 private class {{name}}Alias = {{name}};
-{{/root}}
+{{/needs_self_alias}}
 /**
  * INTERNAL: This module contains the fully generated definition of `{{name}}` and should not
  * be referenced directly.
@@ -29,7 +29,19 @@ module Generated {
     /**
      * Gets the string representation of this element.
      */
-    string toString() { none() } // overridden by subclasses
+    cached
+    final string toString() {
+      result = this.toStringImpl() and
+      // recursion guard to prevent `toString` from being defined recursively
+      (exists(any(Element e).toStringImpl()) implies any())
+    }
+
+    /**
+     * INTERNAL: Do not use.
+     *
+     * Gets the string representation of this element.
+     */
+    abstract string toStringImpl();
 
     /**
      * Gets the name of a primary CodeQL class to which this element belongs.
@@ -77,7 +89,7 @@ module Generated {
      * INTERNAL: Do not use.
     {{/internal}}
      */
-    {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
+    {{type_alias}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^synth}}
       result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}))
       {{/synth}}
@@ -95,7 +107,7 @@ module Generated {
      * INTERNAL: Do not use.
     {{/internal}}
      */
-    final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
+    final {{type_alias}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
         {{#hideable}}if exists(this.getResolveStep()) then result = immediate else {{/hideable}}result = immediate.resolve())
     }
@@ -111,7 +123,7 @@ module Generated {
      * INTERNAL: Do not use.
     {{/internal}}
      */
-    {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
+    {{type_alias}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^synth}}
       {{^is_predicate}}result = {{/is_predicate}}{{#type_is_codegen_class}}Synth::convert{{type}}FromRaw({{/type_is_codegen_class}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}){{#type_is_codegen_class}}){{/type_is_codegen_class}}
       {{/synth}}
@@ -140,7 +152,7 @@ module Generated {
      * INTERNAL: Do not use.
     {{/internal}}
      */
-    final {{type}} {{indefinite_getter}}() {
+    final {{type_alias}} {{indefinite_getter}}() {
       result = this.{{getter}}(_)
     }
     {{^is_optional}}

@@ -3,14 +3,19 @@
  * for tracking types.
  */
 
+private import codeql.util.Location
+
 /**
  * The step relations for type tracking.
  */
-signature module TypeTrackingInput {
+signature module TypeTrackingInput<LocationSig Location> {
   /** A node that is used by the type-trackers. */
   class Node {
     /** Gets a textual representation of this node. */
     string toString();
+
+    /** Gets the source location of this node. */
+    Location getLocation();
   }
 
   /**
@@ -127,12 +132,10 @@ private import internal.TypeTrackingImpl as Impl
  * Given a set of step relations, this module provides classes and predicates
  * for simple data-flow reachability suitable for tracking types.
  */
-module TypeTracking<TypeTrackingInput I> {
-  private module MkImpl = Impl::TypeTracking<I>;
+module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
+  private module MkImpl = Impl::TypeTracking<Location, I>;
 
   private module ConsistencyChecksInput implements MkImpl::ConsistencyChecksInputSig { }
-
-  deprecated module ConsistencyChecks = MkImpl::ConsistencyChecks<ConsistencyChecksInput>;
 
   class TypeTracker = MkImpl::TypeTracker;
 

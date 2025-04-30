@@ -11,29 +11,32 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import JWT
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "jsonwebtoken without any signature verification" }
-
-  override predicate isSource(DataFlow::Node source) {
+module DecodeWithoutVerificationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source = [unverifiedDecode(), verifiedDecode()].getALocalSource()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = unverifiedDecode()
     or
     sink = verifiedDecode()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql:32: Flow call outside 'select' clause
+    // ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql:42: Flow call outside 'select' clause
+    none()
+  }
 }
 
+module DecodeWithoutVerificationFlow = TaintTracking::Global<DecodeWithoutVerificationConfig>;
+
 /** Holds if `source` flows to the first parameter of jsonwebtoken.verify */
-predicate isSafe(Configuration cfg, DataFlow::Node source) {
-  exists(DataFlow::Node sink |
-    cfg.hasFlow(source, sink) and
-    sink = verifiedDecode()
-  )
+predicate isSafe(DataFlow::Node source) {
+  DecodeWithoutVerificationFlow::flow(source, verifiedDecode())
 }
 
 /**
@@ -41,15 +44,17 @@ predicate isSafe(Configuration cfg, DataFlow::Node source) {
  * - `source` does not flow to the first parameter of `jsonwebtoken.verify`, and
  * - `source` flows to the first parameter of `jsonwebtoken.decode`
  */
-predicate isVulnerable(Configuration cfg, DataFlow::Node source, DataFlow::Node sink) {
-  not isSafe(cfg, source) and // i.e., source does not flow to a verify call
-  cfg.hasFlow(source, sink) and // but it does flow to something else
+predicate isVulnerable(DataFlow::Node source, DataFlow::Node sink) {
+  not isSafe(source) and // i.e., source does not flow to a verify call
+  DecodeWithoutVerificationFlow::flow(source, sink) and // but it does flow to something else
   sink = unverifiedDecode() // and that something else is a call to decode.
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+import DecodeWithoutVerificationFlow::PathGraph
+
+from DecodeWithoutVerificationFlow::PathNode source, DecodeWithoutVerificationFlow::PathNode sink
 where
-  cfg.hasFlowPath(source, sink) and
-  isVulnerable(cfg, source.getNode(), sink.getNode())
+  DecodeWithoutVerificationFlow::flowPath(source, sink) and
+  isVulnerable(source.getNode(), sink.getNode())
 select source.getNode(), source, sink, "Decoding JWT $@.", sink.getNode(),
   "without signature verification"

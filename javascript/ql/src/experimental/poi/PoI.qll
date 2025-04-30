@@ -134,44 +134,6 @@ private module StandardPoIs {
   }
 
   /**
-   * A "source" for any active configuration.
-   */
-  class SourcePoI extends PoI {
-    SourcePoI() { this = "SourcePoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg | cfg.isSource(l0) or cfg.isSource(l0, _))
-    }
-  }
-
-  /**
-   * A "sink" for any active configuration.
-   */
-  class SinkPoI extends PoI {
-    SinkPoI() { this = "SinkPoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg | cfg.isSink(l0) or cfg.isSink(l0, _))
-    }
-  }
-
-  /**
-   * A "barrier" for any active configuration.
-   */
-  class BarrierPoI extends PoI {
-    BarrierPoI() { this = "BarrierPoI" }
-
-    override predicate is(Node l0) {
-      exists(Configuration cfg |
-        cfg.isBarrier(l0) or
-        cfg.isBarrierEdge(l0, _) or
-        cfg.isBarrierEdge(l0, _, _) or
-        cfg.isLabeledBarrier(l0, _)
-      )
-    }
-  }
-
-  /**
    * Provides groups of often used points of interest.
    */
   module StandardPoIGroups {
@@ -183,16 +145,6 @@ private module StandardPoIs {
         this instanceof UnpromotedRouteSetupPoI or
         this instanceof UnpromotedRouteHandlerPoI or
         this instanceof UnpromotedRouteHandlerWithFlowPoI
-      }
-    }
-
-    /**
-     * A configuration-related point of interest.
-     */
-    class DataFlowConfigurationPoI extends PoI {
-      DataFlowConfigurationPoI() {
-        this instanceof SourcePoI or
-        this instanceof SinkPoI
       }
     }
   }

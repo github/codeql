@@ -1,3 +1,3 @@
-export function A(x) {
+export function A(x) { // $ Alert
    this.x = x;
 };

@@ -33,6 +33,8 @@ private module Config implements DataFlow::StateConfigSig {
     ) and
     stateTo = FlowState::Taint()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

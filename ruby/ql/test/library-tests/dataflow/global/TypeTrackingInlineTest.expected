@@ -1,4 +1,6 @@
 | blocks.rb:4:10:4:10 | r | Fixed missing result: hasValueFlow=1 |
+| callbacks.rb:17:41:17:58 | # $ hasValueFlow=1 | Missing result: hasValueFlow=1 |
+| callbacks.rb:29:37:29:37 | x | Unexpected result: hasValueFlow=2 |
 | captured_variables.rb:50:10:50:10 | x | Fixed missing result: hasValueFlow=2 |
 | captured_variables.rb:68:25:68:68 | # $ hasValueFlow=3 $ MISSING: hasValueFlow=4 | Missing result: hasValueFlow=3 |
 | captured_variables.rb:72:21:72:66 | # $ hasValueFlow=4 $ SPURIOUS: hasValueFlow=3  | Fixed spurious result: hasValueFlow=3 |

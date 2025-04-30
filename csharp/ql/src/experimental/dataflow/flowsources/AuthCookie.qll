@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for detecting insecure cookies.
  */
+deprecated module;
 
 import csharp
 import semmle.code.csharp.frameworks.microsoft.AspNetCore

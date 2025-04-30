@@ -1,9 +1,42 @@
+legacyDataFlowDifference
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] | only flow with NEW data flow library |
+| bound-function.js:27:8:27:15 | source() | bound-function.js:30:10:30:10 | y | only flow with OLD data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) | only flow with NEW data flow library |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) | only flow with NEW data flow library |
+| call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) | only flow with NEW data flow library |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:41:10:41:10 | x | only flow with NEW data flow library |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:37:37:37:37 | x | only flow with NEW data flow library |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x | only flow with NEW data flow library |
+| capture-flow.js:89:13:89:20 | source() | capture-flow.js:89:6:89:21 | test3c(source()) | only flow with NEW data flow library |
+| capture-flow.js:101:12:101:19 | source() | capture-flow.js:102:6:102:20 | test5("safe")() | only flow with OLD data flow library |
+| capture-flow.js:126:25:126:32 | source() | capture-flow.js:123:14:123:26 | orderingTaint | only flow with OLD data flow library |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:40:8:40:14 | e.taint | only flow with NEW data flow library |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:44:8:44:19 | f_safe.taint | only flow with NEW data flow library |
+| constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:39:8:39:14 | e.param | only flow with NEW data flow library |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:54:10:54:10 | e | only flow with NEW data flow library |
+| export-taint.js:3:22:3:29 | source() | import-taint.js:7:10:7:25 | mod.object.taint | only flow with OLD data flow library |
+| export-taint.js:3:22:3:29 | source() | import-taint.js:14:14:14:29 | mod.object.taint | only flow with OLD data flow library |
+| getters-and-setters.js:53:21:53:28 | source() | getters-and-setters.js:53:10:53:30 | getX(ne ... rce())) | only flow with NEW data flow library |
+| nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y | only flow with NEW data flow library |
+| nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x | only flow with NEW data flow library |
+| nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y | only flow with NEW data flow library |
+| sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y | only flow with NEW data flow library |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y | only flow with NEW data flow library |
+| tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary | only flow with NEW data flow library |
+| tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary | only flow with NEW data flow library |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item | only flow with NEW data flow library |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x | only flow with NEW data flow library |
+flow
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:28:8:28:13 | arr[1] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:34:8:34:13 | arr[1] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:38:8:38:13 | arr[5] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:43:10:43:15 | arr[i] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:55:10:55:15 | arr[i] |
 | arrays-init.js:2:16:2:23 | source() | arrays-init.js:61:10:61:13 | item |
@@ -13,18 +46,19 @@
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:22:10:22:10 | x |
-| bound-function.js:12:12:12:19 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:14:6:14:13 | source() | bound-function.js:4:10:4:10 | y |
-| bound-function.js:22:8:22:15 | source() | bound-function.js:25:10:25:10 | y |
-| bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
-| bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
+| bound-function.js:17:21:17:28 | source() | bound-function.js:5:10:5:16 | y.test2 |
+| bound-function.js:19:15:19:22 | source() | bound-function.js:6:10:6:16 | y.test3 |
+| bound-function.js:50:10:50:17 | source() | bound-function.js:50:6:50:18 | id3(source()) |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:59:6:59:14 | source0() |
+| bound-function.js:54:12:54:19 | source() | bound-function.js:60:6:60:14 | source1() |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:46:6:46:28 | foo1_ca ... e, ""]) |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:68:10:68:21 | arguments[0] |
-| call-apply.js:87:17:87:24 | source() | call-apply.js:84:8:84:11 | this |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:34:6:34:29 | foo1_ap ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:40:6:40:28 | foo1_ca ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:62:10:62:21 | arguments[0] |
+| call-apply.js:45:8:45:15 | source() | call-apply.js:55:6:55:13 | foo(obj) |
+| call-apply.js:81:17:81:24 | source() | call-apply.js:78:8:78:11 | this |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
 | callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |
@@ -32,21 +66,54 @@
 | callbacks.js:25:16:25:23 | source() | callbacks.js:47:26:47:26 | x |
 | callbacks.js:25:16:25:23 | source() | callbacks.js:48:26:48:26 | x |
 | callbacks.js:37:17:37:24 | source() | callbacks.js:37:37:37:37 | x |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:38:35:38:35 | x |
+| callbacks.js:37:17:37:24 | source() | callbacks.js:41:10:41:10 | x |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:37:37:37:37 | x |
+| callbacks.js:44:17:44:24 | source() | callbacks.js:38:35:38:35 | x |
 | callbacks.js:44:17:44:24 | source() | callbacks.js:41:10:41:10 | x |
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:53:23:53:30 | source() | callbacks.js:58:10:58:10 | x |
+| callbacks.js:73:17:73:24 | source() | callbacks.js:73:37:73:37 | x |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:14:10:14:16 | outer() |
 | capture-flow.js:9:11:9:18 | source() | capture-flow.js:19:6:19:16 | outerMost() |
 | capture-flow.js:31:14:31:21 | source() | capture-flow.js:31:6:31:22 | confuse(source()) |
+| capture-flow.js:45:12:45:19 | source() | capture-flow.js:45:6:45:20 | test3(source()) |
+| capture-flow.js:60:13:60:20 | source() | capture-flow.js:60:6:60:21 | test3a(source()) |
+| capture-flow.js:76:13:76:20 | source() | capture-flow.js:76:6:76:21 | test3b(source()) |
+| capture-flow.js:89:13:89:20 | source() | capture-flow.js:89:6:89:21 | test3c(source()) |
+| capture-flow.js:93:13:93:20 | source() | capture-flow.js:96:6:96:14 | test4()() |
+| capture-flow.js:101:12:101:19 | source() | capture-flow.js:101:6:101:22 | test5(source())() |
+| capture-flow.js:110:12:110:19 | source() | capture-flow.js:106:14:106:14 | x |
+| capture-flow.js:118:37:118:44 | source() | capture-flow.js:114:14:114:14 | x |
+| capture-flow.js:126:25:126:32 | source() | capture-flow.js:129:14:129:26 | orderingTaint |
+| capture-flow.js:177:26:177:33 | source() | capture-flow.js:173:14:173:14 | x |
+| capture-flow.js:187:34:187:41 | source() | capture-flow.js:183:14:183:14 | x |
+| capture-flow.js:195:24:195:31 | source() | capture-flow.js:191:14:191:14 | x |
+| capture-flow.js:205:24:205:31 | source() | capture-flow.js:200:18:200:18 | x |
+| capture-flow.js:225:13:225:20 | source() | capture-flow.js:220:51:220:59 | fileOrDir |
+| capture-flow.js:230:9:230:16 | source() | capture-flow.js:233:14:233:14 | x |
+| capture-flow.js:259:23:259:30 | source() | capture-flow.js:243:18:243:40 | objectW ... s.field |
+| capture-flow.js:259:23:259:30 | source() | capture-flow.js:247:18:247:40 | objectW ... s.field |
+| capture-flow.js:259:23:259:30 | source() | capture-flow.js:248:18:248:27 | this.field |
+| capture-flow.js:259:23:259:30 | source() | capture-flow.js:252:14:252:36 | objectW ... s.field |
+| capture-flow.js:259:23:259:30 | source() | capture-flow.js:253:14:253:23 | this.field |
+| capture-flow.js:262:16:262:23 | source() | capture-flow.js:264:14:264:21 | this.foo |
+| capture-flow.js:274:33:274:40 | source() | capture-flow.js:272:10:272:17 | this.foo |
+| capture-flow.js:274:33:274:40 | source() | capture-flow.js:274:6:274:45 | new Cap ... ()).foo |
+| capture-flow.js:283:34:283:41 | source() | capture-flow.js:283:6:283:46 | new Cap ... ()).foo |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
-| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
-| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
-| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:26:8:26:14 | d.taint |
-| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:30:8:30:19 | d_safe.taint |
-| constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:17:8:17:14 | c.param |
-| constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:25:8:25:14 | d.param |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:24:8:24:14 | c.taint |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:28:8:28:19 | c_safe.taint |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:40:8:40:14 | e.taint |
+| constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:44:8:44:19 | f_safe.taint |
+| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:32:8:32:14 | d.taint |
+| constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:36:8:36:19 | d_safe.taint |
+| constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:23:8:23:14 | c.param |
+| constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:31:8:31:14 | d.param |
+| constructor-calls.js:20:15:20:22 | source() | constructor-calls.js:39:8:39:14 | e.param |
 | exceptions.js:3:15:3:22 | source() | exceptions.js:5:10:5:10 | e |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:54:10:54:10 | e |
 | exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
 | exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
@@ -56,6 +123,8 @@
 | exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
+| export-taint.js:2:12:2:19 | source() | import-taint.js:6:10:6:18 | mod.taint |
+| export-taint.js:2:12:2:19 | source() | import-taint.js:13:14:13:22 | mod.taint |
 | factory-function.js:21:13:21:20 | source() | factory-function.js:7:10:7:12 | obj |
 | factory-function.js:22:13:22:20 | source() | factory-function.js:7:10:7:12 | obj |
 | factory-function.js:26:7:26:14 | source() | factory-function.js:16:14:16:16 | obj |
@@ -64,20 +133,25 @@
 | getters-and-setters.js:6:20:6:27 | source() | getters-and-setters.js:13:18:13:20 | c.x |
 | getters-and-setters.js:27:15:27:22 | source() | getters-and-setters.js:23:18:23:18 | v |
 | getters-and-setters.js:47:23:47:30 | source() | getters-and-setters.js:45:14:45:16 | c.x |
+| getters-and-setters.js:53:21:53:28 | source() | getters-and-setters.js:53:10:53:30 | getX(ne ... rce())) |
 | getters-and-setters.js:60:20:60:27 | source() | getters-and-setters.js:66:10:66:14 | obj.x |
 | getters-and-setters.js:67:13:67:20 | source() | getters-and-setters.js:63:18:63:22 | value |
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:88:10:88:18 | new C().x |
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
 | getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
+| implied-receiver.js:4:16:4:23 | source() | implied-receiver.js:7:18:7:25 | this.foo |
 | importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | logical-and.js:2:17:2:24 | source() | logical-and.js:4:10:4:24 | "safe" && taint |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |
 | nested-props.js:9:18:9:25 | source() | nested-props.js:10:10:10:16 | obj.x.y |
+| nested-props.js:14:15:14:22 | source() | nested-props.js:15:10:15:16 | obj.x.y |
+| nested-props.js:27:18:27:25 | source() | nested-props.js:28:10:28:14 | obj.x |
 | nested-props.js:35:13:35:20 | source() | nested-props.js:36:10:36:20 | doLoad(obj) |
 | nested-props.js:43:13:43:20 | source() | nested-props.js:44:10:44:18 | id(obj).x |
+| nested-props.js:51:22:51:29 | source() | nested-props.js:52:10:52:16 | obj.x.y |
 | nested-props.js:67:31:67:38 | source() | nested-props.js:68:10:68:10 | x |
 | object-bypass-sanitizer.js:32:21:32:28 | source() | object-bypass-sanitizer.js:15:10:15:24 | sanitizer_id(x) |
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:27:10:27:30 | sanitiz ... bj.foo) |
@@ -87,6 +161,7 @@
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:30:14:30:20 | x.value |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:41:10:41:18 | id(taint) |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:51:14:51:14 | x |
+| regexp-sanitiser.js:2:19:2:26 | source() | regexp-sanitiser.js:4:14:4:18 | taint |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:14:10:14:14 | taint |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:17:14:17:18 | taint |
 | sanitizer-function.js:12:17:12:24 | source() | sanitizer-function.js:21:14:21:18 | taint |
@@ -99,18 +174,26 @@
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:45:8:45:8 | x |
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:48:10:48:10 | x |
 | sanitizer-guards.js:43:11:43:18 | source() | sanitizer-guards.js:52:10:52:10 | x |
+| sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x |
 | sanitizer-guards.js:68:11:68:18 | source() | sanitizer-guards.js:75:8:75:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:81:8:81:8 | x |
 | sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:84:10:84:10 | x |
-| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:86:7:86:7 | x |
+| sanitizer-guards.js:79:11:79:18 | source() | sanitizer-guards.js:86:9:86:9 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:93:8:93:8 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:96:10:96:10 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:98:7:98:7 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:102:10:102:10 | x |
 | sanitizer-guards.js:91:11:91:18 | source() | sanitizer-guards.js:104:7:104:7 | x |
+| spread.js:4:15:4:22 | source() | spread.js:18:8:18:8 | y |
+| spread.js:4:15:4:22 | source() | spread.js:24:8:24:8 | y |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
+| tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
+| tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
 | tst.js:2:13:2:20 | source() | tst.js:54:14:54:19 | unsafe |
+| tst.js:2:13:2:20 | source() | tst.js:79:14:79:35 | grouped ... nown()) |
+| tst.js:82:23:82:30 | source() | tst.js:83:58:83:61 | item |
 | tst.js:93:22:93:29 | source() | tst.js:96:14:96:25 | taintedValue |
 | tst.js:93:22:93:29 | source() | tst.js:97:14:97:26 | map.get(true) |
+| use-use-after-implicit-read.js:7:17:7:24 | source() | use-use-after-implicit-read.js:15:10:15:10 | x |

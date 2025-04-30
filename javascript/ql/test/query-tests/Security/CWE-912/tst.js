@@ -12,28 +12,28 @@ try {
   },
   (response) => {
     response.setEncoding('utf8');
-    response.on('data', (c) => {
-      fs.writeFile("/tmp/test", c, (err) => {}); // BAD: data from response 'on' event flows to file
+    response.on('data', (c) => { // $ Source
+      fs.writeFile("/tmp/test", c, (err) => {}); // $ Alert - data from response 'on' event flows to file
 
       let writeStream = fs.createWriteStream('/usr/evil/evil.cmd');
-      writeStream.write(c); // BAD: data from response 'on' event flows to filestream write
+      writeStream.write(c); // $ Alert - data from response 'on' event flows to filestream write
       writeStream.end();
 
       var stream = fs.createWriteStream("my_file.txt");
       stream.once('open', function (fd) {
-        stream.write(c); // BAD: data from response 'on' event flows to filestream write
+        stream.write(c); // $ Alert - data from response 'on' event flows to filestream write
         stream.end();
       });
     });
     response.on('error', () => 
     { 
-	fs.writeFile("/tmp/test", "error occured"); // GOOD: static data written to file
+	fs.writeFile("/tmp/test", "error occured"); // OK - static data written to file
     });
   }).on('error', () => 
   { 
       let error = "error occured";
       let writeStream = fs.createWriteStream('/usr/good/errorlog.txt');
-      writeStream.write(error);  // GOOD: static data written to file stream
+      writeStream.write(error);  // OK - static data written to file stream
       writeStream.end();
   });
 }

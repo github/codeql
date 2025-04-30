@@ -81,9 +81,14 @@ private module CorsOriginConfig implements DataFlow::ConfigSig {
 
 private module CorsOriginFlow = TaintTracking::Global<CorsOriginConfig>;
 
-from CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink
-where
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
   CorsOriginFlow::flowPath(source, sink) and
-  not CorsSourceReachesCheckFlow::flow(source.getNode(), _)
-select sink.getNode(), source, sink, "CORS header is being set using user controlled value $@.",
-  source.getNode(), "user-provided value"
+  not CorsSourceReachesCheckFlow::flow(sourceNode, _) and
+  sinkNode = sink.getNode() and
+  message1 = "CORS header is being set using user controlled value $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

@@ -1,1 +1,2 @@
-Security/CWE-020/IncompleteUrlSchemeCheck.ql
+query: Security/CWE-020/IncompleteUrlSchemeCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

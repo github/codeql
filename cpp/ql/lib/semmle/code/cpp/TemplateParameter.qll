@@ -52,9 +52,7 @@ deprecated class TemplateParameter = TypeTemplateParameter;
  * ```
  */
 class TypeTemplateParameter extends UserType, TemplateParameterImpl {
-  TypeTemplateParameter() {
-    usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8)
-  }
+  TypeTemplateParameter() { usertypes(underlyingElement(this), _, [7, 8]) }
 
   override string getAPrimaryQlClass() { result = "TypeTemplateParameter" }
 

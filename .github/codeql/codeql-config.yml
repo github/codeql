@@ -4,9 +4,13 @@ queries:
   - uses: security-and-quality
 
 paths-ignore:
+  - '/actions/ql/test'
   - '/cpp/'
   - '/java/'
   - '/python/'
   - '/javascript/ql/test'
+  - '/javascript/ql/integration-tests'
   - '/javascript/extractor/tests'
+  - '/javascript/extractor/parser-tests'
+  - '/javascript/ql/src/'
   - '/rust/ql'

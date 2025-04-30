@@ -342,6 +342,9 @@ signature module InputSig<LocationSig Location> {
     any()
   }
 
+  /** Gets the default value for the `fieldFlowBranchLimit` */
+  default int defaultFieldFlowBranchLimit() { result = 2 }
+
   /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
@@ -399,7 +402,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit() { result = 2 }
+    default int fieldFlowBranchLimit() { result = Lang::defaultFieldFlowBranchLimit() }
 
     /** Gets the access path limit. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
@@ -442,6 +445,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 
   /** An input configuration for data flow using flow state. */
@@ -526,7 +551,7 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit() { result = 2 }
+    default int fieldFlowBranchLimit() { result = Lang::defaultFieldFlowBranchLimit() }
 
     /** Gets the access path limit. */
     default int accessPathLimit() { result = Lang::accessPathLimit() }
@@ -569,6 +594,28 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * are used directly in a query result.
      */
     default predicate observeDiffInformedIncrementalMode() { none() }
+
+    /**
+     * Gets a location that will be associated with the given `source` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the source itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the source at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    /**
+     * Gets a location that will be associated with the given `sink` in a
+     * diff-informed query that uses this configuration (see
+     * `observeDiffInformedIncrementalMode`). By default, this is the location
+     * of the sink itself, but this predicate should include any locations
+     * that are reported as the primary-location of the query or as an
+     * additional location ("$@" interpolation). For a query that doesn't
+     * report the sink at all, this predicate can be `none()`.
+     */
+    default Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
   }
 }
 
@@ -599,6 +646,7 @@ private module PathGraphSigMod {
 module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  private import internal.DataFlowImplStage1::MakeImplStage1<Location, Lang>
   import Configs<Location, Lang>
 
   /**
@@ -656,12 +704,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    import Impl<C>
-  }
+    private module Stage1 = ImplStage1<C>;
 
-  /** DEPRECATED: Use `Global` instead. */
-  deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
-    import Global<Config>
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
   }
 
   /**
@@ -684,12 +733,13 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    import Impl<C>
-  }
+    private module Stage1 = ImplStage1<C>;
 
-  /** DEPRECATED: Use `GlobalWithState` instead. */
-  deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
-    import GlobalWithState<Config>
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
   }
 
   signature class PathNodeSig {

@@ -526,7 +526,11 @@ class Dereference extends G::DereferenceableExpr {
         not underlyingType instanceof NullableType
       )
     ) else (
-      this = any(QualifiableExpr qe | not qe.isConditional()).getQualifier() and
+      this =
+        any(QualifiableExpr qe |
+          not qe.isConditional() and
+          not qe.(MethodCall).isImplicit()
+        ).getQualifier() and
       not this instanceof ThisAccess and
       not this instanceof BaseAccess and
       not this instanceof TypeAccess

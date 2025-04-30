@@ -7,5 +7,5 @@ var db = new sqlite3.Database(':memory:');
 
 var app = express();
 app.get('/post/:id', function(req, res) {
-  db.get('SELECT * FROM Post WHERE id = "' + req.params.id + '"');
+  db.get('SELECT * FROM Post WHERE id = "' + req.params.id + '"'); // $ Alert
 });

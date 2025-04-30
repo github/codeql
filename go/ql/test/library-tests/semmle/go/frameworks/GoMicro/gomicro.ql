@@ -8,8 +8,7 @@ module GoMicroTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node node |
-      node.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      node.getLocation() = location and
       (
         node instanceof GoMicro::Request and
         element = node.toString() and

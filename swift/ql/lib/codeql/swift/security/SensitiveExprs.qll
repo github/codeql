@@ -34,8 +34,6 @@ class SensitivePassword extends SensitiveDataType, TPassword {
 
   override string getRegexp() {
     result = HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::password())
-    or
-    result = "(?is).*pass.?phrase.*"
   }
 }
 

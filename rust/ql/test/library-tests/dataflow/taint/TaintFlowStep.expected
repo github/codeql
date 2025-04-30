@@ -1,19 +1,17 @@
-| file://:0:0:0:0 | [summary param] 0 in lang:alloc::_::crate::fmt::format | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::crate::fmt::format | MaD:9 |
-| file://:0:0:0:0 | [summary param] self in lang:alloc::_::<crate::string::String>::as_str | file://:0:0:0:0 | [summary] to write: ReturnValue in lang:alloc::_::<crate::string::String>::as_str | MaD:7 |
-| file://:0:0:0:0 | [summary param] self in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | file://:0:0:0:0 | [summary] to write: ReturnValue.Variant[crate::result::Result::Ok(0)] in repo:https://github.com/seanmonstar/reqwest:reqwest::_::<crate::blocking::response::Response>::text | MaD:0 |
-| main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |  |
-| main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |  |
-| main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |  |
-| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... |  |
-| main.rs:13:14:13:14 | 1 | main.rs:13:10:13:14 | ... + ... |  |
-| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... |  |
-| main.rs:23:13:23:13 | a | main.rs:23:13:23:19 | a as u8 |  |
-| main.rs:24:10:24:10 | b | main.rs:24:10:24:17 | b as i64 |  |
-| main.rs:29:23:29:23 | i | main.rs:29:17:29:23 | FormatArgsExpr |  |
-| main.rs:33:24:33:24 | s | main.rs:33:18:33:24 | FormatArgsExpr |  |
-| main.rs:38:23:38:23 | s | main.rs:38:23:38:29 | s[...] |  |
-| main.rs:49:24:49:24 | i | main.rs:49:18:49:24 | FormatArgsExpr |  |
-| main.rs:54:14:54:16 | arr | main.rs:54:14:54:19 | arr[1] |  |
-| main.rs:64:24:64:24 | s | main.rs:64:24:64:27 | s[1] |  |
-| main.rs:64:24:64:27 | s[1] | main.rs:64:18:64:27 | FormatArgsExpr |  |
-| main.rs:69:9:69:12 | arr2 | main.rs:69:9:69:15 | arr2[1] |  |
+| main.rs:4:5:4:8 | 1000 | main.rs:4:5:4:12 | ... + ... |
+| main.rs:4:12:4:12 | i | main.rs:4:5:4:12 | ... + ... |
+| main.rs:8:20:8:20 | s | main.rs:8:14:8:20 | FormatArgsExpr |
+| main.rs:13:10:13:10 | a | main.rs:13:10:13:14 | ... + ... |
+| main.rs:13:14:13:14 | 1 | main.rs:13:10:13:14 | ... + ... |
+| main.rs:18:11:18:11 | a | main.rs:18:10:18:11 | - ... |
+| main.rs:23:13:23:13 | a | main.rs:23:13:23:19 | a as u8 |
+| main.rs:24:10:24:10 | b | main.rs:24:10:24:17 | b as i64 |
+| main.rs:24:10:24:17 | [post] b as i64 | main.rs:24:10:24:10 | [post] b |
+| main.rs:29:23:29:23 | i | main.rs:29:17:29:23 | FormatArgsExpr |
+| main.rs:33:24:33:24 | s | main.rs:33:18:33:24 | FormatArgsExpr |
+| main.rs:38:23:38:23 | s | main.rs:38:23:38:29 | s[...] |
+| main.rs:49:24:49:24 | i | main.rs:49:18:49:24 | FormatArgsExpr |
+| main.rs:54:14:54:16 | arr | main.rs:54:14:54:19 | arr[1] |
+| main.rs:64:24:64:24 | s | main.rs:64:24:64:27 | s[1] |
+| main.rs:64:24:64:27 | s[1] | main.rs:64:18:64:27 | FormatArgsExpr |
+| main.rs:69:9:69:12 | arr2 | main.rs:69:9:69:15 | arr2[1] |

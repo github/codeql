@@ -1,4 +1,5 @@
 /** Provides methods related to regular expression matching. */
+deprecated module;
 
 import java
 

@@ -7,9 +7,7 @@ module FasthttpTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(RequestForgery::Sink ssrfSink |
-      ssrfSink
-          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      ssrfSink.getLocation() = location and
       element = ssrfSink.toString() and
       value = ssrfSink.toString() and
       tag = "SsrfSink"

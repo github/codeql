@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.WebSockets, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.WebSockets, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -16,6 +16,7 @@ namespace Microsoft
                 public System.Collections.Generic.IList<string> AllowedOrigins { get => throw null; }
                 public WebSocketOptions() => throw null;
                 public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
+                public System.TimeSpan KeepAliveTimeout { get => throw null; set { } }
                 public int ReceiveBufferSize { get => throw null; set { } }
             }
         }

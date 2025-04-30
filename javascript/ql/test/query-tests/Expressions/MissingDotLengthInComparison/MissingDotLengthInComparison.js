@@ -1,6 +1,6 @@
 function total(bad) {
     var sum = 0
-    for (var i = 0; i < bad; ++i) { // NOT OK
+    for (var i = 0; i < bad; ++i) { // $ Alert
         sum += bad[i]
     }
     return sum
@@ -8,7 +8,7 @@ function total(bad) {
 
 function total_good(good) {
     var sum = 0
-    for (var i = 0; i < good.length; ++i) { // OK
+    for (var i = 0; i < good.length; ++i) {
         sum += good[i]
     }
     return sum
@@ -17,21 +17,21 @@ function total_good(good) {
 var fruits = ["banana", "pineapple"]
 function mix() {
     var drink = []
-    for (var i = 0; i < fruits; ++i) { // NOT OK
+    for (var i = 0; i < fruits; ++i) { // $ Alert
         drink.push(fruits[i])
     }
 }
 
 function mix_good() {
     var drink = []
-    for (var i = 0; i < fruits.length; ++i) { // OK
+    for (var i = 0; i < fruits.length; ++i) {
         drink.push(fruits[i])
     }
 }
 
 function overloaded(mode, foo, bar) {
     if (mode == "floo") {
-        return foo < bar; // OK
+        return foo < bar;
     } else if (mode == "blar") {
         return foo[bar];
     } else {
@@ -41,7 +41,7 @@ function overloaded(mode, foo, bar) {
 
 function overloaded_no_else(mode, foo, bar) {
     if (mode == "floo") {
-        return foo < bar; // OK
+        return foo < bar;
     }
     if (mode == "blar") {
         return foo[bar];
@@ -50,7 +50,7 @@ function overloaded_no_else(mode, foo, bar) {
 
 function reassigned(index, object) {
     var tmp = object.getMaximum()
-    if (index < tmp) { // OK
+    if (index < tmp) {
         tmp = object.getArray()
         return tmp[index]
     }

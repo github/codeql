@@ -119,6 +119,26 @@ predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock
 }
 
 /**
+ * Holds if there is a variable access in `checkblock` that has `falsesucc` as the false successor.
+ *
+ * The variable access must have an assigned value that is a lock access on `t`, and
+ * the true successor of `checkblock` must contain an unlock access.
+ */
+predicate variableLockStateCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
+  exists(ConditionBlock conditionBlock, VarAccess v |
+    v.getType() instanceof BooleanType and
+    // Ensure that a lock access is assigned to the variable
+    v.getVariable().getAnAssignedValue() = t.getLockAccess() and
+    // Ensure that the `true` successor of the condition block contains an unlock access
+    conditionBlock.getTestSuccessor(true) = t.getUnlockAccess().getBasicBlock() and
+    conditionBlock.getCondition() = v
+  |
+    conditionBlock.getBasicBlock() = checkblock and
+    conditionBlock.getTestSuccessor(false) = falsesucc
+  )
+}
+
+/**
  * A control flow path from a locking call in `src` to `b` such that the number of
  * locks minus the number of unlocks along the way is positive and equal to `locks`.
  */
@@ -131,8 +151,9 @@ predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
     // The number of net locks from the `src` block to the predecessor block `pred` is `predlocks`.
     blockIsLocked(t, src, pred, predlocks) and
     // The recursive call ensures that at least one lock is held, so do not consider the false
-    // successor of the `isHeldByCurrentThread()` check.
+    // successor of the `isHeldByCurrentThread()` check or of `variableLockStateCheck`.
     not heldByCurrentThreadCheck(t, pred, b) and
+    not variableLockStateCheck(t, pred, b) and
     // Count a failed lock as an unlock so the net is zero.
     (if failedLock(t, pred, b) then failedlock = 1 else failedlock = 0) and
     (

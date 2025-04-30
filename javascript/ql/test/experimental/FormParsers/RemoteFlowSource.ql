@@ -11,24 +11,25 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import experimental.semmle.javascript.FormParsers
 
 /**
  * A taint-tracking configuration for test
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RemoteFlowSourcesOUserForm" }
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("sink").getAParameter().asSink() or
     sink = API::moduleImport("sink").getReturn().asSource()
   }
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+module TestFlow = TaintTracking::Global<TestConfig>;
+
+import TestFlow::PathGraph
+
+from TestFlow::PathNode source, TestFlow::PathNode sink
+where TestFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This entity depends on a $@.", source.getNode(),
   "user-provided value"

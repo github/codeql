@@ -11,10 +11,16 @@
  */
 
 import csharp
-import RequestForgery::RequestForgery
-import RequestForgeryFlow::PathGraph
+deprecated import RequestForgery::RequestForgery
+deprecated import RequestForgeryFlow::PathGraph
 
-from RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink
-where RequestForgeryFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "The URL of this request depends on a $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  RequestForgeryFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "The URL of this request depends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

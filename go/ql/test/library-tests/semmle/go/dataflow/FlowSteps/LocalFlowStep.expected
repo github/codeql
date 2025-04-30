@@ -69,7 +69,7 @@
 | main.go:14:6:14:10 | function test2 | main.go:34:8:34:12 | test2 |
 | main.go:14:6:14:10 | function test2 | main.go:34:19:34:23 | test2 |
 | main.go:15:9:15:9 | 0 | main.go:15:2:15:4 | definition of acc |
-| main.go:16:9:16:9 | capture variable acc | main.go:17:3:17:5 | acc |
+| main.go:16:9:19:2 | capture variable acc | main.go:17:3:17:5 | acc |
 | main.go:17:3:17:7 | definition of acc | main.go:18:10:18:12 | acc |
 | main.go:17:3:17:7 | rhs of increment statement | main.go:17:3:17:7 | definition of acc |
 | main.go:22:12:22:12 | argument corresponding to b | main.go:22:12:22:12 | definition of b |
@@ -95,21 +95,21 @@
 | main.go:41:8:41:21 | call to make | main.go:41:2:41:3 | definition of s4 |
 | main.go:46:13:46:14 | argument corresponding to xs | main.go:46:13:46:14 | definition of xs |
 | main.go:46:13:46:14 | definition of xs | main.go:47:20:47:21 | xs |
-| main.go:46:24:46:27 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:46:24:46:27 | definition of keys | main.go:47:20:47:21 | keys = phi(def@46:24, def@49:3) |
 | main.go:46:24:46:27 | zero value for keys | main.go:46:24:46:27 | definition of keys |
-| main.go:46:34:46:37 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:46:34:46:37 | definition of vals | main.go:47:20:47:21 | vals = phi(def@46:34, def@48:3) |
 | main.go:46:34:46:37 | zero value for vals | main.go:46:34:46:37 | definition of vals |
 | main.go:47:2:50:2 | range statement[0] | main.go:47:6:47:6 | definition of k |
 | main.go:47:2:50:2 | range statement[1] | main.go:47:9:47:9 | definition of v |
 | main.go:47:6:47:6 | definition of k | main.go:49:11:49:11 | k |
 | main.go:47:9:47:9 | definition of v | main.go:48:11:48:11 | v |
-| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:46:24:46:27 | implicit read of keys |
-| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:49:3:49:6 | keys |
-| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:46:34:46:37 | implicit read of vals |
-| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:48:3:48:6 | vals |
-| main.go:48:3:48:6 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:47:20:47:21 | keys = phi(def@46:24, def@49:3) | main.go:46:24:46:27 | implicit read of keys |
+| main.go:47:20:47:21 | keys = phi(def@46:24, def@49:3) | main.go:49:3:49:6 | keys |
+| main.go:47:20:47:21 | vals = phi(def@46:34, def@48:3) | main.go:46:34:46:37 | implicit read of vals |
+| main.go:47:20:47:21 | vals = phi(def@46:34, def@48:3) | main.go:48:3:48:6 | vals |
+| main.go:48:3:48:6 | definition of vals | main.go:47:20:47:21 | vals = phi(def@46:34, def@48:3) |
 | main.go:48:3:48:11 | ... += ... | main.go:48:3:48:6 | definition of vals |
-| main.go:49:3:49:6 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:49:3:49:6 | definition of keys | main.go:47:20:47:21 | keys = phi(def@46:24, def@49:3) |
 | main.go:49:3:49:11 | ... += ... | main.go:49:3:49:6 | definition of keys |
 | main.go:55:6:55:7 | definition of ch | main.go:56:2:56:3 | ch |
 | main.go:55:6:55:7 | definition of ch | main.go:57:4:57:5 | ch |
@@ -147,16 +147,16 @@
 | url.go:8:20:8:20 | argument corresponding to s | url.go:8:20:8:20 | definition of s |
 | url.go:8:20:8:20 | definition of s | url.go:12:46:12:46 | s |
 | url.go:8:20:8:20 | definition of s | url.go:14:48:14:48 | s |
-| url.go:12:3:12:5 | definition of res | url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) |
+| url.go:12:3:12:5 | definition of res | url.go:16:5:16:7 | res = phi(def@12:3, def@14:3) |
 | url.go:12:3:12:48 | ... = ...[0] | url.go:12:3:12:5 | definition of res |
 | url.go:12:3:12:48 | ... = ...[1] | url.go:12:8:12:10 | definition of err |
-| url.go:12:8:12:10 | definition of err | url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) |
-| url.go:14:3:14:5 | definition of res | url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) |
+| url.go:12:8:12:10 | definition of err | url.go:16:5:16:7 | err = phi(def@12:8, def@14:8) |
+| url.go:14:3:14:5 | definition of res | url.go:16:5:16:7 | res = phi(def@12:3, def@14:3) |
 | url.go:14:3:14:50 | ... = ...[0] | url.go:14:3:14:5 | definition of res |
 | url.go:14:3:14:50 | ... = ...[1] | url.go:14:8:14:10 | definition of err |
-| url.go:14:8:14:10 | definition of err | url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) |
-| url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) | url.go:16:5:16:7 | err |
-| url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) | url.go:19:9:19:11 | res |
+| url.go:14:8:14:10 | definition of err | url.go:16:5:16:7 | err = phi(def@12:8, def@14:8) |
+| url.go:16:5:16:7 | err = phi(def@12:8, def@14:8) | url.go:16:5:16:7 | err |
+| url.go:16:5:16:7 | res = phi(def@12:3, def@14:3) | url.go:19:9:19:11 | res |
 | url.go:22:12:22:12 | argument corresponding to i | url.go:22:12:22:12 | definition of i |
 | url.go:22:12:22:12 | definition of i | url.go:24:5:24:5 | i |
 | url.go:22:19:22:19 | argument corresponding to s | url.go:22:19:22:19 | definition of s |

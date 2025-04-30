@@ -502,6 +502,30 @@ edges
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:14:9:14:11 | this : D [field trivialPropField] : Object | provenance |  |
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:47:14:47:26 | access to property ComplexProp | provenance |  |
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:47:14:47:26 | access to property ComplexProp | provenance |  |
+| D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | access to field _backingField : Object | provenance |  |
+| D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | access to field _backingField : Object | provenance |  |
+| D.cs:61:9:61:11 | value : Object | D.cs:61:31:61:35 | access to parameter value : Object | provenance |  |
+| D.cs:61:9:61:11 | value : Object | D.cs:61:31:61:35 | access to parameter value : Object | provenance |  |
+| D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:61:31:61:35 | access to parameter value : Object | D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:61:31:61:35 | access to parameter value : Object | D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:78:13:78:13 | access to local variable o : Object | D.cs:81:26:81:26 | access to local variable o : Object | provenance |  |
+| D.cs:78:13:78:13 | access to local variable o : Object | D.cs:81:26:81:26 | access to local variable o : Object | provenance |  |
+| D.cs:78:17:78:33 | call to method Source<Object> : Object | D.cs:78:13:78:13 | access to local variable o : Object | provenance |  |
+| D.cs:78:17:78:33 | call to method Source<Object> : Object | D.cs:78:13:78:13 | access to local variable o : Object | provenance |  |
+| D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:61:9:61:11 | value : Object | provenance |  |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:61:9:61:11 | value : Object | provenance |  |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | provenance |  |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:84:14:84:27 | access to property PartialProp1 | provenance |  |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:84:14:84:27 | access to property PartialProp1 | provenance |  |
 | E.cs:8:29:8:29 | o : Object | E.cs:11:21:11:21 | access to parameter o : Object | provenance |  |
 | E.cs:8:29:8:29 | o : Object | E.cs:11:21:11:21 | access to parameter o : Object | provenance |  |
 | E.cs:11:9:11:11 | [post] access to local variable ret : S [field Field] : Object | E.cs:12:16:12:18 | access to local variable ret : S [field Field] : Object | provenance |  |
@@ -1745,6 +1769,32 @@ nodes
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | semmle.label | access to local variable d : D [field trivialPropField] : Object |
 | D.cs:47:14:47:26 | access to property ComplexProp | semmle.label | access to property ComplexProp |
 | D.cs:47:14:47:26 | access to property ComplexProp | semmle.label | access to property ComplexProp |
+| D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | semmle.label | this : DPartial [field _backingField] : Object |
+| D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | semmle.label | this : DPartial [field _backingField] : Object |
+| D.cs:60:22:60:34 | access to field _backingField : Object | semmle.label | access to field _backingField : Object |
+| D.cs:60:22:60:34 | access to field _backingField : Object | semmle.label | access to field _backingField : Object |
+| D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | semmle.label | this access : DPartial [field _backingField] : Object |
+| D.cs:60:22:60:34 | this access : DPartial [field _backingField] : Object | semmle.label | this access : DPartial [field _backingField] : Object |
+| D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | semmle.label | this [Return] : DPartial [field _backingField] : Object |
+| D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | semmle.label | this [Return] : DPartial [field _backingField] : Object |
+| D.cs:61:9:61:11 | value : Object | semmle.label | value : Object |
+| D.cs:61:9:61:11 | value : Object | semmle.label | value : Object |
+| D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | semmle.label | [post] this access : DPartial [field _backingField] : Object |
+| D.cs:61:15:61:27 | [post] this access : DPartial [field _backingField] : Object | semmle.label | [post] this access : DPartial [field _backingField] : Object |
+| D.cs:61:31:61:35 | access to parameter value : Object | semmle.label | access to parameter value : Object |
+| D.cs:61:31:61:35 | access to parameter value : Object | semmle.label | access to parameter value : Object |
+| D.cs:78:13:78:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| D.cs:78:13:78:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| D.cs:78:17:78:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| D.cs:78:17:78:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | semmle.label | [post] access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object | semmle.label | [post] access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:81:26:81:26 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| D.cs:81:26:81:26 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | semmle.label | access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | semmle.label | access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:84:14:84:27 | access to property PartialProp1 | semmle.label | access to property PartialProp1 |
+| D.cs:84:14:84:27 | access to property PartialProp1 | semmle.label | access to property PartialProp1 |
 | E.cs:8:29:8:29 | o : Object | semmle.label | o : Object |
 | E.cs:8:29:8:29 | o : Object | semmle.label | o : Object |
 | E.cs:11:9:11:11 | [post] access to local variable ret : S [field Field] : Object | semmle.label | [post] access to local variable ret : S [field Field] : Object |
@@ -2582,6 +2632,10 @@ subpaths
 | D.cs:45:14:45:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:8:9:8:11 | this : D [field trivialPropField] : Object | D.cs:8:22:8:42 | access to field trivialPropField : Object | D.cs:45:14:45:26 | access to property TrivialProp |
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:14:9:14:11 | this : D [field trivialPropField] : Object | D.cs:14:22:14:42 | access to field trivialPropField : Object | D.cs:47:14:47:26 | access to property ComplexProp |
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:14:9:14:11 | this : D [field trivialPropField] : Object | D.cs:14:22:14:42 | access to field trivialPropField : Object | D.cs:47:14:47:26 | access to property ComplexProp |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:61:9:61:11 | value : Object | D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:81:26:81:26 | access to local variable o : Object | D.cs:61:9:61:11 | value : Object | D.cs:61:9:61:11 | this [Return] : DPartial [field _backingField] : Object | D.cs:81:9:81:9 | [post] access to local variable d : DPartial [field _backingField] : Object |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | access to field _backingField : Object | D.cs:84:14:84:27 | access to property PartialProp1 |
+| D.cs:84:14:84:14 | access to local variable d : DPartial [field _backingField] : Object | D.cs:60:9:60:11 | this : DPartial [field _backingField] : Object | D.cs:60:22:60:34 | access to field _backingField : Object | D.cs:84:14:84:27 | access to property PartialProp1 |
 | E.cs:23:25:23:25 | access to local variable o : Object | E.cs:8:29:8:29 | o : Object | E.cs:12:16:12:18 | access to local variable ret : S [field Field] : Object | E.cs:23:17:23:26 | call to method CreateS : S [field Field] : Object |
 | E.cs:23:25:23:25 | access to local variable o : Object | E.cs:8:29:8:29 | o : Object | E.cs:12:16:12:18 | access to local variable ret : S [field Field] : Object | E.cs:23:17:23:26 | call to method CreateS : S [field Field] : Object |
 | E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:43:46:43:46 | o : Object | E.cs:43:36:43:36 | s [Return] : RefS [field RefField] : Object | E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object |
@@ -2690,6 +2744,8 @@ testFailures
 | D.cs:46:14:46:31 | access to field trivialPropField | D.cs:43:32:43:48 | call to method Source<Object> : Object | D.cs:46:14:46:31 | access to field trivialPropField | $@ | D.cs:43:32:43:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | D.cs:47:14:47:26 | access to property ComplexProp | D.cs:43:32:43:48 | call to method Source<Object> : Object | D.cs:47:14:47:26 | access to property ComplexProp | $@ | D.cs:43:32:43:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | D.cs:47:14:47:26 | access to property ComplexProp | D.cs:43:32:43:48 | call to method Source<Object> : Object | D.cs:47:14:47:26 | access to property ComplexProp | $@ | D.cs:43:32:43:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| D.cs:84:14:84:27 | access to property PartialProp1 | D.cs:78:17:78:33 | call to method Source<Object> : Object | D.cs:84:14:84:27 | access to property PartialProp1 | $@ | D.cs:78:17:78:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| D.cs:84:14:84:27 | access to property PartialProp1 | D.cs:78:17:78:33 | call to method Source<Object> : Object | D.cs:84:14:84:27 | access to property PartialProp1 | $@ | D.cs:78:17:78:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | E.cs:24:14:24:20 | access to field Field | E.cs:22:17:22:33 | call to method Source<Object> : Object | E.cs:24:14:24:20 | access to field Field | $@ | E.cs:22:17:22:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | E.cs:24:14:24:20 | access to field Field | E.cs:22:17:22:33 | call to method Source<Object> : Object | E.cs:24:14:24:20 | access to field Field | $@ | E.cs:22:17:22:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | E.cs:57:14:57:26 | access to field RefField | E.cs:54:21:54:37 | call to method Source<Object> : Object | E.cs:57:14:57:26 | access to field RefField | $@ | E.cs:54:21:54:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Drawing.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Drawing.Primitives, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Drawing
@@ -588,6 +588,7 @@ namespace System
             public static System.Drawing.Color MenuHighlight { get => throw null; }
             public static System.Drawing.Color MenuText { get => throw null; }
             public static System.Drawing.Color ScrollBar { get => throw null; }
+            public static bool UseAlternativeColorSet { get => throw null; set { } }
             public static System.Drawing.Color Window { get => throw null; }
             public static System.Drawing.Color WindowFrame { get => throw null; }
             public static System.Drawing.Color WindowText { get => throw null; }

@@ -13,9 +13,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.InsecureDownloadQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<InsecureDownloadFlow::PathNode, InsecureDownloadFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where InsecureDownloadFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink, "$@ of sensitive file from $@.",
   sink.getNode().(Sink).getDownloadCall(), "Download", source.getNode(), "HTTP source"

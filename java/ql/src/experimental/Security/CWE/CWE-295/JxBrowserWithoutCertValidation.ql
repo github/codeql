@@ -83,9 +83,9 @@ private module JxBrowserFlowConfig implements DataFlow::ConfigSig {
 
 private module JxBrowserFlow = DataFlow::Global<JxBrowserFlowConfig>;
 
-from DataFlow::Node src
-where
+deprecated query predicate problems(DataFlow::Node src, string message) {
   JxBrowserFlowConfig::isSource(src) and
   not JxBrowserFlow::flow(src, _) and
-  not isSafeJxBrowserVersion()
-select src, "This JxBrowser instance may not check HTTPS certificates."
+  not isSafeJxBrowserVersion() and
+  message = "This JxBrowser instance may not check HTTPS certificates."
+}

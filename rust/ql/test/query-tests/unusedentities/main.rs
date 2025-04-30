@@ -468,7 +468,45 @@ fn traits() {
 
 // --- macros ---
 
-fn macros() {
+macro_rules! set_value {
+    ($x:expr,$y:expr) => {
+        $x = $y
+    };
+}
+
+macro_rules! use_value {
+    ($x:expr) => {
+        println!("{}", $x)
+    };
+}
+
+fn macros1() {
+    let a: u16;
+    let b: u16 = 2;
+    set_value!(a, 1);
+    use_value!(b);
+
+    match std::env::args().nth(1).unwrap().parse::<u16>() {
+        Ok(n) => {
+            use_value!(n);
+        }
+        _ => {}
+    }
+}
+
+fn macros2() {
+    let a: u16 = 3;
+    println!("{}", a);
+
+    match std::env::args().nth(1).unwrap().parse::<u16>() {
+        Ok(n) => {
+            println!("{}", n);
+        }
+        _ => {}
+    }
+}
+
+fn macros3() {
     let x;
     println!(
         "The value of x is {}",
@@ -476,8 +514,24 @@ fn macros() {
             x = 10; // $ MISSING: Alert[rust/unused-value]
             10
         })
-    )
+    );
 }
+
+macro_rules! let_in_macro {
+    ($e:expr) => {{
+        let var_in_macro = 0;
+        $e
+    }};
+}
+
+// Our analysis does not currently respect the hygiene rules of Rust macros
+// (https://veykril.github.io/tlborm/decl-macros/minutiae/hygiene.html), because
+// all we have access to is the expanded AST
+fn hygiene_mismatch() {
+    let var_in_macro = 0; // $ SPURIOUS: Alert[rust/unused-value]
+    let_in_macro!(var_in_macro);
+}
+
 // --- references ---
 
 fn references() {
@@ -496,8 +550,7 @@ fn references() {
 pub struct my_declaration {
     field1: fn(i32) -> i32,
     field2: fn(x: i32) -> i32,
-    field3: fn(y:
-        fn(z: i32) -> i32) -> i32,
+    field3: fn(y: fn(z: i32) -> i32) -> i32,
 }
 
 type MyType = fn(x: i32) -> i32;
@@ -520,7 +573,10 @@ fn main() {
     shadowing();
     func_ptrs();
     folds_and_closures();
-    macros();
+    macros1();
+    macros2();
+    macros3();
+    hygiene_mismatch();
     references();
 
     generics();

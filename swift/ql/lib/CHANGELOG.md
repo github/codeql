@@ -1,3 +1,52 @@
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.1.
+
+### Minor Analysis Improvements
+
+* Added AST nodes `ActorIsolationErasureExpr`, `CurrentContextIsolationExpr`,
+  `ExtracFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
+  added by Swift 6.0.
+
+## 4.1.4
+
+No user-facing changes.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ArrayContent` class from the dataflow library, use `CollectionContent` instead.
+* Deleted the deprecated `getOptionsInput`, `getRegexInput`, and `getStringInput` predicates from the regexp library, use `getAnOptionsInput`, `getRegexInputNode`, and `getStringInputNode` instead.
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
+
 ## 3.1.0
 
 ### Major Analysis Improvements

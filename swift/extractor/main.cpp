@@ -93,6 +93,7 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
+    LOG_DEBUG("{}()", __func__);
     auto& options = invocation.getFrontendOptions();
     options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
@@ -101,18 +102,21 @@ class Observer : public swift::FrontendObserver {
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    LOG_DEBUG("{}()", __func__);
     // remove default consumers to avoid double messaging
     instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
   void performedCompilation(swift::CompilerInstance& compiler) override {
+    LOG_DEBUG("{}()", __func__);
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
   }
 
   void markSuccessfullyExtractedFiles() {
+    LOG_DEBUG("{}()", __func__);
     codeql::SwiftLocationExtractor locExtractor{invocationTrap};
     for (const auto& src : state.sourceFiles) {
       auto fileLabel = locExtractor.emitFile(src);
@@ -208,8 +212,11 @@ static auto argDump(int argc, char** argv) {
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {
-    ret += *env;
-    ret += '\n';
+    if (std::string_view envVar{*env};
+        envVar.starts_with("CODEQL_") || envVar.starts_with("SEMMLE_")) {
+      ret += *env;
+      ret += '\n';
+    }
   }
   return ret;
 }
@@ -229,7 +236,7 @@ int main(int argc, char** argv, char** envp) {
 
   const auto configuration = configure(argc, argv);
   LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
-  LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  LOG_DEBUG("CodeQL environment:\n{}\n", envDump(envp));
 
   auto openInterception = codeql::setupFileInterception(configuration);
 

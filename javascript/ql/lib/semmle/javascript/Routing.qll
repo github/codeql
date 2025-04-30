@@ -139,6 +139,8 @@ module Routing {
     predicate mayResumeDispatch() {
       this.getLastChild().mayResumeDispatch()
       or
+      isInMiddlewareSetup(this)
+      or
       exists(this.(RouteHandler).getAContinuationInvocation())
       or
       // Leaf nodes that aren't functions are assumed to invoke their continuation
@@ -154,6 +156,8 @@ module Routing {
      */
     predicate definitelyResumesDispatch() {
       this.getLastChild().definitelyResumesDispatch()
+      or
+      isInMiddlewareSetup(this)
       or
       exists(this.(RouteHandler).getAContinuationInvocation())
       or
@@ -188,25 +192,33 @@ module Routing {
       )
     }
 
-    /**
-     * Gets the path prefix needed to reach this node from the given ancestor, that is, the concatenation
-     * of all relative paths between this node and the ancestor.
-     *
-     * To restrict the size of the predicate, this is only available for the ancestors that are "fork" nodes,
-     * that is, a node that has siblings (i.e. multiple children).
-     */
-    private string getPathFromFork(Node fork) {
+    private string getPathFromForkInternal(Node fork) {
       this.isFork() and
       this = fork and
       result = ""
       or
       exists(Node parent | parent = this.getParent() |
         not exists(parent.getRelativePath()) and
-        result = parent.getPathFromFork(fork)
+        result = parent.getPathFromForkInternal(fork)
         or
-        result = parent.getPathFromFork(fork) + parent.getRelativePath() and
+        result = parent.getPathFromForkInternal(fork) + parent.getRelativePath() and
         result.length() < 100
       )
+    }
+
+    /**
+     * Gets the path prefix needed to reach this node from the given ancestor, that is, the concatenation
+     * of all relative paths between this node and the ancestor.
+     *
+     * To restrict the size of the predicate, this is only available for the ancestors that are "fork" nodes,
+     * that is, a node that has siblings (i.e. multiple children).
+     * And only a single (shortest) path is returned, even if there are multiple paths
+     * leading to this node.
+     */
+    pragma[nomagic]
+    private string getPathFromFork(Node fork) {
+      result =
+        min(string res | res = this.getPathFromForkInternal(fork) | res order by res.length(), res)
     }
 
     /**
@@ -315,6 +327,19 @@ module Routing {
      * to the `req` parameter).
      */
     DataFlow::Node getValueImplicitlyStoredInAccessPath(int n, string path) { none() }
+  }
+
+  /**
+   * Holds if `node` is installed at a route handler that is declared to be a middleware setup,
+   * and is therefore assume to resume dispatch.
+   */
+  private predicate isInMiddlewareSetup(Node node) {
+    exists(RouteSetup::Range range |
+      node = getRouteSetupNode(range) and
+      range.isMiddlewareSetup()
+    )
+    or
+    isInMiddlewareSetup(node.getParent())
   }
 
   /** Holds if `pred` and `succ` are adjacent siblings and `succ` is installed after `pred`. */
@@ -604,6 +629,20 @@ module Routing {
        * Holds if this route setup targets `router` and occurs at the given `cfgNode`.
        */
       abstract predicate isInstalledAt(Router::Range router, ControlFlowNode cfgNode);
+
+      /**
+       * Holds if this is a middleware setup, meaning dispatch will resume after the
+       * route handlers in this route setup have completed (usually meaning that they have returned a promise, which has resolved).
+       *
+       * This should only be overridden when the route setup itself determines whether subsequent
+       * route handlers are invoked afterwards.
+       * - For Express-like libraries, the route _handler_ determines whether to resume dispatch,
+       *   based on whether the `next` callback is invoked. For such libraries, do not override `isMiddlewareSetup`.
+       * - For Fastify-like libraries, the route _setup_ determines whether to resume dispatch.
+       *   For example, `.addHook()` will resume dispatch whereas `.get()` will not. `isMiddlewareSetup()` should thus
+       *   hold for `.addHook()` but not for `.get()` calls.
+       */
+      predicate isMiddlewareSetup() { none() }
     }
 
     /**
@@ -884,10 +923,14 @@ module Routing {
    * based on `Node::Range::getValueAtAccessPath`.
    */
   private DataFlow::Node getAnAccessPathRhs(Node base, int n, string path) {
-    // Assigned in the body of a route handler function, whi
+    // Assigned in the body of a route handler function, which is a middleware
     exists(RouteHandler handler | base = handler |
       result = AccessPath::getAnAssignmentTo(handler.getParameter(n).ref(), path) and
-      exists(handler.getAContinuationInvocation())
+      (
+        exists(handler.getAContinuationInvocation())
+        or
+        isInMiddlewareSetup(handler)
+      )
     )
     or
     // Implicit assignment contributed by framework model

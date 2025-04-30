@@ -48,3 +48,11 @@ class Nested<T10>
     Nested<int>.NestedB.NestedC<bool> x5;
     Nested<string>.NestedB.NestedC<decimal> x6;
 }
+
+interface I2 { }
+struct S3 : I2 { }
+ref struct RS : I2 { }
+class C7 : I2 { }
+
+class NormalConstraint<T> where T : I2 { }
+class NegativeConstraint<T> where T : I2, allows ref struct { }

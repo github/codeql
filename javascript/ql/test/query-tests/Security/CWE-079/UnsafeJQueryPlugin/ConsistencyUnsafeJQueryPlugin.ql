@@ -1,3 +1,0 @@
-import javascript
-import utils.test.ConsistencyChecking
-import semmle.javascript.security.dataflow.UnsafeJQueryPluginQuery as UnsafeJqueryPlugin

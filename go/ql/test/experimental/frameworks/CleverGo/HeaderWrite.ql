@@ -8,8 +8,7 @@ module HttpHeaderWriteTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     // Dynamic key-value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getName().toString() and
         value = hw.getName().toString() and
@@ -23,8 +22,7 @@ module HttpHeaderWriteTest implements TestSig {
     or
     // Static key, dynamic value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and
@@ -38,8 +36,7 @@ module HttpHeaderWriteTest implements TestSig {
     or
     // Static key, static value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and

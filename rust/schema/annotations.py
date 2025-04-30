@@ -1,18 +1,19 @@
 from misc.codegen.lib.schemadefs import *
 from .ast import *
 
+
 class LabelableExpr(Expr):
     """
     The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
     """
     label: optional[Label] | child
 
+
 class LoopingExpr(LabelableExpr):
     """
     The base class for expressions that loop (`LoopExpr`, `ForExpr` or `WhileExpr`).
     """
     loop_body: optional["BlockExpr"] | child
-
 
 
 @annotate(Module)
@@ -31,14 +32,14 @@ class _:
     """
 
 
-@annotate(Expr, cfg = True)
+@annotate(Expr, cfg=True)
 class _:
     """
     The base class for expressions.
     """
 
 
-@annotate(Pat, cfg = True)
+@annotate(Pat, cfg=True)
 class _:
     """
     The base class for patterns.
@@ -76,6 +77,7 @@ class _:
     ```
     """
 
+
 @annotate(Path)
 class _:
     """
@@ -85,6 +87,7 @@ class _:
     foo::bar;
     ```
     """
+    segment: _ | ql.db_table_name("path_segments_") | doc("last segment of this path")
 
 
 @annotate(GenericArgList)
@@ -120,7 +123,7 @@ class PathExprBase(Expr):
     """
 
 
-@annotate(PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg = True)
+@annotate(PathExpr, replace_bases={Expr: PathExprBase}, add_bases=(PathAstNode,), cfg=True)
 @qltest.test_with(Path)
 class _:
     """
@@ -135,7 +138,7 @@ class _:
     path: drop
 
 
-@annotate(IfExpr, cfg = True)
+@annotate(IfExpr, cfg=True)
 class _:
     """
     An `if` expression. For example:
@@ -154,7 +157,7 @@ class _:
     """
 
 
-@annotate(LetExpr, cfg = True)
+@annotate(LetExpr, cfg=True)
 @rust.doc_test_signature("(maybe_some: Option<String>) -> ()")
 class _:
     """
@@ -167,7 +170,7 @@ class _:
     """
 
 
-@annotate(BlockExpr, replace_bases={Expr: LabelableExpr}, cfg = True)
+@annotate(BlockExpr, replace_bases={Expr: LabelableExpr}, cfg=True)
 class _:
     """
     A block expression. For example:
@@ -186,7 +189,7 @@ class _:
     label: drop
 
 
-@annotate(LoopExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
+@annotate(LoopExpr, replace_bases={Expr: LoopingExpr}, cfg=True)
 class _:
     """
     A loop expression. For example:
@@ -224,7 +227,7 @@ class CallExprBase(Expr):
     attrs: list["Attr"] | child
 
 
-@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg = True)
+@annotate(CallExpr, replace_bases={Expr: CallExprBase}, cfg=True)
 class _:
     """
     A function call expression. For example:
@@ -239,7 +242,7 @@ class _:
     attrs: drop
 
 
-@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,), cfg = True)
+@annotate(MethodCallExpr, replace_bases={Expr: CallExprBase}, add_bases=(Resolvable,), cfg=True)
 class _:
     """
     A method call expression. For example:
@@ -272,7 +275,7 @@ class _:
     """
 
 
-@annotate(MatchExpr, cfg = True)
+@annotate(MatchExpr, cfg=True)
 @rust.doc_test_signature("(x: i32) -> i32")
 class _:
     """
@@ -290,10 +293,11 @@ class _:
     }
     ```
     """
-    scrutinee: _ | doc("scrutinee (the expression being matched) of this match expression")
+    scrutinee: _ | doc(
+        "scrutinee (the expression being matched) of this match expression")
 
 
-@annotate(ContinueExpr, cfg = True)
+@annotate(ContinueExpr, cfg=True)
 class _:
     """
     A continue expression. For example:
@@ -314,7 +318,7 @@ class _:
     """
 
 
-@annotate(BreakExpr, cfg = True)
+@annotate(BreakExpr, cfg=True)
 class _:
     """
     A break expression. For example:
@@ -343,7 +347,7 @@ class _:
   """
 
 
-@annotate(ReturnExpr, cfg = True)
+@annotate(ReturnExpr, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -361,7 +365,7 @@ class _:
     """
 
 
-@annotate(BecomeExpr, cfg = True)
+@annotate(BecomeExpr, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -378,7 +382,7 @@ class _:
     """
 
 
-@annotate(YieldExpr, cfg = True)
+@annotate(YieldExpr, cfg=True)
 class _:
     """
     A `yield` expression. For example:
@@ -391,7 +395,7 @@ class _:
     """
 
 
-@annotate(YeetExpr, cfg = True)
+@annotate(YeetExpr, cfg=True)
 class _:
     """
     A `yeet` expression. For example:
@@ -403,20 +407,20 @@ class _:
     """
 
 
-@annotate(RecordExprField)
+@annotate(StructExprField)
 class _:
     """
-    A field in a record expression. For example `a: 1` in:
+    A field in a struct expression. For example `a: 1` in:
     ```rust
     Foo { a: 1, b: 2 };
     ```
     """
 
 
-@annotate(RecordExpr, add_bases=(PathAstNode,), cfg = True)
+@annotate(StructExpr, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record expression. For example:
+    A struct expression. For example:
     ```rust
     let first = Foo { a: 1, b: 2 };
     let second = Foo { a: 2, ..first };
@@ -427,7 +431,7 @@ class _:
     path: drop
 
 
-@annotate(FieldExpr, cfg = True)
+@annotate(FieldExpr, cfg=True)
 class _:
     """
     A field access expression. For example:
@@ -437,7 +441,7 @@ class _:
     """
 
 
-@annotate(AwaitExpr, cfg = True)
+@annotate(AwaitExpr, cfg=True)
 class _:
     """
     An `await` expression. For example:
@@ -450,7 +454,7 @@ class _:
     """
 
 
-@annotate(CastExpr, cfg = True)
+@annotate(CastExpr, cfg=True)
 class _:
     """
     A type cast expression. For example:
@@ -460,7 +464,7 @@ class _:
     """
 
 
-@annotate(RefExpr, cfg = True)
+@annotate(RefExpr, cfg=True)
 class _:
     """
     A reference expression. For example:
@@ -473,7 +477,7 @@ class _:
     """
 
 
-@annotate(PrefixExpr, cfg = True)
+@annotate(PrefixExpr, cfg=True)
 class _:
     """
     A unary operation expression. For example:
@@ -485,7 +489,7 @@ class _:
     """
 
 
-@annotate(BinaryExpr, cfg = True)
+@annotate(BinaryExpr, cfg=True)
 class _:
     """
     A binary operation expression. For example:
@@ -499,7 +503,7 @@ class _:
     """
 
 
-@annotate(RangeExpr, cfg = True)
+@annotate(RangeExpr, cfg=True)
 class _:
     """
     A range expression. For example:
@@ -514,7 +518,7 @@ class _:
     """
 
 
-@annotate(IndexExpr, cfg = True)
+@annotate(IndexExpr, cfg=True)
 class _:
     """
     An index expression. For example:
@@ -541,7 +545,7 @@ class _:
     """
 
 
-@annotate(TupleExpr, cfg = True)
+@annotate(TupleExpr, cfg=True)
 class _:
     """
     A tuple expression. For example:
@@ -558,6 +562,7 @@ class _:
 class _:
     pass
 
+
 class ArrayExpr(Expr):
     """
     The base class for array expressions. For example:
@@ -569,6 +574,7 @@ class ArrayExpr(Expr):
     exprs: list[Expr] | child
     attrs: list[Attr] | child
 
+
 @synth.from_class(ArrayExprInternal)
 class ArrayListExpr(ArrayExpr):
     """
@@ -578,6 +584,7 @@ class ArrayListExpr(ArrayExpr):
     ```
     """
     __cfg__ = True
+
 
 @synth.from_class(ArrayExprInternal)
 class ArrayRepeatExpr(ArrayExpr):
@@ -593,7 +600,7 @@ class ArrayRepeatExpr(ArrayExpr):
     repeat_length: Expr | child
 
 
-@annotate(LiteralExpr, cfg = True)
+@annotate(LiteralExpr, cfg=True)
 class _:
     """
     A literal expression. For example:
@@ -610,7 +617,7 @@ class _:
     """
 
 
-@annotate(UnderscoreExpr, cfg = True)
+@annotate(UnderscoreExpr, cfg=True)
 class _:
     """
     An underscore expression. For example:
@@ -620,7 +627,7 @@ class _:
     """
 
 
-@annotate(OffsetOfExpr, cfg = True)
+@annotate(OffsetOfExpr, cfg=True)
 class _:
     """
      An `offset_of` expression. For example:
@@ -630,7 +637,7 @@ class _:
     """
 
 
-@annotate(AsmExpr, cfg = True)
+@annotate(AsmExpr, cfg=True)
 class _:
     """
     An inline assembly expression. For example:
@@ -642,7 +649,7 @@ class _:
     """
 
 
-@annotate(LetStmt, cfg = True)
+@annotate(LetStmt, cfg=True)
 class _:
     """
     A let statement. For example:
@@ -671,7 +678,7 @@ class _:
     """
 
 
-@annotate(WildcardPat, cfg = True)
+@annotate(WildcardPat, cfg=True)
 class _:
     """
     A wildcard pattern. For example:
@@ -681,7 +688,7 @@ class _:
     """
 
 
-@annotate(TuplePat, cfg = True)
+@annotate(TuplePat, cfg=True)
 class _:
     """
     A tuple pattern. For example:
@@ -692,7 +699,7 @@ class _:
     """
 
 
-@annotate(OrPat, cfg = True)
+@annotate(OrPat, cfg=True)
 class _:
     """
     An or pattern. For example:
@@ -704,20 +711,20 @@ class _:
     """
 
 
-@annotate(RecordPatField)
+@annotate(StructPatField)
 class _:
     """
-    A field in a record pattern. For example `a: 1` in:
+    A field in a struct pattern. For example `a: 1` in:
     ```rust
     let Foo { a: 1, b: 2 } = foo;
     ```
     """
 
 
-@annotate(RecordPat, add_bases=(PathAstNode,), cfg = True)
+@annotate(StructPat, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
-    A record pattern. For example:
+    A struct pattern. For example:
     ```rust
     match x {
         Foo { a: 1, b: 2 } => "ok",
@@ -728,7 +735,7 @@ class _:
     path: drop
 
 
-@annotate(RangePat, cfg = True)
+@annotate(RangePat, cfg=True)
 class _:
     """
     A range pattern. For example:
@@ -742,7 +749,7 @@ class _:
     """
 
 
-@annotate(SlicePat, cfg = True)
+@annotate(SlicePat, cfg=True)
 class _:
     """
     A slice pattern. For example:
@@ -756,7 +763,7 @@ class _:
     """
 
 
-@annotate(PathPat, add_bases=(PathAstNode,), cfg = True)
+@annotate(PathPat, add_bases=(PathAstNode,), cfg=True)
 @qltest.test_with(Path)
 class _:
     """
@@ -771,7 +778,7 @@ class _:
     path: drop
 
 
-@annotate(LiteralPat, cfg = True)
+@annotate(LiteralPat, cfg=True)
 class _:
     """
     A literal pattern. For example:
@@ -784,7 +791,7 @@ class _:
     """
 
 
-@annotate(IdentPat, cfg = True)
+@annotate(IdentPat, cfg=True)
 class _:
     """
     A binding pattern. For example:
@@ -803,7 +810,7 @@ class _:
     """
 
 
-@annotate(TupleStructPat, add_bases=(PathAstNode,), cfg = True)
+@annotate(TupleStructPat, add_bases=(PathAstNode,), cfg=True)
 class _:
     """
     A tuple struct pattern. For example:
@@ -818,7 +825,7 @@ class _:
     path: drop
 
 
-@annotate(RefPat, cfg = True)
+@annotate(RefPat, cfg=True)
 class _:
     """
     A reference pattern. For example:
@@ -831,7 +838,7 @@ class _:
     """
 
 
-@annotate(BoxPat, cfg = True)
+@annotate(BoxPat, cfg=True)
 class _:
     """
     A box pattern. For example:
@@ -844,7 +851,7 @@ class _:
     """
 
 
-@annotate(ConstBlockPat, cfg = True)
+@annotate(ConstBlockPat, cfg=True)
 class _:
     """
     A const block pattern. For example:
@@ -1025,10 +1032,11 @@ class _:
     """
 
 
+# @annotate(VariantFieldList)
 @annotate(FieldList)
 class _:
     """
-    A FieldList. For example:
+    A field of a variant. For example:
     ```rust
     todo!()
     ```
@@ -1045,7 +1053,7 @@ class _:
     """
 
 
-@annotate(ForExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
+@annotate(ForExpr, replace_bases={Expr: LoopingExpr}, cfg=True)
 class _:
     """
     A ForExpr. For example:
@@ -1067,7 +1075,7 @@ class _:
     """
 
 
-@annotate(FormatArgsArg, cfg = True)
+@annotate(FormatArgsArg, cfg=True)
 @qltest.test_with(FormatArgsExpr)
 class _:
     """
@@ -1078,7 +1086,7 @@ class _:
     """
 
 
-@annotate(FormatArgsExpr, cfg = True)
+@annotate(FormatArgsExpr, cfg=True)
 class _:
     """
     A FormatArgsExpr. For example:
@@ -1116,9 +1124,12 @@ class _:
 @annotate(GenericParamList)
 class _:
     """
-    A GenericParamList. For example:
+    A list of generic parameters. For example:
     ```rust
-    todo!()
+    fn f<A, B>(a: A, b: B) {}
+    //  ^^^^^^
+    type Foo<T1, T2> = (T1, T2);
+    //      ^^^^^^^^
     ```
     """
 
@@ -1213,7 +1224,7 @@ class _:
     """
 
 
-@annotate(MacroCall, cfg = True)
+@annotate(MacroCall, cfg=True)
 class _:
     """
     A MacroCall. For example:
@@ -1234,7 +1245,7 @@ class _:
     """
 
 
-@annotate(MacroExpr, cfg = True)
+@annotate(MacroExpr, cfg=True)
 class _:
     """
     A MacroExpr. For example:
@@ -1257,7 +1268,7 @@ class _:
     """
 
 
-@annotate(MacroPat, cfg = True)
+@annotate(MacroPat, cfg=True)
 class _:
     """
     A MacroPat. For example:
@@ -1330,7 +1341,7 @@ class _:
     """
 
 
-@annotate(Name)
+@annotate(Name, cfg=True)
 class _:
     """
     A Name. For example:
@@ -1367,11 +1378,13 @@ class ParamBase(AstNode):
     attrs: list["Attr"] | child
     type_repr: optional["TypeRepr"] | child
 
-@annotate(ParamBase, cfg = True)
+
+@annotate(ParamBase, cfg=True)
 class _:
     pass
 
-@annotate(Param, replace_bases={AstNode: ParamBase}, cfg = True)
+
+@annotate(Param, replace_bases={AstNode: ParamBase}, cfg=True)
 class _:
     """
     A parameter in a function or method. For example `x` in:
@@ -1431,7 +1444,8 @@ class _:
     """
     A path segment, which is one part of a whole path.
     """
-
+    type_repr: optional["TypeRepr"] | child | rust.detach
+    trait_type_repr: optional["PathTypeRepr"] | child | rust.detach
 
 @annotate(PathTypeRepr)
 @qltest.test_with(Path)
@@ -1455,40 +1469,40 @@ class _:
     """
 
 
-@annotate(RecordExprFieldList)
+@annotate(StructExprFieldList)
 class _:
     """
-    A RecordExprFieldList. For example:
+    A StructExprFieldList. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordField)
+@annotate(StructField)
 class _:
     """
-    A RecordField. For example:
+    A StructField. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordFieldList)
+@annotate(StructFieldList)
 class _:
     """
-    A RecordFieldList. For example:
+    A field list of a struct expression. For example:
     ```rust
     todo!()
     ```
     """
 
 
-@annotate(RecordPatFieldList)
+@annotate(StructPatFieldList)
 class _:
     """
-    A RecordPatFieldList. For example:
+    A StructPatFieldList. For example:
     ```rust
     todo!()
     ```
@@ -1515,7 +1529,7 @@ class _:
     """
 
 
-@annotate(RestPat, cfg = True)
+@annotate(RestPat, cfg=True)
 class _:
     """
     A RestPat. For example:
@@ -1545,7 +1559,7 @@ class _:
     """
 
 
-@annotate(SelfParam, replace_bases={AstNode: ParamBase}, cfg = True)
+@annotate(SelfParam, replace_bases={AstNode: ParamBase}, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """
@@ -1613,6 +1627,7 @@ class _:
     todo!()
     ```
     """
+    field_list: _ | ql.db_table_name("struct_field_lists_")
 
 
 @annotate(TokenTree)
@@ -1652,7 +1667,7 @@ class _:
     """
 
 
-@annotate(TryExpr, cfg = True)
+@annotate(TryExpr, cfg=True)
 class _:
     """
     A TryExpr. For example:
@@ -1695,9 +1710,14 @@ class _:
 @annotate(TypeAlias)
 class _:
     """
-    A TypeAlias. For example:
+    A type alias. For example:
     ```rust
-    todo!()
+    type Point = (u8, u8);
+
+    trait Trait {
+        type Output;
+    //  ^^^^^^^^^^^
+    }
     ```
     """
 
@@ -1767,7 +1787,10 @@ class _:
     """
     A UseTree. For example:
     ```rust
-    todo!()
+    use std::collections::HashMap;
+    use std::collections::*;
+    use std::collections::HashMap as MyHashMap;
+    use std::collections::{self, HashMap, HashSet};
     ```
     """
 
@@ -1782,7 +1805,7 @@ class _:
     """
 
 
-@annotate(Variant, replace_bases={AstNode: Addressable})
+@annotate(Variant, add_bases=(Addressable,))
 class _:
     """
     A Variant. For example:
@@ -1832,7 +1855,7 @@ class _:
     """
 
 
-@annotate(WhileExpr, replace_bases={Expr: LoopingExpr}, cfg = True)
+@annotate(WhileExpr, replace_bases={Expr: LoopingExpr}, cfg=True)
 class _:
     """
     A WhileExpr. For example:
@@ -1864,7 +1887,6 @@ class FormatTemplateVariableAccess(PathExprBase):
 
 @synth.on_arguments(parent=FormatArgsExpr, index=int, text=string, offset=int)
 @qltest.test_with(FormatArgsExpr)
-
 class Format(Locatable):
     """
     A format element in a formatting template. For example the `{}` in:
@@ -1919,6 +1941,7 @@ class FormatArgument(Locatable):
     """
     parent: Format
     variable: optional[FormatTemplateVariableAccess] | child
+
 
 @annotate(Item, add_bases=(Addressable,))
 class _:

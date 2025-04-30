@@ -11,15 +11,6 @@ import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for cross-site scripting vulnerabilities.
- * DEPRECATED: Use StoredXssFlow
- */
-deprecated module StoredXss {
-  import XSS::StoredXss
-  import TaintTracking::Global<StoredXssConfig>
-}
-
 private module StoredXssConfig implements DataFlow::ConfigSig {
   private import XSS::StoredXss
 
@@ -32,6 +23,8 @@ private module StoredXssConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalXssTaintStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

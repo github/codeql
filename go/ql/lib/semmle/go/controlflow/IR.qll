@@ -218,11 +218,7 @@ module IR {
 
     override string toString() { result = e.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = e.getLocation() }
   }
 
   /**
@@ -364,11 +360,7 @@ module IR {
 
     override string toString() { result = "implicit read of field " + field.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      e.getBase().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = e.getBase().getLocation() }
   }
 
   /**
@@ -483,11 +475,7 @@ module IR {
 
     override string toString() { result = "init of " + elt }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      elt.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = elt.getLocation() }
   }
 
   /**
@@ -644,13 +632,7 @@ module IR {
 
     override string toString() { result = "element index" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      elt.hasLocationInfo(filepath, startline, startcolumn, _, _) and
-      endline = startline and
-      endcolumn = startcolumn
-    }
+    override Location getLocation() { result = elt.getLocation() }
   }
 
   /**
@@ -684,11 +666,7 @@ module IR {
 
     override string toString() { result = "assignment to " + this.getLhs() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLhs().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = this.getLhs().getLocation() }
   }
 
   /** An instruction computing the value of the right-hand side of a compound assignment. */
@@ -706,11 +684,7 @@ module IR {
 
     override string toString() { result = assgn.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      assgn.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = assgn.getLocation() }
   }
 
   /**
@@ -794,11 +768,7 @@ module IR {
 
     override string toString() { result = s + "[" + i + "]" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      s.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = s.getLocation() }
   }
 
   /**
@@ -842,11 +812,7 @@ module IR {
 
     override string toString() { result = "zero value for " + v }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      v.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = v.getDeclaration().getLocation() }
   }
 
   /**
@@ -861,11 +827,7 @@ module IR {
 
     override string toString() { result = fd.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      fd.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = fd.getLocation() }
   }
 
   /**
@@ -880,11 +842,7 @@ module IR {
 
     override string toString() { result = defer.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      defer.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = defer.getLocation() }
   }
 
   /**
@@ -899,11 +857,7 @@ module IR {
 
     override string toString() { result = go.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      go.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = go.getLocation() }
   }
 
   /**
@@ -920,11 +874,7 @@ module IR {
 
     override string toString() { result = ids.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ids.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ids.getLocation() }
   }
 
   /**
@@ -945,11 +895,7 @@ module IR {
 
     override string toString() { result = "rhs of " + ids }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ids.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ids.getLocation() }
   }
 
   /**
@@ -977,11 +923,7 @@ module IR {
 
     override string toString() { result = "1" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ids.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ids.getLocation() }
   }
 
   /**
@@ -1016,11 +958,7 @@ module IR {
 
     override string toString() { result = ret.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ret.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ret.getLocation() }
   }
 
   /**
@@ -1050,11 +988,7 @@ module IR {
 
     override string toString() { result = "implicit write of " + var }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ret.getResult(i).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ret.getResult(i).getLocation() }
   }
 
   /**
@@ -1074,11 +1008,7 @@ module IR {
 
     override string toString() { result = "implicit read of " + var }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      var.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = var.getDeclaration().getLocation() }
   }
 
   /**
@@ -1093,11 +1023,7 @@ module IR {
 
     override string toString() { result = sel.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      sel.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = sel.getLocation() }
   }
 
   /**
@@ -1112,11 +1038,7 @@ module IR {
 
     override string toString() { result = send.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      send.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = send.getLocation() }
   }
 
   /**
@@ -1133,11 +1055,7 @@ module IR {
 
     override string toString() { result = "initialization of " + parm }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      parm.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = parm.getDeclaration().getLocation() }
   }
 
   /**
@@ -1154,11 +1072,7 @@ module IR {
 
     override string toString() { result = "argument corresponding to " + parm }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      parm.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = parm.getDeclaration().getLocation() }
   }
 
   /**
@@ -1175,11 +1089,7 @@ module IR {
 
     override string toString() { result = "initialization of " + res }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      res.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = res.getDeclaration().getLocation() }
   }
 
   /**
@@ -1199,11 +1109,7 @@ module IR {
 
     override string toString() { result = "next key-value pair in range" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      rs.getDomain().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = rs.getDomain().getLocation() }
   }
 
   /**
@@ -1228,13 +1134,7 @@ module IR {
 
     override string toString() { result = "true" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      stmt.hasLocationInfo(filepath, startline, startcolumn, _, _) and
-      endline = startline and
-      endcolumn = startcolumn
-    }
+    override Location getLocation() { result = stmt.getLocation() }
   }
 
   /**
@@ -1263,11 +1163,7 @@ module IR {
 
     override string toString() { result = "case " + cc.getExpr(i) }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      cc.getExpr(i).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = cc.getExpr(i).getLocation() }
   }
 
   /**
@@ -1309,11 +1205,7 @@ module IR {
 
     override string toString() { result = "implicit type switch variable declaration" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      cc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = cc.getLocation() }
   }
 
   /**
@@ -1339,11 +1231,7 @@ module IR {
 
     override string toString() { result = "0" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      slice.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = slice.getLocation() }
   }
 
   /**
@@ -1361,11 +1249,7 @@ module IR {
 
     override string toString() { result = "len" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      slice.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = slice.getLocation() }
   }
 
   /**
@@ -1383,11 +1267,7 @@ module IR {
 
     override string toString() { result = "cap" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      slice.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = slice.getLocation() }
   }
 
   /**
@@ -1410,11 +1290,7 @@ module IR {
 
     override string toString() { result = "implicit dereference" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = e.getLocation() }
   }
 
   /** A representation of the target of a write instruction. */
@@ -1442,17 +1318,29 @@ module IR {
     /** Gets a textual representation of this target. */
     string toString() { result = "write target" }
 
+    /** Gets the source location for this element. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      or
+      not exists(this.getLocation()) and
+      filepath = "" and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
     }
   }
 
@@ -1505,11 +1393,7 @@ module IR {
 
     override string toString() { result = this.getName() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      loc.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = loc.getLocation() }
   }
 
   /** A reference to a field, used as the target of a write. */
@@ -1549,14 +1433,10 @@ module IR {
       result = "field " + w.(InitLiteralStructFieldInstruction).getFieldName()
     }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      exists(SelectorExpr sel | this = MkLhs(_, sel) |
-        sel.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      )
+    override Location getLocation() {
+      exists(SelectorExpr sel | this = MkLhs(_, sel) | result = sel.getLocation())
       or
-      w.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      result = w.(InitLiteralStructFieldInstruction).getLocation()
     }
   }
 
@@ -1586,14 +1466,10 @@ module IR {
 
     override string toString() { result = "element" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      exists(IndexExpr idx | this = MkLhs(_, idx) |
-        idx.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      )
+    override Location getLocation() {
+      exists(IndexExpr idx | this = MkLhs(_, idx) | result = idx.getLocation())
       or
-      w.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      result = w.(InitLiteralElementInstruction).getLocation()
     }
   }
 
@@ -1617,11 +1493,7 @@ module IR {
 
     override string toString() { result = lhs.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      lhs.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = lhs.getLocation() }
   }
 
   /**

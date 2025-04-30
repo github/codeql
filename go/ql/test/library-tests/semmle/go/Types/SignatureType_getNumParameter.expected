@@ -1,6 +1,7 @@
 | aliases.go:10:1:12:1 | function declaration | 1 |
 | aliases.go:14:1:16:1 | function declaration | 1 |
 | aliases.go:25:1:27:1 | function declaration | 1 |
+| aliases.go:34:1:38:1 | function declaration | 1 |
 | depth.go:22:1:25:1 | function declaration | 0 |
 | generic.go:70:1:72:1 | function declaration | 1 |
 | generic.go:74:1:80:1 | function declaration | 1 |

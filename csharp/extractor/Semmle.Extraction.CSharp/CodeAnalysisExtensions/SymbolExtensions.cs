@@ -29,6 +29,15 @@ namespace Semmle.Extraction.CSharp
             symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 
+    internal static class AnnotatedTypeSymbolExtensions
+    {
+        /// <summary>
+        /// Returns true if the type is a string type.
+        /// </summary>
+        public static bool IsStringType(this AnnotatedTypeSymbol? type) =>
+            type.HasValue && type.Value.Symbol?.SpecialType == SpecialType.System_String;
+    }
+
     internal static class SymbolExtensions
     {
         /// <summary>
@@ -531,6 +540,12 @@ namespace Semmle.Extraction.CSharp
             );
             return isInline;
         }
+
+        /// <summary>
+        /// Returns true if this type implements `System.IFormattable`.
+        /// </summary>
+        public static bool ImplementsIFormattable(this ITypeSymbol type) =>
+            type.AllInterfaces.Any(i => i.Name == "IFormattable" && i.ContainingNamespace.ToString() == "System");
 
         /// <summary>
         /// Holds if this type is of the form <code>System.ReadOnlySpan&lt;byte&gt;</code>.

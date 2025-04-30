@@ -31,6 +31,8 @@ private module Config implements DataFlow::StateConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { node instanceof Source }
 
   int fieldFlowBranchLimit() { result = 10 }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

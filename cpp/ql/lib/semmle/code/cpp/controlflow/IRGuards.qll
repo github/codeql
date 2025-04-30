@@ -102,49 +102,76 @@ abstract private class GuardConditionImpl extends Expr {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
-  /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
+   */
   pragma[inline]
   abstract predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   *   If `isLessThan = false` then this implies `left >= right + k`.
+   * If `isLessThan = false` then this implies `left >= right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan);
 
   /**
    * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
-   * this expression evaluates to `value`.
+   * this expression evaluates to `value`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `e >= k`.
+   * If `isLessThan = false` then this implies `e >= k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan);
 
-  /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  /**
+   * Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this
+   * expression evaluates to `testIsTrue`. Note that there's a 4-argument ("unary") and a
+   * 5-argument ("binary") version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue);
 
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `left != right + k`.
+   * If `areEqual = false` then this implies `left != right + k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual);
 
-  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
+  /**
+   * Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression
+   * evaluates to `value`. Note that there's a 4-argument ("unary") and a 5-argument ("binary")
+   * version of `comparesEq` and they are not equivalent:
+   *  - the unary version is suitable for guards where there is no expression representing the
+   *    right-hand side, such as `if (x)`, and also works for equality with an integer constant
+   *    (such as `if (x == k)`).
+   *  - the binary version is the more general case for comparison of any expressions (not
+   *    necessarily integer).
+   */
   pragma[inline]
   abstract predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value);
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `e != k`.
+   * If `areEqual = false` then this implies `e != k`. Note that there's a 4-argument
+   * ("unary") and a 5-argument ("binary") version of this predicate (see `comparesEq`).
    */
   pragma[inline]
   abstract predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual);
@@ -234,6 +261,114 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardConditionImpl
 }
 
 /**
+ * Holds if `ir` controls `block`, meaning that `block` is only
+ * entered if the value of this condition is `v`. This helper
+ * predicate does not necessarily hold for binary logical operations like
+ * `&&` and `||`. See the detailed explanation on predicate `controls`.
+ */
+private predicate controlsBlock(IRGuardCondition ir, BasicBlock controlled, AbstractValue v) {
+  exists(IRBlock irb |
+    ir.valueControls(irb, v) and
+    nonExcludedIRAndBasicBlock(irb, controlled) and
+    not isUnreachedBlock(irb)
+  )
+}
+
+private class GuardConditionFromNotExpr extends GuardConditionImpl {
+  IRGuardCondition ir;
+
+  GuardConditionFromNotExpr() {
+    // Users often expect the `x` in `!x` to also be a guard condition. But
+    // from the perspective of the IR the `x` is just the left-hand side of a
+    // comparison against 0 so it's not included as a normal
+    // `IRGuardCondition`. So to align with user expectations we make that `x`
+    // a `GuardCondition`.
+    exists(NotExpr notExpr |
+      this = notExpr.getOperand() and
+      ir.getUnconvertedResultExpression() = notExpr
+    )
+  }
+
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
+    // This condition must determine the flow of control; that is, this
+    // node must be a top-level condition.
+    controlsBlock(ir, controlled, v.getDualValue())
+  }
+
+  pragma[inline]
+  override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
+    exists(Instruction li, Instruction ri |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue.booleanNot())
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction li, Instruction ri, boolean testIsTrue |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue.booleanNot()) and
+      this.controls(block, testIsTrue)
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value.getDualValue()) and
+      this.valueControls(block, value)
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
+    exists(Instruction li, Instruction ri |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue.booleanNot())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction li, Instruction ri, boolean testIsTrue |
+      li.getUnconvertedResultExpression() = left and
+      ri.getUnconvertedResultExpression() = right and
+      ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue.booleanNot()) and
+      this.controls(block, testIsTrue)
+    )
+  }
+
+  pragma[inline]
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue())
+    )
+  }
+
+  pragma[inline]
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, value.getDualValue()) and
+      this.valueControls(block, value)
+    )
+  }
+}
+
+/**
  * A Boolean condition in the AST that guards one or more basic blocks and has a corresponding IR
  * instruction.
  */
@@ -245,7 +380,7 @@ private class GuardConditionFromIR extends GuardConditionImpl {
   override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, v)
+    controlsBlock(ir, controlled, v)
   }
 
   pragma[inline]
@@ -317,20 +452,6 @@ private class GuardConditionFromIR extends GuardConditionImpl {
       i.getUnconvertedResultExpression() = e and
       ir.comparesEq(i.getAUse(), k, areEqual, value) and
       this.valueControls(block, value)
-    )
-  }
-
-  /**
-   * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `v`. This helper
-   * predicate does not necessarily hold for binary logical operations like
-   * `&&` and `||`. See the detailed explanation on predicate `controls`.
-   */
-  private predicate controlsBlock(BasicBlock controlled, AbstractValue v) {
-    exists(IRBlock irb |
-      ir.valueControls(irb, v) and
-      nonExcludedIRAndBasicBlock(irb, controlled) and
-      not isUnreachedBlock(irb)
     )
   }
 }
@@ -588,7 +709,7 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   pragma[inline]
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
-    unary_compares_eq(valueNumber(this), op, k, areEqual, false, value)
+    unary_compares_eq(valueNumber(this), op, k, areEqual, value)
   }
 
   /**
@@ -610,7 +731,7 @@ class IRGuardCondition extends Instruction {
   pragma[inline]
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
+      unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControls(block, value)
     )
   }
@@ -636,7 +757,7 @@ class IRGuardCondition extends Instruction {
   pragma[inline]
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
-      unary_compares_eq(valueNumber(this), op, k, areEqual, false, value) and
+      unary_compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -847,77 +968,72 @@ private module Cached {
     compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), left, right, k, areEqual, value)
   }
 
+  private predicate isConvertedBool(Instruction instr) {
+    instr.getResultIRType() instanceof IRBooleanType
+    or
+    isConvertedBool(instr.(ConvertInstruction).getUnary())
+    or
+    isConvertedBool(instr.(BuiltinExpectCallInstruction).getCondition())
+  }
+
   /**
    * Holds if `op == k` is `areEqual` given that `test` is equal to `value`.
-   *
-   * Many internal predicates in this file have a `inNonZeroCase` column.
-   * Ideally, the `k` column would be a type such as `Option<int>::Option`, to
-   * represent whether we have a concrete value `k` such that `op == k`, or whether
-   * we only know that `op != 0`.
-   * However, cannot instantiate `Option` with an infinite type. Thus the boolean
-   * `inNonZeroCase` is used to distinquish the `Some` (where we have a concrete
-   * value `k`) and `None` cases (where we only know that `op != 0`).
-   *
-   * Thus, if `inNonZeroCase = true` then `op != 0` and the value of `k` is
-   * meaningless.
-   *
-   * To see why `inNonZeroCase` is needed consider the following C program:
-   * ```c
-   * char* p = ...;
-   * if(p) {
-   *   use(p);
-   * }
-   * ```
-   * in C++ there would be an int-to-bool conversion on `p`. However, since C
-   * does not have booleans there is no conversion. We want to be able to
-   * conclude that `p` is non-zero in the true branch, so we need to give `k`
-   * some value. However, simply setting `k = 1` would make the rest of the
-   * analysis think that `k == 1` holds inside the branch. So we distinquish
-   * between the above case and
-   * ```c
-   * if(p == 1) {
-   *   use(p)
-   * }
-   * ```
-   * by setting `inNonZeroCase` to `true` in the former case, but not in the
-   * latter.
    */
   cached
   predicate unary_compares_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
     /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
-    exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, inNonZeroCase, v) |
+    exists(AbstractValue v | unary_simple_comparison_eq(test, op, k, v) |
       areEqual = true and value = v
       or
       areEqual = false and value = v.getDualValue()
     )
     or
-    unary_complex_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_complex_eq(test, op, k, areEqual, value)
     or
     /* (x is true => (op == k)) => (!x is false => (op == k)) */
-    exists(AbstractValue dual, boolean inNonZeroCase0 |
+    exists(AbstractValue dual |
       value = dual.getDualValue() and
-      unary_compares_eq(test.(LogicalNotValueNumber).getUnary(), op, k, inNonZeroCase0, areEqual,
-        dual)
-    |
-      k = 0 and inNonZeroCase = inNonZeroCase0
-      or
-      k != 0 and inNonZeroCase = true
+      unary_compares_eq(test.(LogicalNotValueNumber).getUnary(), op, k, areEqual, dual)
     )
     or
     // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
     // test is `areEqual` => op == k1 + k2
-    inNonZeroCase = false and
     exists(int k1, int k2, Instruction const |
       compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
       int_value(const) = k1 and
       k = k1 + k2
     )
     or
-    unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual,
-      inNonZeroCase, value)
+    exists(CompareValueNumber cmp, Operand left, Operand right, AbstractValue v |
+      test = cmp and
+      pragma[only_bind_into](cmp)
+          .hasOperands(pragma[only_bind_into](left), pragma[only_bind_into](right)) and
+      isConvertedBool(left.getDef()) and
+      int_value(right.getDef()) = 0 and
+      unary_compares_eq(valueNumberOfOperand(left), op, k, areEqual, v)
+    |
+      cmp instanceof CompareNEValueNumber and
+      v = value
+      or
+      cmp instanceof CompareEQValueNumber and
+      v.getDualValue() = value
+    )
+    or
+    unary_compares_eq(test.(BuiltinExpectCallValueNumber).getCondition(), op, k, areEqual, value)
+    or
+    exists(BinaryLogicalOperation logical, Expr operand, boolean b |
+      test.getAnInstruction().getUnconvertedResultExpression() = logical and
+      op.getDef().getUnconvertedResultExpression() = operand and
+      logical.impliesValue(operand, b, value.(BooleanValue).getValue())
+    |
+      k = 1 and
+      areEqual = b
+      or
+      k = 0 and
+      areEqual = b.booleanNot()
+    )
   }
 
   /** Rearrange various simple comparisons into `left == right + k` form. */
@@ -939,74 +1055,64 @@ private module Cached {
    * Holds if `op` is an operand that is eventually used in a unary comparison
    * with a constant.
    */
-  private predicate isRelevantUnaryComparisonOperand(Operand op) {
-    // Base case: `op` is an operand of a `CompareEQInstruction` or `CompareNEInstruction`,
-    // and the other operand is a constant.
-    exists(CompareInstruction eq, Instruction instr |
-      eq.hasOperands(op, instr.getAUse()) and
-      exists(int_value(instr))
-    |
-      eq instanceof CompareEQInstruction
-      or
-      eq instanceof CompareNEInstruction
-    )
-    or
-    // C doesn't have int-to-bool conversions, so `if(x)` will just generate:
-    // r2_1(glval<int>) = VariableAddress[x]
-    // r2_2(int)        = Load[x]                : &:r2_1, m1_6
-    // v2_3(void)       = ConditionalBranch      : r2_2
-    exists(ConditionalBranchInstruction branch | branch.getConditionOperand() = op)
+  private predicate mayBranchOn(Instruction instr) {
+    exists(ConditionalBranchInstruction branch | branch.getCondition() = instr)
     or
     // If `!x` is a relevant unary comparison then so is `x`.
     exists(LogicalNotInstruction logicalNot |
-      isRelevantUnaryComparisonOperand(unique( | | logicalNot.getAUse())) and
-      logicalNot.getUnaryOperand() = op
+      mayBranchOn(logicalNot) and
+      logicalNot.getUnary() = instr
     )
     or
     // If `y` is a relevant unary comparison and `y = x` then so is `x`.
-    not op.isDefinitionInexact() and
     exists(CopyInstruction copy |
-      isRelevantUnaryComparisonOperand(unique( | | copy.getAUse())) and
-      op = copy.getSourceValueOperand()
+      mayBranchOn(copy) and
+      instr = copy.getSourceValue()
     )
     or
     // If phi(x1, x2) is a relevant unary comparison then so are `x1` and `x2`.
-    not op.isDefinitionInexact() and
     exists(PhiInstruction phi |
-      isRelevantUnaryComparisonOperand(unique( | | phi.getAUse())) and
-      op = phi.getAnInputOperand()
+      mayBranchOn(phi) and
+      instr = phi.getAnInput()
     )
     or
     // If `__builtin_expect(x)` is a relevant unary comparison then so is `x`.
     exists(BuiltinExpectCallInstruction call |
-      isRelevantUnaryComparisonOperand(unique( | | call.getAUse())) and
-      op = call.getConditionOperand()
+      mayBranchOn(call) and
+      instr = call.getCondition()
     )
   }
 
   /** Rearrange various simple comparisons into `op == k` form. */
   private predicate unary_simple_comparison_eq(
-    ValueNumber test, Operand op, int k, boolean inNonZeroCase, AbstractValue value
+    ValueNumber test, Operand op, int k, AbstractValue value
   ) {
     exists(CaseEdge case, SwitchConditionValueNumber condition |
       condition = test and
       op = condition.getExpressionOperand() and
       case = value.(MatchValue).getCase() and
       exists(condition.getSuccessor(case)) and
-      case.getValue().toInt() = k and
-      inNonZeroCase = false
+      case.getValue().toInt() = k
     )
     or
-    isRelevantUnaryComparisonOperand(op) and
-    op.getDef() = test.getAnInstruction() and
-    (
-      k = 1 and
+    exists(Instruction const | int_value(const) = k |
       value.(BooleanValue).getValue() = true and
-      inNonZeroCase = true
+      test.(CompareEQValueNumber).hasOperands(op, const.getAUse())
       or
-      k = 0 and
       value.(BooleanValue).getValue() = false and
-      inNonZeroCase = false
+      test.(CompareNEValueNumber).hasOperands(op, const.getAUse())
+    )
+    or
+    exists(BooleanValue bv |
+      bv = value and
+      mayBranchOn(op.getDef()) and
+      op = test.getAUse()
+    |
+      k = 0 and
+      bv.getValue() = false
+      or
+      k = 1 and
+      bv.getValue() = true
     )
   }
 
@@ -1061,13 +1167,12 @@ private module Cached {
    * an instruction that compares the value of `__builtin_expect(op == k, _)` to `0`.
    */
   private predicate unary_builtin_expect_eq(
-    CompareValueNumber cmp, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    CompareValueNumber cmp, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
     exists(BuiltinExpectCallValueNumber call, Instruction const, AbstractValue innerValue |
       int_value(const) = 0 and
       cmp.hasOperands(call.getAUse(), const.getAUse()) and
-      unary_compares_eq(call.getCondition(), op, k, areEqual, inNonZeroCase, innerValue)
+      unary_compares_eq(call.getCondition(), op, k, areEqual, innerValue)
     |
       cmp instanceof CompareNEValueNumber and
       value = innerValue
@@ -1078,14 +1183,13 @@ private module Cached {
   }
 
   private predicate unary_complex_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
-    unary_sub_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_sub_eq(test, op, k, areEqual, value)
     or
-    unary_add_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_add_eq(test, op, k, areEqual, value)
     or
-    unary_builtin_expect_eq(test, op, k, areEqual, inNonZeroCase, value)
+    unary_builtin_expect_eq(test, op, k, areEqual, value)
   }
 
   /*
@@ -1347,20 +1451,17 @@ private module Cached {
 
   // op - x == c => op == (c+x)
   private predicate unary_sub_eq(
-    ValueNumber test, Operand op, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
   ) {
-    inNonZeroCase = false and
     exists(SubInstruction sub, int c, int x |
-      unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, sub.getAUse(), c, areEqual, value) and
       op = sub.getLeftOperand() and
       x = int_value(sub.getRight()) and
       k = c + x
     )
     or
-    inNonZeroCase = false and
     exists(PointerSubInstruction sub, int c, int x |
-      unary_compares_eq(test, sub.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, sub.getAUse(), c, areEqual, value) and
       op = sub.getLeftOperand() and
       x = int_value(sub.getRight()) and
       k = c + x
@@ -1415,12 +1516,10 @@ private module Cached {
 
   // left + x == right + c => left == right + (c-x)
   private predicate unary_add_eq(
-    ValueNumber test, Operand left, int k, boolean areEqual, boolean inNonZeroCase,
-    AbstractValue value
+    ValueNumber test, Operand left, int k, boolean areEqual, AbstractValue value
   ) {
-    inNonZeroCase = false and
     exists(AddInstruction lhs, int c, int x |
-      unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, lhs.getAUse(), c, areEqual, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
@@ -1429,9 +1528,8 @@ private module Cached {
       k = c - x
     )
     or
-    inNonZeroCase = false and
     exists(PointerAddInstruction lhs, int c, int x |
-      unary_compares_eq(test, lhs.getAUse(), c, areEqual, inNonZeroCase, value) and
+      unary_compares_eq(test, lhs.getAUse(), c, areEqual, value) and
       (
         left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
         or
@@ -1453,3 +1551,25 @@ private module Cached {
 }
 
 private import Cached
+
+/**
+ * Holds if `left < right + k` evaluates to `isLt` given that some guard
+ * evaluates to `value`.
+ *
+ * To find the specific guard that performs the comparison
+ * use `IRGuards.comparesLt`.
+ */
+predicate comparesLt(Operand left, Operand right, int k, boolean isLt, AbstractValue value) {
+  compares_lt(_, left, right, k, isLt, value)
+}
+
+/**
+ * Holds if `left = right + k` evaluates to `isLt` given that some guard
+ * evaluates to `value`.
+ *
+ * To find the specific guard that performs the comparison
+ * use `IRGuards.comparesEq`.
+ */
+predicate comparesEq(Operand left, Operand right, int k, boolean isLt, AbstractValue value) {
+  compares_eq(_, left, right, k, isLt, value)
+}

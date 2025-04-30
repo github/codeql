@@ -20,7 +20,7 @@ import semmle.code.cpp.Class
  * ```
  */
 class Struct extends Class {
-  Struct() { usertypes(underlyingElement(this), _, 1) or usertypes(underlyingElement(this), _, 3) }
+  Struct() { usertypes(underlyingElement(this), _, [1, 3, 15, 17]) }
 
   override string getAPrimaryQlClass() { result = "Struct" }
 

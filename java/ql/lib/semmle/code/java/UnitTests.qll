@@ -67,6 +67,19 @@ class TestClass extends Class {
 }
 
 /**
+ * A class that is likely a test class. That is either a definite test class, or
+ * a class whose name, package, or location suggests that it might be a test class.
+ */
+class LikelyTestClass extends Class {
+  LikelyTestClass() {
+    this instanceof TestClass or
+    this.getName().toLowerCase().matches("%test%") or
+    this.getPackage().getName().toLowerCase().matches("%test%") or
+    this.getLocation().getFile().getAbsolutePath().matches("%/src/test/java%")
+  }
+}
+
+/**
  * A test method declared within a JUnit 3.8 test class.
  */
 class JUnit3TestMethod extends Method {
@@ -109,6 +122,57 @@ class JUnit4TestMethod extends Method {
 class JUnitJupiterTestMethod extends Method {
   JUnitJupiterTestMethod() {
     this.getAnAnnotation().getType().hasQualifiedName("org.junit.jupiter.api", "Test")
+  }
+}
+
+/**
+ * A JUnit 5 test method.
+ *
+ * A test method is defined by JUnit as "any instance method
+ * that is directly annotated or meta-annotated with `@Test`,
+ * `@RepeatedTest`, `@ParameterizedTest`, `@TestFactory`, or
+ * `@TestTemplate`."
+ *
+ * See https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions
+ */
+class JUnit5TestMethod extends Method {
+  JUnit5TestMethod() {
+    this instanceof JUnitJupiterTestMethod or
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.junit.jupiter.api", ["RepeatedTest", "TestFactory", "TestTemplate"]) or
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName("org.junit.jupiter.params", "ParameterizedTest")
+  }
+}
+
+/**
+ * A JUnit 5 test class.
+ *
+ * A test class must contain at least one test method, and
+ * cannot be abstract.
+ *
+ * See https://junit.org/junit5/docs/current/user-guide/#writing-tests-definitions
+ */
+class JUnit5TestClass extends Class {
+  JUnit5TestClass() {
+    this.getAMethod() instanceof JUnit5TestMethod and
+    not this.isAbstract()
+  }
+}
+
+/**
+ * A JUnit inner test class that is non-anonymous, non-local,
+ * and non-private.
+ */
+class JUnit5InnerTestClass extends JUnit5TestClass {
+  JUnit5InnerTestClass() {
+    // `InnerClass` is a non-static nested class.
+    this instanceof InnerClass and
+    not this.isAnonymous() and
+    not this.isLocal() and
+    not this.isPrivate()
   }
 }
 
@@ -182,6 +246,37 @@ class TestMethod extends Method {
     this instanceof JUnit4TestMethod or
     this instanceof JUnitJupiterTestMethod or
     this instanceof TestNGTestMethod
+  }
+}
+
+/**
+ * A method that is likely a test method.
+ */
+class LikelyTestMethod extends Method {
+  LikelyTestMethod() {
+    this.getDeclaringType() instanceof LikelyTestClass
+    or
+    this instanceof TestMethod
+    or
+    this instanceof LikelyJunitTest
+  }
+}
+
+/**
+ * A `Method` that is public, has no parameters,
+ * has a "void" return type, AND either has a name that starts with "test" OR
+ * has an annotation that ends with "Test"
+ */
+class LikelyJunitTest extends Method {
+  LikelyJunitTest() {
+    this.isPublic() and
+    this.getReturnType().hasName("void") and
+    this.hasNoParameters() and
+    (
+      this.getName().matches("JUnit%") or
+      this.getName().matches("test%") or
+      this.getAnAnnotation().getType().getName().matches("%Test")
+    )
   }
 }
 

@@ -30,8 +30,8 @@ arguments = parser.parse_args()
 assert hasattr(arguments, "ignore_missing_query_packs")
 
 # Define which languages and query packs to consider
-languages = [ "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "swift" ]
-packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental" ]
+languages = [ "actions", "cpp", "csharp", "go", "java", "javascript", "python", "ruby", "swift" ]
+packs = [ "code-scanning", "security-and-quality", "security-extended", "security-experimental", "code-quality"]
 
 class CodeQL:
     def __init__(self):
@@ -169,7 +169,7 @@ with CodeQL() as codeql:
             for pack in packs:
                 # Get absolute paths to queries in this pack by using 'codeql resolve queries'
                 try:
-                    queries_subp = codeql.command(["resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)])
+                    queries_subp = codeql.command(["resolve","queries","--search-path", codeql_search_path, "%s-%s.qls" % (lang, pack)]).strip()
                 except Exception as e:
                     # Resolving queries might go wrong if the github/codeql repository is not
                     # on the search path.
@@ -183,8 +183,13 @@ with CodeQL() as codeql:
                     else:
                         sys.exit("You can use '--ignore-missing-query-packs' to ignore this error")
 
+                # Exception for the code-quality suites, which might be empty, but must be resolvable.
+                if pack == 'code-quality' and queries_subp == '':
+                    print(f'Warning: skipping empty suite code-quality', file=sys.stderr)
+                    continue
+
                 # Investigate metadata for every query by using 'codeql resolve metadata'
-                for queryfile in queries_subp.strip().split("\n"):
+                for queryfile in queries_subp.split("\n"):
                     query_metadata_json = codeql.command(["resolve","metadata",queryfile]).strip()
 
                     # Turn an absolute path to a query file into an nwo-prefixed path (e.g. github/codeql/java/ql/src/....)

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -393,6 +393,7 @@ namespace Microsoft
             {
                 public HttpValidationProblemDetails() => throw null;
                 public HttpValidationProblemDetails(System.Collections.Generic.IDictionary<string, string[]> errors) => throw null;
+                public HttpValidationProblemDetails(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string[]>> errors) => throw null;
                 public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; set { } }
             }
             public interface IBindableFromHttpContext<TSelf> where TSelf : class, Microsoft.AspNetCore.Http.IBindableFromHttpContext<TSelf>
@@ -483,6 +484,9 @@ namespace Microsoft
                     bool IsOptional { get; }
                     System.Type RequestType { get; }
                 }
+                public interface IDisableHttpMetricsMetadata
+                {
+                }
                 public interface IEndpointDescriptionMetadata
                 {
                     string Description { get; }
@@ -534,6 +538,14 @@ namespace Microsoft
                 }
                 public interface IFromServiceMetadata
                 {
+                }
+                public interface IParameterBindingMetadata
+                {
+                    bool HasBindAsync { get; }
+                    bool HasTryParse { get; }
+                    bool IsOptional { get; }
+                    string Name { get; }
+                    System.Reflection.ParameterInfo ParameterInfo { get; }
                 }
                 public interface IProducesResponseTypeMetadata
                 {

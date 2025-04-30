@@ -1,25 +1,20 @@
 var o = {
   A: function f(x) {
        'use strict';
-       // BAD
-       if (!(this instanceof arguments.callee))
-         // BAD
-         return new arguments.callee(x);
-       // BAD
-       console.log(f.caller);
-       // BAD
-       this.y = f.arguments;
+       if (!(this instanceof arguments.callee)) // $ Alert
+         return new arguments.callee(x); // $ Alert
+       console.log(f.caller); // $ Alert
+       this.y = f.arguments; // $ Alert
        this.x = x;
      }
 };
 
 var D = class extends function() {
-  // BAD
-  return arguments.callee;
+  return arguments.callee; // $ Alert
 } {};
 
 function g() {
-  // OK
+
   return arguments.caller.length;
 }
 
@@ -27,8 +22,7 @@ function g() {
   'use strict';
   function h() {
     var foo = Math.random() > 0.5 ? h : arguments;
-    // BAD
-    return foo.caller;
+    return foo.caller; // $ Alert
   }
 })();
 

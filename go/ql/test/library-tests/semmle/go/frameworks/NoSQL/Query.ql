@@ -8,8 +8,7 @@ module NoSqlQueryTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(NoSql::Query q |
-      q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      q.getLocation() = location and
       element = q.toString() and
       value = q.toString() and
       tag = "nosqlquery"

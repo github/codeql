@@ -1267,6 +1267,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCurrentContextIsolationExpr(
+    CurrentContextIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -1402,6 +1417,26 @@ private module Impl {
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfExtractFunctionIsolationExpr(
+    ExtractFunctionIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nFunctionExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nFunctionExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediateFunctionExpr() and
+        partialPredicateCall = "FunctionExpr()"
       )
     )
   }
@@ -2098,6 +2133,23 @@ private module Impl {
 
   private Element getImmediateChildOfAbiSafeConversionExpr(
     AbiSafeConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfActorIsolationErasureExpr(
+    ActorIsolationErasureExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bImplicitConversionExpr, int n |
       b = 0 and
@@ -3041,6 +3093,23 @@ private module Impl {
 
   private Element getImmediateChildOfUnevaluatedInstanceExpr(
     UnevaluatedInstanceExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUnreachableExpr(
+    UnreachableExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bImplicitConversionExpr, int n |
       b = 0 and
@@ -5224,6 +5293,8 @@ private module Impl {
     or
     result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCurrentContextIsolationExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
@@ -5237,6 +5308,8 @@ private module Impl {
     result = getImmediateChildOfEnumIsCaseExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfErrorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExtractFunctionIsolationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfForceValueExpr(e, index, partialAccessor)
     or
@@ -5305,6 +5378,8 @@ private module Impl {
     result = getImmediateChildOfVarargExpansionExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAbiSafeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfActorIsolationErasureExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAnyHashableErasureExpr(e, index, partialAccessor)
     or
@@ -5411,6 +5486,8 @@ private module Impl {
     result = getImmediateChildOfUnderlyingToOpaqueExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnevaluatedInstanceExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnreachableExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, index, partialAccessor)
     or
@@ -5631,6 +5708,11 @@ Element getImmediateParent(Element e) {
 }
 
 /**
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct.
+ */
+Element getImmediateChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _) }
+
+/**
  * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
@@ -5649,3 +5731,8 @@ Element getChildAndAccessor(Element e, int index, string accessor) {
     accessor = "get" + partialAccessor
   )
 }
+
+/**
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
+ */
+Element getChild(Element e, int index) { result = Impl::getImmediateChild(e, index, _).resolve() }

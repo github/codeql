@@ -8,16 +8,17 @@
  */
 
 import javascript
-import DataFlow
 
-class EvalTaint extends TaintTracking::Configuration {
-  EvalTaint() { this = "EvalTaint" }
+module EvalTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
 
-  override predicate isSource(Node node) { node instanceof RemoteFlowSource }
-
-  override predicate isSink(Node node) { node = globalVarRef("eval").getACall().getArgument(0) }
+  predicate isSink(DataFlow::Node node) {
+    node = DataFlow::globalVarRef("eval").getACall().getArgument(0)
+  }
 }
 
-from EvalTaint cfg, Node source, Node sink
-where cfg.hasFlow(source, sink)
+module EvalTaintFlow = TaintTracking::Global<EvalTaintConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where EvalTaintFlow::flow(source, sink)
 select sink, "Eval with user-controlled input from $@.", source, "here"

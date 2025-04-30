@@ -1,3 +1,37 @@
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### Deprecated APIs
+
+* All references to the `DefinitionExt` and `PhiReadNode` classes in the SSA library have been deprecated. The concept of phi-read nodes is now strictly an internal implementation detail. Their sole use-case is to improve the structure of the use-use flow relation for data flow, and this use-case remains supported by the `DataFlowIntegration` module.
+
+## 1.0.20
+
+No user-facing changes.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+No user-facing changes.
+
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+No user-facing changes.
+
+## 1.0.15
+
+No user-facing changes.
+
 ## 1.0.14
 
 No user-facing changes.

@@ -10,6 +10,8 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Path
 import codeql.rust.elements.PathSegment
 
+private class PathAlias = Path;
+
 /**
  * INTERNAL: This module contains the fully generated definition of `Path` and should not
  * be referenced directly.
@@ -30,7 +32,7 @@ module Generated {
     /**
      * Gets the qualifier of this path, if it exists.
      */
-    Path getQualifier() {
+    PathAlias getQualifier() {
       result = Synth::convertPathFromRaw(Synth::convertPathToRaw(this).(Raw::Path).getQualifier())
     }
 
@@ -40,15 +42,16 @@ module Generated {
     final predicate hasQualifier() { exists(this.getQualifier()) }
 
     /**
-     * Gets the part of this path, if it exists.
+     * Gets the last segment of this path, if it exists.
      */
-    PathSegment getPart() {
-      result = Synth::convertPathSegmentFromRaw(Synth::convertPathToRaw(this).(Raw::Path).getPart())
+    PathSegment getSegment() {
+      result =
+        Synth::convertPathSegmentFromRaw(Synth::convertPathToRaw(this).(Raw::Path).getSegment())
     }
 
     /**
-     * Holds if `getPart()` exists.
+     * Holds if `getSegment()` exists.
      */
-    final predicate hasPart() { exists(this.getPart()) }
+    final predicate hasSegment() { exists(this.getSegment()) }
   }
 }

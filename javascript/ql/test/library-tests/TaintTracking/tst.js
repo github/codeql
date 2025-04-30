@@ -14,7 +14,7 @@ function test() {
     sink(x.sort()); // NOT OK
 
     var a = [];
-    sink(a); // NOT OK (flow-insensitive treatment of `a`)
+    sink(a); // OK
     a.push(x);
     sink(a); // NOT OK
 
@@ -76,12 +76,12 @@ function test() {
 
     { 
         const grouped = Map.groupBy(x, (item) => sink(item)); // NOT OK
-        sink(grouped); // NOT OK
+        sink(grouped.get(unknown())); // NOT OK
     }
     {
         const list = [source()];
         const grouped = Map.groupBy(list, (item) => sink(item)); // NOT OK
-        sink(grouped); // NOT OK
+        sink(grouped.get(unknown())); // NOT OK
     }
     {
         const data = source();

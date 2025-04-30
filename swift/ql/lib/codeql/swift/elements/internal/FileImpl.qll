@@ -5,7 +5,7 @@ private import codeql.swift.elements.UnknownLocation
 module Impl {
   class File extends Generated::File {
     /** toString */
-    override string toString() { result = this.getAbsolutePath() }
+    override string toStringImpl() { result = this.getAbsolutePath() }
 
     /** Gets the absolute path of this file. */
     string getAbsolutePath() { result = this.getName() }

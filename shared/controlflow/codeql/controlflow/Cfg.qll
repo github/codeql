@@ -48,7 +48,7 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
   }
 
-  /** Gets the CFG scope of AST node `n`. */
+  /** Gets the CFG scope of the AST node `n`. */
   CfgScope getCfgScope(AstNode n);
 
   /** Holds if `first` is executed first when entering `scope`. */
@@ -77,6 +77,18 @@ signature module InputSig<LocationSig Location> {
 
   /** Holds if `t` is an abnormal exit type out of a CFG scope. */
   predicate isAbnormalExitType(SuccessorType t);
+
+  /**
+   * Gets an `id` of `node`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  int idOfAstNode(AstNode node);
+
+  /**
+   * Gets an `id` of `scope`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  int idOfCfgScope(CfgScope scope);
 }
 
 /** Provides input needed for CFG splitting. */
@@ -994,6 +1006,41 @@ module MakeWithSplitting<
       )
     }
 
+    private module JoinBlockPredecessors {
+      predicate hasIdAndKind(BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind) {
+        id = idOfCfgScope(jbp.(BasicBlocks::EntryBasicBlock).getScope()) and
+        kind = 0
+        or
+        not jbp instanceof BasicBlocks::EntryBasicBlock and
+        id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
+        kind = 1
+      }
+
+      string getSplitString(BasicBlocks::JoinPredecessorBasicBlock jbp) {
+        result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+        or
+        not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+        result = ""
+      }
+    }
+
+    /**
+     * Gets the `i`th predecessor of join block `jb`, with respect to some
+     * arbitrary order.
+     */
+    cached
+    BasicBlocks::JoinPredecessorBasicBlock getJoinBlockPredecessor(
+      BasicBlocks::JoinBasicBlock jb, int i
+    ) {
+      result =
+        rank[i + 1](BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind |
+          jbp = jb.getAPredecessor() and
+          JoinBlockPredecessors::hasIdAndKind(jbp, id, kind)
+        |
+          jbp order by id, kind, JoinBlockPredecessors::getSplitString(jbp)
+        )
+    }
+
     cached
     module Public {
       /**
@@ -1213,7 +1260,10 @@ module MakeWithSplitting<
             last(parent, succ, completion) and
             condPropagateExpr(parent, completion, child, c) and
             succ(pred, succ, c) and
-            last(child, pred, c)
+            last(child, pred, c) and
+            // no need to create split if `succ` can only complete with the
+            // recorded completion
+            not completion = unique(ConditionalCompletion c0 | last(parent, succ, c0))
           )
         }
 
@@ -1513,6 +1563,98 @@ module MakeWithSplitting<
 
     /** Holds if CFG scope `scope` lacks an initial AST node. */
     query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
+  }
+
+  /**
+   * Provides a basic block construction on top of the control flow graph.
+   */
+  module BasicBlocks {
+    private import codeql.controlflow.BasicBlock as BB
+
+    private class CfgScopeAlias = CfgScope;
+
+    private class NodeAlias = Node;
+
+    private module BasicBlockInputSig implements BB::InputSig<Location> {
+      class SuccessorType = Input::SuccessorType;
+
+      predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
+
+      class CfgScope = CfgScopeAlias;
+
+      class Node = NodeAlias;
+
+      CfgScope nodeGetCfgScope(Node node) { result = node.getScope() }
+
+      Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
+
+      predicate nodeIsDominanceEntry(Node node) { node instanceof EntryNode }
+
+      predicate nodeIsPostDominanceExit(Node node) { node.(AnnotatedExitNode).isNormal() }
+    }
+
+    private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
+
+    final class BasicBlock = BasicBlockImpl::BasicBlock;
+
+    predicate dominatingEdge = BasicBlockImpl::dominatingEdge/2;
+
+    /**
+     * An entry basic block, that is, a basic block whose first node is
+     * an entry node.
+     */
+    final class EntryBasicBlock extends BasicBlock {
+      EntryBasicBlock() { this.getFirstNode() instanceof EntryNode }
+    }
+
+    /**
+     * An annotated exit basic block, that is, a basic block that contains an
+     * annotated exit node.
+     */
+    final class AnnotatedExitBasicBlock extends BasicBlock {
+      private boolean normal;
+
+      AnnotatedExitBasicBlock() {
+        exists(AnnotatedExitNode n |
+          n = this.getANode() and
+          if n.isNormal() then normal = true else normal = false
+        )
+      }
+
+      /** Holds if this block represent a normal exit. */
+      final predicate isNormal() { normal = true }
+    }
+
+    /**
+     * An exit basic block, that is, a basic block whose last node is
+     * an exit node.
+     */
+    final class ExitBasicBlock extends BasicBlock {
+      ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
+    }
+
+    /** A basic block with more than one predecessor. */
+    final class JoinBasicBlock extends BasicBlock {
+      JoinBasicBlock() { this.getFirstNode().isJoin() }
+
+      /**
+       * Gets the `i`th predecessor of this join block, with respect to some
+       * arbitrary order.
+       */
+      JoinPredecessorBasicBlock getJoinBlockPredecessor(int i) {
+        result = getJoinBlockPredecessor(this, i)
+      }
+    }
+
+    /** A basic block that is an immediate predecessor of a join block. */
+    final class JoinPredecessorBasicBlock extends BasicBlock {
+      JoinPredecessorBasicBlock() { this.getASuccessor() instanceof JoinBasicBlock }
+    }
+
+    /** A basic block that terminates in a condition, splitting the subsequent control flow. */
+    final class ConditionBasicBlock extends BasicBlock {
+      ConditionBasicBlock() { this.getLastNode().isCondition() }
+    }
   }
 }
 

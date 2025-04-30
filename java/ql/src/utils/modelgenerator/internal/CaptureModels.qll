@@ -32,9 +32,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
 
   class Callable = J::Callable;
 
-  class NodeExtended extends DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
+  class NodeExtended = DataFlow::Node;
+
+  Callable getAsExprEnclosingCallable(NodeExtended node) {
+    result = node.asExpr().getEnclosingCallable()
   }
+
+  Callable getEnclosingCallable(NodeExtended node) { result = node.getEnclosingCallable() }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
   private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
     cu.getPackage().getName().matches("javax.swing%") or
@@ -282,13 +288,28 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, JavaDataF
     c instanceof DataFlowUtil::MapKeyContent and result = "MapKey"
   }
 
-  predicate partialModel(
-    Callable api, string package, string type, string extensible, string name, string parameters
-  ) {
-    qualifiedName(api, package, type) and
-    extensible = isExtensible(api) and
-    name = api.getName() and
-    parameters = ExternalFlow::paramsString(api)
+  string partialModelRow(Callable api, int i) {
+    i = 0 and qualifiedName(api, result, _) // package
+    or
+    i = 1 and qualifiedName(api, _, result) // type
+    or
+    i = 2 and result = isExtensible(api) // extensible
+    or
+    i = 3 and result = api.getName() // name
+    or
+    i = 4 and result = ExternalFlow::paramsString(api) // parameters
+    or
+    i = 5 and result = "" and exists(api) // ext
+  }
+
+  string partialNeutralModelRow(Callable api, int i) {
+    i = 0 and qualifiedName(api, result, _) // package
+    or
+    i = 1 and qualifiedName(api, _, result) // type
+    or
+    i = 2 and result = api.getName() // name
+    or
+    i = 3 and result = ExternalFlow::paramsString(api) // parameters
   }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;

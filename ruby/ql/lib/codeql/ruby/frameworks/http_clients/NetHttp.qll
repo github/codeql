@@ -103,6 +103,10 @@ private module NetHttpDisablesCertificateValidationConfig implements DataFlow::C
   predicate isSink(DataFlow::Node sink) {
     sink = any(NetHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
 
 private module NetHttpDisablesCertificateValidationFlow =

@@ -35,6 +35,11 @@ module PolynomialReDoS {
     /** Gets the regex that is being executed by this node. */
     abstract RegExpTerm getRegExp();
 
+    /** Gets a term within the regexp that may perform polynomial back-tracking. */
+    final PolynomialBackTrackingTerm getABacktrackingTerm() {
+      result.getRootTerm() = this.getRegExp()
+    }
+
     /**
      * Gets the node to highlight in the alert message.
      */

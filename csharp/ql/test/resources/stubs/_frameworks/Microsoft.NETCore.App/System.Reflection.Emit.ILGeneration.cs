@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Reflection.Emit.ILGeneration, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Reflection.Emit.ILGeneration, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Reflection
@@ -21,6 +21,7 @@ namespace System
                 public abstract void BeginFaultBlock();
                 public abstract void BeginFinallyBlock();
                 public abstract void BeginScope();
+                protected static System.Reflection.Emit.Label CreateLabel(int id) => throw null;
                 protected ILGenerator() => throw null;
                 public virtual System.Reflection.Emit.LocalBuilder DeclareLocal(System.Type localType) => throw null;
                 public abstract System.Reflection.Emit.LocalBuilder DeclareLocal(System.Type localType, bool pinned);
@@ -52,6 +53,8 @@ namespace System
                 public abstract void EndScope();
                 public abstract int ILOffset { get; }
                 public abstract void MarkLabel(System.Reflection.Emit.Label loc);
+                public void MarkSequencePoint(System.Diagnostics.SymbolStore.ISymbolDocumentWriter document, int startLine, int startColumn, int endLine, int endColumn) => throw null;
+                protected virtual void MarkSequencePointCore(System.Diagnostics.SymbolStore.ISymbolDocumentWriter document, int startLine, int startColumn, int endLine, int endColumn) => throw null;
                 public virtual void ThrowException(System.Type excType) => throw null;
                 public abstract void UsingNamespace(string usingNamespace);
             }
@@ -60,14 +63,18 @@ namespace System
                 public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Reflection.Emit.Label obj) => throw null;
                 public override int GetHashCode() => throw null;
+                public int Id { get => throw null; }
                 public static bool operator ==(System.Reflection.Emit.Label a, System.Reflection.Emit.Label b) => throw null;
                 public static bool operator !=(System.Reflection.Emit.Label a, System.Reflection.Emit.Label b) => throw null;
             }
-            public sealed class LocalBuilder : System.Reflection.LocalVariableInfo
+            public abstract class LocalBuilder : System.Reflection.LocalVariableInfo
             {
+                protected LocalBuilder() => throw null;
                 public override bool IsPinned { get => throw null; }
                 public override int LocalIndex { get => throw null; }
                 public override System.Type LocalType { get => throw null; }
+                public void SetLocalSymInfo(string name) => throw null;
+                protected virtual void SetLocalSymInfoCore(string name) => throw null;
             }
             public abstract class ParameterBuilder
             {

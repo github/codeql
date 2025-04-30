@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 private import semmle.code.java.dataflow.TaintTracking
 

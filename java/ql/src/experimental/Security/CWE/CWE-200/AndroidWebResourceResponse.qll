@@ -1,4 +1,5 @@
 /** Provides Android methods relating to web resource response. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

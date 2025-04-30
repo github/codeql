@@ -8,6 +8,8 @@ import javascript
 import semmle.javascript.security.TaintedObject
 
 module NosqlInjection {
+  import semmle.javascript.security.CommonFlowState
+
   /**
    * A data flow source for NoSQL injection vulnerabilities.
    */
@@ -22,7 +24,10 @@ module NosqlInjection {
      *
      * Defaults to deeply tainted objects only.
      */
-    DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
+    FlowState getAFlowState() { result.isTaintedObject() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getAFlowLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**

@@ -7,15 +7,6 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 private import LdapInjectionCustomizations::LdapInjection as LI
 
-/**
- * Provides a taint-tracking configuration for detecting LDAP Injections vulnerabilities.
- * DEPRECATED: Use `LdapInjectionFlow` instead
- */
-deprecated module LdapInjection {
-  import LdapInjectionCustomizations::LdapInjection
-  import TaintTracking::Global<LdapInjectionConfig>
-}
-
 private module LdapInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LI::Source }
 
@@ -26,6 +17,8 @@ private module LdapInjectionConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     LI::isAdditionalFlowStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

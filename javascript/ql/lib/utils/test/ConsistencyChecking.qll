@@ -1,3 +1,9 @@
+/**
+ * DEPRECATED, but can be imported with a `deprecated import`.
+ *
+ * Will be replaced with standardized inline test expectations in the future.
+ */
+
 import javascript
 
 /**
@@ -7,7 +13,7 @@ import javascript
  *
  * If no configuration is specified, then the default is that the all sinks from a `DataFlow::Configuration` are alerts, and all files are consistency-checked.
  */
-abstract class ConsistencyConfiguration extends string {
+abstract deprecated class ConsistencyConfiguration extends string {
   bindingset[this]
   ConsistencyConfiguration() { any() }
 
@@ -30,7 +36,7 @@ abstract class ConsistencyConfiguration extends string {
  *
  * Is used internally to match a configuration or lack thereof.
  */
-final private class Conf extends string {
+deprecated final private class Conf extends string {
   Conf() {
     this instanceof ConsistencyConfiguration
     or
@@ -40,10 +46,10 @@ final private class Conf extends string {
 }
 
 /**
- * A line-comment that asserts whether a result exists at that line or not.
+ * A comment that asserts whether a result exists at that line or not.
  * Can optionally include `[INCONSISTENCY]` to indicate that a consistency issue is expected at the location
  */
-private class AssertionComment extends LineComment {
+private class AssertionComment extends Comment {
   boolean shouldHaveAlert;
 
   AssertionComment() {
@@ -65,12 +71,14 @@ private class AssertionComment extends LineComment {
   predicate expectConsistencyError() { this.getText().matches("%[INCONSISTENCY]%") }
 }
 
-private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result)) }
+deprecated private DataFlow::Node getASink() {
+  exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result))
+}
 
 /**
  * Gets all the alerts for consistency consistency checking from a configuration `conf`.
  */
-private DataFlow::Node alerts(Conf conf) {
+deprecated private DataFlow::Node alerts(Conf conf) {
   result = conf.(ConsistencyConfiguration).getAnAlert()
   or
   not exists(ConsistencyConfiguration r) and
@@ -83,7 +91,7 @@ private DataFlow::Node alerts(Conf conf) {
  * The `line` can be either the first or the last line of the alert.
  * And if no expression exists at `line`, then an alert on the next line is used.
  */
-private DataFlow::Node getAlert(File file, int line, Conf conf) {
+deprecated private DataFlow::Node getAlert(File file, int line, Conf conf) {
   result = alerts(conf) and
   result.getFile() = file and
   (result.hasLocationInfo(_, _, _, line, _) or result.hasLocationInfo(_, line, _, _, _))
@@ -108,7 +116,7 @@ private AssertionComment getComment(File file, int line) {
 /**
  * Holds if there is a false positive in `file` at `line` for configuration `conf`.
  */
-private predicate falsePositive(File file, int line, AssertionComment comment, Conf conf) {
+deprecated private predicate falsePositive(File file, int line, AssertionComment comment, Conf conf) {
   exists(getAlert(file, line, conf)) and
   comment = getComment(file, line) and
   not comment.shouldHaveAlert()
@@ -117,7 +125,7 @@ private predicate falsePositive(File file, int line, AssertionComment comment, C
 /**
  * Holds if there is a false negative in `file` at `line` for configuration `conf`.
  */
-private predicate falseNegative(File file, int line, AssertionComment comment, Conf conf) {
+deprecated private predicate falseNegative(File file, int line, AssertionComment comment, Conf conf) {
   not exists(getAlert(file, line, conf)) and
   comment = getComment(file, line) and
   comment.shouldHaveAlert()
@@ -126,10 +134,10 @@ private predicate falseNegative(File file, int line, AssertionComment comment, C
 /**
  * Gets a file that should be included for consistency checking for configuration `conf`.
  */
-private File getATestFile(string conf) {
+deprecated private File getATestFile(string conf) {
   not exists(any(ConsistencyConfiguration res).getAFile()) and
   result = any(LineComment comment).getFile() and
-  conf = ""
+  (conf = "" or conf instanceof ConsistencyConfiguration)
   or
   result = conf.(ConsistencyConfiguration).getAFile()
 }
@@ -139,7 +147,7 @@ private File getATestFile(string conf) {
  * Or the empty string
  */
 bindingset[file, line]
-private string getSinkDescription(File file, int line, Conf conf) {
+deprecated private string getSinkDescription(File file, int line, Conf conf) {
   not exists(DataFlow::Configuration c | c.hasFlow(_, getAlert(file, line, conf))) and
   result = ""
   or
@@ -153,7 +161,9 @@ private string getSinkDescription(File file, int line, Conf conf) {
  * The consistency issue an unexpected false positive/negative.
  * Or that false positive/negative was expected, and none were found.
  */
-query predicate consistencyIssue(string location, string msg, string commentText, Conf conf) {
+deprecated query predicate consistencyIssue(
+  string location, string msg, string commentText, Conf conf
+) {
   exists(File file, int line |
     file = getATestFile(conf) and location = file.getRelativePath() + ":" + line
   |

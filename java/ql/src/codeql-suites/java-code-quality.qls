@@ -1,0 +1,17 @@
+- queries: .
+- include:
+    id:
+      - java/contradictory-type-checks
+      - java/do-not-call-finalize
+      - java/equals-on-unrelated-types
+      - java/inconsistent-equals-and-hashcode
+      - java/input-resource-leak
+      - java/integer-multiplication-cast-to-long
+      - java/junit5-missing-nested-annotation
+      - java/output-resource-leak
+      - java/reference-equality-of-boxed-types
+      - java/string-replace-all-with-non-regex
+      - java/suspicious-date-format
+      - java/type-variable-hides-type
+      - java/unchecked-cast-in-equals
+      - java/unused-container

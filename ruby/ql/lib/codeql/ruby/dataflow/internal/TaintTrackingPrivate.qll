@@ -88,7 +88,7 @@ private module Cached {
         nodeFrom.asExpr() = value and
         value = case.getValue() and
         clause = case.getBranch(_) and
-        def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+        def = nodeTo.(SsaDefinitionNodeImpl).getDefinition() and
         def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
         not def.(Ssa::WriteDefinition).assigns(value)
       )

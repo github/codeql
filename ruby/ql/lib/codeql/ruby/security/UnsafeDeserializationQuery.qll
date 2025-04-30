@@ -17,6 +17,8 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserialization::Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof UnsafeDeserialization::Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

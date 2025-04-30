@@ -11,5 +11,4 @@ submod2/src/main/resources/my-app.properties
 submod2/src/main/resources/page.xml
 submod2/src/main/resources/struts.xml
 submod2/src/test/java/com/example/AppTest2.java
-test-db/log/ext/javac.properties
 test-db/working/settings.xml

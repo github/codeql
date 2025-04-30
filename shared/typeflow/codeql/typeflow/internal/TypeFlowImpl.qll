@@ -85,12 +85,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   pragma[nomagic]
   private predicate typeBound(Type t) { typeFlow(_, t) }
 
+  private predicate hasSupertype(Type sub, Type ancestor) { sub.getASupertype() = ancestor }
+
   /**
-   * Gets a direct or indirect supertype of this type.
-   * This does not include itself, unless this type is part of a cycle
-   * in the type hierarchy.
+   * Holds if `ancestor` is a direct or indirect supertype of `sub`.
    */
-  private Type getAStrictAncestor(Type sub) { result = getAnAncestor(sub.getASupertype()) }
+  private predicate hasAncestorBound(Type sub, Type ancestor) =
+    doublyBoundedFastTC(hasSupertype/2, typeBound/1, typeBound/1)(sub, ancestor)
 
   /**
    * Holds if we have a bound for `n` that is better than `t`.
@@ -98,10 +99,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   pragma[nomagic]
   private predicate irrelevantBound(TypeFlowNode n, Type t) {
     exists(Type bound |
-      typeFlow(n, bound) and
-      t = getAStrictAncestor(bound) and
-      typeBound(t) and
-      typeFlow(n, pragma[only_bind_into](t)) and
+      typeFlow(n, pragma[only_bind_into](bound)) and
+      hasAncestorBound(bound, t) and
+      typeFlow(n, t) and
       not getAnAncestor(t) = bound
       or
       n.getType() = pragma[only_bind_into](bound) and

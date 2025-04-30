@@ -14,3 +14,4 @@ public class Test {
 // Diagnostic Matches: 2 errors during annotation processing
 // Diagnostic Matches: Unknown or erroneous type for expression of kind TypeAccess
 // Diagnostic Matches: Unknown or erroneous type for expression of kind ClassInstanceCreation
+// Diagnostic Matches: Unknown or erroneous type for expression of kind VarAccess

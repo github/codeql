@@ -1,3 +1,5 @@
+deprecated module;
+
 import csharp
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.System

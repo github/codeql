@@ -26,4 +26,3 @@ project/build/intermediates/merged_manifests/release/AndroidManifest.xml
 project/build/intermediates/packaged_manifests/release/AndroidManifest.xml
 project/src/main/AndroidManifest.xml
 project/src/main/java/com/github/androidsample/Main.java
-test-db/log/ext/javac.properties

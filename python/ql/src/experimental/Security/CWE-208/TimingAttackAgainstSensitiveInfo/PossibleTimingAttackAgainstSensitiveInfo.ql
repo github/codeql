@@ -23,6 +23,8 @@ private module PossibleTimingAttackAgainstSensitiveInfoConfig implements DataFlo
   predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module PossibleTimingAttackAgainstSensitiveInfoFlow =

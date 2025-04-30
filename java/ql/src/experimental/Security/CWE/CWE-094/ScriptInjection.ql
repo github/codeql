@@ -142,7 +142,13 @@ module ScriptInjectionConfig implements DataFlow::ConfigSig {
 
 module ScriptInjectionFlow = TaintTracking::Global<ScriptInjectionConfig>;
 
-from ScriptInjectionFlow::PathNode source, ScriptInjectionFlow::PathNode sink
-where ScriptInjectionFlow::flowPath(source, sink)
-select sink.getNode().(ScriptInjectionSink).getMethodCall(), source, sink,
-  "Java Script Engine evaluate $@.", source.getNode(), "user input"
+deprecated query predicate problems(
+  MethodCall sinkCall, ScriptInjectionFlow::PathNode source, ScriptInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  ScriptInjectionFlow::flowPath(source, sink) and
+  sinkCall = sink.getNode().(ScriptInjectionSink).getMethodCall() and
+  message1 = "Java Script Engine evaluate $@." and
+  sourceNode = source.getNode() and
+  message2 = "user input"
+}

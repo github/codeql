@@ -8,20 +8,59 @@ import javascript
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 module HardcodedDataInterpretedAsCode {
+  private newtype TFlowState =
+    TUnmodified() or
+    TModified()
+
+  /** A flow state to associate with a tracked value. */
+  class FlowState extends TFlowState {
+    /** Gets a string representation fo this flow state */
+    string toString() {
+      this = TUnmodified() and result = "unmodified"
+      or
+      this = TModified() and result = "modified"
+    }
+
+    /** Gets the corresponding flow label. */
+    deprecated DataFlow::FlowLabel toFlowLabel() {
+      this = TUnmodified() and result.isData()
+      or
+      this = TModified() and result.isTaint()
+    }
+  }
+
+  /** Predicates for working with flow states. */
+  module FlowState {
+    /** Gets the flow state corresponding to `label`. */
+    deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
+
+    /** An unmodified value originating from a string constant. */
+    FlowState unmodified() { result = TUnmodified() }
+
+    /** A value which has undergone some transformation, such as hex decoding. */
+    FlowState modified() { result = TModified() }
+  }
+
   /**
    * A data flow source for hard-coded data.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label for which this is a source. */
-    DataFlow::FlowLabel getLabel() { result.isData() }
+    /** Gets a flow state for which this is a source. */
+    FlowState getAFlowState() { result = FlowState::unmodified() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getLabel() { result = this.getAFlowState().toFlowLabel() }
   }
 
   /**
    * A data flow sink for code injection.
    */
   abstract class Sink extends DataFlow::Node {
-    /** Gets a flow label for which this is a sink. */
-    abstract DataFlow::FlowLabel getLabel();
+    /** Gets a flow state for which this is a sink. */
+    FlowState getAFlowState() { result = FlowState::modified() }
+
+    /** DEPRECATED. Use `getAFlowState()` instead. */
+    deprecated DataFlow::FlowLabel getLabel() { result = this.getAFlowState().toFlowLabel() }
 
     /** Gets a description of what kind of sink this is. */
     abstract string getKind();
@@ -50,7 +89,7 @@ module HardcodedDataInterpretedAsCode {
    * A code injection sink; hard-coded data should not flow here.
    */
   private class DefaultCodeInjectionSink extends Sink instanceof CodeInjection::Sink {
-    override DataFlow::FlowLabel getLabel() { result.isTaint() }
+    override FlowState getAFlowState() { result = FlowState::modified() }
 
     override string getKind() { result = "Code" }
   }
@@ -61,7 +100,7 @@ module HardcodedDataInterpretedAsCode {
   private class RequireArgumentSink extends Sink {
     RequireArgumentSink() { this = any(Require r).getAnArgument().flow() }
 
-    override DataFlow::FlowLabel getLabel() { result.isDataOrTaint() }
+    override FlowState getAFlowState() { result = [FlowState::modified(), FlowState::unmodified()] }
 
     override string getKind() { result = "An import path" }
   }

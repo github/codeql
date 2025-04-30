@@ -1,3 +1,76 @@
+## 4.3.0
+
+### New Features
+
+* New classes `TypeofType`, `TypeofExprType`, and `TypeofTypeType` were introduced, which represent the C23 `typeof` and `typeof_unqual` operators. The `TypeofExprType` class represents the variant taking an expression as its argument. The `TypeofTypeType` class represents the variant taking a type as its argument.
+* A new class `IntrinsicTransformedType` was introduced, which represents the type transforming intrinsics supported by clang, gcc, and MSVC.
+* Introduced `hasDesignator()` predicates to distinguish between designated and positional initializations for both struct/union fields and array elements.
+* Added the `isVla()` predicate to the `ArrayType` class. This allows queries to identify variable-length arrays (VLAs).
+
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Modified the `getBufferSize` predicate in `commons/Buffer.qll` to be more tolerant in some cases involving member variables in a larger struct or class.
+* Fixed an issue where the `getBufferSize` predicate in `commons/Buffer.qll` was returning results for references inside `offsetof` expressions, which are not accesses to a buffer.
+
+## 4.0.1
+
+No user-facing changes.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAllocatorCall` predicate from `DeleteOrDeleteArrayExpr`, use `getDeallocatorCall` instead.
+
+### New Features
+
+* A new predicate `getOffsetInClass` was added to the `Field` class, which computes the byte offset of a field relative to a given `Class`.
+* New classes `PreprocessorElifdef` and `PreprocessorElifndef` were introduced, which represents the C23/C++23 `#elifdef` and `#elifndef` preprocessor directives.
+* A new class `TypeLibraryImport` was introduced, which represents the `#import` preprocessor directive as used by the Microsoft Visual C++ for importing type libraries.
+
+## 3.2.0
+
+### New Features
+
+* Add a new predicate `getAnIndirectBarrier` to the parameterized module `InstructionBarrierGuard` in `semmle.code.cpp.dataflow.new.DataFlow` for computing indirect dataflow nodes that are guarded by a given instruction. This predicate is similar to the `getAnIndirectBarrier` predicate on the parameterized module `BarrierGuard`.
+* A new predicate `getDecltype` was added to the `ProxyClass` class, which yields the decltype for the proxy class.
+* Template classes that are of `struct` type are now also instances of the `Struct` class.
+* Template classes that are of `union` type are now also instances of the `Union` class.
+* A new abstract class `ConfigurationTestFile` (`semmle.code.cpp.ConfigurationTestFile.ConfigurationTestFile`) was introduced, which represents files created to test the build configuration. A subclass `CmakeTryCompileFile` of `ConfigurationTestFile` was also introduced, which represents files created by CMake to test the build configuration.
+* New predicates `getARequiresClause`, `getTemplateRequiresClause` and `getFunctionRequiresClause` were added to the `FunctionDeclarationEntry` class, which yield the requires clauses when the entry represents a function template declaration with requires clauses.
+* A new predicate `getRequiresClause` was added to the `TypeDeclarationEntry` class, which yields the requires clause when the entry represents a class template declaration with a requires clause.
+* A new predicate `getRequiresClause` was added to the `VariableDeclarationEntry` class, which yields the requires clause when the entry represents a variable template declaration with a requires clause.
+* A new predicate `getTypeConstraint` was added to the `TypeTemplateParameter` class, which yields the type constraint of the parameter if it exists.
+* A new class `VariableTemplateSpecialization` was introduced, which represents explicit specializations of variable templates.
+* A new predicate `isSpecialization` was added to the `Variable` class, which holds if the variable is a template specialization.
+* A new class `ConceptIdExpr` was introduced, which represents C++20 concept id expressions.
+* A new class `Concept` was introduced, which represents C++20 concepts.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of concepts.
+* A new class `ConstevalIfStmt` was introduced, which represents the C++23 `if consteval` and `if ! consteval` statements.
+
+### Minor Analysis Improvements
+
+* `DefaultOptions::exits` now holds for C23 functions with the `_Noreturn` or `___Noreturn__` attribute.
+
 ## 3.1.0
 
 ### Deprecated APIs

@@ -1,7 +1,7 @@
 class C {
-  constructor(public x: number) {} // OK
+  constructor(public x: number) {}
 }
 
 class D {
-  constructor(x: number) {} // NOT OK
+  constructor(x: number) {} // $ Alert
 }

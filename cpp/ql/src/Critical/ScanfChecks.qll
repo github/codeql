@@ -37,7 +37,7 @@ private string getEofValue() {
  */
 private predicate checkedForEof(ScanfFunctionCall call) {
   exists(IRGuardCondition gc |
-    exists(Instruction i | i.getUnconvertedResultExpression() = call |
+    exists(CallInstruction i | i.getUnconvertedResultExpression() = call |
       exists(int val | gc.comparesEq(valueNumber(i).getAUse(), val, _, _) |
         // call == EOF
         val = getEofValue().toInt()
