@@ -1067,6 +1067,7 @@ if_exprs(  //dir=expr
 | @unevaluated_instance_expr
 | @unreachable_expr
 | @unresolved_type_conversion_expr
+| @unsafe_cast_expr
 ;
 
 #keyset[id]
@@ -1654,6 +1655,10 @@ unresolved_member_chain_result_exprs(  //dir=expr
 
 unresolved_type_conversion_exprs(  //dir=expr
   unique int id: @unresolved_type_conversion_expr
+);
+
+unsafe_cast_exprs(  //dir=expr
+  unique int id: @unsafe_cast_expr
 );
 
 boolean_literal_exprs(  //dir=expr

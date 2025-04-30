@@ -195,6 +195,7 @@ import codeql.swift.elements.expr.UnresolvedMemberExpr
 import codeql.swift.elements.expr.UnresolvedPatternExpr
 import codeql.swift.elements.expr.UnresolvedSpecializeExpr
 import codeql.swift.elements.expr.UnresolvedTypeConversionExpr
+import codeql.swift.elements.expr.UnsafeCastExpr
 import codeql.swift.elements.expr.VarargExpansionExpr
 import codeql.swift.elements.pattern.AnyPattern
 import codeql.swift.elements.pattern.BindingPattern

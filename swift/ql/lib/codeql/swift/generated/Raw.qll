@@ -2490,6 +2490,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A conversion that performs an unsafe bitcast.
+   */
+  class UnsafeCastExpr extends @unsafe_cast_expr, ImplicitConversionExpr {
+    override string toString() { result = "UnsafeCastExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class BooleanLiteralExpr extends @boolean_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "BooleanLiteralExpr" }

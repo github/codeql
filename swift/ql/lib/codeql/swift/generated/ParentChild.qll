@@ -3169,6 +3169,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnsafeCastExpr(
+    UnsafeCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfBooleanLiteralExpr(
     BooleanLiteralExpr e, int index, string partialPredicateCall
   ) {
@@ -5492,6 +5509,8 @@ private module Impl {
     result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnresolvedTypeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
     or

@@ -1463,3 +1463,9 @@ class UnreachableExpr(ImplicitConversionExpr):
     """
     A conversion from the uninhabited type to any other type. It's never evaluated.
     """
+
+
+class UnsafeCastExpr(ImplicitConversionExpr):
+    """
+    A conversion that performs an unsafe bitcast.
+    """

@@ -719,6 +719,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TUnsafeCastExpr(Raw::UnsafeCastExpr id) { constructUnsafeCastExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TVarargExpansionExpr(Raw::VarargExpansionExpr id) { constructVarargExpansionExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1288,7 +1292,7 @@ module Synth {
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
         TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
         TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnreachableExpr or
-        TUnresolvedTypeConversionExpr;
+        TUnresolvedTypeConversionExpr or TUnsafeCastExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -2563,6 +2567,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TUnsafeCastExpr`, if possible.
+   */
+  TUnsafeCastExpr convertUnsafeCastExprFromRaw(Raw::Element e) { result = TUnsafeCastExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TVarargExpansionExpr`, if possible.
    */
   TVarargExpansionExpr convertVarargExpansionExprFromRaw(Raw::Element e) {
@@ -3765,6 +3775,8 @@ module Synth {
     result = convertUnreachableExprFromRaw(e)
     or
     result = convertUnresolvedTypeConversionExprFromRaw(e)
+    or
+    result = convertUnsafeCastExprFromRaw(e)
   }
 
   /**
@@ -5271,6 +5283,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TUnsafeCastExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertUnsafeCastExprToRaw(TUnsafeCastExpr e) { e = TUnsafeCastExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TVarargExpansionExpr` to a raw DB element, if possible.
    */
   Raw::Element convertVarargExpansionExprToRaw(TVarargExpansionExpr e) {
@@ -6473,6 +6491,8 @@ module Synth {
     result = convertUnreachableExprToRaw(e)
     or
     result = convertUnresolvedTypeConversionExprToRaw(e)
+    or
+    result = convertUnsafeCastExprToRaw(e)
   }
 
   /**

@@ -242,6 +242,7 @@
 /lib/codeql/swift/elements/expr/UnresolvedPatternExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedTypeConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnsafeCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprImpl.qll linguist-generated
@@ -427,6 +428,8 @@
 /lib/codeql/swift/elements/expr/internal/UnresolvedSpecializeExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedTypeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedTypeConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeCastExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeCastExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/VarargExpansionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilityInfoConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilitySpecImpl.qll linguist-generated
@@ -908,6 +911,7 @@
 /lib/codeql/swift/generated/expr/UnresolvedPatternExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedTypeConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnsafeCastExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/generated/pattern/AnyPattern.qll linguist-generated
 /lib/codeql/swift/generated/pattern/BindingPattern.qll linguist-generated
