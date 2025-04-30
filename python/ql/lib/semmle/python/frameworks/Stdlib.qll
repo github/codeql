@@ -1963,6 +1963,22 @@ module StdlibPrivate {
     /** Gets a reference to an instance of the `BaseHttpRequestHandler` class or any subclass. */
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
+    /** A call to a method that writes to a response header. */
+    private class HeaderWriteCall extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      HeaderWriteCall() { this.calls(instance(), "send_header") }
+
+      override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+      override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+      // TODO: These checks perhaps could be made more precise.
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { any() }
+    }
+
     private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
       override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeFrom = instance() and
