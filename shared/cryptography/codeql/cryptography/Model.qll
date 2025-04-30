@@ -3,7 +3,6 @@
  */
 
 import codeql.util.Location
-import codeql.util.Option
 import codeql.util.Either
 
 signature module InputSig<LocationSig Location> {
@@ -379,6 +378,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
         exists(KeyDerivationOperationInstance op | inputNode = op.getInputConsumer())
         or
         exists(MACOperationInstance op | inputNode = op.getMessageConsumer())
+        or
+        exists(HashOperationInstance op | inputNode = op.getInputConsumer())
       ) and
       this = Input::dfn_to_element(inputNode)
     }
@@ -411,15 +412,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
-   * An artifact representing a hash function's digest output.
-   */
-  abstract class DigestArtifactInstance extends OutputArtifactInstance { }
-
-  /**
    * An artifact representing a random number generator's output.
    */
   abstract class RandomNumberGenerationInstance extends OutputArtifactInstance {
-    // TODO: input seed?
+    abstract string getGeneratorName();
   }
 
   /**
@@ -434,6 +430,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     KeyOperationOutputArtifactInstance() {
       Input::dfn_to_element(creator.getOutputArtifact()) = this
     }
+
+    override DataFlowNode getOutputNode() { result = creator.getOutputArtifact() }
+  }
+
+  /**
+   * An artifact representing the message digest output of a hash operation.
+   */
+  final class HashOutputArtifactInstance extends OutputArtifactInstance {
+    HashOperationInstance creator;
+
+    HashOutputArtifactInstance() { Input::dfn_to_element(creator.getOutputArtifact()) = this }
 
     override DataFlowNode getOutputNode() { result = creator.getOutputArtifact() }
   }
@@ -489,8 +496,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // TODO: key type hint? e.g. hint: private || public
     KeyArtifactConsumer() {
       (
-        exists(KeyOperationInstance op | inputNode = op.getKeyConsumer()) or
+        exists(KeyOperationInstance op | inputNode = op.getKeyConsumer())
+        or
         exists(MACOperationInstance op | inputNode = op.getKeyConsumer())
+        or
+        exists(KeyAgreementSecretGenerationOperationInstance op |
+          inputNode = op.getServerKeyConsumer() or
+          inputNode = op.getPeerKeyConsumer()
+        )
       ) and
       this = Input::dfn_to_element(inputNode)
     }
@@ -770,7 +783,22 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      *
      * If the algorithm accepts a range of key sizes without a particular one specified, this predicate should be implemented as `none()`.
      */
-    abstract string getKeySize();
+    abstract string getKeySizeFixed();
+
+    /**
+     * Gets a consumer for the key size in bits specified for this algorithm variant.
+     */
+    abstract ConsumerInputDataFlowNode getKeySizeConsumer();
+
+    /**
+     * Holds if this algorithm is expected to have a mode specified.
+     */
+    predicate shouldHaveModeOfOperation() { any() }
+
+    /**
+     * Holds if this algorithm is expected to have a padding scheme specified.
+     */
+    predicate shouldHavePaddingScheme() { any() }
   }
 
   newtype TBlockCipherModeOfOperationType =
@@ -904,7 +932,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   abstract class HashOperationInstance extends OperationInstance {
-    abstract DigestArtifactInstance getDigestArtifact();
+    abstract ArtifactOutputDataFlowNode getOutputArtifact();
+
+    abstract ConsumerInputDataFlowNode getInputConsumer();
   }
 
   abstract class HashAlgorithmInstance extends AlgorithmInstance {
@@ -1151,7 +1181,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   private newtype TNode =
     // Output artifacts (data that is not an operation or algorithm, e.g., a key)
-    TDigest(DigestArtifactInstance e) or
+    TDigest(HashOutputArtifactInstance e) or
     TKey(KeyArtifactInstance e) or
     TSharedSecret(KeyAgreementSharedSecretOutputArtifactInstance e) or
     // Input artifacts (synthetic nodes, used to differentiate input as entities)
@@ -1442,6 +1472,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override LocatableElement asElement() { result = instance }
 
     override string getSourceNodeRelationship() { none() } // TODO: seed?
+
+    override predicate properties(string key, string value, Location location) {
+      super.properties(key, value, location)
+      or
+      // [ONLY_KNOWN]
+      key = "Description" and
+      value = instance.getGeneratorName() and
+      location = this.getLocation()
+    }
   }
 
   /**
@@ -1518,7 +1557,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * A digest artifact produced by a hash operation.
    */
   final class DigestArtifactNode extends ArtifactNode, TDigest {
-    DigestArtifactInstance instance;
+    HashOutputArtifactInstance instance;
 
     DigestArtifactNode() { this = TDigest(instance) }
 
@@ -1664,12 +1703,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result.asElement() = instance.getOutputArtifact().getArtifact()
     }
 
+    KeyArtifactNode getServerKey() {
+      result.asElement() = instance.getServerKeyConsumer().getConsumer()
+    }
+
+    KeyArtifactNode getPeerKey() {
+      result.asElement() = instance.getPeerKeyConsumer().getConsumer()
+    }
+
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
       // [ALWAYS_KNOWN]
       key = "Output" and
       result = this.getOutput()
+      or
+      // [KNOWN_OR_UNKOWN]
+      key = "ServerKey" and
+      if exists(this.getServerKey()) then result = this.getServerKey() else result = this
+      or
+      // [KNOWN_OR_UNKOWN]
+      key = "PeerKey" and
+      if exists(this.getPeerKey()) then result = this.getPeerKey() else result = this
     }
   }
 
@@ -2115,7 +2170,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySize() { result = instance.asAlg().getKeySize() } // TODO: key sizes for known algorithms
+    string getKeySizeFixed() { result = instance.asAlg().getKeySizeFixed() } // TODO: key sizes for known algorithms
+
+    /**
+     * Gets the key size generic source node.
+     */
+    GenericSourceNode getKeySize() {
+      result = instance.asAlg().getKeySizeConsumer().getConsumer().getAGenericSourceNode()
+    }
 
     /**
      * Gets the type of this key operation algorithm, e.g., "SymmetricEncryption(_)" or ""
@@ -2139,17 +2201,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string edgeName) {
       result = super.getChild(edgeName)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - but only if not suppressed
       edgeName = "Mode" and
-      if exists(this.getModeOfOperation())
-      then result = this.getModeOfOperation()
-      else result = this
+      (
+        if exists(this.getModeOfOperation())
+        then result = this.getModeOfOperation()
+        else result = this
+      ) and
+      instance.asAlg().shouldHaveModeOfOperation()
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - but only if not suppressed
       edgeName = "Padding" and
-      if exists(this.getPaddingAlgorithm())
-      then result = this.getPaddingAlgorithm()
-      else result = this
+      (
+        if exists(this.getPaddingAlgorithm())
+        then result = this.getPaddingAlgorithm()
+        else result = this
+      ) and
+      instance.asAlg().shouldHavePaddingScheme()
     }
 
     override predicate properties(string key, string value, Location location) {
@@ -2160,14 +2228,13 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.getSymmetricCipherStructure().toString() = value and
       location = this.getLocation()
       or
+      // [ONLY_KNOWN]
+      key = "KeySize" and
       (
-        // [KNOWN_OR_UNKNOWN]
-        key = "KeySize" and
-        if exists(this.getKeySize())
-        then value = this.getKeySize()
-        else (
-          value instanceof UnknownPropertyValue and location instanceof UnknownLocation
-        )
+        value = this.getKeySizeFixed() and
+        location = this.getLocation()
+        or
+        node_as_property(this.getKeySize(), value, location)
       )
     }
   }
@@ -2191,10 +2258,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       node instanceof HashAlgorithmNode
     }
 
+    MessageArtifactNode getInputArtifact() {
+      result.asElement() = instance.getInputConsumer().getConsumer()
+    }
+
     /**
      * Gets the output digest node
      */
-    DigestArtifactNode getDigest() { result.asElement() = instance.getDigestArtifact() }
+    DigestArtifactNode getDigest() {
+      result.asElement() = instance.getOutputArtifact().getArtifact()
+    }
 
     override NodeBase getChild(string key) {
       result = super.getChild(key)
@@ -2202,6 +2275,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [KNOWN_OR_UNKNOWN]
       key = "Digest" and
       if exists(this.getDigest()) then result = this.getDigest() else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      key = "Message" and
+      if exists(this.getInputArtifact()) then result = this.getInputArtifact() else result = this
     }
   }
 

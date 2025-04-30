@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import sys
 import argparse
 import subprocess
@@ -86,6 +87,7 @@ def main():
     parser.add_argument("-c", "--codeql", required=True, help="Path to CodeQL CLI executable.")
     parser.add_argument("-d", "--database", required=True, help="Path to the CodeQL database.")
     parser.add_argument("-q", "--query", required=True, help="Path to the .ql query file.")
+    parser.add_argument("--queryid", required=True, help="Query ID for the analysis.")
     parser.add_argument("-o", "--output", required=True, help="Output directory for analysis results.")
     
     args = parser.parse_args()
@@ -94,7 +96,13 @@ def main():
     run_codeql_analysis(args.codeql, args.database, args.query, args.output)
 
     # Locate DGML file
-    dgml_file = os.path.join(args.output, "java", "print-cbom-graph.dgml")
+    ALLOWED_QUERY_ID = re.compile(r'^[a-zA-Z0-9_\-]+$')
+
+    if not ALLOWED_QUERY_ID.match(args.queryid):
+        print("Invalid query_id provided: '%s'. Allowed characters: letters, digits, '_', and '-'.", args.queryid)
+        sys.exit(1)
+
+    dgml_file = os.path.join(args.output, "java", '{}.dgml'.format(args.queryid))
     dot_file = dgml_file.replace(".dgml", ".dot")
 
     if os.path.exists(dgml_file):

@@ -1,5 +1,5 @@
 /**
- * @name "PQC Test"
+ * @name "Key operation slice table demo query"
  */
 
 import experimental.Quantum.Language

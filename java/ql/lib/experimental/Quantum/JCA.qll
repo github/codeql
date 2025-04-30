@@ -2,7 +2,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.controlflow.Dominance
-import codeql.util.Option
 
 module JCAModel {
   import Language
@@ -354,9 +353,11 @@ module JCAModel {
       else result instanceof KeyOpAlg::TUnknownKeyOperationAlgorithmType
     }
 
-    override string getKeySize() {
+    override string getKeySizeFixed() {
       none() // TODO: implement to handle variants such as AES-128
     }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
   }
 
   bindingset[input]
@@ -394,8 +395,6 @@ module JCAModel {
     override Crypto::HashAlgorithmInstance getOAEPEncodingHashAlgorithm() { result = this }
 
     override Crypto::HashAlgorithmInstance getMGF1HashAlgorithm() { none() } // TODO
-
-    override string getKeySize() { none() }
   }
 
   /**
@@ -445,8 +444,6 @@ module JCAModel {
      */
     predicate isIntermediate();
   }
-
-  module MethodCallOption = Option<MethodCall>;
 
   /**
    * An generic analysis module for analyzing the `getInstance` to `initialize` to `doOperation` pattern in the JCA.
@@ -565,6 +562,14 @@ module JCAModel {
     ) {
       src.getNode().asExpr() = result and
       sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
+      GetInstanceToInitToUseFlow::flowPath(src, sink)
+    }
+
+    GetInstance getInstantiationFromInit(
+      Init init, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
+    ) {
+      src.getNode().asExpr() = result and
+      sink.getNode().asExpr() = init.(MethodCall).getQualifier() and
       GetInstanceToInitToUseFlow::flowPath(src, sink)
     }
 
@@ -829,6 +834,9 @@ module JCAModel {
     }
   }
 
+  module MessageDigestFlowAnalysisImpl =
+    GetInstanceInitUseFlowAnalysis<MessageDigestGetInstanceCall, DUMMY_UNUSED_METHODCALL, DigestCall>;
+
   class MessageDigestGetInstanceAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
     MessageDigestGetInstanceCall call;
 
@@ -849,17 +857,18 @@ module JCAModel {
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
-
-    DigestHashOperation getDigestCall() {
-      DigestGetInstanceToDigestFlow::flow(DataFlow::exprNode(this),
-        DataFlow::exprNode(result.(DigestCall).getQualifier()))
-    }
   }
 
   class DigestCall extends MethodCall {
-    DigestCall() { this.getCallee().hasQualifiedName("java.security", "MessageDigest", "digest") }
+    DigestCall() {
+      this.getCallee().hasQualifiedName("java.security", "MessageDigest", ["update", "digest"])
+    }
 
     Expr getDigestArtifactOutput() { result = this }
+
+    Expr getInputArg() { result = this.getArgument(0) }
+
+    predicate isIntermediate() { this.getMethod().getName() = "update" }
   }
 
   // flow config from MessageDigest.getInstance to MessageDigest.digest
@@ -873,23 +882,22 @@ module JCAModel {
 
   module DigestGetInstanceToDigestFlow = DataFlow::Global<DigestGetInstanceToDigestConfig>;
 
-  class DigestArtifact extends Crypto::DigestArtifactInstance {
-    DigestArtifact() { this = any(DigestCall call).getDigestArtifactOutput() }
-
-    override DataFlow::Node getOutputNode() { result.asExpr() = this }
-  }
-
   class DigestHashOperation extends Crypto::HashOperationInstance instanceof DigestCall {
-    override Crypto::DigestArtifactInstance getDigestArtifact() {
-      result = this.(DigestCall).getDigestArtifactOutput()
+    DigestHashOperation() { not super.isIntermediate() }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+      result.asExpr() = super.getDigestArtifactOutput()
     }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      exists(MessageDigestGetInstanceCall getInstanceCall |
-        getInstanceCall.getDigestCall() = this and
-        getInstanceCall =
-          result.(MessageDigestGetInstanceAlgorithmValueConsumer).getInstantiationCall()
-      )
+      MessageDigestFlowAnalysisImpl::getInstantiationFromUse(this, _, _) =
+        result.(MessageDigestGetInstanceAlgorithmValueConsumer).getInstantiationCall()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result.asExpr() = super.getInputArg() or
+      result.asExpr() =
+        MessageDigestFlowAnalysisImpl::getAnIntermediateUseFromFinalUse(this, _, _).getInputArg()
     }
   }
 
@@ -997,6 +1005,7 @@ module JCAModel {
       or
       // However, for general elliptic curves, getInstance("EC") is used
       // and java.security.spec.ECGenParameterSpec("<CURVE NAME>") is what sets the specific curve.
+      // If init is not specified, the default (P-)
       // The result of ECGenParameterSpec is passed to KeyPairGenerator.initialize
       // If the curve is not specified, the default is used.
       // We would trace the use of this inside a KeyPairGenerator.initialize
@@ -1094,6 +1103,30 @@ module JCAModel {
     }
 
     override string getKeySizeFixed() { none() }
+  }
+
+  class KeyGeneratorCipherAlgorithm extends CipherStringLiteralAlgorithmInstance {
+    KeyGeneratorCipherAlgorithm() { consumer instanceof KeyGenerationAlgorithmValueConsumer }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      exists(KeyGeneratorGetInstanceCall getInstance, KeyGeneratorInitCall init |
+        getInstance =
+          this.getConsumer().(KeyGenerationAlgorithmValueConsumer).getInstantiationCall() and
+        getInstance = KeyGeneratorFlowAnalysisImpl::getInstantiationFromInit(init, _, _) and
+        init.getKeySizeArg() = result.asExpr()
+      )
+    }
+
+    predicate isOnlyConsumedByKeyGen() {
+      forall(Crypto::AlgorithmValueConsumer c |
+        c = this.getConsumer() and
+        c instanceof KeyGenerationAlgorithmValueConsumer
+      )
+    }
+
+    override predicate shouldHaveModeOfOperation() { this.isOnlyConsumedByKeyGen() }
+
+    override predicate shouldHavePaddingScheme() { this.isOnlyConsumedByKeyGen() }
   }
 
   /*
