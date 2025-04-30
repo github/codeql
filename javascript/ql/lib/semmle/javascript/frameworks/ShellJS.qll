@@ -15,7 +15,7 @@ module ShellJS {
           .getMember([
               "exec", "cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv",
               "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo",
-              "which",
+              "which", "cmd", "asyncExec"
             ])
           .getReturn()
   }
@@ -154,16 +154,27 @@ module ShellJS {
   }
 
   /**
-   * A call to `shelljs.exec()` modeled as command execution.
+   * A call to `shelljs.exec()`, `shelljs.cmd()`, or `async-shelljs.asyncExec()` modeled as command execution.
    */
   private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
-    ShellJSExec() { name = "exec" }
+    ShellJSExec() { name = ["exec", "cmd", "asyncExec"] }
 
-    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getACommandArgument() {
+      if name = "cmd"
+      then
+        result = this.getArgument(_) and
+        not (
+          result = this.getLastArgument() and
+          exists(this.getOptionsArg())
+        )
+      else
+        // For exec/asyncExec: only first argument is command
+        result = this.getArgument(0)
+    }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
 
-    override predicate isSync() { none() }
+    override predicate isSync() { name = "cmd" }
 
     override DataFlow::Node getOptionsArg() {
       result = this.getLastArgument() and
