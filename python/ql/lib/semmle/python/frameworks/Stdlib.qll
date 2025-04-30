@@ -1973,7 +1973,6 @@ module StdlibPrivate {
 
       override DataFlow::Node getValueArg() { result = this.getArg(1) }
 
-      // TODO: These checks perhaps could be made more precise.
       override predicate nameAllowsNewline() { any() }
 
       override predicate valueAllowsNewline() { any() }
