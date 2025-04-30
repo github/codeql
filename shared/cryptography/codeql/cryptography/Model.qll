@@ -672,6 +672,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
       TSymmetricCipherType getType() { result = type }
     }
+
+    class AsymmetricCipherAlgorithm extends Algorithm, TAsymmetricCipher {
+      TAsymmetricCipherType type;
+
+      AsymmetricCipherAlgorithm() { this = TAsymmetricCipher(type) }
+
+      TAsymmetricCipherType getType() { result = type }
+    }
   }
 
   /**
@@ -1279,7 +1287,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * A generic source node is a source of data that is not resolvable to a specific asset.
    */
-  private class GenericSourceNode extends NodeBase, TGenericSourceNode {
+  final class GenericSourceNode extends NodeBase, TGenericSourceNode {
     GenericSourceInstance instance;
 
     GenericSourceNode() { this = TGenericSourceNode(instance) }
@@ -2184,6 +2192,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     KeyOpAlg::Algorithm getAlgorithmType() { result = instance.asAlg().getAlgorithmType() }
 
+    predicate isAsymmetric() {
+      this.getAlgorithmType() instanceof KeyOpAlg::TAsymmetricCipher
+      or
+      this.getAlgorithmType() instanceof KeyOpAlg::TSignature
+    }
+
     /**
      * Gets the mode of operation of this cipher, e.g., "GCM" or "CBC".
      */
@@ -2518,5 +2532,11 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       value = instance.asAlg().getParsedEllipticCurveName() and
       location = this.getLocation()
     }
+  }
+
+  predicate isKnownAsymmetricAlgorithm(AlgorithmNode node) {
+    node instanceof EllipticCurveNode
+    or
+    node instanceof KeyOperationAlgorithmNode and node.(KeyOperationAlgorithmNode).isAsymmetric()
   }
 }
