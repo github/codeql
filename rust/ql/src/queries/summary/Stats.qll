@@ -136,9 +136,9 @@ predicate extractionStats(string key, int value) {
   or
   key = "Macro calls - total" and value = count(MacroCall mc)
   or
-  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
+  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasMacroCallExpansion())
   or
-  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
+  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasMacroCallExpansion())
 }
 
 /**
