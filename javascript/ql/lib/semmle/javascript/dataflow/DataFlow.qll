@@ -229,10 +229,7 @@ module DataFlow {
     predicate hasUnderlyingType(string globalName) {
       Stages::TypeTracking::ref() and
       exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type)
-        or
-        TypeResolution::contextualType(this.getNameResolutionNode(), type)
-      |
+        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
         UnderlyingTypes::nodeHasUnderlyingType(type, globalName)
       )
     }
@@ -246,12 +243,7 @@ module DataFlow {
       Stages::TypeTracking::ref() and
       moduleName != "global" and
       exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.getNameResolutionNode(), type)
-        or
-        // Also check contextual type as this helps when tracking facts between SourceNode only.
-        // For example, for `var x: T = getFoo()` we need `getFoo()` to have the type T.
-        TypeResolution::contextualType(this.getNameResolutionNode(), type)
-      |
+        TypeResolution::valueHasType(this.getNameResolutionNode(), type) and
         UnderlyingTypes::nodeHasUnderlyingType(type, moduleName, typeName)
       )
     }
