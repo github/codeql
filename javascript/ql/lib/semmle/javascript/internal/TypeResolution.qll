@@ -60,7 +60,7 @@ module TypeResolution {
       content.isUnknownArrayElement()
     )
     or
-    // Ad-hoc support for array types. We don't support generics in general currently, we just special-case arrays.
+    // Ad-hoc support for array types. We don't support generics in general currently, we just special-case arrays and promises.
     content.isUnknownArrayElement() and
     (
       memberType = host.(ArrayTypeExpr).getElementType()
@@ -77,6 +77,9 @@ module TypeResolution {
         memberType = type.getArgument(0)
       )
     )
+    or
+    content.isPromiseValue() and
+    memberType = unwrapPromiseType(host)
   }
 
   /**
@@ -119,6 +122,9 @@ module TypeResolution {
     or
     object.(ObjectPattern).getPropertyPatternByName(contents.asPropertyName()).getValuePattern() =
       member
+    or
+    member.(AwaitExpr).getOperand() = object and
+    contents = DataFlow::ContentSet::promiseValue()
     or
     SummaryTypeTracker::basicLoadStep(object.(AST::ValueNode).flow(),
       member.(AST::ValueNode).flow(), contents)
