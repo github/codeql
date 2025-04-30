@@ -484,10 +484,14 @@ module MakeModelGenerator<
       }
 
       predicate isSink(DataFlow::Node sink, FlowState state) {
+        // Sinks are provided by `isSink/1`
+        none()
+      }
+
+      predicate isSink(DataFlow::Node sink) {
         sink instanceof ReturnNodeExt and
         not isOwnInstanceAccessNode(sink) and
-        not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink))) and
-        (state instanceof TaintRead or state instanceof TaintStore)
+        not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink)))
       }
 
       predicate isAdditionalFlowStep(

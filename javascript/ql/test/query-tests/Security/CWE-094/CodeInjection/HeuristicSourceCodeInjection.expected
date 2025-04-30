@@ -11,6 +11,46 @@ edges
 | express.js:27:9:27:35 | taint | express.js:36:15:36:19 | taint | provenance |  |
 | express.js:27:17:27:35 | req.param("wobble") | express.js:27:9:27:35 | taint | provenance |  |
 | express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | provenance |  |
+| fastify.js:4:9:4:43 | userInput | fastify.js:5:44:5:52 | userInput | provenance |  |
+| fastify.js:4:21:4:33 | request.query | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:4:21:4:43 | request ... Request | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:9:9:9:40 | userInput | fastify.js:10:44:10:52 | userInput | provenance |  |
+| fastify.js:9:21:9:33 | request.query | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:9:21:9:40 | request.query.onSend | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:15:9:15:44 | userInput | fastify.js:16:44:16:52 | userInput | provenance |  |
+| fastify.js:15:21:15:33 | request.query | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:15:21:15:44 | request ... Parsing | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:21:9:21:47 | userInput | fastify.js:22:44:22:52 | userInput | provenance |  |
+| fastify.js:21:21:21:33 | request.query | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:21:21:21:47 | request ... idation | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:26:9:26:44 | userInput | fastify.js:27:44:27:52 | userInput | provenance |  |
+| fastify.js:26:21:26:33 | request.query | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:26:21:26:44 | request ... Handler | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:31:9:31:50 | userInput | fastify.js:32:44:32:52 | userInput | provenance |  |
+| fastify.js:31:21:31:33 | request.query | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:31:21:31:50 | request ... ization | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:37:9:37:44 | userInput | fastify.js:38:44:38:52 | userInput | provenance |  |
+| fastify.js:37:21:37:33 | request.query | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:37:21:37:44 | request ... esponse | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:42:9:42:41 | userInput | fastify.js:43:44:43:52 | userInput | provenance |  |
+| fastify.js:42:21:42:33 | request.query | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:42:21:42:41 | request ... onError | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:47:9:47:43 | userInput | fastify.js:48:44:48:52 | userInput | provenance |  |
+| fastify.js:47:21:47:33 | request.query | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:47:21:47:43 | request ... Timeout | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:52:11:52:50 | userInput | fastify.js:53:46:53:54 | userInput | provenance |  |
+| fastify.js:52:23:52:35 | request.query | fastify.js:52:11:52:50 | userInput | provenance |  |
+| fastify.js:52:23:52:50 | request ... stAbort | fastify.js:52:11:52:50 | userInput | provenance |  |
+| fastify.js:57:9:57:39 | userInput | fastify.js:58:44:58:52 | userInput | provenance |  |
+| fastify.js:57:9:57:39 | userInput | fastify.js:59:23:59:31 | userInput | provenance |  |
+| fastify.js:57:21:57:33 | request.query | fastify.js:57:9:57:39 | userInput | provenance |  |
+| fastify.js:57:21:57:39 | request.query.input | fastify.js:57:9:57:39 | userInput | provenance |  |
+| fastify.js:66:24:66:36 | request.query | fastify.js:66:24:66:47 | request ... redCode | provenance |  |
+| fastify.js:66:24:66:47 | request ... redCode | fastify.js:71:34:71:51 | request.storedCode | provenance |  |
+| fastify.js:79:20:79:32 | request.query | fastify.js:79:20:79:42 | request ... plyCode | provenance |  |
+| fastify.js:79:20:79:42 | request ... plyCode | fastify.js:84:30:84:43 | reply.userCode | provenance |  |
+| fastify.js:94:29:94:41 | request.query | fastify.js:94:29:94:51 | request ... plyCode | provenance |  |
+| fastify.js:94:29:94:51 | request ... plyCode | fastify.js:99:30:99:52 | reply.l ... tedCode | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -82,6 +122,60 @@ nodes
 | express.js:36:15:36:19 | taint | semmle.label | taint |
 | express.js:42:30:42:32 | msg | semmle.label | msg |
 | express.js:43:10:43:12 | msg | semmle.label | msg |
+| fastify.js:4:9:4:43 | userInput | semmle.label | userInput |
+| fastify.js:4:21:4:33 | request.query | semmle.label | request.query |
+| fastify.js:4:21:4:43 | request ... Request | semmle.label | request ... Request |
+| fastify.js:5:44:5:52 | userInput | semmle.label | userInput |
+| fastify.js:9:9:9:40 | userInput | semmle.label | userInput |
+| fastify.js:9:21:9:33 | request.query | semmle.label | request.query |
+| fastify.js:9:21:9:40 | request.query.onSend | semmle.label | request.query.onSend |
+| fastify.js:10:44:10:52 | userInput | semmle.label | userInput |
+| fastify.js:15:9:15:44 | userInput | semmle.label | userInput |
+| fastify.js:15:21:15:33 | request.query | semmle.label | request.query |
+| fastify.js:15:21:15:44 | request ... Parsing | semmle.label | request ... Parsing |
+| fastify.js:16:44:16:52 | userInput | semmle.label | userInput |
+| fastify.js:21:9:21:47 | userInput | semmle.label | userInput |
+| fastify.js:21:21:21:33 | request.query | semmle.label | request.query |
+| fastify.js:21:21:21:47 | request ... idation | semmle.label | request ... idation |
+| fastify.js:22:44:22:52 | userInput | semmle.label | userInput |
+| fastify.js:26:9:26:44 | userInput | semmle.label | userInput |
+| fastify.js:26:21:26:33 | request.query | semmle.label | request.query |
+| fastify.js:26:21:26:44 | request ... Handler | semmle.label | request ... Handler |
+| fastify.js:27:44:27:52 | userInput | semmle.label | userInput |
+| fastify.js:31:9:31:50 | userInput | semmle.label | userInput |
+| fastify.js:31:21:31:33 | request.query | semmle.label | request.query |
+| fastify.js:31:21:31:50 | request ... ization | semmle.label | request ... ization |
+| fastify.js:32:44:32:52 | userInput | semmle.label | userInput |
+| fastify.js:37:9:37:44 | userInput | semmle.label | userInput |
+| fastify.js:37:21:37:33 | request.query | semmle.label | request.query |
+| fastify.js:37:21:37:44 | request ... esponse | semmle.label | request ... esponse |
+| fastify.js:38:44:38:52 | userInput | semmle.label | userInput |
+| fastify.js:42:9:42:41 | userInput | semmle.label | userInput |
+| fastify.js:42:21:42:33 | request.query | semmle.label | request.query |
+| fastify.js:42:21:42:41 | request ... onError | semmle.label | request ... onError |
+| fastify.js:43:44:43:52 | userInput | semmle.label | userInput |
+| fastify.js:47:9:47:43 | userInput | semmle.label | userInput |
+| fastify.js:47:21:47:33 | request.query | semmle.label | request.query |
+| fastify.js:47:21:47:43 | request ... Timeout | semmle.label | request ... Timeout |
+| fastify.js:48:44:48:52 | userInput | semmle.label | userInput |
+| fastify.js:52:11:52:50 | userInput | semmle.label | userInput |
+| fastify.js:52:23:52:35 | request.query | semmle.label | request.query |
+| fastify.js:52:23:52:50 | request ... stAbort | semmle.label | request ... stAbort |
+| fastify.js:53:46:53:54 | userInput | semmle.label | userInput |
+| fastify.js:57:9:57:39 | userInput | semmle.label | userInput |
+| fastify.js:57:21:57:33 | request.query | semmle.label | request.query |
+| fastify.js:57:21:57:39 | request.query.input | semmle.label | request.query.input |
+| fastify.js:58:44:58:52 | userInput | semmle.label | userInput |
+| fastify.js:59:23:59:31 | userInput | semmle.label | userInput |
+| fastify.js:66:24:66:36 | request.query | semmle.label | request.query |
+| fastify.js:66:24:66:47 | request ... redCode | semmle.label | request ... redCode |
+| fastify.js:71:34:71:51 | request.storedCode | semmle.label | request.storedCode |
+| fastify.js:79:20:79:32 | request.query | semmle.label | request.query |
+| fastify.js:79:20:79:42 | request ... plyCode | semmle.label | request ... plyCode |
+| fastify.js:84:30:84:43 | reply.userCode | semmle.label | reply.userCode |
+| fastify.js:94:29:94:41 | request.query | semmle.label | request.query |
+| fastify.js:94:29:94:51 | request ... plyCode | semmle.label | request ... plyCode |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
