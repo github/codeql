@@ -24,6 +24,7 @@ Moreover in the test directory for each <Class> in <group> it will generate bene
 import logging
 import pathlib
 import re
+import shutil
 import subprocess
 import typing
 import itertools
@@ -257,6 +258,15 @@ def format(codeql, files):
     if not ql_files:
         return
     format_cmd = [codeql, "query", "format", "--in-place", "--"] + ql_files
+    if "/" in codeql:
+        if not pathlib.Path(codeql).exists():
+            raise FormatError(f"Provided CodeQL binary `{codeql}` does not exist")
+    else:
+        codeql_path = shutil.which(codeql)
+        if not codeql_path:
+            raise FormatError(
+                f"`{codeql}` not found in PATH. Either install it, or pass `-- --codeql-binary` with a full path")
+        codeql = codeql_path
     res = subprocess.run(format_cmd, stderr=subprocess.PIPE, text=True)
     if res.returncode:
         for line in res.stderr.splitlines():
