@@ -965,25 +965,20 @@ private module Cached {
 
   /** Holds if a method for `type` with the name `name` and the arity `arity` exists in `impl`. */
   pragma[nomagic]
-  private predicate methodCandidate(Type type, string name, Impl impl, Function f) {
+  private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
     type = impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention).resolveType() and
-    f = impl.(ImplItemNode).getASuccessor(name)
+    exists(Function f |
+      f = impl.(ImplItemNode).getASuccessor(name) and
+      f.getParamList().hasSelfParam() and
+      arity = f.getParamList().getNumberOfParams()
+    )
   }
 
   private module IsInstantiationOfInput implements IsInstantiationOfSig<ReceiverExpr> {
     predicate potentialInstantiationOf(ReceiverExpr receiver, TypeAbstraction impl, TypeMention sub) {
-      exists(Function method |
-        methodCandidate(receiver.resolveTypeAt(TypePath::nil()), receiver.getField(), impl, method) and
-        (
-          method.getParamList().getNumberOfParams() = receiver.getNumberOfArgs() and
-          method.getParamList().hasSelfParam()
-          or
-          // TODO: Once parameter lists for functions in dependencies are
-          // extracted correctly we should check arity for those as well.
-          not method.fromSource()
-        ) and
-        sub = impl.(ImplTypeAbstraction).getSelfTy()
-      )
+      methodCandidate(receiver.resolveTypeAt(TypePath::nil()), receiver.getField(),
+        receiver.getNumberOfArgs(), impl) and
+      sub = impl.(ImplTypeAbstraction).getSelfTy()
     }
   }
 
