@@ -1,0 +1,2 @@
+extractionWarning
+| illegal/main.rs:1:1:1:1 | semantic analyzer unavailable (not included as a module) |
