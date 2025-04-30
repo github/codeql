@@ -103,8 +103,8 @@ fastify.get('/flow-through-reply', async (request, reply) => {
 });
 
 fastify.all('/eval', async (request, reply) => {
-  const userInput = request.query.code; // $ MISSING: Source[js/code-injection]
-  const result = eval(userInput); // $ MISSING: Alert[js/code-injection]
-  const replyResult = eval(reply.locals.nestedCode); // $ MISSING: Alert[js/code-injection]
+  const userInput = request.query.code; // $ Source[js/code-injection]
+  const result = eval(userInput); // $ Alert[js/code-injection]
+  const replyResult = eval(reply.locals.nestedCode); // $ Alert[js/code-injection]
   return { method: request.method, result };
 });

@@ -138,7 +138,8 @@ module Fastify {
 
     RouteSetup() {
       this = server(server).getAMethodCall(methodName) and
-      methodName = ["route", "get", "head", "post", "put", "delete", "options", "patch", "addHook"]
+      methodName =
+        ["route", "get", "head", "post", "put", "delete", "options", "patch", "addHook", "all"]
     }
 
     override DataFlow::SourceNode getARouteHandler() {
@@ -168,7 +169,9 @@ module Fastify {
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
-    override Http::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
+    override Http::RequestMethodName getHttpMethod() {
+      if this.getMethodName() = "all" then any() else result = this.getMethodName().toUpperCase()
+    }
   }
 
   private class AddHookRouteSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
