@@ -172,9 +172,14 @@ abstract class ItemNode extends Locatable {
     result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
   }
 
-  /** Gets a successor named `name` of this item, if any. */
+  /**
+   * Gets a successor named `name` of this item, if any.
+   *
+   * Whenever a function exists in both source code and in library code,
+   * both are included
+   */
   cached
-  ItemNode getASuccessor(string name) {
+  ItemNode getASuccessorFull(string name) {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
@@ -200,6 +205,22 @@ abstract class ItemNode extends Locatable {
     name = "$crate" and
     result = any(CrateItemNode crate | this = crate.getARootModuleNode()).(Crate).getADependency*() and
     result.(CrateItemNode).isPotentialDollarCrateTarget()
+  }
+
+  /** Gets a successor named `name` of this item, if any. */
+  pragma[nomagic]
+  ItemNode getASuccessor(string name) {
+    result = this.getASuccessorFull(name) and
+    (
+      // when a function exists in both source code and in library code, it is because
+      // we also extracted the source code as library code, and hence we only want
+      // the function from source code
+      result.fromSource()
+      or
+      not result instanceof Function
+      or
+      not this.getASuccessorFull(name).(Function).fromSource()
+    )
   }
 
   /** Gets the location of this item. */
@@ -234,7 +255,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
   ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessorFull("super")
   }
 
   override string getName() { result = "(source file)" }
@@ -297,7 +318,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   predicate isPotentialDollarCrateTarget() {
     exists(string name, RelevantPath p |
       p.isDollarCrateQualifiedPath(name) and
-      exists(this.getASuccessor(name))
+      exists(this.getASuccessorFull(name))
     )
   }
 
@@ -328,10 +349,8 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
     or
     // for trait items from library code, we do not currently know if they
     // have default implementations or not, so we assume they do
-    exists(TraitItemNode t |
-      this = t.getAnAssocItem() and
-      not this.fromSource()
-    )
+    not this.fromSource() and
+    this = any(TraitItemNode t).getAnAssocItem()
   }
 
   override Namespace getNamespace() { result.isValue() }
@@ -373,10 +392,8 @@ class FunctionItemNode extends AssocItemNode instanceof Function {
     or
     // for trait items from library code, we do not currently know if they
     // have default implementations or not, so we assume they do
-    exists(TraitItemNode t |
-      this = t.getAnAssocItem() and
-      not this.fromSource()
-    )
+    not this.fromSource() and
+    this = any(TraitItemNode t).getAnAssocItem()
   }
 
   override Namespace getNamespace() { result.isValue() }
@@ -940,8 +957,8 @@ private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns
 }
 
 pragma[nomagic]
-private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
-  result = pred.getASuccessor(name) and
+private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns) {
+  result = pred.getASuccessorFull(name) and
   ns = result.getNamespace()
 }
 
@@ -978,7 +995,7 @@ private predicate keywordLookup(ItemNode encl, string name, Namespace ns, Releva
 
 pragma[nomagic]
 private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns) {
-  exists(ItemNode encl, string name | result = getASuccessor(encl, name, ns) |
+  exists(ItemNode encl, string name | result = getASuccessorFull(encl, name, ns) |
     unqualifiedPathLookup(encl, name, ns, p)
     or
     keywordLookup(encl, name, ns, p)
@@ -1002,7 +1019,7 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = getASuccessor(q, name, ns)
+    result = getASuccessorFull(q, name, ns)
   )
   or
   result = resolveUseTreeListItem(_, _, path) and
@@ -1127,12 +1144,12 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path
     mid = resolveUseTreeListItem(use, midTree) and
     tree = midTree.getUseTreeList().getAUseTree() and
     isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-    result = mid.getASuccessor(pragma[only_bind_into](name))
+    result = mid.getASuccessorFull(pragma[only_bind_into](name))
   )
   or
   exists(ItemNode q, string name |
     q = resolveUseTreeListItemQualifier(use, tree, path, name) and
-    result = q.getASuccessor(name)
+    result = q.getASuccessorFull(name)
   )
 }
 
@@ -1162,7 +1179,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
     then
       exists(ItemNode encl, Namespace ns |
         encl.getADescendant() = use and
-        item = getASuccessor(used, name, ns) and
+        item = getASuccessorFull(used, name, ns) and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
         not name = ["super", "self", "Self", "$crate", "crate"]

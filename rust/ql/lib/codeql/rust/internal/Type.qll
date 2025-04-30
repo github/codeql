@@ -29,26 +29,7 @@ newtype TType =
 abstract class Type extends TType {
   /** Gets the method `name` belonging to this type, if any. */
   pragma[nomagic]
-  final Function getMethod(string name) {
-    result = this.getAMethod(name) and
-    (
-      // when a method exists in both source code and in library code, it is because
-      // we also extracted the source code as library code, and hence we only want
-      // the method from source code
-      result.fromSource()
-      or
-      not this.getAMethod(name).fromSource()
-    )
-  }
-
-  /**
-   * Gets a method `name` belonging to this type, if any.
-   *
-   * Multiple methods may exist with the same name when it exists in both
-   * source code and in library code.
-   */
-  pragma[nomagic]
-  abstract Function getAMethod(string name);
+  abstract Function getMethod(string name);
 
   /** Gets the struct field `name` belonging to this type, if any. */
   pragma[nomagic]
@@ -93,7 +74,7 @@ abstract class Type extends TType {
 abstract private class StructOrEnumType extends Type {
   abstract ItemNode asItemNode();
 
-  final override Function getAMethod(string name) {
+  final override Function getMethod(string name) {
     result = this.asItemNode().getASuccessor(name) and
     exists(ImplOrTraitItemNode impl | result = impl.getAnAssocItem() |
       impl instanceof Trait
@@ -157,7 +138,7 @@ class TraitType extends Type, TTrait {
 
   TraitType() { this = TTrait(trait) }
 
-  override Function getAMethod(string name) { result = trait.(ItemNode).getASuccessor(name) }
+  override Function getMethod(string name) { result = trait.(ItemNode).getASuccessor(name) }
 
   override StructField getStructField(string name) { none() }
 
@@ -239,7 +220,7 @@ class ImplType extends Type, TImpl {
 
   ImplType() { this = TImpl(impl) }
 
-  override Function getAMethod(string name) { result = impl.(ItemNode).getASuccessor(name) }
+  override Function getMethod(string name) { result = impl.(ItemNode).getASuccessor(name) }
 
   override StructField getStructField(string name) { none() }
 
@@ -266,7 +247,7 @@ class ImplType extends Type, TImpl {
 class ArrayType extends Type, TArrayType {
   ArrayType() { this = TArrayType() }
 
-  override Function getAMethod(string name) { none() }
+  override Function getMethod(string name) { none() }
 
   override StructField getStructField(string name) { none() }
 
@@ -292,7 +273,7 @@ class ArrayType extends Type, TArrayType {
 class RefType extends Type, TRefType {
   RefType() { this = TRefType() }
 
-  override Function getAMethod(string name) { none() }
+  override Function getMethod(string name) { none() }
 
   override StructField getStructField(string name) { none() }
 
@@ -337,7 +318,7 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
 
   TypeParam getTypeParam() { result = typeParam }
 
-  override Function getAMethod(string name) {
+  override Function getMethod(string name) {
     // NOTE: If the type parameter has trait bounds, then this finds methods
     // on the bounding traits.
     result = typeParam.(ItemNode).getASuccessor(name)
@@ -396,7 +377,7 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
 
   int getIndex() { traitAliasIndex(_, result, typeAlias) }
 
-  override Function getAMethod(string name) { none() }
+  override Function getMethod(string name) { none() }
 
   override string toString() { result = typeAlias.getName().getText() }
 
@@ -407,7 +388,7 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
 
 /** An implicit reference type parameter. */
 class RefTypeParameter extends TypeParameter, TRefTypeParameter {
-  override Function getAMethod(string name) { none() }
+  override Function getMethod(string name) { none() }
 
   override string toString() { result = "&T" }
 
@@ -430,7 +411,7 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
 
   override TypeMention getABaseTypeMention() { result = trait }
 
-  override Function getAMethod(string name) {
+  override Function getMethod(string name) {
     // The `Self` type parameter is an implementation of the trait, so it has
     // all the trait's methods.
     result = trait.(ItemNode).getASuccessor(name)
