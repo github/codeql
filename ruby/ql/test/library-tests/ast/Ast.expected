@@ -915,8 +915,8 @@ control/cases.rb:
 #   56|         getValue: [IntegerLiteral] 5
 #   56|         getKey: [SymbolLiteral] :b
 #   56|           getComponent: [StringTextComponent] b
-#   56|         getValue: [LocalVariableAccess] b
 #   56|         getRestVariableAccess: [LocalVariableAccess] map
+#   56|         getValue: [LocalVariableAccess] b
 #   57|     getBranch: [InClause] in ... then ...
 #   57|       getPattern: [HashPattern] { ..., ** }
 #   57|         getKey: [SymbolLiteral] :a
@@ -1006,8 +1006,8 @@ control/cases.rb:
 #   75|         getValue: [IntegerLiteral] 5
 #   75|         getKey: [SymbolLiteral] :b
 #   75|           getComponent: [StringTextComponent] b
-#   75|         getValue: [LocalVariableAccess] b
 #   75|         getRestVariableAccess: [LocalVariableAccess] map
+#   75|         getValue: [LocalVariableAccess] b
 #   76|     getBranch: [InClause] in ... then ...
 #   76|       getPattern: [HashPattern] { ..., ** }
 #   76|         getKey: [SymbolLiteral] :a
@@ -1209,8 +1209,8 @@ control/cases.rb:
 #  141|         getValue: [IntegerLiteral] 1
 #  141|         getKey: [SymbolLiteral] :a
 #  141|           getComponent: [StringTextComponent] a
-#  141|         getValue: [LocalVariableAccess] a
 #  141|         getRestVariableAccess: [LocalVariableAccess] rest
+#  141|         getValue: [LocalVariableAccess] a
 #  142|     getBranch: [InClause] in ... then ...
 #  142|       getPattern: [HashPattern] { ..., ** }
 #  142|         getClass: [ConstantReadAccess] Foo
@@ -3185,14 +3185,14 @@ params/params.rb:
 #  106|       getParameter: [HashSplatParameter] **kwargs
 #  106|         getDefiningAccess: [LocalVariableAccess] kwargs
 #  107|       getStmt: [SuperCall] super call to m
-#  107|         getArgument: [HashSplatExpr] ** ...
-#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] kwargs
+#  107|         getArgument: [LocalVariableAccess] y
+#  107|         getArgument: [SplatExpr] * ...
+#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] rest
 #  107|         getArgument: [Pair] Pair
 #  107|           getKey: [SymbolLiteral] k
 #  107|           getValue: [LocalVariableAccess] k
-#  107|         getArgument: [SplatExpr] * ...
-#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] rest
-#  107|         getArgument: [LocalVariableAccess] y
+#  107|         getArgument: [HashSplatExpr] ** ...
+#  107|           getAnOperand/getOperand/getReceiver: [LocalVariableAccess] kwargs
 #  111|   getStmt: [MethodCall] call to m
 #  111|     getReceiver: [MethodCall] call to new
 #  111|       getReceiver: [ConstantReadAccess] Sub
