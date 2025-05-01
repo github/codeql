@@ -18,9 +18,7 @@ final class CloneCallable extends SummarizedCallable::Range {
   final override predicate propagatesFlow(
     string input, string output, boolean preservesValue, string model
   ) {
-    // The `clone` method takes a `&self` parameter and dereferences it;
-    // make sure to not clone the reference itself
-    input = ["Argument[self].Reference", "Argument[self].WithoutReference"] and
+    input = "Argument[self].Reference" and
     output = "ReturnValue" and
     preservesValue = true and
     model = "generated"
