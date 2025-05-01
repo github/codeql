@@ -1,2 +1,1 @@
-| QlRefInlineExpectations.qlref:1:1:1:40 | queries ... ions.ql | Query test does not use inline test expectations. |
-| Test3.qlref:1:1:1:39 | query:  ... ists.ql | Query test does not use inline test expectations. |
+| Test3.qlref:1:1:1:22 | query:  ... uery.ql | Query test does not use inline test expectations. |

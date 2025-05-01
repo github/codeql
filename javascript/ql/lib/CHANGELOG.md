@@ -1,3 +1,7 @@
+## 2.6.2
+
+No user-facing changes.
+
 ## 2.6.1
 
 ### Minor Analysis Improvements

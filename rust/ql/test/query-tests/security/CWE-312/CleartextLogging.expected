@@ -226,8 +226,8 @@ models
 | 8 | Sink: lang:std; crate::io::stdio::_print; log-injection; Argument[0] |
 | 9 | Sink: repo:https://github.com/rust-lang/log:log; crate::__private_api::log; log-injection; Argument[1] |
 | 10 | Sink: repo:https://github.com/rust-lang/log:log; crate::__private_api::log; log-injection; Argument[3] |
-| 11 | Summary: lang:alloc; <crate::string::String>::as_bytes; Argument[self]; ReturnValue; taint |
-| 12 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
+| 11 | Summary: lang:alloc; <crate::string::String>::as_bytes; Argument[self]; ReturnValue; value |
+| 12 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 13 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
 | 14 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
 nodes

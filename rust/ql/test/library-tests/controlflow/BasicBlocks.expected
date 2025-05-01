@@ -304,8 +304,8 @@ dominates
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:227:9:236:9 | if ... {...} else {...} |
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:228:13:230:13 | if ... {...} |
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:228:13:230:14 | ExprStmt |
-| test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:233:13:233:13 | 1 |
 | test.rs:226:5:237:5 | enter fn test_if_loop2 | test.rs:235:13:235:13 | 0 |
@@ -314,18 +314,18 @@ dominates
 | test.rs:228:13:230:14 | ExprStmt | test.rs:227:9:236:9 | if ... {...} else {...} |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:13 | if ... {...} |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:14 | ExprStmt |
-| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:233:13:233:13 | 1 |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:235:13:235:13 | 0 |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:235:13:235:13 | 0 |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:233:13:233:13 | 1 |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:235:13:235:13 | 0 |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:233:13:233:13 | 1 |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:227:9:236:9 | if ... {...} else {...} |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:233:13:233:13 | 1 |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:235:13:235:13 | 0 |
@@ -333,15 +333,15 @@ dominates
 | test.rs:235:13:235:13 | 0 | test.rs:235:13:235:13 | 0 |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:239:5:247:5 | enter fn test_labelled_block |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:240:9:246:9 | if ... {...} else {...} |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:243:13:243:13 | 1 |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:245:13:245:13 | 0 |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:240:9:246:9 | if ... {...} else {...} |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:245:13:245:13 | 0 |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:243:13:243:13 | 1 |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:245:13:245:13 | 0 |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:243:13:243:13 | 1 |
 | test.rs:243:13:243:13 | 1 | test.rs:243:13:243:13 | 1 |
 | test.rs:245:13:245:13 | 0 | test.rs:245:13:245:13 | 0 |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:252:5:255:5 | enter fn test_and_operator |
@@ -1031,8 +1031,8 @@ postDominance
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:227:9:236:9 | if ... {...} else {...} |
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:228:13:230:13 | if ... {...} |
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:228:13:230:14 | ExprStmt |
-| test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:233:13:233:13 | 1 |
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:235:13:235:13 | 0 |
@@ -1040,28 +1040,28 @@ postDominance
 | test.rs:228:13:230:14 | ExprStmt | test.rs:226:5:237:5 | enter fn test_if_loop2 |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:13 | if ... {...} |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:14 | ExprStmt |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:226:5:237:5 | enter fn test_if_loop2 |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:228:13:230:13 | if ... {...} |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:228:13:230:14 | ExprStmt |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:36 | ExprStmt |
-| test.rs:233:13:233:13 | 1 | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
+| test.rs:233:13:233:13 | 1 | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
 | test.rs:233:13:233:13 | 1 | test.rs:233:13:233:13 | 1 |
-| test.rs:235:13:235:13 | 0 | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
+| test.rs:235:13:235:13 | 0 | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
 | test.rs:235:13:235:13 | 0 | test.rs:235:13:235:13 | 0 |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:239:5:247:5 | enter fn test_labelled_block |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:239:5:247:5 | enter fn test_labelled_block |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:240:9:246:9 | if ... {...} else {...} |
-| test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
-| test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
+| test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
+| test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:243:13:243:13 | 1 |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:245:13:245:13 | 0 |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
-| test.rs:243:13:243:13 | 1 | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
+| test.rs:243:13:243:13 | 1 | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
 | test.rs:243:13:243:13 | 1 | test.rs:243:13:243:13 | 1 |
-| test.rs:245:13:245:13 | 0 | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
+| test.rs:245:13:245:13 | 0 | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
 | test.rs:245:13:245:13 | 0 | test.rs:245:13:245:13 | 0 |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:252:5:255:5 | enter fn test_and_operator |
 | test.rs:253:17:253:22 | [boolean(false)] ... && ... | test.rs:253:17:253:22 | [boolean(false)] ... && ... |
@@ -1543,16 +1543,16 @@ immediateDominator
 | test.rs:227:9:236:9 | if ... {...} else {...} | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:228:13:230:13 | if ... {...} | test.rs:228:13:230:14 | ExprStmt |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:226:5:237:5 | enter fn test_if_loop2 |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:229:17:229:36 | ExprStmt |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:229:17:229:36 | ExprStmt |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:229:17:229:36 | ExprStmt |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:229:17:229:36 | ExprStmt |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:228:13:230:14 | ExprStmt |
-| test.rs:233:13:233:13 | 1 | test.rs:229:17:229:35 | [boolean(true)] break ''label ... |
-| test.rs:235:13:235:13 | 0 | test.rs:229:17:229:35 | [boolean(false)] break ''label ... |
+| test.rs:233:13:233:13 | 1 | test.rs:229:17:229:35 | [boolean(true)] break 'label ... |
+| test.rs:235:13:235:13 | 0 | test.rs:229:17:229:35 | [boolean(false)] break 'label ... |
 | test.rs:240:9:246:9 | if ... {...} else {...} | test.rs:239:5:247:5 | enter fn test_labelled_block |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:239:5:247:5 | enter fn test_labelled_block |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:239:5:247:5 | enter fn test_labelled_block |
-| test.rs:243:13:243:13 | 1 | test.rs:241:13:241:30 | [boolean(true)] break ''block ... |
-| test.rs:245:13:245:13 | 0 | test.rs:241:13:241:30 | [boolean(false)] break ''block ... |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:239:5:247:5 | enter fn test_labelled_block |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:239:5:247:5 | enter fn test_labelled_block |
+| test.rs:243:13:243:13 | 1 | test.rs:241:13:241:30 | [boolean(true)] break 'block ... |
+| test.rs:245:13:245:13 | 0 | test.rs:241:13:241:30 | [boolean(false)] break 'block ... |
 | test.rs:253:17:253:22 | [boolean(false)] ... && ... | test.rs:252:5:255:5 | enter fn test_and_operator |
 | test.rs:253:17:253:22 | [boolean(true)] ... && ... | test.rs:253:22:253:22 | b |
 | test.rs:253:17:253:27 | ... && ... | test.rs:252:5:255:5 | enter fn test_and_operator |
@@ -1798,23 +1798,23 @@ controls
 | test.rs:216:17:216:29 | ExprStmt | test.rs:222:13:222:13 | 0 | false |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:227:9:236:9 | if ... {...} else {...} | true |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:13 | if ... {...} | false |
-| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break ''label ... | true |
-| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break ''label ... | true |
+| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break 'label ... | true |
+| test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break 'label ... | true |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:36 | ExprStmt | true |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:233:13:233:13 | 1 | true |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:235:13:235:13 | 0 | true |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:235:13:235:13 | 0 | false |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:233:13:233:13 | 1 | true |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break ''label ... | false |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break ''label ... | true |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:235:13:235:13 | 0 | false |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:233:13:233:13 | 1 | true |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break 'label ... | false |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break 'label ... | true |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:233:13:233:13 | 1 | true |
 | test.rs:229:17:229:36 | ExprStmt | test.rs:235:13:235:13 | 0 | false |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break ''block ... | false |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break ''block ... | true |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break 'block ... | false |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break 'block ... | true |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:243:13:243:13 | 1 | true |
 | test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:245:13:245:13 | 0 | false |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:245:13:245:13 | 0 | false |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:243:13:243:13 | 1 | true |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:245:13:245:13 | 0 | false |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:243:13:243:13 | 1 | true |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:253:17:253:22 | [boolean(true)] ... && ... | true |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:253:22:253:22 | b | true |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:253:27:253:27 | c | true |
@@ -1974,14 +1974,14 @@ successor
 | test.rs:216:17:216:29 | ExprStmt | test.rs:216:17:216:28 | [boolean(true)] break ... | true |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:228:13:230:13 | if ... {...} | false |
 | test.rs:228:13:230:14 | ExprStmt | test.rs:229:17:229:36 | ExprStmt | true |
-| test.rs:229:17:229:35 | [boolean(false)] break ''label ... | test.rs:235:13:235:13 | 0 | false |
-| test.rs:229:17:229:35 | [boolean(true)] break ''label ... | test.rs:233:13:233:13 | 1 | true |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break ''label ... | false |
-| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break ''label ... | true |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break ''block ... | false |
-| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break ''block ... | true |
-| test.rs:241:13:241:30 | [boolean(false)] break ''block ... | test.rs:245:13:245:13 | 0 | false |
-| test.rs:241:13:241:30 | [boolean(true)] break ''block ... | test.rs:243:13:243:13 | 1 | true |
+| test.rs:229:17:229:35 | [boolean(false)] break 'label ... | test.rs:235:13:235:13 | 0 | false |
+| test.rs:229:17:229:35 | [boolean(true)] break 'label ... | test.rs:233:13:233:13 | 1 | true |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(false)] break 'label ... | false |
+| test.rs:229:17:229:36 | ExprStmt | test.rs:229:17:229:35 | [boolean(true)] break 'label ... | true |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(false)] break 'block ... | false |
+| test.rs:239:5:247:5 | enter fn test_labelled_block | test.rs:241:13:241:30 | [boolean(true)] break 'block ... | true |
+| test.rs:241:13:241:30 | [boolean(false)] break 'block ... | test.rs:245:13:245:13 | 0 | false |
+| test.rs:241:13:241:30 | [boolean(true)] break 'block ... | test.rs:243:13:243:13 | 1 | true |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:253:17:253:22 | [boolean(false)] ... && ... | false |
 | test.rs:252:5:255:5 | enter fn test_and_operator | test.rs:253:22:253:22 | b | true |
 | test.rs:253:17:253:22 | [boolean(false)] ... && ... | test.rs:253:17:253:27 | ... && ... | false |

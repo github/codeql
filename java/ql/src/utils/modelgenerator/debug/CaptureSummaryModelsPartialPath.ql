@@ -15,7 +15,7 @@ import PartialFlow::PartialPathGraph
 
 int explorationLimit() { result = 3 }
 
-module PartialFlow = PropagateFlow::FlowExplorationFwd<explorationLimit/0>;
+module PartialFlow = Heuristic::PropagateFlow::FlowExplorationFwd<explorationLimit/0>;
 
 from
   PartialFlow::PartialPathNode source, PartialFlow::PartialPathNode sink,
