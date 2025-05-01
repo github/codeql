@@ -1236,6 +1236,8 @@ module ClassNode {
     func instanceof AbstractCallable // the join-order goes bad if `func` has type `AbstractFunction`.
   }
 
+  deprecated class FunctionStyleClass = StandardClassNode;
+
   /**
    * A function definition, targeted by a `new`-call or with prototype manipulation, seen as a `ClassNode` instance.
    * Or An ES6 class as a `ClassNode` instance.
