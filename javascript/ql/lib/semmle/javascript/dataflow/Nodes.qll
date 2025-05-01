@@ -861,21 +861,60 @@ module MemberKind {
  *
  * Additional patterns can be recognized as class nodes, by extending `DataFlow::ClassNode::Range`.
  */
-class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
+class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
+  override AST::ValueNode astNode;
+  AbstractCallable function;
+
+  ClassNode() {
+    // ES6 class case
+    astNode instanceof ClassDefinition and
+    function.(AbstractClass).getClass() = astNode
+    or
+    // Function-style class case
+    astNode instanceof Function and
+    function.getFunction() = astNode and
+    (
+      exists(getAFunctionValueWithPrototype(function))
+      or
+      function = any(NewNode new).getCalleeNode().analyze().getAValue()
+      or
+      exists(string name | this = AccessPath::getAnAssignmentTo(name) |
+        exists(getAPrototypeReferenceInFile(name, this.getFile()))
+        or
+        exists(getAnInstantiationInFile(name, this.getFile()))
+      )
+    )
+  }
+
   /**
    * Gets the unqualified name of the class, if it has one or one can be determined from the context.
    */
-  string getName() { result = super.getName() }
+  string getName() {
+    astNode instanceof ClassDefinition and result = astNode.(ClassDefinition).getName()
+    or
+    astNode instanceof Function and result = astNode.(Function).getName()
+  }
 
   /**
    * Gets a description of the class.
    */
-  string describe() { result = super.describe() }
+  string describe() {
+    astNode instanceof ClassDefinition and result = astNode.(ClassDefinition).describe()
+    or
+    astNode instanceof Function and result = astNode.(Function).describe()
+  }
 
   /**
    * Gets the constructor function of this class.
    */
-  FunctionNode getConstructor() { result = super.getConstructor() }
+  FunctionNode getConstructor() {
+    // For ES6 classes
+    astNode instanceof ClassDefinition and
+    result = astNode.(ClassDefinition).getConstructor().getBody().flow()
+    or
+    // For function-style classes
+    astNode instanceof Function and result = this
+  }
 
   /**
    * Gets an instance method declared in this class, with the given name, if any.
@@ -883,7 +922,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * Does not include methods from superclasses.
    */
   FunctionNode getInstanceMethod(string name) {
-    result = super.getInstanceMember(name, MemberKind::method())
+    result = this.getInstanceMember(name, MemberKind::method())
   }
 
   /**
@@ -893,7 +932,7 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getAnInstanceMethod() { result = super.getAnInstanceMember(MemberKind::method()) }
+  FunctionNode getAnInstanceMethod() { result = this.getAnInstanceMember(MemberKind::method()) }
 
   /**
    * Gets the instance method, getter, or setter with the given name and kind.
@@ -901,7 +940,43 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * Does not include members from superclasses.
    */
   FunctionNode getInstanceMember(string name, MemberKind kind) {
-    result = super.getInstanceMember(name, kind)
+    // ES6 class methods
+    exists(MethodDeclaration method |
+      astNode instanceof ClassDefinition and
+      method = astNode.(ClassDefinition).getMethod(name) and
+      not method.isStatic() and
+      kind = MemberKind::of(method) and
+      result = method.getBody().flow()
+    )
+    or
+    // ES6 class property or Function-style class methods via constructor
+    kind = MemberKind::method() and
+    exists(ThisNode receiver |
+      receiver = this.getConstructor().getReceiver() and
+      receiver.hasPropertyWrite(name, result)
+    )
+    or
+    // Function-style class methods via prototype
+    kind = MemberKind::method() and
+    exists(DataFlow::SourceNode proto |
+      proto = this.getAPrototypeReference() and
+      proto.hasPropertyWrite(name, result)
+    )
+    or
+    // Function-style class accessors
+    astNode instanceof Function and
+    exists(PropertyAccessor accessor |
+      accessor = this.getAnAccessor(kind) and
+      accessor.getName() = name and
+      result = accessor.getInit().flow()
+    )
+    or
+    kind = MemberKind::method() and
+    result =
+      [
+        this.getConstructor().getReceiver().getAPropertySource(name),
+        this.getAPrototypeReference().getAPropertySource(name)
+      ]
   }
 
   /**
@@ -909,20 +984,66 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getAnInstanceMember(MemberKind kind) { result = super.getAnInstanceMember(kind) }
+  FunctionNode getAnInstanceMember(MemberKind kind) {
+    // ES6 class methods
+    exists(MethodDeclaration method |
+      astNode instanceof ClassDefinition and
+      method = astNode.(ClassDefinition).getAMethod() and
+      not method.isStatic() and
+      kind = MemberKind::of(method) and
+      result = method.getBody().flow()
+    )
+    or
+    // ES6 class property or Function-style class methods via constructor
+    kind = MemberKind::method() and
+    exists(ThisNode receiver |
+      receiver = this.getConstructor().getReceiver() and
+      result = receiver.getAPropertySource()
+    )
+    or
+    // Function-style class methods via prototype
+    kind = MemberKind::method() and
+    exists(DataFlow::SourceNode proto |
+      proto = this.getAPrototypeReference() and
+      result = proto.getAPropertySource()
+    )
+    or
+    // Function-style class accessors
+    astNode instanceof Function and
+    exists(PropertyAccessor accessor |
+      accessor = this.getAnAccessor(kind) and
+      result = accessor.getInit().flow()
+    )
+    or
+    kind = MemberKind::method() and
+    result =
+      [
+        this.getConstructor().getReceiver().getAPropertySource(),
+        this.getAPrototypeReference().getAPropertySource()
+      ]
+  }
 
   /**
    * Gets an instance method, getter, or setter declared in this class.
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getAnInstanceMember() { result = super.getAnInstanceMember(_) }
+  FunctionNode getAnInstanceMember() { result = this.getAnInstanceMember(_) }
 
   /**
    * Gets the static method, getter, or setter declared in this class with the given name and kind.
    */
   FunctionNode getStaticMember(string name, MemberKind kind) {
-    result = super.getStaticMember(name, kind)
+    exists(MethodDeclaration method |
+      astNode instanceof ClassDefinition and
+      method = astNode.(ClassDefinition).getMethod(name) and
+      method.isStatic() and
+      kind = MemberKind::of(method) and
+      result = method.getBody().flow()
+    )
+    or
+    kind.isMethod() and
+    result = this.getAPropertySource(name)
   }
 
   /**
@@ -935,7 +1056,18 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   /**
    * Gets a static method, getter, or setter declared in this class with the given kind.
    */
-  FunctionNode getAStaticMember(MemberKind kind) { result = super.getAStaticMember(kind) }
+  FunctionNode getAStaticMember(MemberKind kind) {
+    exists(MethodDeclaration method |
+      astNode instanceof ClassDefinition and
+      method = astNode.(ClassDefinition).getAMethod() and
+      method.isStatic() and
+      kind = MemberKind::of(method) and
+      result = method.getBody().flow()
+    )
+    or
+    kind.isMethod() and
+    result = this.getAPropertySource()
+  }
 
   /**
    * Gets a static method declared in this class.
@@ -945,9 +1077,78 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
   FunctionNode getAStaticMethod() { result = this.getAStaticMember(MemberKind::method()) }
 
   /**
+   * Gets a reference to the prototype of this class.
+   * Only applies to function-style classes.
+   */
+  DataFlow::SourceNode getAPrototypeReference() {
+    exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
+      result = base.getAPropertyRead("prototype")
+      or
+      result = base.getAPropertySource("prototype")
+    )
+    or
+    exists(string name |
+      this = AccessPath::getAnAssignmentTo(name) and
+      result = getAPrototypeReferenceInFile(name, this.getFile())
+    )
+    or
+    exists(string name, DataFlow::SourceNode root |
+      result = AccessPath::getAReferenceOrAssignmentTo(root, name + ".prototype").getALocalSource() and
+      this = AccessPath::getAnAssignmentTo(root, name)
+    )
+    or
+    exists(ExtendCall call |
+      call.getDestinationOperand() = this.getAPrototypeReference() and
+      result = call.getASourceOperand()
+    )
+  }
+
+  private PropertyAccessor getAnAccessor(MemberKind kind) {
+    // Only applies to function-style classes
+    astNode instanceof Function and
+    result.getObjectExpr() = this.getAPrototypeReference().asExpr() and
+    (
+      kind = MemberKind::getter() and
+      result instanceof PropertyGetter
+      or
+      kind = MemberKind::setter() and
+      result instanceof PropertySetter
+    )
+  }
+
+  /**
    * Gets a dataflow node that refers to the superclass of this class.
    */
-  DataFlow::Node getASuperClassNode() { result = super.getASuperClassNode() }
+  DataFlow::Node getASuperClassNode() {
+    // ES6 class superclass
+    astNode instanceof ClassDefinition and
+    result = astNode.(ClassDefinition).getSuperClass().flow()
+    or
+    (
+      // C.prototype = Object.create(D.prototype)
+      exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
+        this.getAPropertySource("prototype") = objectCreate and
+        objectCreate = DataFlow::globalVarRef("Object").getAMemberCall("create") and
+        superProto.flowsTo(objectCreate.getArgument(0)) and
+        superProto.getPropertyName() = "prototype" and
+        result = superProto.getBase()
+      )
+      or
+      // C.prototype = new D()
+      exists(DataFlow::NewNode newCall |
+        this.getAPropertySource("prototype") = newCall and
+        result = newCall.getCalleeNode()
+      )
+      or
+      // util.inherits(C, D);
+      exists(DataFlow::CallNode inheritsCall |
+        inheritsCall = DataFlow::moduleMember("util", "inherits").getACall()
+      |
+        this = inheritsCall.getArgument(0).getALocalSource() and
+        result = inheritsCall.getArgument(1)
+      )
+    )
+  }
 
   /**
    * Gets a direct super class of this class.
@@ -1136,13 +1337,47 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
    * Gets the type annotation for the field `fieldName`, if any.
    */
   TypeAnnotation getFieldTypeAnnotation(string fieldName) {
-    result = super.getFieldTypeAnnotation(fieldName)
+    exists(FieldDeclaration field |
+      field.getDeclaringClass() = astNode and
+      fieldName = field.getName() and
+      result = field.getTypeAnnotation()
+    )
   }
 
   /**
    * Gets a decorator applied to this class.
    */
-  DataFlow::Node getADecorator() { result = super.getADecorator() }
+  DataFlow::Node getADecorator() {
+    astNode instanceof ClassDefinition and
+    result = astNode.(ClassDefinition).getADecorator().getExpression().flow()
+  }
+}
+
+/**
+ * Helper predicate to get a prototype reference in a file.
+ */
+private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
+  result.getBase() = AccessPath::getAReferenceOrAssignmentTo(name) and
+  result.getPropertyName() = "prototype" and
+  result.getFile() = f
+}
+
+/**
+ * Helper predicate to get an instantiation in a file.
+ */
+private DataFlow::NewNode getAnInstantiationInFile(string name, File f) {
+  result = AccessPath::getAReferenceTo(name).(DataFlow::LocalSourceNode).getAnInstantiation() and
+  result.getFile() = f
+}
+
+/**
+ * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
+ */
+pragma[noinline]
+private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
+  exists(result.getAPropertyReference("prototype")) and
+  result.analyze().getAValue() = pragma[only_bind_into](func) and
+  func instanceof AbstractCallable // the join-order goes bad if `func` has type `AbstractFunction`.
 }
 
 module ClassNode {
@@ -1214,262 +1449,7 @@ module ClassNode {
     DataFlow::Node getADecorator() { none() }
   }
 
-  private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
-    result.getBase() = AccessPath::getAReferenceOrAssignmentTo(name) and
-    result.getPropertyName() = "prototype" and
-    result.getFile() = f
-  }
-
-  pragma[nomagic]
-  private DataFlow::NewNode getAnInstantiationInFile(string name, File f) {
-    result = AccessPath::getAReferenceTo(name).(DataFlow::LocalSourceNode).getAnInstantiation() and
-    result.getFile() = f
-  }
-
-  /**
-   * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
-   */
-  pragma[noinline]
-  private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
-    exists(result.getAPropertyReference("prototype")) and
-    result.analyze().getAValue() = pragma[only_bind_into](func) and
-    func instanceof AbstractCallable // the join-order goes bad if `func` has type `AbstractFunction`.
-  }
-
-  deprecated class FunctionStyleClass = StandardClassNode;
-
-  /**
-   * A function definition, targeted by a `new`-call or with prototype manipulation, seen as a `ClassNode` instance.
-   * Or An ES6 class as a `ClassNode` instance.
-   */
-  class StandardClassNode extends Range, DataFlow::ValueNode {
-    override AST::ValueNode astNode;
-    AbstractCallable function;
-
-    StandardClassNode() {
-      // ES6 class case
-      astNode instanceof ClassDefinition and
-      function.(AbstractClass).getClass() = astNode
-      or
-      // Function-style class case
-      astNode instanceof Function and
-      function.getFunction() = astNode and
-      (
-        exists(getAFunctionValueWithPrototype(function))
-        or
-        function = any(NewNode new).getCalleeNode().analyze().getAValue()
-        or
-        exists(string name | this = AccessPath::getAnAssignmentTo(name) |
-          exists(getAPrototypeReferenceInFile(name, this.getFile()))
-          or
-          exists(getAnInstantiationInFile(name, this.getFile()))
-        )
-      )
-    }
-
-    override string getName() {
-      astNode instanceof ClassDefinition and result = astNode.(ClassDefinition).getName()
-      or
-      astNode instanceof Function and result = astNode.(Function).getName()
-    }
-
-    override string describe() {
-      astNode instanceof ClassDefinition and result = astNode.(ClassDefinition).describe()
-      or
-      astNode instanceof Function and result = astNode.(Function).describe()
-    }
-
-    override FunctionNode getConstructor() {
-      // For ES6 classes
-      astNode instanceof ClassDefinition and
-      result = astNode.(ClassDefinition).getConstructor().getBody().flow()
-      or
-      // For function-style classes
-      astNode instanceof Function and result = this
-    }
-
-    private PropertyAccessor getAnAccessor(MemberKind kind) {
-      // Only applies to function-style classes
-      astNode instanceof Function and
-      result.getObjectExpr() = this.getAPrototypeReference().asExpr() and
-      (
-        kind = MemberKind::getter() and
-        result instanceof PropertyGetter
-        or
-        kind = MemberKind::setter() and
-        result instanceof PropertySetter
-      )
-    }
-
-    override FunctionNode getInstanceMember(string name, MemberKind kind) {
-      // ES6 class methods
-      exists(MethodDeclaration method |
-        astNode instanceof ClassDefinition and
-        method = astNode.(ClassDefinition).getMethod(name) and
-        not method.isStatic() and
-        kind = MemberKind::of(method) and
-        result = method.getBody().flow()
-      )
-      or
-      // ES6 class property or Function-style class methods via constructor
-      kind = MemberKind::method() and
-      exists(ThisNode receiver |
-        receiver = this.getConstructor().getReceiver() and
-        receiver.hasPropertyWrite(name, result)
-      )
-      or
-      // Function-style class methods via prototype
-      kind = MemberKind::method() and
-      exists(DataFlow::SourceNode proto |
-        proto = this.getAPrototypeReference() and
-        proto.hasPropertyWrite(name, result)
-      )
-      or
-      // Function-style class accessors
-      astNode instanceof Function and
-      exists(PropertyAccessor accessor |
-        accessor = this.getAnAccessor(kind) and
-        accessor.getName() = name and
-        result = accessor.getInit().flow()
-      )
-      or
-      kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource(name)
-    }
-
-    override FunctionNode getAnInstanceMember(MemberKind kind) {
-      // ES6 class methods
-      exists(MethodDeclaration method |
-        astNode instanceof ClassDefinition and
-        method = astNode.(ClassDefinition).getAMethod() and
-        not method.isStatic() and
-        kind = MemberKind::of(method) and
-        result = method.getBody().flow()
-      )
-      or
-      // ES6 class property or Function-style class methods via constructor
-      kind = MemberKind::method() and
-      exists(ThisNode receiver |
-        receiver = this.getConstructor().getReceiver() and
-        result = receiver.getAPropertySource()
-      )
-      or
-      // Function-style class methods via prototype
-      kind = MemberKind::method() and
-      exists(DataFlow::SourceNode proto |
-        proto = this.getAPrototypeReference() and
-        result = proto.getAPropertySource()
-      )
-      or
-      // Function-style class accessors
-      astNode instanceof Function and
-      exists(PropertyAccessor accessor |
-        accessor = this.getAnAccessor(kind) and
-        result = accessor.getInit().flow()
-      )
-      or
-      kind = MemberKind::method() and
-      result = this.getConstructor().getReceiver().getAPropertySource()
-    }
-
-    override FunctionNode getStaticMember(string name, MemberKind kind) {
-      exists(MethodDeclaration method |
-        astNode instanceof ClassDefinition and
-        method = astNode.(ClassDefinition).getMethod(name) and
-        method.isStatic() and
-        kind = MemberKind::of(method) and
-        result = method.getBody().flow()
-      )
-      or
-      kind.isMethod() and
-      result = this.getAPropertySource(name)
-    }
-
-    override FunctionNode getAStaticMember(MemberKind kind) {
-      exists(MethodDeclaration method |
-        astNode instanceof ClassDefinition and
-        method = astNode.(ClassDefinition).getAMethod() and
-        method.isStatic() and
-        kind = MemberKind::of(method) and
-        result = method.getBody().flow()
-      )
-      or
-      kind.isMethod() and
-      result = this.getAPropertySource()
-    }
-
-    /**
-     * Gets a reference to the prototype of this class.
-     * Only applies to function-style classes.
-     */
-    DataFlow::SourceNode getAPrototypeReference() {
-      exists(DataFlow::SourceNode base | base = getAFunctionValueWithPrototype(function) |
-        result = base.getAPropertyRead("prototype")
-        or
-        result = base.getAPropertySource("prototype")
-      )
-      or
-      exists(string name |
-        this = AccessPath::getAnAssignmentTo(name) and
-        result = getAPrototypeReferenceInFile(name, this.getFile())
-      )
-      or
-      exists(string name, DataFlow::SourceNode root |
-        result =
-          AccessPath::getAReferenceOrAssignmentTo(root, name + ".prototype").getALocalSource() and
-        this = AccessPath::getAnAssignmentTo(root, name)
-      )
-      or
-      exists(ExtendCall call |
-        call.getDestinationOperand() = this.getAPrototypeReference() and
-        result = call.getASourceOperand()
-      )
-    }
-
-    override DataFlow::Node getASuperClassNode() {
-      // ES6 class superclass
-      astNode instanceof ClassDefinition and
-      result = astNode.(ClassDefinition).getSuperClass().flow()
-      or
-      (
-        // C.prototype = Object.create(D.prototype)
-        exists(DataFlow::InvokeNode objectCreate, DataFlow::PropRead superProto |
-          this.getAPropertySource("prototype") = objectCreate and
-          objectCreate = DataFlow::globalVarRef("Object").getAMemberCall("create") and
-          superProto.flowsTo(objectCreate.getArgument(0)) and
-          superProto.getPropertyName() = "prototype" and
-          result = superProto.getBase()
-        )
-        or
-        // C.prototype = new D()
-        exists(DataFlow::NewNode newCall |
-          this.getAPropertySource("prototype") = newCall and
-          result = newCall.getCalleeNode()
-        )
-        or
-        // util.inherits(C, D);
-        exists(DataFlow::CallNode inheritsCall |
-          inheritsCall = DataFlow::moduleMember("util", "inherits").getACall()
-        |
-          this = inheritsCall.getArgument(0).getALocalSource() and
-          result = inheritsCall.getArgument(1)
-        )
-      )
-    }
-
-    override TypeAnnotation getFieldTypeAnnotation(string fieldName) {
-      exists(FieldDeclaration field |
-        field.getDeclaringClass() = astNode and
-        fieldName = field.getName() and
-        result = field.getTypeAnnotation()
-      )
-    }
-
-    override DataFlow::Node getADecorator() {
-      astNode instanceof ClassDefinition and
-      result = astNode.(ClassDefinition).getADecorator().getExpression().flow()
-    }
-  }
+  deprecated class FunctionStyleClass = ClassNode;
 }
 
 /**
