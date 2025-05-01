@@ -25,6 +25,7 @@ jobs:
           channel: release
       - name: Install PowerShell
         run: |
+          chmod +x powershell/build.ps1
           ./powershell/build.ps1
       - name: Run QL tests
         run: |
