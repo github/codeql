@@ -8,8 +8,6 @@ Using a tag for a 3rd party Action that is not pinned to a commit can lead to ex
 
 Pinning an action to a full length commit SHA is currently the only way to use a non-immutable action as an immutable release. Pinning to a particular SHA helps mitigate the risk of a bad actor adding a backdoor to the action's repository, as they would need to generate a SHA-1 collision for a valid Git object payload. When selecting a SHA, you should verify it is from the action's repository and not a repository fork.
 
-See the [`UnpinnedActionsTag-CUSTOMIZING.md`](https://github.com/github/codeql/blob/main/actions/ql/src/Security/CWE-829/UnpinnedActionsTag-CUSTOMIZING.md) file in the source code for this query for information on how to extend the list of Action publishers trusted by this query.
-
 ## Examples
 
 ### Incorrect Usage
