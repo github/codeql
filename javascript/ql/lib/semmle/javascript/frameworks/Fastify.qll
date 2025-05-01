@@ -169,9 +169,7 @@ module Fastify {
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
-    override Http::RequestMethodName getHttpMethod() {
-      if this.getMethodName() = "all" then any() else result = this.getMethodName().toUpperCase()
-    }
+    override Http::RequestMethodName getHttpMethod() { result = this.getMethodName().toUpperCase() }
   }
 
   private class AddHookRouteSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
