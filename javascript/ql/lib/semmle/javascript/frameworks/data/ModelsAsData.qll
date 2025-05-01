@@ -19,6 +19,7 @@
 private import javascript
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
+private import semmle.javascript.dataflow.internal.FlowSummaryPrivate
 private import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
@@ -45,12 +46,50 @@ private class ThreatModelSourceFromDataExtension extends ThreatModelSource::Rang
   }
 }
 
+private class SummarizedCallableFromModel extends DataFlow::SummarizedCallable {
+  string type;
+  string path;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
+    this = type + ";" + path
+  }
+
+  override DataFlow::InvokeNode getACall() { ModelOutput::resolvedSummaryBase(type, path, result) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, string model
+  ) {
+    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
+
+  predicate hasTypeAndPath(string type_, string path_) { type = type_ and path = path_ }
+
+  predicate isUnsupportedByFlowSummaries() { unsupportedCallable(this) }
+}
+
+private predicate shouldInduceStepsFromSummary(string type, string path) {
+  exists(SummarizedCallableFromModel callable |
+    callable.isUnsupportedByFlowSummaries() and
+    callable.hasTypeAndPath(type, path)
+  )
+}
+
 /**
  * Holds if `path` is an input or output spec for a summary with the given `base` node.
  */
 pragma[nomagic]
 private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
   exists(string type, string input, string output, string path |
+    // If the summary for 'callable' could not be handled as a flow summary, we need to evaluate
+    // its inputs and outputs to a set of nodes, so we can generate steps instead.
+    shouldInduceStepsFromSummary(type, path) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
     inputOrOutput = [input, output]
@@ -81,6 +120,7 @@ private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPat
 
 private predicate summaryStep(API::Node pred, API::Node succ, string kind) {
   exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
+    shouldInduceStepsFromSummary(type, path) and
     ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
