@@ -31,8 +31,9 @@ module Impl {
    * ```
    */
   class MethodCallExpr extends Generated::MethodCallExpr {
-    override Function getStaticTarget() {
+    private Function getStaticTargetFrom(boolean fromSource) {
       result = resolveMethodCallExpr(this) and
+      (if result.fromSource() then fromSource = true else fromSource = false) and
       (
         // prioritize inherent implementation methods first
         isInherentImplFunction(result)
@@ -52,6 +53,13 @@ module Impl {
           )
         )
       )
+    }
+
+    override Function getStaticTarget() {
+      result = this.getStaticTargetFrom(true)
+      or
+      not exists(this.getStaticTargetFrom(true)) and
+      result = this.getStaticTargetFrom(false)
     }
 
     private string toStringPart(int index) {
