@@ -15,7 +15,7 @@ exec(getInput('data')); // $ Alert
 
 function test2(e) {
     const shelljs = require('shelljs');
-    exec('rm -rf ' + shelljs.env['SOME']); // $ MISSING: Alert
-    exec('rm -rf ' + shelljs.env.SOME); // $ MISSING: Alert
-    exec('rm -rf ' + shelljs.env); // $ MISSING: Alert
+    exec('rm -rf ' + shelljs.env['SOME']); // $ Alert
+    exec('rm -rf ' + shelljs.env.SOME); // $ Alert
+    exec('rm -rf ' + shelljs.env); // $ Alert
 }
