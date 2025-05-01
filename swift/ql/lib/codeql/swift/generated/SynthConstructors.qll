@@ -152,6 +152,7 @@ import codeql.swift.elements.expr.internal.TryExprConstructor
 import codeql.swift.elements.expr.internal.TupleElementExprConstructor
 import codeql.swift.elements.expr.internal.TupleExprConstructor
 import codeql.swift.elements.expr.internal.TypeExprConstructor
+import codeql.swift.elements.expr.internal.TypeValueExprConstructor
 import codeql.swift.elements.expr.internal.UnderlyingToOpaqueExprConstructor
 import codeql.swift.elements.expr.internal.UnevaluatedInstanceExprConstructor
 import codeql.swift.elements.expr.internal.UnreachableExprConstructor
@@ -228,6 +229,7 @@ import codeql.swift.elements.type.internal.FunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericFunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericTypeParamTypeConstructor
 import codeql.swift.elements.type.internal.InOutTypeConstructor
+import codeql.swift.elements.type.internal.IntegerTypeConstructor
 import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ModuleTypeConstructor

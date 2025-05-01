@@ -671,6 +671,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TTypeValueExpr(Raw::TypeValueExpr id) { constructTypeValueExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TUnderlyingToOpaqueExpr(Raw::UnderlyingToOpaqueExpr id) { constructUnderlyingToOpaqueExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -997,6 +1001,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TIntegerType(Raw::IntegerType id) { constructIntegerType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TLValueType(Raw::LValueType id) { constructLValueType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1266,9 +1274,9 @@ module Synth {
         TOptionalEvaluationExpr or TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
         TPackElementExpr or TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
-        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
-        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
-        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TTypeValueExpr or
+        TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
+        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1426,9 +1434,9 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TPackElementType or TPackExpansionType or TPackType or
-        TParameterizedProtocolType or TProtocolCompositionType or TReferenceStorageType or
-        TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
+        TIntegerType or TLValueType or TModuleType or TPackElementType or TPackExpansionType or
+        TPackType or TParameterizedProtocolType or TProtocolCompositionType or
+        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
 
   /**
    * INTERNAL: Do not use.
@@ -2489,6 +2497,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TTypeValueExpr`, if possible.
+   */
+  TTypeValueExpr convertTypeValueExprFromRaw(Raw::Element e) { result = TTypeValueExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TUnderlyingToOpaqueExpr`, if possible.
    */
   TUnderlyingToOpaqueExpr convertUnderlyingToOpaqueExprFromRaw(Raw::Element e) {
@@ -3002,6 +3016,12 @@ module Synth {
    * Converts a raw element to a synthesized `TInOutType`, if possible.
    */
   TInOutType convertInOutTypeFromRaw(Raw::Element e) { result = TInOutType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TIntegerType`, if possible.
+   */
+  TIntegerType convertIntegerTypeFromRaw(Raw::Element e) { result = TIntegerType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3674,6 +3694,8 @@ module Synth {
     or
     result = convertTypeExprFromRaw(e)
     or
+    result = convertTypeValueExprFromRaw(e)
+    or
     result = convertUnresolvedDeclRefExprFromRaw(e)
     or
     result = convertUnresolvedDotExprFromRaw(e)
@@ -4115,6 +4137,8 @@ module Synth {
     result = convertExistentialTypeFromRaw(e)
     or
     result = convertInOutTypeFromRaw(e)
+    or
+    result = convertIntegerTypeFromRaw(e)
     or
     result = convertLValueTypeFromRaw(e)
     or
@@ -5205,6 +5229,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TTypeValueExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertTypeValueExprToRaw(TTypeValueExpr e) { e = TTypeValueExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TUnderlyingToOpaqueExpr` to a raw DB element, if possible.
    */
   Raw::Element convertUnderlyingToOpaqueExprToRaw(TUnderlyingToOpaqueExpr e) {
@@ -5718,6 +5748,12 @@ module Synth {
    * Converts a synthesized `TInOutType` to a raw DB element, if possible.
    */
   Raw::Element convertInOutTypeToRaw(TInOutType e) { e = TInOutType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TIntegerType` to a raw DB element, if possible.
+   */
+  Raw::Element convertIntegerTypeToRaw(TIntegerType e) { e = TIntegerType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -6390,6 +6426,8 @@ module Synth {
     or
     result = convertTypeExprToRaw(e)
     or
+    result = convertTypeValueExprToRaw(e)
+    or
     result = convertUnresolvedDeclRefExprToRaw(e)
     or
     result = convertUnresolvedDotExprToRaw(e)
@@ -6831,6 +6869,8 @@ module Synth {
     result = convertExistentialTypeToRaw(e)
     or
     result = convertInOutTypeToRaw(e)
+    or
+    result = convertIntegerTypeToRaw(e)
     or
     result = convertLValueTypeToRaw(e)
     or

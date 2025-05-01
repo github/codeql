@@ -205,7 +205,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
   MAP(swift::ExtractFunctionIsolationExpr, ExtractFunctionIsolationExprTag)
   MAP(swift::CurrentContextIsolationExpr, CurrentContextIsolationExprTag)
-  MAP(swift::TypeValueExpr, void)  // TODO swift 6.1
+  MAP(swift::TypeValueExpr, TypeValueExprTag)
 MAP(swift::Decl, DeclTag)
   MAP(swift::ValueDecl, ValueDeclTag)
     MAP(swift::TypeDecl, TypeDeclTag)
@@ -339,7 +339,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::PackElementType, PackElementTypeTag)
   MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
   MAP(swift::ErrorUnionType, void)  // created during type checking and only used for constraint checking
-  MAP(swift::IntegerType, void)  // TODO swift 6.1
+  MAP(swift::IntegerType, IntegerTypeTag)
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
     MAP(swift::SyntaxSugarType, SyntaxSugarTypeTag)

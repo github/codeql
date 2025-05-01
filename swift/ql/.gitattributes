@@ -232,6 +232,7 @@
 /lib/codeql/swift/elements/expr/TupleElementExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/TupleExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/TypeExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/TypeValueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnevaluatedInstanceExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnreachableExpr.qll linguist-generated
@@ -410,6 +411,8 @@
 /lib/codeql/swift/elements/expr/internal/TupleElementExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/TupleExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/TypeExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/TypeValueExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/TypeValueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprConstructor.qll linguist-generated
@@ -559,6 +562,7 @@
 /lib/codeql/swift/elements/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/elements/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/elements/type/InOutType.qll linguist-generated
+/lib/codeql/swift/elements/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/elements/type/LValueType.qll linguist-generated
 /lib/codeql/swift/elements/type/LocalArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/MetatypeType.qll linguist-generated
@@ -657,6 +661,8 @@
 /lib/codeql/swift/elements/type/internal/GenericTypeParamTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/IntegerTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/IntegerTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/LValueTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/LocalArchetypeTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/MetatypeTypeConstructor.qll linguist-generated
@@ -901,6 +907,7 @@
 /lib/codeql/swift/generated/expr/TupleElementExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/TupleExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/TypeExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/TypeValueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnevaluatedInstanceExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnreachableExpr.qll linguist-generated
@@ -988,6 +995,7 @@
 /lib/codeql/swift/generated/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/generated/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/generated/type/InOutType.qll linguist-generated
+/lib/codeql/swift/generated/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/generated/type/LValueType.qll linguist-generated
 /lib/codeql/swift/generated/type/LocalArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/MetatypeType.qll linguist-generated
@@ -1234,6 +1242,8 @@
 /test/extractor-tests/generated/expr/TupleElementExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/TupleExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/TypeExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/TypeValueExpr/TypeValueExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/TypeValueExpr/TypeValueExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/VarargExpansionExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/pattern/AnyPattern/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/pattern/BindingPattern/MISSING_SOURCE.txt linguist-generated
@@ -1297,6 +1307,7 @@
 /test/extractor-tests/generated/type/GenericFunctionType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/GenericTypeParamType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/InOutType/InOutType.ql linguist-generated
+/test/extractor-tests/generated/type/IntegerType/IntegerType.ql linguist-generated
 /test/extractor-tests/generated/type/LValueType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/MetatypeType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ModuleType/ModuleType.ql linguist-generated

@@ -2009,6 +2009,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfTypeValueExpr(
+    TypeValueExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nTypeRepr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnresolvedDeclRefExpr(
     UnresolvedDeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -4277,6 +4295,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfIntegerType(
+    IntegerType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfLValueType(LValueType e, int index, string partialPredicateCall) {
     exists(int b, int bType, int n |
       b = 0 and
@@ -5382,6 +5415,8 @@ private module Impl {
     or
     result = getImmediateChildOfTypeExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfTypeValueExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnresolvedDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnresolvedDotExpr(e, index, partialAccessor)
@@ -5617,6 +5652,8 @@ private module Impl {
     result = getImmediateChildOfExistentialType(e, index, partialAccessor)
     or
     result = getImmediateChildOfInOutType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIntegerType(e, index, partialAccessor)
     or
     result = getImmediateChildOfLValueType(e, index, partialAccessor)
     or

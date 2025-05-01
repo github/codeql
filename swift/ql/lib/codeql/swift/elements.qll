@@ -185,6 +185,7 @@ import codeql.swift.elements.expr.TryExpr
 import codeql.swift.elements.expr.TupleElementExpr
 import codeql.swift.elements.expr.TupleExpr
 import codeql.swift.elements.expr.TypeExpr
+import codeql.swift.elements.expr.TypeValueExpr
 import codeql.swift.elements.expr.UnderlyingToOpaqueExpr
 import codeql.swift.elements.expr.UnevaluatedInstanceExpr
 import codeql.swift.elements.expr.UnreachableExpr
@@ -272,6 +273,7 @@ import codeql.swift.elements.type.FunctionType
 import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
+import codeql.swift.elements.type.IntegerType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.LocalArchetypeType
 import codeql.swift.elements.type.MetatypeType

@@ -1856,6 +1856,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class TypeValueExpr extends @type_value_expr, Expr {
+    override string toString() { result = "TypeValueExpr" }
+
+    /**
+     * Gets the type representation of this type value expression.
+     */
+    TypeRepr getTypeRepr() { type_value_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
@@ -3321,6 +3333,18 @@ module Raw {
      * Gets the object type of this in out type.
      */
     Type getObjectType() { in_out_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class IntegerType extends @integer_type, Type {
+    override string toString() { result = "IntegerType" }
+
+    /**
+     * Gets the value of this integer type.
+     */
+    string getValue() { integer_types(this, result) }
   }
 
   /**

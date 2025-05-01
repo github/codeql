@@ -819,6 +819,7 @@ arguments(  //dir=expr
 | @tuple_element_expr
 | @tuple_expr
 | @type_expr
+| @type_value_expr
 | @unresolved_decl_ref_expr
 | @unresolved_dot_expr
 | @unresolved_member_expr
@@ -1278,6 +1279,11 @@ type_exprs(  //dir=expr
 #keyset[id]
 type_expr_type_reprs(  //dir=expr
   int id: @type_expr ref,
+  int type_repr: @type_repr_or_none ref
+);
+
+type_value_exprs(  //dir=expr
+  unique int id: @type_value_expr,
   int type_repr: @type_repr_or_none ref
 );
 
@@ -2132,6 +2138,7 @@ while_stmts(  //dir=stmt
 | @error_type
 | @existential_type
 | @in_out_type
+| @integer_type
 | @l_value_type
 | @module_type
 | @pack_element_type
@@ -2245,6 +2252,11 @@ existential_types(  //dir=type
 in_out_types(  //dir=type
   unique int id: @in_out_type,
   int object_type: @type_or_none ref
+);
+
+integer_types(  //dir=type
+  unique int id: @integer_type,
+  string value: string ref
 );
 
 l_value_types(  //dir=type

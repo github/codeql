@@ -1469,3 +1469,9 @@ class UnsafeCastExpr(ImplicitConversionExpr):
     """
     A conversion that performs an unsafe bitcast.
     """
+
+class TypeValueExpr(Expr):
+    type_repr: TypeRepr | child
+
+class IntegerType(Type):
+    value: string
