@@ -25,6 +25,7 @@ jobs:
           channel: release
       - name: Install PowerShell
         run: |
+          Get-Command codeql
           ./powershell/build.ps1
       - name: Run QL tests
         run: |
