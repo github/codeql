@@ -49,6 +49,22 @@ namespace System.Net.Http
     {
         public StringContent(string s) { }
     }
+
+    public class HttpResponseMessage : IDisposable
+    {
+        public HttpResponseMessage() { }
+        public HttpResponseMessage(HttpStatusCode statusCode) { }
+
+
+        public Version Version { get; set; }
+        public HttpContent Content { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public HttpResponseHeaders Headers { get; }
+        public HttpRequestMessage RequestMessage { get; set; }
+        public bool IsSuccessStatusCode { get; }
+    }
+
+
 }
 
 namespace System.Net.Mail
