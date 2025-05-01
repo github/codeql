@@ -138,7 +138,7 @@ class TypeTracker extends TTypeTracker {
   TypeTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(StepSummary summary |
       StepSummary::step(pred, succ, summary) and
-      result = this.append(summary)
+      result = pragma[only_bind_out](this).append(summary)
     )
   }
 
