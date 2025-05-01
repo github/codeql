@@ -23,6 +23,9 @@ jobs:
         uses: ./.github/actions/fetch-codeql
         with:
           channel: release
-      - name: Compile PowerShell Queries
+      - name: Install PowerShell
+        run: |
+          ./powershell/build.ps1
+      - name: Run QL tests
         run: |
           codeql test run --threads=0 powershell/ql/test
