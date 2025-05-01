@@ -52,6 +52,8 @@ def qlgen_opts(opts):
     opts.ql_format = True
     opts.root_dir = paths.root_dir
     opts.force = False
+    opts.codeql_binary = "./my_fake_codeql"
+    pathlib.Path(opts.codeql_binary).touch()
     return opts
 
 
@@ -499,7 +501,6 @@ def test_class_dir_imports(generate_import_list):
 
 
 def test_format(opts, generate, render_manager, run_mock):
-    opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
     render_manager.written = [
         pathlib.Path("x", "foo.ql"),
@@ -508,19 +509,36 @@ def test_format(opts, generate, render_manager, run_mock):
     ]
     generate([schema.Class('A')])
     assert run_mock.mock_calls == [
-        mock.call(["my_fake_codeql", "query", "format", "--in-place", "--", "x/foo.ql", "bar.qll"],
+        mock.call([opts.codeql_binary, "query", "format", "--in-place", "--", "x/foo.ql", "bar.qll"],
                   stderr=subprocess.PIPE, text=True),
     ]
 
 
 def test_format_error(opts, generate, render_manager, run_mock):
-    opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
     run_mock.return_value.returncode = 1
     render_manager.written = [
         pathlib.Path("x", "foo.ql"),
         pathlib.Path("bar.qll"),
         pathlib.Path("y", "baz.txt"),
+    ]
+    with pytest.raises(qlgen.FormatError):
+        generate([schema.Class('A')])
+
+
+def test_format_no_codeql(opts, generate, render_manager, run_mock):
+    pathlib.Path(opts.codeql_binary).unlink()
+    render_manager.written = [
+        pathlib.Path("bar.qll"),
+    ]
+    with pytest.raises(qlgen.FormatError):
+        generate([schema.Class('A')])
+
+
+def test_format_no_codeql_in_path(opts, generate, render_manager, run_mock):
+    opts.codeql_binary = "my_fake_codeql"
+    render_manager.written = [
+        pathlib.Path("bar.qll"),
     ]
     with pytest.raises(qlgen.FormatError):
         generate([schema.Class('A')])

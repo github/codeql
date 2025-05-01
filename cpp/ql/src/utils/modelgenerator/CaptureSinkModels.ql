@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import Heuristic
 
 from DataFlowSinkTargetApi api, string sink
 where sink = captureSink(api)

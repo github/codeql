@@ -1394,7 +1394,7 @@ class MacroRole(AstNode):
     """
     kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
     macro_syntax: int | doc("#freestanding or @attached") | ql.internal
-    conformances: list[TypeExpr] | doc("conformances of this macro role")
+    conformances: list[Expr] | doc("conformances of this macro role")
     names: list[string] | doc("names of this macro role")
 
 class MacroDecl(GenericContext, ValueDecl):

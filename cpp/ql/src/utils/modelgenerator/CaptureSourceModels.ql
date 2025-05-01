@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import Heuristic
 
 from DataFlowSourceTargetApi api, string source
 where source = captureSource(api)
