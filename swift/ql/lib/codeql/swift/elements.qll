@@ -66,6 +66,7 @@ import codeql.swift.elements.decl.TypeDecl
 import codeql.swift.elements.decl.ValueDecl
 import codeql.swift.elements.decl.VarDecl
 import codeql.swift.elements.expr.AbiSafeConversionExpr
+import codeql.swift.elements.expr.ActorIsolationErasureExpr
 import codeql.swift.elements.expr.AnyHashableErasureExpr
 import codeql.swift.elements.expr.AnyTryExpr
 import codeql.swift.elements.expr.AppliedPropertyWrapperExpr
@@ -98,6 +99,7 @@ import codeql.swift.elements.expr.ConsumeExpr
 import codeql.swift.elements.expr.CopyExpr
 import codeql.swift.elements.expr.CovariantFunctionConversionExpr
 import codeql.swift.elements.expr.CovariantReturnConversionExpr
+import codeql.swift.elements.expr.CurrentContextIsolationExpr
 import codeql.swift.elements.expr.DeclRefExpr
 import codeql.swift.elements.expr.DefaultArgumentExpr
 import codeql.swift.elements.expr.DerivedToBaseExpr
@@ -119,6 +121,7 @@ import codeql.swift.elements.expr.ExistentialMetatypeToObjectExpr
 import codeql.swift.elements.expr.ExplicitCastExpr
 import codeql.swift.elements.expr.ExplicitClosureExpr
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.expr.ExtractFunctionIsolationExpr
 import codeql.swift.elements.expr.FloatLiteralExpr
 import codeql.swift.elements.expr.ForceTryExpr
 import codeql.swift.elements.expr.ForceValueExpr
@@ -184,6 +187,7 @@ import codeql.swift.elements.expr.TupleExpr
 import codeql.swift.elements.expr.TypeExpr
 import codeql.swift.elements.expr.UnderlyingToOpaqueExpr
 import codeql.swift.elements.expr.UnevaluatedInstanceExpr
+import codeql.swift.elements.expr.UnreachableExpr
 import codeql.swift.elements.expr.UnresolvedDeclRefExpr
 import codeql.swift.elements.expr.UnresolvedDotExpr
 import codeql.swift.elements.expr.UnresolvedMemberChainResultExpr

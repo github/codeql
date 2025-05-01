@@ -2,11 +2,11 @@
 
 ## Description
 
-Secrets derived from other secrets are not known to the workflow runner and therefore not masked unless explicitly registered.
+Secrets derived from other secrets are not known to the workflow runner, and therefore are not masked unless explicitly registered.
 
 ## Recommendations
 
-Avoid defining non-plain secrets. For example, do not define a new secret containing a JSON object and then read properties out of it from the workflow since these read values will not be masked by the workflow runner.
+Avoid defining non-plain secrets. For example, do not define a new secret containing a JSON object and then read properties out of it from the workflow, since these read values will not be masked by the workflow runner.
 
 ## Examples
 

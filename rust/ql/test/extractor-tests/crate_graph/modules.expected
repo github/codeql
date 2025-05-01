@@ -10,13 +10,18 @@
 
 #-----| fn fmt
 
+#-----| fn from
+
 #-----| fn length
+
+#-----| impl ...::AsString for ...::X { ... }
+#-----|  -> fn as_string
 
 #-----| impl ...::Display for ...::X { ... }
 #-----|  -> fn fmt
 
-#-----| impl AsString for ...::X { ... }
-#-----|  -> fn as_string
+#-----| impl ...::From::<...> for ...::Thing::<...> { ... }
+#-----|  -> fn from
 
 lib.rs:
 #    0| mod crate
@@ -27,8 +32,11 @@ lib.rs:
 #-----|  -> Static
 #-----|  -> enum X
 #-----|  -> fn length
+#-----|  -> impl ...::AsString for ...::X { ... }
 #-----|  -> impl ...::Display for ...::X { ... }
-#-----|  -> impl AsString for ...::X { ... }
+#-----|  -> impl ...::From::<...> for ...::Thing::<...> { ... }
+#-----|  -> struct LocalKey<T>
+#-----|  -> struct Thing<T>
 #-----|  -> struct X_List
 #-----|  -> trait AsString
 #-----|  -> use ...::DirBuilder
@@ -61,6 +69,10 @@ lib.rs:
 #-----|  -> use ...::soft_link
 #-----|  -> use ...::symlink_metadata
 #-----|  -> use ...::write
+
+#-----| struct LocalKey<T>
+
+#-----| struct Thing<T>
 
 #-----| struct X_List
 

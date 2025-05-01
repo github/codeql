@@ -1,7 +1,7 @@
 models
 | 1 | Summary: lang:alloc; <_ as crate::string::ToString>::to_string; Argument[self]; ReturnValue; taint |
 | 2 | Summary: lang:alloc; <crate::string::String as crate::convert::From>::from; Argument[0]; ReturnValue; value |
-| 3 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; taint |
+| 3 | Summary: lang:alloc; <crate::string::String>::as_str; Argument[self]; ReturnValue; value |
 | 4 | Summary: lang:alloc; crate::fmt::format; Argument[0]; ReturnValue; taint |
 | 5 | Summary: lang:core; crate::hint::must_use; Argument[0]; ReturnValue; value |
 edges

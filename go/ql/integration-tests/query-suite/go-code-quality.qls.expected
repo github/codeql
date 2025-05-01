@@ -1,0 +1,6 @@
+ql/go/ql/src/InconsistentCode/LengthComparisonOffByOne.ql
+ql/go/ql/src/InconsistentCode/MissingErrorCheck.ql
+ql/go/ql/src/InconsistentCode/UnhandledCloseWritableHandle.ql
+ql/go/ql/src/InconsistentCode/WrappedErrorAlwaysNil.ql
+ql/go/ql/src/RedundantCode/NegativeLengthCheck.ql
+ql/go/ql/src/RedundantCode/RedundantRecover.ql

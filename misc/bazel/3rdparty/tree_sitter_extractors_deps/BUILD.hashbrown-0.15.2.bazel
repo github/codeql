@@ -90,7 +90,7 @@ rust_library(
     version = "0.15.2",
     deps = [
         "@vendor_ts__allocator-api2-0.2.21//:allocator_api2",
-        "@vendor_ts__equivalent-1.0.1//:equivalent",
+        "@vendor_ts__equivalent-1.0.2//:equivalent",
         "@vendor_ts__foldhash-0.1.5//:foldhash",
     ],
 )
