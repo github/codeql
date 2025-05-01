@@ -1041,8 +1041,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/tauri/src/app/plugin.rs") and
-      startline = 54
+      filepath.matches("%/main.rs") and
+      startline = 28
     )
   }
 
