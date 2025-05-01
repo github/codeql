@@ -8,3 +8,4 @@ extensions:
       - ["advanced-security"]
       - ["microsoft"]
       - ["azure"]
+      - ["NuGet"]
