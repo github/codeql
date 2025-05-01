@@ -57,6 +57,10 @@
 | fastify.js:84:30:84:43 | reply.userCode | fastify.js:79:20:79:42 | request ... plyCode | fastify.js:84:30:84:43 | reply.userCode | This code execution depends on a $@. | fastify.js:79:20:79:42 | request ... plyCode | user-provided value |
 | fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:94:29:94:41 | request.query | fastify.js:99:30:99:52 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:41 | request.query | user-provided value |
 | fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:99:30:99:52 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:51 | request ... plyCode | user-provided value |
+| fastify.js:107:23:107:31 | userInput | fastify.js:106:21:106:33 | request.query | fastify.js:107:23:107:31 | userInput | This code execution depends on a $@. | fastify.js:106:21:106:33 | request.query | user-provided value |
+| fastify.js:107:23:107:31 | userInput | fastify.js:106:21:106:38 | request.query.code | fastify.js:107:23:107:31 | userInput | This code execution depends on a $@. | fastify.js:106:21:106:38 | request.query.code | user-provided value |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:41 | request.query | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:41 | request.query | user-provided value |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:51 | request ... plyCode | user-provided value |
 | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
 | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
 | react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
@@ -145,6 +149,10 @@ edges
 | fastify.js:79:20:79:42 | request ... plyCode | fastify.js:84:30:84:43 | reply.userCode | provenance |  |
 | fastify.js:94:29:94:41 | request.query | fastify.js:94:29:94:51 | request ... plyCode | provenance |  |
 | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:99:30:99:52 | reply.l ... tedCode | provenance |  |
+| fastify.js:94:29:94:51 | request ... plyCode | fastify.js:108:28:108:50 | reply.l ... tedCode | provenance |  |
+| fastify.js:106:9:106:38 | userInput | fastify.js:107:23:107:31 | userInput | provenance |  |
+| fastify.js:106:21:106:33 | request.query | fastify.js:106:9:106:38 | userInput | provenance |  |
+| fastify.js:106:21:106:38 | request.query.code | fastify.js:106:9:106:38 | userInput | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -268,6 +276,11 @@ nodes
 | fastify.js:94:29:94:41 | request.query | semmle.label | request.query |
 | fastify.js:94:29:94:51 | request ... plyCode | semmle.label | request ... plyCode |
 | fastify.js:99:30:99:52 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
+| fastify.js:106:9:106:38 | userInput | semmle.label | userInput |
+| fastify.js:106:21:106:33 | request.query | semmle.label | request.query |
+| fastify.js:106:21:106:38 | request.query.code | semmle.label | request.query.code |
+| fastify.js:107:23:107:31 | userInput | semmle.label | userInput |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
