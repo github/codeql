@@ -6,3 +6,5 @@ extensions:
       - ["actions"]
       - ["github"]
       - ["advanced-security"]
+      - ["microsoft"]
+      - ["azure"]
