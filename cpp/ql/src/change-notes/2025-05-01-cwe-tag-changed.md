@@ -1,0 +1,9 @@
+---
+category: queryMetadata
+---
+* The tag `external/cwe/cwe-14` has been removed from `cpp/memset-may-be-deleted` and the tag `external/cwe/cwe-014` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/count-untrusted-data-external-api-ir` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/untrusted-data-to-external-api-ir` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/late-check-of-function-argument` and the tag `external/cwe/cwe-020` has been added.
