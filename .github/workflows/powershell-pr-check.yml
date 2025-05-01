@@ -2,9 +2,6 @@ name: PowerShell PR Check
 
 on:
   pull_request:
-    paths:
-      - "powershell/**"
-      - "shared/**"
     branches:
       - main
   workflow_dispatch:
