@@ -591,7 +591,7 @@ async fn test_tokio_file() -> std::io::Result<()> {
 
 use std::net::ToSocketAddrs;
 
-async fn test_std_tcpstream(case: i64) -> std::io::Result<()> { // Result<(), Box<dyn Error>>
+async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
     // using std::net to fetch a web page
     let address = "example.com:80";
 
