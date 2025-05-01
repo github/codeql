@@ -2,6 +2,9 @@ name: PowerShell PR Check
 
 on:
   pull_request:
+    paths:
+      - "powershell/**"
+      - "shared/**"
     branches:
       - main
   workflow_dispatch:
@@ -25,4 +28,4 @@ jobs:
           channel: release
       - name: Compile PowerShell Queries
         run: |
-          codeql query compile --check-only --keep-going powershell/ql/src
+          codeql test run --threads=0 powershell/ql/test
