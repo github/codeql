@@ -2,14 +2,12 @@ package main
 
 import (
 	"html/template"
-	"os"
+	"net/http"
 )
 
-// good is an example of a good implementation
-func good() {
-	tmpl, _ := template.New("test").Parse(`Hello, {{.}}\n`)
-	{ // This will be escaped:
-		var escaped = source(`<a href="example.com">link</a>`)
-		checkError(tmpl.Execute(os.Stdout, escaped))
-	}
+func good(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+	tmpl, _ := template.New("test").Parse(`<b>Hi {{.}}</b>`)
+	tmpl.Execute(w, username)
 }
