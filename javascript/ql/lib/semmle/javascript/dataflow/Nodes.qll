@@ -1330,6 +1330,9 @@ module ClassNode {
         accessor.getName() = name and
         result = accessor.getInit().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = this.getConstructor().getReceiver().getAPropertySource(name)
     }
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
@@ -1362,6 +1365,9 @@ module ClassNode {
         accessor = this.getAnAccessor(kind) and
         result = accessor.getInit().flow()
       )
+      or
+      kind = MemberKind::method() and
+      result = this.getConstructor().getReceiver().getAPropertySource()
     }
 
     override FunctionNode getStaticMember(string name, MemberKind kind) {
