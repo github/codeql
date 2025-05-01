@@ -9,7 +9,7 @@ on:
 jobs:
   powershell-pr-check:
     name: powershell-pr-check
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: github.repository == 'microsoft/codeql'
     permissions:
       contents: read
@@ -25,7 +25,6 @@ jobs:
           channel: release
       - name: Install PowerShell
         run: |
-          chmod +x powershell/build.ps1
           ./powershell/build.ps1
       - name: Run QL tests
         run: |
