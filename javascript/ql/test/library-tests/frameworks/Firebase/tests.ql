@@ -1,10 +1,16 @@
 import javascript
 
-query predicate firebaseRef(DataFlow::SourceNode ref) { ref = Firebase::Database::ref() }
+query predicate firebaseRef(DataFlow::SourceNode ref) {
+  ref = ModelOutput::getATypeNode("FirebaseDBRef").asSource()
+}
 
-query predicate firebaseSnapshot(DataFlow::SourceNode snap) { snap = Firebase::snapshot() }
+query predicate firebaseSnapshot(DataFlow::SourceNode snap) {
+  snap = ModelOutput::getATypeNode("Snapshot").asSource()
+}
 
-query predicate firebaseVal(Firebase::FirebaseVal val) { any() }
+query predicate firebaseVal(DataFlow::SourceNode val) {
+  val = ModelOutput::getASourceNode("remote").asSource()
+}
 
 query predicate requestInputAccess(Http::RequestInputAccess acc) { any() }
 
