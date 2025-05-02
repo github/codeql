@@ -159,21 +159,24 @@ impl<'a> Translator<'a> {
             Some(node.syntax().text_range())
         }
     }
-    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        if let Some((start, end)) = self
-            .text_range_for_node(node)
+
+    fn location_for_node(&mut self, node: &impl ast::AstNode) -> (LineCol, LineCol) {
+        self.text_range_for_node(node)
             .and_then(|r| self.location(r))
-        {
-            self.trap.emit_location(self.label, label, start, end)
-        } else {
-            self.emit_diagnostic(
+            .unwrap_or(UNKNOWN_LOCATION)
+    }
+
+    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
+        match self.location_for_node(node) {
+            UNKNOWN_LOCATION => self.emit_diagnostic(
                 DiagnosticSeverity::Debug,
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
                 UNKNOWN_LOCATION,
-            );
-        }
+            ),
+            (start, end) => self.trap.emit_location(self.label, label, start, end),
+        };
     }
     pub fn emit_location_token(
         &mut self,
@@ -657,9 +660,19 @@ impl<'a> Translator<'a> {
             let ExpandResult {
                 value: expanded, ..
             } = semantics.expand_attr_macro(node)?;
-            // TODO emit err?
             self.emit_macro_expansion_parse_errors(node, &expanded);
-            let macro_items = ast::MacroItems::cast(expanded)?;
+            let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
+                let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
+                let location = self.location_for_node(node);
+                self.emit_diagnostic(
+                    DiagnosticSeverity::Warning,
+                    "item_expansion".to_owned(),
+                    message.clone(),
+                    message,
+                    location,
+                );
+                None
+            })?;
             let expanded = self.emit_macro_items(&macro_items)?;
             generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
             Some(())
