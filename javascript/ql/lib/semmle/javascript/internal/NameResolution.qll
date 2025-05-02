@@ -55,11 +55,11 @@ module NameResolution {
     // This ensures we can also use the PathExpr as a source when working with external (unresolved) modules.
     exists(Import imprt |
       node1 = imprt.getImportedModule() and
-      node2 = imprt.getImportedPath()
+      node2 = imprt.getImportedPathExpr()
     )
     or
     exists(ImportNamespaceSpecifier spec |
-      node1 = spec.getImportDeclaration().getImportedPath() and
+      node1 = spec.getImportDeclaration().getImportedPathExpr() and
       node2 = spec.getLocal()
     )
     or
@@ -79,7 +79,7 @@ module NameResolution {
     )
     or
     exists(ExternalModuleReference ref |
-      node1 = ref.getImportedPath() and
+      node1 = ref.getImportedPathExpr() and
       node2 = ref
     )
     or
@@ -195,7 +195,7 @@ module NameResolution {
     )
     or
     exists(ImportSpecifier spec |
-      node1 = spec.getImportDeclaration().getImportedPath() and
+      node1 = spec.getImportDeclaration().getImportedPathExpr() and
       name = spec.getImportedName() and
       node2 = spec.getLocal()
     )
@@ -411,12 +411,12 @@ module NameResolution {
    * Unlike `trackModule`, this is intended to track uses of external packages.
    */
   predicate nodeRefersToModule(Node node, string mod, string qualifiedName) {
-    exists(PathExpr path |
-      path = any(Import imprt).getImportedPath() or
+    exists(Expr path |
+      path = any(Import imprt).getImportedPathExpr() or
       path = any(ReExportDeclaration e).getImportedPath()
     |
       node = path and
-      mod = normalizeModuleName(path.getValue()) and
+      mod = normalizeModuleName(path.getStringValue()) and
       isExternalModuleName(mod) and
       qualifiedName = ""
     )
