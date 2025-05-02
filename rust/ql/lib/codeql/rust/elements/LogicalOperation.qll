@@ -6,16 +6,14 @@ private import codeql.rust.elements.Operation
 /**
  * A logical operation, such as `&&`, `||` or `!`.
  */
-abstract private class LogicalOperationImpl extends Operation {
-}
+abstract private class LogicalOperationImpl extends Operation { }
 
 final class LogicalOperation = LogicalOperationImpl;
 
 /**
  * A binary logical operation, such as `&&` or `||`.
  */
-abstract private class BinaryLogicalOperationImpl extends BinaryExpr, LogicalOperationImpl {
-}
+abstract private class BinaryLogicalOperationImpl extends BinaryExpr, LogicalOperationImpl { }
 
 final class BinaryLogicalOperation = BinaryLogicalOperationImpl;
 
