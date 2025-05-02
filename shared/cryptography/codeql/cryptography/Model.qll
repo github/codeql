@@ -582,6 +582,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
+    predicate fixedImplicitCipherKeySize(TAlgorithm type, int size) {
+      type = TSymmetricCipher(DES()) and size = 56
+      or
+      type = TSymmetricCipher(DESX()) and size = 184
+      or
+      type = TSymmetricCipher(DoubleDES()) and size = 112
+      or
+      type = TSymmetricCipher(TripleDES()) and size = 168
+      or
+      type = TSymmetricCipher(CHACHA20()) and size = 256
+      or
+      type = TSymmetricCipher(IDEA()) and size = 128
+      or
+      type = TSymmetricCipher(KUZNYECHIK()) and size = 256
+      or
+      type = TSymmetricCipher(MAGMA()) and size = 256
+      or
+      type = TSymmetricCipher(SM4()) and size = 128
+      or
+      type = TSymmetricCipher(SEED()) and size = 128
+    }
+
     bindingset[type]
     predicate symmetric_cipher_to_name_and_structure(
       TSymmetricCipherType type, string name, CipherStructureType s
@@ -790,6 +812,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * If a specific key size is unknown, this predicate should be implemented as `none()`.
      *
      * If the algorithm accepts a range of key sizes without a particular one specified, this predicate should be implemented as `none()`.
+     *
+     * NOTE: if the algorithm has a single key size, the implicit key size does not need to be modeled.
+     * This will be automatically inferred and applied at the node level.
+     * See `fixedImplicitCipherKeySize`.
      */
     abstract string getKeySizeFixed();
 
@@ -2178,7 +2204,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySizeFixed() { result = instance.asAlg().getKeySizeFixed() } // TODO: key sizes for known algorithms
+    string getKeySizeFixed() {
+      result = instance.asAlg().getKeySizeFixed()
+      or
+      exists(int size |
+        KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), size) and
+        result = size.toString()
+      )
+    }
 
     /**
      * Gets the key size generic source node.
