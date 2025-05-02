@@ -194,7 +194,6 @@ test_ConstructorDefinitions
 | tst.js:11:9:11:8 | constructor() {} |
 test_ClassNodeConstructor
 | dataflow.js:4:2:13:2 | class F ... \\n\\t\\t}\\n\\t} | dataflow.js:4:12:4:11 | () {} |
-| dataflow.js:4:12:4:11 | () {} | dataflow.js:4:12:4:11 | () {} |
 | fields.js:1:1:4:1 | class C ...  = 42\\n} | fields.js:1:9:1:8 | () {} |
 | points.js:1:1:18:1 | class P ... ;\\n  }\\n} | points.js:2:14:5:3 | (x, y)  ...  y;\\n  } |
 | points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:21:14:24:3 | (x, y,  ...  c;\\n  } |

@@ -872,6 +872,7 @@ class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
     or
     // Function-style class case
     astNode instanceof Function and
+    not astNode = any(ClassDefinition cls).getConstructor().getBody() and
     function.getFunction() = astNode and
     (
       exists(getAFunctionValueWithPrototype(function))
