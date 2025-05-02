@@ -32,9 +32,17 @@ fn i64_clone() {
 mod my_clone {
     use super::{sink, source};
 
-    #[derive(Clone)]
+    // TODO: Replace manual implementation below with `#[derive(Clone)]`,
+    // once the extractor expands the `#[derive]` attributes.
+    // #[derive(Clone)]
     struct Wrapper {
         n: i64,
+    }
+
+    impl Clone for Wrapper {
+        fn clone(&self) -> Self {
+            Wrapper { n: self.n }
+        }
     }
 
     pub fn wrapper_clone() {
@@ -44,7 +52,7 @@ mod my_clone {
         }
         let u = w.clone();
         match u {
-            Wrapper { n: n } => sink(n), // $ MISSING: hasValueFlow=73 - lack of expanded derives means that we cannot resolve clone call above, and hence not insert implicit borrow
+            Wrapper { n: n } => sink(n), // $ hasValueFlow=73
         }
     }
 }

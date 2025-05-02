@@ -87,11 +87,6 @@ abstract class ItemNode extends Locatable {
   /** Gets the `i`th type parameter of this item, if any. */
   abstract TypeParam getTypeParam(int i);
 
-  /** Holds if this item is declared as `pub`. */
-  bindingset[this]
-  pragma[inline_late]
-  predicate isPublic() { exists(this.getVisibility()) }
-
   /** Gets an element that has this item as immediately enclosing item. */
   pragma[nomagic]
   Element getADescendant() {
@@ -207,6 +202,11 @@ abstract class ItemNode extends Locatable {
     result.(CrateItemNode).isPotentialDollarCrateTarget()
   }
 
+  pragma[nomagic]
+  private predicate hasSourceFunction(string name) {
+    this.getASuccessorFull(name).(Function).fromSource()
+  }
+
   /** Gets a successor named `name` of this item, if any. */
   pragma[nomagic]
   ItemNode getASuccessor(string name) {
@@ -219,7 +219,7 @@ abstract class ItemNode extends Locatable {
       or
       not result instanceof Function
       or
-      not this.getASuccessorFull(name).(Function).fromSource()
+      not this.hasSourceFunction(name)
     )
   }
 
@@ -265,8 +265,6 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   }
 
   override Visibility getVisibility() { none() }
-
-  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -329,8 +327,6 @@ class CrateItemNode extends ItemNode instanceof Crate {
   }
 
   override Visibility getVisibility() { none() }
-
-  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -436,7 +432,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
 pragma[nomagic]
 private TypeParamItemNode resolveTypeParamPathTypeRepr(PathTypeRepr ptr) {
-  result = resolvePath(ptr.getPath())
+  result = resolvePathFull(ptr.getPath())
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
@@ -444,9 +440,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
 
-  ItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
+  ItemNode resolveSelfTy() { result = resolvePathFull(this.getSelfPath()) }
 
-  TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
+  TraitItemNode resolveTraitTy() { result = resolvePathFull(this.getTraitPath()) }
 
   pragma[nomagic]
   private TypeRepr getASelfTyArg() {
@@ -560,7 +556,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
@@ -634,7 +630,7 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
 
   /**
    * Holds if this type parameter has a trait bound. Examples:
@@ -897,12 +893,6 @@ class RelevantPath extends Path {
     this.getQualifier().(RelevantPath).isCratePath("$crate", _) and
     this.getText() = name
   }
-
-  // TODO: Remove once the crate graph extractor generates publicly visible paths
-  predicate requiresExtractorWorkaround() {
-    not this.fromSource() and
-    this = any(RelevantPath p).getQualifier()
-  }
 }
 
 private predicate isModule(ItemNode m) { m instanceof Module }
@@ -1056,8 +1046,14 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
+/**
+ * Gets the item that `path` resolves to, if any.
+ *
+ * Whenever `path` can resolve to both a function in source code and in library
+ * code, both are included
+ */
 pragma[nomagic]
-private ItemNode resolvePath1(RelevantPath path) {
+private ItemNode resolvePathFull(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
@@ -1067,58 +1063,29 @@ private ItemNode resolvePath1(RelevantPath path) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePathPrivate(
-  RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
-) {
-  not path.requiresExtractorWorkaround() and
-  result = resolvePath1(path) and
-  itemParent = result.getImmediateParentModule() and
-  not result.isPublic() and
-  (
-    pathParent.getADescendant() = path
-    or
-    pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
-  )
-}
-
-pragma[nomagic]
-private predicate isItemParent(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _))
-}
-
-/**
- * Gets a module that has access to private items defined inside `itemParent`.
- *
- * According to [The Rust Reference][1] this is either `itemParent` itself or any
- * descendant of `itemParent`.
- *
- * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
- */
-pragma[nomagic]
-private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  isItemParent(itemParent) and
-  result.getImmediateParentModule*() = itemParent
+private predicate resolvesSourceFunction(RelevantPath path) {
+  resolvePathFull(path).(Function).fromSource()
 }
 
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
-  result = resolvePath1(path) and
+  result = resolvePathFull(path) and
   (
-    result.isPublic()
+    // when a function exists in both source code and in library code, it is because
+    // we also extracted the source code as library code, and hence we only want
+    // the function from source code
+    result.fromSource()
     or
-    path.requiresExtractorWorkaround()
-  )
-  or
-  exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
-    result = resolvePathPrivate(path, itemParent, pathParent) and
-    pathParent = getAPrivateVisibleModule(itemParent)
+    not result instanceof Function
+    or
+    not resolvesSourceFunction(path)
   )
 }
 
 pragma[nomagic]
 private ItemNode resolvePathQualifier(RelevantPath path, string name) {
-  result = resolvePath(path.getQualifier()) and
+  result = resolvePathFull(path.getQualifier()) and
   name = path.getText()
 }
 
@@ -1164,7 +1131,7 @@ private ItemNode resolveUseTreeListItemQualifier(
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   tree = use.getUseTree() and
-  result = resolvePath(tree.getPath())
+  result = resolvePathFull(tree.getPath())
   or
   result = resolveUseTreeListItem(use, tree, tree.getPath())
 }

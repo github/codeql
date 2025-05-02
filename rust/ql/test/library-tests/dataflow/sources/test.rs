@@ -37,7 +37,7 @@ fn test_env_args() {
     sink(arg1); // $ hasTaintFlow
     sink(arg2); // $ hasTaintFlow
     sink(arg3); // $ hasTaintFlow
-    sink(arg4); // $ hasTaintFlow
+    sink(arg4); // $ MISSING: hasTaintFlow - we need to extract builtins to know the type of `std::env::args().nth(4).unwrap()`
 
     for arg in std::env::args() { // $ Alert[rust/summary/taint-sources]
         sink(arg); // $ hasTaintFlow
