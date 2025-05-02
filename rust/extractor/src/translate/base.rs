@@ -160,22 +160,21 @@ impl<'a> Translator<'a> {
         }
     }
 
-    fn location_for_node(&mut self, node: &impl ast::AstNode) -> (LineCol, LineCol) {
+    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
         self.text_range_for_node(node)
             .and_then(|r| self.location(r))
-            .unwrap_or(UNKNOWN_LOCATION)
     }
 
     pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
         match self.location_for_node(node) {
-            UNKNOWN_LOCATION => self.emit_diagnostic(
+            None => self.emit_diagnostic(
                 DiagnosticSeverity::Debug,
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
                 UNKNOWN_LOCATION,
             ),
-            (start, end) => self.trap.emit_location(self.label, label, start, end),
+            Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
         };
     }
     pub fn emit_location_token(
@@ -669,7 +668,7 @@ impl<'a> Translator<'a> {
                     "item_expansion".to_owned(),
                     message.clone(),
                     message,
-                    location,
+                    location.unwrap_or(UNKNOWN_LOCATION),
                 );
                 None
             })?;
