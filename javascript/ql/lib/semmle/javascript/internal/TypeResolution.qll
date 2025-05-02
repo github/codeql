@@ -136,9 +136,9 @@ module TypeResolution {
       target = cls.getConstructor().getBody()
     )
     or
-    valueHasType(call.(InvokeExpr).getCallee(), trackFunctionValue(target))
+    valueHasType(call.getCallee(), trackFunctionValue(target))
     or
-    valueHasType(call.(InvokeExpr).getCallee(), trackFunctionType(target)) and
+    valueHasType(call.getCallee(), trackFunctionType(target)) and
     (
       call instanceof NewExpr and
       target = any(ConstructorTypeExpr t).getFunction()
@@ -148,7 +148,7 @@ module TypeResolution {
     )
     or
     exists(InterfaceDefinition interface, CallSignature sig |
-      valueHasType(call.(InvokeExpr).getCallee(), trackType(interface)) and
+      valueHasType(call.getCallee(), trackType(interface)) and
       sig = interface.getACallSignature() and
       target = sig.getBody()
     |
