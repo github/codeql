@@ -163,10 +163,7 @@ module ShellJS {
       if name = "cmd"
       then
         result = this.getArgument(_) and
-        not (
-          result = this.getLastArgument() and
-          exists(this.getOptionsArg())
-        )
+        not result = this.getOptionsArg()
       else
         // For exec/asyncExec: only first argument is command
         result = this.getArgument(0)
