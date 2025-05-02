@@ -1,5 +1,5 @@
 import cpp
-import LibraryDetector
+import experimental.Quantum.OpenSSL.LibraryDetector
 
 class KnownOpenSSLAlgorithmConstant extends Expr {
   string normalizedName;
@@ -14,6 +14,28 @@ class KnownOpenSSLAlgorithmConstant extends Expr {
   string getNormalizedName() { result = normalizedName }
 
   string getAlgType() { result = algType }
+}
+
+class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLCipherAlgorithmConstant() {
+    this.(KnownOpenSSLAlgorithmConstant).getAlgType().toLowerCase().matches("%encryption")
+  }
+
+  int getExplicitKeySize() {
+    result = this.getNormalizedName().regexpCapture(".*-(\\d*)", 1).toInt()
+  }
+}
+
+class KnownOpenSSLPaddingAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLPaddingAlgorithmConstant() {
+    this.(KnownOpenSSLAlgorithmConstant).getAlgType().toLowerCase().matches("%padding")
+  }
+}
+
+class KnownOpenSSLBlockModeAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLBlockModeAlgorithmConstant() {
+    this.(KnownOpenSSLAlgorithmConstant).getAlgType().toLowerCase().matches("block_mode")
+  }
 }
 
 /**
@@ -222,9 +244,9 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "gost2001" and nid = 811 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "gost2012_256" and nid = 979 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "gost2012_256" and nid = 979 and normalized = "GOST" and algType = "HASH" // TODO: Verify algorithm type
   or
-  name = "gost2012_512" and nid = 980 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "gost2012_512" and nid = 980 and normalized = "GOST" and algType = "HASH" // TODO: Verify algorithm type
   or
   name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "ELLIPTIC_CURVE"
   or
@@ -276,159 +298,222 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "sm3" and nid = 1143 and normalized = "SM3" and algType = "HASH"
   or
-  name = "aes-128-cbc" and nid = 419 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-cbc" and nid = 419 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cbc" and nid = 419 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-ecb" and nid = 418 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-ecb" and nid = 418 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-ecb" and nid = 418 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-cbc" and nid = 423 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-cbc" and nid = 423 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cbc" and nid = 423 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-ecb" and nid = 422 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-ecb" and nid = 422 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-ecb" and nid = 422 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-cbc" and nid = 427 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-cbc" and nid = 427 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cbc" and nid = 427 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-ecb" and nid = 426 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-ecb" and nid = 426 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-ecb" and nid = 426 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
   name = "aria-128-cbc" and nid = 1066 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-cbc" and nid = 1066 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-cbc" and
+  nid = 1066 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-cfb" and nid = 1067 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-cfb" and nid = 1067 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-cfb" and
+  nid = 1067 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-ctr" and nid = 1069 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-ctr" and nid = 1069 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-ctr" and
+  nid = 1069 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-ecb" and nid = 1065 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-ecb" and nid = 1065 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-ecb" and
+  nid = 1065 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-ofb" and nid = 1068 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-ofb" and nid = 1068 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-ofb" and
+  nid = 1068 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-cfb1" and nid = 1080 and normalized = "CFB1" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-cfb1" and nid = 1080 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-cfb1" and
+  nid = 1080 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aria-128-cfb8" and nid = 1083 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-cfb8" and
+  nid = 1083 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-cfb8" and nid = 1083 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "aria-192-cbc" and nid = 1071 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-cbc" and nid = 1071 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-cbc" and
+  nid = 1071 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-cfb" and nid = 1072 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-cfb" and nid = 1072 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-cfb" and
+  nid = 1072 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-ctr" and nid = 1074 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-ctr" and nid = 1074 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-ctr" and
+  nid = 1074 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-ecb" and nid = 1070 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-ecb" and nid = 1070 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-ecb" and
+  nid = 1070 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-ofb" and nid = 1073 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-ofb" and nid = 1073 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-ofb" and
+  nid = 1073 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-cfb1" and nid = 1081 and normalized = "CFB1" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-cfb1" and nid = 1081 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-cfb1" and
+  nid = 1081 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aria-192-cfb8" and nid = 1084 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-cfb8" and
+  nid = 1084 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-cfb8" and nid = 1084 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "aria-256-cbc" and nid = 1076 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-cbc" and nid = 1076 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-cbc" and
+  nid = 1076 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-cfb" and nid = 1077 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-cfb" and nid = 1077 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-cfb" and
+  nid = 1077 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-ctr" and nid = 1079 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-ctr" and nid = 1079 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-ctr" and
+  nid = 1079 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-ecb" and nid = 1075 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-ecb" and nid = 1075 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-ecb" and
+  nid = 1075 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-ofb" and nid = 1078 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-ofb" and nid = 1078 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-ofb" and
+  nid = 1078 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-cfb1" and nid = 1082 and normalized = "CFB1" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-cfb1" and nid = 1082 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-cfb1" and
+  nid = 1082 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aria-256-cfb8" and nid = 1085 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-cfb8" and
+  nid = 1085 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-cfb8" and nid = 1085 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-cbc" and
   nid = 751 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-cbc" and nid = 751 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-ecb" and
   nid = 754 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-ecb" and nid = 754 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-cbc" and
   nid = 752 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-cbc" and nid = 752 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-ecb" and
   nid = 755 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-ecb" and nid = 755 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-cbc" and
   nid = 753 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-cbc" and nid = 753 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-ecb" and
   nid = 756 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-ecb" and nid = 756 and normalized = "ECB" and algType = "BLOCK_MODE"
   or
   name = "rc4" and nid = 5 and normalized = "RC4" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "rc4-40" and nid = 97 and normalized = "RC4" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "rc4-40" and nid = 97 and normalized = "RC4-40" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "des-ecb" and nid = 29 and normalized = "DES" and algType = "SYMMETRIC_ENCRYPTION"
   or
@@ -510,7 +595,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "seed-ofb" and nid = 778 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "rc2-cbc" and nid = 37 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "rc2-cbc" and nid = 37 and normalized = "RC2-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "rc2-cbc" and nid = 37 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
@@ -526,11 +611,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "rc2-ofb" and nid = 40 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "rc2-64-cbc" and nid = 166 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "rc2-64-cbc" and nid = 166 and normalized = "RC2-64" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "rc2-64-cbc" and nid = 166 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "rc2-40-cbc" and nid = 98 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "rc2-40-cbc" and nid = 98 and normalized = "RC2-40" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "rc2-40-cbc" and nid = 98 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
@@ -586,7 +671,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "sm4-ctr" and nid = 1139 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-gcm" and nid = 895 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-gcm" and nid = 895 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-gcm" and nid = 895 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
@@ -604,32 +689,32 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "id-aes128-wrap" and
   nid = 788 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes192-wrap" and
   nid = 789 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes256-wrap" and
   nid = 790 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes128-wrap-pad" and
   nid = 897 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes192-wrap-pad" and
   nid = 900 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes256-wrap-pad" and
   nid = 903 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "chacha20" and nid = 1019 and normalized = "CHACHA20" and algType = "SYMMETRIC_ENCRYPTION"
@@ -738,7 +823,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pkcs5" and nid = 187 and normalized = "PKCS5" and algType = "KEY_DERIVATION"
   or
-  name = "aes-256-gcm" and nid = 901 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-gcm" and nid = 901 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-gcm" and nid = 901 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
@@ -775,53 +860,71 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "id-alg-dh-sig-hmac-sha1" and nid = 325 and normalized = "SHA1" and algType = "HASH"
   or
-  name = "aes-128-ofb" and nid = 420 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-ofb" and nid = 420 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-ofb" and nid = 420 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-cfb" and nid = 421 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-cfb" and nid = 421 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cfb" and nid = 421 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-ofb" and nid = 424 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-ofb" and nid = 424 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-ofb" and nid = 424 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-cfb" and nid = 425 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-cfb" and nid = 425 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cfb" and nid = 425 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-ofb" and nid = 428 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-ofb" and nid = 428 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-ofb" and nid = 428 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-cfb" and nid = 429 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-cfb" and nid = 429 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cfb" and nid = 429 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "des-cdmf" and nid = 643 and normalized = "DES" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aes-128-cfb1" and nid = 650 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-cfb1" and
+  nid = 650 and
+  normalized = "AES-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cfb1" and nid = 650 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-cfb1" and nid = 651 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-cfb1" and
+  nid = 651 and
+  normalized = "AES-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cfb1" and nid = 651 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-cfb1" and nid = 652 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-cfb1" and
+  nid = 652 and
+  normalized = "AES-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cfb1" and nid = 652 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-cfb8" and nid = 653 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-cfb8" and
+  nid = 653 and
+  normalized = "AES-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cfb8" and nid = 653 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-cfb8" and nid = 654 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-cfb8" and
+  nid = 654 and
+  normalized = "AES-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cfb8" and nid = 654 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-cfb8" and nid = 655 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-cfb8" and
+  nid = 655 and
+  normalized = "AES-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cfb8" and nid = 655 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
@@ -851,84 +954,84 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "camellia-128-cfb" and
   nid = 757 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-cfb" and nid = 757 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-cfb" and
   nid = 758 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-cfb" and nid = 758 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-cfb" and
   nid = 759 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-cfb" and nid = 759 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-cfb1" and
   nid = 760 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-cfb1" and nid = 760 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-cfb1" and
   nid = 761 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-cfb1" and nid = 761 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-cfb1" and
   nid = 762 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-cfb1" and nid = 762 and normalized = "CFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-cfb8" and
   nid = 763 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-cfb8" and nid = 763 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-cfb8" and
   nid = 764 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-cfb8" and nid = 764 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-cfb8" and
   nid = 765 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-cfb8" and nid = 765 and normalized = "CFB8" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-ofb" and
   nid = 766 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-ofb" and nid = 766 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-ofb" and
   nid = 767 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-ofb" and nid = 767 and normalized = "OFB" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-ofb" and
   nid = 768 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-ofb" and nid = 768 and normalized = "OFB" and algType = "BLOCK_MODE"
@@ -956,56 +1059,56 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "gost2001cc" and nid = 851 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aes-128-ccm" and nid = 896 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-ccm" and nid = 896 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-ccm" and nid = 896 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-gcm" and nid = 898 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-gcm" and nid = 898 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-gcm" and nid = 898 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-ccm" and nid = 899 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-ccm" and nid = 899 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-ccm" and nid = 899 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-ccm" and nid = 902 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-ccm" and nid = 902 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-ccm" and nid = 902 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-ctr" and nid = 904 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-ctr" and nid = 904 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-ctr" and nid = 904 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-ctr" and nid = 905 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-ctr" and nid = 905 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-ctr" and nid = 905 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-ctr" and nid = 906 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-ctr" and nid = 906 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-ctr" and nid = 906 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
   name = "id-camellia128-wrap" and
   nid = 907 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-camellia192-wrap" and
   nid = 908 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-camellia256-wrap" and
   nid = 909 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "mgf1" and nid = 911 and normalized = "MGF1" and algType = "HASH"
   or
-  name = "aes-128-xts" and nid = 913 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-xts" and nid = 913 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-xts" and nid = 913 and normalized = "XTS" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-xts" and nid = 914 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-xts" and nid = 914 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-xts" and nid = 914 and normalized = "XTS" and algType = "BLOCK_MODE"
   or
@@ -1017,7 +1120,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aes-128-cbc-hmac-sha1" and
   nid = 916 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cbc-hmac-sha1" and nid = 916 and normalized = "CBC" and algType = "BLOCK_MODE"
@@ -1026,14 +1129,14 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aes-192-cbc-hmac-sha1" and
   nid = 917 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cbc-hmac-sha1" and nid = 917 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
   name = "aes-256-cbc-hmac-sha1" and
   nid = 918 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cbc-hmac-sha1" and nid = 918 and normalized = "CBC" and algType = "BLOCK_MODE"
@@ -1042,7 +1145,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aes-128-cbc-hmac-sha256" and
   nid = 948 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-cbc-hmac-sha256" and nid = 948 and normalized = "CBC" and algType = "BLOCK_MODE"
@@ -1051,7 +1154,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aes-192-cbc-hmac-sha256" and
   nid = 949 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-cbc-hmac-sha256" and nid = 949 and normalized = "CBC" and algType = "BLOCK_MODE"
@@ -1060,93 +1163,93 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aes-256-cbc-hmac-sha256" and
   nid = 950 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-cbc-hmac-sha256" and nid = 950 and normalized = "CBC" and algType = "BLOCK_MODE"
   or
-  name = "aes-128-ocb" and nid = 958 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-ocb" and nid = 958 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aes-192-ocb" and nid = 959 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-ocb" and nid = 959 and normalized = "AES-192" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aes-256-ocb" and nid = 960 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-ocb" and nid = 960 and normalized = "AES-256" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-gcm" and
   nid = 961 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-gcm" and nid = 961 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-ccm" and
   nid = 962 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-ccm" and nid = 962 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-ctr" and
   nid = 963 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-128-ctr" and nid = 963 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
   name = "camellia-128-cmac" and
   nid = 964 and
-  normalized = "CAMELLIA128" and
+  normalized = "CAMELLIA-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-gcm" and
   nid = 965 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-gcm" and nid = 965 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-ccm" and
   nid = 966 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-ccm" and nid = 966 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-ctr" and
   nid = 967 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-192-ctr" and nid = 967 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
   name = "camellia-192-cmac" and
   nid = 968 and
-  normalized = "CAMELLIA192" and
+  normalized = "CAMELLIA-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-gcm" and
   nid = 969 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-gcm" and nid = 969 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-ccm" and
   nid = 970 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-ccm" and nid = 970 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-ctr" and
   nid = 971 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "camellia-256-ctr" and nid = 971 and normalized = "CTR" and algType = "BLOCK_MODE"
   or
   name = "camellia-256-cmac" and
   nid = 972 and
-  normalized = "CAMELLIA256" and
+  normalized = "CAMELLIA-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-scrypt" and nid = 973 and normalized = "SCRYPT" and algType = "KEY_DERIVATION"
@@ -1386,27 +1489,45 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "aria-128-ccm" and nid = 1120 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-ccm" and nid = 1120 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-ccm" and
+  nid = 1120 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-ccm" and nid = 1121 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-ccm" and nid = 1121 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-ccm" and
+  nid = 1121 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-ccm" and nid = 1122 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-ccm" and nid = 1122 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-ccm" and
+  nid = 1122 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-128-gcm" and nid = 1123 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-128-gcm" and nid = 1123 and normalized = "ARIA128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-128-gcm" and
+  nid = 1123 and
+  normalized = "ARIA-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-192-gcm" and nid = 1124 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-192-gcm" and nid = 1124 and normalized = "ARIA192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-192-gcm" and
+  nid = 1124 and
+  normalized = "ARIA-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aria-256-gcm" and nid = 1125 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
-  name = "aria-256-gcm" and nid = 1125 and normalized = "ARIA256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aria-256-gcm" and
+  nid = 1125 and
+  normalized = "ARIA-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "sm4-cfb1" and nid = 1136 and normalized = "SM4" and algType = "SYMMETRIC_ENCRYPTION"
   or
@@ -1505,15 +1626,24 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "magma-mac" and nid = 1192 and normalized = "MAGMA" and algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "aes-128-siv" and nid = 1198 and normalized = "AES128" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-128-siv" and
+  nid = 1198 and
+  normalized = "AES-128" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-siv" and nid = 1198 and normalized = "SIV" and algType = "BLOCK_MODE"
   or
-  name = "aes-192-siv" and nid = 1199 and normalized = "AES192" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-192-siv" and
+  nid = 1199 and
+  normalized = "AES-192" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-192-siv" and nid = 1199 and normalized = "SIV" and algType = "BLOCK_MODE"
   or
-  name = "aes-256-siv" and nid = 1200 and normalized = "AES256" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "aes-256-siv" and
+  nid = 1200 and
+  normalized = "AES-256" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-256-siv" and nid = 1200 and normalized = "SIV" and algType = "BLOCK_MODE"
   or
@@ -2000,42 +2130,42 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "id-aes128-ccm" and
   nid = 896 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes128-ccm" and nid = 896 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "id-aes128-gcm" and
   nid = 895 and
-  normalized = "AES128" and
+  normalized = "AES-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes128-gcm" and nid = 895 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
   name = "id-aes192-ccm" and
   nid = 899 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes192-ccm" and nid = 899 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "id-aes192-gcm" and
   nid = 898 and
-  normalized = "AES192" and
+  normalized = "AES-192" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes192-gcm" and nid = 898 and normalized = "GCM" and algType = "BLOCK_MODE"
   or
   name = "id-aes256-ccm" and
   nid = 902 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes256-ccm" and nid = 902 and normalized = "CCM" and algType = "BLOCK_MODE"
   or
   name = "id-aes256-gcm" and
   nid = 901 and
-  normalized = "AES256" and
+  normalized = "AES-256" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "id-aes256-gcm" and nid = 901 and normalized = "GCM" and algType = "BLOCK_MODE"
@@ -2407,27 +2537,36 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbe-sha1-rc2-128" and
   nid = 148 and
-  normalized = "RC2" and
+  normalized = "RC2-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbe-sha1-rc2-40" and nid = 149 and normalized = "SHA1" and algType = "HASH"
   or
-  name = "pbe-sha1-rc2-40" and nid = 149 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "pbe-sha1-rc2-40" and
+  nid = 149 and
+  normalized = "RC2-40" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbe-sha1-rc2-64" and nid = 68 and normalized = "SHA1" and algType = "HASH"
   or
-  name = "pbe-sha1-rc2-64" and nid = 68 and normalized = "RC2" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "pbe-sha1-rc2-64" and
+  nid = 68 and
+  normalized = "RC2-64" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbe-sha1-rc4-128" and nid = 144 and normalized = "SHA1" and algType = "HASH"
   or
   name = "pbe-sha1-rc4-128" and
   nid = 144 and
-  normalized = "RC4" and
+  normalized = "RC4-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbe-sha1-rc4-40" and nid = 145 and normalized = "SHA1" and algType = "HASH"
   or
-  name = "pbe-sha1-rc4-40" and nid = 145 and normalized = "RC4" and algType = "SYMMETRIC_ENCRYPTION"
+  name = "pbe-sha1-rc4-40" and
+  nid = 145 and
+  normalized = "RC4-40" and
+  algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithmd2anddes-cbc" and
   nid = 9 and
@@ -2478,7 +2617,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbewithsha1and128bitrc2-cbc" and
   nid = 148 and
-  normalized = "RC2" and
+  normalized = "RC2-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1and128bitrc2-cbc" and
@@ -2490,7 +2629,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbewithsha1and128bitrc4" and
   nid = 144 and
-  normalized = "RC4" and
+  normalized = "RC4-128" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1and2-keytripledes-cbc" and
@@ -2505,7 +2644,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbewithsha1and2-keytripledes-cbc" and
   nid = 147 and
-  normalized = "TRIPLEDES" and
+  normalized = "3DES" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1and3-keytripledes-cbc" and
@@ -2520,14 +2659,14 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbewithsha1and3-keytripledes-cbc" and
   nid = 146 and
-  normalized = "TRIPLEDES" and
+  normalized = "3DES" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1and40bitrc2-cbc" and nid = 149 and normalized = "SHA1" and algType = "HASH"
   or
   name = "pbewithsha1and40bitrc2-cbc" and
   nid = 149 and
-  normalized = "RC2" and
+  normalized = "RC2-40" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1and40bitrc2-cbc" and
@@ -2539,7 +2678,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "pbewithsha1and40bitrc4" and
   nid = 145 and
-  normalized = "RC4" and
+  normalized = "RC4-40" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "pbewithsha1anddes-cbc" and nid = 170 and normalized = "SHA1" and algType = "HASH"
