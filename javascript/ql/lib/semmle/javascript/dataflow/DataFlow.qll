@@ -1610,6 +1610,11 @@ module DataFlow {
       pred = TElementPatternNode(_, element) and
       succ = lvalueNodeInternal(element)
     )
+    or
+    exists(Expr rest |
+      pred = TRestPatternNode(_, rest) and
+      succ = lvalueNodeInternal(rest)
+    )
   }
 
   /**

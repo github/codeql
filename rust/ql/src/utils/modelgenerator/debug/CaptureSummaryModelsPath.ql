@@ -10,6 +10,7 @@
 
 private import codeql.rust.dataflow.DataFlow
 import utils.modelgenerator.internal.CaptureModels
+import Heuristic
 import PropagateFlow::PathGraph
 
 from

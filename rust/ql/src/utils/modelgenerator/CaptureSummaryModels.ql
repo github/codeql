@@ -9,5 +9,5 @@
 import internal.CaptureModels
 
 from DataFlowSummaryTargetApi api, string flow
-where flow = captureFlow(api)
+where flow = captureFlow(api, _)
 select flow order by flow

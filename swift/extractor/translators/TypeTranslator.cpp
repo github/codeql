@@ -76,12 +76,6 @@ codeql::DependentMemberType TypeTranslator::translateDependentMemberType(
   return entry;
 }
 
-codeql::ParenType TypeTranslator::translateParenType(const swift::ParenType& type) {
-  auto entry = createTypeEntry(type);
-  entry.type = dispatcher.fetchLabel(type.getUnderlyingType());
-  return entry;
-}
-
 codeql::OptionalType TypeTranslator::translateOptionalType(const swift::OptionalType& type) {
   auto entry = createTypeEntry(type);
   fillUnarySyntaxSugarType(type, entry);

@@ -101,7 +101,7 @@ closures.swift:
 #   24|       getSubExpr(): [CallExpr] call to ...
 #   24|         getFunction(): [BindOptionalExpr] ...?
 #   24|           getSubExpr(): [DeclRefExpr] escape
-#   24|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
+#   24|         getFunction().getFullyConverted(): [LoadExpr] (() -> ()) ...
 #   24|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
 #   24|   getCapture(0): [CapturedDecl] escape
 #   27| [NamedFunction] logical()
@@ -145,8 +145,8 @@ closures.swift:
 #   30|         getArgument(0): [Argument] : ... .!=(_:_:) ...
 #   30|           getExpr(): [BinaryExpr] ... .!=(_:_:) ...
 #   30|             getFunction(): [MethodLookupExpr] .!=(_:_:)
-#   30|               getBase(): [TypeExpr] Optional<((Int) -> Int)>.Type
-#   30|                 getTypeRepr(): [TypeRepr] Optional<((Int) -> Int)>
+#   30|               getBase(): [TypeExpr] Optional<(Int) -> Int>.Type
+#   30|                 getTypeRepr(): [TypeRepr] Optional<(Int) -> Int>
 #   30|               getMethodRef(): [DeclRefExpr] !=(_:_:)
 #   30|             getArgument(0): [Argument] : f
 #   30|               getExpr(): [DeclRefExpr] f

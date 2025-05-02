@@ -1094,6 +1094,7 @@ flowStep
 | tst.js:87:11:87:24 | o | tst.js:90:15:90:15 | o |
 | tst.js:87:11:87:24 | x | tst.js:91:10:91:10 | x |
 | tst.js:87:13:87:16 | p: x | tst.js:87:11:87:24 | x |
+| tst.js:87:22:87:22 | ...o | tst.js:87:11:87:24 | o |
 | tst.js:88:7:88:18 | y | tst.js:91:14:91:14 | y |
 | tst.js:88:9:88:12 | q: y | tst.js:88:7:88:18 | y |
 | tst.js:88:18:88:18 | o | tst.js:88:7:88:14 | { q: y } |
@@ -1110,6 +1111,7 @@ flowStep
 | tst.js:98:11:98:24 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:98:11:98:24 | x | tst.js:102:10:102:10 | x |
 | tst.js:98:13:98:13 | x | tst.js:98:11:98:24 | x |
+| tst.js:98:19:98:22 | ...rest | tst.js:98:11:98:24 | rest |
 | tst.js:99:7:99:18 | y | tst.js:102:14:102:14 | y |
 | tst.js:99:9:99:9 | y | tst.js:99:7:99:18 | y |
 | tst.js:99:15:99:18 | rest | tst.js:99:7:99:11 | [ y ] |
@@ -1264,6 +1266,7 @@ getImmediatePredecessor
 | tst.js:87:11:87:24 | o | tst.js:90:15:90:15 | o |
 | tst.js:87:11:87:24 | x | tst.js:91:10:91:10 | x |
 | tst.js:87:13:87:16 | p: x | tst.js:87:11:87:24 | x |
+| tst.js:87:22:87:22 | ...o | tst.js:87:11:87:24 | o |
 | tst.js:88:7:88:18 | y | tst.js:91:14:91:14 | y |
 | tst.js:88:9:88:12 | q: y | tst.js:88:7:88:18 | y |
 | tst.js:88:18:88:18 | o | tst.js:88:7:88:14 | { q: y } |
@@ -1279,6 +1282,7 @@ getImmediatePredecessor
 | tst.js:98:11:98:24 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:98:11:98:24 | x | tst.js:102:10:102:10 | x |
 | tst.js:98:13:98:13 | x | tst.js:98:11:98:24 | x |
+| tst.js:98:19:98:22 | ...rest | tst.js:98:11:98:24 | rest |
 | tst.js:99:7:99:18 | y | tst.js:102:14:102:14 | y |
 | tst.js:99:9:99:9 | y | tst.js:99:7:99:18 | y |
 | tst.js:99:15:99:18 | rest | tst.js:99:7:99:11 | [ y ] |
