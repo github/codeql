@@ -345,12 +345,14 @@ module MakeModelGeneratorFactory<
       /**
        * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
        */
-      private string captureQualifierFlow(DataFlowSummaryTargetApi api) {
+      private string captureQualifierFlow(DataFlowSummaryTargetApi api, string input, string output) {
         exists(ReturnNodeExt ret |
           api = returnNodeEnclosingCallable(ret) and
           isOwnInstanceAccessNode(ret)
         ) and
-        result = ModelPrintingSummary::asLiftedValueModel(api, qualifierString(), "ReturnValue")
+        input = qualifierString() and
+        output = "ReturnValue" and
+        result = ModelPrintingSummary::asLiftedValueModel(api, input, output)
       }
 
       private int accessPathLimit0() { result = 2 }
@@ -430,7 +432,7 @@ module MakeModelGeneratorFactory<
         predicate isSink(DataFlow::Node sink) {
           sink instanceof ReturnNodeExt and
           not isOwnInstanceAccessNode(sink) and
-          not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink)))
+          not exists(captureQualifierFlow(getAsExprEnclosingCallable(sink), _, _))
         }
 
         predicate isAdditionalFlowStep = PropagateFlowConfigInput::isAdditionalFlowStep/4;
@@ -559,11 +561,24 @@ module MakeModelGeneratorFactory<
        *
        * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
        */
-      private string captureThroughFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
-        exists(string input, string output |
-          preservesValue = max(boolean b | captureThroughFlow0(api, _, input, _, output, b)) and
-          result = ModelPrintingSummary::asLiftedModel(api, input, output, preservesValue)
-        )
+      private string captureThroughFlow(
+        DataFlowSummaryTargetApi api, string input, string output, boolean preservesValue
+      ) {
+        preservesValue = max(boolean b | captureThroughFlow0(api, _, input, _, output, b)) and
+        result = ModelPrintingSummary::asLiftedModel(api, input, output, preservesValue)
+      }
+
+      /**
+       * Gets the summary model(s) of `api`, if there is flow `input` to
+       * `output`. `preservesValue` is `true` if the summary is value-
+       * preserving, and `false` otherwise.
+       */
+      string captureFlow(
+        DataFlowSummaryTargetApi api, string input, string output, boolean preservesValue
+      ) {
+        result = captureQualifierFlow(api, input, output) and preservesValue = true
+        or
+        result = captureThroughFlow(api, input, output, preservesValue)
       }
 
       /**
@@ -573,9 +588,7 @@ module MakeModelGeneratorFactory<
        * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
        */
       string captureFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
-        result = captureQualifierFlow(api) and preservesValue = true
-        or
-        result = captureThroughFlow(api, preservesValue)
+        result = captureFlow(api, _, _, preservesValue)
       }
 
       /**
@@ -947,19 +960,20 @@ module MakeModelGeneratorFactory<
       }
 
       /**
-       * Gets the content based summary model(s) of the API `api` (if there is flow from a parameter to
-       * the return value or a parameter). `lift` is true, if the model should be lifted, otherwise false.
+       * Gets the content based summary model(s) of the API `api` (if there is flow from `input` to
+       * `output`). `lift` is true, if the model should be lifted, otherwise false.
        * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
        *
        * Models are lifted to the best type in case the read and store access paths do not
        * contain a field or synthetic field access.
        */
-      string captureFlow(ContentDataFlowSummaryTargetApi api, boolean lift, boolean preservesValue) {
-        exists(string input, string output |
-          captureFlow0(api, input, output, _, lift) and
-          preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
-          result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
-        )
+      string captureFlow(
+        ContentDataFlowSummaryTargetApi api, string input, string output, boolean lift,
+        boolean preservesValue
+      ) {
+        captureFlow0(api, input, output, _, lift) and
+        preservesValue = max(boolean p | captureFlow0(api, input, output, p, lift)) and
+        result = ContentModelPrinting::asModel(api, input, output, preservesValue, lift)
       }
     }
 
@@ -972,23 +986,30 @@ module MakeModelGeneratorFactory<
      * generate flow summaries using the heuristic based summary generator.
      */
     string captureFlow(DataFlowSummaryTargetApi api, boolean lift) {
-      exists(boolean preservesValue |
-        result = ContentSensitive::captureFlow(api, lift, preservesValue)
-        or
-        not exists(DataFlowSummaryTargetApi api0 |
-          // If the heuristic summary is value-preserving then we keep both
-          // summaries. However, if we can generate any content-sensitive
-          // summary (value-preserving or not) then we don't include any taint-
-          // based heuristic summary.
-          preservesValue = false
+      result = ContentSensitive::captureFlow(api, _, _, lift, _)
+      or
+      exists(boolean preservesValue, string input, string output |
+        not exists(
+          DataFlowSummaryTargetApi api0, string input0, string output0, boolean preservesValue0
+        |
+          // If the heuristic summary is taint-based, and we can generate a content-sensitive
+          // summary that is value-preserving then we omit generating any heuristic summary.
+          preservesValue = false and
+          preservesValue0 = true
+          or
+          // However, if they're both value-preserving (or both taint-based) then we only
+          // generate a heuristic summary if we didn't generate a content-sensitive summary.
+          preservesValue = preservesValue0 and
+          input0 = input and
+          output0 = output
         |
           (api0 = api or api.lift() = api0) and
-          exists(ContentSensitive::captureFlow(api0, false, _))
+          exists(ContentSensitive::captureFlow(api0, input0, output0, false, preservesValue0))
           or
           api0.lift() = api.lift() and
-          exists(ContentSensitive::captureFlow(api0, true, _))
+          exists(ContentSensitive::captureFlow(api0, input0, output0, true, preservesValue0))
         ) and
-        result = Heuristic::captureFlow(api, preservesValue) and
+        result = Heuristic::captureFlow(api, input, output, preservesValue) and
         lift = true
       )
     }
