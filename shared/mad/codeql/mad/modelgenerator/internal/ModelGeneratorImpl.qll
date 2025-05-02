@@ -562,7 +562,7 @@ module MakeModelGeneratorFactory<
       private string captureThroughFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
         exists(string input, string output |
           preservesValue = max(boolean b | captureThroughFlow0(api, _, input, _, output, b)) and
-          result = ModelPrintingSummary::asLiftedTaintModel(api, input, output, preservesValue)
+          result = ModelPrintingSummary::asLiftedModel(api, input, output, preservesValue)
         )
       }
 

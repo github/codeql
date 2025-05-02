@@ -97,7 +97,7 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
      * Gets the lifted taint summary model for `api` with `input` and `output`.
      */
     bindingset[input, output, preservesValue]
-    string asLiftedTaintModel(
+    string asLiftedModel(
       Printing::SummaryApi api, string input, string output, boolean preservesValue
     ) {
       result = asModel(api, input, output, preservesValue, true)
