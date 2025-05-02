@@ -10,6 +10,7 @@
 
 import csharp
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import Heuristic
 import PropagateTaintFlow::PathGraph
 

@@ -8,7 +8,7 @@
  * @id cs/web/request-validation-disabled
  * @tags security
  *       frameworks/asp.net
- *       external/cwe/cwe-16
+ *       external/cwe/cwe-016
  */
 
 import csharp

@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import SummaryModels
 
 from DataFlowSummaryTargetApi api, string flow
 where flow = ContentSensitive::captureFlow(api, _, _)
