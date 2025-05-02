@@ -1,4 +1,3 @@
-ql/java/ql/src/Language Abuse/TypeVariableHidesType.ql
 ql/java/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
 ql/java/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
 ql/java/ql/src/Likely Bugs/Comparison/IncomparableEquals.ql

@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import SummaryModels
 
 from DataFlowSummaryTargetApi api, string noflow
 where noflow = Heuristic::captureNoFlow(api)

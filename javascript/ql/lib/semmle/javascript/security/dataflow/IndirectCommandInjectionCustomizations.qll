@@ -29,7 +29,7 @@ module IndirectCommandInjection {
    * A read of `process.env`, considered as a flow source for command injection.
    */
   private class ProcessEnvAsSource extends Source {
-    ProcessEnvAsSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+    ProcessEnvAsSource() { this.(ThreatModelSource).getThreatModel() = "environment" }
 
     override string describe() { result = "environment variable" }
   }
@@ -37,7 +37,7 @@ module IndirectCommandInjection {
   /** Gets a data flow node referring to `process.env`. */
   private DataFlow::SourceNode envObject(DataFlow::TypeTracker t) {
     t.start() and
-    result = NodeJSLib::process().getAPropertyRead("env")
+    result.(ThreatModelSource).getThreatModel() = "environment"
     or
     exists(DataFlow::TypeTracker t2 | result = envObject(t2).track(t2, t))
   }

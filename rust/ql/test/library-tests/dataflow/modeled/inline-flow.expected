@@ -29,8 +29,15 @@ edges
 | main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | main.rs:41:13:41:13 | w [Wrapper] | provenance |  |
 | main.rs:41:30:41:39 | source(...) | main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:42:15:42:15 | w [Wrapper] | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:42:15:42:15 | w [Wrapper] | main.rs:45:17:45:17 | w [Wrapper] | provenance |  |
 | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | main.rs:43:26:43:26 | n | provenance |  |
 | main.rs:43:26:43:26 | n | main.rs:43:38:43:38 | n | provenance |  |
+| main.rs:45:13:45:13 | u [Wrapper] | main.rs:46:15:46:15 | u [Wrapper] | provenance |  |
+| main.rs:45:17:45:17 | w [Wrapper] | main.rs:45:17:45:25 | w.clone() [Wrapper] | provenance | generated |
+| main.rs:45:17:45:25 | w.clone() [Wrapper] | main.rs:45:13:45:13 | u [Wrapper] | provenance |  |
+| main.rs:46:15:46:15 | u [Wrapper] | main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | main.rs:47:26:47:26 | n | provenance |  |
+| main.rs:47:26:47:26 | n | main.rs:47:38:47:38 | n | provenance |  |
 | main.rs:58:13:58:13 | b [Some] | main.rs:59:23:59:23 | b [Some] | provenance |  |
 | main.rs:58:17:58:32 | Some(...) [Some] | main.rs:58:13:58:13 | b [Some] | provenance |  |
 | main.rs:58:22:58:31 | source(...) | main.rs:58:17:58:32 | Some(...) [Some] | provenance |  |
@@ -71,6 +78,13 @@ nodes
 | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
 | main.rs:43:26:43:26 | n | semmle.label | n |
 | main.rs:43:38:43:38 | n | semmle.label | n |
+| main.rs:45:13:45:13 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:45:17:45:17 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:45:17:45:25 | w.clone() [Wrapper] | semmle.label | w.clone() [Wrapper] |
+| main.rs:46:15:46:15 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
+| main.rs:47:26:47:26 | n | semmle.label | n |
+| main.rs:47:38:47:38 | n | semmle.label | n |
 | main.rs:58:13:58:13 | b [Some] | semmle.label | b [Some] |
 | main.rs:58:17:58:32 | Some(...) [Some] | semmle.label | Some(...) [Some] |
 | main.rs:58:22:58:31 | source(...) | semmle.label | source(...) |
@@ -95,5 +109,6 @@ testFailures
 | main.rs:22:10:22:19 | b.unwrap() | main.rs:19:34:19:43 | source(...) | main.rs:22:10:22:19 | b.unwrap() | $@ | main.rs:19:34:19:43 | source(...) | source(...) |
 | main.rs:27:10:27:10 | a | main.rs:26:13:26:22 | source(...) | main.rs:27:10:27:10 | a | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
 | main.rs:43:38:43:38 | n | main.rs:41:30:41:39 | source(...) | main.rs:43:38:43:38 | n | $@ | main.rs:41:30:41:39 | source(...) | source(...) |
+| main.rs:47:38:47:38 | n | main.rs:41:30:41:39 | source(...) | main.rs:47:38:47:38 | n | $@ | main.rs:41:30:41:39 | source(...) | source(...) |
 | main.rs:63:22:63:22 | m | main.rs:58:22:58:31 | source(...) | main.rs:63:22:63:22 | m | $@ | main.rs:58:22:58:31 | source(...) | source(...) |
 | main.rs:85:18:85:34 | ...::read(...) | main.rs:84:32:84:41 | source(...) | main.rs:85:18:85:34 | ...::read(...) | $@ | main.rs:84:32:84:41 | source(...) | source(...) |

@@ -1,0 +1,10 @@
+- description: Selectors for selecting the Code-Quality-relevant queries for a language
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - high
+    - very-high
+    tags contain:
+    - quality
