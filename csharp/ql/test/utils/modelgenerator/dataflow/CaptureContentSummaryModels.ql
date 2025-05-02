@@ -1,5 +1,6 @@
 import csharp
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import utils.test.InlineMadTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {

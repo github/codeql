@@ -8,6 +8,7 @@
  * @id go/redundant-recover
  * @tags maintainability
  *       correctness
+ *       quality
  * @precision high
  */
 

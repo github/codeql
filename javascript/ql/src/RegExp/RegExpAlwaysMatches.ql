@@ -6,6 +6,7 @@
  * @id js/regex/always-matches
  * @tags correctness
  *       regular-expressions
+ *       quality
  * @precision high
  */
 
