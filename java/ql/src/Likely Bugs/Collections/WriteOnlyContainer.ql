@@ -7,6 +7,7 @@
  * @id java/unused-container
  * @tags maintainability
  *       useless-code
+ *       quality
  *       external/cwe/cwe-561
  */
 

@@ -1,8 +1,3 @@
 - queries: .
-- include:
-    id:
-      - js/missing-await
-      - js/regex/always-matches
-      - js/superfluous-trailing-arguments
-      - js/useless-expression
-      - js/ineffective-parameter-type
+- apply: code-quality-selectors.yml
+  from: codeql/suite-helpers
