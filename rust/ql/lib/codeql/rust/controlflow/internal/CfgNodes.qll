@@ -75,7 +75,7 @@ class StructPatChildMapping extends ParentAstNode, StructPat {
 }
 
 class MacroCallChildMapping extends ParentAstNode, MacroCall {
-  override predicate relevantChild(AstNode child) { child = this.getExpanded() }
+  override predicate relevantChild(AstNode child) { child = this.getMacroCallExpansion() }
 }
 
 class FormatArgsExprChildMapping extends ParentAstNode, CfgImpl::ExprTrees::FormatArgsExprTree {

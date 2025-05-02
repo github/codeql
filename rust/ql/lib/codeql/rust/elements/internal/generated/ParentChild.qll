@@ -2204,18 +2204,23 @@ private module Impl {
   }
 
   private Element getImmediateChildOfItem(Item e, int index, string partialPredicateCall) {
-    exists(int b, int bStmt, int bAddressable, int n |
+    exists(int b, int bStmt, int bAddressable, int n, int nAttributeMacroExpansion |
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       bAddressable =
         bStmt + 1 + max(int i | i = -1 or exists(getImmediateChildOfAddressable(e, i, _)) | i) and
       n = bAddressable and
+      nAttributeMacroExpansion = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfAddressable(e, index - bStmt, partialPredicateCall)
+        or
+        index = n and
+        result = e.getAttributeMacroExpansion() and
+        partialPredicateCall = "AttributeMacroExpansion()"
       )
     )
   }
@@ -3496,7 +3501,7 @@ private module Impl {
   private Element getImmediateChildOfMacroCall(MacroCall e, int index, string partialPredicateCall) {
     exists(
       int b, int bAssocItem, int bExternItem, int bItem, int n, int nAttr, int nPath,
-      int nTokenTree, int nExpanded
+      int nTokenTree, int nMacroCallExpansion
     |
       b = 0 and
       bAssocItem = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAssocItem(e, i, _)) | i) and
@@ -3507,7 +3512,7 @@ private module Impl {
       nAttr = n + 1 + max(int i | i = -1 or exists(e.getAttr(i)) | i) and
       nPath = nAttr + 1 and
       nTokenTree = nPath + 1 and
-      nExpanded = nTokenTree + 1 and
+      nMacroCallExpansion = nTokenTree + 1 and
       (
         none()
         or
@@ -3524,7 +3529,9 @@ private module Impl {
         or
         index = nPath and result = e.getTokenTree() and partialPredicateCall = "TokenTree()"
         or
-        index = nTokenTree and result = e.getExpanded() and partialPredicateCall = "Expanded()"
+        index = nTokenTree and
+        result = e.getMacroCallExpansion() and
+        partialPredicateCall = "MacroCallExpansion()"
       )
     )
   }

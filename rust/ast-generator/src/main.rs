@@ -142,6 +142,7 @@ fn fix_blank_lines(s: &str) -> String {
 fn write_schema(
     grammar: &AstSrc,
     super_types: BTreeMap<String, BTreeSet<String>>,
+    mustache_ctx: &mustache::Context,
 ) -> mustache::Result<String> {
     let mut schema = Schema::default();
     schema.classes.extend(
@@ -156,7 +157,7 @@ fn write_schema(
             .iter()
             .map(|node| node_src_to_schema_class(node, &super_types)),
     );
-    let template = mustache::compile_str(include_str!("templates/schema.mustache"))?;
+    let template = mustache_ctx.compile_path("schema")?;
     let res = template.render_to_string(&schema)?;
     Ok(fix_blank_lines(&res))
 }
@@ -541,7 +542,7 @@ fn node_to_extractor_info(node: &AstNodeSrc) -> ExtractorNodeInfo {
     }
 }
 
-fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
+fn write_extractor(grammar: &AstSrc, mustache_ctx: &mustache::Context) -> mustache::Result<String> {
     let extractor_info = ExtractorInfo {
         enums: grammar
             .enums
@@ -550,7 +551,7 @@ fn write_extractor(grammar: &AstSrc) -> mustache::Result<String> {
             .collect(),
         nodes: grammar.nodes.iter().map(node_to_extractor_info).collect(),
     };
-    let template = mustache::compile_str(include_str!("templates/extractor.mustache"))?;
+    let template = mustache_ctx.compile_path("extractor")?;
     let res = template.render_to_string(&extractor_info)?;
     Ok(fix_blank_lines(&res))
 }
@@ -578,8 +579,13 @@ fn main() -> anyhow::Result<()> {
         let super_class_y = super_types.get(&y.name).into_iter().flatten().max();
         super_class_x.cmp(&super_class_y).then(x.name.cmp(&y.name))
     });
-    let schema = write_schema(&grammar, super_types)?;
-    let schema_path = project_root().join("schema/ast.py");
+    let root = project_root();
+    let mustache_ctx = mustache::Context {
+        template_path: root.join("ast-generator").join("templates"),
+        template_extension: "mustache".to_string(),
+    };
+    let schema = write_schema(&grammar, super_types, &mustache_ctx)?;
+    let schema_path = root.join("schema/ast.py");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,
         &schema_path,
@@ -587,7 +593,7 @@ fn main() -> anyhow::Result<()> {
         false,
     );
 
-    let extractor = write_extractor(&grammar)?;
+    let extractor = write_extractor(&grammar, &mustache_ctx)?;
     let extractor_path = project_root().join("extractor/src/translate/generated.rs");
     codegen::ensure_file_contents(
         crate::flags::CodegenType::Grammar,

@@ -217,7 +217,7 @@ final class MacroCallCfgNode extends Nodes::MacroCallCfgNode {
 
   /** Gets the CFG node for the expansion of this macro call, if it exists. */
   CfgNode getExpandedNode() {
-    any(ChildMapping mapping).hasCfgChild(node, node.getExpanded(), this, result)
+    any(ChildMapping mapping).hasCfgChild(node, node.getMacroCallExpansion(), this, result)
   }
 }
 
