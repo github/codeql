@@ -950,20 +950,6 @@ class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
       result = method.getBody().flow()
     )
     or
-    // ES6 class property or Function-style class methods via constructor
-    kind = MemberKind::method() and
-    exists(ThisNode receiver |
-      receiver = this.getConstructor().getReceiver() and
-      receiver.hasPropertyWrite(name, result)
-    )
-    or
-    // Function-style class methods via prototype
-    kind = MemberKind::method() and
-    exists(DataFlow::SourceNode proto |
-      proto = this.getAPrototypeReference() and
-      proto.hasPropertyWrite(name, result)
-    )
-    or
     // Function-style class accessors
     astNode instanceof Function and
     exists(PropertyAccessor accessor |
@@ -993,20 +979,6 @@ class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
       not method.isStatic() and
       kind = MemberKind::of(method) and
       result = method.getBody().flow()
-    )
-    or
-    // ES6 class property or Function-style class methods via constructor
-    kind = MemberKind::method() and
-    exists(ThisNode receiver |
-      receiver = this.getConstructor().getReceiver() and
-      result = receiver.getAPropertySource()
-    )
-    or
-    // Function-style class methods via prototype
-    kind = MemberKind::method() and
-    exists(DataFlow::SourceNode proto |
-      proto = this.getAPrototypeReference() and
-      result = proto.getAPropertySource()
     )
     or
     // Function-style class accessors
