@@ -134,6 +134,10 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
     else result = 0
   }
 
+  private int getSynthAstNodeIndexForSynthParent() {
+    if this.parentIsSynthesized() then result = this.getSynthAstNodeIndex() else result = 0
+  }
+
   override int getOrder() {
     this =
       rank[result](PrintRegularAstNode p, Location l, File f |
@@ -142,8 +146,9 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
       |
         p
         order by
-          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn(),
-          p.getSynthAstNodeIndex(), l.getEndLine(), l.getEndColumn()
+          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(),
+          p.getSynthAstNodeIndexForSynthParent(), l.getStartColumn(), p.getSynthAstNodeIndex(),
+          l.getEndLine(), l.getEndColumn()
       )
   }
 
