@@ -24,7 +24,7 @@ public final class ImmutablePojo {
     return x;
   }
 
-  // heuristic-summary=p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;taint;df-generated
+  // heuristic-summary=p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;value;df-generated
   // heuristic-summary=p;ImmutablePojo;false;or;(String);;Argument[this];ReturnValue;taint;df-generated
   // contentbased-summary=p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;value;dfc-generated
   // contentbased-summary=p;ImmutablePojo;false;or;(String);;Argument[this].SyntheticField[p.ImmutablePojo.value];ReturnValue;value;dfc-generated

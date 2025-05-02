@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ParamFlow {
 
-  // heuristic-summary=p;ParamFlow;true;returnsInput;(String);;Argument[0];ReturnValue;taint;df-generated
+  // heuristic-summary=p;ParamFlow;true;returnsInput;(String);;Argument[0];ReturnValue;value;df-generated
   // contentbased-summary=p;ParamFlow;true;returnsInput;(String);;Argument[0];ReturnValue;value;dfc-generated
   public String returnsInput(String input) {
     return input;
@@ -18,8 +18,8 @@ public class ParamFlow {
     return input.length();
   }
 
-  // heuristic-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[0];ReturnValue;taint;df-generated
-  // heuristic-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[1];ReturnValue;taint;df-generated
+  // heuristic-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[0];ReturnValue;value;df-generated
+  // heuristic-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[1];ReturnValue;value;df-generated
   // contentbased-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[0];ReturnValue;value;dfc-generated
   // contentbased-summary=p;ParamFlow;true;returnMultipleParameters;(String,String);;Argument[1];ReturnValue;value;dfc-generated
   public String returnMultipleParameters(String one, String two) {
