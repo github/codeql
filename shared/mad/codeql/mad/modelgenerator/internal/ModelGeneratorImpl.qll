@@ -572,7 +572,7 @@ module MakeModelGeneratorFactory<
        *
        * `preservesValue` is `true` if the summary is value-preserving, and `false` otherwise.
        */
-      string captureHeuristicFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
+      string captureFlow(DataFlowSummaryTargetApi api, boolean preservesValue) {
         result = captureQualifierFlow(api) and preservesValue = true
         or
         result = captureThroughFlow(api, preservesValue)
@@ -988,7 +988,7 @@ module MakeModelGeneratorFactory<
           api0.lift() = api.lift() and
           exists(ContentSensitive::captureFlow(api0, true, _))
         ) and
-        result = Heuristic::captureHeuristicFlow(api, preservesValue) and
+        result = Heuristic::captureFlow(api, preservesValue) and
         lift = true
       )
     }
