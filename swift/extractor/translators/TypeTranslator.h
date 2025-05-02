@@ -82,6 +82,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::PackType translatePackType(const swift::PackType& type);
   codeql::PackElementType translatePackElementType(const swift::PackElementType& type);
   codeql::PackExpansionType translatePackExpansionType(const swift::PackExpansionType& type);
+  codeql::IntegerType translateIntegerType(const swift::IntegerType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
