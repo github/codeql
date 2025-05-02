@@ -321,6 +321,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMacroBlockExpr(Raw::MacroBlockExpr id) { constructMacroBlockExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TMacroCall(Raw::MacroCall id) { constructMacroCall(id) } or
     /**
      * INTERNAL: Do not use.
@@ -342,10 +346,6 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TMacroRules(Raw::MacroRules id) { constructMacroRules(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
-    TMacroStmts(Raw::MacroStmts id) { constructMacroStmts(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -742,9 +742,9 @@ module Synth {
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
         TBreakExpr or TCallExprBase or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroExpr or TMacroStmts or TMatchExpr or TOffsetOfExpr or TParenExpr or TPathExprBase or
-        TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or TTryExpr or
-        TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TMacroBlockExpr or TMacroExpr or TMatchExpr or TOffsetOfExpr or TParenExpr or
+        TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or
+        TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1302,6 +1302,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroBlockExpr`, if possible.
+   */
+  TMacroBlockExpr convertMacroBlockExprFromRaw(Raw::Element e) { result = TMacroBlockExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TMacroCall`, if possible.
    */
   TMacroCall convertMacroCallFromRaw(Raw::Element e) { result = TMacroCall(e) }
@@ -1335,12 +1341,6 @@ module Synth {
    * Converts a raw element to a synthesized `TMacroRules`, if possible.
    */
   TMacroRules convertMacroRulesFromRaw(Raw::Element e) { result = TMacroRules(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw element to a synthesized `TMacroStmts`, if possible.
-   */
-  TMacroStmts convertMacroStmtsFromRaw(Raw::Element e) { result = TMacroStmts(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2125,9 +2125,9 @@ module Synth {
     or
     result = convertLiteralExprFromRaw(e)
     or
-    result = convertMacroExprFromRaw(e)
+    result = convertMacroBlockExprFromRaw(e)
     or
-    result = convertMacroStmtsFromRaw(e)
+    result = convertMacroExprFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
     or
@@ -2902,6 +2902,12 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroBlockExpr` to a raw DB element, if possible.
+   */
+  Raw::Element convertMacroBlockExprToRaw(TMacroBlockExpr e) { e = TMacroBlockExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TMacroCall` to a raw DB element, if possible.
    */
   Raw::Element convertMacroCallToRaw(TMacroCall e) { e = TMacroCall(result) }
@@ -2935,12 +2941,6 @@ module Synth {
    * Converts a synthesized `TMacroRules` to a raw DB element, if possible.
    */
   Raw::Element convertMacroRulesToRaw(TMacroRules e) { e = TMacroRules(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TMacroStmts` to a raw DB element, if possible.
-   */
-  Raw::Element convertMacroStmtsToRaw(TMacroStmts e) { e = TMacroStmts(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3725,9 +3725,9 @@ module Synth {
     or
     result = convertLiteralExprToRaw(e)
     or
-    result = convertMacroExprToRaw(e)
+    result = convertMacroBlockExprToRaw(e)
     or
-    result = convertMacroStmtsToRaw(e)
+    result = convertMacroExprToRaw(e)
     or
     result = convertMatchExprToRaw(e)
     or

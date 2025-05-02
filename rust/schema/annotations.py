@@ -1289,7 +1289,7 @@ class _:
     """
 
 
-@annotate(MacroStmts, replace_bases={AstNode: Expr}, cfg=True)
+@annotate(MacroBlockExpr, replace_bases={AstNode: Expr}, cfg=True)
 @rust.doc_test_signature(None)
 class _:
     """

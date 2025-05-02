@@ -1365,16 +1365,16 @@ impl Translator<'_> {
         Some(label)
     }
 
-    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Option<Label<generated::MacroStmts>> {
-        let expr = node.expr().and_then(|x| self.emit_expr(x));
+    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Option<Label<generated::MacroBlockExpr>> {
+        let tail_expr = node.expr().and_then(|x| self.emit_expr(x));
         let statements = node.statements().filter_map(|x| self.emit_stmt(x)).collect();
-        let label = self.trap.emit(generated::MacroStmts {
+        let label = self.trap.emit(generated::MacroBlockExpr {
             id: TrapId::Star,
-            expr,
+            tail_expr,
             statements,
         });
         self.emit_location(label, &node);
-        emit_detached!(MacroStmts, self, node, label);
+        emit_detached!(MacroBlockExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }

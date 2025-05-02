@@ -2368,6 +2368,28 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMacroBlockExpr(
+    MacroBlockExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nTailExpr, int nStatement |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nTailExpr = n + 1 and
+      nStatement = nTailExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getTailExpr() and partialPredicateCall = "TailExpr()"
+        or
+        result = e.getStatement(index - nTailExpr) and
+        partialPredicateCall = "Statement(" + (index - nTailExpr).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfMacroExpr(MacroExpr e, int index, string partialPredicateCall) {
     exists(int b, int bExpr, int n, int nMacroCall |
       b = 0 and
@@ -2396,26 +2418,6 @@ private module Impl {
         result = getImmediateChildOfPat(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getMacroCall() and partialPredicateCall = "MacroCall()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfMacroStmts(MacroStmts e, int index, string partialPredicateCall) {
-    exists(int b, int bExpr, int n, int nExpr, int nStatement |
-      b = 0 and
-      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
-      nExpr = n + 1 and
-      nStatement = nExpr + 1 + max(int i | i = -1 or exists(e.getStatement(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getExpr() and partialPredicateCall = "Expr()"
-        or
-        result = e.getStatement(index - nExpr) and
-        partialPredicateCall = "Statement(" + (index - nExpr).toString() + ")"
       )
     )
   }
@@ -4298,11 +4300,11 @@ private module Impl {
     or
     result = getImmediateChildOfLiteralPat(e, index, partialAccessor)
     or
+    result = getImmediateChildOfMacroBlockExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfMacroExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroPat(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfMacroStmts(e, index, partialAccessor)
     or
     result = getImmediateChildOfMacroTypeRepr(e, index, partialAccessor)
     or

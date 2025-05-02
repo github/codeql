@@ -397,9 +397,9 @@ edges
 | test.rs:171:26:171:28 | ...::format_args_nl!... | test.rs:171:26:171:28 | MacroExpr |  |
 | test.rs:171:26:171:28 | ExprStmt | test.rs:171:17:171:29 | ...::_print |  |
 | test.rs:171:26:171:28 | FormatArgsExpr | test.rs:171:26:171:28 | ...::format_args_nl!... |  |
+| test.rs:171:26:171:28 | MacroBlockExpr | test.rs:171:17:171:29 | println!... |  |
 | test.rs:171:26:171:28 | MacroExpr | test.rs:171:26:171:28 | ...::_print(...) |  |
-| test.rs:171:26:171:28 | MacroStmts | test.rs:171:17:171:29 | println!... |  |
-| test.rs:171:26:171:28 | { ... } | test.rs:171:26:171:28 | MacroStmts |  |
+| test.rs:171:26:171:28 | { ... } | test.rs:171:26:171:28 | MacroBlockExpr |  |
 | test.rs:172:20:174:13 | { ... } | test.rs:170:13:174:13 | if cond2 {...} else {...} |  |
 | test.rs:173:17:173:29 | ...::_print | test.rs:173:26:173:28 | "2\\n" |  |
 | test.rs:173:17:173:29 | MacroExpr | test.rs:172:20:174:13 | { ... } |  |
@@ -410,9 +410,9 @@ edges
 | test.rs:173:26:173:28 | ...::format_args_nl!... | test.rs:173:26:173:28 | MacroExpr |  |
 | test.rs:173:26:173:28 | ExprStmt | test.rs:173:17:173:29 | ...::_print |  |
 | test.rs:173:26:173:28 | FormatArgsExpr | test.rs:173:26:173:28 | ...::format_args_nl!... |  |
+| test.rs:173:26:173:28 | MacroBlockExpr | test.rs:173:17:173:29 | println!... |  |
 | test.rs:173:26:173:28 | MacroExpr | test.rs:173:26:173:28 | ...::_print(...) |  |
-| test.rs:173:26:173:28 | MacroStmts | test.rs:173:17:173:29 | println!... |  |
-| test.rs:173:26:173:28 | { ... } | test.rs:173:26:173:28 | MacroStmts |  |
+| test.rs:173:26:173:28 | { ... } | test.rs:173:26:173:28 | MacroBlockExpr |  |
 | test.rs:175:13:175:25 | ...::_print | test.rs:175:22:175:24 | "3\\n" |  |
 | test.rs:175:13:175:25 | MacroExpr | test.rs:169:18:176:9 | { ... } |  |
 | test.rs:175:13:175:25 | println!... | test.rs:175:13:175:25 | MacroExpr |  |
@@ -422,9 +422,9 @@ edges
 | test.rs:175:22:175:24 | ...::format_args_nl!... | test.rs:175:22:175:24 | MacroExpr |  |
 | test.rs:175:22:175:24 | ExprStmt | test.rs:175:13:175:25 | ...::_print |  |
 | test.rs:175:22:175:24 | FormatArgsExpr | test.rs:175:22:175:24 | ...::format_args_nl!... |  |
+| test.rs:175:22:175:24 | MacroBlockExpr | test.rs:175:13:175:25 | println!... |  |
 | test.rs:175:22:175:24 | MacroExpr | test.rs:175:22:175:24 | ...::_print(...) |  |
-| test.rs:175:22:175:24 | MacroStmts | test.rs:175:13:175:25 | println!... |  |
-| test.rs:175:22:175:24 | { ... } | test.rs:175:22:175:24 | MacroStmts |  |
+| test.rs:175:22:175:24 | { ... } | test.rs:175:22:175:24 | MacroBlockExpr |  |
 | test.rs:179:5:188:5 | enter fn test_nested_if_match | test.rs:179:29:179:29 | a |  |
 | test.rs:179:5:188:5 | exit fn test_nested_if_match (normal) | test.rs:179:5:188:5 | exit fn test_nested_if_match |  |
 | test.rs:179:29:179:29 | a | test.rs:179:29:179:29 | a |  |
@@ -902,11 +902,11 @@ edges
 | test.rs:363:39:363:53 | ...::panic_fmt(...) | test.rs:363:39:363:53 | { ... } |  |
 | test.rs:363:39:363:53 | ExprStmt | test.rs:363:32:363:54 | ...::panic_fmt |  |
 | test.rs:363:39:363:53 | FormatArgsExpr | test.rs:363:39:363:53 | ...::const_format_args!... |  |
+| test.rs:363:39:363:53 | MacroBlockExpr | test.rs:363:32:363:54 | panic!... |  |
+| test.rs:363:39:363:53 | MacroBlockExpr | test.rs:363:39:363:53 | ...::panic_2021!... |  |
 | test.rs:363:39:363:53 | MacroExpr | test.rs:363:39:363:53 | ...::panic_fmt(...) |  |
-| test.rs:363:39:363:53 | MacroExpr | test.rs:363:39:363:53 | MacroStmts |  |
-| test.rs:363:39:363:53 | MacroStmts | test.rs:363:32:363:54 | panic!... |  |
-| test.rs:363:39:363:53 | MacroStmts | test.rs:363:39:363:53 | ...::panic_2021!... |  |
-| test.rs:363:39:363:53 | { ... } | test.rs:363:39:363:53 | MacroStmts |  |
+| test.rs:363:39:363:53 | MacroExpr | test.rs:363:39:363:53 | MacroBlockExpr |  |
+| test.rs:363:39:363:53 | { ... } | test.rs:363:39:363:53 | MacroBlockExpr |  |
 | test.rs:364:9:364:9 | n | test.rs:362:46:365:5 | { ... } |  |
 | test.rs:367:5:373:5 | enter fn test_let_with_return | test.rs:367:29:367:29 | m |  |
 | test.rs:367:5:373:5 | exit fn test_let_with_return (normal) | test.rs:367:5:373:5 | exit fn test_let_with_return |  |
@@ -1189,9 +1189,9 @@ edges
 | test.rs:495:18:495:32 | ...::format_args_nl!... | test.rs:495:18:495:32 | MacroExpr |  |
 | test.rs:495:18:495:32 | ExprStmt | test.rs:495:9:495:33 | ...::_print |  |
 | test.rs:495:18:495:32 | FormatArgsExpr | test.rs:495:18:495:32 | ...::format_args_nl!... |  |
+| test.rs:495:18:495:32 | MacroBlockExpr | test.rs:495:9:495:33 | println!... |  |
 | test.rs:495:18:495:32 | MacroExpr | test.rs:495:18:495:32 | ...::_print(...) |  |
-| test.rs:495:18:495:32 | MacroStmts | test.rs:495:9:495:33 | println!... |  |
-| test.rs:495:18:495:32 | { ... } | test.rs:495:18:495:32 | MacroStmts |  |
+| test.rs:495:18:495:32 | { ... } | test.rs:495:18:495:32 | MacroBlockExpr |  |
 | test.rs:498:5:517:5 | enter fn async_block | test.rs:498:26:498:26 | b |  |
 | test.rs:498:5:517:5 | exit fn async_block (normal) | test.rs:498:5:517:5 | exit fn async_block |  |
 | test.rs:498:26:498:26 | b | test.rs:498:26:498:26 | b |  |
@@ -1213,9 +1213,9 @@ edges
 | test.rs:500:22:500:40 | ...::format_args_nl!... | test.rs:500:22:500:40 | MacroExpr |  |
 | test.rs:500:22:500:40 | ExprStmt | test.rs:500:13:500:41 | ...::_print |  |
 | test.rs:500:22:500:40 | FormatArgsExpr | test.rs:500:22:500:40 | ...::format_args_nl!... |  |
+| test.rs:500:22:500:40 | MacroBlockExpr | test.rs:500:13:500:41 | println!... |  |
 | test.rs:500:22:500:40 | MacroExpr | test.rs:500:22:500:40 | ...::_print(...) |  |
-| test.rs:500:22:500:40 | MacroStmts | test.rs:500:13:500:41 | println!... |  |
-| test.rs:500:22:500:40 | { ... } | test.rs:500:22:500:40 | MacroStmts |  |
+| test.rs:500:22:500:40 | { ... } | test.rs:500:22:500:40 | MacroBlockExpr |  |
 | test.rs:502:9:504:10 | let ... = ... | test.rs:502:31:504:9 | { ... } |  |
 | test.rs:502:13:502:27 | say_how_are_you | test.rs:502:13:502:27 | say_how_are_you |  |
 | test.rs:502:13:502:27 | say_how_are_you | test.rs:505:9:505:28 | let ... = ... | match |
@@ -1231,9 +1231,9 @@ edges
 | test.rs:503:22:503:35 | ...::format_args_nl!... | test.rs:503:22:503:35 | MacroExpr |  |
 | test.rs:503:22:503:35 | ExprStmt | test.rs:503:13:503:36 | ...::_print |  |
 | test.rs:503:22:503:35 | FormatArgsExpr | test.rs:503:22:503:35 | ...::format_args_nl!... |  |
+| test.rs:503:22:503:35 | MacroBlockExpr | test.rs:503:13:503:36 | println!... |  |
 | test.rs:503:22:503:35 | MacroExpr | test.rs:503:22:503:35 | ...::_print(...) |  |
-| test.rs:503:22:503:35 | MacroStmts | test.rs:503:13:503:36 | println!... |  |
-| test.rs:503:22:503:35 | { ... } | test.rs:503:22:503:35 | MacroStmts |  |
+| test.rs:503:22:503:35 | { ... } | test.rs:503:22:503:35 | MacroBlockExpr |  |
 | test.rs:505:9:505:28 | let ... = ... | test.rs:505:20:505:27 | { ... } |  |
 | test.rs:505:13:505:16 | noop | test.rs:505:13:505:16 | noop |  |
 | test.rs:505:13:505:16 | noop | test.rs:506:9:506:26 | ExprStmt | match |
@@ -1292,16 +1292,16 @@ edges
 | test.rs:533:13:533:49 | ...::panic_explicit(...) | test.rs:533:13:533:49 | { ... } |  |
 | test.rs:533:13:533:49 | ExprStmt | test.rs:533:13:533:49 | fn panic_cold_explicit |  |
 | test.rs:533:13:533:49 | ExprStmt | test.rs:533:13:533:49 | panic_cold_explicit |  |
+| test.rs:533:13:533:49 | MacroBlockExpr | test.rs:533:13:533:49 | ...::panic_2021!... |  |
 | test.rs:533:13:533:49 | MacroExpr | test.rs:532:9:534:9 | { ... } |  |
 | test.rs:533:13:533:49 | MacroExpr | test.rs:533:13:533:49 | { ... } |  |
-| test.rs:533:13:533:49 | MacroStmts | test.rs:533:13:533:49 | ...::panic_2021!... |  |
 | test.rs:533:13:533:49 | assert!... | test.rs:533:13:533:49 | MacroExpr |  |
 | test.rs:533:13:533:49 | enter fn panic_cold_explicit | test.rs:533:13:533:49 | ...::panic_explicit |  |
 | test.rs:533:13:533:49 | exit fn panic_cold_explicit (normal) | test.rs:533:13:533:49 | exit fn panic_cold_explicit |  |
 | test.rs:533:13:533:49 | fn panic_cold_explicit | test.rs:533:13:533:49 | ExprStmt |  |
 | test.rs:533:13:533:49 | panic_cold_explicit | test.rs:533:13:533:49 | panic_cold_explicit(...) |  |
 | test.rs:533:13:533:49 | panic_cold_explicit(...) | test.rs:533:13:533:49 | { ... } |  |
-| test.rs:533:13:533:49 | { ... } | test.rs:533:13:533:49 | MacroStmts |  |
+| test.rs:533:13:533:49 | { ... } | test.rs:533:13:533:49 | MacroBlockExpr |  |
 | test.rs:533:13:533:49 | { ... } | test.rs:533:13:533:49 | exit fn panic_cold_explicit (normal) |  |
 | test.rs:533:13:533:49 | { ... } | test.rs:533:21:533:48 | if ... {...} |  |
 | test.rs:533:13:533:50 | ExprStmt | test.rs:533:21:533:42 | ...::size_of::<...> |  |
@@ -1309,11 +1309,11 @@ edges
 | test.rs:533:21:533:44 | ...::size_of::<...>(...) | test.rs:533:48:533:48 | 0 |  |
 | test.rs:533:21:533:48 | ... > ... | test.rs:533:21:533:48 | [boolean(false)] ! ... | true |
 | test.rs:533:21:533:48 | ... > ... | test.rs:533:21:533:48 | [boolean(true)] ! ... | false |
-| test.rs:533:21:533:48 | MacroStmts | test.rs:533:13:533:49 | assert!... |  |
+| test.rs:533:21:533:48 | MacroBlockExpr | test.rs:533:13:533:49 | assert!... |  |
 | test.rs:533:21:533:48 | [boolean(false)] ! ... | test.rs:533:21:533:48 | if ... {...} | false |
 | test.rs:533:21:533:48 | [boolean(true)] ! ... | test.rs:533:13:533:49 | ExprStmt | true |
 | test.rs:533:21:533:48 | if ... {...} | test.rs:533:21:533:48 | { ... } |  |
-| test.rs:533:21:533:48 | { ... } | test.rs:533:21:533:48 | MacroStmts |  |
+| test.rs:533:21:533:48 | { ... } | test.rs:533:21:533:48 | MacroBlockExpr |  |
 | test.rs:533:48:533:48 | 0 | test.rs:533:21:533:48 | ... > ... |  |
 | test.rs:536:9:536:10 | 42 | test.rs:529:41:537:5 | { ... } |  |
 | test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:540:9:540:30 | Const |  |
