@@ -9,6 +9,7 @@
  * @id cs/equality-on-floats
  * @tags reliability
  *       correctness
+ *       quality
  */
 
 import csharp

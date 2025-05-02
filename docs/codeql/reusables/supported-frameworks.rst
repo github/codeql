@@ -254,6 +254,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    cassandra-driver, Database
    clickhouse-driver, Database
    cx_Oracle, Database
+   hdbcli, Database
    mysql-connector, Database
    mysql-connector-python, Database
    MySQL-python, Database

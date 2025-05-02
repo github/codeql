@@ -6,6 +6,7 @@ private import Type
 private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
+private import codeql.rust.frameworks.stdlib.Stdlib
 
 class Type = T::Type;
 
@@ -873,6 +874,17 @@ private Type inferRefExprType(Expr e, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type inferTryExprType(TryExpr te, TypePath path) {
+  exists(TypeParam tp |
+    result = inferType(te.getExpr(), TypePath::cons(TTypeParamTypeParameter(tp), path))
+  |
+    tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
+    or
+    tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
+  )
+}
+
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
@@ -1012,6 +1024,8 @@ private module Cached {
     result = inferFieldExprType(n, path)
     or
     result = inferRefExprType(n, path)
+    or
+    result = inferTryExprType(n, path)
   }
 }
 
@@ -1027,8 +1041,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/tauri/src/app/plugin.rs") and
-      startline = 54
+      filepath.matches("%/main.rs") and
+      startline = 28
     )
   }
 
