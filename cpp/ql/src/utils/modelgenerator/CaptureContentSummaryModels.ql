@@ -10,5 +10,5 @@ import internal.CaptureModels
 import SummaryModels
 
 from DataFlowSummaryTargetApi api, string flow
-where flow = ContentSensitive::captureFlow(api, _, _)
+where flow = ContentSensitive::captureFlow(api, _, _, _, _)
 select flow order by flow
