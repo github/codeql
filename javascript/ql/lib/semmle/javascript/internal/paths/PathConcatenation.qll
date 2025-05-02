@@ -25,6 +25,7 @@ private class TemplateConcatenation extends PathConcatenation, TemplateLiteral {
 
 private class JoinCallConcatenation extends PathConcatenation, CallExpr {
   JoinCallConcatenation() {
+    // Heuristic recognition of path.join and path.resolve since we can't rely on SourceNode at this stage.
     this.getReceiver().(VarAccess).getName() = "path" and
     this.getCalleeName() = ["join", "resolve"]
   }
