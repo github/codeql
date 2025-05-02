@@ -24,6 +24,8 @@ module Impl {
   class PrefixExpr extends Generated::PrefixExpr, OperationImpl::Operation {
     override string toStringImpl() { result = this.getOperatorName() + " ..." }
 
+    override string getOperatorName() { result = Generated::PrefixExpr.super.getOperatorName() }
+
     override Expr getAnOperand() { result = this.getExpr() }
   }
 }

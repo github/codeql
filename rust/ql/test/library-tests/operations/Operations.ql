@@ -16,7 +16,7 @@ string describe(Expr op) {
 }
 
 module OperationsTest implements TestSig {
-  string getARelevantTag() { result = describe(_) or result = "Operands" }
+  string getARelevantTag() { result = describe(_) or result = ["Op", "Operands"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr op |
@@ -26,6 +26,9 @@ module OperationsTest implements TestSig {
       (
         tag = describe(op) and
         value = ""
+        or
+        tag = "Op" and
+        value = op.(Operation).getOperatorName()
         or
         op instanceof Operation and
         tag = "Operands" and

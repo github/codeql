@@ -15,6 +15,11 @@ module OperationImpl {
    */
   abstract class Operation extends ExprImpl::Expr {
     /**
+     * Gets the operator name of this operation, if it exists.
+     */
+    abstract string getOperatorName();
+
+    /**
      * Gets an operand of this operation.
      */
     abstract Expr getAnOperand();
