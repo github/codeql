@@ -4,9 +4,7 @@ import EVPCipherInitializer
 import OpenSSLOperationBase
 import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
-// import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.AlgorithmValueConsumers
-// import OpenSSLOperation
-module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
+private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(OpenSSLAlgorithmValueConsumer c | c.getResultNode() = source)
   }
@@ -16,8 +14,10 @@ module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
+private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
+// import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.AlgorithmValueConsumers
+// import OpenSSLOperation
 // class EVPCipherOutput extends CipherOutputArtifact {
 //   EVPCipherOutput() { exists(EVP_Cipher_Operation op | op.getOutputArg() = this) }
 //   override DataFlow::Node getOutputNode() { result.asDefiningArgument() = this }
@@ -81,6 +81,8 @@ class EVP_Cipher_Call extends EVP_Cipher_Operation {
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 }
 
+// ******* TODO  NEED to model UPDATE but not as the coree operation, rather a step towards final,
+// see the JCA
 // class EVP_Encrypt_Decrypt_or_Cipher_Update_Call extends EVP_Update_Call {
 //   EVP_Encrypt_Decrypt_or_Cipher_Update_Call() {
 //     this.(Call).getTarget().getName() in [

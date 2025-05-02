@@ -386,7 +386,7 @@ module JCAModel {
 
     override Crypto::THashType getHashFamily() { result = hash_name_to_type_known(hashName, _) }
 
-    override int getDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
+    override int getFixedDigestLength() { exists(hash_name_to_type_known(hashName, result)) }
   }
 
   class OAEPPaddingAlgorithmInstance extends Crypto::OAEPPaddingAlgorithmInstance,
@@ -829,7 +829,7 @@ module JCAModel {
       result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
     }
 
-    override int getDigestLength() {
+    override int getFixedDigestLength() {
       exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
     }
   }
@@ -1237,7 +1237,7 @@ module JCAModel {
       result = hash_name_to_type_known(this.getRawHashAlgorithmName(), _)
     }
 
-    override int getDigestLength() {
+    override int getFixedDigestLength() {
       exists(hash_name_to_type_known(this.getRawHashAlgorithmName(), result))
     }
 

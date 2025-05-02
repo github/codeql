@@ -983,9 +983,27 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getRawHashAlgorithmName();
 
     /**
-     * Gets the length of the hash digest in bits.
+     * Gets the length of the hash digest in bits if it is not an implicit size
+     * and is not fixed by the algorithm.
+     * For example, SHA-256 has a fixed length of 256 bits.
+     * SHA-1 should not be modled with digest length as it is always 160 bits.
+     * Fixed length digests are modeled with `fixedImplicitDigestLength` and
+     * are used at the node level.
      */
-    abstract int getDigestLength();
+    abstract int getFixedDigestLength();
+  }
+
+  predicate fixedImplicitDigestLength(THashType type, int digestLength) {
+    type instanceof SHA1 and digestLength = 160
+    or
+    type instanceof MD5 and
+    digestLength = 128
+    or
+    type instanceof RIPEMD160 and
+    digestLength = 160
+    or
+    type instanceof WHIRLPOOL and
+    digestLength = 512 // TODO: verify
   }
 
   abstract private class KeyCreationOperationInstance extends OperationInstance {
@@ -2398,7 +2416,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashFamily(), result) }
 
-    int getDigestLength() { result = instance.asAlg().getDigestLength() }
+    int getDigestLength() {
+      result = instance.asAlg().getFixedDigestLength() or
+      fixedImplicitDigestLength(instance.asAlg().getHashFamily(), result)
+    }
 
     final override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
