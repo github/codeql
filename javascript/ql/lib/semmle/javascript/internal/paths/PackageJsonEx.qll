@@ -2,7 +2,7 @@ private import javascript
 private import semmle.javascript.internal.paths.JSPaths
 
 /**
- * Extension of `PackageJson` with some internal path-resolution predicates.
+ * A `package.json` file. The class is an extension of the `PackageJson` class with some internal path-resolution predicates.
  */
 class PackageJsonEx extends PackageJson {
   private JsonValue getAPartOfExportsSection(string pattern) {

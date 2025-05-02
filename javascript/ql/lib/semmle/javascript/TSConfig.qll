@@ -141,7 +141,7 @@ class TSConfig extends JsonObject {
   }
 
   /**
-   * Holds if this has an exact path mapping from `pattern` to `newPath`.
+   * Holds if this has an exact path mapping (i.e. no wildcards) from `pattern` to `newPath`.
    *
    * For example, `"paths": { "@": "./src/index.ts" }` maps the `@` path to `./src/index.ts`.
    *
