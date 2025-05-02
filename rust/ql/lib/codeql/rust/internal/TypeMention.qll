@@ -248,3 +248,19 @@ class TraitMention extends TypeMention, TraitItemNode {
 
   override Type resolveType() { result = TTrait(this) }
 }
+
+// NOTE: Since the implicit type parameter for the self type parameter never
+// appears in the AST, we (somewhat arbitrarily) choose the name of a trait as a
+// type mention. This works because there is a one-to-one correspondence between
+// a trait and its name.
+class SelfTypeParameterMention extends TypeMention, Name {
+  Trait trait;
+
+  SelfTypeParameterMention() { trait.getName() = this }
+
+  Trait getTrait() { result = trait }
+
+  override Type resolveType() { result = TSelfTypeParameter(trait) }
+
+  override TypeReprMention getTypeArgument(int i) { none() }
+}
