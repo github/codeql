@@ -187,7 +187,7 @@ class PointsToContext extends TPointsToContext {
   pragma[inline]
   predicate appliesTo(ControlFlowNode n) {
     exists(Scope s |
-      this.appliesToScope(pragma[only_bind_into](s)) and pragma[only_bind_into](s) = n.getScope()
+      this.appliesToScope(s) and s = n.getScope()
     )
   }
 
