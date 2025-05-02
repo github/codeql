@@ -336,6 +336,8 @@ All support is experimental.
    `reqwest <https://crates.io/crates/reqwest>`__, HTTP client
    `rusqlite <https://crates.io/crates/rusqlite>`__, Database
    std, Standard library
+   `sqlx <https://crates.io/crates/sqlx>`__, Database
+   `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
    `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
    `url <https://crates.io/crates/url>`__, Utility library
 
