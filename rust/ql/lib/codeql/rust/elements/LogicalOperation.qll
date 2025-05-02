@@ -7,7 +7,6 @@ private import codeql.rust.elements.Operation
  * A logical operation, such as `&&`, `||` or `!`.
  */
 abstract private class LogicalOperationImpl extends Operation {
-  abstract Expr getAnOperand();
 }
 
 final class LogicalOperation = LogicalOperationImpl;
@@ -16,7 +15,6 @@ final class LogicalOperation = LogicalOperationImpl;
  * A binary logical operation, such as `&&` or `||`.
  */
 abstract private class BinaryLogicalOperationImpl extends BinaryExpr, LogicalOperationImpl {
-  override Expr getAnOperand() { result = [this.getLhs(), this.getRhs()] }
 }
 
 final class BinaryLogicalOperation = BinaryLogicalOperationImpl;
@@ -47,6 +45,4 @@ final class UnaryLogicalOperation = UnaryLogicalOperationImpl;
  */
 final class LogicalNotExpr extends UnaryLogicalOperationImpl {
   LogicalNotExpr() { this.getOperatorName() = "!" }
-
-  override Expr getAnOperand() { result = this.getExpr() }
 }

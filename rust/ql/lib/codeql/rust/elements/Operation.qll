@@ -10,10 +10,15 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  * be referenced directly.
  */
 module OperationImpl {
+  /**
+   * An operation, for example `&&`, `+=`, `!` or `*`.
+   */
+  abstract class Operation extends ExprImpl::Expr {
     /**
-     * An operation, for example `&&`, `+=`, `!` or `*`.
+     * Gets an operand of this operation.
      */
-    abstract class Operation extends ExprImpl::Expr { }
+    abstract Expr getAnOperand();
+  }
 }
 
 final class Operation = OperationImpl::Operation;

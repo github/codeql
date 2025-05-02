@@ -8,48 +8,48 @@ fn test_operations(
 	let mut x: i32;
 
 	// simple assignment
-	x = y; // $ Operation AssignmentOperation BinaryExpr
+	x = y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
 
 	// comparison operations
-	x == y; // $ Operation BinaryExpr
-	x != y; // $ Operation BinaryExpr
-	x < y; // $ Operation BinaryExpr
-	x <= y; // $ Operation BinaryExpr
-	x > y; // $ Operation BinaryExpr
-	x >= y; // $ Operation BinaryExpr
+	x == y; // $ Operation Operands=2 BinaryExpr
+	x != y; // $ Operation Operands=2 BinaryExpr
+	x < y; // $ Operation Operands=2 BinaryExpr
+	x <= y; // $ Operation Operands=2 BinaryExpr
+	x > y; // $ Operation Operands=2 BinaryExpr
+	x >= y; // $ Operation Operands=2 BinaryExpr
 
 	// arithmetic operations
-	x + y; // $ Operation BinaryExpr
-	x - y; // $ Operation BinaryExpr
-	x * y; // $ Operation BinaryExpr
-	x / y; // $ Operation BinaryExpr
-	x % y; // $ Operation BinaryExpr
-	x += y; // $ Operation AssignmentOperation BinaryExpr
-	x -= y; // $ Operation AssignmentOperation BinaryExpr
-	x *= y; // $ Operation AssignmentOperation BinaryExpr
-	x /= y; // $ Operation AssignmentOperation BinaryExpr
-	x %= y; // $ Operation AssignmentOperation BinaryExpr
-	-x; // $ Operation PrefixExpr
+	x + y; // $ Operation Operands=2 BinaryExpr
+	x - y; // $ Operation Operands=2 BinaryExpr
+	x * y; // $ Operation Operands=2 BinaryExpr
+	x / y; // $ Operation Operands=2 BinaryExpr
+	x % y; // $ Operation Operands=2 BinaryExpr
+	x += y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x -= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x *= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x /= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x %= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	-x; // $ Operation Operands=1 PrefixExpr
 
 	// logical operations
-	a && b; // $ Operation BinaryExpr LogicalOperation
-	a || b; // $ Operation BinaryExpr LogicalOperation
-	!a; // $ Operation PrefixExpr LogicalOperation
+	a && b; // $ Operation Operands=2 BinaryExpr LogicalOperation
+	a || b; // $ Operation Operands=2 BinaryExpr LogicalOperation
+	!a; // $ Operation Operands=1 PrefixExpr LogicalOperation
 
 	// bitwise operations
-	x & y; // $ Operation BinaryExpr
-	x | y; // $ Operation BinaryExpr
-	x ^ y; // $ Operation BinaryExpr
-	x << y; // $ Operation BinaryExpr
-	x >> y; // $ Operation BinaryExpr
-	x &= y; // $ Operation AssignmentOperation BinaryExpr
-	x |= y; // $ Operation AssignmentOperation BinaryExpr
-	x ^= y; // $ Operation AssignmentOperation BinaryExpr
-	x <<= y; // $ Operation AssignmentOperation BinaryExpr
-	x >>= y; // $ Operation AssignmentOperation BinaryExpr
+	x & y; // $ Operation Operands=2 BinaryExpr
+	x | y; // $ Operation Operands=2 BinaryExpr
+	x ^ y; // $ Operation Operands=2 BinaryExpr
+	x << y; // $ Operation Operands=2 BinaryExpr
+	x >> y; // $ Operation Operands=2 BinaryExpr
+	x &= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x |= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x ^= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x <<= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
+	x >>= y; // $ Operation Operands=2 AssignmentOperation BinaryExpr
 
 	// miscellaneous expressions that might be operations
-	*ptr; // $ Operation PrefixExpr
+	*ptr; // $ Operation Operands=1 PrefixExpr
 	&x; // $ RefExpr
 	res?;
 

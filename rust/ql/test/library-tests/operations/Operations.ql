@@ -16,15 +16,21 @@ string describe(Expr op) {
 }
 
 module OperationsTest implements TestSig {
-  string getARelevantTag() { result = describe(_) }
+  string getARelevantTag() { result = describe(_) or result = "Operands" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr op |
       location = op.getLocation() and
       location.getFile().getBaseName() != "" and
       element = op.toString() and
-      tag = describe(op) and
-      value = ""
+      (
+        tag = describe(op) and
+        value = ""
+        or
+        op instanceof Operation and
+        tag = "Operands" and
+        value = count(op.(Operation).getAnOperand()).toString()
+      )
     )
   }
 }

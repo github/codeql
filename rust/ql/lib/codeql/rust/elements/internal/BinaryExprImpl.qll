@@ -25,5 +25,7 @@ module Impl {
    */
   class BinaryExpr extends Generated::BinaryExpr, OperationImpl::Operation {
     override string toStringImpl() { result = "... " + this.getOperatorName() + " ..." }
+
+    override Expr getAnOperand() { result = [this.getLhs(), this.getRhs()] }
   }
 }
