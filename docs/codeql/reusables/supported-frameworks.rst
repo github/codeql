@@ -330,12 +330,14 @@ All support is experimental.
    `libc <https://crates.io/crates/libc>`__, Utility library
    `log <https://crates.io/crates/log>`__, Logging library
    `md5 <https://crates.io/crates/md5>`__, Utility library
+   `poem <https://crates.io/crates/poem>`__, Web framework
    `postgres <https://crates.io/crates/postgres>`__, Database
    proc_macro, Standard library
    `regex <https://crates.io/crates/regex>`__, Utility library
    `reqwest <https://crates.io/crates/reqwest>`__, HTTP client
    `rusqlite <https://crates.io/crates/rusqlite>`__, Database
    std, Standard library
+   `rust-crypto <https://crates.io/crates/rust-crypto>`__, Cryptography library
    `sqlx <https://crates.io/crates/sqlx>`__, Database
    `tokio <https://crates.io/crates/tokio>`__, Asynchronous IO
    `tokio-postgres <https://crates.io/crates/tokio-postgres>`__, Database
