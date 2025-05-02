@@ -52,4 +52,4 @@ for entry in this_dir.joinpath("modules").iterdir():
             p.name: sha256(p) for p in version.joinpath("patches").iterdir()
         })
         patch_file(version / "MODULE.bazel",
-                   lambda s: re.sub(r'''version\s*=\s*['"].*['"]''', f'version = "{version.name}"', s, 1))
+                   lambda s: re.sub(r'''version\s*=\s*['"].*['"]''', f'version = "{version.name}"', s, count=1))
