@@ -1475,3 +1475,9 @@ class TypeValueExpr(Expr):
 
 class IntegerType(Type):
     value: string
+
+class BuiltinFixedArrayType(BuiltinType):
+    """
+    A builtin type representing N values stored contiguously.
+    """
+    pass

@@ -250,6 +250,7 @@ import codeql.swift.elements.type.BoundGenericType
 import codeql.swift.elements.type.BuiltinBridgeObjectType
 import codeql.swift.elements.type.BuiltinDefaultActorStorageType
 import codeql.swift.elements.type.BuiltinExecutorType
+import codeql.swift.elements.type.BuiltinFixedArrayType
 import codeql.swift.elements.type.BuiltinFloatType
 import codeql.swift.elements.type.BuiltinIntegerLiteralType
 import codeql.swift.elements.type.BuiltinIntegerType

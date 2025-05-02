@@ -903,6 +903,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBuiltinFixedArrayType(Raw::BuiltinFixedArrayType id) { constructBuiltinFixedArrayType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBuiltinFloatType(Raw::BuiltinFloatType id) { constructBuiltinFloatType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -1389,8 +1393,8 @@ module Synth {
    */
   class TBuiltinType =
     TAnyBuiltinIntegerType or TBuiltinBridgeObjectType or TBuiltinDefaultActorStorageType or
-        TBuiltinExecutorType or TBuiltinFloatType or TBuiltinJobType or TBuiltinNativeObjectType or
-        TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
+        TBuiltinExecutorType or TBuiltinFixedArrayType or TBuiltinFloatType or TBuiltinJobType or
+        TBuiltinNativeObjectType or TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
         TBuiltinUnsafeValueBufferType or TBuiltinVectorType;
 
   /**
@@ -2863,6 +2867,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBuiltinFixedArrayType`, if possible.
+   */
+  TBuiltinFixedArrayType convertBuiltinFixedArrayTypeFromRaw(Raw::Element e) {
+    result = TBuiltinFixedArrayType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TBuiltinFloatType`, if possible.
    */
   TBuiltinFloatType convertBuiltinFloatTypeFromRaw(Raw::Element e) { result = TBuiltinFloatType(e) }
@@ -4021,6 +4033,8 @@ module Synth {
     result = convertBuiltinDefaultActorStorageTypeFromRaw(e)
     or
     result = convertBuiltinExecutorTypeFromRaw(e)
+    or
+    result = convertBuiltinFixedArrayTypeFromRaw(e)
     or
     result = convertBuiltinFloatTypeFromRaw(e)
     or
@@ -5595,6 +5609,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBuiltinFixedArrayType` to a raw DB element, if possible.
+   */
+  Raw::Element convertBuiltinFixedArrayTypeToRaw(TBuiltinFixedArrayType e) {
+    e = TBuiltinFixedArrayType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBuiltinFloatType` to a raw DB element, if possible.
    */
   Raw::Element convertBuiltinFloatTypeToRaw(TBuiltinFloatType e) { e = TBuiltinFloatType(result) }
@@ -6753,6 +6775,8 @@ module Synth {
     result = convertBuiltinDefaultActorStorageTypeToRaw(e)
     or
     result = convertBuiltinExecutorTypeToRaw(e)
+    or
+    result = convertBuiltinFixedArrayTypeToRaw(e)
     or
     result = convertBuiltinFloatTypeToRaw(e)
     or

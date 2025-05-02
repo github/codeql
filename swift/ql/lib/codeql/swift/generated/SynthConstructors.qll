@@ -207,6 +207,7 @@ import codeql.swift.elements.type.internal.BoundGenericStructTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinBridgeObjectTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinDefaultActorStorageTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinExecutorTypeConstructor
+import codeql.swift.elements.type.internal.BuiltinFixedArrayTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinFloatTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinIntegerLiteralTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinIntegerTypeConstructor

@@ -3548,6 +3548,14 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A builtin type representing N values stored contiguously.
+   */
+  class BuiltinFixedArrayType extends @builtin_fixed_array_type, BuiltinType {
+    override string toString() { result = "BuiltinFixedArrayType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class BuiltinFloatType extends @builtin_float_type, BuiltinType {
     override string toString() { result = "BuiltinFloatType" }

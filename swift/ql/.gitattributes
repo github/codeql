@@ -539,6 +539,7 @@
 /lib/codeql/swift/elements/type/BuiltinBridgeObjectType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinDefaultActorStorageType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinExecutorType.qll linguist-generated
+/lib/codeql/swift/elements/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinFloatType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerType.qll linguist-generated
@@ -617,6 +618,8 @@
 /lib/codeql/swift/elements/type/internal/BuiltinDefaultActorStorageTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinExecutorTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinExecutorTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/BuiltinFixedArrayTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/BuiltinFixedArrayTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinIntegerLiteralTypeConstructor.qll linguist-generated
@@ -972,6 +975,7 @@
 /lib/codeql/swift/generated/type/BuiltinBridgeObjectType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinDefaultActorStorageType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinExecutorType.qll linguist-generated
+/lib/codeql/swift/generated/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinFloatType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerType.qll linguist-generated

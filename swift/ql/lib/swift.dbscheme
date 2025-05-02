@@ -2220,6 +2220,7 @@ any_generic_type_parents(  //dir=type
 | @builtin_bridge_object_type
 | @builtin_default_actor_storage_type
 | @builtin_executor_type
+| @builtin_fixed_array_type
 | @builtin_float_type
 | @builtin_job_type
 | @builtin_native_object_type
@@ -2400,6 +2401,10 @@ builtin_default_actor_storage_types(  //dir=type
 
 builtin_executor_types(  //dir=type
   unique int id: @builtin_executor_type
+);
+
+builtin_fixed_array_types(  //dir=type
+  unique int id: @builtin_fixed_array_type
 );
 
 builtin_float_types(  //dir=type

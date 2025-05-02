@@ -4564,6 +4564,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfBuiltinFixedArrayType(
+    BuiltinFixedArrayType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfBuiltinFloatType(
     BuiltinFloatType e, int index, string partialPredicateCall
   ) {
@@ -5678,6 +5694,8 @@ private module Impl {
     result = getImmediateChildOfBuiltinDefaultActorStorageType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinExecutorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinFixedArrayType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinFloatType(e, index, partialAccessor)
     or
