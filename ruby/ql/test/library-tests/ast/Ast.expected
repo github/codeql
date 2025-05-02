@@ -915,8 +915,8 @@ control/cases.rb:
 #   56|         getValue: [IntegerLiteral] 5
 #   56|         getKey: [SymbolLiteral] :b
 #   56|           getComponent: [StringTextComponent] b
-#   56|         getRestVariableAccess: [LocalVariableAccess] map
 #   56|         getValue: [LocalVariableAccess] b
+#   56|         getRestVariableAccess: [LocalVariableAccess] map
 #   57|     getBranch: [InClause] in ... then ...
 #   57|       getPattern: [HashPattern] { ..., ** }
 #   57|         getKey: [SymbolLiteral] :a
@@ -1006,8 +1006,8 @@ control/cases.rb:
 #   75|         getValue: [IntegerLiteral] 5
 #   75|         getKey: [SymbolLiteral] :b
 #   75|           getComponent: [StringTextComponent] b
-#   75|         getRestVariableAccess: [LocalVariableAccess] map
 #   75|         getValue: [LocalVariableAccess] b
+#   75|         getRestVariableAccess: [LocalVariableAccess] map
 #   76|     getBranch: [InClause] in ... then ...
 #   76|       getPattern: [HashPattern] { ..., ** }
 #   76|         getKey: [SymbolLiteral] :a
@@ -1209,8 +1209,8 @@ control/cases.rb:
 #  141|         getValue: [IntegerLiteral] 1
 #  141|         getKey: [SymbolLiteral] :a
 #  141|           getComponent: [StringTextComponent] a
-#  141|         getRestVariableAccess: [LocalVariableAccess] rest
 #  141|         getValue: [LocalVariableAccess] a
+#  141|         getRestVariableAccess: [LocalVariableAccess] rest
 #  142|     getBranch: [InClause] in ... then ...
 #  142|       getPattern: [HashPattern] { ..., ** }
 #  142|         getClass: [ConstantReadAccess] Foo

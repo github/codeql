@@ -142,8 +142,8 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
       |
         p
         order by
-          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), p.getSynthAstNodeIndex(),
-          l.getStartColumn(), l.getEndLine(), l.getEndColumn()
+          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn(),
+          p.getSynthAstNodeIndex(), l.getEndLine(), l.getEndColumn()
       )
   }
 
