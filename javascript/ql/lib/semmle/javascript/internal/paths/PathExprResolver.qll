@@ -65,6 +65,7 @@ module ResolveExpr<exprSig/1 shouldResolveExpr> {
       or
       exists(PathConcatenation join |
         node = TValueNode(join) and
+        // Note: 'monotonicAggregates' above lets us use recursion in the last clause of this aggregate
         result =
           strictconcat(int n, EarlyStageNode child, string sep |
             child = TValueNode(join.getOperand(n)) and sep = join.getSeparator()
