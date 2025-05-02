@@ -383,25 +383,54 @@ fn emit_function(
     assert_eq!(sig.binders.len(Interner), parameters.len());
     let sig = sig.skip_binders();
     let ty_vars = &[parameters];
+    let function_data = db.function_data(function);
+    let mut self_param = None;
     let params = sig
         .params()
         .iter()
-        .map(|p| {
+        .enumerate()
+        .filter_map(|(idx, p)| {
             let type_repr = emit_hir_ty(trap, db, ty_vars, p);
-            trap.emit(generated::Param {
-                id: trap::TrapId::Star,
-                attrs: vec![],
-                type_repr,
-                pat: None,
-            })
+
+            if idx == 0 && function_data.has_self_param() {
+                // Check if the self parameter is a reference
+                let (is_ref, is_mut) = match p.kind(Interner) {
+                    chalk_ir::TyKind::Ref(mutability, _, _) => {
+                        (true, matches!(mutability, chalk_ir::Mutability::Mut))
+                    }
+                    chalk_ir::TyKind::Raw(mutability, _) => {
+                        (false, matches!(mutability, chalk_ir::Mutability::Mut))
+                    }
+                    _ => (false, false),
+                };
+
+                self_param = Some(trap.emit(generated::SelfParam {
+                    id: trap::TrapId::Star,
+                    attrs: vec![],
+                    type_repr,
+                    is_ref,
+                    is_mut,
+                    lifetime: None,
+                    name: None,
+                }));
+                None
+            } else {
+                Some(trap.emit(generated::Param {
+                    id: trap::TrapId::Star,
+                    attrs: vec![],
+                    type_repr,
+                    pat: None,
+                }))
+            }
         })
         .collect();
 
     let ret_type = emit_hir_ty(trap, db, ty_vars, sig.ret());
+
     let param_list = trap.emit(generated::ParamList {
         id: trap::TrapId::Star,
         params,
-        self_param: None,
+        self_param,
     });
     let ret_type = ret_type.map(|ret_type| {
         trap.emit(generated::RetTypeRepr {
