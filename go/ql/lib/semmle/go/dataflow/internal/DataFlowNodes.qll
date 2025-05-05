@@ -807,12 +807,18 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
+  predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
+      e instanceof AddressExpr or
+      e = any(AddressExpr ae).getOperand() or
+      e = any(StarExpr ae).getBase() or
+      e = any(DerefExpr ae).getOperand() or
+      e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
+    )
+  }
+
   predicate hasPostUpdateNode(Node preupd) {
-    preupd instanceof AddressOperationNode
-    or
-    preupd = any(AddressOperationNode addr).getOperand()
-    or
-    preupd = any(PointerDereferenceNode deref).getOperand()
+    insnHasPostUpdateNode(preupd.asInstruction())
     or
     preupd = getAWrittenNode()
     or
