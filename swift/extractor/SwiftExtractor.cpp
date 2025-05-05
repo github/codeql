@@ -155,7 +155,7 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
   if (primaryFile && primaryFile->getBufferID()) {
     auto& sourceManager = compiler.getSourceMgr();
     auto tokens = swift::tokenize(compiler.getInvocation().getLangOptions(), sourceManager,
-                                  *primaryFile->getBufferID());
+                                  primaryFile->getBufferID());
     for (auto& token : tokens) {
       if (token.getKind() == swift::tok::comment) {
         comments.push_back(token);
@@ -210,6 +210,7 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
   state.encounteredModules.insert(todo.begin(), todo.end());
+  LOG_DEBUG("{} modules loaded", todo.size());
 
   while (!todo.empty()) {
     auto module = todo.back();
@@ -223,13 +224,18 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
       }
       isFromSourceFile = true;
       if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
+        LOG_DEBUG("skipping module {} from file {}, not in input files", module->getName().get(),
+                  sourceFile->getFilename());
         continue;
       }
+      LOG_DEBUG("extracting module {} from input file {}", module->getName().get(),
+                sourceFile->getFilename());
       archiveFile(state.configuration, *sourceFile);
       encounteredModules =
           extractDeclarations(state, compiler, *module, sourceFile, /*lazy declaration*/ nullptr);
     }
     if (!isFromSourceFile) {
+      LOG_DEBUG("extracting module {} from non-source file", module->getName().get());
       encounteredModules = extractDeclarations(state, compiler, *module, /*source file*/ nullptr,
                                                /*lazy declaration*/ nullptr);
     }

@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 9.3
  * @precision high
- * @id actions/reusable-wokflow-sinks
+ * @id actions/reusable-workflow-sinks
  * @tags actions
  *       model-generator
  *       external/cwe/cwe-020

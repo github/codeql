@@ -87,11 +87,6 @@ abstract class ItemNode extends Locatable {
   /** Gets the `i`th type parameter of this item, if any. */
   abstract TypeParam getTypeParam(int i);
 
-  /** Holds if this item is declared as `pub`. */
-  bindingset[this]
-  pragma[inline_late]
-  predicate isPublic() { exists(this.getVisibility()) }
-
   /** Gets an element that has this item as immediately enclosing item. */
   pragma[nomagic]
   Element getADescendant() {
@@ -172,9 +167,14 @@ abstract class ItemNode extends Locatable {
     result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
   }
 
-  /** Gets a successor named `name` of this item, if any. */
+  /**
+   * Gets a successor named `name` of this item, if any.
+   *
+   * Whenever a function exists in both source code and in library code,
+   * both are included
+   */
   cached
-  ItemNode getASuccessor(string name) {
+  ItemNode getASuccessorFull(string name) {
     Stages::PathResolutionStage::ref() and
     result = this.getASuccessorRec(name)
     or
@@ -200,6 +200,27 @@ abstract class ItemNode extends Locatable {
     name = "$crate" and
     result = any(CrateItemNode crate | this = crate.getARootModuleNode()).(Crate).getADependency*() and
     result.(CrateItemNode).isPotentialDollarCrateTarget()
+  }
+
+  pragma[nomagic]
+  private predicate hasSourceFunction(string name) {
+    this.getASuccessorFull(name).(Function).fromSource()
+  }
+
+  /** Gets a successor named `name` of this item, if any. */
+  pragma[nomagic]
+  ItemNode getASuccessor(string name) {
+    result = this.getASuccessorFull(name) and
+    (
+      // when a function exists in both source code and in library code, it is because
+      // we also extracted the source code as library code, and hence we only want
+      // the function from source code
+      result.fromSource()
+      or
+      not result instanceof Function
+      or
+      not this.hasSourceFunction(name)
+    )
   }
 
   /** Gets the location of this item. */
@@ -234,7 +255,7 @@ abstract private class ModuleLikeNode extends ItemNode {
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   pragma[nomagic]
   ModuleLikeNode getSuper() {
-    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessor("super")
+    result = any(ModuleItemNode mod | fileImport(mod, this)).getASuccessorFull("super")
   }
 
   override string getName() { result = "(source file)" }
@@ -244,8 +265,6 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   }
 
   override Visibility getVisibility() { none() }
-
-  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -297,7 +316,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   predicate isPotentialDollarCrateTarget() {
     exists(string name, RelevantPath p |
       p.isDollarCrateQualifiedPath(name) and
-      exists(this.getASuccessor(name))
+      exists(this.getASuccessorFull(name))
     )
   }
 
@@ -308,8 +327,6 @@ class CrateItemNode extends ItemNode instanceof Crate {
   }
 
   override Visibility getVisibility() { none() }
-
-  override predicate isPublic() { any() }
 
   override TypeParam getTypeParam(int i) { none() }
 }
@@ -323,7 +340,14 @@ abstract private class AssocItemNode extends ItemNode, AssocItem {
 private class ConstItemNode extends AssocItemNode instanceof Const {
   override string getName() { result = Const.super.getName().getText() }
 
-  override predicate hasImplementation() { super.hasBody() }
+  override predicate hasImplementation() {
+    super.hasBody()
+    or
+    // for trait items from library code, we do not currently know if they
+    // have default implementations or not, so we assume they do
+    not this.fromSource() and
+    this = any(TraitItemNode t).getAnAssocItem()
+  }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -359,7 +383,14 @@ private class VariantItemNode extends ItemNode instanceof Variant {
 class FunctionItemNode extends AssocItemNode instanceof Function {
   override string getName() { result = Function.super.getName().getText() }
 
-  override predicate hasImplementation() { super.hasBody() }
+  override predicate hasImplementation() {
+    super.hasBody()
+    or
+    // for trait items from library code, we do not currently know if they
+    // have default implementations or not, so we assume they do
+    not this.fromSource() and
+    this = any(TraitItemNode t).getAnAssocItem()
+  }
 
   override Namespace getNamespace() { result.isValue() }
 
@@ -401,7 +432,7 @@ abstract class ImplOrTraitItemNode extends ItemNode {
 
 pragma[nomagic]
 private TypeParamItemNode resolveTypeParamPathTypeRepr(PathTypeRepr ptr) {
-  result = resolvePath(ptr.getPath())
+  result = resolvePathFull(ptr.getPath())
 }
 
 class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
@@ -409,9 +440,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
 
-  ItemNode resolveSelfTy() { result = resolvePath(this.getSelfPath()) }
+  ItemNode resolveSelfTy() { result = resolvePathFull(this.getSelfPath()) }
 
-  TraitItemNode resolveTraitTy() { result = resolvePath(this.getTraitPath()) }
+  TraitItemNode resolveTraitTy() { result = resolvePathFull(this.getTraitPath()) }
 
   pragma[nomagic]
   private TypeRepr getASelfTyArg() {
@@ -525,7 +556,7 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
 
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
@@ -599,7 +630,7 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
 
   /**
    * Holds if this type parameter has a trait bound. Examples:
@@ -864,47 +895,60 @@ class RelevantPath extends Path {
   }
 }
 
+private predicate isModule(ItemNode m) { m instanceof Module }
+
+/** Holds if root module `root` contains the module `m`. */
+private predicate rootHasModule(ItemNode root, ItemNode m) =
+  doublyBoundedFastTC(hasChild/2, isRoot/1, isModule/1)(root, m)
+
+pragma[nomagic]
+private ItemNode getOuterScope(ItemNode i) {
+  // nested modules do not have unqualified access to items from outer modules,
+  // except for items declared at top-level in the root module
+  rootHasModule(result, i)
+  or
+  not i instanceof Module and
+  result = i.getImmediateParent()
+}
+
+pragma[nomagic]
+private ItemNode getAdjustedEnclosing(ItemNode encl0, Namespace ns) {
+  // functions in `impl` blocks need to use explicit `Self::` to access other
+  // functions in the `impl` block
+  if encl0 instanceof ImplOrTraitItemNode and ns.isValue()
+  then result = encl0.getImmediateParent()
+  else result = encl0
+}
+
 /**
  * Holds if the unqualified path `p` references an item named `name`, and `name`
  * may be looked up in the `ns` namespace inside enclosing item `encl`.
  */
 pragma[nomagic]
-private predicate unqualifiedPathLookup(RelevantPath p, string name, Namespace ns, ItemNode encl) {
-  exists(ItemNode encl0 |
+private predicate unqualifiedPathLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
+  exists(ItemNode encl0 | encl = getAdjustedEnclosing(encl0, ns) |
     // lookup in the immediately enclosing item
     p.isUnqualified(name) and
     encl0.getADescendant() = p and
     exists(ns) and
-    not name = ["crate", "$crate"]
+    not name = ["crate", "$crate", "super", "self"]
     or
     // lookup in an outer scope, but only if the item is not declared in inner scope
     exists(ItemNode mid |
-      unqualifiedPathLookup(p, name, ns, mid) and
+      unqualifiedPathLookup(mid, name, ns, p) and
       not declares(mid, ns, name) and
-      not name = ["super", "self"] and
       not (
         name = "Self" and
         mid = any(ImplOrTraitItemNode i).getAnItemInSelfScope()
-      )
-    |
-      // nested modules do not have unqualified access to items from outer modules,
-      // except for items declared at top-level in the root module
-      if mid instanceof Module
-      then encl0 = mid.getImmediateParent+() and encl0.(ModuleLikeNode).isRoot()
-      else encl0 = mid.getImmediateParent()
+      ) and
+      encl0 = getOuterScope(mid)
     )
-  |
-    // functions in `impl` blocks need to use explicit `Self::` to access other
-    // functions in the `impl` block
-    if encl0 instanceof ImplOrTraitItemNode and ns.isValue()
-    then encl = encl0.getImmediateParent()
-    else encl = encl0
   )
 }
 
 pragma[nomagic]
-private ItemNode getASuccessor(ItemNode pred, string name, Namespace ns) {
-  result = pred.getASuccessor(name) and
+private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns) {
+  result = pred.getASuccessorFull(name) and
   ns = result.getNamespace()
 }
 
@@ -917,10 +961,12 @@ private predicate hasChild(ItemNode parent, ItemNode child) { child.getImmediate
 private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
   doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
 
+/**
+ * Holds if the unqualified path `p` references a keyword item named `name`, and
+ * `name` may be looked up in the `ns` namespace inside enclosing item `encl`.
+ */
 pragma[nomagic]
-private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace ns, ItemNode encl) {
-  unqualifiedPathLookup(p, name, ns, encl)
-  or
+private predicate keywordLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
   // For `($)crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
     encl.(ModuleLikeNode).isRoot() and
@@ -928,13 +974,21 @@ private predicate unqualifiedPathLookup1(RelevantPath p, string name, Namespace 
     or
     rootHasCratePathTc(encl, i)
   )
+  or
+  name = ["super", "self"] and
+  p.isUnqualified(name) and
+  exists(ItemNode encl0 |
+    encl0.getADescendant() = p and
+    encl = getAdjustedEnclosing(encl0, ns)
+  )
 }
 
 pragma[nomagic]
-private ItemNode unqualifiedPathLookup(RelevantPath path, Namespace ns) {
-  exists(ItemNode encl, string name |
-    result = getASuccessor(encl, name, ns) and
-    unqualifiedPathLookup1(path, name, ns, encl)
+private ItemNode unqualifiedPathLookup(RelevantPath p, Namespace ns) {
+  exists(ItemNode encl, string name | result = getASuccessorFull(encl, name, ns) |
+    unqualifiedPathLookup(encl, name, ns, p)
+    or
+    keywordLookup(encl, name, ns, p)
   )
 }
 
@@ -955,7 +1009,7 @@ private ItemNode resolvePath0(RelevantPath path, Namespace ns) {
   or
   exists(ItemNode q, string name |
     q = resolvePathQualifier(path, name) and
-    result = getASuccessor(q, name, ns)
+    result = getASuccessorFull(q, name, ns)
   )
   or
   result = resolveUseTreeListItem(_, _, path) and
@@ -992,8 +1046,14 @@ private predicate pathUsesNamespace(Path p, Namespace n) {
   )
 }
 
+/**
+ * Gets the item that `path` resolves to, if any.
+ *
+ * Whenever `path` can resolve to both a function in source code and in library
+ * code, both are included
+ */
 pragma[nomagic]
-private ItemNode resolvePath1(RelevantPath path) {
+private ItemNode resolvePathFull(RelevantPath path) {
   exists(Namespace ns | result = resolvePath0(path, ns) |
     pathUsesNamespace(path, ns)
     or
@@ -1003,53 +1063,29 @@ private ItemNode resolvePath1(RelevantPath path) {
 }
 
 pragma[nomagic]
-private ItemNode resolvePathPrivate(
-  RelevantPath path, ModuleLikeNode itemParent, ModuleLikeNode pathParent
-) {
-  result = resolvePath1(path) and
-  itemParent = result.getImmediateParentModule() and
-  not result.isPublic() and
-  (
-    pathParent.getADescendant() = path
-    or
-    pathParent = any(ItemNode mid | path = mid.getADescendant()).getImmediateParentModule()
-  )
-}
-
-pragma[nomagic]
-private predicate isItemParent(ModuleLikeNode itemParent) {
-  exists(resolvePathPrivate(_, itemParent, _))
-}
-
-/**
- * Gets a module that has access to private items defined inside `itemParent`.
- *
- * According to [The Rust Reference][1] this is either `itemParent` itself or any
- * descendant of `itemParent`.
- *
- * [1]: https://doc.rust-lang.org/reference/visibility-and-privacy.html#r-vis.access
- */
-pragma[nomagic]
-private ModuleLikeNode getAPrivateVisibleModule(ModuleLikeNode itemParent) {
-  isItemParent(itemParent) and
-  result.getImmediateParentModule*() = itemParent
+private predicate resolvesSourceFunction(RelevantPath path) {
+  resolvePathFull(path).(Function).fromSource()
 }
 
 /** Gets the item that `path` resolves to, if any. */
 cached
 ItemNode resolvePath(RelevantPath path) {
-  result = resolvePath1(path) and
-  result.isPublic()
-  or
-  exists(ModuleLikeNode itemParent, ModuleLikeNode pathParent |
-    result = resolvePathPrivate(path, itemParent, pathParent) and
-    pathParent = getAPrivateVisibleModule(itemParent)
+  result = resolvePathFull(path) and
+  (
+    // when a function exists in both source code and in library code, it is because
+    // we also extracted the source code as library code, and hence we only want
+    // the function from source code
+    result.fromSource()
+    or
+    not result instanceof Function
+    or
+    not resolvesSourceFunction(path)
   )
 }
 
 pragma[nomagic]
 private ItemNode resolvePathQualifier(RelevantPath path, string name) {
-  result = resolvePath(path.getQualifier()) and
+  result = resolvePathFull(path.getQualifier()) and
   name = path.getText()
 }
 
@@ -1075,12 +1111,12 @@ private ItemNode resolveUseTreeListItem(Use use, UseTree tree, RelevantPath path
     mid = resolveUseTreeListItem(use, midTree) and
     tree = midTree.getUseTreeList().getAUseTree() and
     isUseTreeSubPathUnqualified(tree, path, pragma[only_bind_into](name)) and
-    result = mid.getASuccessor(pragma[only_bind_into](name))
+    result = mid.getASuccessorFull(pragma[only_bind_into](name))
   )
   or
   exists(ItemNode q, string name |
     q = resolveUseTreeListItemQualifier(use, tree, path, name) and
-    result = q.getASuccessor(name)
+    result = q.getASuccessorFull(name)
   )
 }
 
@@ -1095,7 +1131,7 @@ private ItemNode resolveUseTreeListItemQualifier(
 pragma[nomagic]
 private ItemNode resolveUseTreeListItem(Use use, UseTree tree) {
   tree = use.getUseTree() and
-  result = resolvePath(tree.getPath())
+  result = resolvePathFull(tree.getPath())
   or
   result = resolveUseTreeListItem(use, tree, tree.getPath())
 }
@@ -1110,7 +1146,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
     then
       exists(ItemNode encl, Namespace ns |
         encl.getADescendant() = use and
-        item = getASuccessor(used, name, ns) and
+        item = getASuccessorFull(used, name, ns) and
         // glob imports can be shadowed
         not declares(encl, ns, name) and
         not name = ["super", "self", "Self", "$crate", "crate"]

@@ -7,6 +7,7 @@
  * @id cs/reference-equality-on-valuetypes
  * @tags reliability
  *       correctness
+ *       quality
  *       external/cwe/cwe-595
  */
 

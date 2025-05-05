@@ -9,6 +9,7 @@
  * @id cs/constant-condition
  * @tags maintainability
  *       readability
+ *       quality
  *       external/cwe/cwe-835
  */
 

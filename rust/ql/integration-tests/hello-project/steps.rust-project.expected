@@ -1,3 +1,5 @@
+| file:///types.rs:0:0:0:0 | Extract(/types.rs) |
+| file:///types.rs:0:0:0:0 | Parse(/types.rs) |
 | file://:0:0:0:0 | CrateGraph |
 | file://:0:0:0:0 | FindManifests |
 | rust-project.json:0:0:0:0 | LoadManifest(rust-project.json) |

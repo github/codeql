@@ -1394,7 +1394,7 @@ class MacroRole(AstNode):
     """
     kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
     macro_syntax: int | doc("#freestanding or @attached") | ql.internal
-    conformances: list[TypeExpr] | doc("conformances of this macro role")
+    conformances: list[Expr] | doc("conformances of this macro role")
     names: list[string] | doc("names of this macro role")
 
 class MacroDecl(GenericContext, ValueDecl):
@@ -1463,3 +1463,21 @@ class UnreachableExpr(ImplicitConversionExpr):
     """
     A conversion from the uninhabited type to any other type. It's never evaluated.
     """
+
+
+class UnsafeCastExpr(ImplicitConversionExpr):
+    """
+    A conversion that performs an unsafe bitcast.
+    """
+
+class TypeValueExpr(Expr):
+    type_repr: TypeRepr | child
+
+class IntegerType(Type):
+    value: string
+
+class BuiltinFixedArrayType(BuiltinType):
+    """
+    A builtin type representing N values stored contiguously.
+    """
+    pass

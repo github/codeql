@@ -408,7 +408,8 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
   )
 }
 
-pragma[inline]
+bindingset[d, ext]
+pragma[inline_late]
 private Declaration interpretExt(Declaration d, ExtPath ext) {
   ext = "" and result = d
   or

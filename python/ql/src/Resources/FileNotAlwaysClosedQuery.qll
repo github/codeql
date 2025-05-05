@@ -52,12 +52,27 @@ class FileWrapperCall extends DataFlow::CallCfgNode {
 abstract class FileClose extends DataFlow::CfgNode {
   /** Holds if this file close will occur if an exception is thrown at `raises`. */
   predicate guardsExceptions(DataFlow::CfgNode raises) {
-    this.asCfgNode() = raises.asCfgNode().getAnExceptionalSuccessor().getASuccessor*()
+    cfgGetASuccessorStar(raises.asCfgNode().getAnExceptionalSuccessor(), this.asCfgNode())
     or
     // The expression is after the close call.
     // This also covers the body of a `with` statement.
-    raises.asCfgNode() = this.asCfgNode().getASuccessor*()
+    cfgGetASuccessorStar(this.asCfgNode(), raises.asCfgNode())
   }
+}
+
+private predicate cfgGetASuccessor(ControlFlowNode src, ControlFlowNode sink) {
+  sink = src.getASuccessor()
+}
+
+pragma[inline]
+private predicate cfgGetASuccessorPlus(ControlFlowNode src, ControlFlowNode sink) =
+  fastTC(cfgGetASuccessor/2)(src, sink)
+
+pragma[inline]
+private predicate cfgGetASuccessorStar(ControlFlowNode src, ControlFlowNode sink) {
+  src = sink
+  or
+  cfgGetASuccessorPlus(src, sink)
 }
 
 /** A call to the `.close()` method of a file object. */
