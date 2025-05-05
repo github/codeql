@@ -238,7 +238,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   }
 
   /** A class that represents a type tree. */
-  signature class TypeTreeSig {
+  private signature class TypeTreeSig {
     Type resolveTypeAt(TypePath path);
 
     /** Gets a textual representation of this type abstraction. */
@@ -357,21 +357,38 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       result = tm.resolveTypeAt(TypePath::nil())
     }
 
-    signature module IsInstantiationOfSig<TypeTreeSig App> {
+    signature module IsInstantiationOfInputSig<TypeTreeSig App> {
       /**
        * Holds if `abs` is a type abstraction under which `tm` occurs and if
        * `app` is potentially the result of applying the abstraction to type
        * some type argument.
        */
       predicate potentialInstantiationOf(App app, TypeAbstraction abs, TypeMention tm);
+
+      /**
+       * Holds if `constraint` might occur as the third argument of
+       * `potentialInstantiationOf`. Defaults to simply projecting the third
+       * argument of `potentialInstantiationOf`.
+       */
+      default predicate relevantTypeMention(TypeMention tm) { potentialInstantiationOf(_, _, tm) }
     }
 
-    module IsInstantiationOf<TypeTreeSig App, IsInstantiationOfSig<App> Input> {
+    /**
+     * Provides functionality for determining if a type is a possible
+     * instantiation of a type mention containing type parameters.
+     */
+    module IsInstantiationOf<TypeTreeSig App, IsInstantiationOfInputSig<App> Input> {
       private import Input
 
       /** Gets the `i`th path in `tm` per some arbitrary order. */
+      pragma[nomagic]
       private TypePath getNthPath(TypeMention tm, int i) {
-        result = rank[i + 1](TypePath path | exists(tm.resolveTypeAt(path)) | path)
+        result =
+          rank[i + 1](TypePath path |
+            exists(tm.resolveTypeAt(path)) and relevantTypeMention(tm)
+          |
+            path
+          )
       }
 
       /**
@@ -389,6 +406,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
       private predicate satisfiesConcreteTypesFromIndex(
         App app, TypeAbstraction abs, TypeMention tm, int i
       ) {
@@ -398,7 +416,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, tm, i - 1)
       }
 
-      pragma[inline]
+      pragma[nomagic]
       private predicate satisfiesConcreteTypes(App app, TypeAbstraction abs, TypeMention tm) {
         satisfiesConcreteTypesFromIndex(app, abs, tm, max(int i | exists(getNthPath(tm, i))))
       }
@@ -417,18 +435,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * arbitrary order, if any.
        */
       private TypePath getNthTypeParameterPath(TypeMention tm, TypeParameter tp, int i) {
-        result = rank[i + 1](TypePath path | tp = tm.resolveTypeAt(path) | path)
+        result =
+          rank[i + 1](TypePath path | tp = tm.resolveTypeAt(path) and relevantTypeMention(tm) | path)
       }
 
+      pragma[nomagic]
       private predicate typeParametersEqualFromIndex(
-        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, int i
+        App app, TypeAbstraction abs, TypeMention tm, TypeParameter tp, Type t, int i
       ) {
         potentialInstantiationOf(app, abs, tm) and
-        exists(TypePath path, TypePath nextPath |
+        exists(TypePath path |
           path = getNthTypeParameterPath(tm, tp, i) and
-          nextPath = getNthTypeParameterPath(tm, tp, i - 1) and
-          app.resolveTypeAt(path) = app.resolveTypeAt(nextPath) and
-          if i = 1 then any() else typeParametersEqualFromIndex(app, abs, tm, tp, i - 1)
+          t = app.resolveTypeAt(path) and
+          if i = 0 then any() else typeParametersEqualFromIndex(app, abs, tm, tp, t, i - 1)
         )
       }
 
@@ -443,7 +462,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           exists(int n | n = max(int i | exists(getNthTypeParameterPath(tm, tp, i))) |
             // If the largest index is 0, then there are no equalities to check as
             // the type parameter only occurs once.
-            if n = 0 then any() else typeParametersEqualFromIndex(app, abs, tm, tp, n)
+            if n = 0 then any() else typeParametersEqualFromIndex(app, abs, tm, tp, _, n)
           )
         )
       }
@@ -488,7 +507,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `Pair<int, string>` is _not_ an instantiation of `Pair<string, string>`
        */
       predicate isInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
-        potentialInstantiationOf(app, abs, tm) and
         satisfiesConcreteTypes(app, abs, tm) and
         typeParametersHaveEqualInstantiation(app, abs, tm)
       }
@@ -513,7 +531,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
-      module IsInstantiationOfInput implements IsInstantiationOfSig<TypeMention> {
+      module IsInstantiationOfInput implements IsInstantiationOfInputSig<TypeMention> {
         pragma[nomagic]
         private predicate typeCondition(Type type, TypeAbstraction abs, TypeMention lhs) {
           conditionSatisfiesConstraint(abs, lhs, _) and type = resolveTypeMentionRoot(lhs)
@@ -954,7 +972,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Location getLocation() { result = a.getLocation() }
         }
 
-        private module IsInstantiationOfInput implements IsInstantiationOfSig<RelevantAccess> {
+        private module IsInstantiationOfInput implements IsInstantiationOfInputSig<RelevantAccess> {
           predicate potentialInstantiationOf(
             RelevantAccess at, TypeAbstraction abs, TypeMention cond
           ) {
@@ -964,6 +982,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
               // We only need to check instantiations where there are multiple candidates.
               countConstraintImplementations(type, constraint) > 1
             )
+          }
+
+          predicate relevantTypeMention(TypeMention constraint) {
+            rootTypesSatisfaction(_, _, _, constraint, _)
           }
         }
 

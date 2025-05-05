@@ -990,11 +990,19 @@ private module Cached {
     )
   }
 
-  private module IsInstantiationOfInput implements IsInstantiationOfSig<ReceiverExpr> {
+  private module IsInstantiationOfInput implements IsInstantiationOfInputSig<ReceiverExpr> {
+    pragma[nomagic]
     predicate potentialInstantiationOf(ReceiverExpr receiver, TypeAbstraction impl, TypeMention sub) {
       methodCandidate(receiver.resolveTypeAt(TypePath::nil()), receiver.getField(),
         receiver.getNumberOfArgs(), impl) and
       sub = impl.(ImplTypeAbstraction).getSelfTy()
+    }
+
+    predicate relevantTypeMention(TypeMention sub) {
+      exists(TypeAbstraction impl |
+        methodCandidate(_, _, _, impl) and
+        sub = impl.(ImplTypeAbstraction).getSelfTy()
+      )
     }
   }
 
