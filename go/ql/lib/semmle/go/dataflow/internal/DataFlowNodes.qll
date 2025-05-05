@@ -807,22 +807,24 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
+  predicate hasPostUpdateNode(Node preupd) {
+    preupd instanceof AddressOperationNode
+    or
+    preupd = any(AddressOperationNode addr).getOperand()
+    or
+    preupd = any(PointerDereferenceNode deref).getOperand()
+    or
+    preupd = getAWrittenNode()
+    or
+    preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
+    mutableType(preupd.getType())
+  }
+
   private class DefaultPostUpdateNode extends PostUpdateNode {
     Node preupd;
 
     DefaultPostUpdateNode() {
-      (
-        preupd instanceof AddressOperationNode
-        or
-        preupd = any(AddressOperationNode addr).getOperand()
-        or
-        preupd = any(PointerDereferenceNode deref).getOperand()
-        or
-        preupd = getAWrittenNode()
-        or
-        preupd = any(ArgumentNode arg).getACorrespondingSyntacticArgument() and
-        mutableType(preupd.getType())
-      ) and
+      hasPostUpdateNode(preupd) and
       (
         preupd = this.(SsaNode).getAUse()
         or
