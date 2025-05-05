@@ -866,7 +866,7 @@ module Public {
     int getPosition() { result = i }
 
     /**
-     * Gets a data-flow node for a syntactic argument corresponding this this
+     * Gets a data-flow node for a syntactic argument corresponding to this
      * argument. If this argument is not an implicit varargs slice then this
      * will just be the argument itself. If this argument is an implicit
      * varargs slice then this will be a data-flow node that for an argument
