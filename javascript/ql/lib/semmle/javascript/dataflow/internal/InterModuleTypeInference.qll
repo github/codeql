@@ -25,7 +25,7 @@ private class AnalyzedImportSpecifier extends AnalyzedVarDef, @import_specifier 
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) {
     // mark as incomplete if the import could rely on the lookup path
-    mayDependOnLookupPath(id.getImportedPath().getValue()) and
+    mayDependOnLookupPath(id.getImportedPathString()) and
     cause = "import"
     or
     // mark as incomplete if we cannot fully analyze this import
@@ -260,7 +260,7 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
   Module required;
 
   AnalyzedAmdImport() {
-    exists(AmdModule amd, PathExpr dep |
+    exists(AmdModule amd, Expr dep |
       exists(Parameter p |
         amd.getDefine().dependencyParameter(dep, p) and
         this = DataFlow::parameterNode(p)

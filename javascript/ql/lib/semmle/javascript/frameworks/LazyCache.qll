@@ -36,7 +36,7 @@ module LazyCache {
 
     override Module getEnclosingModule() { result = this.getTopLevel() }
 
-    override PathExpr getImportedPath() { result = this.getArgument(0) }
+    override Expr getImportedPathExpr() { result = this.getArgument(0) }
 
     private LazyCacheVariable getVariable() { result = cache }
 
@@ -58,7 +58,7 @@ module LazyCache {
   }
 
   /** A constant path element appearing in a call to a lazy-cache object. */
-  private class LazyCachePathExpr extends PathExpr, ConstantString {
+  deprecated private class LazyCachePathExpr extends PathExpr, ConstantString {
     LazyCachePathExpr() { this = any(LazyCacheImport rp).getArgument(0) }
 
     override string getValue() { result = this.getStringValue() }
