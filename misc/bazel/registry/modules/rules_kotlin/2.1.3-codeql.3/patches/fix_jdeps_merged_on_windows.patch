@@ -1,0 +1,32 @@
+Workaround against build error on windows, as inspired by
+https://github.com/bazel-contrib/rules_jvm_external/pull/1297#issuecomment-2751599009
+
+diff --git a/src/main/kotlin/BUILD.release.bazel b/src/main/kotlin/BUILD.release.bazel
+index 91ad31c..ecff81f 100644
+--- a/src/main/kotlin/BUILD.bazel
++++ b/src/main/kotlin/BUILD.bazel
+@@ -13,6 +13,7 @@
+ # limitations under the License.
+ 
+ load("@rules_java//java:defs.bzl", "java_binary", "java_import")
++load("//kotlin/compiler:compiler.bzl", _KOTLIN_STDLIBS = "KOTLIN_STDLIBS")
+ 
+ java_import(
+     name = "worker",
+@@ -50,7 +51,7 @@ java_binary(
+         "@kotlinx_serialization_core_jvm//jar",
+         "@kotlinx_serialization_json//jar",
+         "@kotlinx_serialization_json_jvm//jar",
+-    ],
++    ] + _KOTLIN_STDLIBS,
+     jvm_flags = [
+         "-D@com_github_jetbrains_kotlinx...serialization-core-jvm=$(rlocationpath @kotlinx_serialization_core_jvm//jar)",
+         "-D@com_github_jetbrains_kotlinx...serialization-json=$(rlocationpath @kotlinx_serialization_json//jar)",
+@@ -79,6 +80,7 @@ java_binary(
+     jvm_flags = [
+         "-XX:-MaxFDLimit",
+     ],
++    data = _KOTLIN_STDLIBS,
+     main_class = "io.bazel.kotlin.builder.cmd.MergeJdeps",
+     visibility = ["//visibility:public"],
+     runtime_deps = [":jdeps_merger_worker"],
