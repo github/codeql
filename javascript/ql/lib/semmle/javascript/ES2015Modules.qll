@@ -2,6 +2,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * An ECMAScript 2015 module.
@@ -91,7 +92,12 @@ private predicate hasDefaultExport(ES2015Module mod) {
 class ImportDeclaration extends Stmt, Import, @import_declaration {
   override ES2015Module getEnclosingModule() { result = this.getTopLevel() }
 
-  override PathExpr getImportedPath() { result = this.getChildExpr(-1) }
+  /**
+   * INTERNAL USE ONLY. DO NOT USE.
+   */
+  string getRawImportPath() { result = this.getChildExpr(-1).getStringValue() }
+
+  override Expr getImportedPathExpr() { result = this.getChildExpr(-1) }
 
   /**
    * Gets the object literal passed as part of the `with` (or `assert`) clause in this import declaration.
@@ -149,7 +155,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 }
 
 /** A literal path expression appearing in an `import` declaration. */
-private class LiteralImportPath extends PathExpr, ConstantString {
+deprecated private class LiteralImportPath extends PathExpr, ConstantString {
   LiteralImportPath() { exists(ImportDeclaration req | this = req.getChildExpr(-1)) }
 
   override string getValue() { result = this.getStringValue() }
@@ -725,27 +731,12 @@ abstract class ReExportDeclaration extends ExportDeclaration {
   cached
   Module getReExportedModule() {
     Stages::Imports::ref() and
-    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
-    or
-    result = this.resolveFromTypeRoot()
-  }
-
-  /**
-   * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
-   */
-  private Module resolveFromTypeRoot() {
-    result.getFile() =
-      min(TypeRootFolder typeRoot |
-        |
-        typeRoot.getModuleFile(this.getImportedPath().getStringValue())
-        order by
-          typeRoot.getSearchPriority(this.getFile().getParentContainer())
-      )
+    result.getFile() = ImportPathResolver::resolveExpr(this.getImportedPath())
   }
 }
 
 /** A literal path expression appearing in a re-export declaration. */
-private class LiteralReExportPath extends PathExpr, ConstantString {
+deprecated private class LiteralReExportPath extends PathExpr, ConstantString {
   LiteralReExportPath() { exists(ReExportDeclaration bred | this = bred.getImportedPath()) }
 
   override string getValue() { result = this.getStringValue() }

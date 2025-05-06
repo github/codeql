@@ -45,7 +45,7 @@ int numberOfExtensions() { result = count(getFileExtensionPriority(_)) }
  * Gets the resolution target with the given `priority` of `req`
  * when resolved from the root with priority `rootPriority`.
  */
-File loadAsFile(Require req, int rootPriority, int priority) {
+deprecated File loadAsFile(Require req, int rootPriority, int priority) {
   exists(PathExpr path | path = req.getImportedPath() |
     result = path.resolve(rootPriority) and priority = 0
     or
@@ -60,7 +60,7 @@ File loadAsFile(Require req, int rootPriority, int priority) {
  * with the given `priority` of `req` when resolved from the root with
  * priority `rootPriority`.
  */
-File loadAsDirectory(Require req, int rootPriority, int priority) {
+deprecated File loadAsDirectory(Require req, int rootPriority, int priority) {
   exists(Folder dir | dir = req.getImportedPath().resolve(rootPriority) |
     result = resolveMainModule(dir.(NpmPackage).getPackageJson(), priority, ".") or
     result = tryExtensions(dir, "index", priority - (numberOfExtensions() + 1))
@@ -99,7 +99,7 @@ private string getStem(string name) {
  * Gets a file that a main module from `pkg` exported as `mainPath` with the given `priority`.
  * `mainPath` is "." if it's the main module of the package.
  */
-private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
+deprecated private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
   exists(PathExpr main | main = MainModulePath::of(pkg, mainPath) |
     result = main.resolve() and priority = 0
     or
@@ -132,7 +132,7 @@ private File resolveMainPath(PackageJson pkg, string mainPath, int priority) {
 /**
  * Gets the main module described by `pkg` with the given `priority`.
  */
-File resolveMainModule(PackageJson pkg, int priority, string exportPath) {
+deprecated File resolveMainModule(PackageJson pkg, int priority, string exportPath) {
   result = resolveMainPath(pkg, exportPath, priority)
   or
   exportPath = "." and
@@ -178,7 +178,7 @@ private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
  * A JSON string in a `package.json` file specifying the path of one of the exported
  * modules of the package.
  */
-class MainModulePath extends PathExpr, @json_string {
+deprecated class MainModulePath extends PathExpr, @json_string {
   PackageJson pkg;
 
   MainModulePath() {
@@ -228,7 +228,7 @@ private string getExportRelativePath(JsonValue part) {
   result.matches(".%")
 }
 
-module MainModulePath {
+deprecated module MainModulePath {
   /** Gets the path to the main entry point of `pkg`. */
   MainModulePath of(PackageJson pkg) { result = of(pkg, ".") }
 
@@ -244,7 +244,7 @@ module MainModulePath {
  * These files are often imported directly from a client when a "main" module is not specified.
  * For performance reasons this only exists if there is no "main" field in the `package.json` file.
  */
-private class FilesPath extends PathExpr, @json_string {
+deprecated private class FilesPath extends PathExpr, @json_string {
   PackageJson pkg;
 
   FilesPath() {
@@ -263,7 +263,7 @@ private class FilesPath extends PathExpr, @json_string {
   }
 }
 
-private module FilesPath {
+deprecated private module FilesPath {
   FilesPath of(PackageJson pkg) { result.getPackageJson() = pkg }
 }
 
@@ -271,7 +271,7 @@ private module FilesPath {
  * A JSON string in a `package.json` file specifying the path of the
  * TypeScript typings entry point.
  */
-class TypingsModulePathString extends PathString {
+deprecated class TypingsModulePathString extends PathString {
   PackageJson pkg;
 
   TypingsModulePathString() {
@@ -288,7 +288,7 @@ class TypingsModulePathString extends PathString {
 }
 
 /** Companion module to the `TypingsModulePathString` class. */
-module TypingsModulePathString {
+deprecated module TypingsModulePathString {
   /** Get the typings path for the given `package.json` file. */
   TypingsModulePathString of(PackageJson pkg) { result.getPackageJson() = pkg }
 }
