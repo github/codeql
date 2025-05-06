@@ -1,4 +1,4 @@
-| clinit.kt:3:1:3:24 | setTopLevelInt | clinit.kt:3:1:3:24 | <set-?> | 0 |
+| clinit.kt:3:1:3:20 | setTopLevelInt | clinit.kt:3:1:3:20 | <set-?> | 0 |
 | dataClass.kt:0:0:0:0 | copy | dataClass.kt:0:0:0:0 | x | 0 |
 | dataClass.kt:0:0:0:0 | copy | dataClass.kt:0:0:0:0 | y | 1 |
 | dataClass.kt:0:0:0:0 | copy$default | dataClass.kt:0:0:0:0 | p0 | 0 |
@@ -10,7 +10,7 @@
 | dataClass.kt:1:34:1:46 | setY | dataClass.kt:1:34:1:46 | <set-?> | 0 |
 | delegates.kt:4:21:6:5 | get | delegates.kt:4:21:6:5 | a0 | 0 |
 | delegates.kt:4:21:6:5 | invoke | delegates.kt:4:21:6:5 | a0 | 0 |
-| delegates.kt:8:5:11:5 | setObservableProp | delegates.kt:8:35:11:5 | <set-?> | 0 |
+| delegates.kt:8:5:11:5 | setObservableProp | delegates.kt:8:5:11:5 | <set-?> | 0 |
 | delegates.kt:8:35:11:5 | get | delegates.kt:8:35:11:5 | a0 | 0 |
 | delegates.kt:8:35:11:5 | get | delegates.kt:8:35:11:5 | a0 | 0 |
 | delegates.kt:8:35:11:5 | invoke | delegates.kt:8:35:11:5 | a0 | 0 |

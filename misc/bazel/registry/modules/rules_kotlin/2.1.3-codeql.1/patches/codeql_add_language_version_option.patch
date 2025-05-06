@@ -1,0 +1,32 @@
+diff --git a/src/main/starlark/core/options/opts.kotlinc.bzl b/src/main/starlark/core/options/opts.kotlinc.bzl
+index 76df826..ef2d6ca 100644
+--- a/src/main/starlark/core/options/opts.kotlinc.bzl
++++ b/src/main/starlark/core/options/opts.kotlinc.bzl
+@@ -33,6 +33,11 @@ def _map_jdk_release_to_flag(version):
+         return None
+     return ["-Xjdk-release=%s" % version]
+ 
++def _map_language_version_to_flag(version):
++    if not version:
++        return None
++    return ["-language-version=%s" % version, "-api-version=%s" % version]
++
+ _KOPTS_ALL = {
+     "warn": struct(
+         args = dict(
+@@ -429,6 +434,15 @@ _KOPTS_ALL = {
+         value_to_flag = None,
+         map_value_to_flag = _map_jdk_release_to_flag,
+     ),
++    "language_version": struct(
++        args = dict(
++            default = "1.9",
++            doc = "-language-version",
++        ),
++        type = attr.string,
++        value_to_flag = None,
++        map_value_to_flag = _map_language_version_to_flag,
++    ),
+ }
+ 
+ def _merge(key, rule_defined):

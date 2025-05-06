@@ -9,7 +9,6 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
-import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.kdoc.lexer.KDocTokens
@@ -43,7 +42,7 @@ class CommentExtractorLighterAST(
 
         val kDocOwners = mutableMapOf<Int, MutableList<IrElement>>()
         val visitor =
-            object : IrElementVisitorVoid {
+            object : IrVisitorVoid() {
                 override fun visitElement(element: IrElement) {
                     val metadata = (element as? IrMetadataSourceOwner)?.metadata
                     val sourceElement = (metadata as? FirMetadataSource)?.fir?.source

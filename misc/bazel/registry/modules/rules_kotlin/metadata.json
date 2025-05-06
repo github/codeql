@@ -21,6 +21,7 @@
         "github:bazelbuild/rules_kotlin"
     ],
     "versions": [
+        "2.1.3-codeql.1",
         "2.0.0-codeql.1"
     ],
     "yanked_versions": {}

@@ -2,11 +2,17 @@ package com.github.codeql.comments
 
 import com.github.codeql.*
 import com.github.codeql.utils.isLocalFunction
+import com.github.codeql.utils.versions.isDispatchReceiver
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
+
+private fun IrValueParameter.isExtensionReceiver(): Boolean {
+    val parentFun = parent as? IrFunction ?: return false
+    return parentFun.extensionReceiverParameter == this
+}
 
 open class CommentExtractor(
     protected val fileExtractor: KotlinFileExtractor,
@@ -19,7 +25,7 @@ open class CommentExtractor(
     protected fun getLabel(element: IrElement): Label<out DbTop>? {
         if (element == file) return fileLabel
 
-        if (element is IrValueParameter && element.index == -1) {
+        if (element is IrValueParameter && (isDispatchReceiver(element) || element.isExtensionReceiver())) {
             // Don't attribute comments to the implicit `this` parameter of a function.
             return null
         }
