@@ -1,0 +1,13 @@
+diff --git a/src/main/starlark/core/repositories/kotlin/artifacts.bzl b/src/main/starlark/core/repositories/kotlin/artifacts.bzl
+index a837b1c..941671d 100644
+--- a/src/main/starlark/core/repositories/kotlin/artifacts.bzl
++++ b/src/main/starlark/core/repositories/kotlin/artifacts.bzl
+@@ -46,7 +46,7 @@ KOTLINC_ARTIFACTS = struct(
+         compile = {
+             "android-extensions-compiler": "lib/android-extensions-compiler.jar",
+             "android-extensions-runtime": "lib/android-extensions-runtime.jar",
+-            "annotations": "lib/annotations-13_0.jar",
++            "annotations": "lib/annotations-13.0.jar",
+             "kotlin-annotation-processing": "lib/kotlin-annotation-processing.jar",
+             "kotlin-annotation-processing-cli": "lib/kotlin-annotation-processing-cli.jar",
+             "kotlin-annotation-processing-compiler": "lib/kotlin-annotation-processing-compiler.jar",

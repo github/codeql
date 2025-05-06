@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from MacroStmts x, int index
+from MacroBlockExpr x
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getStatement(index)
+select x, x.getTailExpr()
