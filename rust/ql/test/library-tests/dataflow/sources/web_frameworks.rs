@@ -79,3 +79,50 @@ mod poem_test {
         // ...
     }
 }
+
+mod actix_test {
+    use actix_web::{get, web, App, HttpServer};
+    use crate::web_frameworks::sink;
+
+    async fn my_actix_handler_1(path: web::Path<String>) -> String { // $ MISSING: Alert[rust/summary/taint-sources]
+        let a = path.into_inner();
+        sink(a.as_str()); // $ MISSING: hasTaintFlow
+        sink(a.as_bytes()); // $ MISSING: hasTaintFlow
+        sink(a); // $ MISSING: hasTaintFlow
+
+        "".to_string()
+    }
+
+    async fn my_actix_handler_2(path: web::Path<(String, String)>) -> String { // $ MISSING: Alert[rust/summary/taint-sources]
+        let (a, b) = path.into_inner();
+
+        sink(a); // $ MISSING: hasTaintFlow
+        sink(b); // $ MISSING: hasTaintFlow
+
+        "".to_string()
+    }
+
+    async fn my_actix_handler_3(web::Query(a): web::Query<String>) -> String { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(a); // $ MISSING: hasTaintFlow
+
+        "".to_string()
+    }
+
+    #[get("/4/{a}")]
+    async fn my_actix_handler_4(path: web::Path<String>) -> String { // $ MISSING: Alert[rust/summary/taint-sources]
+        let a = path.into_inner();
+        sink(a); // $ MISSING: hasTaintFlow
+
+        "".to_string()
+    }
+
+    async fn test_actix() {
+        let app = App::new()
+            .route("/1/{a}", web::get().to(my_actix_handler_1))
+            .route("/2/{a}/{b}", web::get().to(my_actix_handler_2))
+            .route("/3/{a}", web::get().to(my_actix_handler_3))
+            .service(my_actix_handler_4);
+
+        // ...
+    }
+}

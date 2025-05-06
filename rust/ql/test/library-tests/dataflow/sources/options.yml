@@ -9,3 +9,4 @@ qltest_dependencies:
     - futures = { version = "0.3" }
     - poem = { version = "3.1.10" }
     - serde = { version = "1.0.219" }
+    - actix-web = { version = "4.10.2" }
