@@ -83,7 +83,7 @@ rust_library(
     deps = [
         "@vendor_ts__indexmap-2.9.0//:indexmap",
         "@vendor_ts__itoa-1.0.15//:itoa",
-        "@vendor_ts__ryu-1.0.19//:ryu",
+        "@vendor_ts__ryu-1.0.20//:ryu",
         "@vendor_ts__serde-1.0.219//:serde",
         "@vendor_ts__unsafe-libyaml-0.2.11//:unsafe_libyaml",
     ],

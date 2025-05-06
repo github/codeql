@@ -10,8 +10,8 @@ ungrammar = "1.16.1"
 proc-macro2 = "1.0.94"
 quote = "1.0.40"
 either = "1.15.0"
-stdx = {package = "ra_ap_stdx", version = "0.0.273"}
+stdx = {package = "ra_ap_stdx", version = "0.0.274"}
 itertools = "0.14.0"
 mustache = "0.9.0"
 serde = { version = "1.0.219", features = ["derive"] }
-anyhow = "1.0.97"
+anyhow = "1.0.98"

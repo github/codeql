@@ -1,0 +1,5 @@
+extractionWarning
+| test.rs:388:5:388:34 | macro expansion failed: could not resolve macro 'println' |
+| test.rs:390:18:390:37 | macro expansion failed: could not resolve macro 'println' |
+| test.rs:391:19:391:42 | macro expansion failed: could not resolve macro 'println' |
+| test.rs:393:5:393:16 | macro expansion failed: could not resolve macro 'println' |

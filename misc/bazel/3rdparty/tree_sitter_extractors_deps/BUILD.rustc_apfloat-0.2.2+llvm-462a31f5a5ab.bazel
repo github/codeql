@@ -84,7 +84,7 @@ rust_library(
     deps = [
         "@vendor_ts__bitflags-2.9.0//:bitflags",
         "@vendor_ts__rustc_apfloat-0.2.2-llvm-462a31f5a5ab//:build_script_build",
-        "@vendor_ts__smallvec-1.14.0//:smallvec",
+        "@vendor_ts__smallvec-1.15.0//:smallvec",
     ],
 )
 
