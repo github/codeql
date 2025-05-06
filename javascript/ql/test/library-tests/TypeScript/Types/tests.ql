@@ -3,11 +3,11 @@ import javascript
 // Ensure `true | false` and `false | true` are not distinct boolean types.
 query predicate booleans(BooleanType t) { any() }
 
-query predicate getExprType(Expr expr, Type type) { type = expr.getType() }
+query Type getExprType(Expr expr) { result = expr.getType() }
 
-query predicate getTypeDefinitionType(TypeDefinition def, Type type) { type = def.getType() }
+query Type getTypeDefinitionType(TypeDefinition def) { result = def.getType() }
 
-query predicate getTypeExprType(TypeExpr e, Type type) { e.getType() = type }
+query Type getTypeExprType(TypeExpr e) { result = e.getType() }
 
 query predicate missingToString(Type typ, string msg) {
   not exists(typ.toString()) and
