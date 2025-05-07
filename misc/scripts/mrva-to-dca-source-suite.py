@@ -7,7 +7,7 @@ from collections import defaultdict
 
 help_text = """
 To use this script, pass the URL of a GitHub Gist as an argument. The Gist should contain the
-exported MarkDown output of a MRVA run.
+exported Markdown output of a MRVA run.
 
 The script clones the Gist to a temporary directory, and constructs a DCA source suite that covers the same repos/SHAs that had results in the Gist.
 
@@ -102,8 +102,8 @@ if __name__ == "__main__":
     repo_alerts = get_repo_alert_counts(repo_dir)
     repo_nwo_shas = get_repo_nwo_shas(repo_dir)
 
-    min_count = args.min if args.min else min(repo_alerts.values())
-    max_count = args.max if args.max else max(repo_alerts.values())
+    min_count = args.min if args.min is not None else min(repo_alerts.values())
+    max_count = args.max if args.max is not None else max(repo_alerts.values())
 
     filtered_alerts = {
         nwo: count for nwo, count in repo_alerts.items() if min_count <= count <= max_count
