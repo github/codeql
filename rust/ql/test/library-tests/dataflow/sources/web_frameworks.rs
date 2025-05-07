@@ -126,3 +126,74 @@ mod actix_test {
         // ...
     }
 }
+
+mod axum_test {
+    use axum::Router;
+    use axum::routing::get;
+    use axum::extract::{Path, Query, Request, Json};
+    use std::collections::HashMap;
+    use crate::web_frameworks::sink;
+
+    async fn my_axum_handler_1(Path(a): Path<String>) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(a.as_str()); // $ MISSING: hasTaintFlow
+        sink(a.as_bytes()); // $ MISSING: hasTaintFlow
+        sink(a); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn my_axum_handler_2(Path((a, b)): Path<(String, String)>) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(a); // $ MISSING: hasTaintFlow
+        sink(b); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn my_axum_handler_3(Query(params): Query<HashMap<String, String>>) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        for (key, value) in params {
+            sink(key); // $ MISSING: hasTaintFlow
+            sink(value); // $ MISSING: hasTaintFlow
+        }
+
+        ""
+    }
+
+    async fn my_axum_handler_4(request: Request) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(request.body()); // $ MISSING: hasTaintFlow
+        request.headers().get("header").unwrap(); // $ MISSING: hasTaintFlow
+        sink(request.into_body()); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn my_axum_handler_5(Json(payload): Json<serde_json::Value>) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(payload.as_str()); // $ MISSING: hasTaintFlow
+        sink(payload); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn my_axum_handler_6(body: String) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(body); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn my_axum_handler_7(body: String) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
+        sink(body); // $ MISSING: hasTaintFlow
+
+        ""
+    }
+
+    async fn test_axum() {
+        let app = Router::<()>::new()
+            .route("/foo/{a}", get(my_axum_handler_1))
+            .route("/bar/{a}/{b}", get(my_axum_handler_2))
+            .route("/1/:a", get(my_axum_handler_3))
+            .route("/2/:a", get(my_axum_handler_4))
+            .route("/3/:a", get(my_axum_handler_5))
+            .route("/4/:a", get(my_axum_handler_6).get(my_axum_handler_7));
+
+        // ...
+    }
+}
