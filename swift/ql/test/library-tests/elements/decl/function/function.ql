@@ -27,6 +27,6 @@ string describe(Function f) {
 
 from Function f
 where
-  not f.getFile() instanceof UnknownFile and
+  exists(f.getFile().getRelativePath()) and
   not f.getName().matches("%init%")
 select f, concat(describe(f), ", ")

@@ -240,6 +240,12 @@ module Make<InputSig Input> {
       }
 
       pragma[nomagic]
+      private Container getAChildContainer(Container c, string baseName) {
+        result = c.getAChildContainer() and
+        baseName = result.getBaseName()
+      }
+
+      pragma[nomagic]
       private Container appendStep(Folder f, string relativePath, int i) {
         i = -1 and
         shouldAppend(f, relativePath) and
@@ -253,10 +259,7 @@ module Make<InputSig Input> {
           else
             if comp = "."
             then result = mid
-            else (
-              result = mid.getAChildContainer() and
-              result.getBaseName() = comp
-            )
+            else result = getAChildContainer(mid, comp)
         )
       }
 
