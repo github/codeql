@@ -83,11 +83,10 @@ class Traverser(object):
                 self.logger.debug("Ignoring %s (symlink)", fullpath)
                 continue
             if isdir(fullpath):
-                if fullpath in self.exclude_paths or is_hidden(fullpath):
-                    if is_hidden(fullpath):
-                        self.logger.debug("Ignoring %s (hidden)", fullpath)
-                    else:
-                        self.logger.debug("Ignoring %s (excluded)", fullpath)
+                if fullpath in self.exclude_paths:
+                    self.logger.debug("Ignoring %s (excluded)", fullpath)
+                elif is_hidden(fullpath):
+                    self.logger.debug("Ignoring %s (hidden)", fullpath)
                 else:
                     empty = True
                     for item in self._treewalk(fullpath):
@@ -101,7 +100,12 @@ class Traverser(object):
                 self.logger.debug("Ignoring %s (filter)", fullpath)
 
 
-if os.name== 'nt':
+if os.environ.get("CODEQL_EXTRACTOR_PYTHON_OPTION_SKIP_HIDDEN_DIRECTORIES", "false") == "false":
+
+    def is_hidden(path):
+        return False
+
+elif os.name== 'nt':
     import ctypes
 
     def is_hidden(path):
