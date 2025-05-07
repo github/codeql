@@ -1,9 +1,11 @@
+//TODO: model as data on open APIs should be able to get common flows, and obviate some of this
+// e.g., copy/dup calls, need to ingest those models for openSSL and refactor.
 /**
  * In OpenSSL, flow between 'context' parameters is often used to
  * store state/config of how an operation will eventually be performed.
  * Tracing algorithms and configurations to operations therefore
- * requires tracing context parameters for many OpenSSL apis. 
- * 
+ * requires tracing context parameters for many OpenSSL apis.
+ *
  * This library provides a dataflow analysis to track context parameters
  * between any two functions accepting openssl context parameters.
  * The dataflow takes into consideration flowing through duplication and copy calls
@@ -88,7 +90,7 @@ module OpenSSLCTXArgumentFlowConfig implements DataFlow::ConfigSig {
 
 module OpenSSLCTXArgumentFlow = DataFlow::Global<OpenSSLCTXArgumentFlowConfig>;
 
-predicate ctxFlowsTo(CTXPointerArgument source, CTXPointerArgument sink) {
+predicate ctxArgFlowsToCtxArg(CTXPointerArgument source, CTXPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
     OpenSSLCTXArgumentFlow::flow(a, b) and
     a.asExpr() = source and

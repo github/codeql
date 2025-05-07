@@ -582,6 +582,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
+    predicate fixedImplicitCipherKeySize(TAlgorithm type, int size) {
+      type = TSymmetricCipher(DES()) and size = 56
+      or
+      type = TSymmetricCipher(DESX()) and size = 184
+      or
+      type = TSymmetricCipher(DoubleDES()) and size = 112
+      or
+      type = TSymmetricCipher(TripleDES()) and size = 168
+      or
+      type = TSymmetricCipher(CHACHA20()) and size = 256
+      or
+      type = TSymmetricCipher(IDEA()) and size = 128
+      or
+      type = TSymmetricCipher(KUZNYECHIK()) and size = 256
+      or
+      type = TSymmetricCipher(MAGMA()) and size = 256
+      or
+      type = TSymmetricCipher(SM4()) and size = 128
+      or
+      type = TSymmetricCipher(SEED()) and size = 128
+    }
+
     bindingset[type]
     predicate symmetric_cipher_to_name_and_structure(
       TSymmetricCipherType type, string name, CipherStructureType s
@@ -790,6 +812,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * If a specific key size is unknown, this predicate should be implemented as `none()`.
      *
      * If the algorithm accepts a range of key sizes without a particular one specified, this predicate should be implemented as `none()`.
+     *
+     * NOTE: if the algorithm has a single key size, the implicit key size does not need to be modeled.
+     * This will be automatically inferred and applied at the node level.
+     * See `fixedImplicitCipherKeySize`.
      */
     abstract string getKeySizeFixed();
 
@@ -957,9 +983,27 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract string getRawHashAlgorithmName();
 
     /**
-     * Gets the length of the hash digest in bits.
+     * Gets the length of the hash digest in bits if it is not an implicit size
+     * and is not fixed by the algorithm.
+     * For example, SHA-256 has a fixed length of 256 bits.
+     * SHA-1 should not be modled with digest length as it is always 160 bits.
+     * Fixed length digests are modeled with `fixedImplicitDigestLength` and
+     * are used at the node level.
      */
-    abstract int getDigestLength();
+    abstract int getFixedDigestLength();
+  }
+
+  predicate fixedImplicitDigestLength(THashType type, int digestLength) {
+    type instanceof SHA1 and digestLength = 160
+    or
+    type instanceof MD5 and
+    digestLength = 128
+    or
+    type instanceof RIPEMD160 and
+    digestLength = 160
+    or
+    type instanceof WHIRLPOOL and
+    digestLength = 512 // TODO: verify
   }
 
   abstract private class KeyCreationOperationInstance extends OperationInstance {
@@ -2178,7 +2222,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySizeFixed() { result = instance.asAlg().getKeySizeFixed() } // TODO: key sizes for known algorithms
+    string getKeySizeFixed() {
+      result = instance.asAlg().getKeySizeFixed()
+      or
+      exists(int size |
+        KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), size) and
+        result = size.toString()
+      )
+    }
 
     /**
      * Gets the key size generic source node.
@@ -2365,7 +2416,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     override string getAlgorithmName() { this.hashTypeToNameMapping(this.getHashFamily(), result) }
 
-    int getDigestLength() { result = instance.asAlg().getDigestLength() }
+    int getDigestLength() {
+      result = instance.asAlg().getFixedDigestLength() or
+      fixedImplicitDigestLength(instance.asAlg().getHashFamily(), result)
+    }
 
     final override predicate properties(string key, string value, Location location) {
       super.properties(key, value, location)
