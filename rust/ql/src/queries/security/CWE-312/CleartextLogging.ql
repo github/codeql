@@ -3,7 +3,7 @@
  * @description Logging sensitive information in plaintext can
  *              expose it to an attacker.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id rust/cleartext-logging

@@ -14,6 +14,7 @@ ql/rust/ql/src/queries/security/CWE-311/CleartextTransmission.ql
 ql/rust/ql/src/queries/security/CWE-312/CleartextLogging.ql
 ql/rust/ql/src/queries/security/CWE-327/BrokenCryptoAlgorithm.ql
 ql/rust/ql/src/queries/security/CWE-328/WeakSensitiveDataHashing.ql
+ql/rust/ql/src/queries/security/CWE-770/UncontrolledAllocationSize.ql
 ql/rust/ql/src/queries/security/CWE-825/AccessInvalidPointer.ql
 ql/rust/ql/src/queries/summary/LinesOfCode.ql
 ql/rust/ql/src/queries/summary/LinesOfUserCode.ql
