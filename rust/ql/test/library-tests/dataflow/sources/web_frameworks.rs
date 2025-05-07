@@ -71,8 +71,8 @@ mod poem_test {
             .at("/2/:a/:b", get(my_poem_handler_2))
             .at("/3/:a/:b", get(my_poem_handler_3))
             .at("/4/:a/:b", get(my_poem_handler_4))
-            .at("/4/:a/:b", get(my_poem_handler_5))
-            .at("/5/:a/", get(my_poem_handler_6));
+            .at("/5/:a/:b", get(my_poem_handler_5))
+            .at("/6/:a/", get(my_poem_handler_6));
 
         _ = Server::new(TcpListener::bind("0.0.0.0:3000")).run(app).await.unwrap();
 
@@ -187,12 +187,12 @@ mod axum_test {
 
     async fn test_axum() {
         let app = Router::<()>::new()
-            .route("/foo/{a}", get(my_axum_handler_1))
-            .route("/bar/{a}/{b}", get(my_axum_handler_2))
-            .route("/1/:a", get(my_axum_handler_3))
-            .route("/2/:a", get(my_axum_handler_4))
-            .route("/3/:a", get(my_axum_handler_5))
-            .route("/4/:a", get(my_axum_handler_6).get(my_axum_handler_7));
+            .route("/1/{a}", get(my_axum_handler_1))
+            .route("/2/{a}/{b}", get(my_axum_handler_2))
+            .route("/3/:a", get(my_axum_handler_3))
+            .route("/4/:a", get(my_axum_handler_4))
+            .route("/5/:a", get(my_axum_handler_5))
+            .route("/67/:a", get(my_axum_handler_6).get(my_axum_handler_7));
 
         // ...
     }
