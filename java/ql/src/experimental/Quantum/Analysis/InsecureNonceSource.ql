@@ -8,7 +8,7 @@
  *              vulnerabilities such as replay attacks or key recovery.
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 predicate isInsecureNonceSource(Crypto::NonceArtifactNode n, Crypto::NodeBase src) {
   src = n.getSourceNode() and

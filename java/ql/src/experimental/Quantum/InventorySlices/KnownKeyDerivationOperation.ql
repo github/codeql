@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::KeyDerivationOperationNode op
 select op, "Known key derivation operation"

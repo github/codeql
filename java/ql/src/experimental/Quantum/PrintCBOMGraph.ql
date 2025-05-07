@@ -6,7 +6,7 @@
  * @id java/print-cbom-graph
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 query predicate nodes(Crypto::NodeBase node, string key, string value) {
   Crypto::nodes_graph_impl(node, key, value)

@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::OperationNode op, Crypto::AlgorithmNode a
 where a = op.getAKnownAlgorithm() and Crypto::isKnownAsymmetricAlgorithm(a)

@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 //TODO: can we have an unknown node concept?
 from Crypto::OperationNode op, Element e, string msg

@@ -1,8 +1,8 @@
 import cpp
-import experimental.Quantum.Language
+import experimental.quantum.Language
 import OpenSSLAlgorithmInstanceBase
-import experimental.Quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
 import AlgToAVCFlow
 
 /**

@@ -1,7 +1,7 @@
 import cpp
-import experimental.Quantum.Language
+import experimental.quantum.Language
 import KnownAlgorithmConstants
-import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 import AlgToAVCFlow
 
 predicate knownOpenSSLConstantToHashFamilyType(

@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Callable f, Parameter p, Crypto::OperationNode op
 where

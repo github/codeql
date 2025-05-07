@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::KeyOperationAlgorithmNode a
 where a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithm

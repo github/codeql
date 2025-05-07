@@ -1,4 +1,4 @@
-name: codeql/cryptography
+name: codeql/experimental
 version: 0.0.0-dev
 groups: shared
 library: true

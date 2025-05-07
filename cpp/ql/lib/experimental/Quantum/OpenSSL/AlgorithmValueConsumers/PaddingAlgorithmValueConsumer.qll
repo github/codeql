@@ -1,8 +1,8 @@
 import cpp
-import experimental.Quantum.Language
-import experimental.Quantum.OpenSSL.LibraryDetector
-import experimental.Quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.Quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+import experimental.quantum.Language
+import experimental.quantum.OpenSSL.LibraryDetector
+import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
 import OpenSSLAlgorithmValueConsumerBase
 
 abstract class PaddingAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }

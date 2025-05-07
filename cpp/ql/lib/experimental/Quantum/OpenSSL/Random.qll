@@ -1,6 +1,5 @@
 import cpp
-private import experimental.Quantum.Language
-private import codeql.cryptography.Model
+private import experimental.quantum.Language
 private import LibraryDetector
 private import semmle.code.cpp.dataflow.new.DataFlow
 
@@ -15,7 +14,5 @@ class OpenSSLRandomNumberGeneratorInstance extends Crypto::RandomNumberGeneratio
     result.asDefiningArgument() = this.(Call).getArgument(0)
   }
 
-  override predicate flowsTo(Crypto::FlowAwareElement other) {
-    ArtifactUniversalFlow::flow(this.getOutputNode(), other.getInputNode())
-  }
+  override string getGeneratorName() { result = this.(Call).getTarget().getName() }
 }

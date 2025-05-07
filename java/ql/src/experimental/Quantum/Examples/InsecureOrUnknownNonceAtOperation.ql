@@ -4,7 +4,7 @@
  * @kind problem
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from
   Crypto::NonceArtifactNode n, Crypto::KeyOperationNode op, Crypto::FlowAwareElement src, string msg

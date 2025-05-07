@@ -2,7 +2,7 @@
  * @name "Key operation slice table demo query"
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from
   Crypto::KeyOperationNode op, Crypto::KeyOperationAlgorithmNode a,

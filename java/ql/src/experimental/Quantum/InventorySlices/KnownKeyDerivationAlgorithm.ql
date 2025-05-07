@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::KeyDerivationAlgorithmNode alg
 select alg, "Known key derivation algorithm " + alg.getAlgorithmName()

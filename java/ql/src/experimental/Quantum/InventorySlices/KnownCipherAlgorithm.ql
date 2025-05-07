@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 // TODO: should there be a cipher algorithm node?
 from Crypto::KeyOperationAlgorithmNode a

@@ -1,4 +1,4 @@
-private import codeql.cryptography.Model
+private import codeql.quantum.Model
 private import java as Language
 private import semmle.code.java.security.InsecureRandomnessQuery
 private import semmle.code.java.security.RandomQuery

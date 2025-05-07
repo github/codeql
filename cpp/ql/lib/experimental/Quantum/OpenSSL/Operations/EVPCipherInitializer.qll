@@ -3,8 +3,8 @@
  * Models cipher initialization for EVP cipher operations.
  */
 
-import experimental.Quantum.Language
-import experimental.Quantum.OpenSSL.CtxFlow as CTXFlow
+import experimental.quantum.Language
+import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 
 module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }

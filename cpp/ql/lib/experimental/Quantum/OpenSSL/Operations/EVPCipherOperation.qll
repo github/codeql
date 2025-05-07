@@ -1,8 +1,8 @@
-import experimental.Quantum.Language
-import experimental.Quantum.OpenSSL.CtxFlow as CTXFlow
+import experimental.quantum.Language
+import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 import EVPCipherInitializer
 import OpenSSLOperationBase
-import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -16,7 +16,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
 
 private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
-// import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.AlgorithmValueConsumers
+// import experimental.quantum.OpenSSL.AlgorithmValueConsumers.AlgorithmValueConsumers
 // import OpenSSLOperation
 // class EVPCipherOutput extends CipherOutputArtifact {
 //   EVPCipherOutput() { exists(EVP_Cipher_Operation op | op.getOutputArg() = this) }

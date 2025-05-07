@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::HashAlgorithmNode a
 select a, "Instance of hashing algorithm " + a.getAlgorithmName()

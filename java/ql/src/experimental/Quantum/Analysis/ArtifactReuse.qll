@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 /**
  * Flow from any function that appears to return a value

@@ -2,7 +2,7 @@
  * @name "PQC Test"
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::KeyOperationNode op, Crypto::CipherAlgorithmNode a, Crypto::KeyArtifactNode k
 where

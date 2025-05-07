@@ -5,7 +5,7 @@
  */
 
 import java
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 from Crypto::EllipticCurveNode a
 select a, "Instance of elliptic curve algorithm " + a.getAlgorithmName()

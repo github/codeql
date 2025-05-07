@@ -1,4 +1,4 @@
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Call {
   abstract Expr getInputArg();

@@ -6,8 +6,8 @@ extractor: java
 library: true
 upgrades: upgrades
 dependencies:
-  codeql/cryptography: ${workspace}
   codeql/dataflow: ${workspace}
+  codeql/experimental: ${workspace}
   codeql/mad: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/regex: ${workspace}

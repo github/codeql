@@ -1,6 +1,4 @@
-private import codeql.cryptography.Model
-import semmle.code.cpp.ir.IR
-import semmle.code.cpp.security.FlowSources as FlowSources
+import codeql.quantum.Model
 import semmle.code.cpp.dataflow.new.DataFlow
 private import cpp as Lang
 

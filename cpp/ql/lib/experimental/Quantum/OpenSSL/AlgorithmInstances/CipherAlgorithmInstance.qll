@@ -1,10 +1,10 @@
 import cpp
-import experimental.Quantum.Language
+import experimental.quantum.Language
 import KnownAlgorithmConstants
 import Crypto::KeyOpAlg as KeyOpAlg
 import OpenSSLAlgorithmInstanceBase
 import PaddingAlgorithmInstance
-import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 import AlgToAVCFlow
 import BlockAlgorithmInstance
 

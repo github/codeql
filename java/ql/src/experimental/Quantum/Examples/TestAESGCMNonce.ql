@@ -2,7 +2,7 @@
  * @name "PQC Test"
  */
 
-import experimental.Quantum.Language
+import experimental.quantum.Language
 
 class AESGCMAlgorithmNode extends Crypto::KeyOperationAlgorithmNode {
   AESGCMAlgorithmNode() {

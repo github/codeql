@@ -1,7 +1,7 @@
 import cpp
-import experimental.Quantum.Language
-import experimental.Quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.Quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+import experimental.quantum.Language
+import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
 // TODO: can self referential to itself, which is also an algorithm (Known algorithm)
 /**
