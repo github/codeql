@@ -1236,7 +1236,7 @@ module API {
       exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
         ref = cls.getAReceiverNode()
         or
-        ref = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+        ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
       )
       or
       nd = MkUse(ref)
