@@ -327,20 +327,25 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * //      ^^^^^^^^^^^^^ `constraint`
      * ```
      *
-     * Note that the type parameters in `abs` significantly change the meaning
-     * of type parameters that occur in `condition`. For instance, in the Rust
-     * example
-     * ```rust
-     * fn foo<T: Trait>() { }
-     * ```
-     * we have that the type parameter `T` satisfies the constraint `Trait`. But,
-     * only that specific `T` satisfy the constraint. Hence we would not have
-     * `T` in `abs`. On the other hand, in the Rust example
+     * To see how `abs` change the meaning of the type parameters that occur in
+     * `condition`, consider the following examples in Rust:
      * ```rust
      * impl<T> Trait for T { }
+     * //  ^^^ `abs`     ^ `condition`
+     * //      ^^^^^ `constraint`
      * ```
-     * the constraint `Trait` is in fact satisfied for all types, and we would
-     * have `T` in `abs` to make it free in the condition.
+     * Here the meaning is "for all type parameters `T` it is the case that `T`
+     * implements `Trait`". On the other hand, in
+     * ```rust
+     * fn foo<T: Trait>() { }
+     * //     ^ `condition`
+     * //        ^^^^^ `constraint`
+     * ```
+     * the meaning is "`T` implements `Trait`" where the constraint is only
+     * valid for the specific `T`. Note that `condition` and `condition` are
+     * identical in the two examples. To encode the difference, `abs` in the
+     * first example should contain `T` whereas in the seconds example `abs`
+     * should be empty.
      */
     predicate conditionSatisfiesConstraint(
       TypeAbstraction abs, TypeMention condition, TypeMention constraint
@@ -359,9 +364,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
     signature module IsInstantiationOfInputSig<TypeTreeSig App> {
       /**
-       * Holds if `abs` is a type abstraction under which `tm` occurs and if
-       * `app` is potentially the result of applying the abstraction to type
-       * some type argument.
+       * Holds if `abs` is a type abstraction, `tm` occurs under `abs`, and
+       * `app` is potentially an application/instantiation of `abs`.
+       *
+       * For example:
+       * ```rust
+       * impl<A> Foo<A, A> {
+       * //  ^^^ `abs`
+       * //      ^^^^^^^^^ `tm`
+       *   fn bar(self) { ... }
+       * }
+       * // ...
+       *    foo.bar();
+       * // ^^^ `app`
+       * ```
+       * Here `abs` introduces the type parameter `A` and `tm` occurs under
+       * `abs` (i.e., `A` is bound in `tm` by `abs`). On the last line,
+       * accessing the `bar` method of `foo` potentially instantiates the `impl`
+       * block with a type argument for `A`.
        */
       predicate potentialInstantiationOf(App app, TypeAbstraction abs, TypeMention tm);
 

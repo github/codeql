@@ -19,6 +19,16 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeParameter = T::TypeParameter;
 
+  /**
+   * A type abstraction. I.e., a place in the program where type variables are
+   * introduced.
+   *
+   * Example:
+   * ```rust
+   * impl<A, B> Foo<A, B> { }
+   * //  ^^^^^^ a type abstraction
+   * ```
+   */
   class TypeAbstraction = T::TypeAbstraction;
 
   private newtype TTypeArgumentPosition =
@@ -118,6 +128,13 @@ private module Input2 implements InputSig2 {
     result = tp.(SelfTypeParameter).getTrait()
   }
 
+  /**
+   * Use the constraint mechanism in the shared type inference library to
+   * support traits. In Rust `constraint` is always a trait.
+   *
+   * See the documentation of `conditionSatisfiesConstraint` in the shared type
+   * inference module for more information.
+   */
   predicate conditionSatisfiesConstraint(
     TypeAbstraction abs, TypeMention condition, TypeMention constraint
   ) {

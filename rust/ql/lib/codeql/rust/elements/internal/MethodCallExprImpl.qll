@@ -56,6 +56,8 @@ module Impl {
     }
 
     override Function getStaticTarget() {
+      // Functions in source code also gets extracted as library code, due to
+      // this duplication we prioritize functions from source code.
       result = this.getStaticTargetFrom(true)
       or
       not exists(this.getStaticTargetFrom(true)) and
