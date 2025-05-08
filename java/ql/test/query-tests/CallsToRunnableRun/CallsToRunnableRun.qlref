@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/CallsToRunnableRun.ql
+query: Likely Bugs/Concurrency/CallsToRunnableRun.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
