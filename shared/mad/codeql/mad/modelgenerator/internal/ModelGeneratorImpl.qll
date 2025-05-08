@@ -344,6 +344,8 @@ module MakeModelGeneratorFactory<
 
       /**
        * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
+       *
+       * The strings `input` and `output` represent the qualifier and the return value, respectively.
        */
       private string captureQualifierFlow(DataFlowSummaryTargetApi api, string input, string output) {
         exists(ReturnNodeExt ret |
