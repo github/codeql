@@ -1,7 +1,12 @@
 /**
- * @name Detects known weak KDf iteration counts (less than 100k and the count is statically known)
- * @id java/crypto_inventory_filters/known_weak_kdf_iteration_count
+ * @name Weak known key derivation function iteration count
+ * @description Detects key derivation operations with a known weak iteration count.
+ * @id java/quantum/weak-kdf-iteration-count
  * @kind problem
+ * @precision high
+ * @severity problem
+ * @tags quantum
+ *       experimental
  */
 
 import java

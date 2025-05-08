@@ -1,11 +1,13 @@
 /**
  * @name Insecure nonce at a cipher operation
- * @id java/insecure-nonce
+ * @id java/quantum/insecure-nonce
+ * @description A nonce is generated from a source that is not secure. This can lead to
+ *              vulnerabilities such as replay attacks or key recovery.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @description A nonce is generated from a source that is not secure. This can lead to
- *              vulnerabilities such as replay attacks or key recovery.
+ * @tags quantum
+ *       experimental
  */
 
 import experimental.quantum.Language

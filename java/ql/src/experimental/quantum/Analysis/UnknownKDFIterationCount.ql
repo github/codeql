@@ -1,7 +1,12 @@
 /**
- * @name Detects unknown KDf iteration counts
- * @id java/crypto_inventory_filters/unknown_kdf_iteration_count
+ * @name Unknown key derivation function iteration count
+ * @description Detects key derivation operations with an unknown iteration count.
+ * @id java/quantum/unknown-kdf-iteration-count
  * @kind problem
+ * @precision medium
+ * @severity warning
+ * @tags quantum
+ *       experimental
  */
 
 import java

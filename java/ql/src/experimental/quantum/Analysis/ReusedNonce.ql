@@ -1,7 +1,12 @@
 /**
- * @name Detects reuse of the same nonce in multiple operations
- * @id java/crypto_inventory_filter/nonce_reuse
+ * @name Reuse of cryptographic nonce
+ * @description Reuse of nonce in cryptographic operations can lead to vulnerabilities.
+ * @id java/quantum/reused-nonce
  * @kind problem
+ * @precision medium
+ * @severity problem
+ * @tags quantum
+ *       experimental
  */
 
 import java
