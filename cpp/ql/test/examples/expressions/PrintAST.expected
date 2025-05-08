@@ -324,7 +324,7 @@ Conversion3.cpp:
 #    2|               getExpr(): [CStyleCast] (int)...
 #    2|                   Conversion = [IntegralConversion] integral conversion
 #    2|                   Type = [IntType] int
-#    2|                   Value = [CStyleCast] 1
+#    2|                   Value = [CStyleCast] 5
 #    2|                   ValueCategory = prvalue
 #    2|           getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 #    2|               Type = [IntType] int
