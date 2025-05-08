@@ -64,7 +64,7 @@ private string algorithmRegex(string algorithmString) {
       "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
 }
 
-from Crypto::Algorithm alg
+from Crypto::AlgorithmNode alg
 where
   alg.getAlgorithmName().regexpMatch(getInsecureAlgorithmRegex()) and
   // Exclude RSA/ECB/.* ciphers.
