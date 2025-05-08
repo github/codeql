@@ -10,14 +10,14 @@ module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(EVP_Cipher_Inititalizer initCall | sink.asExpr() = initCall.getOperataionSubtypeArg())
+    exists(EVP_Cipher_Initializer initCall | sink.asExpr() = initCall.getOperationSubtypeArg())
   }
 }
 
 module EncValToInitEncArgFlow = DataFlow::Global<EncValToInitEncArgConfig>;
 
 int getEncConfigValue(Expr e) {
-  exists(EVP_Cipher_Inititalizer initCall | e = initCall.getOperataionSubtypeArg()) and
+  exists(EVP_Cipher_Initializer initCall | e = initCall.getOperationSubtypeArg()) and
   exists(DataFlow::Node a, DataFlow::Node b |
     EncValToInitEncArgFlow::flow(a, b) and b.asExpr() = e and result = a.asExpr().getValue().toInt()
   )
@@ -34,7 +34,7 @@ Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
 }
 
 // TODO: need to add key consumer
-abstract class EVP_Cipher_Inititalizer extends Call {
+abstract class EVP_Cipher_Initializer extends Call {
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
   Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
@@ -44,7 +44,7 @@ abstract class EVP_Cipher_Inititalizer extends Call {
   abstract Expr getIVArg();
 
   //   abstract Crypto::CipherOperationSubtype getCipherOperationSubtype();
-  abstract Expr getOperataionSubtypeArg();
+  abstract Expr getOperationSubtypeArg();
 
   Crypto::KeyOperationSubtype getCipherOperationSubtype() {
     if this.(Call).getTarget().getName().toLowerCase().matches("%encrypt%")
@@ -53,19 +53,19 @@ abstract class EVP_Cipher_Inititalizer extends Call {
       if this.(Call).getTarget().getName().toLowerCase().matches("%decrypt%")
       then result instanceof Crypto::TDecryptMode
       else
-        if exists(getEncConfigValue(this.getOperataionSubtypeArg()))
-        then result = intToCipherOperationSubtype(getEncConfigValue(this.getOperataionSubtypeArg()))
+        if exists(getEncConfigValue(this.getOperationSubtypeArg()))
+        then result = intToCipherOperationSubtype(getEncConfigValue(this.getOperationSubtypeArg()))
         else result instanceof Crypto::TUnknownKeyOperationMode
   }
 }
 
-abstract class EVP_EX_Initializer extends EVP_Cipher_Inititalizer {
+abstract class EVP_EX_Initializer extends EVP_Cipher_Initializer {
   override Expr getKeyArg() { result = this.(Call).getArgument(3) }
 
   override Expr getIVArg() { result = this.(Call).getArgument(4) }
 }
 
-abstract class EVP_EX2_Initializer extends EVP_Cipher_Inititalizer {
+abstract class EVP_EX2_Initializer extends EVP_Cipher_Initializer {
   override Expr getKeyArg() { result = this.(Call).getArgument(2) }
 
   override Expr getIVArg() { result = this.(Call).getArgument(3) }
@@ -78,7 +78,7 @@ class EVP_Cipher_EX_Init_Call extends EVP_EX_Initializer {
       ]
   }
 
-  override Expr getOperataionSubtypeArg() {
+  override Expr getOperationSubtypeArg() {
     this.(Call).getTarget().getName().toLowerCase().matches("%cipherinit%") and
     result = this.(Call).getArgument(5)
   }
@@ -92,7 +92,7 @@ class EVP_Cipher_EX2_or_Simple_Init_Call extends EVP_EX2_Initializer {
       ]
   }
 
-  override Expr getOperataionSubtypeArg() {
+  override Expr getOperationSubtypeArg() {
     this.(Call).getTarget().getName().toLowerCase().matches("%cipherinit%") and
     result = this.(Call).getArgument(4)
   }
@@ -101,23 +101,23 @@ class EVP_Cipher_EX2_or_Simple_Init_Call extends EVP_EX2_Initializer {
 class EVP_CipherInit_SKEY_Call extends EVP_EX2_Initializer {
   EVP_CipherInit_SKEY_Call() { this.(Call).getTarget().getName() in ["EVP_CipherInit_SKEY"] }
 
-  override Expr getOperataionSubtypeArg() { result = this.(Call).getArgument(5) }
+  override Expr getOperationSubtypeArg() { result = this.(Call).getArgument(5) }
 }
 
 class EVPCipherInitializerAlgorithmArgument extends Expr {
   EVPCipherInitializerAlgorithmArgument() {
-    exists(EVP_Cipher_Inititalizer initCall | this = initCall.getAlgorithmArg())
+    exists(EVP_Cipher_Initializer initCall | this = initCall.getAlgorithmArg())
   }
 }
 
 class EVPCipherInitializerKeyArgument extends Expr {
   EVPCipherInitializerKeyArgument() {
-    exists(EVP_Cipher_Inititalizer initCall | this = initCall.getKeyArg())
+    exists(EVP_Cipher_Initializer initCall | this = initCall.getKeyArg())
   }
 }
 
 class EVPCipherInitializerIVArgument extends Expr {
   EVPCipherInitializerIVArgument() {
-    exists(EVP_Cipher_Inititalizer initCall | this = initCall.getIVArg())
+    exists(EVP_Cipher_Initializer initCall | this = initCall.getIVArg())
   }
 }

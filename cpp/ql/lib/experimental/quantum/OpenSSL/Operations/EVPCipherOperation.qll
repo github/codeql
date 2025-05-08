@@ -45,7 +45,7 @@ abstract class EVP_Cipher_Operation extends OpenSSLOperation, Crypto::KeyOperati
     this.(Call).getTarget().getName().toLowerCase().matches("%cipher%")
   }
 
-  EVP_Cipher_Inititalizer getInitCall() {
+  EVP_Cipher_Initializer getInitCall() {
     CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
 
@@ -74,14 +74,14 @@ abstract class EVP_Final_Call extends EVP_Cipher_Operation {
 
 // TODO: only model Final (model final as operation and model update but not as an operation)
 // Updates are multiple input consumers (most important)
-// PUNT assuming update doesn't ouput, otherwise it outputs arifacts, but is not an operation
+// TODO: assuming update doesn't ouput, otherwise it outputs artifacts, but is not an operation
 class EVP_Cipher_Call extends EVP_Cipher_Operation {
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 }
 
-// ******* TODO  NEED to model UPDATE but not as the coree operation, rather a step towards final,
+// ******* TODO: model UPDATE but not as the core operation, rather a step towards final
 // see the JCA
 // class EVP_Encrypt_Decrypt_or_Cipher_Update_Call extends EVP_Update_Call {
 //   EVP_Encrypt_Decrypt_or_Cipher_Update_Call() {
