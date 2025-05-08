@@ -1,7 +1,7 @@
 /**
  * @name Detects known cipher algorithms
  * @id java/crypto_inventory_slices/known_cipher_algorithm
- * @kind problem
+ * @kind table
  */
 
 import java

@@ -1,8 +1,7 @@
 /**
  * @name Detects operations where the algorithm applied is a known key derivation algorithm
- * @id java/cryptography-inventory-slices/operation-known-key-derivation-algorithm
- * @description This query identifies operations that utilize a known key derivation algorithm.
- * @kind problem
+ * @id java/crypto_inventory_slices/operation_known_key_derivation_algorithm
+ * @kind table
  */
 
 import java

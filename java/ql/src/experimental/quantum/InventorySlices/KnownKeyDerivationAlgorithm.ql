@@ -1,7 +1,7 @@
 /**
  * @name Detects known key derivation algorithms
  * @id java/crypto_inventory_slices/known_key_derivation_algorithm
- * @kind problem
+ * @kind table
  */
 
 import java

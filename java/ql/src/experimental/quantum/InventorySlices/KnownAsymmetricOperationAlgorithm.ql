@@ -1,7 +1,7 @@
 /**
  * @name Detects operations where the algorithm applied is a known asymmetric algorithms
  * @id java/crypto_inventory_slices/known_asymmetric_operation_algorithm
- * @kind problem
+ * @kind table
  */
 
 import java

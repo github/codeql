@@ -1,7 +1,7 @@
 /**
  * @name Detects operations where the algorithm applied is unknown
  * @id java/crypto_inventory_slices/unknown_operation_algorithm
- * @kind problem
+ * @kind table
  */
 
 import java

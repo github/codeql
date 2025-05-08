@@ -1,7 +1,7 @@
 /**
  * @name Detects uses of hashing operations (operations exlicitly for hashing only, irrespective of the algorithm used)
  * @id java/crypto_inventory_slices/known_hashing_operation
- * @kind problem
+ * @kind table
  */
 
 import java

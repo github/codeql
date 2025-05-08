@@ -1,7 +1,7 @@
 /**
  * @name Detects known elliptic curve algorithms
  * @id java/crypto_inventory_slices/known_elliptic_curve_algorithm
- * @kind problem
+ * @kind table
  */
 
 import java
