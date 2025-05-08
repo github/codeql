@@ -1,4 +1,4 @@
-import codeql.quantum.Model
+import codeql.experimental.quantum.Model
 import semmle.code.cpp.dataflow.new.DataFlow
 private import cpp as Lang
 
