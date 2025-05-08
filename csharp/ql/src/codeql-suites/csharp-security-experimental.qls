@@ -1,4 +1,0 @@
-- description: Extended and experimental security queries for C#
-- queries: .
-- apply: security-experimental-selectors.yml
-  from: codeql/suite-helpers
