@@ -3,8 +3,8 @@
  * @description Detects key derivation operations with a known weak iteration count.
  * @id java/quantum/weak-kdf-iteration-count
  * @kind problem
+ * @problem.severity error
  * @precision high
- * @severity problem
  * @tags quantum
  *       experimental
  */

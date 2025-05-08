@@ -3,8 +3,8 @@
  * @description Reuse of nonce in cryptographic operations can lead to vulnerabilities.
  * @id java/quantum/reused-nonce
  * @kind problem
+ * @problem.severity error
  * @precision medium
- * @severity problem
  * @tags quantum
  *       experimental
  */
