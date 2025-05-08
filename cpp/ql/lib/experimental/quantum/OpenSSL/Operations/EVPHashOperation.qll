@@ -13,7 +13,7 @@ import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValu
 abstract class EVP_Hash_Operation extends OpenSSLOperation, Crypto::HashOperationInstance {
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
-  EVP_Hash_Inititalizer getInitCall() {
+  EVP_Hash_Initializer getInitCall() {
     CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
 }
@@ -38,7 +38,7 @@ class EVP_Q_Digest_Operation extends EVP_Hash_Operation {
   }
 
   //override Crypto::AlgorithmConsumer getAlgorithmConsumer() {  }
-  override EVP_Hash_Inititalizer getInitCall() {
+  override EVP_Hash_Initializer getInitCall() {
     // This variant of digest does not use an init
     // and even if it were used, the init would be ignored/undefined
     none()
@@ -74,7 +74,7 @@ class EVP_Digest_Operation extends EVP_Hash_Operation {
       DataFlow::exprNode(this.(Call).getArgument(4)))
   }
 
-  override EVP_Hash_Inititalizer getInitCall() {
+  override EVP_Hash_Initializer getInitCall() {
     // This variant of digest does not use an init
     // and even if it were used, the init would be ignored/undefined
     none()
