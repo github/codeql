@@ -11,6 +11,7 @@ struct MyStruct {
 	password_file_path: String,
 	password_enabled: String,
 	mfa: String,
+	numfailed: String,
 }
 
 impl MyStruct {
@@ -25,10 +26,11 @@ fn test_passwords(
 	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
 	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
 	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
-	harmless: &str, encrypted_password: &str, password_hash: &str,
+	harmless: &str, encrypted_password: &str, password_hash: &str, passwordFile: &str,
 	ms: &MyStruct
 ) {
 	// passwords
+
 	sink(password); // $ sensitive=password
 	sink(pass_word); // $ MISSING: sensitive=password
 	sink(passwd); // $ sensitive=password
@@ -59,13 +61,16 @@ fn test_passwords(
 	sink(qry); // $ MISSING: sensitive=password
 
 	// not passwords
+
 	sink(harmless);
 	sink(encrypted_password);
 	sink(password_hash);
+	sink(passwordFile); // $ SPURIOUS: sensitive=password
 
 	sink(ms.harmless.as_str());
 	sink(ms.password_file_path.as_str());
 	sink(ms.password_enabled.as_str());
+	sink(ms.numfailed.as_str());
 
 	sink(get_string());
 	let harmless2 = get_string();
@@ -82,10 +87,11 @@ fn get_next_token() -> String { get_string() }
 fn test_credentials(
 	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64,
 	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, unique_id: i64, uid: i64,
-	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4],
+	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4], sessionkeypath: &[u64; 4], account_key_path: &[u64; 4],
 	ms: &MyStruct
 ) {
 	// credentials
+
 	sink(account_key); // $ sensitive=id
 	sink(accnt_key); // $ sensitive=id
 	sink(license_key); // $ MISSING: sensitive=secret
@@ -108,12 +114,15 @@ fn test_credentials(
 	sink(get_secret_token()); // $ sensitive=secret
 
 	// not (necessarily) credentials
+
 	sink(is_secret);
 	sink(num_accounts); // $ SPURIOUS: sensitive=id
 	sink(unique_id);
 	sink(uid); // $ SPURIOUS: sensitive=id
 	sink(hashkey);
 	sink(hash_key);
+	sink(sessionkeypath); // $ SPURIOUS: sensitive=id
+	sink(account_key_path); // $ SPURIOUS: sensitive=id
 
 	sink(ms.get_certificate_url()); // $ SPURIOUS: sensitive=certificate
 	sink(ms.get_certificate_file()); // $ SPURIOUS: sensitive=certificate
@@ -134,11 +143,17 @@ struct DeviceInfo {
 	macaddr12: [u8;12],
 	mac_addr: MacAddr,
 	networkMacAddress: String,
+
+	// not private device info
+	macro_value: bool,
+	mac_command: u32,
+	skip_address: String,
 }
 
 impl DeviceInfo {
 	fn test_device_info(&self, other: &DeviceInfo) {
 		// private device info
+
 		sink(&self.api_key); // $ MISSING: sensitive=id
 		sink(&other.api_key); // $ MISSING: sensitive=id
 		sink(&self.deviceApiToken); // $ MISSING: sensitive=id
@@ -149,6 +164,12 @@ impl DeviceInfo {
 		sink(self.mac_addr.values); // $ MISSING: sensitive=id
 		sink(self.mac_addr.values[0]); // $ MISSING: sensitive=id
 		sink(&self.networkMacAddress); // $ MISSING: sensitive=id
+
+		// not private device info
+
+		sink(self.macro_value);
+		sink(self.mac_command);
+		sink(&self.skip_address);
 	}
 }
 
@@ -164,6 +185,12 @@ struct Financials {
 	routingNumberText: String,
 	iban: String,
 	iBAN: String,
+
+	num_accounts: i32,
+	total_accounts: i32,
+	accounting: i32,
+	unaccounted: bool,
+	multiband: bool,
 }
 
 enum Gender {
@@ -210,12 +237,14 @@ enum ContactDetails {
 	HomePhoneNumber(String),
 	MobileNumber(String),
 	Email(String),
+	FavouriteColor(String),
 }
 
 fn test_private_info(
 	info: &MyPrivateInfo, details: &ContactDetails,
 ) {
 	// private info
+
 	sink(info.mobile_phone_num.as_str()); // $ MISSING: sensitive=private
 	sink(info.mobile_phone_num.to_string()); // $ MISSING: sensitive=private
 	sink(info.contact_email.as_str()); // $ MISSING: sensitive=private
@@ -273,5 +302,15 @@ fn test_private_info(
 
 	// not private info
 
+	let modulesEx = 1;
+	sink(modulesEx);
+
 	sink(info.financials.harmless.as_str());
+	sink(info.financials.num_accounts);
+	sink(info.financials.total_accounts);
+	sink(info.financials.accounting);
+	sink(info.financials.unaccounted);
+	sink(info.financials.multiband);
+
+	sink(ContactDetails::FavouriteColor("blue".to_string()));
 }
