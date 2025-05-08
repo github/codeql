@@ -10,6 +10,7 @@ struct MyStruct {
 	password: String,
 	password_file_path: String,
 	password_enabled: String,
+	mfa: String,
 }
 
 impl MyStruct {
@@ -22,8 +23,8 @@ fn get_password() -> String { get_string() }
 
 fn test_passwords(
 	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
-	pass_phrase: &str, passphrase: &str, passPhrase: &str,
-	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str,
+	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
+	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
 	harmless: &str, encrypted_password: &str, password_hash: &str,
 	ms: &MyStruct
 ) {
@@ -36,6 +37,7 @@ fn test_passwords(
 	sink(pass_phrase); // $ sensitive=password
 	sink(passphrase); // $ sensitive=password
 	sink(passPhrase); // $ sensitive=password
+	sink(backup_code); // $ MISSING: sensitive=password
 
 	sink(auth_key); // $ sensitive=password
 	sink(authkey); // $ sensitive=password
@@ -43,13 +45,18 @@ fn test_passwords(
 	sink(authentication_key); // $ sensitive=password
 	sink(authenticationkey); // $ sensitive=password
 	sink(authenticationKey); // $ sensitive=password
+	sink(oauth); // $ MISSING: sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ MISSING: sensitive=password
+	sink(ms.mfa.as_str()); // $ MISSING: sensitive=password
 
 	sink(get_password()); // $ sensitive=password
 	let password2 = get_string();
 	sink(password2); // $ sensitive=password
+
+	let qry = "password=abc";
+	sink(qry); // $ MISSING: sensitive=password
 
 	// not passwords
 	sink(harmless);
@@ -115,32 +122,98 @@ fn test_credentials(
 	sink(get_next_token());
 }
 
+struct MacAddr {
+	values: [u8;12],
+}
+
+struct DeviceInfo {
+	api_key: String,
+	deviceApiToken: String,
+	finger_print: String,
+	ip_address: String,
+	macaddr12: [u8;12],
+	mac_addr: MacAddr,
+	networkMacAddress: String,
+}
+
+impl DeviceInfo {
+	fn test_device_info(&self, other: &DeviceInfo) {
+		// private device info
+		sink(&self.api_key); // $ MISSING: sensitive=id
+		sink(&other.api_key); // $ MISSING: sensitive=id
+		sink(&self.deviceApiToken); // $ MISSING: sensitive=id
+		sink(&self.finger_print); // $ MISSING: sensitive=id
+		sink(&self.ip_address); // $ MISSING: sensitive=id
+		sink(self.macaddr12); // $ MISSING: sensitive=id
+		sink(&self.mac_addr); // $ MISSING: sensitive=id
+		sink(self.mac_addr.values); // $ MISSING: sensitive=id
+		sink(self.mac_addr.values[0]); // $ MISSING: sensitive=id
+		sink(&self.networkMacAddress); // $ MISSING: sensitive=id
+	}
+}
+
 struct Financials {
 	harmless: String,
 	my_bank_account_number: String,
 	credit_card_no: String,
 	credit_rating: i32,
-	user_ccn: String
+	user_ccn: String,
+	cvv: String,
+	beneficiary: String,
+	routing_number: u64,
+	routingNumberText: String,
+	iban: String,
+	iBAN: String,
+}
+
+enum Gender {
+	Male,
+	Female,
+}
+
+struct SSN {
+	data: u128,
+}
+
+impl SSN {
+	fn get_data(&self) -> u128 {
+		return self.data;
+	}
 }
 
 struct MyPrivateInfo {
 	mobile_phone_num: String,
 	contact_email: String,
 	contact_e_mail_2: String,
-	my_ssn: String,
-	birthday: String,
 	emergency_contact: String,
+	my_ssn: String,
+	ssn: SSN,
+	birthday: String,
 	name_of_employer: String,
 
+	gender: Gender,
+	genderString: String,
+
+	patient_id: u64,
+	linkedPatientId: u64,
+	patient_record: String,
 	medical_notes: Vec<String>,
+	confidentialMessage: String,
+
 	latitude: f64,
 	longitude: Option<f64>,
 
 	financials: Financials
 }
 
+enum ContactDetails {
+	HomePhoneNumber(String),
+	MobileNumber(String),
+	Email(String),
+}
+
 fn test_private_info(
-	info: &MyPrivateInfo
+	info: &MyPrivateInfo, details: &ContactDetails,
 ) {
 	// private info
 	sink(info.mobile_phone_num.as_str()); // $ MISSING: sensitive=private
@@ -148,15 +221,33 @@ fn test_private_info(
 	sink(info.contact_email.as_str()); // $ MISSING: sensitive=private
 	sink(info.contact_e_mail_2.as_str()); // $ MISSING: sensitive=private
 	sink(info.my_ssn.as_str()); // $ MISSING: sensitive=private
+	sink(&info.ssn); // $ MISSING: sensitive=private
+	sink(info.ssn.data); // $ MISSING: sensitive=private
+	sink(info.ssn.get_data()); // $ MISSING: sensitive=private
 	sink(info.birthday.as_str()); // $ MISSING: sensitive=private
 	sink(info.emergency_contact.as_str()); // $ MISSING: sensitive=private
 	sink(info.name_of_employer.as_str()); // $ MISSING: sensitive=private
 
+	sink(&info.gender); // $ MISSING: sensitive=private
+	sink(info.genderString.as_str()); // $ MISSING: sensitive=private
+	let sex = "Male";
+	let gender = Gender::Female;
+	let a = Gender::Female;
+	sink(sex); // $ MISSING: sensitive=private
+	sink(gender); // $ MISSING: sensitive=private
+	sink(a); // $ MISSING: sensitive=private
+
+	sink(info.patient_id); // $ MISSING: sensitive=private
+	sink(info.linkedPatientId); // $ MISSING: sensitive=private
+	sink(info.patient_record.as_str()); // $ MISSING: sensitive=private
+	sink(info.patient_record.trim()); // $ MISSING: sensitive=private
 	sink(&info.medical_notes); // $ MISSING: sensitive=private
 	sink(info.medical_notes[0].as_str()); // $ MISSING: sensitive=private
 	for n in info.medical_notes.iter() {
 		sink(n.as_str()); // $ MISSING: sensitive=private
 	}
+	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
+	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private
 
 	sink(info.latitude); // $ MISSING: sensitive=private
 	let x = info.longitude.unwrap();
@@ -166,7 +257,21 @@ fn test_private_info(
 	sink(info.financials.credit_card_no.as_str()); // $ MISSING: sensitive=private
 	sink(info.financials.credit_rating); // $ MISSING: sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.cvv.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.beneficiary.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.routing_number); // $ MISSING: sensitive=private
+	sink(info.financials.routingNumberText.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.iban.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.iBAN.as_str()); // $ MISSING: sensitive=private
+
+	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ MISSING: sensitive=private
+	sink(ContactDetails::MobileNumber("123".to_string())); // $ MISSING: sensitive=private
+	sink(ContactDetails::Email("a@b".to_string())); // $ MISSING: sensitive=private
+	if let ContactDetails::MobileNumber(num) = details {
+		sink(num.as_str()); // $ MISSING: sensitive=private
+	}
 
 	// not private info
+
 	sink(info.financials.harmless.as_str());
 }
