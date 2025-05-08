@@ -1,7 +1,10 @@
 /**
- * @name Detects known cipher algorithms
- * @id java/crypto_inventory_slices/known_cipher_algorithm
+ * @name Known cipher algorithms (slice)
+ * @description Outputs known cipher algorithms.
+ * @id java/quantum/slices/known-cipher-algorithm
  * @kind table
+ * @tags quantum
+ *       experimental
  */
 
 import java
@@ -12,4 +15,4 @@ from Crypto::KeyOperationAlgorithmNode a
 where
   a.getAlgorithmType() instanceof Crypto::KeyOpAlg::AsymmetricCipherAlgorithm or
   a.getAlgorithmType() instanceof Crypto::KeyOpAlg::SymmetricCipherAlgorithm
-select a, "Instance of cipher algorithm " + a.getAlgorithmName()
+select a, a.getAlgorithmName()

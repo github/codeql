@@ -1,7 +1,11 @@
 /**
- * @name Detects operations where the algorithm applied is unknown
- * @id java/crypto_inventory_slices/unknown_operation_algorithm
- * @kind table
+ * @name Operations with unknown algorithm
+ * @description Outputs operations where the algorithm applied is unknown
+ * @id java/quantum/slices/operation-with-unknown-algorithm
+ * @kind problem
+ * @severity info
+ * @tags quantum
+ *       experimental
  */
 
 import java

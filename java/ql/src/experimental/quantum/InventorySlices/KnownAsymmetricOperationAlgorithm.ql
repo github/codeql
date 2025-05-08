@@ -1,7 +1,10 @@
 /**
- * @name Detects operations where the algorithm applied is a known asymmetric algorithms
- * @id java/crypto_inventory_slices/known_asymmetric_operation_algorithm
+ * @name Operations using known asymmetric algorithms (slice)
+ * @description Outputs operations where the algorithm used is a known asymmetric algorithm.
+ * @id java/quantum/slices/known-asymmetric-operation-algorithm
  * @kind table
+ * @tags quantum
+ *       experimental
  */
 
 import java
@@ -9,4 +12,4 @@ import experimental.quantum.Language
 
 from Crypto::OperationNode op, Crypto::AlgorithmNode a
 where a = op.getAKnownAlgorithm() and Crypto::isKnownAsymmetricAlgorithm(a)
-select op, "Operation using asymmetric algorithm $@", a, a.getAlgorithmName()
+select op, a.getAlgorithmName()

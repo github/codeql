@@ -1,11 +1,14 @@
 /**
- * @name Detects algorithms that are known hashing algorithms
- * @id java/crypto_inventory_slices/known_hashing_algorithm
+ * @name Known hashing algorithms (slice)
+ * @description Outputs known hashing algorithms.
+ * @id java/quantum/slices/known-hashing-algorithm
  * @kind table
+ * @tags quantum
+ *       experimental
  */
 
 import java
 import experimental.quantum.Language
 
 from Crypto::HashAlgorithmNode a
-select a, "Instance of hashing algorithm " + a.getAlgorithmName()
+select a, a.getAlgorithmName()

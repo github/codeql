@@ -1,7 +1,11 @@
 /**
- * @name Detects functions that take in crypto configuration parameters but calls are not detected in source.
- * @id java/crypto_inventory_slices/likely_crypto_api_function
- * @kind table
+ * @name Likely crypto API function
+ * @description Detects functions that take in crypto configuration parameters but calls are not detected in source.
+ * @id java/quantum/slices/likely-crypto-api-function
+ * @kind problem
+ * @severity info
+ * @tags quantum
+ *       experimental
  */
 
 import java

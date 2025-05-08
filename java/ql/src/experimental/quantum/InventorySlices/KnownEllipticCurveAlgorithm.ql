@@ -1,11 +1,14 @@
 /**
- * @name Detects known elliptic curve algorithms
- * @id java/crypto_inventory_slices/known_elliptic_curve_algorithm
+ * @name Known elliptic curve algorithms (slice)
+ * @description Outputs known elliptic curve algorithms.
+ * @id java/quantum/slices/known-elliptic-curve-algorithm
  * @kind table
+ * @tags quantum
+ *       experimental
  */
 
 import java
 import experimental.quantum.Language
 
 from Crypto::EllipticCurveNode a
-select a, "Instance of elliptic curve algorithm " + a.getAlgorithmName()
+select a, a.getAlgorithmName()
