@@ -1,6 +1,6 @@
 /**
  * @name Detects known asymmetric cipher algorithms
- * @id java/crypto_inventory_slices/known_symmetric_cipher_algorithm
+ * @id java/crypto_inventory_slices/known_asymmetric_cipher_algorithm
  * @kind problem
  */
 
