@@ -10,32 +10,32 @@ namespace Models {
         //No model as destructors are excluded from model generation.
         ~BasicFlow() = default;
 
-        //heuristic-summary=Models;BasicFlow;true;returnThis;(int *);;Argument[-1];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnThis;(int *);;Argument[-1];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;BasicFlow;true;returnThis;(int *);;Argument[-1];ReturnValue[*];value;dfc-generated
         BasicFlow* returnThis(int* input) {
             return this;
         }
 
-        //heuristic-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[0];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[0];ReturnValue;value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[*0];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[0];ReturnValue;value;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnParam0;(int *,int *);;Argument[*0];ReturnValue[*];value;dfc-generated
         int* returnParam0(int* input0, int* input1) {
             return input0;
         }
 
-        //heuristic-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[1];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[*1];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[1];ReturnValue;value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[*1];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[1];ReturnValue;value;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnParam1;(int *,int *);;Argument[*1];ReturnValue[*];value;dfc-generated
         int* returnParam1(int* input0, int* input1) {
             return input1;
         }
 
-        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[1];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*1];ReturnValue[*];taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[2];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*2];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[1];ReturnValue;value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*1];ReturnValue[*];value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[2];ReturnValue;value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*2];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[1];ReturnValue;value;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[*1];ReturnValue[*];value;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnParamMultiple;(bool,int *,int *);;Argument[2];ReturnValue;value;dfc-generated
@@ -46,9 +46,9 @@ namespace Models {
 
         //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];Argument[*1];taint;df-generated
         //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];ReturnValue[*];taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];ReturnValue[*];taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[1];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];Argument[*1];taint;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];ReturnValue[*];value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[1];ReturnValue;value;df-generated
+        //heuristic-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];Argument[*1];value;df-generated
         //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];Argument[*1];taint;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[0];ReturnValue[*];taint;dfc-generated
         //contentbased-summary=Models;BasicFlow;true;returnSubstring;(const char *,char *);;Argument[*0];ReturnValue[*];value;dfc-generated
@@ -79,14 +79,14 @@ namespace Models {
     struct TemplatedFlow {
         T tainted;
 
-        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnThis;(T);;Argument[-1];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnThis;(T);;Argument[-1];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnThis;(T);;Argument[-1];ReturnValue[*];value;dfc-generated
         TemplatedFlow<T>* template_returnThis(T input) {
             return this;
         }
 
-        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[0];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[0];ReturnValue;value;df-generated
+        //heuristic-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[*0];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[0];ReturnValue;value;dfc-generated
         //contentbased-summary=Models;TemplatedFlow<T>;true;template_returnParam0;(T *,T *);;Argument[*0];ReturnValue[*];value;dfc-generated
         T* template_returnParam0(T* input0, T* input1) {
@@ -105,8 +105,8 @@ namespace Models {
             return tainted;
         }
 
-        //heuristic-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[0];ReturnValue;taint;df-generated
-        //heuristic-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[*0];ReturnValue[*];taint;df-generated
+        //heuristic-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[0];ReturnValue;value;df-generated
+        //heuristic-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[*0];ReturnValue[*];value;df-generated
         //contentbased-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[0];ReturnValue;value;dfc-generated
         //contentbased-summary=Models;TemplatedFlow<T>;true;templated_function<U>;(U *,T *);;Argument[*0];ReturnValue[*];value;dfc-generated
         template<typename U>
@@ -130,7 +130,7 @@ namespace Models {
 }
 
 //heuristic-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;df-generated
-//heuristic-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;taint;df-generated
+//heuristic-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;value;df-generated
 //heuristic-summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;df-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;dfc-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;dfc-generated
@@ -145,13 +145,13 @@ static int static_toplevel_function(int* p) {
 }
 
 struct NonFinalStruct {
-    //heuristic-summary=;NonFinalStruct;true;public_not_final_member_function;(int);;Argument[0];ReturnValue;taint;df-generated
+    //heuristic-summary=;NonFinalStruct;true;public_not_final_member_function;(int);;Argument[0];ReturnValue;value;df-generated
     //contentbased-summary=;NonFinalStruct;true;public_not_final_member_function;(int);;Argument[0];ReturnValue;value;dfc-generated
     virtual int public_not_final_member_function(int x) {
         return x;
     }
 
-    //heuristic-summary=;NonFinalStruct;false;public_final_member_function;(int);;Argument[0];ReturnValue;taint;df-generated
+    //heuristic-summary=;NonFinalStruct;false;public_final_member_function;(int);;Argument[0];ReturnValue;value;df-generated
     //contentbased-summary=;NonFinalStruct;false;public_final_member_function;(int);;Argument[0];ReturnValue;value;dfc-generated
     virtual int public_final_member_function(int x) final {
         return x;
@@ -171,13 +171,13 @@ protected:
 };
 
 struct FinalStruct final {
-    //heuristic-summary=;FinalStruct;false;public_not_final_member_function_2;(int);;Argument[0];ReturnValue;taint;df-generated
+    //heuristic-summary=;FinalStruct;false;public_not_final_member_function_2;(int);;Argument[0];ReturnValue;value;df-generated
     //contentbased-summary=;FinalStruct;false;public_not_final_member_function_2;(int);;Argument[0];ReturnValue;value;dfc-generated
     virtual int public_not_final_member_function_2(int x) {
         return x;
     }
 
-    //heuristic-summary=;FinalStruct;false;public_final_member_function_2;(int);;Argument[0];ReturnValue;taint;df-generated
+    //heuristic-summary=;FinalStruct;false;public_final_member_function_2;(int);;Argument[0];ReturnValue;value;df-generated
     //contentbased-summary=;FinalStruct;false;public_final_member_function_2;(int);;Argument[0];ReturnValue;value;dfc-generated
     virtual int public_final_member_function_2(int x) final {
         return x;
@@ -211,7 +211,7 @@ struct HasInt {
 //contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];value;dfc-generated
 //heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*0];taint;df-generated
 //heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*1];taint;df-generated
-//heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];taint;df-generated
+//heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];value;df-generated
 int copy_struct(HasInt *out, const HasInt *in) {
     *out = *in;
     return 1;
