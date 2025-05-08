@@ -10,13 +10,17 @@ localStep
 | main.rs:6:9:6:9 | s | main.rs:6:9:6:9 | s |
 | main.rs:6:9:6:14 | ...: i64 | main.rs:6:9:6:9 | s |
 | main.rs:7:14:7:20 | FormatArgsExpr | main.rs:7:14:7:20 | MacroExpr |
+| main.rs:7:14:7:20 | MacroBlockExpr | main.rs:7:5:7:21 | MacroExpr |
 | main.rs:7:14:7:20 | [post] MacroExpr | main.rs:7:14:7:20 | [post] FormatArgsExpr |
+| main.rs:7:14:7:20 | { ... } | main.rs:7:14:7:20 | MacroBlockExpr |
 | main.rs:10:13:10:14 | [SSA] sr | main.rs:11:20:11:21 | sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | [SSA] sr |
 | main.rs:10:13:10:14 | sr | main.rs:10:13:10:14 | sr |
 | main.rs:10:13:10:20 | ...: ... | main.rs:10:13:10:14 | sr |
 | main.rs:11:14:11:21 | FormatArgsExpr | main.rs:11:14:11:21 | MacroExpr |
+| main.rs:11:14:11:21 | MacroBlockExpr | main.rs:11:5:11:22 | MacroExpr |
 | main.rs:11:14:11:21 | [post] MacroExpr | main.rs:11:14:11:21 | [post] FormatArgsExpr |
+| main.rs:11:14:11:21 | { ... } | main.rs:11:14:11:21 | MacroBlockExpr |
 | main.rs:22:9:22:9 | [SSA] s | main.rs:23:10:23:10 | s |
 | main.rs:22:9:22:9 | s | main.rs:22:9:22:9 | [SSA] s |
 | main.rs:22:9:22:9 | s | main.rs:22:9:22:9 | s |
@@ -680,7 +684,9 @@ localStep
 | main.rs:462:16:462:16 | s | main.rs:462:16:462:16 | s |
 | main.rs:462:16:462:24 | ...: String | main.rs:462:16:462:16 | s |
 | main.rs:463:14:463:20 | FormatArgsExpr | main.rs:463:14:463:20 | MacroExpr |
+| main.rs:463:14:463:20 | MacroBlockExpr | main.rs:463:5:463:21 | MacroExpr |
 | main.rs:463:14:463:20 | [post] MacroExpr | main.rs:463:14:463:20 | [post] FormatArgsExpr |
+| main.rs:463:14:463:20 | { ... } | main.rs:463:14:463:20 | MacroBlockExpr |
 | main.rs:467:9:467:9 | [SSA] a | main.rs:468:13:468:13 | a |
 | main.rs:467:9:467:9 | a | main.rs:467:9:467:9 | [SSA] a |
 | main.rs:467:9:467:9 | a | main.rs:467:9:467:9 | a |
@@ -1931,33 +1937,16 @@ readStep
 | main.rs:221:9:221:23 | ...::Some(...) | Some | main.rs:221:22:221:22 | n |
 | main.rs:230:9:230:15 | Some(...) | Some | main.rs:230:14:230:14 | n |
 | main.rs:234:9:234:15 | Some(...) | Some | main.rs:234:14:234:14 | n |
-| main.rs:241:10:241:11 | s1 | &ref | main.rs:241:10:241:11 | receiver for s1 |
-| main.rs:246:10:246:11 | s1 | &ref | main.rs:246:10:246:11 | receiver for s1 |
-| main.rs:249:10:249:11 | s2 | &ref | main.rs:249:10:249:11 | receiver for s2 |
-| main.rs:254:10:254:11 | s1 | &ref | main.rs:254:10:254:11 | receiver for s1 |
-| main.rs:257:10:257:11 | s2 | &ref | main.rs:257:10:257:11 | receiver for s2 |
 | main.rs:263:14:263:15 | s1 | Ok | main.rs:263:14:263:16 | TryExpr |
 | main.rs:263:14:263:15 | s1 | Some | main.rs:263:14:263:16 | TryExpr |
 | main.rs:265:10:265:11 | s2 | Ok | main.rs:265:10:265:12 | TryExpr |
 | main.rs:265:10:265:11 | s2 | Some | main.rs:265:10:265:12 | TryExpr |
-| main.rs:271:29:271:30 | r1 | &ref | main.rs:271:29:271:30 | receiver for r1 |
-| main.rs:272:29:272:30 | r1 | &ref | main.rs:272:29:272:30 | receiver for r1 |
-| main.rs:273:10:273:12 | o1a | &ref | main.rs:273:10:273:12 | receiver for o1a |
-| main.rs:274:10:274:12 | o1b | &ref | main.rs:274:10:274:12 | receiver for o1b |
-| main.rs:277:29:277:30 | r2 | &ref | main.rs:277:29:277:30 | receiver for r2 |
-| main.rs:278:29:278:30 | r2 | &ref | main.rs:278:29:278:30 | receiver for r2 |
-| main.rs:279:10:279:12 | o2a | &ref | main.rs:279:10:279:12 | receiver for o2a |
-| main.rs:280:10:280:12 | o2b | &ref | main.rs:280:10:280:12 | receiver for o2b |
 | main.rs:287:14:287:15 | s1 | Ok | main.rs:287:14:287:16 | TryExpr |
 | main.rs:287:14:287:15 | s1 | Some | main.rs:287:14:287:16 | TryExpr |
 | main.rs:288:14:288:15 | s2 | Ok | main.rs:288:14:288:16 | TryExpr |
 | main.rs:288:14:288:15 | s2 | Some | main.rs:288:14:288:16 | TryExpr |
 | main.rs:291:14:291:15 | s3 | Ok | main.rs:291:14:291:16 | TryExpr |
 | main.rs:291:14:291:15 | s3 | Some | main.rs:291:14:291:16 | TryExpr |
-| main.rs:298:10:298:11 | s1 | &ref | main.rs:298:10:298:11 | receiver for s1 |
-| main.rs:299:10:299:11 | s1 | &ref | main.rs:299:10:299:11 | receiver for s1 |
-| main.rs:302:10:302:11 | s2 | &ref | main.rs:302:10:302:11 | receiver for s2 |
-| main.rs:303:10:303:11 | s2 | &ref | main.rs:303:10:303:11 | receiver for s2 |
 | main.rs:315:9:315:25 | ...::A(...) | A | main.rs:315:24:315:24 | n |
 | main.rs:316:9:316:25 | ...::B(...) | B | main.rs:316:24:316:24 | n |
 | main.rs:319:9:319:25 | ...::A(...) | A | main.rs:319:24:319:24 | n |
@@ -1997,40 +1986,22 @@ readStep
 | main.rs:442:9:442:20 | TuplePat | tuple.0 | main.rs:442:10:442:13 | cond |
 | main.rs:442:9:442:20 | TuplePat | tuple.1 | main.rs:442:16:442:19 | name |
 | main.rs:442:25:442:29 | names | element | main.rs:442:9:442:20 | TuplePat |
-| main.rs:444:21:444:24 | name | &ref | main.rs:444:21:444:24 | receiver for name |
 | main.rs:444:41:444:67 | [post] \|...\| ... | captured default_name | main.rs:444:41:444:67 | [post] default_name |
-| main.rs:444:44:444:55 | default_name | &ref | main.rs:444:44:444:55 | receiver for default_name |
 | main.rs:444:44:444:55 | this | captured default_name | main.rs:444:44:444:55 | default_name |
-| main.rs:445:18:445:18 | n | &ref | main.rs:445:18:445:18 | receiver for n |
-| main.rs:468:13:468:13 | a | &ref | main.rs:468:13:468:13 | receiver for a |
-| main.rs:469:13:469:13 | b | &ref | main.rs:469:13:469:13 | receiver for b |
-| main.rs:470:19:470:19 | b | &ref | main.rs:470:19:470:19 | receiver for b |
 | main.rs:481:10:481:11 | vs | element | main.rs:481:10:481:14 | vs[0] |
-| main.rs:482:11:482:12 | vs | &ref | main.rs:482:11:482:12 | receiver for vs |
 | main.rs:482:11:482:35 | ... .unwrap() | &ref | main.rs:482:10:482:35 | * ... |
-| main.rs:483:11:483:12 | vs | &ref | main.rs:483:11:483:12 | receiver for vs |
 | main.rs:483:11:483:35 | ... .unwrap() | &ref | main.rs:483:10:483:35 | * ... |
 | main.rs:485:14:485:15 | vs | element | main.rs:485:9:485:9 | v |
 | main.rs:488:9:488:10 | &... | &ref | main.rs:488:10:488:10 | v |
-| main.rs:488:15:488:16 | vs | &ref | main.rs:488:15:488:16 | receiver for vs |
 | main.rs:488:15:488:23 | vs.iter() | element | main.rs:488:9:488:10 | &... |
-| main.rs:492:27:492:28 | vs | &ref | main.rs:492:27:492:28 | receiver for vs |
 | main.rs:493:9:493:10 | &... | &ref | main.rs:493:10:493:10 | v |
 | main.rs:493:15:493:17 | vs2 | element | main.rs:493:9:493:10 | &... |
-| main.rs:497:5:497:6 | vs | &ref | main.rs:497:5:497:6 | receiver for vs |
 | main.rs:497:29:497:29 | x | &ref | main.rs:497:28:497:29 | * ... |
-| main.rs:498:5:498:6 | vs | &ref | main.rs:498:5:498:6 | receiver for vs |
 | main.rs:498:34:498:34 | x | &ref | main.rs:498:33:498:34 | * ... |
-| main.rs:500:14:500:15 | vs | &ref | main.rs:500:14:500:15 | receiver for vs |
 | main.rs:500:14:500:27 | vs.into_iter() | element | main.rs:500:9:500:9 | v |
 | main.rs:506:10:506:15 | vs_mut | element | main.rs:506:10:506:18 | vs_mut[0] |
-| main.rs:507:11:507:16 | vs_mut | &ref | main.rs:507:11:507:16 | receiver for vs_mut |
 | main.rs:507:11:507:39 | ... .unwrap() | &ref | main.rs:507:10:507:39 | * ... |
-| main.rs:508:11:508:16 | vs_mut | &ref | main.rs:508:11:508:16 | receiver for vs_mut |
 | main.rs:508:11:508:39 | ... .unwrap() | &ref | main.rs:508:10:508:39 | * ... |
 | main.rs:510:9:510:14 | &mut ... | &ref | main.rs:510:14:510:14 | v |
-| main.rs:510:19:510:24 | vs_mut | &ref | main.rs:510:19:510:24 | receiver for vs_mut |
 | main.rs:510:19:510:35 | vs_mut.iter_mut() | element | main.rs:510:9:510:14 | &mut ... |
 | main.rs:524:11:524:15 | c_ref | &ref | main.rs:524:10:524:15 | * ... |
-| main.rs:531:10:531:10 | a | &ref | main.rs:531:10:531:10 | receiver for a |
-| main.rs:537:10:537:10 | b | &ref | main.rs:537:10:537:10 | receiver for b |

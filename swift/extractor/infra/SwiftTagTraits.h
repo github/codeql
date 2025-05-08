@@ -177,7 +177,7 @@ MAP(swift::Expr, ExprTag)
     MAP(swift::ABISafeConversionExpr, AbiSafeConversionExprTag)  // different acronym convention
     MAP(swift::ActorIsolationErasureExpr, ActorIsolationErasureExprTag)
     MAP(swift::UnreachableExpr, UnreachableExprTag)
-    MAP(swift::UnsafeCastExpr, void)  // TODO swift 6.1
+    MAP(swift::UnsafeCastExpr, UnsafeCastExprTag)
   MAP(swift::ExplicitCastExpr, ExplicitCastExprTag)
     MAP(swift::CheckedCastExpr, CheckedCastExprTag)
       MAP(swift::ForcedCheckedCastExpr, ForcedCheckedCastExprTag)
@@ -205,7 +205,7 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::SingleValueStmtExpr, SingleValueStmtExprTag)
   MAP(swift::ExtractFunctionIsolationExpr, ExtractFunctionIsolationExprTag)
   MAP(swift::CurrentContextIsolationExpr, CurrentContextIsolationExprTag)
-  MAP(swift::TypeValueExpr, void)  // TODO swift 6.1
+  MAP(swift::TypeValueExpr, TypeValueExprTag)
 MAP(swift::Decl, DeclTag)
   MAP(swift::ValueDecl, ValueDeclTag)
     MAP(swift::TypeDecl, TypeDeclTag)
@@ -285,8 +285,8 @@ MAP(swift::TypeBase, TypeTag)
     MAP(swift::BuiltinVectorType, BuiltinVectorTypeTag)
     MAP(swift::BuiltinPackIndexType, void)  // SIL type, cannot really appear in the frontend run
     MAP(swift::BuiltinNonDefaultDistributedActorStorageType, void)  // Does not appear in AST/SIL, only used during IRGen
-    MAP(swift::BuiltinFixedArrayType, void)  // TODO swift 6.1
-    MAP(swift::BuiltinUnboundGenericType, void)  // TODO swift 6.1
+    MAP(swift::BuiltinFixedArrayType, BuiltinFixedArrayTypeTag)
+    MAP(swift::BuiltinUnboundGenericType, void)  // Only used during type resolution
   MAP(swift::TupleType, TupleTypeTag)
   MAP(swift::ReferenceStorageType, ReferenceStorageTypeTag)
   MAP(swift::WeakStorageType, WeakStorageTypeTag)
@@ -339,7 +339,7 @@ MAP(swift::TypeBase, TypeTag)
   MAP(swift::PackElementType, PackElementTypeTag)
   MAP(swift::TypeVariableType, void)  // created during type checking and only used for constraint checking
   MAP(swift::ErrorUnionType, void)  // created during type checking and only used for constraint checking
-  MAP(swift::IntegerType, void)  // TODO swift 6.1
+  MAP(swift::IntegerType, IntegerTypeTag)
   MAP(swift::SugarType, SugarTypeTag)
     MAP(swift::TypeAliasType, TypeAliasTypeTag)
     MAP(swift::SyntaxSugarType, SyntaxSugarTypeTag)

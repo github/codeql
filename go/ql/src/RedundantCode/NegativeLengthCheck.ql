@@ -9,6 +9,7 @@
  * @precision very-high
  * @id go/negative-length-check
  * @tags correctness
+ *       quality
  */
 
 import go

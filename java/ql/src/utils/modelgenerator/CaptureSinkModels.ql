@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import SinkModels
 
 from DataFlowSinkTargetApi api, string sink
 where sink = Heuristic::captureSink(api)

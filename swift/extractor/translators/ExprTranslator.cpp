@@ -689,4 +689,10 @@ codeql::CurrentContextIsolationExpr ExprTranslator::translateCurrentContextIsola
   return entry;
 }
 
+codeql::TypeValueExpr ExprTranslator::translateTypeValueExpr(const swift::TypeValueExpr& expr) {
+  auto entry = createExprEntry(expr);
+  entry.type_repr = dispatcher.fetchLabel(expr.getParamTypeRepr());
+  return entry;
+}
+
 }  // namespace codeql

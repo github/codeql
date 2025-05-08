@@ -37,6 +37,14 @@ Bug Fixes
 Query Packs
 -----------
 
+New Features
+~~~~~~~~~~~~
+
+GitHub Actions
+""""""""""""""
+
+*   CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
+
 Bug Fixes
 ~~~~~~~~~
 
@@ -122,6 +130,11 @@ Ruby
 
 New Features
 ~~~~~~~~~~~~
+
+GitHub Actions
+""""""""""""""
+
+*   CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
 
 C/C++
 """""

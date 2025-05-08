@@ -8,6 +8,7 @@
  * @id cs/local-not-disposed
  * @tags efficiency
  *       maintainability
+ *       quality
  *       external/cwe/cwe-404
  *       external/cwe/cwe-459
  *       external/cwe/cwe-460

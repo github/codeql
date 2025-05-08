@@ -1,5 +1,6 @@
 import cpp
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import InlineModelsAsDataTest
 
 module InlineMadTestConfig implements InlineMadTestConfigSig {
