@@ -7,7 +7,7 @@ private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
 
-/** A method that formats a string, for example `string.Format()`. */
+/** A method that formats a string (or parses a format string), for example `string.Format()` */
 abstract private class FormatMethodImpl extends Method {
   /**
    * Gets the argument containing the format string. For example, the argument of
@@ -120,6 +120,17 @@ private class SystemDiagnosticsFormatMethods extends FormatMethodImpl {
       )
     )
   }
+
+  override int getFormatArgument() { result = 0 }
+}
+
+/**
+ * The `System.Text.CompositeFormat.Parse` method.
+ *
+ * Note that this method is not an ordinary format method, but it parses the format argument.
+ */
+class CompositeFormatParseMethod extends FormatMethodImpl {
+  CompositeFormatParseMethod() { this = any(SystemTextCompositeFormatClass x).getParseMethod() }
 
   override int getFormatArgument() { result = 0 }
 }
