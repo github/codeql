@@ -1,6 +1,6 @@
 private import rust
 
-predicate toBeTested(Element e) { not e instanceof CrateElement }
+predicate toBeTested(Element e) { not e instanceof CrateElement and not e instanceof Builtin }
 
 class CrateElement extends Element {
   CrateElement() {
@@ -8,4 +8,8 @@ class CrateElement extends Element {
     this instanceof NamedCrate or
     any(Crate c).getModule() = this.(AstNode).getParentNode*()
   }
+}
+
+class Builtin extends AstNode {
+  Builtin() { this.getFile().getAbsolutePath().matches("%/builtins/%.rs") }
 }
