@@ -17,6 +17,7 @@
 
 # Experimental CodeQL cryptography
 **/experimental/quantum/ @github/ps-codeql
+/shared/quantum/ @github/ps-codeql
 
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
