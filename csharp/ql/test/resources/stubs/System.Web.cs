@@ -19,6 +19,15 @@ namespace System.Web
     public class HttpResponseBase
     {
         public void Write(object obj) { }
+        public virtual void AppendHeader(string name, string value) { }
+        public virtual void Redirect(string url) { }
+        public virtual void RedirectPermanent(string url) { }
+        public virtual int StatusCode { get; set; }
+        public virtual void AddHeader(string name, string value) { }
+        public virtual void End() { }
+        public virtual string RedirectLocation { get; set; }
+        public virtual NameValueCollection Headers => null;
+
     }
 
     public class HttpContextBase
@@ -55,7 +64,15 @@ namespace System.Web.Http
 {
     public class ApiController
     {
+        public Microsoft.AspNetCore.Http.HttpContext Context => null;
+        public virtual Microsoft.AspNetCore.Mvc.RedirectResult Redirect(Uri location) => null;
+        public virtual Microsoft.AspNetCore.Mvc.RedirectResult Redirect(string location) => null;
+        public virtual ResponseMessageResult ResponseMessage(System.Net.Http.HttpResponseMessage response) => null;
+        public virtual Microsoft.AspNetCore.Mvc.RedirectToRouteResult RedirectToRoute(string routeName, object routeValues) => null;
+        public Microsoft.AspNetCore.Mvc.IUrlHelper Url { get; set; }
     }
+
+    public class ResponseMessageResult { }
 }
 
 namespace System.Web.Mvc
@@ -63,13 +80,34 @@ namespace System.Web.Mvc
     public class Controller
     {
         public ViewResult View() => null;
+        public HttpRequestBase Request => null;
+        public HttpResponseBase Response => null;
+        protected internal virtual RedirectResult RedirectPermanent(string url) => null;
+        protected internal RedirectToRouteResult RedirectToRoute(string routeName) => null;
+        public UrlHelper Url { get; set; }
+        protected internal virtual RedirectResult Redirect(string url) => null;
     }
 
     public class MvcHtmlString : HtmlString
     {
         public MvcHtmlString(string s) : base(s) { }
     }
+
+    public class RoutePrefixAttribute : Attribute
+    {
+        public virtual string Prefix { get; private set; }
+        public RoutePrefixAttribute(string prefix) { }
+    }
+
+    public sealed class RouteAttribute : Attribute
+    {
+
+        public RouteAttribute(string template) { }
+    }
+
+    public class RedirectToRouteResult : ActionResult { }
 }
+
 
 namespace System.Web.UI
 {
@@ -81,6 +119,7 @@ namespace System.Web.UI
     {
         public System.Security.Principal.IPrincipal User { get; }
         public System.Web.HttpRequest Request { get; }
+        public HttpResponse Response => null;
     }
 
     interface IPostBackDataHandler
@@ -153,6 +192,7 @@ namespace System.Web
         public UnvalidatedRequestValues Unvalidated { get; }
         public string RawUrl { get; set; }
         public HttpCookieCollection Cookies => null;
+        public bool IsAuthenticated { get; set; }
     }
 
     public class HttpRequestWrapper : System.Web.HttpRequestBase
@@ -169,6 +209,13 @@ namespace System.Web
         public void AddHeader(string name, string value) { }
         public void Redirect(string url) { }
         public void AppendHeader(string name, string value) { }
+        public void End() { }
+        public string RedirectLocation { get; set; }
+        public int StatusCode { get; set; }
+        public void RedirectPermanent(string url) { }
+        public virtual NameValueCollection Headers { get; set; }
+
+
     }
 
     public class HttpContext : IServiceProvider
@@ -177,6 +224,7 @@ namespace System.Web
         public HttpResponse Response => null;
         public SessionState.HttpSessionState Session => null;
         public HttpServerUtility Server => null;
+        public static HttpContext Current => null;
     }
 
     public class HttpCookie
@@ -301,6 +349,15 @@ namespace System.Web.Mvc
         public UrlHelper(Routing.RequestContext requestContext) { }
         public virtual bool IsLocalUrl(string url) => false;
     }
+
+    public class RedirectResult : ActionResult
+    {
+        public bool Permanent { get; set; }
+        public string Url => null;
+
+        public RedirectResult(string url) : this(url, permanent: false) { }
+        public RedirectResult(string url, bool permanent) { }
+    }
 }
 
 namespace System.Web.Routing
@@ -390,7 +447,7 @@ namespace System.Web.Script.Serialization
         public JavaScriptSerializer() => throw null;
         public JavaScriptSerializer(System.Web.Script.Serialization.JavaScriptTypeResolver resolver) => throw null;
         public object DeserializeObject(string input) => throw null;
-        public T Deserialize<T> (string input) => throw null;
+        public T Deserialize<T>(string input) => throw null;
         public object Deserialize(string input, Type targetType) => throw null;
     }
 
