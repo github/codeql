@@ -67,10 +67,10 @@ fn test_passwords(
 	sink(harmless);
 	sink(encrypted_password);
 	sink(password_hash);
-	sink(passwordFile); // $ SPURIOUS: sensitive=password
+	sink(passwordFile);
 
 	sink(ms.harmless.as_str());
-	sink(ms.password_file_path.as_str()); // $ SPURIOUS: sensitive=password
+	sink(ms.password_file_path.as_str());
 	sink(ms.password_enabled.as_str()); // $ SPURIOUS: sensitive=password
 	sink(ms.numfailed.as_str());
 
@@ -127,11 +127,11 @@ fn test_credentials(
 
 	sink(hashkey);
 	sink(hash_key);
-	sink(sessionkeypath); // $ SPURIOUS: sensitive=id
-	sink(account_key_path); // $ SPURIOUS: sensitive=id
+	sink(sessionkeypath);
+	sink(account_key_path);
 
-	sink(ms.get_certificate_url()); // $ SPURIOUS: sensitive=certificate
-	sink(ms.get_certificate_file()); // $ SPURIOUS: sensitive=certificate
+	sink(ms.get_certificate_url());
+	sink(ms.get_certificate_file());
 
 	sink(get_public_key());
 	sink(get_next_token());
@@ -343,8 +343,8 @@ fn test_private_info(
 	sink(info.financials.harmless.as_str());
 	sink(info.financials.num_accounts); // $ SPURIOUS: sensitive=id
 	sink(info.financials.total_accounts); // $ SPURIOUS: sensitive=id
-	sink(info.financials.accounting); // $ SPURIOUS: sensitive=id
-	sink(info.financials.unaccounted); // $ SPURIOUS: sensitive=id
+	sink(info.financials.accounting);
+	sink(info.financials.unaccounted);
 	sink(info.financials.multiband);
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
@@ -362,5 +362,5 @@ impl MyArray {
 
 fn test_iterator() {
 	let iter = std::iter::repeat(1).take(10);
-	sink(MyArray::from_trusted_iterator(iter)); // $ SPURIOUS: sensitive=secret
+	sink(MyArray::from_trusted_iterator(iter));
 }
