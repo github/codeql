@@ -135,14 +135,14 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     // logging from a struct
     let s1 = MyStruct1 { harmless: "foo".to_string(), password: "123456".to_string() }; // $ MISSING: Source=s1
     warn!("message = {}", s1.harmless);
-    warn!("message = {}", s1.password); // $ MISSING: Alert[rust/cleartext-logging]
+    warn!("message = {}", s1.password); // $ Alert[rust/cleartext-logging]
     warn!("message = {}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
     warn!("message = {:?}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
     warn!("message = {:#?}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
 
     let s2 = MyStruct2 { harmless: "foo".to_string(), password: "123456".to_string() }; // $ MISSING: Source=s2
     warn!("message = {}", s2.harmless);
-    warn!("message = {}", s2.password); // $ MISSING: Alert[rust/cleartext-logging]
+    warn!("message = {}", s2.password); // $ Alert[rust/cleartext-logging]
     warn!("message = {}", s2); // (this implementation does not output the password field)
     warn!("message = {:?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
     warn!("message = {:#?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
