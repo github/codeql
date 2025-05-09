@@ -92,11 +92,9 @@ private class SensitiveFieldAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveFieldAccess() {
-    HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
-          .getAstNode()
-          .(FieldExpr)
-          .getIdentifier()
-          .getText(), classification)
+    exists(FieldExpr fe | fe.getParentNode*() = this.asExpr().getAstNode() |
+      HeuristicNames::nameIndicatesSensitiveData(fe.getIdentifier().getText(), classification)
+    )
   }
 
   override SensitiveDataClassification getClassification() { result = classification }

@@ -251,8 +251,8 @@ fn test_private_info(
 	sink(info.contact_e_mail_2.as_str()); // $ MISSING: sensitive=private
 	sink(info.my_ssn.as_str()); // $ sensitive=private
 	sink(&info.ssn); // $ sensitive=private
-	sink(info.ssn.data); // $ MISSING: sensitive=private
-	sink(info.ssn.get_data()); // $ MISSING: sensitive=private
+	sink(info.ssn.data); // $ sensitive=private
+	sink(info.ssn.get_data()); // $ sensitive=private
 	sink(info.birthday.as_str()); // $ sensitive=private
 	sink(info.emergency_contact.as_str()); // $ sensitive=private
 	sink(info.name_of_employer.as_str()); // $ sensitive=private
@@ -273,14 +273,14 @@ fn test_private_info(
 	sink(&info.medical_notes); // $ sensitive=private
 	sink(info.medical_notes[0].as_str()); // $ sensitive=private
 	for n in info.medical_notes.iter() {
-		sink(n.as_str()); // $ MISSING: sensitive=private
+		sink(n.as_str()); // $ sensitive=private
 	}
 	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
 	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private
 
 	sink(info.latitude); // $ sensitive=private
 	let x = info.longitude.unwrap();
-	sink(x); // $ MISSING: sensitive=private
+	sink(x); // $ sensitive=private
 
 	sink(info.financials.my_bank_account_number.as_str()); // $ sensitive=private SPURIOUS: sensitive=id
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
