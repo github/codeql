@@ -299,6 +299,7 @@ ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SigningAlgorithms.q
 ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SymmetricEncryptionAlgorithms.ql
 ql/cpp/ql/src/experimental/cryptography/inventory/new_models/SymmetricPaddingAlgorithms.ql
 ql/cpp/ql/src/experimental/cryptography/inventory/new_models/UnknownAsymmetricKeyGeneration.ql
+ql/cpp/ql/src/experimental/quantum/PrintCBOMGraph.ql
 ql/cpp/ql/src/external/examples/filters/BumpMetricBy10.ql
 ql/cpp/ql/src/external/examples/filters/EditDefectMessage.ql
 ql/cpp/ql/src/external/examples/filters/ExcludeGeneratedCode.ql
