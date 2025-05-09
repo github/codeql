@@ -67,7 +67,7 @@ private class SensitiveDataVariable extends Variable {
 }
 
 /**
- * A variable access data flow node that might produce sensitive data.
+ * A variable access data flow node that might be sensitive data.
  */
 private class SensitiveVariableAccess extends SensitiveData {
   SensitiveDataClassification classification;
@@ -80,6 +80,23 @@ private class SensitiveVariableAccess extends SensitiveData {
           .getVariable()
           .(SensitiveDataVariable)
           .getClassification()
+  }
+
+  override SensitiveDataClassification getClassification() { result = classification }
+}
+
+/**
+ * A field access data flow node that might be sensitive data.
+ */
+private class SensitiveFieldAccess extends SensitiveData {
+  SensitiveDataClassification classification;
+
+  SensitiveFieldAccess() {
+    HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
+          .getAstNode()
+          .(FieldExpr)
+          .getIdentifier()
+          .getText(), classification)
   }
 
   override SensitiveDataClassification getClassification() { result = classification }

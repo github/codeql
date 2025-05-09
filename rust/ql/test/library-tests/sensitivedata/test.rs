@@ -50,7 +50,7 @@ fn test_passwords(
 	sink(oauth); // $ MISSING: sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
-	sink(ms.password.as_str()); // $ MISSING: sensitive=password
+	sink(ms.password.as_str()); // $ sensitive=password
 	sink(ms.mfa.as_str()); // $ MISSING: sensitive=password
 
 	sink(get_password()); // $ sensitive=password
@@ -68,8 +68,8 @@ fn test_passwords(
 	sink(passwordFile); // $ SPURIOUS: sensitive=password
 
 	sink(ms.harmless.as_str());
-	sink(ms.password_file_path.as_str());
-	sink(ms.password_enabled.as_str());
+	sink(ms.password_file_path.as_str()); // $ SPURIOUS: sensitive=password
+	sink(ms.password_enabled.as_str()); // $ SPURIOUS: sensitive=password
 	sink(ms.numfailed.as_str());
 
 	sink(get_string());
@@ -245,17 +245,17 @@ fn test_private_info(
 ) {
 	// private info
 
-	sink(info.mobile_phone_num.as_str()); // $ MISSING: sensitive=private
-	sink(info.mobile_phone_num.to_string()); // $ MISSING: sensitive=private
+	sink(info.mobile_phone_num.as_str()); // $ sensitive=private
+	sink(info.mobile_phone_num.to_string()); // $ sensitive=private
 	sink(info.contact_email.as_str()); // $ MISSING: sensitive=private
 	sink(info.contact_e_mail_2.as_str()); // $ MISSING: sensitive=private
-	sink(info.my_ssn.as_str()); // $ MISSING: sensitive=private
-	sink(&info.ssn); // $ MISSING: sensitive=private
+	sink(info.my_ssn.as_str()); // $ sensitive=private
+	sink(&info.ssn); // $ sensitive=private
 	sink(info.ssn.data); // $ MISSING: sensitive=private
 	sink(info.ssn.get_data()); // $ MISSING: sensitive=private
-	sink(info.birthday.as_str()); // $ MISSING: sensitive=private
-	sink(info.emergency_contact.as_str()); // $ MISSING: sensitive=private
-	sink(info.name_of_employer.as_str()); // $ MISSING: sensitive=private
+	sink(info.birthday.as_str()); // $ sensitive=private
+	sink(info.emergency_contact.as_str()); // $ sensitive=private
+	sink(info.name_of_employer.as_str()); // $ sensitive=private
 
 	sink(&info.gender); // $ MISSING: sensitive=private
 	sink(info.genderString.as_str()); // $ MISSING: sensitive=private
@@ -270,22 +270,22 @@ fn test_private_info(
 	sink(info.linkedPatientId); // $ MISSING: sensitive=private
 	sink(info.patient_record.as_str()); // $ MISSING: sensitive=private
 	sink(info.patient_record.trim()); // $ MISSING: sensitive=private
-	sink(&info.medical_notes); // $ MISSING: sensitive=private
-	sink(info.medical_notes[0].as_str()); // $ MISSING: sensitive=private
+	sink(&info.medical_notes); // $ sensitive=private
+	sink(info.medical_notes[0].as_str()); // $ sensitive=private
 	for n in info.medical_notes.iter() {
 		sink(n.as_str()); // $ MISSING: sensitive=private
 	}
 	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
 	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private
 
-	sink(info.latitude); // $ MISSING: sensitive=private
+	sink(info.latitude); // $ sensitive=private
 	let x = info.longitude.unwrap();
 	sink(x); // $ MISSING: sensitive=private
 
-	sink(info.financials.my_bank_account_number.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.credit_card_no.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.credit_rating); // $ MISSING: sensitive=private
-	sink(info.financials.user_ccn.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.my_bank_account_number.as_str()); // $ sensitive=private SPURIOUS: sensitive=id
+	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
+	sink(info.financials.credit_rating); // $ sensitive=private
+	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
 	sink(info.financials.cvv.as_str()); // $ MISSING: sensitive=private
 	sink(info.financials.beneficiary.as_str()); // $ MISSING: sensitive=private
 	sink(info.financials.routing_number); // $ MISSING: sensitive=private
@@ -306,10 +306,10 @@ fn test_private_info(
 	sink(modulesEx);
 
 	sink(info.financials.harmless.as_str());
-	sink(info.financials.num_accounts);
-	sink(info.financials.total_accounts);
-	sink(info.financials.accounting);
-	sink(info.financials.unaccounted);
+	sink(info.financials.num_accounts); // $ SPURIOUS: sensitive=id
+	sink(info.financials.total_accounts); // $ SPURIOUS: sensitive=id
+	sink(info.financials.accounting); // $ SPURIOUS: sensitive=id
+	sink(info.financials.unaccounted); // $ SPURIOUS: sensitive=id
 	sink(info.financials.multiband);
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
