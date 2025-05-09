@@ -37,10 +37,10 @@ private class SensitiveDataFunction extends Function {
 /**
  * A function call data flow node that might produce sensitive data.
  */
-private class SensitiveDataCall extends SensitiveData {
+private class SensitiveDataFunctionCall extends SensitiveData {
   SensitiveDataClassification classification;
 
-  SensitiveDataCall() {
+  SensitiveDataFunctionCall() {
     classification =
       this.asExpr()
           .getAstNode()
@@ -48,6 +48,33 @@ private class SensitiveDataCall extends SensitiveData {
           .getStaticTarget()
           .(SensitiveDataFunction)
           .getClassification()
+  }
+
+  override SensitiveDataClassification getClassification() { result = classification }
+}
+
+/**
+ * An enum variant that might produce sensitive data.
+ */
+private class SensitiveDataVariant extends Variant {
+  SensitiveDataClassification classification;
+
+  SensitiveDataVariant() {
+    HeuristicNames::nameIndicatesSensitiveData(this.getName().getText(), classification)
+  }
+
+  SensitiveDataClassification getClassification() { result = classification }
+}
+
+/**
+ * An enum variant call data flow node that might produce sensitive data.
+ */
+private class SensitiveDataVariantCall extends SensitiveData {
+  SensitiveDataClassification classification;
+
+  SensitiveDataVariantCall() {
+    classification =
+      this.asExpr().getAstNode().(CallExpr).getVariant().(SensitiveDataVariant).getClassification()
   }
 
   override SensitiveDataClassification getClassification() { result = classification }
@@ -67,7 +94,7 @@ private class SensitiveDataVariable extends Variable {
 }
 
 /**
- * A variable access data flow node that might produce sensitive data.
+ * A variable access data flow node that might be sensitive data.
  */
 private class SensitiveVariableAccess extends SensitiveData {
   SensitiveDataClassification classification;
@@ -80,6 +107,21 @@ private class SensitiveVariableAccess extends SensitiveData {
           .getVariable()
           .(SensitiveDataVariable)
           .getClassification()
+  }
+
+  override SensitiveDataClassification getClassification() { result = classification }
+}
+
+/**
+ * A field access data flow node that might be sensitive data.
+ */
+private class SensitiveFieldAccess extends SensitiveData {
+  SensitiveDataClassification classification;
+
+  SensitiveFieldAccess() {
+    exists(FieldExpr fe | fe.getParentNode*() = this.asExpr().getAstNode() |
+      HeuristicNames::nameIndicatesSensitiveData(fe.getIdentifier().getText(), classification)
+    )
   }
 
   override SensitiveDataClassification getClassification() { result = classification }
