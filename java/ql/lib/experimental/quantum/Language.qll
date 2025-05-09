@@ -1,9 +1,9 @@
-private import codeql.experimental.quantum.Model
 private import java as Language
 private import semmle.code.java.security.InsecureRandomnessQuery
 private import semmle.code.java.security.RandomQuery
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.FlowSources
+private import codeql.quantum.experimental.Model
 
 private class UnknownLocation extends Language::Location {
   UnknownLocation() { this.getFile().getAbsolutePath() = "" }

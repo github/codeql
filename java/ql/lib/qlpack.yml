@@ -7,8 +7,8 @@ library: true
 upgrades: upgrades
 dependencies:
   codeql/dataflow: ${workspace}
-  codeql/experimental: ${workspace}
   codeql/mad: ${workspace}
+  codeql/quantum: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/regex: ${workspace}
   codeql/threat-models: ${workspace}

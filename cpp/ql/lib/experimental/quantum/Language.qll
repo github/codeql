@@ -1,13 +1,13 @@
-import codeql.experimental.quantum.Model
+private import cpp as Language
 import semmle.code.cpp.dataflow.new.DataFlow
-private import cpp as Lang
+import codeql.quantum.experimental.Model
 
-module CryptoInput implements InputSig<Lang::Location> {
+module CryptoInput implements InputSig<Language::Location> {
   class DataFlowNode = DataFlow::Node;
 
-  class LocatableElement = Lang::Locatable;
+  class LocatableElement = Language::Locatable;
 
-  class UnknownLocation = Lang::UnknownDefaultLocation;
+  class UnknownLocation = Language::UnknownDefaultLocation;
 
   LocatableElement dfn_to_element(DataFlow::Node node) {
     result = node.asExpr() or
@@ -26,7 +26,7 @@ module CryptoInput implements InputSig<Lang::Location> {
   }
 }
 
-module Crypto = CryptographyBase<Lang::Location, CryptoInput>;
+module Crypto = CryptographyBase<Language::Location, CryptoInput>;
 
 module ArtifactFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
