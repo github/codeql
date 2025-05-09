@@ -48,12 +48,12 @@ fn test_passwords(
 	sink(authentication_key); // $ sensitive=password
 	sink(authenticationkey); // $ sensitive=password
 	sink(authenticationKey); // $ sensitive=password
-	sink(oauth); // $ MISSING: sensitive=password
+	sink(oauth); // $ sensitive=password
 	sink(one_time_code); // $ MISSING: sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ sensitive=password
-	sink(ms.mfa.as_str()); // $ MISSING: sensitive=password
+	sink(ms.mfa.as_str()); // $ sensitive=password
 
 	sink(get_password()); // $ sensitive=password
 	let password2 = get_string();
@@ -160,16 +160,16 @@ impl DeviceInfo {
 	fn test_device_info(&self, other: &DeviceInfo) {
 		// private device info
 
-		sink(&self.api_key); // $ MISSING: sensitive=id
-		sink(&other.api_key); // $ MISSING: sensitive=id
-		sink(&self.deviceApiToken); // $ MISSING: sensitive=id
-		sink(&self.finger_print); // $ MISSING: sensitive=id
-		sink(&self.ip_address); // $ MISSING: sensitive=id
-		sink(self.macaddr12); // $ MISSING: sensitive=id
-		sink(&self.mac_addr); // $ MISSING: sensitive=id
-		sink(self.mac_addr.values); // $ MISSING: sensitive=id
-		sink(self.mac_addr.values[0]); // $ MISSING: sensitive=id
-		sink(&self.networkMacAddress); // $ MISSING: sensitive=id
+		sink(&self.api_key); // $ sensitive=password
+		sink(&other.api_key); // $ sensitive=password
+		sink(&self.deviceApiToken); // $ sensitive=password
+		sink(&self.finger_print); // $ sensitive=private
+		sink(&self.ip_address); // $ sensitive=private
+		sink(self.macaddr12); // $ sensitive=private
+		sink(&self.mac_addr); // $ sensitive=private
+		sink(self.mac_addr.values); // $ sensitive=private
+		sink(self.mac_addr.values[0]); // $ sensitive=private
+		sink(&self.networkMacAddress); // $ sensitive=private
 
 		// not private device info
 
@@ -267,26 +267,26 @@ fn test_private_info(
 	sink(info.emergency_contact.as_str()); // $ sensitive=private
 	sink(info.name_of_employer.as_str()); // $ sensitive=private
 
-	sink(&info.gender); // $ MISSING: sensitive=private
-	sink(info.genderString.as_str()); // $ MISSING: sensitive=private
+	sink(&info.gender); // $ sensitive=private
+	sink(info.genderString.as_str()); // $ sensitive=private
 	let sex = "Male";
 	let gender = Gender::Female;
 	let a = Gender::Female;
-	sink(sex); // $ MISSING: sensitive=private
-	sink(gender); // $ MISSING: sensitive=private
+	sink(sex); // $ sensitive=private
+	sink(gender); // $ sensitive=private
 	sink(a); // $ MISSING: sensitive=private
 
-	sink(info.patient_id); // $ MISSING: sensitive=private
-	sink(info.linkedPatientId); // $ MISSING: sensitive=private
-	sink(info.patient_record.as_str()); // $ MISSING: sensitive=private
-	sink(info.patient_record.trim()); // $ MISSING: sensitive=private
+	sink(info.patient_id); // $ sensitive=private
+	sink(info.linkedPatientId); // $ sensitive=private
+	sink(info.patient_record.as_str()); // $ sensitive=private
+	sink(info.patient_record.trim()); // $ sensitive=private
 	sink(&info.medical_notes); // $ sensitive=private
 	sink(info.medical_notes[0].as_str()); // $ sensitive=private
 	for n in info.medical_notes.iter() {
 		sink(n.as_str()); // $ MISSING: sensitive=private
 	}
-	sink(info.confidentialMessage.as_str()); // $ MISSING: sensitive=private
-	sink(info.confidentialMessage.to_lowercase()); // $ MISSING: sensitive=private
+	sink(info.confidentialMessage.as_str()); // $ sensitive=secret
+	sink(info.confidentialMessage.to_lowercase()); // $ sensitive=secret
 
 	sink(info.latitude); // $ sensitive=private
 	let x = info.longitude.unwrap();
@@ -296,12 +296,12 @@ fn test_private_info(
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
 	sink(info.financials.credit_rating); // $ sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
-	sink(info.financials.cvv.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.beneficiary.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.routing_number); // $ MISSING: sensitive=private
-	sink(info.financials.routingNumberText.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.iban.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.iBAN.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.cvv.as_str()); // $ sensitive=private
+	sink(info.financials.beneficiary.as_str()); // $ sensitive=private
+	sink(info.financials.routing_number); // $ sensitive=private
+	sink(info.financials.routingNumberText.as_str()); // $ sensitive=private
+	sink(info.financials.iban.as_str()); // $ sensitive=private
+	sink(info.financials.iBAN.as_str()); // $ sensitive=private
 
 	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ sensitive=private
 	sink(ContactDetails::MobileNumber("123".to_string())); // $ sensitive=private

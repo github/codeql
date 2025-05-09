@@ -54,7 +54,9 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of secret
    * or trusted data.
    */
-  string maybeSecret() { result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted).*" }
+  string maybeSecret() {
+    result = "(?is).*((?<!is|is_)secret|(?<!un|un_|is|is_)trusted|confidential).*"
+  }
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence of
@@ -72,7 +74,10 @@ module HeuristicNames {
    */
   string maybePassword() {
     result = "(?is).*pass(wd|word|code|.?phrase)(?!.*question).*" or
-    result = "(?is).*(auth(entication|ori[sz]ation)?).?key.*"
+    result = "(?is).*(auth(entication|ori[sz]ation)?).?key.*" or
+    result = "(?is).*([_-]|\\b)mfa([_-]|\\b).*" or
+    result = "(?is).*oauth.*" or
+    result = "(?is).*api.?(key|token).*"
   }
 
   /**
@@ -88,7 +93,7 @@ module HeuristicNames {
   string maybePrivate() {
     result =
       "(?is).*(" +
-        // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
+        // Inspired by multiple sources including the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
         "social.?security|employer.?identification|national.?insurance|resident.?id|" +
         "passport.?(num|no)|([_-]|\\b)ssn([_-]|\\b)|" +
@@ -100,17 +105,19 @@ module HeuristicNames {
         // Geographic location - where the user is (or was)
         "latitude|longitude|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|acc(ou)?nt.?(no|num|credit)|" +
-        "salary|billing|credit.?(rating|score)|([_-]|\\b)ccn([_-]|\\b)|" +
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|acc(ou)?nt.?(no|num|credit)|routing.?num|" +
+        "salary|billing|beneficiary|credit.?(rating|score)|([_-]|\\b)(ccn|cvv|iban)([_-]|\\b)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         // "e(mail|_mail)|" + // this seems too noisy
         // Health - medical conditions, insurance status, prescription records
-        "birth.?da(te|y)|da(te|y).?(of.?)?birth|" +
-        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
+        "birth.?da(te|y)|da(te|y).?(of.?)?birth|gender|([_-]|\\b)sex([_-]|\\b)|" +
+        "medical|(health|care).?plan|healthkit|appointment|prescription|patient.?(id|record)|" +
         "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
         "menstrua|pregnan|insulin|inhaler|" +
         // Relationships - work and family
-        "employ(er|ee)|spouse|maiden.?name" +
+        "employ(er|ee)|spouse|maiden.?name|" +
+        // Device information
+        "([_-]|\\b)ip.?addr|mac.?addr|finger.?print" +
         // ---
         ").*"
   }
