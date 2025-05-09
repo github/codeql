@@ -293,8 +293,8 @@ fn test_private_info(
 	sink(info.financials.iban.as_str()); // $ MISSING: sensitive=private
 	sink(info.financials.iBAN.as_str()); // $ MISSING: sensitive=private
 
-	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ MISSING: sensitive=private
-	sink(ContactDetails::MobileNumber("123".to_string())); // $ MISSING: sensitive=private
+	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ sensitive=private
+	sink(ContactDetails::MobileNumber("123".to_string())); // $ sensitive=private
 	sink(ContactDetails::Email("a@b".to_string())); // $ MISSING: sensitive=private
 	if let ContactDetails::MobileNumber(num) = details {
 		sink(num.as_str()); // $ MISSING: sensitive=private
