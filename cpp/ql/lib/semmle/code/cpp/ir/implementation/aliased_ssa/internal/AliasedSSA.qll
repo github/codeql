@@ -235,7 +235,7 @@ private newtype TMemoryLocation =
  *
  * Some of these memory locations will be filtered out for performance reasons before being passed to SSA construction.
  */
-abstract private class MemoryLocation0 extends TMemoryLocation {
+abstract class MemoryLocation0 extends TMemoryLocation {
   final string toString() {
     if this.isMayAccess()
     then result = "?" + this.toStringInternal()
