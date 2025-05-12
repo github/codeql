@@ -143,3 +143,9 @@ int getStartBitOffset(MemoryLocation location) { none() }
 
 /** Gets the end bit offset of a `MemoryLocation`, if any. */
 int getEndBitOffset(MemoryLocation location) { none() }
+
+/**
+ * Holds if `def` is a busy definition. That is, it has a large number of
+ * overlapping uses.
+ */
+predicate isBusyDef(MemoryLocation def) { none() }
