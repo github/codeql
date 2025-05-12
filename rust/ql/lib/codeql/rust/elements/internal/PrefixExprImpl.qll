@@ -5,7 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.PrefixExpr
-private import codeql.rust.elements.Operation::OperationImpl as OperationImpl
+private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
 
 /**
  * INTERNAL: This module contains the customizable definition of `PrefixExpr` and should not

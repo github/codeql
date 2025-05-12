@@ -5,7 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.BinaryExpr
-private import codeql.rust.elements.Operation::OperationImpl as OperationImpl
+private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
 
 /**
  * INTERNAL: This module contains the customizable definition of `BinaryExpr` and should not
