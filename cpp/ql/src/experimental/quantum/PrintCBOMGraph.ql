@@ -4,6 +4,8 @@
  *              This query only supports DGML output, as CodeQL DOT output omits properties.
  * @kind graph
  * @id cpp/print-cbom-graph
+ * @tags quantum
+ *       experimental
  */
 
 import experimental.quantum.Language
