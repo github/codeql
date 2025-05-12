@@ -80,7 +80,7 @@ mod poem_test {
 }
 
 mod actix_test {
-    use actix_web::{get, web, App, HttpServer};
+    use actix_web::{get, web, App};
     use crate::web_frameworks::sink;
 
     async fn my_actix_handler_1(path: web::Path<String>) -> String { // $ MISSING: Alert[rust/summary/taint-sources]
