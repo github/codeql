@@ -130,7 +130,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that is flow-aware, i.e., it has an input and output node implicitly used for data flow analysis.
    */
-  abstract class FlowAwareElement extends LocatableElement {
+  abstract private class FlowAwareElementImpl extends LocatableElement {
     /**
      * Gets the output node for this element, which should usually be the same as `this`.
      */
@@ -154,6 +154,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     abstract predicate flowsTo(FlowAwareElement other);
   }
+
+  final class FlowAwareElement = FlowAwareElementImpl;
 
   /**
    * An element that represents a _known_ cryptographic asset with a determinable value OR an artifact.
@@ -187,7 +189,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * 1. A value (e.g., a string or integer literal) *or*
    * 1. An input for which a value cannot be determined (e.g., `argv`, file system reads, and web request headers)
    */
-  abstract class GenericSourceInstance extends FlowAwareElement {
+  abstract class GenericSourceInstance extends FlowAwareElementImpl {
     final override ConsumerInputDataFlowNode getInputNode() { none() }
 
     abstract string getInternalType();
@@ -257,7 +259,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    *
    * A consumer can consume multiple instances and types of assets at once, e.g., both a `PaddingAlgorithm` and `CipherAlgorithm`.
    */
-  abstract private class ConsumerElement extends FlowAwareElement {
+  abstract private class ConsumerElement extends FlowAwareElementImpl {
     abstract KnownElement getAKnownSource();
 
     override predicate flowsTo(FlowAwareElement other) { none() }
@@ -337,7 +339,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   /**
    * An element that represents a _known_ cryptographic artifact.
    */
-  abstract class ArtifactInstance extends KnownElement, FlowAwareElement {
+  abstract class ArtifactInstance extends KnownElement, FlowAwareElementImpl {
     abstract predicate isConsumerArtifact(); // whether this is an input artifact defined by its consumer
   }
 
