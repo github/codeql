@@ -3,7 +3,6 @@
  */
 
 import codeql.util.Location
-import codeql.util.Either
 
 signature module InputSig<LocationSig Location> {
   class LocatableElement {
@@ -36,10 +35,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   final class DataFlowNode = Input::DataFlowNode;
 
+  /**
+   * A `ConsumerInputDataFlowNode` is a `DataFlowNode` that represents a consumer of data.
+   *
+   * This class is equivalent to `DataFlowNode` but facilitates binding to a `ConsumerElement`.
+   */
   class ConsumerInputDataFlowNode extends DataFlowNode {
     ConsumerElement getConsumer() { result.getInputNode() = this }
   }
 
+  /**
+   * An `ArtifactOutputDataFlowNode` is a `DataFlowNode` that represents the source of a created artifact.
+   *
+   * This class is equivalent to `DataFlowNode` but facilitates binding to an `OutputArtifactInstance`.
+   */
   class ArtifactOutputDataFlowNode extends DataFlowNode {
     OutputArtifactInstance getArtifact() { result.getOutputNode() = this }
   }
@@ -51,19 +60,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   bindingset[root]
   private string getPropertyAsGraphString(NodeBase node, string key, Location root) {
     result =
-      strictconcat(any(string value, Location location, string parsed |
-            node.properties(key, value, location) and
-            (
-              if location = root or location instanceof UnknownLocation
-              then parsed = value
-              else
-                parsed =
-                  "(" + value + "," + Input::locationToFileBaseNameAndLineNumberString(location) +
-                    ")"
-            )
-          |
-            parsed
-          ), ","
+      strictconcat(string value, Location location, string parsed |
+        node.properties(key, value, location) and
+        (
+          if location = root or location instanceof UnknownLocation
+          then parsed = value
+          else
+            parsed =
+              "(" + value + "," + Input::locationToFileBaseNameAndLineNumberString(location) + ")"
+        )
+      |
+        parsed, ","
       )
   }
 
@@ -154,7 +161,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * CROSS PRODUCT WARNING: Modeling any *other* element that is a `FlowAwareElement` to the same
    * instance in the database will result in every `FlowAwareElement` sharing the output flow.
    */
-  abstract class KnownElement extends LocatableElement {
+  abstract private class KnownElement extends LocatableElement {
     final ConsumerElement getAConsumer() { result.getAKnownSource() = this }
   }
 
@@ -297,6 +304,23 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override ConsumerInputDataFlowNode getInputNode() { result = input }
   }
 
+  /**
+   * An `AlgorithmValueConsumer` (_AVC_) is an element that consumes a value specifying an algorithm.
+   *
+   * Example 1:
+   * `arg0` of `set_algorithm` (`x`) is the AVC for the `ctx.encrypt()` operation.
+   * ```cpp
+   * x = "RSA";
+   * ctx.set_algorithm(x);
+   * ctx.encrypt();
+   * ```
+   *
+   * Example 2:
+   * `encrypt_with_rsa` is concurrently an an operation, an AVC, and an algorithm.
+   * ```cpp
+   * `encrypt_with_rsa();`
+   * ```
+   */
   abstract class AlgorithmValueConsumer extends ConsumerElement {
     /**
      * DO NOT USE.
@@ -324,8 +348,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * to the artifact it receives, thereby becoming the definitive contextual source for that artifact.
    *
    * Architectural Implications:
-   *   * By directly coupling a consumer with the node that receives an artifact,
-   *     the data flow is fully transparent with the consumer itself serving only as a transparent node.
+   *   * By directly coupling a consumer with the node that receives an artifact, no modeling considerations have to be made
+   *     to provide an interface for identifying the source via the consumer data-flow mechanisms.
    *   * An artifact's properties (such as being a nonce) are not necessarily inherent; they are determined by the context in which the artifact is consumed.
    *     The consumer node is therefore essential in defining these properties for inputs.
    *   * This approach reduces ambiguity by avoiding separate notions of "artifact source" and "consumer", as the node itself encapsulates both roles.
@@ -347,7 +371,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
    * A `NonceArtifactConsumer` is always the `NonceArtifactInstance` itself, since data only becomes (i.e., is determined to be)
    * a `NonceArtifactInstance` when it is consumed in a context that expects a nonce (e.g., an argument expecting nonce data).
    *
-   *  In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
+   * In this case, the artifact (nonce) is fully defined by the context in which it is consumed, and the consumer embodies
    * that identity without the need for additional differentiation. Without the context a consumer provides, that data could
    * otherwise be any other type of artifact or even simply random data.
    *
@@ -604,7 +628,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       type = TSymmetricCipher(SEED()) and size = 128
     }
 
-    bindingset[type]
     predicate symmetric_cipher_to_name_and_structure(
       TSymmetricCipherType type, string name, CipherStructureType s
     ) {
@@ -651,7 +674,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       s = UnknownCipherStructureType()
     }
 
-    bindingset[type]
     predicate type_to_name(Algorithm type, string name) {
       // Symmetric cipher algorithm
       symmetric_cipher_to_name_and_structure(type.(SymmetricCipherAlgorithm).getType(), name, _)
@@ -1552,6 +1574,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
+   * The subset of algorithm nodes that are known asymmetric algorithm.
+   *
+   * Note: This is not an independent top-level node type.
+   */
+  class AsymmetricAlgorithmNode extends TKeyCreationCandidateAlgorithm instanceof AlgorithmNode {
+    AsymmetricAlgorithmNode() {
+      this instanceof EllipticCurveNode or
+      this.(KeyOperationAlgorithmNode).isAsymmetric()
+    }
+
+    string toString() { result = super.getAlgorithmName() }
+  }
+
+  /**
    * A cryptographic key, such as a symmetric key or asymmetric key pair.
    */
   final class KeyArtifactNode extends ArtifactNode, TKey {
@@ -1709,7 +1745,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     TMACType getMACType() { result = instance.asAlg().getMACType() }
 
-    bindingset[type]
     final private predicate macToNameMapping(TMACType type, string name) {
       type instanceof THMAC and
       name = "HMAC"
@@ -2102,7 +2137,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      */
     TBlockCipherModeOfOperationType getModeType() { result = instance.getModeType() }
 
-    bindingset[type]
     final private predicate modeToNameMapping(TBlockCipherModeOfOperationType type, string name) {
       type = ECB() and name = "ECB"
       or
@@ -2148,7 +2182,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     TPaddingType getPaddingType() { result = instance.getPaddingType() }
 
-    bindingset[type]
     final private predicate paddingToNameMapping(TPaddingType type, string name) {
       type = ANSI_X9_23() and name = "ANSI_X9_23"
       or
@@ -2454,9 +2487,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // ALL BRAINPOOL CURVES
     keySize in [160, 192, 224, 256, 320, 384, 512] and
     (
-      curveName = "BRAINPOOLP" + keySize.toString() + "R1"
+      curveName = "BRAINPOOLP" + keySize + "R1"
       or
-      curveName = "BRAINPOOLP" + keySize.toString() + "T1"
+      curveName = "BRAINPOOLP" + keySize + "T1"
     )
   }
 
@@ -2464,8 +2497,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     // ALL SEC CURVES
     keySize in [112, 113, 128, 131, 160, 163, 192, 193, 224, 233, 239, 256, 283, 384, 409, 521, 571] and
     exists(string suff | suff in ["R1", "R2", "K1"] |
-      curveName = "SECT" + keySize.toString() + suff or
-      curveName = "SECP" + keySize.toString() + suff
+      curveName = "SECT" + keySize + suff or
+      curveName = "SECP" + keySize + suff
     )
   }
 
@@ -2475,22 +2508,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     exists(string pre, string suff |
       pre in ["PNB", "ONB", "TNB"] and suff in ["V1", "V2", "V3", "V4", "V5", "W1", "R1"]
     |
-      curveName = "C2" + pre + keySize.toString() + suff
+      curveName = "C2" + pre + keySize + suff
     )
   }
 
   private predicate isPrimeCurve(string curveName, int keySize) {
     // ALL PRIME CURVES
     keySize in [192, 239, 256] and
-    exists(string suff | suff in ["V1", "V2", "V3"] |
-      curveName = "PRIME" + keySize.toString() + suff
-    )
+    exists(string suff | suff in ["V1", "V2", "V3"] | curveName = "PRIME" + keySize + suff)
   }
 
   private predicate isNumsCurve(string curveName, int keySize) {
     // ALL NUMS CURVES
     keySize in [256, 384, 512] and
-    exists(string suff | suff = "T1" | curveName = "NUMSP" + keySize.toString() + suff)
+    exists(string suff | suff = "T1" | curveName = "NUMSP" + keySize + suff)
   }
 
   /**
@@ -2586,11 +2617,5 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       value = instance.asAlg().getParsedEllipticCurveName() and
       location = this.getLocation()
     }
-  }
-
-  predicate isKnownAsymmetricAlgorithm(AlgorithmNode node) {
-    node instanceof EllipticCurveNode
-    or
-    node instanceof KeyOperationAlgorithmNode and node.(KeyOperationAlgorithmNode).isAsymmetric()
   }
 }

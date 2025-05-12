@@ -42,19 +42,15 @@ module CryptoInput implements InputSig<Language::Location> {
   }
 }
 
-/**
- * Instantiate the model
- */
+// Instantiate the `CryptographyBase` module
 module Crypto = CryptographyBase<Language::Location, CryptoInput>;
 
-/**
- * Definitions of various generic data sources
- */
+// Definitions of various generic sources
 final class DefaultFlowSource = SourceNode;
 
 final class DefaultRemoteFlowSource = RemoteFlowSource;
 
-class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedParameterSource {
+private class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedParameterSource {
   GenericUnreferencedParameterSource() {
     exists(Parameter p | this = p and not exists(p.getAnArgument()))
   }
@@ -68,7 +64,7 @@ class GenericUnreferencedParameterSource extends Crypto::GenericUnreferencedPara
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
+private class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
   GenericLocalDataSource() {
     any(DefaultFlowSource src | not src instanceof DefaultRemoteFlowSource).asExpr() = this
   }
@@ -82,7 +78,7 @@ class GenericLocalDataSource extends Crypto::GenericLocalDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
+private class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   GenericRemoteDataSource() { any(DefaultRemoteFlowSource src).asExpr() = this }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
@@ -94,7 +90,7 @@ class GenericRemoteDataSource extends Crypto::GenericRemoteDataSource {
   override string getAdditionalDescription() { result = this.toString() }
 }
 
-class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
+private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
   ConstantDataSource() {
     // TODO: this is an API specific workaround for JCA, as 'EC' is a constant that may be used
     // where typical algorithms are specified, but EC specifically means set up a
@@ -114,14 +110,14 @@ class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceo
 }
 
 /**
- * Random number generation, where each instance is modelled as the expression
+ * An instance of random number generation, modelled as the expression
  * tied to an output node (i.e., the result of the source of randomness)
  */
 abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance {
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 }
 
-class SecureRandomnessInstance extends RandomnessInstance {
+private class SecureRandomnessInstance extends RandomnessInstance {
   RandomDataSource source;
 
   SecureRandomnessInstance() {
@@ -132,7 +128,7 @@ class SecureRandomnessInstance extends RandomnessInstance {
   override string getGeneratorName() { result = source.getSourceOfRandomness().getQualifiedName() }
 }
 
-class InsecureRandomnessInstance extends RandomnessInstance {
+private class InsecureRandomnessInstance extends RandomnessInstance {
   RandomDataSource source;
 
   InsecureRandomnessInstance() {
@@ -143,15 +139,17 @@ class InsecureRandomnessInstance extends RandomnessInstance {
 }
 
 /**
- * Artifact output to node input configuration
+ * An additional flow step in generic data-flow configurations.
+ * Where a step is an edge between nodes `n1` and `n2`,
+ * `this` = `n1` and `getOutput()` = `n2`.
+ *
+ * FOR INTERNAL MODELING USE ONLY.
  */
 abstract class AdditionalFlowInputStep extends DataFlow::Node {
   abstract DataFlow::Node getOutput();
 
   final DataFlow::Node getInput() { result = this }
 }
-
-module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 /**
  * Generic data source to node input configuration
@@ -213,6 +211,8 @@ module ArtifactFlowConfig implements DataFlow::ConfigSig {
 }
 
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
+
+module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA

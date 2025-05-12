@@ -1,6 +1,6 @@
 /**
  * @name Likely crypto API function
- * @description Detects functions that take in crypto configuration parameters but calls are not detected in source.
+ * @description Outputs functions that take in crypto configuration parameters but calls are not detected in source.
  * @id java/quantum/slices/likely-crypto-api-function
  * @kind problem
  * @severity info

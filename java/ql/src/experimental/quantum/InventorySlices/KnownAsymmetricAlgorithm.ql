@@ -10,6 +10,5 @@
 import java
 import experimental.quantum.Language
 
-from Crypto::AlgorithmNode a
-where Crypto::isKnownAsymmetricAlgorithm(a)
+from Crypto::AsymmetricAlgorithmNode a
 select a, a.getAlgorithmName()
