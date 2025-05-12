@@ -234,14 +234,27 @@ class InvalidFormatString extends StringLiteral {
 }
 
 /**
+ * A method call to a method that parses a format string, for example a call
+ * to `string.Format()`.
+ */
+abstract private class FormatStringParseCallImpl extends MethodCall {
+  /**
+   * Gets the expression used as the format string.
+   */
+  abstract Expr getFormatExpr();
+}
+
+final class FormatStringParseCall = FormatStringParseCallImpl;
+
+/**
  * A method call to a method that formats a string, for example a call
  * to `string.Format()`.
  */
-class FormatCall extends MethodCall {
+class FormatCall extends FormatStringParseCallImpl {
   FormatCall() { this.getTarget() instanceof FormatMethod }
 
   /** Gets the expression used as the format string. */
-  Expr getFormatExpr() { result = this.getArgument(this.getFormatArgument()) }
+  override Expr getFormatExpr() { result = this.getArgument(this.getFormatArgument()) }
 
   /** Gets the argument number containing the format string. */
   int getFormatArgument() { result = this.getTarget().(FormatMethod).getFormatArgument() }
@@ -288,23 +301,6 @@ class FormatCall extends MethodCall {
     index = this.getASuppliedArgument() and
     result = this.getArgument(this.getFirstArgument() + index)
   }
-}
-
-/**
- * A method call to a method that parses a format string, for example a call
- * to `string.Format()`.
- */
-abstract private class FormatStringParseCallImpl extends MethodCall {
-  /**
-   * Gets the expression used as the format string.
-   */
-  abstract Expr getFormatExpr();
-}
-
-final class FormatStringParseCall = FormatStringParseCallImpl;
-
-private class OrdinaryFormatCall extends FormatStringParseCallImpl instanceof FormatCall {
-  override Expr getFormatExpr() { result = FormatCall.super.getFormatExpr() }
 }
 
 /**
