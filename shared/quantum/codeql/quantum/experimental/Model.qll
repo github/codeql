@@ -1584,7 +1584,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       this.(KeyOperationAlgorithmNode).isAsymmetric()
     }
 
-    string toString() { result = super.getAlgorithmName() }
+    string toString() { result = super.toString() }
+
+    AlgorithmNode asAlgorithmNode() { result = this }
   }
 
   /**

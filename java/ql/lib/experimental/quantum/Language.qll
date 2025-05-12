@@ -117,7 +117,7 @@ abstract class RandomnessInstance extends Crypto::RandomNumberGenerationInstance
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 }
 
-private class SecureRandomnessInstance extends RandomnessInstance {
+class SecureRandomnessInstance extends RandomnessInstance {
   RandomDataSource source;
 
   SecureRandomnessInstance() {
@@ -128,7 +128,7 @@ private class SecureRandomnessInstance extends RandomnessInstance {
   override string getGeneratorName() { result = source.getSourceOfRandomness().getQualifiedName() }
 }
 
-private class InsecureRandomnessInstance extends RandomnessInstance {
+class InsecureRandomnessInstance extends RandomnessInstance {
   RandomDataSource source;
 
   InsecureRandomnessInstance() {

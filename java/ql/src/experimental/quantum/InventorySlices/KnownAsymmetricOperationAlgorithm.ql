@@ -12,4 +12,4 @@ import experimental.quantum.Language
 
 from Crypto::OperationNode op, Crypto::AsymmetricAlgorithmNode a
 where a = op.getAKnownAlgorithm()
-select op, a.getAlgorithmName()
+select op, a.asAlgorithmNode().getAlgorithmName()
