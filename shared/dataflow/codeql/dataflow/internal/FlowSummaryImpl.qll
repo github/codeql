@@ -565,8 +565,7 @@ module Make<
       isLocalSummaryComponent(s.head())
     }
 
-    /** Like `isSupportedInputStack` but for output stacks. */
-    private predicate isSupportedOutputStack(SummaryComponentStack s) {
+    private predicate isSupportedOutputStack1(SummaryComponentStack s) {
       // ReturnValue.*
       s.length() = 1 and
       s.head() instanceof TReturnSummaryComponent
@@ -581,8 +580,17 @@ module Make<
       s.head() instanceof TParameterSummaryComponent and
       s.tail().head() instanceof TArgumentSummaryComponent
       or
-      isSupportedOutputStack(s.tail()) and
+      isSupportedOutputStack1(s.tail()) and
       isLocalSummaryComponent(s.head())
+    }
+
+    /** Like `isSupportedInputStack` but for output stacks. */
+    private predicate isSupportedOutputStack(SummaryComponentStack s) {
+      isSupportedOutputStack1(s)
+      or
+      // `Argument[n]` not followed by anything. Needs to be outside the recursion.
+      s.length() = 1 and
+      s.head() instanceof TArgumentSummaryComponent
     }
 
     /**
