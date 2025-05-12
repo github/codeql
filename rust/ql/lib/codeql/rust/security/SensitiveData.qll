@@ -112,6 +112,10 @@ private class SensitiveVariableAccess extends SensitiveData {
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
+Expr fieldExprParentField(FieldExpr fe) {
+  result = fe.getParentNode()
+}
+
 /**
  * A field access data flow node that might be sensitive data.
  */
@@ -119,7 +123,7 @@ private class SensitiveFieldAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveFieldAccess() {
-    exists(FieldExpr fe | fe.getParentNode*() = this.asExpr().getAstNode() |
+    exists(FieldExpr fe | fieldExprParentField*(fe) = this.asExpr().getAstNode() |
       HeuristicNames::nameIndicatesSensitiveData(fe.getIdentifier().getText(), classification)
     )
   }
