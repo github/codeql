@@ -112,9 +112,7 @@ private class SensitiveVariableAccess extends SensitiveData {
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
-Expr fieldExprParentField(FieldExpr fe) {
-  result = fe.getParentNode()
-}
+private Expr fieldExprParentField(FieldExpr fe) { result = fe.getParentNode() }
 
 /**
  * A field access data flow node that might be sensitive data.
