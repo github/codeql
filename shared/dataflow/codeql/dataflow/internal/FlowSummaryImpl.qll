@@ -541,7 +541,7 @@ module Make<
     }
 
     /**
-     * Holds if `s` is a valid input stack, in the sense that we generate data flow graph
+     * Holds if `s` is a valid input stack, in the sense that we generate a data flow graph
      * that faithfully represents this flow, and lambda-tracking can be expected to track
      * lambdas to the relevant callbacks in practice.
      */
