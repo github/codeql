@@ -242,6 +242,10 @@ enum ContactDetails {
 	FavouriteColor(String),
 }
 
+struct ContactDetails2 {
+	home_phone_number: String,
+}
+
 fn test_private_info(
 	info: &MyPrivateInfo, details: &ContactDetails,
 ) {
@@ -298,9 +302,34 @@ fn test_private_info(
 	sink(ContactDetails::HomePhoneNumber("123".to_string())); // $ sensitive=private
 	sink(ContactDetails::MobileNumber("123".to_string())); // $ sensitive=private
 	sink(ContactDetails::Email("a@b".to_string())); // $ MISSING: sensitive=private
+
+	let numbers = [1, 2, 3];
+
 	if let ContactDetails::MobileNumber(num) = details {
 		sink(num.as_str()); // $ MISSING: sensitive=private
 	}
+	let contacts = numbers.map(|number|
+		{
+			let contact = ContactDetails::MobileNumber(number.to_string());
+			sink(&contact); // $ sensitive=private
+			contact
+		}
+	);
+	sink(&contacts[0]); // $ MISSING: sensitive=private
+	if let ContactDetails::HomePhoneNumber(num) = &contacts[0] {
+		sink(num.as_str()); // $ MISSING: sensitive=private
+	}
+
+	let contacts2 = numbers.map(|number|
+		{
+			let contact = ContactDetails2 {
+				home_phone_number: number.to_string(),
+			};
+			sink(&contact.home_phone_number); // $ sensitive=private
+			contact
+		}
+	);
+	sink(&contacts2[0].home_phone_number); // $ sensitive=private
 
 	// not private info
 
