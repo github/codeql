@@ -1,4 +1,3 @@
-#![allow(deprecated)]
 
 fn sink<T>(_: T) { }
 
@@ -7,7 +6,7 @@ fn sink<T>(_: T) { }
 mod poem_test {
     use poem::{get, handler, web::Path, web::Query, Route, Server, listener::TcpListener};
     use serde::Deserialize;
-    use crate::web_frameworks::sink;
+    use super::sink;
 
     #[handler]
     fn my_poem_handler_1(Path(a): Path<String>) -> String { // $ Alert[rust/summary/taint-sources]
@@ -74,7 +73,7 @@ mod poem_test {
             .at("/5/:a/:b", get(my_poem_handler_5))
             .at("/6/:a/", get(my_poem_handler_6));
 
-        _ = Server::new(TcpListener::bind("0.0.0.0:3000")).run(app).await.unwrap();
+        Server::new(TcpListener::bind("0.0.0.0:3000")).run(app).await.unwrap();
 
         // ...
     }
