@@ -26,6 +26,7 @@ fn test_passwords(
 	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str,
 	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
 	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
+	one_time_code: &str,
 	harmless: &str, encrypted_password: &str, password_hash: &str, passwordFile: &str,
 	ms: &MyStruct
 ) {
@@ -48,6 +49,7 @@ fn test_passwords(
 	sink(authenticationkey); // $ sensitive=password
 	sink(authenticationKey); // $ sensitive=password
 	sink(oauth); // $ MISSING: sensitive=password
+	sink(one_time_code); // $ MISSING: sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ sensitive=password
