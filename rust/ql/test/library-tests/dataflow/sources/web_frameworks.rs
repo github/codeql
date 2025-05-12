@@ -131,7 +131,7 @@ mod axum_test {
     use axum::routing::get;
     use axum::extract::{Path, Query, Request, Json};
     use std::collections::HashMap;
-    use crate::web_frameworks::sink;
+    use super::sink;
 
     async fn my_axum_handler_1(Path(a): Path<String>) -> &'static str { // $ MISSING: Alert[rust/summary/taint-sources]
         sink(a.as_str()); // $ MISSING: hasTaintFlow
