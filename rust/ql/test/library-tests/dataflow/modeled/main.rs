@@ -26,7 +26,7 @@ fn i64_clone() {
     let a = source(12);
     sink(a); // $ hasValueFlow=12
     let b = a.clone();
-    sink(b); // $ hasValueFlow=12
+    sink(b); // $ MISSING: hasValueFlow=12 - lack of builtins means that we cannot resolve clone call above, and hence not insert implicit borrow
 }
 
 mod my_clone {

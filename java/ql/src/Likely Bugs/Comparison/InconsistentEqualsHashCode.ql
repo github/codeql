@@ -8,6 +8,7 @@
  * @id java/inconsistent-equals-and-hashcode
  * @tags reliability
  *       correctness
+ *       quality
  *       external/cwe/cwe-581
  */
 

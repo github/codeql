@@ -1,1 +1,3 @@
-[]
+- queries: .
+- apply: code-quality-selectors.yml
+  from: codeql/suite-helpers

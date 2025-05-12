@@ -58,13 +58,13 @@
 /LiteralExpr/gen_literal_expr.rs linguist-generated
 /LiteralPat/gen_literal_pat.rs linguist-generated
 /LoopExpr/gen_loop_expr.rs linguist-generated
+/MacroBlockExpr/gen_macro_block_expr.rs linguist-generated
 /MacroCall/gen_macro_call.rs linguist-generated
 /MacroDef/gen_macro_def.rs linguist-generated
 /MacroExpr/gen_macro_expr.rs linguist-generated
 /MacroItems/gen_macro_items.rs linguist-generated
 /MacroPat/gen_macro_pat.rs linguist-generated
 /MacroRules/gen_macro_rules.rs linguist-generated
-/MacroStmts/gen_macro_stmts.rs linguist-generated
 /MacroTypeRepr/gen_macro_type_repr.rs linguist-generated
 /MatchArm/gen_match_arm.rs linguist-generated
 /MatchArmList/gen_match_arm_list.rs linguist-generated

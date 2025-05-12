@@ -94,13 +94,13 @@ import codeql.rust.elements.LiteralPat
 import codeql.rust.elements.Locatable
 import codeql.rust.elements.LoopExpr
 import codeql.rust.elements.LoopingExpr
+import codeql.rust.elements.MacroBlockExpr
 import codeql.rust.elements.MacroCall
 import codeql.rust.elements.MacroDef
 import codeql.rust.elements.MacroExpr
 import codeql.rust.elements.MacroItems
 import codeql.rust.elements.MacroPat
 import codeql.rust.elements.MacroRules
-import codeql.rust.elements.MacroStmts
 import codeql.rust.elements.MacroTypeRepr
 import codeql.rust.elements.MatchArm
 import codeql.rust.elements.MatchArmList

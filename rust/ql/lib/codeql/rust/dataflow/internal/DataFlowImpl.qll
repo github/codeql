@@ -203,6 +203,7 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result = e.(ReturnExprCfgNode).getExpr() or
   result = e.(BreakExprCfgNode).getExpr() or
   result = e.(BlockExprCfgNode).getTailExpr() or
+  result = e.(MacroBlockExprCfgNode).getTailExpr() or
   result = e.(MatchExprCfgNode).getArmExpr(_) or
   result = e.(MacroExprCfgNode).getMacroCall().(MacroCallCfgNode).getExpandedNode() or
   result.(BreakExprCfgNode).getTarget() = e
