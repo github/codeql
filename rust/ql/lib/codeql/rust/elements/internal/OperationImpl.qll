@@ -11,7 +11,7 @@ private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  * INTERNAL: This module contains the customizable definition of `Operation` and should not
  * be referenced directly.
  */
-module OperationImpl {
+module Impl {
   /**
    * An operation, for example `&&`, `+=`, `!` or `*`.
    */
