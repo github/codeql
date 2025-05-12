@@ -1,5 +1,5 @@
 /**
- * @name HTML template escaping bypass cross-site scripting
+ * @name Cross-site scripting via HTML template escaping bypass
  * @description Converting user input to a special type that avoids escaping
  *              when fed into an HTML template allows for a cross-site
  *              scripting vulnerability.
