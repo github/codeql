@@ -1320,6 +1320,18 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
 }
 
 /**
+ * Holds if the def-use information for `f` may have been omitted because it
+ * was too expensive to compute. This happens if one of the memory allocations
+ * in `f` is a busy definition (i.e., it has many different overlapping uses).
+ */
+predicate hasIncompleteSsa(IRFunction f) {
+  exists(Alias::MemoryLocation0 defLocation |
+    Alias::isBusyDef(defLocation) and
+    defLocation.getIRFunction() = f
+  )
+}
+
+/**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
  * `DebugSsa` module, which is then imported by PrintSSA.
  */
