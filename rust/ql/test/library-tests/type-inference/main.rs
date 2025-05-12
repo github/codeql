@@ -978,6 +978,20 @@ mod try_expressions {
     }
 }
 
+mod builtins {
+    pub fn f() {
+        let x: i32 = 1; // $ MISSING: type=x:i32
+        let y = 2; // $ MISSING: type=y:i32
+        let z = x + y; // $ MISSING: type=z:i32
+        let z = x.abs(); // $ MISSING: method=abs $ MISSING: type=z:i32
+        'c';
+        "Hello";
+        123.0f64;
+        true;
+        false;
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -995,4 +1009,5 @@ fn main() {
     implicit_self_borrow::f();
     borrowed_typed::f();
     try_expressions::f();
+    builtins::f();
 }
