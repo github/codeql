@@ -398,7 +398,7 @@ mod impl_overlap {
 
     pub fn f() {
         let x = S1;
-        println!("{:?}", x.common_method()); // $ method=S1::common_method SPURIOUS: method=<S1_as_OverlappingTrait>::common_method
+        println!("{:?}", x.common_method()); // $ method=S1::common_method
         println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
     }
 }

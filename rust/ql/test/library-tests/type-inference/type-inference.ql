@@ -24,7 +24,7 @@ module ResolveTest implements TestSig {
       location = source.getLocation() and
       element = source.toString()
     |
-      target = resolveMethodCallExpr(source) and
+      target = source.(MethodCallExpr).getStaticTarget() and
       functionHasValue(target, value) and
       tag = "method"
       or
