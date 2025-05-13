@@ -485,6 +485,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     default predicate additionalNullCheck(PreGuard guard, GuardValue val, Expr e, boolean isNull) {
       none()
     }
+
+    /**
+     * Holds if the assumption that `g1` has been evaluated to `v1` implies that
+     * `g2` has been evaluated to `v2`, that is, the evaluation of `g2` to `v2`
+     * dominates the evaluation of `g1` to `v1`.
+     *
+     * This predicate can be instantiated with `CustomGuard<..>::additionalImpliesStep`.
+     */
+    default predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
+      none()
+    }
   }
 
   module Logic<LogicInputSig LogicInput> {
@@ -695,41 +706,177 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    pragma[nomagic]
+    private signature predicate baseGuardValueSig(Guard guard, GuardValue v);
+
+    /**
+     * Calculates the transitive closure of all the guard implication steps
+     * starting from a given set of base cases.
+     */
+    private module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+      pragma[nomagic]
+      predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+        baseGuardValue(tgtGuard, tgtVal) and
+        guard = tgtGuard and
+        v = tgtVal
+        or
+        exists(Guard g0, GuardValue v0 |
+          guardControls(g0, v0, tgtGuard, tgtVal) and
+          impliesStep(g0, v0, guard, v)
+        )
+        or
+        exists(Guard g0, GuardValue v0 |
+          guardControls(g0, v0, tgtGuard, tgtVal) and
+          unboundImpliesStep(g0, v0, guard, v)
+        )
+        or
+        exists(SsaDefinition def0, GuardValue v0 |
+          ssaControls(def0, v0, tgtGuard, tgtVal) and
+          impliesStepSsaGuard(def0, v0, guard, v)
+        )
+        or
+        exists(Guard g0, GuardValue v0 |
+          guardControls(g0, v0, tgtGuard, tgtVal) and
+          additionalImpliesStep(g0, v0, guard, v)
+        )
+      }
+
+      pragma[nomagic]
+      predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
+        exists(Guard g0 |
+          guardControls(g0, v, tgtGuard, tgtVal) and
+          guardReadsSsaVar(g0, def)
+        )
+        or
+        exists(SsaDefinition def0 |
+          ssaControls(def0, v, tgtGuard, tgtVal) and
+          impliesStepSsa(def0, v, def)
+        )
+      }
+    }
+
+    private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
+      guard.hasValueBranchEdge(_, _, v)
+    }
+
+    private module BranchImplies = ImpliesTC<hasAValueBranchEdge/2>;
+
     private predicate guardControlsBranchEdge(
       Guard guard, BasicBlock bb1, BasicBlock bb2, GuardValue v
     ) {
-      guard.hasValueBranchEdge(bb1, bb2, v)
-      or
       exists(Guard g0, GuardValue v0 |
-        guardControlsBranchEdge(g0, bb1, bb2, v0) and
-        impliesStep(g0, v0, guard, v)
-      )
-      or
-      exists(Guard g0, GuardValue v0 |
-        guardControlsBranchEdge(g0, bb1, bb2, v0) and
-        unboundImpliesStep(g0, v0, guard, v)
-      )
-      or
-      exists(SsaDefinition def0, GuardValue v0 |
-        ssaControlsBranchEdge(def0, bb1, bb2, v0) and
-        impliesStepSsaGuard(def0, v0, guard, v)
+        g0.hasValueBranchEdge(bb1, bb2, v0) and
+        BranchImplies::guardControls(guard, v, g0, v0)
       )
     }
 
-    pragma[nomagic]
-    private predicate ssaControlsBranchEdge(
-      SsaDefinition def, BasicBlock bb1, BasicBlock bb2, GuardValue v
-    ) {
-      exists(Guard g0 |
-        guardControlsBranchEdge(g0, bb1, bb2, v) and
-        guardReadsSsaVar(g0, def)
-      )
-      or
-      exists(SsaDefinition def0 |
-        ssaControlsBranchEdge(def0, bb1, bb2, v) and
-        impliesStepSsa(def0, v, def)
-      )
+    signature module CustomGuardInputSig {
+      class ParameterPosition {
+        /** Gets a textual representation of this element. */
+        bindingset[this]
+        string toString();
+      }
+
+      class ArgumentPosition {
+        /** Gets a textual representation of this element. */
+        bindingset[this]
+        string toString();
+      }
+
+      /**
+       * Holds if the parameter position `ppos` matches the argument position
+       * `apos`.
+       */
+      predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
+
+      /** A non-overridable method with a boolean return value. */
+      class BooleanMethod {
+        SsaDefinition getParameter(ParameterPosition ppos);
+
+        Expr getAReturnExpr();
+      }
+
+      class BooleanMethodCall extends Expr {
+        BooleanMethod getMethod();
+
+        Expr getArgument(ArgumentPosition apos);
+      }
+    }
+
+    /**
+     * Provides an implementation of guard implication logic for custom
+     * wrappers. This can be used to instantiate the `additionalImpliesStep`
+     * predicate.
+     */
+    module CustomGuard<CustomGuardInputSig CustomGuardInput> {
+      private import CustomGuardInput
+
+      private class ReturnExpr extends ExprFinal {
+        ReturnExpr() { any(BooleanMethod m).getAReturnExpr() = this }
+
+        pragma[nomagic]
+        BasicBlock getBasicBlock() { result = super.getBasicBlock() }
+      }
+
+      private predicate booleanReturnGuard(Guard guard, GuardValue val) {
+        guard instanceof ReturnExpr and exists(val.asBooleanValue())
+      }
+
+      private module ReturnImplies = ImpliesTC<booleanReturnGuard/2>;
+
+      /**
+       * Holds if `ret` is a return expression in a non-overridable method that
+       * on a return value of `retval` allows the conclusion that the `ppos`th
+       * parameter has the value `val`.
+       */
+      private predicate validReturnInCustomGuard(
+        ReturnExpr ret, ParameterPosition ppos, boolean retval, GuardValue val
+      ) {
+        exists(BooleanMethod m, SsaDefinition param |
+          m.getAReturnExpr() = ret and
+          m.getParameter(ppos) = param and
+          not val instanceof TCaseMatch
+        |
+          exists(Guard g0, GuardValue v0 |
+            g0.directlyValueControls(ret.getBasicBlock(), v0) and
+            BranchImplies::ssaControls(param, val, g0, v0) and
+            retval = [true, false]
+          )
+          or
+          ReturnImplies::ssaControls(param, val, ret,
+            any(GuardValue r | r.asBooleanValue() = retval))
+        )
+      }
+
+      /**
+       * Gets a non-overridable method with a boolean return value that performs a check
+       * on the `ppos`th parameter. A return value equal to `retval` allows us to conclude
+       * that the argument has the value `val`.
+       */
+      private BooleanMethod customGuard(ParameterPosition ppos, boolean retval, GuardValue val) {
+        forex(ReturnExpr ret |
+          result.getAReturnExpr() = ret and
+          not ret.(ConstantExpr).asBooleanValue() = retval.booleanNot()
+        |
+          validReturnInCustomGuard(ret, ppos, retval, val)
+        )
+      }
+
+      /**
+       * Holds if the assumption that `g1` has been evaluated to `v1` implies that
+       * `g2` has been evaluated to `v2`, that is, the evaluation of `g2` to `v2`
+       * dominates the evaluation of `g1` to `v1`.
+       *
+       * This predicate covers the implication steps that arise from calls to
+       * custom guard wrappers.
+       */
+      predicate additionalImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
+        exists(BooleanMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
+          g1 = call and
+          call.getMethod() = customGuard(ppos, v1.asBooleanValue(), v2) and
+          call.getArgument(apos) = g2 and
+          parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
+        )
+      }
     }
 
     /**
