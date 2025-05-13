@@ -58,7 +58,7 @@ def get_retried x
         print x
         if x < 1
             begin
-                x += 1  #$ SPURIOUS: Alert
+                x += 1  #$ OK - the block may be executed again
                 raise StandardError
             end
         end

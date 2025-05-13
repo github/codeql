@@ -1,2 +1,1 @@
 | DeadStoreOfLocal.rb:2:5:2:5 | y | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.rb:2:5:2:5 | y | y |
-| DeadStoreOfLocal.rb:61:17:61:17 | x | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.rb:56:17:56:17 | x | x |
