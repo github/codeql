@@ -133,35 +133,35 @@ public class CollectionFlow
         return new List<string> { tainted };
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0];ReturnValue;value;dfc-generated
     public string[] ReturnComplexTypeArray(string[] a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0];ReturnValue;value;dfc-generated
     public List<byte> ReturnBulkTypeList(List<byte> a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public Dictionary<int, string> ReturnComplexTypeDictionary(Dictionary<int, string> a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0];ReturnValue;value;dfc-generated
     public Array ReturnUntypedArray(Array a)
     {
         return a;
     }
 
-    // SPURIOUS-heuristic-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0];ReturnValue;value;dfc-generated
     public IList ReturnUntypedList(IList a)
     {
@@ -202,7 +202,7 @@ public class IEnumerableFlow
         tainted = s;
     }
 
-    // SPURIOUS-heuristic-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0].Element;ReturnValue;value;df-generated
+    // heuristic-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=Models;IEnumerableFlow;false;ReturnIEnumerable;(System.Collections.Generic.IEnumerable<System.String>);;Argument[0];ReturnValue;value;dfc-generated
     public IEnumerable<string> ReturnIEnumerable(IEnumerable<string> input)
     {
