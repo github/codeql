@@ -1608,7 +1608,7 @@ open class KotlinFileExtractor(
             cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
 
     private fun needsInterfaceForwarder(f: IrFunction) =
-        // jvmDefaultModeEnabledIsEnabled means that -Xjvm-default=all or all-compatibility was
+        // jvmDefaultModeIsNoCompatibility means that -Xjvm-default=all or =no-compatibility was
         // used, in which case real Java default interfaces are used, and we don't need to do
         // anything.
         // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to
@@ -1618,7 +1618,7 @@ open class KotlinFileExtractor(
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class
         // called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
-        !jvmDefaultModeEnabledIsEnabled(getJvmDefaultMode(pluginContext.languageVersionSettings)) &&
+        !jvmDefaultModeIsNoCompatibility(getJvmDefaultMode(pluginContext.languageVersionSettings)) &&
             f.parentClassOrNull.let {
                 it != null &&
                     it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
