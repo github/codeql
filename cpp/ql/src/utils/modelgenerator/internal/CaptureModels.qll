@@ -189,15 +189,15 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
     )
   }
 
-  string parameterAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterApproximateAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
-  string parameterContentAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterExactAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, DataFlowPrivate::Position pos) {
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowPrivate::Position pos) {
     exists(Parameter p |
       p.isSourceParameterOf(c, pos) and
-      result = parameterAccess(p)
+      result = parameterExactAccess(p)
     )
     or
     pos.getArgumentIndex() = -1 and
@@ -206,8 +206,8 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
-    result = paramReturnNodeAsOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   pragma[nomagic]
