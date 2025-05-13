@@ -731,6 +731,20 @@ private module Cached {
     or
     instruction = getChi(result.(UninitializedGroupInstruction))
   }
+
+  /**
+   * Holds if the def-use information for `f` may have been omitted because it
+   * was too expensive to compute. This happens if one of the memory allocations
+   * in `f` is a busy definition (i.e., it has many different overlapping uses).
+   */
+  pragma[nomagic]
+  cached
+  predicate hasIncompleteSsa(IRFunction f) {
+    exists(Alias::MemoryLocation0 defLocation |
+      Alias::isBusyDef(pragma[only_bind_into](defLocation)) and
+      defLocation.getIRFunction() = f
+    )
+  }
 }
 
 private Instruction getNewInstruction(OldInstruction instr) { getOldInstruction(result) = instr }
@@ -1317,18 +1331,6 @@ predicate canReuseSsaForMemoryResult(Instruction instruction) {
     defLocation.canReuseSsa()
   )
   // We don't support reusing SSA for any location that could create a `Chi` instruction.
-}
-
-/**
- * Holds if the def-use information for `f` may have been omitted because it
- * was too expensive to compute. This happens if one of the memory allocations
- * in `f` is a busy definition (i.e., it has many different overlapping uses).
- */
-predicate hasIncompleteSsa(IRFunction f) {
-  exists(Alias::MemoryLocation0 defLocation |
-    Alias::isBusyDef(defLocation) and
-    defLocation.getIRFunction() = f
-  )
 }
 
 /**
