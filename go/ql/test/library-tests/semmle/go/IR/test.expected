@@ -4,3 +4,7 @@
 | test.go:15:2:15:20 | ... := ...[1] | test.go:15:13:15:20 | index expression | 1 | file://:0:0:0:0 | bool |
 | test.go:21:2:21:22 | ... := ...[0] | test.go:21:13:21:22 | type assertion | 0 | file://:0:0:0:0 | string |
 | test.go:21:2:21:22 | ... := ...[1] | test.go:21:13:21:22 | type assertion | 1 | file://:0:0:0:0 | bool |
+| test.go:29:2:29:7 | call to f[0] | test.go:29:4:29:6 | call to g | 0 | file://:0:0:0:0 | int |
+| test.go:29:2:29:7 | call to f[1] | test.go:29:4:29:6 | call to g | 1 | file://:0:0:0:0 | int |
+| test.go:33:2:33:7 | call to f[0] | test.go:33:4:33:6 | call to v | 0 | file://:0:0:0:0 | int |
+| test.go:33:2:33:7 | call to f[1] | test.go:33:4:33:6 | call to v | 1 | file://:0:0:0:0 | int |
