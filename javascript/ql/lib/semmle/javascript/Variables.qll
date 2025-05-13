@@ -126,6 +126,23 @@ class NamespaceScope extends Scope, @namespace_scope {
   override string toString() { result = "namespace scope" }
 }
 
+/**
+ * Holds if `v` is declared in the top-level of a module using a `declare` statement.
+ *
+ * For example:
+ * ```js
+ * declare var $: any;
+ * ```
+ *
+ * This introduces a `$` variable in the module scope, but it is likely just a way to provide
+ * a type for a global variable. We therefore treat it as a global variable.
+ */
+pragma[nomagic]
+private predicate isGlobalLike(Variable v) {
+  v.getScope() instanceof ModuleScope and
+  forex(VarDecl decl | decl = v.getADeclaration() | decl.isAmbient())
+}
+
 /** A variable declared in a scope. */
 class Variable extends @variable, LexicalName {
   /** Gets the name of this variable. */
@@ -135,7 +152,7 @@ class Variable extends @variable, LexicalName {
   override Scope getScope() { variables(this, _, result) }
 
   /** Holds if this is a global variable. */
-  predicate isGlobal() { this.getScope() instanceof GlobalScope }
+  predicate isGlobal() { this.getScope() instanceof GlobalScope or isGlobalLike(this) }
 
   /**
    * Holds if this is a variable exported from a TypeScript namespace.
