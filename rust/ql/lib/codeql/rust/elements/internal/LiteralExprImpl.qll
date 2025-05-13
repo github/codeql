@@ -53,10 +53,7 @@ module Impl {
    * [1]: https://doc.rust-lang.org/reference/tokens.html#character-literals
    */
   class CharLiteralExpr extends LiteralExpr {
-    CharLiteralExpr() {
-      // todo: proper implementation
-      this.getTextValue().regexpMatch("'.*'")
-    }
+    CharLiteralExpr() { this.getTextValue().regexpMatch("'.*'") }
 
     override string getAPrimaryQlClass() { result = "CharLiteralExpr" }
   }
@@ -71,10 +68,7 @@ module Impl {
    * [1]: https://doc.rust-lang.org/reference/tokens.html#string-literals
    */
   class StringLiteralExpr extends LiteralExpr {
-    StringLiteralExpr() {
-      // todo: proper implementation
-      this.getTextValue().regexpMatch("r?#*\".*\"#*")
-    }
+    StringLiteralExpr() { this.getTextValue().regexpMatch("r?#*\".*\"#*") }
 
     override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
   }
@@ -138,11 +132,10 @@ module Impl {
      * For example, `42u8` has the suffix `u8`.
      */
     string getSuffix() {
-      exists(string s, string reg, int last |
+      exists(string s, string reg |
         s = this.getTextValue() and
         reg = IntegerLiteralRegexs::integerLiteral() and
-        last = strictcount(reg.indexOf("(")) and
-        result = s.regexpCapture(reg, last)
+        result = s.regexpCapture(reg, 13)
       )
     }
 
@@ -193,9 +186,8 @@ module Impl {
   class FloatLiteralExpr extends NumberLiteralExpr {
     FloatLiteralExpr() {
       this.getTextValue()
-          .regexpMatch([
-              FloatLiteralRegexs::floatLiteral(), FloatLiteralRegexs::integerSuffixLiteral()
-            ]) and
+          .regexpMatch(IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteral()) + "|" +
+              IntegerLiteralRegexs::paren(FloatLiteralRegexs::integerSuffixLiteral())) and
       // E.g. `0x01_f32` is an integer, not a float
       not this instanceof IntegerLiteralExpr
     }
@@ -206,15 +198,18 @@ module Impl {
      * For example, `42.0f32` has the suffix `f32`.
      */
     string getSuffix() {
-      exists(string s, string reg, int last |
+      exists(string s, string reg, int group |
+        reg = FloatLiteralRegexs::floatLiteralSuffix1() and
+        group = 3
+        or
+        reg = FloatLiteralRegexs::floatLiteralSuffix2() and
+        group = 9
+        or
+        reg = FloatLiteralRegexs::integerSuffixLiteral() and
+        group = 13
+      |
         s = this.getTextValue() and
-        reg =
-          [
-            FloatLiteralRegexs::floatLiteralSuffix1(), FloatLiteralRegexs::floatLiteralSuffix2(),
-            FloatLiteralRegexs::integerSuffixLiteral()
-          ] and
-        last = strictcount(reg.indexOf("(")) and
-        result = s.regexpCapture(reg, last)
+        result = s.regexpCapture(reg, group)
       )
     }
 

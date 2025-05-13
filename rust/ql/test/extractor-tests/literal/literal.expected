@@ -1,42 +1,45 @@
 charLiteral
 | literal.rs:2:5:2:7 | 'a' |
 | literal.rs:3:5:3:7 | 'b' |
+| literal.rs:4:5:4:8 | '\\'' |
+| literal.rs:5:5:5:8 | '\\n' |
+| literal.rs:6:5:6:15 | '\\u{1F600}' |
 stringLiteral
-| literal.rs:8:5:8:9 | "foo" |
-| literal.rs:9:5:9:10 | r"foo" |
-| literal.rs:10:5:10:13 | "\\"foo\\"" |
-| literal.rs:11:5:11:14 | r#""foo""# |
-| literal.rs:13:5:13:18 | "foo #\\"# bar" |
-| literal.rs:14:5:14:22 | r##"foo #"# bar"## |
-| literal.rs:16:5:16:10 | "\\x52" |
-| literal.rs:17:5:17:7 | "R" |
-| literal.rs:18:5:18:8 | r"R" |
-| literal.rs:19:5:19:11 | "\\\\x52" |
-| literal.rs:20:5:20:11 | r"\\x52" |
+| literal.rs:11:5:11:9 | "foo" |
+| literal.rs:12:5:12:10 | r"foo" |
+| literal.rs:13:5:13:13 | "\\"foo\\"" |
+| literal.rs:14:5:14:14 | r#""foo""# |
+| literal.rs:16:5:16:18 | "foo #\\"# bar" |
+| literal.rs:17:5:17:22 | r##"foo #"# bar"## |
+| literal.rs:19:5:19:10 | "\\x52" |
+| literal.rs:20:5:20:7 | "R" |
+| literal.rs:21:5:21:8 | r"R" |
+| literal.rs:22:5:22:11 | "\\\\x52" |
+| literal.rs:23:5:23:11 | r"\\x52" |
 integerLiteral
-| literal.rs:25:5:25:7 | 123 |  |
-| literal.rs:26:5:26:10 | 123i32 | i32 |
-| literal.rs:27:5:27:10 | 123u32 | u32 |
-| literal.rs:28:5:28:11 | 123_u32 | u32 |
-| literal.rs:30:5:30:8 | 0xff |  |
-| literal.rs:31:5:31:11 | 0xff_u8 | u8 |
-| literal.rs:32:5:32:12 | 0x01_f32 |  |
-| literal.rs:33:5:33:11 | 0x01_e3 |  |
-| literal.rs:35:5:35:8 | 0o70 |  |
-| literal.rs:36:5:36:12 | 0o70_i16 | i16 |
-| literal.rs:38:5:38:25 | 0b1111_1111_1001_0000 |  |
-| literal.rs:39:5:39:28 | 0b1111_1111_1001_0000i64 | i64 |
-| literal.rs:40:5:40:15 | 0b________1 |  |
-| literal.rs:42:5:42:10 | 0usize | usize |
-| literal.rs:45:5:46:10 | 128_i8 | i8 |
-| literal.rs:47:5:48:10 | 256_u8 | u8 |
+| literal.rs:28:5:28:7 | 123 |  |
+| literal.rs:29:5:29:10 | 123i32 | i32 |
+| literal.rs:30:5:30:10 | 123u32 | u32 |
+| literal.rs:31:5:31:11 | 123_u32 | u32 |
+| literal.rs:33:5:33:8 | 0xff |  |
+| literal.rs:34:5:34:11 | 0xff_u8 | u8 |
+| literal.rs:35:5:35:12 | 0x01_f32 |  |
+| literal.rs:36:5:36:11 | 0x01_e3 |  |
+| literal.rs:38:5:38:8 | 0o70 |  |
+| literal.rs:39:5:39:12 | 0o70_i16 | i16 |
+| literal.rs:41:5:41:25 | 0b1111_1111_1001_0000 |  |
+| literal.rs:42:5:42:28 | 0b1111_1111_1001_0000i64 | i64 |
+| literal.rs:43:5:43:15 | 0b________1 |  |
+| literal.rs:45:5:45:10 | 0usize | usize |
+| literal.rs:48:5:49:10 | 128_i8 | i8 |
+| literal.rs:50:5:51:10 | 256_u8 | u8 |
 floatLiteral
-| literal.rs:53:5:53:8 | 5f32 | f32 |
-| literal.rs:55:5:55:12 | 123.0f64 | f64 |
-| literal.rs:56:5:56:10 | 0.1f64 | f64 |
-| literal.rs:57:5:57:10 | 0.1f32 | f32 |
-| literal.rs:58:5:58:14 | 12E+99_f64 | f64 |
-| literal.rs:59:18:59:19 | 2. |  |
+| literal.rs:56:5:56:8 | 5f32 | f32 |
+| literal.rs:58:5:58:12 | 123.0f64 | f64 |
+| literal.rs:59:5:59:10 | 0.1f64 | f64 |
+| literal.rs:60:5:60:10 | 0.1f32 | f32 |
+| literal.rs:61:5:61:14 | 12E+99_f64 | f64 |
+| literal.rs:62:18:62:19 | 2. |  |
 booleanLiteral
-| literal.rs:63:5:63:8 | true |
-| literal.rs:64:5:64:9 | false |
+| literal.rs:66:5:66:8 | true |
+| literal.rs:67:5:67:9 | false |

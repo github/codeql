@@ -1,6 +1,9 @@
 fn char_literals() {
     'a';
     'b';
+    '\'';
+    '\n';
+    '\u{1F600}';
 }
 
 fn string_literals() {
