@@ -77,6 +77,7 @@ resolvePath
 | main.rs:68:5:68:8 | self | main.rs:1:1:653:2 | SourceFile |
 | main.rs:68:5:68:11 | ...::i | main.rs:71:1:83:1 | fn i |
 | main.rs:74:13:74:15 | Foo | main.rs:48:1:48:13 | struct Foo |
+| main.rs:78:16:78:18 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | main.rs:81:17:81:19 | Foo | main.rs:77:9:79:9 | struct Foo |
 | main.rs:85:5:85:7 | my2 | main.rs:7:1:7:8 | mod my2 |
 | main.rs:85:5:85:16 | ...::nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
@@ -92,6 +93,8 @@ resolvePath
 | main.rs:117:13:117:21 | ...::m5 | main.rs:103:1:107:1 | mod m5 |
 | main.rs:118:9:118:9 | f | main.rs:104:5:106:5 | fn f |
 | main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
+| main.rs:125:13:125:15 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
+| main.rs:128:16:128:18 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | main.rs:134:19:134:24 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
 | main.rs:137:17:137:22 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
 | main.rs:137:17:137:25 | ...::A | main.rs:124:9:126:9 | A |
@@ -352,7 +355,10 @@ resolvePath
 | my.rs:22:5:22:17 | ...::result | file://:0:0:0:0 | mod result |
 | my.rs:22:5:25:1 | ...::Result::<...> | file://:0:0:0:0 | enum Result |
 | my.rs:23:5:23:5 | T | my.rs:21:5:21:5 | T |
+| my.rs:28:8:28:10 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
+| my.rs:29:8:29:10 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | my.rs:30:6:30:16 | Result::<...> | my.rs:20:1:25:2 | type Result<...> |
+| my.rs:30:13:30:15 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | my.rs:33:16:33:18 | Err | file://:0:0:0:0 | Err |
 | my.rs:35:5:35:6 | Ok | file://:0:0:0:0 | Ok |
 | my/nested.rs:9:13:9:13 | f | my/nested.rs:3:9:5:9 | fn f |

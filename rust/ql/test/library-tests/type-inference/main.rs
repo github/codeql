@@ -980,10 +980,10 @@ mod try_expressions {
 
 mod builtins {
     pub fn f() {
-        let x: i32 = 1; // $ MISSING: type=x:i32
-        let y = 2; // $ MISSING: type=y:i32
+        let x: i32 = 1; // $ type=x:i32
+        let y = 2; // $ type=y:i32
         let z = x + y; // $ MISSING: type=z:i32
-        let z = x.abs(); // $ MISSING: method=abs $ MISSING: type=z:i32
+        let z = x.abs(); // $ method=abs $ type=z:i32
         'c';
         "Hello";
         123.0f64;

@@ -75,7 +75,7 @@ fn i() {
 
     {
         struct Foo {
-            x: i32, // $ MISSING: item=i32
+            x: i32, // $ item=i32
         } // I30
 
         let _ = Foo { x: 0 }; // $ item=I30
@@ -122,10 +122,10 @@ mod m6 {
 mod m7 {
     pub enum MyEnum {
         A(
-            i32, // $ MISSING: item=i32
+            i32, // $ item=i32
         ), // I42
         B {
-            x: i32, // $ MISSING: item=i32
+            x: i32, // $ item=i32
         }, // I43
         C, // I44
     } // I41
