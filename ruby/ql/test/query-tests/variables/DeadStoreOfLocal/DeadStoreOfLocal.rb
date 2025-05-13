@@ -34,3 +34,33 @@ class Sub < Sup
         super
     end
 end
+
+def do_twice
+    yield
+    yield
+end
+    
+def get_done_twice x
+    do_twice do
+        print x
+        x += 1  # OK - the block is executed twice
+    end
+end
+
+def retry_once
+    yield
+rescue
+    yield
+end
+    
+def get_retried x
+    retry_once do
+        print x
+        if x < 1
+            begin
+                x += 1  #$ SPURIOUS: Alert
+                raise StandardError
+            end
+        end
+    end
+end
