@@ -73,14 +73,14 @@ signature module ModelGeneratorCommonInputSig<LocationSig Location, InputSig<Loc
    * `pos` of callable `c`.
    */
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, Lang::ParameterPosition p);
+  string paramReturnNodeAsApproximateOutput(Callable c, Lang::ParameterPosition p);
 
   /**
    * Gets the MaD string representation of return through parameter at position
    * `pos` of callable `c` when used in content flow.
    */
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, Lang::ParameterPosition pos);
+  string paramReturnNodeAsExactOutput(Callable c, Lang::ParameterPosition pos);
 
   /**
    * Gets the enclosing callable of `ret`.
@@ -95,13 +95,13 @@ signature module ModelGeneratorCommonInputSig<LocationSig Location, InputSig<Loc
   /**
    * Gets the MaD string representation of the parameter `p`.
    */
-  string parameterAccess(Parameter p);
+  string parameterApproximateAccess(Parameter p);
 
   /**
    * Gets the MaD string representation of the parameter `p`
    * when used in content flow.
    */
-  string parameterContentAccess(Parameter p);
+  string parameterExactAccess(Parameter p);
 
   /**
    * Gets the MaD string representation of the qualifier.
@@ -226,8 +226,12 @@ module MakeModelGeneratorFactory<
     containerContent(c)
   }
 
-  private string getOutput(ReturnNodeExt node) {
-    result = PrintReturnNodeExt<paramReturnNodeAsOutput/2>::getOutput(node)
+  private string getApproximateOutput(ReturnNodeExt node) {
+    result = PrintReturnNodeExt<paramReturnNodeAsApproximateOutput/2>::getOutput(node)
+  }
+
+  private string getExactOutput(ReturnNodeExt node) {
+    result = PrintReturnNodeExt<paramReturnNodeAsExactOutput/2>::getOutput(node)
   }
 
   /**
@@ -321,6 +325,16 @@ module MakeModelGeneratorFactory<
     }
 
     /**
+     * Gets the MaD string representation of the parameter `p`
+     * when used in exact flow.
+     */
+    private string parameterNodeAsExactInput(DataFlow::ParameterNode p) {
+      result = parameterExactAccess(asParameter(p))
+      or
+      result = qualifierString() and p instanceof InstanceParameterNode
+    }
+
+    /**
      * Provides classes and predicates related to capturing summary models
      * based on heuristic data flow.
      */
@@ -336,8 +350,8 @@ module MakeModelGeneratorFactory<
       /**
        * Gets the MaD string representation of the parameter node `p`.
        */
-      string parameterNodeAsInput(DataFlow::ParameterNode p) {
-        result = parameterAccess(asParameter(p))
+      private string parameterNodeAsApproximateInput(DataFlow::ParameterNode p) {
+        result = parameterApproximateAccess(asParameter(p))
         or
         result = qualifierString() and p instanceof InstanceParameterNode
       }
@@ -545,16 +559,19 @@ module MakeModelGeneratorFactory<
         ReturnNodeExt returnNodeExt, string output, boolean preservesValue
       ) {
         (
-          PropagateDataFlow::flow(p, returnNodeExt) and preservesValue = true
+          PropagateDataFlow::flow(p, returnNodeExt) and
+          input = parameterNodeAsExactInput(p) and
+          output = getExactOutput(returnNodeExt) and
+          preservesValue = true
           or
           not PropagateDataFlow::flow(p, returnNodeExt) and
           PropagateTaintFlow::flow(p, returnNodeExt) and
+          input = parameterNodeAsApproximateInput(p) and
+          output = getApproximateOutput(returnNodeExt) and
           preservesValue = false
         ) and
         getEnclosingCallable(p) = api and
         getEnclosingCallable(returnNodeExt) = api and
-        input = parameterNodeAsInput(p) and
-        output = getOutput(returnNodeExt) and
         input != output
       }
 
@@ -651,20 +668,6 @@ module MakeModelGeneratorFactory<
       private module ContentModelPrinting =
         Printing::ModelPrintingSummary<ContentModelPrintingInput>;
 
-      private string getContentOutput(ReturnNodeExt node) {
-        result = PrintReturnNodeExt<paramReturnNodeAsContentOutput/2>::getOutput(node)
-      }
-
-      /**
-       * Gets the MaD string representation of the parameter `p`
-       * when used in content flow.
-       */
-      private string parameterNodeAsContentInput(DataFlow::ParameterNode p) {
-        result = parameterContentAccess(asParameter(p))
-        or
-        result = qualifierString() and p instanceof InstanceParameterNode
-      }
-
       private string getContent(PropagateContentFlow::AccessPath ap, int i) {
         result = "." + printContent(ap.getAtIndex(i))
       }
@@ -740,8 +743,8 @@ module MakeModelGeneratorFactory<
               PropagateContentFlow::AccessPath stores
             |
               apiFlow(this, parameter, reads, returnNodeExt, stores, _) and
-              input = parameterNodeAsContentInput(parameter) + printReadAccessPath(reads) and
-              output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores)
+              input = parameterNodeAsExactInput(parameter) + printReadAccessPath(reads) and
+              output = getExactOutput(returnNodeExt) + printStoreAccessPath(stores)
             )
           ) <= 3
         }
@@ -948,8 +951,8 @@ module MakeModelGeneratorFactory<
           PropagateContentFlow::AccessPath reads, PropagateContentFlow::AccessPath stores
         |
           apiRelevantContentFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
-          input = parameterNodeAsContentInput(p) + printReadAccessPath(reads) and
-          output = getContentOutput(returnNodeExt) + printStoreAccessPath(stores) and
+          input = parameterNodeAsExactInput(p) + printReadAccessPath(reads) and
+          output = getExactOutput(returnNodeExt) + printStoreAccessPath(stores) and
           input != output and
           validateAccessPath(reads) and
           validateAccessPath(stores) and
@@ -1174,7 +1177,7 @@ module MakeModelGeneratorFactory<
           sourceNode(source, kind) and
           api = getEnclosingCallable(sink) and
           not irrelevantSourceSinkApi(getEnclosingCallable(source), api) and
-          result = ModelPrintingSourceOrSink::asSourceModel(api, getOutput(sink), kind)
+          result = ModelPrintingSourceOrSink::asSourceModel(api, getExactOutput(sink), kind)
         )
       }
     }
