@@ -995,13 +995,13 @@ module MakeModelGeneratorFactory<
           DataFlowSummaryTargetApi api0, string input0, string output0, boolean preservesValue0
         |
           // If the heuristic summary is taint-based, and we can generate a content-sensitive
-          // summary that is value-preserving then we omit generating any heuristic summary.
-          preservesValue = false and
-          preservesValue0 = true
+          // summary then we omit generating the heuristic summary.
+          preservesValue = false
           or
-          // However, if they're both value-preserving (or both taint-based) then we only
-          // generate a heuristic summary if we didn't generate a content-sensitive summary.
-          preservesValue = preservesValue0 and
+          // If they're both value-preserving then we only generate a heuristic summary if
+          // we didn't generate a content-sensitive summary on the same input/output pair.
+          preservesValue = true and
+          preservesValue0 = true and
           input0 = input and
           output0 = output
         |
