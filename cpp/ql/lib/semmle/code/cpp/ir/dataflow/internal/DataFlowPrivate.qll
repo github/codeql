@@ -1567,7 +1567,7 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
         |
           exists(Ssa::UseImpl use | use.hasIndexInBlock(useblock, _, sv))
           or
-          exists(Ssa::DefImpl def | def.hasIndexInBlock(useblock, _, sv))
+          exists(Ssa::DefImpl def | def.hasIndexInBlock(sv, useblock, _))
         )
       )
   )
@@ -1814,7 +1814,7 @@ module IteratorFlow {
      */
     private predicate isIteratorWrite(Instruction write, Operand address) {
       exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
-        writeDef.hasIndexInBlock(bb, i, _) and
+        writeDef.hasIndexInBlock(_, bb, i) and
         bb.getInstruction(i) = write and
         address = writeDef.getAddressOperand()
       )
