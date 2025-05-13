@@ -18,14 +18,14 @@ abstract private class BinaryLogicalOperationImpl extends BinaryExpr, LogicalOpe
 final class BinaryLogicalOperation = BinaryLogicalOperationImpl;
 
 /**
- * The logical and operation, `&&`.
+ * The logical "and" operation, `&&`.
  */
 final class LogicalAndExpr extends BinaryLogicalOperationImpl, BinaryExpr {
   LogicalAndExpr() { this.getOperatorName() = "&&" }
 }
 
 /**
- * The logical or operation, `||`.
+ * The logical "or" operation, `||`.
  */
 final class LogicalOrExpr extends BinaryLogicalOperationImpl {
   LogicalOrExpr() { this.getOperatorName() = "||" }
@@ -39,7 +39,7 @@ abstract private class UnaryLogicalOperationImpl extends PrefixExpr, LogicalOper
 final class UnaryLogicalOperation = UnaryLogicalOperationImpl;
 
 /**
- * A logical not operation, `!`.
+ * A logical "not" operation, `!`.
  */
 final class LogicalNotExpr extends UnaryLogicalOperationImpl {
   LogicalNotExpr() { this.getOperatorName() = "!" }
