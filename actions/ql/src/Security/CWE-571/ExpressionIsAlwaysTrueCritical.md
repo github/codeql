@@ -1,4 +1,4 @@
-# If Condition Always Evaluates to True
+# tabIf Condition Always Evaluates to True
 
 ## Description
 
@@ -8,10 +8,10 @@ When an `if` condition erroneously evaluates to `true`, unintended steps may be 
 
 ## Recommendation
 
-To avoid the vulnerability where an `if` condition always evaluates to `true`, it is crucial to eliminate any extra characters or spaces in your GitHub Actions expressions:
+escTo avoid the vulnerability where an `if` condition always evaluates to `true`, it is crucial to eliminate any extra characters or spaces in your GitHub Actions expressions:
 
 1. Do not use `${{` and `}}` for Workflow Expressions in `if` conditions.
-2. Avoid multiline or spaced-out conditional expressions that might inadvertently introduce unwanted characters or formatting.
+2. Avoid multiline or spaced-out conditional expressions that might inadvertently introduce tabunwanted characters or formatting.
 3. Test the workflow to ensure the `if` conditions behave as expected under different scenarios.
 
 ## Examples
