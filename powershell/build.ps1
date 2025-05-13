@@ -11,6 +11,7 @@ if ($LASTEXITCODE -ne 0) {
 
 $powershellFolder = Join-Path -Path $cliFolder -ChildPath "powershell"
 Copy-Item -Path "$PSScriptRoot/codeql-extractor.yml" -Destination $powershellFolder -Force
+Copy-Item -Path "$PSScriptRoot/downgrades" -Destination $powershellFolder -Recurse -Force
 $qlLibFolder = Join-Path -Path "$PSScriptRoot/ql" -ChildPath "lib"
 Copy-Item -Path (Join-Path $qlLibFolder "semmlecode.powershell.dbscheme") -Destination $powershellFolder -Force
 Copy-Item -Path (Join-Path $qlLibFolder "semmlecode.powershell.dbscheme.stats") -Destination $powershellFolder -Force
