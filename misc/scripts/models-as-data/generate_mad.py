@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
 import helpers
-import json
 import os
 import os.path
-import shlex
 import subprocess
 import sys
 import tempfile
@@ -27,24 +25,13 @@ def parseData(data):
 
     return rows
 
-class Generator:
-    def __init__ (self, language):
-        self.language = language
-        self.generateSinks = False
-        self.generateSources = False
-        self.generateSummaries = False
-        self.generateNeutrals = False
-        self.generateTypeBasedSummaries = False
-        self.dryRun = False
-        self.dirname = "modelgenerator"
 
-
-    def printHelp(self):
-        print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> [DIR] [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
+def printHelp():
+    print(f"""Usage:
+python3 generate_mad.py <library-database> [DIR] --language LANGUAGE [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
 
 This generates summary, source, sink and neutral models for the code in the database.
-The files will be placed in `{self.language}/ql/lib/ext/generated/DIR`
+The files will be placed in `LANGUAGE/ql/lib/ext/generated/DIR`
 
 Which models are generated is controlled by the flags:
     --with-sinks
@@ -57,13 +44,24 @@ If none of these flags are specified, all models are generated except for the ty
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks my_directory
+$ python3 generate_mad.py /tmp/dbs/my_library_db
+$ python3 generate_mad.py /tmp/dbs/my_library_db --with-sinks
+$ python3 generate_mad.py /tmp/dbs/my_library_db --with-sinks my_directory
 
 
 Requirements: `codeql` should appear on your path.
     """)
+
+class Generator:
+    def __init__(self, language):
+        self.language = language
+        self.generateSinks = False
+        self.generateSources = False
+        self.generateSummaries = False
+        self.generateNeutrals = False
+        self.generateTypeBasedSummaries = False
+        self.dryRun = False
+        self.dirname = "modelgenerator"
 
 
     def setenvironment(self, database, folder):
@@ -76,11 +74,21 @@ Requirements: `codeql` should appear on your path.
 
 
     @staticmethod
-    def make(language):
-        generator = Generator(language)
+    def make():
+        # Create a generator instance based on command line arguments.
         if any(s == "--help" for s in sys.argv):
-            generator.printHelp()
+            printHelp()
             sys.exit(0)
+
+        if "--language" in sys.argv:
+            language = sys.argv[sys.argv.index("--language") + 1]
+            sys.argv.remove("--language")
+            sys.argv.remove(language)
+        else:
+            printHelp()
+            sys.exit(0)
+
+        generator = Generator(language=language)
 
         if "--with-sinks" in sys.argv:
             sys.argv.remove("--with-sinks")
@@ -115,7 +123,7 @@ Requirements: `codeql` should appear on your path.
 
         n = len(sys.argv)
         if n < 2:
-            generator.printHelp()
+            printHelp()
             sys.exit(1)
         elif n == 2:
             generator.setenvironment(sys.argv[1], "")
@@ -204,3 +212,6 @@ extensions:
 
         if self.generateTypeBasedSummaries:
             self.save(typeBasedContent, ".typebased.model.yml")
+
+if __name__ == '__main__':
+    Generator.make().run()
