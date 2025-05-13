@@ -1825,7 +1825,7 @@ predicate typos(string wrong, string right) {
   or
   wrong = "commisions" and right = "commissions"
   or
-  wrong = "commited" and right = "committed"
+  wrong = "committed" and right = "committed"
   or
   wrong = "commitee" and right = "committee"
   or
