@@ -7,3 +7,5 @@ types
 | string |
 | void |
 jsonFiles
+| tsconfig.foo.json:0:0:0:0 | tsconfig.foo.json |
+| tsconfig.json:0:0:0:0 | tsconfig.json |
