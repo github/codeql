@@ -75,7 +75,7 @@ class Generator:
 
     @staticmethod
     def make():
-        '''Create a generator instance based on command line arguments.'''
+        # Create a generator instance based on command line arguments.
         if any(s == "--help" for s in sys.argv):
             printHelp()
             sys.exit(0)
@@ -85,7 +85,7 @@ class Generator:
             sys.argv.remove("--language")
             sys.argv.remove(language)
         else:
-            print("Error: Language not specified. Use --language <language>.")
+            printHelp()
             sys.exit(0)
 
         generator = Generator(language=language)
