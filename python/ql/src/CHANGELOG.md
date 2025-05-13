@@ -1,3 +1,14 @@
+## 1.5.0
+
+### Query Metadata Changes
+
+* The tags `security/cwe/cwe-94` and `security/cwe/cwe-95` have been removed from `py/use-of-input` and the tags `external/cwe/cwe-094` and `external/cwe/cwe-095` have been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/cookie-injection` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/incomplete-url-substring-sanitization` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-94` has been removed from `py/js2py-rce` and the tag `external/cwe/cwe-094` has been added.
+
 ## 1.4.8
 
 No user-facing changes.

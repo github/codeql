@@ -1,3 +1,20 @@
+## 1.2.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-13` has been removed from `cs/password-in-configuration` and the tag `external/cwe/cwe-013` has been added.
+* The tag `external/cwe/cwe-11` has been removed from `cs/web/debug-binary` and the tag `external/cwe/cwe-011` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/large-max-request-length` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/request-validation-disabled` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/serialization-check-bypass` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-12` has been removed from `cs/web/missing-global-error-handler` and the tag `external/cwe/cwe-012` has been added.
+
+### Minor Analysis Improvements
+
+* Changed the precision of the `cs/equality-on-floats` query from medium to high.
+
 ## 1.1.2
 
 ### Minor Analysis Improvements
