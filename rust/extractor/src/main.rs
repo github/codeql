@@ -17,6 +17,7 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use std::{env, fs};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -77,17 +78,19 @@ impl<'a> Extractor<'a> {
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
         if let Err(reason) = semantics_info {
-            let message = format!("semantic analyzer unavailable ({reason})");
-            let full_message = format!(
-                "{message}: macro expansion, call graph, and type inference will be skipped."
-            );
-            translator.emit_diagnostic(
-                trap::DiagnosticSeverity::Warning,
-                "semantics".to_owned(),
-                message,
-                full_message,
-                no_location,
-            );
+            if !reason.is_empty() {
+                let message = format!("semantic analyzer unavailable ({reason})");
+                let full_message = format!(
+                    "{message}: macro expansion, call graph, and type inference will be skipped."
+                );
+                translator.emit_diagnostic(
+                    trap::DiagnosticSeverity::Warning,
+                    "semantics".to_owned(),
+                    message,
+                    full_message,
+                    no_location,
+                );
+            }
         }
         translator.emit_source_file(&ast);
         translator.trap.commit().unwrap_or_else(|err| {
@@ -276,5 +279,16 @@ fn main() -> anyhow::Result<()> {
             }
         }
     }
+    let builtins_dir = env::var("CODEQL_EXTRACTOR_RUST_ROOT")
+        .map(|path| Path::new(&path).join("tools").join("builtins"))?;
+    let builtins = fs::read_dir(builtins_dir).context("failed to read builtins directory")?;
+    for entry in builtins {
+        let entry = entry.context("failed to read builtins directory")?;
+        let path = entry.path();
+        if path.extension().is_some_and(|ext| ext == "rs") {
+            extractor.extract_without_semantics(&path, "");
+        }
+    }
+
     extractor.emit_extraction_diagnostics(start, &cfg)
 }

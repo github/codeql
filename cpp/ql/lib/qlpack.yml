@@ -8,6 +8,7 @@ upgrades: upgrades
 dependencies:
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
+  codeql/quantum: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/ssa: ${workspace}
   codeql/typeflow: ${workspace}

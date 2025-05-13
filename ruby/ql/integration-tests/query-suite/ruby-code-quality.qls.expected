@@ -1,2 +1,3 @@
 ql/ruby/ql/src/queries/performance/DatabaseQueryInLoop.ql
+ql/ruby/ql/src/queries/variables/DeadStoreOfLocal.ql
 ql/ruby/ql/src/queries/variables/UninitializedLocal.ql
