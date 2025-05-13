@@ -81,28 +81,28 @@ module Impl {
   // https://doc.rust-lang.org/reference/tokens.html#integer-literals
   private module IntegerLiteralRegexs {
     bindingset[s]
-    string paren(string s) { result = "(" + s + ")" }
+    string paren(string s) { result = "(?:" + s + ")" }
 
     string integerLiteral() {
       result =
         paren(paren(decLiteral()) + "|" + paren(binLiteral()) + "|" + paren(octLiteral()) + "|" +
-              paren(hexLiteral())) + paren(suffix()) + "?"
+              paren(hexLiteral())) + "(" + suffix() + ")?"
     }
 
     private string suffix() { result = "u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize" }
 
-    string decLiteral() { result = decDigit() + "(" + decDigit() + "|_)*" }
+    string decLiteral() { result = decDigit() + "(?:" + decDigit() + "|_)*" }
 
     string binLiteral() {
-      result = "0b(" + binDigit() + "|_)*" + binDigit() + "(" + binDigit() + "|_)*"
+      result = "0b(?:" + binDigit() + "|_)*" + binDigit() + "(?:" + binDigit() + "|_)*"
     }
 
     string octLiteral() {
-      result = "0o(" + octDigit() + "|_)*" + octDigit() + "(" + octDigit() + "|_)*"
+      result = "0o(?:" + octDigit() + "|_)*" + octDigit() + "(?:" + octDigit() + "|_)*"
     }
 
     string hexLiteral() {
-      result = "0x(" + hexDigit() + "|_)*" + hexDigit() + "(" + hexDigit() + "|_)*"
+      result = "0x(?:" + hexDigit() + "|_)*" + hexDigit() + "(?:" + hexDigit() + "|_)*"
     }
 
     string decDigit() { result = "[0-9]" }
@@ -135,7 +135,7 @@ module Impl {
       exists(string s, string reg |
         s = this.getTextValue() and
         reg = IntegerLiteralRegexs::integerLiteral() and
-        result = s.regexpCapture(reg, 13)
+        result = s.regexpCapture(reg, 1)
       )
     }
 
@@ -153,24 +153,25 @@ module Impl {
     }
 
     string floatLiteralSuffix1() {
-      result = decLiteral() + "\\." + decLiteral() + paren(suffix()) + "?"
+      result = decLiteral() + "\\." + decLiteral() + "(" + suffix() + ")?"
     }
 
     string floatLiteralSuffix2() {
       result =
-        decLiteral() + paren("\\." + decLiteral()) + "?" + paren(exponent()) + paren(suffix()) + "?"
+        decLiteral() + paren("\\." + decLiteral()) + "?" + paren(exponent()) + "(" + suffix() + ")?"
     }
 
     string integerSuffixLiteral() {
       result =
         paren(paren(decLiteral()) + "|" + paren(binLiteral()) + "|" + paren(octLiteral()) + "|" +
-              paren(hexLiteral())) + paren(suffix())
+              paren(hexLiteral())) + "(" + suffix() + ")"
     }
 
     private string suffix() { result = "f32|f64" }
 
     string exponent() {
-      result = "(e|E)(\\+|-)?(" + decDigit() + "|_)*" + decDigit() + "(" + decDigit() + "|_)*"
+      result =
+        "(?:e|E)(?:\\+|-)?(?:" + decDigit() + "|_)*" + decDigit() + "(?:" + decDigit() + "|_)*"
     }
   }
 
@@ -198,18 +199,13 @@ module Impl {
      * For example, `42.0f32` has the suffix `f32`.
      */
     string getSuffix() {
-      exists(string s, string reg, int group |
-        reg = FloatLiteralRegexs::floatLiteralSuffix1() and
-        group = 3
-        or
-        reg = FloatLiteralRegexs::floatLiteralSuffix2() and
-        group = 9
-        or
-        reg = FloatLiteralRegexs::integerSuffixLiteral() and
-        group = 13
-      |
+      exists(string s, string reg |
+        reg =
+          IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteralSuffix1()) + "|" +
+            IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteralSuffix2()) + "|" +
+            IntegerLiteralRegexs::paren(FloatLiteralRegexs::integerSuffixLiteral()) and
         s = this.getTextValue() and
-        result = s.regexpCapture(reg, group)
+        result = s.regexpCapture(reg, [1, 2, 3])
       )
     }
 
