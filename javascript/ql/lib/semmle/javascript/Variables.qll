@@ -134,8 +134,26 @@ class Variable extends @variable, LexicalName {
   /** Gets the scope this variable is declared in. */
   override Scope getScope() { variables(this, _, result) }
 
+  /**
+   * Holds if this variable is declared in the top-level of a module using a `declare` statement.
+   *
+   * For example:
+   * ```js
+   * declare var $: any;
+   * ```
+   *
+   * Such variables are generally treated as a global variables, except for type-checking related purposes.
+   */
+  pragma[nomagic]
+  predicate isTopLevelWithAmbientDeclaration() {
+    this.getScope() instanceof ModuleScope and
+    forex(VarDecl decl | decl = this.getADeclaration() | decl.isAmbient())
+  }
+
   /** Holds if this is a global variable. */
-  predicate isGlobal() { this.getScope() instanceof GlobalScope }
+  predicate isGlobal() {
+    this.getScope() instanceof GlobalScope or this.isTopLevelWithAmbientDeclaration()
+  }
 
   /**
    * Holds if this is a variable exported from a TypeScript namespace.

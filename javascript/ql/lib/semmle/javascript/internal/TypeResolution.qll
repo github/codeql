@@ -190,7 +190,7 @@ module TypeResolution {
   }
 
   predicate contextualType(Node value, Node type) {
-    exists(LocalVariable v |
+    exists(LocalVariableLike v |
       type = v.getADeclaration().getTypeAnnotation() and
       value = v.getAnAssignedExpr()
     )
@@ -239,7 +239,7 @@ module TypeResolution {
       // ValueFlow::step is restricted to variables with at most one assignment. Allow the type annotation
       // of a variable to propagate to its uses, even if the variable has multiple assignments.
       type = decl.getTypeAnnotation() and
-      value = decl.getVariable().(LocalVariable).getAnAccess()
+      value = decl.getVariable().(LocalVariableLike).getAnAccess()
     )
     or
     exists(MemberDeclaration member |

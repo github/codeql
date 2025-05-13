@@ -28,7 +28,7 @@ module NameResolution {
     Location getLocation() {
       result = this.(AstNode).getLocation()
       or
-      result = this.(LocalVariable).getLocation()
+      result = this.(LocalVariableLike).getLocation()
       or
       result = this.(JSDocTypeExpr).getLocation()
     }
@@ -44,6 +44,22 @@ module NameResolution {
       this instanceof Module
       or
       this instanceof NamespaceDefinition // `module {}` or `enum {}` statement
+    }
+  }
+
+  /**
+   * A local variable, or a top-level variable that acts as a global variable due to an ambient declaration.
+   */
+  class LocalVariableLike extends Variable {
+    LocalVariableLike() { this.isLocal() or this.isTopLevelWithAmbientDeclaration() }
+
+    Location getLocation() {
+      result =
+        min(Location loc |
+          loc = this.getADeclaration().getLocation()
+        |
+          loc order by loc.getStartLine(), loc.getStartColumn()
+        )
     }
   }
 
@@ -224,7 +240,7 @@ module NameResolution {
   /**
    * A local variable with exactly one definition, not counting implicit initialization.
    */
-  private class EffectivelyConstantVariable extends LocalVariable {
+  private class EffectivelyConstantVariable extends LocalVariableLike {
     EffectivelyConstantVariable() {
       count(SsaExplicitDefinition ssa | ssa.getSourceVariable() = this) <= 1 // count may be zero if ambient
     }
@@ -294,7 +310,7 @@ module NameResolution {
      * Holds if `value` is stored in `target.prop`. Only needs to recognise assignments
      * that are also recognised by JSDoc tooling such as the Closure compiler.
      */
-    private predicate storeToVariable(Expr value, string prop, LocalVariable target) {
+    private predicate storeToVariable(Expr value, string prop, LocalVariableLike target) {
       exists(AssignExpr assign |
         // exports.name = value
         assign.getLhs().(PropAccess).accesses(target.getAnAccess(), prop) and
