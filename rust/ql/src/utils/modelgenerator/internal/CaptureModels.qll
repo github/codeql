@@ -54,26 +54,26 @@ module ModelGeneratorCommonInput implements
 
   string qualifierString() { result = "Argument[self]" }
 
-  string parameterAccess(R::ParamBase p) {
+  string parameterExactAccess(R::ParamBase p) {
     result =
       "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
         "]"
   }
 
-  string parameterContentAccess(R::ParamBase p) { result = parameterAccess(p) }
+  string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
     InstanceParameterNode() { this.asParameter() instanceof SelfParam }
   }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = paramReturnNodeAsContentOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterContentAccess(c.getParamList().getParam(pos.getPosition()))
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+    result = parameterExactAccess(c.getParamList().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }
