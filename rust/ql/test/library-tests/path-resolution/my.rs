@@ -25,9 +25,9 @@ type Result<
 >; // my::Result
 
 fn int_div(
-    x: i32, //
-    y: i32,
-) -> Result<i32> // $ item=my::Result
+    x: i32, // $ MISSING: item=i32
+    y: i32, // $ MISSING: item=i32
+) -> Result<i32> // $ item=my::Result $ MISSING: item=i32
 {
     if y == 0 {
         return Err("Div by zero".to_string());
