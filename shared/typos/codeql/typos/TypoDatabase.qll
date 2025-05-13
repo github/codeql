@@ -8331,7 +8331,7 @@ predicate typos(string wrong, string right) {
   or
   wrong = "tomatos" and right = "tomatoes"
   or
-  wrong = "tommorow" and right = "tomorrow"
+  wrong = "tomorrow" and right = "tomorrow"
   or
   wrong = "tommorrow" and right = "tomorrow"
   or
