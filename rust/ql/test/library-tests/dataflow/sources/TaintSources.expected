@@ -47,8 +47,14 @@
 | test.rs:369:25:369:43 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:377:22:377:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:386:16:386:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:386:16:386:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
 | web_frameworks.rs:12:31:12:31 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:12:31:12:31 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:21:31:21:35 | TuplePat | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:21:31:21:36 | TuplePat | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:43:31:43:44 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:43:31:43:45 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:51:31:51:32 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:51:31:51:32 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:60:15:60:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | web_frameworks.rs:60:15:60:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |

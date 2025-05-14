@@ -2,6 +2,6 @@
 import codeql.rust.elements
 import TestUtils
 
-from MacroCall x
+from ExternCrate x
 where toBeTested(x) and not x.isUnknown()
-select x, x.getExpanded()
+select x, x.getAttributeMacroExpansion()
