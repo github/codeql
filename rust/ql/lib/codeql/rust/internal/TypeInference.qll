@@ -888,36 +888,31 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
 private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 pragma[nomagic]
-StructType getBuiltinType(string name) {
-  result = TStruct(any(Builtins::BuiltinType t | name = t.getName()))
-}
-
-pragma[nomagic]
 private StructType inferLiteralType(LiteralExpr le) {
-  le instanceof CharLiteralExpr and
-  result = TStruct(any(Builtins::Char t))
-  or
-  le instanceof StringLiteralExpr and
-  result = TStruct(any(Builtins::Str t))
-  or
-  le =
-    any(IntegerLiteralExpr n |
-      not exists(n.getSuffix()) and
-      result = getBuiltinType("i32")
-      or
-      result = getBuiltinType(n.getSuffix())
-    )
-  or
-  le =
-    any(FloatLiteralExpr n |
-      not exists(n.getSuffix()) and
-      result = getBuiltinType("f32")
-      or
-      result = getBuiltinType(n.getSuffix())
-    )
-  or
-  le instanceof BooleanLiteralExpr and
-  result = TStruct(any(Builtins::Bool t))
+  exists(Builtins::BuiltinType t | result = TStruct(t) |
+    le instanceof CharLiteralExpr and
+    t instanceof Builtins::Char
+    or
+    le instanceof StringLiteralExpr and
+    t instanceof Builtins::Str
+    or
+    le =
+      any(NumberLiteralExpr ne |
+        t.getName() = ne.getSuffix()
+        or
+        not exists(ne.getSuffix()) and
+        (
+          ne instanceof IntegerLiteralExpr and
+          t instanceof Builtins::I32
+          or
+          ne instanceof FloatLiteralExpr and
+          t instanceof Builtins::F64
+        )
+      )
+    or
+    le instanceof BooleanLiteralExpr and
+    t instanceof Builtins::Bool
+  )
 }
 
 cached

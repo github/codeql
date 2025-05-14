@@ -97,13 +97,13 @@ class U128 extends BuiltinType {
 }
 
 /** The builtin `usize` type. */
-class USize extends BuiltinType {
-  USize() { this.getName() = "usize" }
+class Usize extends BuiltinType {
+  Usize() { this.getName() = "usize" }
 }
 
 /** The builtin `isize` type. */
-class ISize extends BuiltinType {
-  ISize() { this.getName() = "isize" }
+class Isize extends BuiltinType {
+  Isize() { this.getName() = "isize" }
 }
 
 /** The builtin `f32` type. */

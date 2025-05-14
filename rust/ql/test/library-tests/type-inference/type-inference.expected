@@ -1206,11 +1206,16 @@ inferType
 | main.rs:986:13:986:13 | z |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:986:17:986:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:986:17:986:23 | x.abs() |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
-| main.rs:987:9:987:11 | 'c' |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
-| main.rs:988:9:988:15 | "Hello" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
-| main.rs:989:9:989:16 | 123.0f64 |  | file:///BUILTINS/types.rs:25:1:25:15 | f64 |
-| main.rs:990:9:990:12 | true |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
-| main.rs:991:9:991:13 | false |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:987:13:987:13 | c |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
+| main.rs:987:17:987:19 | 'c' |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
+| main.rs:988:13:988:17 | hello |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
+| main.rs:988:21:988:27 | "Hello" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
+| main.rs:989:13:989:13 | f |  | file:///BUILTINS/types.rs:25:1:25:15 | f64 |
+| main.rs:989:17:989:24 | 123.0f64 |  | file:///BUILTINS/types.rs:25:1:25:15 | f64 |
+| main.rs:990:13:990:13 | t |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:990:17:990:20 | true |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:991:13:991:13 | f |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:991:17:991:21 | false |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:997:5:997:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:998:5:998:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:998:20:998:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

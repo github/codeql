@@ -984,11 +984,11 @@ mod builtins {
         let y = 2; // $ type=y:i32
         let z = x + y; // $ MISSING: type=z:i32
         let z = x.abs(); // $ method=abs $ type=z:i32
-        'c';
-        "Hello";
-        123.0f64;
-        true;
-        false;
+        let c = 'c'; // $ type=c:char
+        let hello = "Hello"; // $ type=hello:str
+        let f = 123.0f64; // $ type=f:f64
+        let t = true; // $ type=t:bool
+        let f = false; // $ type=f:bool
     }
 }
 
