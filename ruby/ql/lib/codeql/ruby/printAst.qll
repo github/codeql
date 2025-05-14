@@ -121,17 +121,16 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
   }
 
   private int getSynthAstNodeIndex() {
-    if
-      exists(AstNode parent |
-        shouldPrintAstEdge(parent, _, astNode) and
-        synthChild(parent, _, astNode)
-      )
-    then
-      exists(AstNode parent |
-        shouldPrintAstEdge(parent, _, astNode) and
-        synthChild(parent, result, astNode)
-      )
-    else result = 0
+    exists(AstNode parent |
+      shouldPrintAstEdge(parent, _, astNode) and
+      synthChild(parent, result, astNode)
+    )
+    or
+    not exists(AstNode parent |
+      shouldPrintAstEdge(parent, _, astNode) and
+      synthChild(parent, _, astNode)
+    ) and
+    result = 0
   }
 
   private int getSynthAstNodeIndexForSynthParent() {
