@@ -40,34 +40,44 @@ EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqual
   isEqualExpr = result.polarity()
 }
 
-/** Gets an expression that is provably not `null`. */
-Expr clearlyNotNullExpr(Expr reason) {
-  result instanceof ClassInstanceExpr and reason = result
+Expr baseNotNullExpr() {
+  result instanceof ClassInstanceExpr
   or
-  result instanceof ArrayCreationExpr and reason = result
+  result instanceof ArrayCreationExpr
   or
-  result instanceof TypeLiteral and reason = result
+  result instanceof TypeLiteral
   or
-  result instanceof ThisAccess and reason = result
+  result instanceof ThisAccess
   or
-  result instanceof StringLiteral and reason = result
+  result instanceof StringLiteral
   or
-  result instanceof AddExpr and result.getType() instanceof TypeString and reason = result
+  result instanceof AddExpr and result.getType() instanceof TypeString
   or
   exists(Field f |
     result = f.getAnAccess() and
     (f.hasName("TRUE") or f.hasName("FALSE")) and
-    f.getDeclaringType().hasQualifiedName("java.lang", "Boolean") and
-    reason = result
+    f.getDeclaringType().hasQualifiedName("java.lang", "Boolean")
   )
+  or
+  result = any(EnumConstant c).getAnAccess()
+  or
+  result instanceof ImplicitNotNullExpr
+  or
+  result instanceof ImplicitCoercionToUnitExpr
+  or
+  result
+      .(MethodCall)
+      .getMethod()
+      .hasQualifiedName("com.google.common.base", "Strings", "nullToEmpty")
+}
+
+/** Gets an expression that is provably not `null`. */
+Expr clearlyNotNullExpr(Expr reason) {
+  result = baseNotNullExpr() and reason = result
   or
   result.(CastExpr).getExpr() = clearlyNotNullExpr(reason)
   or
   result.(ImplicitCastExpr).getExpr() = clearlyNotNullExpr(reason)
-  or
-  result instanceof ImplicitNotNullExpr and reason = result
-  or
-  result instanceof ImplicitCoercionToUnitExpr and reason = result
   or
   result.(AssignExpr).getSource() = clearlyNotNullExpr(reason)
   or
@@ -83,14 +93,14 @@ Expr clearlyNotNullExpr(Expr reason) {
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and
     rval = v.getAUse() and
-    result = rval
+    result = rval and
+    not result = baseNotNullExpr()
   )
   or
-  exists(SsaVariable v | clearlyNotNull(v, reason) and result = v.getAUse())
-  or
-  exists(Method m | m = result.(MethodCall).getMethod() and reason = result |
-    m.getDeclaringType().hasQualifiedName("com.google.common.base", "Strings") and
-    m.hasName("nullToEmpty")
+  exists(SsaVariable v |
+    clearlyNotNull(v, reason) and
+    result = v.getAUse() and
+    not result = baseNotNullExpr()
   )
 }
 
