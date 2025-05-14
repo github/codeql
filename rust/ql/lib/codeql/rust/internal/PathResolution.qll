@@ -180,6 +180,8 @@ abstract class ItemNode extends Locatable {
     or
     preludeEdge(this, name, result) and not declares(this, _, name)
     or
+    builtinEdge(this, name, result)
+    or
     name = "super" and
     if this instanceof Module or this instanceof SourceFile
     then result = this.getImmediateParentModule()
@@ -1181,6 +1183,21 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
     rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
     i = rust.getASuccessorRec(name) and
     not i instanceof Use
+  )
+}
+
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+
+pragma[nomagic]
+private predicate builtinEdge(ModuleLikeNode m, string name, ItemNode i) {
+  (
+    m instanceof SourceFile
+    or
+    m = any(CrateItemNode c).getModuleNode()
+  ) and
+  exists(SourceFileItemNode builtins |
+    builtins.getFile().getParentContainer() instanceof Builtins::BuiltinsFolder and
+    i = builtins.getASuccessorRec(name)
   )
 }
 

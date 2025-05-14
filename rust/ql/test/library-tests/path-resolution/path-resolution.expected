@@ -9,26 +9,26 @@ mod
 | main.rs:39:1:46:1 | mod m4 |
 | main.rs:103:1:107:1 | mod m5 |
 | main.rs:109:1:120:1 | mod m6 |
-| main.rs:122:1:137:1 | mod m7 |
-| main.rs:139:1:193:1 | mod m8 |
-| main.rs:195:1:203:1 | mod m9 |
-| main.rs:205:1:224:1 | mod m10 |
-| main.rs:226:1:263:1 | mod m11 |
-| main.rs:236:5:236:12 | mod f |
-| main.rs:265:1:277:1 | mod m12 |
-| main.rs:279:1:292:1 | mod m13 |
-| main.rs:283:5:291:5 | mod m14 |
-| main.rs:294:1:348:1 | mod m15 |
-| main.rs:350:1:442:1 | mod m16 |
-| main.rs:444:1:474:1 | mod m17 |
-| main.rs:476:1:494:1 | mod m18 |
-| main.rs:481:5:493:5 | mod m19 |
-| main.rs:486:9:492:9 | mod m20 |
-| main.rs:496:1:521:1 | mod m21 |
-| main.rs:497:5:503:5 | mod m22 |
-| main.rs:505:5:520:5 | mod m33 |
-| main.rs:523:1:548:1 | mod m23 |
-| main.rs:550:1:618:1 | mod m24 |
+| main.rs:122:1:141:1 | mod m7 |
+| main.rs:143:1:197:1 | mod m8 |
+| main.rs:199:1:207:1 | mod m9 |
+| main.rs:209:1:228:1 | mod m10 |
+| main.rs:230:1:267:1 | mod m11 |
+| main.rs:240:5:240:12 | mod f |
+| main.rs:269:1:281:1 | mod m12 |
+| main.rs:283:1:296:1 | mod m13 |
+| main.rs:287:5:295:5 | mod m14 |
+| main.rs:298:1:352:1 | mod m15 |
+| main.rs:354:1:446:1 | mod m16 |
+| main.rs:448:1:478:1 | mod m17 |
+| main.rs:480:1:498:1 | mod m18 |
+| main.rs:485:5:497:5 | mod m19 |
+| main.rs:490:9:496:9 | mod m20 |
+| main.rs:500:1:525:1 | mod m21 |
+| main.rs:501:5:507:5 | mod m22 |
+| main.rs:509:5:524:5 | mod m33 |
+| main.rs:527:1:552:1 | mod m23 |
+| main.rs:554:1:622:1 | mod m24 |
 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:12:1:12:12 | mod my3 |
 | my2/mod.rs:14:1:15:10 | mod mymod |
@@ -62,7 +62,7 @@ resolvePath
 | main.rs:30:17:30:21 | super | main.rs:18:5:36:5 | mod m2 |
 | main.rs:30:17:30:24 | ...::f | main.rs:19:9:21:9 | fn f |
 | main.rs:33:17:33:17 | f | main.rs:19:9:21:9 | fn f |
-| main.rs:40:9:40:13 | super | main.rs:1:1:649:2 | SourceFile |
+| main.rs:40:9:40:13 | super | main.rs:1:1:653:2 | SourceFile |
 | main.rs:40:9:40:17 | ...::m1 | main.rs:13:1:37:1 | mod m1 |
 | main.rs:40:9:40:21 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
 | main.rs:40:9:40:24 | ...::g | main.rs:23:9:27:9 | fn g |
@@ -74,9 +74,10 @@ resolvePath
 | main.rs:61:17:61:19 | Foo | main.rs:59:9:59:21 | struct Foo |
 | main.rs:64:13:64:15 | Foo | main.rs:53:5:53:17 | struct Foo |
 | main.rs:66:5:66:5 | f | main.rs:55:5:62:5 | fn f |
-| main.rs:68:5:68:8 | self | main.rs:1:1:649:2 | SourceFile |
+| main.rs:68:5:68:8 | self | main.rs:1:1:653:2 | SourceFile |
 | main.rs:68:5:68:11 | ...::i | main.rs:71:1:83:1 | fn i |
 | main.rs:74:13:74:15 | Foo | main.rs:48:1:48:13 | struct Foo |
+| main.rs:78:16:78:18 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | main.rs:81:17:81:19 | Foo | main.rs:77:9:79:9 | struct Foo |
 | main.rs:85:5:85:7 | my2 | main.rs:7:1:7:8 | mod my2 |
 | main.rs:85:5:85:16 | ...::nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
@@ -88,241 +89,243 @@ resolvePath
 | main.rs:87:57:87:66 | ...::g | my2/nested2.rs:7:9:9:9 | fn g |
 | main.rs:87:80:87:86 | nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
 | main.rs:100:5:100:22 | f_defined_in_macro | main.rs:99:18:99:42 | fn f_defined_in_macro |
-| main.rs:117:13:117:17 | super | main.rs:1:1:649:2 | SourceFile |
+| main.rs:117:13:117:17 | super | main.rs:1:1:653:2 | SourceFile |
 | main.rs:117:13:117:21 | ...::m5 | main.rs:103:1:107:1 | mod m5 |
 | main.rs:118:9:118:9 | f | main.rs:104:5:106:5 | fn f |
 | main.rs:118:9:118:9 | f | main.rs:110:5:112:5 | fn f |
-| main.rs:130:19:130:24 | MyEnum | main.rs:123:5:127:5 | enum MyEnum |
-| main.rs:133:17:133:22 | MyEnum | main.rs:123:5:127:5 | enum MyEnum |
-| main.rs:133:17:133:25 | ...::A | main.rs:124:9:124:14 | A |
-| main.rs:134:17:134:22 | MyEnum | main.rs:123:5:127:5 | enum MyEnum |
-| main.rs:134:17:134:25 | ...::B | main.rs:124:23:125:20 | B |
-| main.rs:135:9:135:14 | MyEnum | main.rs:123:5:127:5 | enum MyEnum |
-| main.rs:135:9:135:17 | ...::C | main.rs:125:23:126:9 | C |
-| main.rs:145:13:145:13 | f | main.rs:152:5:154:5 | fn f |
-| main.rs:146:13:146:16 | Self | main.rs:140:5:148:5 | trait MyTrait |
-| main.rs:146:13:146:19 | ...::f | main.rs:141:9:141:20 | fn f |
-| main.rs:157:10:157:16 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
-| main.rs:157:22:157:29 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:160:13:160:13 | f | main.rs:152:5:154:5 | fn f |
-| main.rs:161:13:161:16 | Self | main.rs:156:5:167:5 | impl MyTrait for MyStruct { ... } |
-| main.rs:161:13:161:19 | ...::g | main.rs:164:9:166:9 | fn g |
-| main.rs:170:10:170:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:173:13:173:13 | f | main.rs:152:5:154:5 | fn f |
-| main.rs:179:17:179:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:180:9:180:15 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
-| main.rs:180:9:180:18 | ...::f | main.rs:141:9:141:20 | fn f |
-| main.rs:181:9:181:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:181:9:181:19 | ...::f | main.rs:157:33:162:9 | fn f |
-| main.rs:182:10:182:17 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:183:10:183:16 | MyTrait | main.rs:140:5:148:5 | trait MyTrait |
-| main.rs:186:17:186:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:188:17:188:24 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:190:9:190:16 | MyStruct | main.rs:150:5:150:22 | struct MyStruct |
-| main.rs:190:9:190:19 | ...::h | main.rs:170:21:174:9 | fn h |
-| main.rs:199:19:199:22 | self | main.rs:195:1:203:1 | mod m9 |
-| main.rs:199:19:199:32 | ...::MyStruct | main.rs:196:5:196:26 | struct MyStruct |
-| main.rs:201:9:201:12 | self | main.rs:195:1:203:1 | mod m9 |
-| main.rs:201:9:201:22 | ...::MyStruct | main.rs:196:5:196:26 | struct MyStruct |
-| main.rs:211:12:211:12 | T | main.rs:208:7:208:7 | T |
-| main.rs:216:12:216:12 | T | main.rs:215:14:215:14 | T |
-| main.rs:218:7:220:7 | MyStruct::<...> | main.rs:206:5:212:5 | struct MyStruct |
-| main.rs:219:9:219:9 | T | main.rs:215:14:215:14 | T |
-| main.rs:222:9:222:16 | MyStruct | main.rs:206:5:212:5 | struct MyStruct |
-| main.rs:232:17:232:19 | Foo | main.rs:227:5:227:21 | struct Foo |
-| main.rs:233:9:233:11 | Foo | main.rs:229:5:229:15 | fn Foo |
-| main.rs:242:9:242:11 | Bar | main.rs:238:5:240:5 | enum Bar |
-| main.rs:242:9:242:19 | ...::FooBar | main.rs:239:9:239:17 | FooBar |
-| main.rs:247:13:247:15 | Foo | main.rs:227:5:227:21 | struct Foo |
-| main.rs:248:17:248:22 | FooBar | main.rs:239:9:239:17 | FooBar |
-| main.rs:249:17:249:22 | FooBar | main.rs:244:5:244:18 | fn FooBar |
-| main.rs:257:9:257:9 | E | main.rs:252:15:255:5 | enum E |
-| main.rs:257:9:257:12 | ...::C | main.rs:254:9:254:9 | C |
-| main.rs:260:17:260:17 | S | main.rs:252:5:252:13 | struct S |
-| main.rs:261:17:261:17 | C | main.rs:254:9:254:9 | C |
-| main.rs:274:16:274:16 | T | main.rs:268:7:268:7 | T |
-| main.rs:275:14:275:17 | Self | main.rs:266:5:276:5 | trait MyParamTrait |
-| main.rs:275:14:275:33 | ...::AssociatedType | main.rs:270:9:270:28 | type AssociatedType |
-| main.rs:284:13:284:17 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
-| main.rs:284:13:284:22 | ...::m13 | main.rs:279:1:292:1 | mod m13 |
-| main.rs:284:13:284:25 | ...::f | main.rs:280:5:280:17 | fn f |
-| main.rs:284:13:284:25 | ...::f | main.rs:280:19:281:19 | struct f |
-| main.rs:287:17:287:17 | f | main.rs:280:19:281:19 | struct f |
-| main.rs:288:21:288:21 | f | main.rs:280:19:281:19 | struct f |
-| main.rs:289:13:289:13 | f | main.rs:280:5:280:17 | fn f |
-| main.rs:303:9:303:14 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
-| main.rs:306:13:306:16 | Self | main.rs:301:5:309:5 | trait Trait2 |
-| main.rs:306:13:306:19 | ...::g | main.rs:298:9:298:20 | fn g |
-| main.rs:314:10:314:15 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
-| main.rs:315:11:315:11 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:318:13:318:16 | Self | main.rs:313:5:325:5 | impl Trait1 for S { ... } |
-| main.rs:318:13:318:19 | ...::g | main.rs:322:9:324:9 | fn g |
-| main.rs:328:10:328:15 | Trait2 | main.rs:301:5:309:5 | trait Trait2 |
-| main.rs:329:11:329:11 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:338:17:338:17 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:339:10:339:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:340:14:340:19 | Trait1 | main.rs:295:5:299:5 | trait Trait1 |
-| main.rs:342:10:342:10 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:343:14:343:19 | Trait2 | main.rs:301:5:309:5 | trait Trait2 |
-| main.rs:345:9:345:9 | S | main.rs:311:5:311:13 | struct S |
-| main.rs:345:9:345:12 | ...::g | main.rs:322:9:324:9 | fn g |
-| main.rs:355:24:355:24 | T | main.rs:353:7:353:7 | T |
-| main.rs:357:24:357:24 | T | main.rs:353:7:353:7 | T |
-| main.rs:360:24:360:24 | T | main.rs:353:7:353:7 | T |
-| main.rs:361:13:361:16 | Self | main.rs:351:5:367:5 | trait Trait1 |
-| main.rs:361:13:361:19 | ...::g | main.rs:357:9:358:9 | fn g |
-| main.rs:365:18:365:18 | T | main.rs:353:7:353:7 | T |
-| main.rs:373:9:375:9 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
-| main.rs:374:11:374:11 | T | main.rs:371:7:371:7 | T |
-| main.rs:376:24:376:24 | T | main.rs:371:7:371:7 | T |
-| main.rs:378:13:378:16 | Self | main.rs:369:5:382:5 | trait Trait2 |
-| main.rs:378:13:378:19 | ...::g | main.rs:357:9:358:9 | fn g |
-| main.rs:380:13:380:16 | Self | main.rs:369:5:382:5 | trait Trait2 |
-| main.rs:380:13:380:19 | ...::c | main.rs:365:9:366:9 | Const |
-| main.rs:387:10:389:5 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
-| main.rs:388:7:388:7 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:390:11:390:11 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:391:24:391:24 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:393:13:393:16 | Self | main.rs:386:5:404:5 | impl Trait1::<...> for S { ... } |
-| main.rs:393:13:393:19 | ...::g | main.rs:397:9:400:9 | fn g |
-| main.rs:397:24:397:24 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:399:13:399:16 | Self | main.rs:386:5:404:5 | impl Trait1::<...> for S { ... } |
-| main.rs:399:13:399:19 | ...::c | main.rs:402:9:403:9 | Const |
-| main.rs:402:18:402:18 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:402:22:402:22 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:407:10:409:5 | Trait2::<...> | main.rs:369:5:382:5 | trait Trait2 |
-| main.rs:408:7:408:7 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:410:11:410:11 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:411:24:411:24 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:413:13:413:16 | Self | main.rs:406:5:415:5 | impl Trait2::<...> for S { ... } |
-| main.rs:420:17:420:17 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:421:10:421:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:422:14:424:11 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
-| main.rs:423:13:423:13 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:426:10:426:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:427:14:429:11 | Trait2::<...> | main.rs:369:5:382:5 | trait Trait2 |
-| main.rs:428:13:428:13 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:431:9:431:9 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:431:9:431:12 | ...::g | main.rs:397:9:400:9 | fn g |
-| main.rs:433:9:433:9 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:433:9:433:12 | ...::h | main.rs:360:9:363:9 | fn h |
-| main.rs:435:9:435:9 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:435:9:435:12 | ...::c | main.rs:402:9:403:9 | Const |
-| main.rs:436:10:436:10 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:437:14:439:11 | Trait1::<...> | main.rs:351:5:367:5 | trait Trait1 |
-| main.rs:438:13:438:13 | S | main.rs:384:5:384:13 | struct S |
-| main.rs:452:10:452:16 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
-| main.rs:453:9:453:9 | S | main.rs:449:5:449:13 | struct S |
-| main.rs:461:7:461:13 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
-| main.rs:462:10:462:10 | T | main.rs:460:10:460:10 | T |
-| main.rs:464:9:464:9 | T | main.rs:460:10:460:10 | T |
-| main.rs:464:9:464:12 | ...::f | main.rs:446:9:446:20 | fn f |
-| main.rs:465:9:465:15 | MyTrait | main.rs:445:5:447:5 | trait MyTrait |
-| main.rs:465:9:465:18 | ...::f | main.rs:446:9:446:20 | fn f |
-| main.rs:470:9:470:9 | g | main.rs:459:5:466:5 | fn g |
-| main.rs:471:11:471:11 | S | main.rs:449:5:449:13 | struct S |
-| main.rs:489:17:489:21 | super | main.rs:481:5:493:5 | mod m19 |
-| main.rs:489:17:489:24 | ...::f | main.rs:482:9:484:9 | fn f |
-| main.rs:490:17:490:21 | super | main.rs:481:5:493:5 | mod m19 |
-| main.rs:490:17:490:28 | ...::super | main.rs:476:1:494:1 | mod m18 |
-| main.rs:490:17:490:31 | ...::f | main.rs:477:5:479:5 | fn f |
-| main.rs:507:13:507:17 | super | main.rs:496:1:521:1 | mod m21 |
-| main.rs:507:13:507:22 | ...::m22 | main.rs:497:5:503:5 | mod m22 |
-| main.rs:507:13:507:30 | ...::MyEnum | main.rs:498:9:500:9 | enum MyEnum |
-| main.rs:508:13:508:16 | self | main.rs:498:9:500:9 | enum MyEnum |
-| main.rs:512:13:512:17 | super | main.rs:496:1:521:1 | mod m21 |
-| main.rs:512:13:512:22 | ...::m22 | main.rs:497:5:503:5 | mod m22 |
-| main.rs:512:13:512:32 | ...::MyStruct | main.rs:502:9:502:28 | struct MyStruct |
-| main.rs:513:13:513:16 | self | main.rs:502:9:502:28 | struct MyStruct |
-| main.rs:517:21:517:26 | MyEnum | main.rs:498:9:500:9 | enum MyEnum |
-| main.rs:517:21:517:29 | ...::A | main.rs:499:13:499:13 | A |
-| main.rs:518:21:518:28 | MyStruct | main.rs:502:9:502:28 | struct MyStruct |
-| main.rs:534:10:536:5 | Trait1::<...> | main.rs:524:5:529:5 | trait Trait1 |
-| main.rs:535:7:535:10 | Self | main.rs:531:5:531:13 | struct S |
-| main.rs:537:11:537:11 | S | main.rs:531:5:531:13 | struct S |
-| main.rs:545:17:545:17 | S | main.rs:531:5:531:13 | struct S |
-| main.rs:561:15:561:15 | T | main.rs:560:26:560:26 | T |
-| main.rs:566:9:566:24 | GenericStruct::<...> | main.rs:559:5:562:5 | struct GenericStruct |
-| main.rs:566:23:566:23 | T | main.rs:565:10:565:10 | T |
-| main.rs:568:9:568:9 | T | main.rs:565:10:565:10 | T |
-| main.rs:568:12:568:17 | TraitA | main.rs:551:5:553:5 | trait TraitA |
-| main.rs:577:9:577:24 | GenericStruct::<...> | main.rs:559:5:562:5 | struct GenericStruct |
-| main.rs:577:23:577:23 | T | main.rs:576:10:576:10 | T |
-| main.rs:579:9:579:9 | T | main.rs:576:10:576:10 | T |
-| main.rs:579:12:579:17 | TraitB | main.rs:555:5:557:5 | trait TraitB |
-| main.rs:580:9:580:9 | T | main.rs:576:10:576:10 | T |
-| main.rs:580:12:580:17 | TraitA | main.rs:551:5:553:5 | trait TraitA |
-| main.rs:591:10:591:15 | TraitA | main.rs:551:5:553:5 | trait TraitA |
-| main.rs:591:21:591:31 | Implementor | main.rs:588:5:588:23 | struct Implementor |
-| main.rs:598:10:598:15 | TraitB | main.rs:555:5:557:5 | trait TraitB |
-| main.rs:598:21:598:31 | Implementor | main.rs:588:5:588:23 | struct Implementor |
-| main.rs:606:24:606:34 | Implementor | main.rs:588:5:588:23 | struct Implementor |
-| main.rs:607:23:607:35 | GenericStruct | main.rs:559:5:562:5 | struct GenericStruct |
-| main.rs:613:9:613:36 | GenericStruct::<...> | main.rs:559:5:562:5 | struct GenericStruct |
-| main.rs:613:9:613:50 | ...::call_trait_a | main.rs:570:9:572:9 | fn call_trait_a |
-| main.rs:613:25:613:35 | Implementor | main.rs:588:5:588:23 | struct Implementor |
-| main.rs:616:9:616:36 | GenericStruct::<...> | main.rs:559:5:562:5 | struct GenericStruct |
-| main.rs:616:9:616:47 | ...::call_both | main.rs:582:9:585:9 | fn call_both |
-| main.rs:616:25:616:35 | Implementor | main.rs:588:5:588:23 | struct Implementor |
-| main.rs:621:5:621:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:621:5:621:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
-| main.rs:621:5:621:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
-| main.rs:621:5:621:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
-| main.rs:621:5:621:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
-| main.rs:622:5:622:6 | my | main.rs:1:1:1:7 | mod my |
-| main.rs:622:5:622:9 | ...::f | my.rs:5:1:7:1 | fn f |
-| main.rs:623:5:623:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
-| main.rs:623:5:623:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
-| main.rs:623:5:623:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
-| main.rs:623:5:623:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:624:5:624:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:625:5:625:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:626:5:626:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
-| main.rs:626:5:626:12 | ...::h | main.rs:50:1:69:1 | fn h |
-| main.rs:627:5:627:6 | m1 | main.rs:13:1:37:1 | mod m1 |
-| main.rs:627:5:627:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
-| main.rs:627:5:627:13 | ...::g | main.rs:23:9:27:9 | fn g |
-| main.rs:628:5:628:6 | m1 | main.rs:13:1:37:1 | mod m1 |
-| main.rs:628:5:628:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
-| main.rs:628:5:628:14 | ...::m3 | main.rs:29:9:35:9 | mod m3 |
-| main.rs:628:5:628:17 | ...::h | main.rs:30:27:34:13 | fn h |
-| main.rs:629:5:629:6 | m4 | main.rs:39:1:46:1 | mod m4 |
-| main.rs:629:5:629:9 | ...::i | main.rs:42:5:45:5 | fn i |
-| main.rs:630:5:630:5 | h | main.rs:50:1:69:1 | fn h |
-| main.rs:631:5:631:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
-| main.rs:632:5:632:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
-| main.rs:633:5:633:5 | j | main.rs:97:1:101:1 | fn j |
-| main.rs:634:5:634:6 | m6 | main.rs:109:1:120:1 | mod m6 |
-| main.rs:634:5:634:9 | ...::g | main.rs:114:5:119:5 | fn g |
-| main.rs:635:5:635:6 | m7 | main.rs:122:1:137:1 | mod m7 |
-| main.rs:635:5:635:9 | ...::f | main.rs:129:5:136:5 | fn f |
-| main.rs:636:5:636:6 | m8 | main.rs:139:1:193:1 | mod m8 |
-| main.rs:636:5:636:9 | ...::g | main.rs:177:5:192:5 | fn g |
-| main.rs:637:5:637:6 | m9 | main.rs:195:1:203:1 | mod m9 |
-| main.rs:637:5:637:9 | ...::f | main.rs:198:5:202:5 | fn f |
-| main.rs:638:5:638:7 | m11 | main.rs:226:1:263:1 | mod m11 |
-| main.rs:638:5:638:10 | ...::f | main.rs:231:5:234:5 | fn f |
-| main.rs:639:5:639:7 | m15 | main.rs:294:1:348:1 | mod m15 |
-| main.rs:639:5:639:10 | ...::f | main.rs:335:5:347:5 | fn f |
-| main.rs:640:5:640:7 | m16 | main.rs:350:1:442:1 | mod m16 |
-| main.rs:640:5:640:10 | ...::f | main.rs:417:5:441:5 | fn f |
-| main.rs:641:5:641:7 | m17 | main.rs:444:1:474:1 | mod m17 |
-| main.rs:641:5:641:10 | ...::f | main.rs:468:5:473:5 | fn f |
-| main.rs:642:5:642:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
-| main.rs:642:5:642:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
-| main.rs:643:5:643:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
-| main.rs:643:5:643:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
-| main.rs:644:5:644:7 | my3 | my2/mod.rs:12:1:12:12 | mod my3 |
-| main.rs:644:5:644:10 | ...::f | my2/my3/mod.rs:1:1:5:1 | fn f |
-| main.rs:645:5:645:12 | nested_f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
-| main.rs:646:5:646:7 | m18 | main.rs:476:1:494:1 | mod m18 |
-| main.rs:646:5:646:12 | ...::m19 | main.rs:481:5:493:5 | mod m19 |
-| main.rs:646:5:646:17 | ...::m20 | main.rs:486:9:492:9 | mod m20 |
-| main.rs:646:5:646:20 | ...::g | main.rs:487:13:491:13 | fn g |
-| main.rs:647:5:647:7 | m23 | main.rs:523:1:548:1 | mod m23 |
-| main.rs:647:5:647:10 | ...::f | main.rs:543:5:547:5 | fn f |
-| main.rs:648:5:648:7 | m24 | main.rs:550:1:618:1 | mod m24 |
-| main.rs:648:5:648:10 | ...::f | main.rs:604:5:617:5 | fn f |
+| main.rs:125:13:125:15 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
+| main.rs:128:16:128:18 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
+| main.rs:134:19:134:24 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
+| main.rs:137:17:137:22 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
+| main.rs:137:17:137:25 | ...::A | main.rs:124:9:126:9 | A |
+| main.rs:138:17:138:22 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
+| main.rs:138:17:138:25 | ...::B | main.rs:126:12:129:9 | B |
+| main.rs:139:9:139:14 | MyEnum | main.rs:123:5:131:5 | enum MyEnum |
+| main.rs:139:9:139:17 | ...::C | main.rs:129:12:130:9 | C |
+| main.rs:149:13:149:13 | f | main.rs:156:5:158:5 | fn f |
+| main.rs:150:13:150:16 | Self | main.rs:144:5:152:5 | trait MyTrait |
+| main.rs:150:13:150:19 | ...::f | main.rs:145:9:145:20 | fn f |
+| main.rs:161:10:161:16 | MyTrait | main.rs:144:5:152:5 | trait MyTrait |
+| main.rs:161:22:161:29 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:164:13:164:13 | f | main.rs:156:5:158:5 | fn f |
+| main.rs:165:13:165:16 | Self | main.rs:160:5:171:5 | impl MyTrait for MyStruct { ... } |
+| main.rs:165:13:165:19 | ...::g | main.rs:168:9:170:9 | fn g |
+| main.rs:174:10:174:17 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:177:13:177:13 | f | main.rs:156:5:158:5 | fn f |
+| main.rs:183:17:183:24 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:184:9:184:15 | MyTrait | main.rs:144:5:152:5 | trait MyTrait |
+| main.rs:184:9:184:18 | ...::f | main.rs:145:9:145:20 | fn f |
+| main.rs:185:9:185:16 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:185:9:185:19 | ...::f | main.rs:161:33:166:9 | fn f |
+| main.rs:186:10:186:17 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:187:10:187:16 | MyTrait | main.rs:144:5:152:5 | trait MyTrait |
+| main.rs:190:17:190:24 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:192:17:192:24 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:194:9:194:16 | MyStruct | main.rs:154:5:154:22 | struct MyStruct |
+| main.rs:194:9:194:19 | ...::h | main.rs:174:21:178:9 | fn h |
+| main.rs:203:19:203:22 | self | main.rs:199:1:207:1 | mod m9 |
+| main.rs:203:19:203:32 | ...::MyStruct | main.rs:200:5:200:26 | struct MyStruct |
+| main.rs:205:9:205:12 | self | main.rs:199:1:207:1 | mod m9 |
+| main.rs:205:9:205:22 | ...::MyStruct | main.rs:200:5:200:26 | struct MyStruct |
+| main.rs:215:12:215:12 | T | main.rs:212:7:212:7 | T |
+| main.rs:220:12:220:12 | T | main.rs:219:14:219:14 | T |
+| main.rs:222:7:224:7 | MyStruct::<...> | main.rs:210:5:216:5 | struct MyStruct |
+| main.rs:223:9:223:9 | T | main.rs:219:14:219:14 | T |
+| main.rs:226:9:226:16 | MyStruct | main.rs:210:5:216:5 | struct MyStruct |
+| main.rs:236:17:236:19 | Foo | main.rs:231:5:231:21 | struct Foo |
+| main.rs:237:9:237:11 | Foo | main.rs:233:5:233:15 | fn Foo |
+| main.rs:246:9:246:11 | Bar | main.rs:242:5:244:5 | enum Bar |
+| main.rs:246:9:246:19 | ...::FooBar | main.rs:243:9:243:17 | FooBar |
+| main.rs:251:13:251:15 | Foo | main.rs:231:5:231:21 | struct Foo |
+| main.rs:252:17:252:22 | FooBar | main.rs:243:9:243:17 | FooBar |
+| main.rs:253:17:253:22 | FooBar | main.rs:248:5:248:18 | fn FooBar |
+| main.rs:261:9:261:9 | E | main.rs:256:15:259:5 | enum E |
+| main.rs:261:9:261:12 | ...::C | main.rs:258:9:258:9 | C |
+| main.rs:264:17:264:17 | S | main.rs:256:5:256:13 | struct S |
+| main.rs:265:17:265:17 | C | main.rs:258:9:258:9 | C |
+| main.rs:278:16:278:16 | T | main.rs:272:7:272:7 | T |
+| main.rs:279:14:279:17 | Self | main.rs:270:5:280:5 | trait MyParamTrait |
+| main.rs:279:14:279:33 | ...::AssociatedType | main.rs:274:9:274:28 | type AssociatedType |
+| main.rs:288:13:288:17 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:288:13:288:22 | ...::m13 | main.rs:283:1:296:1 | mod m13 |
+| main.rs:288:13:288:25 | ...::f | main.rs:284:5:284:17 | fn f |
+| main.rs:288:13:288:25 | ...::f | main.rs:284:19:285:19 | struct f |
+| main.rs:291:17:291:17 | f | main.rs:284:19:285:19 | struct f |
+| main.rs:292:21:292:21 | f | main.rs:284:19:285:19 | struct f |
+| main.rs:293:13:293:13 | f | main.rs:284:5:284:17 | fn f |
+| main.rs:307:9:307:14 | Trait1 | main.rs:299:5:303:5 | trait Trait1 |
+| main.rs:310:13:310:16 | Self | main.rs:305:5:313:5 | trait Trait2 |
+| main.rs:310:13:310:19 | ...::g | main.rs:302:9:302:20 | fn g |
+| main.rs:318:10:318:15 | Trait1 | main.rs:299:5:303:5 | trait Trait1 |
+| main.rs:319:11:319:11 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:322:13:322:16 | Self | main.rs:317:5:329:5 | impl Trait1 for S { ... } |
+| main.rs:322:13:322:19 | ...::g | main.rs:326:9:328:9 | fn g |
+| main.rs:332:10:332:15 | Trait2 | main.rs:305:5:313:5 | trait Trait2 |
+| main.rs:333:11:333:11 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:342:17:342:17 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:343:10:343:10 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:344:14:344:19 | Trait1 | main.rs:299:5:303:5 | trait Trait1 |
+| main.rs:346:10:346:10 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:347:14:347:19 | Trait2 | main.rs:305:5:313:5 | trait Trait2 |
+| main.rs:349:9:349:9 | S | main.rs:315:5:315:13 | struct S |
+| main.rs:349:9:349:12 | ...::g | main.rs:326:9:328:9 | fn g |
+| main.rs:359:24:359:24 | T | main.rs:357:7:357:7 | T |
+| main.rs:361:24:361:24 | T | main.rs:357:7:357:7 | T |
+| main.rs:364:24:364:24 | T | main.rs:357:7:357:7 | T |
+| main.rs:365:13:365:16 | Self | main.rs:355:5:371:5 | trait Trait1 |
+| main.rs:365:13:365:19 | ...::g | main.rs:361:9:362:9 | fn g |
+| main.rs:369:18:369:18 | T | main.rs:357:7:357:7 | T |
+| main.rs:377:9:379:9 | Trait1::<...> | main.rs:355:5:371:5 | trait Trait1 |
+| main.rs:378:11:378:11 | T | main.rs:375:7:375:7 | T |
+| main.rs:380:24:380:24 | T | main.rs:375:7:375:7 | T |
+| main.rs:382:13:382:16 | Self | main.rs:373:5:386:5 | trait Trait2 |
+| main.rs:382:13:382:19 | ...::g | main.rs:361:9:362:9 | fn g |
+| main.rs:384:13:384:16 | Self | main.rs:373:5:386:5 | trait Trait2 |
+| main.rs:384:13:384:19 | ...::c | main.rs:369:9:370:9 | Const |
+| main.rs:391:10:393:5 | Trait1::<...> | main.rs:355:5:371:5 | trait Trait1 |
+| main.rs:392:7:392:7 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:394:11:394:11 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:395:24:395:24 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:397:13:397:16 | Self | main.rs:390:5:408:5 | impl Trait1::<...> for S { ... } |
+| main.rs:397:13:397:19 | ...::g | main.rs:401:9:404:9 | fn g |
+| main.rs:401:24:401:24 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:403:13:403:16 | Self | main.rs:390:5:408:5 | impl Trait1::<...> for S { ... } |
+| main.rs:403:13:403:19 | ...::c | main.rs:406:9:407:9 | Const |
+| main.rs:406:18:406:18 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:406:22:406:22 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:411:10:413:5 | Trait2::<...> | main.rs:373:5:386:5 | trait Trait2 |
+| main.rs:412:7:412:7 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:414:11:414:11 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:415:24:415:24 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:417:13:417:16 | Self | main.rs:410:5:419:5 | impl Trait2::<...> for S { ... } |
+| main.rs:424:17:424:17 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:425:10:425:10 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:426:14:428:11 | Trait1::<...> | main.rs:355:5:371:5 | trait Trait1 |
+| main.rs:427:13:427:13 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:430:10:430:10 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:431:14:433:11 | Trait2::<...> | main.rs:373:5:386:5 | trait Trait2 |
+| main.rs:432:13:432:13 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:435:9:435:9 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:435:9:435:12 | ...::g | main.rs:401:9:404:9 | fn g |
+| main.rs:437:9:437:9 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:437:9:437:12 | ...::h | main.rs:364:9:367:9 | fn h |
+| main.rs:439:9:439:9 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:439:9:439:12 | ...::c | main.rs:406:9:407:9 | Const |
+| main.rs:440:10:440:10 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:441:14:443:11 | Trait1::<...> | main.rs:355:5:371:5 | trait Trait1 |
+| main.rs:442:13:442:13 | S | main.rs:388:5:388:13 | struct S |
+| main.rs:456:10:456:16 | MyTrait | main.rs:449:5:451:5 | trait MyTrait |
+| main.rs:457:9:457:9 | S | main.rs:453:5:453:13 | struct S |
+| main.rs:465:7:465:13 | MyTrait | main.rs:449:5:451:5 | trait MyTrait |
+| main.rs:466:10:466:10 | T | main.rs:464:10:464:10 | T |
+| main.rs:468:9:468:9 | T | main.rs:464:10:464:10 | T |
+| main.rs:468:9:468:12 | ...::f | main.rs:450:9:450:20 | fn f |
+| main.rs:469:9:469:15 | MyTrait | main.rs:449:5:451:5 | trait MyTrait |
+| main.rs:469:9:469:18 | ...::f | main.rs:450:9:450:20 | fn f |
+| main.rs:474:9:474:9 | g | main.rs:463:5:470:5 | fn g |
+| main.rs:475:11:475:11 | S | main.rs:453:5:453:13 | struct S |
+| main.rs:493:17:493:21 | super | main.rs:485:5:497:5 | mod m19 |
+| main.rs:493:17:493:24 | ...::f | main.rs:486:9:488:9 | fn f |
+| main.rs:494:17:494:21 | super | main.rs:485:5:497:5 | mod m19 |
+| main.rs:494:17:494:28 | ...::super | main.rs:480:1:498:1 | mod m18 |
+| main.rs:494:17:494:31 | ...::f | main.rs:481:5:483:5 | fn f |
+| main.rs:511:13:511:17 | super | main.rs:500:1:525:1 | mod m21 |
+| main.rs:511:13:511:22 | ...::m22 | main.rs:501:5:507:5 | mod m22 |
+| main.rs:511:13:511:30 | ...::MyEnum | main.rs:502:9:504:9 | enum MyEnum |
+| main.rs:512:13:512:16 | self | main.rs:502:9:504:9 | enum MyEnum |
+| main.rs:516:13:516:17 | super | main.rs:500:1:525:1 | mod m21 |
+| main.rs:516:13:516:22 | ...::m22 | main.rs:501:5:507:5 | mod m22 |
+| main.rs:516:13:516:32 | ...::MyStruct | main.rs:506:9:506:28 | struct MyStruct |
+| main.rs:517:13:517:16 | self | main.rs:506:9:506:28 | struct MyStruct |
+| main.rs:521:21:521:26 | MyEnum | main.rs:502:9:504:9 | enum MyEnum |
+| main.rs:521:21:521:29 | ...::A | main.rs:503:13:503:13 | A |
+| main.rs:522:21:522:28 | MyStruct | main.rs:506:9:506:28 | struct MyStruct |
+| main.rs:538:10:540:5 | Trait1::<...> | main.rs:528:5:533:5 | trait Trait1 |
+| main.rs:539:7:539:10 | Self | main.rs:535:5:535:13 | struct S |
+| main.rs:541:11:541:11 | S | main.rs:535:5:535:13 | struct S |
+| main.rs:549:17:549:17 | S | main.rs:535:5:535:13 | struct S |
+| main.rs:565:15:565:15 | T | main.rs:564:26:564:26 | T |
+| main.rs:570:9:570:24 | GenericStruct::<...> | main.rs:563:5:566:5 | struct GenericStruct |
+| main.rs:570:23:570:23 | T | main.rs:569:10:569:10 | T |
+| main.rs:572:9:572:9 | T | main.rs:569:10:569:10 | T |
+| main.rs:572:12:572:17 | TraitA | main.rs:555:5:557:5 | trait TraitA |
+| main.rs:581:9:581:24 | GenericStruct::<...> | main.rs:563:5:566:5 | struct GenericStruct |
+| main.rs:581:23:581:23 | T | main.rs:580:10:580:10 | T |
+| main.rs:583:9:583:9 | T | main.rs:580:10:580:10 | T |
+| main.rs:583:12:583:17 | TraitB | main.rs:559:5:561:5 | trait TraitB |
+| main.rs:584:9:584:9 | T | main.rs:580:10:580:10 | T |
+| main.rs:584:12:584:17 | TraitA | main.rs:555:5:557:5 | trait TraitA |
+| main.rs:595:10:595:15 | TraitA | main.rs:555:5:557:5 | trait TraitA |
+| main.rs:595:21:595:31 | Implementor | main.rs:592:5:592:23 | struct Implementor |
+| main.rs:602:10:602:15 | TraitB | main.rs:559:5:561:5 | trait TraitB |
+| main.rs:602:21:602:31 | Implementor | main.rs:592:5:592:23 | struct Implementor |
+| main.rs:610:24:610:34 | Implementor | main.rs:592:5:592:23 | struct Implementor |
+| main.rs:611:23:611:35 | GenericStruct | main.rs:563:5:566:5 | struct GenericStruct |
+| main.rs:617:9:617:36 | GenericStruct::<...> | main.rs:563:5:566:5 | struct GenericStruct |
+| main.rs:617:9:617:50 | ...::call_trait_a | main.rs:574:9:576:9 | fn call_trait_a |
+| main.rs:617:25:617:35 | Implementor | main.rs:592:5:592:23 | struct Implementor |
+| main.rs:620:9:620:36 | GenericStruct::<...> | main.rs:563:5:566:5 | struct GenericStruct |
+| main.rs:620:9:620:47 | ...::call_both | main.rs:586:9:589:9 | fn call_both |
+| main.rs:620:25:620:35 | Implementor | main.rs:592:5:592:23 | struct Implementor |
+| main.rs:625:5:625:6 | my | main.rs:1:1:1:7 | mod my |
+| main.rs:625:5:625:14 | ...::nested | my.rs:1:1:1:15 | mod nested |
+| main.rs:625:5:625:23 | ...::nested1 | my/nested.rs:1:1:17:1 | mod nested1 |
+| main.rs:625:5:625:32 | ...::nested2 | my/nested.rs:2:5:11:5 | mod nested2 |
+| main.rs:625:5:625:35 | ...::f | my/nested.rs:3:9:5:9 | fn f |
+| main.rs:626:5:626:6 | my | main.rs:1:1:1:7 | mod my |
+| main.rs:626:5:626:9 | ...::f | my.rs:5:1:7:1 | fn f |
+| main.rs:627:5:627:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
+| main.rs:627:5:627:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
+| main.rs:627:5:627:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
+| main.rs:627:5:627:32 | ...::f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:628:5:628:5 | f | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:629:5:629:5 | g | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:630:5:630:9 | crate | main.rs:0:0:0:0 | Crate(main@0.0.1) |
+| main.rs:630:5:630:12 | ...::h | main.rs:50:1:69:1 | fn h |
+| main.rs:631:5:631:6 | m1 | main.rs:13:1:37:1 | mod m1 |
+| main.rs:631:5:631:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
+| main.rs:631:5:631:13 | ...::g | main.rs:23:9:27:9 | fn g |
+| main.rs:632:5:632:6 | m1 | main.rs:13:1:37:1 | mod m1 |
+| main.rs:632:5:632:10 | ...::m2 | main.rs:18:5:36:5 | mod m2 |
+| main.rs:632:5:632:14 | ...::m3 | main.rs:29:9:35:9 | mod m3 |
+| main.rs:632:5:632:17 | ...::h | main.rs:30:27:34:13 | fn h |
+| main.rs:633:5:633:6 | m4 | main.rs:39:1:46:1 | mod m4 |
+| main.rs:633:5:633:9 | ...::i | main.rs:42:5:45:5 | fn i |
+| main.rs:634:5:634:5 | h | main.rs:50:1:69:1 | fn h |
+| main.rs:635:5:635:11 | f_alias | my2/nested2.rs:3:9:5:9 | fn f |
+| main.rs:636:5:636:11 | g_alias | my2/nested2.rs:7:9:9:9 | fn g |
+| main.rs:637:5:637:5 | j | main.rs:97:1:101:1 | fn j |
+| main.rs:638:5:638:6 | m6 | main.rs:109:1:120:1 | mod m6 |
+| main.rs:638:5:638:9 | ...::g | main.rs:114:5:119:5 | fn g |
+| main.rs:639:5:639:6 | m7 | main.rs:122:1:141:1 | mod m7 |
+| main.rs:639:5:639:9 | ...::f | main.rs:133:5:140:5 | fn f |
+| main.rs:640:5:640:6 | m8 | main.rs:143:1:197:1 | mod m8 |
+| main.rs:640:5:640:9 | ...::g | main.rs:181:5:196:5 | fn g |
+| main.rs:641:5:641:6 | m9 | main.rs:199:1:207:1 | mod m9 |
+| main.rs:641:5:641:9 | ...::f | main.rs:202:5:206:5 | fn f |
+| main.rs:642:5:642:7 | m11 | main.rs:230:1:267:1 | mod m11 |
+| main.rs:642:5:642:10 | ...::f | main.rs:235:5:238:5 | fn f |
+| main.rs:643:5:643:7 | m15 | main.rs:298:1:352:1 | mod m15 |
+| main.rs:643:5:643:10 | ...::f | main.rs:339:5:351:5 | fn f |
+| main.rs:644:5:644:7 | m16 | main.rs:354:1:446:1 | mod m16 |
+| main.rs:644:5:644:10 | ...::f | main.rs:421:5:445:5 | fn f |
+| main.rs:645:5:645:7 | m17 | main.rs:448:1:478:1 | mod m17 |
+| main.rs:645:5:645:10 | ...::f | main.rs:472:5:477:5 | fn f |
+| main.rs:646:5:646:11 | nested6 | my2/nested2.rs:14:5:18:5 | mod nested6 |
+| main.rs:646:5:646:14 | ...::f | my2/nested2.rs:15:9:17:9 | fn f |
+| main.rs:647:5:647:11 | nested8 | my2/nested2.rs:22:5:26:5 | mod nested8 |
+| main.rs:647:5:647:14 | ...::f | my2/nested2.rs:23:9:25:9 | fn f |
+| main.rs:648:5:648:7 | my3 | my2/mod.rs:12:1:12:12 | mod my3 |
+| main.rs:648:5:648:10 | ...::f | my2/my3/mod.rs:1:1:5:1 | fn f |
+| main.rs:649:5:649:12 | nested_f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
+| main.rs:650:5:650:7 | m18 | main.rs:480:1:498:1 | mod m18 |
+| main.rs:650:5:650:12 | ...::m19 | main.rs:485:5:497:5 | mod m19 |
+| main.rs:650:5:650:17 | ...::m20 | main.rs:490:9:496:9 | mod m20 |
+| main.rs:650:5:650:20 | ...::g | main.rs:491:13:495:13 | fn g |
+| main.rs:651:5:651:7 | m23 | main.rs:527:1:552:1 | mod m23 |
+| main.rs:651:5:651:10 | ...::f | main.rs:547:5:551:5 | fn f |
+| main.rs:652:5:652:7 | m24 | main.rs:554:1:622:1 | mod m24 |
+| main.rs:652:5:652:10 | ...::f | main.rs:608:5:621:5 | fn f |
 | my2/mod.rs:5:5:5:11 | nested2 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:5:5:5:20 | ...::nested3 | my2/nested2.rs:1:1:11:1 | mod nested3 |
 | my2/mod.rs:5:5:5:29 | ...::nested4 | my2/nested2.rs:2:5:10:5 | mod nested4 |
@@ -338,7 +341,7 @@ resolvePath
 | my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
 | my2/my3/mod.rs:4:5:4:5 | h | main.rs:50:1:69:1 | fn h |
 | my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:17:30 | SourceFile |
-| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:649:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:653:2 | SourceFile |
 | my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:50:1:69:1 | fn h |
 | my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:17:30 | SourceFile |
 | my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
@@ -352,7 +355,10 @@ resolvePath
 | my.rs:22:5:22:17 | ...::result | file://:0:0:0:0 | mod result |
 | my.rs:22:5:25:1 | ...::Result::<...> | file://:0:0:0:0 | enum Result |
 | my.rs:23:5:23:5 | T | my.rs:21:5:21:5 | T |
+| my.rs:28:8:28:10 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
+| my.rs:29:8:29:10 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | my.rs:30:6:30:16 | Result::<...> | my.rs:20:1:25:2 | type Result<...> |
+| my.rs:30:13:30:15 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |
 | my.rs:33:16:33:18 | Err | file://:0:0:0:0 | Err |
 | my.rs:35:5:35:6 | Ok | file://:0:0:0:0 | Ok |
 | my/nested.rs:9:13:9:13 | f | my/nested.rs:3:9:5:9 | fn f |

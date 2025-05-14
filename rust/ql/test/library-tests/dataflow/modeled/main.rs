@@ -26,15 +26,23 @@ fn i64_clone() {
     let a = source(12);
     sink(a); // $ hasValueFlow=12
     let b = a.clone();
-    sink(b); // $ MISSING: hasValueFlow=12 - lack of builtins means that we cannot resolve clone call above, and hence not insert implicit borrow
+    sink(b); // $ hasValueFlow=12
 }
 
 mod my_clone {
     use super::{sink, source};
 
-    #[derive(Clone)]
+    // TODO: Replace manual implementation below with `#[derive(Clone)]`,
+    // once the extractor expands the `#[derive]` attributes.
+    // #[derive(Clone)]
     struct Wrapper {
         n: i64,
+    }
+
+    impl Clone for Wrapper {
+        fn clone(&self) -> Self {
+            Wrapper { n: self.n }
+        }
     }
 
     pub fn wrapper_clone() {
