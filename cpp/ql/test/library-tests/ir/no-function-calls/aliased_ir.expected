@@ -9,17 +9,18 @@ test.cpp:
 #    5|     m5_6(int *)          = InitializeParameter[x]           : &:r5_5
 #    5|     r5_7(int *)          = Load[x]                          : &:r5_5, m5_6
 #    5|     m5_8(unknown)        = InitializeIndirection[x]         : &:r5_7
+#    5|     m5_9(unknown)        = Chi                              : total:m5_4, partial:m5_8
 #    6|     r6_1(glval<unknown>) = FunctionAddress[operator delete] : 
 #    6|     r6_2(glval<int *>)   = VariableAddress[x]               : 
 #    6|     r6_3(int *)          = Load[x]                          : &:r6_2, m5_6
-#    6|     v6_4(void)           = Call[operator delete]            : func:r6_1
-#    6|     m6_5(unknown)        = ^CallSideEffect                  : ~m5_4
-#    6|     m6_6(unknown)        = Chi                              : total:m5_4, partial:m6_5
+#    6|     v6_4(void)           = Call[operator delete]            : func:r6_1, 0:r6_3
+#    6|     m6_5(unknown)        = ^CallSideEffect                  : ~m5_9
+#    6|     m6_6(unknown)        = Chi                              : total:m5_9, partial:m6_5
 #    7|     v7_1(void)           = NoOp                             : 
-#    5|     v5_9(void)           = ReturnIndirection[x]             : &:r5_7, m5_8
-#    5|     v5_10(void)          = ReturnVoid                       : 
-#    5|     v5_11(void)          = AliasedUse                       : ~m6_6
-#    5|     v5_12(void)          = ExitFunction                     : 
+#    5|     v5_10(void)          = ReturnIndirection[x]             : &:r5_7, ~m6_6
+#    5|     v5_11(void)          = ReturnVoid                       : 
+#    5|     v5_12(void)          = AliasedUse                       : ~m6_6
+#    5|     v5_13(void)          = ExitFunction                     : 
 
 #   11| void jazz()
 #   11|   Block 0
