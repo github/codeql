@@ -13,6 +13,8 @@ private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.cpp.dataflow.new.TaintTracking as Tt
 private import semmle.code.cpp.dataflow.new.DataFlow as Df
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
+private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 
 /**
  * Holds if `f` is a "private" function.
@@ -45,6 +47,19 @@ private predicate isUninterestingForModels(Callable api) {
   api = any(Cpp::LambdaExpression lambda).getLambdaFunction()
   or
   api.isFromUninstantiatedTemplate(_)
+  or
+  // No need to generate models for functions modeled by hand in QL
+  api instanceof Taint::TaintFunction
+  or
+  api instanceof DataFlow::DataFlowFunction
+  or
+  // Don't generate models for main functions
+  api.hasGlobalName("main")
+  or
+  // Don't generate models for system-provided functions. If we want to
+  // generate models for these we should use a database containing the
+  // implementations of those system-provided functions in the source root.
+  not exists(api.getLocation().getFile().getRelativePath())
   or
   // Exclude functions in test directories (but not the ones in the CodeQL test directory)
   exists(Cpp::File f |
