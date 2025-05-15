@@ -773,9 +773,15 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDu
 	var parentLbl trap.Label
 
 	for i, component := range components {
+		isRoot := false
 		if i == 0 {
 			if component == "" {
 				path = "/"
+				isRoot = true
+			} else if regexp.MustCompile(`^[A-Za-z]:$`).MatchString(component) {
+				// Handle Windows drive letters by appending "/"
+				path = component + "/"
+				isRoot = true
 			} else {
 				path = component
 			}
@@ -800,7 +806,7 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDu
 		if i > 0 {
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 		}
-		if path != "/" {
+		if !isRoot {
 			parentPath = path
 		}
 		parentLbl = lbl
