@@ -51,6 +51,11 @@ def glob_to_regex(glob, prefix=""):
         parts = parts[:-1]
         if not parts:
             return ".*"
+    # The `glob.strip("/")` call above will have removed all trailing slashes, but if there was at
+    # least one trailing slash, we want there to be an extra part, so we add it explicitly here in
+    # that case, using the emptyness of `end_sep` as a proxy.
+    if end_sep == "":
+        parts += [""]
     parts = [ glob_part_to_regex(escape(p), True) for p in parts[:-1] ] + [ glob_part_to_regex(escape(parts[-1]), False) ]
     # we need to escape the prefix, specifically because on windows the prefix will be
     # something like `C:\\folder\\subfolder\\` and without escaping the
