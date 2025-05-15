@@ -3,7 +3,7 @@ param (
 )
 
 $toolsOsx64Folder = Join-Path (Join-Path (Join-Path $cliFolder "powershell") "tools") "osx64"
-dotnet publish (Join-Path "$PSScriptRoot/extractor" "powershell.sln" | Resolve-Path) -o $toolsOsx64Folder -r osx-x64
+dotnet publish (Join-Path "$PSScriptRoot/extractor" "powershell.sln" | Resolve-Path) -o $toolsOsx64Folder -r osx-x64 -c Release --self-contained
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Build failed"
     exit 1
