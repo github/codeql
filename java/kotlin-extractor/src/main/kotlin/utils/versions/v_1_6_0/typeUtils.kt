@@ -1,6 +1,7 @@
 package com.github.codeql.utils.versions
 
 import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.IrBuiltIns
 
 fun IrType.isNullableCodeQL(): Boolean =
     this.isNullable()
