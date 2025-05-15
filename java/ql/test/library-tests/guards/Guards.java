@@ -26,7 +26,7 @@ public class Guards {
     }
     int sz = a != null ? a.length : 0;
     for (int i = 0; i < sz; i++) {
-      chk(); // $ guarded='a != null:true' guarded='i < sz:true'
+      chk(); // $ guarded='a != null:true' guarded='i < sz:true' guarded='sz:not 0' guarded='...?...:...:not 0' guarded='a.length:not 0' guarded='a:not null'
       int e = a[i];
       if (e > 2) break;
     }
@@ -36,26 +36,26 @@ public class Guards {
       s = "bar";
     switch (s) {
       case "bar":
-        chk(); // $ guarded='s:match "bar"'
+        chk(); // $ guarded='s:match "bar"' guarded='s:bar'
         break;
       case "foo":
-        chk(); // $ guarded='s:match "foo"' guarded=g(3):false
+        chk(); // $ guarded='s:match "foo"' guarded='s:foo' guarded=g(3):false
         break;
       default:
-        chk(); // $ guarded='s:non-match "bar"' guarded='s:non-match "foo"' guarded='s:match default' guarded=g(3):false
+        chk(); // $ guarded='s:non-match "bar"' guarded='s:non-match "foo"' guarded='s:not bar' guarded='s:not foo' guarded='s:match default' guarded=g(3):false
         break;
     }
 
     Object o = g(4) ? null : s;
     if (o instanceof String) {
-      chk(); // $ guarded=...instanceof...:true guarded=g(4):false
+      chk(); // $ guarded=...instanceof...:true guarded='o:not null' guarded='...?...:...:not null' guarded=g(4):false guarded='s:not null'
     }
   }
 
   void t2() {
     checkTrue(g(1), "A");
     checkFalse(g(2), "B");
-    chk(); // $ guarded=checkTrue(A):true guarded=g(1):true guarded=checkFalse(B):false guarded=g(2):false
+    chk(); // $ guarded='checkTrue(...):no exception' guarded=g(1):true guarded='checkFalse(...):no exception' guarded=g(2):false
   }
 
   void t3() {
@@ -86,23 +86,23 @@ public class Guards {
     if (g("Alt2")) x = Val.E2;
     if (g(3)) x = Val.E3; // unique value
     if (x == null)
-      chk(); // $ guarded='x == null:true' guarded=g(3):false
+      chk(); // $ guarded='x == null:true' guarded='x:null' guarded=g(1):false guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
     switch (x) {
       case E1:
-        chk(); // $ guarded='x:match E1' guarded=g(1):true guarded=g(3):false
+        chk(); // $ guarded='x:match E1' guarded='x:E1' guarded=g(1):true guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
         break;
       case E2:
-        chk(); // $ guarded='x:match E2' guarded=g(3):false
+        chk(); // $ guarded='x:match E2' guarded='x:E2' guarded=g(3):false
         break;
       case E3:
-        chk(); // $ guarded='x:match E3' guarded=g(3):true
+        chk(); // $ guarded='x:match E3' guarded='x:E3' guarded=g(3):true
         break;
     }
     Object o = g(4) ? new Object() : null;
     if (o == null) {
-      chk(); // $ guarded='o == null:true' guarded=g(4):false
+      chk(); // $ guarded='o == null:true' guarded='o:null' guarded='...?...:...:null' guarded=g(4):false
     } else {
-      chk(); // $ guarded='o == null:false' guarded=g(4):true
+      chk(); // $ guarded='o == null:false' guarded='o:not null' guarded='...?...:...:not null' guarded=g(4):true
     }
   }
 
@@ -112,7 +112,7 @@ public class Guards {
       base = "/user";
     }
     if (base.equals("/"))
-      chk(); // $ guarded=equals(/):true guarded='base == null:false'
+      chk(); // $ guarded=equals(/):true guarded='base:/' guarded='base:not null' guarded='base == null:false' guarded='foo:/' guarded='foo:not null'
   }
 
   void t6() {
@@ -122,9 +122,9 @@ public class Guards {
       if (g(2)) { }
     }
     if (o != null) {
-      chk(); // $ guarded='o != null:true'
+      chk(); // $ guarded='o != null:true' guarded='o:not null' guarded=g(1):true
     } else {
-      chk(); // $ guarded='o != null:false' guarded=g(1):false
+      chk(); // $ guarded='o != null:false' guarded='o:null' guarded=g(1):false
     }
   }
 
