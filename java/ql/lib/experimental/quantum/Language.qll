@@ -216,3 +216,4 @@ module ArtifactFlow = DataFlow::Global<ArtifactFlowConfig>;
 
 // Import library-specific modeling
 import JCA
+import BouncyCastle
