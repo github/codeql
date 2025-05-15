@@ -8,6 +8,7 @@
  * @id cs/invalid-string-formatting
  * @tags reliability
  *       maintainability
+ *       quality
  */
 
 import csharp

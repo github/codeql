@@ -59,7 +59,7 @@ module EscapingCaptureFlowConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet cs) {
     isSink(node) and
     (
-      cs instanceof DataFlow::TupleElementContent or
+      cs.(DataFlow::TupleElementContent).getIndex() in [0 .. 10] or
       cs instanceof DataFlow::ListElementContent or
       cs instanceof DataFlow::SetElementContent or
       cs instanceof DataFlow::DictionaryElementAnyContent

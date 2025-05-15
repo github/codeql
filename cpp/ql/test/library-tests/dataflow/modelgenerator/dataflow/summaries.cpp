@@ -131,6 +131,8 @@ namespace Models {
 
 //heuristic-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;df-generated
 //heuristic-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;taint;df-generated
+//heuristic-summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;df-generated
+//contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];Argument[*0];taint;dfc-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[0];ReturnValue;taint;dfc-generated
 //contentbased-summary=;;true;toplevel_function;(int *);;Argument[*0];ReturnValue;value;dfc-generated
 int toplevel_function(int* p) {
@@ -198,4 +200,19 @@ int get_x_from_union(U* u) {
 //contentbased-summary=;;true;set_x_in_union;(U *,int);;Argument[1];Argument[*0].Union[*U];value;dfc-generated
 void set_x_in_union(U* u, int x) {
     u->x = x;
+}
+
+struct HasInt {
+    int x;
+};
+
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*0];taint;dfc-generated
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*1];taint;dfc-generated
+//contentbased-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];value;dfc-generated
+//heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*0];taint;df-generated
+//heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[1];Argument[*1];taint;df-generated
+//heuristic-summary=;;true;copy_struct;(HasInt *,const HasInt *);;Argument[*1];Argument[*0];taint;df-generated
+int copy_struct(HasInt *out, const HasInt *in) {
+    *out = *in;
+    return 1;
 }

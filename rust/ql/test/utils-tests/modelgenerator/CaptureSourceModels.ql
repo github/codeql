@@ -1,5 +1,6 @@
 import rust
 import utils.modelgenerator.internal.CaptureModels
+import SourceModels
 import utils.test.InlineMadTest
 import codeql.rust.dataflow.internal.ModelsAsData
 

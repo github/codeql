@@ -1,16 +1,3 @@
 - queries: .
-- include:
-    id:
-      - cs/index-out-of-bounds
-      - cs/test-for-negative-container-size
-      - cs/unchecked-cast-in-equals
-      - cs/reference-equality-on-valuetypes
-      - cs/self-assignment
-      - cs/inefficient-containskey
-      - cs/call-to-object-tostring
-      - cs/local-not-disposed
-      - cs/constant-condition
-      - cs/useless-gethashcode-call
-      - cs/non-short-circuit
-      - cs/useless-assignment-to-local
-      - cs/invalid-string-formatting
+- apply: code-quality-selectors.yml
+  from: codeql/suite-helpers

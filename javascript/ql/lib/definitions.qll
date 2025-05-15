@@ -70,7 +70,7 @@ private predicate importLookup(AstNode path, Module target, string kind) {
   kind = "I" and
   (
     exists(Import i |
-      path = i.getImportedPath() and
+      path = i.getImportedPathExpr() and
       target = i.getImportedModule()
     )
     or

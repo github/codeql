@@ -9,6 +9,7 @@
  * @tags reliability
  *       readability
  *       types
+ *       quality
  */
 
 import java

@@ -112,7 +112,14 @@ module SemanticExprConfig {
   }
 
   /** Holds if no range analysis should be performed on the phi edges in `f`. */
-  private predicate excludeFunction(Cpp::Function f) { count(f.getEntryPoint()) > 1 }
+  private predicate excludeFunction(Cpp::Function f) {
+    count(f.getEntryPoint()) > 1
+    or
+    exists(IR::IRFunction irFunction |
+      irFunction.getFunction() = f and
+      irFunction.hasIncompleteSsa()
+    )
+  }
 
   SemType getUnknownExprType(Expr expr) { result = getSemanticType(expr.getResultIRType()) }
 

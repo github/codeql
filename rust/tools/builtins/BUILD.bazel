@@ -1,0 +1,8 @@
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
+
+codeql_pkg_files(
+    name = "builtins",
+    srcs = glob(["*.rs"]),
+    prefix = "builtins",
+    visibility = ["//rust:__subpackages__"],
+)
