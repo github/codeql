@@ -39,4 +39,13 @@ query predicate guarded(MethodCall mc, string guard) {
     not exists(ppGuard(g, branch)) and
     guard = g.toString() + ":" + branch
   )
+  or
+  mc.getMethod().hasName("chk") and
+  exists(Guard g, BasicBlock bb, GuardValue val |
+    g.valueControls(bb, val) and
+    not exists(val.asBooleanValue()) and
+    mc.getBasicBlock() = bb
+  |
+    guard = "'" + g.toString() + ":" + val + "'"
+  )
 }

@@ -60,7 +60,7 @@ public class C {
       arrLen = arr == null ? 0 : arr.length;
     }
     if (arrLen > 0) {
-      arr[0] = 0; // NPE - false positive
+      arr[0] = 0; // OK
     }
   }
 

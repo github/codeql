@@ -4,7 +4,7 @@
 
 import java
 import SSA
-private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.frameworks.apache.Collections
 private import IntegerGuards
 
@@ -40,6 +40,7 @@ EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqual
   isEqualExpr = result.polarity()
 }
 
+/** Gets an expression that is provably not `null`. */
 Expr baseNotNullExpr() {
   result instanceof ClassInstanceExpr
   or
@@ -183,50 +184,19 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
  * is true, and non-null if `isnull` is false.
  */
 Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
-  exists(EqualityTest eqtest, boolean polarity |
-    eqtest = result and
-    eqtest.hasOperands(e, any(NullLiteral n)) and
-    polarity = eqtest.polarity() and
-    (
-      branch = true and isnull = polarity
-      or
-      branch = false and isnull = polarity.booleanNot()
-    )
-  )
-  or
-  result.(InstanceOfExpr).getExpr() = e and branch = true and isnull = false
-  or
-  exists(MethodCall call |
-    call = result and
-    call.getAnArgument() = e and
-    nullCheckMethod(call.getMethod(), branch, isnull)
-  )
-  or
-  exists(EqualityTest eqtest |
-    eqtest = result and
-    eqtest.hasOperands(e, clearlyNotNullExpr()) and
-    isnull = false and
-    branch = eqtest.polarity()
-  )
-  or
-  result = enumConstEquality(e, branch, _) and isnull = false
+  Guards_v3::nullGuard(result, any(GuardValue v | v.asBooleanValue() = branch), e, isnull)
 }
 
 /**
+ * DEPRECATED: Use `basicNullGuard` instead.
+ *
  * Gets an expression that directly tests whether a given expression, `e`, is null or not.
  *
  * If `result` evaluates to `branch`, then `e` is guaranteed to be null if `isnull`
  * is true, and non-null if `isnull` is false.
  */
-Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
+deprecated Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
   result = basicNullGuard(e, branch, isnull)
-  or
-  exists(MethodCall call, Method m, int ix |
-    call = result and
-    call.getArgument(ix) = e and
-    call.getMethod().getSourceDeclaration() = m and
-    m = customNullGuard(ix, branch, isnull)
-  )
 }
 
 /**
@@ -236,72 +206,42 @@ Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
  * is true, and non-null if `isnull` is false.
  */
 Expr directNullGuard(SsaVariable v, boolean branch, boolean isnull) {
-  result = basicOrCustomNullGuard(sameValue(v, _), branch, isnull)
+  result = basicNullGuard(sameValue(v, _), branch, isnull)
 }
 
 /**
+ * DEPRECATED: Use `nullGuardControls`/`nullGuardControlsBranchEdge` instead.
+ *
  * Gets a `Guard` that tests (possibly indirectly) whether a given SSA variable is null or not.
  *
  * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
  * is true, and non-null if `isnull` is false.
  */
-Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
-  result = directNullGuard(v, branch, isnull) or
-  exists(boolean branch0 | implies_v3(result, branch, nullGuard(v, branch0, isnull), branch0))
+deprecated Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
+  result = directNullGuard(v, branch, isnull)
 }
 
 /**
- * A return statement in a non-overridable method that on a return value of
- * `retval` allows the conclusion that the parameter `p` either is null or
- * non-null as specified by `isnull`.
+ * Holds if there exists a null check on `v`, such that taking the branch edge
+ * from `bb1` to `bb2` implies that `v` is guaranteed to be null if `isnull` is
+ * true, and non-null if `isnull` is false.
  */
-private predicate validReturnInCustomNullGuard(
-  ReturnStmt ret, Parameter p, boolean retval, boolean isnull
-) {
-  exists(Method m |
-    ret.getEnclosingCallable() = m and
-    p.getCallable() = m and
-    m.getReturnType().(PrimitiveType).hasName("boolean") and
-    not p.isVarargs() and
-    p.getType() instanceof RefType and
-    not m.isOverridable()
-  ) and
-  exists(SsaImplicitInit ssa | ssa.isParameterDefinition(p) |
-    nullGuardedReturn(ret, ssa, isnull) and
-    (retval = true or retval = false)
-    or
-    exists(Expr res | res = ret.getResult() | res = nullGuard(ssa, retval, isnull))
+predicate nullGuardControlsBranchEdge(SsaVariable v, boolean isnull, BasicBlock bb1, BasicBlock bb2) {
+  exists(GuardValue gv |
+    Guards_v3::ssaControlsBranchEdge(v, bb1, bb2, gv) and
+    gv.isNullness(isnull)
   )
-}
-
-private predicate nullGuardedReturn(ReturnStmt ret, SsaImplicitInit ssa, boolean isnull) {
-  exists(boolean branch |
-    nullGuard(ssa, branch, isnull).directlyControls(ret.getBasicBlock(), branch)
-  )
-}
-
-pragma[nomagic]
-private Method returnStmtGetEnclosingCallable(ReturnStmt ret) {
-  ret.getEnclosingCallable() = result
 }
 
 /**
- * Gets a non-overridable method with a boolean return value that performs a null-check
- * on the `index`th parameter. A return value equal to `retval` allows us to conclude
- * that the argument either is null or non-null as specified by `isnull`.
+ * Holds if there exists a null check on `v` that controls `bb`, such that in
+ * `bb` `v` is guaranteed to be null if `isnull` is true, and non-null if
+ * `isnull` is false.
  */
-private Method customNullGuard(int index, boolean retval, boolean isnull) {
-  exists(Parameter p |
-    p.getCallable() = result and
-    p.getPosition() = index and
-    forex(ReturnStmt ret |
-      returnStmtGetEnclosingCallable(ret) = result and
-      exists(Expr res | res = ret.getResult() |
-        not res.(BooleanLiteral).getBooleanValue() = retval.booleanNot()
-      )
-    |
-      validReturnInCustomNullGuard(ret, p, retval, isnull)
-    )
+predicate nullGuardControls(SsaVariable v, boolean isnull, BasicBlock bb) {
+  exists(GuardValue gv |
+    Guards_v3::ssaControls(v, bb, gv) and
+    gv.isNullness(isnull)
   )
 }
 

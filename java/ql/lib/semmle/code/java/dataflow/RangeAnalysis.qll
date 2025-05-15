@@ -66,7 +66,6 @@
 import java
 private import SSA
 private import RangeUtils
-private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.security.RandomDataSource
 private import SignAnalysis
 private import semmle.code.java.Reflection
@@ -79,7 +78,7 @@ module Sem implements Semantic<Location> {
   private import java as J
   private import SSA as SSA
   private import RangeUtils as RU
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
+  private import semmle.code.java.controlflow.Guards as G
 
   class Expr = J::Expr;
 
@@ -219,7 +218,7 @@ module Sem implements Semantic<Location> {
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
-  class Guard extends GL::Guard_v2 {
+  class Guard extends G::Guards_v2::Guard {
     Expr asExpr() { result = this }
   }
 
