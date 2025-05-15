@@ -6,6 +6,7 @@ inferType
 | main.rs:26:13:26:13 | x |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:26:17:26:32 | MyThing {...} |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:26:30:26:30 | S |  | main.rs:2:5:3:13 | S |
+| main.rs:27:18:27:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:27:26:27:26 | x |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:27:26:27:28 | x.a |  | main.rs:2:5:3:13 | S |
 | main.rs:32:13:32:13 | x |  | main.rs:16:5:19:5 | GenericThing |
@@ -13,6 +14,7 @@ inferType
 | main.rs:32:17:32:42 | GenericThing::<...> {...} |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:32:17:32:42 | GenericThing::<...> {...} | A | main.rs:2:5:3:13 | S |
 | main.rs:32:40:32:40 | S |  | main.rs:2:5:3:13 | S |
+| main.rs:33:18:33:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:33:26:33:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:33:26:33:26 | x | A | main.rs:2:5:3:13 | S |
 | main.rs:33:26:33:28 | x.a |  | main.rs:2:5:3:13 | S |
@@ -21,6 +23,7 @@ inferType
 | main.rs:36:17:36:37 | GenericThing {...} |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:36:17:36:37 | GenericThing {...} | A | main.rs:2:5:3:13 | S |
 | main.rs:36:35:36:35 | S |  | main.rs:2:5:3:13 | S |
+| main.rs:37:18:37:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:37:26:37:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:37:26:37:26 | x | A | main.rs:2:5:3:13 | S |
 | main.rs:37:26:37:28 | x.a |  | main.rs:2:5:3:13 | S |
@@ -28,6 +31,7 @@ inferType
 | main.rs:41:17:43:9 | OptionS {...} |  | main.rs:21:5:23:5 | OptionS |
 | main.rs:42:16:42:33 | ...::MyNone(...) |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:42:16:42:33 | ...::MyNone(...) | T | main.rs:2:5:3:13 | S |
+| main.rs:44:18:44:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:44:26:44:26 | x |  | main.rs:21:5:23:5 | OptionS |
 | main.rs:44:26:44:28 | x.a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:44:26:44:28 | x.a | T | main.rs:2:5:3:13 | S |
@@ -39,6 +43,7 @@ inferType
 | main.rs:47:17:49:9 | GenericThing::<...> {...} | A.T | main.rs:2:5:3:13 | S |
 | main.rs:48:16:48:33 | ...::MyNone(...) |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:48:16:48:33 | ...::MyNone(...) | T | main.rs:2:5:3:13 | S |
+| main.rs:50:18:50:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:50:26:50:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:50:26:50:26 | x | A | main.rs:10:5:14:5 | MyOption |
 | main.rs:50:26:50:26 | x | A.T | main.rs:2:5:3:13 | S |
@@ -59,6 +64,7 @@ inferType
 | main.rs:56:30:56:30 | x | A.T | main.rs:2:5:3:13 | S |
 | main.rs:56:30:56:32 | x.a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:56:30:56:32 | x.a | T | main.rs:2:5:3:13 | S |
+| main.rs:57:18:57:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:57:26:57:26 | a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:57:26:57:26 | a | T | main.rs:2:5:3:13 | S |
 | main.rs:70:19:70:22 | SelfParam |  | main.rs:67:5:67:21 | Foo |
@@ -68,6 +74,7 @@ inferType
 | main.rs:74:32:76:9 | { ... } |  | main.rs:67:5:67:21 | Foo |
 | main.rs:75:13:75:16 | self |  | main.rs:67:5:67:21 | Foo |
 | main.rs:79:23:84:5 | { ... } |  | main.rs:67:5:67:21 | Foo |
+| main.rs:80:18:80:33 | "main.rs::m1::f\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:81:13:81:13 | x |  | main.rs:67:5:67:21 | Foo |
 | main.rs:81:17:81:22 | Foo {...} |  | main.rs:67:5:67:21 | Foo |
 | main.rs:82:13:82:13 | y |  | main.rs:67:5:67:21 | Foo |
@@ -76,6 +83,7 @@ inferType
 | main.rs:86:14:86:14 | x |  | main.rs:67:5:67:21 | Foo |
 | main.rs:86:22:86:22 | y |  | main.rs:67:5:67:21 | Foo |
 | main.rs:86:37:90:5 | { ... } |  | main.rs:67:5:67:21 | Foo |
+| main.rs:87:18:87:33 | "main.rs::m1::g\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:88:9:88:9 | x |  | main.rs:67:5:67:21 | Foo |
 | main.rs:88:9:88:14 | x.m1() |  | main.rs:67:5:67:21 | Foo |
 | main.rs:89:9:89:9 | y |  | main.rs:67:5:67:21 | Foo |
@@ -111,14 +119,18 @@ inferType
 | main.rs:126:17:126:33 | MyThing {...} |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:126:17:126:33 | MyThing {...} | A | main.rs:101:5:102:14 | S2 |
 | main.rs:126:30:126:31 | S2 |  | main.rs:101:5:102:14 | S2 |
+| main.rs:129:18:129:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:129:26:129:26 | x |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:129:26:129:26 | x | A | main.rs:99:5:100:14 | S1 |
 | main.rs:129:26:129:28 | x.a |  | main.rs:99:5:100:14 | S1 |
+| main.rs:130:18:130:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:130:26:130:26 | y |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:130:26:130:26 | y | A | main.rs:101:5:102:14 | S2 |
 | main.rs:130:26:130:28 | y.a |  | main.rs:101:5:102:14 | S2 |
+| main.rs:132:18:132:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:132:26:132:26 | x |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:132:26:132:26 | x | A | main.rs:99:5:100:14 | S1 |
+| main.rs:133:18:133:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:133:26:133:26 | y |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:133:26:133:26 | y | A | main.rs:101:5:102:14 | S2 |
 | main.rs:135:13:135:13 | x |  | main.rs:94:5:97:5 | MyThing |
@@ -131,9 +143,11 @@ inferType
 | main.rs:136:17:136:33 | MyThing {...} |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:136:17:136:33 | MyThing {...} | A | main.rs:101:5:102:14 | S2 |
 | main.rs:136:30:136:31 | S2 |  | main.rs:101:5:102:14 | S2 |
+| main.rs:138:18:138:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:138:26:138:26 | x |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:138:26:138:26 | x | A | main.rs:99:5:100:14 | S1 |
 | main.rs:138:26:138:31 | x.m2() |  | main.rs:99:5:100:14 | S1 |
+| main.rs:139:18:139:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:139:26:139:26 | y |  | main.rs:94:5:97:5 | MyThing |
 | main.rs:139:26:139:26 | y | A | main.rs:101:5:102:14 | S2 |
 | main.rs:139:26:139:31 | y.m2() |  | main.rs:101:5:102:14 | S2 |
@@ -170,8 +184,10 @@ inferType
 | main.rs:185:17:185:33 | MyThing {...} |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:185:17:185:33 | MyThing {...} | A | main.rs:151:5:152:14 | S2 |
 | main.rs:185:30:185:31 | S2 |  | main.rs:151:5:152:14 | S2 |
+| main.rs:187:18:187:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:187:26:187:26 | x |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:187:26:187:26 | x | A | main.rs:149:5:150:14 | S1 |
+| main.rs:188:18:188:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:188:26:188:26 | y |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:188:26:188:26 | y | A | main.rs:151:5:152:14 | S2 |
 | main.rs:190:13:190:13 | x |  | main.rs:144:5:147:5 | MyThing |
@@ -184,8 +200,10 @@ inferType
 | main.rs:191:17:191:33 | MyThing {...} |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:191:17:191:33 | MyThing {...} | A | main.rs:151:5:152:14 | S2 |
 | main.rs:191:30:191:31 | S2 |  | main.rs:151:5:152:14 | S2 |
+| main.rs:193:18:193:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:193:40:193:40 | x |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:193:40:193:40 | x | A | main.rs:149:5:150:14 | S1 |
+| main.rs:194:18:194:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:194:40:194:40 | y |  | main.rs:144:5:147:5 | MyThing |
 | main.rs:194:40:194:40 | y | A | main.rs:151:5:152:14 | S2 |
 | main.rs:211:19:211:22 | SelfParam |  | main.rs:209:5:212:5 | Self [trait FirstTrait] |
@@ -194,21 +212,25 @@ inferType
 | main.rs:221:13:221:14 | s1 |  | main.rs:219:35:219:42 | I |
 | main.rs:221:18:221:18 | x |  | main.rs:219:45:219:61 | T |
 | main.rs:221:18:221:27 | x.method() |  | main.rs:219:35:219:42 | I |
+| main.rs:222:18:222:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:222:26:222:27 | s1 |  | main.rs:219:35:219:42 | I |
 | main.rs:225:65:225:65 | x |  | main.rs:225:46:225:62 | T |
 | main.rs:227:13:227:14 | s2 |  | main.rs:225:36:225:43 | I |
 | main.rs:227:18:227:18 | x |  | main.rs:225:46:225:62 | T |
 | main.rs:227:18:227:27 | x.method() |  | main.rs:225:36:225:43 | I |
+| main.rs:228:18:228:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:228:26:228:27 | s2 |  | main.rs:225:36:225:43 | I |
 | main.rs:231:49:231:49 | x |  | main.rs:231:30:231:46 | T |
 | main.rs:232:13:232:13 | s |  | main.rs:201:5:202:14 | S1 |
 | main.rs:232:17:232:17 | x |  | main.rs:231:30:231:46 | T |
 | main.rs:232:17:232:26 | x.method() |  | main.rs:201:5:202:14 | S1 |
+| main.rs:233:18:233:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:233:26:233:26 | s |  | main.rs:201:5:202:14 | S1 |
 | main.rs:236:53:236:53 | x |  | main.rs:236:34:236:50 | T |
 | main.rs:237:13:237:13 | s |  | main.rs:201:5:202:14 | S1 |
 | main.rs:237:17:237:17 | x |  | main.rs:236:34:236:50 | T |
 | main.rs:237:17:237:26 | x.method() |  | main.rs:201:5:202:14 | S1 |
+| main.rs:238:18:238:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:238:26:238:26 | s |  | main.rs:201:5:202:14 | S1 |
 | main.rs:242:16:242:19 | SelfParam |  | main.rs:241:5:245:5 | Self [trait Pair] |
 | main.rs:244:16:244:19 | SelfParam |  | main.rs:241:5:245:5 | Self [trait Pair] |
@@ -220,6 +242,7 @@ inferType
 | main.rs:250:13:250:14 | s2 |  | main.rs:204:5:205:14 | S2 |
 | main.rs:250:18:250:18 | y |  | main.rs:247:41:247:55 | T |
 | main.rs:250:18:250:24 | y.snd() |  | main.rs:204:5:205:14 | S2 |
+| main.rs:251:18:251:29 | "{:?}, {:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:251:32:251:33 | s1 |  | main.rs:201:5:202:14 | S1 |
 | main.rs:251:36:251:37 | s2 |  | main.rs:204:5:205:14 | S2 |
 | main.rs:254:69:254:69 | x |  | main.rs:254:52:254:66 | T |
@@ -230,6 +253,7 @@ inferType
 | main.rs:257:13:257:14 | s2 |  | main.rs:254:41:254:49 | T2 |
 | main.rs:257:18:257:18 | y |  | main.rs:254:52:254:66 | T |
 | main.rs:257:18:257:24 | y.snd() |  | main.rs:254:41:254:49 | T2 |
+| main.rs:258:18:258:29 | "{:?}, {:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:258:32:258:33 | s1 |  | main.rs:201:5:202:14 | S1 |
 | main.rs:258:36:258:37 | s2 |  | main.rs:254:41:254:49 | T2 |
 | main.rs:274:15:274:18 | SelfParam |  | main.rs:273:5:282:5 | Self [trait MyTrait] |
@@ -264,9 +288,11 @@ inferType
 | main.rs:302:17:302:33 | MyThing {...} |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:302:17:302:33 | MyThing {...} | T | main.rs:270:5:271:14 | S2 |
 | main.rs:302:30:302:31 | S2 |  | main.rs:270:5:271:14 | S2 |
+| main.rs:304:18:304:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:304:26:304:26 | x |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:304:26:304:26 | x | T | main.rs:268:5:269:14 | S1 |
 | main.rs:304:26:304:31 | x.m1() |  | main.rs:268:5:269:14 | S1 |
+| main.rs:305:18:305:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:305:26:305:26 | y |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:305:26:305:26 | y | T | main.rs:270:5:271:14 | S2 |
 | main.rs:305:26:305:31 | y.m1() |  | main.rs:270:5:271:14 | S2 |
@@ -280,9 +306,11 @@ inferType
 | main.rs:308:17:308:33 | MyThing {...} |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:308:17:308:33 | MyThing {...} | T | main.rs:270:5:271:14 | S2 |
 | main.rs:308:30:308:31 | S2 |  | main.rs:270:5:271:14 | S2 |
+| main.rs:310:18:310:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:310:26:310:26 | x |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:310:26:310:26 | x | T | main.rs:268:5:269:14 | S1 |
 | main.rs:310:26:310:31 | x.m2() |  | main.rs:268:5:269:14 | S1 |
+| main.rs:311:18:311:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:311:26:311:26 | y |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:311:26:311:26 | y | T | main.rs:270:5:271:14 | S2 |
 | main.rs:311:26:311:31 | y.m2() |  | main.rs:270:5:271:14 | S2 |
@@ -296,9 +324,11 @@ inferType
 | main.rs:314:18:314:34 | MyThing {...} |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:314:18:314:34 | MyThing {...} | T | main.rs:270:5:271:14 | S2 |
 | main.rs:314:31:314:32 | S2 |  | main.rs:270:5:271:14 | S2 |
+| main.rs:316:18:316:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:316:26:316:42 | call_trait_m1(...) |  | main.rs:268:5:269:14 | S1 |
 | main.rs:316:40:316:41 | x2 |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:316:40:316:41 | x2 | T | main.rs:268:5:269:14 | S1 |
+| main.rs:317:18:317:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:317:26:317:42 | call_trait_m1(...) |  | main.rs:270:5:271:14 | S2 |
 | main.rs:317:40:317:41 | y2 |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:317:40:317:41 | y2 | T | main.rs:270:5:271:14 | S2 |
@@ -320,10 +350,12 @@ inferType
 | main.rs:323:16:323:32 | MyThing {...} |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:323:16:323:32 | MyThing {...} | T | main.rs:270:5:271:14 | S2 |
 | main.rs:323:29:323:30 | S2 |  | main.rs:270:5:271:14 | S2 |
+| main.rs:326:18:326:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:326:26:326:48 | call_trait_thing_m1(...) |  | main.rs:268:5:269:14 | S1 |
 | main.rs:326:46:326:47 | x3 |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:326:46:326:47 | x3 | T | main.rs:263:5:266:5 | MyThing |
 | main.rs:326:46:326:47 | x3 | T.T | main.rs:268:5:269:14 | S1 |
+| main.rs:327:18:327:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:327:26:327:48 | call_trait_thing_m1(...) |  | main.rs:270:5:271:14 | S2 |
 | main.rs:327:46:327:47 | y3 |  | main.rs:263:5:266:5 | MyThing |
 | main.rs:327:46:327:47 | y3 | T | main.rs:263:5:266:5 | MyThing |
@@ -400,6 +432,7 @@ inferType
 | main.rs:445:13:445:14 | S2 |  | main.rs:386:5:387:14 | S2 |
 | main.rs:450:13:450:14 | x1 |  | main.rs:383:5:384:13 | S |
 | main.rs:450:18:450:18 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:452:18:452:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:452:26:452:27 | x1 |  | main.rs:383:5:384:13 | S |
 | main.rs:452:26:452:32 | x1.m1() |  | main.rs:389:5:390:14 | AT |
 | main.rs:454:13:454:14 | x2 |  | main.rs:383:5:384:13 | S |
@@ -407,20 +440,31 @@ inferType
 | main.rs:456:13:456:13 | y |  | main.rs:389:5:390:14 | AT |
 | main.rs:456:17:456:18 | x2 |  | main.rs:383:5:384:13 | S |
 | main.rs:456:17:456:23 | x2.m2() |  | main.rs:389:5:390:14 | AT |
+| main.rs:457:18:457:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:457:26:457:26 | y |  | main.rs:389:5:390:14 | AT |
 | main.rs:459:13:459:14 | x3 |  | main.rs:383:5:384:13 | S |
 | main.rs:459:18:459:18 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:461:18:461:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:461:26:461:27 | x3 |  | main.rs:383:5:384:13 | S |
 | main.rs:461:26:461:34 | x3.put(...) |  | main.rs:332:5:335:5 | Wrapper |
+| main.rs:461:26:461:34 | x3.put(...) | A | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:461:26:461:43 | ... .unwrap() |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:461:33:461:33 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:464:18:464:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:464:26:464:27 | x3 |  | main.rs:383:5:384:13 | S |
+| main.rs:464:36:464:36 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:464:39:464:39 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:466:20:466:20 | S |  | main.rs:383:5:384:13 | S |
+| main.rs:467:18:467:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:469:13:469:14 | x5 |  | main.rs:386:5:387:14 | S2 |
 | main.rs:469:18:469:19 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:470:18:470:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:470:26:470:27 | x5 |  | main.rs:386:5:387:14 | S2 |
 | main.rs:470:26:470:32 | x5.m1() |  | main.rs:332:5:335:5 | Wrapper |
 | main.rs:470:26:470:32 | x5.m1() | A | main.rs:386:5:387:14 | S2 |
 | main.rs:471:13:471:14 | x6 |  | main.rs:386:5:387:14 | S2 |
 | main.rs:471:18:471:19 | S2 |  | main.rs:386:5:387:14 | S2 |
+| main.rs:472:18:472:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:472:26:472:27 | x6 |  | main.rs:386:5:387:14 | S2 |
 | main.rs:472:26:472:32 | x6.m2() |  | main.rs:332:5:335:5 | Wrapper |
 | main.rs:472:26:472:32 | x6.m2() | A | main.rs:386:5:387:14 | S2 |
@@ -453,9 +497,11 @@ inferType
 | main.rs:503:17:503:36 | ...::C2 {...} |  | main.rs:481:5:485:5 | MyEnum |
 | main.rs:503:17:503:36 | ...::C2 {...} | A | main.rs:489:5:490:14 | S2 |
 | main.rs:503:33:503:34 | S2 |  | main.rs:489:5:490:14 | S2 |
+| main.rs:505:18:505:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:505:26:505:26 | x |  | main.rs:481:5:485:5 | MyEnum |
 | main.rs:505:26:505:26 | x | A | main.rs:487:5:488:14 | S1 |
 | main.rs:505:26:505:31 | x.m1() |  | main.rs:487:5:488:14 | S1 |
+| main.rs:506:18:506:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:506:26:506:26 | y |  | main.rs:481:5:485:5 | MyEnum |
 | main.rs:506:26:506:26 | y | A | main.rs:489:5:490:14 | S2 |
 | main.rs:506:26:506:31 | y.m1() |  | main.rs:489:5:490:14 | S2 |
@@ -463,6 +509,9 @@ inferType
 | main.rs:532:15:532:18 | SelfParam |  | main.rs:531:5:542:5 | Self [trait MyTrait2] |
 | main.rs:535:9:541:9 | { ... } |  | main.rs:531:20:531:22 | Tr2 |
 | main.rs:536:13:540:13 | if ... {...} else {...} |  | main.rs:531:20:531:22 | Tr2 |
+| main.rs:536:16:536:16 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:536:20:536:20 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:536:24:536:24 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:536:26:538:13 | { ... } |  | main.rs:531:20:531:22 | Tr2 |
 | main.rs:537:17:537:20 | self |  | main.rs:531:5:542:5 | Self [trait MyTrait2] |
 | main.rs:537:17:537:25 | self.m1() |  | main.rs:531:20:531:22 | Tr2 |
@@ -472,6 +521,9 @@ inferType
 | main.rs:545:15:545:18 | SelfParam |  | main.rs:544:5:555:5 | Self [trait MyTrait3] |
 | main.rs:548:9:554:9 | { ... } |  | main.rs:544:20:544:22 | Tr3 |
 | main.rs:549:13:553:13 | if ... {...} else {...} |  | main.rs:544:20:544:22 | Tr3 |
+| main.rs:549:16:549:16 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:549:20:549:20 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:549:24:549:24 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:549:26:551:13 | { ... } |  | main.rs:544:20:544:22 | Tr3 |
 | main.rs:550:17:550:20 | self |  | main.rs:544:5:555:5 | Self [trait MyTrait3] |
 | main.rs:550:17:550:25 | self.m2() |  | main.rs:511:5:514:5 | MyThing |
@@ -507,9 +559,11 @@ inferType
 | main.rs:579:17:579:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:579:17:579:33 | MyThing {...} | A | main.rs:523:5:524:14 | S2 |
 | main.rs:579:30:579:31 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:581:18:581:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:581:26:581:26 | x |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:581:26:581:26 | x | A | main.rs:521:5:522:14 | S1 |
 | main.rs:581:26:581:31 | x.m1() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:582:18:582:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:582:26:582:26 | y |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:582:26:582:26 | y | A | main.rs:523:5:524:14 | S2 |
 | main.rs:582:26:582:31 | y.m1() |  | main.rs:523:5:524:14 | S2 |
@@ -523,9 +577,11 @@ inferType
 | main.rs:585:17:585:33 | MyThing {...} |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:585:17:585:33 | MyThing {...} | A | main.rs:523:5:524:14 | S2 |
 | main.rs:585:30:585:31 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:587:18:587:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:587:26:587:26 | x |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:587:26:587:26 | x | A | main.rs:521:5:522:14 | S1 |
 | main.rs:587:26:587:31 | x.m2() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:588:18:588:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:588:26:588:26 | y |  | main.rs:511:5:514:5 | MyThing |
 | main.rs:588:26:588:26 | y | A | main.rs:523:5:524:14 | S2 |
 | main.rs:588:26:588:31 | y.m2() |  | main.rs:523:5:524:14 | S2 |
@@ -539,9 +595,11 @@ inferType
 | main.rs:591:17:591:34 | MyThing2 {...} |  | main.rs:516:5:519:5 | MyThing2 |
 | main.rs:591:17:591:34 | MyThing2 {...} | A | main.rs:523:5:524:14 | S2 |
 | main.rs:591:31:591:32 | S2 |  | main.rs:523:5:524:14 | S2 |
+| main.rs:593:18:593:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:593:26:593:26 | x |  | main.rs:516:5:519:5 | MyThing2 |
 | main.rs:593:26:593:26 | x | A | main.rs:521:5:522:14 | S1 |
 | main.rs:593:26:593:31 | x.m3() |  | main.rs:521:5:522:14 | S1 |
+| main.rs:594:18:594:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:594:26:594:26 | y |  | main.rs:516:5:519:5 | MyThing2 |
 | main.rs:594:26:594:26 | y | A | main.rs:523:5:524:14 | S2 |
 | main.rs:594:26:594:31 | y.m3() |  | main.rs:523:5:524:14 | S2 |
@@ -560,6 +618,7 @@ inferType
 | main.rs:626:9:626:16 | x.into() |  | main.rs:622:17:622:18 | T2 |
 | main.rs:630:13:630:13 | x |  | main.rs:602:5:603:14 | S1 |
 | main.rs:630:17:630:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:631:18:631:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:631:26:631:31 | id(...) |  | file://:0:0:0:0 | & |
 | main.rs:631:26:631:31 | id(...) | &T | main.rs:602:5:603:14 | S1 |
 | main.rs:631:29:631:30 | &x |  | file://:0:0:0:0 | & |
@@ -567,6 +626,7 @@ inferType
 | main.rs:631:30:631:30 | x |  | main.rs:602:5:603:14 | S1 |
 | main.rs:633:13:633:13 | x |  | main.rs:602:5:603:14 | S1 |
 | main.rs:633:17:633:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:634:18:634:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:634:26:634:37 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:634:26:634:37 | id::<...>(...) | &T | main.rs:602:5:603:14 | S1 |
 | main.rs:634:35:634:36 | &x |  | file://:0:0:0:0 | & |
@@ -574,6 +634,7 @@ inferType
 | main.rs:634:36:634:36 | x |  | main.rs:602:5:603:14 | S1 |
 | main.rs:636:13:636:13 | x |  | main.rs:602:5:603:14 | S1 |
 | main.rs:636:17:636:18 | S1 |  | main.rs:602:5:603:14 | S1 |
+| main.rs:637:18:637:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:637:26:637:44 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:637:26:637:44 | id::<...>(...) | &T | main.rs:602:5:603:14 | S1 |
 | main.rs:637:42:637:43 | &x |  | file://:0:0:0:0 | & |
@@ -597,7 +658,9 @@ inferType
 | main.rs:658:19:658:22 | self | Fst | main.rs:656:10:656:12 | Fst |
 | main.rs:658:19:658:22 | self | Snd | main.rs:656:15:656:17 | Snd |
 | main.rs:659:43:659:82 | MacroExpr |  | main.rs:656:15:656:17 | Snd |
+| main.rs:659:50:659:81 | "PairNone has no second elemen... |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:660:43:660:81 | MacroExpr |  | main.rs:656:15:656:17 | Snd |
+| main.rs:660:50:660:80 | "PairFst has no second element... |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:661:37:661:39 | snd |  | main.rs:656:15:656:17 | Snd |
 | main.rs:661:45:661:47 | snd |  | main.rs:656:15:656:17 | Snd |
 | main.rs:662:41:662:43 | snd |  | main.rs:656:15:656:17 | Snd |
@@ -617,6 +680,7 @@ inferType
 | main.rs:689:17:689:29 | t.unwrapSnd() | Fst | main.rs:670:5:671:14 | S2 |
 | main.rs:689:17:689:29 | t.unwrapSnd() | Snd | main.rs:673:5:674:14 | S3 |
 | main.rs:689:17:689:41 | ... .unwrapSnd() |  | main.rs:673:5:674:14 | S3 |
+| main.rs:690:18:690:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:690:26:690:26 | x |  | main.rs:673:5:674:14 | S3 |
 | main.rs:695:13:695:14 | p1 |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:695:13:695:14 | p1 | Fst | main.rs:667:5:668:14 | S1 |
@@ -626,6 +690,7 @@ inferType
 | main.rs:695:26:695:53 | ...::PairBoth(...) | Snd | main.rs:670:5:671:14 | S2 |
 | main.rs:695:47:695:48 | S1 |  | main.rs:667:5:668:14 | S1 |
 | main.rs:695:51:695:52 | S2 |  | main.rs:670:5:671:14 | S2 |
+| main.rs:696:18:696:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:696:26:696:27 | p1 |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:696:26:696:27 | p1 | Fst | main.rs:667:5:668:14 | S1 |
 | main.rs:696:26:696:27 | p1 | Snd | main.rs:670:5:671:14 | S2 |
@@ -635,6 +700,7 @@ inferType
 | main.rs:699:26:699:47 | ...::PairNone(...) |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:699:26:699:47 | ...::PairNone(...) | Fst | main.rs:667:5:668:14 | S1 |
 | main.rs:699:26:699:47 | ...::PairNone(...) | Snd | main.rs:670:5:671:14 | S2 |
+| main.rs:700:18:700:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:700:26:700:27 | p2 |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:700:26:700:27 | p2 | Fst | main.rs:667:5:668:14 | S1 |
 | main.rs:700:26:700:27 | p2 | Snd | main.rs:670:5:671:14 | S2 |
@@ -645,6 +711,7 @@ inferType
 | main.rs:703:34:703:56 | ...::PairSnd(...) | Fst | main.rs:670:5:671:14 | S2 |
 | main.rs:703:34:703:56 | ...::PairSnd(...) | Snd | main.rs:673:5:674:14 | S3 |
 | main.rs:703:54:703:55 | S3 |  | main.rs:673:5:674:14 | S3 |
+| main.rs:704:18:704:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:704:26:704:27 | p3 |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:704:26:704:27 | p3 | Fst | main.rs:670:5:671:14 | S2 |
 | main.rs:704:26:704:27 | p3 | Snd | main.rs:673:5:674:14 | S3 |
@@ -654,6 +721,7 @@ inferType
 | main.rs:707:35:707:56 | ...::PairNone(...) |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:707:35:707:56 | ...::PairNone(...) | Fst | main.rs:670:5:671:14 | S2 |
 | main.rs:707:35:707:56 | ...::PairNone(...) | Snd | main.rs:673:5:674:14 | S3 |
+| main.rs:708:18:708:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:708:26:708:27 | p3 |  | main.rs:648:5:654:5 | PairOption |
 | main.rs:708:26:708:27 | p3 | Fst | main.rs:670:5:671:14 | S2 |
 | main.rs:708:26:708:27 | p3 | Snd | main.rs:673:5:674:14 | S3 |
@@ -701,6 +769,7 @@ inferType
 | main.rs:745:40:745:40 | x | T | main.rs:741:10:741:10 | T |
 | main.rs:754:13:754:14 | x1 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:754:18:754:37 | ...::new(...) |  | main.rs:715:5:719:5 | MyOption |
+| main.rs:755:18:755:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:755:26:755:27 | x1 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:757:13:757:18 | mut x2 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:757:13:757:18 | mut x2 | T | main.rs:750:5:751:13 | S |
@@ -709,12 +778,14 @@ inferType
 | main.rs:758:9:758:10 | x2 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:758:9:758:10 | x2 | T | main.rs:750:5:751:13 | S |
 | main.rs:758:16:758:16 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:759:18:759:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:759:26:759:27 | x2 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:759:26:759:27 | x2 | T | main.rs:750:5:751:13 | S |
 | main.rs:761:13:761:18 | mut x3 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:761:22:761:36 | ...::new(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:762:9:762:10 | x3 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:762:21:762:21 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:763:18:763:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:763:26:763:27 | x3 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:765:13:765:18 | mut x4 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:765:13:765:18 | mut x4 | T | main.rs:750:5:751:13 | S |
@@ -726,6 +797,7 @@ inferType
 | main.rs:766:28:766:29 | x4 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:766:28:766:29 | x4 | T | main.rs:750:5:751:13 | S |
 | main.rs:766:32:766:32 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:767:18:767:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:767:26:767:27 | x4 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:767:26:767:27 | x4 | T | main.rs:750:5:751:13 | S |
 | main.rs:769:13:769:14 | x5 |  | main.rs:715:5:719:5 | MyOption |
@@ -736,6 +808,7 @@ inferType
 | main.rs:769:18:769:58 | ...::MySome(...) | T.T | main.rs:750:5:751:13 | S |
 | main.rs:769:35:769:57 | ...::MyNone(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:769:35:769:57 | ...::MyNone(...) | T | main.rs:750:5:751:13 | S |
+| main.rs:770:18:770:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:770:26:770:27 | x5 |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:770:26:770:27 | x5 | T | main.rs:715:5:719:5 | MyOption |
 | main.rs:770:26:770:27 | x5 | T.T | main.rs:750:5:751:13 | S |
@@ -747,6 +820,7 @@ inferType
 | main.rs:772:18:772:58 | ...::MySome(...) | T.T | main.rs:750:5:751:13 | S |
 | main.rs:772:35:772:57 | ...::MyNone(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:772:35:772:57 | ...::MyNone(...) | T | main.rs:750:5:751:13 | S |
+| main.rs:773:18:773:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:773:26:773:61 | ...::flatten(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:773:26:773:61 | ...::flatten(...) | T | main.rs:750:5:751:13 | S |
 | main.rs:773:59:773:60 | x6 |  | main.rs:715:5:719:5 | MyOption |
@@ -756,6 +830,9 @@ inferType
 | main.rs:775:13:775:19 | from_if | T | main.rs:750:5:751:13 | S |
 | main.rs:775:23:779:9 | if ... {...} else {...} |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:775:23:779:9 | if ... {...} else {...} | T | main.rs:750:5:751:13 | S |
+| main.rs:775:26:775:26 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:775:30:775:30 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:775:34:775:34 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:775:36:777:9 | { ... } |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:775:36:777:9 | { ... } | T | main.rs:750:5:751:13 | S |
 | main.rs:776:13:776:30 | ...::MyNone(...) |  | main.rs:715:5:719:5 | MyOption |
@@ -765,28 +842,39 @@ inferType
 | main.rs:778:13:778:31 | ...::MySome(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:778:13:778:31 | ...::MySome(...) | T | main.rs:750:5:751:13 | S |
 | main.rs:778:30:778:30 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:780:18:780:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:780:26:780:32 | from_if |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:780:26:780:32 | from_if | T | main.rs:750:5:751:13 | S |
 | main.rs:782:13:782:22 | from_match |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:782:13:782:22 | from_match | T | main.rs:750:5:751:13 | S |
 | main.rs:782:26:785:9 | match ... { ... } |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:782:26:785:9 | match ... { ... } | T | main.rs:750:5:751:13 | S |
+| main.rs:782:32:782:32 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:782:36:782:36 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:782:40:782:40 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:783:13:783:16 | true |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:783:21:783:38 | ...::MyNone(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:783:21:783:38 | ...::MyNone(...) | T | main.rs:750:5:751:13 | S |
+| main.rs:784:13:784:17 | false |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:784:22:784:40 | ...::MySome(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:784:22:784:40 | ...::MySome(...) | T | main.rs:750:5:751:13 | S |
 | main.rs:784:39:784:39 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:786:18:786:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:786:26:786:35 | from_match |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:786:26:786:35 | from_match | T | main.rs:750:5:751:13 | S |
 | main.rs:788:13:788:21 | from_loop |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:788:13:788:21 | from_loop | T | main.rs:750:5:751:13 | S |
 | main.rs:788:25:793:9 | loop { ... } |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:788:25:793:9 | loop { ... } | T | main.rs:750:5:751:13 | S |
+| main.rs:789:16:789:16 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:789:20:789:20 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:789:24:789:24 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:790:23:790:40 | ...::MyNone(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:790:23:790:40 | ...::MyNone(...) | T | main.rs:750:5:751:13 | S |
 | main.rs:792:19:792:37 | ...::MySome(...) |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:792:19:792:37 | ...::MySome(...) | T | main.rs:750:5:751:13 | S |
 | main.rs:792:36:792:36 | S |  | main.rs:750:5:751:13 | S |
+| main.rs:794:18:794:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:794:26:794:34 | from_loop |  | main.rs:715:5:719:5 | MyOption |
 | main.rs:794:26:794:34 | from_loop | T | main.rs:750:5:751:13 | S |
 | main.rs:807:15:807:18 | SelfParam |  | main.rs:800:5:801:19 | S |
@@ -822,6 +910,7 @@ inferType
 | main.rs:821:18:821:22 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:821:18:821:22 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:821:20:821:21 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:822:18:822:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:822:26:822:27 | x1 |  | main.rs:800:5:801:19 | S |
 | main.rs:822:26:822:27 | x1 | T | main.rs:803:5:804:14 | S2 |
 | main.rs:822:26:822:32 | x1.m1() |  | main.rs:803:5:804:14 | S2 |
@@ -830,10 +919,12 @@ inferType
 | main.rs:824:18:824:22 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:824:18:824:22 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:824:20:824:21 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:826:18:826:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:826:26:826:27 | x2 |  | main.rs:800:5:801:19 | S |
 | main.rs:826:26:826:27 | x2 | T | main.rs:803:5:804:14 | S2 |
 | main.rs:826:26:826:32 | x2.m2() |  | file://:0:0:0:0 | & |
 | main.rs:826:26:826:32 | x2.m2() | &T | main.rs:803:5:804:14 | S2 |
+| main.rs:827:18:827:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:827:26:827:27 | x2 |  | main.rs:800:5:801:19 | S |
 | main.rs:827:26:827:27 | x2 | T | main.rs:803:5:804:14 | S2 |
 | main.rs:827:26:827:32 | x2.m3() |  | file://:0:0:0:0 | & |
@@ -843,6 +934,7 @@ inferType
 | main.rs:829:18:829:22 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:829:18:829:22 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:829:20:829:21 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:831:18:831:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:831:26:831:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
 | main.rs:831:26:831:41 | ...::m2(...) | &T | main.rs:803:5:804:14 | S2 |
 | main.rs:831:38:831:40 | &x3 |  | file://:0:0:0:0 | & |
@@ -850,6 +942,7 @@ inferType
 | main.rs:831:38:831:40 | &x3 | &T.T | main.rs:803:5:804:14 | S2 |
 | main.rs:831:39:831:40 | x3 |  | main.rs:800:5:801:19 | S |
 | main.rs:831:39:831:40 | x3 | T | main.rs:803:5:804:14 | S2 |
+| main.rs:832:18:832:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:832:26:832:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
 | main.rs:832:26:832:41 | ...::m3(...) | &T | main.rs:803:5:804:14 | S2 |
 | main.rs:832:38:832:40 | &x3 |  | file://:0:0:0:0 | & |
@@ -866,11 +959,13 @@ inferType
 | main.rs:834:19:834:23 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:834:19:834:23 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:834:21:834:22 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:836:18:836:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:836:26:836:27 | x4 |  | file://:0:0:0:0 | & |
 | main.rs:836:26:836:27 | x4 | &T | main.rs:800:5:801:19 | S |
 | main.rs:836:26:836:27 | x4 | &T.T | main.rs:803:5:804:14 | S2 |
 | main.rs:836:26:836:32 | x4.m2() |  | file://:0:0:0:0 | & |
 | main.rs:836:26:836:32 | x4.m2() | &T | main.rs:803:5:804:14 | S2 |
+| main.rs:837:18:837:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:837:26:837:27 | x4 |  | file://:0:0:0:0 | & |
 | main.rs:837:26:837:27 | x4 | &T | main.rs:800:5:801:19 | S |
 | main.rs:837:26:837:27 | x4 | &T.T | main.rs:803:5:804:14 | S2 |
@@ -885,10 +980,12 @@ inferType
 | main.rs:839:19:839:23 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:839:19:839:23 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:839:21:839:22 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:841:18:841:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:841:26:841:27 | x5 |  | file://:0:0:0:0 | & |
 | main.rs:841:26:841:27 | x5 | &T | main.rs:800:5:801:19 | S |
 | main.rs:841:26:841:27 | x5 | &T.T | main.rs:803:5:804:14 | S2 |
 | main.rs:841:26:841:32 | x5.m1() |  | main.rs:803:5:804:14 | S2 |
+| main.rs:842:18:842:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:842:26:842:27 | x5 |  | file://:0:0:0:0 | & |
 | main.rs:842:26:842:27 | x5 | &T | main.rs:800:5:801:19 | S |
 | main.rs:842:26:842:27 | x5 | &T.T | main.rs:803:5:804:14 | S2 |
@@ -902,6 +999,7 @@ inferType
 | main.rs:844:19:844:23 | S(...) |  | main.rs:800:5:801:19 | S |
 | main.rs:844:19:844:23 | S(...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:844:21:844:22 | S2 |  | main.rs:803:5:804:14 | S2 |
+| main.rs:846:18:846:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:846:26:846:30 | (...) |  | main.rs:800:5:801:19 | S |
 | main.rs:846:26:846:30 | (...) | T | main.rs:803:5:804:14 | S2 |
 | main.rs:846:26:846:35 | ... .m1() |  | main.rs:803:5:804:14 | S2 |
@@ -1072,6 +1170,7 @@ inferType
 | main.rs:955:33:955:37 | value |  | main.rs:953:20:953:27 | T |
 | main.rs:955:53:958:9 | { ... } |  | file://:0:0:0:0 | Result |
 | main.rs:955:53:958:9 | { ... } | E | main.rs:925:5:926:14 | S1 |
+| main.rs:956:22:956:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:957:13:957:34 | ...::Ok::<...>(...) |  | file://:0:0:0:0 | Result |
 | main.rs:957:13:957:34 | ...::Ok::<...>(...) | E | main.rs:925:5:926:14 | S1 |
 | main.rs:959:9:959:23 | ...::Err(...) |  | file://:0:0:0:0 | Result |
@@ -1081,12 +1180,15 @@ inferType
 | main.rs:963:37:963:52 | try_same_error(...) |  | file://:0:0:0:0 | Result |
 | main.rs:963:37:963:52 | try_same_error(...) | E | main.rs:925:5:926:14 | S1 |
 | main.rs:963:37:963:52 | try_same_error(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:964:22:964:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:967:37:967:55 | try_convert_error(...) |  | file://:0:0:0:0 | Result |
 | main.rs:967:37:967:55 | try_convert_error(...) | E | main.rs:928:5:929:14 | S2 |
 | main.rs:967:37:967:55 | try_convert_error(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:968:22:968:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:971:37:971:49 | try_chained(...) |  | file://:0:0:0:0 | Result |
 | main.rs:971:37:971:49 | try_chained(...) | E | main.rs:928:5:929:14 | S2 |
 | main.rs:971:37:971:49 | try_chained(...) | T | main.rs:925:5:926:14 | S1 |
+| main.rs:972:22:972:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:975:37:975:63 | try_complex(...) |  | file://:0:0:0:0 | Result |
 | main.rs:975:37:975:63 | try_complex(...) | E | main.rs:925:5:926:14 | S1 |
 | main.rs:975:37:975:63 | try_complex(...) | T | main.rs:925:5:926:14 | S1 |
@@ -1094,7 +1196,27 @@ inferType
 | main.rs:975:49:975:62 | ...::Ok(...) | E | main.rs:925:5:926:14 | S1 |
 | main.rs:975:49:975:62 | ...::Ok(...) | T | main.rs:925:5:926:14 | S1 |
 | main.rs:975:60:975:61 | S1 |  | main.rs:925:5:926:14 | S1 |
-| main.rs:983:5:983:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:984:5:984:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:984:20:984:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:984:41:984:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:976:22:976:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
+| main.rs:983:13:983:13 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:983:22:983:22 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:984:13:984:13 | y |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:984:17:984:17 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:985:17:985:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:985:21:985:21 | y |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:986:13:986:13 | z |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:986:17:986:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:986:17:986:23 | x.abs() |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:987:13:987:13 | c |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
+| main.rs:987:17:987:19 | 'c' |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
+| main.rs:988:13:988:17 | hello |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
+| main.rs:988:21:988:27 | "Hello" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
+| main.rs:989:13:989:13 | f |  | file:///BUILTINS/types.rs:25:1:25:15 | f64 |
+| main.rs:989:17:989:24 | 123.0f64 |  | file:///BUILTINS/types.rs:25:1:25:15 | f64 |
+| main.rs:990:13:990:13 | t |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:990:17:990:20 | true |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:991:13:991:13 | f |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:991:17:991:21 | false |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:997:5:997:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:998:5:998:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:998:20:998:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:998:41:998:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
