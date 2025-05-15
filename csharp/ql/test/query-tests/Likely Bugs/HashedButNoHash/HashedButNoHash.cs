@@ -6,9 +6,10 @@ public class Test
     public void M()
     {
         var h = new Hashtable();
-        h.Add(this, null); // BAD
+        h.Add(this, null); // $ Alert
+
         var d = new Dictionary<Test, bool>();
-        d.Add(this, false); // BAD
+        d.Add(this, false); // $ Alert
     }
 
     public override bool Equals(object other)
