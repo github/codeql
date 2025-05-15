@@ -26,7 +26,7 @@ jobs:
       - name: Install PowerShell
         run: |
           $path = Split-Path (Get-Command codeql).Source
-          ./powershell/build.ps1 $path
+          ./powershell/build-win64.ps1 $path
       - name: Run QL tests
         run: |
           codeql test run --threads=0 powershell/ql/test
