@@ -238,12 +238,6 @@ crate_versions(
   string version: string ref
 );
 
-#keyset[id]
-crate_modules(
-  int id: @crate ref,
-  int module: @module ref
-);
-
 #keyset[id, index]
 crate_cfg_options(
   int id: @crate ref,
