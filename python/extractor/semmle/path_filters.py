@@ -41,6 +41,9 @@ def glob_part_to_regex(glob, add_sep):
 
 def glob_to_regex(glob, prefix=""):
     '''Convert entire glob to a compiled regex'''
+    # When the glob ends in `/`, we need to remember this so that we don't accidentally add an
+    # extra separator to the final regex.
+    end_sep = "" if glob.endswith("/") else SEP
     glob = glob.strip().strip("/")
     parts = glob.split("/")
     #Trailing '**' is redundant, so strip it off.
@@ -53,7 +56,7 @@ def glob_to_regex(glob, prefix=""):
     # something like `C:\\folder\\subfolder\\` and without escaping the
     # backslash-path-separators will get interpreted as regex escapes (which might be
     # invalid sequences, causing the extractor to crash)
-    full_pattern = escape(prefix) + ''.join(parts) + "(?:" + SEP + ".*|$)"
+    full_pattern = escape(prefix) + ''.join(parts) + "(?:" + end_sep + ".*|$)"
     return re.compile(full_pattern)
 
 def filter_from_pattern(pattern, prev_filter, prefix):
