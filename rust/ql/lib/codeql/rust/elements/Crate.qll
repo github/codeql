@@ -5,7 +5,6 @@
 
 private import internal.CrateImpl
 import codeql.rust.elements.Locatable
-import codeql.rust.elements.Module
 import codeql.rust.elements.internal.NamedCrate
 
 final class Crate = Impl::Crate;
