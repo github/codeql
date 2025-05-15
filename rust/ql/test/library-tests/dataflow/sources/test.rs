@@ -770,6 +770,37 @@ async fn test_std_to_tokio_tcpstream() -> std::io::Result<()> {
     Ok(())
 }
 
+fn test_rustls() -> std::io::Result<()> {
+    let config = rustls::ClientConfig::builder()
+        .with_root_certificates(rustls::RootCertStore::empty())
+        .with_no_client_auth();
+    let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
+    let config_arc = std::sync::Arc::new(config);
+    let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut reader = client.reader();
+    sink(&reader); // $ MISSING: hasTaintFlow
+
+    {
+        let mut buffer = [0u8; 100];
+        let _bytes = reader.read(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let mut buffer = Vec::<u8>::new();
+        let _bytes = reader.read_to_end(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow
+    }
+
+    {
+        let mut buffer = String::new();
+        let _bytes = reader.read_to_string(&mut buffer)?;
+        sink(&buffer); // $ MISSING: hasTaintFlow
+    }
+
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let case = std::env::args().nth(1).unwrap_or(String::from("1")).parse::<i64>().unwrap(); // $ Alert[rust/summary/taint-sources]
@@ -845,6 +876,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("test_std_to_tokio_tcpstream...");
     match futures::executor::block_on(test_std_to_tokio_tcpstream()) {
+        Ok(_) => println!("complete"),
+        Err(e) => println!("error: {}", e),
+    }
+
+    println!("test_rustls...");
+    match test_rustls() {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
     }
