@@ -1143,6 +1143,10 @@ private newtype TDataFlowCall =
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
+private predicate summarizedCallableIsManual(SummarizedCallable sc) {
+  sc.asSummarizedCallable().applyManualModel()
+}
+
 /**
  * A function call relevant for data flow. This includes calls from source
  * code and calls inside library callables with a flow summary.
@@ -1178,13 +1182,13 @@ class DataFlowCall extends TDataFlowCall {
       // target
       not exists(SummarizedCallable sc |
         sc.asSummarizedCallable() = target and
-        sc.asSummarizedCallable().applyManualModel()
+        summarizedCallableIsManual(sc)
       ) and
       result.asSourceCallable() = target
       or
       // When there is no function body, or when we have a manual model then
       // we dispatch to the summary.
-      (not target.hasDefinition() or result.asSummarizedCallable().applyManualModel()) and
+      (not target.hasDefinition() or summarizedCallableIsManual(result)) and
       result.asSummarizedCallable() = target
     )
   }
