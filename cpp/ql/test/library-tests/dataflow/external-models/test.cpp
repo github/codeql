@@ -30,8 +30,8 @@ void test() {
 
 	// ymlStepGenerated_with_body is modeled by the model generator so we should use the model only if there is no body
 	int z2 = ymlStepGenerated_with_body(0, x);
-	ymlSink(z2); // $ MISSING: ir
+	ymlSink(z2); // $ ir
 
 	int z3 = ymlStepGenerated_with_body(x, 0);
-	ymlSink(z3); // $ SPURIOUS: ir
+	ymlSink(z3); // clean
 }
