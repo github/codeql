@@ -7,8 +7,6 @@ import (
 	"strconv"
 )
 
-func main() {}
-
 func checkError(err error) {
 	if err != nil {
 		panic(err)
@@ -26,45 +24,45 @@ func bad(req *http.Request) {
 
 	{
 		{
-			var a = template.HTML(req.UserAgent())
-			checkError(tmpl.Execute(os.Stdout, a))
+			var a = template.HTML(req.UserAgent()) // $ Source[go/html-template-escaping-bypass-xss]
+			checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 		}
 		{
 			{
 				var a template.HTML
-				a = template.HTML(req.UserAgent())
-				checkError(tmpl.Execute(os.Stdout, a))
+				a = template.HTML(req.UserAgent())     // $ Source[go/html-template-escaping-bypass-xss]
+				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 			}
 			{
 				var a HTMLAlias
-				a = HTMLAlias(req.UserAgent())
-				checkError(tmpl.Execute(os.Stdout, a))
+				a = HTMLAlias(req.UserAgent())         // $ Source[go/html-template-escaping-bypass-xss]
+				checkError(tmpl.Execute(os.Stdout, a)) // $ Alert[go/html-template-escaping-bypass-xss]
 			}
 		}
 	}
 	{
-		var c = template.HTMLAttr(req.UserAgent())
-		checkError(tmplTag.Execute(os.Stdout, c))
+		var c = template.HTMLAttr(req.UserAgent()) // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplTag.Execute(os.Stdout, c))  // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var d = template.JS(req.UserAgent())
-		checkError(tmplScript.Execute(os.Stdout, d))
+		var d = template.JS(req.UserAgent())         // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplScript.Execute(os.Stdout, d)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var e = template.JSStr(req.UserAgent())
-		checkError(tmplScript.Execute(os.Stdout, e))
+		var e = template.JSStr(req.UserAgent())      // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplScript.Execute(os.Stdout, e)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var b = template.CSS(req.UserAgent())
-		checkError(tmpl.Execute(os.Stdout, b))
+		var b = template.CSS(req.UserAgent())  // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmpl.Execute(os.Stdout, b)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var f = template.Srcset(req.UserAgent())
-		checkError(tmplSrcset.Execute(os.Stdout, f))
+		var f = template.Srcset(req.UserAgent())     // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmplSrcset.Execute(os.Stdout, f)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 	{
-		var g = template.URL(req.UserAgent())
-		checkError(tmpl.Execute(os.Stdout, g))
+		var g = template.URL(req.UserAgent())  // $ Source[go/html-template-escaping-bypass-xss]
+		checkError(tmpl.Execute(os.Stdout, g)) // $ Alert[go/html-template-escaping-bypass-xss]
 	}
 }
 
