@@ -44,10 +44,3 @@ options:
       Use this setting with caution, the Python extractor requires Python 3 to run.
     type: string
     pattern: "^(py|python|python3)$"
-  skip_hidden_directories:
-    title: Controls whether hidden directories are skipped during extraction.
-    description: >
-      By default, CodeQL will extract all Python files, including ones located in hidden directories. By setting this option to true, these hidden directories will be skipped instead.
-      Accepted values are true and false.
-    type: string
-    pattern: "^(true|false)$"
