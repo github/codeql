@@ -8,19 +8,30 @@
 | Guards.java:25:7:25:11 | chk(...) | b:false |
 | Guards.java:25:7:25:11 | chk(...) | g(1):true |
 | Guards.java:25:7:25:11 | chk(...) | g(2):false |
+| Guards.java:29:7:29:11 | chk(...) | '...?...:...:not 0' |
 | Guards.java:29:7:29:11 | chk(...) | 'a != null:true' |
+| Guards.java:29:7:29:11 | chk(...) | 'a.length:not 0' |
+| Guards.java:29:7:29:11 | chk(...) | 'a:not null' |
 | Guards.java:29:7:29:11 | chk(...) | 'i < sz:true' |
+| Guards.java:29:7:29:11 | chk(...) | 'sz:not 0' |
+| Guards.java:39:9:39:13 | chk(...) | 's:bar' |
 | Guards.java:39:9:39:13 | chk(...) | 's:match "bar"' |
+| Guards.java:42:9:42:13 | chk(...) | 's:foo' |
 | Guards.java:42:9:42:13 | chk(...) | 's:match "foo"' |
 | Guards.java:42:9:42:13 | chk(...) | g(3):false |
 | Guards.java:45:9:45:13 | chk(...) | 's:match default' |
 | Guards.java:45:9:45:13 | chk(...) | 's:non-match "bar"' |
 | Guards.java:45:9:45:13 | chk(...) | 's:non-match "foo"' |
+| Guards.java:45:9:45:13 | chk(...) | 's:not bar' |
+| Guards.java:45:9:45:13 | chk(...) | 's:not foo' |
 | Guards.java:45:9:45:13 | chk(...) | g(3):false |
+| Guards.java:51:7:51:11 | chk(...) | '...?...:...:not null' |
+| Guards.java:51:7:51:11 | chk(...) | 'o:not null' |
+| Guards.java:51:7:51:11 | chk(...) | 's:not null' |
 | Guards.java:51:7:51:11 | chk(...) | ...instanceof...:true |
 | Guards.java:51:7:51:11 | chk(...) | g(4):false |
-| Guards.java:58:5:58:9 | chk(...) | checkFalse(B):false |
-| Guards.java:58:5:58:9 | chk(...) | checkTrue(A):true |
+| Guards.java:58:5:58:9 | chk(...) | 'checkFalse(...):no exception' |
+| Guards.java:58:5:58:9 | chk(...) | 'checkTrue(...):no exception' |
 | Guards.java:58:5:58:9 | chk(...) | g(1):true |
 | Guards.java:58:5:58:9 | chk(...) | g(2):false |
 | Guards.java:64:7:64:11 | chk(...) | 'g(...) && ... \|\| ...:true' |
@@ -37,22 +48,42 @@
 | Guards.java:72:7:72:11 | chk(...) | g(4):false |
 | Guards.java:72:7:72:11 | chk(...) | g(5):true |
 | Guards.java:89:7:89:11 | chk(...) | 'x == null:true' |
+| Guards.java:89:7:89:11 | chk(...) | 'x:null' |
+| Guards.java:89:7:89:11 | chk(...) | g(1):false |
+| Guards.java:89:7:89:11 | chk(...) | g(2):false |
 | Guards.java:89:7:89:11 | chk(...) | g(3):false |
+| Guards.java:89:7:89:11 | chk(...) | g(Alt2):false |
+| Guards.java:92:9:92:13 | chk(...) | 'x:E1' |
 | Guards.java:92:9:92:13 | chk(...) | 'x:match E1' |
 | Guards.java:92:9:92:13 | chk(...) | g(1):true |
+| Guards.java:92:9:92:13 | chk(...) | g(2):false |
 | Guards.java:92:9:92:13 | chk(...) | g(3):false |
+| Guards.java:92:9:92:13 | chk(...) | g(Alt2):false |
+| Guards.java:95:9:95:13 | chk(...) | 'x:E2' |
 | Guards.java:95:9:95:13 | chk(...) | 'x:match E2' |
 | Guards.java:95:9:95:13 | chk(...) | g(3):false |
+| Guards.java:98:9:98:13 | chk(...) | 'x:E3' |
 | Guards.java:98:9:98:13 | chk(...) | 'x:match E3' |
 | Guards.java:98:9:98:13 | chk(...) | g(3):true |
+| Guards.java:103:7:103:11 | chk(...) | '...?...:...:null' |
 | Guards.java:103:7:103:11 | chk(...) | 'o == null:true' |
+| Guards.java:103:7:103:11 | chk(...) | 'o:null' |
 | Guards.java:103:7:103:11 | chk(...) | g(4):false |
+| Guards.java:105:7:105:11 | chk(...) | '...?...:...:not null' |
 | Guards.java:105:7:105:11 | chk(...) | 'o == null:false' |
+| Guards.java:105:7:105:11 | chk(...) | 'o:not null' |
 | Guards.java:105:7:105:11 | chk(...) | g(4):true |
 | Guards.java:115:7:115:11 | chk(...) | 'base == null:false' |
+| Guards.java:115:7:115:11 | chk(...) | 'base:/' |
+| Guards.java:115:7:115:11 | chk(...) | 'base:not null' |
+| Guards.java:115:7:115:11 | chk(...) | 'foo:/' |
+| Guards.java:115:7:115:11 | chk(...) | 'foo:not null' |
 | Guards.java:115:7:115:11 | chk(...) | equals(/):true |
 | Guards.java:125:7:125:11 | chk(...) | 'o != null:true' |
+| Guards.java:125:7:125:11 | chk(...) | 'o:not null' |
+| Guards.java:125:7:125:11 | chk(...) | g(1):true |
 | Guards.java:127:7:127:11 | chk(...) | 'o != null:false' |
+| Guards.java:127:7:127:11 | chk(...) | 'o:null' |
 | Guards.java:127:7:127:11 | chk(...) | g(1):false |
 | Guards.java:139:9:139:13 | chk(...) | 'i < a.length:true' |
 | Guards.java:139:9:139:13 | chk(...) | found:true |

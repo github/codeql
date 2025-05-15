@@ -60,8 +60,6 @@ module SsaFlow {
 
 cached
 private module Cached {
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GuardsLogic
-
   cached
   newtype TNode =
     TExprNode(Expr e) {
