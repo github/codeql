@@ -113,10 +113,6 @@ module Signers {
    */
   module FlowAnalysis = NewToInitToUseFlowAnalysis<NewCall, InitCall, UseCall>;
 
-  UseCall getIntermediateUse(UseCall use) {
-    result = FlowAnalysis::getAnIntermediateUseFromFinalUse(use, _, _)
-  }
-
   /**
    * A signing operation instance is a call to either `update()`, `generateSignature()`,
    * or `verifySignature()` on a `Signer` instance.
