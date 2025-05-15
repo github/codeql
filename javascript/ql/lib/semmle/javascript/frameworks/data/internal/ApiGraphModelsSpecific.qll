@@ -58,7 +58,7 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 predicate isPackageUsed(string package) {
   package = "global"
   or
-  package = any(JS::Import imp).getImportedPath().getValue()
+  package = any(JS::Import imp).getImportedPathString()
   or
   any(JS::TypeName t).hasQualifiedName(package, _)
   or
@@ -269,51 +269,6 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
     stringValue = operand.splitAt("=", 1) and
     invoke.getArgument(parseIntWithArity(argIndex, invoke.getNumArgument())).getStringValue() =
       stringValue
-  )
-}
-
-/**
- * Holds if `path` is an input or output spec for a summary with the given `base` node.
- */
-pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
-  exists(string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    inputOrOutput = [input, output]
-  )
-}
-
-/**
- * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
-  relevantInputOutputPath(baseNode, path) and
-  (
-    n = 1 and
-    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
-    or
-    result =
-      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
-  )
-}
-
-/**
- * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
-  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
-}
-
-/**
- * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
- */
-predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
-    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    pred = getNodeFromInputOutputPath(base, input) and
-    succ = getNodeFromInputOutputPath(base, output)
   )
 }
 

@@ -5,11 +5,12 @@
  * @precision low
  * @id csharp/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import csharp
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import Heuristic
 import PropagateFlow::PathGraph
 

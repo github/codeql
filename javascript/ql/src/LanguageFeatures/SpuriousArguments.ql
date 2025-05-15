@@ -7,6 +7,7 @@
  * @tags maintainability
  *       correctness
  *       language-features
+ *       quality
  *       external/cwe/cwe-685
  * @precision very-high
  */

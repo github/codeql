@@ -7,6 +7,7 @@
  */
 
 import internal.CaptureModels
+import SourceModels
 
 from DataFlowSourceTargetApi api, string source
 where source = Heuristic::captureSource(api)

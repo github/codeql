@@ -8,6 +8,7 @@
  * @id cs/call-to-object-tostring
  * @tags reliability
  *       maintainability
+ *       quality
  */
 
 import DefaultToStringQuery

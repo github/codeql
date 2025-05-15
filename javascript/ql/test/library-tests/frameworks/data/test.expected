@@ -1,4 +1,21 @@
 legacyDataFlowDifference
+| test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) | only flow with NEW data flow library |
+| test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) | only flow with NEW data flow library |
+| test.js:7:41:7:48 | source() | test.js:7:8:7:49 | require ... urce()) | only flow with NEW data flow library |
+| test.js:11:38:11:45 | source() | test.js:11:8:11:55 | testlib ... , 1, 1) | only flow with NEW data flow library |
+| test.js:13:44:13:51 | source() | test.js:13:8:13:55 | testlib ... e(), 1) | only flow with NEW data flow library |
+| test.js:17:47:17:54 | source() | test.js:17:8:17:61 | testlib ... , 1, 1) | only flow with NEW data flow library |
+| test.js:18:50:18:57 | source() | test.js:18:8:18:61 | testlib ... e(), 1) | only flow with NEW data flow library |
+| test.js:19:53:19:60 | source() | test.js:19:8:19:61 | testlib ... urce()) | only flow with NEW data flow library |
+| test.js:21:34:21:41 | source() | test.js:21:8:21:51 | testlib ... , 1, 1) | only flow with NEW data flow library |
+| test.js:22:37:22:44 | source() | test.js:22:8:22:51 | testlib ... , 1, 1) | only flow with NEW data flow library |
+| test.js:23:40:23:47 | source() | test.js:23:8:23:51 | testlib ... e(), 1) | only flow with NEW data flow library |
+| test.js:24:43:24:50 | source() | test.js:24:8:24:51 | testlib ... urce()) | only flow with NEW data flow library |
+| test.js:31:29:31:36 | source() | test.js:32:10:32:10 | y | only flow with NEW data flow library |
+| test.js:37:29:37:36 | source() | test.js:38:10:38:10 | y | only flow with NEW data flow library |
+| test.js:43:29:43:36 | source() | test.js:44:10:44:10 | y | only flow with NEW data flow library |
+| test.js:47:33:47:40 | source() | test.js:49:10:49:13 | this | only flow with NEW data flow library |
+| test.js:102:16:102:34 | testlib.getSource() | test.js:104:8:104:24 | source.continue() | only flow with NEW data flow library |
 consistencyIssue
 taintFlow
 | guardedRouteHandler.js:6:10:6:28 | req.injectedReqData | guardedRouteHandler.js:6:10:6:28 | req.injectedReqData |
