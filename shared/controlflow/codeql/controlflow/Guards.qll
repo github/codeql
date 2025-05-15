@@ -37,6 +37,8 @@ signature module InputSig<LocationSig Location> {
     string toString();
   }
 
+  class ExceptionSuccessor extends SuccessorType;
+
   class ConditionalSuccessor extends SuccessorType {
     /** Gets the Boolean value of this successor. */
     boolean getValue();
@@ -187,7 +189,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) or
-    TCaseMatch(Case c, Boolean match)
+    TCaseMatch(Case c, Boolean match) or
+    TException(Boolean throws)
 
   private class AbstractSingleValue extends TAbstractSingleValue {
     /** Gets a textual representation of this value. */
@@ -221,6 +224,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this = TCaseMatch(c, match) and
         result = TCaseMatch(c, match.booleanNot())
       )
+      or
+      exists(boolean throws |
+        this = TException(throws) and
+        result = TException(throws.booleanNot())
+      )
     }
 
     /** Holds if this value represents `null`. */
@@ -234,6 +242,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
+
+    /** Holds if this value represents throwing an exception. */
+    predicate isThrowsException() { this = TException(true) }
 
     /** Gets a textual representation of this value. */
     string toString() {
@@ -256,6 +267,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
           or
           match = false and result = "non-match " + s
         )
+      )
+      or
+      exists(boolean throws | this = TException(throws) |
+        throws = true and result = "exception"
+        or
+        throws = false and result = "no exception"
       )
     }
   }
@@ -288,6 +305,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     e instanceof NonNullExpr and v = TValue(TValueNull(), false)
   }
 
+  private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
+    exists(SuccessorType norm, ExceptionSuccessor exc |
+      bb1.getASuccessor(norm) = normalSucc and
+      bb1.getASuccessor(exc) = excSucc and
+      normalSucc != excSucc and
+      not norm instanceof ExceptionSuccessor
+    )
+  }
+
   private predicate branchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
     exists(ConditionalSuccessor s |
       bb1.getASuccessor(s) = bb2 and
@@ -307,6 +333,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       v = TCaseMatch(c, false) and
       c.nonMatchEdge(bb1, bb2)
     )
+    or
+    exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
+    or
+    exceptionBranchPoint(bb1, _, bb2) and v = TException(true)
   }
 
   pragma[nomagic]
@@ -399,7 +429,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   bindingset[g1, v1]
   pragma[inline_late]
   private predicate unboundBaseImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
-    g1.(IdExpr).getEqualChildExpr() = g2 and v1 = v2
+    g1.(IdExpr).getEqualChildExpr() = g2 and v1 = v2 and not v1 instanceof TException
     or
     exists(ConditionalExpr cond, boolean branch, Expr e, GuardValue ev |
       cond = g1 and
