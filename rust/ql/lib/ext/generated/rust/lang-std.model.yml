@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["lang:std", "<&[u8] as crate::io::BufRead>::consume", "Argument[self].Element", "Argument[self].Reference.Reference", "value", "dfc-generated"]
       - ["lang:std", "<&[u8] as crate::io::BufRead>::fill_buf", "Argument[self].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)]", "value", "dfc-generated"]

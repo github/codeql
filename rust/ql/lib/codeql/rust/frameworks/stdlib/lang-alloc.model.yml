@@ -1,13 +1,13 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sourceModel
+      extensible: sourceModelDeprecated
     data:
       # Alloc
       - ["lang:alloc", "crate::alloc::dealloc", "Argument[0]", "pointer-invalidate", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       # Alloc
       - ["lang:alloc", "crate::alloc::alloc", "Argument[0]", "alloc-layout", "manual"]
@@ -27,7 +27,7 @@ extensions:
       - ["lang:alloc", "<crate::alloc::Global as crate::alloc::Allocator>::grow_zeroed", "Argument[2]", "alloc-layout", "manual"]
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       # Fmt
       - ["lang:alloc", "crate::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"]

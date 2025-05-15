@@ -2,7 +2,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["lang:alloc", "<&&str as crate::string::SpecToString>::spec_to_string", "Argument[self].Reference.Reference", "ReturnValue", "value", "dfc-generated"]
       - ["lang:alloc", "<&crate::string::String as crate::str::pattern::Pattern>::as_utf8_pattern", "Argument[self]", "ReturnValue.Field[crate::option::Option::Some(0)].Field[crate::str::pattern::Utf8Pattern::StringPattern(0)]", "value", "dfc-generated"]
