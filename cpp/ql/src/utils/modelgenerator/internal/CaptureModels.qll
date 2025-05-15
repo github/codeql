@@ -45,6 +45,13 @@ private predicate isUninterestingForModels(Callable api) {
   api = any(Cpp::LambdaExpression lambda).getLambdaFunction()
   or
   api.isFromUninstantiatedTemplate(_)
+  or
+  // Exclude functions in test directories (but not the ones in the CodeQL test directory)
+  exists(Cpp::File f |
+    f = api.getFile() and
+    f.getAbsolutePath().matches("%test%") and
+    not f.getAbsolutePath().matches("%test/library-tests/dataflow/modelgenerator/dataflow/%")
+  )
 }
 
 private predicate relevant(Callable api) {
