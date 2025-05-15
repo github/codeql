@@ -1,5 +1,6 @@
 |             name              |
 +-------------------------------+
 | .hidden_file.py               |
+| another_non_hidden.py         |
 | foo.py                        |
 | visible_file_in_hidden_dir.py |
