@@ -1164,15 +1164,27 @@ class DataFlowCall extends TDataFlowCall {
   Function getStaticCallSourceTarget() { none() }
 
   /**
-   * Gets the target of this call. If a summarized callable exists for the
-   * target this is chosen, and otherwise the callable is the implementation
-   * from the source code.
+   * Gets the target of this call. We use the following strategy for deciding
+   * between the source callable and a summarized callable:
+   * - If there is a manual summary then we always use the manual summary.
+   * - If there is a source callable and we only have generated summaries
+   * we use the source callable.
+   * - If there is no source callable then we use the summary regardless of
+   * whether is it manual or generated.
    */
-  DataFlowCallable getStaticCallTarget() {
+  final DataFlowCallable getStaticCallTarget() {
     exists(Function target | target = this.getStaticCallSourceTarget() |
-      not exists(TSummarizedCallable(target)) and
+      // Don't use the source callable if there is a manual model for the
+      // target
+      not exists(SummarizedCallable sc |
+        sc.asSummarizedCallable() = target and
+        sc.asSummarizedCallable().applyManualModel()
+      ) and
       result.asSourceCallable() = target
       or
+      // When there is no function body, or when we have a manual model then
+      // we dispatch to the summary.
+      (not target.hasDefinition() or result.asSummarizedCallable().applyManualModel()) and
       result.asSummarizedCallable() = target
     )
   }
