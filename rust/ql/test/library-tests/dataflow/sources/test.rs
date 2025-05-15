@@ -776,9 +776,9 @@ fn test_rustls() -> std::io::Result<()> {
         .with_no_client_auth();
     let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
     let config_arc = std::sync::Arc::new(config);
-    let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ MISSING: Alert[rust/summary/taint-sources]
+    let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ Alert[rust/summary/taint-sources]
     let mut reader = client.reader();
-    sink(&reader); // $ MISSING: hasTaintFlow
+    sink(&reader); // $ hasTaintFlow=config_arc
 
     {
         let mut buffer = [0u8; 100];
@@ -789,13 +789,13 @@ fn test_rustls() -> std::io::Result<()> {
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = reader.read_to_end(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = String::new();
         let _bytes = reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     Ok(())
