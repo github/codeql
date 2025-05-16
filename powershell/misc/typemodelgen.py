@@ -22,7 +22,7 @@ def isStatic(member):
     return False
 
 
-def isA(x):
+def isA(member, x):
     """Returns True if member is an `x`."""
     for child in member:
         if child.tag == "MemberType" and child.text == x:
@@ -77,10 +77,10 @@ def generateTypeModels(arg):
         try:
             if not file_path.name.endswith(".xml"):
                 continue
-
+            
             if not file_path.is_file():
                 continue
-
+            
             tree = ET.parse(str(file_path))
             root = tree.getroot()
             if not root.tag == "Type":
@@ -91,8 +91,8 @@ def generateTypeModels(arg):
             if "`" in file_path.stem or "+" in file_path.stem:
                 continue  # Skip generics (and nested types?) for now
 
-            folderName = file_path.parent.name.replace(".", "")
-            filename = folderName + "/model.yml"
+            folderName = "generated/" + file_path.parent.name.replace(".", "")
+            filename = folderName + "/typemodel.yml"
             s = set()
             for elem in root.findall(".//Members/Member"):
                 name = elem.attrib["MemberName"]
@@ -106,10 +106,10 @@ def generateTypeModels(arg):
                 startSelectorMarker = ""
                 endSelectorMarker = ""
                 if isField(elem):
-                    startSelectorMarker = "Field"
+                    startSelectorMarker = "Member"
                     endSelectorMarker = ""
                 if isProperty(elem):
-                    startSelectorMarker = "Property"
+                    startSelectorMarker = "Member"
                     endSelectorMarker = ""
                 if isMethod(elem):
                     startSelectorMarker = "Method"
@@ -134,8 +134,9 @@ def generateTypeModels(arg):
                 returnType = elem.find(".//ReturnValue/ReturnType").text
                 if returnType == "System.Void":
                     continue  # Don't generate type summaries for void methods
+
                 s.add(
-                    f'    - ["{fixup(returnType)}", "{thisType + staticMarker}", "{startSelectorMarker}[{name}]{endSelectorMarker}"]\n'
+                    f'    - ["{fixup(returnType.lower())}", "{thisType.lower() + staticMarker}", "{startSelectorMarker}[{name.lower()}]{endSelectorMarker}"]\n'
                 )
 
             summaries[filename].update(s)
@@ -153,6 +154,7 @@ def writeModels():
             continue
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         with open(filename, "x") as file:
+            file.write("# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.\n")
             file.write("extensions:\n")
             file.write("  - addsTo:\n")
             file.write("      pack: microsoft/powershell-all\n")
