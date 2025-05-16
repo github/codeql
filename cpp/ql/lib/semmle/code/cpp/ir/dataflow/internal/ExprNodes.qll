@@ -269,7 +269,7 @@ private module Cached {
    * ```
    * i.getUnconvertedResultExpression() instanceof ClassAggregateLiteral
    * ```
-   * and thus we don't automaticallt get a dataflow node for which:
+   * and thus we don't automatically get a dataflow node for which:
    * ```
    * node.asExpr() instanceof ClassAggregateLiteral
    * ```
