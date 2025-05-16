@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsMut>::as_mut", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsMut>::as_mut", "Argument[self].Field[crate::chacha::Array64(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsRef>::as_ref", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::Array64 as crate::convert::AsRef>::as_ref", "Argument[self].Field[crate::chacha::Array64(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::ChaCha12Rng as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[crate::chacha::ChaCha12Rng::rng].Field[crate::block::BlockRng::core]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::ChaCha20Rng as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[crate::chacha::ChaCha20Rng::rng].Field[crate::block::BlockRng::core]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "<crate::chacha::ChaCha8Rng as crate::convert::From>::from", "Argument[0]", "ReturnValue.Field[crate::chacha::ChaCha8Rng::rng].Field[crate::block::BlockRng::core]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "crate::guts::diagonalize", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "crate::guts::round", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rust-random/rand:rand_chacha", "crate::guts::undiagonalize", "Argument[0]", "ReturnValue", "value", "dfc-generated"]

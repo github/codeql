@@ -15,9 +15,15 @@ private predicate relevant(Function api) {
   // Only include functions that have a resolved path.
   api.hasCrateOrigin() and
   api.hasExtendedCanonicalPath() and
+  // A canonical path can contain `;` as the syntax for array types use `;`. For
+  // instance `<[Foo; 1] as Bar>::baz`. This does not work with the shared model
+  // generator and it is not clear if this will also be the case when we move to
+  // QL created canoonical paths, so for now we just exclude functions with
+  // `;`s.
+  not exists(api.getExtendedCanonicalPath().indexOf(";")) and
   (
     // This excludes closures (these are not exported API endpoints) and
-    // functions without a `pub` visiblity. A function can be `pub` without
+    // functions without a `pub` visibility. A function can be `pub` without
     // ultimately being exported by a crate, so this is an overapproximation.
     api.hasVisibility()
     or

@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo::tls", "<crate::redirector::Redirector>::try_launch", "Argument[self].Field[crate::redirector::Redirector::port]", "Argument[0].Field[crate::config::config::Config::port]", "value", "dfc-generated"]
