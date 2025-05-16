@@ -17,13 +17,9 @@
 | strings.go:10:35:10:41 | "&amp;" | strings.go:10:8:10:42 | call to ReplaceAll |
 | strings.go:11:9:11:26 | call to Sprint | strings.go:11:9:11:50 | ...+... |
 | strings.go:11:9:11:50 | ...+... | strings.go:11:9:11:69 | ...+... |
-| strings.go:11:20:11:21 | s2 | strings.go:11:9:11:26 | call to Sprint |
-| strings.go:11:24:11:25 | s3 | strings.go:11:9:11:26 | call to Sprint |
 | strings.go:11:30:11:50 | call to Sprintf | strings.go:11:9:11:50 | ...+... |
 | strings.go:11:42:11:45 | "%q" | strings.go:11:30:11:50 | call to Sprintf |
-| strings.go:11:48:11:49 | s2 | strings.go:11:30:11:50 | call to Sprintf |
 | strings.go:11:54:11:69 | call to Sprintln | strings.go:11:9:11:69 | ...+... |
-| strings.go:11:67:11:68 | s3 | strings.go:11:54:11:69 | call to Sprintln |
 | url.go:12:14:12:48 | call to PathUnescape | url.go:12:3:12:48 | ... = ...[0] |
 | url.go:12:14:12:48 | call to PathUnescape | url.go:12:3:12:48 | ... = ...[1] |
 | url.go:12:31:12:47 | call to PathEscape | url.go:12:3:12:48 | ... = ...[0] |

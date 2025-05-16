@@ -5,7 +5,6 @@ edges
 | Dsn.go:49:11:49:106 | []type{args} [array] | Dsn.go:49:11:49:106 | call to Sprintf | provenance | MaD:2 |
 | Dsn.go:49:11:49:106 | call to Sprintf | Dsn.go:50:29:50:33 | dbDSN | provenance |  |
 | Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | []type{args} [array] | provenance |  |
-| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | call to Sprintf | provenance | FunctionModel |
 models
 | 1 | Source: net/http; Request; true; FormValue; ; ; ReturnValue; remote; manual |
 | 2 | Summary: fmt; ; false; Sprintf; ; ; Argument[1].ArrayElement; ReturnValue; taint; manual |
