@@ -22,16 +22,21 @@ extensions:
       - ["actions/stale", "pull-requests: write"]
       - ["actions/attest-build-provenance", "id-token: write"]
       - ["actions/attest-build-provenance", "attestations: write"]
+      - ["actions/deploy-pages", "pages: write"]
+      - ["actions/deploy-pages", "id-token: write"]
+      - ["actions/delete-package-versions", "packages: write"]
       - ["actions/jekyll-build-pages", "contents: read"]
       - ["actions/jekyll-build-pages", "pages: write"]
       - ["actions/jekyll-build-pages", "id-token: write"]
       - ["actions/publish-action", "contents: write"]
-      - ["actions/versions-package-tools", "contents: read"]      
+      - ["actions/versions-package-tools", "contents: read"]
       - ["actions/versions-package-tools", "actions: read"]
-      - ["actions/reusable-workflows", "contents: read"]      
+      - ["actions/reusable-workflows", "contents: read"]
       - ["actions/reusable-workflows", "actions: read"]
+      - ["actions/ai-inference", "contents: read"]
+      - ["actions/ai-inference", "models: read"]
       # TODO: Add permissions for actions/download-artifact
       # TODO: Add permissions for actions/upload-artifact
+      # No permissions needed for actions/upload-pages-artifact
       # TODO: Add permissions for actions/cache
-
-      
+      # No permissions needed for actions/configure-pages
