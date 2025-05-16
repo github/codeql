@@ -611,6 +611,8 @@ module JCAModel {
   }
 
   class CipherOperationInstance extends Crypto::KeyOperationInstance instanceof CipherOperationCall {
+    CipherOperationInstance() { not this.isIntermediate() }
+
     override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
       if CipherFlowAnalysisImpl::hasInit(this)
       then result = CipherFlowAnalysisImpl::getInitFromUse(this, _, _).getCipherOperationModeType()
