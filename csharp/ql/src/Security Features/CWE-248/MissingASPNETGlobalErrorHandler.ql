@@ -8,7 +8,7 @@
  * @precision high
  * @id cs/web/missing-global-error-handler
  * @tags security
- *       external/cwe/cwe-12
+ *       external/cwe/cwe-012
  *       external/cwe/cwe-248
  */
 

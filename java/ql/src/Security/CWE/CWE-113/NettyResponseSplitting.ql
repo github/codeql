@@ -9,7 +9,7 @@
  * @precision high
  * @id java/netty-http-request-or-response-splitting
  * @tags security
- *       external/cwe/cwe-93
+ *       external/cwe/cwe-093
  *       external/cwe/cwe-113
  */
 

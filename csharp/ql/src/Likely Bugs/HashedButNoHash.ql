@@ -11,24 +11,44 @@
 
 import csharp
 import semmle.code.csharp.frameworks.System
+import semmle.code.csharp.frameworks.system.Collections
+import semmle.code.csharp.frameworks.system.collections.Generic
 
-predicate dictionary(ConstructedType constructed) {
-  exists(UnboundGenericType dict |
-    dict.hasFullyQualifiedName("System.Collections.Generic", "Dictionary`2") and
-    constructed = dict.getAConstructedGeneric()
+/**
+ * Holds if `t` is a dictionary type.
+ */
+predicate dictionary(ValueOrRefType t) {
+  exists(Type base | base = t.getABaseType*().getUnboundDeclaration() |
+    base instanceof SystemCollectionsGenericIDictionaryInterface or
+    base instanceof SystemCollectionsGenericIReadOnlyDictionaryInterface or
+    base instanceof SystemCollectionsIDictionaryInterface
   )
 }
 
-predicate hashtable(Class c) { c.hasFullyQualifiedName("System.Collections", "Hashtable") }
+/**
+ * Holds if `c` is a hashset type.
+ */
+predicate hashSet(ValueOrRefType t) {
+  t.getABaseType*().getUnboundDeclaration() instanceof SystemCollectionsGenericHashSetClass
+}
 
-predicate hashstructure(Type t) { hashtable(t) or dictionary(t) }
+predicate hashStructure(Type t) { dictionary(t) or hashSet(t) }
 
-predicate hashAdd(Expr e) {
+/**
+ * Holds if the expression `e` relies on `GetHashCode()` implementation.
+ * That is, if the call assumes that `e1.Equals(e2)` implies `e1.GetHashCode() == e2.GetHashCode()`.
+ */
+predicate usesHashing(Expr e) {
   exists(MethodCall mc, string name |
-    (name = "Add" or name = "ContainsKey") and
+    name = ["Add", "Contains", "ContainsKey", "Remove", "TryAdd", "TryGetValue"] and
     mc.getArgument(0) = e and
     mc.getTarget().hasName(name) and
-    hashstructure(mc.getTarget().getDeclaringType())
+    hashStructure(mc.getTarget().getDeclaringType())
+  )
+  or
+  exists(IndexerCall ic |
+    ic.getArgument(0) = e and
+    dictionary(ic.getTarget().getDeclaringType())
   )
 }
 
@@ -46,7 +66,7 @@ predicate hashCall(Expr e) {
 
 from Expr e, Type t
 where
-  (hashAdd(e) or hashCall(e)) and
+  (usesHashing(e) or hashCall(e)) and
   e.getType() = t and
   eqWithoutHash(t)
 select e,

@@ -7,6 +7,7 @@
  * @precision high
  * @tags correctness
  *       typescript
+ *       quality
  */
 
 import javascript

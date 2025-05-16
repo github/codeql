@@ -7,6 +7,7 @@
  * @id cs/unchecked-cast-in-equals
  * @tags reliability
  *       maintainability
+ *       quality
  */
 
 import csharp

@@ -1,9 +1,3 @@
 - queries: .
-- include:
-    id:
-      - go/unhandled-writable-file-close
-      - go/unexpected-nil-value
-      - go/negative-length-check
-      - go/redundant-recover
-      - go/missing-error-check
-      - go/index-out-of-bounds
+- apply: code-quality-selectors.yml
+  from: codeql/suite-helpers

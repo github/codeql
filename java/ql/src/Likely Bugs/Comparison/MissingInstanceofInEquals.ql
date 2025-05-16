@@ -8,6 +8,7 @@
  * @id java/unchecked-cast-in-equals
  * @tags reliability
  *       correctness
+ *       quality
  */
 
 import java

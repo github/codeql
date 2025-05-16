@@ -9,6 +9,7 @@
  * @tags efficiency
  *       correctness
  *       resources
+ *       quality
  *       external/cwe/cwe-404
  *       external/cwe/cwe-772
  */

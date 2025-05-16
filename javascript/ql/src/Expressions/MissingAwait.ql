@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @id js/missing-await
  * @tags correctness
+ *       quality
  * @precision high
  */
 

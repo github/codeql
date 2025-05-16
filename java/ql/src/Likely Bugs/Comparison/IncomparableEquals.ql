@@ -8,6 +8,7 @@
  * @id java/equals-on-unrelated-types
  * @tags reliability
  *       correctness
+ *       quality
  */
 
 import java

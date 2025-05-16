@@ -47,6 +47,6 @@ func closures() {
 func f2(
         @Wrapper p1: Int,
         @WrapperWithInit p2: Int,
-        @WrapperWithProjected p3: Int,
-        @WrapperWithProjectedAndInit p4: Int
+        // @WrapperWithProjected p3: Int, // Disabled causes crashes with Swift 6.1
+        // @WrapperWithProjectedAndInit p4: Int // Disabled causes crashes with Swift 6.1
 ) {}

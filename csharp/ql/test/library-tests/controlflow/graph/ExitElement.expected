@@ -3581,6 +3581,38 @@
 | Switch.cs:160:40:160:43 | "b = " | Switch.cs:160:40:160:43 | "b = " | normal |
 | Switch.cs:160:44:160:46 | {...} | Switch.cs:160:44:160:46 | {...} | normal |
 | Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:160:45:160:45 | access to local variable s | normal |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:170:17:170:22 | break; | normal [break] (0) |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:173:17:173:22 | break; | normal [break] (0) |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:176:17:176:22 | break; | normal [break] (0) |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:170:17:170:22 | break; | normal [break] (0) |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:173:17:173:22 | break; | normal [break] (0) |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:176:17:176:22 | break; | normal [break] (0) |
+| Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:165:17:165:17 | access to parameter i | normal |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:18:167:18 | 1 | no-match |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:169:17:169:50 | call to method WriteLine | normal |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | 1 | match |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | 1 | no-match |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:18:168:18 | 2 | no-match |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:169:17:169:50 | call to method WriteLine | normal |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:168:18:168:18 | 2 | match |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:168:18:168:18 | 2 | no-match |
+| Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:169:17:169:50 | call to method WriteLine | normal |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:169:17:169:50 | call to method WriteLine | normal |
+| Switch.cs:169:42:169:49 | "1 or 2" | Switch.cs:169:42:169:49 | "1 or 2" | normal |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:170:17:170:22 | break; | break |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:18:171:18 | 3 | no-match |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:172:17:172:45 | call to method WriteLine | normal |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:171:18:171:18 | 3 | match |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:171:18:171:18 | 3 | no-match |
+| Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:172:17:172:45 | call to method WriteLine | normal |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:172:17:172:45 | call to method WriteLine | normal |
+| Switch.cs:172:42:172:44 | "3" | Switch.cs:172:42:172:44 | "3" | normal |
+| Switch.cs:173:17:173:22 | break; | Switch.cs:173:17:173:22 | break; | break |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:175:17:175:47 | call to method WriteLine | normal |
+| Switch.cs:175:17:175:47 | call to method WriteLine | Switch.cs:175:17:175:47 | call to method WriteLine | normal |
+| Switch.cs:175:17:175:48 | ...; | Switch.cs:175:17:175:47 | call to method WriteLine | normal |
+| Switch.cs:175:42:175:46 | "def" | Switch.cs:175:42:175:46 | "def" | normal |
+| Switch.cs:176:17:176:22 | break; | Switch.cs:176:17:176:22 | break; | break |
 | TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | call to constructor Object | normal |
 | TypeAccesses.cs:1:7:1:18 | {...} | TypeAccesses.cs:1:7:1:18 | {...} | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |

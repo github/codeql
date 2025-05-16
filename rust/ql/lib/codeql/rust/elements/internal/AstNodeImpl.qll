@@ -60,7 +60,7 @@ module Impl {
 
     /** Holds if this node is inside a macro expansion. */
     predicate isInMacroExpansion() {
-      this = any(MacroCall mc).getExpanded()
+      this = any(MacroCall mc).getMacroCallExpansion()
       or
       this.getParentNode().isInMacroExpansion()
     }

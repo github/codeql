@@ -10,7 +10,7 @@
  * @tags correctness
  *       security
  *       experimental
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import cpp

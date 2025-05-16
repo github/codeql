@@ -1,3 +1,0 @@
-| if_config.swift:1:1:10:1 | #if ... | 0 | if_config.swift:8:1:8:16 | { ... } |
-| if_config.swift:1:1:10:1 | #if ... | 1 | if_config.swift:8:5:8:5 | baz |
-| if_config.swift:1:1:10:1 | #if ... | 2 | if_config.swift:9:1:9:12 | { ... } |

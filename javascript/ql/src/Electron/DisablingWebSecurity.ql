@@ -7,7 +7,7 @@
  * @precision very-high
  * @tags security
  *       frameworks/electron
- *       external/cwe/cwe-79
+ *       external/cwe/cwe-079
  * @id js/disabling-electron-websecurity
  */
 

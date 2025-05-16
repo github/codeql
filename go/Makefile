@@ -5,6 +5,8 @@
 # and that we actually get are too big, the build fails on CI.
 BAZEL := $(shell bash -c "which bazel")
 
+rtjo ?= none
+
 all: gen extractor
 
 EXTRACTOR_PACK_OUT = extractor-pack

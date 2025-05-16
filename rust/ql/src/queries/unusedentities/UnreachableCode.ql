@@ -6,6 +6,7 @@
  * @precision medium
  * @id rust/dead-code
  * @tags maintainability
+ *       quality
  */
 
 import rust

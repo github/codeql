@@ -1,6 +1,6 @@
 private import csharp as CS
 private import codeql.mad.modelgenerator.internal.ModelPrinting
-private import CaptureModels::ModelGeneratorInput as ModelGeneratorInput
+private import CaptureModels::ModelGeneratorCommonInput as ModelGeneratorInput
 
 private module ModelPrintingLang implements ModelPrintingLangSig {
   class Callable = CS::Callable;

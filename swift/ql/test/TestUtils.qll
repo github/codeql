@@ -6,7 +6,10 @@ import codeql.swift.elements.expr.internal.DotSyntaxCallExpr
 
 cached
 predicate toBeTested(Element e) {
-  e instanceof File
+  e instanceof File and
+  (exists(e.(File).getRelativePath()) or e instanceof UnknownFile)
+  or
+  e instanceof IntegerType
   or
   e instanceof ParameterizedProtocolType
   or

@@ -6,6 +6,7 @@ private import Type
 private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
+private import codeql.rust.frameworks.stdlib.Stdlib
 
 class Type = T::Type;
 
@@ -662,15 +663,6 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       tAdj = t
     )
   }
-
-  pragma[nomagic]
-  additional Type inferReceiverType(AstNode n) {
-    exists(Access a, AccessPosition apos |
-      result = inferType(n) and
-      n = a.getNodeAt(apos) and
-      apos.isSelf()
-    )
-  }
 }
 
 private module CallExprBaseMatching = Matching<CallExprBaseMatchingInput>;
@@ -690,7 +682,7 @@ private Type inferCallExprBaseType(AstNode n, TypePath path) {
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = CallExprBaseMatchingInput::inferReceiverType(n) |
+      exists(Type receiverType | receiverType = inferType(n) |
         if receiverType = TRefType()
         then
           path = path0 and
@@ -813,15 +805,6 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       tAdj = t
     )
   }
-
-  pragma[nomagic]
-  additional Type inferReceiverType(AstNode n) {
-    exists(Access a, AccessPosition apos |
-      result = inferType(n) and
-      n = a.getNodeAt(apos) and
-      apos.isSelf()
-    )
-  }
 }
 
 private module FieldExprMatching = Matching<FieldExprMatchingInput>;
@@ -840,7 +823,7 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   |
     if apos.isSelf()
     then
-      exists(Type receiverType | receiverType = FieldExprMatchingInput::inferReceiverType(n) |
+      exists(Type receiverType | receiverType = inferType(n) |
         if receiverType = TRefType()
         then
           // adjust for implicit deref
@@ -891,9 +874,72 @@ private Type inferRefExprType(Expr e, TypePath path) {
   )
 }
 
+pragma[nomagic]
+private Type inferTryExprType(TryExpr te, TypePath path) {
+  exists(TypeParam tp |
+    result = inferType(te.getExpr(), TypePath::cons(TTypeParamTypeParameter(tp), path))
+  |
+    tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
+    or
+    tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
+  )
+}
+
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+
+pragma[nomagic]
+private StructType inferLiteralType(LiteralExpr le) {
+  exists(Builtins::BuiltinType t | result = TStruct(t) |
+    le instanceof CharLiteralExpr and
+    t instanceof Builtins::Char
+    or
+    le instanceof StringLiteralExpr and
+    t instanceof Builtins::Str
+    or
+    le =
+      any(NumberLiteralExpr ne |
+        t.getName() = ne.getSuffix()
+        or
+        not exists(ne.getSuffix()) and
+        (
+          ne instanceof IntegerLiteralExpr and
+          t instanceof Builtins::I32
+          or
+          ne instanceof FloatLiteralExpr and
+          t instanceof Builtins::F64
+        )
+      )
+    or
+    le instanceof BooleanLiteralExpr and
+    t instanceof Builtins::Bool
+  )
+}
+
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
+
+  /** Holds if `receiver` is the receiver of a method call with an implicit dereference. */
+  cached
+  predicate receiverHasImplicitDeref(AstNode receiver) {
+    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
+      apos.isSelf() and
+      receiver = a.getNodeAt(apos) and
+      inferType(receiver) = TRefType() and
+      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) != TRefType()
+    )
+  }
+
+  /** Holds if `receiver` is the receiver of a method call with an implicit borrow. */
+  cached
+  predicate receiverHasImplicitBorrow(AstNode receiver) {
+    exists(CallExprBaseMatchingInput::Access a, CallExprBaseMatchingInput::AccessPosition apos |
+      apos.isSelf() and
+      receiver = a.getNodeAt(apos) and
+      CallExprBaseMatching::inferAccessType(a, apos, TypePath::nil()) = TRefType() and
+      inferType(receiver) != TRefType()
+    )
+  }
 
   pragma[inline]
   private Type getLookupType(AstNode n) {
@@ -1008,6 +1054,11 @@ private module Cached {
     result = inferFieldExprType(n, path)
     or
     result = inferRefExprType(n, path)
+    or
+    result = inferTryExprType(n, path)
+    or
+    result = inferLiteralType(n) and
+    path.isEmpty()
   }
 }
 
@@ -1017,3 +1068,24 @@ import Cached
  * Gets a type that `n` infers to, if any.
  */
 Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
+
+/** Provides predicates for debugging the type inference implementation. */
+private module Debug {
+  private Locatable getRelevantLocatable() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      filepath.matches("%/main.rs") and
+      startline = 28
+    )
+  }
+
+  Type debugInferType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    result = inferType(n, path)
+  }
+
+  Function debugResolveMethodCallExpr(MethodCallExpr mce) {
+    mce = getRelevantLocatable() and
+    result = resolveMethodCallExpr(mce)
+  }
+}

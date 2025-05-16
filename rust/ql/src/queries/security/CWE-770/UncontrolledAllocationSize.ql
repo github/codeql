@@ -4,7 +4,7 @@
  *              arbitrary amounts of memory being allocated, leading to a crash or a
  *              denial-of-service (DoS) attack.
  * @kind path-problem
- * @problem.severity recommendation
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id rust/uncontrolled-allocation-size

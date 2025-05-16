@@ -414,7 +414,7 @@ impl<T> MyOption<&T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,
@@ -438,7 +438,7 @@ impl<T> MyOption<&mut T> {
         }
     }
 
-    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,
@@ -466,7 +466,7 @@ impl<T> Clone for MyOption<T>
 where
     T: Clone,
 {
-    // summary=repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated
     fn clone(&self) -> Self {
         match self {
             MySome(x) => MySome(x.clone()),

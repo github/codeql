@@ -10,7 +10,7 @@
  * @tags security
  *       maintainability
  *       frameworks/asp.net
- *       external/cwe/cwe-11
+ *       external/cwe/cwe-011
  *       external/cwe/cwe-532
  */
 

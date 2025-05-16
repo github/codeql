@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+    - ["aws-sdk", "AnyMember.Argument[0].Member[secretAccessKey,accessKeyId]", "credentials-key"]
+    - ["aws-sdk", "AnyMember.Member[secretAccessKey,accessKeyId]", "credentials-key"]
+    - ["aws-sdk", "Member[Credentials].Argument[0,1]", "credentials-key"]

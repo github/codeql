@@ -1,17 +1,17 @@
 package com.github.codeql.utils
 
+import com.github.codeql.utils.versions.IrVisitor
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrDeclaration
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.util.isFakeOverride
-import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 
 class IrVisitorLookup(
     private val psi2Ir: Psi2IrFacade,
     private val psi: PsiElement,
     private val file: IrFile
-) : IrElementVisitor<Unit, MutableCollection<IrElement>> {
+) : IrVisitor<Unit, MutableCollection<IrElement>>() {
     private val location = psi.getLocation()
 
     override fun visitElement(element: IrElement, data: MutableCollection<IrElement>): Unit {

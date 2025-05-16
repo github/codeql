@@ -1,3 +1,20 @@
+## 1.5.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-20` has been removed from `java/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `java/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-93` has been removed from `java/netty-http-request-or-response-splitting` and the tag `external/cwe/cwe-093` has been added.
+
+## 1.4.2
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `java/utils/modelgenerator/summary-models` to use the implementation from `java/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `java/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `java/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+
 ## 1.4.1
 
 No user-facing changes.

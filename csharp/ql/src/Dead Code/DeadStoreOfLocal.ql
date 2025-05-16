@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id cs/useless-assignment-to-local
  * @tags maintainability
+ *       quality
  *       external/cwe/cwe-563
  * @precision very-high
  */

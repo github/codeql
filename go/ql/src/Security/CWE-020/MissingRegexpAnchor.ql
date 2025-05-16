@@ -8,7 +8,7 @@
  * @id go/regex/missing-regexp-anchor
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import go

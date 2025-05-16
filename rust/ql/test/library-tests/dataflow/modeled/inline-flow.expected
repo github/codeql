@@ -2,38 +2,42 @@ models
 | 1 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
 | 2 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
 | 3 | Summary: lang:core; <crate::option::Option>::zip; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)].Field[1]; value |
-| 4 | Summary: lang:core; <crate::result::Result as crate::clone::Clone>::clone; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 5 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 4 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 5 | Summary: lang:core; <i64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
 | 6 | Summary: lang:core; crate::ptr::read; Argument[0].Reference; ReturnValue; value |
 | 7 | Summary: lang:core; crate::ptr::write; Argument[1]; Argument[0].Reference; value |
 edges
 | main.rs:12:9:12:9 | a [Some] | main.rs:13:10:13:19 | a.unwrap() | provenance | MaD:2 |
+| main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:13 | a [Some] | provenance |  |
 | main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | MaD:1 |
-| main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | generated |
 | main.rs:12:13:12:28 | Some(...) [Some] | main.rs:12:9:12:9 | a [Some] | provenance |  |
 | main.rs:12:18:12:27 | source(...) | main.rs:12:13:12:28 | Some(...) [Some] | provenance |  |
 | main.rs:14:9:14:9 | b [Some] | main.rs:15:10:15:19 | b.unwrap() | provenance | MaD:2 |
+| main.rs:14:13:14:13 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | generated |
 | main.rs:14:13:14:21 | a.clone() [Some] | main.rs:14:9:14:9 | b [Some] | provenance |  |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:5 |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | MaD:4 |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | generated |
+| main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:4 |
+| main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:13 | a [Ok] | provenance |  |
 | main.rs:19:31:19:44 | Ok(...) [Ok] | main.rs:19:9:19:9 | a [Ok] | provenance |  |
 | main.rs:19:34:19:43 | source(...) | main.rs:19:31:19:44 | Ok(...) [Ok] | provenance |  |
-| main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:5 |
+| main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:4 |
+| main.rs:21:13:21:13 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | generated |
 | main.rs:21:13:21:21 | a.clone() [Ok] | main.rs:21:9:21:9 | b [Ok] | provenance |  |
 | main.rs:26:9:26:9 | a | main.rs:27:10:27:10 | a | provenance |  |
-| main.rs:26:9:26:9 | a | main.rs:28:13:28:21 | a.clone() | provenance | generated |
+| main.rs:26:9:26:9 | a | main.rs:28:13:28:13 | a | provenance |  |
 | main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
 | main.rs:28:9:28:9 | b | main.rs:29:10:29:10 | b | provenance |  |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:5 |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | generated |
 | main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |
 | main.rs:41:13:41:13 | w [Wrapper] | main.rs:42:15:42:15 | w [Wrapper] | provenance |  |
 | main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | main.rs:41:13:41:13 | w [Wrapper] | provenance |  |
 | main.rs:41:30:41:39 | source(...) | main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:42:15:42:15 | w [Wrapper] | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | provenance |  |
-| main.rs:42:15:42:15 | w [Wrapper] | main.rs:45:17:45:25 | w.clone() [Wrapper] | provenance | generated |
+| main.rs:42:15:42:15 | w [Wrapper] | main.rs:45:17:45:17 | w [Wrapper] | provenance |  |
 | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | main.rs:43:26:43:26 | n | provenance |  |
 | main.rs:43:26:43:26 | n | main.rs:43:38:43:38 | n | provenance |  |
 | main.rs:45:13:45:13 | u [Wrapper] | main.rs:46:15:46:15 | u [Wrapper] | provenance |  |
+| main.rs:45:17:45:17 | w [Wrapper] | main.rs:45:17:45:25 | w.clone() [Wrapper] | provenance | generated |
 | main.rs:45:17:45:25 | w.clone() [Wrapper] | main.rs:45:13:45:13 | u [Wrapper] | provenance |  |
 | main.rs:46:15:46:15 | u [Wrapper] | main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | provenance |  |
 | main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | main.rs:47:26:47:26 | n | provenance |  |
@@ -57,6 +61,7 @@ nodes
 | main.rs:12:18:12:27 | source(...) | semmle.label | source(...) |
 | main.rs:13:10:13:19 | a.unwrap() | semmle.label | a.unwrap() |
 | main.rs:14:9:14:9 | b [Some] | semmle.label | b [Some] |
+| main.rs:14:13:14:13 | a [Some] | semmle.label | a [Some] |
 | main.rs:14:13:14:21 | a.clone() [Some] | semmle.label | a.clone() [Some] |
 | main.rs:15:10:15:19 | b.unwrap() | semmle.label | b.unwrap() |
 | main.rs:19:9:19:9 | a [Ok] | semmle.label | a [Ok] |
@@ -64,12 +69,14 @@ nodes
 | main.rs:19:34:19:43 | source(...) | semmle.label | source(...) |
 | main.rs:20:10:20:19 | a.unwrap() | semmle.label | a.unwrap() |
 | main.rs:21:9:21:9 | b [Ok] | semmle.label | b [Ok] |
+| main.rs:21:13:21:13 | a [Ok] | semmle.label | a [Ok] |
 | main.rs:21:13:21:21 | a.clone() [Ok] | semmle.label | a.clone() [Ok] |
 | main.rs:22:10:22:19 | b.unwrap() | semmle.label | b.unwrap() |
 | main.rs:26:9:26:9 | a | semmle.label | a |
 | main.rs:26:13:26:22 | source(...) | semmle.label | source(...) |
 | main.rs:27:10:27:10 | a | semmle.label | a |
 | main.rs:28:9:28:9 | b | semmle.label | b |
+| main.rs:28:13:28:13 | a | semmle.label | a |
 | main.rs:28:13:28:21 | a.clone() | semmle.label | a.clone() |
 | main.rs:29:10:29:10 | b | semmle.label | b |
 | main.rs:41:13:41:13 | w [Wrapper] | semmle.label | w [Wrapper] |
@@ -80,6 +87,7 @@ nodes
 | main.rs:43:26:43:26 | n | semmle.label | n |
 | main.rs:43:38:43:38 | n | semmle.label | n |
 | main.rs:45:13:45:13 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:45:17:45:17 | w [Wrapper] | semmle.label | w [Wrapper] |
 | main.rs:45:17:45:25 | w.clone() [Wrapper] | semmle.label | w.clone() [Wrapper] |
 | main.rs:46:15:46:15 | u [Wrapper] | semmle.label | u [Wrapper] |
 | main.rs:47:13:47:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |

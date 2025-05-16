@@ -1,5 +1,5 @@
-@_moveOnly
-struct S {
+
+struct S : ~Copyable {
   __consuming func f() {
     discard self
   }

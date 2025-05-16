@@ -67,8 +67,13 @@ class Class = Cpp::Class; // Used for inheritance conversions
 predicate hasCaseEdge(string minValue, string maxValue) { hasCaseEdge(_, minValue, maxValue) }
 
 predicate hasPositionalArgIndex(int argIndex) {
-  exists(Cpp::FunctionCall call | exists(call.getArgument(argIndex))) or
+  exists(Cpp::FunctionCall call | exists(call.getArgument(argIndex)))
+  or
   exists(Cpp::BuiltInOperation op | exists(op.getChild(argIndex)))
+  or
+  // Ensure we are always able to output the argument of a call to the delete operator.
+  exists(Cpp::DeleteExpr d) and
+  argIndex = 0
 }
 
 predicate hasAsmOperandIndex(int operandIndex) {

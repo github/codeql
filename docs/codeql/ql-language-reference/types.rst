@@ -422,7 +422,7 @@ final extensions leave the extended type unchanged:
 
 .. code-block:: ql
 
-    from OneTwoTree o
+    from OneTwoThree o
     select o, o.getAString()
 
 +---+-------------------------+

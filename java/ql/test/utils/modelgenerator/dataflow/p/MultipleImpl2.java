@@ -16,7 +16,7 @@ class MultipleImpl2 {
   }
 
   public class Impl2 implements IInterface {
-    // summary=p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;value;dfc-generated
     public Object m(Object value) {
       return value;

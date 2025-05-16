@@ -264,3 +264,7 @@ module Stage {
   cached
   predicate backref() { optionalStep(_, _, _) }
 }
+
+predicate unsupportedCallable = Private::unsupportedCallable/1;
+
+predicate unsupportedCallable = Private::unsupportedCallable/4;

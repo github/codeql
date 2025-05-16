@@ -3,3 +3,5 @@
 | implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | ErasureExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:5:25:5:25 | 42 |
 | implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | AbiSafeConversionExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:3:12:5 | .b |
 | implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | InjectIntoOptionalExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:12:9:12:10 | { ... } |
+| implicit_conversions.swift:24:3:24:5 | (Array<Any>) ... | UnsafeCastExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... |
+| implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... | LoadExpr | hasType: | yes | getSubExpr: | implicit_conversions.swift:24:3:24:5 | .a |

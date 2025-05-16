@@ -8,6 +8,7 @@
  * @id cs/useless-gethashcode-call
  * @tags readability
  *       useless-code
+ *       quality
  */
 
 import csharp

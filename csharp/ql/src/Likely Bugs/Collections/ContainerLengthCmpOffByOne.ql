@@ -9,6 +9,7 @@
  * @tags reliability
  *       correctness
  *       logic
+ *       quality
  *      external/cwe/cwe-193
  */
 

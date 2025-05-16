@@ -79,18 +79,18 @@ module Generated {
     final predicate hasTokenTree() { exists(this.getTokenTree()) }
 
     /**
-     * Gets the expanded of this macro call, if it exists.
+     * Gets the macro call expansion of this macro call, if it exists.
      */
-    AstNode getExpanded() {
+    AstNode getMacroCallExpansion() {
       result =
         Synth::convertAstNodeFromRaw(Synth::convertMacroCallToRaw(this)
               .(Raw::MacroCall)
-              .getExpanded())
+              .getMacroCallExpansion())
     }
 
     /**
-     * Holds if `getExpanded()` exists.
+     * Holds if `getMacroCallExpansion()` exists.
      */
-    final predicate hasExpanded() { exists(this.getExpanded()) }
+    final predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
   }
 }

@@ -271,7 +271,7 @@ models
 | 13 | Sink: repo:https://github.com/rust-lang/libc:libc; ::calloc; alloc-size; Argument[0,1] |
 | 14 | Sink: repo:https://github.com/rust-lang/libc:libc; ::malloc; alloc-size; Argument[0] |
 | 15 | Sink: repo:https://github.com/rust-lang/libc:libc; ::realloc; alloc-size; Argument[1] |
-| 16 | Source: lang:std; crate::env::args; command-line-source; ReturnValue.Element |
+| 16 | Source: lang:std; crate::env::args; commandargs; ReturnValue.Element |
 | 17 | Summary: lang:core; <crate::alloc::layout::Layout>::align_to; Argument[self]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
 | 18 | Summary: lang:core; <crate::alloc::layout::Layout>::array; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)]; taint |
 | 19 | Summary: lang:core; <crate::alloc::layout::Layout>::extend; Argument[0]; ReturnValue.Field[crate::result::Result::Ok(0)].Field[0]; taint |

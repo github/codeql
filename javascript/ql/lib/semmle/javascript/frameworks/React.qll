@@ -733,7 +733,7 @@ private class ReactRouterSource extends ClientSideRemoteFlowSource {
  * Holds if `mod` transitively depends on `react-router-dom`.
  */
 private predicate dependsOnReactRouter(Module mod) {
-  mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
+  mod.getAnImport().getImportedPathString() = "react-router-dom"
   or
   dependsOnReactRouter(mod.getAnImportedModule())
 }

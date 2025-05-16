@@ -1,3 +1,0 @@
-| applied_property_wrapper.swift:14:8:14:8 | AppliedPropertyWrapperExpr | hasType: | yes | getKind: | 1 | getValue: | applied_property_wrapper.swift:14:8:14:8 | 42 | getParam: | applied_property_wrapper.swift:12:19:12:22 | x |
-| applied_property_wrapper.swift:15:9:15:9 | AppliedPropertyWrapperExpr | hasType: | yes | getKind: | 2 | getValue: | applied_property_wrapper.swift:15:9:15:9 | true | getParam: | applied_property_wrapper.swift:12:19:12:22 | x |
-| file://:0:0:0:0 | AppliedPropertyWrapperExpr | hasType: | yes | getKind: | 1 | getValue: | file://:0:0:0:0 | y | getParam: | applied_property_wrapper.swift:17:26:17:29 | y |

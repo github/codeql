@@ -40,8 +40,8 @@ public class Sources {
     return socketStream();
   }
 
-  // source=p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[0].ArrayElement;remote;df-generated
-  // source=p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[1].Element;remote;df-generated
+  // source=p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[0];remote;df-generated
+  // source=p;Sources;true;sourceToParameter;(InputStream[],List);;Argument[1];remote;df-generated
   // neutral=p;Sources;sourceToParameter;(InputStream[],List);summary;df-generated
   public void sourceToParameter(InputStream[] streams, List<InputStream> otherStreams)
       throws IOException {

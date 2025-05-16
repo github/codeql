@@ -354,37 +354,37 @@
 | cfg.swift:113:12:113:12 | c | cfg.swift:113:12:113:23 | call to getMyInt() |  |
 | cfg.swift:113:12:113:14 | .getMyInt() | cfg.swift:113:12:113:12 | c |  |
 | cfg.swift:113:12:113:23 | call to getMyInt() | cfg.swift:113:3:113:23 | var ... = ... |  |
-| cfg.swift:114:3:114:28 | var ... = ... | cfg.swift:116:7:116:7 | n5 |  |
+| cfg.swift:114:3:114:28 | var ... = ... | cfg.swift:115:7:115:7 | n5 |  |
 | cfg.swift:114:7:114:7 | n4 | cfg.swift:114:12:114:19 | .getMyInt() | match |
 | cfg.swift:114:12:114:12 | c | cfg.swift:114:12:114:14 | .self |  |
 | cfg.swift:114:12:114:14 | .self | cfg.swift:114:12:114:28 | call to getMyInt() |  |
 | cfg.swift:114:12:114:19 | .getMyInt() | cfg.swift:114:12:114:12 | c |  |
 | cfg.swift:114:12:114:28 | call to getMyInt() | cfg.swift:114:3:114:28 | var ... = ... |  |
-| cfg.swift:116:3:116:18 | var ... = ... | cfg.swift:117:7:117:7 | n6 |  |
-| cfg.swift:116:7:116:7 | n5 | cfg.swift:116:12:116:12 | param | match |
-| cfg.swift:116:12:116:12 | param | cfg.swift:116:12:116:18 | getter for .myInt |  |
-| cfg.swift:116:12:116:18 | getter for .myInt | cfg.swift:116:3:116:18 | var ... = ... |  |
-| cfg.swift:117:3:117:23 | var ... = ... | cfg.swift:118:7:118:7 | n7 |  |
-| cfg.swift:117:7:117:7 | n6 | cfg.swift:117:12:117:12 | param | match |
-| cfg.swift:117:12:117:12 | param | cfg.swift:117:12:117:18 | .self |  |
-| cfg.swift:117:12:117:18 | .self | cfg.swift:117:12:117:23 | getter for .myInt |  |
-| cfg.swift:117:12:117:23 | getter for .myInt | cfg.swift:117:3:117:23 | var ... = ... |  |
-| cfg.swift:118:3:118:27 | var ... = ... | cfg.swift:119:7:119:7 | n8 |  |
-| cfg.swift:118:7:118:7 | n7 | cfg.swift:118:12:118:18 | .getMyInt() | match |
-| cfg.swift:118:12:118:12 | param | cfg.swift:118:12:118:27 | call to getMyInt() |  |
-| cfg.swift:118:12:118:18 | .getMyInt() | cfg.swift:118:12:118:12 | param |  |
-| cfg.swift:118:12:118:27 | call to getMyInt() | cfg.swift:118:3:118:27 | var ... = ... |  |
-| cfg.swift:119:3:119:32 | var ... = ... | cfg.swift:121:7:121:7 | n9 |  |
-| cfg.swift:119:7:119:7 | n8 | cfg.swift:119:12:119:23 | .getMyInt() | match |
-| cfg.swift:119:12:119:12 | param | cfg.swift:119:12:119:18 | .self |  |
-| cfg.swift:119:12:119:18 | .self | cfg.swift:119:12:119:32 | call to getMyInt() |  |
-| cfg.swift:119:12:119:23 | .getMyInt() | cfg.swift:119:12:119:12 | param |  |
-| cfg.swift:119:12:119:32 | call to getMyInt() | cfg.swift:119:3:119:32 | var ... = ... |  |
-| cfg.swift:121:3:121:23 | var ... = ... | cfg.swift:122:7:122:7 | n10 |  |
-| cfg.swift:121:7:121:7 | n9 | cfg.swift:121:12:121:12 | inoutParam | match |
-| cfg.swift:121:12:121:12 | (C) ... | cfg.swift:121:12:121:23 | getter for .myInt |  |
-| cfg.swift:121:12:121:12 | inoutParam | cfg.swift:121:12:121:12 | (C) ... |  |
-| cfg.swift:121:12:121:23 | getter for .myInt | cfg.swift:121:3:121:23 | var ... = ... |  |
+| cfg.swift:115:3:115:18 | var ... = ... | cfg.swift:116:7:116:7 | n6 |  |
+| cfg.swift:115:7:115:7 | n5 | cfg.swift:115:12:115:12 | param | match |
+| cfg.swift:115:12:115:12 | param | cfg.swift:115:12:115:18 | getter for .myInt |  |
+| cfg.swift:115:12:115:18 | getter for .myInt | cfg.swift:115:3:115:18 | var ... = ... |  |
+| cfg.swift:116:3:116:23 | var ... = ... | cfg.swift:118:7:118:7 | n8 |  |
+| cfg.swift:116:7:116:7 | n6 | cfg.swift:116:12:116:12 | param | match |
+| cfg.swift:116:12:116:12 | param | cfg.swift:116:12:116:18 | .self |  |
+| cfg.swift:116:12:116:18 | .self | cfg.swift:116:12:116:23 | getter for .myInt |  |
+| cfg.swift:116:12:116:23 | getter for .myInt | cfg.swift:116:3:116:23 | var ... = ... |  |
+| cfg.swift:118:3:118:32 | var ... = ... | cfg.swift:120:7:120:7 | n9 |  |
+| cfg.swift:118:7:118:7 | n8 | cfg.swift:118:12:118:23 | .getMyInt() | match |
+| cfg.swift:118:12:118:12 | param | cfg.swift:118:12:118:18 | .self |  |
+| cfg.swift:118:12:118:18 | .self | cfg.swift:118:12:118:32 | call to getMyInt() |  |
+| cfg.swift:118:12:118:23 | .getMyInt() | cfg.swift:118:12:118:12 | param |  |
+| cfg.swift:118:12:118:32 | call to getMyInt() | cfg.swift:118:3:118:32 | var ... = ... |  |
+| cfg.swift:120:3:120:23 | var ... = ... | cfg.swift:121:7:121:7 | n7 |  |
+| cfg.swift:120:7:120:7 | n9 | cfg.swift:120:12:120:12 | inoutParam | match |
+| cfg.swift:120:12:120:12 | (C) ... | cfg.swift:120:12:120:23 | getter for .myInt |  |
+| cfg.swift:120:12:120:12 | inoutParam | cfg.swift:120:12:120:12 | (C) ... |  |
+| cfg.swift:120:12:120:23 | getter for .myInt | cfg.swift:120:3:120:23 | var ... = ... |  |
+| cfg.swift:121:3:121:27 | var ... = ... | cfg.swift:122:7:122:7 | n10 |  |
+| cfg.swift:121:7:121:7 | n7 | cfg.swift:121:12:121:18 | .getMyInt() | match |
+| cfg.swift:121:12:121:12 | param | cfg.swift:121:12:121:27 | call to getMyInt() |  |
+| cfg.swift:121:12:121:18 | .getMyInt() | cfg.swift:121:12:121:12 | param |  |
+| cfg.swift:121:12:121:27 | call to getMyInt() | cfg.swift:121:3:121:27 | var ... = ... |  |
 | cfg.swift:122:3:122:29 | var ... = ... | cfg.swift:123:7:123:7 | n11 |  |
 | cfg.swift:122:7:122:7 | n10 | cfg.swift:122:13:122:13 | inoutParam | match |
 | cfg.swift:122:13:122:13 | inoutParam | cfg.swift:122:13:122:24 | .self |  |
@@ -1902,14 +1902,11 @@
 | cfg.swift:464:39:464:39 | kpGet_mayB_x | cfg.swift:464:39:464:39 | (KeyPath<A, Int?>) ... |  |
 | cfg.swift:467:1:494:1 | enter testIfConfig() | cfg.swift:467:1:494:1 | testIfConfig() |  |
 | cfg.swift:467:1:494:1 | exit testIfConfig() (normal) | cfg.swift:467:1:494:1 | exit testIfConfig() |  |
-| cfg.swift:467:1:494:1 | testIfConfig() | cfg.swift:468:1:474:1 | #if ... |  |
-| cfg.swift:468:1:474:1 | #if ... | cfg.swift:472:3:472:3 | 3 |  |
+| cfg.swift:467:1:494:1 | testIfConfig() | cfg.swift:472:3:472:3 | 3 |  |
 | cfg.swift:472:3:472:3 | 3 | cfg.swift:473:3:473:3 | 4 |  |
 | cfg.swift:473:3:473:3 | 4 | cfg.swift:476:3:476:3 | 5 |  |
-| cfg.swift:476:3:476:3 | 5 | cfg.swift:478:1:481:1 | #if ... |  |
-| cfg.swift:478:1:481:1 | #if ... | cfg.swift:483:3:483:3 | 8 |  |
-| cfg.swift:483:3:483:3 | 8 | cfg.swift:485:1:491:1 | #if ... |  |
-| cfg.swift:485:1:491:1 | #if ... | cfg.swift:489:3:489:3 | 11 |  |
+| cfg.swift:476:3:476:3 | 5 | cfg.swift:483:3:483:3 | 8 |  |
+| cfg.swift:483:3:483:3 | 8 | cfg.swift:489:3:489:3 | 11 |  |
 | cfg.swift:489:3:489:3 | 11 | cfg.swift:490:3:490:3 | 12 |  |
 | cfg.swift:490:3:490:3 | 12 | cfg.swift:493:3:493:3 | 13 |  |
 | cfg.swift:493:3:493:3 | 13 | cfg.swift:467:1:494:1 | exit testIfConfig() (normal) |  |
@@ -2038,10 +2035,12 @@
 | cfg.swift:529:17:529:30 | .finish() | cfg.swift:529:17:529:17 | continuation |  |
 | cfg.swift:529:17:529:37 | call to finish() | cfg.swift:525:27:530:13 | exit { ... } (normal) |  |
 | cfg.swift:533:5:533:5 | $i$generator | cfg.swift:533:5:533:5 | &... |  |
-| cfg.swift:533:5:533:5 | &... | cfg.swift:533:5:533:5 | call to next() |  |
-| cfg.swift:533:5:533:5 | .next() | cfg.swift:533:5:533:5 | $i$generator |  |
+| cfg.swift:533:5:533:5 | &... | cfg.swift:533:5:533:5 | nil |  |
+| cfg.swift:533:5:533:5 | .next(isolation:) | cfg.swift:533:5:533:5 | $i$generator |  |
+| cfg.swift:533:5:533:5 | CurrentContextIsolationExpr | cfg.swift:533:5:533:5 | call to next(isolation:) |  |
 | cfg.swift:533:5:533:5 | await ... | cfg.swift:533:5:535:5 | for ... in ... { ... } |  |
-| cfg.swift:533:5:533:5 | call to next() | cfg.swift:533:5:533:5 | await ... |  |
+| cfg.swift:533:5:533:5 | call to next(isolation:) | cfg.swift:533:5:533:5 | await ... |  |
+| cfg.swift:533:5:533:5 | nil | cfg.swift:533:5:533:5 | CurrentContextIsolationExpr |  |
 | cfg.swift:533:5:535:5 | for ... in ... { ... } | cfg.swift:522:1:536:1 | exit testAsyncFor() (normal) | empty |
 | cfg.swift:533:5:535:5 | for ... in ... { ... } | cfg.swift:533:19:533:19 | i | non-empty |
 | cfg.swift:533:19:533:19 | i | cfg.swift:534:9:534:9 | print(_:separator:terminator:) | match |
@@ -2051,7 +2050,7 @@
 | cfg.swift:533:24:533:24 | call to makeAsyncIterator() | file://:0:0:0:0 | var ... = ... |  |
 | cfg.swift:533:24:533:24 | stream | cfg.swift:533:24:533:24 | (AsyncStream<Int>) ... |  |
 | cfg.swift:534:9:534:9 | print(_:separator:terminator:) | cfg.swift:534:15:534:15 | i |  |
-| cfg.swift:534:9:534:16 | call to print(_:separator:terminator:) | cfg.swift:533:5:533:5 | .next() |  |
+| cfg.swift:534:9:534:16 | call to print(_:separator:terminator:) | cfg.swift:533:5:533:5 | .next(isolation:) |  |
 | cfg.swift:534:14:534:14 | default separator | cfg.swift:534:14:534:14 | default terminator |  |
 | cfg.swift:534:14:534:14 | default terminator | cfg.swift:534:9:534:16 | call to print(_:separator:terminator:) |  |
 | cfg.swift:534:15:534:15 | (Any) ... | cfg.swift:534:15:534:15 | [...] |  |
@@ -2223,6 +2222,44 @@
 | cfg.swift:585:25:585:25 | ThenStmt | cfg.swift:585:11:585:38 | SingleValueStmtExpr |  |
 | cfg.swift:585:36:585:36 | 2 | cfg.swift:585:36:585:36 | ThenStmt |  |
 | cfg.swift:585:36:585:36 | ThenStmt | cfg.swift:585:11:585:38 | SingleValueStmtExpr |  |
+| cfg.swift:590:8:590:8 | ValueGenericsStruct<N>.init() | cfg.swift:590:8:590:8 | self |  |
+| cfg.swift:590:8:590:8 | enter ValueGenericsStruct<N>.init() | cfg.swift:590:8:590:8 | ValueGenericsStruct<N>.init() |  |
+| cfg.swift:590:8:590:8 | exit ValueGenericsStruct<N>.init() (normal) | cfg.swift:590:8:590:8 | exit ValueGenericsStruct<N>.init() |  |
+| cfg.swift:590:8:590:8 | return | cfg.swift:590:8:590:8 | exit ValueGenericsStruct<N>.init() (normal) | return |
+| cfg.swift:590:8:590:8 | self | cfg.swift:590:8:590:8 | return |  |
+| cfg.swift:591:9:591:9 | _modify | cfg.swift:591:9:591:9 | self |  |
+| cfg.swift:591:9:591:9 | enter _modify | cfg.swift:591:9:591:9 | _modify |  |
+| cfg.swift:591:9:591:9 | enter get | cfg.swift:591:9:591:9 | get |  |
+| cfg.swift:591:9:591:9 | enter set | cfg.swift:591:9:591:9 | set |  |
+| cfg.swift:591:9:591:9 | exit _modify (normal) | cfg.swift:591:9:591:9 | exit _modify |  |
+| cfg.swift:591:9:591:9 | exit get (normal) | cfg.swift:591:9:591:9 | exit get |  |
+| cfg.swift:591:9:591:9 | exit set (normal) | cfg.swift:591:9:591:9 | exit set |  |
+| cfg.swift:591:9:591:9 | get | cfg.swift:591:9:591:9 | self |  |
+| cfg.swift:591:9:591:9 | self | cfg.swift:591:9:591:9 | value |  |
+| cfg.swift:591:9:591:9 | self | file://:0:0:0:0 | self |  |
+| cfg.swift:591:9:591:9 | self | file://:0:0:0:0 | self |  |
+| cfg.swift:591:9:591:9 | set | cfg.swift:591:9:591:9 | self |  |
+| cfg.swift:591:9:591:9 | value | file://:0:0:0:0 | self |  |
+| cfg.swift:591:9:591:9 | yield ... | cfg.swift:591:9:591:9 | exit _modify (normal) |  |
+| cfg.swift:594:1:598:1 | enter valueGenericsFn(_:) | cfg.swift:594:1:598:1 | valueGenericsFn(_:) |  |
+| cfg.swift:594:1:598:1 | exit valueGenericsFn(_:) (normal) | cfg.swift:594:1:598:1 | exit valueGenericsFn(_:) |  |
+| cfg.swift:594:1:598:1 | valueGenericsFn(_:) | cfg.swift:594:34:594:64 | value |  |
+| cfg.swift:594:34:594:64 | value | cfg.swift:595:9:595:9 | x |  |
+| cfg.swift:595:5:595:13 | var ... = ... | cfg.swift:596:5:596:5 | print(_:separator:terminator:) |  |
+| cfg.swift:595:9:595:9 | x | cfg.swift:595:13:595:13 | TypeValueExpr | match |
+| cfg.swift:595:13:595:13 | TypeValueExpr | cfg.swift:595:5:595:13 | var ... = ... |  |
+| cfg.swift:596:5:596:5 | print(_:separator:terminator:) | cfg.swift:596:11:596:11 | x |  |
+| cfg.swift:596:5:596:12 | call to print(_:separator:terminator:) | cfg.swift:597:5:597:5 | _ |  |
+| cfg.swift:596:10:596:10 | default separator | cfg.swift:596:10:596:10 | default terminator |  |
+| cfg.swift:596:10:596:10 | default terminator | cfg.swift:596:5:596:12 | call to print(_:separator:terminator:) |  |
+| cfg.swift:596:11:596:11 | (Any) ... | cfg.swift:596:11:596:11 | [...] |  |
+| cfg.swift:596:11:596:11 | (Int) ... | cfg.swift:596:11:596:11 | (Any) ... |  |
+| cfg.swift:596:11:596:11 | [...] | cfg.swift:596:10:596:10 | default separator |  |
+| cfg.swift:596:11:596:11 | [...] | cfg.swift:596:11:596:11 | [...] |  |
+| cfg.swift:596:11:596:11 | x | cfg.swift:596:11:596:11 | (Int) ... |  |
+| cfg.swift:597:5:597:5 | _ | cfg.swift:597:9:597:9 | value |  |
+| cfg.swift:597:5:597:9 |  ... = ... | cfg.swift:594:1:598:1 | exit valueGenericsFn(_:) (normal) |  |
+| cfg.swift:597:9:597:9 | value | cfg.swift:597:5:597:9 |  ... = ... |  |
 | file://:0:0:0:0 |  ... = ... | cfg.swift:394:7:394:7 | exit set (normal) |  |
 | file://:0:0:0:0 |  ... = ... | cfg.swift:410:9:410:9 | exit set (normal) |  |
 | file://:0:0:0:0 |  ... = ... | cfg.swift:417:9:417:9 | exit set (normal) |  |
@@ -2230,6 +2267,7 @@
 | file://:0:0:0:0 |  ... = ... | cfg.swift:450:7:450:7 | exit set (normal) |  |
 | file://:0:0:0:0 |  ... = ... | cfg.swift:451:7:451:7 | exit set (normal) |  |
 | file://:0:0:0:0 |  ... = ... | cfg.swift:452:7:452:7 | exit set (normal) |  |
+| file://:0:0:0:0 |  ... = ... | cfg.swift:591:9:591:9 | exit set (normal) |  |
 | file://:0:0:0:0 | &... | cfg.swift:394:7:394:7 | yield ... |  |
 | file://:0:0:0:0 | &... | cfg.swift:410:9:410:9 | yield ... |  |
 | file://:0:0:0:0 | &... | cfg.swift:417:9:417:9 | yield ... |  |
@@ -2237,6 +2275,7 @@
 | file://:0:0:0:0 | &... | cfg.swift:450:7:450:7 | yield ... |  |
 | file://:0:0:0:0 | &... | cfg.swift:451:7:451:7 | yield ... |  |
 | file://:0:0:0:0 | &... | cfg.swift:452:7:452:7 | yield ... |  |
+| file://:0:0:0:0 | &... | cfg.swift:591:9:591:9 | yield ... |  |
 | file://:0:0:0:0 | .b | file://:0:0:0:0 | return ... |  |
 | file://:0:0:0:0 | .b | file://:0:0:0:0 | value |  |
 | file://:0:0:0:0 | .bs | file://:0:0:0:0 | return ... |  |
@@ -2250,6 +2289,8 @@
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | return ... |  |
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | return ... |  |
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | return ... |  |
+| file://:0:0:0:0 | .x | file://:0:0:0:0 | return ... |  |
+| file://:0:0:0:0 | .x | file://:0:0:0:0 | value |  |
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | value |  |
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | value |  |
 | file://:0:0:0:0 | .x | file://:0:0:0:0 | value |  |
@@ -2258,6 +2299,7 @@
 | file://:0:0:0:0 | getter for .bs | file://:0:0:0:0 | &... |  |
 | file://:0:0:0:0 | getter for .field | file://:0:0:0:0 | &... |  |
 | file://:0:0:0:0 | getter for .mayB | file://:0:0:0:0 | &... |  |
+| file://:0:0:0:0 | getter for .x | file://:0:0:0:0 | &... |  |
 | file://:0:0:0:0 | getter for .x | file://:0:0:0:0 | &... |  |
 | file://:0:0:0:0 | getter for .x | file://:0:0:0:0 | &... |  |
 | file://:0:0:0:0 | getter for .x | file://:0:0:0:0 | &... |  |
@@ -2272,6 +2314,7 @@
 | file://:0:0:0:0 | return ... | cfg.swift:450:7:450:7 | exit get (normal) | return |
 | file://:0:0:0:0 | return ... | cfg.swift:451:7:451:7 | exit get (normal) | return |
 | file://:0:0:0:0 | return ... | cfg.swift:452:7:452:7 | exit get (normal) | return |
+| file://:0:0:0:0 | return ... | cfg.swift:591:9:591:9 | exit get (normal) | return |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .b |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .b |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .bs |  |
@@ -2288,6 +2331,8 @@
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .x |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .x |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | .x |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .x |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .x |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .b |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .bs |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .field |  |
@@ -2295,6 +2340,8 @@
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .x |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .x |  |
 | file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .x |  |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | getter for .x |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
@@ -2304,4 +2351,4 @@
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | var ... = ... | cfg.swift:138:3:138:3 | .next() |  |
 | file://:0:0:0:0 | var ... = ... | cfg.swift:526:17:526:17 | .next() |  |
-| file://:0:0:0:0 | var ... = ... | cfg.swift:533:5:533:5 | .next() |  |
+| file://:0:0:0:0 | var ... = ... | cfg.swift:533:5:533:5 | .next(isolation:) |  |

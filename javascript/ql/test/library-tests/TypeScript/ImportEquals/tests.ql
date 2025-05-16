@@ -5,7 +5,7 @@ query predicate dataFlowModuleImports(string name, DataFlow::SourceNode imp) {
 }
 
 query predicate imports(Import imprt, string path, Module mod) {
-  path = imprt.getImportedPath().getValue() and
+  path = imprt.getImportedPathString() and
   mod = imprt.getImportedModule()
 }
 

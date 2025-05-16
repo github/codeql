@@ -4,6 +4,7 @@
 
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
+private import semmle.javascript.dataflow.TypeTracking
 private import FlowSummaryUtil
 
 DataFlow::SourceNode promiseConstructorRef() {
@@ -211,12 +212,57 @@ private class PromiseReject extends SummarizedCallable {
   }
 }
 
+/**
+ * A call to `Promise.all()`.
+ */
+class PromiseAllCall extends DataFlow::CallNode {
+  PromiseAllCall() { this = promiseConstructorRef().getAMemberCall("all") }
+
+  /** Gets the source of the input array */
+  DataFlow::ArrayCreationNode getInputArray() { result = this.getArgument(0).getALocalSource() }
+
+  /** Gets the `n`th element of the input array */
+  DataFlow::Node getNthInput(int n) { result = this.getInputArray().getElement(n) }
+
+  /** Gets a reference to the output array. */
+  DataFlow::SourceNode getOutputArray() {
+    exists(AwaitExpr await |
+      this.flowsToExpr(await.getOperand()) and
+      result = await.flow()
+    )
+    or
+    result = this.getAMethodCall("then").getCallback(0).getParameter(0)
+  }
+
+  /** Gets the `n`th output */
+  DataFlow::SourceNode getNthOutput(int n) {
+    exists(string prop |
+      result = this.getOutputArray().getAPropertyRead(prop) and
+      n = prop.toInt()
+    )
+  }
+}
+
+/**
+ * Helps type-tracking simple uses of `Promise.all()` such as `const [a, b] = await Promise.all([x, y])`.
+ *
+ * Due to limited access path depth, type tracking can't track things that are in a promise and an array
+ * at once. This generates a step directly from the input array to the output array.
+ */
+private class PromiseAllStep extends SharedTypeTrackingStep {
+  override predicate loadStep(DataFlow::Node node1, DataFlow::Node node2, string prop) {
+    exists(PromiseAllCall call, int n |
+      node1 = call.getNthInput(n) and
+      node2 = call.getNthOutput(n) and
+      prop = Promises::valueProp()
+    )
+  }
+}
+
 private class PromiseAll extends SummarizedCallable {
   PromiseAll() { this = "Promise.all()" }
 
-  override DataFlow::InvokeNode getACallSimple() {
-    result = promiseConstructorRef().getAMemberCall("all")
-  }
+  override DataFlow::InvokeNode getACallSimple() { result instanceof PromiseAllCall }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     preservesValue = true and

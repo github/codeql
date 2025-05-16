@@ -7,7 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.swift.elements.expr.TypeExpr
+import codeql.swift.elements.expr.Expr
 
 /**
  * INTERNAL: This module contains the fully generated definition of `MacroRole` and should not
@@ -44,9 +44,9 @@ module Generated {
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeExpr getImmediateConformance(int index) {
+    Expr getImmediateConformance(int index) {
       result =
-        Synth::convertTypeExprFromRaw(Synth::convertMacroRoleToRaw(this)
+        Synth::convertExprFromRaw(Synth::convertMacroRoleToRaw(this)
               .(Raw::MacroRole)
               .getConformance(index))
     }
@@ -54,8 +54,8 @@ module Generated {
     /**
      * Gets the `index`th conformance of this macro role (0-based).
      */
-    final TypeExpr getConformance(int index) {
-      exists(TypeExpr immediate |
+    final Expr getConformance(int index) {
+      exists(Expr immediate |
         immediate = this.getImmediateConformance(index) and
         result = immediate.resolve()
       )
@@ -64,7 +64,7 @@ module Generated {
     /**
      * Gets any of the conformances of this macro role.
      */
-    final TypeExpr getAConformance() { result = this.getConformance(_) }
+    final Expr getAConformance() { result = this.getConformance(_) }
 
     /**
      * Gets the number of conformances of this macro role.

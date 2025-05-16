@@ -14,7 +14,7 @@ string describe(TypeDecl td) {
 
 from VarDecl v, TypeDecl td
 where
-  v.getLocation().getFile().getBaseName() != "" and
+  exists(v.getLocation().getFile().getRelativePath()) and
   not v.getName() = "self" and
   (
     td = v.getType().(NominalType).getDeclaration() or

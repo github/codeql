@@ -1,4 +1,2 @@
 | param_decls.swift:48:18:48:22 | p1 | Wrapper |
 | param_decls.swift:49:26:49:30 | p2 | WrapperWithInit |
-| param_decls.swift:50:31:50:35 | p3 | WrapperWithProjected |
-| param_decls.swift:51:38:51:42 | p4 | WrapperWithProjectedAndInit |

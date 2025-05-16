@@ -134,7 +134,7 @@ void noReturnWrapper() { noReturn(); }
 
 void test9()
 {
-	char *data, *data2;
+	char *data;
 	free(data);
 	noReturnWrapper();
 	use_if_nonzero(data); // GOOD
@@ -228,4 +228,29 @@ void regression_test_for_static_var_handling()
 	free(data);
 	data = (char *)malloc(100*sizeof(char));
 	use(data); // GOOD
+}
+
+struct myInnerStruct {
+	char *data;
+};
+
+struct myStruct {
+	myInnerStruct i1;
+	myInnerStruct *i2;
+};
+
+void malloc_after_free(myStruct *s) {
+	free(s->i1.data);
+	s->i1.data = (char *)malloc(100*sizeof(char));
+	if (s->i1.data == 0) {
+		return;
+	}
+	use(s->i1.data); // GOOD [FALSE POSITIVE]
+
+	free(s->i2->data);
+	s->i2->data = (char *)malloc(100*sizeof(char));
+	if (s->i2->data == 0) {
+		return;
+	}
+	use(s->i2->data); // GOOD [FALSE POSITIVE]
 }

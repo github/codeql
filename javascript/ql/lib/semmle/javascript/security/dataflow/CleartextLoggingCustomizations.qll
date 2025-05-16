@@ -171,7 +171,7 @@ module CleartextLogging {
 
   /** An access to the sensitive object `process.env`. */
   class ProcessEnvSource extends Source {
-    ProcessEnvSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+    ProcessEnvSource() { this.(ThreatModelSource).getThreatModel() = "environment" }
 
     override string describe() { result = "process environment" }
   }

@@ -137,9 +137,16 @@ func SupportsWorkspaces() bool {
 	return GetEnvGoSemVer().IsAtLeast(V1_18)
 }
 
+// Constructs a `*exec.Cmd` for `go` with the specified arguments.
+func GoCommand(arg ...string) *exec.Cmd {
+	cmd := exec.Command("go", arg...)
+	util.ApplyProxyEnvVars(cmd)
+	return cmd
+}
+
 // Run `go mod tidy -e` in the directory given by `path`.
 func TidyModule(path string) *exec.Cmd {
-	cmd := exec.Command("go", "mod", "tidy", "-e")
+	cmd := GoCommand("mod", "tidy", "-e")
 	cmd.Dir = path
 	return cmd
 }
@@ -159,21 +166,21 @@ func InitModule(path string) *exec.Cmd {
 		}
 	}
 
-	modInit := exec.Command("go", "mod", "init", moduleName)
+	modInit := GoCommand("mod", "init", moduleName)
 	modInit.Dir = path
 	return modInit
 }
 
 // Constructs a command to run `go mod vendor -e` in the directory given by `path`.
 func VendorModule(path string) *exec.Cmd {
-	modVendor := exec.Command("go", "mod", "vendor", "-e")
+	modVendor := GoCommand("mod", "vendor", "-e")
 	modVendor.Dir = path
 	return modVendor
 }
 
 // Constructs a command to run `go version`.
 func Version() *exec.Cmd {
-	version := exec.Command("go", "version")
+	version := GoCommand("version")
 	return version
 }
 
@@ -209,7 +216,7 @@ func RunListWithEnv(format string, patterns []string, additionalEnv []string, fl
 func ListWithEnv(format string, patterns []string, additionalEnv []string, flags ...string) *exec.Cmd {
 	args := append([]string{"list", "-e", "-f", format}, flags...)
 	args = append(args, patterns...)
-	cmd := exec.Command("go", args...)
+	cmd := GoCommand(args...)
 	cmd.Env = append(os.Environ(), additionalEnv...)
 	return cmd
 }

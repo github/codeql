@@ -1,6 +1,8 @@
 | Cargo.toml:0:0:0:0 | LoadManifest(Cargo.toml) |
 | exe/src/main.rs:0:0:0:0 | Extract(exe/src/main.rs) |
 | exe/src/main.rs:0:0:0:0 | Parse(exe/src/main.rs) |
+| file:///types.rs:0:0:0:0 | Extract(/types.rs) |
+| file:///types.rs:0:0:0:0 | Parse(/types.rs) |
 | file://:0:0:0:0 | CrateGraph |
 | file://:0:0:0:0 | FindManifests |
 | lib/src/lib.rs:0:0:0:0 | Extract(lib/src/lib.rs) |

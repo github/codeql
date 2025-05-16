@@ -2,14 +2,14 @@
 
 ## Description
 In Ruby, it is not necessary to explicitly initialize variables.
-If a local variable has not been explicitly initialized, it will have the value `nil`. If this happens unintended, though, the variable will not represent an object with the expected methods, and a method call on the variable will raise a `NoMethodError`.
+If a local variable has not been explicitly initialized, it will have the value `nil`. If this happens unintentionally, though, the variable will not represent an object with the expected methods, and a method call on the variable will raise a `NoMethodError`.
 
 ## Recommendation
 
-Ensure that the variable cannot be `nil` at the point hightligted by the alert.
+Ensure that the variable cannot be `nil` at the point highlighted by the alert.
 This can be achieved by using a safe navigation or adding a check for `nil`.
 
-Note: You do not need to explicitly initialize the variable, if you can make the program deal with the possible `nil` value. In particular, initializing the variable to `nil` will have no effect, as this is already the value of the variable. If `nil` is the only possibly default value, you need to handle the `nil` value instead of initializing the variable.
+Note: You do not need to explicitly initialize the variable, if you can make the program deal with the possible `nil` value. In particular, initializing the variable to `nil` will have no effect, as this is already the value of the variable. If `nil` is the only possible default value, you need to handle the `nil` value instead of initializing the variable.
 
 ## Examples
 

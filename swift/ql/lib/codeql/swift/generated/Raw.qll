@@ -266,7 +266,7 @@ module Raw {
     /**
      * Gets the `index`th conformance of this macro role (0-based).
      */
-    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+    Expr getConformance(int index) { macro_role_conformances(this, index, result) }
 
     /**
      * Gets the `index`th name of this macro role (0-based).
@@ -1856,6 +1856,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class TypeValueExpr extends @type_value_expr, Expr {
+    override string toString() { result = "TypeValueExpr" }
+
+    /**
+     * Gets the type representation of this type value expression.
+     */
+    TypeRepr getTypeRepr() { type_value_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
@@ -2486,6 +2498,14 @@ module Raw {
     ImplicitConversionExpr, ErrorElement
   {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A conversion that performs an unsafe bitcast.
+   */
+  class UnsafeCastExpr extends @unsafe_cast_expr, ImplicitConversionExpr {
+    override string toString() { result = "UnsafeCastExpr" }
   }
 
   /**
@@ -3318,6 +3338,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class IntegerType extends @integer_type, Type {
+    override string toString() { result = "IntegerType" }
+
+    /**
+     * Gets the value of this integer type.
+     */
+    string getValue() { integer_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class LValueType extends @l_value_type, Type {
     override string toString() { result = "LValueType" }
 
@@ -3512,6 +3544,14 @@ module Raw {
    */
   class BuiltinExecutorType extends @builtin_executor_type, BuiltinType {
     override string toString() { result = "BuiltinExecutorType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A builtin type representing N values stored contiguously.
+   */
+  class BuiltinFixedArrayType extends @builtin_fixed_array_type, BuiltinType {
+    override string toString() { result = "BuiltinFixedArrayType" }
   }
 
   /**

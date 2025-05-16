@@ -7,7 +7,7 @@
  * @id go/ldap-injection
  * @tags security
  *       experimental
- *       external/cwe/cwe-90
+ *       external/cwe/cwe-090
  */
 
 import go

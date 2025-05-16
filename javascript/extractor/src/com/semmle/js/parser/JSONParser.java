@@ -152,9 +152,6 @@ public class JSONParser {
         char c = next();
         switch (c) {
           case '}':
-            if (!needsComma) {
-              raise("Trailing commas are not allowed in JSON.");
-            }
             break out;
           case ',':
             if (!needsComma) {

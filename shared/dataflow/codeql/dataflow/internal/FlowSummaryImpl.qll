@@ -530,6 +530,93 @@ module Make<
       }
     }
 
+    private predicate isNonLocalSummaryComponent(SummaryComponent c) {
+      c instanceof TArgumentSummaryComponent or
+      c instanceof TParameterSummaryComponent or
+      c instanceof TReturnSummaryComponent
+    }
+
+    private predicate isLocalSummaryComponent(SummaryComponent c) {
+      not isNonLocalSummaryComponent(c)
+    }
+
+    /**
+     * Holds if `s` is a valid input stack, in the sense that we generate a data flow graph
+     * that faithfully represents this flow, and lambda-tracking can be expected to track
+     * lambdas to the relevant callbacks in practice.
+     */
+    private predicate isSupportedInputStack(SummaryComponentStack s) {
+      // Argument[n].*
+      s.length() = 1 and
+      s.head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].ReturnValue.*
+      s.length() = 2 and
+      s.head() instanceof TReturnSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].Parameter[n].Content.*
+      s.length() = 3 and
+      s.head() instanceof TContentSummaryComponent and
+      s.tail().head() instanceof TParameterSummaryComponent and
+      s.drop(2).head() instanceof TArgumentSummaryComponent
+      or
+      isSupportedInputStack(s.tail()) and
+      isLocalSummaryComponent(s.head())
+    }
+
+    private predicate isSupportedOutputStack1(SummaryComponentStack s) {
+      // ReturnValue.*
+      s.length() = 1 and
+      s.head() instanceof TReturnSummaryComponent
+      or
+      // Argument[n].Content.*
+      s.length() = 2 and
+      s.head() instanceof TContentSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].Parameter[n].*
+      s.length() = 2 and
+      s.head() instanceof TParameterSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      isSupportedOutputStack1(s.tail()) and
+      isLocalSummaryComponent(s.head())
+    }
+
+    /** Like `isSupportedInputStack` but for output stacks. */
+    private predicate isSupportedOutputStack(SummaryComponentStack s) {
+      isSupportedOutputStack1(s)
+      or
+      // `Argument[n]` not followed by anything. Needs to be outside the recursion.
+      s.length() = 1 and
+      s.head() instanceof TArgumentSummaryComponent
+    }
+
+    /**
+     * Holds if `callable` has an unsupported flow `input -> output`.
+     *
+     * `whichOne` indicates if the `input` or `output` contains the unsupported sequence.
+     */
+    predicate unsupportedCallable(
+      SummarizedCallableImpl callable, SummaryComponentStack input, SummaryComponentStack output,
+      string whichOne
+    ) {
+      callable.propagatesFlow(input, output, _, _) and
+      (
+        not isSupportedInputStack(input) and whichOne = "input"
+        or
+        not isSupportedOutputStack(output) and whichOne = "output"
+      )
+    }
+
+    /**
+     * Holds if `callable` has an unsupported flow.
+     */
+    predicate unsupportedCallable(SummarizedCallableImpl callable) {
+      unsupportedCallable(callable, _, _, _)
+    }
+
     private predicate summarySpec(string spec) {
       exists(SummarizedCallable c |
         c.propagatesFlow(spec, _, _, _)

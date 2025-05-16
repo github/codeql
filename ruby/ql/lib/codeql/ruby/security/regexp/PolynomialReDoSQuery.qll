@@ -18,16 +18,6 @@ private module PolynomialReDoSConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
-
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
-    result = sink.(Sink).getLocation()
-    or
-    result = sink.(Sink).getHighlight().getLocation()
-    or
-    result = sink.(Sink).getRegExp().getLocation()
-  }
 }
 
 /**

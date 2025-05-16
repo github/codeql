@@ -53,7 +53,11 @@ async fn test_sqlx_mysql(url: &str, enable_remote: bool) -> Result<(), sqlx::Err
     let unsafe_query_1 = &arg_string;
     let unsafe_query_2 = &remote_string;
     let unsafe_query_3 = String::from("SELECT * FROM people WHERE firstname='") + &remote_string + "'";
-    let unsafe_query_4 = format!("SELECT * FROM people WHERE firstname='{remote_string}'");
+    let unsafe_query_4 = if remote_string == "*" {
+        "SELECT * FROM people".to_string()
+    } else {
+        format!("SELECT * FROM people WHERE firstname='{remote_string}'")
+    };
     let prepared_query_1 = String::from("SELECT * FROM people WHERE firstname=?"); // (prepared arguments are safe)
 
     // direct execution

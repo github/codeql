@@ -9,6 +9,7 @@
  * @id java/contradictory-type-checks
  * @tags correctness
  *       logic
+ *       quality
  */
 
 import java

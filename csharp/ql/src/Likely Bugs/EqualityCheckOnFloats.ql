@@ -5,10 +5,11 @@
  *              computation does not follow the standard rules of algebra.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cs/equality-on-floats
  * @tags reliability
  *       correctness
+ *       quality
  */
 
 import csharp

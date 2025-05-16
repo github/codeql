@@ -14,7 +14,8 @@ module ShellJS {
       shellJSMember()
           .getMember([
               "exec", "cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv",
-              "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo"
+              "rm", "cat", "head", "sort", "tail", "uniq", "grep", "sed", "to", "toEnd", "echo",
+              "which", "cmd", "asyncExec"
             ])
           .getReturn()
   }
@@ -99,7 +100,8 @@ module ShellJS {
    */
   private class ShellJSGenericFileAccess extends FileSystemAccess, ShellJSCall {
     ShellJSGenericFileAccess() {
-      name = ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm"]
+      name =
+        ["cd", "cp", "touch", "chmod", "pushd", "find", "ls", "ln", "mkdir", "mv", "rm", "which"]
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getAnArgument() }
@@ -111,7 +113,8 @@ module ShellJS {
   private class ShellJSFilenameSource extends FileNameSource, ShellJSCall {
     ShellJSFilenameSource() {
       name = "find" or
-      name = "ls"
+      name = "ls" or
+      name = "which"
     }
   }
 
@@ -151,16 +154,24 @@ module ShellJS {
   }
 
   /**
-   * A call to `shelljs.exec()` modeled as command execution.
+   * A call to `shelljs.exec()`, `shelljs.cmd()`, or `async-shelljs.asyncExec()` modeled as command execution.
    */
   private class ShellJSExec extends SystemCommandExecution, ShellJSCall {
-    ShellJSExec() { name = "exec" }
+    ShellJSExec() { name = ["exec", "cmd", "asyncExec"] }
 
-    override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getACommandArgument() {
+      if name = "cmd"
+      then
+        result = this.getArgument(_) and
+        not result = this.getOptionsArg()
+      else
+        // For exec/asyncExec: only first argument is command
+        result = this.getArgument(0)
+    }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getACommandArgument() }
 
-    override predicate isSync() { none() }
+    override predicate isSync() { name = "cmd" }
 
     override DataFlow::Node getOptionsArg() {
       result = this.getLastArgument() and

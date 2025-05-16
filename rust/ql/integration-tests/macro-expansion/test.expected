@@ -1,0 +1,11 @@
+| src/lib.rs:3:1:4:11 | fn foo | 0 | src/lib.rs:4:1:4:10 | fn foo_0 |
+| src/lib.rs:3:1:4:11 | fn foo | 1 | src/lib.rs:4:1:4:10 | fn foo_1 |
+| src/lib.rs:3:1:4:11 | fn foo | 2 | src/lib.rs:4:1:4:10 | fn foo_2 |
+| src/lib.rs:6:1:8:11 | fn bar | 0 | src/lib.rs:7:1:8:10 | fn bar_0 |
+| src/lib.rs:6:1:8:11 | fn bar | 1 | src/lib.rs:7:1:8:10 | fn bar_1 |
+| src/lib.rs:7:1:8:10 | fn bar_0 | 0 | src/lib.rs:8:1:8:10 | fn bar_0_0 |
+| src/lib.rs:7:1:8:10 | fn bar_0 | 1 | src/lib.rs:8:1:8:10 | fn bar_0_1 |
+| src/lib.rs:7:1:8:10 | fn bar_0 | 2 | src/lib.rs:8:1:8:10 | fn bar_0_2 |
+| src/lib.rs:7:1:8:10 | fn bar_1 | 0 | src/lib.rs:8:1:8:10 | fn bar_1_0 |
+| src/lib.rs:7:1:8:10 | fn bar_1 | 1 | src/lib.rs:8:1:8:10 | fn bar_1_1 |
+| src/lib.rs:7:1:8:10 | fn bar_1 | 2 | src/lib.rs:8:1:8:10 | fn bar_1_2 |

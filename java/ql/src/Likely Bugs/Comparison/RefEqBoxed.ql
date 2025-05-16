@@ -8,6 +8,7 @@
  * @id java/reference-equality-of-boxed-types
  * @tags reliability
  *       correctness
+ *       quality
  *       external/cwe/cwe-595
  */
 

@@ -9,7 +9,7 @@ public class MultipleImpls {
   }
 
   public static class Strat1 implements Strategy {
-    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated
+    // heuristic-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;value;df-generated
     // contentbased-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;value;dfc-generated
     public String doSomething(String value) {
       return value;
@@ -29,7 +29,7 @@ public class MultipleImpls {
   public static class Strat2 implements Strategy {
     private String foo;
 
-    // summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
+    // heuristic-summary=p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated
     // The content based summary is not lifted as it pertains to a (synthetic)field.
     // contentbased-summary=p;MultipleImpls$Strat2;true;doSomething;(String);;Argument[0];Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];value;dfc-generated
     public String doSomething(String value) {
@@ -37,7 +37,7 @@ public class MultipleImpls {
       return "none";
     }
 
-    // summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated
+    // heuristic-summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated
     // The content based summary is not lifted as it pertains to a (synthetic)field.
     // contentbased-summary=p;MultipleImpls$Strat2;true;getValue;();;Argument[this].SyntheticField[p.MultipleImpls$Strat2.foo];ReturnValue;value;dfc-generated
     public String getValue() {

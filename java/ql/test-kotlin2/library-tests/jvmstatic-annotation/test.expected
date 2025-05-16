@@ -4,14 +4,14 @@ staticMembers
 | test.kt:9:1:29:1 | HasCompanion | test.kt:11:3:27:3 | Companion | Class |
 | test.kt:9:1:29:1 | HasCompanion | test.kt:11:3:27:3 | Companion | Field |
 | test.kt:9:1:29:1 | HasCompanion | test.kt:13:5:13:71 | staticMethod | Method |
-| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:43 | getStaticProp | Method |
-| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:43 | setStaticProp | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:37 | getStaticProp | Method |
+| test.kt:9:1:29:1 | HasCompanion | test.kt:16:5:16:37 | setStaticProp | Method |
 | test.kt:9:1:29:1 | HasCompanion | test.kt:20:7:20:45 | getPropWithStaticGetter | Method |
 | test.kt:9:1:29:1 | HasCompanion | test.kt:25:7:25:60 | setPropWithStaticSetter | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:31:1:47:1 | INSTANCE | Field |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:33:3:33:69 | staticMethod | Method |
-| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:41 | getStaticProp | Method |
-| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:41 | setStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:35 | getStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:3:36:35 | setStaticProp | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:40:5:40:43 | getPropWithStaticGetter | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:45:5:45:58 | setPropWithStaticSetter | Method |
 #select
@@ -28,8 +28,8 @@ staticMembers
 | test.kt:11:3:27:3 | Companion | test.kt:13:5:13:71 | staticMethod(...) | test.kt:13:5:13:71 | HasCompanion.Companion | instance |
 | test.kt:11:3:27:3 | Companion | test.kt:13:54:13:71 | nonStaticMethod(...) | test.kt:13:54:13:71 | this | instance |
 | test.kt:11:3:27:3 | Companion | test.kt:14:46:14:60 | staticMethod(...) | test.kt:14:46:14:60 | this | instance |
-| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:43 | getStaticProp(...) | test.kt:16:5:16:43 | HasCompanion.Companion | instance |
-| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:43 | setStaticProp(...) | test.kt:16:5:16:43 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:37 | getStaticProp(...) | test.kt:16:5:16:37 | HasCompanion.Companion | instance |
+| test.kt:11:3:27:3 | Companion | test.kt:16:5:16:37 | setStaticProp(...) | test.kt:16:5:16:37 | HasCompanion.Companion | instance |
 | test.kt:11:3:27:3 | Companion | test.kt:20:7:20:45 | getPropWithStaticGetter(...) | test.kt:20:7:20:45 | HasCompanion.Companion | instance |
 | test.kt:11:3:27:3 | Companion | test.kt:20:26:20:45 | getPropWithStaticSetter(...) | test.kt:20:26:20:45 | this | instance |
 | test.kt:11:3:27:3 | Companion | test.kt:21:24:21:47 | setPropWithStaticSetter(...) | test.kt:21:24:21:47 | this | instance |

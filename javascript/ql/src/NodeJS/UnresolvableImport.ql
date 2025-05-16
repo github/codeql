@@ -24,7 +24,7 @@ PackageJson getClosestPackageJson(Folder f) {
 
 from Require r, string path, string mod
 where
-  path = r.getImportedPath().getValue() and
+  path = r.getImportedPathString() and
   // the imported module is the initial segment of the path, up to
   // `/` or the end of the string, whichever comes first; we exclude
   // local paths starting with `.` or `/`, since they might refer to files

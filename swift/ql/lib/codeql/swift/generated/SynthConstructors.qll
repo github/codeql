@@ -152,6 +152,7 @@ import codeql.swift.elements.expr.internal.TryExprConstructor
 import codeql.swift.elements.expr.internal.TupleElementExprConstructor
 import codeql.swift.elements.expr.internal.TupleExprConstructor
 import codeql.swift.elements.expr.internal.TypeExprConstructor
+import codeql.swift.elements.expr.internal.TypeValueExprConstructor
 import codeql.swift.elements.expr.internal.UnderlyingToOpaqueExprConstructor
 import codeql.swift.elements.expr.internal.UnevaluatedInstanceExprConstructor
 import codeql.swift.elements.expr.internal.UnreachableExprConstructor
@@ -162,6 +163,7 @@ import codeql.swift.elements.expr.internal.UnresolvedMemberExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedPatternExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedSpecializeExprConstructor
 import codeql.swift.elements.expr.internal.UnresolvedTypeConversionExprConstructor
+import codeql.swift.elements.expr.internal.UnsafeCastExprConstructor
 import codeql.swift.elements.expr.internal.VarargExpansionExprConstructor
 import codeql.swift.elements.pattern.internal.AnyPatternConstructor
 import codeql.swift.elements.pattern.internal.BindingPatternConstructor
@@ -205,6 +207,7 @@ import codeql.swift.elements.type.internal.BoundGenericStructTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinBridgeObjectTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinDefaultActorStorageTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinExecutorTypeConstructor
+import codeql.swift.elements.type.internal.BuiltinFixedArrayTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinFloatTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinIntegerLiteralTypeConstructor
 import codeql.swift.elements.type.internal.BuiltinIntegerTypeConstructor
@@ -227,6 +230,7 @@ import codeql.swift.elements.type.internal.FunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericFunctionTypeConstructor
 import codeql.swift.elements.type.internal.GenericTypeParamTypeConstructor
 import codeql.swift.elements.type.internal.InOutTypeConstructor
+import codeql.swift.elements.type.internal.IntegerTypeConstructor
 import codeql.swift.elements.type.internal.LValueTypeConstructor
 import codeql.swift.elements.type.internal.MetatypeTypeConstructor
 import codeql.swift.elements.type.internal.ModuleTypeConstructor

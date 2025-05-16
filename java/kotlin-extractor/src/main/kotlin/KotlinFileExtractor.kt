@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.declarations.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
@@ -1609,7 +1608,7 @@ open class KotlinFileExtractor(
             cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
 
     private fun needsInterfaceForwarder(f: IrFunction) =
-        // jvmDefaultModeEnabledIsEnabled means that -Xjvm-default=all or all-compatibility was
+        // jvmDefaultModeIsNoCompatibility means that -Xjvm-default=all or =no-compatibility was
         // used, in which case real Java default interfaces are used, and we don't need to do
         // anything.
         // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to
@@ -1619,9 +1618,7 @@ open class KotlinFileExtractor(
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class
         // called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
-        !jvmDefaultModeEnabledIsEnabled(
-            pluginContext.languageVersionSettings
-            .getFlag(JvmAnalysisFlags.jvmDefaultMode)) &&
+        !jvmDefaultModeIsNoCompatibility(getJvmDefaultMode(pluginContext.languageVersionSettings)) &&
             f.parentClassOrNull.let {
                 it != null &&
                     it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
@@ -6011,11 +6008,7 @@ open class KotlinFileExtractor(
                 is IrGetValue -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = e.symbol.owner
-                    if (
-                        owner is IrValueParameter &&
-                            owner.index == -1 &&
-                            !owner.isExtensionReceiver()
-                    ) {
+                    if (owner is IrValueParameter && isDispatchReceiver(owner)) {
                         extractThisAccess(e, owner.parent, exprParent, callable)
                     } else {
                         val isAnnotationClassParameter =
@@ -6964,11 +6957,6 @@ open class KotlinFileExtractor(
                 null.also { logger.errorElement("Unrecognised IrConst: " + v.javaClass, e) }
             }
         }
-    }
-
-    private fun IrValueParameter.isExtensionReceiver(): Boolean {
-        val parentFun = parent as? IrFunction ?: return false
-        return parentFun.extensionReceiverParameter == this
     }
 
     private open inner class GeneratedClassHelper(

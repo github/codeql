@@ -1,5 +1,10 @@
 | asio_streams.cpp:93:29:93:39 | *recv_buffer | remote-sink |
 | asio_streams.cpp:103:29:103:39 | *send_buffer | remote-sink |
-| test.cpp:9:10:9:10 | 0 | test-sink |
-| test.cpp:11:10:11:10 | x | test-sink |
-| test.cpp:15:10:15:10 | y | test-sink |
+| test.cpp:12:10:12:10 | 0 | test-sink |
+| test.cpp:14:10:14:10 | x | test-sink |
+| test.cpp:18:10:18:10 | y | test-sink |
+| test.cpp:22:10:22:10 | z | test-sink |
+| test.cpp:26:10:26:11 | y2 | test-sink |
+| test.cpp:29:10:29:11 | y3 | test-sink |
+| test.cpp:33:10:33:11 | z2 | test-sink |
+| test.cpp:36:10:36:11 | z3 | test-sink |

@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @id rb/useless-assignment-to-local
  * @tags maintainability
+ *       quality
  *       external/cwe/cwe-563
- * @precision medium
+ * @precision high
  */
 
 import codeql.ruby.AST

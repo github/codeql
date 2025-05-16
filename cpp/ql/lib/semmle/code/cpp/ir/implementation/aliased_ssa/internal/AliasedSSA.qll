@@ -235,7 +235,7 @@ private newtype TMemoryLocation =
  *
  * Some of these memory locations will be filtered out for performance reasons before being passed to SSA construction.
  */
-abstract private class MemoryLocation0 extends TMemoryLocation {
+abstract class MemoryLocation0 extends TMemoryLocation {
   final string toString() {
     if this.isMayAccess()
     then result = "?" + this.toStringInternal()
@@ -874,7 +874,7 @@ private int numberOfOverlappingUses(MemoryLocation0 def) {
  * Holds if `def` is a busy definition. That is, it has a large number of
  * overlapping uses.
  */
-private predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
+predicate isBusyDef(MemoryLocation0 def) { numberOfOverlappingUses(def) > 1024 }
 
 /** Holds if `use` is a use that overlaps with a busy definition. */
 private predicate useOverlapWithBusyDef(MemoryLocation0 use) {

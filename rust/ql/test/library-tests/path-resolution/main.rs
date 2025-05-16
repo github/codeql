@@ -75,7 +75,7 @@ fn i() {
 
     {
         struct Foo {
-            x: i32,
+            x: i32, // $ item=i32
         } // I30
 
         let _ = Foo { x: 0 }; // $ item=I30
@@ -121,9 +121,13 @@ mod m6 {
 
 mod m7 {
     pub enum MyEnum {
-        A(i32),       // I42
-        B { x: i32 }, // I43
-        C,            // I44
+        A(
+            i32, // $ item=i32
+        ), // I42
+        B {
+            x: i32, // $ item=i32
+        }, // I43
+        C, // I44
     } // I41
 
     #[rustfmt::skip]
@@ -547,6 +551,76 @@ mod m23 {
     } // I108
 }
 
+mod m24 {
+    trait TraitA {
+        fn trait_a_method(&self); // I110
+    } // I111
+
+    trait TraitB {
+        fn trait_b_method(&self); // I112
+    } // I113
+
+    #[rustfmt::skip]
+    struct GenericStruct<T> { // I114
+        data: T, // $ item=I114
+    } // I115
+
+    #[rustfmt::skip]
+    impl<T> // I1151
+        GenericStruct<T> // $ item=I115 item=I1151
+    where
+        T: TraitA // $ item=I111 item=I1151
+    {
+        fn call_trait_a(&self) {
+            self.data.trait_a_method(); // $ item=I110
+        } // I116
+    }
+
+    #[rustfmt::skip]
+    impl<T> // I1161
+        GenericStruct<T> // $ item=I115 item=I1161
+    where
+        T: TraitB, // $ item=I113 item=I1161
+        T: TraitA, // $ item=I111 item=I1161
+    {
+        fn call_both(&self) {
+            self.data.trait_a_method(); // $ item=I110
+            self.data.trait_b_method(); // $ item=I112
+        } // I117
+    }
+
+    struct Implementor; // I118
+
+    #[rustfmt::skip]
+    impl TraitA for Implementor { // $ item=I111 item=I118
+        fn trait_a_method(&self) {
+            println!("TraitA method called");
+        } // I119
+    }
+
+    #[rustfmt::skip]
+    impl TraitB for Implementor { // $ item=I113 item=I118
+        fn trait_b_method(&self) {
+            println!("TraitB method called");
+        } // I120
+    }
+
+    #[rustfmt::skip]
+    pub fn f() {
+        let impl_obj = Implementor; // $ item=I118
+        let generic = GenericStruct { data: impl_obj }; // $ item=I115
+        
+        generic.call_trait_a(); // $ MISSING: item=I116
+        generic.call_both(); // $ MISSING: item=I117
+        
+        // Access through where clause type parameter constraint
+        GenericStruct::<Implementor>::call_trait_a(&generic); // $ item=I116 item=I118
+            
+        // Type that satisfies multiple trait bounds in where clause
+        GenericStruct::<Implementor>::call_both(&generic); // $ item=I117 item=I118
+    } // I121
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38
@@ -575,4 +649,5 @@ fn main() {
     nested_f(); // $ item=I201
     m18::m19::m20::g(); // $ item=I103
     m23::f(); // $ item=I108
+    m24::f(); // $ item=I121
 }

@@ -1,0 +1,2 @@
+| macro_expansion.rs:1:1:2:11 | fn foo | 0 | macro_expansion.rs:2:4:2:10 | fn foo |
+| macro_expansion.rs:1:1:2:11 | fn foo | 1 | macro_expansion.rs:2:4:2:6 | Static |

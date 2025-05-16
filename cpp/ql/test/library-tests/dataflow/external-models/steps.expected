@@ -1,2 +1,7 @@
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer |
-| test.cpp:13:18:13:18 | x | test.cpp:13:10:13:16 | call to ymlStep |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
+| test.cpp:28:35:28:35 | 0 | test.cpp:28:11:28:33 | call to ymlStepManual_with_body |
+| test.cpp:32:38:32:38 | 0 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
+| test.cpp:35:38:35:38 | x | test.cpp:35:11:35:36 | call to ymlStepGenerated_with_body |
