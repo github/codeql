@@ -30,6 +30,12 @@ module ServerSideRequestForgery {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/experimental/CWE-918/SSRF.ql:23: Column 1 selects sink.getARequest
+      none()
+    }
   }
 
   /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
