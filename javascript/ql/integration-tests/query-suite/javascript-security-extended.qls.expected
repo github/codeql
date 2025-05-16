@@ -59,7 +59,6 @@ ql/javascript/ql/src/Security/CWE-312/ActionsArtifactLeak.ql
 ql/javascript/ql/src/Security/CWE-312/BuildArtifactLeak.ql
 ql/javascript/ql/src/Security/CWE-312/CleartextLogging.ql
 ql/javascript/ql/src/Security/CWE-312/CleartextStorage.ql
-ql/javascript/ql/src/Security/CWE-313/PasswordInConfigurationFile.ql
 ql/javascript/ql/src/Security/CWE-326/InsufficientKeySize.ql
 ql/javascript/ql/src/Security/CWE-327/BadRandomness.ql
 ql/javascript/ql/src/Security/CWE-327/BrokenCryptoAlgorithm.ql
@@ -88,7 +87,6 @@ ql/javascript/ql/src/Security/CWE-754/UnvalidatedDynamicMethodCall.ql
 ql/javascript/ql/src/Security/CWE-770/MissingRateLimiting.ql
 ql/javascript/ql/src/Security/CWE-770/ResourceExhaustion.ql
 ql/javascript/ql/src/Security/CWE-776/XmlBomb.ql
-ql/javascript/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/javascript/ql/src/Security/CWE-807/ConditionalBypass.ql
 ql/javascript/ql/src/Security/CWE-829/InsecureDownload.ql
 ql/javascript/ql/src/Security/CWE-830/FunctionalityFromUntrustedDomain.ql

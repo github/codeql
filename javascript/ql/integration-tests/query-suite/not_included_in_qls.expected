@@ -53,7 +53,9 @@ ql/javascript/ql/src/RegExp/BackspaceEscape.ql
 ql/javascript/ql/src/RegExp/MalformedRegExp.ql
 ql/javascript/ql/src/Security/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
 ql/javascript/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
+ql/javascript/ql/src/Security/CWE-313/PasswordInConfigurationFile.ql
 ql/javascript/ql/src/Security/CWE-451/MissingXFrameOptions.ql
+ql/javascript/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/javascript/ql/src/Security/CWE-807/DifferentKindsComparisonBypass.ql
 ql/javascript/ql/src/Security/trest/test.ql
 ql/javascript/ql/src/Statements/EphemeralLoop.ql
