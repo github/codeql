@@ -380,7 +380,7 @@ fn emit_function(
     assert_eq!(sig.binders.len(Interner), parameters.len());
     let sig = sig.skip_binders();
     let ty_vars = &[parameters];
-    let function_data = db.function_data(function);
+    let function_data = db.function_signature(function);
     let mut self_param = None;
     let params = sig
         .params()
