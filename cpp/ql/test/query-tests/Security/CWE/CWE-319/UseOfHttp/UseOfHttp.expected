@@ -6,8 +6,8 @@ edges
 | test.cpp:28:10:28:29 | *http://example.com | test.cpp:11:26:11:28 | *url | provenance |  |
 | test.cpp:35:23:35:42 | *http://example.com | test.cpp:35:23:35:42 | *http://example.com | provenance |  |
 | test.cpp:35:23:35:42 | *http://example.com | test.cpp:39:11:39:15 | *url_l | provenance |  |
-| test.cpp:36:26:36:45 | *http://example.com | test.cpp:36:26:36:45 | *http://example.com | provenance |  |
-| test.cpp:36:26:36:45 | *http://example.com | test.cpp:40:11:40:17 | *access to array | provenance |  |
+| test.cpp:36:26:36:45 | *http://example.com | test.cpp:36:26:36:45 | *{...} | provenance |  |
+| test.cpp:36:26:36:45 | *{...} | test.cpp:40:11:40:17 | *access to array | provenance |  |
 | test.cpp:38:11:38:15 | *url_g | test.cpp:11:26:11:28 | *url | provenance |  |
 | test.cpp:39:11:39:15 | *url_l | test.cpp:11:26:11:28 | *url | provenance |  |
 | test.cpp:40:11:40:17 | *access to array | test.cpp:11:26:11:28 | *url | provenance |  |
@@ -29,7 +29,7 @@ nodes
 | test.cpp:35:23:35:42 | *http://example.com | semmle.label | *http://example.com |
 | test.cpp:35:23:35:42 | *http://example.com | semmle.label | *http://example.com |
 | test.cpp:36:26:36:45 | *http://example.com | semmle.label | *http://example.com |
-| test.cpp:36:26:36:45 | *http://example.com | semmle.label | *http://example.com |
+| test.cpp:36:26:36:45 | *{...} | semmle.label | *{...} |
 | test.cpp:38:11:38:15 | *url_g | semmle.label | *url_g |
 | test.cpp:39:11:39:15 | *url_l | semmle.label | *url_l |
 | test.cpp:40:11:40:17 | *access to array | semmle.label | *access to array |
