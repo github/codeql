@@ -55,12 +55,12 @@ private class LocalModelSource extends LocalFlowSource {
 }
 
 /**
- * A local data flow source that the `argv` parameter to `main`.
+ * A local data flow source that the `argv` parameter to `main` or `wmain`.
  */
 private class ArgvSource extends LocalFlowSource {
   ArgvSource() {
     exists(Function main, Parameter argv |
-      main.hasGlobalName("main") and
+      main.hasGlobalName(["main", "wmain"]) and
       main.getParameter(1) = argv and
       this.asParameter(2) = argv
     )
