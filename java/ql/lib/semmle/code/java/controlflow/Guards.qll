@@ -23,7 +23,7 @@ class ConditionBlock extends BasicBlock {
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
-    result = this.getConditionNode().getABranchSuccessor(testIsTrue)
+    result.getFirstNode() = this.getConditionNode().getABranchSuccessor(testIsTrue)
   }
 
   /*
@@ -300,7 +300,7 @@ private predicate preconditionBranchEdge(
 ) {
   conditionCheckArgument(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
-  bb2 = bb1.getLastNode().getANormalSuccessor()
+  bb2.getFirstNode() = bb1.getLastNode().getANormalSuccessor()
 }
 
 private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {

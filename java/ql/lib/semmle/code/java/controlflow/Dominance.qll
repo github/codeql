@@ -8,30 +8,8 @@ import java
  * Predicates for basic-block-level dominance.
  */
 
-/** Entry points for control-flow. */
-private predicate flowEntry(BasicBlock entry) {
-  exists(Stmt entrystmt | entrystmt = entry.getFirstNode().asStmt() |
-    exists(Callable c | entrystmt = c.getBody())
-    or
-    // This disjunct is technically superfluous, but safeguards against extractor problems.
-    entrystmt instanceof BlockStmt and
-    not exists(entry.getEnclosingCallable()) and
-    not entrystmt.getParent() instanceof Stmt
-  )
-}
-
-/** The successor relation for basic blocks. */
-private predicate bbSucc(BasicBlock pre, BasicBlock post) { post = pre.getABBSuccessor() }
-
 /** The immediate dominance relation for basic blocks. */
-cached
-predicate bbIDominates(BasicBlock dom, BasicBlock node) =
-  idominance(flowEntry/1, bbSucc/2)(_, dom, node)
-
-/** Holds if the dominance relation is calculated for `bb`. */
-predicate hasDominanceInformation(BasicBlock bb) {
-  exists(BasicBlock entry | flowEntry(entry) and bbSucc*(entry, bb))
-}
+predicate bbIDominates(BasicBlock dom, BasicBlock node) { dom.immediatelyDominates(node) }
 
 /** Exit points for basic-block control-flow. */
 private predicate bbSink(BasicBlock exit) { exit.getLastNode() instanceof ControlFlow::ExitNode }
@@ -76,21 +54,6 @@ predicate dominanceFrontier(BasicBlock x, BasicBlock w) {
     bbIDominates(x, prev) and
     not bbIDominates(x, w)
   )
-}
-
-/**
- * Holds if `(bb1, bb2)` is an edge that dominates `bb2`, that is, all other
- * predecessors of `bb2` are dominated by `bb2`. This implies that `bb1` is the
- * immediate dominator of `bb2`.
- *
- * This is a necessary and sufficient condition for an edge to dominate anything,
- * and in particular `dominatingEdge(bb1, bb2) and bb2.bbDominates(bb3)` means
- * that the edge `(bb1, bb2)` dominates `bb3`.
- */
-predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
-  bbIDominates(bb1, bb2) and
-  bb1.getABBSuccessor() = bb2 and
-  forall(BasicBlock pred | pred = bb2.getABBPredecessor() and pred != bb1 | bbDominates(bb2, pred))
 }
 
 /*

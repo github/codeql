@@ -299,8 +299,8 @@ private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normale
   exists(TryStmt try, BlockStmt finally |
     try.getFinally() = finally and
     bb1.getABBSuccessor() = bb2 and
-    bb1.getEnclosingStmt().getEnclosingStmt*() = finally and
-    not bb2.getEnclosingStmt().getEnclosingStmt*() = finally and
+    bb1.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
+    not bb2.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
     if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
     then normaledge = true
     else normaledge = false

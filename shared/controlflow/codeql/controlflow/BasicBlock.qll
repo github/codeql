@@ -51,8 +51,6 @@ signature module InputSig<LocationSig Location> {
 module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
-  final class BasicBlock = BasicBlockImpl;
-
   private Node nodeGetAPredecessor(Node node, SuccessorType s) {
     nodeGetASuccessor(result, s) = node
   }
@@ -67,7 +65,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
    */
-  private class BasicBlockImpl extends TBasicBlockStart {
+  final class BasicBlock extends TBasicBlockStart {
     /** Gets the CFG scope of this basic block. */
     CfgScope getScope() { result = nodeGetCfgScope(this.getFirstNode()) }
 
@@ -259,6 +257,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * only be reached from the entry block by going through `(bb1, bb2)`. This
    * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
    * only be reached from the entry block by going via `(bb1, bb2)`.
+   *
+   * This is a necessary and sufficient condition for an edge to dominate anything,
+   * and in particular `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)` means
+   * that the edge `(bb1, bb2)` dominates `bb3`.
    */
   pragma[nomagic]
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {

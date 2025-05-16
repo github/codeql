@@ -40,7 +40,7 @@ private predicate validatedAccess(VarAccess va) {
       guardcall.getControlFlowNode() = node
     |
       exists(BasicBlock succ |
-        succ = node.getANormalSuccessor() and
+        succ.getFirstNode() = node.getANormalSuccessor() and
         dominatingEdge(node.getBasicBlock(), succ) and
         succ.bbDominates(va.getBasicBlock())
       )

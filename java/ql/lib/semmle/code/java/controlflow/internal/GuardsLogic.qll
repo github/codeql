@@ -290,10 +290,10 @@ private predicate guardImpliesEqual(Guard guard, boolean branch, SsaVariable v, 
   )
 }
 
-private ControlFlowNode getAGuardBranchSuccessor(Guard g, boolean branch) {
-  result = g.(Expr).getControlFlowNode().(ConditionNode).getABranchSuccessor(branch)
+private BasicBlock getAGuardBranchSuccessor(Guard g, boolean branch) {
+  result.getFirstNode() = g.(Expr).getControlFlowNode().(ConditionNode).getABranchSuccessor(branch)
   or
-  result = g.(SwitchCase).getControlFlowNode() and branch = true
+  result.getFirstNode() = g.(SwitchCase).getControlFlowNode() and branch = true
 }
 
 /**
