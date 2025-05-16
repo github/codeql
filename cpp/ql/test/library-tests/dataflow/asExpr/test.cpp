@@ -35,6 +35,6 @@ void test_aggregate_literal() {
 
   S s5 = {.a = 1, .b = 2}; // $ asExpr=1 asExpr=2 asExpr={...}
 
-  int xs[] = {1, 2, 3}; // $ asExpr=1 asExpr=2 asExpr=3 MISSING: asExpr={...}
-  const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 MISSING: asExpr={...}
+  int xs[] = {1, 2, 3}; // $ asExpr=1 asExpr=2 asExpr=3 asExpr={...}
+  const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
 }
