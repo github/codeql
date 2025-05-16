@@ -49,13 +49,6 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
  */
 module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 
-/**
- * DEPRECATED: Use `ThreatModelSource` instead.
- *
- * A source of remote user input.
- */
-deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
-
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 

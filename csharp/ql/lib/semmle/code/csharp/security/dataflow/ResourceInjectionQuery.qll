@@ -39,20 +39,6 @@ private module ResourceInjectionConfig implements DataFlow::ConfigSig {
  */
 module ResourceInjection = TaintTracking::Global<ResourceInjectionConfig>;
 
-/**
- * DEPRECATED: Use `ThreatModelSource` instead.
- *
- * A source of remote user input.
- */
-deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
-
-/**
- * DEPRECATED: Use `ThreatModelSource` instead.
- *
- * A source of local user input.
- */
-deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
-
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 

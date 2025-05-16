@@ -26,19 +26,3 @@ module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about unsafe deserialization.
  */
 module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
-
-/**
- * DEPRECATED. Use the `UnsafeDeserializationFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeDeserialization" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}

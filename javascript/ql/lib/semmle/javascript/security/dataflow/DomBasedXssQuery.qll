@@ -122,40 +122,6 @@ module DomBasedXssConfig implements DataFlow::StateConfigSig {
  */
 module DomBasedXssFlow = TaintTracking::GlobalWithState<DomBasedXssConfig>;
 
-/**
- * DEPRECATED. Use the `DomBasedXssFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "HtmlInjection" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    DomBasedXssConfig::isSource(source, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    DomBasedXssConfig::isSink(sink, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { DomBasedXssConfig::isBarrier(node) }
-
-  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel lbl) {
-    DomBasedXssConfig::isBarrier(node, FlowState::fromFlowLabel(lbl))
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::Node node2, DataFlow::FlowLabel state1,
-    DataFlow::FlowLabel state2
-  ) {
-    DomBasedXssConfig::isAdditionalFlowStep(node1, FlowState::fromFlowLabel(state1), node2,
-      FlowState::fromFlowLabel(state2))
-    or
-    // inherit all ordinary taint steps for the prefix label
-    state1 = prefixLabel() and
-    state2 = prefixLabel() and
-    TaintTracking::sharedTaintStep(node1, node2)
-  }
-}
-
 private class PrefixStringSanitizerActivated extends PrefixStringSanitizer {
   PrefixStringSanitizerActivated() { this = this }
 }

@@ -38,19 +38,6 @@ module LogInjectionConfig implements DataFlow::ConfigSig {
 module LogInjectionFlow = TaintTracking::Global<LogInjectionConfig>;
 
 /**
- * DEPRECATED. Use the `LogInjectionFlow` module instead.
- */
-deprecated class LogInjectionConfiguration extends TaintTracking::Configuration {
-  LogInjectionConfiguration() { this = "LogInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A source of remote user controlled input.
  */
 class RemoteSource extends Source instanceof RemoteFlowSource {

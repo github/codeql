@@ -479,11 +479,6 @@ class DereferenceableExpr extends Expr {
 }
 
 /**
- * DEPRECATED: Use `EnumerableCollectionExpr` instead.
- */
-deprecated class CollectionExpr = EnumerableCollectionExpr;
-
-/**
  * An expression that evaluates to a collection. That is, an expression whose
  * (transitive, reflexive) base type is `IEnumerable`.
  */

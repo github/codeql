@@ -27,16 +27,3 @@ module ImproperCodeSanitizationConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about improper code sanitization vulnerabilities.
  */
 module ImproperCodeSanitizationFlow = TaintTracking::Global<ImproperCodeSanitizationConfig>;
-
-/**
- * DEPRECATED. Use the `ImproperCodeSanitizationFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ImproperCodeSanitization" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
-}

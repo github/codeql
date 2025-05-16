@@ -11,10 +11,6 @@ import javascript
 import PostMessageStarCustomizations::PostMessageStar
 
 // Materialize flow labels
-deprecated private class ConcretePartiallyTaintedObject extends PartiallyTaintedObject {
-  ConcretePartiallyTaintedObject() { this = this }
-}
-
 /**
  * A taint tracking configuration for cross-window communication with unrestricted origin.
  *
@@ -45,44 +41,3 @@ module PostMessageStarConfig implements DataFlow::ConfigSig {
  * A taint tracking configuration for cross-window communication with unrestricted origin.
  */
 module PostMessageStarFlow = TaintTracking::Global<PostMessageStarConfig>;
-
-/**
- * DEPRECATED. Use the `PostMessageStarFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PostMessageStar" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
-    sink instanceof Sink and lbl = anyLabel()
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node trg, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
-  ) {
-    // writing a tainted value to an object property makes the object partially tainted
-    exists(DataFlow::PropWrite write |
-      write.getRhs() = src and
-      inlbl = anyLabel() and
-      trg.(DataFlow::SourceNode).flowsTo(write.getBase()) and
-      outlbl instanceof PartiallyTaintedObject
-    )
-    or
-    // `toString` or `JSON.toString` on a partially tainted object gives a tainted value
-    exists(DataFlow::InvokeNode toString | toString = trg |
-      toString.(DataFlow::MethodCallNode).calls(src, "toString")
-      or
-      src = toString.(JsonStringifyCall).getInput()
-    ) and
-    inlbl instanceof PartiallyTaintedObject and
-    outlbl.isTaint()
-    or
-    // `valueOf` preserves partial taint
-    trg.(DataFlow::MethodCallNode).calls(src, "valueOf") and
-    inlbl instanceof PartiallyTaintedObject and
-    outlbl = inlbl
-  }
-}

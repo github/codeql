@@ -27,19 +27,3 @@ module RegExpInjectionConfig implements DataFlow::ConfigSig {
  * Taint-tracking for untrusted user input used to construct regular expressions.
  */
 module RegExpInjectionFlow = TaintTracking::Global<RegExpInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `RegExpInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RegExpInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}

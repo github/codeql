@@ -43,55 +43,6 @@ module ExternalAPIUsedWithUntrustedDataConfig implements DataFlow::ConfigSig {
 module ExternalAPIUsedWithUntrustedDataFlow =
   TaintTracking::Global<ExternalAPIUsedWithUntrustedDataConfig>;
 
-/**
- * Flow label for objects from which a tainted value is reachable.
- *
- * Only used by the legacy data-flow configuration, as the new data flow configuration
- * uses `allowImplicitRead` to achieve this instead.
- */
-deprecated private class ObjectWrapperFlowLabel extends DataFlow::FlowLabel {
-  ObjectWrapperFlowLabel() { this = "object-wrapper" }
-}
-
-/**
- * DEPRECATED. Use the `ExternalAPIUsedWithUntrustedDataFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ExternalAPIUsedWithUntrustedData" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
-    sink instanceof Sink and
-    (lbl.isTaint() or lbl instanceof ObjectWrapperFlowLabel)
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predLbl,
-    DataFlow::FlowLabel succLbl
-  ) {
-    // Step into an object and switch to the 'object-wrapper' label.
-    exists(DataFlow::PropWrite write |
-      pred = write.getRhs() and
-      succ = write.getBase().getALocalSource() and
-      (predLbl.isTaint() or predLbl instanceof ObjectWrapperFlowLabel) and
-      succLbl instanceof ObjectWrapperFlowLabel
-    )
-  }
-
-  override predicate isSanitizerIn(DataFlow::Node node) {
-    // Block flow from the location to its properties, as the relevant properties (hash and search) are taint sources of their own.
-    // The location source is only used for propagating through API calls like `new URL(location)` and into external APIs where
-    // the whole location object escapes.
-    node = DOM::locationRef().getAPropertyRead()
-  }
-}
-
 /** A node representing data being passed to an external API. */
 class ExternalApiDataNode extends DataFlow::Node instanceof Sink { }
 

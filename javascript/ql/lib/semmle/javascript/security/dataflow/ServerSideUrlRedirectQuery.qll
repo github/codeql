@@ -44,35 +44,6 @@ module ServerSideUrlRedirectConfig implements DataFlow::ConfigSig {
 module ServerSideUrlRedirectFlow = TaintTracking::Global<ServerSideUrlRedirectConfig>;
 
 /**
- * DEPRECATED. Use the `ServerSideUrlRedirectFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ServerSideUrlRedirect" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    ServerSideUrlRedirectConfig::isBarrierOut(node)
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof LocalUrlSanitizingGuard or
-    guard instanceof HostnameSanitizerGuard
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    ServerSideUrlRedirectConfig::isAdditionalFlowStep(pred, succ)
-  }
-}
-
-/**
  * DEPRECATED. This is no longer used as a sanitizer guard.
  *
  * A call to a function called `isLocalUrl` or similar, which is

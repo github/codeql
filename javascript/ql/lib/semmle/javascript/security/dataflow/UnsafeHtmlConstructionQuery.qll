@@ -9,9 +9,6 @@ private import semmle.javascript.security.dataflow.UnsafeJQueryPluginCustomizati
 import UnsafeHtmlConstructionCustomizations::UnsafeHtmlConstruction
 import semmle.javascript.security.TaintedObject
 
-/** DEPRECATED: Mis-spelled class name, alias for Configuration. */
-deprecated class Configration = Configuration;
-
 /**
  * A taint-tracking configuration for reasoning about unsafe HTML constructed from library input vulnerabilities.
  */

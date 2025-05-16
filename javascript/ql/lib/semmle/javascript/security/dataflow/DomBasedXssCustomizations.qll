@@ -336,13 +336,6 @@ module DomBasedXss {
 
   private class HtmlSanitizerAsSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
 
-  /**
-   * DEPRECATED. Use `isOptionallySanitizedNode` instead.
-   *
-   * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
-   */
-  deprecated predicate isOptionallySanitizedEdge = isOptionallySanitizedEdgeInternal/2;
-
   bindingset[call]
   pragma[inline_late]
   private SsaVariable getSanitizedSsaVariable(HtmlSanitizerCall call) {

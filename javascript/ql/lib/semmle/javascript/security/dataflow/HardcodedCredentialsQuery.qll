@@ -77,25 +77,3 @@ module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
  * Data flow for reasoning about hardcoded credentials.
  */
 module HardcodedCredentials = DataFlow::Global<HardcodedCredentialsConfig>;
-
-/**
- * DEPRECATED. Use the `HardcodedCredentials` module instead.
- */
-deprecated class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "HardcodedCredentials" }
-
-  override predicate isSource(DataFlow::Node source) {
-    HardcodedCredentialsConfig::isSource(source)
-  }
-
-  override predicate isSink(DataFlow::Node sink) { HardcodedCredentialsConfig::isSink(sink) }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node) or
-    HardcodedCredentialsConfig::isBarrier(node)
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
-    HardcodedCredentialsConfig::isAdditionalFlowStep(src, trg)
-  }
-}

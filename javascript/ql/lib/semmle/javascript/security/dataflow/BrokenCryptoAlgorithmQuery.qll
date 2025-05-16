@@ -39,19 +39,3 @@ module BrokenCryptoAlgorithmConfig implements DataFlow::ConfigSig {
  * Taint tracking flow for sensitive information in broken or weak cryptographic algorithms.
  */
 module BrokenCryptoAlgorithmFlow = TaintTracking::Global<BrokenCryptoAlgorithmConfig>;
-
-/**
- * DEPRECATED. Use the `BrokenCryptoAlgorithmFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "BrokenCryptoAlgorithm" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}

@@ -38,24 +38,3 @@ module BuildArtifactLeakConfig implements DataFlow::ConfigSig {
  * Taint tracking flow for storage of sensitive information in build artifact.
  */
 module BuildArtifactLeakFlow = TaintTracking::Global<BuildArtifactLeakConfig>;
-
-/**
- * DEPRECATED. Use the `BuildArtifactLeakFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "BuildArtifactLeak" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-    source.(CleartextLogging::Source).getLabel() = lbl
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel lbl) {
-    sink.(Sink).getLabel() = lbl
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof CleartextLogging::Barrier }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node trg) {
-    CleartextLogging::isAdditionalTaintStep(src, trg)
-  }
-}

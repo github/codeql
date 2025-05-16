@@ -46,46 +46,6 @@ predicate isIgnoredSourceSinkPair(Source source, DomBasedXss::Sink sink) {
   sink instanceof DomBasedXss::WriteUrlSink
 }
 
-/**
- * DEPRECATED. Use the `XssThroughDomFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "XssThroughDOM" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DomBasedXss::Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof DomBasedXss::Sanitizer or
-    DomBasedXss::isOptionallySanitizedNode(node)
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof TypeTestGuard or
-    guard instanceof UnsafeJQuery::PropertyPresenceSanitizer or
-    guard instanceof UnsafeJQuery::NumberGuard or
-    guard instanceof PrefixStringSanitizer or
-    guard instanceof QuoteGuard or
-    guard instanceof ContainsHtmlGuard
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    succ = DataFlow::globalVarRef("URL").getAMemberCall("createObjectURL") and
-    pred = succ.(DataFlow::InvokeNode).getArgument(0)
-  }
-
-  override predicate hasFlowPath(DataFlow::SourcePathNode src, DataFlow::SinkPathNode sink) {
-    super.hasFlowPath(src, sink) and
-    // filtering away readings of `src` that end in a URL sink.
-    not (
-      sink.getNode() instanceof DomBasedXss::WriteUrlSink and
-      src.getNode().(DomPropertySource).getPropertyName() = "src"
-    )
-  }
-}
-
 /** A test for the value of `typeof x`, restricting the potential types of `x`. */
 class TypeTestGuard extends BarrierGuard, DataFlow::ValueNode {
   override EqualityTest astNode;

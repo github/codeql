@@ -23,26 +23,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Aliases
 
   module DataFlowImplCommonPublic {
-    /**
-     * DEPRECATED: Generally, a custom `FlowState` type should be used instead,
-     * but `string` can of course still be used without referring to this
-     * module.
-     *
-     * Provides `FlowState = string`.
-     */
-    deprecated module FlowStateString {
-      /** A state value to track during data flow. */
-      deprecated class FlowState = string;
-
-      /**
-       * The default state, which is used when the state is unspecified for a source
-       * or a sink.
-       */
-      deprecated class FlowStateEmpty extends FlowState {
-        FlowStateEmpty() { this = "" }
-      }
-    }
-
     private newtype TFlowFeature =
       TFeatureHasSourceCallContext() or
       TFeatureHasSinkCallContext() or

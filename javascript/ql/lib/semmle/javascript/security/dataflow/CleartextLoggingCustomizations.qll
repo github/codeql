@@ -15,22 +15,12 @@ module CleartextLogging {
   abstract class Source extends DataFlow::Node {
     /** Gets a string that describes the type of this data flow source. */
     abstract string describe();
-
-    /**
-     * DEPRECATED. Overriding this predicate no longer has any effect.
-     */
-    deprecated DataFlow::FlowLabel getLabel() { result.isTaint() }
   }
 
   /**
    * A data flow sink for clear-text logging of sensitive information.
    */
-  abstract class Sink extends DataFlow::Node {
-    /**
-     * DEPRECATED. Overriding this predicate no longer has any effect.
-     */
-    deprecated DataFlow::FlowLabel getLabel() { result.isTaint() }
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * A barrier for clear-text logging of sensitive information.
@@ -196,15 +186,6 @@ module CleartextLogging {
       // If the name is known, it should not be sensitive
       not nameIndicatesSensitiveData(this.getPropertyName(), _)
     }
-  }
-
-  /**
-   * DEPRECATED. Use `Barrier` instead, sanitized have been replaced by sanitized nodes.
-   *
-   * Holds if the edge `pred` -> `succ` should be sanitized for clear-text logging of sensitive information.
-   */
-  deprecated predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
-    succ.(DataFlow::PropRead).getBase() = pred
   }
 
   /**

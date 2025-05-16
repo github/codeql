@@ -59,37 +59,3 @@ module NosqlInjectionConfig implements DataFlow::StateConfigSig {
  * Taint-tracking for reasoning about SQL-injection vulnerabilities.
  */
 module NosqlInjectionFlow = DataFlow::GlobalWithState<NosqlInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `NosqlInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "NosqlInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    TaintedObject::isSource(source, label)
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink.(Sink).getAFlowLabel() = label
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof TaintedObject::SanitizerGuard
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::Node node2, DataFlow::FlowLabel state1,
-    DataFlow::FlowLabel state2
-  ) {
-    NosqlInjectionConfig::isAdditionalFlowStep(node1, FlowState::fromFlowLabel(state1), node2,
-      FlowState::fromFlowLabel(state2))
-  }
-}

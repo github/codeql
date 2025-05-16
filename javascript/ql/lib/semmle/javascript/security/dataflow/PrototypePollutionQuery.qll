@@ -14,13 +14,6 @@ import PrototypePollutionCustomizations::PrototypePollution
 
 // Materialize flow labels
 /**
- * We no longer use this flow label, since it does not work in a world where flow states inherit taint steps.
- */
-deprecated private class ConcreteTaintedObjectWrapper extends TaintedObjectWrapper {
-  ConcreteTaintedObjectWrapper() { this = this }
-}
-
-/**
  * A taint tracking configuration for user-controlled objects flowing into deep `extend` calls,
  * leading to prototype pollution.
  */
@@ -65,36 +58,3 @@ module PrototypePollutionConfig implements DataFlow::StateConfigSig {
  * leading to prototype pollution.
  */
 module PrototypePollutionFlow = TaintTracking::GlobalWithState<PrototypePollutionConfig>;
-
-/**
- * DEPRECATED. Use the `PrototypePollutionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PrototypePollution" }
-
-  override predicate isSource(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node.(Source).getAFlowLabel() = label
-  }
-
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowLabel label) {
-    node.(Sink).getAFlowLabel() = label
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel inlbl, DataFlow::FlowLabel outlbl
-  ) {
-    TaintedObject::step(src, dst, inlbl, outlbl)
-    or
-    // Track objects are wrapped in other objects
-    exists(DataFlow::PropWrite write |
-      src = write.getRhs() and
-      inlbl = TaintedObject::label() and
-      dst = write.getBase().getALocalSource() and
-      outlbl = TaintedObjectWrapper::label()
-    )
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    node instanceof TaintedObject::SanitizerGuard
-  }
-}

@@ -36,31 +36,6 @@ module ResourceExhaustionConfig implements DataFlow::ConfigSig {
  */
 module ResourceExhaustionFlow = TaintTracking::Global<ResourceExhaustionConfig>;
 
-/**
- * DEPRECATED. Use the `ResourceExhaustionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ResourceExhaustion" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer or
-    node = any(DataFlow::PropRead read | read.getPropertyName() = "length")
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
-    isNumericFlowStep(src, dst)
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof UpperBoundsCheckSanitizerGuard
-  }
-}
-
 /** Holds if data is converted to a number from `src` to `dst`. */
 predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
   exists(DataFlow::CallNode c |

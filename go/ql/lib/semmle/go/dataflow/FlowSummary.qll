@@ -10,14 +10,4 @@ private import internal.DataFlowUtil
 // import all instances below
 private module Summaries { }
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
 class SummarizedCallable = Impl::Public::SummarizedCallable;
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

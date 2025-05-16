@@ -83,39 +83,3 @@ module UnsafeDynamicMethodAccessConfig implements DataFlow::StateConfigSig {
  * Taint-tracking for reasoning about unsafe dynamic method access.
  */
 module UnsafeDynamicMethodAccessFlow = DataFlow::GlobalWithState<UnsafeDynamicMethodAccessConfig>;
-
-/**
- * DEPRECATED. Use the `UnsafeDynamicMethodAccessFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeDynamicMethodAccess" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    UnsafeDynamicMethodAccessConfig::isSource(source, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    UnsafeDynamicMethodAccessConfig::isSink(sink, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node)
-    or
-    UnsafeDynamicMethodAccessConfig::isBarrier(node)
-  }
-
-  /**
-   * Holds if a property of the given object is an unsafe function.
-   */
-  predicate hasUnsafeMethods(DataFlow::SourceNode node) {
-    PropertyInjection::hasUnsafeMethods(node) // Redefined here so custom queries can override it
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-    DataFlow::FlowLabel dstlabel
-  ) {
-    UnsafeDynamicMethodAccessConfig::additionalFlowStep(src, FlowState::fromFlowLabel(srclabel),
-      dst, FlowState::fromFlowLabel(dstlabel))
-  }
-}

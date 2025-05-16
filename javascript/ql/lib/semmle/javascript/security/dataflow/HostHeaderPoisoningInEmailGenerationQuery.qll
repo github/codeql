@@ -25,14 +25,3 @@ module HostHeaderPoisoningConfig implements DataFlow::ConfigSig {
  * Taint tracking configuration host header poisoning.
  */
 module HostHeaderPoisoningFlow = TaintTracking::Global<HostHeaderPoisoningConfig>;
-
-/**
- * DEPRECATED. Use the `HostHeaderPoisoningFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "TaintedHostHeader" }
-
-  override predicate isSource(DataFlow::Node node) { HostHeaderPoisoningConfig::isSource(node) }
-
-  override predicate isSink(DataFlow::Node node) { HostHeaderPoisoningConfig::isSink(node) }
-}
