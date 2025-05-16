@@ -1,44 +1,51 @@
 import java
 import experimental.quantum.Language
 
-abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance {
+/**
+ * Signature algorithms are implicitly defined by the constructor.
+ */
+private abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { 
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    result = this
+  }
 
-  // TODO: Could potentially be used to model signature modes like Ed25519ph and Ed25519ctx.
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { 
+    none()
+  }
+}
+
+class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance, SignatureAlgorithmValueConsumer instanceof ClassInstanceExpr {
+  SignatureAlgorithmInstance() {
+    super.getConstructedType().getPackage().getName() = "org.bouncycastle.crypto.signers" and
+    super.getConstructedType().getName().matches("%Signer")
+
+  }
+
+   // TODO: Could potentially be used to model signature modes like Ed25519ph and Ed25519ctx.
   override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
   
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    nameToTypeAndKeySizeMapping(this.getRawAlgorithmName(), _, result)
+  }
+
+  override string getRawAlgorithmName() { 
+    result = super.getConstructedType().getName().splitAt("Signer", 0)
+  }
+
+  override string getKeySizeFixed() { 
+    nameToTypeAndKeySizeMapping(this.getRawAlgorithmName(), result, _)
+  }
 }
 
-class Ed25519AlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
-  Ed25519AlgorithmInstance() {
-    this.getConstructedType().hasQualifiedName("org.bouncycastle.crypto.signers", "Ed25519Signer")
-  }
-
-  override string getRawAlgorithmName() { result = "Ed25519" }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() { 
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519()) 
-  }
-
-  // TODO: May be redundant.
-  override string getKeySizeFixed() { result = "256" }
+predicate nameToTypeAndKeySizeMapping(string name, string keySize, Crypto::KeyOpAlg::Algorithm algorithm) {
+  name = "Ed25519" and keySize = "256" and algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
+  or
+  name = "Ed448" and keySize = "448" and algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
 }
 
-class Ed448AlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
-  Ed448AlgorithmInstance() {
-    this.getConstructedType().hasQualifiedName("org.bouncycastle.crypto.signers", "Ed448Signer")
-  }
-
-  override string getRawAlgorithmName() { result = "Ed448" }
-
-  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() { 
-    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448()) 
-  }
-
-  // TODO: May be redundant.
-  override string getKeySizeFixed() { result = "448" }
-}
 
 
