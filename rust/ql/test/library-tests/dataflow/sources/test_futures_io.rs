@@ -34,8 +34,8 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
         let bytes_read = pinned.poll_read(&mut cx, &mut buffer);
         if let Poll::Ready(Ok(n)) = bytes_read {
-            sink(&buffer); // $ MISSING: hasTaintFlow=url
-            sink(&buffer[..n]); // $ MISSING: hasTaintFlow=url
+            sink(&buffer); // $ hasTaintFlow=url
+            sink(&buffer[..n]); // $ hasTaintFlow=url
         }
     }
 
@@ -80,7 +80,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
     {
         // using the `AsyncBufReadExt::fill_buf` extension method (higher-level)
         let buffer = reader2.fill_buf().await?;
-        sink(buffer); // $ MISSING: hasTaintFlow
+        sink(buffer); // $ hasTaintFlow=url
     }
 
     {
@@ -122,7 +122,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
     {
         // using the `AsyncBufReadExt::fill_buf` extension method (higher-level)
         let buffer = reader2.fill_buf().await?;
-        sink(buffer); // $ MISSING: hasTaintFlow
+        sink(buffer); // $ hasTaintFlow=url
     }
 
     {
@@ -149,7 +149,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
     {
         // using the `AsyncBufReadExt::lines` extension method
         let mut lines_stream = reader2.lines();
-        sink(lines_stream.next().await.unwrap()); // $ MISSING: hasTaintFlow
+        sink(lines_stream.next().await.unwrap()); // $ hasTaintFlow=url
         while let Some(line) = lines_stream.next().await {
             sink(line.unwrap()); // $ MISSING: hasTaintFlow
         }

@@ -783,7 +783,7 @@ fn test_rustls() -> std::io::Result<()> {
     {
         let mut buffer = [0u8; 100];
         let _bytes = reader.read(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
