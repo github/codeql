@@ -1,16 +1,12 @@
-
 import java
 
 /**
  * Models for the signature algorithms defined by the `org.bouncycastle.crypto.signers` package.
- * 
  */
 module Signers {
   import Language
   import BouncyCastle.FlowAnalysis
   import BouncyCastle.AlgorithmInstances
-
-  abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
   /**
    * A model of the `Signer` class in Bouncy Castle.
@@ -21,14 +17,12 @@ module Signers {
       this.getName().matches("%Signer")
     }
 
-    MethodCall getAnInitCall() {
-      result = this.getAMethodCall("init")
-    }
+    MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
 
     MethodCall getAUseCall() {
       result = this.getAMethodCall(["update", "generateSignature", "verifySignature"])
     }
-    
+
     MethodCall getAMethodCall(string name) {
       result.getCallee().hasQualifiedName("org.bouncycastle.crypto.signers", this.getName(), name)
     }
@@ -36,55 +30,36 @@ module Signers {
 
   /**
    * BouncyCastle algorithms are instantiated by calling the constructor of the
-   * corresponding class. The algorithm is implicitly defined by the constructor
-   * call.
+   * corresponding class.
    */
-  class NewCall extends SignatureAlgorithmValueConsumer instanceof ClassInstanceExpr {
-    NewCall() {
-      this.getConstructedType() instanceof Signer
-    }
-
-    override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
-      result = getSignatureAlgorithmInstanceFromType(super.getConstructedType())
-    }
-  
-    // TODO: Since the algorithm is implicitly defined by the constructor, should
-    // the input node be `this`?
-    override Crypto::ConsumerInputDataFlowNode getInputNode() { 
-      result.asExpr() = this
-    }
-  }
+  class NewCall = SignatureAlgorithmInstance;
 
   /**
    * The type is instantiated by a constructor call and initialized by a call to
    * `init()` which takes two arguments. The first argument is a flag indicating
    * whether the operation is signing data or verifying a signature, and the
-   * second is the key to use. 
+   * second is the key to use.
    */
   class InitCall extends MethodCall {
-    InitCall() {
-      this = any(Signer signer).getAnInitCall() 
-    }
+    InitCall() { this = any(Signer signer).getAnInitCall() }
 
     Expr getForSigningArg() { result = this.getArgument(0) }
 
     Expr getKeyArg() { result = this.getArgument(1) }
 
-    Crypto::KeyOperationAlgorithmInstance getAlgorithm() {
-      result = getSignatureAlgorithmInstanceFromType(this.getReceiverType())
-    }
-
+    // TODO: Support dataflow for the operation sub-type.
     Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-      (
+      if this.isOperationSubTypeKnown()
+      then
         this.getForSigningArg().(BooleanLiteral).getBooleanValue() = true and
         result = Crypto::TSignMode()
-      ) or (
+        or
         this.getForSigningArg().(BooleanLiteral).getBooleanValue() = false and
         result = Crypto::TVerifyMode()
-      ) or (
-        result = Crypto::TUnknownKeyOperationMode()
-      )
+      else result = Crypto::TUnknownKeyOperationMode()
     }
+
+    predicate isOperationSubTypeKnown() { this.getForSigningArg() instanceof BooleanLiteral }
   }
 
   /**
@@ -93,19 +68,13 @@ module Signers {
    * verify the signature, respectively.
    */
   class UseCall extends MethodCall {
-    UseCall() {
-      this = any(Signer signer).getAUseCall()
-    }
+    UseCall() { this = any(Signer signer).getAUseCall() }
 
-    predicate isIntermediate() {
-      this.getCallee().getName() = "update"
-    }
+    predicate isIntermediate() { this.getCallee().getName() = "update" }
 
     Expr getInput() { result = this.getArgument(0) }
 
-    Expr getOutput() {
-      result = this
-    }
+    Expr getOutput() { result = this }
   }
 
   /**
@@ -118,10 +87,12 @@ module Signers {
    * or `verifySignature()` on a `Signer` instance.
    */
   class SignatureOperationInstance extends Crypto::KeyOperationInstance instanceof UseCall {
-    
+    SignatureOperationInstance() { not this.isIntermediate() }
+
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      result = FlowAnalysis::getInstantiationFromInit(this.getInitCall(), _, _)
+      result = FlowAnalysis::getInstantiationFromUse(this, _, _)
     }
+
     override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
       if FlowAnalysis::hasInit(this)
       then result = this.getInitCall().getKeyOperationSubtype()
@@ -144,17 +115,12 @@ module Signers {
       result.asExpr() = super.getOutput()
     }
 
-    InitCall getInitCall() {
-      result = FlowAnalysis::getInitFromUse(this, _, _)
-    }
+    InitCall getInitCall() { result = FlowAnalysis::getInitFromUse(this, _, _) }
 
     UseCall getAnUpdateCall() {
-      (
-        super.isIntermediate() and result = this
-      ) or (
-        result = FlowAnalysis::getAnIntermediateUseFromFinalUse(this, _, _)
-      )
+      super.isIntermediate() and result = this
+      or
+      result = FlowAnalysis::getAnIntermediateUseFromFinalUse(this, _, _)
     }
   }
 }
-
