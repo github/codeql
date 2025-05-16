@@ -3,4 +3,7 @@ extensions:
       pack: codeql/cpp-all
       extensible: summaryModel
     data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
-      - ["", "", False, "ymlStep", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "ymlStepManual", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "ymlStepGenerated", "", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["", "", False, "ymlStepManual_with_body", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "ymlStepGenerated_with_body", "", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
