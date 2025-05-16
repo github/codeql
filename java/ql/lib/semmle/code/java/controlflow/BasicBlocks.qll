@@ -80,6 +80,14 @@ class BasicBlock extends BbImpl::BasicBlock {
   Callable getEnclosingCallable() { result = this.getScope() }
 
   /**
+   * Holds if this basic block dominates basic block `bb`.
+   *
+   * That is, all paths reaching `bb` from the entry point basic block must
+   * go through this basic block.
+   */
+  predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+  /**
    * DEPRECATED: Use `getASuccessor` instead.
    *
    * Gets an immediate successor of this basic block.
