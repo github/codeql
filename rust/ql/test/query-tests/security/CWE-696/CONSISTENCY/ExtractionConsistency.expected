@@ -1,5 +1,0 @@
-extractionWarning
-| test.rs:62:5:62:29 | macro expansion failed: could not resolve macro 'println' |
-| test.rs:101:5:101:46 | macro expansion failed: could not resolve macro 'libc_print::libc_println' |
-| test.rs:106:5:106:23 | macro expansion failed: could not resolve macro 'core::assert' |
-| test.rs:170:5:170:15 | macro expansion failed: could not resolve macro 'macro4_1' |
