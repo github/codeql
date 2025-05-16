@@ -180,6 +180,9 @@ deprecated private class LiteralImportPath extends PathExpr, ConstantString {
  * ```
  */
 class ImportSpecifier extends Expr, @import_specifier {
+  /** Gets the import declaration in which this specifier appears. */
+  ImportDeclaration getImportDeclaration() { result.getASpecifier() = this }
+
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
   Identifier getImported() { result = this.getChildExpr(0) }
 
