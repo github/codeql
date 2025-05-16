@@ -47,7 +47,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader.read(&mut buffer2).await?;
-        sink(&buffer2[..bytes_read2]); // $ MISSING: hasTaintFlow
+        sink(&buffer2[..bytes_read2]); // $ hasTaintFlow=url
     }
 
     let mut reader2 = futures::io::BufReader::new(reader);
@@ -104,7 +104,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader2.read(&mut buffer2).await?;
-        sink(&buffer2[..bytes_read2]); // $ MISSING: hasTaintFlow
+        sink(&buffer2[..bytes_read2]); // $ hasTaintFlow=url
     }
 
     {
@@ -129,21 +129,21 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncBufReadExt::read_until` extension method
         let mut line = Vec::new();
         let _bytes_read = reader2.read_until(b'\n', &mut line).await?;
-        sink(&line); // $ MISSING: hasTaintFlow
+        sink(&line); // $ hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::read_line` extension method
         let mut line = String::new();
         let _bytes_read = reader2.read_line(&mut line).await?;
-        sink(&line); // $ MISSING: hasTaintFlow
+        sink(&line); // $ hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::read_to_end` extension method
         let mut buffer = Vec::with_capacity(1024);
         let _bytes_read = reader2.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ MISSING: hasTaintFlow
+        sink(&buffer); // $ hasTaintFlow=url
     }
 
     {
