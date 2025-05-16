@@ -245,11 +245,7 @@ abstract private class ModuleLikeNode extends ItemNode {
    * Holds if this is a root module, meaning either a source file or
    * the entry module of a crate.
    */
-  predicate isRoot() {
-    this instanceof SourceFileItemNode
-    or
-    this = any(Crate c).getModule()
-  }
+  predicate isRoot() { this instanceof SourceFileItemNode }
 }
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
@@ -277,12 +273,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
    * or a module, when the crate is defined in a dependency.
    */
   pragma[nomagic]
-  ModuleLikeNode getModuleNode() {
-    result = super.getSourceFile()
-    or
-    not exists(super.getSourceFile()) and
-    result = super.getModule()
-  }
+  ModuleLikeNode getModuleNode() { result = super.getSourceFile() }
 
   /**
    * Gets a source file that belongs to this crate, if any.
@@ -306,11 +297,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   /**
    * Gets a root module node belonging to this crate.
    */
-  ModuleLikeNode getARootModuleNode() {
-    result = this.getASourceFile()
-    or
-    result = super.getModule()
-  }
+  ModuleLikeNode getARootModuleNode() { result = this.getASourceFile() }
 
   pragma[nomagic]
   predicate isPotentialDollarCrateTarget() {
@@ -829,7 +816,7 @@ private predicate crateDependencyEdge(ModuleLikeNode m, string name, CrateItemNo
   or
   // paths inside the crate graph use the name of the crate itself as prefix,
   // although that is not valid in Rust
-  dep = any(Crate c | name = c.getName() and m = c.getModule())
+  dep = any(Crate c | name = c.getName() and m = c.getSourceFile())
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -1173,10 +1160,10 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
  * [1]: https://doc.rust-lang.org/core/prelude/index.html
  */
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
-  exists(Crate core, ModuleItemNode mod, ModuleItemNode prelude, ModuleItemNode rust |
+  exists(Crate core, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
     f = any(Crate c0 | core = c0.getDependency(_)).getASourceFile() and
     core.getName() = "core" and
-    mod = core.getModule() and
+    mod = core.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and
     rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
     i = rust.getASuccessorRec(name) and

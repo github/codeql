@@ -6,7 +6,7 @@ class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
     this instanceof NamedCrate or
-    any(Crate c).getModule() = this.(AstNode).getParentNode*()
+    any(Crate c).getSourceFile() = this.(AstNode).getParentNode*()
   }
 }
 

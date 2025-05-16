@@ -32,7 +32,7 @@ class OptionEnum extends Enum {
     // todo: replace with canonical path, once calculated in QL
     exists(Crate core, Module m |
       core.getName() = "core" and
-      m = core.getModule().getItemList().getAnItem() and
+      m = core.getSourceFile().getAnItem() and
       m.getName().getText() = "option" and
       this = m.getItemList().getAnItem() and
       this.getName().getText() = "Option"
@@ -53,7 +53,7 @@ class ResultEnum extends Enum {
     // todo: replace with canonical path, once calculated in QL
     exists(Crate core, Module m |
       core.getName() = "core" and
-      m = core.getModule().getItemList().getAnItem() and
+      m = core.getSourceFile().getAnItem() and
       m.getName().getText() = "result" and
       this = m.getItemList().getAnItem() and
       this.getName().getText() = "Result"
