@@ -21,12 +21,9 @@ signatureMatches
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | ossl_tolower | 0 |
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | ossl_toupper | 0 |
-| arrayassignment.cpp:3:6:3:9 | sink | (int) |  | pulldown_test_framework | 0 |
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | sqlite3_compileoption_get | 0 |
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | sqlite3_errstr | 0 |
-| arrayassignment.cpp:3:6:3:9 | sink | (int) |  | tls1_alert_code | 0 |
 | arrayassignment.cpp:3:6:3:9 | sink | (int) |  | tls13_alert_code | 0 |
-| arrayassignment.cpp:3:6:3:9 | sink | (int) |  | wait_until_sock_readable | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ASN1_STRING_type_new | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ASN1_tag2bit | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ASN1_tag2str | 0 |
@@ -49,12 +46,9 @@ signatureMatches
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ossl_tolower | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | ossl_toupper | 0 |
-| arrayassignment.cpp:88:7:88:9 | get | (int) |  | pulldown_test_framework | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | sqlite3_compileoption_get | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | sqlite3_errstr | 0 |
-| arrayassignment.cpp:88:7:88:9 | get | (int) |  | tls1_alert_code | 0 |
 | arrayassignment.cpp:88:7:88:9 | get | (int) |  | tls13_alert_code | 0 |
-| arrayassignment.cpp:88:7:88:9 | get | (int) |  | wait_until_sock_readable | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ASN1_STRING_type_new | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ASN1_tag2bit | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ASN1_tag2str | 0 |
@@ -77,12 +71,9 @@ signatureMatches
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ossl_tolower | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | ossl_toupper | 0 |
-| arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | pulldown_test_framework | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | sqlite3_compileoption_get | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | sqlite3_errstr | 0 |
-| arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | tls1_alert_code | 0 |
 | arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | tls13_alert_code | 0 |
-| arrayassignment.cpp:90:7:90:16 | operator[] | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:71:5:71:17 | _U_STRINGorID | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:71:5:71:17 | _U_STRINGorID | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:71:5:71:17 | _U_STRINGorID | (unsigned int) |  | Jim_IntHashFunction | 0 |
@@ -99,7 +90,6 @@ signatureMatches
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | opt_progname | 0 |
 | atl.cpp:72:5:72:17 | _U_STRINGorID | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -109,7 +99,6 @@ signatureMatches
 | atl.cpp:201:8:201:12 | GetAt | (size_t) |  | ossl_param_bytes_to_blocks | 0 |
 | atl.cpp:201:8:201:12 | GetAt | (size_t) |  | ossl_quic_sstream_new | 0 |
 | atl.cpp:201:8:201:12 | GetAt | (size_t) |  | ssl_cert_new | 0 |
-| atl.cpp:201:8:201:12 | GetAt | (size_t) |  | test_get_argument | 0 |
 | atl.cpp:206:10:206:17 | InsertAt | (BLAKE2B_CTX *,const void *,size_t) |  | ossl_blake2b_update | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (BLAKE2B_PARAM *,const uint8_t *,size_t) |  | ossl_blake2b_param_set_personal | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (BLAKE2B_PARAM *,const uint8_t *,size_t) |  | ossl_blake2b_param_set_salt | 2 |
@@ -157,7 +146,6 @@ signatureMatches
 | atl.cpp:206:10:206:17 | InsertAt | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_generic_initiv | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_hw_tdes_ede3_initkey | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (PROV_GCM_CTX *,const unsigned char *,size_t) |  | ossl_gcm_aad_update | 2 |
-| atl.cpp:206:10:206:17 | InsertAt | (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (QUIC_PN,unsigned char *,size_t) |  | ossl_quic_wire_encode_pkt_hdr_pn | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (QUIC_RXFC *,OSSL_STATM *,size_t) |  | ossl_quic_rstream_new | 2 |
 | atl.cpp:206:10:206:17 | InsertAt | (QUIC_TLS *,const unsigned char *,size_t) |  | ossl_quic_tls_set_transport_params | 2 |
@@ -244,7 +232,6 @@ signatureMatches
 | atl.cpp:213:8:213:17 | operator[] | (size_t) |  | ossl_param_bytes_to_blocks | 0 |
 | atl.cpp:213:8:213:17 | operator[] | (size_t) |  | ossl_quic_sstream_new | 0 |
 | atl.cpp:213:8:213:17 | operator[] | (size_t) |  | ssl_cert_new | 0 |
-| atl.cpp:213:8:213:17 | operator[] | (size_t) |  | test_get_argument | 0 |
 | atl.cpp:259:5:259:12 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:259:5:259:12 | CAtlList | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:259:5:259:12 | CAtlList | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
@@ -263,8 +250,6 @@ signatureMatches
 | atl.cpp:268:14:268:22 | FindIndex | (size_t) |  | ossl_quic_sstream_new | 0 |
 | atl.cpp:268:14:268:22 | FindIndex | (size_t) |  | ssl_cert_new | 0 |
 | atl.cpp:268:14:268:22 | FindIndex | (size_t) |  | ssl_cert_new | 0 |
-| atl.cpp:268:14:268:22 | FindIndex | (size_t) |  | test_get_argument | 0 |
-| atl.cpp:268:14:268:22 | FindIndex | (size_t) |  | test_get_argument | 0 |
 | atl.cpp:409:10:409:10 | operator= | (const CComBSTR &) | CComBSTR | Append | 0 |
 | atl.cpp:409:10:409:10 | operator= | (const CComBSTR &) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:411:5:411:12 | CComBSTR | (const CComBSTR &) | CComBSTR | Append | 0 |
@@ -291,12 +276,9 @@ signatureMatches
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | ossl_tolower | 0 |
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | ossl_toupper | 0 |
-| atl.cpp:412:5:412:12 | CComBSTR | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:412:5:412:12 | CComBSTR | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:412:5:412:12 | CComBSTR | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:412:5:412:12 | CComBSTR | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:413:5:413:12 | CComBSTR | (int,LPCOLESTR) | CComBSTR | CComBSTR | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (ASN1_GENERALIZEDTIME *,const char *) |  | ASN1_GENERALIZEDTIME_set_string | 1 |
@@ -370,7 +352,6 @@ signatureMatches
 | atl.cpp:414:5:414:12 | CComBSTR | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| atl.cpp:414:5:414:12 | CComBSTR | (STANZA *,const char *) |  | test_start_file | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (UI *,const char *) |  | UI_add_error_string | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (UI *,const char *) |  | UI_add_info_string | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -389,7 +370,6 @@ signatureMatches
 | atl.cpp:414:5:414:12 | CComBSTR | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| atl.cpp:414:5:414:12 | CComBSTR | (const char *,const char *) |  | test_mk_file_path | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 0 |
 | atl.cpp:414:5:414:12 | CComBSTR | (int,LPCSTR) | CComBSTR | CComBSTR | 1 |
 | atl.cpp:414:5:414:12 | CComBSTR | (int,const char *) |  | BIO_meth_new | 0 |
@@ -421,7 +401,6 @@ signatureMatches
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | opt_progname | 0 |
 | atl.cpp:416:5:416:12 | CComBSTR | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -450,7 +429,6 @@ signatureMatches
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:424:13:424:18 | Append | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | opt_progname | 0 |
 | atl.cpp:424:13:424:18 | Append | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1101,12 +1079,9 @@ signatureMatches
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | ossl_tolower | 0 |
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | ossl_toupper | 0 |
-| atl.cpp:568:8:568:17 | operator[] | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:568:8:568:17 | operator[] | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:568:8:568:17 | operator[] | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:568:8:568:17 | operator[] | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:612:5:612:10 | CPathT | (PCXSTR) |  | operator+= | 0 |
 | atl.cpp:612:5:612:10 | CPathT | (PCXSTR) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:612:5:612:10 | CPathT | (PCXSTR) | CStringT | operator= | 0 |
@@ -1148,12 +1123,9 @@ signatureMatches
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | ossl_tolower | 0 |
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | ossl_toupper | 0 |
-| atl.cpp:731:8:731:17 | operator[] | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:731:8:731:17 | operator[] | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:731:8:731:17 | operator[] | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:731:8:731:17 | operator[] | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:765:10:765:12 | Add | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
 | atl.cpp:765:10:765:12 | Add | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
 | atl.cpp:765:10:765:12 | Add | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
@@ -1184,12 +1156,9 @@ signatureMatches
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | ossl_tolower | 0 |
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | ossl_toupper | 0 |
-| atl.cpp:770:11:770:20 | GetValueAt | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:770:11:770:20 | GetValueAt | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:770:11:770:20 | GetValueAt | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:770:11:770:20 | GetValueAt | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:776:10:776:14 | SetAt | (const deque &,const Allocator &) | deque<T,Allocator> | deque | 1 |
 | atl.cpp:776:10:776:14 | SetAt | (const forward_list &,const Allocator &) | forward_list<T,Allocator> | forward_list | 1 |
 | atl.cpp:776:10:776:14 | SetAt | (const list &,const Allocator &) | list<T,Allocator> | list | 1 |
@@ -1259,7 +1228,6 @@ signatureMatches
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | opt_progname | 0 |
 | atl.cpp:842:17:842:28 | SetExtraInfo | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1276,7 +1244,6 @@ signatureMatches
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | opt_progname | 0 |
 | atl.cpp:843:17:843:27 | SetHostName | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1293,7 +1260,6 @@ signatureMatches
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | opt_progname | 0 |
 | atl.cpp:844:17:844:27 | SetPassword | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1310,7 +1276,6 @@ signatureMatches
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | opt_progname | 0 |
 | atl.cpp:847:17:847:29 | SetSchemeName | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1327,7 +1292,6 @@ signatureMatches
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | opt_progname | 0 |
 | atl.cpp:848:17:848:26 | SetUrlPath | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1344,7 +1308,6 @@ signatureMatches
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | a2i_IPADDRESS | 0 |
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | new_pkcs12_builder | 0 |
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | opt_path_end | 0 |
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | opt_progname | 0 |
 | atl.cpp:849:17:849:27 | SetUserName | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -1780,9 +1743,7 @@ signatureMatches
 | atl.cpp:927:17:927:25 | CopyChars | (QUIC_RXFC *,uint64_t,int) |  | ossl_quic_rxfc_on_rx_stream_frame | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (QUIC_STREAM_ITER *,QUIC_STREAM_MAP *,int) |  | ossl_quic_stream_iter_init | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (QUIC_STREAM_MAP *,uint64_t,int) |  | ossl_quic_stream_map_alloc | 2 |
-| atl.cpp:927:17:927:25 | CopyChars | (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (RSA *,const OSSL_PARAM[],int) |  | ossl_rsa_fromdata | 2 |
-| atl.cpp:927:17:927:25 | CopyChars | (SSL *,SSL *,int) |  | create_ssl_connection | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (SSL *,const unsigned char *,int) |  | SSL_use_certificate_ASN1 | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (SSL *,const void *,int) |  | SSL_write | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (SSL *,void *,int) |  | SSL_peek | 2 |
@@ -1860,7 +1821,6 @@ signatureMatches
 | atl.cpp:927:17:927:25 | CopyChars | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 1 |
 | atl.cpp:927:17:927:25 | CopyChars | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 2 |
-| atl.cpp:927:17:927:25 | CopyChars | (const char *,SD *,int) |  | sd_load | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (const char *,const OSSL_PARAM *,int) |  | print_param_types | 2 |
 | atl.cpp:927:17:927:25 | CopyChars | (const char *,const char *,int) |  | CRYPTO_strdup | 1 |
 | atl.cpp:927:17:927:25 | CopyChars | (const char *,const char *,int) |  | CRYPTO_strdup | 2 |
@@ -2136,9 +2096,7 @@ signatureMatches
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (QUIC_RXFC *,uint64_t,int) |  | ossl_quic_rxfc_on_rx_stream_frame | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (QUIC_STREAM_ITER *,QUIC_STREAM_MAP *,int) |  | ossl_quic_stream_iter_init | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (QUIC_STREAM_MAP *,uint64_t,int) |  | ossl_quic_stream_map_alloc | 2 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (RSA *,const OSSL_PARAM[],int) |  | ossl_rsa_fromdata | 2 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (SSL *,SSL *,int) |  | create_ssl_connection | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (SSL *,const unsigned char *,int) |  | SSL_use_certificate_ASN1 | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (SSL *,const void *,int) |  | SSL_write | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (SSL *,void *,int) |  | SSL_peek | 2 |
@@ -2216,7 +2174,6 @@ signatureMatches
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 1 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 2 |
-| atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const char *,SD *,int) |  | sd_load | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const char *,const OSSL_PARAM *,int) |  | print_param_types | 2 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const char *,const char *,int) |  | CRYPTO_strdup | 1 |
 | atl.cpp:929:17:929:35 | CopyCharsOverlapped | (const char *,const char *,int) |  | CRYPTO_strdup | 2 |
@@ -2293,12 +2250,9 @@ signatureMatches
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | ossl_tolower | 0 |
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | ossl_toupper | 0 |
-| atl.cpp:931:11:931:15 | GetAt | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:931:11:931:15 | GetAt | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:931:11:931:15 | GetAt | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:931:11:931:15 | GetAt | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ASN1_STRING_type_new | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ASN1_tag2bit | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ASN1_tag2str | 0 |
@@ -2321,12 +2275,9 @@ signatureMatches
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ossl_tolower | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | ossl_toupper | 0 |
-| atl.cpp:932:11:932:19 | GetBuffer | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:932:11:932:19 | GetBuffer | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:932:11:932:19 | GetBuffer | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:932:11:932:19 | GetBuffer | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ASN1_STRING_type_new | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ASN1_tag2bit | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ASN1_tag2str | 0 |
@@ -2349,12 +2300,9 @@ signatureMatches
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ossl_tolower | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | ossl_toupper | 0 |
-| atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:934:11:934:28 | GetBufferSetLength | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:938:10:938:14 | SetAt | (XCHAR,XCHAR) | CStringT | Replace | 1 |
 | atl.cpp:938:10:938:14 | SetAt | (const CStringT &,char) |  | operator+ | 1 |
 | atl.cpp:938:10:938:14 | SetAt | (int,XCHAR) | CStringT | Insert | 0 |
@@ -2673,12 +2621,9 @@ signatureMatches
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | ossl_tolower | 0 |
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | ossl_toupper | 0 |
-| atl.cpp:942:11:942:20 | operator[] | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:942:11:942:20 | operator[] | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:942:11:942:20 | operator[] | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:942:11:942:20 | operator[] | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) |  | operator+= | 0 |
 | atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) | CStringT | CStringT | 0 |
 | atl.cpp:1036:5:1036:12 | CStringT | (const VARIANT &) | CStringT | operator= | 0 |
@@ -3336,12 +3281,9 @@ signatureMatches
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | ossl_tolower | 0 |
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | ossl_toupper | 0 |
-| atl.cpp:1072:14:1072:17 | Left | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:1072:14:1072:17 | Left | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:1072:14:1072:17 | Left | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:1072:14:1072:17 | Left | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:1075:10:1075:19 | LoadString | (UINT) | CComBSTR | LoadString | 0 |
 | atl.cpp:1075:10:1075:19 | LoadString | (UINT) | _U_STRINGorID | _U_STRINGorID | 0 |
 | atl.cpp:1075:10:1075:19 | LoadString | (unsigned int) |  | Jim_IntHashFunction | 0 |
@@ -3668,12 +3610,9 @@ signatureMatches
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | ossl_tolower | 0 |
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | ossl_toupper | 0 |
-| atl.cpp:1083:14:1083:18 | Right | (int) |  | pulldown_test_framework | 0 |
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | sqlite3_compileoption_get | 0 |
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | sqlite3_errstr | 0 |
-| atl.cpp:1083:14:1083:18 | Right | (int) |  | tls1_alert_code | 0 |
 | atl.cpp:1083:14:1083:18 | Right | (int) |  | tls13_alert_code | 0 |
-| atl.cpp:1083:14:1083:18 | Right | (int) |  | wait_until_sock_readable | 0 |
 | atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) |  | operator+= | 0 |
 | atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) | CSimpleStringT | operator+= | 0 |
 | atl.cpp:1085:14:1085:26 | SpanExcluding | (PCXSTR) | CStringT | operator= | 0 |
@@ -3761,12 +3700,9 @@ signatureMatches
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | ossl_tolower | 0 |
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | ossl_toupper | 0 |
-| constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | pulldown_test_framework | 0 |
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | sqlite3_compileoption_get | 0 |
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | sqlite3_errstr | 0 |
-| constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | tls1_alert_code | 0 |
 | constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | tls13_alert_code | 0 |
-| constructor_delegation.cpp:8:2:8:8 | MyValue | (int) |  | wait_until_sock_readable | 0 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (ASN1_STRING *,int) |  | ASN1_STRING_length_set | 1 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (ASYNC_WAIT_CTX *,int) |  | ASYNC_WAIT_CTX_set_status | 1 |
 | constructor_delegation.cpp:10:2:10:8 | MyValue | (BIGNUM *,int) |  | BN_clear_bit | 1 |
@@ -4371,12 +4307,9 @@ signatureMatches
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | ossl_tolower | 0 |
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | ossl_toupper | 0 |
-| copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | pulldown_test_framework | 0 |
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | sqlite3_compileoption_get | 0 |
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | sqlite3_errstr | 0 |
-| copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | tls1_alert_code | 0 |
 | copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | tls13_alert_code | 0 |
-| copyableclass.cpp:8:2:8:16 | MyCopyableClass | (int) |  | wait_until_sock_readable | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ASN1_STRING_type_new | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ASN1_tag2bit | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ASN1_tag2str | 0 |
@@ -4399,12 +4332,9 @@ signatureMatches
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ossl_tolower | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | ossl_toupper | 0 |
-| copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | pulldown_test_framework | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | sqlite3_compileoption_get | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | sqlite3_errstr | 0 |
-| copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | tls1_alert_code | 0 |
 | copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | tls13_alert_code | 0 |
-| copyableclass_declonly.cpp:8:2:8:24 | MyCopyableClassDeclOnly | (int) |  | wait_until_sock_readable | 0 |
 | file://:0:0:0:0 | operator delete | (void *) |  | ossl_kdf_data_new | 0 |
 | file://:0:0:0:0 | operator new | (unsigned long) |  | BN_num_bits_word | 0 |
 | file://:0:0:0:0 | operator new | (unsigned long) |  | BUF_MEM_new_ex | 0 |
@@ -4535,7 +4465,6 @@ signatureMatches
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | a2i_IPADDRESS | 0 |
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| format.cpp:142:8:142:13 | strlen | (const char *) |  | new_pkcs12_builder | 0 |
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | opt_path_end | 0 |
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | opt_progname | 0 |
 | format.cpp:142:8:142:13 | strlen | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -4556,7 +4485,6 @@ signatureMatches
 | map.cpp:9:6:9:9 | sink | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | map.cpp:9:6:9:9 | sink | (const char *) |  | a2i_IPADDRESS | 0 |
 | map.cpp:9:6:9:9 | sink | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| map.cpp:9:6:9:9 | sink | (const char *) |  | new_pkcs12_builder | 0 |
 | map.cpp:9:6:9:9 | sink | (const char *) |  | opt_path_end | 0 |
 | map.cpp:9:6:9:9 | sink | (const char *) |  | opt_progname | 0 |
 | map.cpp:9:6:9:9 | sink | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -4583,12 +4511,9 @@ signatureMatches
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | ossl_tolower | 0 |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | ossl_toupper | 0 |
-| movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | pulldown_test_framework | 0 |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | sqlite3_compileoption_get | 0 |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | sqlite3_errstr | 0 |
-| movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | tls1_alert_code | 0 |
 | movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | tls13_alert_code | 0 |
-| movableclass.cpp:8:2:8:15 | MyMovableClass | (int) |  | wait_until_sock_readable | 0 |
 | set.cpp:8:6:8:9 | sink | (char *) |  | SRP_VBASE_new | 0 |
 | set.cpp:8:6:8:9 | sink | (char *) |  | defossilize | 0 |
 | set.cpp:8:6:8:9 | sink | (char *) |  | make_uppercase | 0 |
@@ -4616,12 +4541,9 @@ signatureMatches
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | ossl_tolower | 0 |
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | ossl_toupper | 0 |
-| smart_pointer.cpp:4:6:4:9 | sink | (int) |  | pulldown_test_framework | 0 |
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | sqlite3_compileoption_get | 0 |
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | sqlite3_errstr | 0 |
-| smart_pointer.cpp:4:6:4:9 | sink | (int) |  | tls1_alert_code | 0 |
 | smart_pointer.cpp:4:6:4:9 | sink | (int) |  | tls13_alert_code | 0 |
-| smart_pointer.cpp:4:6:4:9 | sink | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ASN1_tag2str | 0 |
@@ -4644,12 +4566,9 @@ signatureMatches
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:5:6:5:9 | sink | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ASN1_tag2str | 0 |
@@ -4672,12 +4591,9 @@ signatureMatches
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:16:30:16:39 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ASN1_tag2str | 0 |
@@ -4700,12 +4616,9 @@ signatureMatches
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:23:27:23:36 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ASN1_tag2str | 0 |
@@ -4728,12 +4641,9 @@ signatureMatches
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:39:18:39:27 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ASN1_tag2str | 0 |
@@ -4756,12 +4666,9 @@ signatureMatches
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:66:30:66:39 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ASN1_tag2str | 0 |
@@ -4784,12 +4691,9 @@ signatureMatches
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:68:30:68:39 | operator-- | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ASN1_STRING_type_new | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ASN1_tag2bit | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ASN1_tag2str | 0 |
@@ -4812,12 +4716,9 @@ signatureMatches
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ossl_tolower | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | ossl_toupper | 0 |
-| standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | pulldown_test_framework | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | sqlite3_compileoption_get | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | sqlite3_errstr | 0 |
-| standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | tls1_alert_code | 0 |
 | standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | tls13_alert_code | 0 |
-| standalone_iterators.cpp:70:31:70:39 | operator= | (int) |  | wait_until_sock_readable | 0 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (ASN1_STRING *,int) |  | ASN1_STRING_length_set | 1 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (ASYNC_WAIT_CTX *,int) |  | ASYNC_WAIT_CTX_set_status | 1 |
 | standalone_iterators.cpp:103:27:103:36 | operator+= | (BIGNUM *,int) |  | BN_clear_bit | 1 |
@@ -5217,11 +5118,6 @@ signatureMatches
 | stl.h:52:12:52:21 | operator++ | (int) |  | ossl_toupper | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | ossl_toupper | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | ossl_toupper | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | pulldown_test_framework | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | pulldown_test_framework | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | pulldown_test_framework | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | pulldown_test_framework | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
@@ -5232,21 +5128,11 @@ signatureMatches
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_errstr | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_errstr | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | tls1_alert_code | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | tls1_alert_code | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | tls1_alert_code | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | tls1_alert_code | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | tls1_alert_code | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | tls13_alert_code | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | tls13_alert_code | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | tls13_alert_code | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | tls13_alert_code | 0 |
 | stl.h:52:12:52:21 | operator++ | (int) |  | tls13_alert_code | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:52:12:52:21 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | ASN1_tag2bit | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | ASN1_tag2str | 0 |
@@ -5269,12 +5155,9 @@ signatureMatches
 | stl.h:54:12:54:21 | operator-- | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | ossl_tolower | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | ossl_toupper | 0 |
-| stl.h:54:12:54:21 | operator-- | (int) |  | pulldown_test_framework | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | sqlite3_errstr | 0 |
-| stl.h:54:12:54:21 | operator-- | (int) |  | tls1_alert_code | 0 |
 | stl.h:54:12:54:21 | operator-- | (int) |  | tls13_alert_code | 0 |
-| stl.h:54:12:54:21 | operator-- | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | ASN1_tag2bit | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | ASN1_tag2str | 0 |
@@ -5297,12 +5180,9 @@ signatureMatches
 | stl.h:59:12:59:20 | operator+ | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | ossl_tolower | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | ossl_toupper | 0 |
-| stl.h:59:12:59:20 | operator+ | (int) |  | pulldown_test_framework | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | sqlite3_errstr | 0 |
-| stl.h:59:12:59:20 | operator+ | (int) |  | tls1_alert_code | 0 |
 | stl.h:59:12:59:20 | operator+ | (int) |  | tls13_alert_code | 0 |
-| stl.h:59:12:59:20 | operator+ | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | ASN1_tag2bit | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | ASN1_tag2str | 0 |
@@ -5325,12 +5205,9 @@ signatureMatches
 | stl.h:60:12:60:20 | operator- | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | ossl_tolower | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | ossl_toupper | 0 |
-| stl.h:60:12:60:20 | operator- | (int) |  | pulldown_test_framework | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | sqlite3_errstr | 0 |
-| stl.h:60:12:60:20 | operator- | (int) |  | tls1_alert_code | 0 |
 | stl.h:60:12:60:20 | operator- | (int) |  | tls13_alert_code | 0 |
-| stl.h:60:12:60:20 | operator- | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | ASN1_tag2bit | 0 |
@@ -5375,18 +5252,12 @@ signatureMatches
 | stl.h:61:13:61:22 | operator+= | (int) |  | ossl_tolower | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | ossl_toupper | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | ossl_toupper | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | pulldown_test_framework | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | pulldown_test_framework | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | sqlite3_errstr | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | sqlite3_errstr | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | tls1_alert_code | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | tls1_alert_code | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | tls13_alert_code | 0 |
 | stl.h:61:13:61:22 | operator+= | (int) |  | tls13_alert_code | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:61:13:61:22 | operator+= | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | ASN1_tag2bit | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | ASN1_tag2str | 0 |
@@ -5409,12 +5280,9 @@ signatureMatches
 | stl.h:62:13:62:22 | operator-= | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | ossl_tolower | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | ossl_toupper | 0 |
-| stl.h:62:13:62:22 | operator-= | (int) |  | pulldown_test_framework | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | sqlite3_errstr | 0 |
-| stl.h:62:13:62:22 | operator-= | (int) |  | tls1_alert_code | 0 |
 | stl.h:62:13:62:22 | operator-= | (int) |  | tls13_alert_code | 0 |
-| stl.h:62:13:62:22 | operator-= | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | ASN1_tag2bit | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | ASN1_tag2str | 0 |
@@ -5437,12 +5305,9 @@ signatureMatches
 | stl.h:64:18:64:27 | operator[] | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | ossl_tolower | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | ossl_toupper | 0 |
-| stl.h:64:18:64:27 | operator[] | (int) |  | pulldown_test_framework | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | sqlite3_errstr | 0 |
-| stl.h:64:18:64:27 | operator[] | (int) |  | tls1_alert_code | 0 |
 | stl.h:64:18:64:27 | operator[] | (int) |  | tls13_alert_code | 0 |
-| stl.h:64:18:64:27 | operator[] | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | ASN1_STRING_type_new | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | ASN1_tag2bit | 0 |
@@ -5487,18 +5352,12 @@ signatureMatches
 | stl.h:91:24:91:33 | operator++ | (int) |  | ossl_tolower | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | ossl_toupper | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | ossl_toupper | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | pulldown_test_framework | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | pulldown_test_framework | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | sqlite3_errstr | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | sqlite3_errstr | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | tls1_alert_code | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | tls1_alert_code | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | tls13_alert_code | 0 |
 | stl.h:91:24:91:33 | operator++ | (int) |  | tls13_alert_code | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | wait_until_sock_readable | 0 |
-| stl.h:91:24:91:33 | operator++ | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 0 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | deque | assign<InputIt> | 1 |
 | stl.h:182:17:182:22 | assign | (InputIt,InputIt) | forward_list | assign<InputIt> | 0 |
@@ -5665,12 +5524,9 @@ signatureMatches
 | stl.h:240:33:240:42 | operator<< | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stl.h:240:33:240:42 | operator<< | (int) |  | ossl_tolower | 0 |
 | stl.h:240:33:240:42 | operator<< | (int) |  | ossl_toupper | 0 |
-| stl.h:240:33:240:42 | operator<< | (int) |  | pulldown_test_framework | 0 |
 | stl.h:240:33:240:42 | operator<< | (int) |  | sqlite3_compileoption_get | 0 |
 | stl.h:240:33:240:42 | operator<< | (int) |  | sqlite3_errstr | 0 |
-| stl.h:240:33:240:42 | operator<< | (int) |  | tls1_alert_code | 0 |
 | stl.h:240:33:240:42 | operator<< | (int) |  | tls13_alert_code | 0 |
-| stl.h:240:33:240:42 | operator<< | (int) |  | wait_until_sock_readable | 0 |
 | stl.h:243:33:243:37 | write | (ASN1_PCTX *,unsigned long) |  | ASN1_PCTX_set_cert_flags | 1 |
 | stl.h:243:33:243:37 | write | (ASN1_PCTX *,unsigned long) |  | ASN1_PCTX_set_flags | 1 |
 | stl.h:243:33:243:37 | write | (ASN1_PCTX *,unsigned long) |  | ASN1_PCTX_set_nm_flags | 1 |
@@ -5983,7 +5839,6 @@ signatureMatches
 | string.cpp:17:6:17:9 | sink | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | string.cpp:17:6:17:9 | sink | (const char *) |  | a2i_IPADDRESS | 0 |
 | string.cpp:17:6:17:9 | sink | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| string.cpp:17:6:17:9 | sink | (const char *) |  | new_pkcs12_builder | 0 |
 | string.cpp:17:6:17:9 | sink | (const char *) |  | opt_path_end | 0 |
 | string.cpp:17:6:17:9 | sink | (const char *) |  | opt_progname | 0 |
 | string.cpp:17:6:17:9 | sink | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -6059,7 +5914,6 @@ signatureMatches
 | string.cpp:19:6:19:9 | sink | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | string.cpp:19:6:19:9 | sink | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | string.cpp:19:6:19:9 | sink | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| string.cpp:19:6:19:9 | sink | (STANZA *,const char *) |  | test_start_file | 1 |
 | string.cpp:19:6:19:9 | sink | (UI *,const char *) |  | UI_add_error_string | 1 |
 | string.cpp:19:6:19:9 | sink | (UI *,const char *) |  | UI_add_info_string | 1 |
 | string.cpp:19:6:19:9 | sink | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -6087,8 +5941,6 @@ signatureMatches
 | string.cpp:19:6:19:9 | sink | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | string.cpp:19:6:19:9 | sink | (const char *,const char *) |  | sqlite3_stricmp | 0 |
 | string.cpp:19:6:19:9 | sink | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| string.cpp:19:6:19:9 | sink | (const char *,const char *) |  | test_mk_file_path | 0 |
-| string.cpp:19:6:19:9 | sink | (const char *,const char *) |  | test_mk_file_path | 1 |
 | string.cpp:19:6:19:9 | sink | (int,const char *) |  | BIO_meth_new | 1 |
 | string.cpp:19:6:19:9 | sink | (lemon *,const char *) |  | file_makename | 1 |
 | string.cpp:19:6:19:9 | sink | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -6127,12 +5979,9 @@ signatureMatches
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | ossl_tolower | 0 |
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | ossl_toupper | 0 |
-| stringstream.cpp:13:6:13:9 | sink | (int) |  | pulldown_test_framework | 0 |
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | sqlite3_compileoption_get | 0 |
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | sqlite3_errstr | 0 |
-| stringstream.cpp:13:6:13:9 | sink | (int) |  | tls1_alert_code | 0 |
 | stringstream.cpp:13:6:13:9 | sink | (int) |  | tls13_alert_code | 0 |
-| stringstream.cpp:13:6:13:9 | sink | (int) |  | wait_until_sock_readable | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ASN1_STRING_type_new | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ASN1_tag2bit | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ASN1_tag2str | 0 |
@@ -6155,12 +6004,9 @@ signatureMatches
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ossl_tolower | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | ossl_toupper | 0 |
-| stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | pulldown_test_framework | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | sqlite3_compileoption_get | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | sqlite3_errstr | 0 |
-| stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | tls1_alert_code | 0 |
 | stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | tls13_alert_code | 0 |
-| stringstream.cpp:26:6:26:29 | test_stringstream_string | (int) |  | wait_until_sock_readable | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ASN1_STRING_type_new | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ASN1_tag2bit | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ASN1_tag2str | 0 |
@@ -6183,12 +6029,9 @@ signatureMatches
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ossl_tolower | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | ossl_toupper | 0 |
-| stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | pulldown_test_framework | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | sqlite3_compileoption_get | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | sqlite3_errstr | 0 |
-| stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | tls1_alert_code | 0 |
 | stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | tls13_alert_code | 0 |
-| stringstream.cpp:70:6:70:26 | test_stringstream_int | (int) |  | wait_until_sock_readable | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ASN1_STRING_type_new | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ASN1_tag2bit | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ASN1_tag2str | 0 |
@@ -6211,12 +6054,9 @@ signatureMatches
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ossl_tolower | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | ossl_toupper | 0 |
-| structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | pulldown_test_framework | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | sqlite3_compileoption_get | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | sqlite3_errstr | 0 |
-| structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | tls1_alert_code | 0 |
 | structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | tls13_alert_code | 0 |
-| structlikeclass.cpp:8:2:8:16 | StructLikeClass | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:4:6:4:21 | arithAssignments | (ASN1_STRING *,int) |  | ASN1_STRING_length_set | 1 |
 | taint.cpp:4:6:4:21 | arithAssignments | (ASYNC_WAIT_CTX *,int) |  | ASYNC_WAIT_CTX_set_status | 1 |
 | taint.cpp:4:6:4:21 | arithAssignments | (BIGNUM *,int) |  | BN_clear_bit | 1 |
@@ -6532,12 +6372,9 @@ signatureMatches
 | taint.cpp:22:5:22:13 | increment | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:22:5:22:13 | increment | (int) |  | ossl_tolower | 0 |
 | taint.cpp:22:5:22:13 | increment | (int) |  | ossl_toupper | 0 |
-| taint.cpp:22:5:22:13 | increment | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:22:5:22:13 | increment | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:22:5:22:13 | increment | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:22:5:22:13 | increment | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:22:5:22:13 | increment | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:22:5:22:13 | increment | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | ASN1_STRING_type_new | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | ASN1_tag2bit | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | ASN1_tag2str | 0 |
@@ -6560,12 +6397,9 @@ signatureMatches
 | taint.cpp:23:5:23:8 | zero | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | ossl_tolower | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | ossl_toupper | 0 |
-| taint.cpp:23:5:23:8 | zero | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:23:5:23:8 | zero | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:23:5:23:8 | zero | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:23:5:23:8 | zero | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ASN1_STRING_type_new | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ASN1_tag2bit | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ASN1_tag2str | 0 |
@@ -6588,12 +6422,9 @@ signatureMatches
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ossl_tolower | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | ossl_toupper | 0 |
-| taint.cpp:100:6:100:15 | array_test | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:100:6:100:15 | array_test | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:100:6:100:15 | array_test | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:100:6:100:15 | array_test | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:142:5:142:10 | select | (ASN1_BIT_STRING *,int,int) |  | ASN1_BIT_STRING_set_bit | 1 |
 | taint.cpp:142:5:142:10 | select | (ASN1_BIT_STRING *,int,int) |  | ASN1_BIT_STRING_set_bit | 2 |
 | taint.cpp:142:5:142:10 | select | (ASN1_BIT_STRING *,unsigned char *,int) |  | ASN1_BIT_STRING_set | 2 |
@@ -6705,9 +6536,7 @@ signatureMatches
 | taint.cpp:142:5:142:10 | select | (QUIC_RXFC *,uint64_t,int) |  | ossl_quic_rxfc_on_rx_stream_frame | 2 |
 | taint.cpp:142:5:142:10 | select | (QUIC_STREAM_ITER *,QUIC_STREAM_MAP *,int) |  | ossl_quic_stream_iter_init | 2 |
 | taint.cpp:142:5:142:10 | select | (QUIC_STREAM_MAP *,uint64_t,int) |  | ossl_quic_stream_map_alloc | 2 |
-| taint.cpp:142:5:142:10 | select | (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 |
 | taint.cpp:142:5:142:10 | select | (RSA *,const OSSL_PARAM[],int) |  | ossl_rsa_fromdata | 2 |
-| taint.cpp:142:5:142:10 | select | (SSL *,SSL *,int) |  | create_ssl_connection | 2 |
 | taint.cpp:142:5:142:10 | select | (SSL *,const unsigned char *,int) |  | SSL_use_certificate_ASN1 | 2 |
 | taint.cpp:142:5:142:10 | select | (SSL *,const void *,int) |  | SSL_write | 2 |
 | taint.cpp:142:5:142:10 | select | (SSL *,void *,int) |  | SSL_peek | 2 |
@@ -6800,7 +6629,6 @@ signatureMatches
 | taint.cpp:142:5:142:10 | select | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 1 |
 | taint.cpp:142:5:142:10 | select | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 2 |
 | taint.cpp:142:5:142:10 | select | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 2 |
-| taint.cpp:142:5:142:10 | select | (const char *,SD *,int) |  | sd_load | 2 |
 | taint.cpp:142:5:142:10 | select | (const char *,const OSSL_PARAM *,int) |  | print_param_types | 2 |
 | taint.cpp:142:5:142:10 | select | (const char *,const char *,int) |  | CRYPTO_strdup | 2 |
 | taint.cpp:142:5:142:10 | select | (const char *,const char *,int) |  | sqlite3_strnicmp | 2 |
@@ -6885,12 +6713,9 @@ signatureMatches
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | ossl_tolower | 0 |
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | ossl_toupper | 0 |
-| taint.cpp:150:6:150:12 | fn_test | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:150:6:150:12 | fn_test | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:150:6:150:12 | fn_test | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:150:6:150:12 | fn_test | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:156:7:156:12 | strcpy | (ASN1_GENERALIZEDTIME *,const char *) |  | ASN1_GENERALIZEDTIME_set_string | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (ASN1_TIME *,const char *) |  | ASN1_TIME_set_string | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (ASN1_TIME *,const char *) |  | ASN1_TIME_set_string_X509 | 1 |
@@ -6962,7 +6787,6 @@ signatureMatches
 | taint.cpp:156:7:156:12 | strcpy | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:156:7:156:12 | strcpy | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -6981,7 +6805,6 @@ signatureMatches
 | taint.cpp:156:7:156:12 | strcpy | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:156:7:156:12 | strcpy | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:156:7:156:12 | strcpy | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -7066,7 +6889,6 @@ signatureMatches
 | taint.cpp:157:7:157:12 | strcat | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:157:7:157:12 | strcat | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:157:7:157:12 | strcat | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:157:7:157:12 | strcat | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:157:7:157:12 | strcat | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:157:7:157:12 | strcat | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:157:7:157:12 | strcat | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -7085,7 +6907,6 @@ signatureMatches
 | taint.cpp:157:7:157:12 | strcat | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | taint.cpp:157:7:157:12 | strcat | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:157:7:157:12 | strcat | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:157:7:157:12 | strcat | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:157:7:157:12 | strcat | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:157:7:157:12 | strcat | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:157:7:157:12 | strcat | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -7202,9 +7023,7 @@ signatureMatches
 | taint.cpp:190:7:190:12 | memcpy | (QUIC_RXFC *,uint64_t,int) |  | ossl_quic_rxfc_on_rx_stream_frame | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (QUIC_STREAM_ITER *,QUIC_STREAM_MAP *,int) |  | ossl_quic_stream_iter_init | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (QUIC_STREAM_MAP *,uint64_t,int) |  | ossl_quic_stream_map_alloc | 2 |
-| taint.cpp:190:7:190:12 | memcpy | (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (RSA *,const OSSL_PARAM[],int) |  | ossl_rsa_fromdata | 2 |
-| taint.cpp:190:7:190:12 | memcpy | (SSL *,SSL *,int) |  | create_ssl_connection | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (SSL *,const unsigned char *,int) |  | SSL_use_certificate_ASN1 | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (SSL *,const void *,int) |  | SSL_write | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (SSL *,void *,int) |  | SSL_peek | 1 |
@@ -7279,7 +7098,6 @@ signatureMatches
 | taint.cpp:190:7:190:12 | memcpy | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_NID | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 2 |
-| taint.cpp:190:7:190:12 | memcpy | (const char *,SD *,int) |  | sd_load | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (const char *,const OSSL_PARAM *,int) |  | print_param_types | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (const char *,const char *,int) |  | CRYPTO_strdup | 2 |
 | taint.cpp:190:7:190:12 | memcpy | (const char *,const char *,int) |  | sqlite3_strnicmp | 2 |
@@ -7934,12 +7752,9 @@ signatureMatches
 | taint.cpp:266:5:266:6 | id | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:266:5:266:6 | id | (int) |  | ossl_tolower | 0 |
 | taint.cpp:266:5:266:6 | id | (int) |  | ossl_toupper | 0 |
-| taint.cpp:266:5:266:6 | id | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:266:5:266:6 | id | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:266:5:266:6 | id | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:266:5:266:6 | id | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:266:5:266:6 | id | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:266:5:266:6 | id | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:302:6:302:14 | myAssign2 | (ASN1_STRING *,int) |  | ASN1_STRING_length_set | 1 |
 | taint.cpp:302:6:302:14 | myAssign2 | (ASYNC_WAIT_CTX *,int) |  | ASYNC_WAIT_CTX_set_status | 1 |
 | taint.cpp:302:6:302:14 | myAssign2 | (BIGNUM *,int) |  | BN_clear_bit | 1 |
@@ -8822,7 +8637,6 @@ signatureMatches
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:361:7:361:12 | strdup | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | opt_progname | 0 |
 | taint.cpp:361:7:361:12 | strdup | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -8859,10 +8673,6 @@ signatureMatches
 | taint.cpp:362:7:362:13 | strndup | (OSSL_QUIC_TX_PACKETISER *,size_t) |  | ossl_quic_tx_packetiser_record_received_closing_bytes | 1 |
 | taint.cpp:362:7:362:13 | strndup | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_frag_len | 1 |
 | taint.cpp:362:7:362:13 | strndup | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_pipelines | 1 |
-| taint.cpp:362:7:362:13 | strndup | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_datagram | 1 |
-| taint.cpp:362:7:362:13 | strndup | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_handshake | 1 |
-| taint.cpp:362:7:362:13 | strndup | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_message | 1 |
-| taint.cpp:362:7:362:13 | strndup | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_plain_packet | 1 |
 | taint.cpp:362:7:362:13 | strndup | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_release_record | 1 |
 | taint.cpp:362:7:362:13 | strndup | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_resize_rbuf | 1 |
 | taint.cpp:362:7:362:13 | strndup | (QUIC_RXFC *,size_t) |  | ossl_quic_rxfc_set_max_window_size | 1 |
@@ -8873,7 +8683,6 @@ signatureMatches
 | taint.cpp:362:7:362:13 | strndup | (SSL *,size_t) |  | SSL_set_block_padding | 1 |
 | taint.cpp:362:7:362:13 | strndup | (SSL *,size_t) |  | SSL_set_default_read_buffer_len | 1 |
 | taint.cpp:362:7:362:13 | strndup | (SSL *,size_t) |  | SSL_set_num_tickets | 1 |
-| taint.cpp:362:7:362:13 | strndup | (SSL *,size_t) |  | create_a_psk | 1 |
 | taint.cpp:362:7:362:13 | strndup | (SSL *,unsigned long) |  | SSL_dane_clear_flags | 1 |
 | taint.cpp:362:7:362:13 | strndup | (SSL *,unsigned long) |  | SSL_dane_set_flags | 1 |
 | taint.cpp:362:7:362:13 | strndup | (SSL_CONNECTION *,unsigned long) |  | tls1_check_ec_tmp_key | 1 |
@@ -8910,7 +8719,6 @@ signatureMatches
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:364:7:364:13 | strdupa | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | opt_progname | 0 |
 | taint.cpp:364:7:364:13 | strdupa | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -8947,10 +8755,6 @@ signatureMatches
 | taint.cpp:365:7:365:14 | strndupa | (OSSL_QUIC_TX_PACKETISER *,size_t) |  | ossl_quic_tx_packetiser_record_received_closing_bytes | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_frag_len | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_pipelines | 1 |
-| taint.cpp:365:7:365:14 | strndupa | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_datagram | 1 |
-| taint.cpp:365:7:365:14 | strndupa | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_handshake | 1 |
-| taint.cpp:365:7:365:14 | strndupa | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_message | 1 |
-| taint.cpp:365:7:365:14 | strndupa | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_plain_packet | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_release_record | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_resize_rbuf | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (QUIC_RXFC *,size_t) |  | ossl_quic_rxfc_set_max_window_size | 1 |
@@ -8961,7 +8765,6 @@ signatureMatches
 | taint.cpp:365:7:365:14 | strndupa | (SSL *,size_t) |  | SSL_set_block_padding | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (SSL *,size_t) |  | SSL_set_default_read_buffer_len | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (SSL *,size_t) |  | SSL_set_num_tickets | 1 |
-| taint.cpp:365:7:365:14 | strndupa | (SSL *,size_t) |  | create_a_psk | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (SSL *,unsigned long) |  | SSL_dane_clear_flags | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (SSL *,unsigned long) |  | SSL_dane_set_flags | 1 |
 | taint.cpp:365:7:365:14 | strndupa | (SSL_CONNECTION *,unsigned long) |  | tls1_check_ec_tmp_key | 1 |
@@ -9014,12 +8817,9 @@ signatureMatches
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | ossl_tolower | 0 |
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | ossl_toupper | 0 |
-| taint.cpp:379:6:379:17 | test_strndup | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:379:6:379:17 | test_strndup | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:379:6:379:17 | test_strndup | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:379:6:379:17 | test_strndup | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:387:6:387:16 | test_wcsdup | (wchar_t *) | CStringT | CStringT | 0 |
 | taint.cpp:397:6:397:17 | test_strdupa | (char *) |  | SRP_VBASE_new | 0 |
 | taint.cpp:397:6:397:17 | test_strdupa | (char *) |  | defossilize | 0 |
@@ -9048,12 +8848,9 @@ signatureMatches
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | ossl_tolower | 0 |
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | ossl_toupper | 0 |
-| taint.cpp:409:6:409:18 | test_strndupa | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:409:6:409:18 | test_strndupa | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:409:6:409:18 | test_strndupa | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:409:6:409:18 | test_strndupa | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ASN1_STRING_type_new | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ASN1_tag2bit | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ASN1_tag2str | 0 |
@@ -9076,12 +8873,9 @@ signatureMatches
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ossl_tolower | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | ossl_toupper | 0 |
-| taint.cpp:421:2:421:9 | MyClass2 | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:421:2:421:9 | MyClass2 | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:421:2:421:9 | MyClass2 | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:421:2:421:9 | MyClass2 | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ASN1_STRING_type_new | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ASN1_tag2bit | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ASN1_tag2str | 0 |
@@ -9104,12 +8898,9 @@ signatureMatches
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ossl_tolower | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | ossl_toupper | 0 |
-| taint.cpp:422:7:422:15 | setMember | (int) |  | pulldown_test_framework | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | sqlite3_compileoption_get | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | sqlite3_errstr | 0 |
-| taint.cpp:422:7:422:15 | setMember | (int) |  | tls1_alert_code | 0 |
 | taint.cpp:422:7:422:15 | setMember | (int) |  | tls13_alert_code | 0 |
-| taint.cpp:422:7:422:15 | setMember | (int) |  | wait_until_sock_readable | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | BIO_gethostbyname | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | Jim_StrDup | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | OPENSSL_LH_strhash | 0 |
@@ -9121,7 +8912,6 @@ signatureMatches
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | opt_progname | 0 |
 | taint.cpp:430:2:430:9 | MyClass3 | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -9137,7 +8927,6 @@ signatureMatches
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:431:7:431:15 | setString | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | opt_progname | 0 |
 | taint.cpp:431:7:431:15 | setString | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -9213,7 +9002,6 @@ signatureMatches
 | taint.cpp:512:7:512:12 | strtok | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:512:7:512:12 | strtok | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:512:7:512:12 | strtok | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:512:7:512:12 | strtok | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:512:7:512:12 | strtok | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:512:7:512:12 | strtok | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:512:7:512:12 | strtok | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -9232,7 +9020,6 @@ signatureMatches
 | taint.cpp:512:7:512:12 | strtok | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | taint.cpp:512:7:512:12 | strtok | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:512:7:512:12 | strtok | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:512:7:512:12 | strtok | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:512:7:512:12 | strtok | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:512:7:512:12 | strtok | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:512:7:512:12 | strtok | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -9612,7 +9399,6 @@ signatureMatches
 | taint.cpp:538:7:538:13 | mempcpy | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_generic_initiv | 2 |
 | taint.cpp:538:7:538:13 | mempcpy | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_hw_tdes_ede3_initkey | 2 |
 | taint.cpp:538:7:538:13 | mempcpy | (PROV_GCM_CTX *,const unsigned char *,size_t) |  | ossl_gcm_aad_update | 2 |
-| taint.cpp:538:7:538:13 | mempcpy | (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 2 |
 | taint.cpp:538:7:538:13 | mempcpy | (QUIC_PN,unsigned char *,size_t) |  | ossl_quic_wire_encode_pkt_hdr_pn | 2 |
 | taint.cpp:538:7:538:13 | mempcpy | (QUIC_RXFC *,OSSL_STATM *,size_t) |  | ossl_quic_rstream_new | 2 |
 | taint.cpp:538:7:538:13 | mempcpy | (QUIC_TLS *,const unsigned char *,size_t) |  | ossl_quic_tls_set_transport_params | 2 |
@@ -9843,7 +9629,6 @@ signatureMatches
 | taint.cpp:558:7:558:12 | strcat | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:558:7:558:12 | strcat | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:558:7:558:12 | strcat | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:558:7:558:12 | strcat | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:558:7:558:12 | strcat | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:558:7:558:12 | strcat | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:558:7:558:12 | strcat | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -9862,7 +9647,6 @@ signatureMatches
 | taint.cpp:558:7:558:12 | strcat | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | taint.cpp:558:7:558:12 | strcat | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:558:7:558:12 | strcat | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:558:7:558:12 | strcat | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:558:7:558:12 | strcat | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:558:7:558:12 | strcat | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:558:7:558:12 | strcat | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -9988,7 +9772,6 @@ signatureMatches
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (RSA *,unsigned char *,const unsigned char *,const EVP_MD *,const EVP_MD *,int) |  | RSA_padding_add_PKCS1_PSS_mgf1 | 5 |
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (SSL_CONNECTION *,PACKET *,unsigned int,RAW_EXTENSION **,size_t *,int) |  | tls_collect_extensions | 5 |
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (SSL_CONNECTION *,int,RAW_EXTENSION *,X509 *,size_t,int) |  | tls_parse_all_extensions | 5 |
-| taint.cpp:572:6:572:20 | test__mbsncat_l | (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 5 |
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (UI *,const char *,int,char *,int,int) |  | UI_add_input_string | 5 |
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (UI *,const char *,int,char *,int,int) |  | UI_dup_input_string | 5 |
 | taint.cpp:572:6:572:20 | test__mbsncat_l | (X509V3_CTX *,X509 *,X509 *,X509_REQ *,X509_CRL *,int) |  | X509V3_set_ctx | 5 |
@@ -10081,7 +9864,6 @@ signatureMatches
 | taint.cpp:589:7:589:12 | strsep | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:589:7:589:12 | strsep | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:589:7:589:12 | strsep | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:589:7:589:12 | strsep | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:589:7:589:12 | strsep | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:589:7:589:12 | strsep | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:589:7:589:12 | strsep | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -10100,7 +9882,6 @@ signatureMatches
 | taint.cpp:589:7:589:12 | strsep | (const char *,const char *) |  | ossl_v3_name_cmp | 1 |
 | taint.cpp:589:7:589:12 | strsep | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:589:7:589:12 | strsep | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:589:7:589:12 | strsep | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:589:7:589:12 | strsep | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:589:7:589:12 | strsep | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:589:7:589:12 | strsep | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -10135,7 +9916,6 @@ signatureMatches
 | taint.cpp:602:7:602:13 | _strinc | (EVP_PKEY_CTX *,void *) |  | EVP_PKEY_CTX_set_data | 1 |
 | taint.cpp:602:7:602:13 | _strinc | (Jim_Stack *,void *) |  | Jim_StackPush | 1 |
 | taint.cpp:602:7:602:13 | _strinc | (OPENSSL_LHASH *,void *) |  | OPENSSL_LH_insert | 1 |
-| taint.cpp:602:7:602:13 | _strinc | (OSSL_CALLBACK *,void *) |  | OSSL_SELF_TEST_new | 1 |
 | taint.cpp:602:7:602:13 | _strinc | (OSSL_CMP_CTX *,void *) |  | OSSL_CMP_CTX_set_certConf_cb_arg | 1 |
 | taint.cpp:602:7:602:13 | _strinc | (OSSL_CMP_CTX *,void *) |  | OSSL_CMP_CTX_set_http_cb_arg | 1 |
 | taint.cpp:602:7:602:13 | _strinc | (OSSL_CMP_CTX *,void *) |  | OSSL_CMP_CTX_set_transfer_cb_arg | 1 |
@@ -10206,7 +9986,6 @@ signatureMatches
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | opt_progname | 0 |
 | taint.cpp:645:14:645:22 | _strnextc | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -10222,7 +10001,6 @@ signatureMatches
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | X509_LOOKUP_meth_new | 0 |
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | a2i_IPADDRESS | 0 |
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | a2i_IPADDRESS_NC | 0 |
-| taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | new_pkcs12_builder | 0 |
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | opt_path_end | 0 |
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | opt_progname | 0 |
 | taint.cpp:647:6:647:19 | test__strnextc | (const char *) |  | ossl_lh_strcasehash | 0 |
@@ -10355,9 +10133,7 @@ signatureMatches
 | taint.cpp:725:10:725:15 | strtol | (QUIC_RXFC *,uint64_t,int) |  | ossl_quic_rxfc_on_rx_stream_frame | 2 |
 | taint.cpp:725:10:725:15 | strtol | (QUIC_STREAM_ITER *,QUIC_STREAM_MAP *,int) |  | ossl_quic_stream_iter_init | 2 |
 | taint.cpp:725:10:725:15 | strtol | (QUIC_STREAM_MAP *,uint64_t,int) |  | ossl_quic_stream_map_alloc | 2 |
-| taint.cpp:725:10:725:15 | strtol | (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 |
 | taint.cpp:725:10:725:15 | strtol | (RSA *,const OSSL_PARAM[],int) |  | ossl_rsa_fromdata | 2 |
-| taint.cpp:725:10:725:15 | strtol | (SSL *,SSL *,int) |  | create_ssl_connection | 2 |
 | taint.cpp:725:10:725:15 | strtol | (SSL *,const unsigned char *,int) |  | SSL_use_certificate_ASN1 | 2 |
 | taint.cpp:725:10:725:15 | strtol | (SSL *,const void *,int) |  | SSL_write | 2 |
 | taint.cpp:725:10:725:15 | strtol | (SSL *,void *,int) |  | SSL_peek | 2 |
@@ -10429,7 +10205,6 @@ signatureMatches
 | taint.cpp:725:10:725:15 | strtol | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_NID | 2 |
 | taint.cpp:725:10:725:15 | strtol | (const X509_REVOKED *,int,int) |  | X509_REVOKED_get_ext_by_critical | 2 |
 | taint.cpp:725:10:725:15 | strtol | (const X509_SIG *,const char *,int) |  | PKCS8_decrypt | 2 |
-| taint.cpp:725:10:725:15 | strtol | (const char *,SD *,int) |  | sd_load | 2 |
 | taint.cpp:725:10:725:15 | strtol | (const char *,const OSSL_PARAM *,int) |  | print_param_types | 2 |
 | taint.cpp:725:10:725:15 | strtol | (const char *,const char *,int) |  | CRYPTO_strdup | 2 |
 | taint.cpp:725:10:725:15 | strtol | (const char *,const char *,int) |  | sqlite3_strnicmp | 2 |
@@ -10486,7 +10261,6 @@ signatureMatches
 | taint.cpp:735:7:735:12 | malloc | (size_t) |  | ossl_param_bytes_to_blocks | 0 |
 | taint.cpp:735:7:735:12 | malloc | (size_t) |  | ossl_quic_sstream_new | 0 |
 | taint.cpp:735:7:735:12 | malloc | (size_t) |  | ssl_cert_new | 0 |
-| taint.cpp:735:7:735:12 | malloc | (size_t) |  | test_get_argument | 0 |
 | taint.cpp:735:7:735:12 | malloc | (unsigned long) |  | BN_num_bits_word | 0 |
 | taint.cpp:735:7:735:12 | malloc | (unsigned long) |  | BUF_MEM_new_ex | 0 |
 | taint.cpp:736:7:736:13 | realloc | (ASN1_PCTX *,unsigned long) |  | ASN1_PCTX_set_cert_flags | 1 |
@@ -10521,10 +10295,6 @@ signatureMatches
 | taint.cpp:736:7:736:13 | realloc | (OSSL_QUIC_TX_PACKETISER *,size_t) |  | ossl_quic_tx_packetiser_record_received_closing_bytes | 1 |
 | taint.cpp:736:7:736:13 | realloc | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_frag_len | 1 |
 | taint.cpp:736:7:736:13 | realloc | (OSSL_RECORD_LAYER *,size_t) |  | tls_set_max_pipelines | 1 |
-| taint.cpp:736:7:736:13 | realloc | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_datagram | 1 |
-| taint.cpp:736:7:736:13 | realloc | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_handshake | 1 |
-| taint.cpp:736:7:736:13 | realloc | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_message | 1 |
-| taint.cpp:736:7:736:13 | realloc | (QTEST_FAULT *,size_t) |  | qtest_fault_resize_plain_packet | 1 |
 | taint.cpp:736:7:736:13 | realloc | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_release_record | 1 |
 | taint.cpp:736:7:736:13 | realloc | (QUIC_RSTREAM *,size_t) |  | ossl_quic_rstream_resize_rbuf | 1 |
 | taint.cpp:736:7:736:13 | realloc | (QUIC_RXFC *,size_t) |  | ossl_quic_rxfc_set_max_window_size | 1 |
@@ -10535,7 +10305,6 @@ signatureMatches
 | taint.cpp:736:7:736:13 | realloc | (SSL *,size_t) |  | SSL_set_block_padding | 1 |
 | taint.cpp:736:7:736:13 | realloc | (SSL *,size_t) |  | SSL_set_default_read_buffer_len | 1 |
 | taint.cpp:736:7:736:13 | realloc | (SSL *,size_t) |  | SSL_set_num_tickets | 1 |
-| taint.cpp:736:7:736:13 | realloc | (SSL *,size_t) |  | create_a_psk | 1 |
 | taint.cpp:736:7:736:13 | realloc | (SSL *,unsigned long) |  | SSL_dane_clear_flags | 1 |
 | taint.cpp:736:7:736:13 | realloc | (SSL *,unsigned long) |  | SSL_dane_set_flags | 1 |
 | taint.cpp:736:7:736:13 | realloc | (SSL_CONNECTION *,unsigned long) |  | tls1_check_ec_tmp_key | 1 |
@@ -10643,7 +10412,6 @@ signatureMatches
 | taint.cpp:782:7:782:11 | fopen | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:782:7:782:11 | fopen | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:782:7:782:11 | fopen | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:782:7:782:11 | fopen | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:782:7:782:11 | fopen | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:782:7:782:11 | fopen | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:782:7:782:11 | fopen | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -10671,8 +10439,6 @@ signatureMatches
 | taint.cpp:782:7:782:11 | fopen | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:782:7:782:11 | fopen | (const char *,const char *) |  | sqlite3_stricmp | 0 |
 | taint.cpp:782:7:782:11 | fopen | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:782:7:782:11 | fopen | (const char *,const char *) |  | test_mk_file_path | 0 |
-| taint.cpp:782:7:782:11 | fopen | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:782:7:782:11 | fopen | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:782:7:782:11 | fopen | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:782:7:782:11 | fopen | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -10700,14 +10466,11 @@ signatureMatches
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_CMP_MSG *,OSSL_LIB_CTX *,const char *) |  | ossl_cmp_msg_set0_libctx | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_DECODER *,void *,const char *) |  | ossl_decoder_instance_new_forprov | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,EVP_PKEY *,const char *) |  | EVP_PKEY_CTX_new_from_pkey | 2 |
-| taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,SSL_CTX *,const char *) |  | ssl_ctx_add_large_cert_chain | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,const char *,const char *) |  | EVP_PKEY_CTX_new_from_name | 1 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,const char *,const char *) |  | EVP_PKEY_CTX_new_from_name | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,const char *,const char *) |  | ossl_slh_dsa_key_new | 1 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_LIB_CTX *,const char *,const char *) |  | ossl_slh_dsa_key_new | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (OSSL_NAMEMAP *,int,const char *) |  | ossl_namemap_add_name | 2 |
-| taint.cpp:783:5:783:11 | fopen_s | (OSSL_SELF_TEST *,const char *,const char *) |  | OSSL_SELF_TEST_onbegin | 1 |
-| taint.cpp:783:5:783:11 | fopen_s | (OSSL_SELF_TEST *,const char *,const char *) |  | OSSL_SELF_TEST_onbegin | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (PROV_CTX *,const char *,const char *) |  | ossl_prov_ctx_get_param | 1 |
 | taint.cpp:783:5:783:11 | fopen_s | (PROV_CTX *,const char *,const char *) |  | ossl_prov_ctx_get_param | 2 |
 | taint.cpp:783:5:783:11 | fopen_s | (SRP_user_pwd *,const char *,const char *) |  | SRP_user_pwd_set1_ids | 1 |
@@ -11152,7 +10915,6 @@ signatureMatches
 | taint.cpp:822:6:822:19 | take_const_ptr | (SSL_CTX *,const char *) |  | SSL_CTX_use_psk_identity_hint | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (SSL_CTX *,const char *) |  | ossl_quic_set_diag_title | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (SSL_SESSION *,const char *) |  | SSL_SESSION_set1_hostname | 1 |
-| taint.cpp:822:6:822:19 | take_const_ptr | (STANZA *,const char *) |  | test_start_file | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (UI *,const char *) |  | UI_add_error_string | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (UI *,const char *) |  | UI_add_info_string | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (UI *,const char *) |  | UI_dup_error_string | 1 |
@@ -11180,8 +10942,6 @@ signatureMatches
 | taint.cpp:822:6:822:19 | take_const_ptr | (const char *,const char *) |  | sqlite3_strglob | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (const char *,const char *) |  | sqlite3_stricmp | 0 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (const char *,const char *) |  | sqlite3_stricmp | 1 |
-| taint.cpp:822:6:822:19 | take_const_ptr | (const char *,const char *) |  | test_mk_file_path | 0 |
-| taint.cpp:822:6:822:19 | take_const_ptr | (const char *,const char *) |  | test_mk_file_path | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (int,const char *) |  | BIO_meth_new | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (lemon *,const char *) |  | file_makename | 1 |
 | taint.cpp:822:6:822:19 | take_const_ptr | (size_t *,const char *) |  | next_protos_parse | 1 |
@@ -11217,12 +10977,9 @@ signatureMatches
 | vector.cpp:13:6:13:9 | sink | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | vector.cpp:13:6:13:9 | sink | (int) |  | ossl_tolower | 0 |
 | vector.cpp:13:6:13:9 | sink | (int) |  | ossl_toupper | 0 |
-| vector.cpp:13:6:13:9 | sink | (int) |  | pulldown_test_framework | 0 |
 | vector.cpp:13:6:13:9 | sink | (int) |  | sqlite3_compileoption_get | 0 |
 | vector.cpp:13:6:13:9 | sink | (int) |  | sqlite3_errstr | 0 |
-| vector.cpp:13:6:13:9 | sink | (int) |  | tls1_alert_code | 0 |
 | vector.cpp:13:6:13:9 | sink | (int) |  | tls13_alert_code | 0 |
-| vector.cpp:13:6:13:9 | sink | (int) |  | wait_until_sock_readable | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ASN1_STRING_type_new | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ASN1_tag2bit | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ASN1_tag2str | 0 |
@@ -11245,12 +11002,9 @@ signatureMatches
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ossl_tolower | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | ossl_toupper | 0 |
-| vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | pulldown_test_framework | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | sqlite3_compileoption_get | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | sqlite3_errstr | 0 |
-| vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | tls1_alert_code | 0 |
 | vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | tls13_alert_code | 0 |
-| vector.cpp:16:6:16:37 | test_range_based_for_loop_vector | (int) |  | wait_until_sock_readable | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ASN1_STRING_type_new | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ASN1_tag2bit | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ASN1_tag2str | 0 |
@@ -11273,12 +11027,9 @@ signatureMatches
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ossl_tolower | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | ossl_toupper | 0 |
-| vector.cpp:37:6:37:23 | test_element_taint | (int) |  | pulldown_test_framework | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | sqlite3_compileoption_get | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | sqlite3_errstr | 0 |
-| vector.cpp:37:6:37:23 | test_element_taint | (int) |  | tls1_alert_code | 0 |
 | vector.cpp:37:6:37:23 | test_element_taint | (int) |  | tls13_alert_code | 0 |
-| vector.cpp:37:6:37:23 | test_element_taint | (int) |  | wait_until_sock_readable | 0 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (ASN1_STRING *,int) |  | ASN1_STRING_length_set | 1 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (ASYNC_WAIT_CTX *,int) |  | ASYNC_WAIT_CTX_set_status | 1 |
 | vector.cpp:333:6:333:35 | vector_iterator_assign_wrapper | (BIGNUM *,int) |  | BN_clear_bit | 1 |
@@ -11590,12 +11341,9 @@ signatureMatches
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | ossl_cmp_bodytype_to_string | 0 |
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | ossl_tolower | 0 |
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | ossl_toupper | 0 |
-| vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | pulldown_test_framework | 0 |
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | sqlite3_compileoption_get | 0 |
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | sqlite3_errstr | 0 |
-| vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | tls1_alert_code | 0 |
 | vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | tls13_alert_code | 0 |
-| vector.cpp:337:6:337:32 | test_vector_output_iterator | (int) |  | wait_until_sock_readable | 0 |
 | vector.cpp:417:6:417:25 | test_vector_inserter | (char *) |  | SRP_VBASE_new | 0 |
 | vector.cpp:417:6:417:25 | test_vector_inserter | (char *) |  | defossilize | 0 |
 | vector.cpp:417:6:417:25 | test_vector_inserter | (char *) |  | make_uppercase | 0 |
@@ -11666,7 +11414,6 @@ signatureMatches
 | vector.cpp:454:7:454:12 | memcpy | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_generic_initiv | 2 |
 | vector.cpp:454:7:454:12 | memcpy | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_hw_tdes_ede3_initkey | 2 |
 | vector.cpp:454:7:454:12 | memcpy | (PROV_GCM_CTX *,const unsigned char *,size_t) |  | ossl_gcm_aad_update | 2 |
-| vector.cpp:454:7:454:12 | memcpy | (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 2 |
 | vector.cpp:454:7:454:12 | memcpy | (QUIC_PN,unsigned char *,size_t) |  | ossl_quic_wire_encode_pkt_hdr_pn | 2 |
 | vector.cpp:454:7:454:12 | memcpy | (QUIC_RXFC *,OSSL_STATM *,size_t) |  | ossl_quic_rstream_new | 2 |
 | vector.cpp:454:7:454:12 | memcpy | (QUIC_TLS *,const unsigned char *,size_t) |  | ossl_quic_tls_set_transport_params | 2 |
@@ -11827,7 +11574,6 @@ signatureMatches
 | zmq.cpp:17:6:17:13 | test_zmc | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_generic_initiv | 2 |
 | zmq.cpp:17:6:17:13 | test_zmc | (PROV_CIPHER_CTX *,const unsigned char *,size_t) |  | ossl_cipher_hw_tdes_ede3_initkey | 2 |
 | zmq.cpp:17:6:17:13 | test_zmc | (PROV_GCM_CTX *,const unsigned char *,size_t) |  | ossl_gcm_aad_update | 2 |
-| zmq.cpp:17:6:17:13 | test_zmc | (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 2 |
 | zmq.cpp:17:6:17:13 | test_zmc | (QUIC_PN,unsigned char *,size_t) |  | ossl_quic_wire_encode_pkt_hdr_pn | 2 |
 | zmq.cpp:17:6:17:13 | test_zmc | (QUIC_RXFC *,OSSL_STATM *,size_t) |  | ossl_quic_rstream_new | 2 |
 | zmq.cpp:17:6:17:13 | test_zmc | (QUIC_TLS *,const unsigned char *,size_t) |  | ossl_quic_tls_set_transport_params | 2 |
@@ -13439,11 +13185,6 @@ getSignatureParameterName
 | (BIO *,const char *,const stack_st_X509_EXTENSION *,unsigned long,int) |  | X509V3_extensions_print | 2 | const stack_st_X509_EXTENSION * |
 | (BIO *,const char *,const stack_st_X509_EXTENSION *,unsigned long,int) |  | X509V3_extensions_print | 3 | unsigned long |
 | (BIO *,const char *,const stack_st_X509_EXTENSION *,unsigned long,int) |  | X509V3_extensions_print | 4 | int |
-| (BIO *,const char *,int,int,int) |  | mempacket_test_inject | 0 | BIO * |
-| (BIO *,const char *,int,int,int) |  | mempacket_test_inject | 1 | const char * |
-| (BIO *,const char *,int,int,int) |  | mempacket_test_inject | 2 | int |
-| (BIO *,const char *,int,int,int) |  | mempacket_test_inject | 3 | int |
-| (BIO *,const char *,int,int,int) |  | mempacket_test_inject | 4 | int |
 | (BIO *,const char *,va_list) |  | BIO_vprintf | 0 | BIO * |
 | (BIO *,const char *,va_list) |  | BIO_vprintf | 1 | const char * |
 | (BIO *,const char *,va_list) |  | BIO_vprintf | 2 | va_list |
@@ -13599,8 +13340,6 @@ getSignatureParameterName
 | (BIO_METHOD *,..(*)(..)) |  | BIO_meth_set_write | 1 | ..(*)(..) |
 | (BIO_METHOD *,..(*)(..)) |  | BIO_meth_set_write_ex | 0 | BIO_METHOD * |
 | (BIO_METHOD *,..(*)(..)) |  | BIO_meth_set_write_ex | 1 | ..(*)(..) |
-| (BIO_MSG *,BIO_MSG *) |  | bio_msg_copy | 0 | BIO_MSG * |
-| (BIO_MSG *,BIO_MSG *) |  | bio_msg_copy | 1 | BIO_MSG * |
 | (BLAKE2B_CTX *,const BLAKE2B_PARAM *) |  | ossl_blake2b_init | 0 | BLAKE2B_CTX * |
 | (BLAKE2B_CTX *,const BLAKE2B_PARAM *) |  | ossl_blake2b_init | 1 | const BLAKE2B_PARAM * |
 | (BLAKE2B_CTX *,const BLAKE2B_PARAM *,const void *) |  | ossl_blake2b_init_key | 0 | BLAKE2B_CTX * |
@@ -15361,8 +15100,6 @@ getSignatureParameterName
 | (EVP_RAND *,EVP_RAND_CTX *) |  | EVP_RAND_CTX_new | 1 | EVP_RAND_CTX * |
 | (EVP_RAND_CTX *) |  | EVP_RAND_CTX_get0_rand | 0 | EVP_RAND_CTX * |
 | (EVP_RAND_CTX *) |  | evp_rand_can_seed | 0 | EVP_RAND_CTX * |
-| (EVP_RAND_CTX *,..(*)(..)) |  | fake_rand_set_callback | 0 | EVP_RAND_CTX * |
-| (EVP_RAND_CTX *,..(*)(..)) |  | fake_rand_set_callback | 1 | ..(*)(..) |
 | (EVP_RAND_CTX *,unsigned char *,size_t) |  | EVP_RAND_nonce | 0 | EVP_RAND_CTX * |
 | (EVP_RAND_CTX *,unsigned char *,size_t) |  | EVP_RAND_nonce | 1 | unsigned char * |
 | (EVP_RAND_CTX *,unsigned char *,size_t) |  | EVP_RAND_nonce | 2 | size_t |
@@ -16727,8 +16464,6 @@ getSignatureParameterName
 | (OSSL_BASIC_ATTR_CONSTRAINTS **,const unsigned char **,long) |  | d2i_OSSL_BASIC_ATTR_CONSTRAINTS | 0 | OSSL_BASIC_ATTR_CONSTRAINTS ** |
 | (OSSL_BASIC_ATTR_CONSTRAINTS **,const unsigned char **,long) |  | d2i_OSSL_BASIC_ATTR_CONSTRAINTS | 1 | const unsigned char ** |
 | (OSSL_BASIC_ATTR_CONSTRAINTS **,const unsigned char **,long) |  | d2i_OSSL_BASIC_ATTR_CONSTRAINTS | 2 | long |
-| (OSSL_CALLBACK *,void *) |  | OSSL_SELF_TEST_new | 0 | OSSL_CALLBACK * |
-| (OSSL_CALLBACK *,void *) |  | OSSL_SELF_TEST_new | 1 | void * |
 | (OSSL_CMP_ATAV *,ASN1_OBJECT *,ASN1_TYPE *) |  | OSSL_CMP_ATAV_set0 | 0 | OSSL_CMP_ATAV * |
 | (OSSL_CMP_ATAV *,ASN1_OBJECT *,ASN1_TYPE *) |  | OSSL_CMP_ATAV_set0 | 1 | ASN1_OBJECT * |
 | (OSSL_CMP_ATAV *,ASN1_OBJECT *,ASN1_TYPE *) |  | OSSL_CMP_ATAV_set0 | 2 | ASN1_TYPE * |
@@ -17400,11 +17135,6 @@ getSignatureParameterName
 | (OSSL_LIB_CTX *) |  | RAND_get0_primary | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | RAND_get0_private | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | RAND_get0_public | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *) |  | SSL_TEST_CTX_new | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *) |  | fake_cipher_start | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *) |  | fake_pipeline_start | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *) |  | fake_rand_start | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *) |  | fake_rsa_start | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | ossl_dh_new_ex | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | ossl_do_ex_data_init | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | ossl_dsa_new | 0 | OSSL_LIB_CTX * |
@@ -17418,16 +17148,6 @@ getSignatureParameterName
 | (OSSL_LIB_CTX *) |  | ossl_provider_store_new | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | ossl_rand_get0_seed_noncreating | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *) |  | ossl_rsa_new_with_ctx | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,OSSL_PROVIDER **,int,const char *) |  | test_arg_libctx | 0 | OSSL_LIB_CTX ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,OSSL_PROVIDER **,int,const char *) |  | test_arg_libctx | 1 | OSSL_PROVIDER ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,OSSL_PROVIDER **,int,const char *) |  | test_arg_libctx | 2 | OSSL_PROVIDER ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,OSSL_PROVIDER **,int,const char *) |  | test_arg_libctx | 3 | int |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,OSSL_PROVIDER **,int,const char *) |  | test_arg_libctx | 4 | const char * |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,const char *,OSSL_PROVIDER **,const char *) |  | test_get_libctx | 0 | OSSL_LIB_CTX ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,const char *,OSSL_PROVIDER **,const char *) |  | test_get_libctx | 1 | OSSL_PROVIDER ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,const char *,OSSL_PROVIDER **,const char *) |  | test_get_libctx | 2 | const char * |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,const char *,OSSL_PROVIDER **,const char *) |  | test_get_libctx | 3 | OSSL_PROVIDER ** |
-| (OSSL_LIB_CTX **,OSSL_PROVIDER **,const char *,OSSL_PROVIDER **,const char *) |  | test_get_libctx | 4 | const char * |
 | (OSSL_LIB_CTX **,const char **,const X509_PUBKEY *) |  | ossl_x509_PUBKEY_get0_libctx | 0 | OSSL_LIB_CTX ** |
 | (OSSL_LIB_CTX **,const char **,const X509_PUBKEY *) |  | ossl_x509_PUBKEY_get0_libctx | 1 | const char ** |
 | (OSSL_LIB_CTX **,const char **,const X509_PUBKEY *) |  | ossl_x509_PUBKEY_get0_libctx | 2 | const X509_PUBKEY * |
@@ -17479,9 +17199,6 @@ getSignatureParameterName
 | (OSSL_LIB_CTX *,FFC_PARAMS *,int,size_t,size_t,int *,BN_GENCB *) |  | ossl_ffc_params_FIPS186_4_generate | 4 | size_t |
 | (OSSL_LIB_CTX *,FFC_PARAMS *,int,size_t,size_t,int *,BN_GENCB *) |  | ossl_ffc_params_FIPS186_4_generate | 5 | int * |
 | (OSSL_LIB_CTX *,FFC_PARAMS *,int,size_t,size_t,int *,BN_GENCB *) |  | ossl_ffc_params_FIPS186_4_generate | 6 | BN_GENCB * |
-| (OSSL_LIB_CTX *,OSSL_CALLBACK **,void **) |  | OSSL_SELF_TEST_get_callback | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *,OSSL_CALLBACK **,void **) |  | OSSL_SELF_TEST_get_callback | 1 | OSSL_CALLBACK ** |
-| (OSSL_LIB_CTX *,OSSL_CALLBACK **,void **) |  | OSSL_SELF_TEST_get_callback | 2 | void ** |
 | (OSSL_LIB_CTX *,OSSL_CORE_BIO *) |  | BIO_new_from_core_bio | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *,OSSL_CORE_BIO *) |  | BIO_new_from_core_bio | 1 | OSSL_CORE_BIO * |
 | (OSSL_LIB_CTX *,OSSL_INDICATOR_CALLBACK **) |  | OSSL_INDICATOR_get_callback | 0 | OSSL_LIB_CTX * |
@@ -17492,19 +17209,6 @@ getSignatureParameterName
 | (OSSL_LIB_CTX *,OSSL_PROPERTY_IDX) |  | ossl_property_value_str | 1 | OSSL_PROPERTY_IDX |
 | (OSSL_LIB_CTX *,OSSL_PROVIDER_INFO *) |  | ossl_provider_info_add_to_store | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *,OSSL_PROVIDER_INFO *) |  | ossl_provider_info_add_to_store | 1 | OSSL_PROVIDER_INFO * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 1 | SSL_CTX * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 2 | SSL_CTX * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 3 | char * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 4 | char * |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 5 | int |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 6 | QUIC_TSERVER ** |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 7 | SSL ** |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 8 | QTEST_FAULT ** |
-| (OSSL_LIB_CTX *,SSL_CTX *,SSL_CTX *,char *,char *,int,QUIC_TSERVER **,SSL **,QTEST_FAULT **,BIO **) |  | qtest_create_quic_objects | 9 | BIO ** |
-| (OSSL_LIB_CTX *,SSL_CTX *,const char *) |  | ssl_ctx_add_large_cert_chain | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *,SSL_CTX *,const char *) |  | ssl_ctx_add_large_cert_chain | 1 | SSL_CTX * |
-| (OSSL_LIB_CTX *,SSL_CTX *,const char *) |  | ssl_ctx_add_large_cert_chain | 2 | const char * |
 | (OSSL_LIB_CTX *,const BIO_METHOD *) |  | BIO_new_ex | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *,const BIO_METHOD *) |  | BIO_new_ex | 1 | const BIO_METHOD * |
 | (OSSL_LIB_CTX *,const FFC_PARAMS *,int,int *) |  | ossl_ffc_params_full_validate | 0 | OSSL_LIB_CTX * |
@@ -17536,15 +17240,6 @@ getSignatureParameterName
 | (OSSL_LIB_CTX *,const OSSL_PROPERTY_LIST *,char *,size_t) |  | ossl_property_list_to_string | 1 | const OSSL_PROPERTY_LIST * |
 | (OSSL_LIB_CTX *,const OSSL_PROPERTY_LIST *,char *,size_t) |  | ossl_property_list_to_string | 2 | char * |
 | (OSSL_LIB_CTX *,const OSSL_PROPERTY_LIST *,char *,size_t) |  | ossl_property_list_to_string | 3 | size_t |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 0 | OSSL_LIB_CTX * |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 1 | const SSL_METHOD * |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 2 | const SSL_METHOD * |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 3 | int |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 4 | int |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 5 | SSL_CTX ** |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 6 | SSL_CTX ** |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 7 | char * |
-| (OSSL_LIB_CTX *,const SSL_METHOD *,const SSL_METHOD *,int,int,SSL_CTX **,SSL_CTX **,char *,char *) |  | create_ssl_ctx_pair | 8 | char * |
 | (OSSL_LIB_CTX *,const char *) |  | CMS_ContentInfo_new_ex | 0 | OSSL_LIB_CTX * |
 | (OSSL_LIB_CTX *,const char *) |  | CMS_ContentInfo_new_ex | 1 | const char * |
 | (OSSL_LIB_CTX *,const char *) |  | CTLOG_STORE_new_ex | 0 | OSSL_LIB_CTX * |
@@ -18221,11 +17916,6 @@ getSignatureParameterName
 | (OSSL_ROLE_SPEC_CERT_ID_SYNTAX **,const unsigned char **,long) |  | d2i_OSSL_ROLE_SPEC_CERT_ID_SYNTAX | 0 | OSSL_ROLE_SPEC_CERT_ID_SYNTAX ** |
 | (OSSL_ROLE_SPEC_CERT_ID_SYNTAX **,const unsigned char **,long) |  | d2i_OSSL_ROLE_SPEC_CERT_ID_SYNTAX | 1 | const unsigned char ** |
 | (OSSL_ROLE_SPEC_CERT_ID_SYNTAX **,const unsigned char **,long) |  | d2i_OSSL_ROLE_SPEC_CERT_ID_SYNTAX | 2 | long |
-| (OSSL_SELF_TEST *,const char *,const char *) |  | OSSL_SELF_TEST_onbegin | 0 | OSSL_SELF_TEST * |
-| (OSSL_SELF_TEST *,const char *,const char *) |  | OSSL_SELF_TEST_onbegin | 1 | const char * |
-| (OSSL_SELF_TEST *,const char *,const char *) |  | OSSL_SELF_TEST_onbegin | 2 | const char * |
-| (OSSL_SELF_TEST *,unsigned char *) |  | OSSL_SELF_TEST_oncorrupt_byte | 0 | OSSL_SELF_TEST * |
-| (OSSL_SELF_TEST *,unsigned char *) |  | OSSL_SELF_TEST_oncorrupt_byte | 1 | unsigned char * |
 | (OSSL_STATM *,OSSL_RTT_INFO *) |  | ossl_statm_get_rtt_info | 0 | OSSL_STATM * |
 | (OSSL_STATM *,OSSL_RTT_INFO *) |  | ossl_statm_get_rtt_info | 1 | OSSL_RTT_INFO * |
 | (OSSL_STATM *,OSSL_TIME,OSSL_TIME) |  | ossl_statm_update_rtt | 0 | OSSL_STATM * |
@@ -18583,29 +18273,6 @@ getSignatureParameterName
 | (PKCS12_BAGS **,const unsigned char **,long) |  | d2i_PKCS12_BAGS | 0 | PKCS12_BAGS ** |
 | (PKCS12_BAGS **,const unsigned char **,long) |  | d2i_PKCS12_BAGS | 1 | const unsigned char ** |
 | (PKCS12_BAGS **,const unsigned char **,long) |  | d2i_PKCS12_BAGS | 2 | long |
-| (PKCS12_BUILDER *) |  | end_pkcs12_builder | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | add_certbag | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | add_certbag | 1 | const unsigned char * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | add_certbag | 2 | int |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | add_certbag | 3 | const PKCS12_ATTR * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | check_certbag | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | check_certbag | 1 | const unsigned char * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | check_certbag | 2 | int |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *) |  | check_certbag | 3 | const PKCS12_ATTR * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | add_keybag | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | add_keybag | 1 | const unsigned char * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | add_keybag | 2 | int |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | add_keybag | 3 | const PKCS12_ATTR * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | add_keybag | 4 | const PKCS12_ENC * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | check_keybag | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | check_keybag | 1 | const unsigned char * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | check_keybag | 2 | int |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | check_keybag | 3 | const PKCS12_ATTR * |
-| (PKCS12_BUILDER *,const unsigned char *,int,const PKCS12_ATTR *,const PKCS12_ENC *) |  | check_keybag | 4 | const PKCS12_ENC * |
-| (PKCS12_BUILDER *,int,const char *,const PKCS12_ATTR *) |  | add_secretbag | 0 | PKCS12_BUILDER * |
-| (PKCS12_BUILDER *,int,const char *,const PKCS12_ATTR *) |  | add_secretbag | 1 | int |
-| (PKCS12_BUILDER *,int,const char *,const PKCS12_ATTR *) |  | add_secretbag | 2 | const char * |
-| (PKCS12_BUILDER *,int,const char *,const PKCS12_ATTR *) |  | add_secretbag | 3 | const PKCS12_ATTR * |
 | (PKCS12_MAC_DATA *) |  | PKCS12_MAC_DATA_free | 0 | PKCS12_MAC_DATA * |
 | (PKCS12_MAC_DATA **,const unsigned char **,long) |  | d2i_PKCS12_MAC_DATA | 0 | PKCS12_MAC_DATA ** |
 | (PKCS12_MAC_DATA **,const unsigned char **,long) |  | d2i_PKCS12_MAC_DATA | 1 | const unsigned char ** |
@@ -18818,37 +18485,6 @@ getSignatureParameterName
 | (QLOG *,uint32_t,int) |  | ossl_qlog_set_event_type_enabled | 0 | QLOG * |
 | (QLOG *,uint32_t,int) |  | ossl_qlog_set_event_type_enabled | 1 | uint32_t |
 | (QLOG *,uint32_t,int) |  | ossl_qlog_set_event_type_enabled | 2 | int |
-| (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 1 | const unsigned char * |
-| (QTEST_FAULT *,const unsigned char *,size_t) |  | qtest_fault_prepend_frame | 2 | size_t |
-| (QTEST_FAULT *,qtest_fault_on_datagram_cb,void *) |  | qtest_fault_set_datagram_listener | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,qtest_fault_on_datagram_cb,void *) |  | qtest_fault_set_datagram_listener | 1 | qtest_fault_on_datagram_cb |
-| (QTEST_FAULT *,qtest_fault_on_datagram_cb,void *) |  | qtest_fault_set_datagram_listener | 2 | void * |
-| (QTEST_FAULT *,qtest_fault_on_enc_ext_cb,void *) |  | qtest_fault_set_hand_enc_ext_listener | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,qtest_fault_on_enc_ext_cb,void *) |  | qtest_fault_set_hand_enc_ext_listener | 1 | qtest_fault_on_enc_ext_cb |
-| (QTEST_FAULT *,qtest_fault_on_enc_ext_cb,void *) |  | qtest_fault_set_hand_enc_ext_listener | 2 | void * |
-| (QTEST_FAULT *,qtest_fault_on_handshake_cb,void *) |  | qtest_fault_set_handshake_listener | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,qtest_fault_on_handshake_cb,void *) |  | qtest_fault_set_handshake_listener | 1 | qtest_fault_on_handshake_cb |
-| (QTEST_FAULT *,qtest_fault_on_handshake_cb,void *) |  | qtest_fault_set_handshake_listener | 2 | void * |
-| (QTEST_FAULT *,qtest_fault_on_packet_cipher_cb,void *) |  | qtest_fault_set_packet_cipher_listener | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,qtest_fault_on_packet_cipher_cb,void *) |  | qtest_fault_set_packet_cipher_listener | 1 | qtest_fault_on_packet_cipher_cb |
-| (QTEST_FAULT *,qtest_fault_on_packet_cipher_cb,void *) |  | qtest_fault_set_packet_cipher_listener | 2 | void * |
-| (QTEST_FAULT *,qtest_fault_on_packet_plain_cb,void *) |  | qtest_fault_set_packet_plain_listener | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,qtest_fault_on_packet_plain_cb,void *) |  | qtest_fault_set_packet_plain_listener | 1 | qtest_fault_on_packet_plain_cb |
-| (QTEST_FAULT *,qtest_fault_on_packet_plain_cb,void *) |  | qtest_fault_set_packet_plain_listener | 2 | void * |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_datagram | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_datagram | 1 | size_t |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_handshake | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_handshake | 1 | size_t |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_message | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_message | 1 | size_t |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_plain_packet | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,size_t) |  | qtest_fault_resize_plain_packet | 1 | size_t |
-| (QTEST_FAULT *,unsigned int,unsigned char *,size_t *,BUF_MEM *) |  | qtest_fault_delete_extension | 0 | QTEST_FAULT * |
-| (QTEST_FAULT *,unsigned int,unsigned char *,size_t *,BUF_MEM *) |  | qtest_fault_delete_extension | 1 | unsigned int |
-| (QTEST_FAULT *,unsigned int,unsigned char *,size_t *,BUF_MEM *) |  | qtest_fault_delete_extension | 2 | unsigned char * |
-| (QTEST_FAULT *,unsigned int,unsigned char *,size_t *,BUF_MEM *) |  | qtest_fault_delete_extension | 3 | size_t * |
-| (QTEST_FAULT *,unsigned int,unsigned char *,size_t *,BUF_MEM *) |  | qtest_fault_delete_extension | 4 | BUF_MEM * |
 | (QUIC_CFQ *,QUIC_CFQ_ITEM *) |  | ossl_quic_cfq_mark_tx | 0 | QUIC_CFQ * |
 | (QUIC_CFQ *,QUIC_CFQ_ITEM *) |  | ossl_quic_cfq_mark_tx | 1 | QUIC_CFQ_ITEM * |
 | (QUIC_CFQ *,QUIC_CFQ_ITEM *) |  | ossl_quic_cfq_release | 0 | QUIC_CFQ * |
@@ -19187,17 +18823,9 @@ getSignatureParameterName
 | (QUIC_TSERVER *) |  | ossl_quic_tserver_get0_rbio | 0 | QUIC_TSERVER * |
 | (QUIC_TSERVER *) |  | ossl_quic_tserver_get0_ssl_ctx | 0 | QUIC_TSERVER * |
 | (QUIC_TSERVER *) |  | ossl_quic_tserver_get_channel | 0 | QUIC_TSERVER * |
-| (QUIC_TSERVER *) |  | qtest_create_injector | 0 | QUIC_TSERVER * |
 | (QUIC_TSERVER *,..(*)(..),void *) |  | ossl_quic_tserver_set_msg_callback | 0 | QUIC_TSERVER * |
 | (QUIC_TSERVER *,..(*)(..),void *) |  | ossl_quic_tserver_set_msg_callback | 1 | ..(*)(..) |
 | (QUIC_TSERVER *,..(*)(..),void *) |  | ossl_quic_tserver_set_msg_callback | 2 | void * |
-| (QUIC_TSERVER *,SSL *) |  | qtest_create_quic_connection | 0 | QUIC_TSERVER * |
-| (QUIC_TSERVER *,SSL *) |  | qtest_create_quic_connection | 1 | SSL * |
-| (QUIC_TSERVER *,SSL *) |  | qtest_shutdown | 0 | QUIC_TSERVER * |
-| (QUIC_TSERVER *,SSL *) |  | qtest_shutdown | 1 | SSL * |
-| (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 0 | QUIC_TSERVER * |
-| (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 1 | SSL * |
-| (QUIC_TSERVER *,SSL *,int) |  | qtest_create_quic_connection_ex | 2 | int |
 | (QUIC_TSERVER *,SSL_psk_find_session_cb_func) |  | ossl_quic_tserver_set_psk_find_session_cb | 0 | QUIC_TSERVER * |
 | (QUIC_TSERVER *,SSL_psk_find_session_cb_func) |  | ossl_quic_tserver_set_psk_find_session_cb | 1 | SSL_psk_find_session_cb_func |
 | (QUIC_TSERVER *,const QUIC_CONN_ID *) |  | ossl_quic_tserver_set_new_local_cid | 0 | QUIC_TSERVER * |
@@ -19507,9 +19135,6 @@ getSignatureParameterName
 | (SCT_CTX *,X509_PUBKEY *) |  | SCT_CTX_set1_pubkey | 1 | X509_PUBKEY * |
 | (SCT_CTX *,uint64_t) |  | SCT_CTX_set_time | 0 | SCT_CTX * |
 | (SCT_CTX *,uint64_t) |  | SCT_CTX_set_time | 1 | uint64_t |
-| (SD,const char *,SD_SYM *) |  | sd_sym | 0 | SD |
-| (SD,const char *,SD_SYM *) |  | sd_sym | 1 | const char * |
-| (SD,const char *,SD_SYM *) |  | sd_sym | 2 | SD_SYM * |
 | (SFRAME_LIST *) |  | ossl_sframe_list_is_head_locked | 0 | SFRAME_LIST * |
 | (SFRAME_LIST *,UINT_RANGE *,OSSL_QRX_PKT *,const unsigned char *,int) |  | ossl_sframe_list_insert | 0 | SFRAME_LIST * |
 | (SFRAME_LIST *,UINT_RANGE *,OSSL_QRX_PKT *,const unsigned char *,int) |  | ossl_sframe_list_insert | 1 | UINT_RANGE * |
@@ -19686,27 +19311,6 @@ getSignatureParameterName
 | (SSL *,EVP_PKEY *) |  | SSL_set0_tmp_dh_pkey | 1 | EVP_PKEY * |
 | (SSL *,GEN_SESSION_CB) |  | SSL_set_generate_session_id | 0 | SSL * |
 | (SSL *,GEN_SESSION_CB) |  | SSL_set_generate_session_id | 1 | GEN_SESSION_CB |
-| (SSL *,SSL *) |  | shutdown_ssl_connection | 0 | SSL * |
-| (SSL *,SSL *) |  | shutdown_ssl_connection | 1 | SSL * |
-| (SSL *,SSL *,int) |  | create_ssl_connection | 0 | SSL * |
-| (SSL *,SSL *,int) |  | create_ssl_connection | 1 | SSL * |
-| (SSL *,SSL *,int) |  | create_ssl_connection | 2 | int |
-| (SSL *,SSL *,int,int,int) |  | create_bare_ssl_connection | 0 | SSL * |
-| (SSL *,SSL *,int,int,int) |  | create_bare_ssl_connection | 1 | SSL * |
-| (SSL *,SSL *,int,int,int) |  | create_bare_ssl_connection | 2 | int |
-| (SSL *,SSL *,int,int,int) |  | create_bare_ssl_connection | 3 | int |
-| (SSL *,SSL *,int,int,int) |  | create_bare_ssl_connection | 4 | int |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 0 | SSL * |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 1 | SSL * |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 2 | int |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 3 | long |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 4 | clock_t * |
-| (SSL *,SSL *,int,long,clock_t *,clock_t *) |  | doit_localhost | 5 | clock_t * |
-| (SSL *,SSL *,long,clock_t *,clock_t *) |  | doit_biopair | 0 | SSL * |
-| (SSL *,SSL *,long,clock_t *,clock_t *) |  | doit_biopair | 1 | SSL * |
-| (SSL *,SSL *,long,clock_t *,clock_t *) |  | doit_biopair | 2 | long |
-| (SSL *,SSL *,long,clock_t *,clock_t *) |  | doit_biopair | 3 | clock_t * |
-| (SSL *,SSL *,long,clock_t *,clock_t *) |  | doit_biopair | 4 | clock_t * |
 | (SSL *,SSL_CTX *) |  | SSL_set_SSL_CTX | 0 | SSL * |
 | (SSL *,SSL_CTX *) |  | SSL_set_SSL_CTX | 1 | SSL_CTX * |
 | (SSL *,SSL_CTX *,const SSL_METHOD *,int) |  | ossl_ssl_init | 0 | SSL * |
@@ -19919,8 +19523,6 @@ getSignatureParameterName
 | (SSL *,size_t) |  | SSL_set_default_read_buffer_len | 1 | size_t |
 | (SSL *,size_t) |  | SSL_set_num_tickets | 0 | SSL * |
 | (SSL *,size_t) |  | SSL_set_num_tickets | 1 | size_t |
-| (SSL *,size_t) |  | create_a_psk | 0 | SSL * |
-| (SSL *,size_t) |  | create_a_psk | 1 | size_t |
 | (SSL *,size_t,size_t) |  | SSL_set_block_padding_ex | 0 | SSL * |
 | (SSL *,size_t,size_t) |  | SSL_set_block_padding_ex | 1 | size_t |
 | (SSL *,size_t,size_t) |  | SSL_set_block_padding_ex | 2 | size_t |
@@ -20532,31 +20134,6 @@ getSignatureParameterName
 | (SSL_CTX *,SSL *,const SSL_METHOD *) |  | ossl_ssl_connection_new_int | 0 | SSL_CTX * |
 | (SSL_CTX *,SSL *,const SSL_METHOD *) |  | ossl_ssl_connection_new_int | 1 | SSL * |
 | (SSL_CTX *,SSL *,const SSL_METHOD *) |  | ossl_ssl_connection_new_int | 2 | const SSL_METHOD * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 0 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 1 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 2 | SSL ** |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 3 | SSL ** |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 4 | BIO * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,BIO *,BIO *) |  | create_ssl_objects | 5 | BIO * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 0 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 1 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 2 | SSL ** |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 3 | SSL ** |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 4 | int |
-| (SSL_CTX *,SSL_CTX *,SSL **,SSL **,int,int) |  | create_ssl_objects2 | 5 | int |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 0 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 1 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 2 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 3 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 4 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_CTX *) |  | do_handshake | 5 | const SSL_TEST_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 0 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 1 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 2 | SSL_CTX * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 3 | const SSL_TEST_EXTRA_CONF * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 4 | CTX_DATA * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 5 | CTX_DATA * |
-| (SSL_CTX *,SSL_CTX *,SSL_CTX *,const SSL_TEST_EXTRA_CONF *,CTX_DATA *,CTX_DATA *,CTX_DATA *) |  | configure_handshake_ctx_for_srp | 6 | CTX_DATA * |
 | (SSL_CTX *,SSL_CTX_alpn_select_cb_func,void *) |  | SSL_CTX_set_alpn_select_cb | 0 | SSL_CTX * |
 | (SSL_CTX *,SSL_CTX_alpn_select_cb_func,void *) |  | SSL_CTX_set_alpn_select_cb | 1 | SSL_CTX_alpn_select_cb_func |
 | (SSL_CTX *,SSL_CTX_alpn_select_cb_func,void *) |  | SSL_CTX_set_alpn_select_cb | 2 | void * |
@@ -20856,8 +20433,6 @@ getSignatureParameterName
 | (SSL_SESSION *,void **,size_t *) |  | SSL_SESSION_get0_ticket_appdata | 0 | SSL_SESSION * |
 | (SSL_SESSION *,void **,size_t *) |  | SSL_SESSION_get0_ticket_appdata | 1 | void ** |
 | (SSL_SESSION *,void **,size_t *) |  | SSL_SESSION_get0_ticket_appdata | 2 | size_t * |
-| (STANZA *,const char *) |  | test_start_file | 0 | STANZA * |
-| (STANZA *,const char *) |  | test_start_file | 1 | const char * |
 | (SXNET *) |  | SXNET_free | 0 | SXNET * |
 | (SXNET **,ASN1_INTEGER *,const char *,int) |  | SXNET_add_id_INTEGER | 0 | SXNET ** |
 | (SXNET **,ASN1_INTEGER *,const char *,int) |  | SXNET_add_id_INTEGER | 1 | ASN1_INTEGER * |
@@ -22534,9 +22109,6 @@ getSignatureParameterName
 | (const COMP_METHOD *) |  | COMP_get_type | 0 | const COMP_METHOD * |
 | (const COMP_METHOD *) |  | SSL_COMP_get_name | 0 | const COMP_METHOD * |
 | (const CONF *) |  | NCONF_get0_libctx | 0 | const CONF * |
-| (const CONF *,const char *,OSSL_LIB_CTX *) |  | SSL_TEST_CTX_create | 0 | const CONF * |
-| (const CONF *,const char *,OSSL_LIB_CTX *) |  | SSL_TEST_CTX_create | 1 | const char * |
-| (const CONF *,const char *,OSSL_LIB_CTX *) |  | SSL_TEST_CTX_create | 2 | OSSL_LIB_CTX * |
 | (const CONF_IMODULE *) |  | CONF_imodule_get_flags | 0 | const CONF_IMODULE * |
 | (const CONF_IMODULE *) |  | CONF_imodule_get_module | 0 | const CONF_IMODULE * |
 | (const CONF_IMODULE *) |  | CONF_imodule_get_name | 0 | const CONF_IMODULE * |
@@ -23714,7 +23286,6 @@ getSignatureParameterName
 | (const OSSL_CMP_MSG *) |  | OSSL_CMP_MSG_dup | 0 | const OSSL_CMP_MSG * |
 | (const OSSL_CMP_MSG *) |  | OSSL_CMP_MSG_get0_header | 0 | const OSSL_CMP_MSG * |
 | (const OSSL_CMP_MSG *) |  | OSSL_CMP_MSG_get_bodytype | 0 | const OSSL_CMP_MSG * |
-| (const OSSL_CMP_MSG *) |  | valid_asn1_encoding | 0 | const OSSL_CMP_MSG * |
 | (const OSSL_CMP_MSG *,unsigned char **) |  | i2d_OSSL_CMP_MSG | 0 | const OSSL_CMP_MSG * |
 | (const OSSL_CMP_MSG *,unsigned char **) |  | i2d_OSSL_CMP_MSG | 1 | unsigned char ** |
 | (const OSSL_CMP_PKIBODY *,unsigned char **) |  | i2d_OSSL_CMP_PKIBODY | 0 | const OSSL_CMP_PKIBODY * |
@@ -23762,10 +23333,6 @@ getSignatureParameterName
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | OSSL_provider_init | 1 | const OSSL_DISPATCH * |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | OSSL_provider_init | 2 | const OSSL_DISPATCH ** |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | OSSL_provider_init | 3 | void ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | filter_provider_init | 0 | const OSSL_CORE_HANDLE * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | filter_provider_init | 1 | const OSSL_DISPATCH * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | filter_provider_init | 2 | const OSSL_DISPATCH ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | filter_provider_init | 3 | void ** |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_base_provider_init | 0 | const OSSL_CORE_HANDLE * |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_base_provider_init | 1 | const OSSL_DISPATCH * |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_base_provider_init | 2 | const OSSL_DISPATCH ** |
@@ -23782,14 +23349,6 @@ getSignatureParameterName
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_null_provider_init | 1 | const OSSL_DISPATCH * |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_null_provider_init | 2 | const OSSL_DISPATCH ** |
 | (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | ossl_null_provider_init | 3 | void ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | p_test_init | 0 | const OSSL_CORE_HANDLE * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | p_test_init | 1 | const OSSL_DISPATCH * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | p_test_init | 2 | const OSSL_DISPATCH ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | p_test_init | 3 | void ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | tls_provider_init | 0 | const OSSL_CORE_HANDLE * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | tls_provider_init | 1 | const OSSL_DISPATCH * |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | tls_provider_init | 2 | const OSSL_DISPATCH ** |
-| (const OSSL_CORE_HANDLE *,const OSSL_DISPATCH *,const OSSL_DISPATCH **,void **) |  | tls_provider_init | 3 | void ** |
 | (const OSSL_CRMF_ATTRIBUTETYPEANDVALUE *) |  | OSSL_CRMF_ATTRIBUTETYPEANDVALUE_dup | 0 | const OSSL_CRMF_ATTRIBUTETYPEANDVALUE * |
 | (const OSSL_CRMF_ATTRIBUTETYPEANDVALUE *,unsigned char **) |  | i2d_OSSL_CRMF_ATTRIBUTETYPEANDVALUE | 0 | const OSSL_CRMF_ATTRIBUTETYPEANDVALUE * |
 | (const OSSL_CRMF_ATTRIBUTETYPEANDVALUE *,unsigned char **) |  | i2d_OSSL_CRMF_ATTRIBUTETYPEANDVALUE | 1 | unsigned char ** |
@@ -24996,7 +24555,6 @@ getSignatureParameterName
 | (const char *) |  | X509_LOOKUP_meth_new | 0 | const char * |
 | (const char *) |  | a2i_IPADDRESS | 0 | const char * |
 | (const char *) |  | a2i_IPADDRESS_NC | 0 | const char * |
-| (const char *) |  | new_pkcs12_builder | 0 | const char * |
 | (const char *) |  | opt_path_end | 0 | const char * |
 | (const char *) |  | opt_progname | 0 | const char * |
 | (const char *) |  | ossl_lh_strcasehash | 0 | const char * |
@@ -25076,12 +24634,6 @@ getSignatureParameterName
 | (const char *,OSSL_CMP_severity *,char **,char **,int *) |  | ossl_cmp_log_parse_metadata | 2 | char ** |
 | (const char *,OSSL_CMP_severity *,char **,char **,int *) |  | ossl_cmp_log_parse_metadata | 3 | char ** |
 | (const char *,OSSL_CMP_severity *,char **,char **,int *) |  | ossl_cmp_log_parse_metadata | 4 | int * |
-| (const char *,OSSL_LIB_CTX *) |  | load_cert_pem | 0 | const char * |
-| (const char *,OSSL_LIB_CTX *) |  | load_cert_pem | 1 | OSSL_LIB_CTX * |
-| (const char *,OSSL_LIB_CTX *) |  | load_csr_der | 0 | const char * |
-| (const char *,OSSL_LIB_CTX *) |  | load_csr_der | 1 | OSSL_LIB_CTX * |
-| (const char *,OSSL_LIB_CTX *) |  | load_pkimsg | 0 | const char * |
-| (const char *,OSSL_LIB_CTX *) |  | load_pkimsg | 1 | OSSL_LIB_CTX * |
 | (const char *,OSSL_LIB_CTX *,const char *) |  | OSSL_CMP_MSG_read | 0 | const char * |
 | (const char *,OSSL_LIB_CTX *,const char *) |  | OSSL_CMP_MSG_read | 1 | OSSL_LIB_CTX * |
 | (const char *,OSSL_LIB_CTX *,const char *) |  | OSSL_CMP_MSG_read | 2 | const char * |
@@ -25093,9 +24645,6 @@ getSignatureParameterName
 | (const char *,OSSL_LIB_CTX *,const char *,const UI_METHOD *,void *,const OSSL_PARAM[],OSSL_STORE_post_process_info_fn,void *) |  | OSSL_STORE_open_ex | 5 | const OSSL_PARAM[] |
 | (const char *,OSSL_LIB_CTX *,const char *,const UI_METHOD *,void *,const OSSL_PARAM[],OSSL_STORE_post_process_info_fn,void *) |  | OSSL_STORE_open_ex | 6 | OSSL_STORE_post_process_info_fn |
 | (const char *,OSSL_LIB_CTX *,const char *,const UI_METHOD *,void *,const OSSL_PARAM[],OSSL_STORE_post_process_info_fn,void *) |  | OSSL_STORE_open_ex | 7 | void * |
-| (const char *,SD *,int) |  | sd_load | 0 | const char * |
-| (const char *,SD *,int) |  | sd_load | 1 | SD * |
-| (const char *,SD *,int) |  | sd_load | 2 | int |
 | (const char *,X509 **,stack_st_X509 **,int,const char *,const char *,X509_VERIFY_PARAM *) |  | load_cert_certs | 0 | const char * |
 | (const char *,X509 **,stack_st_X509 **,int,const char *,const char *,X509_VERIFY_PARAM *) |  | load_cert_certs | 1 | X509 ** |
 | (const char *,X509 **,stack_st_X509 **,int,const char *,const char *,X509_VERIFY_PARAM *) |  | load_cert_certs | 2 | stack_st_X509 ** |
@@ -25133,8 +24682,6 @@ getSignatureParameterName
 | (const char *,const ASN1_INTEGER *,stack_st_CONF_VALUE **) |  | X509V3_add_value_int | 0 | const char * |
 | (const char *,const ASN1_INTEGER *,stack_st_CONF_VALUE **) |  | X509V3_add_value_int | 1 | const ASN1_INTEGER * |
 | (const char *,const ASN1_INTEGER *,stack_st_CONF_VALUE **) |  | X509V3_add_value_int | 2 | stack_st_CONF_VALUE ** |
-| (const char *,const BIGNUM *) |  | test_output_bignum | 0 | const char * |
-| (const char *,const BIGNUM *) |  | test_output_bignum | 1 | const BIGNUM * |
 | (const char *,const ML_COMMON_PKCS8_FMT *,const char *,const char *) |  | ossl_ml_common_pkcs8_fmt_order | 0 | const char * |
 | (const char *,const ML_COMMON_PKCS8_FMT *,const char *,const char *) |  | ossl_ml_common_pkcs8_fmt_order | 1 | const ML_COMMON_PKCS8_FMT * |
 | (const char *,const ML_COMMON_PKCS8_FMT *,const char *,const char *) |  | ossl_ml_common_pkcs8_fmt_order | 2 | const char * |
@@ -25168,8 +24715,6 @@ getSignatureParameterName
 | (const char *,const char *) |  | sqlite3_strglob | 1 | const char * |
 | (const char *,const char *) |  | sqlite3_stricmp | 0 | const char * |
 | (const char *,const char *) |  | sqlite3_stricmp | 1 | const char * |
-| (const char *,const char *) |  | test_mk_file_path | 0 | const char * |
-| (const char *,const char *) |  | test_mk_file_path | 1 | const char * |
 | (const char *,const char *,BIGNUM **,BIGNUM **,const BIGNUM *,const BIGNUM *) |  | SRP_create_verifier_BN | 0 | const char * |
 | (const char *,const char *,BIGNUM **,BIGNUM **,const BIGNUM *,const BIGNUM *) |  | SRP_create_verifier_BN | 1 | const char * |
 | (const char *,const char *,BIGNUM **,BIGNUM **,const BIGNUM *,const BIGNUM *) |  | SRP_create_verifier_BN | 2 | BIGNUM ** |
@@ -25306,23 +24851,6 @@ getSignatureParameterName
 | (const char *,const char *,int) |  | sqlite3_strnicmp | 0 | const char * |
 | (const char *,const char *,int) |  | sqlite3_strnicmp | 1 | const char * |
 | (const char *,const char *,int) |  | sqlite3_strnicmp | 2 | int |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 0 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 1 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 2 | int |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 3 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 4 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 5 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 6 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *) |  | test_fail_bignum_mono_message | 7 | const BIGNUM * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 0 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 1 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 2 | int |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 3 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 4 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 5 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 6 | const char * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 7 | const BIGNUM * |
-| (const char *,const char *,int,const char *,const char *,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_fail_bignum_message | 8 | const BIGNUM * |
 | (const char *,const char *,int,int,int,int,BIO_ADDRINFO **) |  | BIO_lookup_ex | 0 | const char * |
 | (const char *,const char *,int,int,int,int,BIO_ADDRINFO **) |  | BIO_lookup_ex | 1 | const char * |
 | (const char *,const char *,int,int,int,int,BIO_ADDRINFO **) |  | BIO_lookup_ex | 2 | int |
@@ -25393,84 +24921,6 @@ getSignatureParameterName
 | (const char *,int,PKCS8_PRIV_KEY_INFO *,X509_ALGOR *,OSSL_LIB_CTX *,const char *) |  | PKCS8_set0_pbe_ex | 3 | X509_ALGOR * |
 | (const char *,int,PKCS8_PRIV_KEY_INFO *,X509_ALGOR *,OSSL_LIB_CTX *,const char *) |  | PKCS8_set0_pbe_ex | 4 | OSSL_LIB_CTX * |
 | (const char *,int,PKCS8_PRIV_KEY_INFO *,X509_ALGOR *,OSSL_LIB_CTX *,const char *) |  | PKCS8_set0_pbe_ex | 5 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_one | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_one | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_one | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_one | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_eq_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_even | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_even | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_even | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_even | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ge_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ge_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ge_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ge_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_gt_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_gt_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_gt_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_gt_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_le_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_le_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_le_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_le_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_lt_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_lt_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_lt_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_lt_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ne_zero | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ne_zero | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ne_zero | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_ne_zero | 3 | const BIGNUM * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_odd | 0 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_odd | 1 | int |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_odd | 2 | const char * |
-| (const char *,int,const char *,const BIGNUM *) |  | test_BN_odd | 3 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_eq | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ge | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_gt | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_le | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_lt | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,const BIGNUM *) |  | test_BN_ne | 5 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 0 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 1 | int |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 2 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 3 | const char * |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 4 | const BIGNUM * |
-| (const char *,int,const char *,const char *,const BIGNUM *,unsigned long) |  | test_BN_eq_word | 5 | unsigned long |
 | (const char *,int,int,..(*)(..),void *) |  | CONF_parse_list | 0 | const char * |
 | (const char *,int,int,..(*)(..),void *) |  | CONF_parse_list | 1 | int |
 | (const char *,int,int,..(*)(..),void *) |  | CONF_parse_list | 2 | int |
@@ -25584,14 +25034,6 @@ getSignatureParameterName
 | (const char *,unsigned long *) |  | opt_ulong | 1 | unsigned long * |
 | (const char *,va_list) |  | sqlite3_vmprintf | 0 | const char * |
 | (const char *,va_list) |  | sqlite3_vmprintf | 1 | va_list |
-| (const char *,va_list) |  | test_vprintf_stderr | 0 | const char * |
-| (const char *,va_list) |  | test_vprintf_stderr | 1 | va_list |
-| (const char *,va_list) |  | test_vprintf_stdout | 0 | const char * |
-| (const char *,va_list) |  | test_vprintf_stdout | 1 | va_list |
-| (const char *,va_list) |  | test_vprintf_taperr | 0 | const char * |
-| (const char *,va_list) |  | test_vprintf_taperr | 1 | va_list |
-| (const char *,va_list) |  | test_vprintf_tapout | 0 | const char * |
-| (const char *,va_list) |  | test_vprintf_tapout | 1 | va_list |
 | (const char *,void *) |  | collect_names | 0 | const char * |
 | (const char *,void *) |  | collect_names | 1 | void * |
 | (const char *,void **,size_t) |  | OSSL_PARAM_construct_octet_ptr | 0 | const char * |
@@ -25630,8 +25072,6 @@ getSignatureParameterName
 | (const stack_st_SCT *,unsigned char **) |  | i2o_SCT_LIST | 0 | const stack_st_SCT * |
 | (const stack_st_SCT *,unsigned char **) |  | i2o_SCT_LIST | 1 | unsigned char ** |
 | (const stack_st_X509 *) |  | OSSL_CMP_ITAV_new_caCerts | 0 | const stack_st_X509 * |
-| (const stack_st_X509 *,const stack_st_X509 *) |  | STACK_OF_X509_cmp | 0 | const stack_st_X509 * |
-| (const stack_st_X509 *,const stack_st_X509 *) |  | STACK_OF_X509_cmp | 1 | const stack_st_X509 * |
 | (const stack_st_X509_ATTRIBUTE *) |  | X509at_get_attr_count | 0 | const stack_st_X509_ATTRIBUTE * |
 | (const stack_st_X509_ATTRIBUTE *) |  | ossl_x509at_dup | 0 | const stack_st_X509_ATTRIBUTE * |
 | (const stack_st_X509_ATTRIBUTE *,const ASN1_OBJECT *,int) |  | X509at_get_attr_by_OBJ | 0 | const stack_st_X509_ATTRIBUTE * |
@@ -26512,12 +25952,9 @@ getSignatureParameterName
 | (int) |  | ossl_cmp_bodytype_to_string | 0 | int |
 | (int) |  | ossl_tolower | 0 | int |
 | (int) |  | ossl_toupper | 0 | int |
-| (int) |  | pulldown_test_framework | 0 | int |
 | (int) |  | sqlite3_compileoption_get | 0 | int |
 | (int) |  | sqlite3_errstr | 0 | int |
-| (int) |  | tls1_alert_code | 0 | int |
 | (int) |  | tls13_alert_code | 0 | int |
-| (int) |  | wait_until_sock_readable | 0 | int |
 | (int,BIO_ADDR *,int) |  | BIO_accept_ex | 0 | int |
 | (int,BIO_ADDR *,int) |  | BIO_accept_ex | 1 | BIO_ADDR * |
 | (int,BIO_ADDR *,int) |  | BIO_accept_ex | 2 | int |
@@ -27061,7 +26498,6 @@ getSignatureParameterName
 | (size_t) |  | ossl_param_bytes_to_blocks | 0 | size_t |
 | (size_t) |  | ossl_quic_sstream_new | 0 | size_t |
 | (size_t) |  | ssl_cert_new | 0 | size_t |
-| (size_t) |  | test_get_argument | 0 | size_t |
 | (size_t,OSSL_QTX_IOVEC *,size_t) |  | ossl_quic_sstream_adjust_iov | 0 | size_t |
 | (size_t,OSSL_QTX_IOVEC *,size_t) |  | ossl_quic_sstream_adjust_iov | 1 | OSSL_QTX_IOVEC * |
 | (size_t,OSSL_QTX_IOVEC *,size_t) |  | ossl_quic_sstream_adjust_iov | 2 | size_t |
@@ -27693,8 +27129,6 @@ getSignatureParameterName
 | (stack_st_X509 *,IPAddrBlocks *,int) |  | X509v3_addr_validate_resource_set | 0 | stack_st_X509 * |
 | (stack_st_X509 *,IPAddrBlocks *,int) |  | X509v3_addr_validate_resource_set | 1 | IPAddrBlocks * |
 | (stack_st_X509 *,IPAddrBlocks *,int) |  | X509v3_addr_validate_resource_set | 2 | int |
-| (stack_st_X509 *,X509 *) |  | STACK_OF_X509_push1 | 0 | stack_st_X509 * |
-| (stack_st_X509 *,X509 *) |  | STACK_OF_X509_push1 | 1 | X509 * |
 | (stack_st_X509 *,X509 *,int) |  | X509_add_cert | 0 | stack_st_X509 * |
 | (stack_st_X509 *,X509 *,int) |  | X509_add_cert | 1 | X509 * |
 | (stack_st_X509 *,X509 *,int) |  | X509_add_cert | 2 | int |
@@ -28264,8 +27698,6 @@ getSignatureParameterName
 | (void *) |  | ossl_kdf_data_new | 0 | void * |
 | (void *,CRYPTO_THREAD_RETVAL *) |  | ossl_crypto_thread_join | 0 | void * |
 | (void *,CRYPTO_THREAD_RETVAL *) |  | ossl_crypto_thread_join | 1 | CRYPTO_THREAD_RETVAL * |
-| (void *,OSSL_PARAM[]) |  | fake_pipeline_aead_get_ctx_params | 0 | void * |
-| (void *,OSSL_PARAM[]) |  | fake_pipeline_aead_get_ctx_params | 1 | OSSL_PARAM[] |
 | (void *,OSSL_PARAM[]) |  | ossl_blake2b_get_ctx_params | 0 | void * |
 | (void *,OSSL_PARAM[]) |  | ossl_blake2b_get_ctx_params | 1 | OSSL_PARAM[] |
 | (void *,OSSL_PARAM[]) |  | ossl_blake2s_get_ctx_params | 0 | void * |
@@ -28292,8 +27724,6 @@ getSignatureParameterName
 | (void *,const ASN1_ITEM *,int,int) |  | PKCS12_item_pack_safebag | 1 | const ASN1_ITEM * |
 | (void *,const ASN1_ITEM *,int,int) |  | PKCS12_item_pack_safebag | 2 | int |
 | (void *,const ASN1_ITEM *,int,int) |  | PKCS12_item_pack_safebag | 3 | int |
-| (void *,const OSSL_PARAM[]) |  | fake_pipeline_aead_set_ctx_params | 0 | void * |
-| (void *,const OSSL_PARAM[]) |  | fake_pipeline_aead_set_ctx_params | 1 | const OSSL_PARAM[] |
 | (void *,const OSSL_PARAM[]) |  | ossl_blake2b_set_ctx_params | 0 | void * |
 | (void *,const OSSL_PARAM[]) |  | ossl_blake2b_set_ctx_params | 1 | const OSSL_PARAM[] |
 | (void *,const OSSL_PARAM[]) |  | ossl_blake2s_set_ctx_params | 0 | void * |
@@ -28371,20 +27801,6 @@ getSignatureParameterName
 | (void *,const unsigned char *,size_t,const unsigned char *,size_t,const OSSL_PARAM[]) |  | ossl_tdes_einit | 3 | const unsigned char * |
 | (void *,const unsigned char *,size_t,const unsigned char *,size_t,const OSSL_PARAM[]) |  | ossl_tdes_einit | 4 | size_t |
 | (void *,const unsigned char *,size_t,const unsigned char *,size_t,const OSSL_PARAM[]) |  | ossl_tdes_einit | 5 | const OSSL_PARAM[] |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 0 | void * |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 1 | const unsigned char * |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 2 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 3 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 4 | const unsigned char ** |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 5 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_dinit | 6 | const OSSL_PARAM[] |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 0 | void * |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 1 | const unsigned char * |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 2 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 3 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 4 | const unsigned char ** |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 5 | size_t |
-| (void *,const unsigned char *,size_t,size_t,const unsigned char **,size_t,const OSSL_PARAM[]) |  | fake_pipeline_einit | 6 | const OSSL_PARAM[] |
 | (void *,const unsigned char *,unsigned char *,const unsigned char *,size_t,block128_f) |  | CRYPTO_128_unwrap | 0 | void * |
 | (void *,const unsigned char *,unsigned char *,const unsigned char *,size_t,block128_f) |  | CRYPTO_128_unwrap | 1 | const unsigned char * |
 | (void *,const unsigned char *,unsigned char *,const unsigned char *,size_t,block128_f) |  | CRYPTO_128_unwrap | 2 | unsigned char * |
@@ -28447,18 +27863,6 @@ getSignatureParameterName
 | (void *,size_t,size_t,size_t,unsigned int,uint64_t,const PROV_CIPHER_HW *,void *) |  | ossl_cipher_generic_initkey | 5 | uint64_t |
 | (void *,size_t,size_t,size_t,unsigned int,uint64_t,const PROV_CIPHER_HW *,void *) |  | ossl_cipher_generic_initkey | 6 | const PROV_CIPHER_HW * |
 | (void *,size_t,size_t,size_t,unsigned int,uint64_t,const PROV_CIPHER_HW *,void *) |  | ossl_cipher_generic_initkey | 7 | void * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *) |  | fake_pipeline_final | 0 | void * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *) |  | fake_pipeline_final | 1 | size_t |
-| (void *,size_t,unsigned char **,size_t *,const size_t *) |  | fake_pipeline_final | 2 | unsigned char ** |
-| (void *,size_t,unsigned char **,size_t *,const size_t *) |  | fake_pipeline_final | 3 | size_t * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *) |  | fake_pipeline_final | 4 | const size_t * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 0 | void * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 1 | size_t |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 2 | unsigned char ** |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 3 | size_t * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 4 | const size_t * |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 5 | const unsigned char ** |
-| (void *,size_t,unsigned char **,size_t *,const size_t *,const unsigned char **,const size_t *) |  | fake_pipeline_update | 6 | const size_t * |
 | (void *,sqlite3 *,int,const char *) |  | useDummyCS | 0 | void * |
 | (void *,sqlite3 *,int,const char *) |  | useDummyCS | 1 | sqlite3 * |
 | (void *,sqlite3 *,int,const char *) |  | useDummyCS | 2 | int |
