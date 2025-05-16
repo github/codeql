@@ -43,7 +43,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncReadExt::read` extension method (higher-level)
         let mut buffer1 = [0u8; 64];
         let bytes_read1 = futures::io::AsyncReadExt::read(&mut reader, &mut buffer1).await?;
-        sink(&buffer1[..bytes_read1]); // $ MISSING: hasTaintFlow
+        sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader.read(&mut buffer2).await?;
@@ -100,7 +100,7 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         // using the `AsyncReadExt::read` extension method (higher-level)
         let mut buffer1 = [0u8; 64];
         let bytes_read1 = futures::io::AsyncReadExt::read(&mut reader2, &mut buffer1).await?;
-        sink(&buffer1[..bytes_read1]); // $ MISSING: hasTaintFlow
+        sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
         let bytes_read2 = reader2.read(&mut buffer2).await?;
