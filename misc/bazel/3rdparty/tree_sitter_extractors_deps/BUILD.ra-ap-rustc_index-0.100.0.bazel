@@ -87,6 +87,6 @@ rust_library(
     }),
     version = "0.100.0",
     deps = [
-        "@vendor_ts__smallvec-1.14.0//:smallvec",
+        "@vendor_ts__smallvec-1.15.0//:smallvec",
     ],
 )
