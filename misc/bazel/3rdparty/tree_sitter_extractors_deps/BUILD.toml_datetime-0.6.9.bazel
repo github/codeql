@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "rand",
+    name = "toml_datetime",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,13 +29,7 @@ rust_library(
         ],
     ),
     crate_features = [
-        "alloc",
-        "default",
-        "os_rng",
-        "small_rng",
-        "std",
-        "std_rng",
-        "thread_rng",
+        "serde",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -44,7 +38,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=rand",
+        "crate-name=toml_datetime",
         "manual",
         "noclippy",
         "norustfmt",
@@ -88,10 +82,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.9.0",
+    version = "0.6.9",
     deps = [
-        "@vendor_ts__rand_chacha-0.9.0//:rand_chacha",
-        "@vendor_ts__rand_core-0.9.3//:rand_core",
-        "@vendor_ts__zerocopy-0.8.24//:zerocopy",
+        "@vendor_ts__serde-1.0.219//:serde",
     ],
 )

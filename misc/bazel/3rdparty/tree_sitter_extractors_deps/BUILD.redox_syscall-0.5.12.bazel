@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "toml",
+    name = "syscall",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,11 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "default",
-        "display",
-        "parse",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -40,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=toml",
+        "crate-name=redox_syscall",
         "manual",
         "noclippy",
         "norustfmt",
@@ -84,11 +79,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.8.20",
+    version = "0.5.12",
     deps = [
-        "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde_spanned-0.6.8//:serde_spanned",
-        "@vendor_ts__toml_datetime-0.6.8//:toml_datetime",
-        "@vendor_ts__toml_edit-0.22.24//:toml_edit",
+        "@vendor_ts__bitflags-2.9.1//:bitflags",
     ],
 )

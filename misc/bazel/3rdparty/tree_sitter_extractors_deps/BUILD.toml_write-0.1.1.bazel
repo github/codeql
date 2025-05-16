@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows_strings",
+    name = "toml_write",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,6 +28,11 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "alloc",
+        "default",
+        "std",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -35,7 +40,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-strings",
+        "crate-name=toml_write",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,9 +84,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.1.0",
-    deps = [
-        "@vendor_ts__windows-result-0.2.0//:windows_result",
-        "@vendor_ts__windows-targets-0.52.6//:windows_targets",
-    ],
+    version = "0.1.1",
 )

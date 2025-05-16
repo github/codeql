@@ -83,10 +83,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.3.2",
+    version = "0.3.3",
     deps = [
         "@vendor_ts__cfg-if-1.0.0//:cfg_if",
-        "@vendor_ts__getrandom-0.3.2//:build_script_build",
+        "@vendor_ts__getrandom-0.3.3//:build_script_build",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(any(target_os = "macos", target_os = "openbsd", target_os = "vita", target_os = "emscripten"))
@@ -206,7 +206,7 @@ cargo_build_script(
         "noclippy",
         "norustfmt",
     ],
-    version = "0.3.2",
+    version = "0.3.3",
     visibility = ["//visibility:private"],
 )
 

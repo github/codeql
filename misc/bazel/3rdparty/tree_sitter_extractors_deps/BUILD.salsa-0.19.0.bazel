@@ -90,10 +90,10 @@ rust_library(
     }),
     version = "0.19.0",
     deps = [
-        "@vendor_ts__boxcar-0.2.11//:boxcar",
+        "@vendor_ts__boxcar-0.2.12//:boxcar",
         "@vendor_ts__crossbeam-queue-0.3.12//:crossbeam_queue",
         "@vendor_ts__dashmap-6.1.0//:dashmap",
-        "@vendor_ts__hashbrown-0.15.2//:hashbrown",
+        "@vendor_ts__hashbrown-0.15.3//:hashbrown",
         "@vendor_ts__hashlink-0.10.0//:hashlink",
         "@vendor_ts__indexmap-2.9.0//:indexmap",
         "@vendor_ts__parking_lot-0.12.3//:parking_lot",

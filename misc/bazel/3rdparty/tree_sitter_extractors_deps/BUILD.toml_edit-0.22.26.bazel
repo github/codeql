@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "synstructure",
+    name = "toml_edit",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,17 +29,18 @@ rust_library(
         ],
     ),
     crate_features = [
-        "default",
-        "proc-macro",
+        "display",
+        "parse",
+        "serde",
     ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=synstructure",
+        "crate-name=toml_edit",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,10 +84,13 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.13.1",
+    version = "0.22.26",
     deps = [
-        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
-        "@vendor_ts__quote-1.0.40//:quote",
-        "@vendor_ts__syn-2.0.100//:syn",
+        "@vendor_ts__indexmap-2.9.0//:indexmap",
+        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__serde_spanned-0.6.8//:serde_spanned",
+        "@vendor_ts__toml_datetime-0.6.9//:toml_datetime",
+        "@vendor_ts__toml_write-0.1.1//:toml_write",
+        "@vendor_ts__winnow-0.7.10//:winnow",
     ],
 )

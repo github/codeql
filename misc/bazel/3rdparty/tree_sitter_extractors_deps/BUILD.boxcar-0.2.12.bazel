@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_proc_macro(
-    name = "windows_interface",
+rust_library(
+    name = "boxcar",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_proc_macro(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-interface",
+        "crate-name=boxcar",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,10 +79,5 @@ rust_proc_macro(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.58.0",
-    deps = [
-        "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
-        "@vendor_ts__quote-1.0.40//:quote",
-        "@vendor_ts__syn-2.0.100//:syn",
-    ],
+    version = "0.2.12",
 )

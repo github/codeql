@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows_result",
+    name = "synstructure",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,14 +28,18 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "proc-macro",
+    ],
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-result",
+        "crate-name=synstructure",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,8 +83,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.3.2",
+    version = "0.13.2",
     deps = [
-        "@vendor_ts__windows-link-0.1.1//:windows_link",
+        "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.101//:syn",
     ],
 )

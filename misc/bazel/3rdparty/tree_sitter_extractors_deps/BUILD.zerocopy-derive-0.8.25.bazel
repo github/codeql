@@ -6,12 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "hashbrown",
+rust_proc_macro(
+    name = "zerocopy_derive",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,14 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "allocator-api2",
-        "default",
-        "default-hasher",
-        "equivalent",
-        "inline-more",
-        "raw-entry",
-    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -43,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=hashbrown",
+        "crate-name=zerocopy-derive",
         "manual",
         "noclippy",
         "norustfmt",
@@ -87,10 +79,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.15.2",
+    version = "0.8.25",
     deps = [
-        "@vendor_ts__allocator-api2-0.2.21//:allocator_api2",
-        "@vendor_ts__equivalent-1.0.2//:equivalent",
-        "@vendor_ts__foldhash-0.1.5//:foldhash",
+        "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.101//:syn",
     ],
 )

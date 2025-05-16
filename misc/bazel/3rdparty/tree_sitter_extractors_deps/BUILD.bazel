@@ -68,26 +68,26 @@ alias(
 )
 
 alias(
-    name = "chrono-0.4.40",
-    actual = "@vendor_ts__chrono-0.4.40//:chrono",
+    name = "chrono-0.4.41",
+    actual = "@vendor_ts__chrono-0.4.41//:chrono",
     tags = ["manual"],
 )
 
 alias(
     name = "chrono",
-    actual = "@vendor_ts__chrono-0.4.40//:chrono",
+    actual = "@vendor_ts__chrono-0.4.41//:chrono",
     tags = ["manual"],
 )
 
 alias(
-    name = "clap-4.5.36",
-    actual = "@vendor_ts__clap-4.5.36//:clap",
+    name = "clap-4.5.38",
+    actual = "@vendor_ts__clap-4.5.38//:clap",
     tags = ["manual"],
 )
 
 alias(
     name = "clap",
-    actual = "@vendor_ts__clap-4.5.36//:clap",
+    actual = "@vendor_ts__clap-4.5.38//:clap",
     tags = ["manual"],
 )
 
@@ -236,14 +236,14 @@ alias(
 )
 
 alias(
-    name = "proc-macro2-1.0.94",
-    actual = "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+    name = "proc-macro2-1.0.95",
+    actual = "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
     tags = ["manual"],
 )
 
 alias(
     name = "proc-macro2",
-    actual = "@vendor_ts__proc-macro2-1.0.94//:proc_macro2",
+    actual = "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
     tags = ["manual"],
 )
 
@@ -458,14 +458,14 @@ alias(
 )
 
 alias(
-    name = "rand-0.9.0",
-    actual = "@vendor_ts__rand-0.9.0//:rand",
+    name = "rand-0.9.1",
+    actual = "@vendor_ts__rand-0.9.1//:rand",
     tags = ["manual"],
 )
 
 alias(
     name = "rand",
-    actual = "@vendor_ts__rand-0.9.0//:rand",
+    actual = "@vendor_ts__rand-0.9.1//:rand",
     tags = ["manual"],
 )
 
@@ -530,26 +530,26 @@ alias(
 )
 
 alias(
-    name = "syn-2.0.100",
-    actual = "@vendor_ts__syn-2.0.100//:syn",
+    name = "syn-2.0.101",
+    actual = "@vendor_ts__syn-2.0.101//:syn",
     tags = ["manual"],
 )
 
 alias(
     name = "syn",
-    actual = "@vendor_ts__syn-2.0.100//:syn",
+    actual = "@vendor_ts__syn-2.0.101//:syn",
     tags = ["manual"],
 )
 
 alias(
-    name = "toml-0.8.20",
-    actual = "@vendor_ts__toml-0.8.20//:toml",
+    name = "toml-0.8.22",
+    actual = "@vendor_ts__toml-0.8.22//:toml",
     tags = ["manual"],
 )
 
 alias(
     name = "toml",
-    actual = "@vendor_ts__toml-0.8.20//:toml",
+    actual = "@vendor_ts__toml-0.8.22//:toml",
     tags = ["manual"],
 )
 
@@ -590,14 +590,14 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-0.25.3",
-    actual = "@vendor_ts__tree-sitter-0.25.3//:tree_sitter",
+    name = "tree-sitter-0.25.4",
+    actual = "@vendor_ts__tree-sitter-0.25.4//:tree_sitter",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor_ts__tree-sitter-0.25.3//:tree_sitter",
+    actual = "@vendor_ts__tree-sitter-0.25.4//:tree_sitter",
     tags = ["manual"],
 )
 

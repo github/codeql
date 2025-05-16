@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "kqueue",
+    name = "winnow",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,14 +28,19 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "alloc",
+        "default",
+        "std",
+    ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=kqueue",
+        "crate-name=winnow",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,9 +84,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.0.8",
-    deps = [
-        "@vendor_ts__kqueue-sys-1.0.4//:kqueue_sys",
-        "@vendor_ts__libc-0.2.172//:libc",
-    ],
+    version = "0.7.10",
 )

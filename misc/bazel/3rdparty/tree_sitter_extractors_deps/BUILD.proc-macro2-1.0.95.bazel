@@ -6,12 +6,13 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "toml_edit",
+    name = "proc_macro2",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,9 +30,8 @@ rust_library(
         ],
     ),
     crate_features = [
-        "display",
-        "parse",
-        "serde",
+        "default",
+        "proc-macro",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -40,7 +40,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=toml_edit",
+        "crate-name=proc-macro2",
         "manual",
         "noclippy",
         "norustfmt",
@@ -84,12 +84,68 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.22.24",
+    version = "1.0.95",
     deps = [
-        "@vendor_ts__indexmap-2.9.0//:indexmap",
-        "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde_spanned-0.6.8//:serde_spanned",
-        "@vendor_ts__toml_datetime-0.6.8//:toml_datetime",
-        "@vendor_ts__winnow-0.7.6//:winnow",
+        "@vendor_ts__proc-macro2-1.0.95//:build_script_build",
+        "@vendor_ts__unicode-ident-1.0.18//:unicode_ident",
     ],
+)
+
+cargo_build_script(
+    name = "_bs",
+    srcs = glob(
+        include = ["**/*.rs"],
+        allow_empty = True,
+    ),
+    compile_data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            "**/*.rs",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    crate_features = [
+        "default",
+        "proc-macro",
+    ],
+    crate_name = "build_script_build",
+    crate_root = "build.rs",
+    data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    edition = "2021",
+    pkg_name = "proc-macro2",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-bazel",
+        "crate-name=proc-macro2",
+        "manual",
+        "noclippy",
+        "norustfmt",
+    ],
+    version = "1.0.95",
+    visibility = ["//visibility:private"],
+)
+
+alias(
+    name = "build_script_build",
+    actual = ":_bs",
+    tags = ["manual"],
 )

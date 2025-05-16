@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "winnow",
+    name = "rand",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -31,7 +31,11 @@ rust_library(
     crate_features = [
         "alloc",
         "default",
+        "os_rng",
+        "small_rng",
         "std",
+        "std_rng",
+        "thread_rng",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -40,7 +44,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=winnow",
+        "crate-name=rand",
         "manual",
         "noclippy",
         "norustfmt",
@@ -84,5 +88,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.7.6",
+    version = "0.9.1",
+    deps = [
+        "@vendor_ts__rand_chacha-0.9.0//:rand_chacha",
+        "@vendor_ts__rand_core-0.9.3//:rand_core",
+    ],
 )

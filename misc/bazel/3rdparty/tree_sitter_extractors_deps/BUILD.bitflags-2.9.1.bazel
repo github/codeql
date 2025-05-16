@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows",
+    name = "bitflags",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows",
+        "crate-name=bitflags",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,9 +79,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.58.0",
-    deps = [
-        "@vendor_ts__windows-core-0.58.0//:windows_core",
-        "@vendor_ts__windows-targets-0.52.6//:windows_targets",
-    ],
+    version = "2.9.1",
 )

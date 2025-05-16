@@ -85,7 +85,7 @@ rust_library(
     }),
     version = "0.100.0",
     deps = [
-        "@vendor_ts__bitflags-2.9.0//:bitflags",
+        "@vendor_ts__bitflags-2.9.1//:bitflags",
         "@vendor_ts__ra-ap-rustc_hashes-0.100.0//:ra_ap_rustc_hashes",
         "@vendor_ts__ra-ap-rustc_index-0.100.0//:ra_ap_rustc_index",
         "@vendor_ts__tracing-0.1.41//:tracing",

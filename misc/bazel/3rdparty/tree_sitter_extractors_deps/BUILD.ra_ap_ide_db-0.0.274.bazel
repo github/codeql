@@ -96,7 +96,7 @@ rust_library(
     version = "0.0.274",
     deps = [
         "@vendor_ts__arrayvec-0.7.6//:arrayvec",
-        "@vendor_ts__bitflags-2.9.0//:bitflags",
+        "@vendor_ts__bitflags-2.9.1//:bitflags",
         "@vendor_ts__cov-mark-2.0.0//:cov_mark",
         "@vendor_ts__crossbeam-channel-0.5.15//:crossbeam_channel",
         "@vendor_ts__either-1.15.0//:either",

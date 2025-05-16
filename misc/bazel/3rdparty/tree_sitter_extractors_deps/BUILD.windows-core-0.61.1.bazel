@@ -31,8 +31,8 @@ rust_library(
     crate_root = "src/lib.rs",
     edition = "2021",
     proc_macro_deps = [
-        "@vendor_ts__windows-implement-0.58.0//:windows_implement",
-        "@vendor_ts__windows-interface-0.58.0//:windows_interface",
+        "@vendor_ts__windows-implement-0.60.0//:windows_implement",
+        "@vendor_ts__windows-interface-0.59.1//:windows_interface",
     ],
     rustc_flags = [
         "--cap-lints=allow",
@@ -83,10 +83,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.58.0",
+    version = "0.61.1",
     deps = [
-        "@vendor_ts__windows-result-0.2.0//:windows_result",
-        "@vendor_ts__windows-strings-0.1.0//:windows_strings",
-        "@vendor_ts__windows-targets-0.52.6//:windows_targets",
+        "@vendor_ts__windows-link-0.1.1//:windows_link",
+        "@vendor_ts__windows-result-0.3.3//:windows_result",
+        "@vendor_ts__windows-strings-0.4.1//:windows_strings",
     ],
 )
