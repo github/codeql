@@ -77,16 +77,6 @@ class SecurityOptions extends string {
   }
 }
 
-/**
- * An access to the argv argument to main().
- */
-private predicate commandLineArg(Expr e) {
-  exists(Parameter argv |
-    argv(argv) and
-    argv.getAnAccess() = e
-  )
-}
-
 /** The argv parameter to the main function */
 predicate argv(Parameter argv) {
   exists(Function f |
