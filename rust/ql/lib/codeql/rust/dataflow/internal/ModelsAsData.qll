@@ -58,7 +58,7 @@ private import codeql.rust.dataflow.FlowSink
  * For more information on the `kind` parameter, see
  * https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst.
  */
-extensible predicate sourceModel(
+extensible predicate sourceModelDeprecated(
   string crate, string path, string output, string kind, string provenance,
   QlBuiltins::ExtensionId madId
 );
@@ -74,7 +74,7 @@ extensible predicate sourceModel(
  *
  * - `sql-injection`: a flow sink for SQL injection.
  */
-extensible predicate sinkModel(
+extensible predicate sinkModelDeprecated(
   string crate, string path, string input, string kind, string provenance,
   QlBuiltins::ExtensionId madId
 );
@@ -87,7 +87,7 @@ extensible predicate sinkModel(
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving
  * steps, respectively.
  */
-extensible predicate summaryModel(
+extensible predicate summaryModelDeprecated(
   string crate, string path, string input, string output, string kind, string provenance,
   QlBuiltins::ExtensionId madId
 );
@@ -99,17 +99,17 @@ extensible predicate summaryModel(
  */
 predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
   exists(string crate, string path, string output, string kind |
-    sourceModel(crate, path, kind, output, _, madId) and
+    sourceModelDeprecated(crate, path, kind, output, _, madId) and
     model = "Source: " + crate + "; " + path + "; " + output + "; " + kind
   )
   or
   exists(string crate, string path, string input, string kind |
-    sinkModel(crate, path, kind, input, _, madId) and
+    sinkModelDeprecated(crate, path, kind, input, _, madId) and
     model = "Sink: " + crate + "; " + path + "; " + input + "; " + kind
   )
   or
   exists(string type, string path, string input, string output, string kind |
-    summaryModel(type, path, input, output, kind, _, madId) and
+    summaryModelDeprecated(type, path, input, output, kind, _, madId) and
     model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
   )
 }
@@ -119,7 +119,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   private string path;
 
   SummarizedCallableFromModel() {
-    summaryModel(crate, path, _, _, _, _, _) and
+    summaryModelDeprecated(crate, path, _, _, _, _, _) and
     this = crate + "::_::" + path
   }
 
@@ -127,7 +127,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
     string input, string output, boolean preservesValue, string model
   ) {
     exists(string kind, QlBuiltins::ExtensionId madId |
-      summaryModel(crate, path, input, output, kind, _, madId) and
+      summaryModelDeprecated(crate, path, input, output, kind, _, madId) and
       model = "MaD:" + madId.toString()
     |
       kind = "value" and
@@ -144,13 +144,13 @@ private class FlowSourceFromModel extends FlowSource::Range {
   private string path;
 
   FlowSourceFromModel() {
-    sourceModel(crate, path, _, _, _, _) and
+    sourceModelDeprecated(crate, path, _, _, _, _) and
     this.callResolvesTo(crate, path)
   }
 
   override predicate isSource(string output, string kind, Provenance provenance, string model) {
     exists(QlBuiltins::ExtensionId madId |
-      sourceModel(crate, path, output, kind, provenance, madId) and
+      sourceModelDeprecated(crate, path, output, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
     )
   }
@@ -161,13 +161,13 @@ private class FlowSinkFromModel extends FlowSink::Range {
   private string path;
 
   FlowSinkFromModel() {
-    sinkModel(crate, path, _, _, _, _) and
+    sinkModelDeprecated(crate, path, _, _, _, _) and
     this.callResolvesTo(crate, path)
   }
 
   override predicate isSink(string input, string kind, Provenance provenance, string model) {
     exists(QlBuiltins::ExtensionId madId |
-      sinkModel(crate, path, input, kind, provenance, madId) and
+      sinkModelDeprecated(crate, path, input, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
     )
   }

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::new_with_prefix", "Argument[0]", "hasher-input", "manual"]
       - ["repo:https://github.com/RustCrypto/traits:digest", "<_ as crate::digest::Digest>::update", "Argument[0]", "hasher-input", "manual"]
