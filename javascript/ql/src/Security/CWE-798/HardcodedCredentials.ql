@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.8
- * @precision high
+ * @precision low
  * @id js/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
