@@ -99,8 +99,8 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
       )
     ) and
     (
-      lock.getAnExceptionSuccessor() = exblock or
-      lock.(ConditionNode).getAFalseSuccessor() = exblock
+      lock.getAnExceptionSuccessor() = exblock.getFirstNode() or
+      lock.(ConditionNode).getAFalseSuccessor() = exblock.getFirstNode()
     )
   )
 }
@@ -113,7 +113,7 @@ predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock
   exists(ConditionBlock conditionBlock |
     conditionBlock.getCondition() = t.getIsHeldByCurrentThreadAccess()
   |
-    conditionBlock.getBasicBlock() = checkblock and
+    conditionBlock = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
   )
 }
@@ -133,7 +133,7 @@ predicate variableLockStateCheck(LockType t, BasicBlock checkblock, BasicBlock f
     conditionBlock.getTestSuccessor(true) = t.getUnlockAccess().getBasicBlock() and
     conditionBlock.getCondition() = v
   |
-    conditionBlock.getBasicBlock() = checkblock and
+    conditionBlock = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
   )
 }

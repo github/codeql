@@ -144,13 +144,13 @@ private predicate certainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBl
 pragma[nomagic]
 private predicate hasEntryDef(TrackedVar v, BasicBlock b) {
   exists(LocalScopeVariable l, Callable c |
-    v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+    v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
   |
     l instanceof Parameter or
     l.getCallable() != c
   )
   or
-  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getControlFlowNode() = b
+  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getBasicBlock() = b
 }
 
 /** Holds if `n` might update the locally tracked variable `v`. */

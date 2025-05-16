@@ -145,7 +145,7 @@ private module BaseSsaImpl {
   /** Holds if `v` has an implicit definition at the entry, `b`, of the callable. */
   predicate hasEntryDef(BaseSsaSourceVariable v, BasicBlock b) {
     exists(LocalScopeVariable l, Callable c |
-      v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+      v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
     |
       l instanceof Parameter or
       l.getCallable() != c

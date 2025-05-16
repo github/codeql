@@ -215,7 +215,7 @@ module Sem implements Semantic<Location> {
 
   private predicate idOfAst(ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
 
-  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getAstNode(), y) }
+  private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
