@@ -58,6 +58,7 @@ ql/python/ql/src/Metrics/NumberOfStatements.ql
 ql/python/ql/src/Metrics/TransitiveImports.ql
 ql/python/ql/src/Security/CWE-020-ExternalAPIs/ExternalAPIsUsedWithUntrustedData.ql
 ql/python/ql/src/Security/CWE-020-ExternalAPIs/UntrustedDataToExternalAPI.ql
+ql/python/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/python/ql/src/Statements/AssertLiteralConstant.ql
 ql/python/ql/src/Statements/C_StyleParentheses.ql
 ql/python/ql/src/Statements/DocStrings.ql

@@ -14,12 +14,10 @@ ql/swift/ql/src/queries/Security/CWE-1204/StaticInitializationVector.ql
 ql/swift/ql/src/queries/Security/CWE-1333/ReDoS.ql
 ql/swift/ql/src/queries/Security/CWE-134/UncontrolledFormatString.ql
 ql/swift/ql/src/queries/Security/CWE-135/StringLengthConflation.ql
-ql/swift/ql/src/queries/Security/CWE-259/ConstantPassword.ql
 ql/swift/ql/src/queries/Security/CWE-311/CleartextStorageDatabase.ql
 ql/swift/ql/src/queries/Security/CWE-311/CleartextTransmission.ql
 ql/swift/ql/src/queries/Security/CWE-312/CleartextLogging.ql
 ql/swift/ql/src/queries/Security/CWE-312/CleartextStoragePreferences.ql
-ql/swift/ql/src/queries/Security/CWE-321/HardcodedEncryptionKey.ql
 ql/swift/ql/src/queries/Security/CWE-327/ECBEncryption.ql
 ql/swift/ql/src/queries/Security/CWE-328/WeakPasswordHashing.ql
 ql/swift/ql/src/queries/Security/CWE-328/WeakSensitiveDataHashing.ql
