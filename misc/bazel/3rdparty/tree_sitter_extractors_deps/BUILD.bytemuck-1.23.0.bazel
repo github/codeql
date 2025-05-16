@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "syscall",
+    name = "bytemuck",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,13 +29,13 @@ rust_library(
         ],
     ),
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=redox_syscall",
+        "crate-name=bytemuck",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,8 +79,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.5.11",
-    deps = [
-        "@vendor_ts__bitflags-2.9.0//:bitflags",
-    ],
+    version = "1.23.0",
 )

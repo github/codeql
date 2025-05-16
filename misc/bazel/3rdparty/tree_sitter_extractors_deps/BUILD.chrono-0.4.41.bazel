@@ -95,7 +95,7 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.4.40",
+    version = "0.4.41",
     deps = [
         "@vendor_ts__num-traits-0.2.19//:num_traits",
         "@vendor_ts__serde-1.0.219//:serde",

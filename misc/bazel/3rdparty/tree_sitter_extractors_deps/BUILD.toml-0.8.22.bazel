@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "windows_core",
+    name = "toml",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,18 +28,19 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "display",
+        "parse",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
-    proc_macro_deps = [
-        "@vendor_ts__windows-implement-0.60.0//:windows_implement",
-        "@vendor_ts__windows-interface-0.59.1//:windows_interface",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=windows-core",
+        "crate-name=toml",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,10 +84,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.61.0",
+    version = "0.8.22",
     deps = [
-        "@vendor_ts__windows-link-0.1.1//:windows_link",
-        "@vendor_ts__windows-result-0.3.2//:windows_result",
-        "@vendor_ts__windows-strings-0.4.0//:windows_strings",
+        "@vendor_ts__serde-1.0.219//:serde",
+        "@vendor_ts__serde_spanned-0.6.8//:serde_spanned",
+        "@vendor_ts__toml_datetime-0.6.9//:toml_datetime",
+        "@vendor_ts__toml_edit-0.22.26//:toml_edit",
     ],
 )

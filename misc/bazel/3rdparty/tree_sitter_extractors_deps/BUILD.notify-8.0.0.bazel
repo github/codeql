@@ -93,15 +93,15 @@ rust_library(
         "@vendor_ts__walkdir-2.5.0//:walkdir",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.1//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # aarch64-apple-darwin
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__kqueue-1.0.8//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__kqueue-1.1.1//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__kqueue-1.0.8//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__kqueue-1.1.1//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
@@ -132,7 +132,7 @@ rust_library(
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.1//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # i686-apple-darwin
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
@@ -143,7 +143,7 @@ rust_library(
             "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_ts__kqueue-1.0.8//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__kqueue-1.1.1//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
@@ -159,11 +159,11 @@ rust_library(
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "linux", target_os = "android"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__bitflags-2.9.0//:bitflags",  # cfg(target_os = "macos")
+            "@vendor_ts__bitflags-2.9.1//:bitflags",  # cfg(target_os = "macos")
             "@vendor_ts__fsevent-sys-4.1.0//:fsevent_sys",  # x86_64-apple-darwin
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_ts__kqueue-1.0.8//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__kqueue-1.1.1//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
@@ -174,7 +174,7 @@ rust_library(
             "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__kqueue-1.0.8//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
+            "@vendor_ts__kqueue-1.1.1//:kqueue",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
             "@vendor_ts__mio-1.0.3//:mio",  # cfg(any(target_os = "freebsd", target_os = "openbsd", target_os = "netbsd", target_os = "dragonflybsd", target_os = "ios"))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [

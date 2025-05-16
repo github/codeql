@@ -6,13 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "zerocopy",
+    name = "hashbrown",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -30,7 +29,12 @@ rust_library(
         ],
     ),
     crate_features = [
-        "simd",
+        "allocator-api2",
+        "default",
+        "default-hasher",
+        "equivalent",
+        "inline-more",
+        "raw-entry",
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
@@ -39,7 +43,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=zerocopy",
+        "crate-name=hashbrown",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,66 +87,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.8.24",
+    version = "0.15.3",
     deps = [
-        "@vendor_ts__zerocopy-0.8.24//:build_script_build",
+        "@vendor_ts__allocator-api2-0.2.21//:allocator_api2",
+        "@vendor_ts__equivalent-1.0.2//:equivalent",
+        "@vendor_ts__foldhash-0.1.5//:foldhash",
     ],
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    crate_features = [
-        "simd",
-    ],
-    crate_name = "build_script_build",
-    crate_root = "build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    edition = "2021",
-    pkg_name = "zerocopy",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=zerocopy",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "0.8.24",
-    visibility = ["//visibility:private"],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
 )

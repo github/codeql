@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "loom",
+    name = "windows_result",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,13 +29,13 @@ rust_library(
         ],
     ),
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2021",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=loom",
+        "crate-name=windows-result",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,12 +79,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.7.2",
+    version = "0.3.3",
     deps = [
-        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
-        "@vendor_ts__generator-0.8.4//:generator",
-        "@vendor_ts__scoped-tls-1.0.1//:scoped_tls",
-        "@vendor_ts__tracing-0.1.41//:tracing",
-        "@vendor_ts__tracing-subscriber-0.3.19//:tracing_subscriber",
+        "@vendor_ts__windows-link-0.1.1//:windows_link",
     ],
 )

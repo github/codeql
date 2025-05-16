@@ -97,7 +97,7 @@ rust_library(
             "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__windows-core-0.61.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.61.1//:windows_core",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
             "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
@@ -109,7 +109,7 @@ rust_library(
             "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__windows-core-0.61.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.61.1//:windows_core",  # cfg(target_os = "windows")
         ],
         "@rules_rust//rust/platform:wasm32-unknown-unknown": [
             "@vendor_ts__js-sys-0.3.77//:js_sys",  # cfg(all(target_arch = "wasm32", target_os = "unknown"))
@@ -126,7 +126,7 @@ rust_library(
             "@vendor_ts__android_system_properties-0.1.5//:android_system_properties",  # cfg(target_os = "android")
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__windows-core-0.61.0//:windows_core",  # cfg(target_os = "windows")
+            "@vendor_ts__windows-core-0.61.1//:windows_core",  # cfg(target_os = "windows")
         ],
         "//conditions:default": [],
     }),

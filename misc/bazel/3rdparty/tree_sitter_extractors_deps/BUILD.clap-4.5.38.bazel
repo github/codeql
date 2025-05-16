@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "clap_builder",
+    name = "clap",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -30,6 +30,8 @@ rust_library(
     ),
     crate_features = [
         "color",
+        "default",
+        "derive",
         "error-context",
         "help",
         "std",
@@ -38,12 +40,15 @@ rust_library(
     ],
     crate_root = "src/lib.rs",
     edition = "2021",
+    proc_macro_deps = [
+        "@vendor_ts__clap_derive-4.5.32//:clap_derive",
+    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=clap_builder",
+        "crate-name=clap",
         "manual",
         "noclippy",
         "norustfmt",
@@ -87,11 +92,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.36",
+    version = "4.5.38",
     deps = [
-        "@vendor_ts__anstream-0.6.18//:anstream",
-        "@vendor_ts__anstyle-1.0.10//:anstyle",
-        "@vendor_ts__clap_lex-0.7.4//:clap_lex",
-        "@vendor_ts__strsim-0.11.1//:strsim",
+        "@vendor_ts__clap_builder-4.5.38//:clap_builder",
     ],
 )
