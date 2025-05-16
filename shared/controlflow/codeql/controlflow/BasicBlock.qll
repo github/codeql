@@ -51,16 +51,6 @@ signature module InputSig<LocationSig Location> {
 module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
-  private Node nodeGetAPredecessor(Node node, SuccessorType s) {
-    nodeGetASuccessor(result, s) = node
-  }
-
-  /** Holds if this node has more than one predecessor. */
-  private predicate nodeIsJoin(Node node) { strictcount(nodeGetAPredecessor(node, _)) > 1 }
-
-  /** Holds if this node has more than one successor. */
-  private predicate nodeIsBranch(Node node) { strictcount(nodeGetASuccessor(node, _)) > 1 }
-
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
@@ -76,9 +66,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     BasicBlock getASuccessor() { result = this.getASuccessor(_) }
 
     /** Gets an immediate successor of this basic block of a given type, if any. */
-    BasicBlock getASuccessor(SuccessorType t) {
-      result.getFirstNode() = nodeGetASuccessor(this.getLastNode(), t)
-    }
+    BasicBlock getASuccessor(SuccessorType t) { bbSuccessor(this, result, t) }
 
     /** Gets an immediate predecessor of this basic block, if any. */
     BasicBlock getAPredecessor() { result.getASuccessor(_) = this }
@@ -287,6 +275,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   cached
   private module Cached {
+    private Node nodeGetAPredecessor(Node node, SuccessorType s) {
+      nodeGetASuccessor(result, s) = node
+    }
+
+    /** Holds if this node has more than one predecessor. */
+    private predicate nodeIsJoin(Node node) { strictcount(nodeGetAPredecessor(node, _)) > 1 }
+
+    /** Holds if this node has more than one successor. */
+    private predicate nodeIsBranch(Node node) { strictcount(nodeGetASuccessor(node, _)) > 1 }
+
     /**
      * Internal representation of basic blocks. A basic block is represented
      * by its first CFG node.
@@ -343,11 +341,19 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     cached
     Node getNode(BasicBlock bb, int pos) { bbIndex(bb.getFirstNode(), result, pos) }
 
+    /** Holds if `bb` is an entry basic block. */
+    private predicate entryBB(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
+
+    cached
+    predicate bbSuccessor(BasicBlock bb1, BasicBlock bb2, SuccessorType t) {
+      bb2.getFirstNode() = nodeGetASuccessor(bb1.getLastNode(), t)
+    }
+
     /**
      * Holds if the first node of basic block `succ` is a control flow
      * successor of the last node of basic block `pred`.
      */
-    private predicate succBB(BasicBlock pred, BasicBlock succ) { pred.getASuccessor(_) = succ }
+    private predicate succBB(BasicBlock pred, BasicBlock succ) { bbSuccessor(pred, succ, _) }
 
     /** Holds if `dom` is an immediate dominator of `bb`. */
     cached
@@ -367,7 +373,4 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private import Cached
-
-  /** Holds if `bb` is an entry basic block. */
-  private predicate entryBB(BasicBlock bb) { nodeIsDominanceEntry(bb.getFirstNode()) }
 }
