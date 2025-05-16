@@ -79,23 +79,47 @@ class BasicBlock extends BbImpl::BasicBlock {
   /** Gets the immediately enclosing callable whose body contains this node. */
   Callable getEnclosingCallable() { result = this.getScope() }
 
-  /** Gets an immediate successor of this basic block. */
-  BasicBlock getABBSuccessor() { result = this.getASuccessor() }
+  /**
+   * DEPRECATED: Use `getASuccessor` instead.
+   *
+   * Gets an immediate successor of this basic block.
+   */
+  deprecated BasicBlock getABBSuccessor() { result = this.getASuccessor() }
 
-  /** Gets an immediate predecessor of this basic block. */
-  BasicBlock getABBPredecessor() { result.getABBSuccessor() = this }
+  /**
+   * DEPRECATED: Use `getAPredecessor` instead.
+   *
+   * Gets an immediate predecessor of this basic block.
+   */
+  deprecated BasicBlock getABBPredecessor() { result.getASuccessor() = this }
 
-  /** Holds if this basic block strictly dominates `node`. */
-  predicate bbStrictlyDominates(BasicBlock node) { this.strictlyDominates(node) }
+  /**
+   * DEPRECATED: Use `strictlyDominates` instead.
+   *
+   * Holds if this basic block strictly dominates `node`.
+   */
+  deprecated predicate bbStrictlyDominates(BasicBlock node) { this.strictlyDominates(node) }
 
-  /** Holds if this basic block dominates `node`. (This is reflexive.) */
-  predicate bbDominates(BasicBlock node) { this.dominates(node) }
+  /**
+   * DEPRECATED: Use `dominates` instead.
+   *
+   * Holds if this basic block dominates `node`. (This is reflexive.)
+   */
+  deprecated predicate bbDominates(BasicBlock node) { this.dominates(node) }
 
-  /** Holds if this basic block strictly post-dominates `node`. */
-  predicate bbStrictlyPostDominates(BasicBlock node) { this.strictlyPostDominates(node) }
+  /**
+   * DEPRECATED: Use `strictlyPostDominates` instead.
+   *
+   * Holds if this basic block strictly post-dominates `node`.
+   */
+  deprecated predicate bbStrictlyPostDominates(BasicBlock node) { this.strictlyPostDominates(node) }
 
-  /** Holds if this basic block post-dominates `node`. (This is reflexive.) */
-  predicate bbPostDominates(BasicBlock node) { this.postDominates(node) }
+  /**
+   * DEPRECATED: Use `postDominates` instead.
+   *
+   * Holds if this basic block post-dominates `node`. (This is reflexive.)
+   */
+  deprecated predicate bbPostDominates(BasicBlock node) { this.postDominates(node) }
 }
 
 /** A basic block that ends in an exit node. */

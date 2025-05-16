@@ -165,15 +165,14 @@ private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, Basic
 
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import java as J
-  private import semmle.code.java.controlflow.Dominance as Dom
 
   class BasicBlock = J::BasicBlock;
 
   class ControlFlowNode = J::ControlFlowNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { Dom::bbIDominates(result, bb) }
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = SsaSourceVariable;
 
