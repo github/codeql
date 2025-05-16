@@ -2,7 +2,7 @@
 
 use super::base::Translator;
 use super::mappings::TextValue;
-use crate::emit_detached;
+use crate::{pre_emit,post_emit};
 use crate::generated;
 use crate::trap::{Label, TrapId};
 use ra_ap_syntax::ast::{
@@ -22,18 +22,20 @@ impl Translator<'_> {
     {{#enums}}
 
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: &ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
+        pre_emit!({{name}}, self, node);
         let label = match node {
             {{#variants}}
             ast::{{ast_name}}::{{variant_ast_name}}(inner) => self.emit_{{snake_case_name}}(inner).map(Into::into),
             {{/variants}}
         }?;
-        emit_detached!({{name}}, self, node, label);
+        post_emit!({{name}}, self, node, label);
         Some(label)
     }
     {{/enums}}
     {{#nodes}}
 
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: &ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
+        pre_emit!({{name}}, self, node);
         {{#has_attrs}}
         if self.should_be_excluded(node) { return None; }
         {{/has_attrs}}
@@ -58,7 +60,7 @@ impl Translator<'_> {
             {{/fields}}
         });
         self.emit_location(label, node);
-        emit_detached!({{name}}, self, node, label);
+        post_emit!({{name}}, self, node, label);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
