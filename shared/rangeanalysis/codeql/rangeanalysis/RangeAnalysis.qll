@@ -146,7 +146,7 @@ signature module Semantic<LocationSig Location> {
 
   class BasicBlock {
     /** Holds if this block (transitively) dominates `otherblock`. */
-    predicate bbDominates(BasicBlock otherBlock);
+    predicate dominates(BasicBlock otherBlock);
   }
 
   /** Gets an immediate successor of basic block `bb`, if any. */

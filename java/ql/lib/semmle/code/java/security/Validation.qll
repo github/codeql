@@ -42,14 +42,14 @@ private predicate validatedAccess(VarAccess va) {
       exists(BasicBlock succ |
         succ.getFirstNode() = node.getANormalSuccessor() and
         dominatingEdge(node.getBasicBlock(), succ) and
-        succ.bbDominates(va.getBasicBlock())
+        succ.dominates(va.getBasicBlock())
       )
       or
       exists(BasicBlock bb, int i |
         bb.getNode(i) = node and
         bb.getNode(i + 1) = node.getANormalSuccessor()
       |
-        bb.bbStrictlyDominates(va.getBasicBlock()) or
+        bb.strictlyDominates(va.getBasicBlock()) or
         bb.getNode(any(int j | j > i)).asExpr() = va
       )
     )

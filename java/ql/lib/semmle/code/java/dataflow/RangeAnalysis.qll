@@ -209,7 +209,7 @@ module Sem implements Semantic<Location> {
 
   class BasicBlock = J::BasicBlock;
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   private predicate id(ExprParent x, ExprParent y) { x = y }
 

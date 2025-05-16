@@ -145,9 +145,7 @@ predicate variableLockStateCheck(LockType t, BasicBlock checkblock, BasicBlock f
 predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
   lockUnlockBlock(t, b, locks) and src = b and locks > 0
   or
-  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock |
-    pred = b.getABBPredecessor()
-  |
+  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock | pred = b.getAPredecessor() |
     // The number of net locks from the `src` block to the predecessor block `pred` is `predlocks`.
     blockIsLocked(t, src, pred, predlocks) and
     // The recursive call ensures that at least one lock is held, so do not consider the false

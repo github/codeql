@@ -68,7 +68,7 @@ class ConditionBlock extends BasicBlock {
     exists(BasicBlock succ |
       succ = this.getTestSuccessor(testIsTrue) and
       dominatingEdge(this, succ) and
-      succ.bbDominates(controlled)
+      succ.dominates(controlled)
     )
   }
 }
@@ -287,7 +287,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     // Pattern cases are handled as condition blocks
     not sc instanceof PatternCase and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
-    caseblock.bbDominates(bb) and
+    caseblock.dominates(bb) and
     // Check we can't fall through from a previous block:
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
       isNonFallThroughPredecessor(sc, pred)
@@ -307,7 +307,7 @@ private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boo
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
     dominatingEdge(check, succ) and
-    succ.bbDominates(controlled)
+    succ.dominates(controlled)
   )
 }
 

@@ -298,7 +298,7 @@ private predicate impossibleEdge(BasicBlock bb1, BasicBlock bb2) {
 private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normaledge) {
   exists(TryStmt try, BlockStmt finally |
     try.getFinally() = finally and
-    bb1.getABBSuccessor() = bb2 and
+    bb1.getASuccessor() = bb2 and
     bb1.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
     not bb2.getFirstNode().getEnclosingStmt().getEnclosingStmt*() = finally and
     if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
@@ -339,7 +339,7 @@ private predicate nullVarStep(
   midssa.isLiveAtEndOfBlock(mid) and
   not ensureNotNull(midssa).getBasicBlock() = mid and
   not assertFail(mid, _) and
-  bb = mid.getABBSuccessor() and
+  bb = mid.getASuccessor() and
   not impossibleEdge(mid, bb) and
   not exists(boolean branch | nullGuard(midssa, branch, false).hasBranchEdge(mid, bb, branch)) and
   not (leavingFinally(mid, bb, true) and midstoredcompletion = true) and
