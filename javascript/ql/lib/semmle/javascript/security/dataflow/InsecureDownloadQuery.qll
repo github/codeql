@@ -37,23 +37,3 @@ module InsecureDownloadConfig implements DataFlow::StateConfigSig {
  * Taint tracking for download of sensitive file through insecure connection.
  */
 module InsecureDownloadFlow = DataFlow::GlobalWithState<InsecureDownloadConfig>;
-
-/**
- * DEPRECATED. Use the `InsecureDownload` module instead.
- */
-deprecated class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "InsecureDownload" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    InsecureDownloadConfig::isSource(source, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    InsecureDownloadConfig::isSink(sink, FlowState::fromFlowLabel(label))
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node) or
-    InsecureDownloadConfig::isBarrier(node)
-  }
-}

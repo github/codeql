@@ -463,64 +463,6 @@ module Ssa {
      */
     final AssignableDefinition getADefinition() { result = SsaImpl::getADefinition(this) }
 
-    /**
-     * DEPRECATED.
-     *
-     * Holds if this definition updates a captured local scope variable, and the updated
-     * value may be read from the implicit entry definition `def` using one or more calls
-     * (as indicated by `additionalCalls`), starting from call `c`.
-     *
-     * Example:
-     *
-     * ```csharp
-     * class C {
-     *   void M1() {
-     *     int i = 0;
-     *     void M2() => System.Console.WriteLine(i);
-     *     i = 1;
-     *     M2();
-     *   }
-     * }
-     * ```
-     *
-     * If this definition is the update of `i` on line 5, then the value may be read inside
-     * `M2` via the call on line 6.
-     */
-    deprecated final predicate isCapturedVariableDefinitionFlowIn(
-      ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
-    ) {
-      none()
-    }
-
-    /**
-     * DEPRECATED.
-     *
-     * Holds if this definition updates a captured local scope variable, and the updated
-     * value may be read from the implicit call definition `cdef` using one or more calls
-     * (as indicated by `additionalCalls`).
-     *
-     * Example:
-     *
-     * ```csharp
-     * class C {
-     *   void M1() {
-     *     int i = 0;
-     *     void M2() { i = 2; };
-     *     M2();
-     *     System.Console.WriteLine(i);
-     *   }
-     * }
-     * ```
-     *
-     * If this definition is the update of `i` on line 4, then the value may be read outside
-     * of `M2` via the call on line 5.
-     */
-    deprecated final predicate isCapturedVariableDefinitionFlowOut(
-      ImplicitCallDefinition cdef, boolean additionalCalls
-    ) {
-      none()
-    }
-
     override Element getElement() { result = ad.getElement() }
 
     override string toString() {

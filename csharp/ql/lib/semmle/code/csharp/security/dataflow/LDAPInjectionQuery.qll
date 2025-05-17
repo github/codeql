@@ -52,13 +52,6 @@ module LdapInjectionConfig implements DataFlow::ConfigSig {
  */
 module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
 
-/**
- * DEPRECATED: Use `ThreadModelSource` instead.
- *
- * A source of remote user input.
- */
-deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
-
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 

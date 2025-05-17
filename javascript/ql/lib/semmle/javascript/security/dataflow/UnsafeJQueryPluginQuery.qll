@@ -52,47 +52,6 @@ module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
 module UnsafeJQueryPluginFlow = TaintTracking::Global<UnsafeJQueryPluginConfig>;
 
 /**
- * DEPRECATED. Use the `UnsafeJQueryPluginFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeJQueryPlugin" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node)
-    or
-    node instanceof DomBasedXss::Sanitizer
-    or
-    node instanceof Sanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-    // jQuery plugins tend to be implemented as classes that store data in fields initialized by the constructor.
-    DataFlow::localFieldStep(src, sink) or
-    aliasPropertyPresenceStep(src, sink)
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    // prefixing prevents forced html/css confusion:
-    // prefixing through concatenation:
-    StringConcatenation::taintStep(node, _, _, any(int i | i >= 1))
-    or
-    // prefixing through a poor-mans templating system:
-    node = any(StringReplaceCall call).getRawReplacement()
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
-    super.isSanitizerGuard(node) or
-    node instanceof IsElementSanitizer or
-    node instanceof PropertyPresenceSanitizer or
-    node instanceof NumberGuard
-  }
-}
-
-/**
  * Holds if there is a taint-step from `src` to `sink`,
  * where `src` is a property read that acts as a sanitizer for the base,
  * and `sink` is that same property read from the same base.

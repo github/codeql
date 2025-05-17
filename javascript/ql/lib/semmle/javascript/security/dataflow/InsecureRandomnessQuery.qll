@@ -48,28 +48,3 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
  * Taint tracking for random values that are not cryptographically secure.
  */
 module InsecureRandomnessFlow = DataFlow::Global<InsecureRandomnessConfig>;
-
-/**
- * DEPRECATED. Use the `InsecureRandomnessFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "InsecureRandomness" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    // not making use of `super.isSanitizer`: those sanitizers are not for this kind of data
-    node instanceof Sanitizer
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    // stop propagation at the sinks to avoid double reporting
-    this.isSink(node)
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    InsecureRandomness::isAdditionalTaintStep(pred, succ)
-  }
-}

@@ -27,19 +27,3 @@ module XmlBombConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about XML-bomb vulnerabilities.
  */
 module XmlBombFlow = TaintTracking::Global<XmlBombConfig>;
-
-/**
- * DEPRECATED. Use the `XmlBombFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "XmlBomb" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}

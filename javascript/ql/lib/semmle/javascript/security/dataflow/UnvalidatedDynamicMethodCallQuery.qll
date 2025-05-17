@@ -100,37 +100,3 @@ module UnvalidatedDynamicMethodCallConfig implements DataFlow::StateConfigSig {
  */
 module UnvalidatedDynamicMethodCallFlow =
   DataFlow::GlobalWithState<UnvalidatedDynamicMethodCallConfig>;
-
-/**
- * DEPRECATED. Use the `UnvalidatedDynamicMethodCallFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnvalidatedDynamicMethodCall" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    source.(Source).getFlowLabel() = label
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink.(Sink).getFlowLabel() = label
-  }
-
-  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
-    super.isLabeledBarrier(node, label)
-    or
-    node.(Sanitizer).getFlowLabel() = label
-  }
-
-  override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof NumberGuard or
-    guard instanceof FunctionCheck
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-    DataFlow::FlowLabel dstlabel
-  ) {
-    UnvalidatedDynamicMethodCallConfig::isAdditionalFlowStep(src,
-      FlowState::fromFlowLabel(srclabel), dst, FlowState::fromFlowLabel(dstlabel))
-  }
-}

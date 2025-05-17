@@ -39,23 +39,3 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
  * Taint-tracking for reasoning about string based query injection vulnerabilities.
  */
 module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
-
-/**
- * DEPRECATED. Use the `SqlInjectionFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "SqlInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    SqlInjectionConfig::isAdditionalFlowStep(pred, succ)
-  }
-}

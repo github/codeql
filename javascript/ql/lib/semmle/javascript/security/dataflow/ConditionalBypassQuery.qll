@@ -36,26 +36,6 @@ module ConditionalBypassConfig implements DataFlow::ConfigSig {
 module ConditionalBypassFlow = TaintTracking::Global<ConditionalBypassConfig>;
 
 /**
- * DEPRECATED. Use the `ConditionalBypassFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ConditionalBypass" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node dst) {
-    ConditionalBypassConfig::isAdditionalFlowStep(src, dst)
-  }
-}
-
-/**
  * Holds if the value of `nd` flows into `guard`.
  */
 predicate flowsToGuardExpr(DataFlow::Node nd, SensitiveActionGuardConditional guard) {
@@ -131,64 +111,6 @@ predicate isTaintedGuardNodeForSensitiveAction(
  * Example: `if (e) return; action(x)`.
  */
 predicate isEarlyAbortGuardNode(ConditionalBypassFlow::PathNode e, SensitiveAction action) {
-  exists(IfStmt guard |
-    // `e` is in the condition of an if-statement ...
-    e.getNode().(Sink).asExpr().getParentExpr*() = guard.getCondition() and
-    // ... where the then-branch always throws or returns
-    exists(Stmt abort |
-      abort instanceof ThrowStmt or
-      abort instanceof ReturnStmt
-    |
-      abort.nestedIn(guard) and
-      abort.getBasicBlock().(ReachableBasicBlock).postDominates(guard.getThen().getBasicBlock())
-    ) and
-    // ... and the else-branch does not exist
-    not exists(guard.getElse())
-  |
-    // ... and `action` is outside the if-statement
-    not action.asExpr().getEnclosingStmt().nestedIn(guard)
-  )
-}
-
-/**
- * Holds if `sink` guards `action`, and `source` taints `sink`.
- *
- * If flow from `source` taints `sink`, then an attacker can
- * control if `action` should be executed or not.
- */
-deprecated predicate isTaintedGuardForSensitiveAction(
-  DataFlow::PathNode sink, DataFlow::PathNode source, SensitiveAction action
-) {
-  action = sink.getNode().(Sink).getAction() and
-  // exclude the intermediary sink
-  not sink.getNode() instanceof SensitiveActionGuardComparisonOperand and
-  exists(Configuration cfg |
-    // ordinary taint tracking to a guard
-    cfg.hasFlowPath(source, sink)
-    or
-    // taint tracking to both operands of a guard comparison
-    exists(
-      SensitiveActionGuardComparison cmp, DataFlow::PathNode lSource, DataFlow::PathNode rSource,
-      DataFlow::PathNode lSink, DataFlow::PathNode rSink
-    |
-      sink.getNode() = cmp.getGuard() and
-      cfg.hasFlowPath(lSource, lSink) and
-      lSink.getNode() = DataFlow::valueNode(cmp.getLeftOperand()) and
-      cfg.hasFlowPath(rSource, rSink) and
-      rSink.getNode() = DataFlow::valueNode(cmp.getRightOperand())
-    |
-      source = lSource or
-      source = rSource
-    )
-  )
-}
-
-/**
- * Holds if `e` effectively guards access to `action` by returning or throwing early.
- *
- * Example: `if (e) return; action(x)`.
- */
-deprecated predicate isEarlyAbortGuard(DataFlow::PathNode e, SensitiveAction action) {
   exists(IfStmt guard |
     // `e` is in the condition of an if-statement ...
     e.getNode().(Sink).asExpr().getParentExpr*() = guard.getCondition() and

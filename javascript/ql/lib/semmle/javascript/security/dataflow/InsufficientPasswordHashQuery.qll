@@ -33,19 +33,3 @@ module InsufficientPasswordHashConfig implements DataFlow::ConfigSig {
  * Taint tracking for password hashing with insufficient computational effort.
  */
 module InsufficientPasswordHashFlow = TaintTracking::Global<InsufficientPasswordHashConfig>;
-
-/**
- * DEPRECATED. Use the `InsufficientPasswordHashFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "InsufficientPasswordHash" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-}

@@ -30,16 +30,3 @@ module ClearTextStorageConfig implements DataFlow::ConfigSig {
 }
 
 module ClearTextStorageFlow = TaintTracking::Global<ClearTextStorageConfig>;
-
-/**
- * DEPRECATED. Use the `ClearTextStorageFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ClearTextStorage" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}

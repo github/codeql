@@ -50,33 +50,3 @@ module ZipSlipConfig implements DataFlow::StateConfigSig {
 
 /** A taint tracking configuration for unsafe archive extraction. */
 module ZipSlipFlow = DataFlow::GlobalWithState<ZipSlipConfig>;
-
-/** A taint tracking configuration for unsafe archive extraction. */
-deprecated class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "ZipSlip" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
-    label = source.(Source).getAFlowLabel()
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    label = sink.(Sink).getAFlowLabel()
-  }
-
-  override predicate isBarrier(DataFlow::Node node) {
-    super.isBarrier(node) or
-    node instanceof TaintedPath::Sanitizer
-  }
-
-  override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
-    guard instanceof TaintedPath::BarrierGuardNode
-  }
-
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-    DataFlow::FlowLabel dstlabel
-  ) {
-    ZipSlipConfig::isAdditionalFlowStep(src, TaintedPath::FlowState::fromFlowLabel(srclabel), dst,
-      TaintedPath::FlowState::fromFlowLabel(dstlabel))
-  }
-}

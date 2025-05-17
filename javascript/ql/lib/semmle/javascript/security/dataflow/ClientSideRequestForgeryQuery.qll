@@ -45,30 +45,3 @@ module ClientSideRequestForgeryConfig implements DataFlow::ConfigSig {
  * Taint tracking for client-side request forgery.
  */
 module ClientSideRequestForgeryFlow = TaintTracking::Global<ClientSideRequestForgeryConfig>;
-
-/**
- * DEPRECATED. Use the `ClientSideRequestForgeryFlow` module instead.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ClientSideRequestForgery" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(Source src |
-      source = src and
-      not src.isServerSide()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) { sanitizingPrefixEdge(node, _) }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    isAdditionalRequestForgeryStep(pred, succ)
-  }
-}

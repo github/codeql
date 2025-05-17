@@ -37,11 +37,9 @@ edges
 | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion | provenance |  |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] | provenance |  |
-| reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | call to Sprintf | provenance | FunctionModel |
 | reflectedxsstest.go:34:17:34:61 | []type{args} [array] | reflectedxsstest.go:34:17:34:61 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:34:17:34:61 | call to Sprintf | reflectedxsstest.go:34:10:34:62 | type conversion | provenance |  |
 | reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | []type{args} [array] | provenance |  |
-| reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | call to Sprintf | provenance | FunctionModel |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader | provenance | Src:MaD:9  |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:40:14:40:17 | part | provenance |  |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:42:2:42:5 | part | provenance |  |
@@ -53,7 +51,6 @@ edges
 | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | MaD:12 |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | reflectedxsstest.go:44:10:44:55 | type conversion | provenance |  |
 | reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | []type{args} [array] | provenance |  |
-| reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | call to Sprintf | provenance | FunctionModel |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query | provenance | Src:MaD:10 MaD:17 |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion | provenance |  |
 | tst.go:14:15:14:20 | selection of Form | tst.go:14:15:14:36 | call to Get | provenance | Src:MaD:6 MaD:18 |

@@ -11,7 +11,6 @@ edges
 | sample.go:15:31:15:62 | []type{args} [array] | sample.go:15:31:15:62 | call to Sprintf | provenance | MaD:1 |
 | sample.go:15:31:15:62 | call to Sprintf | sample.go:15:24:15:63 | type conversion | provenance |  |
 | sample.go:15:49:15:61 | call to Uint32 | sample.go:15:31:15:62 | []type{args} [array] | provenance |  |
-| sample.go:15:49:15:61 | call to Uint32 | sample.go:15:31:15:62 | call to Sprintf | provenance | FunctionModel |
 | sample.go:16:9:16:15 | slice expression | sample.go:26:25:26:30 | call to Guid | provenance |  |
 | sample.go:33:2:33:6 | definition of nonce | sample.go:37:25:37:29 | nonce | provenance |  |
 | sample.go:33:2:33:6 | definition of nonce | sample.go:37:32:37:36 | nonce | provenance |  |
