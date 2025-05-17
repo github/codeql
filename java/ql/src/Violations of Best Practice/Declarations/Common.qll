@@ -14,7 +14,7 @@ private predicate blockInSwitch(SwitchStmt s, BasicBlock b) {
 
 private predicate switchCaseControlFlow(SwitchStmt switch, BasicBlock b1, BasicBlock b2) {
   blockInSwitch(switch, b1) and
-  b1.getABBSuccessor() = b2 and
+  b1.getASuccessor() = b2 and
   blockInSwitch(switch, b2)
 }
 

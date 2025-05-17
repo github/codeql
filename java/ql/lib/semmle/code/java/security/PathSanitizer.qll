@@ -21,7 +21,7 @@ private module ValidationMethod<DataFlow::guardChecksSig/3 validationGuard> {
       validationMethod(ma.getMethod(), pos) and
       ma.getArgument(pos) = rv and
       adjacentUseUseSameVar(rv, result.asExpr()) and
-      ma.getBasicBlock().bbDominates(result.asExpr().getBasicBlock())
+      ma.getBasicBlock().dominates(result.asExpr().getBasicBlock())
     )
   }
 

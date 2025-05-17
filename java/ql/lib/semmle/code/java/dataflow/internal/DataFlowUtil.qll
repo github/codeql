@@ -40,14 +40,14 @@ private module ThisFlow {
 
   private int lastRank(BasicBlock b) { result = max(int rankix | thisRank(_, b, rankix)) }
 
-  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getABBSuccessor*(), _) }
+  private predicate blockPrecedesThisAccess(BasicBlock b) { thisAccess(_, b.getASuccessor*(), _) }
 
   private predicate thisAccessBlockReaches(BasicBlock b1, BasicBlock b2) {
-    thisAccess(_, b1, _) and b2 = b1.getABBSuccessor()
+    thisAccess(_, b1, _) and b2 = b1.getASuccessor()
     or
     exists(BasicBlock mid |
       thisAccessBlockReaches(b1, mid) and
-      b2 = mid.getABBSuccessor() and
+      b2 = mid.getASuccessor() and
       not thisAccess(_, mid, _) and
       blockPrecedesThisAccess(b2)
     )

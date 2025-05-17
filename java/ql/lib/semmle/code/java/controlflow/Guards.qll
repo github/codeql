@@ -23,7 +23,7 @@ class ConditionBlock extends BasicBlock {
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
-    result = this.getConditionNode().getABranchSuccessor(testIsTrue)
+    result.getFirstNode() = this.getConditionNode().getABranchSuccessor(testIsTrue)
   }
 
   /*
@@ -68,7 +68,7 @@ class ConditionBlock extends BasicBlock {
     exists(BasicBlock succ |
       succ = this.getTestSuccessor(testIsTrue) and
       dominatingEdge(this, succ) and
-      succ.bbDominates(controlled)
+      succ.dominates(controlled)
     )
   }
 }
@@ -287,7 +287,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     // Pattern cases are handled as condition blocks
     not sc instanceof PatternCase and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
-    caseblock.bbDominates(bb) and
+    caseblock.dominates(bb) and
     // Check we can't fall through from a previous block:
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
       isNonFallThroughPredecessor(sc, pred)
@@ -300,14 +300,14 @@ private predicate preconditionBranchEdge(
 ) {
   conditionCheckArgument(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
-  bb2 = bb1.getLastNode().getANormalSuccessor()
+  bb2.getFirstNode() = bb1.getLastNode().getANormalSuccessor()
 }
 
 private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
     dominatingEdge(check, succ) and
-    succ.bbDominates(controlled)
+    succ.dominates(controlled)
   )
 }
 

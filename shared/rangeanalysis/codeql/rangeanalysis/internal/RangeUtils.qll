@@ -205,7 +205,7 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
   predicate backEdge(SsaPhiNode phi, SsaVariable inp, SsaReadPositionPhiInputEdge edge) {
     edge.phiInput(phi, inp) and
     (
-      phi.getBasicBlock().bbDominates(edge.getOrigBlock()) or
+      phi.getBasicBlock().dominates(edge.getOrigBlock()) or
       irreducibleSccEdge(edge.getOrigBlock(), phi.getBasicBlock())
     )
   }
@@ -227,7 +227,7 @@ module MakeUtils<LocationSig Location, Semantic<Location> Lang, DeltaSig D> {
 
   private predicate trimmedEdge(BasicBlock pred, BasicBlock succ) {
     getABasicBlockSuccessor(pred) = succ and
-    not succ.bbDominates(pred)
+    not succ.dominates(pred)
   }
 
   /**
