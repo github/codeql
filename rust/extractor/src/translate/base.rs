@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{Const, Fn, HasName, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -93,6 +93,11 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
+#[derive(PartialEq, Eq)]
+pub enum SourceKind {
+    Source,
+    Library,
+}
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
@@ -102,6 +107,7 @@ pub struct Translator<'a> {
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
     resolve_paths: ResolvePaths,
+    source_kind: SourceKind,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -115,6 +121,7 @@ impl<'a> Translator<'a> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -124,6 +131,7 @@ impl<'a> Translator<'a> {
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
             resolve_paths,
+            source_kind,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -612,6 +620,31 @@ impl<'a> Translator<'a> {
     }
 
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+        if self.source_kind == SourceKind::Library {
+            let syntax = item.syntax();
+            if let Some(body) = syntax.parent().and_then(Fn::cast).and_then(|x| x.body()) {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Fn body");
+                    return true;
+                }
+            }
+            if let Some(body) = syntax.parent().and_then(Const::cast).and_then(|x| x.body()) {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Const body");
+                    return true;
+                }
+            }
+            if let Some(body) = syntax
+                .parent()
+                .and_then(Static::cast)
+                .and_then(|x| x.body())
+            {
+                if body.syntax() == syntax {
+                    tracing::debug!("Skipping Static body");
+                    return true;
+                }
+            }
+        }
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {

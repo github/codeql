@@ -60,13 +60,11 @@ module Impl {
     Crate getADependency() { result = this.getDependency(_) }
 
     /** Gets the source file that defines this crate, if any. */
-    SourceFile getSourceFile() { result.getFile() = this.getModule().getFile() }
+    SourceFile getSourceFile() { result.getFile() = this.getLocation().getFile() }
 
     /**
      * Gets a source file that belongs to this crate, if any.
      */
     SourceFile getASourceFile() { result = this.(CrateItemNode).getASourceFile() }
-
-    override Location getLocation() { result = this.getModule().getLocation() }
   }
 }
