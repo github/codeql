@@ -71,11 +71,6 @@ Language Libraries
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Golang
-""""""
-
-*   Go 1.24 is now supported. This includes the new language feature of generic type aliases.
-
 JavaScript/TypeScript
 """""""""""""""""""""
 
