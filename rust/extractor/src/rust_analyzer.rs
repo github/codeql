@@ -79,7 +79,7 @@ impl<'a> RustAnalyzer<'a> {
                     .ok_or("failed to determine rust edition")?;
                 Ok((
                     semantics,
-                    EditionedFileId::new(semantics.db, editioned_file_id),
+                    editioned_file_id,
                     input,
                 ))
             }
