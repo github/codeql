@@ -67,6 +67,15 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
   }
 }
 
+class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  string algType;
+
+  KnownOpenSSLEllipticCurveAlgorithmConstant() {
+    resolveAlgorithmFromExpr(this, _, algType) and
+    algType.toLowerCase().matches("elliptic_curve")
+  }
+}
+
 /**
  * Resolves a call to a 'direct algorithm getter', e.g., EVP_MD5()
  * This approach to fetching algorithms was used in OpenSSL 1.0.2.
