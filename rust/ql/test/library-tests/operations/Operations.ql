@@ -1,5 +1,6 @@
 import rust
 import utils.test.InlineExpectationsTest
+import TestUtils
 
 string describe(Expr op) {
   op instanceof Operation and result = "Operation"
@@ -20,6 +21,7 @@ module OperationsTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr op |
+      toBeTested(op) and
       location = op.getLocation() and
       location.getFile().getBaseName() != "" and
       element = op.toString() and

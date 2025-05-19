@@ -93,7 +93,7 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
-#[derive(PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq)]
 pub enum SourceKind {
     Source,
     Library,
@@ -619,7 +619,17 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
+        self.semantics.is_some_and(|sema| {
+            item.attrs().any(|attr| {
+                attr.as_simple_call().is_some_and(|(name, tokens)| {
+                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
+                })
+            })
+        })
+    }
+
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
         if self.source_kind == SourceKind::Library {
             let syntax = item.syntax();
             if let Some(body) = syntax.parent().and_then(Fn::cast).and_then(|x| x.body()) {
@@ -645,13 +655,7 @@ impl<'a> Translator<'a> {
                 }
             }
         }
-        self.semantics.is_some_and(|sema| {
-            item.attrs().any(|attr| {
-                attr.as_simple_call().is_some_and(|(name, tokens)| {
-                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
-                })
-            })
-        })
+        return false;
     }
 
     pub(crate) fn extract_types_from_path_segment(

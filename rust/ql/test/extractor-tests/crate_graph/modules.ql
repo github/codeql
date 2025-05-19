@@ -5,13 +5,16 @@
  */
 
 import rust
+import codeql.rust.internal.PathResolution
 
 predicate nodes(Item i) { i instanceof RelevantNode }
 
-class RelevantNode extends Item {
+class RelevantNode extends Element instanceof ItemNode {
   RelevantNode() {
-    this.getParentNode*() =
-      any(Crate m | m.getName() = "test" and m.getVersion() = "0.0.1").getModule()
+    this.(ItemNode).getImmediateParentModule*() =
+      any(Crate m | m.getName() = "test" and m.getVersion() = "0.0.1")
+          .(CrateItemNode)
+          .getModuleNode()
   }
 
   string label() { result = this.toString() }
@@ -26,9 +29,8 @@ class HasGenericParams extends RelevantNode {
     params = this.(Struct).getGenericParamList() or
     params = this.(Union).getGenericParamList() or
     params = this.(Impl).getGenericParamList() or
-    params = this.(Enum).getGenericParamList() or
-    params = this.(Trait).getGenericParamList() or
-    params = this.(TraitAlias).getGenericParamList()
+    params = this.(Trait).getGenericParamList() // or
+    //params = this.(TraitAlias).getGenericParamList()
   }
 
   override string label() {

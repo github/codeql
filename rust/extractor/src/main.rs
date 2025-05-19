@@ -63,7 +63,8 @@ impl<'a> Extractor<'a> {
             errors,
             semantics_info,
         } = rust_analyzer.parse(file);
-        self.steps.push(ExtractionStep::parse(before_parse, file));
+        self.steps
+            .push(ExtractionStep::parse(before_parse, source_kind, file));
 
         let before_extract = Instant::now();
         let line_index = LineIndex::new(text.as_ref());
@@ -108,7 +109,7 @@ impl<'a> Extractor<'a> {
             )
         });
         self.steps
-            .push(ExtractionStep::extract(before_extract, file));
+            .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
     pub fn extract_with_semantics(
