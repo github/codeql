@@ -181,18 +181,29 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Holds if this type path is empty. */
     predicate isEmpty() { this = "" }
 
+    /** Gets the length of this path, assuming the length is at least 2. */
+    bindingset[this]
+    pragma[inline_late]
+    private int length2() {
+      // Same as
+      // `result = strictcount(this.indexOf(".")) + 1`
+      // but performs better because it doesn't use an aggregate
+      result = this.regexpReplaceAll("[0-9]+", "").length() + 1
+    }
+
     /** Gets the length of this path. */
     bindingset[this]
     pragma[inline_late]
     int length() {
-      this.isEmpty() and result = 0
-      or
-      result = strictcount(this.indexOf(".")) + 1
+      if this.isEmpty()
+      then result = 0
+      else
+        if exists(TypeParameter::decode(this))
+        then result = 1
+        else result = this.length2()
     }
 
     /** Gets the path obtained by appending `suffix` onto this path. */
-    bindingset[suffix, result]
-    bindingset[this, result]
     bindingset[this, suffix]
     TypePath append(TypePath suffix) {
       if this.isEmpty()
@@ -202,22 +213,37 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         then result = this
         else (
           result = this + "." + suffix and
-          not result.length() > getTypePathLimit()
+          (
+            not exists(getTypePathLimit())
+            or
+            result.length2() <= getTypePathLimit()
+          )
+        )
+    }
+
+    /**
+     * Gets the path obtained by appending `suffix` onto this path.
+     *
+     * Unlike `append`, this predicate has `result` in the binding set,
+     * so there is no need to check the length of `result`.
+     */
+    bindingset[this, result]
+    TypePath appendInverse(TypePath suffix) {
+      if result.isEmpty()
+      then this.isEmpty() and suffix.isEmpty()
+      else
+        if this.isEmpty()
+        then suffix = result
+        else (
+          result = this and suffix.isEmpty()
+          or
+          result = this + "." + suffix
         )
     }
 
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
-    predicate isCons(TypeParameter tp, TypePath suffix) {
-      tp = TypeParameter::decode(this) and
-      suffix.isEmpty()
-      or
-      exists(int first |
-        first = min(this.indexOf(".")) and
-        suffix = this.suffix(first + 1) and
-        tp = TypeParameter::decode(this.prefix(first))
-      )
-    }
+    predicate isCons(TypeParameter tp, TypePath suffix) { this = TypePath::consInverse(tp, suffix) }
   }
 
   /** Provides predicates for constructing `TypePath`s. */
@@ -232,9 +258,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * Gets the type path obtained by appending the singleton type path `tp`
      * onto `suffix`.
      */
-    bindingset[result]
     bindingset[suffix]
     TypePath cons(TypeParameter tp, TypePath suffix) { result = singleton(tp).append(suffix) }
+
+    /**
+     * Gets the type path obtained by appending the singleton type path `tp`
+     * onto `suffix`.
+     */
+    bindingset[result]
+    TypePath consInverse(TypeParameter tp, TypePath suffix) {
+      result = singleton(tp).appendInverse(suffix)
+    }
   }
 
   /**
@@ -556,7 +590,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeMention tm1, TypeMention tm2, TypeParameter tp, TypePath path, Type t
       ) {
         exists(TypePath prefix |
-          tm2.resolveTypeAt(prefix) = tp and t = tm1.resolveTypeAt(prefix.append(path))
+          tm2.resolveTypeAt(prefix) = tp and t = tm1.resolveTypeAt(prefix.appendInverse(path))
         )
       }
 
@@ -899,7 +933,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(AccessPosition apos, DeclarationPosition dpos, TypePath pathToTypeParam |
           tp = target.getDeclaredType(dpos, pathToTypeParam) and
           accessDeclarationPositionMatch(apos, dpos) and
-          adjustedAccessType(a, apos, target, pathToTypeParam.append(path), t)
+          adjustedAccessType(a, apos, target, pathToTypeParam.appendInverse(path), t)
         )
       }
 
@@ -998,7 +1032,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
           RelevantAccess() { this = MkRelevantAccess(a, apos, path) }
 
-          Type getTypeAt(TypePath suffix) { a.getInferredType(apos, path.append(suffix)) = result }
+          Type getTypeAt(TypePath suffix) {
+            a.getInferredType(apos, path.appendInverse(suffix)) = result
+          }
 
           /** Holds if this relevant access has the type `type` and should satisfy `constraint`. */
           predicate hasTypeConstraint(Type type, Type constraint) {
@@ -1077,7 +1113,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             t0 = abs.getATypeParameter() and
             exists(TypePath path3, TypePath suffix |
               sub.resolveTypeAt(path3) = t0 and
-              at.getTypeAt(path3.append(suffix)) = t and
+              at.getTypeAt(path3.appendInverse(suffix)) = t and
               path = prefix0.append(suffix)
             )
           )
@@ -1149,7 +1185,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         not exists(getTypeArgument(a, target, tp, _)) and
         target = a.getTarget() and
         exists(AccessPosition apos, DeclarationPosition dpos, Type base, TypePath pathToTypeParam |
-          accessBaseType(a, apos, base, pathToTypeParam.append(path), t) and
+          accessBaseType(a, apos, base, pathToTypeParam.appendInverse(path), t) and
           declarationBaseType(target, dpos, base, pathToTypeParam, tp) and
           accessDeclarationPositionMatch(apos, dpos)
         )
@@ -1217,7 +1253,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           typeParameterConstraintHasTypeParameter(target, dpos, pathToTp2, _, constraint, pathToTp,
             tp) and
           AccessConstraint::satisfiesConstraintTypeMention(a, apos, pathToTp2, constraint,
-            pathToTp.append(path), t)
+            pathToTp.appendInverse(path), t)
         )
       }
 
