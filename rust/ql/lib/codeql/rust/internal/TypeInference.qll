@@ -19,16 +19,6 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeParameter = T::TypeParameter;
 
-  /**
-   * A type abstraction. I.e., a place in the program where type variables are
-   * introduced.
-   *
-   * Example:
-   * ```rust
-   * impl<A, B> Foo<A, B> { }
-   * //  ^^^^^^ a type abstraction
-   * ```
-   */
   class TypeAbstraction = T::TypeAbstraction;
 
   private newtype TTypeArgumentPosition =
@@ -156,7 +146,7 @@ private module Input2 implements InputSig2 {
     exists(TypeParam param |
       abs = param.getTypeBoundList().getABound() and
       condition = param and
-      constraint = param.getTypeBoundList().getABound().getTypeRepr()
+      constraint = abs.(TypeBound).getTypeRepr()
     )
     or
     // the implicit `Self` type parameter satisfies the trait
@@ -968,22 +958,6 @@ private module Cached {
     )
   }
 
-  pragma[nomagic]
-  private Type receiverRootType(Expr e) {
-    any(MethodCallExpr mce).getReceiver() = e and
-    result = inferType(e)
-  }
-
-  pragma[nomagic]
-  private Type inferReceiverType(Expr e, TypePath path) {
-    exists(Type root | root = receiverRootType(e) |
-      // for reference types, lookup members in the type being referenced
-      if root = TRefType()
-      then result = inferType(e, TypePath::cons(TRefTypeParameter(), path))
-      else result = inferType(e, path)
-    )
-  }
-
   private class ReceiverExpr extends Expr {
     MethodCallExpr mce;
 
@@ -993,13 +967,22 @@ private module Cached {
 
     int getNumberOfArgs() { result = mce.getArgList().getNumberOfArgs() }
 
-    Type resolveTypeAt(TypePath path) { result = inferReceiverType(this, path) }
+    pragma[nomagic]
+    Type getTypeAt(TypePath path) {
+      exists(TypePath path0 | result = inferType(this, path0) |
+        path0 = TypePath::cons(TRefTypeParameter(), path)
+        or
+        not path0.isCons(TRefTypeParameter(), _) and
+        not (path0.isEmpty() and result = TRefType()) and
+        path = path0
+      )
+    }
   }
 
   /** Holds if a method for `type` with the name `name` and the arity `arity` exists in `impl`. */
   pragma[nomagic]
   private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
-    type = impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention).resolveType() and
+    type = impl.getSelfTy().(TypeReprMention).resolveType() and
     exists(Function f |
       f = impl.(ImplItemNode).getASuccessor(name) and
       f.getParamList().hasSelfParam() and
@@ -1009,17 +992,16 @@ private module Cached {
 
   private module IsInstantiationOfInput implements IsInstantiationOfInputSig<ReceiverExpr> {
     pragma[nomagic]
-    predicate potentialInstantiationOf(ReceiverExpr receiver, TypeAbstraction impl, TypeMention sub) {
-      methodCandidate(receiver.resolveTypeAt(TypePath::nil()), receiver.getField(),
+    predicate potentialInstantiationOf(
+      ReceiverExpr receiver, TypeAbstraction impl, TypeMention constraint
+    ) {
+      methodCandidate(receiver.getTypeAt(TypePath::nil()), receiver.getField(),
         receiver.getNumberOfArgs(), impl) and
-      sub = impl.(ImplTypeAbstraction).getSelfTy()
+      constraint = impl.(ImplTypeAbstraction).getSelfTy()
     }
 
-    predicate relevantTypeMention(TypeMention sub) {
-      exists(TypeAbstraction impl |
-        methodCandidate(_, _, _, impl) and
-        sub = impl.(ImplTypeAbstraction).getSelfTy()
-      )
+    predicate relevantTypeMention(TypeMention constraint) {
+      exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
     }
   }
 
@@ -1044,8 +1026,7 @@ private module Cached {
    */
   private Function getMethodFromImpl(ReceiverExpr receiver) {
     exists(Impl impl |
-      IsInstantiationOf<ReceiverExpr, IsInstantiationOfInput>::isInstantiationOf(receiver, impl,
-        impl.(ImplTypeAbstraction).getSelfTy().(TypeReprMention)) and
+      IsInstantiationOf<ReceiverExpr, IsInstantiationOfInput>::isInstantiationOf(receiver, impl, _) and
       result = getMethodSuccessor(impl, receiver.getField())
     )
   }
@@ -1059,19 +1040,17 @@ private module Cached {
       or
       // The type of `receiver` is a type parameter and the method comes from a
       // trait bound on the type parameter.
-      result = getTypeParameterMethod(receiver.resolveTypeAt(TypePath::nil()), receiver.getField())
+      result = getTypeParameterMethod(receiver.getTypeAt(TypePath::nil()), receiver.getField())
     )
   }
 
   pragma[inline]
   private Type inferRootTypeDeref(AstNode n) {
-    exists(Type t |
-      t = inferType(n) and
-      // for reference types, lookup members in the type being referenced
-      if t = TRefType()
-      then result = inferType(n, TypePath::singleton(TRefTypeParameter()))
-      else result = t
-    )
+    result = inferType(n) and
+    result != TRefType()
+    or
+    // for reference types, lookup members in the type being referenced
+    result = inferType(n, TypePath::singleton(TRefTypeParameter()))
   }
 
   pragma[nomagic]

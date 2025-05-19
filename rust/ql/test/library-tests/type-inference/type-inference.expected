@@ -1,6 +1,4 @@
 testFailures
-| main.rs:793:25:793:75 | //... | Missing result: type=a:A.S1 |
-| main.rs:793:25:793:75 | //... | Missing result: type=a:MyThing |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
@@ -798,10 +796,13 @@ inferType
 | main.rs:788:9:788:9 | x |  | main.rs:787:26:787:41 | T2 |
 | main.rs:788:9:788:14 | x.m1() |  | main.rs:787:22:787:23 | T1 |
 | main.rs:791:56:791:56 | x |  | main.rs:791:39:791:53 | T |
-| main.rs:793:13:793:13 | a |  | main.rs:741:20:741:22 | Tr2 |
+| main.rs:793:13:793:13 | a |  | main.rs:721:5:724:5 | MyThing |
+| main.rs:793:13:793:13 | a | A | main.rs:731:5:732:14 | S1 |
 | main.rs:793:17:793:17 | x |  | main.rs:791:39:791:53 | T |
-| main.rs:793:17:793:22 | x.m1() |  | main.rs:741:20:741:22 | Tr2 |
-| main.rs:794:26:794:26 | a |  | main.rs:741:20:741:22 | Tr2 |
+| main.rs:793:17:793:22 | x.m1() |  | main.rs:721:5:724:5 | MyThing |
+| main.rs:793:17:793:22 | x.m1() | A | main.rs:731:5:732:14 | S1 |
+| main.rs:794:26:794:26 | a |  | main.rs:721:5:724:5 | MyThing |
+| main.rs:794:26:794:26 | a | A | main.rs:731:5:732:14 | S1 |
 | main.rs:798:13:798:13 | x |  | main.rs:721:5:724:5 | MyThing |
 | main.rs:798:13:798:13 | x | A | main.rs:731:5:732:14 | S1 |
 | main.rs:798:17:798:33 | MyThing {...} |  | main.rs:721:5:724:5 | MyThing |
@@ -856,9 +857,7 @@ inferType
 | main.rs:816:17:816:33 | MyThing {...} | A | main.rs:731:5:732:14 | S1 |
 | main.rs:816:30:816:31 | S1 |  | main.rs:731:5:732:14 | S1 |
 | main.rs:817:13:817:13 | s |  | main.rs:731:5:732:14 | S1 |
-| main.rs:817:13:817:13 | s |  | main.rs:741:20:741:22 | Tr2 |
 | main.rs:817:17:817:32 | call_trait_m1(...) |  | main.rs:731:5:732:14 | S1 |
-| main.rs:817:17:817:32 | call_trait_m1(...) |  | main.rs:741:20:741:22 | Tr2 |
 | main.rs:817:31:817:31 | x |  | main.rs:721:5:724:5 | MyThing |
 | main.rs:817:31:817:31 | x | A | main.rs:731:5:732:14 | S1 |
 | main.rs:819:13:819:13 | x |  | main.rs:726:5:729:5 | MyThing2 |
@@ -867,10 +866,8 @@ inferType
 | main.rs:819:17:819:34 | MyThing2 {...} | A | main.rs:733:5:734:14 | S2 |
 | main.rs:819:31:819:32 | S2 |  | main.rs:733:5:734:14 | S2 |
 | main.rs:820:13:820:13 | s |  | main.rs:721:5:724:5 | MyThing |
-| main.rs:820:13:820:13 | s |  | main.rs:741:20:741:22 | Tr2 |
 | main.rs:820:13:820:13 | s | A | main.rs:733:5:734:14 | S2 |
 | main.rs:820:17:820:32 | call_trait_m1(...) |  | main.rs:721:5:724:5 | MyThing |
-| main.rs:820:17:820:32 | call_trait_m1(...) |  | main.rs:741:20:741:22 | Tr2 |
 | main.rs:820:17:820:32 | call_trait_m1(...) | A | main.rs:733:5:734:14 | S2 |
 | main.rs:820:31:820:31 | x |  | main.rs:726:5:729:5 | MyThing2 |
 | main.rs:820:31:820:31 | x | A | main.rs:733:5:734:14 | S2 |

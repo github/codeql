@@ -335,7 +335,16 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
   override Location getLocation() { result = trait.getLocation() }
 }
 
-/** A type abstraction. */
+/**
+ * A type abstraction. I.e., a place in the program where type variables are
+ * introduced.
+ *
+ * Example:
+ * ```rust
+ * impl<A, B> Foo<A, B> { }
+ * //  ^^^^^^ a type abstraction
+ * ```
+ */
 abstract class TypeAbstraction extends AstNode {
   abstract TypeParameter getATypeParameter();
 }
