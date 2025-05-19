@@ -28,8 +28,10 @@ class Token extends Locatable, @token {
 
   /** Gets the token following this token inside the same toplevel structure, if any. */
   Token getNextToken() {
-    this.getTopLevel() = result.getTopLevel() and
-    this.getIndex() + 1 = result.getIndex()
+    exists (TopLevel topLevel, int index |
+        tokeninfo(this, _, topLevel, index, _) and
+        tokeninfo(result, _, topLevel, index + 1, _)
+    )
   }
 
   /** Gets the token preceding this token inside the same toplevel structure, if any. */
