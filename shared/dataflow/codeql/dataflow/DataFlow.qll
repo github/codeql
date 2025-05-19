@@ -689,6 +689,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     predicate flowToExpr(DataFlowExpr sink);
   }
 
+  class DiffInformedQuery = DiffInformedQueryImpl;
+
   /**
    * Constructs a global data flow computation.
    */

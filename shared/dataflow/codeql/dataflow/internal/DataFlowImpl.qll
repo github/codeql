@@ -170,6 +170,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   }
 
   /**
+   * This private type is used instead of `Unit` to ensure that users of this
+   * library don't take an accidental dependency on convertability to `Unit`,
+   * allowing us to change the implementation in the future.
+   */
+  private newtype TDiffInformedBase = MkDiffInformedBase()
+
+  abstract class DiffInformedQueryImpl extends TDiffInformedBase {
+    DiffInformedQueryImpl() { any() }
+
+    string toString() { result = "DataFlow::DiffInformedQuery" }
+  }
+
+  /**
    * Constructs a data flow computation given a full input configuration, and
    * an initial stage 1 pruning.
    */
