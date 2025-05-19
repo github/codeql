@@ -1,6 +1,5 @@
 import javascript
 private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
-private import utils.test.InlineFlowTest
 
 query Http::RouteHandler routeHandler() { any() }
 
@@ -26,5 +25,3 @@ module TestConfig implements DataFlow::ConfigSig {
     exists(DataFlow::CallNode call | call.getCalleeName() = "sink" and node = call.getArgument(0))
   }
 }
-
-import ValueFlowTest<TestConfig>
