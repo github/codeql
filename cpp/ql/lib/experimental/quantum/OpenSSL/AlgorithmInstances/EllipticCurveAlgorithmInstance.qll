@@ -5,12 +5,12 @@ import OpenSSLAlgorithmInstanceBase
 import AlgToAVCFlow
 
 //ellipticCurveNameToKeySizeAndFamilyMapping(name, size, family)
-class KnownOpenSSLEllitpicCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
+class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
   Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmConstant
 {
   OpenSSLAlgorithmValueConsumer getterCall;
 
-  KnownOpenSSLEllitpicCurveConstantAlgorithmInstance() {
+  KnownOpenSSLEllipticCurveConstantAlgorithmInstance() {
     // Two possibilities:
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
