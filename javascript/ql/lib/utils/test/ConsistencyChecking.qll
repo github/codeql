@@ -13,7 +13,7 @@ import javascript
  *
  * If no configuration is specified, then the default is that the all sinks from a `DataFlow::Configuration` are alerts, and all files are consistency-checked.
  */
-abstract deprecated class ConsistencyConfiguration extends string {
+abstract class ConsistencyConfiguration extends string {
   bindingset[this]
   ConsistencyConfiguration() { any() }
 
@@ -36,7 +36,7 @@ abstract deprecated class ConsistencyConfiguration extends string {
  *
  * Is used internally to match a configuration or lack thereof.
  */
-deprecated final private class Conf extends string {
+final private class Conf extends string {
   Conf() {
     this instanceof ConsistencyConfiguration
     or
@@ -71,14 +71,14 @@ private class AssertionComment extends Comment {
   predicate expectConsistencyError() { this.getText().matches("%[INCONSISTENCY]%") }
 }
 
-deprecated private DataFlow::Node getASink() {
+private DataFlow::Node getASink() {
   exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result))
 }
 
 /**
  * Gets all the alerts for consistency consistency checking from a configuration `conf`.
  */
-deprecated private DataFlow::Node alerts(Conf conf) {
+private DataFlow::Node alerts(Conf conf) {
   result = conf.(ConsistencyConfiguration).getAnAlert()
   or
   not exists(ConsistencyConfiguration r) and
@@ -91,7 +91,7 @@ deprecated private DataFlow::Node alerts(Conf conf) {
  * The `line` can be either the first or the last line of the alert.
  * And if no expression exists at `line`, then an alert on the next line is used.
  */
-deprecated private DataFlow::Node getAlert(File file, int line, Conf conf) {
+private DataFlow::Node getAlert(File file, int line, Conf conf) {
   result = alerts(conf) and
   result.getFile() = file and
   (result.hasLocationInfo(_, _, _, line, _) or result.hasLocationInfo(_, line, _, _, _))
@@ -116,7 +116,7 @@ private AssertionComment getComment(File file, int line) {
 /**
  * Holds if there is a false positive in `file` at `line` for configuration `conf`.
  */
-deprecated private predicate falsePositive(File file, int line, AssertionComment comment, Conf conf) {
+private predicate falsePositive(File file, int line, AssertionComment comment, Conf conf) {
   exists(getAlert(file, line, conf)) and
   comment = getComment(file, line) and
   not comment.shouldHaveAlert()
@@ -125,7 +125,7 @@ deprecated private predicate falsePositive(File file, int line, AssertionComment
 /**
  * Holds if there is a false negative in `file` at `line` for configuration `conf`.
  */
-deprecated private predicate falseNegative(File file, int line, AssertionComment comment, Conf conf) {
+private predicate falseNegative(File file, int line, AssertionComment comment, Conf conf) {
   not exists(getAlert(file, line, conf)) and
   comment = getComment(file, line) and
   comment.shouldHaveAlert()
@@ -134,7 +134,7 @@ deprecated private predicate falseNegative(File file, int line, AssertionComment
 /**
  * Gets a file that should be included for consistency checking for configuration `conf`.
  */
-deprecated private File getATestFile(string conf) {
+private File getATestFile(string conf) {
   not exists(any(ConsistencyConfiguration res).getAFile()) and
   result = any(LineComment comment).getFile() and
   (conf = "" or conf instanceof ConsistencyConfiguration)
@@ -147,7 +147,7 @@ deprecated private File getATestFile(string conf) {
  * Or the empty string
  */
 bindingset[file, line]
-deprecated private string getSinkDescription(File file, int line, Conf conf) {
+private string getSinkDescription(File file, int line, Conf conf) {
   not exists(DataFlow::Configuration c | c.hasFlow(_, getAlert(file, line, conf))) and
   result = ""
   or
@@ -161,7 +161,7 @@ deprecated private string getSinkDescription(File file, int line, Conf conf) {
  * The consistency issue an unexpected false positive/negative.
  * Or that false positive/negative was expected, and none were found.
  */
-deprecated query predicate consistencyIssue(
+query predicate consistencyIssue(
   string location, string msg, string commentText, Conf conf
 ) {
   exists(File file, int line |

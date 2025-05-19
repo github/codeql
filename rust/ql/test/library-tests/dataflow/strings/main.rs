@@ -48,20 +48,20 @@ fn string_add_reference() {
 }
 
 fn string_from() {
-    let s1 = source_slice(36);
-    let s2 = String::from(s1);
-    sink(s2); // $ MISSING: hasTaintFlow=36
+	let s1 = source_slice(36);
+	let s2 = String::from(s1);
+	sink(s2); // $ hasValueFlow=36
 }
 
 fn string_to_string() {
-    let s1 = source_slice(22);
-    let s2 = s1.to_string();
-    sink(s2); // $ MISSING: hasTaintFlow=22
+	let s1 = source_slice(22);
+	let s2 = s1.to_string();
+	sink(s2); // $ hasTaintFlow=22
 }
 
 fn as_str() {
     let s = source(67);
-    sink_slice(s.as_str()); // $ hasTaintFlow=67
+    sink_slice(s.as_str()); // $ hasValueFlow=67
 }
 
 fn format_args_built_in() {

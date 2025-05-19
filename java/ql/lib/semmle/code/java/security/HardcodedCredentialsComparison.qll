@@ -12,9 +12,6 @@ class EqualsCall extends MethodCall {
   EqualsCall() { this.getMethod() instanceof EqualsMethod }
 }
 
-/** DEPRECATED: Alias for `EqualsCall`. */
-deprecated class EqualsAccess = EqualsCall;
-
 /**
  * Holds if `sink` compares password `p` against a hardcoded expression `source`.
  */

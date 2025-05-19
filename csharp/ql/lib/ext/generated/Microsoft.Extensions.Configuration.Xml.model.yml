@@ -13,7 +13,5 @@ extensions:
     data:
       - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationProvider", "XmlConfigurationProvider", "(Microsoft.Extensions.Configuration.Xml.XmlConfigurationSource)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", "Load", "(System.IO.Stream)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationProvider", "XmlStreamConfigurationProvider", "(Microsoft.Extensions.Configuration.Xml.XmlStreamConfigurationSource)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.Configuration.Xml", "XmlStreamConfigurationSource", "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "summary", "df-generated"]

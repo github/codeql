@@ -5,7 +5,7 @@
  *              into account.
  * @kind problem
  * @problem.severity error
- * @id cpp/leap-year/adding-365-days-per-year
+ * @id cpp/microsoft/public/leap-year/adding-365-days-per-year
  * @precision medium
  * @tags leap-year
  *       correctness

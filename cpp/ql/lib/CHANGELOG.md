@@ -1,3 +1,58 @@
+## 4.3.1
+
+### Bug Fixes
+
+* Fixed an infinite loop in `semmle.code.cpp.rangeanalysis.new.RangeAnalysis` when computing ranges in very large and complex function bodies.
+
+## 4.3.0
+
+### New Features
+
+* New classes `TypeofType`, `TypeofExprType`, and `TypeofTypeType` were introduced, which represent the C23 `typeof` and `typeof_unqual` operators. The `TypeofExprType` class represents the variant taking an expression as its argument. The `TypeofTypeType` class represents the variant taking a type as its argument.
+* A new class `IntrinsicTransformedType` was introduced, which represents the type transforming intrinsics supported by clang, gcc, and MSVC.
+* Introduced `hasDesignator()` predicates to distinguish between designated and positional initializations for both struct/union fields and array elements.
+* Added the `isVla()` predicate to the `ArrayType` class. This allows queries to identify variable-length arrays (VLAs).
+
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Modified the `getBufferSize` predicate in `commons/Buffer.qll` to be more tolerant in some cases involving member variables in a larger struct or class.
+* Fixed an issue where the `getBufferSize` predicate in `commons/Buffer.qll` was returning results for references inside `offsetof` expressions, which are not accesses to a buffer.
+
+## 4.0.1
+
+No user-facing changes.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAllocatorCall` predicate from `DeleteOrDeleteArrayExpr`, use `getDeallocatorCall` instead.
+
+### New Features
+
+* A new predicate `getOffsetInClass` was added to the `Field` class, which computes the byte offset of a field relative to a given `Class`.
+* New classes `PreprocessorElifdef` and `PreprocessorElifndef` were introduced, which represents the C23/C++23 `#elifdef` and `#elifndef` preprocessor directives.
+* A new class `TypeLibraryImport` was introduced, which represents the `#import` preprocessor directive as used by the Microsoft Visual C++ for importing type libraries.
+
 ## 3.2.0
 
 ### New Features

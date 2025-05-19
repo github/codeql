@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.visualstudio.text.classification.implementation.iclassificationtypedefinitionmetadata", "Member[name]"]
+    - ["system.collections.generic.ienumerable<system.string>", "microsoft.visualstudio.text.classification.implementation.iclassificationtypedefinitionmetadata", "Member[basedefinition]"]

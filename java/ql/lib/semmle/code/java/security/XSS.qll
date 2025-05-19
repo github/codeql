@@ -92,9 +92,25 @@ private class WritingMethod extends Method {
 /** An output stream or writer that writes to a servlet, JSP or JSF response. */
 class XssVulnerableWriterSource extends MethodCall {
   XssVulnerableWriterSource() {
-    this.getMethod() instanceof ServletResponseGetWriterMethod
-    or
-    this.getMethod() instanceof ServletResponseGetOutputStreamMethod
+    (
+      this.getMethod() instanceof ServletResponseGetWriterMethod
+      or
+      this.getMethod() instanceof ServletResponseGetOutputStreamMethod
+    ) and
+    not exists(MethodCall mc, Expr contentType |
+      mc.getMethod() instanceof ResponseSetContentTypeMethod and
+      contentType = mc.getArgument(0)
+      or
+      (
+        mc.getMethod() instanceof ResponseAddHeaderMethod or
+        mc.getMethod() instanceof ResponseSetHeaderMethod
+      ) and
+      mc.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "content-type" and
+      contentType = mc.getArgument(1)
+    |
+      isXssSafeContentTypeString(contentType.(CompileTimeConstantExpr).getStringValue()) and
+      DataFlow::localExprFlow(mc.getQualifier(), this.getQualifier())
+    )
     or
     exists(Method m | m = this.getMethod() |
       m.hasQualifiedName("javax.servlet.jsp", "JspContext", "getOut")
@@ -104,6 +120,11 @@ class XssVulnerableWriterSource extends MethodCall {
     or
     this.getMethod() instanceof FacesGetResponseStreamMethod
   }
+}
+
+pragma[nomagic]
+private predicate isXssSafeContentTypeString(string s) {
+  s = any(CompileTimeConstantExpr cte).getStringValue() and isXssSafeContentType(s)
 }
 
 /**
@@ -118,10 +139,15 @@ class XssVulnerableWriterSourceNode extends ApiSourceNode {
  */
 bindingset[s]
 predicate isXssVulnerableContentType(string s) {
-  s.regexpMatch("(?i)text/(html|xml|xsl|rdf|vtt|cache-manifest).*") or
-  s.regexpMatch("(?i)application/(.*\\+)?xml.*") or
-  s.regexpMatch("(?i)cache-manifest.*") or
-  s.regexpMatch("(?i)image/svg\\+xml.*")
+  s.regexpMatch("(?i)(" +
+      //
+      "text/(html|xml|xsl|rdf|vtt|cache-manifest).*" + "|" +
+      //
+      "application/(.*\\+)?xml.*" + "|" +
+      //
+      "cache-manifest.*" + "|" +
+      //
+      "image/svg\\+xml.*" + ")")
 }
 
 /**

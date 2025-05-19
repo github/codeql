@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasdll].ReturnValue"]
+    - ["system.io.stream", "iehost.execute.ieexecuteremote", "Member[exception]"]
+    - ["system.object", "iehost.execute.ieexecuteremote", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasassembly].ReturnValue"]

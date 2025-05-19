@@ -4,52 +4,49 @@ private import powershell
 private import ControlFlowGraph
 private import CfgNodes
 private import SuccessorTypes
+private import internal.ControlFlowGraphImpl as CfgImpl
+private import CfgImpl::BasicBlocks as BasicBlocksImpl
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
  */
-class BasicBlock extends TBasicBlockStart {
-  /** Gets the scope of this basic block. */
-  final CfgScope getScope() { result = this.getFirstNode().getScope() }
-
+final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   /** Gets an immediate successor of this basic block, if any. */
-  BasicBlock getASuccessor() { result = this.getASuccessor(_) }
+  BasicBlock getASuccessor() { result = super.getASuccessor() }
 
   /** Gets an immediate successor of this basic block of a given type, if any. */
-  BasicBlock getASuccessor(SuccessorType t) {
-    result.getFirstNode() = this.getLastNode().getASuccessor(t)
-  }
+  BasicBlock getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
   /** Gets an immediate predecessor of this basic block, if any. */
-  BasicBlock getAPredecessor() { result.getASuccessor() = this }
+  BasicBlock getAPredecessor() { result = super.getAPredecessor() }
 
   /** Gets an immediate predecessor of this basic block of a given type, if any. */
-  BasicBlock getAPredecessor(SuccessorType t) { result.getASuccessor(t) = this }
+  BasicBlock getAPredecessor(SuccessorType t) { result = super.getAPredecessor(t) }
 
-  /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  CfgNode getNode(int pos) { bbIndex(this.getFirstNode(), result, pos) }
+  // The overrides below are to use `CfgNode` instead of `CfgImpl::Node`
+  CfgNode getNode(int pos) { result = super.getNode(pos) }
 
-  /** Gets a control flow node in this basic block. */
-  CfgNode getANode() { result = this.getNode(_) }
+  CfgNode getANode() { result = super.getANode() }
 
   /** Gets the first control flow node in this basic block. */
-  CfgNode getFirstNode() { this = TBasicBlockStart(result) }
+  CfgNode getFirstNode() { result = super.getFirstNode() }
 
   /** Gets the last control flow node in this basic block. */
-  CfgNode getLastNode() { result = this.getNode(this.length() - 1) }
-
-  /** Gets the length of this basic block. */
-  int length() { result = strictcount(this.getANode()) }
+  CfgNode getLastNode() { result = super.getLastNode() }
 
   /**
    * Holds if this basic block immediately dominates basic block `bb`.
    *
-   * That is, all paths reaching basic block `bb` from some entry point
-   * basic block must go through this basic block (which is an immediate
-   * predecessor of `bb`).
+   * That is, this basic block is the unique basic block satisfying:
+   * 1. This basic block strictly dominates `bb`
+   * 2. There exists no other basic block that is strictly dominated by this
+   *    basic block and which strictly dominates `bb`.
+   *
+   * All basic blocks, except entry basic blocks, have a unique immediate
+   * dominator.
    */
-  predicate immediatelyDominates(BasicBlock bb) { bbIDominates(this, bb) }
+  predicate immediatelyDominates(BasicBlock bb) { super.immediatelyDominates(bb) }
 
   /**
    * Holds if this basic block strictly dominates basic block `bb`.
@@ -58,7 +55,7 @@ class BasicBlock extends TBasicBlockStart {
    * basic block must go through this basic block (which must be different
    * from `bb`).
    */
-  predicate strictlyDominates(BasicBlock bb) { bbIDominates+(this, bb) }
+  predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
 
   /**
    * Holds if this basic block dominates basic block `bb`.
@@ -66,34 +63,50 @@ class BasicBlock extends TBasicBlockStart {
    * That is, all paths reaching basic block `bb` from some entry point
    * basic block must go through this basic block.
    */
-  predicate dominates(BasicBlock bb) {
-    bb = this or
-    this.strictlyDominates(bb)
-  }
+  predicate dominates(BasicBlock bb) { super.dominates(bb) }
 
   /**
    * Holds if `df` is in the dominance frontier of this basic block.
    * That is, this basic block dominates a predecessor of `df`, but
    * does not dominate `df` itself.
    */
-  predicate inDominanceFrontier(BasicBlock df) {
-    this.dominatesPredecessor(df) and
-    not this.strictlyDominates(df)
-  }
-
-  /**
-   * Holds if this basic block dominates a predecessor of `df`.
-   */
-  private predicate dominatesPredecessor(BasicBlock df) { this.dominates(df.getAPredecessor()) }
+  predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
 
   /**
    * Gets the basic block that immediately dominates this basic block, if any.
    *
-   * That is, all paths reaching this basic block from some entry point
-   * basic block must go through the result, which is an immediate basic block
-   * predecessor of this basic block.
+   * That is, the result is the unique basic block satisfying:
+   * 1. The result strictly dominates this basic block.
+   * 2. There exists no other basic block that is strictly dominated by the
+   *    result and which strictly dominates this basic block.
+   *
+   * All basic blocks, except entry basic blocks, have a unique immediate
+   * dominator.
    */
-  BasicBlock getImmediateDominator() { bbIDominates(result, this) }
+  BasicBlock getImmediateDominator() { result = super.getImmediateDominator() }
+
+  /**
+   * Holds if the edge with successor type `s` out of this basic block is a
+   * dominating edge for `dominated`.
+   *
+   * That is, all paths reaching `dominated` from the entry point basic
+   * block must go through the `s` edge out of this basic block.
+   *
+   * Edge dominance is similar to node dominance except it concerns edges
+   * instead of nodes: A basic block is dominated by a _basic block_ `bb` if it
+   * can only be reached through `bb` and dominated by an _edge_ `s` if it can
+   * only be reached through `s`.
+   *
+   * Note that where all basic blocks (except the entry basic block) are
+   * strictly dominated by at least one basic block, a basic block may not be
+   * dominated by any edge. If an edge dominates a basic block `bb`, then
+   * both endpoints of the edge dominates `bb`. The converse is not the case,
+   * as there may be multiple paths between the endpoints with none of them
+   * dominating.
+   */
+  predicate edgeDominates(BasicBlock dominated, SuccessorType s) {
+    super.edgeDominates(dominated, s)
+  }
 
   /**
    * Holds if this basic block strictly post-dominates basic block `bb`.
@@ -102,7 +115,7 @@ class BasicBlock extends TBasicBlockStart {
    * block `bb` must go through this basic block (which must be different
    * from `bb`).
    */
-  predicate strictlyPostDominates(BasicBlock bb) { bbIPostDominates+(this, bb) }
+  predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
 
   /**
    * Holds if this basic block post-dominates basic block `bb`.
@@ -110,150 +123,37 @@ class BasicBlock extends TBasicBlockStart {
    * That is, all paths reaching a normal exit point basic block from basic
    * block `bb` must go through this basic block.
    */
-  predicate postDominates(BasicBlock bb) {
-    this.strictlyPostDominates(bb) or
-    this = bb
-  }
-
-  /** Holds if this basic block is in a loop in the control flow graph. */
-  predicate inLoop() { this.getASuccessor+() = this }
-
-  /** Gets a textual representation of this basic block. */
-  string toString() { result = this.getFirstNode().toString() }
-
-  /** Gets the location of this basic block. */
-  Location getLocation() { result = this.getFirstNode().getLocation() }
+  predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
 }
-
-cached
-private module Cached {
-  /** Internal representation of basic blocks. */
-  cached
-  newtype TBasicBlock = TBasicBlockStart(CfgNode cfn) { startsBB(cfn) }
-
-  /** Holds if `cfn` starts a new basic block. */
-  private predicate startsBB(CfgNode cfn) {
-    not exists(cfn.getAPredecessor()) and exists(cfn.getASuccessor())
-    or
-    cfn.isJoin()
-    or
-    cfn.getAPredecessor().isBranch()
-    or
-    exists(cfn.getAPredecessor(any(SuccessorTypes::ConditionalSuccessor s)))
-  }
-
-  /**
-   * Holds if `succ` is a control flow successor of `pred` within
-   * the same basic block.
-   */
-  private predicate intraBBSucc(CfgNode pred, CfgNode succ) {
-    succ = pred.getASuccessor() and
-    not startsBB(succ)
-  }
-
-  /**
-   * Holds if `cfn` is the `i`th node in basic block `bb`.
-   *
-   * In other words, `i` is the shortest distance from a node `bb`
-   * that starts a basic block to `cfn` along the `intraBBSucc` relation.
-   */
-  cached
-  predicate bbIndex(CfgNode bbStart, CfgNode cfn, int i) =
-    shortestDistances(startsBB/1, intraBBSucc/2)(bbStart, cfn, i)
-
-  /**
-   * Holds if the first node of basic block `succ` is a control flow
-   * successor of the last node of basic block `pred`.
-   */
-  private predicate succBB(BasicBlock pred, BasicBlock succ) { succ = pred.getASuccessor() }
-
-  /** Holds if `dom` is an immediate dominator of `bb`. */
-  cached
-  predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
-    idominance(entryBB/1, succBB/2)(_, dom, bb)
-
-  /** Holds if `pred` is a basic block predecessor of `succ`. */
-  private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
-
-  /** Holds if `bb` is an exit basic block that represents normal exit. */
-  private predicate normalExitBB(BasicBlock bb) { bb.getANode().(AnnotatedExitNode).isNormal() }
-
-  /** Holds if `dom` is an immediate post-dominator of `bb`. */
-  cached
-  predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
-    idominance(normalExitBB/1, predBB/2)(_, dom, bb)
-
-  cached
-  predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s) {
-    succ = cb.getASuccessor(s) and
-    forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | succ.dominates(pred))
-  }
-
-  cached
-  predicate controls(ConditionBlock cb, BasicBlock controlled, ConditionalSuccessor s) {
-    exists(BasicBlock succ | cb.immediatelyControls(succ, s) | succ.dominates(controlled))
-  }
-}
-
-private import Cached
-
-/** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNode }
 
 /**
  * An entry basic block, that is, a basic block whose first node is
  * an entry node.
  */
-class EntryBasicBlock extends BasicBlock {
-  EntryBasicBlock() { entryBB(this) }
-}
+final class EntryBasicBlock extends BasicBlock, BasicBlocksImpl::EntryBasicBlock { }
 
 /**
- * An annotated exit basic block, that is, a basic block whose last node is
- * an annotated exit node.
+ * An annotated exit basic block, that is, a basic block that contains an
+ * annotated exit node.
  */
-class AnnotatedExitBasicBlock extends BasicBlock {
-  private boolean normal;
-
-  AnnotatedExitBasicBlock() {
-    exists(AnnotatedExitNode n |
-      n = this.getANode() and
-      if n.isNormal() then normal = true else normal = false
-    )
-  }
-
-  /** Holds if this block represent a normal exit. */
-  final predicate isNormal() { normal = true }
-}
+final class AnnotatedExitBasicBlock extends BasicBlock, BasicBlocksImpl::AnnotatedExitBasicBlock { }
 
 /**
  * An exit basic block, that is, a basic block whose last node is
  * an exit node.
  */
-class ExitBasicBlock extends BasicBlock {
-  ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
+final class ExitBasicBlock extends BasicBlock, BasicBlocksImpl::ExitBasicBlock { }
+
+/** A basic block with more than one predecessor. */
+final class JoinBlock extends BasicBlock, BasicBlocksImpl::JoinBasicBlock {
+  JoinBlockPredecessor getJoinBlockPredecessor(int i) { result = super.getJoinBlockPredecessor(i) }
 }
 
-/** A basic block that terminates in a condition, splitting the subsequent control flow. */
-class ConditionBlock extends BasicBlock {
-  ConditionBlock() { this.getLastNode().isCondition() }
+/** A basic block that is an immediate predecessor of a join block. */
+final class JoinBlockPredecessor extends BasicBlock, BasicBlocksImpl::JoinPredecessorBasicBlock { }
 
-  /**
-   * Holds if basic block `succ` is immediately controlled by this basic
-   * block with conditional value `s`. That is, `succ` is an immediate
-   * successor of this block, and `succ` can only be reached from
-   * the callable entry point by going via the `s` edge out of this basic block.
-   */
-  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
-    immediatelyControls(this, succ, s)
-  }
-
-  /**
-   * Holds if basic block `controlled` is controlled by this basic block with
-   * conditional value `s`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the `s` edge out of this basic block.
-   */
-  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
-    controls(this, controlled, s)
-  }
-}
+/**
+ * A basic block that terminates in a condition, splitting the subsequent
+ * control flow.
+ */
+final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBlock { }

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.inargument<microsoft.management.infrastructure.ciminstance>", "cimcmdlets.activities.setciminstance", "Member[inputobject]"]
+    - ["system.string", "cimcmdlets.activities.setciminstance", "Member[psdefiningmodule]"]
+    - ["system.activities.inargument<system.management.automation.switchparameter>", "cimcmdlets.activities.setciminstance", "Member[passthru]"]
+    - ["system.string", "cimcmdlets.activities.setciminstance", "Member[pscommandname]"]
+    - ["system.activities.inargument<system.string>", "cimcmdlets.activities.setciminstance", "Member[querydialect]"]
+    - ["system.type", "cimcmdlets.activities.setciminstance", "Member[typeimplementingcmdlet]"]
+    - ["system.activities.inargument<system.string>", "cimcmdlets.activities.setciminstance", "Member[query]"]
+    - ["system.activities.inargument<system.string>", "cimcmdlets.activities.setciminstance", "Member[namespace]"]
+    - ["system.activities.inargument<system.collections.idictionary>", "cimcmdlets.activities.setciminstance", "Member[property]"]
+    - ["microsoft.powershell.activities.activityimplementationcontext", "cimcmdlets.activities.setciminstance", "Method[getpowershell].ReturnValue"]
+    - ["system.activities.inargument<system.uint32>", "cimcmdlets.activities.setciminstance", "Member[operationtimeoutsec]"]

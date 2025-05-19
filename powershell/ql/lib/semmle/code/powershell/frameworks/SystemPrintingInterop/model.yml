@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.printing.interop.basedevmodetype", "system.printing.interop.basedevmodetype!", "Member[printerdefault]"]
+    - ["system.printing.printticket", "system.printing.interop.printticketconverter", "Method[convertdevmodetoprintticket].ReturnValue"]
+    - ["system.printing.interop.basedevmodetype", "system.printing.interop.basedevmodetype!", "Member[userdefault]"]
+    - ["system.int32", "system.printing.interop.printticketconverter!", "Member[maxprintschemaversion]"]
+    - ["system.byte[]", "system.printing.interop.printticketconverter", "Method[convertprinttickettodevmode].ReturnValue"]

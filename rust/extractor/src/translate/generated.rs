@@ -385,10 +385,10 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_asm_reg_spec(&mut self, node: ast::AsmRegSpec) -> Option<Label<generated::AsmRegSpec>> {
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let label = self.trap.emit(generated::AsmRegSpec {
             id: TrapId::Star,
-            name_ref,
+            identifier,
         });
         self.emit_location(label, &node);
         emit_detached!(AsmRegSpec, self, node, label);
@@ -426,7 +426,7 @@ impl Translator<'_> {
     pub(crate) fn emit_assoc_type_arg(&mut self, node: ast::AssocTypeArg) -> Option<Label<generated::AssocTypeArg>> {
         let const_arg = node.const_arg().and_then(|x| self.emit_const_arg(x));
         let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let param_list = node.param_list().and_then(|x| self.emit_param_list(x));
         let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().and_then(|x| self.emit_return_type_syntax(x));
@@ -436,7 +436,7 @@ impl Translator<'_> {
             id: TrapId::Star,
             const_arg,
             generic_arg_list,
-            name_ref,
+            identifier,
             param_list,
             ret_type,
             return_type_syntax,
@@ -801,13 +801,13 @@ impl Translator<'_> {
     pub(crate) fn emit_extern_crate(&mut self, node: ast::ExternCrate) -> Option<Label<generated::ExternCrate>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let rename = node.rename().and_then(|x| self.emit_rename(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::ExternCrate {
             id: TrapId::Star,
             attrs,
-            name_ref,
+            identifier,
             rename,
             visibility,
         });
@@ -835,13 +835,13 @@ impl Translator<'_> {
     pub(crate) fn emit_field_expr(&mut self, node: ast::FieldExpr) -> Option<Label<generated::FieldExpr>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().and_then(|x| self.emit_expr(x));
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let container = node.expr().and_then(|x| self.emit_expr(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let label = self.trap.emit(generated::FieldExpr {
             id: TrapId::Star,
             attrs,
-            expr,
-            name_ref,
+            container,
+            identifier,
         });
         self.emit_location(label, &node);
         emit_detached!(FieldExpr, self, node, label);
@@ -1365,16 +1365,16 @@ impl Translator<'_> {
         Some(label)
     }
 
-    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Option<Label<generated::MacroStmts>> {
-        let expr = node.expr().and_then(|x| self.emit_expr(x));
+    pub(crate) fn emit_macro_stmts(&mut self, node: ast::MacroStmts) -> Option<Label<generated::MacroBlockExpr>> {
+        let tail_expr = node.expr().and_then(|x| self.emit_expr(x));
         let statements = node.statements().filter_map(|x| self.emit_stmt(x)).collect();
-        let label = self.trap.emit(generated::MacroStmts {
+        let label = self.trap.emit(generated::MacroBlockExpr {
             id: TrapId::Star,
-            expr,
+            tail_expr,
             statements,
         });
         self.emit_location(label, &node);
-        emit_detached!(MacroStmts, self, node, label);
+        emit_detached!(MacroBlockExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -1477,14 +1477,14 @@ impl Translator<'_> {
         let arg_list = node.arg_list().and_then(|x| self.emit_arg_list(x));
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let receiver = node.receiver().and_then(|x| self.emit_expr(x));
         let label = self.trap.emit(generated::MethodCallExpr {
             id: TrapId::Star,
             arg_list,
             attrs,
             generic_arg_list,
-            name_ref,
+            identifier,
             receiver,
         });
         self.emit_location(label, &node);
@@ -1659,11 +1659,11 @@ impl Translator<'_> {
 
     pub(crate) fn emit_path(&mut self, node: ast::Path) -> Option<Label<generated::Path>> {
         let qualifier = node.qualifier().and_then(|x| self.emit_path(x));
-        let part = node.segment().and_then(|x| self.emit_path_segment(x));
+        let segment = node.segment().and_then(|x| self.emit_path_segment(x));
         let label = self.trap.emit(generated::Path {
             id: TrapId::Star,
             qualifier,
-            part,
+            segment,
         });
         self.emit_location(label, &node);
         emit_detached!(Path, self, node, label);
@@ -1700,21 +1700,17 @@ impl Translator<'_> {
 
     pub(crate) fn emit_path_segment(&mut self, node: ast::PathSegment) -> Option<Label<generated::PathSegment>> {
         let generic_arg_list = node.generic_arg_list().and_then(|x| self.emit_generic_arg_list(x));
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let parenthesized_arg_list = node.parenthesized_arg_list().and_then(|x| self.emit_parenthesized_arg_list(x));
-        let path_type = node.path_type().and_then(|x| self.emit_path_type(x));
         let ret_type = node.ret_type().and_then(|x| self.emit_ret_type(x));
         let return_type_syntax = node.return_type_syntax().and_then(|x| self.emit_return_type_syntax(x));
-        let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let label = self.trap.emit(generated::PathSegment {
             id: TrapId::Star,
             generic_arg_list,
-            name_ref,
+            identifier,
             parenthesized_arg_list,
-            path_type,
             ret_type,
             return_type_syntax,
-            type_repr,
         });
         self.emit_location(label, &node);
         emit_detached!(PathSegment, self, node, label);
@@ -1802,126 +1798,130 @@ impl Translator<'_> {
         Some(label)
     }
 
-    pub(crate) fn emit_record_expr(&mut self, node: ast::RecordExpr) -> Option<Label<generated::RecordExpr>> {
+    pub(crate) fn emit_record_expr(&mut self, node: ast::RecordExpr) -> Option<Label<generated::StructExpr>> {
         let path = node.path().and_then(|x| self.emit_path(x));
-        let record_expr_field_list = node.record_expr_field_list().and_then(|x| self.emit_record_expr_field_list(x));
-        let label = self.trap.emit(generated::RecordExpr {
+        let struct_expr_field_list = node.record_expr_field_list().and_then(|x| self.emit_record_expr_field_list(x));
+        let label = self.trap.emit(generated::StructExpr {
             id: TrapId::Star,
             path,
-            record_expr_field_list,
+            struct_expr_field_list,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordExpr, self, node, label);
+        emit_detached!(StructExpr, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_expr_field(&mut self, node: ast::RecordExprField) -> Option<Label<generated::RecordExprField>> {
+    pub(crate) fn emit_record_expr_field(&mut self, node: ast::RecordExprField) -> Option<Label<generated::StructExprField>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let expr = node.expr().and_then(|x| self.emit_expr(x));
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
-        let label = self.trap.emit(generated::RecordExprField {
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let label = self.trap.emit(generated::StructExprField {
             id: TrapId::Star,
             attrs,
             expr,
-            name_ref,
+            identifier,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordExprField, self, node, label);
+        emit_detached!(StructExprField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_expr_field_list(&mut self, node: ast::RecordExprFieldList) -> Option<Label<generated::RecordExprFieldList>> {
+    pub(crate) fn emit_record_expr_field_list(&mut self, node: ast::RecordExprFieldList) -> Option<Label<generated::StructExprFieldList>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let fields = node.fields().filter_map(|x| self.emit_record_expr_field(x)).collect();
         let spread = node.spread().and_then(|x| self.emit_expr(x));
-        let label = self.trap.emit(generated::RecordExprFieldList {
+        let label = self.trap.emit(generated::StructExprFieldList {
             id: TrapId::Star,
             attrs,
             fields,
             spread,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordExprFieldList, self, node, label);
+        emit_detached!(StructExprFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Option<Label<generated::RecordField>> {
+    pub(crate) fn emit_record_field(&mut self, node: ast::RecordField) -> Option<Label<generated::StructField>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
+        let default = node.expr().and_then(|x| self.emit_expr(x));
+        let is_unsafe = node.unsafe_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(x));
         let type_repr = node.ty().and_then(|x| self.emit_type(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
-        let label = self.trap.emit(generated::RecordField {
+        let label = self.trap.emit(generated::StructField {
             id: TrapId::Star,
             attrs,
+            default,
+            is_unsafe,
             name,
             type_repr,
             visibility,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordField, self, node, label);
+        emit_detached!(StructField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Option<Label<generated::RecordFieldList>> {
+    pub(crate) fn emit_record_field_list(&mut self, node: ast::RecordFieldList) -> Option<Label<generated::StructFieldList>> {
         let fields = node.fields().filter_map(|x| self.emit_record_field(x)).collect();
-        let label = self.trap.emit(generated::RecordFieldList {
+        let label = self.trap.emit(generated::StructFieldList {
             id: TrapId::Star,
             fields,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordFieldList, self, node, label);
+        emit_detached!(StructFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_pat(&mut self, node: ast::RecordPat) -> Option<Label<generated::RecordPat>> {
+    pub(crate) fn emit_record_pat(&mut self, node: ast::RecordPat) -> Option<Label<generated::StructPat>> {
         let path = node.path().and_then(|x| self.emit_path(x));
-        let record_pat_field_list = node.record_pat_field_list().and_then(|x| self.emit_record_pat_field_list(x));
-        let label = self.trap.emit(generated::RecordPat {
+        let struct_pat_field_list = node.record_pat_field_list().and_then(|x| self.emit_record_pat_field_list(x));
+        let label = self.trap.emit(generated::StructPat {
             id: TrapId::Star,
             path,
-            record_pat_field_list,
+            struct_pat_field_list,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordPat, self, node, label);
+        emit_detached!(StructPat, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_pat_field(&mut self, node: ast::RecordPatField) -> Option<Label<generated::RecordPatField>> {
+    pub(crate) fn emit_record_pat_field(&mut self, node: ast::RecordPatField) -> Option<Label<generated::StructPatField>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
-        let name_ref = node.name_ref().and_then(|x| self.emit_name_ref(x));
+        let identifier = node.name_ref().and_then(|x| self.emit_name_ref(x));
         let pat = node.pat().and_then(|x| self.emit_pat(x));
-        let label = self.trap.emit(generated::RecordPatField {
+        let label = self.trap.emit(generated::StructPatField {
             id: TrapId::Star,
             attrs,
-            name_ref,
+            identifier,
             pat,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordPatField, self, node, label);
+        emit_detached!(StructPatField, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
 
-    pub(crate) fn emit_record_pat_field_list(&mut self, node: ast::RecordPatFieldList) -> Option<Label<generated::RecordPatFieldList>> {
+    pub(crate) fn emit_record_pat_field_list(&mut self, node: ast::RecordPatFieldList) -> Option<Label<generated::StructPatFieldList>> {
         let fields = node.fields().filter_map(|x| self.emit_record_pat_field(x)).collect();
         let rest_pat = node.rest_pat().and_then(|x| self.emit_rest_pat(x));
-        let label = self.trap.emit(generated::RecordPatFieldList {
+        let label = self.trap.emit(generated::StructPatFieldList {
             id: TrapId::Star,
             fields,
             rest_pat,
         });
         self.emit_location(label, &node);
-        emit_detached!(RecordPatFieldList, self, node, label);
+        emit_detached!(StructPatFieldList, self, node, label);
         self.emit_tokens(&node, label.into(), node.syntax().children_with_tokens());
         Some(label)
     }
@@ -2435,7 +2435,7 @@ impl Translator<'_> {
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
         let generic_param_list = node.generic_param_list().and_then(|x| self.emit_generic_param_list(x));
         let name = node.name().and_then(|x| self.emit_name(x));
-        let record_field_list = node.record_field_list().and_then(|x| self.emit_record_field_list(x));
+        let struct_field_list = node.record_field_list().and_then(|x| self.emit_record_field_list(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(x));
         let label = self.trap.emit(generated::Union {
@@ -2443,7 +2443,7 @@ impl Translator<'_> {
             attrs,
             generic_param_list,
             name,
-            record_field_list,
+            struct_field_list,
             visibility,
             where_clause,
         });
@@ -2483,11 +2483,13 @@ impl Translator<'_> {
     }
 
     pub(crate) fn emit_use_tree(&mut self, node: ast::UseTree) -> Option<Label<generated::UseTree>> {
+        let is_glob = node.star_token().is_some();
         let path = node.path().and_then(|x| self.emit_path(x));
         let rename = node.rename().and_then(|x| self.emit_rename(x));
         let use_tree_list = node.use_tree_list().and_then(|x| self.emit_use_tree_list(x));
         let label = self.trap.emit(generated::UseTree {
             id: TrapId::Star,
+            is_glob,
             path,
             rename,
             use_tree_list,
@@ -2513,14 +2515,14 @@ impl Translator<'_> {
     pub(crate) fn emit_variant(&mut self, node: ast::Variant) -> Option<Label<generated::Variant>> {
         if self.should_be_excluded(&node) { return None; }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(x)).collect();
-        let expr = node.expr().and_then(|x| self.emit_expr(x));
+        let discriminant = node.expr().and_then(|x| self.emit_expr(x));
         let field_list = node.field_list().and_then(|x| self.emit_field_list(x));
         let name = node.name().and_then(|x| self.emit_name(x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(x));
         let label = self.trap.emit(generated::Variant {
             id: TrapId::Star,
             attrs,
-            expr,
+            discriminant,
             field_list,
             name,
             visibility,

@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[path]"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[headers]"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[querystring]"]
+    - ["system.boolean", "system.web.util.requestvalidator", "Method[invokeisvalidrequeststring].ReturnValue"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[rawurl]"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[form]"]
+    - ["system.web.util.httpencoder", "system.web.util.httpencoder!", "Member[default]"]
+    - ["system.string", "system.web.util.httpencoder", "Method[urlpathencode].ReturnValue"]
+    - ["system.web.util.requestvalidator", "system.web.util.requestvalidator!", "Member[current]"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[pathinfo]"]
+    - ["system.byte[]", "system.web.util.httpencoder", "Method[urlencode].ReturnValue"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[files]"]
+    - ["system.object", "system.web.util.iwebobjectfactory", "Method[createinstance].ReturnValue"]
+    - ["system.web.util.httpencoder", "system.web.util.httpencoder!", "Member[current]"]
+    - ["system.string", "system.web.util.httpencoder", "Method[javascriptstringencode].ReturnValue"]
+    - ["system.boolean", "system.web.util.requestvalidator", "Method[isvalidrequeststring].ReturnValue"]
+    - ["system.web.util.requestvalidationsource", "system.web.util.requestvalidationsource!", "Member[cookies]"]
+    - ["system.object", "system.web.util.iwebpropertyaccessor", "Method[getproperty].ReturnValue"]

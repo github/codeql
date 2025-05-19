@@ -1,0 +1,2 @@
+| test.ps1:1:1:2:5 | MyFunction[1] | Function name contains a reserved character: [ |
+| test.ps1:1:1:2:5 | MyFunction[1] | Function name contains a reserved character: ] |

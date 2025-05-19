@@ -1642,11 +1642,13 @@ nodeEnclosing
 | Conditions.cs:147:13:147:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:147:38:147:47 | $"..." | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:147:40:147:43 | "a = " | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:147:44:147:46 | {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:147:45:147:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:13:149:48 | call to method WriteLine | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:13:149:49 | ...; | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:38:149:47 | $"..." | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:40:149:43 | "b = " | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:149:44:149:46 | {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
 | ExitMethods.cs:6:7:6:17 | call to constructor Object | ExitMethods.cs:6:7:6:17 | ExitMethods |
 | ExitMethods.cs:6:7:6:17 | enter ExitMethods | ExitMethods.cs:6:7:6:17 | ExitMethods |
@@ -3436,6 +3438,7 @@ nodeEnclosing
 | Patterns.cs:10:13:10:43 | ...; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:31:10:41 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:33:10:36 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:10:37:10:40 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
@@ -3447,6 +3450,7 @@ nodeEnclosing
 | Patterns.cs:14:13:14:46 | ...; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:14:31:14:44 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:14:33:14:39 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:14:40:14:43 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:5:10:5:11 | M1 |
@@ -3468,6 +3472,7 @@ nodeEnclosing
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:25:35:25:50 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:25:46:25:49 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
@@ -3476,6 +3481,7 @@ nodeEnclosing
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:28:41:28:44 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
@@ -3484,6 +3490,7 @@ nodeEnclosing
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:31:37:31:43 | "string " | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:31:44:31:47 | {...} | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
@@ -4014,12 +4021,39 @@ nodeEnclosing
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:158:38:158:47 | $"..." | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:158:40:158:43 | "a = " | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:158:44:158:46 | {...} | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:158:45:158:45 | access to local variable s | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:48 | call to method WriteLine | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:38:160:47 | $"..." | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:40:160:43 | "b = " | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:160:44:160:46 | {...} | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:45:160:45 | access to local variable s | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:163:10:163:12 | exit M16 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:164:5:178:5 | {...} | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:169:42:169:49 | "1 or 2" | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:170:17:170:22 | break; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:172:42:172:44 | "3" | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:173:17:173:22 | break; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:175:17:175:47 | call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:175:17:175:48 | ...; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:175:42:175:46 | "def" | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:176:17:176:22 | break; | Switch.cs:163:10:163:12 | M16 |
 | TypeAccesses.cs:1:7:1:18 | call to constructor Object | TypeAccesses.cs:1:7:1:18 | TypeAccesses |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | TypeAccesses |
 | TypeAccesses.cs:1:7:1:18 | exit TypeAccesses | TypeAccesses.cs:1:7:1:18 | TypeAccesses |
@@ -4539,15 +4573,15 @@ nodeEnclosing
 | cflow.cs:187:9:190:52 | if (...) ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:13:187:13 | 1 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:13:187:18 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:18:187:18 | 2 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:23:187:28 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:28:187:28 | 3 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:34:187:39 | ... == ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:39:187:39 | 3 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:190:13:190:51 | call to method WriteLine | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:185:10:185:18 | LogicalOr |
@@ -5904,6 +5938,13 @@ blockEnclosing
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:158:13:158:49 | ...; | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:160:13:160:49 | ...; | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:163:10:163:12 | enter M16 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:163:10:163:12 | exit M16 (normal) | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:169:17:169:51 | ...; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:172:17:172:46 | ...; | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:174:13:174:20 | default: | Switch.cs:163:10:163:12 | M16 |
 | TypeAccesses.cs:1:7:1:18 | enter TypeAccesses | TypeAccesses.cs:1:7:1:18 | TypeAccesses |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:13:7:22 | [false] ... is ... | TypeAccesses.cs:3:10:3:10 | M |
@@ -6016,11 +6057,11 @@ blockEnclosing
 | cflow.cs:181:28:181:37 | enter (...) => ... | cflow.cs:181:28:181:37 | (...) => ... |
 | cflow.cs:182:28:182:61 | enter delegate(...) { ... } | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:185:10:185:18 | enter LogicalOr | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:28 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:13:187:50 | [false] ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:28 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:13:187:50 | ... \|\| ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:23:187:23 | 2 | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:187:34:187:34 | 1 | cflow.cs:185:10:185:18 | LogicalOr |
-| cflow.cs:187:34:187:49 | [false] ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
+| cflow.cs:187:34:187:49 | ... && ... | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:190:13:190:52 | ...; | cflow.cs:185:10:185:18 | LogicalOr |
 | cflow.cs:193:10:193:17 | enter Booleans | cflow.cs:193:10:193:17 | Booleans |
 | cflow.cs:193:10:193:17 | exit Booleans | cflow.cs:193:10:193:17 | Booleans |

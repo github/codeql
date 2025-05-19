@@ -4,7 +4,7 @@
  *              risky because the protocol may become deprecated in future.
  * @kind problem
  * @problem.severity warning
- * @id cpp/hardcoded-security-protocol
+ * @id cpp/microsoft/public/hardcoded-security-protocol
  */
 
 import cpp

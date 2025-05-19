@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Microsoft.Extensions.Configuration.Abstractions/8.0.0/Microsoft.Extensions.Configuration.Abstractions.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Configuration.Binder/8.0.0/Microsoft.Extensions.Configuration.Binder.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0/Microsoft.Extensions.DependencyInjection.Abstractions.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Options/8.0.0/Microsoft.Extensions.Options.csproj" />
+    <ProjectReference Include="../../Microsoft.Extensions.Primitives/8.0.0/Microsoft.Extensions.Primitives.csproj" />
+    <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
+  </ItemGroup>
+</Project>

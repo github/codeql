@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pathinfo", "Method[get_drive]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathinfo", "Method[get_path]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathinfo", "Method[get_provider]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathinfo", "Method[get_providerpath]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

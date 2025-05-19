@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.internal.classops!", "Method[callbasector]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.management.automation.internal.classops!", "Method[callbasector]", "Argument[2].Element", "Argument[1]", "taint"]
+      - ["system.management.automation.internal.classops!", "Method[callmethodnonvirtually]", "Argument[1]", "ReturnValue", "taint"]
+      

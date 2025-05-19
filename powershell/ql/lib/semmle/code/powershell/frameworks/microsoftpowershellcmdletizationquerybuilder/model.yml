@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[excludebyproperty]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[excludebyproperty]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyassociatedinstance]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyassociatedinstance]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyassociatedinstance]", "Argument[2]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyassociatedinstance]", "Argument[3]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbymaxpropertyvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbymaxpropertyvalue]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyminpropertyvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyminpropertyvalue]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyproperty]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.querybuilder", "Method[filterbyproperty]", "Argument[1].Element", "Argument[this]", "taint"]
+      

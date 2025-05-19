@@ -3,18 +3,18 @@
 private import swift
 private import BasicBlocks
 private import SuccessorTypes
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Completion
 private import internal.Scope
 private import internal.ControlFlowElements
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends Scope instanceof CfgScope::Range_ {
+class CfgScope extends Scope instanceof CfgImpl::CfgScope::Range_ {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(ControlFlowElement parent |
       parent.asAstNode() = getParentOfAst(this) and
-      result = getCfgScope(parent)
+      result = CfgImpl::getCfgScope(parent)
     )
   }
 }
@@ -27,7 +27,7 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  *
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
-class ControlFlowNode extends Node {
+class ControlFlowNode extends CfgImpl::Node {
   /** Gets the AST node that this node corresponds to, if any. */
   ControlFlowElement getNode() { none() }
 
@@ -63,7 +63,7 @@ class ControlFlowNode extends Node {
 }
 
 /** The type of a control flow successor. */
-class SuccessorType extends TSuccessorType {
+class SuccessorType extends CfgImpl::TSuccessorType {
   /** Gets a textual representation of successor type. */
   string toString() { none() }
 }
@@ -71,7 +71,7 @@ class SuccessorType extends TSuccessorType {
 /** Provides different types of control flow successor types. */
 module SuccessorTypes {
   /** A normal control flow successor. */
-  class NormalSuccessor extends SuccessorType, TSuccessorSuccessor {
+  class NormalSuccessor extends SuccessorType, CfgImpl::TSuccessorSuccessor {
     final override string toString() { result = "successor" }
   }
 
@@ -89,24 +89,24 @@ module SuccessorTypes {
   }
 
   /** A Boolean control flow successor. */
-  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
-    BooleanSuccessor() { this = TBooleanSuccessor(value) }
+  class BooleanSuccessor extends ConditionalSuccessor, CfgImpl::TBooleanSuccessor {
+    BooleanSuccessor() { this = CfgImpl::TBooleanSuccessor(value) }
   }
 
-  class BreakSuccessor extends SuccessorType, TBreakSuccessor {
+  class BreakSuccessor extends SuccessorType, CfgImpl::TBreakSuccessor {
     final override string toString() { result = "break" }
   }
 
-  class ContinueSuccessor extends SuccessorType, TContinueSuccessor {
+  class ContinueSuccessor extends SuccessorType, CfgImpl::TContinueSuccessor {
     final override string toString() { result = "continue" }
   }
 
-  class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
+  class ReturnSuccessor extends SuccessorType, CfgImpl::TReturnSuccessor {
     final override string toString() { result = "return" }
   }
 
-  class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
-    MatchingSuccessor() { this = TMatchingSuccessor(value) }
+  class MatchingSuccessor extends ConditionalSuccessor, CfgImpl::TMatchingSuccessor {
+    MatchingSuccessor() { this = CfgImpl::TMatchingSuccessor(value) }
 
     /** Holds if this is a match successor. */
     predicate isMatch() { value = true }
@@ -114,19 +114,19 @@ module SuccessorTypes {
     override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
   }
 
-  class FallthroughSuccessor extends SuccessorType, TFallthroughSuccessor {
+  class FallthroughSuccessor extends SuccessorType, CfgImpl::TFallthroughSuccessor {
     final override string toString() { result = "fallthrough" }
   }
 
-  class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
-    EmptinessSuccessor() { this = TEmptinessSuccessor(value) }
+  class EmptinessSuccessor extends ConditionalSuccessor, CfgImpl::TEmptinessSuccessor {
+    EmptinessSuccessor() { this = CfgImpl::TEmptinessSuccessor(value) }
 
     predicate isEmpty() { value = true }
 
     override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
   }
 
-  class ExceptionSuccessor extends SuccessorType, TExceptionSuccessor {
+  class ExceptionSuccessor extends SuccessorType, CfgImpl::TExceptionSuccessor {
     override string toString() { result = "exception" }
   }
 }

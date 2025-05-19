@@ -6,6 +6,6 @@ groups:
   - queries
 extractor: powershell
 dependencies:
-  microsoft-sdl/powershell-all: ${workspace}
+  microsoft/powershell-all: ${workspace}
   codeql/suite-helpers: ${workspace}
 warnOnImplicitThis: true

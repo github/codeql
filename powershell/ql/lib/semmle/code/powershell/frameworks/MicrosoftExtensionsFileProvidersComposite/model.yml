@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Member[exists]"]
+    - ["system.collections.generic.ienumerator<microsoft.extensions.fileproviders.ifileinfo>", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]

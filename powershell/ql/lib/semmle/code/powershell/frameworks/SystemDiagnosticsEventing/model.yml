@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.diagnostics.eventing.eventprovider+writeeventerrorcode", "system.diagnostics.eventing.eventprovider!", "Method[getlastwriteeventerror].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovidertracelistener", "Member[isthreadsafe]"]
+    - ["system.string", "system.diagnostics.eventing.eventprovidertracelistener", "Member[delimiter]"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[level]"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[opcode]"]
+    - ["system.string[]", "system.diagnostics.eventing.eventprovidertracelistener", "Method[getsupportedattributes].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[isenabled].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writeevent].ReturnValue"]
+    - ["system.guid", "system.diagnostics.eventing.eventprovider!", "Method[createactivityid].ReturnValue"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[channel]"]
+    - ["system.int32", "system.diagnostics.eventing.eventdescriptor", "Member[eventid]"]
+    - ["system.int32", "system.diagnostics.eventing.eventdescriptor", "Member[task]"]
+    - ["system.int64", "system.diagnostics.eventing.eventdescriptor", "Member[keywords]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writetransferevent].ReturnValue"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writemessageevent].ReturnValue"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[version]"]

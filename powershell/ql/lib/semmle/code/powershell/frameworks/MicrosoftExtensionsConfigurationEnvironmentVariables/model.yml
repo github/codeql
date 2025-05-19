@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.string", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationsource", "Member[prefix]"]
+    - ["system.string", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationprovider", "Method[tostring].ReturnValue"]

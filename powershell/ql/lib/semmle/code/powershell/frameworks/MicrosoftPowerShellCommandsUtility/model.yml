@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[doublequote]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[formatstring]"]
+    - ["system.management.automation.psobject[]", "microsoft.powershell.commands.utility.joinstringcommand", "Member[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[singlequote]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[separator]"]
+    - ["microsoft.powershell.commands.pspropertyexpression", "microsoft.powershell.commands.utility.joinstringcommand", "Member[property]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[outputsuffix]"]
+    - ["system.string", "microsoft.powershell.commands.utility.joinstringcommand", "Member[outputprefix]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.utility.joinstringcommand", "Member[useculture]"]

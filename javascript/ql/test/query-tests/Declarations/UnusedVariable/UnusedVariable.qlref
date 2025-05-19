@@ -1,1 +1,2 @@
-Declarations/UnusedVariable.ql
+query: Declarations/UnusedVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.media.soundplayer", "Member[isloadcompleted]"]
+    - ["system.string", "system.media.soundplayer", "Member[soundlocation]"]
+    - ["system.int32", "system.media.soundplayer", "Member[loadtimeout]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Member[beep]"]
+    - ["system.object", "system.media.soundplayer", "Member[tag]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Member[exclamation]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Member[asterisk]"]
+    - ["system.io.stream", "system.media.soundplayer", "Member[stream]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Member[hand]"]
+    - ["system.media.systemsound", "system.media.systemsounds!", "Member[question]"]

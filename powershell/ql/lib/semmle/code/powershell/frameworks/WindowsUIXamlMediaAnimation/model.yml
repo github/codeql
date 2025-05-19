@@ -1,0 +1,30 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior", "Method[equals].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.animation.repeatbehavior", "Member[count]"]
+    - ["system.string", "windows.ui.xaml.media.animation.repeatbehavior", "Method[system.iformattable.tostring].ReturnValue"]
+    - ["windows.ui.xaml.media.animation.repeatbehaviortype", "windows.ui.xaml.media.animation.repeatbehaviortype!", "Member[duration]"]
+    - ["windows.ui.xaml.media.animation.keytime", "windows.ui.xaml.media.animation.keytime!", "Method[fromtimespan].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior", "Member[hascount]"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.keytime!", "Method[equals].ReturnValue"]
+    - ["system.string", "windows.ui.xaml.media.animation.keytime", "Method[tostring].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior", "Member[hasduration]"]
+    - ["windows.ui.xaml.media.animation.keytime", "windows.ui.xaml.media.animation.keytime!", "Method[op_implicit].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior!", "Method[equals].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.repeatbehavior!", "Method[op_inequality].ReturnValue"]
+    - ["windows.ui.xaml.media.animation.repeatbehaviortype", "windows.ui.xaml.media.animation.repeatbehaviortype!", "Member[forever]"]
+    - ["windows.ui.xaml.media.animation.repeatbehaviortype", "windows.ui.xaml.media.animation.repeatbehaviortype!", "Member[count]"]
+    - ["windows.ui.xaml.media.animation.repeatbehaviortype", "windows.ui.xaml.media.animation.repeatbehavior", "Member[type]"]
+    - ["system.timespan", "windows.ui.xaml.media.animation.repeatbehavior", "Member[duration]"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.keytime!", "Method[op_inequality].ReturnValue"]
+    - ["windows.ui.xaml.media.animation.repeatbehavior", "windows.ui.xaml.media.animation.repeatbehavior!", "Member[forever]"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.keytime!", "Method[op_equality].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.media.animation.repeatbehavior", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.animation.keytime", "Method[equals].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.media.animation.keytime", "Method[gethashcode].ReturnValue"]
+    - ["system.timespan", "windows.ui.xaml.media.animation.keytime", "Member[timespan]"]
+    - ["system.string", "windows.ui.xaml.media.animation.repeatbehavior", "Method[tostring].ReturnValue"]

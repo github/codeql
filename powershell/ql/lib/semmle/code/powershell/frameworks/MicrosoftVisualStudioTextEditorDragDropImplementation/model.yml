@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.ienumerable<system.string>", "microsoft.visualstudio.text.editor.dragdrop.implementation.idrophandlermetadata", "Member[dropformats]"]

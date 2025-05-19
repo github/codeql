@@ -53,12 +53,12 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
  * calls to a method with the same name are considered relevant.
  */
 abstract class SimpleSummarizedCallable extends SummarizedCallable {
-  Call c;
+  CallExpr c;
 
   bindingset[this]
-  SimpleSummarizedCallable() { c.getName() = this }
+  SimpleSummarizedCallable() { c.getLowerCaseName() = this }
 
-  final override Call getACall() { result = c }
+  final override CallExpr getACall() { result = c }
 
-  final override Call getACallSimple() { result = c }
+  final override CallExpr getACallSimple() { result = c }
 }

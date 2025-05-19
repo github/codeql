@@ -1,10 +1,10 @@
 /**
- * @name PATH Enviroment Variable built from user-controlled sources
+ * @name PATH environment variable built from user-controlled sources
  * @description Building the PATH environment variable from user-controlled sources may alter the execution of following system commands
  * @kind path-problem
- * @problem.severity warning
+ * @problem.severity error
  * @security-severity 5.0
- * @precision high
+ * @precision medium
  * @id actions/envpath-injection/medium
  * @tags actions
  *       security

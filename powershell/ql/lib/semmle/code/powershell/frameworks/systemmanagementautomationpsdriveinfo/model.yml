@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psdriveinfo", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[get_provider]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[5]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

@@ -88,7 +88,7 @@ module ExternalApiUsedWithUntrustedData {
       not path instanceof SafeExternalApiPackage and
       // Exclude paths that can be resolved to a file in the project
       not exists(Import imprt |
-        imprt.getImportedPath().getValue() = path and exists(imprt.getImportedModule())
+        imprt.getImportedPathString() = path and exists(imprt.getImportedModule())
       )
     )
     or
@@ -179,7 +179,6 @@ module ExternalApiUsedWithUntrustedData {
       or
       exists(string member |
         node = base.getMember(member) and
-        not node = base.getUnknownMember() and
         not isNumericString(member) and
         not (member = "default" and base = API::moduleImport(_)) and
         not member = "then" // use the 'promised' edges for .then callbacks
@@ -189,10 +188,7 @@ module ExternalApiUsedWithUntrustedData {
         else result = basename + "['" + member.regexpReplaceAll("'", "\\'") + "']"
       )
       or
-      (
-        node = base.getUnknownMember() or
-        node = base.getMember(any(string s | isNumericString(s)))
-      ) and
+      node = base.getArrayElement() and
       result = basename + "[]"
       or
       // just collapse promises

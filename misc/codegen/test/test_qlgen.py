@@ -52,6 +52,8 @@ def qlgen_opts(opts):
     opts.ql_format = True
     opts.root_dir = paths.root_dir
     opts.force = False
+    opts.codeql_binary = "./my_fake_codeql"
+    pathlib.Path(opts.codeql_binary).touch()
     return opts
 
 
@@ -499,7 +501,6 @@ def test_class_dir_imports(generate_import_list):
 
 
 def test_format(opts, generate, render_manager, run_mock):
-    opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
     render_manager.written = [
         pathlib.Path("x", "foo.ql"),
@@ -508,19 +509,36 @@ def test_format(opts, generate, render_manager, run_mock):
     ]
     generate([schema.Class('A')])
     assert run_mock.mock_calls == [
-        mock.call(["my_fake_codeql", "query", "format", "--in-place", "--", "x/foo.ql", "bar.qll"],
+        mock.call([opts.codeql_binary, "query", "format", "--in-place", "--", "x/foo.ql", "bar.qll"],
                   stderr=subprocess.PIPE, text=True),
     ]
 
 
 def test_format_error(opts, generate, render_manager, run_mock):
-    opts.codeql_binary = "my_fake_codeql"
     run_mock.return_value.stderr = "some\nlines\n"
     run_mock.return_value.returncode = 1
     render_manager.written = [
         pathlib.Path("x", "foo.ql"),
         pathlib.Path("bar.qll"),
         pathlib.Path("y", "baz.txt"),
+    ]
+    with pytest.raises(qlgen.FormatError):
+        generate([schema.Class('A')])
+
+
+def test_format_no_codeql(opts, generate, render_manager, run_mock):
+    pathlib.Path(opts.codeql_binary).unlink()
+    render_manager.written = [
+        pathlib.Path("bar.qll"),
+    ]
+    with pytest.raises(qlgen.FormatError):
+        generate([schema.Class('A')])
+
+
+def test_format_no_codeql_in_path(opts, generate, render_manager, run_mock):
+    opts.codeql_binary = "my_fake_codeql"
+    render_manager.written = [
+        pathlib.Path("bar.qll"),
     ]
     with pytest.raises(qlgen.FormatError):
         generate([schema.Class('A')])
@@ -1010,6 +1028,39 @@ def test_hideable_property(generate_classes):
                                              type_is_codegen_class=True,
                                              tableparams=["this", "result"], doc="x of this other"),
                                  ])),
+    }
+
+
+def test_property_with_custom_db_table_name(generate_classes):
+    assert generate_classes([
+        schema.Class("Obj", properties=[
+            schema.OptionalProperty("x", "a", pragmas={"ql_db_table_name": "foo"}),
+            schema.RepeatedProperty("y", "b", pragmas={"ql_db_table_name": "bar"}),
+            schema.RepeatedOptionalProperty("z", "c", pragmas={"ql_db_table_name": "baz"}),
+            schema.PredicateProperty("p", pragmas={"ql_db_table_name": "hello"}),
+            schema.RepeatedUnorderedProperty("q", "d", pragmas={"ql_db_table_name": "world"}),
+        ]),
+    ]) == {
+        "Obj.qll": (a_ql_class_public(name="Obj"),
+                    a_ql_stub(name="Obj"),
+                    a_ql_class(name="Obj", final=True, properties=[
+                        ql.Property(singular="X", type="a", tablename="foo",
+                                    tableparams=["this", "result"],
+                                    is_optional=True, doc="x of this obj"),
+                        ql.Property(singular="Y", plural="Ys", type="b", tablename="bar",
+                                    tableparams=["this", "index", "result"],
+                                    doc="y of this obj", doc_plural="ys of this obj"),
+                        ql.Property(singular="Z", plural="Zs", type="c", tablename="baz",
+                                    tableparams=["this", "index", "result"],
+                                    is_optional=True, doc="z of this obj", doc_plural="zs of this obj"),
+                        ql.Property(singular="p", type="predicate", tablename="hello",
+                                    tableparams=["this"], is_predicate=True,
+                                    doc="this obj p"),
+                        ql.Property(singular="Q", plural="Qs", type="d", tablename="world",
+                                    tableparams=["this", "result"], is_unordered=True,
+                                    doc="q of this obj", doc_plural="qs of this obj"),
+                    ],
+            imports=[stub_import_prefix + "Obj"])),
     }
 
 

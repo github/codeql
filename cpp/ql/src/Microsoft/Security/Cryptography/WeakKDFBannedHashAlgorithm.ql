@@ -2,7 +2,7 @@
  * @name KDF may only use SHA256/384/512 in generating a key.
  * @description KDF may only use SHA256/384/512 in generating a key.
  * @kind problem
- * @id cpp/kdf-insecure-hash
+ * @id cpp/microsoft/public/kdf-insecure-hash
  * @problem.severity error
  * @precision high
  * @tags security

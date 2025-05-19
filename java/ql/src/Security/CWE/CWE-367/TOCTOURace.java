@@ -12,14 +12,14 @@ class Resource {
 	
 public synchronized void bad(Resource r) {
 	if (r.isReady()) {
-		// r might no longer be ready, another thread might
+		// BAD: r might no longer be ready, another thread might
 		// have called setReady(false)
 		r.act();
 	}
 }
 
 public synchronized void good(Resource r) {
-	synchronized(r) {
+	synchronized(r) { // GOOD: r is locked
 		if (r.isReady()) {
 			r.act();
 		}

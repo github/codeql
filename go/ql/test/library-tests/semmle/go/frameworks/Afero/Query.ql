@@ -8,8 +8,7 @@ module FileSystemAccessTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FileSystemAccess fsa |
-      fsa.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      fsa.getLocation() = location and
       element = fsa.getAPathArgument().toString() and
       value = fsa.getAPathArgument().toString() and
       tag = "FileSystemAccess"
@@ -18,14 +17,12 @@ module FileSystemAccessTest implements TestSig {
     exists(DataFlow::Node succ, DataFlow::Node pred |
       any(Afero::AdditionalTaintStep adts).step(pred, succ)
     |
-      succ.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      succ.getLocation() = location and
       element = succ.toString() and
       value = succ.asExpr().(StructLit).getType().getName() and
       tag = "succ"
       or
-      pred.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      pred.getLocation() = location and
       element = pred.toString() and
       value = pred.toString() and
       tag = "pred"

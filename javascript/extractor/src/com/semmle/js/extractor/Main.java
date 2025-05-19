@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class Main {
    * A version identifier that should be updated every time the extractor changes in such a way that
    * it may produce different tuples for the same file under the same {@link ExtractorConfig}.
    */
-  public static final String EXTRACTOR_VERSION = "2025-01-09";
+  public static final String EXTRACTOR_VERSION = "2025-04-10";
 
   public static final Pattern NEWLINE = Pattern.compile("\n");
 
@@ -179,6 +180,12 @@ public class Main {
         remainingTypescriptFiles.add(f);
       }
     }
+    for (Map.Entry<Path, FileSnippet> entry : extractorState.getSnippets().entrySet()) {
+      if (!extractedFiles.contains(entry.getKey().toFile())
+          && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+        remainingTypescriptFiles.add(entry.getKey().toFile());
+      }
+    }
     if (!remainingTypescriptFiles.isEmpty()) {
       tsParser.prepareFiles(remainingTypescriptFiles);
       for (File f : remainingTypescriptFiles) {
@@ -294,9 +301,14 @@ public class Main {
     // only extract HTML and JS by default
     addIncludesFor(includes, FileType.HTML);
     addIncludesFor(includes, FileType.JS);
+    includes.add("**/.babelrc*.json");
+
 
     // extract TypeScript if `--typescript` or `--typescript-full` was specified
-    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) addIncludesFor(includes, FileType.TYPESCRIPT);
+    if (getTypeScriptMode(ap) != TypeScriptMode.NONE) {
+      addIncludesFor(includes, FileType.TYPESCRIPT);
+      includes.add("**/*tsconfig*.json");
+    }
 
     // add explicit include patterns
     for (String pattern : ap.getZeroOrMore(P_INCLUDE))
@@ -532,7 +544,7 @@ public class Main {
       }
 
       if (extractorConfig.getTypeScriptMode() == TypeScriptMode.FULL
-          && root.getName().equals("tsconfig.json")
+          && AutoBuild.treatAsTSConfig(root.getName())
           && !excludeMatcher.matches(path)) {
         projectFiles.add(root);
       }

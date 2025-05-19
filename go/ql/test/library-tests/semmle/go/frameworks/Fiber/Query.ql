@@ -8,8 +8,7 @@ module FileSystemAccessTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FileSystemAccess fsa |
-      fsa.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      fsa.getLocation() = location and
       element = fsa.getAPathArgument().toString() and
       value = fsa.getAPathArgument().toString() and
       tag = "FileSystemAccess"

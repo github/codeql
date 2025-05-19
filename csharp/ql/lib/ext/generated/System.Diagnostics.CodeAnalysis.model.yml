@@ -2,6 +2,15 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullAttribute", False, "MemberNotNullAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullAttribute.Members].Element", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullAttribute", False, "MemberNotNullAttribute", "(System.String[])", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullAttribute.Members]", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", False, "MemberNotNullWhenAttribute", "(System.Boolean,System.String)", "", "Argument[1]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.Members].Element", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", False, "MemberNotNullWhenAttribute", "(System.Boolean,System.String[])", "", "Argument[1]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.Members]", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "NotNullIfNotNullAttribute", False, "NotNullIfNotNullAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute.ParameterName]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["System.Diagnostics.CodeAnalysis", "DoesNotReturnIfAttribute", "DoesNotReturnIfAttribute", "(System.Boolean)", "summary", "df-generated"]
@@ -20,16 +29,15 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "DynamicallyAccessedMembersAttribute", "get_MemberTypes", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "ExperimentalAttribute", "ExperimentalAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "ExperimentalAttribute", "get_DiagnosticId", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "FeatureGuardAttribute", "FeatureGuardAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "FeatureGuardAttribute", "get_FeatureType", "()", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "FeatureSwitchDefinitionAttribute", "FeatureSwitchDefinitionAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "FeatureSwitchDefinitionAttribute", "get_SwitchName", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MaybeNullWhenAttribute", "MaybeNullWhenAttribute", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MaybeNullWhenAttribute", "get_ReturnValue", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullAttribute", "MemberNotNullAttribute", "(System.String)", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullAttribute", "MemberNotNullAttribute", "(System.String[])", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MemberNotNullAttribute", "get_Members", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", "MemberNotNullWhenAttribute", "(System.Boolean,System.String)", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", "MemberNotNullWhenAttribute", "(System.Boolean,System.String[])", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", "get_Members", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", "get_ReturnValue", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "NotNullIfNotNullAttribute", "NotNullIfNotNullAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullIfNotNullAttribute", "get_ParameterName", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullWhenAttribute", "NotNullWhenAttribute", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullWhenAttribute", "get_ReturnValue", "()", "summary", "df-generated"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.activities.build.workflowbuildmessagetask", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[resourcename]"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[messagetype]"]

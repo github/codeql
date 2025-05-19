@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.activity", "system.servicemodel.activities.presentation.factories.receiveandsendreplyfactory", "Method[create].ReturnValue"]
+    - ["system.activities.activity", "system.servicemodel.activities.presentation.factories.sendandreceivereplyfactory", "Method[create].ReturnValue"]

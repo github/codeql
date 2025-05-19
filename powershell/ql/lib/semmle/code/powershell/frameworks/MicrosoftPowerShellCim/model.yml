@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertyvalue].ReturnValue"]
+    - ["system.collections.objectmodel.collection<system.management.automation.psadaptedproperty>", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperties].ReturnValue"]
+    - ["system.collections.objectmodel.collection<system.string>", "microsoft.powershell.cim.ciminstanceadapter", "Method[gettypenamehierarchy].ReturnValue"]
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getfirstpropertyordefault].ReturnValue"]
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperty].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[isgettable].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[issettable].ReturnValue"]
+    - ["system.string", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertytypename].ReturnValue"]

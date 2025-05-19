@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.xml.serialization.advanced.schemaimporterextension", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Member[item]"]
+    - ["system.codedom.codeexpression", "system.xml.serialization.advanced.schemaimporterextension", "Method[importdefaultvalue].ReturnValue"]
+    - ["system.int32", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[add].ReturnValue"]
+    - ["system.string", "system.xml.serialization.advanced.schemaimporterextension", "Method[importanyelement].ReturnValue"]
+    - ["system.boolean", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[contains].ReturnValue"]
+    - ["system.string", "system.xml.serialization.advanced.schemaimporterextension", "Method[importschematype].ReturnValue"]
+    - ["system.int32", "system.xml.serialization.advanced.schemaimporterextensioncollection", "Method[indexof].ReturnValue"]

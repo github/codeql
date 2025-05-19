@@ -4,6 +4,7 @@
 
 import javascript
 private import NodeModuleResolutionImpl
+private import semmle.javascript.internal.paths.PackageJsonEx
 
 /** A `package.json` configuration object. */
 class PackageJson extends JsonObject {
@@ -12,12 +13,21 @@ class PackageJson extends JsonObject {
     this.isTopLevel()
   }
 
+  /** Gets the folder containing this `package.json` file. */
+  Folder getFolder() { result = this.getJsonFile().getParentContainer() }
+
+  /**
+   * Gets the name of this package as it appears in the `name` field.
+   */
+  pragma[nomagic]
+  string getDeclaredPackageName() { result = this.getPropStringValue("name") }
+
   /**
    * Gets the name of this package.
    * If the package is located under the package `pkg1` and its relative path is `foo/bar`, then the resulting package name will be `pkg1/foo/bar`.
    */
   string getPackageName() {
-    result = this.getPropStringValue("name")
+    result = this.getDeclaredPackageName()
     or
     exists(
       PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName,
@@ -84,7 +94,10 @@ class PackageJson extends JsonObject {
    * `module` paths to be exported under the relative path `"."`.
    */
   string getExportedPath(string relativePath) {
-    result = MainModulePath::of(this, relativePath).getValue()
+    this.(PackageJsonEx).hasExactPathMapping(relativePath, result)
+    or
+    relativePath = "." and
+    result = this.(PackageJsonEx).getMainPath()
   }
 
   /** Gets the path of a command defined for this package. */
@@ -211,7 +224,7 @@ class PackageJson extends JsonObject {
   /**
    * Gets the main module of this package.
    */
-  Module getMainModule() { result = this.getExportedModule(".") }
+  Module getMainModule() { result.getFile() = this.(PackageJsonEx).getMainFileOrBestGuess() }
 
   /**
    * Gets the module exported under the given relative path.
@@ -219,12 +232,10 @@ class PackageJson extends JsonObject {
    * The main module is considered exported under the path `"."`.
    */
   Module getExportedModule(string relativePath) {
-    result =
-      min(Module m, int prio |
-        m.getFile() = resolveMainModule(this, prio, relativePath)
-      |
-        m order by prio
-      )
+    this.(PackageJsonEx).hasExactPathMappingTo(relativePath, result.getFile())
+    or
+    relativePath = "." and
+    result = this.getMainModule()
   }
 
   /**
@@ -236,19 +247,7 @@ class PackageJson extends JsonObject {
    * Gets the file containing the typings of this package, which can either be from the `types` or
    * `typings` field, or derived from the `main` or `module` fields.
    */
-  File getTypingsFile() {
-    result =
-      TypingsModulePathString::of(this).resolve(this.getFile().getParentContainer()).getContainer()
-    or
-    not exists(TypingsModulePathString::of(this)) and
-    exists(File mainFile |
-      mainFile = this.getMainModule().getFile() and
-      result =
-        mainFile
-            .getParentContainer()
-            .getFile(mainFile.getStem().regexpReplaceAll("\\.d$", "") + ".d.ts")
-    )
-  }
+  File getTypingsFile() { none() } // implemented in PackageJsonEx
 
   /**
    * Gets the module containing the typings of this package, which can either be from the `types` or

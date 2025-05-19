@@ -1,12 +1,13 @@
-use crate::diagnostics::{emit_extraction_diagnostics, ExtractionStep};
+use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
+use crate::translate::ResolvePaths;
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
-use log::{info, warn};
 use ra_ap_hir::Semantics;
-use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_ide_db::RootDatabase;
+use ra_ap_ide_db::line_index::{LineCol, LineIndex};
+use ra_ap_load_cargo::LoadCargoConfig;
 use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
@@ -16,9 +17,14 @@ use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use std::{env, fs};
+use tracing::{error, info, warn};
+use tracing_subscriber::layer::SubscriberExt;
+use tracing_subscriber::util::SubscriberInitExt;
 
 mod archive;
 mod config;
+mod crate_graph;
 mod diagnostics;
 pub mod generated;
 mod qltest;
@@ -41,7 +47,7 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &rust_analyzer::RustAnalyzer, file: &std::path::Path) {
+    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, resolve_paths: ResolvePaths) {
         self.archiver.archive(file);
 
         let before_parse = Instant::now();
@@ -64,6 +70,7 @@ impl<'a> Extractor<'a> {
             label,
             line_index,
             semantics_info.as_ref().ok(),
+            resolve_paths,
         );
 
         for err in errors {
@@ -71,21 +78,23 @@ impl<'a> Extractor<'a> {
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
         if let Err(reason) = semantics_info {
-            let message = format!("semantic analyzer unavailable ({reason})");
-            let full_message = format!(
-                "{message}: macro expansion, call graph, and type inference will be skipped."
-            );
-            translator.emit_diagnostic(
-                trap::DiagnosticSeverity::Warning,
-                "semantics".to_owned(),
-                message,
-                full_message,
-                no_location,
-            );
+            if !reason.is_empty() {
+                let message = format!("semantic analyzer unavailable ({reason})");
+                let full_message = format!(
+                    "{message}: macro expansion, call graph, and type inference will be skipped."
+                );
+                translator.emit_diagnostic(
+                    trap::DiagnosticSeverity::Warning,
+                    "semantics".to_owned(),
+                    message,
+                    full_message,
+                    no_location,
+                );
+            }
         }
         translator.emit_source_file(ast);
         translator.trap.commit().unwrap_or_else(|err| {
-            log::error!(
+            error!(
                 "Failed to write trap file for: {}: {}",
                 display_path,
                 err.to_string()
@@ -100,21 +109,27 @@ impl<'a> Extractor<'a> {
         file: &Path,
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
+        resolve_paths: ResolvePaths,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file);
+        self.extract(&RustAnalyzer::new(vfs, semantics), file, resolve_paths);
     }
 
     pub fn extract_without_semantics(&mut self, file: &Path, reason: &str) {
-        self.extract(&RustAnalyzer::WithoutSemantics { reason }, file);
+        self.extract(
+            &RustAnalyzer::WithoutSemantics { reason },
+            file,
+            ResolvePaths::No,
+        );
     }
 
     pub fn load_manifest(
         &mut self,
         project: &ProjectManifest,
         config: &CargoConfig,
+        load_config: &LoadCargoConfig,
     ) -> Option<(RootDatabase, Vfs)> {
         let before = Instant::now();
-        let ret = RustAnalyzer::load_workspace(project, config);
+        let ret = RustAnalyzer::load_workspace(project, config, load_config);
         self.steps
             .push(ExtractionStep::load_manifest(before, project));
         ret
@@ -179,15 +194,27 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 }
 
 fn main() -> anyhow::Result<()> {
-    let start = Instant::now();
     let mut cfg = config::Config::extract().context("failed to load configuration")?;
-    stderrlog::new()
-        .module(module_path!())
-        .verbosity(2 + cfg.verbose as usize)
-        .init()?;
     if cfg.qltest {
         qltest::prepare(&mut cfg)?;
     }
+    let start = Instant::now();
+    let (flame_layer, _flush_guard) = if let Some(path) = &cfg.logging_flamegraph {
+        tracing_flame::FlameLayer::with_file(path)
+            .ok()
+            .map(|(a, b)| (Some(a), Some(b)))
+            .unwrap_or((None, None))
+    } else {
+        (None, None)
+    };
+
+    tracing_subscriber::registry()
+        .with(codeql_extractor::extractor::default_subscriber_with_level(
+            "single_arch",
+            &cfg.logging_verbosity,
+        ))
+        .with(flame_layer)
+        .init();
     info!("{cfg:#?}\n");
 
     let traps = trap::TrapFileProvider::new(&cfg).context("failed to set up trap files")?;
@@ -221,13 +248,28 @@ fn main() -> anyhow::Result<()> {
         }
         extractor.extract_without_semantics(file, "no manifest found");
     }
-    let cargo_config = cfg.to_cargo_config(&cwd()?);
+    let cwd = cwd()?;
+    let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
+    let resolve_paths = if cfg.skip_path_resolution {
+        ResolvePaths::No
+    } else {
+        ResolvePaths::Yes
+    };
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
-        if let Some((ref db, ref vfs)) = extractor.load_manifest(manifest, &cargo_config) {
+        if let Some((ref db, ref vfs)) =
+            extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
+        {
+            let before_crate_graph = Instant::now();
+            crate_graph::extract_crate_graph(extractor.traps, db, vfs);
+            extractor
+                .steps
+                .push(ExtractionStep::crate_graph(before_crate_graph));
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => extractor.extract_with_semantics(file, &semantics, vfs),
+                    Ok(()) => {
+                        extractor.extract_with_semantics(file, &semantics, vfs, resolve_paths)
+                    }
                     Err(reason) => extractor.extract_without_semantics(file, &reason),
                 };
             }
@@ -235,6 +277,16 @@ fn main() -> anyhow::Result<()> {
             for file in files {
                 extractor.extract_without_semantics(file, "unable to load manifest");
             }
+        }
+    }
+    let builtins_dir = env::var("CODEQL_EXTRACTOR_RUST_ROOT")
+        .map(|path| Path::new(&path).join("tools").join("builtins"))?;
+    let builtins = fs::read_dir(builtins_dir).context("failed to read builtins directory")?;
+    for entry in builtins {
+        let entry = entry.context("failed to read builtins directory")?;
+        let path = entry.path();
+        if path.extension().is_some_and(|ext| ext == "rs") {
+            extractor.extract_without_semantics(&path, "");
         }
     }
 

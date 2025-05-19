@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.security.membershipprovider", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Member[membershipprovider]"]
+    - ["system.collections.objectmodel.readonlycollection<system.security.claims.claimsidentity>", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Method[validatetoken].ReturnValue"]
+    - ["system.boolean", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Member[canvalidatetoken]"]

@@ -9,6 +9,7 @@
  * @id cs/constant-condition
  * @tags maintainability
  *       readability
+ *       quality
  *       external/cwe/cwe-835
  */
 
@@ -119,9 +120,14 @@ class ConstantMatchingCondition extends ConstantCondition {
   }
 
   override predicate isWhiteListed() {
-    exists(SwitchExpr se, int i |
-      se.getCase(i).getPattern() = this.(DiscardExpr) and
+    exists(Switch se, Case c, int i |
+      c = se.getCase(i) and
+      c.getPattern() = this.(DiscardExpr)
+    |
       i > 0
+      or
+      i = 0 and
+      exists(Expr cond | c.getCondition() = cond and not isConstantCondition(cond, true))
     )
     or
     this = any(PositionalPatternExpr ppe).getPattern(_)

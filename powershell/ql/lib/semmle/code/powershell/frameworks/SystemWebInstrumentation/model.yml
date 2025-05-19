@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Member[length]"]
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Member[startposition]"]
+    - ["system.collections.generic.ilist<system.web.instrumentation.pageexecutionlistener>", "system.web.instrumentation.pageinstrumentationservice", "Member[executionlisteners]"]
+    - ["system.boolean", "system.web.instrumentation.pageexecutioncontext", "Member[isliteral]"]
+    - ["system.io.textwriter", "system.web.instrumentation.pageexecutioncontext", "Member[textwriter]"]
+    - ["system.boolean", "system.web.instrumentation.pageinstrumentationservice!", "Member[isenabled]"]
+    - ["system.string", "system.web.instrumentation.pageexecutioncontext", "Member[virtualpath]"]

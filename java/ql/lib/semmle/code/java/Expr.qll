@@ -180,7 +180,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the string value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   string getStringValue() {
     result = this.(StringLiteral).getValue()
     or
@@ -205,7 +205,7 @@ class CompileTimeConstantExpr extends Expr {
   /**
    * Gets the boolean value of this expression, where possible.
    */
-  pragma[nomagic]
+  cached
   boolean getBooleanValue() {
     // Literal value.
     result = this.(BooleanLiteral).getBooleanValue()
@@ -1924,9 +1924,6 @@ class VarAccess extends Expr, @varaccess {
     exists(UnaryAssignExpr e | e.getExpr() = this)
   }
 
-  /** DEPRECATED: Alias for `isVarWrite`. */
-  deprecated predicate isLValue() { this.isVarWrite() }
-
   /**
    * Holds if this variable access is a read access.
    *
@@ -1935,9 +1932,6 @@ class VarAccess extends Expr, @varaccess {
    * or a unary assignment.
    */
   predicate isVarRead() { not exists(AssignExpr a | a.getDest() = this) }
-
-  /** DEPRECATED: Alias for `isVarRead`. */
-  deprecated predicate isRValue() { this.isVarRead() }
 
   /** Gets a printable representation of this expression. */
   override string toString() {
@@ -2002,13 +1996,7 @@ class VarWrite extends VarAccess {
    * are source expressions of the assignment.
    */
   Expr getASource() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
-
-  /** DEPRECATED: (Inaccurately-named) alias for `getASource` */
-  deprecated Expr getRhs() { result = this.getASource() }
 }
-
-/** DEPRECATED: Alias for `VarWrite`. */
-deprecated class LValue = VarWrite;
 
 /**
  * A read access to a variable.
@@ -2020,9 +2008,6 @@ deprecated class LValue = VarWrite;
 class VarRead extends VarAccess {
   VarRead() { this.isVarRead() }
 }
-
-/** DEPRECATED: Alias for `VarRead`. */
-deprecated class RValue = VarRead;
 
 /** A method call is an invocation of a method with a list of arguments. */
 class MethodCall extends Expr, Call, @methodaccess {
@@ -2082,9 +2067,6 @@ class MethodCall extends Expr, Call, @methodaccess {
    */
   predicate isOwnMethodCall() { Qualifier::ownMemberAccess(this) }
 
-  /** DEPRECATED: Alias for `isOwnMethodCall`. */
-  deprecated predicate isOwnMethodAccess() { this.isOwnMethodCall() }
-
   /**
    * Holds if this is a method call to an instance method of the enclosing
    * class `t`. That is, the qualifier is either an explicit or implicit
@@ -2092,14 +2074,8 @@ class MethodCall extends Expr, Call, @methodaccess {
    */
   predicate isEnclosingMethodCall(RefType t) { Qualifier::enclosingMemberAccess(this, t) }
 
-  /** DEPRECATED: Alias for `isEnclosingMethodCall`. */
-  deprecated predicate isEnclosingMethodAccess(RefType t) { this.isEnclosingMethodCall(t) }
-
   override string getAPrimaryQlClass() { result = "MethodCall" }
 }
-
-/** DEPRECATED: Alias for `MethodCall`. */
-deprecated class MethodAccess = MethodCall;
 
 /** A type access is a (possibly qualified) reference to a type. */
 class TypeAccess extends Expr, Annotatable, @typeaccess {
@@ -2275,24 +2251,15 @@ class VirtualMethodCall extends MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for `VirtualMethodCall`. */
-deprecated class VirtualMethodAccess = VirtualMethodCall;
-
 /** A static method call. */
 class StaticMethodCall extends MethodCall {
   StaticMethodCall() { this.getMethod().isStatic() }
 }
 
-/** DEPRECATED: Alias for `StaticMethodCall`. */
-deprecated class StaticMethodAccess = StaticMethodCall;
-
 /** A call to a method in the superclass. */
 class SuperMethodCall extends MethodCall {
   SuperMethodCall() { this.getQualifier() instanceof SuperAccess }
 }
-
-/** DEPRECATED: Alias for `SuperMethodCall`. */
-deprecated class SuperMethodAccess = SuperMethodCall;
 
 /**
  * A constructor call, which occurs either as a constructor invocation inside a

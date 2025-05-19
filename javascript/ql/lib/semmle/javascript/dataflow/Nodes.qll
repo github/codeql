@@ -8,6 +8,7 @@ private import javascript
 private import semmle.javascript.dependencies.Dependencies
 private import internal.CallGraphs
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 /**
  * A data flow node corresponding to an expression.
@@ -737,7 +738,7 @@ module ModuleImportNode {
     DefaultRange() {
       exists(Import i |
         this = i.getImportedModuleNode() and
-        i.getImportedPath().getValue() = path
+        i.getImportedPathString() = path
       )
       or
       // AMD require
@@ -995,6 +996,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
       result.getAstNode().getFile() = this.getAstNode().getFile()
     )
     or
+    t.start() and
+    PreCallGraphStep::classObjectSource(this, result)
+    or
     result = this.getAClassReferenceRec(t)
   }
 
@@ -1044,6 +1048,9 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
     // Note that this also blocks flows into a property of the receiver,
     // but the `localFieldStep` rule will often compensate for this.
     not result = any(DataFlow::ClassNode cls).getAReceiverNode()
+    or
+    t.start() and
+    PreCallGraphStep::classInstanceSource(this, result)
   }
 
   pragma[noinline]
@@ -1059,20 +1066,46 @@ class ClassNode extends DataFlow::SourceNode instanceof ClassNode::Range {
     result = this.getAnInstanceReference(DataFlow::TypeTracker::end())
   }
 
+  pragma[nomagic]
+  private DataFlow::PropRead getAnOwnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
+    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+  }
+
+  pragma[nomagic]
+  private DataFlow::PropRead getAnInstanceMemberAccessOnSubClass(
+    string name, DataFlow::TypeTracker t
+  ) {
+    exists(DataFlow::ClassNode subclass |
+      subclass = this.getADirectSubClass() and
+      not exists(subclass.getInstanceMember(name, _))
+    |
+      result = subclass.getAnOwnInstanceMemberAccess(name, t)
+      or
+      result = subclass.getAnInstanceMemberAccessOnSubClass(name, t)
+    )
+  }
+
+  pragma[nomagic]
+  private DataFlow::PropRead getAnInstanceMemberAccessOnSuperClass(string name) {
+    result = this.getADirectSuperClass().getAReceiverNode().getAPropertyRead(name)
+    or
+    result = this.getADirectSuperClass().getAnInstanceMemberAccessOnSuperClass(name)
+  }
+
   /**
    * Gets a property read that accesses the property `name` on an instance of this class.
    *
-   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   * This includes accesses on subclasses (if the member is not overridden) and accesses in a base class
+   * (only if accessed on `this`).
    */
   pragma[nomagic]
   DataFlow::PropRead getAnInstanceMemberAccess(string name, DataFlow::TypeTracker t) {
-    result = this.getAnInstanceReference(t.continue()).getAPropertyRead(name)
+    result = this.getAnOwnInstanceMemberAccess(name, t)
     or
-    exists(DataFlow::ClassNode subclass |
-      result = subclass.getAnInstanceMemberAccess(name, t) and
-      not exists(subclass.getInstanceMember(name, _)) and
-      this = subclass.getADirectSuperClass()
-    )
+    result = this.getAnInstanceMemberAccessOnSubClass(name, t)
+    or
+    t.start() and
+    result = this.getAnInstanceMemberAccessOnSuperClass(name)
   }
 
   /**

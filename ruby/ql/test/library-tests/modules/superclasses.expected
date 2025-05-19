@@ -1,24 +1,20 @@
+#-----| BasicObject
+
 #-----| Class
 #-----|  -> Module
 
-#-----| EsotericInstanceMethods
-
-#-----| MyStruct
-
-#-----| Struct
-
-#-----| UnresolvedNamespace
-
-#-----| BasicObject
-
 #-----| Complex
 #-----|  -> Numeric
+
+#-----| EsotericInstanceMethods
 
 #-----| FalseClass
 #-----|  -> Object
 
 #-----| Float
 #-----|  -> Numeric
+
+#-----| MyStruct
 
 #-----| NilClass
 #-----|  -> Object
@@ -31,10 +27,14 @@
 #-----| Rational
 #-----|  -> Numeric
 
+#-----| Struct
+
 #-----| Symbol
 
 #-----| TrueClass
 #-----|  -> Object
+
+#-----| UnresolvedNamespace
 
 #-----| UnresolvedNamespace::X1
 

@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.runtime.remoting.lifetime.clientsponsor", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.ilease", "Member[sponsorshiptimeout]"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.ilease", "Member[currentstate]"]
+    - ["system.boolean", "system.runtime.remoting.lifetime.clientsponsor", "Method[register].ReturnValue"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.clientsponsor", "Method[renewal].ReturnValue"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.ilease", "Member[currentleasetime]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.lifetimeservices!", "Member[sponsorshiptimeout]"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.leasestate!", "Member[null]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.ilease", "Method[renew].ReturnValue"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.lifetimeservices!", "Member[leasemanagerpolltime]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.clientsponsor", "Member[renewaltime]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.lifetimeservices!", "Member[leasetime]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.isponsor", "Method[renewal].ReturnValue"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.leasestate!", "Member[expired]"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.leasestate!", "Member[active]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.ilease", "Member[renewoncalltime]"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.leasestate!", "Member[initial]"]
+    - ["system.runtime.remoting.lifetime.leasestate", "system.runtime.remoting.lifetime.leasestate!", "Member[renewing]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.ilease", "Member[initialleasetime]"]
+    - ["system.timespan", "system.runtime.remoting.lifetime.lifetimeservices!", "Member[renewoncalltime]"]

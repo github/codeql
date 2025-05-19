@@ -7,7 +7,7 @@ on:
 jobs:
   test1:
     if: github.event.comment.body == '@metabase-bot run visual tests'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Fetch issue
         uses: octokit/request-action@v2.x

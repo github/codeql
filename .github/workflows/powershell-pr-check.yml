@@ -9,20 +9,24 @@ on:
 jobs:
   powershell-pr-check:
     name: powershell-pr-check
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: github.repository == 'microsoft/codeql'
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+          token: ${{ github.token }}
       - name: Setup CodeQL
         uses: ./.github/actions/fetch-codeql
         with:
           channel: release
-      - name: Compile PowerShell Queries
+      - name: Install PowerShell
         run: |
-          codeql query compile --check-only --keep-going powershell/ql/src
+          $path = Split-Path (Get-Command codeql).Source
+          ./powershell/build-win64.ps1 $path
+      - name: Run QL tests
+        run: |
+          codeql test run --threads=0 powershell/ql/test

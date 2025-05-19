@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.windows.converters.sizevalueserializer", "Method[convertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.int32rectvalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.vectorvalueserializer", "Method[canconvertfromstring].ReturnValue"]
+    - ["system.string", "system.windows.converters.sizevalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.string", "system.windows.converters.rectvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.object", "system.windows.converters.int32rectvalueserializer", "Method[convertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.sizevalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.rectvalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.object", "system.windows.converters.vectorvalueserializer", "Method[convertfromstring].ReturnValue"]
+    - ["system.string", "system.windows.converters.pointvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.object", "system.windows.converters.rectvalueserializer", "Method[convertfromstring].ReturnValue"]
+    - ["system.string", "system.windows.converters.int32rectvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.vectorvalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.string", "system.windows.converters.vectorvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.rectvalueserializer", "Method[canconvertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.int32rectvalueserializer", "Method[canconvertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.sizevalueserializer", "Method[canconvertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.pointvalueserializer", "Method[canconvertfromstring].ReturnValue"]
+    - ["system.object", "system.windows.converters.pointvalueserializer", "Method[convertfromstring].ReturnValue"]
+    - ["system.boolean", "system.windows.converters.pointvalueserializer", "Method[canconverttostring].ReturnValue"]

@@ -32,7 +32,7 @@ pragma[nomagic]
 private predicate isAngularTopLevel(TopLevel tl) {
   exists(Import imprt |
     imprt.getTopLevel() = tl and
-    imprt.getImportedPath().getValue() = "angular"
+    imprt.getImportedPathString() = "angular"
   )
   or
   exists(GlobalVarAccess global |

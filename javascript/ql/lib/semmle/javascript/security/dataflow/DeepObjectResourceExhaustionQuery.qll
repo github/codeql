@@ -35,6 +35,15 @@ module DeepObjectResourceExhaustionConfig implements DataFlow::StateConfigSig {
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    exists(DataFlow::Node link |
+      sink.(Sink).hasReason(link, _) and
+      result = link.getLocation()
+    )
+  }
 }
 
 /**

@@ -13,8 +13,6 @@ class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   CfgNodes::ExprCfgNode asExpr() { result = this.(ExprNode).getExprNode() }
 
-  CfgNodes::StmtCfgNode asStmt() { result = this.(StmtNode).getStmtNode() }
-
   ScriptBlock asCallable() { result = this.(CallableNode).asCallableAstNode() }
 
   /** Gets the parameter corresponding to this node, if any. */
@@ -67,22 +65,6 @@ class ExprNode extends AbstractAstNode, TExprNode {
 
   /** Gets the expression corresponding to this node. */
   CfgNodes::ExprCfgNode getExprNode() { result = n }
-}
-
-/**
- * A statement, viewed as a node in a data flow graph.
- *
- * Note that because of control-flow splitting, one `Stmt` may correspond
- * to multiple `StmtNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
- */
-class StmtNode extends AbstractAstNode, TStmtNode {
-  override CfgNodes::StmtCfgNode n;
-
-  StmtNode() { this = TStmtNode(n) }
-
-  /** Gets the expression corresponding to this node. */
-  CfgNodes::StmtCfgNode getStmtNode() { result = n }
 }
 
 /**
@@ -193,27 +175,12 @@ class PostUpdateNode extends Node {
   Node getPreUpdateNode() { result = pre }
 }
 
-/**
- * A dataflow node that represents a component of a type or module path.
- *
- * For example, `System`, `System.Management`, `System.Management.Automation`,
- * and `System.Management.Automation.PowerShell` in the type
- * name `[System.Management.Automation.PowerShell]`.
- */
-class TypePathNode extends Node instanceof TypePathNodeImpl {
-  string getComponent() { result = super.getComponent() }
-
-  TypePathNode getConstant(string s) { result = super.getConstant(s) }
-
-  API::Node track() { result = API::mod(super.getType(), super.getIndex()) }
-}
-
 cached
 private module Cached {
   cached
   predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
     source.flowsTo(call.getQualifier()) and
-    call.getName() = name
+    call.getLowerCaseName() = name
   }
 
   cached
@@ -246,9 +213,6 @@ private import Cached
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
-
-/** Gets a node corresponding to statement `s`. */
-StmtNode stmtNode(CfgNodes::StmtCfgNode e) { result.getStmtNode() = e }
 
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
@@ -291,21 +255,43 @@ module Content {
   /** An element in a collection, for example an element in an array or in a hash. */
   class ElementContent extends Content, TElementContent { }
 
-  /** An element in a collection at a known index. */
-  class KnownElementContent extends ElementContent, TKnownElementContent {
-    private ConstantValue cv;
-
-    KnownElementContent() { this = TKnownElementContent(cv) }
+  abstract class KnownElementContent extends ElementContent, TKnownElementContent {
+    ConstantValue cv;
 
     /** Gets the index in the collection. */
-    ConstantValue getIndex() { result = cv }
+    final ConstantValue getIndex() { result = cv }
 
     override string toString() { result = "element " + cv }
   }
 
-  /** An element in a collection at an unknown index. */
-  class UnknownElementContent extends ElementContent, TUnknownElementContent {
-    override string toString() { result = "element" }
+  /** An element in a collection at a known index. */
+  class KnownKeyContent extends KnownElementContent, TKnownKeyContent {
+    KnownKeyContent() { this = TKnownKeyContent(cv) }
+  }
+
+  /** An element in a collection at a known index. */
+  class KnownPositionalContent extends KnownElementContent, TKnownPositionalContent {
+    KnownPositionalContent() { this = TKnownPositionalContent(cv) }
+  }
+
+  class UnknownElementContent extends ElementContent, TUnknownElementContent { }
+
+  class UnknownKeyContent extends UnknownElementContent, TUnknownKeyContent {
+    UnknownKeyContent() { this = TUnknownKeyContent() }
+
+    override string toString() { result = "unknown map key" }
+  }
+
+  class UnknownPositionalContent extends UnknownElementContent, TUnknownPositionalContent {
+    UnknownPositionalContent() { this = TUnknownPositionalContent() }
+
+    override string toString() { result = "unknown index" }
+  }
+
+  class UnknownKeyOrPositionContent extends UnknownElementContent, TUnknownKeyOrPositionContent {
+    UnknownKeyOrPositionContent() { this = TUnknownKeyOrPositionContent() }
+
+    override string toString() { result = "unknown" }
   }
 
   /** A field of an object. */
@@ -315,26 +301,24 @@ module Content {
     FieldContent() { this = TFieldContent(name) }
 
     /** Gets the name of the field. */
-    string getName() { result = name }
+    string getLowerCaseName() { result = name }
 
     override string toString() { result = name }
   }
 
   /** Gets the element content corresponding to constant value `cv`. */
-  ElementContent getElementContent(ConstantValue cv) {
-    result = TKnownElementContent(cv)
+  KnownElementContent getKnownElementContent(ConstantValue cv) {
+    result = TKnownPositionalContent(cv)
     or
-    not exists(TKnownElementContent(cv)) and
-    result = TUnknownElementContent()
+    result = TKnownKeyContent(cv)
   }
 
   /**
    * Gets the constant value of `e`, which corresponds to a valid known
-   * element index. Unlike calling simply `e.getConstantValue()`, this
-   * excludes negative array indices.
+   * element index.
    */
   ConstantValue getKnownElementIndex(Expr e) {
-    result = getElementContent(e.getValue()).(KnownElementContent).getIndex()
+    result = getKnownElementContent(e.getValue()).getIndex()
   }
 }
 
@@ -346,19 +330,31 @@ module Content {
  */
 class ContentSet extends TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
-  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+  predicate isSingleton(Content c) { this = TSingletonContentSet(c) }
 
-  /** Holds if this content set represents all `ElementContent`s. */
-  predicate isAnyElement() { this = TAnyElementContent() }
-
-  /**
-   * Holds if this content set represents a specific known element index, or an
-   * unknown element index.
-   */
-  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
-    this = TKnownOrUnknownElementContent(c)
+  predicate isKnownOrUnknownKeyContent(Content::KnownKeyContent c) {
+    this = TKnownOrUnknownKeyContentSet(c)
   }
 
+  predicate isKnownOrUnknownPositional(Content::KnownPositionalContent c) {
+    this = TKnownOrUnknownPositionalContentSet(c)
+  }
+
+  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
+    this.isKnownOrUnknownKeyContent(c)
+    or
+    this.isKnownOrUnknownPositional(c)
+  }
+
+  predicate isUnknownPositionalContent() { this = TUnknownPositionalElementContentSet() }
+
+  predicate isUnknownKeyContent() { this = TUnknownKeyContentSet() }
+
+  predicate isAnyElement() { this = TAnyElementContentSet() }
+
+  predicate isAnyPositional() { this = TAnyPositionalContentSet() }
+
+  // predicate isPipelineContentSet() { this = TPipelineContentSet() }
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -366,15 +362,25 @@ class ContentSet extends TContentSet {
       result = c.toString()
     )
     or
-    this.isAnyElement() and
-    result = "any element"
-    or
     exists(Content::KnownElementContent c |
       this.isKnownOrUnknownElement(c) and
-      result = c + " or unknown"
+      result = c.toString() + " or unknown"
     )
+    or
+    this.isUnknownPositionalContent() and
+    result = "unknown positional"
+    or
+    this.isUnknownKeyContent() and
+    result = "unknown key"
+    or
+    this.isAnyPositional() and
+    result = "any positional"
+    or
+    this.isAnyElement() and
+    result = "any element"
   }
 
+  /** Gets a content that may be stored into when storing into this set. */
   Content getAStoreContent() {
     this.isSingleton(result)
     or
@@ -382,20 +388,25 @@ class ContentSet extends TContentSet {
     // from `a` to `a[unknown]` (which can read any element), gets translated into
     // a reverse store step that store only into `?`
     this.isAnyElement() and
-    result = TUnknownElementContent()
+    result = TUnknownKeyOrPositionContent()
     or
     // For reverse stores, `a[1][0] = x`, it is important that the read-step
     // from `a` to `a[1]` (which can read both elements stored at exactly index `1`
     // and elements stored at unknown index), gets translated into a reverse store
     // step that store only into `1`
     this.isKnownOrUnknownElement(result)
-  }
-
-  pragma[nomagic]
-  private Content getAnElementReadContent() {
-    exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
-      result = c or
-      result = TUnknownElementContent()
+    or
+    this.isUnknownPositionalContent() and
+    result = TUnknownPositionalContent()
+    or
+    this.isUnknownKeyContent() and
+    result = TUnknownKeyContent()
+    or
+    this.isAnyPositional() and
+    (
+      result instanceof Content::KnownPositionalContent
+      or
+      result = TUnknownPositionalContent()
     )
   }
 
@@ -406,7 +417,36 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result instanceof Content::ElementContent
     or
-    result = this.getAnElementReadContent()
+    exists(Content::KnownElementContent c |
+      this.isKnownOrUnknownKeyContent(c) and
+      (
+        result = c
+        or
+        result = TUnknownKeyContent()
+        or
+        result = TUnknownKeyOrPositionContent()
+      )
+      or
+      this.isKnownOrUnknownPositional(c) and
+      (
+        result = c or
+        result = TUnknownPositionalContent() or
+        result = TUnknownKeyOrPositionContent()
+      )
+    )
+    or
+    this.isUnknownPositionalContent() and
+    result = TUnknownPositionalContent()
+    or
+    this.isUnknownKeyContent() and
+    result = TUnknownKeyContent()
+    or
+    this.isAnyPositional() and
+    (
+      result instanceof Content::KnownPositionalContent
+      or
+      result = TUnknownPositionalContent()
+    )
   }
 }
 
@@ -437,29 +477,44 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
  *
  * For example, `[Foo]::new()` or `New-Object Foo`.
  */
-class ObjectCreationNode extends Node {
-  CfgNodes::ObjectCreationCfgNode objectCreation;
+class ObjectCreationNode extends ExprNode {
+  CfgNodes::ExprNodes::ObjectCreationCfgNode objectCreation;
 
-  ObjectCreationNode() {
-    this.asExpr() = objectCreation
-    or
-    this.asStmt() = objectCreation
+  ObjectCreationNode() { this.getExprNode() = objectCreation }
+
+  final CfgNodes::ExprNodes::ObjectCreationCfgNode getObjectCreationNode() {
+    result = objectCreation
   }
 
-  final CfgNodes::ObjectCreationCfgNode getObjectCreationNode() { result = objectCreation }
+  /**
+   * Gets the node corresponding to the expression that decides which type
+   * to allocate.
+   *
+   * For example, in `[Foo]::new()`, this would be `Foo`, and in
+   * `New-Object Foo`, this would be `Foo`.
+   */
+  Node getConstructedTypeNode() { result.asExpr() = objectCreation.getConstructedTypeExpr() }
 
   string getConstructedTypeName() { result = this.getObjectCreationNode().getConstructedTypeName() }
 }
 
 /** A call, viewed as a node in a data flow graph. */
-class CallNode extends AstNode {
-  CfgNodes::CallCfgNode call;
+class CallNode extends ExprNode {
+  CfgNodes::ExprNodes::CallExprCfgNode call;
 
   CallNode() { call = this.getCfgNode() }
 
-  CfgNodes::CallCfgNode getCallNode() { result = call }
+  CfgNodes::ExprNodes::CallExprCfgNode getCallNode() { result = call }
 
-  string getName() { result = call.getName() }
+  string getLowerCaseName() { result = call.getLowerCaseName() }
+
+  bindingset[name]
+  pragma[inline_late]
+  final predicate matchesName(string name) { this.getLowerCaseName() = name.toLowerCase() }
+
+  bindingset[result]
+  pragma[inline_late]
+  final string getAName() { result.toLowerCase() = this.getLowerCaseName() }
 
   Node getQualifier() { result.asExpr() = call.getQualifier() }
 
@@ -472,28 +527,62 @@ class CallNode extends AstNode {
   /** Gets the argument with the name `name`, if any. */
   Node getNamedArgument(string name) { result.asExpr() = call.getNamedArgument(name) }
 
+  /** Holds if an argument with name `name` is provided to this call. */
+  predicate hasNamedArgument(string name) { call.hasNamedArgument(name) }
+
   /**
    * Gets any argument of this call.
    *
    * Note that this predicate doesn't get the pipeline argument, if any.
    */
   Node getAnArgument() { result.asExpr() = call.getAnArgument() }
-
-  int getNumberOfArguments() { result = call.getNumberOfArguments() }
 }
 
 /** A call to operator `&`, viwed as a node in a data flow graph. */
 class CallOperatorNode extends CallNode {
-  override CfgNodes::StmtNodes::CallOperatorCfgNode call;
+  override CfgNodes::ExprNodes::CallOperatorCfgNode call;
 
-  Node getCommand() { result.asExpr() = call.getCommand() }
+  Node getCommand() { result.asExpr() = call.getCommand() } // TODO: Alternatively, we could remap calls to & as command expressions.
+}
+
+/**
+ * A call to `ToString`, viewed as a node in a data flow graph.
+ */
+class ToStringCallNode extends CallNode {
+  override CfgNodes::ExprNodes::ToStringCallCfgNode call;
 }
 
 /** A use of a type name, viewed as a node in a data flow graph. */
 class TypeNameNode extends ExprNode {
-  override CfgNodes::ExprNodes::TypeNameCfgNode n;
+  override CfgNodes::ExprNodes::TypeNameExprCfgNode n;
 
-  final override CfgNodes::ExprNodes::TypeNameCfgNode getExprNode() { result = n }
+  override CfgNodes::ExprNodes::TypeNameExprCfgNode getExprNode() { result = n }
 
-  string getTypeName() { result = n.getTypeName() }
+  string getName() { result = n.getName() }
+
+  predicate isQualified() { n.isQualified() }
+
+  predicate hasQualifiedName(string namespace, string typename) {
+    n.hasQualifiedName(namespace, typename)
+  }
+
+  string getNamespace() { result = n.getNamespace() }
+
+  string getPossiblyQualifiedName() { result = n.getPossiblyQualifiedName() }
+}
+
+/** A use of a qualified type name, viewed as a node in a data flow graph. */
+class QualifiedTypeNameNode extends TypeNameNode {
+  override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode n;
+
+  final override CfgNodes::ExprNodes::QualifiedTypeNameExprCfgNode getExprNode() { result = n }
+}
+
+/** A use of an automatic variable, viewed as a node in a data flow graph. */
+class AutomaticVariableNode extends ExprNode {
+  override CfgNodes::ExprNodes::AutomaticVariableCfgNode n;
+
+  final override CfgNodes::ExprNodes::AutomaticVariableCfgNode getExprNode() { result = n }
+
+  string getName() { result = n.getName() }
 }

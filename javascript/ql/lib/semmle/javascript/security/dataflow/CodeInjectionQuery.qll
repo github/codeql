@@ -36,7 +36,7 @@ module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
 /**
  * DEPRRECATED. Use the `CodeInjectionFlow` module instead.
  */
-deprecated class Configuration extends TaintTracking::Configuration {
+class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "CodeInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

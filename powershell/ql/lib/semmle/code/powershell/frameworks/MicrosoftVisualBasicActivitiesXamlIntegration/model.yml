@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsvalueserializer", "Method[converttostring].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsvalueserializer", "Method[canconverttostring].ReturnValue"]
+    - ["system.object", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.object", "microsoft.visualbasic.activities.xamlintegration.visualbasicsettingsconverter", "Method[convertto].ReturnValue"]

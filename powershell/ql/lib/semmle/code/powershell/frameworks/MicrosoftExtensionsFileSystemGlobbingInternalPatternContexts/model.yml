@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.filesystemglobbing.internal.ilinearpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Member[pattern]"]
+    - ["microsoft.extensions.filesystemglobbing.internal.patterntestresult", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[test].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextraggedinclude", "Method[test].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextraggedexclude", "Method[test].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[isstartinggroup].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[testmatchingsegment].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.internal.patterntestresult", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[test].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinearinclude", "Method[test].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[testmatchinggroup].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[testmatchingsegment].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinearexclude", "Method[test].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.internal.iraggedpattern", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Member[pattern]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[islastsegment].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[calculatestem].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextragged", "Method[isendinggroup].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[calculatestem].ReturnValue"]

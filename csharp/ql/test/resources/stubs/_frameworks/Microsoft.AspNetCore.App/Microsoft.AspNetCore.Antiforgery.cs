@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Antiforgery, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Antiforgery, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -13,6 +13,7 @@ namespace Microsoft
                 public static readonly string DefaultCookiePrefix;
                 public string FormFieldName { get => throw null; set { } }
                 public string HeaderName { get => throw null; set { } }
+                public bool SuppressReadingTokenFromFormBody { get => throw null; set { } }
                 public bool SuppressXFrameOptionsHeader { get => throw null; set { } }
             }
             public class AntiforgeryTokenSet

@@ -1,9 +1,10 @@
 name: codeql/rust-all
-version: 0.1.0
+version: 0.1.8
 groups: rust
 extractor: rust
 dbscheme: rust.dbscheme
 library: true
+upgrades: upgrades
 dependencies:
   codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
@@ -12,6 +13,7 @@ dependencies:
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
+  codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
   - /**/*.model.yml

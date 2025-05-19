@@ -1,3 +1,69 @@
+## 7.2.0
+
+### New Features
+
+* Kotlin versions up to 2.2.0\ *x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
+
+## 7.1.4
+
+No user-facing changes.
+
+## 7.1.3
+
+### Minor Analysis Improvements
+
+* Enum-typed values are now assumed to be safe by most queries. This means that queries may return fewer results where an enum value is used in a sensitive context, e.g. pasted into a query string.
+* All existing modelling and support for `javax.persistence` now applies to `jakarta.persistence` as well.
+
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* Java extraction is now able to download Maven 3.9.x if a Maven Enforcer Plugin configuration indicates it is necessary. Maven 3.8.x is still preferred if the enforcer-plugin configuration (if any) permits it.
+* Added a path injection sanitizer for calls to `java.lang.String.matches`, `java.lang.String.replace`, and `java.lang.String.replaceAll` that make sure '/', '\', '..' are not in the path.
+
+### Bug Fixes
+
+* In `build-mode: none` where the project has a Gradle build system, database creation no longer attempts to download some non-existent jar files relating to non-jar Maven artifacts, such as BOMs. This was harmless, but saves some time and reduces spurious warnings.
+* Java extraction no longer freezes for a long time or times out when using libraries that feature expanding cyclic generic types. For example, this was known to occur when using some classes from the Blazebit Persistence library.
+* Java build-mode `none` no longer fails when a required version of Gradle cannot be downloaded using the `gradle wrapper` command, such as due to a firewall. It will now attempt to use the system version of Gradle if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` no longer fails when a required version of Maven cannot be downloaded, such as due to a firewall. It will now attempt to use the system version of Maven if present, or otherwise proceed without detailed dependency information.
+* Java build-mode `none` now correctly uses Maven dependency information on Windows platforms.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* The Java extractor and QL libraries now support Java 24.
+
+### Minor Analysis Improvements
+
+* Added a path injection sanitizer for the `child` argument of a `java.io.File` constructor if that argument does not contain path traversal sequences.
+
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `isLValue` and `isRValue` predicates from the `VarAccess` class, use `isVarWrite` and `isVarRead` respectively instead.
+* Deleted the deprecated `getRhs` predicate from the `VarWrite` class, use `getASource` instead.
+* Deleted the deprecated `LValue` and `RValue` classes, use `VarWrite` and `VarRead` respectively instead.
+* Deleted a lot of deprecated classes ending in "*Access", use the corresponding "*Call" classes instead.
+* Deleted a lot of deprecated predicates ending in "*Access", use the corresponding "*Call" predicates instead.
+* Deleted the deprecated `EnvInput` and `DatabaseInput` classes from `FlowSources.qll`, use the threat models feature instead.
+* Deleted some deprecated API predicates from `SensitiveApi.qll`, use the Sink classes from that file instead.
+
+### Minor Analysis Improvements
+
+* We now allow classes which don't have any JAX-RS annotations to inherit JAX-RS annotations from superclasses or interfaces. This is not allowed in the JAX-RS specification, but some implementations, like Apache CXF, allow it. This may lead to more alerts being found.
+
 ## 6.1.0
 
 ### New Features

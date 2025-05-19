@@ -75,6 +75,36 @@ impl From<trap::Label<Locatable>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
+pub struct NamedCrate {
+    pub id: trap::TrapId<NamedCrate>,
+    pub name: String,
+    pub crate_: trap::Label<Crate>,
+}
+
+impl trap::TrapEntry for NamedCrate {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("named_crates", vec![id.into(), self.name.into(), self.crate_.into()]);
+    }
+}
+
+impl trap::TrapClass for NamedCrate {
+    fn class_name() -> &'static str { "NamedCrate" }
+}
+
+impl From<trap::Label<NamedCrate>> for trap::Label<Element> {
+    fn from(value: trap::Label<NamedCrate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme NamedCrate is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct Unextracted {
     _unused: ()
 }
@@ -101,6 +131,15 @@ impl trap::TrapClass for AstNode {
     fn class_name() -> &'static str { "AstNode" }
 }
 
+impl From<trap::Label<AstNode>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<AstNode>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AstNode is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<AstNode>> for trap::Label<Element> {
     fn from(value: trap::Label<AstNode>) -> Self {
         // SAFETY: this is safe because in the dbscheme AstNode is a subclass of Element
@@ -110,9 +149,57 @@ impl From<trap::Label<AstNode>> for trap::Label<Element> {
     }
 }
 
-impl From<trap::Label<AstNode>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<AstNode>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AstNode is a subclass of Locatable
+#[derive(Debug)]
+pub struct Crate {
+    pub id: trap::TrapId<Crate>,
+    pub name: Option<String>,
+    pub version: Option<String>,
+    pub module: Option<trap::Label<Module>>,
+    pub cfg_options: Vec<String>,
+    pub named_dependencies: Vec<trap::Label<NamedCrate>>,
+}
+
+impl trap::TrapEntry for Crate {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("crates", vec![id.into()]);
+        if let Some(v) = self.name {
+            out.add_tuple("crate_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.version {
+            out.add_tuple("crate_versions", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.module {
+            out.add_tuple("crate_modules", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.cfg_options.into_iter().enumerate() {
+            out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.named_dependencies.into_iter().enumerate() {
+            out.add_tuple("crate_named_dependencies", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for Crate {
+    fn class_name() -> &'static str { "Crate" }
+}
+
+impl From<trap::Label<Crate>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Crate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Crate is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Crate>> for trap::Label<Element> {
+    fn from(value: trap::Label<Crate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Crate is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -138,18 +225,18 @@ impl trap::TrapClass for Missing {
     fn class_name() -> &'static str { "Missing" }
 }
 
-impl From<trap::Label<Missing>> for trap::Label<Element> {
+impl From<trap::Label<Missing>> for trap::Label<Unextracted> {
     fn from(value: trap::Label<Missing>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Missing>> for trap::Label<Unextracted> {
+impl From<trap::Label<Missing>> for trap::Label<Element> {
     fn from(value: trap::Label<Missing>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Unextracted
+        // SAFETY: this is safe because in the dbscheme Missing is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -175,18 +262,18 @@ impl trap::TrapClass for Unimplemented {
     fn class_name() -> &'static str { "Unimplemented" }
 }
 
-impl From<trap::Label<Unimplemented>> for trap::Label<Element> {
+impl From<trap::Label<Unimplemented>> for trap::Label<Unextracted> {
     fn from(value: trap::Label<Unimplemented>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Unextracted
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Unimplemented>> for trap::Label<Unextracted> {
+impl From<trap::Label<Unimplemented>> for trap::Label<Element> {
     fn from(value: trap::Label<Unimplemented>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Unextracted
+        // SAFETY: this is safe because in the dbscheme Unimplemented is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -225,18 +312,18 @@ impl From<trap::Label<Abi>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Abi>> for trap::Label<Element> {
+impl From<trap::Label<Abi>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Abi>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Abi is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Abi is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Abi>> for trap::Label<Locatable> {
+impl From<trap::Label<Abi>> for trap::Label<Element> {
     fn from(value: trap::Label<Abi>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Abi is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Abi is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -270,18 +357,18 @@ impl From<trap::Label<Addressable>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Addressable>> for trap::Label<Element> {
+impl From<trap::Label<Addressable>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Addressable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Addressable is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Addressable is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Addressable>> for trap::Label<Locatable> {
+impl From<trap::Label<Addressable>> for trap::Label<Element> {
     fn from(value: trap::Label<Addressable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Addressable is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Addressable is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -320,18 +407,18 @@ impl From<trap::Label<ArgList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ArgList>> for trap::Label<Element> {
+impl From<trap::Label<ArgList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArgList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ArgList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ArgList>> for trap::Label<Locatable> {
+impl From<trap::Label<ArgList>> for trap::Label<Element> {
     fn from(value: trap::Label<ArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArgList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ArgList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -366,18 +453,18 @@ impl From<trap::Label<AsmDirSpec>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmDirSpec>> for trap::Label<Element> {
+impl From<trap::Label<AsmDirSpec>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmDirSpec>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmDirSpec is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmDirSpec is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmDirSpec>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmDirSpec>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmDirSpec>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmDirSpec is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmDirSpec is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -402,18 +489,18 @@ impl From<trap::Label<AsmOperand>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmOperand>> for trap::Label<Element> {
+impl From<trap::Label<AsmOperand>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmOperand>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperand is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmOperand is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmOperand>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmOperand>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmOperand>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperand is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmOperand is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -456,18 +543,18 @@ impl From<trap::Label<AsmOperandExpr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmOperandExpr>> for trap::Label<Element> {
+impl From<trap::Label<AsmOperandExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmOperandExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperandExpr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmOperandExpr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmOperandExpr>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmOperandExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmOperandExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperandExpr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmOperandExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -506,18 +593,18 @@ impl From<trap::Label<AsmOption>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmOption>> for trap::Label<Element> {
+impl From<trap::Label<AsmOption>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmOption>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOption is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmOption is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmOption>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmOption>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmOption>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOption is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmOption is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -542,15 +629,6 @@ impl From<trap::Label<AsmPiece>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmPiece>> for trap::Label<Element> {
-    fn from(value: trap::Label<AsmPiece>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmPiece is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<AsmPiece>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmPiece>) -> Self {
         // SAFETY: this is safe because in the dbscheme AsmPiece is a subclass of Locatable
@@ -560,10 +638,19 @@ impl From<trap::Label<AsmPiece>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<AsmPiece>> for trap::Label<Element> {
+    fn from(value: trap::Label<AsmPiece>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmPiece is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct AsmRegSpec {
     pub id: trap::TrapId<AsmRegSpec>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
 }
 
 impl trap::TrapEntry for AsmRegSpec {
@@ -573,8 +660,8 @@ impl trap::TrapEntry for AsmRegSpec {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("asm_reg_specs", vec![id.into()]);
-        if let Some(v) = self.name_ref {
-            out.add_tuple("asm_reg_spec_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("asm_reg_spec_identifiers", vec![id.into(), v.into()]);
         }
     }
 }
@@ -592,18 +679,18 @@ impl From<trap::Label<AsmRegSpec>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmRegSpec>> for trap::Label<Element> {
+impl From<trap::Label<AsmRegSpec>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmRegSpec>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmRegSpec is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmRegSpec is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmRegSpec>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmRegSpec>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmRegSpec>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmRegSpec is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmRegSpec is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -628,18 +715,18 @@ impl From<trap::Label<AssocItem>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AssocItem>> for trap::Label<Element> {
+impl From<trap::Label<AssocItem>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AssocItem>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocItem is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AssocItem is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AssocItem>> for trap::Label<Locatable> {
+impl From<trap::Label<AssocItem>> for trap::Label<Element> {
     fn from(value: trap::Label<AssocItem>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocItem is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AssocItem is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -682,18 +769,18 @@ impl From<trap::Label<AssocItemList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AssocItemList>> for trap::Label<Element> {
+impl From<trap::Label<AssocItemList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AssocItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocItemList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AssocItemList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AssocItemList>> for trap::Label<Locatable> {
+impl From<trap::Label<AssocItemList>> for trap::Label<Element> {
     fn from(value: trap::Label<AssocItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocItemList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AssocItemList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -732,18 +819,18 @@ impl From<trap::Label<Attr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Attr>> for trap::Label<Element> {
+impl From<trap::Label<Attr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Attr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Attr>> for trap::Label<Locatable> {
+impl From<trap::Label<Attr>> for trap::Label<Element> {
     fn from(value: trap::Label<Attr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Attr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -768,18 +855,18 @@ impl From<trap::Label<Callable>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Callable>> for trap::Label<Element> {
+impl From<trap::Label<Callable>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Callable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Callable is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Callable is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Callable>> for trap::Label<Locatable> {
+impl From<trap::Label<Callable>> for trap::Label<Element> {
     fn from(value: trap::Label<Callable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Callable is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Callable is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -818,18 +905,18 @@ impl From<trap::Label<ClosureBinder>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ClosureBinder>> for trap::Label<Element> {
+impl From<trap::Label<ClosureBinder>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ClosureBinder>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ClosureBinder>> for trap::Label<Locatable> {
+impl From<trap::Label<ClosureBinder>> for trap::Label<Element> {
     fn from(value: trap::Label<ClosureBinder>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ClosureBinder is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -854,18 +941,18 @@ impl From<trap::Label<Expr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Expr>> for trap::Label<Element> {
+impl From<trap::Label<Expr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Expr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Expr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Expr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Expr>> for trap::Label<Locatable> {
+impl From<trap::Label<Expr>> for trap::Label<Element> {
     fn from(value: trap::Label<Expr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Expr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Expr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -890,18 +977,18 @@ impl From<trap::Label<ExternItem>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ExternItem>> for trap::Label<Element> {
+impl From<trap::Label<ExternItem>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ExternItem>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternItem is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ExternItem is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ExternItem>> for trap::Label<Locatable> {
+impl From<trap::Label<ExternItem>> for trap::Label<Element> {
     fn from(value: trap::Label<ExternItem>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternItem is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ExternItem is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -944,18 +1031,18 @@ impl From<trap::Label<ExternItemList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ExternItemList>> for trap::Label<Element> {
+impl From<trap::Label<ExternItemList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ExternItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternItemList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ExternItemList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ExternItemList>> for trap::Label<Locatable> {
+impl From<trap::Label<ExternItemList>> for trap::Label<Element> {
     fn from(value: trap::Label<ExternItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternItemList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ExternItemList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -980,18 +1067,18 @@ impl From<trap::Label<FieldList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<FieldList>> for trap::Label<Element> {
+impl From<trap::Label<FieldList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<FieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FieldList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme FieldList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<FieldList>> for trap::Label<Locatable> {
+impl From<trap::Label<FieldList>> for trap::Label<Element> {
     fn from(value: trap::Label<FieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FieldList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme FieldList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1034,18 +1121,18 @@ impl From<trap::Label<FormatArgsArg>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<FormatArgsArg>> for trap::Label<Element> {
+impl From<trap::Label<FormatArgsArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<FormatArgsArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<FormatArgsArg>> for trap::Label<Locatable> {
+impl From<trap::Label<FormatArgsArg>> for trap::Label<Element> {
     fn from(value: trap::Label<FormatArgsArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1070,18 +1157,18 @@ impl From<trap::Label<GenericArg>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<GenericArg>> for trap::Label<Element> {
+impl From<trap::Label<GenericArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<GenericArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericArg is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme GenericArg is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<GenericArg>> for trap::Label<Locatable> {
+impl From<trap::Label<GenericArg>> for trap::Label<Element> {
     fn from(value: trap::Label<GenericArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericArg is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme GenericArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1120,18 +1207,18 @@ impl From<trap::Label<GenericArgList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<GenericArgList>> for trap::Label<Element> {
+impl From<trap::Label<GenericArgList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<GenericArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<GenericArgList>> for trap::Label<Locatable> {
+impl From<trap::Label<GenericArgList>> for trap::Label<Element> {
     fn from(value: trap::Label<GenericArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme GenericArgList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1156,18 +1243,18 @@ impl From<trap::Label<GenericParam>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<GenericParam>> for trap::Label<Element> {
+impl From<trap::Label<GenericParam>> for trap::Label<Locatable> {
     fn from(value: trap::Label<GenericParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericParam is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme GenericParam is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<GenericParam>> for trap::Label<Locatable> {
+impl From<trap::Label<GenericParam>> for trap::Label<Element> {
     fn from(value: trap::Label<GenericParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericParam is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme GenericParam is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1206,18 +1293,18 @@ impl From<trap::Label<GenericParamList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<GenericParamList>> for trap::Label<Element> {
+impl From<trap::Label<GenericParamList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<GenericParamList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericParamList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme GenericParamList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<GenericParamList>> for trap::Label<Locatable> {
+impl From<trap::Label<GenericParamList>> for trap::Label<Element> {
     fn from(value: trap::Label<GenericParamList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme GenericParamList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme GenericParamList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1260,18 +1347,18 @@ impl From<trap::Label<ItemList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ItemList>> for trap::Label<Element> {
+impl From<trap::Label<ItemList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ItemList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ItemList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ItemList>> for trap::Label<Locatable> {
+impl From<trap::Label<ItemList>> for trap::Label<Element> {
     fn from(value: trap::Label<ItemList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ItemList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ItemList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1310,18 +1397,18 @@ impl From<trap::Label<Label>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Label>> for trap::Label<Element> {
+impl From<trap::Label<Label>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Label>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Label is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Label is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Label>> for trap::Label<Locatable> {
+impl From<trap::Label<Label>> for trap::Label<Element> {
     fn from(value: trap::Label<Label>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Label is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Label is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1360,18 +1447,18 @@ impl From<trap::Label<LetElse>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<LetElse>> for trap::Label<Element> {
+impl From<trap::Label<LetElse>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LetElse>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetElse is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme LetElse is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<LetElse>> for trap::Label<Locatable> {
+impl From<trap::Label<LetElse>> for trap::Label<Element> {
     fn from(value: trap::Label<LetElse>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetElse is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme LetElse is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1410,15 +1497,6 @@ impl From<trap::Label<MacroItems>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<MacroItems>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroItems>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MacroItems>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MacroItems>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of Locatable
@@ -1428,54 +1506,9 @@ impl From<trap::Label<MacroItems>> for trap::Label<Locatable> {
     }
 }
 
-#[derive(Debug)]
-pub struct MacroStmts {
-    pub id: trap::TrapId<MacroStmts>,
-    pub expr: Option<trap::Label<Expr>>,
-    pub statements: Vec<trap::Label<Stmt>>,
-}
-
-impl trap::TrapEntry for MacroStmts {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("macro_stmts", vec![id.into()]);
-        if let Some(v) = self.expr {
-            out.add_tuple("macro_stmts_exprs", vec![id.into(), v.into()]);
-        }
-        for (i, v) in self.statements.into_iter().enumerate() {
-            out.add_tuple("macro_stmts_statements", vec![id.into(), i.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for MacroStmts {
-    fn class_name() -> &'static str { "MacroStmts" }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Locatable
+impl From<trap::Label<MacroItems>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroItems>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroItems is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1526,18 +1559,18 @@ impl From<trap::Label<MatchArm>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<MatchArm>> for trap::Label<Element> {
+impl From<trap::Label<MatchArm>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MatchArm>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchArm is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme MatchArm is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MatchArm>> for trap::Label<Locatable> {
+impl From<trap::Label<MatchArm>> for trap::Label<Element> {
     fn from(value: trap::Label<MatchArm>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchArm is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme MatchArm is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1580,18 +1613,18 @@ impl From<trap::Label<MatchArmList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<MatchArmList>> for trap::Label<Element> {
+impl From<trap::Label<MatchArmList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MatchArmList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchArmList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme MatchArmList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MatchArmList>> for trap::Label<Locatable> {
+impl From<trap::Label<MatchArmList>> for trap::Label<Element> {
     fn from(value: trap::Label<MatchArmList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchArmList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme MatchArmList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1630,18 +1663,18 @@ impl From<trap::Label<MatchGuard>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<MatchGuard>> for trap::Label<Element> {
+impl From<trap::Label<MatchGuard>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MatchGuard>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchGuard is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme MatchGuard is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MatchGuard>> for trap::Label<Locatable> {
+impl From<trap::Label<MatchGuard>> for trap::Label<Element> {
     fn from(value: trap::Label<MatchGuard>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchGuard is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme MatchGuard is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1692,18 +1725,18 @@ impl From<trap::Label<Meta>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Meta>> for trap::Label<Element> {
+impl From<trap::Label<Meta>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Meta>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Meta is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Meta is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Meta>> for trap::Label<Locatable> {
+impl From<trap::Label<Meta>> for trap::Label<Element> {
     fn from(value: trap::Label<Meta>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Meta is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Meta is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1742,18 +1775,18 @@ impl From<trap::Label<Name>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Name>> for trap::Label<Element> {
+impl From<trap::Label<Name>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Name>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Name is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Name is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Name>> for trap::Label<Locatable> {
+impl From<trap::Label<Name>> for trap::Label<Element> {
     fn from(value: trap::Label<Name>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Name is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Name is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1778,18 +1811,18 @@ impl From<trap::Label<ParamBase>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ParamBase>> for trap::Label<Element> {
+impl From<trap::Label<ParamBase>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ParamBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParamBase is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ParamBase is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ParamBase>> for trap::Label<Locatable> {
+impl From<trap::Label<ParamBase>> for trap::Label<Element> {
     fn from(value: trap::Label<ParamBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParamBase is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ParamBase is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1832,18 +1865,18 @@ impl From<trap::Label<ParamList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ParamList>> for trap::Label<Element> {
+impl From<trap::Label<ParamList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ParamList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParamList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ParamList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ParamList>> for trap::Label<Locatable> {
+impl From<trap::Label<ParamList>> for trap::Label<Element> {
     fn from(value: trap::Label<ParamList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParamList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ParamList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1882,18 +1915,18 @@ impl From<trap::Label<ParenthesizedArgList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ParenthesizedArgList>> for trap::Label<Element> {
+impl From<trap::Label<ParenthesizedArgList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ParenthesizedArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenthesizedArgList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ParenthesizedArgList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ParenthesizedArgList>> for trap::Label<Locatable> {
+impl From<trap::Label<ParenthesizedArgList>> for trap::Label<Element> {
     fn from(value: trap::Label<ParenthesizedArgList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenthesizedArgList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ParenthesizedArgList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1918,18 +1951,18 @@ impl From<trap::Label<Pat>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Pat>> for trap::Label<Element> {
+impl From<trap::Label<Pat>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Pat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Pat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Pat is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Pat>> for trap::Label<Locatable> {
+impl From<trap::Label<Pat>> for trap::Label<Element> {
     fn from(value: trap::Label<Pat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Pat is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Pat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1940,7 +1973,7 @@ impl From<trap::Label<Pat>> for trap::Label<Locatable> {
 pub struct Path {
     pub id: trap::TrapId<Path>,
     pub qualifier: Option<trap::Label<Path>>,
-    pub part: Option<trap::Label<PathSegment>>,
+    pub segment: Option<trap::Label<PathSegment>>,
 }
 
 impl trap::TrapEntry for Path {
@@ -1953,8 +1986,8 @@ impl trap::TrapEntry for Path {
         if let Some(v) = self.qualifier {
             out.add_tuple("path_qualifiers", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.part {
-            out.add_tuple("path_parts", vec![id.into(), v.into()]);
+        if let Some(v) = self.segment {
+            out.add_tuple("path_segments_", vec![id.into(), v.into()]);
         }
     }
 }
@@ -1972,18 +2005,18 @@ impl From<trap::Label<Path>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Path>> for trap::Label<Element> {
+impl From<trap::Label<Path>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Path>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Path is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Path>> for trap::Label<Locatable> {
+impl From<trap::Label<Path>> for trap::Label<Element> {
     fn from(value: trap::Label<Path>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Path is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Path is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -1994,12 +2027,10 @@ impl From<trap::Label<Path>> for trap::Label<Locatable> {
 pub struct PathSegment {
     pub id: trap::TrapId<PathSegment>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub parenthesized_arg_list: Option<trap::Label<ParenthesizedArgList>>,
-    pub path_type: Option<trap::Label<PathTypeRepr>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
-    pub type_repr: Option<trap::Label<TypeRepr>>,
 }
 
 impl trap::TrapEntry for PathSegment {
@@ -2012,14 +2043,11 @@ impl trap::TrapEntry for PathSegment {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("path_segment_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("path_segment_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("path_segment_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.parenthesized_arg_list {
             out.add_tuple("path_segment_parenthesized_arg_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.path_type {
-            out.add_tuple("path_segment_path_types", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.ret_type {
             out.add_tuple("path_segment_ret_types", vec![id.into(), v.into()]);
@@ -2027,9 +2055,15 @@ impl trap::TrapEntry for PathSegment {
         if let Some(v) = self.return_type_syntax {
             out.add_tuple("path_segment_return_type_syntaxes", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.type_repr {
-            out.add_tuple("path_segment_type_reprs", vec![id.into(), v.into()]);
-        }
+    }
+}
+
+impl PathSegment {
+    pub fn emit_type_repr(id: trap::Label<Self>, value: trap::Label<TypeRepr>, out: &mut trap::Writer) {
+        out.add_tuple("path_segment_type_reprs", vec![id.into(), value.into()]);
+    }
+    pub fn emit_trait_type_repr(id: trap::Label<Self>, value: trap::Label<PathTypeRepr>, out: &mut trap::Writer) {
+        out.add_tuple("path_segment_trait_type_reprs", vec![id.into(), value.into()]);
     }
 }
 
@@ -2046,15 +2080,6 @@ impl From<trap::Label<PathSegment>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<PathSegment>> for trap::Label<Element> {
-    fn from(value: trap::Label<PathSegment>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathSegment is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<PathSegment>> for trap::Label<Locatable> {
     fn from(value: trap::Label<PathSegment>) -> Self {
         // SAFETY: this is safe because in the dbscheme PathSegment is a subclass of Locatable
@@ -2064,290 +2089,9 @@ impl From<trap::Label<PathSegment>> for trap::Label<Locatable> {
     }
 }
 
-#[derive(Debug)]
-pub struct RecordExprField {
-    pub id: trap::TrapId<RecordExprField>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
-}
-
-impl trap::TrapEntry for RecordExprField {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_expr_fields", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("record_expr_field_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.expr {
-            out.add_tuple("record_expr_field_exprs", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("record_expr_field_name_refs", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordExprField {
-    fn class_name() -> &'static str { "RecordExprField" }
-}
-
-impl From<trap::Label<RecordExprField>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordExprField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprField is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExprField>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordExprField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprField is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExprField>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordExprField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprField is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordExprFieldList {
-    pub id: trap::TrapId<RecordExprFieldList>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub fields: Vec<trap::Label<RecordExprField>>,
-    pub spread: Option<trap::Label<Expr>>,
-}
-
-impl trap::TrapEntry for RecordExprFieldList {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_expr_field_lists", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("record_expr_field_list_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_expr_field_list_fields", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.spread {
-            out.add_tuple("record_expr_field_list_spreads", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordExprFieldList {
-    fn class_name() -> &'static str { "RecordExprFieldList" }
-}
-
-impl From<trap::Label<RecordExprFieldList>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordExprFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprFieldList is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExprFieldList>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordExprFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprFieldList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExprFieldList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordExprFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExprFieldList is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordField {
-    pub id: trap::TrapId<RecordField>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub name: Option<trap::Label<Name>>,
-    pub type_repr: Option<trap::Label<TypeRepr>>,
-    pub visibility: Option<trap::Label<Visibility>>,
-}
-
-impl trap::TrapEntry for RecordField {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_fields", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("record_field_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.name {
-            out.add_tuple("record_field_names", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.type_repr {
-            out.add_tuple("record_field_type_reprs", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.visibility {
-            out.add_tuple("record_field_visibilities", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordField {
-    fn class_name() -> &'static str { "RecordField" }
-}
-
-impl From<trap::Label<RecordField>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordField is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordField>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordField is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordField>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordField is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordPatField {
-    pub id: trap::TrapId<RecordPatField>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
-    pub pat: Option<trap::Label<Pat>>,
-}
-
-impl trap::TrapEntry for RecordPatField {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_pat_fields", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("record_pat_field_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("record_pat_field_name_refs", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.pat {
-            out.add_tuple("record_pat_field_pats", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordPatField {
-    fn class_name() -> &'static str { "RecordPatField" }
-}
-
-impl From<trap::Label<RecordPatField>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordPatField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatField is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPatField>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordPatField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatField is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPatField>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordPatField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatField is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordPatFieldList {
-    pub id: trap::TrapId<RecordPatFieldList>,
-    pub fields: Vec<trap::Label<RecordPatField>>,
-    pub rest_pat: Option<trap::Label<RestPat>>,
-}
-
-impl trap::TrapEntry for RecordPatFieldList {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_pat_field_lists", vec![id.into()]);
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_pat_field_list_fields", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.rest_pat {
-            out.add_tuple("record_pat_field_list_rest_pats", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordPatFieldList {
-    fn class_name() -> &'static str { "RecordPatFieldList" }
-}
-
-impl From<trap::Label<RecordPatFieldList>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordPatFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatFieldList is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPatFieldList>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordPatFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatFieldList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPatFieldList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordPatFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPatFieldList is a subclass of Locatable
+impl From<trap::Label<PathSegment>> for trap::Label<Element> {
+    fn from(value: trap::Label<PathSegment>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathSegment is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2386,18 +2130,18 @@ impl From<trap::Label<Rename>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Rename>> for trap::Label<Element> {
+impl From<trap::Label<Rename>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Rename>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Rename is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Rename is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Rename>> for trap::Label<Locatable> {
+impl From<trap::Label<Rename>> for trap::Label<Element> {
     fn from(value: trap::Label<Rename>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Rename is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Rename is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2431,18 +2175,18 @@ impl From<trap::Label<Resolvable>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Resolvable>> for trap::Label<Element> {
+impl From<trap::Label<Resolvable>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Resolvable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Resolvable>> for trap::Label<Locatable> {
+impl From<trap::Label<Resolvable>> for trap::Label<Element> {
     fn from(value: trap::Label<Resolvable>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Resolvable is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2481,18 +2225,18 @@ impl From<trap::Label<RetTypeRepr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<RetTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<RetTypeRepr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<RetTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RetTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme RetTypeRepr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RetTypeRepr>> for trap::Label<Locatable> {
+impl From<trap::Label<RetTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<RetTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RetTypeRepr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme RetTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2527,18 +2271,18 @@ impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Element> {
+impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ReturnTypeSyntax>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ReturnTypeSyntax is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ReturnTypeSyntax is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Locatable> {
+impl From<trap::Label<ReturnTypeSyntax>> for trap::Label<Element> {
     fn from(value: trap::Label<ReturnTypeSyntax>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ReturnTypeSyntax is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ReturnTypeSyntax is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2581,18 +2325,18 @@ impl From<trap::Label<SourceFile>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<SourceFile>> for trap::Label<Element> {
+impl From<trap::Label<SourceFile>> for trap::Label<Locatable> {
     fn from(value: trap::Label<SourceFile>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SourceFile is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme SourceFile is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<SourceFile>> for trap::Label<Locatable> {
+impl From<trap::Label<SourceFile>> for trap::Label<Element> {
     fn from(value: trap::Label<SourceFile>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SourceFile is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme SourceFile is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2617,18 +2361,18 @@ impl From<trap::Label<Stmt>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Stmt>> for trap::Label<Element> {
+impl From<trap::Label<Stmt>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Stmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Stmt is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Stmt is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Stmt>> for trap::Label<Locatable> {
+impl From<trap::Label<Stmt>> for trap::Label<Element> {
     fn from(value: trap::Label<Stmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Stmt is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Stmt is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2675,6 +2419,15 @@ impl From<trap::Label<StmtList>> for trap::Label<AstNode> {
     }
 }
 
+impl From<trap::Label<StmtList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StmtList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StmtList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<StmtList>> for trap::Label<Element> {
     fn from(value: trap::Label<StmtList>) -> Self {
         // SAFETY: this is safe because in the dbscheme StmtList is a subclass of Element
@@ -2684,9 +2437,298 @@ impl From<trap::Label<StmtList>> for trap::Label<Element> {
     }
 }
 
-impl From<trap::Label<StmtList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<StmtList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme StmtList is a subclass of Locatable
+#[derive(Debug)]
+pub struct StructExprField {
+    pub id: trap::TrapId<StructExprField>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub expr: Option<trap::Label<Expr>>,
+    pub identifier: Option<trap::Label<NameRef>>,
+}
+
+impl trap::TrapEntry for StructExprField {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_expr_fields", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("struct_expr_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.expr {
+            out.add_tuple("struct_expr_field_exprs", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.identifier {
+            out.add_tuple("struct_expr_field_identifiers", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructExprField {
+    fn class_name() -> &'static str { "StructExprField" }
+}
+
+impl From<trap::Label<StructExprField>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructExprField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprField is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExprField>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructExprField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprField is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExprField>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructExprField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprField is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructExprFieldList {
+    pub id: trap::TrapId<StructExprFieldList>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub fields: Vec<trap::Label<StructExprField>>,
+    pub spread: Option<trap::Label<Expr>>,
+}
+
+impl trap::TrapEntry for StructExprFieldList {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_expr_field_lists", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("struct_expr_field_list_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        for (i, v) in self.fields.into_iter().enumerate() {
+            out.add_tuple("struct_expr_field_list_fields", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.spread {
+            out.add_tuple("struct_expr_field_list_spreads", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructExprFieldList {
+    fn class_name() -> &'static str { "StructExprFieldList" }
+}
+
+impl From<trap::Label<StructExprFieldList>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructExprFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprFieldList is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExprFieldList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructExprFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprFieldList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExprFieldList>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructExprFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExprFieldList is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructField {
+    pub id: trap::TrapId<StructField>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub default: Option<trap::Label<Expr>>,
+    pub is_unsafe: bool,
+    pub name: Option<trap::Label<Name>>,
+    pub type_repr: Option<trap::Label<TypeRepr>>,
+    pub visibility: Option<trap::Label<Visibility>>,
+}
+
+impl trap::TrapEntry for StructField {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_fields", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("struct_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.default {
+            out.add_tuple("struct_field_defaults", vec![id.into(), v.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("struct_field_is_unsafe", vec![id.into()]);
+        }
+        if let Some(v) = self.name {
+            out.add_tuple("struct_field_names", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.type_repr {
+            out.add_tuple("struct_field_type_reprs", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.visibility {
+            out.add_tuple("struct_field_visibilities", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructField {
+    fn class_name() -> &'static str { "StructField" }
+}
+
+impl From<trap::Label<StructField>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructField is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructField>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructField is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructField>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructField is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructPatField {
+    pub id: trap::TrapId<StructPatField>,
+    pub attrs: Vec<trap::Label<Attr>>,
+    pub identifier: Option<trap::Label<NameRef>>,
+    pub pat: Option<trap::Label<Pat>>,
+}
+
+impl trap::TrapEntry for StructPatField {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_pat_fields", vec![id.into()]);
+        for (i, v) in self.attrs.into_iter().enumerate() {
+            out.add_tuple("struct_pat_field_attrs", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.identifier {
+            out.add_tuple("struct_pat_field_identifiers", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.pat {
+            out.add_tuple("struct_pat_field_pats", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructPatField {
+    fn class_name() -> &'static str { "StructPatField" }
+}
+
+impl From<trap::Label<StructPatField>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructPatField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatField is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPatField>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructPatField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatField is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPatField>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructPatField>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatField is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructPatFieldList {
+    pub id: trap::TrapId<StructPatFieldList>,
+    pub fields: Vec<trap::Label<StructPatField>>,
+    pub rest_pat: Option<trap::Label<RestPat>>,
+}
+
+impl trap::TrapEntry for StructPatFieldList {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_pat_field_lists", vec![id.into()]);
+        for (i, v) in self.fields.into_iter().enumerate() {
+            out.add_tuple("struct_pat_field_list_fields", vec![id.into(), i.into(), v.into()]);
+        }
+        if let Some(v) = self.rest_pat {
+            out.add_tuple("struct_pat_field_list_rest_pats", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructPatFieldList {
+    fn class_name() -> &'static str { "StructPatFieldList" }
+}
+
+impl From<trap::Label<StructPatFieldList>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructPatFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatFieldList is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPatFieldList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructPatFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatFieldList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPatFieldList>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructPatFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPatFieldList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2711,18 +2753,18 @@ impl From<trap::Label<Token>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Token>> for trap::Label<Element> {
+impl From<trap::Label<Token>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Token>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Token is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Token is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Token>> for trap::Label<Locatable> {
+impl From<trap::Label<Token>> for trap::Label<Element> {
     fn from(value: trap::Label<Token>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Token is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Token is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2757,18 +2799,18 @@ impl From<trap::Label<TokenTree>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TokenTree>> for trap::Label<Element> {
+impl From<trap::Label<TokenTree>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TokenTree>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TokenTree is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TokenTree is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TokenTree>> for trap::Label<Locatable> {
+impl From<trap::Label<TokenTree>> for trap::Label<Element> {
     fn from(value: trap::Label<TokenTree>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TokenTree is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TokenTree is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2815,18 +2857,18 @@ impl From<trap::Label<TupleField>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TupleField>> for trap::Label<Element> {
+impl From<trap::Label<TupleField>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TupleField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleField is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TupleField is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TupleField>> for trap::Label<Locatable> {
+impl From<trap::Label<TupleField>> for trap::Label<Element> {
     fn from(value: trap::Label<TupleField>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleField is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TupleField is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2881,18 +2923,18 @@ impl From<trap::Label<TypeBound>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TypeBound>> for trap::Label<Element> {
+impl From<trap::Label<TypeBound>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeBound>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeBound is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TypeBound is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TypeBound>> for trap::Label<Locatable> {
+impl From<trap::Label<TypeBound>> for trap::Label<Element> {
     fn from(value: trap::Label<TypeBound>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeBound is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TypeBound is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2931,18 +2973,18 @@ impl From<trap::Label<TypeBoundList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TypeBoundList>> for trap::Label<Element> {
+impl From<trap::Label<TypeBoundList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeBoundList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeBoundList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TypeBoundList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TypeBoundList>> for trap::Label<Locatable> {
+impl From<trap::Label<TypeBoundList>> for trap::Label<Element> {
     fn from(value: trap::Label<TypeBoundList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeBoundList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TypeBoundList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -2967,18 +3009,18 @@ impl From<trap::Label<TypeRepr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<TypeRepr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TypeRepr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TypeRepr>> for trap::Label<Locatable> {
+impl From<trap::Label<TypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<TypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeRepr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3003,18 +3045,18 @@ impl From<trap::Label<UseBoundGenericArg>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<UseBoundGenericArg>> for trap::Label<Element> {
+impl From<trap::Label<UseBoundGenericArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<UseBoundGenericArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseBoundGenericArg is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme UseBoundGenericArg is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<UseBoundGenericArg>> for trap::Label<Locatable> {
+impl From<trap::Label<UseBoundGenericArg>> for trap::Label<Element> {
     fn from(value: trap::Label<UseBoundGenericArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseBoundGenericArg is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme UseBoundGenericArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3053,15 +3095,6 @@ impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Element> {
-    fn from(value: trap::Label<UseBoundGenericArgs>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseBoundGenericArgs is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Locatable> {
     fn from(value: trap::Label<UseBoundGenericArgs>) -> Self {
         // SAFETY: this is safe because in the dbscheme UseBoundGenericArgs is a subclass of Locatable
@@ -3071,9 +3104,19 @@ impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<UseBoundGenericArgs>> for trap::Label<Element> {
+    fn from(value: trap::Label<UseBoundGenericArgs>) -> Self {
+        // SAFETY: this is safe because in the dbscheme UseBoundGenericArgs is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct UseTree {
     pub id: trap::TrapId<UseTree>,
+    pub is_glob: bool,
     pub path: Option<trap::Label<Path>>,
     pub rename: Option<trap::Label<Rename>>,
     pub use_tree_list: Option<trap::Label<UseTreeList>>,
@@ -3086,6 +3129,9 @@ impl trap::TrapEntry for UseTree {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("use_trees", vec![id.into()]);
+        if self.is_glob {
+            out.add_tuple("use_tree_is_glob", vec![id.into()]);
+        }
         if let Some(v) = self.path {
             out.add_tuple("use_tree_paths", vec![id.into(), v.into()]);
         }
@@ -3111,18 +3157,18 @@ impl From<trap::Label<UseTree>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<UseTree>> for trap::Label<Element> {
+impl From<trap::Label<UseTree>> for trap::Label<Locatable> {
     fn from(value: trap::Label<UseTree>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseTree is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme UseTree is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<UseTree>> for trap::Label<Locatable> {
+impl From<trap::Label<UseTree>> for trap::Label<Element> {
     fn from(value: trap::Label<UseTree>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseTree is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme UseTree is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3161,6 +3207,15 @@ impl From<trap::Label<UseTreeList>> for trap::Label<AstNode> {
     }
 }
 
+impl From<trap::Label<UseTreeList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<UseTreeList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme UseTreeList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<UseTreeList>> for trap::Label<Element> {
     fn from(value: trap::Label<UseTreeList>) -> Self {
         // SAFETY: this is safe because in the dbscheme UseTreeList is a subclass of Element
@@ -3170,9 +3225,36 @@ impl From<trap::Label<UseTreeList>> for trap::Label<Element> {
     }
 }
 
-impl From<trap::Label<UseTreeList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<UseTreeList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UseTreeList is a subclass of Locatable
+#[derive(Debug)]
+pub struct VariantDef {
+    _unused: ()
+}
+
+impl trap::TrapClass for VariantDef {
+    fn class_name() -> &'static str { "VariantDef" }
+}
+
+impl From<trap::Label<VariantDef>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<VariantDef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<VariantDef>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<VariantDef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<VariantDef>> for trap::Label<Element> {
+    fn from(value: trap::Label<VariantDef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme VariantDef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3211,18 +3293,18 @@ impl From<trap::Label<VariantList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<VariantList>> for trap::Label<Element> {
+impl From<trap::Label<VariantList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<VariantList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme VariantList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme VariantList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<VariantList>> for trap::Label<Locatable> {
+impl From<trap::Label<VariantList>> for trap::Label<Element> {
     fn from(value: trap::Label<VariantList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme VariantList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme VariantList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3261,18 +3343,18 @@ impl From<trap::Label<Visibility>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Visibility>> for trap::Label<Element> {
+impl From<trap::Label<Visibility>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Visibility>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Visibility is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Visibility is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Visibility>> for trap::Label<Locatable> {
+impl From<trap::Label<Visibility>> for trap::Label<Element> {
     fn from(value: trap::Label<Visibility>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Visibility is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Visibility is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3311,18 +3393,18 @@ impl From<trap::Label<WhereClause>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<WhereClause>> for trap::Label<Element> {
+impl From<trap::Label<WhereClause>> for trap::Label<Locatable> {
     fn from(value: trap::Label<WhereClause>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhereClause is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme WhereClause is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<WhereClause>> for trap::Label<Locatable> {
+impl From<trap::Label<WhereClause>> for trap::Label<Element> {
     fn from(value: trap::Label<WhereClause>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhereClause is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme WhereClause is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3373,18 +3455,18 @@ impl From<trap::Label<WherePred>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<WherePred>> for trap::Label<Element> {
+impl From<trap::Label<WherePred>> for trap::Label<Locatable> {
     fn from(value: trap::Label<WherePred>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WherePred is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme WherePred is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<WherePred>> for trap::Label<Locatable> {
+impl From<trap::Label<WherePred>> for trap::Label<Element> {
     fn from(value: trap::Label<WherePred>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WherePred is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme WherePred is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3422,24 +3504,6 @@ impl trap::TrapClass for ArrayExprInternal {
     fn class_name() -> &'static str { "ArrayExprInternal" }
 }
 
-impl From<trap::Label<ArrayExprInternal>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ArrayExprInternal>> for trap::Label<Element> {
-    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ArrayExprInternal>> for trap::Label<Expr> {
     fn from(value: trap::Label<ArrayExprInternal>) -> Self {
         // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Expr
@@ -3449,9 +3513,27 @@ impl From<trap::Label<ArrayExprInternal>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ArrayExprInternal>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ArrayExprInternal>) -> Self {
         // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ArrayExprInternal>> for trap::Label<Element> {
+    fn from(value: trap::Label<ArrayExprInternal>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ArrayExprInternal is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3485,18 +3567,18 @@ impl trap::TrapClass for ArrayTypeRepr {
     fn class_name() -> &'static str { "ArrayTypeRepr" }
 }
 
-impl From<trap::Label<ArrayTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<ArrayTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<ArrayTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ArrayTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<ArrayTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ArrayTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3512,9 +3594,9 @@ impl From<trap::Label<ArrayTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ArrayTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<ArrayTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<ArrayTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme ArrayTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3558,18 +3640,18 @@ impl From<trap::Label<AsmClobberAbi>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmClobberAbi>> for trap::Label<Element> {
+impl From<trap::Label<AsmClobberAbi>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmClobberAbi>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmClobberAbi is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmClobberAbi is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmClobberAbi>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmClobberAbi>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmClobberAbi>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmClobberAbi is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmClobberAbi is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3621,18 +3703,18 @@ impl From<trap::Label<AsmConst>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmConst>> for trap::Label<Element> {
+impl From<trap::Label<AsmConst>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmConst>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmConst is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmConst is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmConst>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmConst>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmConst>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmConst is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmConst is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3670,24 +3752,6 @@ impl trap::TrapClass for AsmExpr {
     fn class_name() -> &'static str { "AsmExpr" }
 }
 
-impl From<trap::Label<AsmExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AsmExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<AsmExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<AsmExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<AsmExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Expr
@@ -3697,9 +3761,27 @@ impl From<trap::Label<AsmExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<AsmExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<AsmExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AsmExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<AsmExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AsmExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3747,18 +3829,18 @@ impl From<trap::Label<AsmLabel>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmLabel>> for trap::Label<Element> {
+impl From<trap::Label<AsmLabel>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmLabel>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmLabel is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmLabel is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmLabel>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmLabel>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmLabel>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmLabel is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmLabel is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3810,18 +3892,18 @@ impl From<trap::Label<AsmOperandNamed>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmOperandNamed>> for trap::Label<Element> {
+impl From<trap::Label<AsmOperandNamed>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmOperandNamed>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperandNamed is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmOperandNamed is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmOperandNamed>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmOperandNamed>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmOperandNamed>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOperandNamed is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmOperandNamed is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3869,18 +3951,18 @@ impl From<trap::Label<AsmOptionsList>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmOptionsList>> for trap::Label<Element> {
+impl From<trap::Label<AsmOptionsList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmOptionsList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOptionsList is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmOptionsList is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmOptionsList>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmOptionsList>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmOptionsList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmOptionsList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmOptionsList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3936,18 +4018,18 @@ impl From<trap::Label<AsmRegOperand>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmRegOperand>> for trap::Label<Element> {
+impl From<trap::Label<AsmRegOperand>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmRegOperand>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmRegOperand is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmRegOperand is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmRegOperand>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmRegOperand>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmRegOperand>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmRegOperand is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmRegOperand is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -3995,18 +4077,18 @@ impl From<trap::Label<AsmSym>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<AsmSym>> for trap::Label<Element> {
+impl From<trap::Label<AsmSym>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AsmSym>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmSym is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme AsmSym is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<AsmSym>> for trap::Label<Locatable> {
+impl From<trap::Label<AsmSym>> for trap::Label<Element> {
     fn from(value: trap::Label<AsmSym>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AsmSym is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme AsmSym is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4018,7 +4100,7 @@ pub struct AssocTypeArg {
     pub id: trap::TrapId<AssocTypeArg>,
     pub const_arg: Option<trap::Label<ConstArg>>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub param_list: Option<trap::Label<ParamList>>,
     pub ret_type: Option<trap::Label<RetTypeRepr>>,
     pub return_type_syntax: Option<trap::Label<ReturnTypeSyntax>>,
@@ -4039,8 +4121,8 @@ impl trap::TrapEntry for AssocTypeArg {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("assoc_type_arg_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("assoc_type_arg_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("assoc_type_arg_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.param_list {
             out.add_tuple("assoc_type_arg_param_lists", vec![id.into(), v.into()]);
@@ -4064,24 +4146,6 @@ impl trap::TrapClass for AssocTypeArg {
     fn class_name() -> &'static str { "AssocTypeArg" }
 }
 
-impl From<trap::Label<AssocTypeArg>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<AssocTypeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AssocTypeArg>> for trap::Label<Element> {
-    fn from(value: trap::Label<AssocTypeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<AssocTypeArg>> for trap::Label<GenericArg> {
     fn from(value: trap::Label<AssocTypeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of GenericArg
@@ -4091,9 +4155,27 @@ impl From<trap::Label<AssocTypeArg>> for trap::Label<GenericArg> {
     }
 }
 
+impl From<trap::Label<AssocTypeArg>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<AssocTypeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<AssocTypeArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AssocTypeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AssocTypeArg>> for trap::Label<Element> {
+    fn from(value: trap::Label<AssocTypeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AssocTypeArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4127,24 +4209,6 @@ impl trap::TrapClass for AwaitExpr {
     fn class_name() -> &'static str { "AwaitExpr" }
 }
 
-impl From<trap::Label<AwaitExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<AwaitExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<AwaitExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<AwaitExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<AwaitExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<AwaitExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of Expr
@@ -4154,9 +4218,27 @@ impl From<trap::Label<AwaitExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<AwaitExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<AwaitExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<AwaitExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<AwaitExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<AwaitExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<AwaitExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme AwaitExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4190,24 +4272,6 @@ impl trap::TrapClass for BecomeExpr {
     fn class_name() -> &'static str { "BecomeExpr" }
 }
 
-impl From<trap::Label<BecomeExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<BecomeExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BecomeExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<BecomeExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<BecomeExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<BecomeExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of Expr
@@ -4217,9 +4281,27 @@ impl From<trap::Label<BecomeExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<BecomeExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<BecomeExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<BecomeExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<BecomeExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BecomeExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<BecomeExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BecomeExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4261,24 +4343,6 @@ impl trap::TrapClass for BinaryExpr {
     fn class_name() -> &'static str { "BinaryExpr" }
 }
 
-impl From<trap::Label<BinaryExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<BinaryExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BinaryExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<BinaryExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<BinaryExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<BinaryExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of Expr
@@ -4288,9 +4352,27 @@ impl From<trap::Label<BinaryExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<BinaryExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<BinaryExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<BinaryExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<BinaryExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BinaryExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<BinaryExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BinaryExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4320,18 +4402,18 @@ impl trap::TrapClass for BoxPat {
     fn class_name() -> &'static str { "BoxPat" }
 }
 
-impl From<trap::Label<BoxPat>> for trap::Label<AstNode> {
+impl From<trap::Label<BoxPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<BoxPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<BoxPat>> for trap::Label<Element> {
+impl From<trap::Label<BoxPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<BoxPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4347,9 +4429,9 @@ impl From<trap::Label<BoxPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<BoxPat>> for trap::Label<Pat> {
+impl From<trap::Label<BoxPat>> for trap::Label<Element> {
     fn from(value: trap::Label<BoxPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme BoxPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4387,27 +4469,18 @@ impl trap::TrapClass for BreakExpr {
     fn class_name() -> &'static str { "BreakExpr" }
 }
 
-impl From<trap::Label<BreakExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<BreakExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BreakExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BreakExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<BreakExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BreakExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<BreakExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<BreakExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BreakExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BreakExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<BreakExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BreakExpr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4423,6 +4496,15 @@ impl From<trap::Label<BreakExpr>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<BreakExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<BreakExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BreakExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct CallExprBase {
     _unused: ()
@@ -4430,24 +4512,6 @@ pub struct CallExprBase {
 
 impl trap::TrapClass for CallExprBase {
     fn class_name() -> &'static str { "CallExprBase" }
-}
-
-impl From<trap::Label<CallExprBase>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<CallExprBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CallExprBase is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<CallExprBase>> for trap::Label<Element> {
-    fn from(value: trap::Label<CallExprBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CallExprBase is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
 }
 
 impl From<trap::Label<CallExprBase>> for trap::Label<Expr> {
@@ -4459,9 +4523,27 @@ impl From<trap::Label<CallExprBase>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<CallExprBase>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<CallExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CallExprBase is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<CallExprBase>> for trap::Label<Locatable> {
     fn from(value: trap::Label<CallExprBase>) -> Self {
         // SAFETY: this is safe because in the dbscheme CallExprBase is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CallExprBase>> for trap::Label<Element> {
+    fn from(value: trap::Label<CallExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CallExprBase is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4499,24 +4581,6 @@ impl trap::TrapClass for CastExpr {
     fn class_name() -> &'static str { "CastExpr" }
 }
 
-impl From<trap::Label<CastExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<CastExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<CastExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<CastExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<CastExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<CastExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of Expr
@@ -4526,9 +4590,27 @@ impl From<trap::Label<CastExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<CastExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<CastExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<CastExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<CastExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CastExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<CastExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CastExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4594,6 +4676,15 @@ impl trap::TrapClass for ClosureExpr {
     fn class_name() -> &'static str { "ClosureExpr" }
 }
 
+impl From<trap::Label<ClosureExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<ClosureExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ClosureExpr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ClosureExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of AstNode
@@ -4603,9 +4694,9 @@ impl From<trap::Label<ClosureExpr>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ClosureExpr>> for trap::Label<Callable> {
+impl From<trap::Label<ClosureExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ClosureExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Callable
+        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4621,18 +4712,9 @@ impl From<trap::Label<ClosureExpr>> for trap::Label<Element> {
     }
 }
 
-impl From<trap::Label<ClosureExpr>> for trap::Label<Expr> {
+impl From<trap::Label<ClosureExpr>> for trap::Label<Callable> {
     fn from(value: trap::Label<ClosureExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ClosureExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<ClosureExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme ClosureExpr is a subclass of Callable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4660,18 +4742,18 @@ impl trap::TrapClass for Comment {
     fn class_name() -> &'static str { "Comment" }
 }
 
-impl From<trap::Label<Comment>> for trap::Label<AstNode> {
+impl From<trap::Label<Comment>> for trap::Label<Token> {
     fn from(value: trap::Label<Comment>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Comment is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Token
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Comment>> for trap::Label<Element> {
+impl From<trap::Label<Comment>> for trap::Label<AstNode> {
     fn from(value: trap::Label<Comment>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4687,9 +4769,9 @@ impl From<trap::Label<Comment>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Comment>> for trap::Label<Token> {
+impl From<trap::Label<Comment>> for trap::Label<Element> {
     fn from(value: trap::Label<Comment>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Token
+        // SAFETY: this is safe because in the dbscheme Comment is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4719,24 +4801,6 @@ impl trap::TrapClass for ConstArg {
     fn class_name() -> &'static str { "ConstArg" }
 }
 
-impl From<trap::Label<ConstArg>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ConstArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ConstArg>> for trap::Label<Element> {
-    fn from(value: trap::Label<ConstArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ConstArg>> for trap::Label<GenericArg> {
     fn from(value: trap::Label<ConstArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of GenericArg
@@ -4746,9 +4810,27 @@ impl From<trap::Label<ConstArg>> for trap::Label<GenericArg> {
     }
 }
 
+impl From<trap::Label<ConstArg>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ConstArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ConstArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ConstArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ConstArg>> for trap::Label<Element> {
+    fn from(value: trap::Label<ConstArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ConstArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4782,18 +4864,18 @@ impl trap::TrapClass for ConstBlockPat {
     fn class_name() -> &'static str { "ConstBlockPat" }
 }
 
-impl From<trap::Label<ConstBlockPat>> for trap::Label<AstNode> {
+impl From<trap::Label<ConstBlockPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<ConstBlockPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ConstBlockPat>> for trap::Label<Element> {
+impl From<trap::Label<ConstBlockPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ConstBlockPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4809,9 +4891,9 @@ impl From<trap::Label<ConstBlockPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ConstBlockPat>> for trap::Label<Pat> {
+impl From<trap::Label<ConstBlockPat>> for trap::Label<Element> {
     fn from(value: trap::Label<ConstBlockPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme ConstBlockPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4857,24 +4939,6 @@ impl trap::TrapClass for ConstParam {
     fn class_name() -> &'static str { "ConstParam" }
 }
 
-impl From<trap::Label<ConstParam>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ConstParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ConstParam>> for trap::Label<Element> {
-    fn from(value: trap::Label<ConstParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ConstParam>> for trap::Label<GenericParam> {
     fn from(value: trap::Label<ConstParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of GenericParam
@@ -4884,9 +4948,27 @@ impl From<trap::Label<ConstParam>> for trap::Label<GenericParam> {
     }
 }
 
+impl From<trap::Label<ConstParam>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ConstParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ConstParam>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ConstParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ConstParam>> for trap::Label<Element> {
+    fn from(value: trap::Label<ConstParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ConstParam is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4920,24 +5002,6 @@ impl trap::TrapClass for ContinueExpr {
     fn class_name() -> &'static str { "ContinueExpr" }
 }
 
-impl From<trap::Label<ContinueExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ContinueExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ContinueExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ContinueExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ContinueExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<ContinueExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of Expr
@@ -4947,9 +5011,27 @@ impl From<trap::Label<ContinueExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<ContinueExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ContinueExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ContinueExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ContinueExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ContinueExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<ContinueExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ContinueExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -4979,18 +5061,18 @@ impl trap::TrapClass for DynTraitTypeRepr {
     fn class_name() -> &'static str { "DynTraitTypeRepr" }
 }
 
-impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<DynTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<DynTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5006,9 +5088,9 @@ impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<DynTraitTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<DynTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme DynTraitTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5038,18 +5120,18 @@ impl trap::TrapClass for ExprStmt {
     fn class_name() -> &'static str { "ExprStmt" }
 }
 
-impl From<trap::Label<ExprStmt>> for trap::Label<AstNode> {
+impl From<trap::Label<ExprStmt>> for trap::Label<Stmt> {
     fn from(value: trap::Label<ExprStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ExprStmt>> for trap::Label<Element> {
+impl From<trap::Label<ExprStmt>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ExprStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5065,9 +5147,9 @@ impl From<trap::Label<ExprStmt>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ExprStmt>> for trap::Label<Stmt> {
+impl From<trap::Label<ExprStmt>> for trap::Label<Element> {
     fn from(value: trap::Label<ExprStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme ExprStmt is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5078,8 +5160,8 @@ impl From<trap::Label<ExprStmt>> for trap::Label<Stmt> {
 pub struct FieldExpr {
     pub id: trap::TrapId<FieldExpr>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub container: Option<trap::Label<Expr>>,
+    pub identifier: Option<trap::Label<NameRef>>,
 }
 
 impl trap::TrapEntry for FieldExpr {
@@ -5092,35 +5174,17 @@ impl trap::TrapEntry for FieldExpr {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("field_expr_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("field_expr_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.container {
+            out.add_tuple("field_expr_containers", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("field_expr_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("field_expr_identifiers", vec![id.into(), v.into()]);
         }
     }
 }
 
 impl trap::TrapClass for FieldExpr {
     fn class_name() -> &'static str { "FieldExpr" }
-}
-
-impl From<trap::Label<FieldExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<FieldExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FieldExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<FieldExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<FieldExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FieldExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
 }
 
 impl From<trap::Label<FieldExpr>> for trap::Label<Expr> {
@@ -5132,9 +5196,27 @@ impl From<trap::Label<FieldExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<FieldExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<FieldExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FieldExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<FieldExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<FieldExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme FieldExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<FieldExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<FieldExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FieldExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5184,18 +5266,18 @@ impl trap::TrapClass for FnPtrTypeRepr {
     fn class_name() -> &'static str { "FnPtrTypeRepr" }
 }
 
-impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<FnPtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<FnPtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5211,9 +5293,9 @@ impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<FnPtrTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<FnPtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme FnPtrTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5247,18 +5329,18 @@ impl trap::TrapClass for ForTypeRepr {
     fn class_name() -> &'static str { "ForTypeRepr" }
 }
 
-impl From<trap::Label<ForTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<ForTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<ForTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ForTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<ForTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ForTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5274,9 +5356,9 @@ impl From<trap::Label<ForTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ForTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<ForTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<ForTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme ForTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5314,24 +5396,6 @@ impl trap::TrapClass for FormatArgsExpr {
     fn class_name() -> &'static str { "FormatArgsExpr" }
 }
 
-impl From<trap::Label<FormatArgsExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<FormatArgsExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<FormatArgsExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<FormatArgsExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<FormatArgsExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<FormatArgsExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of Expr
@@ -5341,9 +5405,27 @@ impl From<trap::Label<FormatArgsExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<FormatArgsExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<FormatArgsExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<FormatArgsExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<FormatArgsExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<FormatArgsExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<FormatArgsExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FormatArgsExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5389,18 +5471,18 @@ impl trap::TrapClass for IdentPat {
     fn class_name() -> &'static str { "IdentPat" }
 }
 
-impl From<trap::Label<IdentPat>> for trap::Label<AstNode> {
+impl From<trap::Label<IdentPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<IdentPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<IdentPat>> for trap::Label<Element> {
+impl From<trap::Label<IdentPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<IdentPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5416,9 +5498,9 @@ impl From<trap::Label<IdentPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<IdentPat>> for trap::Label<Pat> {
+impl From<trap::Label<IdentPat>> for trap::Label<Element> {
     fn from(value: trap::Label<IdentPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme IdentPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5460,24 +5542,6 @@ impl trap::TrapClass for IfExpr {
     fn class_name() -> &'static str { "IfExpr" }
 }
 
-impl From<trap::Label<IfExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<IfExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<IfExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<IfExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<IfExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<IfExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of Expr
@@ -5487,9 +5551,27 @@ impl From<trap::Label<IfExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<IfExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<IfExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<IfExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<IfExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<IfExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<IfExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IfExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5519,18 +5601,18 @@ impl trap::TrapClass for ImplTraitTypeRepr {
     fn class_name() -> &'static str { "ImplTraitTypeRepr" }
 }
 
-impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<ImplTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ImplTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5546,9 +5628,9 @@ impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<ImplTraitTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<ImplTraitTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme ImplTraitTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5586,24 +5668,6 @@ impl trap::TrapClass for IndexExpr {
     fn class_name() -> &'static str { "IndexExpr" }
 }
 
-impl From<trap::Label<IndexExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<IndexExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<IndexExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<IndexExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<IndexExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<IndexExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of Expr
@@ -5613,9 +5677,27 @@ impl From<trap::Label<IndexExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<IndexExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<IndexExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<IndexExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<IndexExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<IndexExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<IndexExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme IndexExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5641,18 +5723,18 @@ impl trap::TrapClass for InferTypeRepr {
     fn class_name() -> &'static str { "InferTypeRepr" }
 }
 
-impl From<trap::Label<InferTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<InferTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<InferTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<InferTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<InferTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<InferTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5668,9 +5750,9 @@ impl From<trap::Label<InferTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<InferTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<InferTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<InferTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme InferTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5686,9 +5768,9 @@ impl trap::TrapClass for Item {
     fn class_name() -> &'static str { "Item" }
 }
 
-impl From<trap::Label<Item>> for trap::Label<Addressable> {
+impl From<trap::Label<Item>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Item>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Item is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Item is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5704,15 +5786,6 @@ impl From<trap::Label<Item>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Item>> for trap::Label<Element> {
-    fn from(value: trap::Label<Item>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Item is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Item>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Item>) -> Self {
         // SAFETY: this is safe because in the dbscheme Item is a subclass of Locatable
@@ -5722,9 +5795,18 @@ impl From<trap::Label<Item>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Item>> for trap::Label<Stmt> {
+impl From<trap::Label<Item>> for trap::Label<Element> {
     fn from(value: trap::Label<Item>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Item is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Item is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Item>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Item>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Item is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5740,24 +5822,6 @@ impl trap::TrapClass for LabelableExpr {
     fn class_name() -> &'static str { "LabelableExpr" }
 }
 
-impl From<trap::Label<LabelableExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LabelableExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LabelableExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LabelableExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<LabelableExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<LabelableExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Expr
@@ -5767,9 +5831,27 @@ impl From<trap::Label<LabelableExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<LabelableExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LabelableExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LabelableExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LabelableExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LabelableExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LabelableExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5807,24 +5889,6 @@ impl trap::TrapClass for LetExpr {
     fn class_name() -> &'static str { "LetExpr" }
 }
 
-impl From<trap::Label<LetExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LetExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LetExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LetExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<LetExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<LetExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of Expr
@@ -5834,9 +5898,27 @@ impl From<trap::Label<LetExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<LetExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LetExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LetExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LetExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LetExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LetExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LetExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5882,18 +5964,18 @@ impl trap::TrapClass for LetStmt {
     fn class_name() -> &'static str { "LetStmt" }
 }
 
-impl From<trap::Label<LetStmt>> for trap::Label<AstNode> {
+impl From<trap::Label<LetStmt>> for trap::Label<Stmt> {
     fn from(value: trap::Label<LetStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<LetStmt>> for trap::Label<Element> {
+impl From<trap::Label<LetStmt>> for trap::Label<AstNode> {
     fn from(value: trap::Label<LetStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5909,9 +5991,9 @@ impl From<trap::Label<LetStmt>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<LetStmt>> for trap::Label<Stmt> {
+impl From<trap::Label<LetStmt>> for trap::Label<Element> {
     fn from(value: trap::Label<LetStmt>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme LetStmt is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5941,18 +6023,18 @@ impl trap::TrapClass for Lifetime {
     fn class_name() -> &'static str { "Lifetime" }
 }
 
-impl From<trap::Label<Lifetime>> for trap::Label<AstNode> {
+impl From<trap::Label<Lifetime>> for trap::Label<UseBoundGenericArg> {
     fn from(value: trap::Label<Lifetime>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of UseBoundGenericArg
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Lifetime>> for trap::Label<Element> {
+impl From<trap::Label<Lifetime>> for trap::Label<AstNode> {
     fn from(value: trap::Label<Lifetime>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -5968,9 +6050,9 @@ impl From<trap::Label<Lifetime>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Lifetime>> for trap::Label<UseBoundGenericArg> {
+impl From<trap::Label<Lifetime>> for trap::Label<Element> {
     fn from(value: trap::Label<Lifetime>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of UseBoundGenericArg
+        // SAFETY: this is safe because in the dbscheme Lifetime is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6000,24 +6082,6 @@ impl trap::TrapClass for LifetimeArg {
     fn class_name() -> &'static str { "LifetimeArg" }
 }
 
-impl From<trap::Label<LifetimeArg>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LifetimeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LifetimeArg>> for trap::Label<Element> {
-    fn from(value: trap::Label<LifetimeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<LifetimeArg>> for trap::Label<GenericArg> {
     fn from(value: trap::Label<LifetimeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of GenericArg
@@ -6027,9 +6091,27 @@ impl From<trap::Label<LifetimeArg>> for trap::Label<GenericArg> {
     }
 }
 
+impl From<trap::Label<LifetimeArg>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LifetimeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LifetimeArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LifetimeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LifetimeArg>> for trap::Label<Element> {
+    fn from(value: trap::Label<LifetimeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LifetimeArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6067,24 +6149,6 @@ impl trap::TrapClass for LifetimeParam {
     fn class_name() -> &'static str { "LifetimeParam" }
 }
 
-impl From<trap::Label<LifetimeParam>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LifetimeParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LifetimeParam>> for trap::Label<Element> {
-    fn from(value: trap::Label<LifetimeParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<LifetimeParam>> for trap::Label<GenericParam> {
     fn from(value: trap::Label<LifetimeParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of GenericParam
@@ -6094,9 +6158,27 @@ impl From<trap::Label<LifetimeParam>> for trap::Label<GenericParam> {
     }
 }
 
+impl From<trap::Label<LifetimeParam>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LifetimeParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LifetimeParam>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LifetimeParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LifetimeParam>> for trap::Label<Element> {
+    fn from(value: trap::Label<LifetimeParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LifetimeParam is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6130,24 +6212,6 @@ impl trap::TrapClass for LiteralExpr {
     fn class_name() -> &'static str { "LiteralExpr" }
 }
 
-impl From<trap::Label<LiteralExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<LiteralExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LiteralExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LiteralExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<LiteralExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<LiteralExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of Expr
@@ -6157,9 +6221,27 @@ impl From<trap::Label<LiteralExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<LiteralExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LiteralExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LiteralExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LiteralExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LiteralExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LiteralExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LiteralExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6189,18 +6271,18 @@ impl trap::TrapClass for LiteralPat {
     fn class_name() -> &'static str { "LiteralPat" }
 }
 
-impl From<trap::Label<LiteralPat>> for trap::Label<AstNode> {
+impl From<trap::Label<LiteralPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<LiteralPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<LiteralPat>> for trap::Label<Element> {
+impl From<trap::Label<LiteralPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<LiteralPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6216,9 +6298,72 @@ impl From<trap::Label<LiteralPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<LiteralPat>> for trap::Label<Pat> {
+impl From<trap::Label<LiteralPat>> for trap::Label<Element> {
     fn from(value: trap::Label<LiteralPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct MacroBlockExpr {
+    pub id: trap::TrapId<MacroBlockExpr>,
+    pub tail_expr: Option<trap::Label<Expr>>,
+    pub statements: Vec<trap::Label<Stmt>>,
+}
+
+impl trap::TrapEntry for MacroBlockExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_block_exprs", vec![id.into()]);
+        if let Some(v) = self.tail_expr {
+            out.add_tuple("macro_block_expr_tail_exprs", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.statements.into_iter().enumerate() {
+            out.add_tuple("macro_block_expr_statements", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for MacroBlockExpr {
+    fn class_name() -> &'static str { "MacroBlockExpr" }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6248,24 +6393,6 @@ impl trap::TrapClass for MacroExpr {
     fn class_name() -> &'static str { "MacroExpr" }
 }
 
-impl From<trap::Label<MacroExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MacroExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MacroExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<MacroExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of Expr
@@ -6275,9 +6402,27 @@ impl From<trap::Label<MacroExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<MacroExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<MacroExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MacroExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6307,18 +6452,18 @@ impl trap::TrapClass for MacroPat {
     fn class_name() -> &'static str { "MacroPat" }
 }
 
-impl From<trap::Label<MacroPat>> for trap::Label<AstNode> {
+impl From<trap::Label<MacroPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<MacroPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MacroPat>> for trap::Label<Element> {
+impl From<trap::Label<MacroPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<MacroPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6334,9 +6479,9 @@ impl From<trap::Label<MacroPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<MacroPat>> for trap::Label<Pat> {
+impl From<trap::Label<MacroPat>> for trap::Label<Element> {
     fn from(value: trap::Label<MacroPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme MacroPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6366,18 +6511,18 @@ impl trap::TrapClass for MacroTypeRepr {
     fn class_name() -> &'static str { "MacroTypeRepr" }
 }
 
-impl From<trap::Label<MacroTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<MacroTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<MacroTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MacroTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<MacroTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<MacroTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6393,9 +6538,9 @@ impl From<trap::Label<MacroTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<MacroTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<MacroTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<MacroTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme MacroTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6433,24 +6578,6 @@ impl trap::TrapClass for MatchExpr {
     fn class_name() -> &'static str { "MatchExpr" }
 }
 
-impl From<trap::Label<MatchExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MatchExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MatchExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<MatchExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MatchExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<MatchExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of Expr
@@ -6460,9 +6587,27 @@ impl From<trap::Label<MatchExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<MatchExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MatchExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<MatchExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MatchExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MatchExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<MatchExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MatchExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6492,18 +6637,18 @@ impl trap::TrapClass for NameRef {
     fn class_name() -> &'static str { "NameRef" }
 }
 
-impl From<trap::Label<NameRef>> for trap::Label<AstNode> {
+impl From<trap::Label<NameRef>> for trap::Label<UseBoundGenericArg> {
     fn from(value: trap::Label<NameRef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of UseBoundGenericArg
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<NameRef>> for trap::Label<Element> {
+impl From<trap::Label<NameRef>> for trap::Label<AstNode> {
     fn from(value: trap::Label<NameRef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6519,9 +6664,9 @@ impl From<trap::Label<NameRef>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<NameRef>> for trap::Label<UseBoundGenericArg> {
+impl From<trap::Label<NameRef>> for trap::Label<Element> {
     fn from(value: trap::Label<NameRef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of UseBoundGenericArg
+        // SAFETY: this is safe because in the dbscheme NameRef is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6547,18 +6692,18 @@ impl trap::TrapClass for NeverTypeRepr {
     fn class_name() -> &'static str { "NeverTypeRepr" }
 }
 
-impl From<trap::Label<NeverTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<NeverTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<NeverTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<NeverTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<NeverTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<NeverTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6574,9 +6719,9 @@ impl From<trap::Label<NeverTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<NeverTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<NeverTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<NeverTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme NeverTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6614,24 +6759,6 @@ impl trap::TrapClass for OffsetOfExpr {
     fn class_name() -> &'static str { "OffsetOfExpr" }
 }
 
-impl From<trap::Label<OffsetOfExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<OffsetOfExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<OffsetOfExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<OffsetOfExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<OffsetOfExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<OffsetOfExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of Expr
@@ -6641,9 +6768,27 @@ impl From<trap::Label<OffsetOfExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<OffsetOfExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<OffsetOfExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<OffsetOfExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<OffsetOfExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<OffsetOfExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<OffsetOfExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme OffsetOfExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6673,18 +6818,18 @@ impl trap::TrapClass for OrPat {
     fn class_name() -> &'static str { "OrPat" }
 }
 
-impl From<trap::Label<OrPat>> for trap::Label<AstNode> {
+impl From<trap::Label<OrPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<OrPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<OrPat>> for trap::Label<Element> {
+impl From<trap::Label<OrPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<OrPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6700,9 +6845,9 @@ impl From<trap::Label<OrPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<OrPat>> for trap::Label<Pat> {
+impl From<trap::Label<OrPat>> for trap::Label<Element> {
     fn from(value: trap::Label<OrPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme OrPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6740,18 +6885,18 @@ impl trap::TrapClass for Param {
     fn class_name() -> &'static str { "Param" }
 }
 
-impl From<trap::Label<Param>> for trap::Label<AstNode> {
+impl From<trap::Label<Param>> for trap::Label<ParamBase> {
     fn from(value: trap::Label<Param>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Param is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme Param is a subclass of ParamBase
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Param>> for trap::Label<Element> {
+impl From<trap::Label<Param>> for trap::Label<AstNode> {
     fn from(value: trap::Label<Param>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Param is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Param is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6767,9 +6912,9 @@ impl From<trap::Label<Param>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Param>> for trap::Label<ParamBase> {
+impl From<trap::Label<Param>> for trap::Label<Element> {
     fn from(value: trap::Label<Param>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Param is a subclass of ParamBase
+        // SAFETY: this is safe because in the dbscheme Param is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6803,24 +6948,6 @@ impl trap::TrapClass for ParenExpr {
     fn class_name() -> &'static str { "ParenExpr" }
 }
 
-impl From<trap::Label<ParenExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ParenExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ParenExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ParenExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ParenExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<ParenExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of Expr
@@ -6830,9 +6957,27 @@ impl From<trap::Label<ParenExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<ParenExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ParenExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ParenExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ParenExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ParenExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<ParenExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ParenExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6862,18 +7007,18 @@ impl trap::TrapClass for ParenPat {
     fn class_name() -> &'static str { "ParenPat" }
 }
 
-impl From<trap::Label<ParenPat>> for trap::Label<AstNode> {
+impl From<trap::Label<ParenPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<ParenPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ParenPat>> for trap::Label<Element> {
+impl From<trap::Label<ParenPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ParenPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6889,9 +7034,9 @@ impl From<trap::Label<ParenPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ParenPat>> for trap::Label<Pat> {
+impl From<trap::Label<ParenPat>> for trap::Label<Element> {
     fn from(value: trap::Label<ParenPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme ParenPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6921,18 +7066,18 @@ impl trap::TrapClass for ParenTypeRepr {
     fn class_name() -> &'static str { "ParenTypeRepr" }
 }
 
-impl From<trap::Label<ParenTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<ParenTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<ParenTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<ParenTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<ParenTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<ParenTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6948,9 +7093,9 @@ impl From<trap::Label<ParenTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ParenTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<ParenTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<ParenTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme ParenTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6966,18 +7111,18 @@ impl trap::TrapClass for PathAstNode {
     fn class_name() -> &'static str { "PathAstNode" }
 }
 
-impl From<trap::Label<PathAstNode>> for trap::Label<AstNode> {
+impl From<trap::Label<PathAstNode>> for trap::Label<Resolvable> {
     fn from(value: trap::Label<PathAstNode>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of Resolvable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathAstNode>> for trap::Label<Element> {
+impl From<trap::Label<PathAstNode>> for trap::Label<AstNode> {
     fn from(value: trap::Label<PathAstNode>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -6993,9 +7138,9 @@ impl From<trap::Label<PathAstNode>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<PathAstNode>> for trap::Label<Resolvable> {
+impl From<trap::Label<PathAstNode>> for trap::Label<Element> {
     fn from(value: trap::Label<PathAstNode>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of Resolvable
+        // SAFETY: this is safe because in the dbscheme PathAstNode is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7011,24 +7156,6 @@ impl trap::TrapClass for PathExprBase {
     fn class_name() -> &'static str { "PathExprBase" }
 }
 
-impl From<trap::Label<PathExprBase>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<PathExprBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<PathExprBase>> for trap::Label<Element> {
-    fn from(value: trap::Label<PathExprBase>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<PathExprBase>> for trap::Label<Expr> {
     fn from(value: trap::Label<PathExprBase>) -> Self {
         // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Expr
@@ -7038,9 +7165,27 @@ impl From<trap::Label<PathExprBase>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<PathExprBase>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<PathExprBase>> for trap::Label<Locatable> {
     fn from(value: trap::Label<PathExprBase>) -> Self {
         // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PathExprBase>> for trap::Label<Element> {
+    fn from(value: trap::Label<PathExprBase>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExprBase is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7070,18 +7215,18 @@ impl trap::TrapClass for PathTypeRepr {
     fn class_name() -> &'static str { "PathTypeRepr" }
 }
 
-impl From<trap::Label<PathTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<PathTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<PathTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<PathTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<PathTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7097,9 +7242,9 @@ impl From<trap::Label<PathTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<PathTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<PathTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<PathTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme PathTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7137,24 +7282,6 @@ impl trap::TrapClass for PrefixExpr {
     fn class_name() -> &'static str { "PrefixExpr" }
 }
 
-impl From<trap::Label<PrefixExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<PrefixExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<PrefixExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<PrefixExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<PrefixExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<PrefixExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of Expr
@@ -7164,9 +7291,27 @@ impl From<trap::Label<PrefixExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<PrefixExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PrefixExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<PrefixExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<PrefixExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<PrefixExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<PrefixExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PrefixExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7204,18 +7349,18 @@ impl trap::TrapClass for PtrTypeRepr {
     fn class_name() -> &'static str { "PtrTypeRepr" }
 }
 
-impl From<trap::Label<PtrTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<PtrTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<PtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PtrTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<PtrTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<PtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7231,9 +7376,9 @@ impl From<trap::Label<PtrTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<PtrTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<PtrTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<PtrTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme PtrTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7275,24 +7420,6 @@ impl trap::TrapClass for RangeExpr {
     fn class_name() -> &'static str { "RangeExpr" }
 }
 
-impl From<trap::Label<RangeExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RangeExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RangeExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<RangeExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<RangeExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<RangeExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of Expr
@@ -7302,9 +7429,27 @@ impl From<trap::Label<RangeExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<RangeExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<RangeExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<RangeExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<RangeExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<RangeExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<RangeExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RangeExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7342,18 +7487,18 @@ impl trap::TrapClass for RangePat {
     fn class_name() -> &'static str { "RangePat" }
 }
 
-impl From<trap::Label<RangePat>> for trap::Label<AstNode> {
+impl From<trap::Label<RangePat>> for trap::Label<Pat> {
     fn from(value: trap::Label<RangePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RangePat>> for trap::Label<Element> {
+impl From<trap::Label<RangePat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<RangePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7369,68 +7514,9 @@ impl From<trap::Label<RangePat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<RangePat>> for trap::Label<Pat> {
+impl From<trap::Label<RangePat>> for trap::Label<Element> {
     fn from(value: trap::Label<RangePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of Pat
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordFieldList {
-    pub id: trap::TrapId<RecordFieldList>,
-    pub fields: Vec<trap::Label<RecordField>>,
-}
-
-impl trap::TrapEntry for RecordFieldList {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_field_lists", vec![id.into()]);
-        for (i, v) in self.fields.into_iter().enumerate() {
-            out.add_tuple("record_field_list_fields", vec![id.into(), i.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordFieldList {
-    fn class_name() -> &'static str { "RecordFieldList" }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<FieldList> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of FieldList
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordFieldList>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordFieldList is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme RangePat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7476,24 +7562,6 @@ impl trap::TrapClass for RefExpr {
     fn class_name() -> &'static str { "RefExpr" }
 }
 
-impl From<trap::Label<RefExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RefExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RefExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<RefExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<RefExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<RefExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of Expr
@@ -7503,9 +7571,27 @@ impl From<trap::Label<RefExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<RefExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<RefExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<RefExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<RefExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<RefExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<RefExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme RefExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7539,18 +7625,18 @@ impl trap::TrapClass for RefPat {
     fn class_name() -> &'static str { "RefPat" }
 }
 
-impl From<trap::Label<RefPat>> for trap::Label<AstNode> {
+impl From<trap::Label<RefPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<RefPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RefPat>> for trap::Label<Element> {
+impl From<trap::Label<RefPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<RefPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7566,9 +7652,9 @@ impl From<trap::Label<RefPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<RefPat>> for trap::Label<Pat> {
+impl From<trap::Label<RefPat>> for trap::Label<Element> {
     fn from(value: trap::Label<RefPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme RefPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7606,18 +7692,18 @@ impl trap::TrapClass for RefTypeRepr {
     fn class_name() -> &'static str { "RefTypeRepr" }
 }
 
-impl From<trap::Label<RefTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<RefTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<RefTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RefTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<RefTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<RefTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7633,9 +7719,9 @@ impl From<trap::Label<RefTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<RefTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<RefTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<RefTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme RefTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7665,18 +7751,18 @@ impl trap::TrapClass for RestPat {
     fn class_name() -> &'static str { "RestPat" }
 }
 
-impl From<trap::Label<RestPat>> for trap::Label<AstNode> {
+impl From<trap::Label<RestPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<RestPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<RestPat>> for trap::Label<Element> {
+impl From<trap::Label<RestPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<RestPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7692,9 +7778,9 @@ impl From<trap::Label<RestPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<RestPat>> for trap::Label<Pat> {
+impl From<trap::Label<RestPat>> for trap::Label<Element> {
     fn from(value: trap::Label<RestPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme RestPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7728,24 +7814,6 @@ impl trap::TrapClass for ReturnExpr {
     fn class_name() -> &'static str { "ReturnExpr" }
 }
 
-impl From<trap::Label<ReturnExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ReturnExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ReturnExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ReturnExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ReturnExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<ReturnExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of Expr
@@ -7755,9 +7823,27 @@ impl From<trap::Label<ReturnExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<ReturnExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ReturnExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ReturnExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ReturnExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ReturnExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<ReturnExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ReturnExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7807,18 +7893,18 @@ impl trap::TrapClass for SelfParam {
     fn class_name() -> &'static str { "SelfParam" }
 }
 
-impl From<trap::Label<SelfParam>> for trap::Label<AstNode> {
+impl From<trap::Label<SelfParam>> for trap::Label<ParamBase> {
     fn from(value: trap::Label<SelfParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of ParamBase
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<SelfParam>> for trap::Label<Element> {
+impl From<trap::Label<SelfParam>> for trap::Label<AstNode> {
     fn from(value: trap::Label<SelfParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7834,9 +7920,9 @@ impl From<trap::Label<SelfParam>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<SelfParam>> for trap::Label<ParamBase> {
+impl From<trap::Label<SelfParam>> for trap::Label<Element> {
     fn from(value: trap::Label<SelfParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of ParamBase
+        // SAFETY: this is safe because in the dbscheme SelfParam is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7866,18 +7952,18 @@ impl trap::TrapClass for SlicePat {
     fn class_name() -> &'static str { "SlicePat" }
 }
 
-impl From<trap::Label<SlicePat>> for trap::Label<AstNode> {
+impl From<trap::Label<SlicePat>> for trap::Label<Pat> {
     fn from(value: trap::Label<SlicePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<SlicePat>> for trap::Label<Element> {
+impl From<trap::Label<SlicePat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<SlicePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7893,9 +7979,9 @@ impl From<trap::Label<SlicePat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<SlicePat>> for trap::Label<Pat> {
+impl From<trap::Label<SlicePat>> for trap::Label<Element> {
     fn from(value: trap::Label<SlicePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme SlicePat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7925,18 +8011,18 @@ impl trap::TrapClass for SliceTypeRepr {
     fn class_name() -> &'static str { "SliceTypeRepr" }
 }
 
-impl From<trap::Label<SliceTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<SliceTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<SliceTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<SliceTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<SliceTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<SliceTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7952,9 +8038,68 @@ impl From<trap::Label<SliceTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<SliceTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<SliceTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<SliceTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme SliceTypeRepr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructFieldList {
+    pub id: trap::TrapId<StructFieldList>,
+    pub fields: Vec<trap::Label<StructField>>,
+}
+
+impl trap::TrapEntry for StructFieldList {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_field_lists", vec![id.into()]);
+        for (i, v) in self.fields.into_iter().enumerate() {
+            out.add_tuple("struct_field_list_fields", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructFieldList {
+    fn class_name() -> &'static str { "StructFieldList" }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<FieldList> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of FieldList
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructFieldList>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructFieldList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -7988,24 +8133,6 @@ impl trap::TrapClass for TryExpr {
     fn class_name() -> &'static str { "TryExpr" }
 }
 
-impl From<trap::Label<TryExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TryExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TryExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<TryExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TryExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<TryExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of Expr
@@ -8015,9 +8142,27 @@ impl From<trap::Label<TryExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<TryExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TryExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<TryExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TryExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TryExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<TryExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TryExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8051,24 +8196,6 @@ impl trap::TrapClass for TupleExpr {
     fn class_name() -> &'static str { "TupleExpr" }
 }
 
-impl From<trap::Label<TupleExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TupleExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TupleExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<TupleExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TupleExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<TupleExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of Expr
@@ -8078,9 +8205,27 @@ impl From<trap::Label<TupleExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<TupleExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TupleExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<TupleExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TupleExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TupleExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<TupleExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TupleExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8110,24 +8255,6 @@ impl trap::TrapClass for TupleFieldList {
     fn class_name() -> &'static str { "TupleFieldList" }
 }
 
-impl From<trap::Label<TupleFieldList>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TupleFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TupleFieldList>> for trap::Label<Element> {
-    fn from(value: trap::Label<TupleFieldList>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TupleFieldList>> for trap::Label<FieldList> {
     fn from(value: trap::Label<TupleFieldList>) -> Self {
         // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of FieldList
@@ -8137,9 +8264,27 @@ impl From<trap::Label<TupleFieldList>> for trap::Label<FieldList> {
     }
 }
 
+impl From<trap::Label<TupleFieldList>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TupleFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<TupleFieldList>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TupleFieldList>) -> Self {
         // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TupleFieldList>> for trap::Label<Element> {
+    fn from(value: trap::Label<TupleFieldList>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TupleFieldList is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8169,18 +8314,18 @@ impl trap::TrapClass for TuplePat {
     fn class_name() -> &'static str { "TuplePat" }
 }
 
-impl From<trap::Label<TuplePat>> for trap::Label<AstNode> {
+impl From<trap::Label<TuplePat>> for trap::Label<Pat> {
     fn from(value: trap::Label<TuplePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TuplePat>> for trap::Label<Element> {
+impl From<trap::Label<TuplePat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<TuplePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8196,9 +8341,9 @@ impl From<trap::Label<TuplePat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<TuplePat>> for trap::Label<Pat> {
+impl From<trap::Label<TuplePat>> for trap::Label<Element> {
     fn from(value: trap::Label<TuplePat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme TuplePat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8228,18 +8373,18 @@ impl trap::TrapClass for TupleTypeRepr {
     fn class_name() -> &'static str { "TupleTypeRepr" }
 }
 
-impl From<trap::Label<TupleTypeRepr>> for trap::Label<AstNode> {
+impl From<trap::Label<TupleTypeRepr>> for trap::Label<TypeRepr> {
     fn from(value: trap::Label<TupleTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of TypeRepr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TupleTypeRepr>> for trap::Label<Element> {
+impl From<trap::Label<TupleTypeRepr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<TupleTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8255,9 +8400,9 @@ impl From<trap::Label<TupleTypeRepr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<TupleTypeRepr>> for trap::Label<TypeRepr> {
+impl From<trap::Label<TupleTypeRepr>> for trap::Label<Element> {
     fn from(value: trap::Label<TupleTypeRepr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of TypeRepr
+        // SAFETY: this is safe because in the dbscheme TupleTypeRepr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8287,24 +8432,6 @@ impl trap::TrapClass for TypeArg {
     fn class_name() -> &'static str { "TypeArg" }
 }
 
-impl From<trap::Label<TypeArg>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TypeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TypeArg>> for trap::Label<Element> {
-    fn from(value: trap::Label<TypeArg>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TypeArg>> for trap::Label<GenericArg> {
     fn from(value: trap::Label<TypeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of GenericArg
@@ -8314,9 +8441,27 @@ impl From<trap::Label<TypeArg>> for trap::Label<GenericArg> {
     }
 }
 
+impl From<trap::Label<TypeArg>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TypeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<TypeArg>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeArg>> for trap::Label<Element> {
+    fn from(value: trap::Label<TypeArg>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeArg is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8358,24 +8503,6 @@ impl trap::TrapClass for TypeParam {
     fn class_name() -> &'static str { "TypeParam" }
 }
 
-impl From<trap::Label<TypeParam>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TypeParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TypeParam>> for trap::Label<Element> {
-    fn from(value: trap::Label<TypeParam>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TypeParam>> for trap::Label<GenericParam> {
     fn from(value: trap::Label<TypeParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of GenericParam
@@ -8385,9 +8512,27 @@ impl From<trap::Label<TypeParam>> for trap::Label<GenericParam> {
     }
 }
 
+impl From<trap::Label<TypeParam>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<TypeParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<TypeParam>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TypeParam>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeParam>> for trap::Label<Element> {
+    fn from(value: trap::Label<TypeParam>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeParam is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8417,27 +8562,18 @@ impl trap::TrapClass for UnderscoreExpr {
     fn class_name() -> &'static str { "UnderscoreExpr" }
 }
 
-impl From<trap::Label<UnderscoreExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<UnderscoreExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UnderscoreExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<UnderscoreExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<UnderscoreExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme UnderscoreExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<UnderscoreExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<UnderscoreExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme UnderscoreExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<UnderscoreExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<UnderscoreExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme UnderscoreExpr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8453,11 +8589,20 @@ impl From<trap::Label<UnderscoreExpr>> for trap::Label<Locatable> {
     }
 }
 
+impl From<trap::Label<UnderscoreExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<UnderscoreExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme UnderscoreExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct Variant {
     pub id: trap::TrapId<Variant>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub expr: Option<trap::Label<Expr>>,
+    pub discriminant: Option<trap::Label<Expr>>,
     pub field_list: Option<trap::Label<FieldList>>,
     pub name: Option<trap::Label<Name>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -8473,8 +8618,8 @@ impl trap::TrapEntry for Variant {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("variant_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.expr {
-            out.add_tuple("variant_exprs", vec![id.into(), v.into()]);
+        if let Some(v) = self.discriminant {
+            out.add_tuple("variant_discriminants", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.field_list {
             out.add_tuple("variant_field_lists", vec![id.into(), v.into()]);
@@ -8492,9 +8637,9 @@ impl trap::TrapClass for Variant {
     fn class_name() -> &'static str { "Variant" }
 }
 
-impl From<trap::Label<Variant>> for trap::Label<Addressable> {
+impl From<trap::Label<Variant>> for trap::Label<VariantDef> {
     fn from(value: trap::Label<Variant>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Variant is a subclass of VariantDef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8510,6 +8655,15 @@ impl From<trap::Label<Variant>> for trap::Label<AstNode> {
     }
 }
 
+impl From<trap::Label<Variant>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Variant>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<Variant>> for trap::Label<Element> {
     fn from(value: trap::Label<Variant>) -> Self {
         // SAFETY: this is safe because in the dbscheme Variant is a subclass of Element
@@ -8519,9 +8673,9 @@ impl From<trap::Label<Variant>> for trap::Label<Element> {
     }
 }
 
-impl From<trap::Label<Variant>> for trap::Label<Locatable> {
+impl From<trap::Label<Variant>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Variant>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Variant is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8547,18 +8701,18 @@ impl trap::TrapClass for WildcardPat {
     fn class_name() -> &'static str { "WildcardPat" }
 }
 
-impl From<trap::Label<WildcardPat>> for trap::Label<AstNode> {
+impl From<trap::Label<WildcardPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<WildcardPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<WildcardPat>> for trap::Label<Element> {
+impl From<trap::Label<WildcardPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<WildcardPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8574,9 +8728,9 @@ impl From<trap::Label<WildcardPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<WildcardPat>> for trap::Label<Pat> {
+impl From<trap::Label<WildcardPat>> for trap::Label<Element> {
     fn from(value: trap::Label<WildcardPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme WildcardPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8610,24 +8764,6 @@ impl trap::TrapClass for YeetExpr {
     fn class_name() -> &'static str { "YeetExpr" }
 }
 
-impl From<trap::Label<YeetExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<YeetExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<YeetExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<YeetExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<YeetExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<YeetExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of Expr
@@ -8637,9 +8773,27 @@ impl From<trap::Label<YeetExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<YeetExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<YeetExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<YeetExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<YeetExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<YeetExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<YeetExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme YeetExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8673,24 +8827,6 @@ impl trap::TrapClass for YieldExpr {
     fn class_name() -> &'static str { "YieldExpr" }
 }
 
-impl From<trap::Label<YieldExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<YieldExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<YieldExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<YieldExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<YieldExpr>> for trap::Label<Expr> {
     fn from(value: trap::Label<YieldExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of Expr
@@ -8700,9 +8836,27 @@ impl From<trap::Label<YieldExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<YieldExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<YieldExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<YieldExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<YieldExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<YieldExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<YieldExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme YieldExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8764,18 +8918,9 @@ impl trap::TrapClass for BlockExpr {
     fn class_name() -> &'static str { "BlockExpr" }
 }
 
-impl From<trap::Label<BlockExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<BlockExpr>> for trap::Label<LabelableExpr> {
     fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<BlockExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of LabelableExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8791,9 +8936,9 @@ impl From<trap::Label<BlockExpr>> for trap::Label<Expr> {
     }
 }
 
-impl From<trap::Label<BlockExpr>> for trap::Label<LabelableExpr> {
+impl From<trap::Label<BlockExpr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<BlockExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of LabelableExpr
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8803,6 +8948,15 @@ impl From<trap::Label<BlockExpr>> for trap::Label<LabelableExpr> {
 impl From<trap::Label<BlockExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<BlockExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<BlockExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<BlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme BlockExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8840,27 +8994,9 @@ impl trap::TrapClass for CallExpr {
     fn class_name() -> &'static str { "CallExpr" }
 }
 
-impl From<trap::Label<CallExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<CallExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<CallExpr>> for trap::Label<CallExprBase> {
     fn from(value: trap::Label<CallExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of CallExprBase
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<CallExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<CallExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8876,9 +9012,27 @@ impl From<trap::Label<CallExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<CallExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<CallExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<CallExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<CallExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<CallExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<CallExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme CallExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8932,15 +9086,6 @@ impl trap::TrapClass for Const {
     fn class_name() -> &'static str { "Const" }
 }
 
-impl From<trap::Label<Const>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<Const>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Const is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Const>> for trap::Label<AssocItem> {
     fn from(value: trap::Label<Const>) -> Self {
         // SAFETY: this is safe because in the dbscheme Const is a subclass of AssocItem
@@ -8953,6 +9098,15 @@ impl From<trap::Label<Const>> for trap::Label<AssocItem> {
 impl From<trap::Label<Const>> for trap::Label<AstNode> {
     fn from(value: trap::Label<Const>) -> Self {
         // SAFETY: this is safe because in the dbscheme Const is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Const>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Const>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Const is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -8977,18 +9131,18 @@ impl From<trap::Label<Const>> for trap::Label<Item> {
     }
 }
 
-impl From<trap::Label<Const>> for trap::Label<Locatable> {
+impl From<trap::Label<Const>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Const>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Const is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Const is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Const>> for trap::Label<Stmt> {
+impl From<trap::Label<Const>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Const>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Const is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Const is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9038,9 +9192,18 @@ impl trap::TrapClass for Enum {
     fn class_name() -> &'static str { "Enum" }
 }
 
-impl From<trap::Label<Enum>> for trap::Label<Addressable> {
+impl From<trap::Label<Enum>> for trap::Label<Item> {
     fn from(value: trap::Label<Enum>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Enum>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Enum>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9056,24 +9219,6 @@ impl From<trap::Label<Enum>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Enum>> for trap::Label<Element> {
-    fn from(value: trap::Label<Enum>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Enum>> for trap::Label<Item> {
-    fn from(value: trap::Label<Enum>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Enum>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Enum>) -> Self {
         // SAFETY: this is safe because in the dbscheme Enum is a subclass of Locatable
@@ -9083,9 +9228,18 @@ impl From<trap::Label<Enum>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Enum>> for trap::Label<Stmt> {
+impl From<trap::Label<Enum>> for trap::Label<Element> {
     fn from(value: trap::Label<Enum>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Enum>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Enum>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Enum is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9127,45 +9281,9 @@ impl trap::TrapClass for ExternBlock {
     fn class_name() -> &'static str { "ExternBlock" }
 }
 
-impl From<trap::Label<ExternBlock>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<ExternBlock>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ExternBlock>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<ExternBlock>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ExternBlock>> for trap::Label<Element> {
-    fn from(value: trap::Label<ExternBlock>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ExternBlock>> for trap::Label<Item> {
     fn from(value: trap::Label<ExternBlock>) -> Self {
         // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ExternBlock>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<ExternBlock>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9181,11 +9299,47 @@ impl From<trap::Label<ExternBlock>> for trap::Label<Stmt> {
     }
 }
 
+impl From<trap::Label<ExternBlock>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ExternBlock>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ExternBlock>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<ExternBlock>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ExternBlock>> for trap::Label<Element> {
+    fn from(value: trap::Label<ExternBlock>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ExternBlock>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<ExternBlock>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternBlock is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct ExternCrate {
     pub id: trap::TrapId<ExternCrate>,
     pub attrs: Vec<trap::Label<Attr>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub rename: Option<trap::Label<Rename>>,
     pub visibility: Option<trap::Label<Visibility>>,
 }
@@ -9200,8 +9354,8 @@ impl trap::TrapEntry for ExternCrate {
         for (i, v) in self.attrs.into_iter().enumerate() {
             out.add_tuple("extern_crate_attrs", vec![id.into(), i.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("extern_crate_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("extern_crate_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.rename {
             out.add_tuple("extern_crate_renames", vec![id.into(), v.into()]);
@@ -9216,9 +9370,18 @@ impl trap::TrapClass for ExternCrate {
     fn class_name() -> &'static str { "ExternCrate" }
 }
 
-impl From<trap::Label<ExternCrate>> for trap::Label<Addressable> {
+impl From<trap::Label<ExternCrate>> for trap::Label<Item> {
     fn from(value: trap::Label<ExternCrate>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ExternCrate>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<ExternCrate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9234,24 +9397,6 @@ impl From<trap::Label<ExternCrate>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<ExternCrate>> for trap::Label<Element> {
-    fn from(value: trap::Label<ExternCrate>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ExternCrate>> for trap::Label<Item> {
-    fn from(value: trap::Label<ExternCrate>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<ExternCrate>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ExternCrate>) -> Self {
         // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Locatable
@@ -9261,9 +9406,18 @@ impl From<trap::Label<ExternCrate>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ExternCrate>> for trap::Label<Stmt> {
+impl From<trap::Label<ExternCrate>> for trap::Label<Element> {
     fn from(value: trap::Label<ExternCrate>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ExternCrate>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<ExternCrate>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ExternCrate is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9345,15 +9499,6 @@ impl trap::TrapClass for Function {
     fn class_name() -> &'static str { "Function" }
 }
 
-impl From<trap::Label<Function>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<Function>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Function is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Function>> for trap::Label<AssocItem> {
     fn from(value: trap::Label<Function>) -> Self {
         // SAFETY: this is safe because in the dbscheme Function is a subclass of AssocItem
@@ -9372,9 +9517,9 @@ impl From<trap::Label<Function>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Function>> for trap::Label<Callable> {
+impl From<trap::Label<Function>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Function>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Function is a subclass of Callable
+        // SAFETY: this is safe because in the dbscheme Function is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9408,18 +9553,27 @@ impl From<trap::Label<Function>> for trap::Label<Item> {
     }
 }
 
-impl From<trap::Label<Function>> for trap::Label<Locatable> {
+impl From<trap::Label<Function>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Function>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Function is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Function is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Function>> for trap::Label<Stmt> {
+impl From<trap::Label<Function>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Function>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Function is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Function is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Function>> for trap::Label<Callable> {
+    fn from(value: trap::Label<Function>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Function is a subclass of Callable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9485,45 +9639,9 @@ impl trap::TrapClass for Impl {
     fn class_name() -> &'static str { "Impl" }
 }
 
-impl From<trap::Label<Impl>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<Impl>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Impl>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<Impl>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Impl is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Impl>> for trap::Label<Element> {
-    fn from(value: trap::Label<Impl>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Impl>> for trap::Label<Item> {
     fn from(value: trap::Label<Impl>) -> Self {
         // SAFETY: this is safe because in the dbscheme Impl is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Impl>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<Impl>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9539,6 +9657,42 @@ impl From<trap::Label<Impl>> for trap::Label<Stmt> {
     }
 }
 
+impl From<trap::Label<Impl>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<Impl>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Impl is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Impl>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<Impl>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Impl>> for trap::Label<Element> {
+    fn from(value: trap::Label<Impl>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Impl>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Impl>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Impl is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct LoopingExpr {
     _unused: ()
@@ -9548,18 +9702,9 @@ impl trap::TrapClass for LoopingExpr {
     fn class_name() -> &'static str { "LoopingExpr" }
 }
 
-impl From<trap::Label<LoopingExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<LoopingExpr>> for trap::Label<LabelableExpr> {
     fn from(value: trap::Label<LoopingExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopingExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LoopingExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of LabelableExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9575,9 +9720,9 @@ impl From<trap::Label<LoopingExpr>> for trap::Label<Expr> {
     }
 }
 
-impl From<trap::Label<LoopingExpr>> for trap::Label<LabelableExpr> {
+impl From<trap::Label<LoopingExpr>> for trap::Label<AstNode> {
     fn from(value: trap::Label<LoopingExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of LabelableExpr
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9587,6 +9732,15 @@ impl From<trap::Label<LoopingExpr>> for trap::Label<LabelableExpr> {
 impl From<trap::Label<LoopingExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LoopingExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopingExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<LoopingExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopingExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9630,15 +9784,6 @@ impl trap::TrapClass for MacroCall {
     fn class_name() -> &'static str { "MacroCall" }
 }
 
-impl From<trap::Label<MacroCall>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<MacroCall>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MacroCall>> for trap::Label<AssocItem> {
     fn from(value: trap::Label<MacroCall>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of AssocItem
@@ -9651,6 +9796,15 @@ impl From<trap::Label<MacroCall>> for trap::Label<AssocItem> {
 impl From<trap::Label<MacroCall>> for trap::Label<AstNode> {
     fn from(value: trap::Label<MacroCall>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroCall>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroCall>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9684,18 +9838,18 @@ impl From<trap::Label<MacroCall>> for trap::Label<Item> {
     }
 }
 
-impl From<trap::Label<MacroCall>> for trap::Label<Locatable> {
+impl From<trap::Label<MacroCall>> for trap::Label<Stmt> {
     fn from(value: trap::Label<MacroCall>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<MacroCall>> for trap::Label<Stmt> {
+impl From<trap::Label<MacroCall>> for trap::Label<Addressable> {
     fn from(value: trap::Label<MacroCall>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme MacroCall is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9741,9 +9895,18 @@ impl trap::TrapClass for MacroDef {
     fn class_name() -> &'static str { "MacroDef" }
 }
 
-impl From<trap::Label<MacroDef>> for trap::Label<Addressable> {
+impl From<trap::Label<MacroDef>> for trap::Label<Item> {
     fn from(value: trap::Label<MacroDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroDef>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<MacroDef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9759,24 +9922,6 @@ impl From<trap::Label<MacroDef>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<MacroDef>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroDef>> for trap::Label<Item> {
-    fn from(value: trap::Label<MacroDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MacroDef>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MacroDef>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Locatable
@@ -9786,9 +9931,18 @@ impl From<trap::Label<MacroDef>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<MacroDef>> for trap::Label<Stmt> {
+impl From<trap::Label<MacroDef>> for trap::Label<Element> {
     fn from(value: trap::Label<MacroDef>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroDef>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<MacroDef>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroDef is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9830,45 +9984,9 @@ impl trap::TrapClass for MacroRules {
     fn class_name() -> &'static str { "MacroRules" }
 }
 
-impl From<trap::Label<MacroRules>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<MacroRules>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroRules>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MacroRules>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroRules>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroRules>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MacroRules>> for trap::Label<Item> {
     fn from(value: trap::Label<MacroRules>) -> Self {
         // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroRules>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<MacroRules>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9884,13 +10002,49 @@ impl From<trap::Label<MacroRules>> for trap::Label<Stmt> {
     }
 }
 
+impl From<trap::Label<MacroRules>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroRules>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroRules>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroRules>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroRules>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroRules>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroRules>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<MacroRules>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroRules is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct MethodCallExpr {
     pub id: trap::TrapId<MethodCallExpr>,
     pub arg_list: Option<trap::Label<ArgList>>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_arg_list: Option<trap::Label<GenericArgList>>,
-    pub name_ref: Option<trap::Label<NameRef>>,
+    pub identifier: Option<trap::Label<NameRef>>,
     pub receiver: Option<trap::Label<Expr>>,
 }
 
@@ -9910,8 +10064,8 @@ impl trap::TrapEntry for MethodCallExpr {
         if let Some(v) = self.generic_arg_list {
             out.add_tuple("method_call_expr_generic_arg_lists", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.name_ref {
-            out.add_tuple("method_call_expr_name_refs", vec![id.into(), v.into()]);
+        if let Some(v) = self.identifier {
+            out.add_tuple("method_call_expr_identifiers", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.receiver {
             out.add_tuple("method_call_expr_receivers", vec![id.into(), v.into()]);
@@ -9923,27 +10077,9 @@ impl trap::TrapClass for MethodCallExpr {
     fn class_name() -> &'static str { "MethodCallExpr" }
 }
 
-impl From<trap::Label<MethodCallExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MethodCallExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<MethodCallExpr>> for trap::Label<CallExprBase> {
     fn from(value: trap::Label<MethodCallExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of CallExprBase
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MethodCallExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<MethodCallExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9959,9 +10095,27 @@ impl From<trap::Label<MethodCallExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<MethodCallExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MethodCallExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<MethodCallExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<MethodCallExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MethodCallExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<MethodCallExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MethodCallExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10012,9 +10166,18 @@ impl trap::TrapClass for Module {
     fn class_name() -> &'static str { "Module" }
 }
 
-impl From<trap::Label<Module>> for trap::Label<Addressable> {
+impl From<trap::Label<Module>> for trap::Label<Item> {
     fn from(value: trap::Label<Module>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Module is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Module is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Module>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Module>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Module is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10030,24 +10193,6 @@ impl From<trap::Label<Module>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Module>> for trap::Label<Element> {
-    fn from(value: trap::Label<Module>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Module is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Module>> for trap::Label<Item> {
-    fn from(value: trap::Label<Module>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Module is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Module>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Module>) -> Self {
         // SAFETY: this is safe because in the dbscheme Module is a subclass of Locatable
@@ -10057,9 +10202,18 @@ impl From<trap::Label<Module>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Module>> for trap::Label<Stmt> {
+impl From<trap::Label<Module>> for trap::Label<Element> {
     fn from(value: trap::Label<Module>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Module is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Module is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Module>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Module>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Module is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10093,18 +10247,9 @@ impl trap::TrapClass for PathExpr {
     fn class_name() -> &'static str { "PathExpr" }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<PathExpr>> for trap::Label<PathExprBase> {
     fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<PathExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of PathExprBase
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10120,6 +10265,15 @@ impl From<trap::Label<PathExpr>> for trap::Label<Expr> {
     }
 }
 
+impl From<trap::Label<PathExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<PathExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<PathExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<PathExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Locatable
@@ -10129,18 +10283,18 @@ impl From<trap::Label<PathExpr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<PathAstNode> {
+impl From<trap::Label<PathExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of PathAstNode
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathExpr>> for trap::Label<PathExprBase> {
+impl From<trap::Label<PathExpr>> for trap::Label<PathAstNode> {
     fn from(value: trap::Label<PathExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of PathExprBase
+        // SAFETY: this is safe because in the dbscheme PathExpr is a subclass of PathAstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10179,18 +10333,18 @@ impl trap::TrapClass for PathPat {
     fn class_name() -> &'static str { "PathPat" }
 }
 
-impl From<trap::Label<PathPat>> for trap::Label<AstNode> {
+impl From<trap::Label<PathPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<PathPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<PathPat>> for trap::Label<Element> {
+impl From<trap::Label<PathPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<PathPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10206,9 +10360,9 @@ impl From<trap::Label<PathPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<PathPat>> for trap::Label<Pat> {
+impl From<trap::Label<PathPat>> for trap::Label<Element> {
     fn from(value: trap::Label<PathPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme PathPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10227,168 +10381,6 @@ impl From<trap::Label<PathPat>> for trap::Label<PathAstNode> {
 impl From<trap::Label<PathPat>> for trap::Label<Resolvable> {
     fn from(value: trap::Label<PathPat>) -> Self {
         // SAFETY: this is safe because in the dbscheme PathPat is a subclass of Resolvable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordExpr {
-    pub id: trap::TrapId<RecordExpr>,
-    pub path: Option<trap::Label<Path>>,
-    pub record_expr_field_list: Option<trap::Label<RecordExprFieldList>>,
-}
-
-impl trap::TrapEntry for RecordExpr {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_exprs", vec![id.into()]);
-        if let Some(v) = self.path {
-            out.add_tuple("path_ast_node_paths", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.record_expr_field_list {
-            out.add_tuple("record_expr_record_expr_field_lists", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordExpr {
-    fn class_name() -> &'static str { "RecordExpr" }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of Expr
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<PathAstNode> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of PathAstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordExpr>> for trap::Label<Resolvable> {
-    fn from(value: trap::Label<RecordExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordExpr is a subclass of Resolvable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct RecordPat {
-    pub id: trap::TrapId<RecordPat>,
-    pub path: Option<trap::Label<Path>>,
-    pub record_pat_field_list: Option<trap::Label<RecordPatFieldList>>,
-}
-
-impl trap::TrapEntry for RecordPat {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("record_pats", vec![id.into()]);
-        if let Some(v) = self.path {
-            out.add_tuple("path_ast_node_paths", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.record_pat_field_list {
-            out.add_tuple("record_pat_record_pat_field_lists", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for RecordPat {
-    fn class_name() -> &'static str { "RecordPat" }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<Element> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<Pat> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of Pat
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<PathAstNode> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of PathAstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<RecordPat>> for trap::Label<Resolvable> {
-    fn from(value: trap::Label<RecordPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme RecordPat is a subclass of Resolvable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10446,9 +10438,9 @@ impl trap::TrapClass for Static {
     fn class_name() -> &'static str { "Static" }
 }
 
-impl From<trap::Label<Static>> for trap::Label<Addressable> {
+impl From<trap::Label<Static>> for trap::Label<ExternItem> {
     fn from(value: trap::Label<Static>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Static is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Static is a subclass of ExternItem
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10464,18 +10456,18 @@ impl From<trap::Label<Static>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Static>> for trap::Label<Element> {
+impl From<trap::Label<Static>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Static>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Static is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme Static is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Static>> for trap::Label<ExternItem> {
+impl From<trap::Label<Static>> for trap::Label<Element> {
     fn from(value: trap::Label<Static>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Static is a subclass of ExternItem
+        // SAFETY: this is safe because in the dbscheme Static is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10491,18 +10483,18 @@ impl From<trap::Label<Static>> for trap::Label<Item> {
     }
 }
 
-impl From<trap::Label<Static>> for trap::Label<Locatable> {
+impl From<trap::Label<Static>> for trap::Label<Stmt> {
     fn from(value: trap::Label<Static>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Static is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme Static is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<Static>> for trap::Label<Stmt> {
+impl From<trap::Label<Static>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Static>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Static is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Static is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10531,7 +10523,7 @@ impl trap::TrapEntry for Struct {
             out.add_tuple("struct_attrs", vec![id.into(), i.into(), v.into()]);
         }
         if let Some(v) = self.field_list {
-            out.add_tuple("struct_field_lists", vec![id.into(), v.into()]);
+            out.add_tuple("struct_field_lists_", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.generic_param_list {
             out.add_tuple("struct_generic_param_lists", vec![id.into(), v.into()]);
@@ -10552,9 +10544,18 @@ impl trap::TrapClass for Struct {
     fn class_name() -> &'static str { "Struct" }
 }
 
-impl From<trap::Label<Struct>> for trap::Label<Addressable> {
+impl From<trap::Label<Struct>> for trap::Label<Item> {
     fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Struct>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Struct>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10570,24 +10571,6 @@ impl From<trap::Label<Struct>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Struct>> for trap::Label<Element> {
-    fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Struct>> for trap::Label<Item> {
-    fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Struct>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Struct>) -> Self {
         // SAFETY: this is safe because in the dbscheme Struct is a subclass of Locatable
@@ -10597,9 +10580,189 @@ impl From<trap::Label<Struct>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Struct>> for trap::Label<Stmt> {
+impl From<trap::Label<Struct>> for trap::Label<Element> {
     fn from(value: trap::Label<Struct>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Struct>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Struct>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Struct>> for trap::Label<VariantDef> {
+    fn from(value: trap::Label<Struct>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Struct is a subclass of VariantDef
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructExpr {
+    pub id: trap::TrapId<StructExpr>,
+    pub path: Option<trap::Label<Path>>,
+    pub struct_expr_field_list: Option<trap::Label<StructExprFieldList>>,
+}
+
+impl trap::TrapEntry for StructExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_exprs", vec![id.into()]);
+        if let Some(v) = self.path {
+            out.add_tuple("path_ast_node_paths", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.struct_expr_field_list {
+            out.add_tuple("struct_expr_struct_expr_field_lists", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructExpr {
+    fn class_name() -> &'static str { "StructExpr" }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<PathAstNode> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of PathAstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructExpr>> for trap::Label<Resolvable> {
+    fn from(value: trap::Label<StructExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructExpr is a subclass of Resolvable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct StructPat {
+    pub id: trap::TrapId<StructPat>,
+    pub path: Option<trap::Label<Path>>,
+    pub struct_pat_field_list: Option<trap::Label<StructPatFieldList>>,
+}
+
+impl trap::TrapEntry for StructPat {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("struct_pats", vec![id.into()]);
+        if let Some(v) = self.path {
+            out.add_tuple("path_ast_node_paths", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.struct_pat_field_list {
+            out.add_tuple("struct_pat_struct_pat_field_lists", vec![id.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for StructPat {
+    fn class_name() -> &'static str { "StructPat" }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<Pat> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of Pat
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<Element> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<PathAstNode> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of PathAstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<StructPat>> for trap::Label<Resolvable> {
+    fn from(value: trap::Label<StructPat>) -> Self {
+        // SAFETY: this is safe because in the dbscheme StructPat is a subclass of Resolvable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10661,9 +10824,18 @@ impl trap::TrapClass for Trait {
     fn class_name() -> &'static str { "Trait" }
 }
 
-impl From<trap::Label<Trait>> for trap::Label<Addressable> {
+impl From<trap::Label<Trait>> for trap::Label<Item> {
     fn from(value: trap::Label<Trait>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Trait>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Trait>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10679,24 +10851,6 @@ impl From<trap::Label<Trait>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Trait>> for trap::Label<Element> {
-    fn from(value: trap::Label<Trait>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Trait>> for trap::Label<Item> {
-    fn from(value: trap::Label<Trait>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Trait>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Trait>) -> Self {
         // SAFETY: this is safe because in the dbscheme Trait is a subclass of Locatable
@@ -10706,9 +10860,18 @@ impl From<trap::Label<Trait>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Trait>> for trap::Label<Stmt> {
+impl From<trap::Label<Trait>> for trap::Label<Element> {
     fn from(value: trap::Label<Trait>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Trait>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Trait>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Trait is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10758,9 +10921,18 @@ impl trap::TrapClass for TraitAlias {
     fn class_name() -> &'static str { "TraitAlias" }
 }
 
-impl From<trap::Label<TraitAlias>> for trap::Label<Addressable> {
+impl From<trap::Label<TraitAlias>> for trap::Label<Item> {
     fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TraitAlias>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<TraitAlias>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10776,24 +10948,6 @@ impl From<trap::Label<TraitAlias>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<TraitAlias>> for trap::Label<Element> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Item> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TraitAlias>> for trap::Label<Locatable> {
     fn from(value: trap::Label<TraitAlias>) -> Self {
         // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Locatable
@@ -10803,9 +10957,18 @@ impl From<trap::Label<TraitAlias>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<TraitAlias>> for trap::Label<Stmt> {
+impl From<trap::Label<TraitAlias>> for trap::Label<Element> {
     fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TraitAlias>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<TraitAlias>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10839,18 +11002,18 @@ impl trap::TrapClass for TupleStructPat {
     fn class_name() -> &'static str { "TupleStructPat" }
 }
 
-impl From<trap::Label<TupleStructPat>> for trap::Label<AstNode> {
+impl From<trap::Label<TupleStructPat>> for trap::Label<Pat> {
     fn from(value: trap::Label<TupleStructPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of AstNode
+        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of Pat
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TupleStructPat>> for trap::Label<Element> {
+impl From<trap::Label<TupleStructPat>> for trap::Label<AstNode> {
     fn from(value: trap::Label<TupleStructPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of Element
+        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of AstNode
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10866,9 +11029,9 @@ impl From<trap::Label<TupleStructPat>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<TupleStructPat>> for trap::Label<Pat> {
+impl From<trap::Label<TupleStructPat>> for trap::Label<Element> {
     fn from(value: trap::Label<TupleStructPat>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of Pat
+        // SAFETY: this is safe because in the dbscheme TupleStructPat is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10944,15 +11107,6 @@ impl trap::TrapClass for TypeAlias {
     fn class_name() -> &'static str { "TypeAlias" }
 }
 
-impl From<trap::Label<TypeAlias>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<TypeAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<TypeAlias>> for trap::Label<AssocItem> {
     fn from(value: trap::Label<TypeAlias>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of AssocItem
@@ -10965,6 +11119,15 @@ impl From<trap::Label<TypeAlias>> for trap::Label<AssocItem> {
 impl From<trap::Label<TypeAlias>> for trap::Label<AstNode> {
     fn from(value: trap::Label<TypeAlias>) -> Self {
         // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<TypeAlias>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<TypeAlias>) -> Self {
+        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Locatable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10998,18 +11161,18 @@ impl From<trap::Label<TypeAlias>> for trap::Label<Item> {
     }
 }
 
-impl From<trap::Label<TypeAlias>> for trap::Label<Locatable> {
+impl From<trap::Label<TypeAlias>> for trap::Label<Stmt> {
     fn from(value: trap::Label<TypeAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Locatable
+        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
     }
 }
 
-impl From<trap::Label<TypeAlias>> for trap::Label<Stmt> {
+impl From<trap::Label<TypeAlias>> for trap::Label<Addressable> {
     fn from(value: trap::Label<TypeAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme TypeAlias is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11022,7 +11185,7 @@ pub struct Union {
     pub attrs: Vec<trap::Label<Attr>>,
     pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub name: Option<trap::Label<Name>>,
-    pub record_field_list: Option<trap::Label<RecordFieldList>>,
+    pub struct_field_list: Option<trap::Label<StructFieldList>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
 }
@@ -11043,8 +11206,8 @@ impl trap::TrapEntry for Union {
         if let Some(v) = self.name {
             out.add_tuple("union_names", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.record_field_list {
-            out.add_tuple("union_record_field_lists", vec![id.into(), v.into()]);
+        if let Some(v) = self.struct_field_list {
+            out.add_tuple("union_struct_field_lists", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("union_visibilities", vec![id.into(), v.into()]);
@@ -11059,9 +11222,18 @@ impl trap::TrapClass for Union {
     fn class_name() -> &'static str { "Union" }
 }
 
-impl From<trap::Label<Union>> for trap::Label<Addressable> {
+impl From<trap::Label<Union>> for trap::Label<Item> {
     fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Union>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Union>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11077,24 +11249,6 @@ impl From<trap::Label<Union>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Union>> for trap::Label<Element> {
-    fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Union>> for trap::Label<Item> {
-    fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Union>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Union>) -> Self {
         // SAFETY: this is safe because in the dbscheme Union is a subclass of Locatable
@@ -11104,9 +11258,27 @@ impl From<trap::Label<Union>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Union>> for trap::Label<Stmt> {
+impl From<trap::Label<Union>> for trap::Label<Element> {
     fn from(value: trap::Label<Union>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Union is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Union>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Union>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of Addressable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Union>> for trap::Label<VariantDef> {
+    fn from(value: trap::Label<Union>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Union is a subclass of VariantDef
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11144,9 +11316,18 @@ impl trap::TrapClass for Use {
     fn class_name() -> &'static str { "Use" }
 }
 
-impl From<trap::Label<Use>> for trap::Label<Addressable> {
+impl From<trap::Label<Use>> for trap::Label<Item> {
     fn from(value: trap::Label<Use>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Use is a subclass of Addressable
+        // SAFETY: this is safe because in the dbscheme Use is a subclass of Item
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Use>> for trap::Label<Stmt> {
+    fn from(value: trap::Label<Use>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Use is a subclass of Stmt
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11162,24 +11343,6 @@ impl From<trap::Label<Use>> for trap::Label<AstNode> {
     }
 }
 
-impl From<trap::Label<Use>> for trap::Label<Element> {
-    fn from(value: trap::Label<Use>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Use is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<Use>> for trap::Label<Item> {
-    fn from(value: trap::Label<Use>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Use is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
 impl From<trap::Label<Use>> for trap::Label<Locatable> {
     fn from(value: trap::Label<Use>) -> Self {
         // SAFETY: this is safe because in the dbscheme Use is a subclass of Locatable
@@ -11189,9 +11352,18 @@ impl From<trap::Label<Use>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<Use>> for trap::Label<Stmt> {
+impl From<trap::Label<Use>> for trap::Label<Element> {
     fn from(value: trap::Label<Use>) -> Self {
-        // SAFETY: this is safe because in the dbscheme Use is a subclass of Stmt
+        // SAFETY: this is safe because in the dbscheme Use is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<Use>> for trap::Label<Addressable> {
+    fn from(value: trap::Label<Use>) -> Self {
+        // SAFETY: this is safe because in the dbscheme Use is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11237,27 +11409,9 @@ impl trap::TrapClass for ForExpr {
     fn class_name() -> &'static str { "ForExpr" }
 }
 
-impl From<trap::Label<ForExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<ForExpr>> for trap::Label<LoopingExpr> {
     fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<ForExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Expr
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of LoopingExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11273,6 +11427,24 @@ impl From<trap::Label<ForExpr>> for trap::Label<LabelableExpr> {
     }
 }
 
+impl From<trap::Label<ForExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<ForExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<ForExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<ForExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<ForExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Locatable
@@ -11282,9 +11454,9 @@ impl From<trap::Label<ForExpr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<ForExpr>> for trap::Label<LoopingExpr> {
+impl From<trap::Label<ForExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<ForExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of LoopingExpr
+        // SAFETY: this is safe because in the dbscheme ForExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11322,27 +11494,9 @@ impl trap::TrapClass for LoopExpr {
     fn class_name() -> &'static str { "LoopExpr" }
 }
 
-impl From<trap::Label<LoopExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<LoopExpr>> for trap::Label<LoopingExpr> {
     fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<LoopExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Expr
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of LoopingExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11358,6 +11512,24 @@ impl From<trap::Label<LoopExpr>> for trap::Label<LabelableExpr> {
     }
 }
 
+impl From<trap::Label<LoopExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<LoopExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<LoopExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<LoopExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<LoopExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Locatable
@@ -11367,9 +11539,9 @@ impl From<trap::Label<LoopExpr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<LoopExpr>> for trap::Label<LoopingExpr> {
+impl From<trap::Label<LoopExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<LoopExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of LoopingExpr
+        // SAFETY: this is safe because in the dbscheme LoopExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11411,27 +11583,9 @@ impl trap::TrapClass for WhileExpr {
     fn class_name() -> &'static str { "WhileExpr" }
 }
 
-impl From<trap::Label<WhileExpr>> for trap::Label<AstNode> {
+impl From<trap::Label<WhileExpr>> for trap::Label<LoopingExpr> {
     fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<Element> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<WhileExpr>> for trap::Label<Expr> {
-    fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Expr
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of LoopingExpr
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -11447,6 +11601,24 @@ impl From<trap::Label<WhileExpr>> for trap::Label<LabelableExpr> {
     }
 }
 
+impl From<trap::Label<WhileExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<WhileExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<WhileExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
 impl From<trap::Label<WhileExpr>> for trap::Label<Locatable> {
     fn from(value: trap::Label<WhileExpr>) -> Self {
         // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Locatable
@@ -11456,9 +11628,9 @@ impl From<trap::Label<WhileExpr>> for trap::Label<Locatable> {
     }
 }
 
-impl From<trap::Label<WhileExpr>> for trap::Label<LoopingExpr> {
+impl From<trap::Label<WhileExpr>> for trap::Label<Element> {
     fn from(value: trap::Label<WhileExpr>) -> Self {
-        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of LoopingExpr
+        // SAFETY: this is safe because in the dbscheme WhileExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

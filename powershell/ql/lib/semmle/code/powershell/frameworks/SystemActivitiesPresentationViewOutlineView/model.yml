@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[currentpropertyvisible]"]
+    - ["system.string", "system.activities.presentation.view.outlineview.showinoutlineviewattribute", "Member[promotedproperty]"]
+    - ["system.string", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[childnodeprefix]"]
+    - ["system.boolean", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[duplicatedchildnodesvisible]"]

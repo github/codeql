@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.specialized.namevaluecollection", "system.workflow.runtime.configuration.workflowruntimeserviceelement", "Member[parameters]"]
+    - ["system.boolean", "system.workflow.runtime.configuration.workflowruntimeserviceelement", "Method[ondeserializeunrecognizedattribute].ReturnValue"]
+    - ["system.configuration.configurationelement", "system.workflow.runtime.configuration.workflowruntimeserviceelementcollection", "Method[createnewelement].ReturnValue"]
+    - ["system.string", "system.workflow.runtime.configuration.workflowruntimesection", "Member[name]"]
+    - ["system.configuration.namevalueconfigurationcollection", "system.workflow.runtime.configuration.workflowruntimesection", "Member[commonparameters]"]
+    - ["system.object", "system.workflow.runtime.configuration.workflowruntimeserviceelementcollection", "Method[getelementkey].ReturnValue"]
+    - ["system.workflow.runtime.configuration.workflowruntimeserviceelementcollection", "system.workflow.runtime.configuration.workflowruntimesection", "Member[services]"]
+    - ["system.boolean", "system.workflow.runtime.configuration.workflowruntimesection", "Member[enableperformancecounters]"]
+    - ["system.int32", "system.workflow.runtime.configuration.workflowruntimesection", "Member[workflowdefinitioncachecapacity]"]
+    - ["system.boolean", "system.workflow.runtime.configuration.workflowruntimesection", "Member[validateoncreate]"]
+    - ["system.string", "system.workflow.runtime.configuration.workflowruntimeserviceelement", "Member[type]"]

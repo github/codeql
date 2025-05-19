@@ -1,0 +1,46 @@
+| Test.cpp:130:17:130:24 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_DES | Test.cpp:130:17:130:24 | ... \| ... | ... \| ... |
+| Test.cpp:131:17:131:29 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_3DES_112 | Test.cpp:131:17:131:29 | ... \| ... | ... \| ... |
+| Test.cpp:132:17:132:25 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_3DES | Test.cpp:132:17:132:25 | ... \| ... | ... \| ... |
+| Test.cpp:133:17:133:25 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_DESX | Test.cpp:133:17:133:25 | ... \| ... | ... \| ... |
+| Test.cpp:134:17:134:24 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC2 | Test.cpp:134:17:134:24 | ... \| ... | ... \| ... |
+| Test.cpp:135:17:135:24 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC4 | Test.cpp:135:17:135:24 | ... \| ... | ... \| ... |
+| Test.cpp:136:17:136:25 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_SEAL | Test.cpp:136:17:136:25 | ... \| ... | ... \| ... |
+| Test.cpp:137:17:137:29 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_SKIPJACK | Test.cpp:137:17:137:29 | ... \| ... | ... \| ... |
+| Test.cpp:138:17:138:24 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_TEK | Test.cpp:138:17:138:24 | ... \| ... | ... \| ... |
+| Test.cpp:139:17:139:31 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_CYLINK_MEK | Test.cpp:139:17:139:31 | ... \| ... | ... \| ... |
+| Test.cpp:140:17:140:24 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC5 | Test.cpp:140:17:140:24 | ... \| ... | ... \| ... |
+| Test.cpp:141:17:141:38 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_THIRDPARTY_CIPHER | Test.cpp:141:17:141:38 | ... \| ... | ... \| ... |
+| Test.cpp:142:17:142:38 | ... << ... | Call to a cryptographic function with a banned symmetric encryption algorithm: ALG_CLASS_DATA_ENCRYPT | Test.cpp:142:17:142:38 | ... << ... | ... << ... |
+| Test.cpp:143:17:143:55 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26112 | Test.cpp:143:17:143:55 | ... \| ... | ... \| ... |
+| Test.cpp:144:17:144:56 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26624 | Test.cpp:144:17:144:56 | ... \| ... | ... \| ... |
+| Test.cpp:146:17:146:70 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26641 | Test.cpp:146:17:146:70 | ... \| ... | ... \| ... |
+| Test.cpp:148:2:148:29 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26625 | Test.cpp:148:2:148:29 | ... \| ... | ... \| ... |
+| Test.cpp:150:17:150:22 | 26121 | Call to a cryptographic function with a banned symmetric encryption algorithm: 0x6609 | Test.cpp:150:17:150:22 | 26121 | 26121 |
+| Test.cpp:152:20:152:27 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_DES | Test.cpp:152:20:152:27 | ... \| ... | ... \| ... |
+| Test.cpp:153:20:153:32 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_3DES_112 | Test.cpp:153:20:153:32 | ... \| ... | ... \| ... |
+| Test.cpp:154:20:154:28 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_3DES | Test.cpp:154:20:154:28 | ... \| ... | ... \| ... |
+| Test.cpp:155:20:155:28 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_DESX | Test.cpp:155:20:155:28 | ... \| ... | ... \| ... |
+| Test.cpp:156:20:156:27 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC2 | Test.cpp:156:20:156:27 | ... \| ... | ... \| ... |
+| Test.cpp:157:20:157:27 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC4 | Test.cpp:157:20:157:27 | ... \| ... | ... \| ... |
+| Test.cpp:158:20:158:28 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_SEAL | Test.cpp:158:20:158:28 | ... \| ... | ... \| ... |
+| Test.cpp:159:20:159:32 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_SKIPJACK | Test.cpp:159:20:159:32 | ... \| ... | ... \| ... |
+| Test.cpp:160:20:160:27 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_TEK | Test.cpp:160:20:160:27 | ... \| ... | ... \| ... |
+| Test.cpp:161:20:161:34 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_CYLINK_MEK | Test.cpp:161:20:161:34 | ... \| ... | ... \| ... |
+| Test.cpp:162:20:162:27 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_RC5 | Test.cpp:162:20:162:27 | ... \| ... | ... \| ... |
+| Test.cpp:163:20:163:41 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: CALG_THIRDPARTY_CIPHER | Test.cpp:163:20:163:41 | ... \| ... | ... \| ... |
+| Test.cpp:164:20:164:41 | ... << ... | Call to a cryptographic function with a banned symmetric encryption algorithm: ALG_CLASS_DATA_ENCRYPT | Test.cpp:164:20:164:41 | ... << ... | ... << ... |
+| Test.cpp:165:20:165:58 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26112 | Test.cpp:165:20:165:58 | ... \| ... | ... \| ... |
+| Test.cpp:166:20:166:59 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26624 | Test.cpp:166:20:166:59 | ... \| ... | ... \| ... |
+| Test.cpp:168:20:168:73 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26641 | Test.cpp:168:20:168:73 | ... \| ... | ... \| ... |
+| Test.cpp:170:2:170:32 | ... \| ... | Call to a cryptographic function with a banned symmetric encryption algorithm: 26124 | Test.cpp:170:2:170:32 | ... \| ... | ... \| ... |
+| Test.cpp:172:20:172:25 | 26121 | Call to a cryptographic function with a banned symmetric encryption algorithm: 0x6609 | Test.cpp:172:20:172:25 | 26121 | 26121 |
+| Test.cpp:191:33:191:52 | RC2 | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_RC2_ALGORITHM | Test.cpp:191:33:191:52 | RC2 | RC2 |
+| Test.cpp:192:33:192:52 | RC4 | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_RC4_ALGORITHM | Test.cpp:192:33:192:52 | RC4 | RC4 |
+| Test.cpp:193:33:193:52 | DES | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_DES_ALGORITHM | Test.cpp:193:33:193:52 | DES | DES |
+| Test.cpp:194:33:194:53 | DESX | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_DESX_ALGORITHM | Test.cpp:194:33:194:53 | DESX | DESX |
+| Test.cpp:195:33:195:53 | 3DES | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_3DES_ALGORITHM | Test.cpp:195:33:195:53 | 3DES | 3DES |
+| Test.cpp:196:33:196:57 | 3DES_112 | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_3DES_112_ALGORITHM | Test.cpp:196:33:196:57 | 3DES_112 | 3DES_112 |
+| Test.cpp:197:33:197:57 | AES-GMAC | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_AES_GMAC_ALGORITHM | Test.cpp:197:33:197:57 | AES-GMAC | AES-GMAC |
+| Test.cpp:198:33:198:57 | AES-CMAC | Call to a cryptographic function with a banned symmetric encryption algorithm: BCRYPT_AES_CMAC_ALGORITHM | Test.cpp:198:33:198:57 | AES-CMAC | AES-CMAC |
+| Test.cpp:199:33:199:39 | 3DES | Call to a cryptographic function with a banned symmetric encryption algorithm: L"3DES" | Test.cpp:199:33:199:39 | 3DES | 3DES |
+| Test.cpp:200:2:200:21 | 3DES_112 | Call to a cryptographic function with a banned symmetric encryption algorithm: 3DES_112 | Test.cpp:200:2:200:21 | 3DES_112 | 3DES_112 |

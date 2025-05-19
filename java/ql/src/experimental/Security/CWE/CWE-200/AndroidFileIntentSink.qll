@@ -1,4 +1,5 @@
 /** Provides Android sink models related to file creation. */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.DataFlow

@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.loader.assemblyloadcontext", "system.runtime.loader.assemblyloadcontext!", "Member[default]"]
+    - ["system.runtime.loader.assemblyloadcontext", "system.runtime.loader.assemblyloadcontext!", "Member[currentcontextualreflectioncontext]"]
+    - ["system.boolean", "system.runtime.loader.assemblyloadcontext", "Member[iscollectible]"]
+    - ["system.reflection.assembly", "system.runtime.loader.assemblyloadcontext", "Method[loadfromassemblypath].ReturnValue"]
+    - ["system.intptr", "system.runtime.loader.assemblyloadcontext", "Method[loadunmanageddll].ReturnValue"]
+    - ["system.runtime.loader.assemblyloadcontext+contextualreflectionscope", "system.runtime.loader.assemblyloadcontext", "Method[entercontextualreflection].ReturnValue"]
+    - ["system.string", "system.runtime.loader.assemblydependencyresolver", "Method[resolveassemblytopath].ReturnValue"]
+    - ["system.runtime.loader.assemblyloadcontext", "system.runtime.loader.assemblyloadcontext!", "Method[getloadcontext].ReturnValue"]
+    - ["system.reflection.assembly", "system.runtime.loader.assemblyloadcontext", "Method[loadfromnativeimagepath].ReturnValue"]
+    - ["system.string", "system.runtime.loader.assemblyloadcontext", "Method[tostring].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.reflection.assembly>", "system.runtime.loader.assemblyloadcontext", "Member[assemblies]"]
+    - ["system.runtime.loader.assemblyloadcontext+contextualreflectionscope", "system.runtime.loader.assemblyloadcontext!", "Method[entercontextualreflection].ReturnValue"]
+    - ["system.string", "system.runtime.loader.assemblydependencyresolver", "Method[resolveunmanageddlltopath].ReturnValue"]
+    - ["system.reflection.assembly", "system.runtime.loader.assemblyloadcontext", "Method[load].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.runtime.loader.assemblyloadcontext>", "system.runtime.loader.assemblyloadcontext!", "Member[all]"]
+    - ["system.string", "system.runtime.loader.assemblyloadcontext", "Member[name]"]
+    - ["system.reflection.assembly", "system.runtime.loader.assemblyloadcontext", "Method[loadfromstream].ReturnValue"]
+    - ["system.reflection.assemblyname", "system.runtime.loader.assemblyloadcontext!", "Method[getassemblyname].ReturnValue"]
+    - ["system.reflection.assembly", "system.runtime.loader.assemblyloadcontext", "Method[loadfromassemblyname].ReturnValue"]
+    - ["system.intptr", "system.runtime.loader.assemblyloadcontext", "Method[loadunmanageddllfrompath].ReturnValue"]

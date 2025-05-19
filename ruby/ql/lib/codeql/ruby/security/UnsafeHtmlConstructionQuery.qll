@@ -23,6 +23,12 @@ private module UnsafeHtmlConstructionConfig implements DataFlow::ConfigSig {
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getXssSink().getLocation()
+  }
 }
 
 /**

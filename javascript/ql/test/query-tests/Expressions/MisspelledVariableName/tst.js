@@ -1,30 +1,30 @@
 function f(errorMessage) {
-  return errorMesage;
+  return errorMesage; // $ Alert
 }
 
 function g(errorMesage) {
-  return errorMessage;
+  return errorMessage; // $ Alert
 }
 
 function h(errorMessage) {
   function inner() {
-    return errorMesage;
+    return errorMesage; // $ Alert
   }
 }
 
 function k(errorMesage) {
   let inner = () =>
-    errorMessage;
+    errorMessage; // $ Alert
 }
 
 function foo() {
 	var thisHander;
-	thisHandler.foo1;
-	thisHandler.foo2;
-	thisHandler.foo3;
-	thisHandler.foo4;
-	thisHandler.foo5;
-	thisHandler.foo6;
-	thisHandler.foo7;
-	thisHandler.foo8;
+	thisHandler.foo1; // $ Alert
+	thisHandler.foo2; // $ Alert
+	thisHandler.foo3; // $ Alert
+	thisHandler.foo4; // $ Alert
+	thisHandler.foo5; // $ Alert
+	thisHandler.foo6; // $ Alert
+	thisHandler.foo7; // $ Alert
+	thisHandler.foo8; // $ Alert
 }

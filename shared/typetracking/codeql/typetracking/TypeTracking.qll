@@ -137,8 +137,6 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
 
   private module ConsistencyChecksInput implements MkImpl::ConsistencyChecksInputSig { }
 
-  deprecated module ConsistencyChecks = MkImpl::ConsistencyChecks<ConsistencyChecksInput>;
-
   class TypeTracker = MkImpl::TypeTracker;
 
   module TypeTracker = MkImpl::TypeTracker;

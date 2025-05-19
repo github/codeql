@@ -22,3 +22,4 @@ invalidModelRow
 | test.go:187:24:187:31 | call to Src1 | qltest |
 | test.go:191:24:191:31 | call to Src1 | qltest |
 | test.go:209:10:209:28 | selection of SourceVariable | qltest |
+| test.go:213:15:213:17 | definition of src | qltest |

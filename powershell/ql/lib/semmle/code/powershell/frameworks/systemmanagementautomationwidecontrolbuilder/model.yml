@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.widecontrolbuilder", "Method[addpropertyentry]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.widecontrolbuilder", "Method[addscriptblockentry]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.widecontrolbuilder", "Method[endwidecontrol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.widecontrolbuilder", "Method[groupbyproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.widecontrolbuilder", "Method[groupbyscriptblock]", "Argument[this]", "ReturnValue", "value"]
+      

@@ -6,9 +6,9 @@ module Impl {
    * An expression that references or accesses a declaration.
    */
   class DeclRefExpr extends Generated::DeclRefExpr {
-    override string toString() {
-      if exists(this.getDecl().toString())
-      then result = this.getDecl().toString()
+    override string toStringImpl() {
+      if exists(this.getDecl().toStringImpl())
+      then result = this.getDecl().toStringImpl()
       else result = "(unknown declaration)"
     }
 

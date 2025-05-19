@@ -1,12 +1,21 @@
 edges
+| char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | char_connect_socket_w32_vsnprintf_01_bad.c:100:13:100:60 | ... = ... | provenance |  |
 | char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | *data | provenance |  |
+| char_connect_socket_w32_vsnprintf_01_bad.c:100:13:100:60 | ... = ... | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | *data | provenance |  |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:37:21:37:43 | ... = ... | provenance |  |
+| char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:44:17:44:37 | ... = ... | provenance |  |
 | char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | char_console_fprintf_01_bad.c:49:21:49:24 | *data | provenance |  |
+| char_console_fprintf_01_bad.c:37:21:37:43 | ... = ... | char_console_fprintf_01_bad.c:49:21:49:24 | *data | provenance |  |
+| char_console_fprintf_01_bad.c:44:17:44:37 | ... = ... | char_console_fprintf_01_bad.c:49:21:49:24 | *data | provenance |  |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | *call to getenv | char_environment_fprintf_01_bad.c:27:30:27:35 | *call to getenv | provenance |  |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | *call to getenv | char_environment_fprintf_01_bad.c:36:21:36:24 | *data | provenance | TaintFunction |
 nodes
 | char_connect_socket_w32_vsnprintf_01_bad.c:94:46:94:69 | recv output argument | semmle.label | recv output argument |
+| char_connect_socket_w32_vsnprintf_01_bad.c:100:13:100:60 | ... = ... | semmle.label | ... = ... |
 | char_connect_socket_w32_vsnprintf_01_bad.c:125:15:125:18 | *data | semmle.label | *data |
 | char_console_fprintf_01_bad.c:30:23:30:35 | fgets output argument | semmle.label | fgets output argument |
+| char_console_fprintf_01_bad.c:37:21:37:43 | ... = ... | semmle.label | ... = ... |
+| char_console_fprintf_01_bad.c:44:17:44:37 | ... = ... | semmle.label | ... = ... |
 | char_console_fprintf_01_bad.c:49:21:49:24 | *data | semmle.label | *data |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | *call to getenv | semmle.label | *call to getenv |
 | char_environment_fprintf_01_bad.c:27:30:27:35 | *call to getenv | semmle.label | *call to getenv |

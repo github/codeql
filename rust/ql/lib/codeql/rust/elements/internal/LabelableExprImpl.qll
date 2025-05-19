@@ -16,7 +16,7 @@ module Impl {
    * The base class for expressions that can be labeled (`LoopExpr`, `ForExpr`, `WhileExpr` or `BlockExpr`).
    */
   class LabelableExpr extends Generated::LabelableExpr {
-    final override string toString() {
+    final override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i), " " order by i)
     }
 

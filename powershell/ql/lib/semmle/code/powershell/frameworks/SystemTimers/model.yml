@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.timers.timer", "Member[autoreset]"]
+    - ["system.string", "system.timers.timersdescriptionattribute", "Member[description]"]
+    - ["system.boolean", "system.timers.timer", "Member[enabled]"]
+    - ["system.componentmodel.isynchronizeinvoke", "system.timers.timer", "Member[synchronizingobject]"]
+    - ["system.componentmodel.isite", "system.timers.timer", "Member[site]"]
+    - ["system.datetime", "system.timers.elapsedeventargs", "Member[signaltime]"]
+    - ["system.double", "system.timers.timer", "Member[interval]"]

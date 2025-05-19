@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.timespan", "system.runtime.jitinfo!", "Method[getcompilationtime].ReturnValue"]
+    - ["system.int64", "system.runtime.jitinfo!", "Method[getcompiledilbytes].ReturnValue"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[interactive]"]
+    - ["system.int64", "system.runtime.jitinfo!", "Method[getcompiledmethodcount].ReturnValue"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gclargeobjectheapcompactionmode!", "Member[compactonce]"]
+    - ["system.boolean", "system.runtime.dependenthandle", "Member[isallocated]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gcsettings!", "Member[latencymode]"]
+    - ["system.string", "system.runtime.assemblytargetedpatchbandattribute", "Member[targetedpatchband]"]
+    - ["system.string", "system.runtime.targetedpatchingoptoutattribute", "Member[reason]"]
+    - ["system.valuetuple<system.object,system.object>", "system.runtime.dependenthandle", "Member[targetanddependent]"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gcsettings!", "Member[largeobjectheapcompactionmode]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[sustainedlowlatency]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[nogcregion]"]
+    - ["system.object", "system.runtime.dependenthandle", "Member[dependent]"]
+    - ["system.object", "system.runtime.dependenthandle", "Member[target]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[lowlatency]"]
+    - ["system.boolean", "system.runtime.gcsettings!", "Member[isservergc]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[batch]"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gclargeobjectheapcompactionmode!", "Member[default]"]

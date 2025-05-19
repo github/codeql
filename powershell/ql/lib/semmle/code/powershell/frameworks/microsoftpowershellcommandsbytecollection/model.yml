@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[2]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[get_ascii]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[get_hexbytes]", "Argument[this]", "ReturnValue", "taint"]
+      

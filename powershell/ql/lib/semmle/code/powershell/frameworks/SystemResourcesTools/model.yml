@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.resources.tools.itargetawarecodedomprovider", "Method[supportsproperty].ReturnValue"]
+    - ["system.string", "system.resources.tools.stronglytypedresourcebuilder!", "Method[verifyresourcename].ReturnValue"]
+    - ["system.codedom.codecompileunit", "system.resources.tools.stronglytypedresourcebuilder!", "Method[create].ReturnValue"]

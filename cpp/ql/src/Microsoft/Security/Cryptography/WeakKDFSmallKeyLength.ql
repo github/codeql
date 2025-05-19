@@ -6,7 +6,7 @@
  *      The rationale currently is that this query is meant to validate common uses of key derivation.
  *      Non-common uses (modifying the values somehow or getting the count from outside sources) are assumed to be intentional.
  * @kind problem
- * @id cpp/kdf-small-key-size
+ * @id cpp/microsoft/public/kdf-small-key-size
  * @problem.severity error
  * @precision high
  * @tags security

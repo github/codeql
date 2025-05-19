@@ -1,3 +1,51 @@
+## 1.4.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-14` has been removed from `cpp/memset-may-be-deleted` and the tag `external/cwe/cwe-014` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/count-untrusted-data-external-api-ir` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/untrusted-data-to-external-api-ir` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cpp/late-check-of-function-argument` and the tag `external/cwe/cwe-020` has been added.
+
+## 1.3.9
+
+No user-facing changes.
+
+## 1.3.8
+
+No user-facing changes.
+
+## 1.3.7
+
+### Minor Analysis Improvements
+
+* Fixed a bug in the models for Microsoft's Active Template Library (ATL).
+* The query "Use of basic integral type" (`cpp/jpl-c/basic-int-types`) no longer produces alerts for the standard fixed width integer types (`int8_t`, `uint8_t`, etc.), and the `_Bool` and `bool` types.
+
+## 1.3.6
+
+No user-facing changes.
+
+## 1.3.5
+
+### Minor Analysis Improvements
+
+* Due to changes in libraries the query "Static array access may cause overflow" (`cpp/static-buffer-overflow`) will no longer report cases where multiple fields of a struct or class are written with a single `memset` or similar operation.
+* The query "Call to memory access function may overflow buffer" (`cpp/overflow-buffer`) has been added to the security-extended query suite. The query detects a range of buffer overflow and underflow issues.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+### Minor Analysis Improvements
+
+* The "Wrong type of arguments to formatting function" query (`cpp/wrong-type-format-argument`) now produces fewer FPs if the formatting function has multiple definitions.
+* The "Call to memory access function may overflow buffer" query (`cpp/overflow-buffer`) now produces fewer FPs involving non-static member variables.
+
 ## 1.3.2
 
 ### Minor Analysis Improvements

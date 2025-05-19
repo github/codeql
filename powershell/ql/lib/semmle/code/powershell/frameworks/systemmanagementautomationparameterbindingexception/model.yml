@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.parameterbindingexception", "Method[get_commandinvocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.parameterbindingexception", "Method[get_errorid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.parameterbindingexception", "Method[get_parametername]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.parameterbindingexception", "Method[parameterbindingexception]", "Argument[0]", "Argument[this]", "taint"]
+      

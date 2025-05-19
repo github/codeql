@@ -1,3 +1,73 @@
+## 1.2.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-13` has been removed from `cs/password-in-configuration` and the tag `external/cwe/cwe-013` has been added.
+* The tag `external/cwe/cwe-11` has been removed from `cs/web/debug-binary` and the tag `external/cwe/cwe-011` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/large-max-request-length` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/request-validation-disabled` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/serialization-check-bypass` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-12` has been removed from `cs/web/missing-global-error-handler` and the tag `external/cwe/cwe-012` has been added.
+
+### Minor Analysis Improvements
+
+* Changed the precision of the `cs/equality-on-floats` query from medium to high.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `cs/utils/modelgenerator/summary-models` to use the implementation from `cs/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `cs/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `cs/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+* Improved detection of authorization checks in the `cs/web/missing-function-level-access-control` query. The query now recognizes authorization attributes inherited from base classes and interfaces.
+* The precision of the query `cs/invalid-string-formatting` has been improved. More methods and more overloads of existing format like methods are taken into account by the query.
+
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* Enums and `System.DateTimeOffset` are now treated as *simple* types, which means that they are considered to have a sanitizing effect. This impacts many queries, among others the `cs/log-forging` query.
+* The MaD models for the .NET 9 Runtime have been re-generated after a fix related to `out`/`ref` parameters.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new query, `csharp/path-combine`, to recommend against the `Path.Combine` method due to it silently discarding its earlier parameters if later parameters are rooted.
+
+### Minor Analysis Improvements
+
+* Improved dependency resolution in `build-mode: none` extraction to handle failing `dotnet restore` processes that managed to download a subset of the dependencies before the failure.
+* Increase query precision for `cs/useless-gethashcode-call` by not flagging calls to `GetHashCode` on `uint`, `long` and `ulong`.
+* Increase query precision for `cs/constant-condition` and allow the use of discards in switch/case statements and also take the condition (if any) into account.
+* The `cs/local-not-disposed` query no longer flags un-disposed tasks as this is often not needed (explained [here](https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/)).
+* Increase query precision for `cs/useless-assignment-to-local` and `cs/constant-condition` when *unknown* types are involved (mostly relevant for `build-mode: none` databases).
+* Don't consider an if-statement to be *useless* in `cs/useless-if-statement` if there is at least a comment.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+### Minor Analysis Improvements
+
+* C#: Improve precision of the query `cs/call-to-object-tostring` for value tuples.
+
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+### Minor Analysis Improvements
+
+* All *experimental* queries have been deprecated. The queries are instead available as part of the *default* query suite in [CodeQL-Community-Packs](https://github.com/GitHubSecurityLab/CodeQL-Community-Packs).
+
 ## 1.0.15
 
 No user-facing changes.

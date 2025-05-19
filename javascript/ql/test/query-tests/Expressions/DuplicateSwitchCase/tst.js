@@ -3,7 +3,7 @@ function controller(msg) {
 	case 'start':
 		start();
 		break;
-	case 'start':
+	case 'start': // $ Alert
 		stop();
 		break;
 	default:

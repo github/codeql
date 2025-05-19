@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.PrefixExpr
+private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
 
 /**
  * INTERNAL: This module contains the customizable definition of `PrefixExpr` and should not
@@ -20,7 +21,11 @@ module Impl {
    * let z = *ptr;
    * ```
    */
-  class PrefixExpr extends Generated::PrefixExpr {
-    override string toString() { result = this.getOperatorName() + " ..." }
+  class PrefixExpr extends Generated::PrefixExpr, OperationImpl::Operation {
+    override string toStringImpl() { result = this.getOperatorName() + " ..." }
+
+    override string getOperatorName() { result = Generated::PrefixExpr.super.getOperatorName() }
+
+    override Expr getAnOperand() { result = this.getExpr() }
   }
 }

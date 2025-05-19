@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.reflection.typeinfo", "system.reflection.context.customreflectioncontext", "Method[maptype].ReturnValue"]
+    - ["system.reflection.assembly", "system.reflection.context.customreflectioncontext", "Method[mapassembly].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.object>", "system.reflection.context.customreflectioncontext", "Method[getcustomattributes].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.reflection.propertyinfo>", "system.reflection.context.customreflectioncontext", "Method[addproperties].ReturnValue"]
+    - ["system.reflection.propertyinfo", "system.reflection.context.customreflectioncontext", "Method[createproperty].ReturnValue"]

@@ -8,6 +8,8 @@ private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.ViewComponentInput
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -189,13 +191,16 @@ module Angular2 {
     result.hasUnderlyingType("@angular/common/http", "HttpClient")
   }
 
+  /** Gets a reference to an `HttpClient` object using the API graph. */
+  API::Node httpClientApiNode() { result = API::Node::ofType("@angular/common/http", "HttpClient") }
+
   private class AngularClientRequest extends ClientRequest::Range, DataFlow::MethodCallNode {
     int argumentOffset;
 
     AngularClientRequest() {
-      this = httpClient().getAMethodCall("request") and argumentOffset = 1
+      this = httpClientApiNode().getMember("request").getACall() and argumentOffset = 1
       or
-      this = httpClient().getAMethodCall() and
+      this = httpClientApiNode().getAMember().getACall() and
       not this.getMethodName() = "request" and
       argumentOffset = 0
     }
@@ -236,17 +241,14 @@ module Angular2 {
 
   class TemplateTopLevel = Templating::TemplateTopLevel;
 
-  /** The RHS of a `templateUrl` property, seen as a path expression. */
-  private class TemplateUrlPath extends PathExpr {
-    TemplateUrlPath() {
-      exists(Property prop |
-        prop.getName() = "templateUrl" and
-        this = prop.getInit()
-      )
-    }
-
-    override string getValue() { result = this.(Expr).getStringValue() }
+  private predicate shouldResolveExpr(Expr e) {
+    exists(Property prop |
+      prop.getName() = "templateUrl" and
+      e = prop.getInit()
+    )
   }
+
+  private module Resolver = ResolveExpr<shouldResolveExpr/1>;
 
   /**
    * Holds if the value of `attrib` is interpreted as an Angular expression.
@@ -334,7 +336,7 @@ module Angular2 {
      */
     pragma[noinline]
     File getTemplateFile() {
-      result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
+      result = Resolver::resolveExpr(decorator.getOptionArgument(0, "templateUrl").asExpr())
     }
 
     /** Gets an element in the HTML template of this component. */
@@ -556,6 +558,41 @@ module Angular2 {
   }
 
   /**
+   * A DOM attribute write, using the AngularJS Renderer2 API: a call to `Renderer2.setProperty`.
+   */
+  class AngularRenderer2AttributeDefinition extends DOM::AttributeDefinition {
+    DataFlow::Node propertyNode;
+    DataFlow::Node valueNode;
+    DataFlow::Node elementNode;
+
+    AngularRenderer2AttributeDefinition() {
+      exists(API::CallNode setProperty |
+        setProperty =
+          API::moduleImport("@angular/core")
+              .getMember("Renderer2")
+              .getInstance()
+              .getMember("setProperty")
+              .getACall() and
+        elementNode = setProperty.getArgument(0) and
+        propertyNode = setProperty.getArgument(1) and
+        valueNode = setProperty.getArgument(2) and
+        this = setProperty.asExpr()
+      )
+    }
+
+    override string getName() { result = propertyNode.getStringValue() }
+
+    /**
+     * Get the `DataFlow::Node` that is affected by this Attribute Definition.
+     *
+     *  Defined instead of defining `getElement()`, which requires returning a DOM element definition, `ElementDefinition`.
+     */
+    DataFlow::Node getElementNode() { result = elementNode }
+
+    override DataFlow::Node getValueNode() { result = valueNode }
+  }
+
+  /**
    * A source of DOM events originating from the `$event` variable in an event handler installed in an Angular template.
    */
   private class DomEventSources extends DOM::DomEventSource::Range {
@@ -574,5 +611,18 @@ module Angular2 {
         not attributeName.matches("(ng%)") // exclude NG events which aren't necessarily DOM events
       )
     }
+  }
+
+  private class InputFieldAsViewComponentInput extends ViewComponentInput {
+    InputFieldAsViewComponentInput() {
+      this =
+        API::moduleImport("@angular/core")
+            .getMember("Input")
+            .getReturn()
+            .getADecoratedMember()
+            .asSource()
+    }
+
+    override string getSourceType() { result = "Angular component input field" }
   }
 }

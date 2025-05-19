@@ -199,3 +199,46 @@ void test_logical_or(bool b1, bool b2) {
     use(b2);
   }
 }
+
+struct Mystruct {
+  int i;
+  float f;
+};
+
+int test_types(signed char sc, unsigned long ul, float f, double d, bool b, Mystruct &ms) {
+    int ctr = 0;
+
+    if (sc == 0) {
+        ctr++;
+    }
+    if (sc == 0x0) {
+        ctr++;
+    }
+    if (ul == 0) {
+        ctr++;
+    }
+    if (f == 0) {
+        ctr++;
+    }
+    if (f == 0.0) {
+        ctr++;
+    }
+    if (d == 0) {
+        ctr++;
+    }
+    if (b == 0) {
+        ctr++;
+    }
+    if (b == false) {
+        ctr++;
+    }
+    if (ms.i == 0) {
+        ctr++;
+    }
+    if (ms.f == 0) {
+        ctr++;
+    }
+    if (ms.i == 0 && ms.f == 0 && ms.i == 0) {
+        ctr++;
+    }
+}

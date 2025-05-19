@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[3]", "Argument[this]", "taint"]
+      

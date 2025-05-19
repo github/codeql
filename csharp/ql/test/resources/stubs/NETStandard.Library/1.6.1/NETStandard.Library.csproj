@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../Microsoft.NETCore.Platforms/1.1.0/Microsoft.NETCore.Platforms.csproj" />
+    <ProjectReference Include="../../Microsoft.NETCore.Platforms/3.1.0/Microsoft.NETCore.Platforms.csproj" />
     <ProjectReference Include="../../Microsoft.Win32.Primitives/4.3.0/Microsoft.Win32.Primitives.csproj" />
     <ProjectReference Include="../../System.AppContext/4.3.0/System.AppContext.csproj" />
     <ProjectReference Include="../../System.Collections/4.3.0/System.Collections.csproj" />

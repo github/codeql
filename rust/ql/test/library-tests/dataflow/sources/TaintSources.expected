@@ -1,17 +1,54 @@
-| test.rs:8:10:8:30 | ...::var(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:9:10:9:33 | ...::var_os(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:11:16:11:36 | ...::var(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:12:16:12:39 | ...::var_os(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:17:25:17:40 | ...::vars(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:22:25:22:43 | ...::vars_os(...) | Flow source 'EnvironmentSource' of type environment. |
-| test.rs:29:29:29:44 | ...::args(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:32:16:32:31 | ...::args(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:33:16:33:34 | ...::args_os(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:40:16:40:31 | ...::args(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:44:16:44:34 | ...::args_os(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:50:15:50:37 | ...::current_dir(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:51:15:51:37 | ...::current_exe(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:52:16:52:35 | ...::home_dir(...) | Flow source 'CommandLineArgs' of type commandargs. |
-| test.rs:60:26:60:70 | ...::get(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:63:26:63:70 | ...::get(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:66:26:66:60 | ...::get(...) | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:8:10:8:22 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:9:10:9:25 | ...::var_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:11:16:11:28 | ...::var | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:12:16:12:31 | ...::var_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:17:25:17:38 | ...::vars | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:22:25:22:41 | ...::vars_os | Flow source 'EnvironmentSource' of type environment (DEFAULT). |
+| test.rs:29:29:29:42 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:32:16:32:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:33:16:33:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:34:16:34:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:42:16:42:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:46:16:46:32 | ...::args_os | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:52:15:52:35 | ...::current_dir | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:53:15:53:35 | ...::current_exe | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:54:16:54:33 | ...::home_dir | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| test.rs:62:26:62:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:65:26:65:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:68:26:68:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:71:26:71:47 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:74:26:74:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:77:26:77:37 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:80:24:80:35 | ...::get | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:112:35:112:46 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:119:31:119:42 | send_request | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:205:31:205:43 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:210:31:210:38 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:215:22:215:39 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:221:22:221:25 | path | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:222:27:222:35 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:228:22:228:34 | ...::read_link | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:243:22:243:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:249:22:249:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:255:22:255:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:261:9:261:22 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:265:17:265:30 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:271:20:271:38 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:304:50:304:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:310:50:310:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:317:50:317:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:324:50:324:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:331:56:331:69 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:338:50:338:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:345:50:345:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:351:50:351:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:360:25:360:43 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:361:25:361:43 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:369:25:369:43 | ...::open | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:377:22:377:35 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
+| test.rs:386:16:386:29 | ...::args | Flow source 'CommandLineArgs' of type commandargs (DEFAULT). |
+| web_frameworks.rs:12:31:12:31 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:21:31:21:36 | TuplePat | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:43:31:43:45 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:51:31:51:32 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| web_frameworks.rs:60:15:60:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |

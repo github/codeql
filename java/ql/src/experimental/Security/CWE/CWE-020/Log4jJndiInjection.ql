@@ -22,7 +22,7 @@ import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.Sanitizers
 import Log4jInjectionFlow::PathGraph
 
-private class ActivateModels extends ActiveExperimentalModels {
+deprecated private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "log4j-injection" }
 }
 
@@ -52,7 +52,13 @@ module Log4jInjectionConfig implements DataFlow::ConfigSig {
  */
 module Log4jInjectionFlow = TaintTracking::Global<Log4jInjectionConfig>;
 
-from Log4jInjectionFlow::PathNode source, Log4jInjectionFlow::PathNode sink
-where Log4jInjectionFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Log4j log entry depends on a $@.", source.getNode(),
-  "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, Log4jInjectionFlow::PathNode source, Log4jInjectionFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  Log4jInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Log4j log entry depends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

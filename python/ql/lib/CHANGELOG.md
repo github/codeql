@@ -1,3 +1,55 @@
+## 4.0.7
+
+### Minor Analysis Improvements
+
+* Added modeling for the `hdbcli` PyPI package as a database library implementing PEP 249.
+* Added header write model for `send_header` in `http.server`.
+
+## 4.0.6
+
+No user-facing changes.
+
+## 4.0.5
+
+No user-facing changes.
+
+## 4.0.4
+
+### Minor Analysis Improvements
+
+- Added the methods `getMinArguments` and `getMaxArguments` to the `Function` class. These return the minimum and maximum positional arguments that the given function accepts.
+
+### Bug Fixes
+
+- `MatchLiteralPattern`s such as `case None: ...` are now never pruned from the extracted source code. This fixes some situations where code was wrongly identified as unreachable.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+No user-facing changes.
+
+## 4.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
+- Using the `break` and `continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated TypeTracking library.
+* Deleted the deprecated `classRef` predicate from the `FieldStorage` module, use `subclassRef` instead.
+* Deleted a lot of deprecated modules and predicates from `Stdlib.qll`, use API-graphs directly instead.
+
+### Minor Analysis Improvements
+
+* Additional data flow models for the builtin functions `map`, `filter`, `zip`, and `enumerate` have been added.
+
 ## 3.1.1
 
 ### Minor Analysis Improvements

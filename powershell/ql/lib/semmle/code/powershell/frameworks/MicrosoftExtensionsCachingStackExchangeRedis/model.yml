@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.tryget].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[refreshasync].ReturnValue"]
+    - ["system.func<system.threading.tasks.task<stackexchange.redis.iconnectionmultiplexer>>", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[connectionmultiplexerfactory]"]
+    - ["system.string", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[configuration]"]
+    - ["system.func<stackexchange.redis.profiling.profilingsession>", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[profilingsession]"]
+    - ["system.byte[]", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.valuetask<system.boolean>", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.trygetasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[instancename]"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.setasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[removeasync].ReturnValue"]
+    - ["microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[Microsoft.Extensions.Options.IOptions<microsoft.extensions.caching.stackexchangeredis.rediscacheoptions>.Value]"]
+    - ["stackexchange.redis.configurationoptions", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[configurationoptions]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[setasync].ReturnValue"]

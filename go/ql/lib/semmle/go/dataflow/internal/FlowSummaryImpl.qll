@@ -61,26 +61,28 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    exists(Field f, string package, string className, string fieldName |
-      f = cs.(FieldContent).getField() and
-      f.hasQualifiedName(package, className, fieldName) and
-      result = "Field" and
-      arg = package + "." + className + "." + fieldName
+    exists(Content c | cs.asOneContent() = c |
+      exists(Field f, string package, string className, string fieldName |
+        f = c.(FieldContent).getField() and
+        f.hasQualifiedName(package, className, fieldName) and
+        result = "Field" and
+        arg = package + "." + className + "." + fieldName
+      )
+      or
+      exists(SyntheticField f |
+        f = c.(SyntheticFieldContent).getField() and result = "SyntheticField" and arg = f
+      )
+      or
+      c instanceof ArrayContent and result = "ArrayElement" and arg = ""
+      or
+      c instanceof CollectionContent and result = "Element" and arg = ""
+      or
+      c instanceof MapKeyContent and result = "MapKey" and arg = ""
+      or
+      c instanceof MapValueContent and result = "MapValue" and arg = ""
+      or
+      c instanceof PointerContent and result = "Dereference" and arg = ""
     )
-    or
-    exists(SyntheticField f |
-      f = cs.(SyntheticFieldContent).getField() and result = "SyntheticField" and arg = f
-    )
-    or
-    cs instanceof ArrayContent and result = "ArrayElement" and arg = ""
-    or
-    cs instanceof CollectionContent and result = "Element" and arg = ""
-    or
-    cs instanceof MapKeyContent and result = "MapKey" and arg = ""
-    or
-    cs instanceof MapValueContent and result = "MapValue" and arg = ""
-    or
-    cs instanceof PointerContent and result = "Dereference" and arg = ""
   }
 
   bindingset[token]
@@ -220,16 +222,17 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the location of this element. */
     Location getLocation() {
-      exists(string fp, int sl, int sc, int el, int ec |
-        this.hasLocationInfo(fp, sl, sc, el, ec) and
-        result.hasLocationInfo(fp, sl, sc, el, ec)
-      )
+      result = this.asEntity().getLocation() or
+      result = this.asAstNode().getLocation()
     }
 
-    /** Holds if this element is at the specified location. */
-    predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.asEntity().hasLocationInfo(fp, sl, sc, el, ec) or
-      this.asAstNode().hasLocationInfo(fp, sl, sc, el, ec)
+    /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
+     * Holds if this element is at the specified location.
+     */
+    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
     }
   }
 
@@ -250,7 +253,9 @@ module SourceSinkInterpretationInput implements
 
     /** Gets the callable that this node corresponds to, if any. */
     DataFlowCallable asCallable() {
-      result.asSummarizedCallable().asFunction() = this.asElement().asEntity()
+      this.asElement().asEntity() = result.asSummarizedCallable().asFunction() or
+      this.asElement().asEntity() = result.asCallable().asFunction() or
+      this.asElement().asAstNode() = result.asCallable().asFuncLit()
     }
 
     /** Gets the target of this call, if any. */
@@ -276,17 +281,18 @@ module SourceSinkInterpretationInput implements
     }
 
     /** Gets the location of this node. */
-    predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.asElement().hasLocationInfo(fp, sl, sc, el, ec)
-      or
-      this.asNode().hasLocationInfo(fp, sl, sc, el, ec)
+    Location getLocation() {
+      result = this.asElement().getLocation() or
+      result = this.asNode().getLocation()
     }
 
-    Location getLocation() {
-      exists(string fp, int sl, int sc, int el, int ec |
-        this.hasLocationInfo(fp, sl, sc, el, ec) and
-        result.hasLocationInfo(fp, sl, sc, el, ec)
-      )
+    /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
+     * Gets the location of this node.
+     */
+    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
+      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
     }
   }
 
@@ -523,7 +529,9 @@ module Private {
     SummaryComponent qualifier() { result = argument(-1) }
 
     /** Gets a summary component for field `f`. */
-    SummaryComponent field(Field f) { result = content(any(FieldContent c | c.getField() = f)) }
+    SummaryComponent field(Field f) {
+      result = content(any(FieldContent c | c.getField() = f).asContentSet())
+    }
 
     /** Gets a summary component that represents the return value of a call. */
     SummaryComponent return() { result = SC::return(_) }

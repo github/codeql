@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.json.jsonconfigurationsource", "Method[build].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.json.jsonstreamconfigurationsource", "Method[build].ReturnValue"]

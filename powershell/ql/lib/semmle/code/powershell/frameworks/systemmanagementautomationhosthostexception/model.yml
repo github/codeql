@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.host.hostexception", "Method[hostexception]", "Argument[2]", "Argument[this]", "taint"]
+      

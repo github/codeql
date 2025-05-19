@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[tablename]"]
+    - ["system.threading.tasks.valuetask<system.boolean>", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.trygetasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[refreshasync].ReturnValue"]
+    - ["system.nullable<system.timespan>", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[expireditemsdeletioninterval]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.setasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[schemaname]"]
+    - ["system.boolean", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[microsoft.extensions.caching.distributed.ibufferdistributedcache.tryget].ReturnValue"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[setasync].ReturnValue"]
+    - ["microsoft.extensions.internal.isystemclock", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[systemclock]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[removeasync].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[defaultslidingexpiration]"]
+    - ["system.byte[]", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[get].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[connectionstring]"]
+    - ["microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[Microsoft.Extensions.Options.IOptions<microsoft.extensions.caching.sqlserver.sqlservercacheoptions>.Value]"]

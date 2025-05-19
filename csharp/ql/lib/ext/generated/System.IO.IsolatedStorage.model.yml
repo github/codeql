@@ -85,7 +85,6 @@ extensions:
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Seek", "(System.Int64,System.IO.SeekOrigin)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Unlock", "(System.Int64,System.Int64)", "summary", "df-generated"]
-      - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "Write", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "WriteByte", "(System.Byte)", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanRead", "()", "summary", "df-generated"]
       - ["System.IO.IsolatedStorage", "IsolatedStorageFileStream", "get_CanSeek", "()", "summary", "df-generated"]

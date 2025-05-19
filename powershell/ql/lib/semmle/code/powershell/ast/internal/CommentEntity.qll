@@ -1,0 +1,2 @@
+private import AstImport
+import Raw.CommentEntity

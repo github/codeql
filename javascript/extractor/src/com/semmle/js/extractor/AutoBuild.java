@@ -160,6 +160,9 @@ import com.semmle.util.trap.TrapWriter;
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>JSON files whose base name is ".xsaccess".
+ *   <li>JSON files whose base name is "xs-app.json".
+ *   <li>JSON files whose base name ends with ".view.json".
+ *   <li>JSON files whose base name is "manifest.json".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -394,12 +397,14 @@ public class AutoBuild {
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, .xsaccess files, package.json files, 
-    // tsconfig.json files, and codeql-javascript-*.json files
+    // include JSON files which are relevant to our analysis
     patterns.add("**/.eslintrc*");
-    patterns.add("**/.xsaccess");
+    patterns.add("**/.xsaccess"); // SAP XSJS
+    patterns.add("**/xs-app.json"); // SAP XSJS
+    patterns.add("**/*.view.json"); // SAP UI5
+    patterns.add("**/manifest.json");
     patterns.add("**/package.json");
-    patterns.add("**/tsconfig*.json");
+    patterns.add("**/*tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions
@@ -895,7 +900,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           // For named packages, find the main file.
           String name = packageJson.getName();
           if (name != null) {
-            Path entryPoint = null; 
+            Path entryPoint = null;
             try {
               entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
               if (entryPoint == null) {
@@ -1087,6 +1092,12 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           remainingTypeScriptFiles.add(f);
         }
       }
+      for (Map.Entry<Path, FileSnippet> entry : state.getSnippets().entrySet()) {
+        if (!extractedFiles.contains(entry.getKey())
+            && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+            remainingTypeScriptFiles.add(entry.getKey());
+        }
+      }
       if (!remainingTypeScriptFiles.isEmpty()) {
         extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors);
       }
@@ -1106,6 +1117,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT) return true;
     }
     return false;
+  }
+
+  public static boolean treatAsTSConfig(String basename) {
+    return basename.contains("tsconfig.") && basename.endsWith(".json");
   }
 
   private void findFilesToExtract(
@@ -1140,7 +1155,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
             // extract TypeScript projects from 'tsconfig.json'
             if (typeScriptMode == TypeScriptMode.FULL
-                && file.getFileName().endsWith("tsconfig.json")
+                && treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
               tsconfigFiles.add(file);

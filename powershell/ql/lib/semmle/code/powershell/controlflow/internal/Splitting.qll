@@ -69,6 +69,8 @@ module ConditionalCompletionSplitting {
         child = parent.(LogicalOrExpr).getAnOperand()
         or
         child = parent.(ConditionalExpr).getBranch(_)
+        or
+        child = parent.(ParenExpr).getExpr()
       )
     }
 

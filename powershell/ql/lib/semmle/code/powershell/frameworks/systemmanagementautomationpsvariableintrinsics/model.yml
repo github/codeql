@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psvariableintrinsics", "Method[getvalue]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.psvariableintrinsics", "Method[set]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.management.automation.psvariableintrinsics", "Method[set]", "Argument[this]", "Argument[1]", "taint"]
+      

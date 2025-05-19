@@ -8,24 +8,26 @@ nodes
 | addEventListener.js:10:21:10:25 | event | semmle.label | event |
 | addEventListener.js:12:24:12:28 | event | semmle.label | event |
 | addEventListener.js:12:24:12:33 | event.data | semmle.label | event.data |
-| angular2-client.ts:22:44:22:71 | \\u0275getDOM ... ().href | semmle.label | \\u0275getDOM ... ().href |
-| angular2-client.ts:24:44:24:69 | this.ro ... .params | semmle.label | this.ro ... .params |
-| angular2-client.ts:24:44:24:73 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
-| angular2-client.ts:25:44:25:74 | this.ro ... yParams | semmle.label | this.ro ... yParams |
-| angular2-client.ts:25:44:25:78 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
-| angular2-client.ts:26:44:26:71 | this.ro ... ragment | semmle.label | this.ro ... ragment |
-| angular2-client.ts:27:44:27:82 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
-| angular2-client.ts:28:44:28:87 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
-| angular2-client.ts:30:46:30:59 | map.get('foo') | semmle.label | map.get('foo') |
-| angular2-client.ts:33:44:33:74 | this.ro ... 1].path | semmle.label | this.ro ... 1].path |
-| angular2-client.ts:34:44:34:80 | this.ro ... ameters | semmle.label | this.ro ... ameters |
-| angular2-client.ts:34:44:34:82 | this.ro ... eters.x | semmle.label | this.ro ... eters.x |
-| angular2-client.ts:35:44:35:91 | this.ro ... et('x') | semmle.label | this.ro ... et('x') |
-| angular2-client.ts:36:44:36:89 | this.ro ... .params | semmle.label | this.ro ... .params |
-| angular2-client.ts:36:44:36:91 | this.ro ... arams.x | semmle.label | this.ro ... arams.x |
-| angular2-client.ts:38:44:38:58 | this.router.url | semmle.label | this.router.url |
-| angular2-client.ts:40:45:40:59 | this.router.url | semmle.label | this.router.url |
-| angular2-client.ts:44:44:44:76 | routeSn ... ('foo') | semmle.label | routeSn ... ('foo') |
+| angular2-client.ts:24:44:24:71 | \\u0275getDOM ... ().href | semmle.label | \\u0275getDOM ... ().href |
+| angular2-client.ts:26:44:26:69 | this.ro ... .params | semmle.label | this.ro ... .params |
+| angular2-client.ts:26:44:26:73 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:27:44:27:74 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular2-client.ts:27:44:27:78 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:28:44:28:71 | this.ro ... ragment | semmle.label | this.ro ... ragment |
+| angular2-client.ts:29:44:29:82 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
+| angular2-client.ts:30:44:30:87 | this.ro ... ('foo') | semmle.label | this.ro ... ('foo') |
+| angular2-client.ts:32:46:32:59 | map.get('foo') | semmle.label | map.get('foo') |
+| angular2-client.ts:35:44:35:74 | this.ro ... 1].path | semmle.label | this.ro ... 1].path |
+| angular2-client.ts:36:44:36:80 | this.ro ... ameters | semmle.label | this.ro ... ameters |
+| angular2-client.ts:36:44:36:82 | this.ro ... eters.x | semmle.label | this.ro ... eters.x |
+| angular2-client.ts:37:44:37:91 | this.ro ... et('x') | semmle.label | this.ro ... et('x') |
+| angular2-client.ts:38:44:38:89 | this.ro ... .params | semmle.label | this.ro ... .params |
+| angular2-client.ts:38:44:38:91 | this.ro ... arams.x | semmle.label | this.ro ... arams.x |
+| angular2-client.ts:40:44:40:58 | this.router.url | semmle.label | this.router.url |
+| angular2-client.ts:42:45:42:59 | this.router.url | semmle.label | this.router.url |
+| angular2-client.ts:43:75:43:105 | this.ro ... yParams | semmle.label | this.ro ... yParams |
+| angular2-client.ts:43:75:43:109 | this.ro ... ams.foo | semmle.label | this.ro ... ams.foo |
+| angular2-client.ts:47:44:47:76 | routeSn ... ('foo') | semmle.label | routeSn ... ('foo') |
 | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | semmle.label | Cookie.get("unsafe") |
 | angular-tempate-url.js:13:30:13:31 | ev | semmle.label | ev |
 | angular-tempate-url.js:14:26:14:27 | ev | semmle.label | ev |
@@ -136,6 +138,7 @@ nodes
 | dates.js:61:31:61:88 | `Time i ... aint)}` | semmle.label | `Time i ... aint)}` |
 | dates.js:61:42:61:86 | dayjs.s ... (taint) | semmle.label | dayjs.s ... (taint) |
 | dates.js:61:81:61:85 | taint | semmle.label | taint |
+| dom.js:4:20:4:30 | window.name | semmle.label | window.name |
 | dragAndDrop.ts:8:11:8:50 | html | semmle.label | html |
 | dragAndDrop.ts:8:18:8:50 | dataTra ... /html') | semmle.label | dataTra ... /html') |
 | dragAndDrop.ts:15:25:15:28 | html | semmle.label | html |
@@ -150,7 +153,35 @@ nodes
 | dragAndDrop.ts:73:29:73:39 | droppedHtml | semmle.label | droppedHtml |
 | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | semmle.label | '<h2><a ... ></h2>' |
 | event-handler-receiver.js:2:49:2:61 | location.href | semmle.label | location.href |
-| express.js:7:15:7:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:6:15:6:33 | req.param("wobble") | semmle.label | req.param("wobble") |
+| hana.js:11:37:11:40 | rows | semmle.label | rows |
+| hana.js:11:37:11:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:16:37:16:40 | rows | semmle.label | rows |
+| hana.js:16:37:16:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:19:37:19:40 | rows | semmle.label | rows |
+| hana.js:19:37:19:51 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:22:37:22:38 | rs | semmle.label | rs |
+| hana.js:22:37:22:49 | rs[0].comment | semmle.label | rs[0].comment |
+| hana.js:38:31:38:32 | rs | semmle.label | rs |
+| hana.js:38:31:38:43 | rs[0].comment | semmle.label | rs[0].comment |
+| hana.js:43:33:43:41 | dummyRows | semmle.label | dummyRows |
+| hana.js:43:33:43:52 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:44:33:44:42 | tablesRows | semmle.label | tablesRows |
+| hana.js:44:33:44:53 | tablesR ... comment | semmle.label | tablesR ... comment |
+| hana.js:50:33:50:41 | dummyRows | semmle.label | dummyRows |
+| hana.js:50:33:50:52 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:51:33:51:42 | tablesRows | semmle.label | tablesRows |
+| hana.js:51:33:51:53 | tablesR ... comment | semmle.label | tablesR ... comment |
+| hana.js:70:33:70:36 | rows | semmle.label | rows |
+| hana.js:70:33:70:47 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:73:33:73:36 | rows | semmle.label | rows |
+| hana.js:73:33:73:47 | rows[0].comment | semmle.label | rows[0].comment |
+| hana.js:84:35:84:43 | dummyRows | semmle.label | dummyRows |
+| hana.js:84:35:84:54 | dummyRows[0].comment | semmle.label | dummyRows[0].comment |
+| hana.js:85:35:85:43 | tableRows | semmle.label | tableRows |
+| hana.js:85:35:85:54 | tableRows[0].comment | semmle.label | tableRows[0].comment |
+| hana.js:90:33:90:34 | rs | semmle.label | rs |
+| hana.js:90:33:90:45 | rs[0].comment | semmle.label | rs[0].comment |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |
@@ -200,8 +231,8 @@ nodes
 | jwt-server.js:7:17:7:35 | req.param("wobble") | semmle.label | req.param("wobble") |
 | jwt-server.js:9:16:9:20 | taint | semmle.label | taint |
 | jwt-server.js:9:55:9:61 | decoded | semmle.label | decoded |
-| jwt-server.js:11:19:11:25 | decoded | semmle.label | decoded |
-| jwt-server.js:11:19:11:29 | decoded.foo | semmle.label | decoded.foo |
+| jwt-server.js:10:19:10:25 | decoded | semmle.label | decoded |
+| jwt-server.js:10:19:10:29 | decoded.foo | semmle.label | decoded.foo |
 | jwt.js:4:36:4:39 | data | semmle.label | data |
 | jwt.js:5:9:5:34 | decoded | semmle.label | decoded |
 | jwt.js:5:19:5:34 | jwt_decode(data) | semmle.label | jwt_decode(data) |
@@ -250,8 +281,8 @@ nodes
 | pages/[id].jsx:13:44:13:52 | params.id | semmle.label | params.id |
 | pages/[id].jsx:16:44:16:49 | params [q] | semmle.label | params [q] |
 | pages/[id].jsx:16:44:16:51 | params.q | semmle.label | params.q |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | semmle.label | {\\n      ... ,\\n    } [id] |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | semmle.label | {\\n      ... ,\\n    } [q] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | semmle.label | {\\n      ... e\\n    } [id] |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | semmle.label | {\\n      ... e\\n    } [q] |
 | pages/[id].jsx:25:11:25:24 | context.params | semmle.label | context.params |
 | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | semmle.label | context ... d \|\| "" |
 | pages/[id].jsx:26:10:26:22 | context.query | semmle.label | context.query |
@@ -339,11 +370,16 @@ nodes
 | translate.js:6:7:6:39 | target | semmle.label | target |
 | translate.js:6:16:6:39 | documen ... .search | semmle.label | documen ... .search |
 | translate.js:7:7:7:61 | searchParams | semmle.label | searchParams |
+| translate.js:7:7:7:61 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
 | translate.js:7:22:7:61 | new URL ... ing(1)) | semmle.label | new URL ... ing(1)) |
+| translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | semmle.label | new URL ... ing(1)) [MapValue] |
 | translate.js:7:42:7:47 | target | semmle.label | target |
 | translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
-| translate.js:9:27:9:38 | searchParams | semmle.label | searchParams |
-| translate.js:9:27:9:50 | searchP ... 'term') | semmle.label | searchP ... 'term') |
+| translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
+| translate.js:7:42:7:60 | target.substring(1) | semmle.label | target.substring(1) |
+| translate.js:8:27:8:38 | searchParams | semmle.label | searchParams |
+| translate.js:8:27:8:38 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
+| translate.js:8:27:8:50 | searchP ... 'term') | semmle.label | searchP ... 'term') |
 | trusted-types-lib.js:1:28:1:28 | x | semmle.label | x |
 | trusted-types-lib.js:2:12:2:12 | x | semmle.label | x |
 | trusted-types.js:3:62:3:62 | x | semmle.label | x |
@@ -366,225 +402,244 @@ nodes
 | tst3.js:10:38:10:43 | data.p | semmle.label | data.p |
 | tst.js:2:7:2:39 | target | semmle.label | target |
 | tst.js:2:16:2:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:5:18:5:23 | target | semmle.label | target |
-| tst.js:8:18:8:126 | "<OPTIO ... PTION>" | semmle.label | "<OPTIO ... PTION>" |
-| tst.js:8:37:8:58 | documen ... on.href | semmle.label | documen ... on.href |
-| tst.js:8:37:8:114 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
-| tst.js:8:37:8:114 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
-| tst.js:12:5:12:42 | '<div s ...  'px">' | semmle.label | '<div s ...  'px">' |
-| tst.js:12:28:12:33 | target | semmle.label | target |
-| tst.js:17:7:17:56 | params | semmle.label | params |
-| tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | semmle.label | (new UR ... ation)) [searchParams] |
-| tst.js:17:16:17:56 | (new UR ... hParams | semmle.label | (new UR ... hParams |
-| tst.js:17:17:17:42 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
-| tst.js:17:25:17:41 | document.location | semmle.label | document.location |
-| tst.js:18:18:18:23 | params | semmle.label | params |
-| tst.js:18:18:18:35 | params.get('name') | semmle.label | params.get('name') |
-| tst.js:20:7:20:61 | searchParams | semmle.label | searchParams |
-| tst.js:20:22:20:61 | new URL ... ing(1)) | semmle.label | new URL ... ing(1)) |
-| tst.js:20:42:20:47 | target | semmle.label | target |
-| tst.js:20:42:20:60 | target.substring(1) | semmle.label | target.substring(1) |
-| tst.js:21:18:21:29 | searchParams | semmle.label | searchParams |
-| tst.js:21:18:21:41 | searchP ... 'name') | semmle.label | searchP ... 'name') |
-| tst.js:24:14:24:19 | target | semmle.label | target |
-| tst.js:26:18:26:23 | target | semmle.label | target |
-| tst.js:28:5:28:28 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:31:10:31:33 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:34:16:34:20 | bar() | semmle.label | bar() |
-| tst.js:36:14:36:14 | x | semmle.label | x |
-| tst.js:37:10:37:10 | x | semmle.label | x |
-| tst.js:40:16:40:44 | baz(doc ... search) | semmle.label | baz(doc ... search) |
-| tst.js:40:20:40:43 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:42:15:42:15 | s | semmle.label | s |
-| tst.js:42:15:42:15 | s | semmle.label | s |
-| tst.js:43:10:43:31 | "<div>" ... </div>" | semmle.label | "<div>" ... </div>" |
-| tst.js:43:20:43:20 | s | semmle.label | s |
-| tst.js:43:20:43:20 | s | semmle.label | s |
-| tst.js:46:16:46:45 | wrap(do ... search) | semmle.label | wrap(do ... search) |
+| tst.js:4:18:4:23 | target | semmle.label | target |
+| tst.js:6:18:6:126 | "<OPTIO ... PTION>" | semmle.label | "<OPTIO ... PTION>" |
+| tst.js:6:37:6:58 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:6:37:6:114 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
+| tst.js:6:37:6:114 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
+| tst.js:9:5:9:42 | '<div s ...  'px">' | semmle.label | '<div s ...  'px">' |
+| tst.js:9:28:9:33 | target | semmle.label | target |
+| tst.js:14:7:14:56 | params | semmle.label | params |
+| tst.js:14:7:14:56 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | semmle.label | (new UR ... ation)) [searchParams, MapValue] |
+| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | semmle.label | (new UR ... ation)) [searchParams] |
+| tst.js:14:16:14:56 | (new UR ... hParams | semmle.label | (new UR ... hParams |
+| tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | semmle.label | (new UR ... hParams [MapValue] |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | semmle.label | new URL ... cation) [searchParams, MapValue] |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
+| tst.js:14:25:14:41 | document.location | semmle.label | document.location |
+| tst.js:15:18:15:23 | params | semmle.label | params |
+| tst.js:15:18:15:23 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:15:18:15:35 | params.get('name') | semmle.label | params.get('name') |
+| tst.js:17:7:17:61 | searchParams | semmle.label | searchParams |
+| tst.js:17:7:17:61 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
+| tst.js:17:22:17:61 | new URL ... ing(1)) | semmle.label | new URL ... ing(1)) |
+| tst.js:17:22:17:61 | new URL ... ing(1)) [MapValue] | semmle.label | new URL ... ing(1)) [MapValue] |
+| tst.js:17:42:17:47 | target | semmle.label | target |
+| tst.js:17:42:17:60 | target.substring(1) | semmle.label | target.substring(1) |
+| tst.js:17:42:17:60 | target.substring(1) | semmle.label | target.substring(1) |
+| tst.js:17:42:17:60 | target.substring(1) | semmle.label | target.substring(1) |
+| tst.js:18:18:18:29 | searchParams | semmle.label | searchParams |
+| tst.js:18:18:18:29 | searchParams [MapValue] | semmle.label | searchParams [MapValue] |
+| tst.js:18:18:18:41 | searchP ... 'name') | semmle.label | searchP ... 'name') |
+| tst.js:21:14:21:19 | target | semmle.label | target |
+| tst.js:22:18:22:23 | target | semmle.label | target |
+| tst.js:24:5:24:28 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:27:10:27:33 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:29:16:29:20 | bar() | semmle.label | bar() |
+| tst.js:31:14:31:14 | x | semmle.label | x |
+| tst.js:32:10:32:10 | x | semmle.label | x |
+| tst.js:34:16:34:44 | baz(doc ... search) | semmle.label | baz(doc ... search) |
+| tst.js:34:20:34:43 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:36:15:36:15 | s | semmle.label | s |
+| tst.js:36:15:36:15 | s | semmle.label | s |
+| tst.js:37:10:37:31 | "<div>" ... </div>" | semmle.label | "<div>" ... </div>" |
+| tst.js:37:20:37:20 | s | semmle.label | s |
+| tst.js:37:20:37:20 | s | semmle.label | s |
+| tst.js:39:16:39:45 | wrap(do ... search) | semmle.label | wrap(do ... search) |
+| tst.js:39:21:39:44 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:41:15:41:15 | s | semmle.label | s |
+| tst.js:43:12:43:12 | s | semmle.label | s |
+| tst.js:43:12:43:22 | s.substr(1) | semmle.label | s.substr(1) |
+| tst.js:43:12:43:22 | s.substr(1) | semmle.label | s.substr(1) |
+| tst.js:43:12:43:22 | s.substr(1) | semmle.label | s.substr(1) |
+| tst.js:46:16:46:45 | chop(do ... search) | semmle.label | chop(do ... search) |
 | tst.js:46:21:46:44 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:48:15:48:15 | s | semmle.label | s |
-| tst.js:50:12:50:12 | s | semmle.label | s |
-| tst.js:50:12:50:22 | s.substr(1) | semmle.label | s.substr(1) |
-| tst.js:50:12:50:22 | s.substr(1) | semmle.label | s.substr(1) |
-| tst.js:50:12:50:22 | s.substr(1) | semmle.label | s.substr(1) |
-| tst.js:54:16:54:45 | chop(do ... search) | semmle.label | chop(do ... search) |
-| tst.js:54:21:54:44 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:56:16:56:45 | chop(do ... search) | semmle.label | chop(do ... search) |
-| tst.js:56:21:56:44 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:58:16:58:32 | wrap(chop(bar())) | semmle.label | wrap(chop(bar())) |
-| tst.js:58:21:58:31 | chop(bar()) | semmle.label | chop(bar()) |
-| tst.js:58:21:58:31 | chop(bar()) | semmle.label | chop(bar()) |
-| tst.js:58:26:58:30 | bar() | semmle.label | bar() |
-| tst.js:60:34:60:34 | s | semmle.label | s |
-| tst.js:62:18:62:18 | s | semmle.label | s |
-| tst.js:64:25:64:48 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:65:25:65:48 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:68:16:68:20 | bar() | semmle.label | bar() |
-| tst.js:70:1:70:27 | [,docum ... search] [1] | semmle.label | [,docum ... search] [1] |
-| tst.js:70:3:70:26 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:70:46:70:46 | x | semmle.label | x |
-| tst.js:73:20:73:20 | x | semmle.label | x |
-| tst.js:77:49:77:72 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:81:26:81:49 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:82:25:82:48 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:84:33:84:56 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:85:32:85:55 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:90:39:90:62 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:96:30:96:53 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:102:25:102:48 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:107:7:107:44 | v | semmle.label | v |
-| tst.js:107:11:107:34 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:107:11:107:44 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
-| tst.js:110:18:110:18 | v | semmle.label | v |
-| tst.js:136:18:136:18 | v | semmle.label | v |
-| tst.js:148:29:148:50 | window. ... .search | semmle.label | window. ... .search |
-| tst.js:151:29:151:29 | v | semmle.label | v |
-| tst.js:151:49:151:49 | v | semmle.label | v |
-| tst.js:155:29:155:46 | xssSourceService() | semmle.label | xssSourceService() |
-| tst.js:158:40:158:61 | window. ... .search | semmle.label | window. ... .search |
-| tst.js:177:9:177:41 | target | semmle.label | target |
-| tst.js:177:18:177:41 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:180:28:180:33 | target | semmle.label | target |
-| tst.js:184:9:184:42 | tainted | semmle.label | tainted |
-| tst.js:184:19:184:42 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:186:31:186:37 | tainted | semmle.label | tainted |
-| tst.js:188:42:188:48 | tainted | semmle.label | tainted |
-| tst.js:189:33:189:39 | tainted | semmle.label | tainted |
-| tst.js:191:54:191:60 | tainted | semmle.label | tainted |
-| tst.js:192:45:192:51 | tainted | semmle.label | tainted |
-| tst.js:193:49:193:55 | tainted | semmle.label | tainted |
-| tst.js:197:9:197:42 | tainted | semmle.label | tainted |
-| tst.js:197:19:197:42 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:199:67:199:73 | tainted | semmle.label | tainted |
-| tst.js:200:67:200:73 | tainted | semmle.label | tainted |
-| tst.js:204:35:204:41 | tainted | semmle.label | tainted |
-| tst.js:206:46:206:52 | tainted | semmle.label | tainted |
-| tst.js:207:38:207:44 | tainted | semmle.label | tainted |
-| tst.js:208:35:208:41 | tainted | semmle.label | tainted |
-| tst.js:212:28:212:46 | this.state.tainted1 | semmle.label | this.state.tainted1 |
-| tst.js:213:28:213:46 | this.state.tainted2 | semmle.label | this.state.tainted2 |
-| tst.js:214:28:214:46 | this.state.tainted3 | semmle.label | this.state.tainted3 |
-| tst.js:218:32:218:49 | prevState.tainted4 | semmle.label | prevState.tainted4 |
-| tst.js:225:28:225:46 | this.props.tainted1 | semmle.label | this.props.tainted1 |
-| tst.js:226:28:226:46 | this.props.tainted2 | semmle.label | this.props.tainted2 |
-| tst.js:227:28:227:46 | this.props.tainted3 | semmle.label | this.props.tainted3 |
-| tst.js:231:32:231:49 | prevProps.tainted4 | semmle.label | prevProps.tainted4 |
-| tst.js:236:35:236:41 | tainted | semmle.label | tainted |
-| tst.js:238:20:238:26 | tainted | semmle.label | tainted |
-| tst.js:240:23:240:29 | tainted | semmle.label | tainted |
-| tst.js:241:23:241:29 | tainted | semmle.label | tainted |
-| tst.js:247:39:247:55 | props.propTainted | semmle.label | props.propTainted |
-| tst.js:251:60:251:82 | this.st ... Tainted | semmle.label | this.st ... Tainted |
-| tst.js:255:23:255:29 | tainted | semmle.label | tainted |
-| tst.js:259:7:259:17 | window.name | semmle.label | window.name |
-| tst.js:260:7:260:10 | name | semmle.label | name |
-| tst.js:264:11:264:21 | window.name | semmle.label | window.name |
-| tst.js:280:22:280:29 | location | semmle.label | location |
-| tst.js:285:9:285:29 | tainted | semmle.label | tainted |
-| tst.js:285:19:285:29 | window.name | semmle.label | window.name |
-| tst.js:288:59:288:65 | tainted | semmle.label | tainted |
-| tst.js:301:9:301:16 | location | semmle.label | location |
-| tst.js:302:10:302:10 | e | semmle.label | e |
-| tst.js:303:20:303:20 | e | semmle.label | e |
-| tst.js:308:10:308:17 | location | semmle.label | location |
-| tst.js:310:10:310:10 | e | semmle.label | e |
-| tst.js:311:20:311:20 | e | semmle.label | e |
-| tst.js:316:35:316:42 | location | semmle.label | location |
-| tst.js:327:10:327:35 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
-| tst.js:327:18:327:34 | document.location | semmle.label | document.location |
-| tst.js:331:7:331:43 | params | semmle.label | params |
-| tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | semmle.label | getTaintedUrl() [searchParams] |
-| tst.js:331:16:331:43 | getTain ... hParams | semmle.label | getTain ... hParams |
-| tst.js:332:18:332:23 | params | semmle.label | params |
-| tst.js:332:18:332:35 | params.get('name') | semmle.label | params.get('name') |
-| tst.js:341:12:341:37 | new URL ... cation) [hash] | semmle.label | new URL ... cation) [hash] |
-| tst.js:341:20:341:36 | document.location | semmle.label | document.location |
-| tst.js:343:5:343:12 | getUrl() [hash] | semmle.label | getUrl() [hash] |
-| tst.js:343:5:343:17 | getUrl().hash | semmle.label | getUrl().hash |
-| tst.js:343:5:343:30 | getUrl( ... ring(1) | semmle.label | getUrl( ... ring(1) |
-| tst.js:348:7:348:39 | target | semmle.label | target |
-| tst.js:348:16:348:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:349:12:349:17 | target | semmle.label | target |
-| tst.js:355:10:355:42 | target | semmle.label | target |
-| tst.js:355:19:355:42 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:356:16:356:21 | target | semmle.label | target |
-| tst.js:357:20:357:25 | target | semmle.label | target |
-| tst.js:360:21:360:26 | target | semmle.label | target |
-| tst.js:363:18:363:23 | target | semmle.label | target |
-| tst.js:371:7:371:39 | target | semmle.label | target |
-| tst.js:371:16:371:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:374:18:374:23 | target | semmle.label | target |
-| tst.js:381:7:381:39 | target | semmle.label | target |
-| tst.js:381:16:381:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:384:18:384:23 | target | semmle.label | target |
-| tst.js:386:18:386:23 | target | semmle.label | target |
-| tst.js:386:18:386:29 | target.taint | semmle.label | target.taint |
-| tst.js:391:3:391:8 | [post update] target [taint3] | semmle.label | [post update] target [taint3] |
-| tst.js:391:19:391:42 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:392:18:392:23 | target [taint3] | semmle.label | target [taint3] |
-| tst.js:392:18:392:30 | target.taint3 | semmle.label | target.taint3 |
-| tst.js:397:18:397:23 | target | semmle.label | target |
-| tst.js:397:18:397:30 | target.taint5 | semmle.label | target.taint5 |
-| tst.js:406:18:406:23 | target | semmle.label | target |
-| tst.js:406:18:406:30 | target.taint7 | semmle.label | target.taint7 |
-| tst.js:408:3:408:8 | [post update] target [taint8] | semmle.label | [post update] target [taint8] |
-| tst.js:408:19:408:24 | target | semmle.label | target |
-| tst.js:408:19:408:24 | target [taint8] | semmle.label | target [taint8] |
-| tst.js:408:19:408:31 | target.taint8 | semmle.label | target.taint8 |
-| tst.js:409:18:409:23 | target [taint8] | semmle.label | target [taint8] |
-| tst.js:409:18:409:30 | target.taint8 | semmle.label | target.taint8 |
-| tst.js:416:7:416:46 | payload | semmle.label | payload |
-| tst.js:416:17:416:36 | window.location.hash | semmle.label | window.location.hash |
-| tst.js:416:17:416:46 | window. ... bstr(1) | semmle.label | window. ... bstr(1) |
-| tst.js:417:18:417:24 | payload | semmle.label | payload |
-| tst.js:419:7:419:55 | match | semmle.label | match |
-| tst.js:419:15:419:34 | window.location.hash | semmle.label | window.location.hash |
-| tst.js:419:15:419:55 | window. ... (\\w+)/) | semmle.label | window. ... (\\w+)/) |
-| tst.js:421:20:421:24 | match | semmle.label | match |
-| tst.js:421:20:421:27 | match[1] | semmle.label | match[1] |
-| tst.js:424:18:424:37 | window.location.hash | semmle.label | window.location.hash |
-| tst.js:424:18:424:48 | window. ... it('#') [1] | semmle.label | window. ... it('#') [1] |
-| tst.js:424:18:424:51 | window. ... '#')[1] | semmle.label | window. ... '#')[1] |
-| tst.js:428:7:428:39 | target | semmle.label | target |
-| tst.js:428:16:428:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:430:18:430:23 | target | semmle.label | target |
-| tst.js:430:18:430:89 | target. ... data>') | semmle.label | target. ... data>') |
-| tst.js:436:6:436:38 | source | semmle.label | source |
-| tst.js:436:15:436:38 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:440:28:440:33 | source | semmle.label | source |
-| tst.js:441:33:441:38 | source | semmle.label | source |
-| tst.js:442:34:442:39 | source | semmle.label | source |
-| tst.js:443:41:443:46 | source | semmle.label | source |
-| tst.js:444:44:444:49 | source | semmle.label | source |
-| tst.js:445:32:445:37 | source | semmle.label | source |
-| tst.js:453:7:453:39 | source | semmle.label | source |
-| tst.js:453:16:453:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:455:18:455:23 | source | semmle.label | source |
-| tst.js:456:18:456:42 | ansiToH ... source) | semmle.label | ansiToH ... source) |
-| tst.js:456:36:456:41 | source | semmle.label | source |
-| tst.js:460:6:460:38 | source | semmle.label | source |
-| tst.js:460:15:460:38 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:463:21:463:26 | source | semmle.label | source |
-| tst.js:465:19:465:24 | source | semmle.label | source |
-| tst.js:467:20:467:25 | source | semmle.label | source |
-| tst.js:471:7:471:46 | url | semmle.label | url |
-| tst.js:471:13:471:36 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:471:13:471:46 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
-| tst.js:473:19:473:21 | url | semmle.label | url |
-| tst.js:474:26:474:28 | url | semmle.label | url |
-| tst.js:475:25:475:27 | url | semmle.label | url |
-| tst.js:476:20:476:22 | url | semmle.label | url |
-| tst.js:486:22:486:24 | url | semmle.label | url |
-| tst.js:491:23:491:35 | location.hash | semmle.label | location.hash |
-| tst.js:491:23:491:45 | locatio ... bstr(1) | semmle.label | locatio ... bstr(1) |
-| tst.js:494:18:494:30 | location.hash | semmle.label | location.hash |
-| tst.js:494:18:494:40 | locatio ... bstr(1) | semmle.label | locatio ... bstr(1) |
-| tst.js:501:33:501:63 | decodeU ... n.hash) | semmle.label | decodeU ... n.hash) |
-| tst.js:501:43:501:62 | window.location.hash | semmle.label | window.location.hash |
-| tst.js:508:7:508:39 | target | semmle.label | target |
-| tst.js:508:16:508:39 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:509:18:509:23 | target | semmle.label | target |
-| tst.js:509:18:509:54 | target. ... "), '') | semmle.label | target. ... "), '') |
+| tst.js:47:16:47:45 | chop(do ... search) | semmle.label | chop(do ... search) |
+| tst.js:47:21:47:44 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:48:16:48:32 | wrap(chop(bar())) | semmle.label | wrap(chop(bar())) |
+| tst.js:48:21:48:31 | chop(bar()) | semmle.label | chop(bar()) |
+| tst.js:48:21:48:31 | chop(bar()) | semmle.label | chop(bar()) |
+| tst.js:48:26:48:30 | bar() | semmle.label | bar() |
+| tst.js:50:34:50:34 | s | semmle.label | s |
+| tst.js:51:18:51:18 | s | semmle.label | s |
+| tst.js:53:25:53:48 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:54:25:54:48 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:56:16:56:20 | bar() | semmle.label | bar() |
+| tst.js:58:1:58:27 | [,docum ... search] [1] | semmle.label | [,docum ... search] [1] |
+| tst.js:58:3:58:26 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:58:46:58:46 | x | semmle.label | x |
+| tst.js:60:20:60:20 | x | semmle.label | x |
+| tst.js:63:49:63:72 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:67:26:67:49 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:68:25:68:48 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:70:33:70:56 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:71:32:71:55 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:76:39:76:62 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:82:30:82:53 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:88:25:88:48 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:93:7:93:44 | v | semmle.label | v |
+| tst.js:93:11:93:34 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:93:11:93:44 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| tst.js:95:18:95:18 | v | semmle.label | v |
+| tst.js:120:18:120:18 | v | semmle.label | v |
+| tst.js:132:29:132:50 | window. ... .search | semmle.label | window. ... .search |
+| tst.js:135:29:135:29 | v | semmle.label | v |
+| tst.js:135:49:135:49 | v | semmle.label | v |
+| tst.js:139:29:139:46 | xssSourceService() | semmle.label | xssSourceService() |
+| tst.js:142:40:142:61 | window. ... .search | semmle.label | window. ... .search |
+| tst.js:161:9:161:41 | target | semmle.label | target |
+| tst.js:161:18:161:41 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:164:28:164:33 | target | semmle.label | target |
+| tst.js:168:9:168:42 | tainted | semmle.label | tainted |
+| tst.js:168:19:168:42 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:170:31:170:37 | tainted | semmle.label | tainted |
+| tst.js:172:42:172:48 | tainted | semmle.label | tainted |
+| tst.js:173:33:173:39 | tainted | semmle.label | tainted |
+| tst.js:175:54:175:60 | tainted | semmle.label | tainted |
+| tst.js:176:45:176:51 | tainted | semmle.label | tainted |
+| tst.js:177:49:177:55 | tainted | semmle.label | tainted |
+| tst.js:181:9:181:42 | tainted | semmle.label | tainted |
+| tst.js:181:19:181:42 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:183:67:183:73 | tainted | semmle.label | tainted |
+| tst.js:184:67:184:73 | tainted | semmle.label | tainted |
+| tst.js:188:35:188:41 | tainted | semmle.label | tainted |
+| tst.js:190:46:190:52 | tainted | semmle.label | tainted |
+| tst.js:191:38:191:44 | tainted | semmle.label | tainted |
+| tst.js:192:35:192:41 | tainted | semmle.label | tainted |
+| tst.js:196:28:196:46 | this.state.tainted1 | semmle.label | this.state.tainted1 |
+| tst.js:197:28:197:46 | this.state.tainted2 | semmle.label | this.state.tainted2 |
+| tst.js:198:28:198:46 | this.state.tainted3 | semmle.label | this.state.tainted3 |
+| tst.js:202:32:202:49 | prevState.tainted4 | semmle.label | prevState.tainted4 |
+| tst.js:209:28:209:46 | this.props.tainted1 | semmle.label | this.props.tainted1 |
+| tst.js:210:28:210:46 | this.props.tainted2 | semmle.label | this.props.tainted2 |
+| tst.js:211:28:211:46 | this.props.tainted3 | semmle.label | this.props.tainted3 |
+| tst.js:215:32:215:49 | prevProps.tainted4 | semmle.label | prevProps.tainted4 |
+| tst.js:220:35:220:41 | tainted | semmle.label | tainted |
+| tst.js:222:20:222:26 | tainted | semmle.label | tainted |
+| tst.js:224:23:224:29 | tainted | semmle.label | tainted |
+| tst.js:225:23:225:29 | tainted | semmle.label | tainted |
+| tst.js:231:39:231:55 | props.propTainted | semmle.label | props.propTainted |
+| tst.js:235:60:235:82 | this.st ... Tainted | semmle.label | this.st ... Tainted |
+| tst.js:239:23:239:29 | tainted | semmle.label | tainted |
+| tst.js:243:7:243:17 | window.name | semmle.label | window.name |
+| tst.js:244:7:244:10 | name | semmle.label | name |
+| tst.js:248:11:248:21 | window.name | semmle.label | window.name |
+| tst.js:264:22:264:29 | location | semmle.label | location |
+| tst.js:269:9:269:29 | tainted | semmle.label | tainted |
+| tst.js:269:19:269:29 | window.name | semmle.label | window.name |
+| tst.js:272:59:272:65 | tainted | semmle.label | tainted |
+| tst.js:285:9:285:16 | location | semmle.label | location |
+| tst.js:286:10:286:10 | e | semmle.label | e |
+| tst.js:287:20:287:20 | e | semmle.label | e |
+| tst.js:292:10:292:17 | location | semmle.label | location |
+| tst.js:294:10:294:10 | e | semmle.label | e |
+| tst.js:295:20:295:20 | e | semmle.label | e |
+| tst.js:300:35:300:42 | location | semmle.label | location |
+| tst.js:311:10:311:35 | new URL ... cation) [searchParams, MapValue] | semmle.label | new URL ... cation) [searchParams, MapValue] |
+| tst.js:311:10:311:35 | new URL ... cation) [searchParams] | semmle.label | new URL ... cation) [searchParams] |
+| tst.js:311:18:311:34 | document.location | semmle.label | document.location |
+| tst.js:315:7:315:43 | params | semmle.label | params |
+| tst.js:315:7:315:43 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:315:16:315:30 | getTaintedUrl() [searchParams, MapValue] | semmle.label | getTaintedUrl() [searchParams, MapValue] |
+| tst.js:315:16:315:30 | getTaintedUrl() [searchParams] | semmle.label | getTaintedUrl() [searchParams] |
+| tst.js:315:16:315:43 | getTain ... hParams | semmle.label | getTain ... hParams |
+| tst.js:315:16:315:43 | getTain ... hParams [MapValue] | semmle.label | getTain ... hParams [MapValue] |
+| tst.js:316:18:316:23 | params | semmle.label | params |
+| tst.js:316:18:316:23 | params [MapValue] | semmle.label | params [MapValue] |
+| tst.js:316:18:316:35 | params.get('name') | semmle.label | params.get('name') |
+| tst.js:325:12:325:37 | new URL ... cation) [hash] | semmle.label | new URL ... cation) [hash] |
+| tst.js:325:20:325:36 | document.location | semmle.label | document.location |
+| tst.js:327:5:327:12 | getUrl() [hash] | semmle.label | getUrl() [hash] |
+| tst.js:327:5:327:17 | getUrl().hash | semmle.label | getUrl().hash |
+| tst.js:327:5:327:30 | getUrl( ... ring(1) | semmle.label | getUrl( ... ring(1) |
+| tst.js:332:7:332:39 | target | semmle.label | target |
+| tst.js:332:16:332:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:333:12:333:17 | target | semmle.label | target |
+| tst.js:339:10:339:42 | target | semmle.label | target |
+| tst.js:339:19:339:42 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:340:16:340:21 | target | semmle.label | target |
+| tst.js:341:20:341:25 | target | semmle.label | target |
+| tst.js:344:21:344:26 | target | semmle.label | target |
+| tst.js:347:18:347:23 | target | semmle.label | target |
+| tst.js:355:7:355:39 | target | semmle.label | target |
+| tst.js:355:16:355:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:357:18:357:23 | target | semmle.label | target |
+| tst.js:364:7:364:39 | target | semmle.label | target |
+| tst.js:364:16:364:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:367:18:367:23 | target | semmle.label | target |
+| tst.js:369:18:369:23 | target | semmle.label | target |
+| tst.js:369:18:369:29 | target.taint | semmle.label | target.taint |
+| tst.js:374:3:374:8 | [post update] target [taint3] | semmle.label | [post update] target [taint3] |
+| tst.js:374:19:374:42 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:375:18:375:23 | target [taint3] | semmle.label | target [taint3] |
+| tst.js:375:18:375:30 | target.taint3 | semmle.label | target.taint3 |
+| tst.js:380:18:380:23 | target | semmle.label | target |
+| tst.js:380:18:380:30 | target.taint5 | semmle.label | target.taint5 |
+| tst.js:389:18:389:23 | target | semmle.label | target |
+| tst.js:389:18:389:30 | target.taint7 | semmle.label | target.taint7 |
+| tst.js:391:3:391:8 | [post update] target [taint8] | semmle.label | [post update] target [taint8] |
+| tst.js:391:19:391:24 | target | semmle.label | target |
+| tst.js:391:19:391:24 | target [taint8] | semmle.label | target [taint8] |
+| tst.js:391:19:391:31 | target.taint8 | semmle.label | target.taint8 |
+| tst.js:392:18:392:23 | target [taint8] | semmle.label | target [taint8] |
+| tst.js:392:18:392:30 | target.taint8 | semmle.label | target.taint8 |
+| tst.js:399:7:399:46 | payload | semmle.label | payload |
+| tst.js:399:17:399:36 | window.location.hash | semmle.label | window.location.hash |
+| tst.js:399:17:399:46 | window. ... bstr(1) | semmle.label | window. ... bstr(1) |
+| tst.js:400:18:400:24 | payload | semmle.label | payload |
+| tst.js:402:7:402:55 | match | semmle.label | match |
+| tst.js:402:15:402:34 | window.location.hash | semmle.label | window.location.hash |
+| tst.js:402:15:402:55 | window. ... (\\w+)/) | semmle.label | window. ... (\\w+)/) |
+| tst.js:404:20:404:24 | match | semmle.label | match |
+| tst.js:404:20:404:27 | match[1] | semmle.label | match[1] |
+| tst.js:407:18:407:37 | window.location.hash | semmle.label | window.location.hash |
+| tst.js:407:18:407:48 | window. ... it('#') [1] | semmle.label | window. ... it('#') [1] |
+| tst.js:407:18:407:51 | window. ... '#')[1] | semmle.label | window. ... '#')[1] |
+| tst.js:411:7:411:39 | target | semmle.label | target |
+| tst.js:411:16:411:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:413:18:413:23 | target | semmle.label | target |
+| tst.js:413:18:413:89 | target. ... data>') | semmle.label | target. ... data>') |
+| tst.js:419:6:419:38 | source | semmle.label | source |
+| tst.js:419:15:419:38 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:423:28:423:33 | source | semmle.label | source |
+| tst.js:424:33:424:38 | source | semmle.label | source |
+| tst.js:425:34:425:39 | source | semmle.label | source |
+| tst.js:426:41:426:46 | source | semmle.label | source |
+| tst.js:427:44:427:49 | source | semmle.label | source |
+| tst.js:428:32:428:37 | source | semmle.label | source |
+| tst.js:436:7:436:39 | source | semmle.label | source |
+| tst.js:436:16:436:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:438:18:438:23 | source | semmle.label | source |
+| tst.js:439:18:439:42 | ansiToH ... source) | semmle.label | ansiToH ... source) |
+| tst.js:439:36:439:41 | source | semmle.label | source |
+| tst.js:443:6:443:38 | source | semmle.label | source |
+| tst.js:443:15:443:38 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:446:21:446:26 | source | semmle.label | source |
+| tst.js:448:19:448:24 | source | semmle.label | source |
+| tst.js:450:20:450:25 | source | semmle.label | source |
+| tst.js:454:7:454:46 | url | semmle.label | url |
+| tst.js:454:13:454:36 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:454:13:454:46 | documen ... bstr(1) | semmle.label | documen ... bstr(1) |
+| tst.js:456:19:456:21 | url | semmle.label | url |
+| tst.js:457:26:457:28 | url | semmle.label | url |
+| tst.js:458:25:458:27 | url | semmle.label | url |
+| tst.js:459:20:459:22 | url | semmle.label | url |
+| tst.js:469:22:469:24 | url | semmle.label | url |
+| tst.js:474:23:474:35 | location.hash | semmle.label | location.hash |
+| tst.js:474:23:474:45 | locatio ... bstr(1) | semmle.label | locatio ... bstr(1) |
+| tst.js:477:18:477:30 | location.hash | semmle.label | location.hash |
+| tst.js:477:18:477:40 | locatio ... bstr(1) | semmle.label | locatio ... bstr(1) |
+| tst.js:484:33:484:63 | decodeU ... n.hash) | semmle.label | decodeU ... n.hash) |
+| tst.js:484:43:484:62 | window.location.hash | semmle.label | window.location.hash |
+| tst.js:491:7:491:39 | target | semmle.label | target |
+| tst.js:491:16:491:39 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:492:18:492:23 | target | semmle.label | target |
+| tst.js:492:18:492:54 | target. ... "), '') | semmle.label | target. ... "), '') |
+| tst.js:498:7:498:26 | source | semmle.label | source |
+| tst.js:498:16:498:26 | window.name | semmle.label | window.name |
+| tst.js:499:18:499:33 | unescape(source) | semmle.label | unescape(source) |
+| tst.js:499:27:499:32 | source | semmle.label | source |
 | typeahead.js:9:28:9:30 | loc | semmle.label | loc |
 | typeahead.js:10:16:10:18 | loc | semmle.label | loc |
 | typeahead.js:20:13:20:45 | target | semmle.label | target |
@@ -592,6 +647,8 @@ nodes
 | typeahead.js:21:12:21:17 | target | semmle.label | target |
 | typeahead.js:24:30:24:32 | val | semmle.label | val |
 | typeahead.js:25:18:25:20 | val | semmle.label | val |
+| v-html.vue:2:8:2:23 | v-html=tainted | semmle.label | v-html=tainted |
+| v-html.vue:6:42:6:58 | document.location | semmle.label | document.location |
 | various-concat-obfuscations.js:2:6:2:39 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | semmle.label | documen ... .search |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | semmle.label | "<div>" ... </div>" |
@@ -657,10 +714,11 @@ edges
 | addEventListener.js:5:43:5:48 | {data} | addEventListener.js:5:43:5:48 | data | provenance |  |
 | addEventListener.js:10:21:10:25 | event | addEventListener.js:12:24:12:28 | event | provenance |  |
 | addEventListener.js:12:24:12:28 | event | addEventListener.js:12:24:12:33 | event.data | provenance |  |
-| angular2-client.ts:24:44:24:69 | this.ro ... .params | angular2-client.ts:24:44:24:73 | this.ro ... ams.foo | provenance |  |
-| angular2-client.ts:25:44:25:74 | this.ro ... yParams | angular2-client.ts:25:44:25:78 | this.ro ... ams.foo | provenance |  |
-| angular2-client.ts:34:44:34:80 | this.ro ... ameters | angular2-client.ts:34:44:34:82 | this.ro ... eters.x | provenance |  |
-| angular2-client.ts:36:44:36:89 | this.ro ... .params | angular2-client.ts:36:44:36:91 | this.ro ... arams.x | provenance |  |
+| angular2-client.ts:26:44:26:69 | this.ro ... .params | angular2-client.ts:26:44:26:73 | this.ro ... ams.foo | provenance |  |
+| angular2-client.ts:27:44:27:74 | this.ro ... yParams | angular2-client.ts:27:44:27:78 | this.ro ... ams.foo | provenance |  |
+| angular2-client.ts:36:44:36:80 | this.ro ... ameters | angular2-client.ts:36:44:36:82 | this.ro ... eters.x | provenance |  |
+| angular2-client.ts:38:44:38:89 | this.ro ... .params | angular2-client.ts:38:44:38:91 | this.ro ... arams.x | provenance |  |
+| angular2-client.ts:43:75:43:105 | this.ro ... yParams | angular2-client.ts:43:75:43:109 | this.ro ... ams.foo | provenance |  |
 | angular-tempate-url.js:13:30:13:31 | ev | angular-tempate-url.js:14:26:14:27 | ev | provenance |  |
 | angular-tempate-url.js:14:26:14:27 | ev | angular-tempate-url.js:14:26:14:32 | ev.data | provenance |  |
 | angular-tempate-url.js:14:26:14:32 | ev.data | angular-tempate-url.js:9:26:9:45 | Cookie.get("unsafe") | provenance |  |
@@ -762,6 +820,20 @@ edges
 | dragAndDrop.ts:71:27:71:61 | e.dataT ... /html') | dragAndDrop.ts:71:13:71:61 | droppedHtml | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance |  |
 | event-handler-receiver.js:2:49:2:61 | location.href | event-handler-receiver.js:2:31:2:83 | '<h2><a ... ></h2>' | provenance | Config |
+| hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | provenance |  |
+| hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | provenance |  |
+| hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | provenance |  |
+| hana.js:22:37:22:38 | rs | hana.js:22:37:22:49 | rs[0].comment | provenance |  |
+| hana.js:38:31:38:32 | rs | hana.js:38:31:38:43 | rs[0].comment | provenance |  |
+| hana.js:43:33:43:41 | dummyRows | hana.js:43:33:43:52 | dummyRows[0].comment | provenance |  |
+| hana.js:44:33:44:42 | tablesRows | hana.js:44:33:44:53 | tablesR ... comment | provenance |  |
+| hana.js:50:33:50:41 | dummyRows | hana.js:50:33:50:52 | dummyRows[0].comment | provenance |  |
+| hana.js:51:33:51:42 | tablesRows | hana.js:51:33:51:53 | tablesR ... comment | provenance |  |
+| hana.js:70:33:70:36 | rows | hana.js:70:33:70:47 | rows[0].comment | provenance |  |
+| hana.js:73:33:73:36 | rows | hana.js:73:33:73:47 | rows[0].comment | provenance |  |
+| hana.js:84:35:84:43 | dummyRows | hana.js:84:35:84:54 | dummyRows[0].comment | provenance |  |
+| hana.js:85:35:85:43 | tableRows | hana.js:85:35:85:54 | tableRows[0].comment | provenance |  |
+| hana.js:90:33:90:34 | rs | hana.js:90:33:90:45 | rs[0].comment | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:4:5:4:11 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:5:13:5:19 | tainted | provenance |  |
 | jquery.js:2:7:2:40 | tainted | jquery.js:6:11:6:17 | tainted | provenance |  |
@@ -808,8 +880,8 @@ edges
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint | provenance |  |
 | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint | provenance |  |
 | jwt-server.js:9:16:9:20 | taint | jwt-server.js:9:55:9:61 | decoded | provenance |  |
-| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:11:19:11:25 | decoded | provenance |  |
-| jwt-server.js:11:19:11:25 | decoded | jwt-server.js:11:19:11:29 | decoded.foo | provenance |  |
+| jwt-server.js:9:55:9:61 | decoded | jwt-server.js:10:19:10:25 | decoded | provenance |  |
+| jwt-server.js:10:19:10:25 | decoded | jwt-server.js:10:19:10:29 | decoded.foo | provenance |  |
 | jwt.js:4:36:4:39 | data | jwt.js:5:30:5:33 | data | provenance |  |
 | jwt.js:5:9:5:34 | decoded | jwt.js:6:14:6:20 | decoded | provenance |  |
 | jwt.js:5:19:5:34 | jwt_decode(data) | jwt.js:5:9:5:34 | decoded | provenance |  |
@@ -856,12 +928,12 @@ edges
 | pages/[id].jsx:5:18:5:29 | router.query | pages/[id].jsx:5:9:5:14 | { id } | provenance |  |
 | pages/[id].jsx:13:44:13:49 | params [id] | pages/[id].jsx:13:44:13:52 | params.id | provenance |  |
 | pages/[id].jsx:16:44:16:49 | params [q] | pages/[id].jsx:16:44:16:51 | params.q | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
-| pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | pages/[id].jsx:3:30:3:35 | params [id] | provenance |  |
+| pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | pages/[id].jsx:3:30:3:35 | params [q] | provenance |  |
 | pages/[id].jsx:25:11:25:24 | context.params | pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | provenance |  |
-| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [id] | provenance |  |
+| pages/[id].jsx:25:11:25:33 | context ... d \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [id] | provenance |  |
 | pages/[id].jsx:26:10:26:22 | context.query | pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | provenance |  |
-| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... ,\\n    } [q] | provenance |  |
+| pages/[id].jsx:26:10:26:36 | context ... r \|\| "" | pages/[id].jsx:24:12:27:5 | {\\n      ... e\\n    } [q] | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:18:8:24 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:9:27:9:33 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -920,11 +992,19 @@ edges
 | tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source | provenance |  |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target | provenance |  |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target | provenance |  |
-| translate.js:7:7:7:61 | searchParams | translate.js:9:27:9:38 | searchParams | provenance |  |
+| translate.js:7:7:7:61 | searchParams | translate.js:8:27:8:38 | searchParams | provenance |  |
+| translate.js:7:7:7:61 | searchParams [MapValue] | translate.js:8:27:8:38 | searchParams [MapValue] | provenance |  |
 | translate.js:7:22:7:61 | new URL ... ing(1)) | translate.js:7:7:7:61 | searchParams | provenance |  |
+| translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | translate.js:7:7:7:61 | searchParams [MapValue] | provenance |  |
 | translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance |  |
+| translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance | Config |
+| translate.js:7:42:7:47 | target | translate.js:7:42:7:60 | target.substring(1) | provenance | Config |
 | translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) | provenance |  |
-| translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') | provenance | Config |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| translate.js:7:42:7:60 | target.substring(1) | translate.js:7:22:7:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| translate.js:8:27:8:38 | searchParams | translate.js:8:27:8:50 | searchP ... 'term') | provenance | Config |
+| translate.js:8:27:8:38 | searchParams [MapValue] | translate.js:8:27:8:50 | searchP ... 'term') | provenance |  |
 | trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x | provenance |  |
 | trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x | provenance |  |
 | trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x | provenance |  |
@@ -942,202 +1022,226 @@ edges
 | tst3.js:7:32:7:35 | data | tst3.js:7:32:7:37 | data.p | provenance |  |
 | tst3.js:9:37:9:40 | data | tst3.js:9:37:9:42 | data.p | provenance |  |
 | tst3.js:10:38:10:41 | data | tst3.js:10:38:10:43 | data.p | provenance |  |
-| tst.js:2:7:2:39 | target | tst.js:5:18:5:23 | target | provenance |  |
-| tst.js:2:7:2:39 | target | tst.js:12:28:12:33 | target | provenance |  |
-| tst.js:2:7:2:39 | target | tst.js:20:42:20:47 | target | provenance |  |
+| tst.js:2:7:2:39 | target | tst.js:4:18:4:23 | target | provenance |  |
+| tst.js:2:7:2:39 | target | tst.js:9:28:9:33 | target | provenance |  |
+| tst.js:2:7:2:39 | target | tst.js:17:42:17:47 | target | provenance |  |
 | tst.js:2:16:2:39 | documen ... .search | tst.js:2:7:2:39 | target | provenance |  |
-| tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) | provenance |  |
-| tst.js:8:37:8:58 | documen ... on.href | tst.js:8:37:8:114 | documen ... t=")+8) | provenance | Config |
-| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | provenance |  |
-| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | provenance |  |
-| tst.js:8:37:8:114 | documen ... t=")+8) | tst.js:8:18:8:126 | "<OPTIO ... PTION>" | provenance | Config |
-| tst.js:12:28:12:33 | target | tst.js:12:5:12:42 | '<div s ...  'px">' | provenance | Config |
-| tst.js:17:7:17:56 | params | tst.js:18:18:18:23 | params | provenance |  |
-| tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | tst.js:17:16:17:56 | (new UR ... hParams | provenance |  |
-| tst.js:17:16:17:56 | (new UR ... hParams | tst.js:17:7:17:56 | params | provenance |  |
-| tst.js:17:17:17:42 | new URL ... cation) [searchParams] | tst.js:17:16:17:43 | (new UR ... ation)) [searchParams] | provenance |  |
-| tst.js:17:25:17:41 | document.location | tst.js:17:17:17:42 | new URL ... cation) [searchParams] | provenance |  |
-| tst.js:18:18:18:23 | params | tst.js:18:18:18:35 | params.get('name') | provenance | Config |
-| tst.js:20:7:20:61 | searchParams | tst.js:21:18:21:29 | searchParams | provenance |  |
-| tst.js:20:22:20:61 | new URL ... ing(1)) | tst.js:20:7:20:61 | searchParams | provenance |  |
-| tst.js:20:42:20:47 | target | tst.js:20:42:20:60 | target.substring(1) | provenance |  |
-| tst.js:20:42:20:60 | target.substring(1) | tst.js:20:22:20:61 | new URL ... ing(1)) | provenance |  |
-| tst.js:21:18:21:29 | searchParams | tst.js:21:18:21:41 | searchP ... 'name') | provenance | Config |
-| tst.js:24:14:24:19 | target | tst.js:26:18:26:23 | target | provenance |  |
-| tst.js:28:5:28:28 | documen ... .search | tst.js:24:14:24:19 | target | provenance |  |
-| tst.js:31:10:31:33 | documen ... .search | tst.js:34:16:34:20 | bar() | provenance |  |
-| tst.js:31:10:31:33 | documen ... .search | tst.js:58:26:58:30 | bar() | provenance |  |
-| tst.js:31:10:31:33 | documen ... .search | tst.js:68:16:68:20 | bar() | provenance |  |
-| tst.js:36:14:36:14 | x | tst.js:37:10:37:10 | x | provenance |  |
-| tst.js:40:20:40:43 | documen ... .search | tst.js:36:14:36:14 | x | provenance |  |
-| tst.js:40:20:40:43 | documen ... .search | tst.js:40:16:40:44 | baz(doc ... search) | provenance |  |
-| tst.js:42:15:42:15 | s | tst.js:43:20:43:20 | s | provenance |  |
-| tst.js:42:15:42:15 | s | tst.js:43:20:43:20 | s | provenance |  |
-| tst.js:43:20:43:20 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | provenance |  |
-| tst.js:43:20:43:20 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | provenance |  |
-| tst.js:43:20:43:20 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | provenance | Config |
-| tst.js:46:21:46:44 | documen ... .search | tst.js:42:15:42:15 | s | provenance |  |
-| tst.js:46:21:46:44 | documen ... .search | tst.js:46:16:46:45 | wrap(do ... search) | provenance |  |
-| tst.js:46:21:46:44 | documen ... .search | tst.js:46:16:46:45 | wrap(do ... search) | provenance | Config |
-| tst.js:48:15:48:15 | s | tst.js:50:12:50:12 | s | provenance |  |
-| tst.js:50:12:50:12 | s | tst.js:50:12:50:22 | s.substr(1) | provenance |  |
-| tst.js:50:12:50:12 | s | tst.js:50:12:50:22 | s.substr(1) | provenance | Config |
-| tst.js:50:12:50:12 | s | tst.js:50:12:50:22 | s.substr(1) | provenance | Config |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:48:15:48:15 | s | provenance |  |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:54:16:54:45 | chop(do ... search) | provenance |  |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:54:16:54:45 | chop(do ... search) | provenance | Config |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:48:15:48:15 | s | provenance |  |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:56:16:56:45 | chop(do ... search) | provenance |  |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:56:16:56:45 | chop(do ... search) | provenance | Config |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:42:15:42:15 | s | provenance |  |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:42:15:42:15 | s | provenance |  |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:58:16:58:32 | wrap(chop(bar())) | provenance |  |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:58:16:58:32 | wrap(chop(bar())) | provenance |  |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:58:16:58:32 | wrap(chop(bar())) | provenance | Config |
-| tst.js:58:26:58:30 | bar() | tst.js:48:15:48:15 | s | provenance |  |
-| tst.js:58:26:58:30 | bar() | tst.js:58:21:58:31 | chop(bar()) | provenance |  |
-| tst.js:58:26:58:30 | bar() | tst.js:58:21:58:31 | chop(bar()) | provenance | Config |
-| tst.js:60:34:60:34 | s | tst.js:62:18:62:18 | s | provenance |  |
-| tst.js:64:25:64:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
-| tst.js:65:25:65:48 | documen ... .search | tst.js:60:34:60:34 | s | provenance |  |
-| tst.js:70:1:70:27 | [,docum ... search] [1] | tst.js:70:46:70:46 | x | provenance |  |
-| tst.js:70:3:70:26 | documen ... .search | tst.js:70:1:70:27 | [,docum ... search] [1] | provenance |  |
-| tst.js:70:46:70:46 | x | tst.js:73:20:73:20 | x | provenance |  |
-| tst.js:107:7:107:44 | v | tst.js:110:18:110:18 | v | provenance |  |
-| tst.js:107:7:107:44 | v | tst.js:136:18:136:18 | v | provenance |  |
-| tst.js:107:11:107:34 | documen ... .search | tst.js:107:11:107:44 | documen ... bstr(1) | provenance |  |
-| tst.js:107:11:107:34 | documen ... .search | tst.js:107:11:107:44 | documen ... bstr(1) | provenance | Config |
-| tst.js:107:11:107:44 | documen ... bstr(1) | tst.js:107:7:107:44 | v | provenance |  |
-| tst.js:148:29:148:50 | window. ... .search | tst.js:151:29:151:29 | v | provenance |  |
-| tst.js:151:29:151:29 | v | tst.js:151:49:151:49 | v | provenance |  |
-| tst.js:158:40:158:61 | window. ... .search | tst.js:155:29:155:46 | xssSourceService() | provenance |  |
-| tst.js:177:9:177:41 | target | tst.js:180:28:180:33 | target | provenance |  |
-| tst.js:177:18:177:41 | documen ... .search | tst.js:177:9:177:41 | target | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:186:31:186:37 | tainted | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:188:42:188:48 | tainted | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:189:33:189:39 | tainted | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:191:54:191:60 | tainted | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:192:45:192:51 | tainted | provenance |  |
-| tst.js:184:9:184:42 | tainted | tst.js:193:49:193:55 | tainted | provenance |  |
-| tst.js:184:19:184:42 | documen ... .search | tst.js:184:9:184:42 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:199:67:199:73 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:200:67:200:73 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:236:35:236:41 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:238:20:238:26 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:240:23:240:29 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:241:23:241:29 | tainted | provenance |  |
-| tst.js:197:9:197:42 | tainted | tst.js:255:23:255:29 | tainted | provenance |  |
-| tst.js:197:19:197:42 | documen ... .search | tst.js:197:9:197:42 | tainted | provenance |  |
-| tst.js:199:67:199:73 | tainted | tst.js:200:67:200:73 | tainted | provenance |  |
-| tst.js:200:67:200:73 | tainted | tst.js:204:35:204:41 | tainted | provenance |  |
-| tst.js:200:67:200:73 | tainted | tst.js:206:46:206:52 | tainted | provenance |  |
-| tst.js:200:67:200:73 | tainted | tst.js:207:38:207:44 | tainted | provenance |  |
-| tst.js:200:67:200:73 | tainted | tst.js:208:35:208:41 | tainted | provenance |  |
-| tst.js:200:67:200:73 | tainted | tst.js:236:35:236:41 | tainted | provenance |  |
-| tst.js:204:35:204:41 | tainted | tst.js:212:28:212:46 | this.state.tainted1 | provenance |  |
-| tst.js:206:46:206:52 | tainted | tst.js:213:28:213:46 | this.state.tainted2 | provenance |  |
-| tst.js:207:38:207:44 | tainted | tst.js:214:28:214:46 | this.state.tainted3 | provenance |  |
-| tst.js:208:35:208:41 | tainted | tst.js:218:32:218:49 | prevState.tainted4 | provenance |  |
-| tst.js:236:35:236:41 | tainted | tst.js:225:28:225:46 | this.props.tainted1 | provenance |  |
-| tst.js:236:35:236:41 | tainted | tst.js:238:20:238:26 | tainted | provenance |  |
-| tst.js:238:20:238:26 | tainted | tst.js:226:28:226:46 | this.props.tainted2 | provenance |  |
-| tst.js:238:20:238:26 | tainted | tst.js:240:23:240:29 | tainted | provenance |  |
-| tst.js:240:23:240:29 | tainted | tst.js:227:28:227:46 | this.props.tainted3 | provenance |  |
-| tst.js:240:23:240:29 | tainted | tst.js:241:23:241:29 | tainted | provenance |  |
-| tst.js:241:23:241:29 | tainted | tst.js:231:32:231:49 | prevProps.tainted4 | provenance |  |
-| tst.js:241:23:241:29 | tainted | tst.js:255:23:255:29 | tainted | provenance |  |
-| tst.js:247:39:247:55 | props.propTainted | tst.js:251:60:251:82 | this.st ... Tainted | provenance |  |
-| tst.js:255:23:255:29 | tainted | tst.js:247:39:247:55 | props.propTainted | provenance |  |
-| tst.js:285:9:285:29 | tainted | tst.js:288:59:288:65 | tainted | provenance |  |
-| tst.js:285:19:285:29 | window.name | tst.js:285:9:285:29 | tainted | provenance |  |
-| tst.js:301:9:301:16 | location | tst.js:302:10:302:10 | e | provenance |  |
-| tst.js:302:10:302:10 | e | tst.js:303:20:303:20 | e | provenance |  |
-| tst.js:308:10:308:17 | location | tst.js:310:10:310:10 | e | provenance |  |
-| tst.js:310:10:310:10 | e | tst.js:311:20:311:20 | e | provenance |  |
-| tst.js:327:10:327:35 | new URL ... cation) [searchParams] | tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | provenance |  |
-| tst.js:327:18:327:34 | document.location | tst.js:327:10:327:35 | new URL ... cation) [searchParams] | provenance |  |
-| tst.js:331:7:331:43 | params | tst.js:332:18:332:23 | params | provenance |  |
-| tst.js:331:16:331:30 | getTaintedUrl() [searchParams] | tst.js:331:16:331:43 | getTain ... hParams | provenance |  |
-| tst.js:331:16:331:43 | getTain ... hParams | tst.js:331:7:331:43 | params | provenance |  |
-| tst.js:332:18:332:23 | params | tst.js:332:18:332:35 | params.get('name') | provenance | Config |
-| tst.js:341:12:341:37 | new URL ... cation) [hash] | tst.js:343:5:343:12 | getUrl() [hash] | provenance |  |
-| tst.js:341:20:341:36 | document.location | tst.js:341:12:341:37 | new URL ... cation) [hash] | provenance |  |
-| tst.js:343:5:343:12 | getUrl() [hash] | tst.js:343:5:343:17 | getUrl().hash | provenance |  |
-| tst.js:343:5:343:17 | getUrl().hash | tst.js:343:5:343:30 | getUrl( ... ring(1) | provenance | Config |
-| tst.js:348:7:348:39 | target | tst.js:349:12:349:17 | target | provenance |  |
-| tst.js:348:16:348:39 | documen ... .search | tst.js:348:7:348:39 | target | provenance |  |
-| tst.js:355:10:355:42 | target | tst.js:356:16:356:21 | target | provenance |  |
-| tst.js:355:10:355:42 | target | tst.js:357:20:357:25 | target | provenance |  |
-| tst.js:355:19:355:42 | documen ... .search | tst.js:355:10:355:42 | target | provenance |  |
-| tst.js:356:16:356:21 | target | tst.js:357:20:357:25 | target | provenance |  |
-| tst.js:357:20:357:25 | target | tst.js:360:21:360:26 | target | provenance |  |
-| tst.js:357:20:357:25 | target | tst.js:363:18:363:23 | target | provenance |  |
-| tst.js:371:7:371:39 | target | tst.js:374:18:374:23 | target | provenance |  |
-| tst.js:371:16:371:39 | documen ... .search | tst.js:371:7:371:39 | target | provenance |  |
-| tst.js:381:7:381:39 | target | tst.js:384:18:384:23 | target | provenance |  |
-| tst.js:381:7:381:39 | target | tst.js:386:18:386:23 | target | provenance |  |
-| tst.js:381:7:381:39 | target | tst.js:397:18:397:23 | target | provenance |  |
-| tst.js:381:7:381:39 | target | tst.js:406:18:406:23 | target | provenance |  |
-| tst.js:381:7:381:39 | target | tst.js:408:19:408:24 | target | provenance |  |
-| tst.js:381:16:381:39 | documen ... .search | tst.js:381:7:381:39 | target | provenance |  |
-| tst.js:386:18:386:23 | target | tst.js:386:18:386:29 | target.taint | provenance |  |
-| tst.js:391:3:391:8 | [post update] target [taint3] | tst.js:392:18:392:23 | target [taint3] | provenance |  |
-| tst.js:391:19:391:42 | documen ... .search | tst.js:391:3:391:8 | [post update] target [taint3] | provenance |  |
-| tst.js:392:18:392:23 | target [taint3] | tst.js:392:18:392:30 | target.taint3 | provenance |  |
-| tst.js:397:18:397:23 | target | tst.js:397:18:397:30 | target.taint5 | provenance |  |
-| tst.js:406:18:406:23 | target | tst.js:406:18:406:30 | target.taint7 | provenance |  |
-| tst.js:408:3:408:8 | [post update] target [taint8] | tst.js:408:19:408:24 | target [taint8] | provenance |  |
-| tst.js:408:3:408:8 | [post update] target [taint8] | tst.js:409:18:409:23 | target [taint8] | provenance |  |
-| tst.js:408:19:408:24 | target | tst.js:408:19:408:31 | target.taint8 | provenance |  |
-| tst.js:408:19:408:24 | target [taint8] | tst.js:408:19:408:31 | target.taint8 | provenance |  |
-| tst.js:408:19:408:31 | target.taint8 | tst.js:408:3:408:8 | [post update] target [taint8] | provenance |  |
-| tst.js:409:18:409:23 | target [taint8] | tst.js:409:18:409:30 | target.taint8 | provenance |  |
-| tst.js:416:7:416:46 | payload | tst.js:417:18:417:24 | payload | provenance |  |
-| tst.js:416:17:416:36 | window.location.hash | tst.js:416:17:416:46 | window. ... bstr(1) | provenance |  |
-| tst.js:416:17:416:36 | window.location.hash | tst.js:416:17:416:46 | window. ... bstr(1) | provenance | Config |
-| tst.js:416:17:416:46 | window. ... bstr(1) | tst.js:416:7:416:46 | payload | provenance |  |
-| tst.js:419:7:419:55 | match | tst.js:421:20:421:24 | match | provenance |  |
-| tst.js:419:15:419:34 | window.location.hash | tst.js:419:15:419:55 | window. ... (\\w+)/) | provenance |  |
-| tst.js:419:15:419:55 | window. ... (\\w+)/) | tst.js:419:7:419:55 | match | provenance |  |
-| tst.js:421:20:421:24 | match | tst.js:421:20:421:27 | match[1] | provenance |  |
-| tst.js:424:18:424:37 | window.location.hash | tst.js:424:18:424:48 | window. ... it('#') [1] | provenance | Config |
-| tst.js:424:18:424:48 | window. ... it('#') [1] | tst.js:424:18:424:51 | window. ... '#')[1] | provenance |  |
-| tst.js:428:7:428:39 | target | tst.js:430:18:430:23 | target | provenance |  |
-| tst.js:428:16:428:39 | documen ... .search | tst.js:428:7:428:39 | target | provenance |  |
-| tst.js:430:18:430:23 | target | tst.js:430:18:430:89 | target. ... data>') | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:440:28:440:33 | source | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:441:33:441:38 | source | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:442:34:442:39 | source | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:443:41:443:46 | source | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:444:44:444:49 | source | provenance |  |
-| tst.js:436:6:436:38 | source | tst.js:445:32:445:37 | source | provenance |  |
-| tst.js:436:15:436:38 | documen ... .search | tst.js:436:6:436:38 | source | provenance |  |
-| tst.js:453:7:453:39 | source | tst.js:455:18:455:23 | source | provenance |  |
-| tst.js:453:7:453:39 | source | tst.js:456:36:456:41 | source | provenance |  |
-| tst.js:453:16:453:39 | documen ... .search | tst.js:453:7:453:39 | source | provenance |  |
-| tst.js:456:36:456:41 | source | tst.js:456:18:456:42 | ansiToH ... source) | provenance |  |
-| tst.js:460:6:460:38 | source | tst.js:463:21:463:26 | source | provenance |  |
-| tst.js:460:6:460:38 | source | tst.js:465:19:465:24 | source | provenance |  |
-| tst.js:460:6:460:38 | source | tst.js:467:20:467:25 | source | provenance |  |
-| tst.js:460:15:460:38 | documen ... .search | tst.js:460:6:460:38 | source | provenance |  |
-| tst.js:471:7:471:46 | url | tst.js:473:19:473:21 | url | provenance |  |
-| tst.js:471:7:471:46 | url | tst.js:474:26:474:28 | url | provenance |  |
-| tst.js:471:7:471:46 | url | tst.js:475:25:475:27 | url | provenance |  |
-| tst.js:471:7:471:46 | url | tst.js:476:20:476:22 | url | provenance |  |
-| tst.js:471:7:471:46 | url | tst.js:486:22:486:24 | url | provenance |  |
-| tst.js:471:13:471:36 | documen ... .search | tst.js:471:13:471:46 | documen ... bstr(1) | provenance | Config |
-| tst.js:471:13:471:46 | documen ... bstr(1) | tst.js:471:7:471:46 | url | provenance |  |
-| tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) | provenance | Config |
-| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) | provenance | Config |
-| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) | provenance |  |
-| tst.js:508:7:508:39 | target | tst.js:509:18:509:23 | target | provenance |  |
-| tst.js:508:16:508:39 | documen ... .search | tst.js:508:7:508:39 | target | provenance |  |
-| tst.js:509:18:509:23 | target | tst.js:509:18:509:54 | target. ... "), '') | provenance |  |
+| tst.js:6:37:6:58 | documen ... on.href | tst.js:6:37:6:114 | documen ... t=")+8) | provenance |  |
+| tst.js:6:37:6:58 | documen ... on.href | tst.js:6:37:6:114 | documen ... t=")+8) | provenance | Config |
+| tst.js:6:37:6:114 | documen ... t=")+8) | tst.js:6:18:6:126 | "<OPTIO ... PTION>" | provenance |  |
+| tst.js:6:37:6:114 | documen ... t=")+8) | tst.js:6:18:6:126 | "<OPTIO ... PTION>" | provenance |  |
+| tst.js:6:37:6:114 | documen ... t=")+8) | tst.js:6:18:6:126 | "<OPTIO ... PTION>" | provenance | Config |
+| tst.js:9:28:9:33 | target | tst.js:9:5:9:42 | '<div s ...  'px">' | provenance | Config |
+| tst.js:14:7:14:56 | params | tst.js:15:18:15:23 | params | provenance |  |
+| tst.js:14:7:14:56 | params [MapValue] | tst.js:15:18:15:23 | params [MapValue] | provenance |  |
+| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | provenance |  |
+| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | tst.js:14:16:14:56 | (new UR ... hParams | provenance |  |
+| tst.js:14:16:14:56 | (new UR ... hParams | tst.js:14:7:14:56 | params | provenance |  |
+| tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | tst.js:14:7:14:56 | params [MapValue] | provenance |  |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | provenance |  |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams] | tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | provenance |  |
+| tst.js:14:25:14:41 | document.location | tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | provenance |  |
+| tst.js:14:25:14:41 | document.location | tst.js:14:17:14:42 | new URL ... cation) [searchParams] | provenance |  |
+| tst.js:15:18:15:23 | params | tst.js:15:18:15:35 | params.get('name') | provenance | Config |
+| tst.js:15:18:15:23 | params [MapValue] | tst.js:15:18:15:35 | params.get('name') | provenance |  |
+| tst.js:17:7:17:61 | searchParams | tst.js:18:18:18:29 | searchParams | provenance |  |
+| tst.js:17:7:17:61 | searchParams [MapValue] | tst.js:18:18:18:29 | searchParams [MapValue] | provenance |  |
+| tst.js:17:22:17:61 | new URL ... ing(1)) | tst.js:17:7:17:61 | searchParams | provenance |  |
+| tst.js:17:22:17:61 | new URL ... ing(1)) [MapValue] | tst.js:17:7:17:61 | searchParams [MapValue] | provenance |  |
+| tst.js:17:42:17:47 | target | tst.js:17:42:17:60 | target.substring(1) | provenance |  |
+| tst.js:17:42:17:47 | target | tst.js:17:42:17:60 | target.substring(1) | provenance | Config |
+| tst.js:17:42:17:47 | target | tst.js:17:42:17:60 | target.substring(1) | provenance | Config |
+| tst.js:17:42:17:60 | target.substring(1) | tst.js:17:22:17:61 | new URL ... ing(1)) | provenance |  |
+| tst.js:17:42:17:60 | target.substring(1) | tst.js:17:22:17:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| tst.js:17:42:17:60 | target.substring(1) | tst.js:17:22:17:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| tst.js:17:42:17:60 | target.substring(1) | tst.js:17:22:17:61 | new URL ... ing(1)) [MapValue] | provenance |  |
+| tst.js:18:18:18:29 | searchParams | tst.js:18:18:18:41 | searchP ... 'name') | provenance | Config |
+| tst.js:18:18:18:29 | searchParams [MapValue] | tst.js:18:18:18:41 | searchP ... 'name') | provenance |  |
+| tst.js:21:14:21:19 | target | tst.js:22:18:22:23 | target | provenance |  |
+| tst.js:24:5:24:28 | documen ... .search | tst.js:21:14:21:19 | target | provenance |  |
+| tst.js:27:10:27:33 | documen ... .search | tst.js:29:16:29:20 | bar() | provenance |  |
+| tst.js:27:10:27:33 | documen ... .search | tst.js:48:26:48:30 | bar() | provenance |  |
+| tst.js:27:10:27:33 | documen ... .search | tst.js:56:16:56:20 | bar() | provenance |  |
+| tst.js:31:14:31:14 | x | tst.js:32:10:32:10 | x | provenance |  |
+| tst.js:34:20:34:43 | documen ... .search | tst.js:31:14:31:14 | x | provenance |  |
+| tst.js:34:20:34:43 | documen ... .search | tst.js:34:16:34:44 | baz(doc ... search) | provenance |  |
+| tst.js:36:15:36:15 | s | tst.js:37:20:37:20 | s | provenance |  |
+| tst.js:36:15:36:15 | s | tst.js:37:20:37:20 | s | provenance |  |
+| tst.js:37:20:37:20 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | provenance |  |
+| tst.js:37:20:37:20 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | provenance |  |
+| tst.js:37:20:37:20 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | provenance | Config |
+| tst.js:39:21:39:44 | documen ... .search | tst.js:36:15:36:15 | s | provenance |  |
+| tst.js:39:21:39:44 | documen ... .search | tst.js:39:16:39:45 | wrap(do ... search) | provenance |  |
+| tst.js:39:21:39:44 | documen ... .search | tst.js:39:16:39:45 | wrap(do ... search) | provenance | Config |
+| tst.js:41:15:41:15 | s | tst.js:43:12:43:12 | s | provenance |  |
+| tst.js:43:12:43:12 | s | tst.js:43:12:43:22 | s.substr(1) | provenance |  |
+| tst.js:43:12:43:12 | s | tst.js:43:12:43:22 | s.substr(1) | provenance | Config |
+| tst.js:43:12:43:12 | s | tst.js:43:12:43:22 | s.substr(1) | provenance | Config |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:41:15:41:15 | s | provenance |  |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:46:16:46:45 | chop(do ... search) | provenance |  |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:46:16:46:45 | chop(do ... search) | provenance | Config |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:41:15:41:15 | s | provenance |  |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:47:16:47:45 | chop(do ... search) | provenance |  |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:47:16:47:45 | chop(do ... search) | provenance | Config |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:36:15:36:15 | s | provenance |  |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:36:15:36:15 | s | provenance |  |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:48:16:48:32 | wrap(chop(bar())) | provenance |  |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:48:16:48:32 | wrap(chop(bar())) | provenance |  |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:48:16:48:32 | wrap(chop(bar())) | provenance | Config |
+| tst.js:48:26:48:30 | bar() | tst.js:41:15:41:15 | s | provenance |  |
+| tst.js:48:26:48:30 | bar() | tst.js:48:21:48:31 | chop(bar()) | provenance |  |
+| tst.js:48:26:48:30 | bar() | tst.js:48:21:48:31 | chop(bar()) | provenance | Config |
+| tst.js:50:34:50:34 | s | tst.js:51:18:51:18 | s | provenance |  |
+| tst.js:53:25:53:48 | documen ... .search | tst.js:50:34:50:34 | s | provenance |  |
+| tst.js:54:25:54:48 | documen ... .search | tst.js:50:34:50:34 | s | provenance |  |
+| tst.js:58:1:58:27 | [,docum ... search] [1] | tst.js:58:46:58:46 | x | provenance |  |
+| tst.js:58:3:58:26 | documen ... .search | tst.js:58:1:58:27 | [,docum ... search] [1] | provenance |  |
+| tst.js:58:46:58:46 | x | tst.js:60:20:60:20 | x | provenance |  |
+| tst.js:93:7:93:44 | v | tst.js:95:18:95:18 | v | provenance |  |
+| tst.js:93:7:93:44 | v | tst.js:120:18:120:18 | v | provenance |  |
+| tst.js:93:11:93:34 | documen ... .search | tst.js:93:11:93:44 | documen ... bstr(1) | provenance |  |
+| tst.js:93:11:93:34 | documen ... .search | tst.js:93:11:93:44 | documen ... bstr(1) | provenance | Config |
+| tst.js:93:11:93:44 | documen ... bstr(1) | tst.js:93:7:93:44 | v | provenance |  |
+| tst.js:132:29:132:50 | window. ... .search | tst.js:135:29:135:29 | v | provenance |  |
+| tst.js:135:29:135:29 | v | tst.js:135:49:135:49 | v | provenance |  |
+| tst.js:142:40:142:61 | window. ... .search | tst.js:139:29:139:46 | xssSourceService() | provenance |  |
+| tst.js:161:9:161:41 | target | tst.js:164:28:164:33 | target | provenance |  |
+| tst.js:161:18:161:41 | documen ... .search | tst.js:161:9:161:41 | target | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:170:31:170:37 | tainted | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:172:42:172:48 | tainted | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:173:33:173:39 | tainted | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:175:54:175:60 | tainted | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:176:45:176:51 | tainted | provenance |  |
+| tst.js:168:9:168:42 | tainted | tst.js:177:49:177:55 | tainted | provenance |  |
+| tst.js:168:19:168:42 | documen ... .search | tst.js:168:9:168:42 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:183:67:183:73 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:184:67:184:73 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:220:35:220:41 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:222:20:222:26 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:224:23:224:29 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:225:23:225:29 | tainted | provenance |  |
+| tst.js:181:9:181:42 | tainted | tst.js:239:23:239:29 | tainted | provenance |  |
+| tst.js:181:19:181:42 | documen ... .search | tst.js:181:9:181:42 | tainted | provenance |  |
+| tst.js:183:67:183:73 | tainted | tst.js:184:67:184:73 | tainted | provenance |  |
+| tst.js:184:67:184:73 | tainted | tst.js:188:35:188:41 | tainted | provenance |  |
+| tst.js:184:67:184:73 | tainted | tst.js:190:46:190:52 | tainted | provenance |  |
+| tst.js:184:67:184:73 | tainted | tst.js:191:38:191:44 | tainted | provenance |  |
+| tst.js:184:67:184:73 | tainted | tst.js:192:35:192:41 | tainted | provenance |  |
+| tst.js:184:67:184:73 | tainted | tst.js:220:35:220:41 | tainted | provenance |  |
+| tst.js:188:35:188:41 | tainted | tst.js:196:28:196:46 | this.state.tainted1 | provenance |  |
+| tst.js:190:46:190:52 | tainted | tst.js:197:28:197:46 | this.state.tainted2 | provenance |  |
+| tst.js:191:38:191:44 | tainted | tst.js:198:28:198:46 | this.state.tainted3 | provenance |  |
+| tst.js:192:35:192:41 | tainted | tst.js:202:32:202:49 | prevState.tainted4 | provenance |  |
+| tst.js:220:35:220:41 | tainted | tst.js:209:28:209:46 | this.props.tainted1 | provenance |  |
+| tst.js:220:35:220:41 | tainted | tst.js:222:20:222:26 | tainted | provenance |  |
+| tst.js:222:20:222:26 | tainted | tst.js:210:28:210:46 | this.props.tainted2 | provenance |  |
+| tst.js:222:20:222:26 | tainted | tst.js:224:23:224:29 | tainted | provenance |  |
+| tst.js:224:23:224:29 | tainted | tst.js:211:28:211:46 | this.props.tainted3 | provenance |  |
+| tst.js:224:23:224:29 | tainted | tst.js:225:23:225:29 | tainted | provenance |  |
+| tst.js:225:23:225:29 | tainted | tst.js:215:32:215:49 | prevProps.tainted4 | provenance |  |
+| tst.js:225:23:225:29 | tainted | tst.js:239:23:239:29 | tainted | provenance |  |
+| tst.js:231:39:231:55 | props.propTainted | tst.js:235:60:235:82 | this.st ... Tainted | provenance |  |
+| tst.js:239:23:239:29 | tainted | tst.js:231:39:231:55 | props.propTainted | provenance |  |
+| tst.js:269:9:269:29 | tainted | tst.js:272:59:272:65 | tainted | provenance |  |
+| tst.js:269:19:269:29 | window.name | tst.js:269:9:269:29 | tainted | provenance |  |
+| tst.js:285:9:285:16 | location | tst.js:286:10:286:10 | e | provenance |  |
+| tst.js:286:10:286:10 | e | tst.js:287:20:287:20 | e | provenance |  |
+| tst.js:292:10:292:17 | location | tst.js:294:10:294:10 | e | provenance |  |
+| tst.js:294:10:294:10 | e | tst.js:295:20:295:20 | e | provenance |  |
+| tst.js:311:10:311:35 | new URL ... cation) [searchParams, MapValue] | tst.js:315:16:315:30 | getTaintedUrl() [searchParams, MapValue] | provenance |  |
+| tst.js:311:10:311:35 | new URL ... cation) [searchParams] | tst.js:315:16:315:30 | getTaintedUrl() [searchParams] | provenance |  |
+| tst.js:311:18:311:34 | document.location | tst.js:311:10:311:35 | new URL ... cation) [searchParams, MapValue] | provenance |  |
+| tst.js:311:18:311:34 | document.location | tst.js:311:10:311:35 | new URL ... cation) [searchParams] | provenance |  |
+| tst.js:315:7:315:43 | params | tst.js:316:18:316:23 | params | provenance |  |
+| tst.js:315:7:315:43 | params [MapValue] | tst.js:316:18:316:23 | params [MapValue] | provenance |  |
+| tst.js:315:16:315:30 | getTaintedUrl() [searchParams, MapValue] | tst.js:315:16:315:43 | getTain ... hParams [MapValue] | provenance |  |
+| tst.js:315:16:315:30 | getTaintedUrl() [searchParams] | tst.js:315:16:315:43 | getTain ... hParams | provenance |  |
+| tst.js:315:16:315:43 | getTain ... hParams | tst.js:315:7:315:43 | params | provenance |  |
+| tst.js:315:16:315:43 | getTain ... hParams [MapValue] | tst.js:315:7:315:43 | params [MapValue] | provenance |  |
+| tst.js:316:18:316:23 | params | tst.js:316:18:316:35 | params.get('name') | provenance | Config |
+| tst.js:316:18:316:23 | params [MapValue] | tst.js:316:18:316:35 | params.get('name') | provenance |  |
+| tst.js:325:12:325:37 | new URL ... cation) [hash] | tst.js:327:5:327:12 | getUrl() [hash] | provenance |  |
+| tst.js:325:20:325:36 | document.location | tst.js:325:12:325:37 | new URL ... cation) [hash] | provenance |  |
+| tst.js:327:5:327:12 | getUrl() [hash] | tst.js:327:5:327:17 | getUrl().hash | provenance |  |
+| tst.js:327:5:327:17 | getUrl().hash | tst.js:327:5:327:30 | getUrl( ... ring(1) | provenance | Config |
+| tst.js:332:7:332:39 | target | tst.js:333:12:333:17 | target | provenance |  |
+| tst.js:332:16:332:39 | documen ... .search | tst.js:332:7:332:39 | target | provenance |  |
+| tst.js:339:10:339:42 | target | tst.js:340:16:340:21 | target | provenance |  |
+| tst.js:339:10:339:42 | target | tst.js:341:20:341:25 | target | provenance |  |
+| tst.js:339:19:339:42 | documen ... .search | tst.js:339:10:339:42 | target | provenance |  |
+| tst.js:340:16:340:21 | target | tst.js:341:20:341:25 | target | provenance |  |
+| tst.js:341:20:341:25 | target | tst.js:344:21:344:26 | target | provenance |  |
+| tst.js:341:20:341:25 | target | tst.js:347:18:347:23 | target | provenance |  |
+| tst.js:355:7:355:39 | target | tst.js:357:18:357:23 | target | provenance |  |
+| tst.js:355:16:355:39 | documen ... .search | tst.js:355:7:355:39 | target | provenance |  |
+| tst.js:364:7:364:39 | target | tst.js:367:18:367:23 | target | provenance |  |
+| tst.js:364:7:364:39 | target | tst.js:369:18:369:23 | target | provenance |  |
+| tst.js:364:7:364:39 | target | tst.js:380:18:380:23 | target | provenance |  |
+| tst.js:364:7:364:39 | target | tst.js:389:18:389:23 | target | provenance |  |
+| tst.js:364:7:364:39 | target | tst.js:391:19:391:24 | target | provenance |  |
+| tst.js:364:16:364:39 | documen ... .search | tst.js:364:7:364:39 | target | provenance |  |
+| tst.js:369:18:369:23 | target | tst.js:369:18:369:29 | target.taint | provenance |  |
+| tst.js:374:3:374:8 | [post update] target [taint3] | tst.js:375:18:375:23 | target [taint3] | provenance |  |
+| tst.js:374:19:374:42 | documen ... .search | tst.js:374:3:374:8 | [post update] target [taint3] | provenance |  |
+| tst.js:375:18:375:23 | target [taint3] | tst.js:375:18:375:30 | target.taint3 | provenance |  |
+| tst.js:380:18:380:23 | target | tst.js:380:18:380:30 | target.taint5 | provenance |  |
+| tst.js:389:18:389:23 | target | tst.js:389:18:389:30 | target.taint7 | provenance |  |
+| tst.js:391:3:391:8 | [post update] target [taint8] | tst.js:391:19:391:24 | target [taint8] | provenance |  |
+| tst.js:391:3:391:8 | [post update] target [taint8] | tst.js:392:18:392:23 | target [taint8] | provenance |  |
+| tst.js:391:19:391:24 | target | tst.js:391:19:391:31 | target.taint8 | provenance |  |
+| tst.js:391:19:391:24 | target [taint8] | tst.js:391:19:391:31 | target.taint8 | provenance |  |
+| tst.js:391:19:391:31 | target.taint8 | tst.js:391:3:391:8 | [post update] target [taint8] | provenance |  |
+| tst.js:392:18:392:23 | target [taint8] | tst.js:392:18:392:30 | target.taint8 | provenance |  |
+| tst.js:399:7:399:46 | payload | tst.js:400:18:400:24 | payload | provenance |  |
+| tst.js:399:17:399:36 | window.location.hash | tst.js:399:17:399:46 | window. ... bstr(1) | provenance |  |
+| tst.js:399:17:399:36 | window.location.hash | tst.js:399:17:399:46 | window. ... bstr(1) | provenance | Config |
+| tst.js:399:17:399:46 | window. ... bstr(1) | tst.js:399:7:399:46 | payload | provenance |  |
+| tst.js:402:7:402:55 | match | tst.js:404:20:404:24 | match | provenance |  |
+| tst.js:402:15:402:34 | window.location.hash | tst.js:402:15:402:55 | window. ... (\\w+)/) | provenance |  |
+| tst.js:402:15:402:55 | window. ... (\\w+)/) | tst.js:402:7:402:55 | match | provenance |  |
+| tst.js:404:20:404:24 | match | tst.js:404:20:404:27 | match[1] | provenance |  |
+| tst.js:407:18:407:37 | window.location.hash | tst.js:407:18:407:48 | window. ... it('#') [1] | provenance | Config |
+| tst.js:407:18:407:48 | window. ... it('#') [1] | tst.js:407:18:407:51 | window. ... '#')[1] | provenance |  |
+| tst.js:411:7:411:39 | target | tst.js:413:18:413:23 | target | provenance |  |
+| tst.js:411:16:411:39 | documen ... .search | tst.js:411:7:411:39 | target | provenance |  |
+| tst.js:413:18:413:23 | target | tst.js:413:18:413:89 | target. ... data>') | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:423:28:423:33 | source | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:424:33:424:38 | source | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:425:34:425:39 | source | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:426:41:426:46 | source | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:427:44:427:49 | source | provenance |  |
+| tst.js:419:6:419:38 | source | tst.js:428:32:428:37 | source | provenance |  |
+| tst.js:419:15:419:38 | documen ... .search | tst.js:419:6:419:38 | source | provenance |  |
+| tst.js:436:7:436:39 | source | tst.js:438:18:438:23 | source | provenance |  |
+| tst.js:436:7:436:39 | source | tst.js:439:36:439:41 | source | provenance |  |
+| tst.js:436:16:436:39 | documen ... .search | tst.js:436:7:436:39 | source | provenance |  |
+| tst.js:439:36:439:41 | source | tst.js:439:18:439:42 | ansiToH ... source) | provenance |  |
+| tst.js:443:6:443:38 | source | tst.js:446:21:446:26 | source | provenance |  |
+| tst.js:443:6:443:38 | source | tst.js:448:19:448:24 | source | provenance |  |
+| tst.js:443:6:443:38 | source | tst.js:450:20:450:25 | source | provenance |  |
+| tst.js:443:15:443:38 | documen ... .search | tst.js:443:6:443:38 | source | provenance |  |
+| tst.js:454:7:454:46 | url | tst.js:456:19:456:21 | url | provenance |  |
+| tst.js:454:7:454:46 | url | tst.js:457:26:457:28 | url | provenance |  |
+| tst.js:454:7:454:46 | url | tst.js:458:25:458:27 | url | provenance |  |
+| tst.js:454:7:454:46 | url | tst.js:459:20:459:22 | url | provenance |  |
+| tst.js:454:7:454:46 | url | tst.js:469:22:469:24 | url | provenance |  |
+| tst.js:454:13:454:36 | documen ... .search | tst.js:454:13:454:46 | documen ... bstr(1) | provenance | Config |
+| tst.js:454:13:454:46 | documen ... bstr(1) | tst.js:454:7:454:46 | url | provenance |  |
+| tst.js:474:23:474:35 | location.hash | tst.js:474:23:474:45 | locatio ... bstr(1) | provenance | Config |
+| tst.js:477:18:477:30 | location.hash | tst.js:477:18:477:40 | locatio ... bstr(1) | provenance | Config |
+| tst.js:484:43:484:62 | window.location.hash | tst.js:484:33:484:63 | decodeU ... n.hash) | provenance |  |
+| tst.js:491:7:491:39 | target | tst.js:492:18:492:23 | target | provenance |  |
+| tst.js:491:16:491:39 | documen ... .search | tst.js:491:7:491:39 | target | provenance |  |
+| tst.js:492:18:492:23 | target | tst.js:492:18:492:54 | target. ... "), '') | provenance |  |
+| tst.js:498:7:498:26 | source | tst.js:499:27:499:32 | source | provenance |  |
+| tst.js:498:16:498:26 | window.name | tst.js:498:7:498:26 | source | provenance |  |
+| tst.js:499:27:499:32 | source | tst.js:499:18:499:33 | unescape(source) | provenance |  |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | provenance |  |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target | provenance |  |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target | provenance |  |
 | typeahead.js:21:12:21:17 | target | typeahead.js:24:30:24:32 | val | provenance |  |
 | typeahead.js:24:30:24:32 | val | typeahead.js:25:18:25:20 | val | provenance |  |
+| v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | provenance |  |
 | various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:4:14:4:20 | tainted | provenance |  |
 | various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:5:12:5:18 | tainted | provenance |  |
 | various-concat-obfuscations.js:2:6:2:39 | tainted | various-concat-obfuscations.js:6:19:6:25 | tainted | provenance |  |
@@ -1167,7 +1271,6 @@ edges
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
-| various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | provenance |  |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | provenance |  |
 | various-concat-obfuscations.js:18:32:18:36 | attrs | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | provenance |  |
 | various-concat-obfuscations.js:18:32:18:58 | attrs.d ...  'left' | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | provenance | Config |
@@ -1198,22 +1301,36 @@ subpaths
 | optionalSanitizer.js:41:28:41:35 | tainted3 | optionalSanitizer.js:28:24:28:24 | x | optionalSanitizer.js:29:12:29:12 | x | optionalSanitizer.js:41:16:41:36 | sanitiz ... inted3) |
 | optionalSanitizer.js:45:41:45:46 | target | optionalSanitizer.js:28:24:28:24 | x | optionalSanitizer.js:29:12:29:12 | x | optionalSanitizer.js:45:29:45:47 | sanitizeBad(target) |
 | tooltip.jsx:18:51:18:57 | provide [source] | tooltip.jsx:23:38:23:43 | source | tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
-| tst.js:40:20:40:43 | documen ... .search | tst.js:36:14:36:14 | x | tst.js:37:10:37:10 | x | tst.js:40:16:40:44 | baz(doc ... search) |
-| tst.js:46:21:46:44 | documen ... .search | tst.js:42:15:42:15 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | tst.js:46:16:46:45 | wrap(do ... search) |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:54:16:54:45 | chop(do ... search) |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:54:16:54:45 | chop(do ... search) |
-| tst.js:54:21:54:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:54:16:54:45 | chop(do ... search) |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:56:16:56:45 | chop(do ... search) |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:56:16:56:45 | chop(do ... search) |
-| tst.js:56:21:56:44 | documen ... .search | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:56:16:56:45 | chop(do ... search) |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:42:15:42:15 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | tst.js:58:16:58:32 | wrap(chop(bar())) |
-| tst.js:58:21:58:31 | chop(bar()) | tst.js:42:15:42:15 | s | tst.js:43:10:43:31 | "<div>" ... </div>" | tst.js:58:16:58:32 | wrap(chop(bar())) |
-| tst.js:58:26:58:30 | bar() | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:58:21:58:31 | chop(bar()) |
-| tst.js:58:26:58:30 | bar() | tst.js:48:15:48:15 | s | tst.js:50:12:50:22 | s.substr(1) | tst.js:58:21:58:31 | chop(bar()) |
+| tst.js:34:20:34:43 | documen ... .search | tst.js:31:14:31:14 | x | tst.js:32:10:32:10 | x | tst.js:34:16:34:44 | baz(doc ... search) |
+| tst.js:39:21:39:44 | documen ... .search | tst.js:36:15:36:15 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | tst.js:39:16:39:45 | wrap(do ... search) |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:46:16:46:45 | chop(do ... search) |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:46:16:46:45 | chop(do ... search) |
+| tst.js:46:21:46:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:46:16:46:45 | chop(do ... search) |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:47:16:47:45 | chop(do ... search) |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:47:16:47:45 | chop(do ... search) |
+| tst.js:47:21:47:44 | documen ... .search | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:47:16:47:45 | chop(do ... search) |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:36:15:36:15 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | tst.js:48:16:48:32 | wrap(chop(bar())) |
+| tst.js:48:21:48:31 | chop(bar()) | tst.js:36:15:36:15 | s | tst.js:37:10:37:31 | "<div>" ... </div>" | tst.js:48:16:48:32 | wrap(chop(bar())) |
+| tst.js:48:26:48:30 | bar() | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:48:21:48:31 | chop(bar()) |
+| tst.js:48:26:48:30 | bar() | tst.js:41:15:41:15 | s | tst.js:43:12:43:22 | s.substr(1) | tst.js:48:21:48:31 | chop(bar()) |
 | various-concat-obfuscations.js:20:17:20:46 | documen ... h.attrs | various-concat-obfuscations.js:14:24:14:28 | attrs | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | various-concat-obfuscations.js:20:4:20:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 | various-concat-obfuscations.js:21:17:21:46 | documen ... h.attrs | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:10:18:105 | '<div a ... /div>') [ArrayElement] | various-concat-obfuscations.js:21:4:21:47 | indirec ... .attrs) |
 #select
+| hana.js:11:37:11:51 | rows[0].comment | hana.js:11:37:11:40 | rows | hana.js:11:37:11:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:11:37:11:40 | rows | user-provided value |
+| hana.js:16:37:16:51 | rows[0].comment | hana.js:16:37:16:40 | rows | hana.js:16:37:16:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:16:37:16:40 | rows | user-provided value |
+| hana.js:19:37:19:51 | rows[0].comment | hana.js:19:37:19:40 | rows | hana.js:19:37:19:51 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:19:37:19:40 | rows | user-provided value |
+| hana.js:22:37:22:49 | rs[0].comment | hana.js:22:37:22:38 | rs | hana.js:22:37:22:49 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:22:37:22:38 | rs | user-provided value |
+| hana.js:38:31:38:43 | rs[0].comment | hana.js:38:31:38:32 | rs | hana.js:38:31:38:43 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:38:31:38:32 | rs | user-provided value |
+| hana.js:43:33:43:52 | dummyRows[0].comment | hana.js:43:33:43:41 | dummyRows | hana.js:43:33:43:52 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:43:33:43:41 | dummyRows | user-provided value |
+| hana.js:44:33:44:53 | tablesR ... comment | hana.js:44:33:44:42 | tablesRows | hana.js:44:33:44:53 | tablesR ... comment | Cross-site scripting vulnerability due to $@. | hana.js:44:33:44:42 | tablesRows | user-provided value |
+| hana.js:50:33:50:52 | dummyRows[0].comment | hana.js:50:33:50:41 | dummyRows | hana.js:50:33:50:52 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:50:33:50:41 | dummyRows | user-provided value |
+| hana.js:51:33:51:53 | tablesR ... comment | hana.js:51:33:51:42 | tablesRows | hana.js:51:33:51:53 | tablesR ... comment | Cross-site scripting vulnerability due to $@. | hana.js:51:33:51:42 | tablesRows | user-provided value |
+| hana.js:70:33:70:47 | rows[0].comment | hana.js:70:33:70:36 | rows | hana.js:70:33:70:47 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:70:33:70:36 | rows | user-provided value |
+| hana.js:73:33:73:47 | rows[0].comment | hana.js:73:33:73:36 | rows | hana.js:73:33:73:47 | rows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:73:33:73:36 | rows | user-provided value |
+| hana.js:84:35:84:54 | dummyRows[0].comment | hana.js:84:35:84:43 | dummyRows | hana.js:84:35:84:54 | dummyRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:84:35:84:43 | dummyRows | user-provided value |
+| hana.js:85:35:85:54 | tableRows[0].comment | hana.js:85:35:85:43 | tableRows | hana.js:85:35:85:54 | tableRows[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:85:35:85:43 | tableRows | user-provided value |
+| hana.js:90:33:90:45 | rs[0].comment | hana.js:90:33:90:34 | rs | hana.js:90:33:90:45 | rs[0].comment | Cross-site scripting vulnerability due to $@. | hana.js:90:33:90:34 | rs | user-provided value |
 | jwt.js:6:14:6:20 | decoded | jwt.js:4:36:4:39 | data | jwt.js:6:14:6:20 | decoded | Cross-site scripting vulnerability due to $@. | jwt.js:4:36:4:39 | data | user-provided value |
 | typeahead.js:10:16:10:18 | loc | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc | Cross-site scripting vulnerability due to $@. | typeahead.js:9:28:9:30 | loc | user-provided value |
 | xmlRequest.js:9:28:9:39 | json.message | xmlRequest.js:8:31:8:46 | xhr.responseText | xmlRequest.js:9:28:9:39 | json.message | Cross-site scripting vulnerability due to $@. | xmlRequest.js:8:31:8:46 | xhr.responseText | user-provided value |

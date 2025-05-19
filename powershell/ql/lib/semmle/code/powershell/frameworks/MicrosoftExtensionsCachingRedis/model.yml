@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[refreshasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.redis.rediscacheoptions", "Member[instancename]"]
+    - ["microsoft.extensions.caching.redis.rediscacheoptions", "microsoft.extensions.caching.redis.rediscacheoptions", "Member[Microsoft.Extensions.Options.IOptions<microsoft.extensions.caching.redis.rediscacheoptions>.Value]"]
+    - ["system.threading.tasks.task<system.byte[]>", "microsoft.extensions.caching.redis.rediscache", "Method[getasync].ReturnValue"]
+    - ["system.byte[]", "microsoft.extensions.caching.redis.rediscache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[removeasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.redis.rediscacheoptions", "Member[configuration]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.redis.rediscache", "Method[setasync].ReturnValue"]

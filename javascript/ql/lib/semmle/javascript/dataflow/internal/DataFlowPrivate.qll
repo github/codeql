@@ -35,38 +35,21 @@ class SsaUseNode extends DataFlow::Node, TSsaUseNode {
   override Location getLocation() { result = expr.getLocation() }
 }
 
-class SsaPhiReadNode extends DataFlow::Node, TSsaPhiReadNode {
-  private Ssa2::PhiReadNode phi;
+class SsaSynthReadNode extends DataFlow::Node, TSsaSynthReadNode {
+  private Ssa2::SsaSynthReadNode read;
 
-  SsaPhiReadNode() { this = TSsaPhiReadNode(phi) }
-
-  cached
-  override string toString() { result = "[ssa-phi-read] " + phi.getSourceVariable().getName() }
+  SsaSynthReadNode() { this = TSsaSynthReadNode(read) }
 
   cached
-  override StmtContainer getContainer() { result = phi.getSourceVariable().getDeclaringContainer() }
-
-  cached
-  override Location getLocation() { result = phi.getLocation() }
-}
-
-class SsaInputNode extends DataFlow::Node, TSsaInputNode {
-  private Ssa2::SsaInputNode input;
-
-  SsaInputNode() { this = TSsaInputNode(input) }
-
-  cached
-  override string toString() {
-    result = "[ssa-input] " + input.getDefinitionExt().getSourceVariable().getName()
-  }
+  override string toString() { result = "[ssa-synth-read] " + read.getSourceVariable().getName() }
 
   cached
   override StmtContainer getContainer() {
-    result = input.getDefinitionExt().getSourceVariable().getDeclaringContainer()
+    result = read.getSourceVariable().getDeclaringContainer()
   }
 
   cached
-  override Location getLocation() { result = input.getLocation() }
+  override Location getLocation() { result = read.getLocation() }
 }
 
 class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
@@ -389,10 +372,11 @@ class CastNode extends DataFlow::Node {
 cached
 newtype TDataFlowCallable =
   MkSourceCallable(StmtContainer container) or
-  MkLibraryCallable(LibraryCallable callable)
+  MkLibraryCallable(LibraryCallable callable) or
+  MkFileCallable(File file)
 
 /**
- * A callable entity. This is a wrapper around either a `StmtContainer` or a `LibraryCallable`.
+ * A callable entity. This is a wrapper around either a `StmtContainer`, `LibraryCallable`, or `File`.
  */
 class DataFlowCallable extends TDataFlowCallable {
   /** Gets a string representation of this callable. */
@@ -400,13 +384,20 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSourceCallable().toString()
     or
     result = this.asLibraryCallable()
+    or
+    result = this.asFileCallable().toString()
   }
 
   /** Gets the location of this callable, if it is present in the source code. */
-  Location getLocation() { result = this.asSourceCallable().getLocation() }
+  Location getLocation() {
+    result = this.asSourceCallable().getLocation() or result = this.asFileCallable().getLocation()
+  }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   StmtContainer asSourceCallable() { this = MkSourceCallable(result) }
+
+  /** Gets the corresponding `File` if this is a file representing a callable. */
+  File asFileCallable() { this = MkFileCallable(result) }
 
   /** Gets the corresponding `StmtContainer` if this is a source callable. */
   pragma[nomagic]
@@ -554,18 +545,26 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asLibraryCallable() = node.(FlowSummaryDefaultExceptionalReturn).getSummarizedCallable()
   or
   node = TGenericSynthesizedNode(_, _, result)
+  or
+  node instanceof DataFlow::HtmlAttributeNode and result.asFileCallable() = node.getFile()
+  or
+  node instanceof DataFlow::XmlAttributeNode and result.asFileCallable() = node.getFile()
 }
 
 newtype TDataFlowType =
   TFunctionType(Function f) or
+  TInstanceType(DataFlow::ClassNode cls) or
   TAnyType()
 
 class DataFlowType extends TDataFlowType {
   string toDebugString() {
-    this instanceof TFunctionType and
     result =
       "TFunctionType(" + this.asFunction().toString() + ") at line " +
         this.asFunction().getLocation().getStartLine()
+    or
+    result =
+      "TInstanceType(" + this.asInstanceOfClass().toString() + ") at line " +
+        this.asInstanceOfClass().getLocation().getStartLine()
     or
     this instanceof TAnyType and result = "TAnyType"
   }
@@ -575,13 +574,20 @@ class DataFlowType extends TDataFlowType {
   }
 
   Function asFunction() { this = TFunctionType(result) }
+
+  DataFlow::ClassNode asInstanceOfClass() { this = TInstanceType(result) }
 }
 
 /**
  * Holds if `t1` is strictly stronger than `t2`.
  */
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
-  t1 instanceof TFunctionType and t2 = TAnyType()
+  // 't1' is a subclass of 't2'
+  t1.asInstanceOfClass() = t2.asInstanceOfClass().getADirectSubClass+()
+  or
+  // Ensure all types are stronger than 'any'
+  not t1 = TAnyType() and
+  t2 = TAnyType()
 }
 
 private DataFlowType getPreciseType(Node node) {
@@ -589,6 +595,9 @@ private DataFlowType getPreciseType(Node node) {
     (node = TValueNode(f) or node = TFunctionSelfReferenceNode(f)) and
     result = TFunctionType(f)
   )
+  or
+  result.asInstanceOfClass() =
+    unique(DataFlow::ClassNode cls | cls.getAnInstanceReference().getALocalUse() = node)
   or
   result = getPreciseType(node.getImmediatePredecessor())
   or
@@ -661,9 +670,7 @@ predicate nodeIsHidden(Node node) {
   or
   node instanceof SsaUseNode
   or
-  node instanceof SsaPhiReadNode
-  or
-  node instanceof SsaInputNode
+  node instanceof SsaSynthReadNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
@@ -683,18 +690,27 @@ predicate neverSkipInPathGraph(Node node) {
 string ppReprType(DataFlowType t) { none() }
 
 pragma[inline]
-private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
+private predicate compatibleTypesWithAny(DataFlowType t1, DataFlowType t2) {
   t1 != TAnyType() and
   t2 = TAnyType()
+}
+
+pragma[nomagic]
+private predicate compatibleTypes1(DataFlowType t1, DataFlowType t2) {
+  t1.asInstanceOfClass().getADirectSubClass+() = t2.asInstanceOfClass()
 }
 
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
   or
-  compatibleTypesNonSymRefl(t1, t2)
+  compatibleTypesWithAny(t1, t2)
   or
-  compatibleTypesNonSymRefl(t2, t1)
+  compatibleTypesWithAny(t2, t1)
+  or
+  compatibleTypes1(t1, t2)
+  or
+  compatibleTypes1(t2, t1)
 }
 
 predicate forceHighPrecision(Content c) { none() }
@@ -1061,17 +1077,54 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
 }
 
+private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
+  result.asOrdinaryCall() = cls.getAReceiverNode().getAPropertyRead().getACall()
+  or
+  result.asAccessorCall() = cls.getAReceiverNode().getAPropertyRead()
+  or
+  result.asPartialCall().getACallbackNode() = cls.getAReceiverNode().getAPropertyRead()
+}
+
+private predicate downwardCall(DataFlowCall call) {
+  exists(DataFlow::ClassNode cls |
+    call = getACallOnThis(cls) and
+    viableCallable(call).asSourceCallable() =
+      cls.getADirectSubClass+().getAnInstanceMember().getFunction()
+  )
+}
+
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call) { downwardCall(call) }
+
+/** Gets the type of the receiver of `call`. */
+private DataFlowType getThisArgumentType(DataFlowCall call) {
+  exists(DataFlow::Node node |
+    isArgumentNodeImpl(node, call, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
+
+/** Gets the type of the 'this' parameter of `call`. */
+private DataFlowType getThisParameterType(DataFlowCallable callable) {
+  exists(DataFlow::Node node |
+    isParameterNodeImpl(node, callable, MkThisParameter()) and
+    result = getNodeType(node)
+  )
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  mayBenefitFromCallContext(call) and
+  result = viableCallable(call) and
+  viableCallable(ctx) = call.getEnclosingCallable() and
+  compatibleTypes(getThisArgumentType(ctx), getThisParameterType(result))
+}
 
 bindingset[node, fun]
 pragma[inline_late]
@@ -1084,7 +1137,7 @@ abstract private class BarrierGuardAdapter extends DataFlow::Node {
   predicate blocksExpr(boolean outcome, Expr e) { none() }
 }
 
-deprecated private class BarrierGuardAdapterSubclass extends BarrierGuardAdapter instanceof DataFlow::AdditionalBarrierGuardNode
+private class BarrierGuardAdapterSubclass extends BarrierGuardAdapter instanceof DataFlow::AdditionalBarrierGuardNode
 {
   override predicate blocksExpr(boolean outcome, Expr e) { super.blocks(outcome, e) }
 }
@@ -1198,20 +1251,18 @@ Node getNodeFromSsa2(Ssa2::Node node) {
     result = TImplicitThisUse(use, true)
   )
   or
-  result = TSsaPhiReadNode(node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt())
-  or
-  result = TSsaInputNode(node.(Ssa2::SsaInputNode))
+  result = TSsaSynthReadNode(node)
   or
   exists(SsaPhiNode legacyPhi, Ssa2::PhiNode ssaPhi |
-    node.(Ssa2::SsaDefinitionExtNode).getDefinitionExt() = ssaPhi and
+    node.(Ssa2::SsaDefinitionNode).getDefinition() = ssaPhi and
     samePhi(legacyPhi, ssaPhi) and
     result = TSsaDefNode(legacyPhi)
   )
 }
 
 private predicate useUseFlow(Node node1, Node node2) {
-  exists(Ssa2::DefinitionExt def, Ssa2::Node ssa1, Ssa2::Node ssa2 |
-    Ssa2::localFlowStep(def, ssa1, ssa2, _) and
+  exists(Ssa2::Node ssa1, Ssa2::Node ssa2 |
+    Ssa2::localFlowStep(_, ssa1, ssa2, _) and
     node1 = getNodeFromSsa2(ssa1) and
     node2 = getNodeFromSsa2(ssa2) and
     not node1.getTopLevel().isExterns()
@@ -1432,6 +1483,23 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       c = ContentSet::arrayElementLowerBound(pos.asPositionalLowerBound())
     )
   )
+  or
+  // Implicitly read array elements before stringification
+  stringifiedNode(node1) and
+  node2 = node1 and
+  c = ContentSet::arrayElement()
+}
+
+private predicate stringifiedNode(Node node) {
+  exists(Expr e | node = TValueNode(e) |
+    e = any(AddExpr add).getAnOperand() and
+    not e instanceof StringLiteral
+    or
+    e = any(TemplateLiteral t).getAnElement() and
+    not e instanceof TemplateElement
+  )
+  or
+  node = DataFlow::globalVarRef("String").getAnInvocation().getArgument(0)
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */

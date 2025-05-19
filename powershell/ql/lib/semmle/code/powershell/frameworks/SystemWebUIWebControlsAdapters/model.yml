@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.ui.webcontrols.menu", "system.web.ui.webcontrols.adapters.menuadapter", "Member[control]"]
+    - ["system.web.ui.webcontrols.webcontrol", "system.web.ui.webcontrols.adapters.webcontroladapter", "Member[control]"]
+    - ["system.web.ui.webcontrols.databoundcontrol", "system.web.ui.webcontrols.adapters.databoundcontroladapter", "Member[control]"]
+    - ["system.web.ui.webcontrols.hierarchicaldataboundcontrol", "system.web.ui.webcontrols.adapters.hierarchicaldataboundcontroladapter", "Member[control]"]
+    - ["system.boolean", "system.web.ui.webcontrols.adapters.webcontroladapter", "Member[isenabled]"]
+    - ["system.object", "system.web.ui.webcontrols.adapters.menuadapter", "Method[saveadaptercontrolstate].ReturnValue"]

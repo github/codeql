@@ -3,7 +3,7 @@
  * @description Conditional logic is present for leap years and common years, potentially leading to untested code pathways.
  * @kind problem
  * @problem.severity warning
- * @id cpp/leap-year/conditional-logic-branches
+ * @id cpp/microsoft/public/leap-year/conditional-logic-branches
  * @precision medium
  * @tags leap-year
  *       correctness

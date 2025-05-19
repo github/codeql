@@ -45,6 +45,36 @@ class StringContainsMethod extends Method {
   }
 }
 
+/** A call to the `java.lang.String.matches` method. */
+class StringMatchesCall extends MethodCall {
+  StringMatchesCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("matches")
+    )
+  }
+}
+
+/** A call to the `java.lang.String.replaceAll` method. */
+class StringReplaceAllCall extends MethodCall {
+  StringReplaceAllCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replaceAll")
+    )
+  }
+}
+
+/** A call to the `java.lang.String.replace` method. */
+class StringReplaceCall extends MethodCall {
+  StringReplaceCall() {
+    exists(Method m | m = this.getMethod() |
+      m.getDeclaringType() instanceof TypeString and
+      m.hasName("replace")
+    )
+  }
+}
+
 /**
  * The methods on the class `java.lang.String` that are used to perform partial matches with a specified substring or char.
  */
@@ -249,9 +279,6 @@ class MethodCallSystemGetProperty extends MethodCall {
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
   }
 }
-
-/** DEPRECATED: Alias for `MethodCallSystemGetProperty`. */
-deprecated class MethodAccessSystemGetProperty = MethodCallSystemGetProperty;
 
 /**
  * Any method named `exit` on class `java.lang.Runtime` or `java.lang.System`.

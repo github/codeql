@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.windows.resources.contenttypes!", "Member[xamlcontenttype]"]
+    - ["system.string", "system.windows.resources.assemblyassociatedcontentfileattribute", "Member[relativecontentfilepath]"]
+    - ["system.io.stream", "system.windows.resources.streamresourceinfo", "Member[stream]"]
+    - ["system.string", "system.windows.resources.streamresourceinfo", "Member[contenttype]"]

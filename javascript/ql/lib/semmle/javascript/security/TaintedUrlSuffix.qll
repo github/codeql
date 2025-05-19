@@ -12,7 +12,7 @@ import javascript
 module TaintedUrlSuffix {
   import TaintedUrlSuffixCustomizations::TaintedUrlSuffix
 
-  deprecated private class ConcreteTaintedUrlSuffixLabel extends TaintedUrlSuffixLabel {
+  private class ConcreteTaintedUrlSuffixLabel extends TaintedUrlSuffixLabel {
     ConcreteTaintedUrlSuffixLabel() { this = this }
   }
 }

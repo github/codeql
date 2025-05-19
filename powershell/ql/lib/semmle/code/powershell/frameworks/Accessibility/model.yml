@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "accessibility.iaccessible", "Member[acchelp]"]
+    - ["system.object", "accessibility.iaccessible", "Method[acchittest].ReturnValue"]
+    - ["system.int32", "accessibility._remotablehandle", "Member[fcontext]"]
+    - ["system.int32", "accessibility.iaccessible", "Member[accchildcount]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accstate]"]
+    - ["accessibility.annoscope", "accessibility.annoscope!", "Member[anno_this]"]
+    - ["system.int32", "accessibility.__midl_iwintypes_0009", "Member[hremote]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accparent]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accrole]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accchild]"]
+    - ["system.string", "accessibility.iaccessible", "Member[acckeyboardshortcut]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accselection]"]
+    - ["system.int32", "accessibility.iaccessible", "Member[acchelptopic]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accdescription]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accdefaultaction]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accfocus]"]
+    - ["accessibility.__midl_iwintypes_0009", "accessibility._remotablehandle", "Member[u]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accvalue]"]
+    - ["system.int32", "accessibility.__midl_iwintypes_0009", "Member[hinproc]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accname]"]
+    - ["accessibility.annoscope", "accessibility.annoscope!", "Member[anno_container]"]
+    - ["system.object", "accessibility.iaccessible", "Method[accnavigate].ReturnValue"]

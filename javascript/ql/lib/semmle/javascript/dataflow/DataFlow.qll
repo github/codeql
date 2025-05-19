@@ -1610,6 +1610,11 @@ module DataFlow {
       pred = TElementPatternNode(_, element) and
       succ = lvalueNodeInternal(element)
     )
+    or
+    exists(Expr rest |
+      pred = TRestPatternNode(_, rest) and
+      succ = lvalueNodeInternal(rest)
+    )
   }
 
   /**
@@ -1929,7 +1934,7 @@ module DataFlow {
   import Nodes
   import Sources
   import TypeInference
-  deprecated import Configuration
+  import Configuration
   import TypeTracking
   import AdditionalFlowSteps
   import internal.FunctionWrapperSteps

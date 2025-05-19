@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.datetime", "system.identitymodel.policy.authorizationcontext", "Member[expirationtime]"]
+    - ["system.collections.objectmodel.readonlycollection<system.identitymodel.claims.claimset>", "system.identitymodel.policy.authorizationcontext", "Member[claimsets]"]
+    - ["system.collections.objectmodel.readonlycollection<system.identitymodel.claims.claimset>", "system.identitymodel.policy.evaluationcontext", "Member[claimsets]"]
+    - ["system.string", "system.identitymodel.policy.iauthorizationcomponent", "Member[id]"]
+    - ["system.identitymodel.policy.authorizationcontext", "system.identitymodel.policy.authorizationcontext!", "Method[createdefaultauthorizationcontext].ReturnValue"]
+    - ["system.boolean", "system.identitymodel.policy.iauthorizationpolicy", "Method[evaluate].ReturnValue"]
+    - ["system.identitymodel.claims.claimset", "system.identitymodel.policy.iauthorizationpolicy", "Member[issuer]"]
+    - ["system.collections.generic.idictionary<system.string,system.object>", "system.identitymodel.policy.evaluationcontext", "Member[properties]"]
+    - ["system.string", "system.identitymodel.policy.authorizationcontext", "Member[id]"]
+    - ["system.collections.generic.idictionary<system.string,system.object>", "system.identitymodel.policy.authorizationcontext", "Member[properties]"]
+    - ["system.int32", "system.identitymodel.policy.evaluationcontext", "Member[generation]"]

@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.composition.sharedattribute", "Member[sharingboundary]"]
+    - ["system.string", "system.composition.partmetadataattribute", "Member[name]"]
+    - ["system.object", "system.composition.compositioncontext", "Method[getexport].ReturnValue"]
+    - ["texport", "system.composition.compositioncontext", "Method[GetExport<texport>].ReturnValue"]
+    - ["system.string", "system.composition.importmanyattribute", "Member[contractname]"]
+    - ["system.string", "system.composition.importmetadataconstraintattribute", "Member[name]"]
+    - ["system.collections.generic.ienumerable<texport>", "system.composition.compositioncontext", "Method[getexports<texport>].ReturnValue"]
+    - ["system.collections.generic.ienumerable<system.object>", "system.composition.compositioncontext", "Method[getexports].ReturnValue"]
+    - ["system.boolean", "system.composition.compositioncontext", "Method[trygetexport<texport>].ReturnValue"]
+    - ["system.boolean", "system.composition.importattribute", "Member[allowdefault]"]
+    - ["system.collections.objectmodel.readonlycollection<system.string>", "system.composition.sharingboundaryattribute", "Member[sharingboundarynames]"]
+    - ["system.string", "system.composition.importattribute", "Member[contractname]"]
+    - ["system.boolean", "system.composition.compositioncontext", "Method[trygetexport].ReturnValue"]
+    - ["system.object", "system.composition.exportmetadataattribute", "Member[value]"]
+    - ["system.string", "system.composition.exportmetadataattribute", "Member[name]"]
+    - ["system.object", "system.composition.importmetadataconstraintattribute", "Member[value]"]
+    - ["system.string", "system.composition.exportattribute", "Member[contractname]"]
+    - ["system.object", "system.composition.partmetadataattribute", "Member[value]"]
+    - ["system.type", "system.composition.exportattribute", "Member[contracttype]"]

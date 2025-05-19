@@ -5,6 +5,7 @@
 import javascript
 private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
+private import semmle.javascript.ViewComponentInput
 
 /**
  * Gets a reference to the 'React' object.
@@ -732,7 +733,7 @@ private class ReactRouterSource extends ClientSideRemoteFlowSource {
  * Holds if `mod` transitively depends on `react-router-dom`.
  */
 private predicate dependsOnReactRouter(Module mod) {
-  mod.getAnImport().getImportedPath().getValue() = "react-router-dom"
+  mod.getAnImport().getImportedPathString() = "react-router-dom"
   or
   dependsOnReactRouter(mod.getAnImportedModule())
 }
@@ -867,4 +868,10 @@ private class PropsFlowStep extends PreCallGraphStep {
       succ = prn
     )
   }
+}
+
+private class ReactPropAsViewComponentInput extends ViewComponentInput {
+  ReactPropAsViewComponentInput() { this = any(ReactComponent c).getADirectPropsAccess() }
+
+  override string getSourceType() { result = "React props" }
 }

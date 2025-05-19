@@ -21,11 +21,22 @@ import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.backend.js.utils.realOverrideTarget
 import org.jetbrains.kotlin.ir.builders.declarations.*
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.declarations.lazy.IrLazyFunction
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.classifierOrFail
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.types.isNullableAny
+import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeWithArguments
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.JvmAnnotationNames
@@ -1597,7 +1608,7 @@ open class KotlinFileExtractor(
             cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
 
     private fun needsInterfaceForwarder(f: IrFunction) =
-        // jvmDefaultModeEnabledIsEnabled means that -Xjvm-default=all or all-compatibility was
+        // jvmDefaultModeIsNoCompatibility means that -Xjvm-default=all or =no-compatibility was
         // used, in which case real Java default interfaces are used, and we don't need to do
         // anything.
         // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to
@@ -1607,9 +1618,7 @@ open class KotlinFileExtractor(
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class
         // called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
-        !jvmDefaultModeEnabledIsEnabled(
-            pluginContext.languageVersionSettings
-            .getFlag(JvmAnalysisFlags.jvmDefaultMode)) &&
+        !jvmDefaultModeIsNoCompatibility(getJvmDefaultMode(pluginContext.languageVersionSettings)) &&
             f.parentClassOrNull.let {
                 it != null &&
                     it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
@@ -2293,7 +2302,7 @@ open class KotlinFileExtractor(
             // synthesised and inherit the annotation from the delegate (which given it has
             // @NotNull, is likely written in Java)
             JvmAnnotationNames.JETBRAINS_NOT_NULL_ANNOTATION.takeUnless {
-                t.isNullable() ||
+                t.isNullableCodeQL() ||
                     primitiveTypeMapping.getPrimitiveInfo(t) != null ||
                     hasExistingAnnotation(it)
             }
@@ -3975,7 +3984,7 @@ open class KotlinFileExtractor(
                 target.parent
             } else {
                 val st = extensionReceiverParameter.type as? IrSimpleType
-                if (isNullable != null && st?.isNullable() != isNullable) {
+                if (isNullable != null && st?.isNullableCodeQL() != isNullable) {
                     verboseln("Nullablility of type didn't match")
                     return false
                 }
@@ -4621,9 +4630,9 @@ open class KotlinFileExtractor(
                     val isPrimitiveArrayCreation = !isBuiltinCallKotlin(c, "arrayOf")
                     val elementType =
                         if (isPrimitiveArrayCreation) {
-                            c.type.getArrayElementType(pluginContext.irBuiltIns)
+                            c.type.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
                         } else {
-                            // TODO: is there any reason not to always use getArrayElementType?
+                            // TODO: is there any reason not to always use getArrayElementTypeCodeQL?
                             if (c.typeArgumentsCount == 1) {
                                 c.getTypeArgument(0).also {
                                     if (it == null) {
@@ -5999,11 +6008,7 @@ open class KotlinFileExtractor(
                 is IrGetValue -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = e.symbol.owner
-                    if (
-                        owner is IrValueParameter &&
-                            owner.index == -1 &&
-                            !owner.isExtensionReceiver()
-                    ) {
+                    if (owner is IrValueParameter && isDispatchReceiver(owner)) {
                         extractThisAccess(e, owner.parent, exprParent, callable)
                     } else {
                         val isAnnotationClassParameter =
@@ -6952,11 +6957,6 @@ open class KotlinFileExtractor(
                 null.also { logger.errorElement("Unrecognised IrConst: " + v.javaClass, e) }
             }
         }
-    }
-
-    private fun IrValueParameter.isExtensionReceiver(): Boolean {
-        val parentFun = parent as? IrFunction ?: return false
-        return parentFun.extensionReceiverParameter == this
     }
 
     private open inner class GeneratedClassHelper(

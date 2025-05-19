@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[3]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

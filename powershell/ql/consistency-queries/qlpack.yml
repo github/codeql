@@ -5,5 +5,5 @@ groups:
   - test
   - consistency-queries
 dependencies:
-  microsoft-sdl/powershell-all: ${workspace}
+  microsoft/powershell-all: ${workspace}
 warnOnImplicitThis: true

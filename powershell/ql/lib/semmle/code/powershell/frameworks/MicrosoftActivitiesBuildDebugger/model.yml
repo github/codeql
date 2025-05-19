@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.activities.build.debugger.debugbuildextension", "Method[execute].ReturnValue"]

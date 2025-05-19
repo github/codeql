@@ -2,10 +2,11 @@ use crate::config::Config;
 use anyhow::Context;
 use glob::glob;
 use itertools::Itertools;
-use log::info;
 use std::ffi::OsStr;
 use std::fs;
+use std::path::Path;
 use std::process::Command;
+use tracing::info;
 
 fn dump_lib() -> anyhow::Result<()> {
     let path_iterator = glob("*.rs").context("globbing test sources")?;
@@ -58,9 +59,18 @@ fn set_sources(config: &mut Config) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn remove_file_if_exists(path: &Path) -> anyhow::Result<()> {
+    match fs::remove_file(path) {
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(()),
+        x => x,
+    }
+    .context(format!("removing file {}", path.display()))
+}
+
 pub(crate) fn prepare(config: &mut Config) -> anyhow::Result<()> {
     dump_lib()?;
     set_sources(config)?;
+    remove_file_if_exists(Path::new("Cargo.lock"))?;
     dump_cargo_manifest(&config.qltest_dependencies)?;
     if config.qltest_cargo_check {
         let status = Command::new("cargo")

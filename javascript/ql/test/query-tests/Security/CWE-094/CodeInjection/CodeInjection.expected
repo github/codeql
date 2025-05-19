@@ -1,15 +1,158 @@
+#select
+| NoSQLCodeInjection.js:18:24:18:37 | req.body.query | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | This code execution depends on a $@. | NoSQLCodeInjection.js:18:24:18:31 | req.body | user-provided value |
+| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | This code execution depends on a $@. | NoSQLCodeInjection.js:19:36:19:43 | req.body | user-provided value |
+| NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | This code execution depends on a $@. | NoSQLCodeInjection.js:22:36:22:43 | req.body | user-provided value |
+| actions.js:4:10:4:50 | github. ... message | actions.js:4:10:4:50 | github. ... message | actions.js:4:10:4:50 | github. ... message | This code execution depends on a $@. | actions.js:4:10:4:50 | github. ... message | user-provided value |
+| angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:36 | location.search | This code execution depends on a $@. | angularjs.js:10:22:10:36 | location.search | user-provided value |
+| angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:37 | location.search | This code execution depends on a $@. | angularjs.js:13:23:13:37 | location.search | user-provided value |
+| angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:42 | location.search | This code execution depends on a $@. | angularjs.js:16:28:16:42 | location.search | user-provided value |
+| angularjs.js:19:22:19:36 | location.search | angularjs.js:19:22:19:36 | location.search | angularjs.js:19:22:19:36 | location.search | This code execution depends on a $@. | angularjs.js:19:22:19:36 | location.search | user-provided value |
+| angularjs.js:22:27:22:41 | location.search | angularjs.js:22:27:22:41 | location.search | angularjs.js:22:27:22:41 | location.search | This code execution depends on a $@. | angularjs.js:22:27:22:41 | location.search | user-provided value |
+| angularjs.js:25:23:25:37 | location.search | angularjs.js:25:23:25:37 | location.search | angularjs.js:25:23:25:37 | location.search | This code execution depends on a $@. | angularjs.js:25:23:25:37 | location.search | user-provided value |
+| angularjs.js:28:33:28:47 | location.search | angularjs.js:28:33:28:47 | location.search | angularjs.js:28:33:28:47 | location.search | This code execution depends on a $@. | angularjs.js:28:33:28:47 | location.search | user-provided value |
+| angularjs.js:31:28:31:42 | location.search | angularjs.js:31:28:31:42 | location.search | angularjs.js:31:28:31:42 | location.search | This code execution depends on a $@. | angularjs.js:31:28:31:42 | location.search | user-provided value |
+| angularjs.js:34:18:34:32 | location.search | angularjs.js:34:18:34:32 | location.search | angularjs.js:34:18:34:32 | location.search | This code execution depends on a $@. | angularjs.js:34:18:34:32 | location.search | user-provided value |
+| angularjs.js:40:18:40:32 | location.search | angularjs.js:40:18:40:32 | location.search | angularjs.js:40:18:40:32 | location.search | This code execution depends on a $@. | angularjs.js:40:18:40:32 | location.search | user-provided value |
+| angularjs.js:44:17:44:31 | location.search | angularjs.js:44:17:44:31 | location.search | angularjs.js:44:17:44:31 | location.search | This code execution depends on a $@. | angularjs.js:44:17:44:31 | location.search | user-provided value |
+| angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search | This code execution depends on a $@. | angularjs.js:47:16:47:30 | location.search | user-provided value |
+| angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search | This code execution depends on a $@. | angularjs.js:50:22:50:36 | location.search | user-provided value |
+| angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search | This code execution depends on a $@. | angularjs.js:53:32:53:46 | location.search | user-provided value |
+| express.js:6:24:6:69 | "return ...  + "];" | express.js:6:44:6:62 | req.param("wobble") | express.js:6:24:6:69 | "return ...  + "];" | This code execution depends on a $@. | express.js:6:44:6:62 | req.param("wobble") | user-provided value |
+| express.js:7:34:7:79 | "return ...  + "];" | express.js:7:54:7:72 | req.param("wobble") | express.js:7:34:7:79 | "return ...  + "];" | This code execution depends on a $@. | express.js:7:54:7:72 | req.param("wobble") | user-provided value |
+| express.js:9:8:9:53 | "return ...  + "];" | express.js:9:28:9:46 | req.param("wobble") | express.js:9:8:9:53 | "return ...  + "];" | This code execution depends on a $@. | express.js:9:28:9:46 | req.param("wobble") | user-provided value |
+| express.js:11:22:11:54 | req.par ... ction") | express.js:11:22:11:54 | req.par ... ction") | express.js:11:22:11:54 | req.par ... ction") | This code execution depends on a $@. | express.js:11:22:11:54 | req.par ... ction") | user-provided value |
+| express.js:12:30:12:53 | req.par ... cript") | express.js:12:30:12:53 | req.par ... cript") | express.js:12:30:12:53 | req.par ... cript") | This code execution depends on a $@. | express.js:12:30:12:53 | req.par ... cript") | user-provided value |
+| express.js:13:37:13:70 | req.par ... odule") | express.js:13:37:13:70 | req.par ... odule") | express.js:13:37:13:70 | req.par ... odule") | This code execution depends on a $@. | express.js:13:37:13:70 | req.par ... odule") | user-provided value |
+| express.js:14:19:14:48 | req.par ... ntext") | express.js:14:19:14:48 | req.par ... ntext") | express.js:14:19:14:48 | req.par ... ntext") | This code execution depends on a $@. | express.js:14:19:14:48 | req.par ... ntext") | user-provided value |
+| express.js:20:34:20:38 | taint | express.js:19:17:19:35 | req.param("wobble") | express.js:20:34:20:38 | taint | This code execution depends on a $@. | express.js:19:17:19:35 | req.param("wobble") | user-provided value |
+| express.js:36:15:36:19 | taint | express.js:27:17:27:35 | req.param("wobble") | express.js:36:15:36:19 | taint | This code execution depends on a $@. | express.js:27:17:27:35 | req.param("wobble") | user-provided value |
+| express.js:43:10:43:12 | msg | express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | This code execution depends on a $@. | express.js:42:30:42:32 | msg | user-provided value |
+| fastify.js:5:44:5:52 | userInput | fastify.js:4:21:4:33 | request.query | fastify.js:5:44:5:52 | userInput | This code execution depends on a $@. | fastify.js:4:21:4:33 | request.query | user-provided value |
+| fastify.js:5:44:5:52 | userInput | fastify.js:4:21:4:43 | request ... Request | fastify.js:5:44:5:52 | userInput | This code execution depends on a $@. | fastify.js:4:21:4:43 | request ... Request | user-provided value |
+| fastify.js:10:44:10:52 | userInput | fastify.js:9:21:9:33 | request.query | fastify.js:10:44:10:52 | userInput | This code execution depends on a $@. | fastify.js:9:21:9:33 | request.query | user-provided value |
+| fastify.js:10:44:10:52 | userInput | fastify.js:9:21:9:40 | request.query.onSend | fastify.js:10:44:10:52 | userInput | This code execution depends on a $@. | fastify.js:9:21:9:40 | request.query.onSend | user-provided value |
+| fastify.js:16:44:16:52 | userInput | fastify.js:15:21:15:33 | request.query | fastify.js:16:44:16:52 | userInput | This code execution depends on a $@. | fastify.js:15:21:15:33 | request.query | user-provided value |
+| fastify.js:16:44:16:52 | userInput | fastify.js:15:21:15:44 | request ... Parsing | fastify.js:16:44:16:52 | userInput | This code execution depends on a $@. | fastify.js:15:21:15:44 | request ... Parsing | user-provided value |
+| fastify.js:22:44:22:52 | userInput | fastify.js:21:21:21:33 | request.query | fastify.js:22:44:22:52 | userInput | This code execution depends on a $@. | fastify.js:21:21:21:33 | request.query | user-provided value |
+| fastify.js:22:44:22:52 | userInput | fastify.js:21:21:21:47 | request ... idation | fastify.js:22:44:22:52 | userInput | This code execution depends on a $@. | fastify.js:21:21:21:47 | request ... idation | user-provided value |
+| fastify.js:27:44:27:52 | userInput | fastify.js:26:21:26:33 | request.query | fastify.js:27:44:27:52 | userInput | This code execution depends on a $@. | fastify.js:26:21:26:33 | request.query | user-provided value |
+| fastify.js:27:44:27:52 | userInput | fastify.js:26:21:26:44 | request ... Handler | fastify.js:27:44:27:52 | userInput | This code execution depends on a $@. | fastify.js:26:21:26:44 | request ... Handler | user-provided value |
+| fastify.js:32:44:32:52 | userInput | fastify.js:31:21:31:33 | request.query | fastify.js:32:44:32:52 | userInput | This code execution depends on a $@. | fastify.js:31:21:31:33 | request.query | user-provided value |
+| fastify.js:32:44:32:52 | userInput | fastify.js:31:21:31:50 | request ... ization | fastify.js:32:44:32:52 | userInput | This code execution depends on a $@. | fastify.js:31:21:31:50 | request ... ization | user-provided value |
+| fastify.js:38:44:38:52 | userInput | fastify.js:37:21:37:33 | request.query | fastify.js:38:44:38:52 | userInput | This code execution depends on a $@. | fastify.js:37:21:37:33 | request.query | user-provided value |
+| fastify.js:38:44:38:52 | userInput | fastify.js:37:21:37:44 | request ... esponse | fastify.js:38:44:38:52 | userInput | This code execution depends on a $@. | fastify.js:37:21:37:44 | request ... esponse | user-provided value |
+| fastify.js:43:44:43:52 | userInput | fastify.js:42:21:42:33 | request.query | fastify.js:43:44:43:52 | userInput | This code execution depends on a $@. | fastify.js:42:21:42:33 | request.query | user-provided value |
+| fastify.js:43:44:43:52 | userInput | fastify.js:42:21:42:41 | request ... onError | fastify.js:43:44:43:52 | userInput | This code execution depends on a $@. | fastify.js:42:21:42:41 | request ... onError | user-provided value |
+| fastify.js:48:44:48:52 | userInput | fastify.js:47:21:47:33 | request.query | fastify.js:48:44:48:52 | userInput | This code execution depends on a $@. | fastify.js:47:21:47:33 | request.query | user-provided value |
+| fastify.js:48:44:48:52 | userInput | fastify.js:47:21:47:43 | request ... Timeout | fastify.js:48:44:48:52 | userInput | This code execution depends on a $@. | fastify.js:47:21:47:43 | request ... Timeout | user-provided value |
+| fastify.js:53:46:53:54 | userInput | fastify.js:52:23:52:35 | request.query | fastify.js:53:46:53:54 | userInput | This code execution depends on a $@. | fastify.js:52:23:52:35 | request.query | user-provided value |
+| fastify.js:53:46:53:54 | userInput | fastify.js:52:23:52:50 | request ... stAbort | fastify.js:53:46:53:54 | userInput | This code execution depends on a $@. | fastify.js:52:23:52:50 | request ... stAbort | user-provided value |
+| fastify.js:58:44:58:52 | userInput | fastify.js:57:21:57:33 | request.query | fastify.js:58:44:58:52 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:33 | request.query | user-provided value |
+| fastify.js:58:44:58:52 | userInput | fastify.js:57:21:57:39 | request.query.input | fastify.js:58:44:58:52 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:39 | request.query.input | user-provided value |
+| fastify.js:59:23:59:31 | userInput | fastify.js:57:21:57:33 | request.query | fastify.js:59:23:59:31 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:33 | request.query | user-provided value |
+| fastify.js:59:23:59:31 | userInput | fastify.js:57:21:57:39 | request.query.input | fastify.js:59:23:59:31 | userInput | This code execution depends on a $@. | fastify.js:57:21:57:39 | request.query.input | user-provided value |
+| fastify.js:71:34:71:51 | request.storedCode | fastify.js:66:24:66:36 | request.query | fastify.js:71:34:71:51 | request.storedCode | This code execution depends on a $@. | fastify.js:66:24:66:36 | request.query | user-provided value |
+| fastify.js:71:34:71:51 | request.storedCode | fastify.js:66:24:66:47 | request ... redCode | fastify.js:71:34:71:51 | request.storedCode | This code execution depends on a $@. | fastify.js:66:24:66:47 | request ... redCode | user-provided value |
+| fastify.js:84:30:84:43 | reply.userCode | fastify.js:79:20:79:32 | request.query | fastify.js:84:30:84:43 | reply.userCode | This code execution depends on a $@. | fastify.js:79:20:79:32 | request.query | user-provided value |
+| fastify.js:84:30:84:43 | reply.userCode | fastify.js:79:20:79:42 | request ... plyCode | fastify.js:84:30:84:43 | reply.userCode | This code execution depends on a $@. | fastify.js:79:20:79:42 | request ... plyCode | user-provided value |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:94:29:94:41 | request.query | fastify.js:99:30:99:52 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:41 | request.query | user-provided value |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:99:30:99:52 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:51 | request ... plyCode | user-provided value |
+| fastify.js:107:23:107:31 | userInput | fastify.js:106:21:106:33 | request.query | fastify.js:107:23:107:31 | userInput | This code execution depends on a $@. | fastify.js:106:21:106:33 | request.query | user-provided value |
+| fastify.js:107:23:107:31 | userInput | fastify.js:106:21:106:38 | request.query.code | fastify.js:107:23:107:31 | userInput | This code execution depends on a $@. | fastify.js:106:21:106:38 | request.query.code | user-provided value |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:41 | request.query | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:41 | request.query | user-provided value |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | fastify.js:94:29:94:51 | request ... plyCode | fastify.js:108:28:108:50 | reply.l ... tedCode | This code execution depends on a $@. | fastify.js:94:29:94:51 | request ... plyCode | user-provided value |
+| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
+| module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
+| react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
+| react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | This code execution depends on a $@. | react.js:10:56:10:77 | documen ... on.hash | user-provided value |
+| template-sinks.js:20:17:20:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:20:17:20:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:21:16:21:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:21:16:21:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:22:18:22:24 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:22:18:22:24 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:23:17:23:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:23:17:23:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:24:18:24:24 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:24:18:24:24 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:25:16:25:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:25:16:25:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:26:27:26:33 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:26:27:26:33 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:27:21:27:27 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:27:21:27:27 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:28:17:28:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:28:17:28:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:29:24:29:30 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:29:24:29:30 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:30:21:30:27 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:30:21:30:27 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:31:19:31:25 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:31:19:31:25 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:32:16:32:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:32:16:32:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| template-sinks.js:33:17:33:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:33:17:33:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
+| tst.js:1:6:1:83 | documen ... t=")+8) | tst.js:1:6:1:27 | documen ... on.href | tst.js:1:6:1:83 | documen ... t=")+8) | This code execution depends on a $@. | tst.js:1:6:1:27 | documen ... on.href | user-provided value |
+| tst.js:3:12:3:33 | documen ... on.hash | tst.js:3:12:3:33 | documen ... on.hash | tst.js:3:12:3:33 | documen ... on.hash | This code execution depends on a $@. | tst.js:3:12:3:33 | documen ... on.hash | user-provided value |
+| tst.js:11:10:11:74 | documen ... , "$1") | tst.js:11:10:11:33 | documen ... .search | tst.js:11:10:11:74 | documen ... , "$1") | This code execution depends on a $@. | tst.js:11:10:11:33 | documen ... .search | user-provided value |
+| tst.js:13:21:13:42 | documen ... on.hash | tst.js:13:21:13:42 | documen ... on.hash | tst.js:13:21:13:42 | documen ... on.hash | This code execution depends on a $@. | tst.js:13:21:13:42 | documen ... on.hash | user-provided value |
+| tst.js:15:30:15:51 | documen ... on.hash | tst.js:15:30:15:51 | documen ... on.hash | tst.js:15:30:15:51 | documen ... on.hash | This code execution depends on a $@. | tst.js:15:30:15:51 | documen ... on.hash | user-provided value |
+| tst.js:17:6:17:46 | atob(do ... ing(1)) | tst.js:17:11:17:32 | documen ... on.hash | tst.js:17:6:17:46 | atob(do ... ing(1)) | This code execution depends on a $@. | tst.js:17:11:17:32 | documen ... on.hash | user-provided value |
+| tst.js:19:26:19:53 | locatio ... ring(1) | tst.js:19:26:19:40 | location.search | tst.js:19:26:19:53 | locatio ... ring(1) | This code execution depends on a $@. | tst.js:19:26:19:40 | location.search | user-provided value |
+| tst.js:24:18:24:23 | source | tst.js:22:18:22:41 | documen ... .search | tst.js:24:18:24:23 | source | This code execution depends on a $@. | tst.js:22:18:22:41 | documen ... .search | user-provided value |
+| tst.js:26:14:26:19 | source | tst.js:22:18:22:41 | documen ... .search | tst.js:26:14:26:19 | source | This code execution depends on a $@. | tst.js:22:18:22:41 | documen ... .search | user-provided value |
+| tst.js:28:28:28:33 | source | tst.js:22:18:22:41 | documen ... .search | tst.js:28:28:28:33 | source | This code execution depends on a $@. | tst.js:22:18:22:41 | documen ... .search | user-provided value |
+| tst.js:30:33:30:38 | source | tst.js:22:18:22:41 | documen ... .search | tst.js:30:33:30:38 | source | This code execution depends on a $@. | tst.js:22:18:22:41 | documen ... .search | user-provided value |
+| webix/webix.html:3:16:3:37 | documen ... on.hash | webix/webix.html:3:16:3:37 | documen ... on.hash | webix/webix.html:3:16:3:37 | documen ... on.hash | This code execution depends on a $@. | webix/webix.html:3:16:3:37 | documen ... on.hash | user-provided value |
+| webix/webix.html:4:26:4:47 | documen ... on.hash | webix/webix.html:4:26:4:47 | documen ... on.hash | webix/webix.html:4:26:4:47 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.html:4:26:4:47 | documen ... on.hash | user-provided value |
+| webix/webix.html:5:47:5:68 | documen ... on.hash | webix/webix.html:5:47:5:68 | documen ... on.hash | webix/webix.html:5:47:5:68 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.html:5:47:5:68 | documen ... on.hash | user-provided value |
+| webix/webix.js:3:12:3:33 | documen ... on.hash | webix/webix.js:3:12:3:33 | documen ... on.hash | webix/webix.js:3:12:3:33 | documen ... on.hash | This code execution depends on a $@. | webix/webix.js:3:12:3:33 | documen ... on.hash | user-provided value |
+| webix/webix.js:4:22:4:43 | documen ... on.hash | webix/webix.js:4:22:4:43 | documen ... on.hash | webix/webix.js:4:22:4:43 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.js:4:22:4:43 | documen ... on.hash | user-provided value |
+| webix/webix.js:5:43:5:64 | documen ... on.hash | webix/webix.js:5:43:5:64 | documen ... on.hash | webix/webix.js:5:43:5:64 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.js:5:43:5:64 | documen ... on.hash | user-provided value |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | provenance |  |
 | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | provenance |  |
 | NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | provenance |  |
-| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" | provenance |  |
-| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" | provenance |  |
-| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" | provenance |  |
-| express.js:26:9:26:35 | taint | express.js:27:34:27:38 | taint | provenance |  |
-| express.js:26:17:26:35 | req.param("wobble") | express.js:26:9:26:35 | taint | provenance |  |
-| express.js:34:9:34:35 | taint | express.js:43:15:43:19 | taint | provenance |  |
-| express.js:34:17:34:35 | req.param("wobble") | express.js:34:9:34:35 | taint | provenance |  |
-| express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg | provenance |  |
+| express.js:6:44:6:62 | req.param("wobble") | express.js:6:24:6:69 | "return ...  + "];" | provenance |  |
+| express.js:7:54:7:72 | req.param("wobble") | express.js:7:34:7:79 | "return ...  + "];" | provenance |  |
+| express.js:9:28:9:46 | req.param("wobble") | express.js:9:8:9:53 | "return ...  + "];" | provenance |  |
+| express.js:19:9:19:35 | taint | express.js:20:34:20:38 | taint | provenance |  |
+| express.js:19:17:19:35 | req.param("wobble") | express.js:19:9:19:35 | taint | provenance |  |
+| express.js:27:9:27:35 | taint | express.js:36:15:36:19 | taint | provenance |  |
+| express.js:27:17:27:35 | req.param("wobble") | express.js:27:9:27:35 | taint | provenance |  |
+| express.js:42:30:42:32 | msg | express.js:43:10:43:12 | msg | provenance |  |
+| fastify.js:4:9:4:43 | userInput | fastify.js:5:44:5:52 | userInput | provenance |  |
+| fastify.js:4:21:4:33 | request.query | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:4:21:4:43 | request ... Request | fastify.js:4:9:4:43 | userInput | provenance |  |
+| fastify.js:9:9:9:40 | userInput | fastify.js:10:44:10:52 | userInput | provenance |  |
+| fastify.js:9:21:9:33 | request.query | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:9:21:9:40 | request.query.onSend | fastify.js:9:9:9:40 | userInput | provenance |  |
+| fastify.js:15:9:15:44 | userInput | fastify.js:16:44:16:52 | userInput | provenance |  |
+| fastify.js:15:21:15:33 | request.query | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:15:21:15:44 | request ... Parsing | fastify.js:15:9:15:44 | userInput | provenance |  |
+| fastify.js:21:9:21:47 | userInput | fastify.js:22:44:22:52 | userInput | provenance |  |
+| fastify.js:21:21:21:33 | request.query | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:21:21:21:47 | request ... idation | fastify.js:21:9:21:47 | userInput | provenance |  |
+| fastify.js:26:9:26:44 | userInput | fastify.js:27:44:27:52 | userInput | provenance |  |
+| fastify.js:26:21:26:33 | request.query | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:26:21:26:44 | request ... Handler | fastify.js:26:9:26:44 | userInput | provenance |  |
+| fastify.js:31:9:31:50 | userInput | fastify.js:32:44:32:52 | userInput | provenance |  |
+| fastify.js:31:21:31:33 | request.query | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:31:21:31:50 | request ... ization | fastify.js:31:9:31:50 | userInput | provenance |  |
+| fastify.js:37:9:37:44 | userInput | fastify.js:38:44:38:52 | userInput | provenance |  |
+| fastify.js:37:21:37:33 | request.query | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:37:21:37:44 | request ... esponse | fastify.js:37:9:37:44 | userInput | provenance |  |
+| fastify.js:42:9:42:41 | userInput | fastify.js:43:44:43:52 | userInput | provenance |  |
+| fastify.js:42:21:42:33 | request.query | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:42:21:42:41 | request ... onError | fastify.js:42:9:42:41 | userInput | provenance |  |
+| fastify.js:47:9:47:43 | userInput | fastify.js:48:44:48:52 | userInput | provenance |  |
+| fastify.js:47:21:47:33 | request.query | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:47:21:47:43 | request ... Timeout | fastify.js:47:9:47:43 | userInput | provenance |  |
+| fastify.js:52:11:52:50 | userInput | fastify.js:53:46:53:54 | userInput | provenance |  |
+| fastify.js:52:23:52:35 | request.query | fastify.js:52:11:52:50 | userInput | provenance |  |
+| fastify.js:52:23:52:50 | request ... stAbort | fastify.js:52:11:52:50 | userInput | provenance |  |
+| fastify.js:57:9:57:39 | userInput | fastify.js:58:44:58:52 | userInput | provenance |  |
+| fastify.js:57:9:57:39 | userInput | fastify.js:59:23:59:31 | userInput | provenance |  |
+| fastify.js:57:21:57:33 | request.query | fastify.js:57:9:57:39 | userInput | provenance |  |
+| fastify.js:57:21:57:39 | request.query.input | fastify.js:57:9:57:39 | userInput | provenance |  |
+| fastify.js:66:24:66:36 | request.query | fastify.js:66:24:66:47 | request ... redCode | provenance |  |
+| fastify.js:66:24:66:47 | request ... redCode | fastify.js:71:34:71:51 | request.storedCode | provenance |  |
+| fastify.js:79:20:79:32 | request.query | fastify.js:79:20:79:42 | request ... plyCode | provenance |  |
+| fastify.js:79:20:79:42 | request ... plyCode | fastify.js:84:30:84:43 | reply.userCode | provenance |  |
+| fastify.js:94:29:94:41 | request.query | fastify.js:94:29:94:51 | request ... plyCode | provenance |  |
+| fastify.js:94:29:94:51 | request ... plyCode | fastify.js:99:30:99:52 | reply.l ... tedCode | provenance |  |
+| fastify.js:94:29:94:51 | request ... plyCode | fastify.js:108:28:108:50 | reply.l ... tedCode | provenance |  |
+| fastify.js:106:9:106:38 | userInput | fastify.js:107:23:107:31 | userInput | provenance |  |
+| fastify.js:106:21:106:33 | request.query | fastify.js:106:9:106:38 | userInput | provenance |  |
+| fastify.js:106:21:106:38 | request.query.code | fastify.js:106:9:106:38 | userInput | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted | provenance |  |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted | provenance |  |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted | provenance |  |
@@ -28,17 +171,17 @@ edges
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:32:16:32:22 | tainted | provenance |  |
 | template-sinks.js:18:9:18:31 | tainted | template-sinks.js:33:17:33:23 | tainted | provenance |  |
 | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:18:9:18:31 | tainted | provenance |  |
-| tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) | provenance |  |
-| tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") | provenance |  |
-| tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:11:23:45 | documen ... ring(1) | provenance |  |
-| tst.js:23:11:23:45 | documen ... ring(1) | tst.js:23:6:23:46 | atob(do ... ing(1)) | provenance |  |
-| tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source | provenance |  |
-| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source | provenance |  |
-| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") | provenance |  |
-| tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source | provenance |  |
+| tst.js:1:6:1:27 | documen ... on.href | tst.js:1:6:1:83 | documen ... t=")+8) | provenance |  |
+| tst.js:11:10:11:33 | documen ... .search | tst.js:11:10:11:74 | documen ... , "$1") | provenance |  |
+| tst.js:17:11:17:32 | documen ... on.hash | tst.js:17:11:17:45 | documen ... ring(1) | provenance |  |
+| tst.js:17:11:17:45 | documen ... ring(1) | tst.js:17:6:17:46 | atob(do ... ing(1)) | provenance |  |
+| tst.js:19:26:19:40 | location.search | tst.js:19:26:19:53 | locatio ... ring(1) | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:24:18:24:23 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:26:14:26:19 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:28:28:28:33 | source | provenance |  |
+| tst.js:22:9:22:82 | source | tst.js:30:33:30:38 | source | provenance |  |
+| tst.js:22:18:22:41 | documen ... .search | tst.js:22:18:22:82 | documen ... , "$1") | provenance |  |
+| tst.js:22:18:22:82 | documen ... , "$1") | tst.js:22:9:22:82 | source | provenance |  |
 nodes
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | semmle.label | req.body |
 | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | semmle.label | req.body.query |
@@ -61,24 +204,83 @@ nodes
 | angularjs.js:47:16:47:30 | location.search | semmle.label | location.search |
 | angularjs.js:50:22:50:36 | location.search | semmle.label | location.search |
 | angularjs.js:53:32:53:46 | location.search | semmle.label | location.search |
-| express.js:7:24:7:69 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:7:44:7:62 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:9:34:9:79 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:9:54:9:72 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:12:8:12:53 | "return ...  + "];" | semmle.label | "return ...  + "];" |
-| express.js:12:28:12:46 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:15:22:15:54 | req.par ... ction") | semmle.label | req.par ... ction") |
-| express.js:17:30:17:53 | req.par ... cript") | semmle.label | req.par ... cript") |
-| express.js:19:37:19:70 | req.par ... odule") | semmle.label | req.par ... odule") |
-| express.js:21:19:21:48 | req.par ... ntext") | semmle.label | req.par ... ntext") |
-| express.js:26:9:26:35 | taint | semmle.label | taint |
-| express.js:26:17:26:35 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:27:34:27:38 | taint | semmle.label | taint |
-| express.js:34:9:34:35 | taint | semmle.label | taint |
-| express.js:34:17:34:35 | req.param("wobble") | semmle.label | req.param("wobble") |
-| express.js:43:15:43:19 | taint | semmle.label | taint |
-| express.js:49:30:49:32 | msg | semmle.label | msg |
-| express.js:50:10:50:12 | msg | semmle.label | msg |
+| express.js:6:24:6:69 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:6:44:6:62 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:7:34:7:79 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:7:54:7:72 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:9:8:9:53 | "return ...  + "];" | semmle.label | "return ...  + "];" |
+| express.js:9:28:9:46 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:11:22:11:54 | req.par ... ction") | semmle.label | req.par ... ction") |
+| express.js:12:30:12:53 | req.par ... cript") | semmle.label | req.par ... cript") |
+| express.js:13:37:13:70 | req.par ... odule") | semmle.label | req.par ... odule") |
+| express.js:14:19:14:48 | req.par ... ntext") | semmle.label | req.par ... ntext") |
+| express.js:19:9:19:35 | taint | semmle.label | taint |
+| express.js:19:17:19:35 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:20:34:20:38 | taint | semmle.label | taint |
+| express.js:27:9:27:35 | taint | semmle.label | taint |
+| express.js:27:17:27:35 | req.param("wobble") | semmle.label | req.param("wobble") |
+| express.js:36:15:36:19 | taint | semmle.label | taint |
+| express.js:42:30:42:32 | msg | semmle.label | msg |
+| express.js:43:10:43:12 | msg | semmle.label | msg |
+| fastify.js:4:9:4:43 | userInput | semmle.label | userInput |
+| fastify.js:4:21:4:33 | request.query | semmle.label | request.query |
+| fastify.js:4:21:4:43 | request ... Request | semmle.label | request ... Request |
+| fastify.js:5:44:5:52 | userInput | semmle.label | userInput |
+| fastify.js:9:9:9:40 | userInput | semmle.label | userInput |
+| fastify.js:9:21:9:33 | request.query | semmle.label | request.query |
+| fastify.js:9:21:9:40 | request.query.onSend | semmle.label | request.query.onSend |
+| fastify.js:10:44:10:52 | userInput | semmle.label | userInput |
+| fastify.js:15:9:15:44 | userInput | semmle.label | userInput |
+| fastify.js:15:21:15:33 | request.query | semmle.label | request.query |
+| fastify.js:15:21:15:44 | request ... Parsing | semmle.label | request ... Parsing |
+| fastify.js:16:44:16:52 | userInput | semmle.label | userInput |
+| fastify.js:21:9:21:47 | userInput | semmle.label | userInput |
+| fastify.js:21:21:21:33 | request.query | semmle.label | request.query |
+| fastify.js:21:21:21:47 | request ... idation | semmle.label | request ... idation |
+| fastify.js:22:44:22:52 | userInput | semmle.label | userInput |
+| fastify.js:26:9:26:44 | userInput | semmle.label | userInput |
+| fastify.js:26:21:26:33 | request.query | semmle.label | request.query |
+| fastify.js:26:21:26:44 | request ... Handler | semmle.label | request ... Handler |
+| fastify.js:27:44:27:52 | userInput | semmle.label | userInput |
+| fastify.js:31:9:31:50 | userInput | semmle.label | userInput |
+| fastify.js:31:21:31:33 | request.query | semmle.label | request.query |
+| fastify.js:31:21:31:50 | request ... ization | semmle.label | request ... ization |
+| fastify.js:32:44:32:52 | userInput | semmle.label | userInput |
+| fastify.js:37:9:37:44 | userInput | semmle.label | userInput |
+| fastify.js:37:21:37:33 | request.query | semmle.label | request.query |
+| fastify.js:37:21:37:44 | request ... esponse | semmle.label | request ... esponse |
+| fastify.js:38:44:38:52 | userInput | semmle.label | userInput |
+| fastify.js:42:9:42:41 | userInput | semmle.label | userInput |
+| fastify.js:42:21:42:33 | request.query | semmle.label | request.query |
+| fastify.js:42:21:42:41 | request ... onError | semmle.label | request ... onError |
+| fastify.js:43:44:43:52 | userInput | semmle.label | userInput |
+| fastify.js:47:9:47:43 | userInput | semmle.label | userInput |
+| fastify.js:47:21:47:33 | request.query | semmle.label | request.query |
+| fastify.js:47:21:47:43 | request ... Timeout | semmle.label | request ... Timeout |
+| fastify.js:48:44:48:52 | userInput | semmle.label | userInput |
+| fastify.js:52:11:52:50 | userInput | semmle.label | userInput |
+| fastify.js:52:23:52:35 | request.query | semmle.label | request.query |
+| fastify.js:52:23:52:50 | request ... stAbort | semmle.label | request ... stAbort |
+| fastify.js:53:46:53:54 | userInput | semmle.label | userInput |
+| fastify.js:57:9:57:39 | userInput | semmle.label | userInput |
+| fastify.js:57:21:57:33 | request.query | semmle.label | request.query |
+| fastify.js:57:21:57:39 | request.query.input | semmle.label | request.query.input |
+| fastify.js:58:44:58:52 | userInput | semmle.label | userInput |
+| fastify.js:59:23:59:31 | userInput | semmle.label | userInput |
+| fastify.js:66:24:66:36 | request.query | semmle.label | request.query |
+| fastify.js:66:24:66:47 | request ... redCode | semmle.label | request ... redCode |
+| fastify.js:71:34:71:51 | request.storedCode | semmle.label | request.storedCode |
+| fastify.js:79:20:79:32 | request.query | semmle.label | request.query |
+| fastify.js:79:20:79:42 | request ... plyCode | semmle.label | request ... plyCode |
+| fastify.js:84:30:84:43 | reply.userCode | semmle.label | reply.userCode |
+| fastify.js:94:29:94:41 | request.query | semmle.label | request.query |
+| fastify.js:94:29:94:51 | request ... plyCode | semmle.label | request ... plyCode |
+| fastify.js:99:30:99:52 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
+| fastify.js:106:9:106:38 | userInput | semmle.label | userInput |
+| fastify.js:106:21:106:33 | request.query | semmle.label | request.query |
+| fastify.js:106:21:106:38 | request.query.code | semmle.label | request.query.code |
+| fastify.js:107:23:107:31 | userInput | semmle.label | userInput |
+| fastify.js:108:28:108:50 | reply.l ... tedCode | semmle.label | reply.l ... tedCode |
 | module.js:9:16:9:29 | req.query.code | semmle.label | req.query.code |
 | module.js:11:17:11:30 | req.query.code | semmle.label | req.query.code |
 | react-native.js:7:7:7:33 | tainted | semmle.label | tainted |
@@ -102,25 +304,25 @@ nodes
 | template-sinks.js:31:19:31:25 | tainted | semmle.label | tainted |
 | template-sinks.js:32:16:32:22 | tainted | semmle.label | tainted |
 | template-sinks.js:33:17:33:23 | tainted | semmle.label | tainted |
-| tst.js:2:6:2:27 | documen ... on.href | semmle.label | documen ... on.href |
-| tst.js:2:6:2:83 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
-| tst.js:5:12:5:33 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:14:10:14:33 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:14:10:14:74 | documen ... , "$1") | semmle.label | documen ... , "$1") |
-| tst.js:17:21:17:42 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:20:30:20:51 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:23:6:23:46 | atob(do ... ing(1)) | semmle.label | atob(do ... ing(1)) |
-| tst.js:23:11:23:32 | documen ... on.hash | semmle.label | documen ... on.hash |
-| tst.js:23:11:23:45 | documen ... ring(1) | semmle.label | documen ... ring(1) |
-| tst.js:26:26:26:40 | location.search | semmle.label | location.search |
-| tst.js:26:26:26:53 | locatio ... ring(1) | semmle.label | locatio ... ring(1) |
-| tst.js:29:9:29:82 | source | semmle.label | source |
-| tst.js:29:18:29:41 | documen ... .search | semmle.label | documen ... .search |
-| tst.js:29:18:29:82 | documen ... , "$1") | semmle.label | documen ... , "$1") |
-| tst.js:31:18:31:23 | source | semmle.label | source |
-| tst.js:33:14:33:19 | source | semmle.label | source |
-| tst.js:35:28:35:33 | source | semmle.label | source |
-| tst.js:37:33:37:38 | source | semmle.label | source |
+| tst.js:1:6:1:27 | documen ... on.href | semmle.label | documen ... on.href |
+| tst.js:1:6:1:83 | documen ... t=")+8) | semmle.label | documen ... t=")+8) |
+| tst.js:3:12:3:33 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:11:10:11:33 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:11:10:11:74 | documen ... , "$1") | semmle.label | documen ... , "$1") |
+| tst.js:13:21:13:42 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:15:30:15:51 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:17:6:17:46 | atob(do ... ing(1)) | semmle.label | atob(do ... ing(1)) |
+| tst.js:17:11:17:32 | documen ... on.hash | semmle.label | documen ... on.hash |
+| tst.js:17:11:17:45 | documen ... ring(1) | semmle.label | documen ... ring(1) |
+| tst.js:19:26:19:40 | location.search | semmle.label | location.search |
+| tst.js:19:26:19:53 | locatio ... ring(1) | semmle.label | locatio ... ring(1) |
+| tst.js:22:9:22:82 | source | semmle.label | source |
+| tst.js:22:18:22:41 | documen ... .search | semmle.label | documen ... .search |
+| tst.js:22:18:22:82 | documen ... , "$1") | semmle.label | documen ... , "$1") |
+| tst.js:24:18:24:23 | source | semmle.label | source |
+| tst.js:26:14:26:19 | source | semmle.label | source |
+| tst.js:28:28:28:33 | source | semmle.label | source |
+| tst.js:30:33:30:38 | source | semmle.label | source |
 | webix/webix.html:3:16:3:37 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.html:4:26:4:47 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.html:5:47:5:68 | documen ... on.hash | semmle.label | documen ... on.hash |
@@ -128,68 +330,3 @@ nodes
 | webix/webix.js:4:22:4:43 | documen ... on.hash | semmle.label | documen ... on.hash |
 | webix/webix.js:5:43:5:64 | documen ... on.hash | semmle.label | documen ... on.hash |
 subpaths
-#select
-| NoSQLCodeInjection.js:18:24:18:37 | req.body.query | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | This code execution depends on a $@. | NoSQLCodeInjection.js:18:24:18:31 | req.body | user-provided value |
-| NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | This code execution depends on a $@. | NoSQLCodeInjection.js:19:36:19:43 | req.body | user-provided value |
-| NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | NoSQLCodeInjection.js:22:36:22:43 | req.body | NoSQLCodeInjection.js:22:24:22:48 | "name = ... dy.name | This code execution depends on a $@. | NoSQLCodeInjection.js:22:36:22:43 | req.body | user-provided value |
-| actions.js:4:10:4:50 | github. ... message | actions.js:4:10:4:50 | github. ... message | actions.js:4:10:4:50 | github. ... message | This code execution depends on a $@. | actions.js:4:10:4:50 | github. ... message | user-provided value |
-| angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:36 | location.search | angularjs.js:10:22:10:36 | location.search | This code execution depends on a $@. | angularjs.js:10:22:10:36 | location.search | user-provided value |
-| angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:37 | location.search | angularjs.js:13:23:13:37 | location.search | This code execution depends on a $@. | angularjs.js:13:23:13:37 | location.search | user-provided value |
-| angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:42 | location.search | angularjs.js:16:28:16:42 | location.search | This code execution depends on a $@. | angularjs.js:16:28:16:42 | location.search | user-provided value |
-| angularjs.js:19:22:19:36 | location.search | angularjs.js:19:22:19:36 | location.search | angularjs.js:19:22:19:36 | location.search | This code execution depends on a $@. | angularjs.js:19:22:19:36 | location.search | user-provided value |
-| angularjs.js:22:27:22:41 | location.search | angularjs.js:22:27:22:41 | location.search | angularjs.js:22:27:22:41 | location.search | This code execution depends on a $@. | angularjs.js:22:27:22:41 | location.search | user-provided value |
-| angularjs.js:25:23:25:37 | location.search | angularjs.js:25:23:25:37 | location.search | angularjs.js:25:23:25:37 | location.search | This code execution depends on a $@. | angularjs.js:25:23:25:37 | location.search | user-provided value |
-| angularjs.js:28:33:28:47 | location.search | angularjs.js:28:33:28:47 | location.search | angularjs.js:28:33:28:47 | location.search | This code execution depends on a $@. | angularjs.js:28:33:28:47 | location.search | user-provided value |
-| angularjs.js:31:28:31:42 | location.search | angularjs.js:31:28:31:42 | location.search | angularjs.js:31:28:31:42 | location.search | This code execution depends on a $@. | angularjs.js:31:28:31:42 | location.search | user-provided value |
-| angularjs.js:34:18:34:32 | location.search | angularjs.js:34:18:34:32 | location.search | angularjs.js:34:18:34:32 | location.search | This code execution depends on a $@. | angularjs.js:34:18:34:32 | location.search | user-provided value |
-| angularjs.js:40:18:40:32 | location.search | angularjs.js:40:18:40:32 | location.search | angularjs.js:40:18:40:32 | location.search | This code execution depends on a $@. | angularjs.js:40:18:40:32 | location.search | user-provided value |
-| angularjs.js:44:17:44:31 | location.search | angularjs.js:44:17:44:31 | location.search | angularjs.js:44:17:44:31 | location.search | This code execution depends on a $@. | angularjs.js:44:17:44:31 | location.search | user-provided value |
-| angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search | angularjs.js:47:16:47:30 | location.search | This code execution depends on a $@. | angularjs.js:47:16:47:30 | location.search | user-provided value |
-| angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search | angularjs.js:50:22:50:36 | location.search | This code execution depends on a $@. | angularjs.js:50:22:50:36 | location.search | user-provided value |
-| angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search | angularjs.js:53:32:53:46 | location.search | This code execution depends on a $@. | angularjs.js:53:32:53:46 | location.search | user-provided value |
-| express.js:7:24:7:69 | "return ...  + "];" | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" | This code execution depends on a $@. | express.js:7:44:7:62 | req.param("wobble") | user-provided value |
-| express.js:9:34:9:79 | "return ...  + "];" | express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" | This code execution depends on a $@. | express.js:9:54:9:72 | req.param("wobble") | user-provided value |
-| express.js:12:8:12:53 | "return ...  + "];" | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" | This code execution depends on a $@. | express.js:12:28:12:46 | req.param("wobble") | user-provided value |
-| express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") | express.js:15:22:15:54 | req.par ... ction") | This code execution depends on a $@. | express.js:15:22:15:54 | req.par ... ction") | user-provided value |
-| express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | express.js:17:30:17:53 | req.par ... cript") | This code execution depends on a $@. | express.js:17:30:17:53 | req.par ... cript") | user-provided value |
-| express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | express.js:19:37:19:70 | req.par ... odule") | This code execution depends on a $@. | express.js:19:37:19:70 | req.par ... odule") | user-provided value |
-| express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | express.js:21:19:21:48 | req.par ... ntext") | This code execution depends on a $@. | express.js:21:19:21:48 | req.par ... ntext") | user-provided value |
-| express.js:27:34:27:38 | taint | express.js:26:17:26:35 | req.param("wobble") | express.js:27:34:27:38 | taint | This code execution depends on a $@. | express.js:26:17:26:35 | req.param("wobble") | user-provided value |
-| express.js:43:15:43:19 | taint | express.js:34:17:34:35 | req.param("wobble") | express.js:43:15:43:19 | taint | This code execution depends on a $@. | express.js:34:17:34:35 | req.param("wobble") | user-provided value |
-| express.js:50:10:50:12 | msg | express.js:49:30:49:32 | msg | express.js:50:10:50:12 | msg | This code execution depends on a $@. | express.js:49:30:49:32 | msg | user-provided value |
-| module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | module.js:9:16:9:29 | req.query.code | This code execution depends on a $@. | module.js:9:16:9:29 | req.query.code | user-provided value |
-| module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | module.js:11:17:11:30 | req.query.code | This code execution depends on a $@. | module.js:11:17:11:30 | req.query.code | user-provided value |
-| react-native.js:8:32:8:38 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:8:32:8:38 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
-| react-native.js:10:23:10:29 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:10:23:10:29 | tainted | This code execution depends on a $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
-| react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | react.js:10:56:10:77 | documen ... on.hash | This code execution depends on a $@. | react.js:10:56:10:77 | documen ... on.hash | user-provided value |
-| template-sinks.js:20:17:20:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:20:17:20:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:21:16:21:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:21:16:21:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:22:18:22:24 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:22:18:22:24 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:23:17:23:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:23:17:23:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:24:18:24:24 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:24:18:24:24 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:25:16:25:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:25:16:25:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:26:27:26:33 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:26:27:26:33 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:27:21:27:27 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:27:21:27:27 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:28:17:28:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:28:17:28:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:29:24:29:30 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:29:24:29:30 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:30:21:30:27 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:30:21:30:27 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:31:19:31:25 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:31:19:31:25 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:32:16:32:22 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:32:16:32:22 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| template-sinks.js:33:17:33:23 | tainted | template-sinks.js:18:19:18:31 | req.query.foo | template-sinks.js:33:17:33:23 | tainted | Template, which may contain code, depends on a $@. | template-sinks.js:18:19:18:31 | req.query.foo | user-provided value |
-| tst.js:2:6:2:83 | documen ... t=")+8) | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) | This code execution depends on a $@. | tst.js:2:6:2:27 | documen ... on.href | user-provided value |
-| tst.js:5:12:5:33 | documen ... on.hash | tst.js:5:12:5:33 | documen ... on.hash | tst.js:5:12:5:33 | documen ... on.hash | This code execution depends on a $@. | tst.js:5:12:5:33 | documen ... on.hash | user-provided value |
-| tst.js:14:10:14:74 | documen ... , "$1") | tst.js:14:10:14:33 | documen ... .search | tst.js:14:10:14:74 | documen ... , "$1") | This code execution depends on a $@. | tst.js:14:10:14:33 | documen ... .search | user-provided value |
-| tst.js:17:21:17:42 | documen ... on.hash | tst.js:17:21:17:42 | documen ... on.hash | tst.js:17:21:17:42 | documen ... on.hash | This code execution depends on a $@. | tst.js:17:21:17:42 | documen ... on.hash | user-provided value |
-| tst.js:20:30:20:51 | documen ... on.hash | tst.js:20:30:20:51 | documen ... on.hash | tst.js:20:30:20:51 | documen ... on.hash | This code execution depends on a $@. | tst.js:20:30:20:51 | documen ... on.hash | user-provided value |
-| tst.js:23:6:23:46 | atob(do ... ing(1)) | tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:6:23:46 | atob(do ... ing(1)) | This code execution depends on a $@. | tst.js:23:11:23:32 | documen ... on.hash | user-provided value |
-| tst.js:26:26:26:53 | locatio ... ring(1) | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) | This code execution depends on a $@. | tst.js:26:26:26:40 | location.search | user-provided value |
-| tst.js:31:18:31:23 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:31:18:31:23 | source | This code execution depends on a $@. | tst.js:29:18:29:41 | documen ... .search | user-provided value |
-| tst.js:33:14:33:19 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:33:14:33:19 | source | This code execution depends on a $@. | tst.js:29:18:29:41 | documen ... .search | user-provided value |
-| tst.js:35:28:35:33 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:35:28:35:33 | source | This code execution depends on a $@. | tst.js:29:18:29:41 | documen ... .search | user-provided value |
-| tst.js:37:33:37:38 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:37:33:37:38 | source | This code execution depends on a $@. | tst.js:29:18:29:41 | documen ... .search | user-provided value |
-| webix/webix.html:3:16:3:37 | documen ... on.hash | webix/webix.html:3:16:3:37 | documen ... on.hash | webix/webix.html:3:16:3:37 | documen ... on.hash | This code execution depends on a $@. | webix/webix.html:3:16:3:37 | documen ... on.hash | user-provided value |
-| webix/webix.html:4:26:4:47 | documen ... on.hash | webix/webix.html:4:26:4:47 | documen ... on.hash | webix/webix.html:4:26:4:47 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.html:4:26:4:47 | documen ... on.hash | user-provided value |
-| webix/webix.html:5:47:5:68 | documen ... on.hash | webix/webix.html:5:47:5:68 | documen ... on.hash | webix/webix.html:5:47:5:68 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.html:5:47:5:68 | documen ... on.hash | user-provided value |
-| webix/webix.js:3:12:3:33 | documen ... on.hash | webix/webix.js:3:12:3:33 | documen ... on.hash | webix/webix.js:3:12:3:33 | documen ... on.hash | This code execution depends on a $@. | webix/webix.js:3:12:3:33 | documen ... on.hash | user-provided value |
-| webix/webix.js:4:22:4:43 | documen ... on.hash | webix/webix.js:4:22:4:43 | documen ... on.hash | webix/webix.js:4:22:4:43 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.js:4:22:4:43 | documen ... on.hash | user-provided value |
-| webix/webix.js:5:43:5:64 | documen ... on.hash | webix/webix.js:5:43:5:64 | documen ... on.hash | webix/webix.js:5:43:5:64 | documen ... on.hash | Template, which may contain code, depends on a $@. | webix/webix.js:5:43:5:64 | documen ... on.hash | user-provided value |

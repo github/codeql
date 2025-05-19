@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[startup]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[readinessprobe]"]
+    - ["system.int32", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[maxpendingconnections]"]
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[readiness]"]
+    - ["system.func<microsoft.extensions.diagnostics.healthchecks.healthcheckregistration,system.boolean>", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[filterchecks]"]
+    - ["system.int32", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[tcpport]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[startupprobe]"]
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[liveness]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[healthassessmentperiod]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[livenessprobe]"]

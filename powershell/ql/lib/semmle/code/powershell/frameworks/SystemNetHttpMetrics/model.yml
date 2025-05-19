@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.exception", "system.net.http.metrics.httpmetricsenrichmentcontext", "Member[exception]"]
+    - ["system.net.http.httprequestmessage", "system.net.http.metrics.httpmetricsenrichmentcontext", "Member[request]"]
+    - ["system.net.http.httpresponsemessage", "system.net.http.metrics.httpmetricsenrichmentcontext", "Member[response]"]

@@ -1,0 +1,3 @@
+| DatabaseQueryInLoop.rb:11:13:11:52 | call to first | This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop. | DatabaseQueryInLoop.rb:10:9:12:11 | call to map | this loop |
+| DatabaseQueryInLoop.rb:16:20:16:59 | call to first | This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop. | DatabaseQueryInLoop.rb:15:9:21:11 | call to map | this loop |
+| DatabaseQueryInLoop.rb:19:17:19:56 | call to first | This call to a database query operation happens inside $@, and could be hoisted to a single call outside the loop. | DatabaseQueryInLoop.rb:18:13:20:15 | call to map | this loop |

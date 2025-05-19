@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getdscresourceusagestring]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getresourcemethodslineposition]", "Argument[0]", "Argument[3]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importcimkeywordsfrommodule]", "Argument[0]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importcimkeywordsfrommodule]", "Argument[0]", "Argument[3].Element", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importcimkeywordsfrommodule]", "Argument[1]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importclassresourcesfrommodule]", "Argument[0]", "Argument[2].Element", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importscriptkeywordsfrommodule]", "Argument[0]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importscriptkeywordsfrommodule]", "Argument[1]", "Argument[2]", "taint"]
+      

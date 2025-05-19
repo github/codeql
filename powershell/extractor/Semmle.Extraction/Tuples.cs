@@ -30,11 +30,7 @@ namespace Semmle.Extraction
 
         public static void locations_default(this System.IO.TextWriter trapFile, SourceLocation label, Entities.File file, int startLine, int startCol, int endLine, int endCol)
         {
-            trapFile.WriteTuple("locations_default", label, file, startLine, startCol, endLine, endCol);
-        }
-
-        public static void is_in_psmodule_path(this System.IO.TextWriter trapFile, Entities.File file) {
-            trapFile.WriteTuple("is_in_psmodule_path", file);
+            trapFile.WriteTuple("locations_default", label, file, startLine, startCol, endLine, endCol - 1);
         }
     }
 }

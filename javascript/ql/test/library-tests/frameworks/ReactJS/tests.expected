@@ -318,3 +318,28 @@ test_JsxName_this
 | thisAccesses.js:61:19:61:41 | <this.t ... s.this> | thisAccesses.js:61:20:61:23 | this |
 locationSource
 | importedComponent.jsx:3:32:3:39 | location |
+threatModelSource
+| es5.js:4:24:4:33 | this.props | view-component-input |
+| es5.js:20:24:20:33 | this.props | view-component-input |
+| es6.js:1:37:1:36 | args | view-component-input |
+| es6.js:3:24:3:33 | this.props | view-component-input |
+| exportedComponent.jsx:1:29:1:33 | props | view-component-input |
+| importedComponent.jsx:3:24:3:40 | {color, location} | view-component-input |
+| importedComponent.jsx:3:32:3:39 | location | remote |
+| namedImport.js:3:27:3:26 | args | view-component-input |
+| namedImport.js:5:19:5:18 | args | view-component-input |
+| plainfn.js:1:16:1:20 | props | view-component-input |
+| plainfn.js:5:17:5:21 | props | view-component-input |
+| plainfn.js:9:17:9:21 | props | view-component-input |
+| plainfn.js:20:28:20:32 | props | view-component-input |
+| preact.js:1:38:1:37 | args | view-component-input |
+| preact.js:2:12:2:16 | props | view-component-input |
+| preact.js:9:38:9:37 | args | view-component-input |
+| probably-a-component.js:1:31:1:30 | args | view-component-input |
+| probably-a-component.js:3:9:3:18 | this.props | view-component-input |
+| props.js:2:37:2:36 | args | view-component-input |
+| props.js:26:16:26:20 | props | view-component-input |
+| rare-lifecycle-methods.js:1:33:1:32 | args | view-component-input |
+| statePropertyWrites.js:38:24:38:33 | this.props | view-component-input |
+| thisAccesses.js:31:12:31:16 | props | view-component-input |
+| thisAccesses.js:48:18:48:18 | y | view-component-input |

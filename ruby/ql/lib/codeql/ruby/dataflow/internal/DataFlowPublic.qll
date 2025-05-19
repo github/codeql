@@ -363,7 +363,7 @@ class PostUpdateNode extends Node {
 /** An SSA definition, viewed as a node in a data flow graph. */
 class SsaDefinitionNode extends Node instanceof SsaDefinitionNodeImpl {
   /** Gets the underlying SSA definition. */
-  Ssa::Definition getDefinition() { result = super.getDefinitionExt() }
+  Ssa::Definition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying variable. */
   Variable getVariable() { result = this.getDefinition().getSourceVariable() }
@@ -434,7 +434,7 @@ private module Cached {
   LocalSourceNode getConstantAccessNode(ConstantAccess access) {
     // Namespaces don't evaluate to the constant being accessed, they return the value of their last statement.
     // Use the definition of 'self' in the namespace as the representative in this case.
-    result.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::SelfDefinition).getSourceVariable() =
+    result.(SsaDefinitionNode).getDefinition().(Ssa::SelfDefinition).getSourceVariable() =
       access.(Namespace).getModuleSelfVariable()
     or
     not access instanceof Namespace and
@@ -1002,7 +1002,7 @@ class ModuleNode instanceof Module {
    * This only gets `self` at the module level, not inside any (singleton) method.
    */
   LocalSourceNode getModuleLevelSelf() {
-    result.(SsaDefinitionExtNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
+    result.(SsaDefinitionNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
   }
 
   /**
@@ -1283,13 +1283,6 @@ class LhsExprNode extends ExprNode {
 
   /** Gets the underlying AST node as a `LhsExpr`. */
   LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
-
-  /**
-   * DEPRECATED: use `getVariable` instead.
-   *
-   * Gets a variable used in (or introduced by) this LHS.
-   */
-  deprecated Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
 
   /** Gets the variable used in (or introduced by) this LHS. */
   Variable getVariable() { result = lhsExprCfgNode.getVariable() }

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.warningrecord", "Method[get_fullyqualifiedwarningid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.warningrecord", "Method[warningrecord]", "Argument[0]", "Argument[this]", "taint"]
+      

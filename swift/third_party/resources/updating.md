@@ -13,7 +13,7 @@ In order to perform a Swift update:
    `SwiftTagTraits.h`](../../extractor/infra/SwiftTagTraits.h).
 5. Open a draft PR with the overridden artifacts. Make sure CI passes, go back to 4. otherwise.
 6. Run DCA, got back to 4. in case of problems.
-7. Once you are happy, do
+7. Once you are happy, run the following from the root of the CodeQL repository:
    ```bash
    bazel run //swift/third_party/resources:update-dir-macos
    bazel run //swift/third_party/resources:update-dir-linux

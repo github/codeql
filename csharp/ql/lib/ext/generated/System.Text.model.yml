@@ -56,8 +56,6 @@ extensions:
       - ["System.Text", "StringBuilder+AppendInterpolatedStringHandler", False, "AppendLiteral", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Text", "StringBuilder+ChunkEnumerator", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text", "StringBuilder+ChunkEnumerator", False, "get_Current", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Text", "StringBuilder", False, "AppendFormat", "(System.IFormatProvider,System.Text.CompositeFormat,System.Object[])", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Text", "StringBuilder", False, "AppendFormat", "(System.IFormatProvider,System.Text.CompositeFormat,System.ReadOnlySpan<System.Object>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text", "StringBuilder", False, "AppendFormat<TArg0,TArg1,TArg2>", "(System.IFormatProvider,System.Text.CompositeFormat,TArg0,TArg1,TArg2)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text", "StringBuilder", False, "AppendFormat<TArg0,TArg1>", "(System.IFormatProvider,System.Text.CompositeFormat,TArg0,TArg1)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Text", "StringBuilder", False, "AppendFormat<TArg0>", "(System.IFormatProvider,System.Text.CompositeFormat,TArg0)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]

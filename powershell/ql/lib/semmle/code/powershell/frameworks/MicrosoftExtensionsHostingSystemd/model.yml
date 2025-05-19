@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Member[ready]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[stopasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdhelpers!", "Method[issystemdservice].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.isystemdnotifier", "Member[isenabled]"]
+    - ["system.string", "microsoft.extensions.hosting.systemd.servicestate", "Method[tostring].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdnotifier", "Member[isenabled]"]
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Member[stopping]"]

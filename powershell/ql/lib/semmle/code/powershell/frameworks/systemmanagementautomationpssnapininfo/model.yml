@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pssnapininfo", "Method[get_description]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pssnapininfo", "Method[get_vendor]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pssnapininfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

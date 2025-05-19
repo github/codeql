@@ -5,17 +5,18 @@ signature module ModelPrintingLangSig {
   class Callable;
 
   /**
-   * Holds if `container`, `type`, `name`, and `parameters` contain the type signature of `api`
-   * and `extensible` is the string representation of a boolean that is true, if
-   * `api` can be overridden (otherwise false).
+   * Gets the string representation for the `i`th column in the MaD row for `api`.
    */
-  predicate partialModel(
-    Callable api, string container, string type, string extensible, string name, string parameters
-  );
+  string partialModelRow(Callable api, int i);
+
+  /**
+   * Gets the string representation for the `i`th column in the neutral MaD row for `api`.
+   */
+  string partialNeutralModelRow(Callable api, int i);
 }
 
 module ModelPrintingImpl<ModelPrintingLangSig Lang> {
-  signature module ModelPrintingSig {
+  signature module ModelPrintingSummarySig {
     /**
      * The class of APIs relevant for model generation.
      */
@@ -23,6 +24,16 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
       Lang::Callable lift();
     }
 
+    /**
+     * Gets the string representation of the provenance of the models.
+     */
+    string getProvenance();
+  }
+
+  signature module ModelPrintingSourceOrSinkSig {
+    /**
+     * The class of APIs relevant for model generation.
+     */
     class SourceOrSinkApi extends Lang::Callable;
 
     /**
@@ -31,35 +42,19 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     string getProvenance();
   }
 
-  module ModelPrinting<ModelPrintingSig Printing> {
-    /**
-     * Computes the first 6 columns for MaD rows used for summaries, sources and sinks.
-     */
-    private string asPartialModel(Lang::Callable api) {
-      exists(string container, string type, string extensible, string name, string parameters |
-        Lang::partialModel(api, container, type, extensible, name, parameters) and
-        result =
-          container + ";" //
-            + type + ";" //
-            + extensible + ";" //
-            + name + ";" //
-            + parameters + ";" //
-            + /* ext + */ ";" //
-      )
-    }
+  /**
+   * Computes the first columns for MaD rows used for summaries, sources and sinks.
+   */
+  private string asPartialModel(Lang::Callable api) {
+    result = strictconcat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
+  }
 
+  module ModelPrintingSummary<ModelPrintingSummarySig Printing> {
     /**
-     * Computes the first 4 columns for neutral MaD rows.
+     * Computes the first columns for neutral MaD rows.
      */
     private string asPartialNeutralModel(Printing::SummaryApi api) {
-      exists(string container, string type, string name, string parameters |
-        Lang::partialModel(api, container, type, _, name, parameters) and
-        result =
-          container + ";" //
-            + type + ";" //
-            + name + ";" //
-            + parameters + ";" //
-      )
+      result = strictconcat(int i | | Lang::partialNeutralModelRow(api, i), ";" order by i) + ";"
     }
 
     /**
@@ -121,7 +116,9 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
       preservesValue = false and
       result = asSummaryModel(api, input, output, "taint", lift)
     }
+  }
 
+  module ModelPrintingSourceOrSink<ModelPrintingSourceOrSinkSig Printing> {
     /**
      * Gets the sink model for `api` with `input` and `kind`.
      */

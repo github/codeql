@@ -1,0 +1,71 @@
+ql/csharp/ql/src/Configuration/EmptyPasswordInConfigurationFile.ql
+ql/csharp/ql/src/Configuration/PasswordInConfigurationFile.ql
+ql/csharp/ql/src/Diagnostics/CompilerError.ql
+ql/csharp/ql/src/Diagnostics/CompilerMessage.ql
+ql/csharp/ql/src/Diagnostics/DiagnosticExtractionErrors.ql
+ql/csharp/ql/src/Diagnostics/ExtractedFiles.ql
+ql/csharp/ql/src/Diagnostics/ExtractorError.ql
+ql/csharp/ql/src/Diagnostics/ExtractorMessage.ql
+ql/csharp/ql/src/Input Validation/UseOfFileUpload.ql
+ql/csharp/ql/src/Input Validation/ValueShadowing.ql
+ql/csharp/ql/src/Input Validation/ValueShadowingServerVariable.ql
+ql/csharp/ql/src/Likely Bugs/ThreadUnsafeICryptoTransform.ql
+ql/csharp/ql/src/Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql
+ql/csharp/ql/src/Metrics/Summaries/LinesOfCode.ql
+ql/csharp/ql/src/Security Features/CWE-011/ASPNetDebug.ql
+ql/csharp/ql/src/Security Features/CWE-016/ASPNetPagesValidateRequest.ql
+ql/csharp/ql/src/Security Features/CWE-020/RuntimeChecksBypass.ql
+ql/csharp/ql/src/Security Features/CWE-022/TaintedPath.ql
+ql/csharp/ql/src/Security Features/CWE-022/ZipSlip.ql
+ql/csharp/ql/src/Security Features/CWE-078/CommandInjection.ql
+ql/csharp/ql/src/Security Features/CWE-079/XSS.ql
+ql/csharp/ql/src/Security Features/CWE-089/SqlInjection.ql
+ql/csharp/ql/src/Security Features/CWE-090/LDAPInjection.ql
+ql/csharp/ql/src/Security Features/CWE-091/XMLInjection.ql
+ql/csharp/ql/src/Security Features/CWE-094/CodeInjection.ql
+ql/csharp/ql/src/Security Features/CWE-099/ResourceInjection.ql
+ql/csharp/ql/src/Security Features/CWE-112/MissingXMLValidation.ql
+ql/csharp/ql/src/Security Features/CWE-114/AssemblyPathInjection.ql
+ql/csharp/ql/src/Security Features/CWE-117/LogForging.ql
+ql/csharp/ql/src/Security Features/CWE-119/LocalUnvalidatedArithmetic.ql
+ql/csharp/ql/src/Security Features/CWE-134/UncontrolledFormatString.ql
+ql/csharp/ql/src/Security Features/CWE-201/ExposureInTransmittedData.ql
+ql/csharp/ql/src/Security Features/CWE-209/ExceptionInformationExposure.ql
+ql/csharp/ql/src/Security Features/CWE-248/MissingASPNETGlobalErrorHandler.ql
+ql/csharp/ql/src/Security Features/CWE-285/MissingAccessControl.ql
+ql/csharp/ql/src/Security Features/CWE-312/CleartextStorage.ql
+ql/csharp/ql/src/Security Features/CWE-327/InsecureSQLConnection.ql
+ql/csharp/ql/src/Security Features/CWE-352/MissingAntiForgeryTokenValidation.ql
+ql/csharp/ql/src/Security Features/CWE-359/ExposureOfPrivateInformation.ql
+ql/csharp/ql/src/Security Features/CWE-384/AbandonSession.ql
+ql/csharp/ql/src/Security Features/CWE-451/MissingXFrameOptions.ql
+ql/csharp/ql/src/Security Features/CWE-502/DeserializedDelegate.ql
+ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql
+ql/csharp/ql/src/Security Features/CWE-548/ASPNetDirectoryListing.ql
+ql/csharp/ql/src/Security Features/CWE-601/UrlRedirect.ql
+ql/csharp/ql/src/Security Features/CWE-611/UntrustedDataInsecureXml.ql
+ql/csharp/ql/src/Security Features/CWE-614/RequireSSL.ql
+ql/csharp/ql/src/Security Features/CWE-639/InsecureDirectObjectReference.ql
+ql/csharp/ql/src/Security Features/CWE-643/XPathInjection.ql
+ql/csharp/ql/src/Security Features/CWE-730/ReDoS.ql
+ql/csharp/ql/src/Security Features/CWE-730/RegexInjection.ql
+ql/csharp/ql/src/Security Features/CWE-798/HardcodedConnectionString.ql
+ql/csharp/ql/src/Security Features/CWE-798/HardcodedCredentials.ql
+ql/csharp/ql/src/Security Features/CWE-807/ConditionalBypass.ql
+ql/csharp/ql/src/Security Features/CookieWithOverlyBroadDomain.ql
+ql/csharp/ql/src/Security Features/CookieWithOverlyBroadPath.ql
+ql/csharp/ql/src/Security Features/Encryption using ECB.ql
+ql/csharp/ql/src/Security Features/HeaderCheckingDisabled.ql
+ql/csharp/ql/src/Security Features/InadequateRSAPadding.ql
+ql/csharp/ql/src/Security Features/InsecureRandomness.ql
+ql/csharp/ql/src/Security Features/InsufficientKeySize.ql
+ql/csharp/ql/src/Security Features/PersistentCookie.ql
+ql/csharp/ql/src/Security Features/WeakEncryption.ql
+ql/csharp/ql/src/Telemetry/DatabaseQualityDiagnostics.ql
+ql/csharp/ql/src/Telemetry/ExternalLibraryUsage.ql
+ql/csharp/ql/src/Telemetry/ExtractorInformation.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalApis.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalSinks.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalSources.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalTaint.ql
+ql/csharp/ql/src/Telemetry/UnsupportedExternalAPIs.ql

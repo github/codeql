@@ -128,10 +128,14 @@ edges
 | .github/workflows/test9.yml:12:9:20:6 | Uses Step: issue_body_parser_request | .github/workflows/test9.yml:10:17:10:70 | steps.issue_body_parser_request.outputs.payload | provenance |  |
 | .github/workflows/test9.yml:12:9:20:6 | Uses Step: issue_body_parser_request | .github/workflows/test9.yml:20:20:20:73 | steps.issue_body_parser_request.outputs.payload | provenance |  |
 | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | .github/workflows/test11.yml:54:20:54:60 | needs.get-artifacts.outputs.pr_num | provenance |  |
+| .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | .github/workflows/test11.yml:55:20:55:57 | needs.get-artifacts.outputs.ref | provenance |  |
 | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | provenance |  |
+| .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | provenance |  |
 | .github/workflows/test11.yml:22:9:30:6 | Uses Step | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | provenance | Config |
 | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | provenance |  |
+| .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | provenance |  |
 | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | provenance |  |
+| .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | provenance |  |
 | .github/workflows/test14.yml:13:9:16:6 | Run Step: changed-files [files] | .github/workflows/test14.yml:16:21:16:60 | steps.changed-files.outputs.files | provenance |  |
 | .github/workflows/test14.yml:14:14:15:117 | echo "files=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} -- docs/)" >> "$GITHUB_OUTPUT"\n | .github/workflows/test14.yml:13:9:16:6 | Run Step: changed-files [files] | provenance |  |
 | .github/workflows/test14.yml:23:9:27:6 | Run Step: changed-files [files] | .github/workflows/test14.yml:27:21:27:60 | steps.changed-files.outputs.files | provenance |  |
@@ -199,6 +203,12 @@ edges
 | .github/workflows/test19.yml:100:14:102:48 | BODY=$(gh api /repos/test/test/issues/${{PR_NUMBER}} --jq ".body")\necho "body=$BODY" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:99:9:103:6 | Run Step: body [body] | provenance |  |
 | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | .github/workflows/test19.yml:108:21:108:57 | steps.comments.outputs.comments | provenance |  |
 | .github/workflows/test19.yml:105:14:107:56 | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | provenance |  |
+| .github/workflows/test19.yml:112:9:117:6 | Run Step: title1 [title] | .github/workflows/test19.yml:117:21:117:52 | steps.title1.outputs.title | provenance |  |
+| .github/workflows/test19.yml:113:14:116:50 | DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $DETAILS \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:112:9:117:6 | Run Step: title1 [title] | provenance |  |
+| .github/workflows/test19.yml:118:9:123:6 | Run Step: title2 [title] | .github/workflows/test19.yml:123:21:123:52 | steps.title2.outputs.title | provenance |  |
+| .github/workflows/test19.yml:119:14:122:50 | TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:118:9:123:6 | Run Step: title2 [title] | provenance |  |
+| .github/workflows/test19.yml:124:9:129:6 | Run Step: title3 [title] | .github/workflows/test19.yml:129:21:129:52 | steps.title3.outputs.title | provenance |  |
+| .github/workflows/test19.yml:125:14:128:50 | TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | .github/workflows/test19.yml:124:9:129:6 | Run Step: title3 [title] | provenance |  |
 | .github/workflows/test24.yml:8:9:17:6 | Uses Step: parse | .github/workflows/test24.yml:19:17:19:50 | steps.parse.outputs.payload | provenance |  |
 | .github/workflows/test25.yml:9:9:12:6 | Uses Step: parse | .github/workflows/test25.yml:12:20:12:50 | steps.parse.outputs.data | provenance |  |
 | .github/workflows/test25.yml:9:9:12:6 | Uses Step: parse | .github/workflows/test25.yml:13:20:13:58 | toJSON(steps.parse.outputs.data) | provenance |  |
@@ -390,6 +400,7 @@ nodes
 | .github/workflows/level0.yml:44:20:44:49 | github.event.issue.body | semmle.label | github.event.issue.body |
 | .github/workflows/level0.yml:69:35:69:66 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/level1.yml:37:38:37:81 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
+| .github/workflows/priv_pull_request.yml:14:21:14:57 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/workflows/pull_request_review.yml:7:19:7:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/pull_request_review.yml:8:19:8:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/workflows/pull_request_review.yml:9:19:9:61 | github.event.pull_request.head.label | semmle.label | github.event.pull_request.head.label |
@@ -495,11 +506,15 @@ nodes
 | .github/workflows/test10.yml:423:34:423:77 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/test10.yml:518:34:518:77 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
 | .github/workflows/test11.yml:19:7:21:4 | Job outputs node [pr_num] | semmle.label | Job outputs node [pr_num] |
+| .github/workflows/test11.yml:19:7:21:4 | Job outputs node [ref] | semmle.label | Job outputs node [ref] |
 | .github/workflows/test11.yml:19:16:19:50 | steps.set-ref.outputs.pr_num | semmle.label | steps.set-ref.outputs.pr_num |
+| .github/workflows/test11.yml:20:13:20:44 | steps.set-ref.outputs.ref | semmle.label | steps.set-ref.outputs.ref |
 | .github/workflows/test11.yml:22:9:30:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [pr_num] | semmle.label | Run Step: set-ref [pr_num] |
+| .github/workflows/test11.yml:30:9:46:2 | Run Step: set-ref [ref] | semmle.label | Run Step: set-ref [ref] |
 | .github/workflows/test11.yml:32:14:44:44 | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n | semmle.label | pr_num=$(jq -r '.pull_request.number' artifacts/event_file/event.json)\nif [ -z "$pr_num" ] \|\| [ "$pr_num" == "null" ]; then\n  pr_num=""\nfi\n\nref=$pr_num\nif [ -z "$ref" ] \|\| [ "$ref" == "null" ]; then\n  ref=${{ github.ref }}\nfi\n\necho "pr_num=$pr_num" >> $GITHUB_OUTPUT\necho "ref=$ref" >> $GITHUB_OUTPUT\n |
 | .github/workflows/test11.yml:54:20:54:60 | needs.get-artifacts.outputs.pr_num | semmle.label | needs.get-artifacts.outputs.pr_num |
+| .github/workflows/test11.yml:55:20:55:57 | needs.get-artifacts.outputs.ref | semmle.label | needs.get-artifacts.outputs.ref |
 | .github/workflows/test12.yml:10:21:10:67 | github.event.pull_request.title \|\| "foo" | semmle.label | github.event.pull_request.title \|\| "foo" |
 | .github/workflows/test13.yml:10:21:10:57 | github.event.changes.body.from | semmle.label | github.event.changes.body.from |
 | .github/workflows/test13.yml:11:21:11:58 | github.event.changes.title.from | semmle.label | github.event.changes.title.from |
@@ -606,6 +621,16 @@ nodes
 | .github/workflows/test19.yml:104:9:108:6 | Run Step: comments [comments] | semmle.label | Run Step: comments [comments] |
 | .github/workflows/test19.yml:105:14:107:56 | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n | semmle.label | COMMENTS=$(gh api /repos/test/test/pulls/${PR_NUMBER}/comments --jq '.[].body')\necho "comments=$COMMENTS" >> "$GITHUB_OUTPUT"\n |
 | .github/workflows/test19.yml:108:21:108:57 | steps.comments.outputs.comments | semmle.label | steps.comments.outputs.comments |
+| .github/workflows/test19.yml:112:9:117:6 | Run Step: title1 [title] | semmle.label | Run Step: title1 [title] |
+| .github/workflows/test19.yml:113:14:116:50 | DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $DETAILS \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | semmle.label | DETAILS=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $DETAILS \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test19.yml:117:21:117:52 | steps.title1.outputs.title | semmle.label | steps.title1.outputs.title |
+| .github/workflows/test19.yml:118:9:123:6 | Run Step: title2 [title] | semmle.label | Run Step: title2 [title] |
+| .github/workflows/test19.yml:119:14:122:50 | TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | semmle.label | TITLE=$(gh pr view $PR_NUMBER --json "title,author,headRefName")\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test19.yml:123:21:123:52 | steps.title2.outputs.title | semmle.label | steps.title2.outputs.title |
+| .github/workflows/test19.yml:124:9:129:6 | Run Step: title3 [title] | semmle.label | Run Step: title3 [title] |
+| .github/workflows/test19.yml:125:14:128:50 | TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n | semmle.label | TITLE=$(gh issue view "$ISSUE_NUMBER" --json title,author)\nTITLE=$(echo $TITLE \| jq -r '.title')\necho "title=$TITLE" >> "$GITHUB_OUTPUT"\n |
+| .github/workflows/test19.yml:129:21:129:52 | steps.title3.outputs.title | semmle.label | steps.title3.outputs.title |
+| .github/workflows/test20.yml:15:54:15:94 | github.event.pull_request.head.ref | semmle.label | github.event.pull_request.head.ref |
 | .github/workflows/test21.yml:22:35:22:73 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 | .github/workflows/test21.yml:23:36:23:74 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 | .github/workflows/test21.yml:24:50:24:88 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
@@ -683,6 +708,7 @@ subpaths
 | .github/workflows/inter-job2.yml:45:20:45:53 | needs.job1.outputs.job_output | .github/workflows/inter-job2.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job2.yml:45:20:45:53 | needs.job1.outputs.job_output | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/inter-job2.yml:45:20:45:53 | needs.job1.outputs.job_output | ${{needs.job1.outputs.job_output}} |
 | .github/workflows/inter-job4.yml:44:20:44:53 | needs.job1.outputs.job_output | .github/workflows/inter-job4.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job4.yml:44:20:44:53 | needs.job1.outputs.job_output | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/inter-job4.yml:44:20:44:53 | needs.job1.outputs.job_output | ${{needs.job1.outputs.job_output}} |
 | .github/workflows/inter-job5.yml:45:20:45:53 | needs.job1.outputs.job_output | .github/workflows/inter-job5.yml:45:20:45:53 | needs.job1.outputs.job_output | .github/workflows/inter-job5.yml:45:20:45:53 | needs.job1.outputs.job_output | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/inter-job5.yml:45:20:45:53 | needs.job1.outputs.job_output | ${{needs.job1.outputs.job_output}} |
+| .github/workflows/priv_pull_request.yml:14:21:14:57 | github.event.pull_request.body | .github/workflows/priv_pull_request.yml:14:21:14:57 | github.event.pull_request.body | .github/workflows/priv_pull_request.yml:14:21:14:57 | github.event.pull_request.body | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/priv_pull_request.yml:14:21:14:57 | github.event.pull_request.body | ${{ github.event.pull_request.body }} |
 | .github/workflows/push.yml:7:19:7:57 | github.event.commits[11].message | .github/workflows/push.yml:7:19:7:57 | github.event.commits[11].message | .github/workflows/push.yml:7:19:7:57 | github.event.commits[11].message | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:7:19:7:57 | github.event.commits[11].message | ${{ github.event.commits[11].message }} |
 | .github/workflows/push.yml:8:19:8:62 | github.event.commits[11].author.email | .github/workflows/push.yml:8:19:8:62 | github.event.commits[11].author.email | .github/workflows/push.yml:8:19:8:62 | github.event.commits[11].author.email | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:8:19:8:62 | github.event.commits[11].author.email | ${{ github.event.commits[11].author.email }} |
 | .github/workflows/push.yml:9:19:9:61 | github.event.commits[11].author.name | .github/workflows/push.yml:9:19:9:61 | github.event.commits[11].author.name | .github/workflows/push.yml:9:19:9:61 | github.event.commits[11].author.name | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/push.yml:9:19:9:61 | github.event.commits[11].author.name | ${{ github.event.commits[11].author.name }} |

@@ -1,2 +1,2 @@
-| FileRedirection.ps1:3:3:3:7 | MergingRedirection |
-| FileRedirection.ps1:3:8:3:20 | FileRedirection |
+| FileRedirection.ps1:3:3:3:6 | MergingRedirection |
+| FileRedirection.ps1:3:8:3:19 | FileRedirection |

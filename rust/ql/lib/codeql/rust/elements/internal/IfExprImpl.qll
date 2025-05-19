@@ -28,7 +28,9 @@ module Impl {
    * ```
    */
   class IfExpr extends Generated::IfExpr {
-    override string toString() { result = concat(int i | | this.toStringPart(i), " " order by i) }
+    override string toStringImpl() {
+      result = concat(int i | | this.toStringPart(i), " " order by i)
+    }
 
     private string toStringPart(int index) {
       index = 0 and result = "if"
@@ -39,5 +41,8 @@ module Impl {
       or
       index = 3 and this.hasElse() and result = "else {...}"
     }
+
+    /** Gets any of the branches of this if expression. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }
 }

@@ -42,3 +42,7 @@ deprecated class LegacyConfig extends TaintTracking::Configuration {
 }
 
 deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+
+query predicate threatModelSource(ThreatModelSource source, string kind) {
+  kind = source.getThreatModel()
+}

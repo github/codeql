@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[3]", "Argument[5]", "taint"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[5]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[this]", "Argument[5]", "taint"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[gethelpcontent]", "Argument[this]", "Argument[0].Element", "taint"]
+      

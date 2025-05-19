@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_exception]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_fullyqualifiederrorid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_invocationinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_scriptstacktrace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_targetobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

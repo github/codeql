@@ -1,11 +1,3 @@
-#select
-| DotRegexFilter.java:32:25:32:30 | source | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) : String | DotRegexFilter.java:32:25:32:30 | source | Potentially authentication bypass due to $@. | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) | user-provided value |
-| DotRegexServlet.java:22:25:22:30 | source | DotRegexServlet.java:19:19:19:39 | getPathInfo(...) : String | DotRegexServlet.java:22:25:22:30 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:19:19:19:39 | getPathInfo(...) | user-provided value |
-| DotRegexServlet.java:59:21:59:26 | source | DotRegexServlet.java:57:19:57:41 | getRequestURI(...) : String | DotRegexServlet.java:59:21:59:26 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:57:19:57:41 | getRequestURI(...) | user-provided value |
-| DotRegexServlet.java:77:56:77:61 | source | DotRegexServlet.java:75:19:75:39 | getPathInfo(...) : String | DotRegexServlet.java:77:56:77:61 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:75:19:75:39 | getPathInfo(...) | user-provided value |
-| DotRegexServlet.java:115:25:115:30 | source | DotRegexServlet.java:112:19:112:39 | getPathInfo(...) : String | DotRegexServlet.java:115:25:115:30 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:112:19:112:39 | getPathInfo(...) | user-provided value |
-| DotRegexSpring.java:23:25:23:28 | path | DotRegexSpring.java:20:26:20:50 | path : String | DotRegexSpring.java:23:25:23:28 | path | Potentially authentication bypass due to $@. | DotRegexSpring.java:20:26:20:50 | path | user-provided value |
-| DotRegexSpring.java:40:25:40:28 | path | DotRegexSpring.java:37:40:37:64 | path : String | DotRegexSpring.java:40:25:40:28 | path | Potentially authentication bypass due to $@. | DotRegexSpring.java:37:40:37:64 | path | user-provided value |
 edges
 | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) : String | DotRegexFilter.java:32:25:32:30 | source | provenance | Src:MaD:2  |
 | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) : String | DotRegexFilter.java:32:25:32:30 | source | provenance | Src:MaD:1  |
@@ -61,6 +53,14 @@ nodes
 | DotRegexSpring.java:71:11:71:42 | decode(...) : String | semmle.label | decode(...) : String |
 | DotRegexSpring.java:71:29:71:32 | path : String | semmle.label | path : String |
 | DotRegexSpring.java:73:10:73:13 | path : String | semmle.label | path : String |
+problems
+| DotRegexFilter.java:32:25:32:30 | source | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) : String | DotRegexFilter.java:32:25:32:30 | source | Potentially authentication bypass due to $@. | DotRegexFilter.java:29:19:29:43 | getPathInfo(...) | user-provided value |
+| DotRegexServlet.java:22:25:22:30 | source | DotRegexServlet.java:19:19:19:39 | getPathInfo(...) : String | DotRegexServlet.java:22:25:22:30 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:19:19:19:39 | getPathInfo(...) | user-provided value |
+| DotRegexServlet.java:59:21:59:26 | source | DotRegexServlet.java:57:19:57:41 | getRequestURI(...) : String | DotRegexServlet.java:59:21:59:26 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:57:19:57:41 | getRequestURI(...) | user-provided value |
+| DotRegexServlet.java:77:56:77:61 | source | DotRegexServlet.java:75:19:75:39 | getPathInfo(...) : String | DotRegexServlet.java:77:56:77:61 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:75:19:75:39 | getPathInfo(...) | user-provided value |
+| DotRegexServlet.java:115:25:115:30 | source | DotRegexServlet.java:112:19:112:39 | getPathInfo(...) : String | DotRegexServlet.java:115:25:115:30 | source | Potentially authentication bypass due to $@. | DotRegexServlet.java:112:19:112:39 | getPathInfo(...) | user-provided value |
+| DotRegexSpring.java:23:25:23:28 | path | DotRegexSpring.java:20:26:20:50 | path : String | DotRegexSpring.java:23:25:23:28 | path | Potentially authentication bypass due to $@. | DotRegexSpring.java:20:26:20:50 | path | user-provided value |
+| DotRegexSpring.java:40:25:40:28 | path | DotRegexSpring.java:37:40:37:64 | path : String | DotRegexSpring.java:40:25:40:28 | path | Potentially authentication bypass due to $@. | DotRegexSpring.java:37:40:37:64 | path | user-provided value |
 subpaths
 | DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String |
 | DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String |

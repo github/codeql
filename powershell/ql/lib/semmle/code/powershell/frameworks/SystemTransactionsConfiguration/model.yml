@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.transactions.configuration.machinesettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[machinesettings]"]
+    - ["system.string", "system.transactions.configuration.defaultsettingssection", "Member[distributedtransactionmanagername]"]
+    - ["system.transactions.configuration.transactionssectiongroup", "system.transactions.configuration.transactionssectiongroup!", "Method[getsectiongroup].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.machinesettingssection", "Member[properties]"]
+    - ["system.timespan", "system.transactions.configuration.defaultsettingssection", "Member[timeout]"]
+    - ["system.transactions.configuration.defaultsettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[defaultsettings]"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.defaultsettingssection", "Member[properties]"]
+    - ["system.timespan", "system.transactions.configuration.machinesettingssection", "Member[maxtimeout]"]

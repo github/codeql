@@ -830,13 +830,6 @@ module TypeTracking<LocationSig Location, TypeTrackingInput<Location> I> {
 
       private predicate stepPlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 
-      /**
-       * DEPRECATED: Use `flowPath` instead.
-       *
-       * Holds if there is a path between `source` and `sink`.
-       */
-      deprecated predicate hasFlow(PathNode source, PathNode sink) { flowPath(source, sink) }
-
       /** Holds if there is a path between `source` and `sink`. */
       predicate flowPath(PathNode source, PathNode sink) {
         source.isSource() and

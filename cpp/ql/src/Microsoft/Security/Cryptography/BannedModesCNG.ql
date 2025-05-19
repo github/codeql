@@ -2,7 +2,7 @@
  * @name Weak cryptography
  * @description Finds explicit uses of block cipher chaining mode algorithms that are not approved. (CNG)
  * @kind problem
- * @id cpp/weak-crypto/cng/banned-modes
+ * @id cpp/microsoft/public/weak-crypto/cng/banned-modes
  * @problem.severity error
  * @precision high
  * @tags security

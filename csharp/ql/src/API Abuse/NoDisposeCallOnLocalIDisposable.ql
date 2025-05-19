@@ -8,6 +8,7 @@
  * @id cs/local-not-disposed
  * @tags efficiency
  *       maintainability
+ *       quality
  *       external/cwe/cwe-404
  *       external/cwe/cwe-459
  *       external/cwe/cwe-460
@@ -16,6 +17,7 @@
 import csharp
 import Dispose
 import semmle.code.csharp.frameworks.System
+import semmle.code.csharp.frameworks.system.threading.Tasks
 import semmle.code.csharp.commons.Disposal
 
 private class ReturnNode extends DataFlow::ExprNode {
@@ -24,15 +26,27 @@ private class ReturnNode extends DataFlow::ExprNode {
   }
 }
 
+private class Task extends Type {
+  Task() {
+    this instanceof SystemThreadingTasksTaskClass or
+    this instanceof SystemThreadingTasksTaskTClass
+  }
+}
+
 module DisposeCallOnLocalIDisposableConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    node.asExpr() =
-      any(LocalScopeDisposableCreation disposable |
-        // Only care about library types - user types often have spurious IDisposable declarations
-        disposable.getType().fromLibrary() and
-        // WebControls are usually disposed automatically
-        not disposable.getType() instanceof WebControl
-      )
+    exists(LocalScopeDisposableCreation disposable, Type t |
+      node.asExpr() = disposable and
+      t = disposable.getType()
+    |
+      // Only care about library types - user types often have spurious IDisposable declarations
+      t.fromLibrary() and
+      // WebControls are usually disposed automatically
+      not t instanceof WebControl and
+      // It is typically not nessesary to dispose tasks
+      // https://devblogs.microsoft.com/pfxteam/do-i-need-to-dispose-of-tasks/
+      not t instanceof Task
+    )
   }
 
   predicate isSink(DataFlow::Node node) {

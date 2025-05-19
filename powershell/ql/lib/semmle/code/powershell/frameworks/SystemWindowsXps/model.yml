@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Member[none]"]
+    - ["system.windows.documents.serialization.serializerwritercollator", "system.windows.xps.xpsdocumentwriter", "Method[createvisualscollator].ReturnValue"]
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Member[receivenotificationenabled]"]
+    - ["system.windows.xps.xpsdocumentnotificationlevel", "system.windows.xps.xpsdocumentnotificationlevel!", "Member[receivenotificationdisabled]"]

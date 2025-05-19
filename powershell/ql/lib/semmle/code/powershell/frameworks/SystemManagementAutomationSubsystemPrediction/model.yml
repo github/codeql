@@ -1,0 +1,45 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.language.token", "system.management.automation.subsystem.prediction.predictioncontext", "Member[tokenatcursor]"]
+    - ["system.collections.generic.ireadonlylist<system.management.automation.language.ast>", "system.management.automation.subsystem.prediction.predictioncontext", "Member[relatedasts]"]
+    - ["system.management.automation.subsystem.prediction.predictioncontext", "system.management.automation.subsystem.prediction.predictioncontext!", "Method[create].ReturnValue"]
+    - ["system.collections.generic.ireadonlylist<system.management.automation.subsystem.prediction.predictivesuggestion>", "system.management.automation.subsystem.prediction.predictionresult", "Member[suggestions]"]
+    - ["system.nullable<system.uint32>", "system.management.automation.subsystem.prediction.suggestionpackage", "Member[session]"]
+    - ["system.collections.generic.ireadonlylist<system.management.automation.language.token>", "system.management.automation.subsystem.prediction.predictioncontext", "Member[inputtokens]"]
+    - ["system.management.automation.subsystem.prediction.predictionclientkind", "system.management.automation.subsystem.prediction.predictionclientkind!", "Member[terminal]"]
+    - ["system.management.automation.pathinfo", "system.management.automation.subsystem.prediction.predictionclient", "Member[currentlocation]"]
+    - ["system.boolean", "system.management.automation.subsystem.prediction.icommandpredictor", "Method[canacceptfeedback].ReturnValue"]
+    - ["system.management.automation.subsystem.prediction.predictorfeedbackkind", "system.management.automation.subsystem.prediction.predictorfeedbackkind!", "Member[commandlineaccepted]"]
+    - ["system.guid", "system.management.automation.subsystem.prediction.predictionresult", "Member[id]"]
+    - ["system.string", "system.management.automation.subsystem.prediction.predictionresult", "Member[name]"]
+    - ["system.management.automation.subsystem.prediction.predictionclientkind", "system.management.automation.subsystem.prediction.predictionclient", "Member[kind]"]
+    - ["system.string", "system.management.automation.subsystem.prediction.predictivesuggestion", "Member[tooltip]"]
+    - ["system.management.automation.subsystem.prediction.predictorfeedbackkind", "system.management.automation.subsystem.prediction.predictorfeedbackkind!", "Member[suggestiondisplayed]"]
+    - ["system.threading.tasks.task<system.collections.generic.list<system.management.automation.subsystem.prediction.predictionresult>>", "system.management.automation.subsystem.prediction.commandprediction!", "Method[predictinputasync].ReturnValue"]
+    - ["system.management.automation.subsystem.prediction.predictionclientkind", "system.management.automation.subsystem.prediction.predictionclientkind!", "Member[editor]"]
+    - ["system.string", "system.management.automation.subsystem.prediction.predictivesuggestion", "Member[suggestiontext]"]
+    - ["system.management.automation.subsystem.prediction.predictorfeedbackkind", "system.management.automation.subsystem.prediction.predictorfeedbackkind!", "Member[suggestionaccepted]"]
+    - ["system.management.automation.language.ast", "system.management.automation.subsystem.prediction.predictioncontext", "Member[inputast]"]
+    - ["system.management.automation.language.iscriptposition", "system.management.automation.subsystem.prediction.predictioncontext", "Member[cursorposition]"]
+    - ["system.management.automation.subsystem.prediction.suggestionpackage", "system.management.automation.subsystem.prediction.icommandpredictor", "Method[getsuggestion].ReturnValue"]
+    - ["system.collections.generic.dictionary<system.string,system.string>", "system.management.automation.subsystem.prediction.icommandpredictor", "Member[system.management.automation.subsystem.isubsystem.functionstodefine]"]
+    - ["system.nullable<system.uint32>", "system.management.automation.subsystem.prediction.predictionresult", "Member[session]"]
+    - ["system.collections.generic.list<system.management.automation.subsystem.prediction.predictivesuggestion>", "system.management.automation.subsystem.prediction.suggestionpackage", "Member[suggestionentries]"]
+    - ["system.string", "system.management.automation.subsystem.prediction.predictionclient", "Member[name]"]
+    - ["system.management.automation.subsystem.prediction.predictorfeedbackkind", "system.management.automation.subsystem.prediction.predictorfeedbackkind!", "Member[commandlineexecuted]"]
+    - ["system.management.automation.subsystem.subsystemkind", "system.management.automation.subsystem.prediction.icommandpredictor", "Member[system.management.automation.subsystem.isubsystem.kind]"]
+
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.subsystem.prediction.predictionclient", "Method[predictionclient]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.predictioncontext", "Method[predictioncontext]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.predictioncontext", "Method[predictioncontext]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.predictivesuggestion", "Method[predictivesuggestion]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.predictivesuggestion", "Method[predictivesuggestion]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.suggestionpackage", "Method[suggestionpackage]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.subsystem.prediction.suggestionpackage", "Method[suggestionpackage]", "Argument[1].Element", "Argument[this]", "taint"]

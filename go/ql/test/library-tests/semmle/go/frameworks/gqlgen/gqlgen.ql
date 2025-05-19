@@ -11,8 +11,7 @@ module ResolveParameterTest implements TestSig {
     exists(Gqlgen::ResolverParameter p |
       element = p.toString() and
       value = "\"" + p.toString() + "\"" and
-      p.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
+      p.getLocation() = location
     )
   }
 }

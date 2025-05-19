@@ -5,12 +5,14 @@
  * @precision low
  * @id java/utils/modelgenerator/summary-models-path
  * @severity warning
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import java
 import semmle.code.java.dataflow.DataFlow
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
+import Heuristic
 import PropagateFlow::PathGraph
 
 from

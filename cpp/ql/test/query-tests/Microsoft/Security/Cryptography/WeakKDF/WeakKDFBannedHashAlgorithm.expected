@@ -1,0 +1,1 @@
+| test.cpp:31:36:31:41 | handle | BCRYPT_ALG_HANDLE is passed to this to KDF derived from insecure hashing function $@. Must use SHA256 or higher. | test.cpp:19:51:19:70 | MD5 | MD5 |

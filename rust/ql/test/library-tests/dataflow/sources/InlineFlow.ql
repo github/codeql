@@ -14,6 +14,12 @@ module MyFlowConfig implements DataFlow::ConfigSig {
         .getArgList()
         .getAnArg() = sink.asExpr().getExpr()
   }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from any content at the sink.
+    isSink(node) and
+    exists(c)
+  }
 }
 
 module MyFlowTest = TaintFlowTest<MyFlowConfig>;

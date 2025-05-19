@@ -1,5 +1,5 @@
 /**
- * @id cpp/drivers/incorrect-usage-of-rtlcomparememory
+ * @id cpp/microsoft/public/drivers/incorrect-usage-of-rtlcomparememory
  * @name Incorrect usage of RtlCompareMemory
  * @description `RtlCompareMemory` routine compares two blocks of memory and returns the number of bytes that match, not a boolean value indicating a full comparison like `RtlEqualMemory` does.
  *     This query detects the return value of `RtlCompareMemory` being handled as a boolean.

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Authentication.OAuth, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Authentication.OAuth, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -134,6 +134,7 @@ namespace Microsoft
                 }
                 public class OAuthOptions : Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions
                 {
+                    public System.Collections.Generic.IDictionary<string, string> AdditionalAuthorizationParameters { get => throw null; }
                     public string AuthorizationEndpoint { get => throw null; set { } }
                     public Microsoft.AspNetCore.Authentication.OAuth.Claims.ClaimActionCollection ClaimActions { get => throw null; }
                     public string ClientId { get => throw null; set { } }

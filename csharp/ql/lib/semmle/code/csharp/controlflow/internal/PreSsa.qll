@@ -90,7 +90,7 @@ module PreSsa {
 
     BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
-    class ExitBasicBlock extends BasicBlock {
+    private class ExitBasicBlock extends BasicBlock {
       ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
     }
 
@@ -175,10 +175,9 @@ module PreSsa {
     }
 
     final AssignableRead getAFirstRead() {
-      exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
-        this.definesAt(_, bb1, i1) and
-        SsaImpl::adjacentDefRead(this, bb1, i1, bb2, i2) and
-        result = bb2.getElement(i2)
+      exists(SsaInput::BasicBlock bb, int i |
+        SsaImpl::firstUse(this, bb, i, true) and
+        result = bb.getElement(i)
       )
     }
 
@@ -216,8 +215,7 @@ module PreSsa {
   predicate adjacentReadPairSameVar(AssignableRead read1, AssignableRead read2) {
     exists(SsaInput::BasicBlock bb1, int i1, SsaInput::BasicBlock bb2, int i2 |
       read1 = bb1.getElement(i1) and
-      SsaInput::variableRead(bb1, i1, _, true) and
-      SsaImpl::adjacentDefRead(_, bb1, i1, bb2, i2) and
+      SsaImpl::adjacentUseUse(bb1, i1, bb2, i2, _, true) and
       read2 = bb2.getElement(i2)
     )
   }

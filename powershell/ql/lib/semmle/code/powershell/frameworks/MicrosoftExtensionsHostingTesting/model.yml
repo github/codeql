@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[shutdowntimeout]"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[timetolive]"]
+    - ["microsoft.extensions.hosting.ihostbuilder", "microsoft.extensions.hosting.testing.fakehost!", "Method[createbuilder].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[validatescopes]"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[startuptimeout]"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[fakelogging]"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[validateonbuild]"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[fakeredaction]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.testing.fakehost", "Method[stopasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.testing.fakehost", "Method[startasync].ReturnValue"]
+    - ["system.iserviceprovider", "microsoft.extensions.hosting.testing.fakehost", "Member[services]"]

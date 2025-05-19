@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[packetintegrity]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[default]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[packet]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[packetprivacy]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[call]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[connect]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[unchanged]"]
+    - ["microsoft.powershell.coreclr.stubs.impersonationlevel", "microsoft.powershell.coreclr.stubs.impersonationlevel!", "Member[identify]"]
+    - ["microsoft.powershell.coreclr.stubs.impersonationlevel", "microsoft.powershell.coreclr.stubs.impersonationlevel!", "Member[delegate]"]
+    - ["microsoft.powershell.coreclr.stubs.impersonationlevel", "microsoft.powershell.coreclr.stubs.impersonationlevel!", "Member[anonymous]"]
+    - ["microsoft.powershell.coreclr.stubs.impersonationlevel", "microsoft.powershell.coreclr.stubs.impersonationlevel!", "Member[impersonate]"]
+    - ["microsoft.powershell.coreclr.stubs.impersonationlevel", "microsoft.powershell.coreclr.stubs.impersonationlevel!", "Member[default]"]
+    - ["microsoft.powershell.coreclr.stubs.authenticationlevel", "microsoft.powershell.coreclr.stubs.authenticationlevel!", "Member[none]"]

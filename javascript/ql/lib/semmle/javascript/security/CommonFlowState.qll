@@ -50,7 +50,7 @@ class FlowState extends TFlowState {
   }
 
   /** DEPRECATED. Gets the corresponding flow label. */
-  deprecated DataFlow::FlowLabel toFlowLabel() {
+  DataFlow::FlowLabel toFlowLabel() {
     this.isTaint() and result.isTaint()
     or
     this.isTaintedUrlSuffix() and result = TaintedUrlSuffix::label()
@@ -86,5 +86,5 @@ module FlowState {
   FlowState taintedObject() { result.isTaintedObject() }
 
   /** DEPRECATED. Gets the flow state corresponding to `label`. */
-  deprecated FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
+  FlowState fromFlowLabel(DataFlow::FlowLabel label) { result.toFlowLabel() = label }
 }

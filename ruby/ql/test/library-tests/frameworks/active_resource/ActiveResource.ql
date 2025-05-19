@@ -14,8 +14,6 @@ query predicate modelClasses(
 
 query predicate modelClassMethodCalls(ActiveResource::ModelClassMethodCall c) { any() }
 
-deprecated query predicate modelInstances(ActiveResource::ModelInstance c) { any() }
-
 query predicate modelInstancesAsSource(
   ActiveResource::ModelClassNode cls, DataFlow::LocalSourceNode node
 ) {
@@ -23,7 +21,5 @@ query predicate modelInstancesAsSource(
 }
 
 query predicate modelInstanceMethodCalls(ActiveResource::ModelInstanceMethodCall c) { any() }
-
-deprecated query predicate collections(ActiveResource::Collection c) { any() }
 
 query predicate collectionSources(ActiveResource::CollectionSource c) { any() }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
 	<AssemblyName>Semmle.Extraction.PowerShell</AssemblyName>
 	<RootNamespace>Semmle.Extraction.PowerShell</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Management.Automation" Version="7.3.3" />
+    <PackageReference Include="System.Management.Automation" Version="7.5.0" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -8,6 +8,24 @@ namespace Microsoft
         {
             namespace Abstractions
             {
+                public abstract class BufferedLogRecord
+                {
+                    public virtual System.Diagnostics.ActivitySpanId? ActivitySpanId { get => throw null; }
+                    public virtual System.Diagnostics.ActivityTraceId? ActivityTraceId { get => throw null; }
+                    public virtual System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>> Attributes { get => throw null; }
+                    protected BufferedLogRecord() => throw null;
+                    public abstract Microsoft.Extensions.Logging.EventId EventId { get; }
+                    public virtual string Exception { get => throw null; }
+                    public virtual string FormattedMessage { get => throw null; }
+                    public abstract Microsoft.Extensions.Logging.LogLevel LogLevel { get; }
+                    public virtual int? ManagedThreadId { get => throw null; }
+                    public virtual string MessageTemplate { get => throw null; }
+                    public abstract System.DateTimeOffset Timestamp { get; }
+                }
+                public interface IBufferedLogger
+                {
+                    void LogRecords(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord> records);
+                }
                 public struct LogEntry<TState>
                 {
                     public string Category { get => throw null; }

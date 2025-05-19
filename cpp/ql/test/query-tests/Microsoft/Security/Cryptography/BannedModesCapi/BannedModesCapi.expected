@@ -1,0 +1,7 @@
+| Test.cpp:100:2:100:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:114:2:114:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:116:2:116:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:118:2:118:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:120:2:120:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:122:2:122:17 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |
+| Test.cpp:124:2:124:43 | call to CryptSetKeyParam | Call to 'CryptSetKeyParam' function with argument dwParam = KP_MODE is setting up a banned block cipher mode. |

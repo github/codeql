@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.repository", "Method[getitems]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.repository", "Method[repository]", "Argument[0]", "Argument[this]", "taint"]
+      

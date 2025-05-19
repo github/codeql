@@ -3,3 +3,5 @@
 | implicit_conversions.swift:5:25:5:25 | (any Equatable) ... | any Equatable |
 | implicit_conversions.swift:12:3:12:5 | (@lvalue (() -> Void)?) ... | @lvalue (() -> Void)? |
 | implicit_conversions.swift:12:9:12:10 | ((() -> Void)?) ... | (() -> Void)? |
+| implicit_conversions.swift:24:3:24:5 | (Array<Any>) ... | Array<Any> |
+| implicit_conversions.swift:24:3:24:5 | ([any Sendable]) ... | [any Sendable] |

@@ -1,0 +1,28 @@
+name: Sync Main Tags
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  sync-main-tags:
+    name: Sync Main Tags
+    runs-on: ubuntu-latest
+    if: github.repository == 'microsoft/codeql' && github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'auto/sync-main-pr'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Push Tags
+        run: |
+          git remote add upstream https://github.com/github/codeql.git
+          git fetch upstream --tags --force
+          git push --force origin --tags
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}

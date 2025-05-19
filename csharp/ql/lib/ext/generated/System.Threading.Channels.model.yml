@@ -10,6 +10,8 @@ extensions:
       - ["System.Threading.Channels", "Channel", "CreateBounded<T>", "(System.Threading.Channels.BoundedChannelOptions,System.Action<T>)", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateUnbounded<T>", "()", "summary", "df-generated"]
       - ["System.Threading.Channels", "Channel", "CreateUnbounded<T>", "(System.Threading.Channels.UnboundedChannelOptions)", "summary", "df-generated"]
+      - ["System.Threading.Channels", "Channel", "CreateUnboundedPrioritized<T>", "()", "summary", "df-generated"]
+      - ["System.Threading.Channels", "Channel", "CreateUnboundedPrioritized<T>", "(System.Threading.Channels.UnboundedPrioritizedChannelOptions<T>)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.Exception)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Threading.Channels", "ChannelClosedException", "ChannelClosedException", "(System.String)", "summary", "df-generated"]

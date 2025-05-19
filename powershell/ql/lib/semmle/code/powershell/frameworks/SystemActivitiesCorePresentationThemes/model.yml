@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.windows.style", "system.activities.core.presentation.themes.designerstylesdictionary!", "Member[sequencestyle]"]

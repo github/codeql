@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pscodemethod", "Method[pscodemethod]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[pscodemethod]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

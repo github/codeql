@@ -1,13 +1,36 @@
 extensions:
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: sinkModel
     data:
-      - ["System.Management.Automation.PowerShell", "Method[AddScript].Argument[0]", "command-injection"]
-      - ["System.Management.Automation.ScriptBlock!", "Method[Create].Argument[0]", "command-injection"]
+      - ["system.management.automation.powershell", "Method[addscript].Argument[0]", "command-injection"]
+      - ["system.management.automation.scriptblock!", "Method[create].Argument[0]", "command-injection"]
 
   - addsTo:
-      pack: microsoft-sdl/powershell-all
+      pack: microsoft/powershell-all
       extensible: typeModel
     data:
-    - ["System.Management.Automation.PowerShell","System.Management.Automation.PowerShell!","Method[Create].ReturnValue"]
+    - ["system.management.automation.powershell", "system.management.automation.powershell!","Method[create].ReturnValue"]
+
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.powershell!", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[addargument]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addcommand]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addparameter]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addparameters]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addscript]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addstatement]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[begininvoke]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[begininvoke]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[begininvoke]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[connect]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[connectasync]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[endinvoke]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[endinvoke]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[invoke]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invoke]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invokeasync]", "Argument[1].Element", "Argument[this]", "taint"]
+      

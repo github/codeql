@@ -64,6 +64,11 @@ extensible predicate vulnerableActionsDataModel(
 extensible predicate immutableActionsDataModel(string action);
 
 /**
+ * Holds for trusted Actions owners.
+ */
+extensible predicate trustedActionsOwnerDataModel(string owner);
+
+/**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
  */
 extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag);
@@ -72,3 +77,14 @@ extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag)
  * Holds for gh commands that may introduce untrusted data
  */
 extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
+
+/**
+ * Holds if `action` needs `permission` to run.
+ * - 'action' is the name of the action without any version information.
+ *   E.g. for the action selector `actions/checkout@v2`, `action` is `actions/checkout`.
+ * - `permission` is of the form `scope-name: read|write`, for example `contents: read`.
+ * - see https://github.com/actions/checkout?tab=readme-ov-file#recommended-permissions
+ *   for an example of recommended permissions.
+ * - see https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token for documentation of token permissions.
+ */
+extensible predicate actionsPermissionsDataModel(string action, string permission);

@@ -36,6 +36,7 @@ pkg_filegroup(
     srcs = [
         ":tools-arch",
         "//rust/tools",
+        "//rust/tools/builtins",
     ],
     prefix = "tools",
 )
@@ -46,6 +47,7 @@ codeql_pkg_files(
         "codeql-extractor.yml",
         "ql/lib/rust.dbscheme",
         "ql/lib/rust.dbscheme.stats",
+        "//:LICENSE",
     ],
 )
 
@@ -54,6 +56,7 @@ codeql_pack(
     srcs = [
         ":root-files",
         ":tools",
+        "//rust/downgrades",
     ],
     experimental = True,
 )

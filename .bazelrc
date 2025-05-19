@@ -2,6 +2,9 @@ common --enable_platform_specific_config
 # because we use --override_module with `%workspace%`, the lock file is not stable
 common --lockfile_mode=off
 
+# Build release binaries by default, can be overwritten to in local.bazelrc and set to `fastbuild` or `dbg`
+build --compilation_mode opt
+
 # when building from this repository in isolation, the internal repository will not be found at ..
 # where `MODULE.bazel` looks for it. The following will get us past the module loading phase, so
 # that we can build things that do not rely on that
@@ -9,6 +12,9 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
+# print test output, like sembuild does.
+# Set to `errors` if this is too verbose.
+test --test_output all
 # we use transitions that break builds of `...`, so for `test` to work with that we need the following
 test --build_tests_only
 
@@ -31,5 +37,6 @@ build --java_language_version=17
 build --tool_java_language_version=17
 build --tool_java_runtime_version=remotejdk_17
 build --java_runtime_version=remotejdk_17
+build --@rules_python//python/config_settings:python_version=3.12
 
 try-import %workspace%/local.bazelrc

@@ -3,7 +3,7 @@
  * @description Using a deprecated security protocol rather than the system default is risky.
  * @kind problem
  * @problem.severity error
- * @id cpp/use-of-deprecated-security-protocol
+ * @id cpp/microsoft/public/use-of-deprecated-security-protocol
  */
 
 import cpp

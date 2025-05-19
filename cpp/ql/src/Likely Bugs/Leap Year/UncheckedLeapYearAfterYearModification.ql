@@ -3,7 +3,7 @@
  * @description A field that represents a year is being modified by an arithmetic operation, but no proper check for leap years can be detected afterwards.
  * @kind problem
  * @problem.severity warning
- * @id cpp/leap-year/unchecked-after-arithmetic-year-modification
+ * @id cpp/microsoft/public/leap-year/unchecked-after-arithmetic-year-modification
  * @precision medium
  * @tags leap-year
  *       correctness

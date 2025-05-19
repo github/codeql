@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.options.contextual.provider.iconfigurecontextualoptions<toptions>", "microsoft.extensions.options.contextual.provider.nullconfigurecontextualoptions!", "Method[getinstance<toptions>].ReturnValue"]

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.speechaudioformatinfo", "Member[encodingformat]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[samplespersecond]"]
+    - ["system.speech.audioformat.audiochannel", "system.speech.audioformat.audiochannel!", "Member[stereo]"]
+    - ["system.speech.audioformat.audiobitspersample", "system.speech.audioformat.audiobitspersample!", "Member[eight]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[alaw]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[bitspersample]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Method[gethashcode].ReturnValue"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[averagebytespersecond]"]
+    - ["system.speech.audioformat.audiochannel", "system.speech.audioformat.audiochannel!", "Member[mono]"]
+    - ["system.speech.audioformat.audiobitspersample", "system.speech.audioformat.audiobitspersample!", "Member[sixteen]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[blockalign]"]
+    - ["system.boolean", "system.speech.audioformat.speechaudioformatinfo", "Method[equals].ReturnValue"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[channelcount]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[pcm]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[ulaw]"]
+    - ["system.byte[]", "system.speech.audioformat.speechaudioformatinfo", "Method[formatspecificdata].ReturnValue"]

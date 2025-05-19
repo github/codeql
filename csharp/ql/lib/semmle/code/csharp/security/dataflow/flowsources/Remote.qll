@@ -26,7 +26,8 @@ abstract class RemoteFlowSource extends SourceNode {
  * A module for importing frameworks that defines remote flow sources.
  */
 private module RemoteFlowSources {
-  private import semmle.code.csharp.frameworks.ServiceStack
+  private import semmle.code.csharp.frameworks.ServiceStack as ServiceStack
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components as Blazor
 }
 
 /** A data flow source of remote user input (ASP.NET). */

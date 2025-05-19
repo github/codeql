@@ -1,3 +1,50 @@
+## 1.2.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-20` has been removed from `go/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `go/incomplete-hostname-regexp` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `go/regex/missing-regexp-anchor` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `go/suspicious-character-in-regex` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `go/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `go/untrusted-data-to-unknown-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-90` has been removed from `go/ldap-injection` and the tag `external/cwe/cwe-090` has been added.
+* The tag `external/cwe/cwe-74` has been removed from `go/dsn-injection` and the tag `external/cwe/cwe-074` has been added.
+* The tag `external/cwe/cwe-74` has been removed from `go/dsn-injection-local` and the tag `external/cwe/cwe-074` has been added.
+* The tag `external/cwe/cwe-79` has been removed from `go/html-template-escaping-passthrough` and the tag `external/cwe/cwe-079` has been added.
+
+## 1.1.13
+
+No user-facing changes.
+
+## 1.1.12
+
+No user-facing changes.
+
+## 1.1.11
+
+### Minor Analysis Improvements
+
+* False positives in "Log entries created from user input" (`go/log-injection`) and "Clear-text logging of sensitive information" (`go/clear-text-logging`) which involved the verb `%T` in a format specifier have been fixed. As a result, some users may also see more alerts from the "Use of constant `state` value in OAuth 2.0 URL" (`go/constant-oauth2-state`) query.
+
+## 1.1.10
+
+No user-facing changes.
+
+## 1.1.9
+
+No user-facing changes.
+
+## 1.1.8
+
+### Minor Analysis Improvements
+
+* Added [github.com/gorilla/mux.Vars](https://pkg.go.dev/github.com/gorilla/mux#Vars) to path sanitizers (disabled if [github.com/gorilla/mix.Router.SkipClean](https://pkg.go.dev/github.com/gorilla/mux#Router.SkipClean) has been called).
+
+## 1.1.7
+
+No user-facing changes.
+
 ## 1.1.6
 
 No user-facing changes.

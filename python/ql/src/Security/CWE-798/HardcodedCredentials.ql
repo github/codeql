@@ -119,6 +119,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module HardcodedCredentialsFlow = TaintTracking::Global<HardcodedCredentialsConfig>;

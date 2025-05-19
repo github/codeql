@@ -7,6 +7,6 @@ public MyObject {
 
 public MyObject deserialize(Socket sock) {
   try(ObjectInputStream in = new ObjectInputStream(sock.getInputStream())) {
-    return (MyObject)in.readObject(); // unsafe
+    return (MyObject)in.readObject(); // BAD: in is from untrusted source
   }
 }

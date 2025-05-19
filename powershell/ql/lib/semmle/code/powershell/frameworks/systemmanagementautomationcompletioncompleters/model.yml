@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.completioncompleters!", "Method[completefilename]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.completioncompleters!", "Method[completevariable]", "Argument[0]", "ReturnValue", "taint"]
+      

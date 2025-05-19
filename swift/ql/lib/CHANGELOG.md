@@ -1,3 +1,52 @@
+## 4.3.0
+
+### New Features
+
+* Added AST nodes `UnsafeCastExpr`, `TypeValueExpr`, `IntegerType`, and `BuiltinFixedArrayType` that correspond to new nodes added by Swift 6.1.
+
+## 4.2.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.1.
+
+### Minor Analysis Improvements
+
+* Added AST nodes `ActorIsolationErasureExpr`, `CurrentContextIsolationExpr`,
+  `ExtracFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
+  added by Swift 6.0.
+
+## 4.1.4
+
+No user-facing changes.
+
+## 4.1.3
+
+No user-facing changes.
+
+## 4.1.2
+
+No user-facing changes.
+
+## 4.1.1
+
+No user-facing changes.
+
+## 4.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `ArrayContent` class from the dataflow library, use `CollectionContent` instead.
+* Deleted the deprecated `getOptionsInput`, `getRegexInput`, and `getStringInput` predicates from the regexp library, use `getAnOptionsInput`, `getRegexInputNode`, and `getStringInputNode` instead.
+
 ## 3.1.1
 
 ### Minor Analysis Improvements

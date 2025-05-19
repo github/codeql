@@ -5,17 +5,18 @@
  * @precision low
  * @id java/utils/modelgenerator/summary-models-partial-path
  * @severity info
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import java
 import semmle.code.java.dataflow.DataFlow
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import PartialFlow::PartialPathGraph
 
 int explorationLimit() { result = 3 }
 
-module PartialFlow = PropagateFlow::FlowExplorationFwd<explorationLimit/0>;
+module PartialFlow = Heuristic::PropagateFlow::FlowExplorationFwd<explorationLimit/0>;
 
 from
   PartialFlow::PartialPathNode source, PartialFlow::PartialPathNode sink,

@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[normal]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[high]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[cc]"]
+    - ["system.text.encoding", "system.web.mail.mailmessage", "Member[bodyencoding]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[to]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailformat!", "Member[html]"]
+    - ["system.collections.ilist", "system.web.mail.mailmessage", "Member[attachments]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailencoding!", "Member[base64]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[low]"]
+    - ["system.collections.idictionary", "system.web.mail.mailmessage", "Member[fields]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailmessage", "Member[bodyformat]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[urlcontentlocation]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[urlcontentbase]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[from]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailencoding!", "Member[uuencode]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailformat!", "Member[text]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailattachment", "Member[encoding]"]
+    - ["system.collections.idictionary", "system.web.mail.mailmessage", "Member[headers]"]
+    - ["system.string", "system.web.mail.smtpmail!", "Member[smtpserver]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[bcc]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[subject]"]
+    - ["system.string", "system.web.mail.mailattachment", "Member[filename]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[body]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailmessage", "Member[priority]"]

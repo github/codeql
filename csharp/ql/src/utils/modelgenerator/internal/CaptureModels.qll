@@ -15,129 +15,50 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.Location
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
 
-module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDataFlow> {
+private predicate irrelevantAccessor(CS::Accessor a) {
+  a.getDeclaration().(CS::Property).isReadWrite()
+}
+
+private predicate isUninterestingForModels(Callable api) {
+  api.getDeclaringType().getNamespace().getFullName() = ""
+  or
+  api instanceof CS::ConversionOperator
+  or
+  api instanceof Util::MainMethod
+  or
+  api instanceof CS::Destructor
+  or
+  api instanceof CS::AnonymousFunctionExpr
+  or
+  api.(CS::Constructor).isParameterless()
+  or
+  exists(Type decl | decl = api.getDeclaringType() |
+    decl instanceof SystemObjectClass or
+    decl instanceof SystemValueTypeClass
+  )
+  or
+  // Disregard properties that have both a get and a set accessor,
+  // which implicitly means auto implemented properties.
+  irrelevantAccessor(api)
+}
+
+private predicate relevant(Callable api) {
+  [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
+  api.fromSource() and
+  api.isUnboundDeclaration() and
+  not isUninterestingForModels(api)
+}
+
+module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Location, CsharpDataFlow> {
   class Type = CS::Type;
 
   class Parameter = CS::Parameter;
 
   class Callable = CS::Callable;
 
-  class NodeExtended extends CS::DataFlow::Node {
-    Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingCallable() }
-  }
+  class NodeExtended = CS::DataFlow::Node;
 
-  /**
-   * Holds if any of the parameters of `api` are `System.Func<>`.
-   */
-  private predicate isHigherOrder(Callable api) {
-    exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
-      t instanceof SystemLinqExpressions::DelegateExtType
-    )
-  }
-
-  private predicate irrelevantAccessor(CS::Accessor a) {
-    a.getDeclaration().(CS::Property).isReadWrite()
-  }
-
-  private predicate isUninterestingForModels(Callable api) {
-    api.getDeclaringType().getNamespace().getFullName() = ""
-    or
-    api instanceof CS::ConversionOperator
-    or
-    api instanceof Util::MainMethod
-    or
-    api instanceof CS::Destructor
-    or
-    api instanceof CS::AnonymousFunctionExpr
-    or
-    api.(CS::Constructor).isParameterless()
-    or
-    exists(Type decl | decl = api.getDeclaringType() |
-      decl instanceof SystemObjectClass or
-      decl instanceof SystemValueTypeClass
-    )
-    or
-    // Disregard properties that have both a get and a set accessor,
-    // which implicitly means auto implemented properties.
-    irrelevantAccessor(api)
-  }
-
-  private predicate relevant(Callable api) {
-    [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
-    api.fromSource() and
-    api.isUnboundDeclaration() and
-    not isUninterestingForModels(api)
-  }
-
-  private Callable getARelevantOverrideeOrImplementee(Overridable m) {
-    m.overridesOrImplements(result) and relevant(result)
-  }
-
-  /**
-   * Gets the super implementation of `api` if it is relevant.
-   * If such a super implementation does not exist, returns `api` if it is relevant.
-   */
-  private Callable liftedImpl(Callable api) {
-    (
-      result = getARelevantOverrideeOrImplementee(api)
-      or
-      result = api and relevant(api)
-    ) and
-    not exists(getARelevantOverrideeOrImplementee(result))
-  }
-
-  private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
-    api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
-  }
-
-  private predicate hasManualSourceModel(Callable api) {
-    api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
-    api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
-  }
-
-  private predicate hasManualSinkModel(Callable api) {
-    api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
-    api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
-  }
-
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
-
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { isHigherOrder(api) }
-
-  class SourceOrSinkTargetApi extends Callable {
-    SourceOrSinkTargetApi() { relevant(this) }
-  }
-
-  class SinkTargetApi extends SourceOrSinkTargetApi {
-    SinkTargetApi() { not hasManualSinkModel(this) }
-  }
-
-  class SourceTargetApi extends SourceOrSinkTargetApi {
-    SourceTargetApi() {
-      not hasManualSourceModel(this) and
-      // Do not generate source models for overridable callables
-      // as virtual dispatch implies that too many methods
-      // will be considered sources.
-      not this.(Overridable).overridesOrImplements(_)
-    }
-  }
-
-  class SummaryTargetApi extends Callable {
-    private Callable lift;
-
-    SummaryTargetApi() {
-      lift = liftedImpl(this) and
-      not hasManualSummaryModel(lift)
-    }
-
-    Callable lift() { result = lift }
-
-    predicate isRelevant() {
-      relevant(this) and
-      not hasManualSummaryModel(this)
-    }
-  }
+  Callable getEnclosingCallable(NodeExtended node) { result = node.getEnclosingCallable() }
 
   /**
    * Holds if `t` is a type that is generally used for bulk data in collection types.
@@ -199,6 +120,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     )
   }
 
+  class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
+
   string qualifierString() { result = "Argument[this]" }
 
   string parameterAccess(CS::Parameter p) {
@@ -208,8 +131,6 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
   }
 
   string parameterContentAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
-
-  class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
   private signature string parameterAccessSig(Parameter p);
 
@@ -233,6 +154,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
   }
 
+  ParameterPosition getReturnKindParamPosition(ReturnKind kind) {
+    kind.(OutRefReturnKind).getPosition() = result.getPosition()
+  }
+
   Callable returnNodeEnclosingCallable(DataFlow::Node ret) {
     result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable(_)
   }
@@ -241,62 +166,91 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     node.asExpr() instanceof CS::ThisAccess
   }
 
-  private predicate isRelevantMemberAccess(DataFlow::Node node) {
-    exists(CS::MemberAccess access | access = node.asExpr() |
-      access.hasThisQualifier() and
-      access.getTarget().isEffectivelyPublic() and
-      (
-        access instanceof CS::FieldAccess
-        or
-        access.getTarget().(CS::Property).getSetter().isPublic()
-      )
-    )
-  }
-
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
-
-  predicate apiSource(DataFlow::Node source) {
-    isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode
-  }
-
-  private predicate uniquelyCalls(DataFlowCallable dc1, DataFlowCallable dc2) {
-    exists(DataFlowCall call |
-      dc1 = call.getEnclosingCallable() and
-      dc2 = unique(DataFlowCallable dc0 | dc0 = viableCallable(call) | dc0)
-    )
-  }
-
-  bindingset[dc1, dc2]
-  private predicate uniquelyCallsPlus(DataFlowCallable dc1, DataFlowCallable dc2) =
-    fastTC(uniquelyCalls/2)(dc1, dc2)
-
-  bindingset[sourceEnclosing, api]
-  predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) {
-    not exists(DataFlowCallable dc1, DataFlowCallable dc2 |
-      uniquelyCallsPlus(dc1, dc2) or dc1 = dc2
-    |
-      dc1.getUnderlyingCallable() = api and
-      dc2.getUnderlyingCallable() = sourceEnclosing
-    )
-  }
-
-  string getInputArgument(DataFlow::Node source) {
-    exists(int pos |
-      pos = source.(DataFlow::ParameterNode).getParameter().getPosition() and
-      result = "Argument[" + pos + "]"
-    )
-    or
-    source.asExpr() instanceof DataFlowPrivate::FieldOrPropertyAccess and
-    result = qualifierString()
-  }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
-
   predicate containerContent(DataFlow::ContentSet c) { c.isElement() }
+
+  string partialModelRow(Callable api, int i) {
+    i = 0 and ExternalFlow::partialModel(api, result, _, _, _, _) // package
+    or
+    i = 1 and ExternalFlow::partialModel(api, _, result, _, _, _) // type
+    or
+    i = 2 and ExternalFlow::partialModel(api, _, _, result, _, _) // extensible
+    or
+    i = 3 and ExternalFlow::partialModel(api, _, _, _, result, _) // name
+    or
+    i = 4 and ExternalFlow::partialModel(api, _, _, _, _, result) // parameters
+    or
+    i = 5 and result = "" and exists(api) // ext
+  }
+
+  string partialNeutralModelRow(Callable api, int i) {
+    i = 0 and result = partialModelRow(api, 0) // package
+    or
+    i = 1 and result = partialModelRow(api, 1) // type
+    or
+    i = 2 and result = partialModelRow(api, 3) // name
+    or
+    i = 3 and result = partialModelRow(api, 4) // parameters
+  }
+}
+
+private import ModelGeneratorCommonInput
+private import MakeModelGeneratorFactory<Location, CsharpDataFlow, CsharpTaintTracking, ModelGeneratorCommonInput>
+
+module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
+  Callable getAsExprEnclosingCallable(NodeExtended node) {
+    result = node.asExpr().getEnclosingCallable()
+  }
+
+  Parameter asParameter(NodeExtended node) { result = node.asParameter() }
+
+  /**
+   * Holds if any of the parameters of `api` are `System.Func<>`.
+   */
+  private predicate isHigherOrder(Callable api) {
+    exists(Type t | t = api.getAParameter().getType().getUnboundDeclaration() |
+      t instanceof SystemLinqExpressions::DelegateExtType
+    )
+  }
+
+  private Callable getARelevantOverrideeOrImplementee(Overridable m) {
+    m.overridesOrImplements(result) and relevant(result)
+  }
+
+  /**
+   * Gets the super implementation of `api` if it is relevant.
+   * If such a super implementation does not exist, returns `api` if it is relevant.
+   */
+  private Callable liftedImpl(Callable api) {
+    (
+      result = getARelevantOverrideeOrImplementee(api)
+      or
+      result = api and relevant(api)
+    ) and
+    not exists(getARelevantOverrideeOrImplementee(result))
+  }
+
+  private predicate hasManualSummaryModel(Callable api) {
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+  }
+
+  predicate isUninterestingForHeuristicDataFlowModels(Callable api) { isHigherOrder(api) }
+
+  class SummaryTargetApi extends Callable {
+    private Callable lift;
+
+    SummaryTargetApi() {
+      lift = liftedImpl(this) and
+      not hasManualSummaryModel(lift)
+    }
+
+    Callable lift() { result = lift }
+
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
+  }
 
   predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     TaintTrackingPrivate::defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
@@ -360,12 +314,88 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CsharpDat
     or
     c.isDelegateCallReturn() and result = "ReturnValue"
   }
+}
 
-  predicate partialModel = ExternalFlow::partialModel/6;
+private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
+  private predicate hasManualSourceModel(Callable api) {
+    api = any(ExternalFlow::SourceCallable sc | sc.hasManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
+  }
+
+  class SourceTargetApi extends Callable {
+    SourceTargetApi() {
+      relevant(this) and
+      not hasManualSourceModel(this) and
+      // Do not generate source models for overridable callables
+      // as virtual dispatch implies that too many methods
+      // will be considered sources.
+      not this.(Overridable).overridesOrImplements(_)
+    }
+  }
+
+  private predicate uniquelyCalls(DataFlowCallable dc1, DataFlowCallable dc2) {
+    exists(DataFlowCall call |
+      dc1 = call.getEnclosingCallable() and
+      dc2 = unique(DataFlowCallable dc0 | dc0 = viableCallable(call) | dc0)
+    )
+  }
+
+  bindingset[dc1, dc2]
+  private predicate uniquelyCallsPlus(DataFlowCallable dc1, DataFlowCallable dc2) =
+    fastTC(uniquelyCalls/2)(dc1, dc2)
+
+  bindingset[sourceEnclosing, api]
+  predicate irrelevantSourceSinkApi(Callable sourceEnclosing, SourceTargetApi api) {
+    not exists(DataFlowCallable dc1, DataFlowCallable dc2 |
+      uniquelyCallsPlus(dc1, dc2) or dc1 = dc2
+    |
+      dc1.getUnderlyingCallable() = api and
+      dc2.getUnderlyingCallable() = sourceEnclosing
+    )
+  }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
+}
+
+private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
+  private predicate hasManualSinkModel(Callable api) {
+    api = any(ExternalFlow::SinkCallable sc | sc.hasManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
+  }
+
+  class SinkTargetApi extends Callable {
+    SinkTargetApi() { relevant(this) and not hasManualSinkModel(this) }
+  }
+
+  private predicate isRelevantMemberAccess(DataFlow::Node node) {
+    exists(CS::MemberAccess access | access = node.asExpr() |
+      access.hasThisQualifier() and
+      access.getTarget().isEffectivelyPublic() and
+      (
+        access instanceof CS::FieldAccess
+        or
+        access.getTarget().(CS::Property).getSetter().isPublic()
+      )
+    )
+  }
+
+  predicate apiSource(DataFlow::Node source) {
+    isRelevantMemberAccess(source) or source instanceof DataFlow::ParameterNode
+  }
+
+  string getInputArgument(DataFlow::Node source) {
+    exists(int pos |
+      pos = source.(DataFlow::ParameterNode).getParameter().getPosition() and
+      result = "Argument[" + pos + "]"
+    )
+    or
+    source.asExpr() instanceof DataFlowPrivate::FieldOrPropertyAccess and
+    result = qualifierString()
+  }
 
   predicate sinkNode = ExternalFlow::sinkNode/2;
 }
 
-import MakeModelGenerator<Location, CsharpDataFlow, CsharpTaintTracking, ModelGeneratorInput>
+import MakeSummaryModelGenerator<SummaryModelGeneratorInput> as SummaryModels
+import MakeSourceModelGenerator<SourceModelGeneratorInput> as SourceModels
+import MakeSinkModelGenerator<SinkModelGeneratorInput> as SinkModels

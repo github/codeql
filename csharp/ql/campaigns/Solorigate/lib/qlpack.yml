@@ -1,5 +1,5 @@
 name: codeql/csharp-solorigate-all
-version: 1.7.32
+version: 1.7.40
 groups:
   - csharp
   - solorigate

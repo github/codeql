@@ -4,8 +4,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Net.Http.Json", "JsonContent", False, "Create", "(System.Object,System.Text.Json.Serialization.Metadata.JsonTypeInfo,System.Net.Http.Headers.MediaTypeHeaderValue)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Net.Http.Json", "JsonContent", False, "Create<T>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Net.Http.Headers.MediaTypeHeaderValue)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Http.Json", "JsonContent", False, "Create", "(System.Object,System.Text.Json.Serialization.Metadata.JsonTypeInfo,System.Net.Http.Headers.MediaTypeHeaderValue)", "", "Argument[0]", "ReturnValue.Property[System.Net.Http.Json.JsonContent.Value]", "value", "dfc-generated"]
+      - ["System.Net.Http.Json", "JsonContent", False, "Create", "(System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue.Property[System.Net.Http.Json.JsonContent.Value]", "value", "dfc-generated"]
+      - ["System.Net.Http.Json", "JsonContent", False, "Create<T>", "(T,System.Net.Http.Headers.MediaTypeHeaderValue,System.Text.Json.JsonSerializerOptions)", "", "Argument[0]", "ReturnValue.Property[System.Net.Http.Json.JsonContent.Value]", "value", "dfc-generated"]
+      - ["System.Net.Http.Json", "JsonContent", False, "Create<T>", "(T,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Net.Http.Headers.MediaTypeHeaderValue)", "", "Argument[0]", "ReturnValue.Property[System.Net.Http.Json.JsonContent.Value]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -67,8 +69,6 @@ extensions:
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>,System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "HttpContentJsonExtensions", "ReadFromJsonAsync<T>", "(System.Net.Http.HttpContent,System.Threading.CancellationToken)", "summary", "df-generated"]
-      - ["System.Net.Http.Json", "JsonContent", "Create", "(System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
-      - ["System.Net.Http.Json", "JsonContent", "Create<T>", "(T,System.Net.Http.Headers.MediaTypeHeaderValue,System.Text.Json.JsonSerializerOptions)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "TryComputeLength", "(System.Int64)", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "get_ObjectType", "()", "summary", "df-generated"]
       - ["System.Net.Http.Json", "JsonContent", "get_Value", "()", "summary", "df-generated"]

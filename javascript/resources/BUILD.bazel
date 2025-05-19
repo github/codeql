@@ -8,7 +8,7 @@ codeql_pkg_files(
             "tools/*.sh",
             "BUILD.bazel",
         ],
-    ),
+    ) + ["//:LICENSE"],
     exes = glob(["tools/*.sh"]),
     strip_prefix = "",
     visibility = ["//javascript:__pkg__"],

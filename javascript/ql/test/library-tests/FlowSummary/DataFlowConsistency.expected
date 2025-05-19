@@ -20,6 +20,7 @@ reverseRead
 | tst.js:267:28:267:31 | map3 | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
 postWithInFlow
+| file://:0:0:0:0 | [summary] to write: Argument[0] in _.tap | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array method with flow into callback | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array#filter | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array#find / Array#findLast | PostUpdateNode should not be the target of local flow. |
@@ -29,6 +30,7 @@ postWithInFlow
 | file://:0:0:0:0 | [summary] to write: Argument[1] in Array#reduce / Array#reduceRight | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[2] in 'array.prototype.find' / 'array-find' | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[2] in Array.from(arg, callback, [thisArg]) | PostUpdateNode should not be the target of local flow. |
+| file://:0:0:0:0 | [summary] to write: Argument[2] in _.reduce-like | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#flatMap | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#forEach / Map#forEach / Set#forEach | PostUpdateNode should not be the target of local flow. |
 | file://:0:0:0:0 | [summary] to write: Argument[this] in Array#map | PostUpdateNode should not be the target of local flow. |

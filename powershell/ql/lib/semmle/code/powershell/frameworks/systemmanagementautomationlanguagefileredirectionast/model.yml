@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.fileredirectionast", "Method[fileredirectionast]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.language.fileredirectionast", "Method[fileredirectionast]", "Argument[this]", "Argument[2]", "taint"]
+      

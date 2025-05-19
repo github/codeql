@@ -653,3 +653,116 @@
 | 206 | c != 0 when c is true |
 | 206 | c == 0 when ! ... is true |
 | 206 | c == 0 when c is false |
+| 211 | 0 != sc+0 when ... == ... is false |
+| 211 | 0 == sc+0 when ... == ... is true |
+| 211 | ... == ... != 0 when ... == ... is true |
+| 211 | ... == ... != 1 when ... == ... is false |
+| 211 | ... == ... == 0 when ... == ... is false |
+| 211 | ... == ... == 1 when ... == ... is true |
+| 211 | sc != 0 when ... == ... is false |
+| 211 | sc != 0+0 when ... == ... is false |
+| 211 | sc == 0 when ... == ... is true |
+| 211 | sc == 0+0 when ... == ... is true |
+| 214 | 0 != sc+0 when ... == ... is false |
+| 214 | 0 == sc+0 when ... == ... is true |
+| 214 | ... == ... != 0 when ... == ... is true |
+| 214 | ... == ... != 1 when ... == ... is false |
+| 214 | ... == ... == 0 when ... == ... is false |
+| 214 | ... == ... == 1 when ... == ... is true |
+| 214 | sc != 0 when ... == ... is false |
+| 214 | sc != 0+0 when ... == ... is false |
+| 214 | sc == 0 when ... == ... is true |
+| 214 | sc == 0+0 when ... == ... is true |
+| 217 | 0 != ul+0 when ... == ... is false |
+| 217 | 0 == ul+0 when ... == ... is true |
+| 217 | ... == ... != 0 when ... == ... is true |
+| 217 | ... == ... != 1 when ... == ... is false |
+| 217 | ... == ... == 0 when ... == ... is false |
+| 217 | ... == ... == 1 when ... == ... is true |
+| 217 | ul != 0 when ... == ... is false |
+| 217 | ul != 0+0 when ... == ... is false |
+| 217 | ul == 0 when ... == ... is true |
+| 217 | ul == 0+0 when ... == ... is true |
+| 220 | 0 != f+0 when ... == ... is false |
+| 220 | 0 == f+0 when ... == ... is true |
+| 220 | ... == ... != 0 when ... == ... is true |
+| 220 | ... == ... != 1 when ... == ... is false |
+| 220 | ... == ... == 0 when ... == ... is false |
+| 220 | ... == ... == 1 when ... == ... is true |
+| 220 | f != 0+0 when ... == ... is false |
+| 220 | f == 0+0 when ... == ... is true |
+| 223 | 0.0 != f+0 when ... == ... is false |
+| 223 | 0.0 == f+0 when ... == ... is true |
+| 223 | ... == ... != 0 when ... == ... is true |
+| 223 | ... == ... != 1 when ... == ... is false |
+| 223 | ... == ... == 0 when ... == ... is false |
+| 223 | ... == ... == 1 when ... == ... is true |
+| 223 | f != 0.0+0 when ... == ... is false |
+| 223 | f == 0.0+0 when ... == ... is true |
+| 226 | 0 != d+0 when ... == ... is false |
+| 226 | 0 == d+0 when ... == ... is true |
+| 226 | ... == ... != 0 when ... == ... is true |
+| 226 | ... == ... != 1 when ... == ... is false |
+| 226 | ... == ... == 0 when ... == ... is false |
+| 226 | ... == ... == 1 when ... == ... is true |
+| 226 | d != 0+0 when ... == ... is false |
+| 226 | d == 0+0 when ... == ... is true |
+| 229 | 0 != b+0 when ... == ... is false |
+| 229 | 0 == b+0 when ... == ... is true |
+| 229 | ... == ... != 0 when ... == ... is true |
+| 229 | ... == ... != 1 when ... == ... is false |
+| 229 | ... == ... == 0 when ... == ... is false |
+| 229 | ... == ... == 1 when ... == ... is true |
+| 229 | b != 0 when ... == ... is false |
+| 229 | b != 0+0 when ... == ... is false |
+| 229 | b == 0 when ... == ... is true |
+| 229 | b == 0+0 when ... == ... is true |
+| 232 | 0 != b+0 when ... == ... is false |
+| 232 | 0 == b+0 when ... == ... is true |
+| 232 | ... == ... != 0 when ... == ... is true |
+| 232 | ... == ... != 1 when ... == ... is false |
+| 232 | ... == ... == 0 when ... == ... is false |
+| 232 | ... == ... == 1 when ... == ... is true |
+| 232 | b != 0 when ... == ... is false |
+| 232 | b != 0+0 when ... == ... is false |
+| 232 | b == 0 when ... == ... is true |
+| 232 | b == 0+0 when ... == ... is true |
+| 235 | 0 != i+0 when ... == ... is false |
+| 235 | 0 == i+0 when ... == ... is true |
+| 235 | ... == ... != 0 when ... == ... is true |
+| 235 | ... == ... != 1 when ... == ... is false |
+| 235 | ... == ... == 0 when ... == ... is false |
+| 235 | ... == ... == 1 when ... == ... is true |
+| 235 | i != 0 when ... == ... is false |
+| 235 | i != 0+0 when ... == ... is false |
+| 235 | i == 0 when ... == ... is true |
+| 235 | i == 0+0 when ... == ... is true |
+| 238 | 0 != f+0 when ... == ... is false |
+| 238 | 0 == f+0 when ... == ... is true |
+| 238 | ... == ... != 0 when ... == ... is true |
+| 238 | ... == ... != 1 when ... == ... is false |
+| 238 | ... == ... == 0 when ... == ... is false |
+| 238 | ... == ... == 1 when ... == ... is true |
+| 238 | f != 0+0 when ... == ... is false |
+| 238 | f == 0+0 when ... == ... is true |
+| 241 | 0 != f+0 when ... == ... is false |
+| 241 | 0 != i+0 when ... == ... is false |
+| 241 | 0 == f+0 when ... && ... is true |
+| 241 | 0 == f+0 when ... == ... is true |
+| 241 | 0 == i+0 when ... && ... is true |
+| 241 | 0 == i+0 when ... == ... is true |
+| 241 | ... == ... != 0 when ... && ... is true |
+| 241 | ... == ... != 0 when ... == ... is true |
+| 241 | ... == ... != 1 when ... == ... is false |
+| 241 | ... == ... == 0 when ... == ... is false |
+| 241 | ... == ... == 1 when ... && ... is true |
+| 241 | ... == ... == 1 when ... == ... is true |
+| 241 | f != 0+0 when ... == ... is false |
+| 241 | f == 0+0 when ... && ... is true |
+| 241 | f == 0+0 when ... == ... is true |
+| 241 | i != 0 when ... == ... is false |
+| 241 | i != 0+0 when ... == ... is false |
+| 241 | i == 0 when ... && ... is true |
+| 241 | i == 0 when ... == ... is true |
+| 241 | i == 0+0 when ... && ... is true |
+| 241 | i == 0+0 when ... == ... is true |

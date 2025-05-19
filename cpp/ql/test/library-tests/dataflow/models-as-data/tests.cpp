@@ -205,7 +205,7 @@ void test_summaries() {
 
 	sink(madAndImplementedComplex(0, 0, 0));
 	sink(madAndImplementedComplex(source(), 0, 0));
-	sink(madAndImplementedComplex(0, source(), 0)); // $ ir
+	sink(madAndImplementedComplex(0, source(), 0)); // Clean. We have a MaD model specifying different behavior.
 	sink(madAndImplementedComplex(0, 0, source())); // $ ir
 
 	sink(madArgsAny(0, 0));

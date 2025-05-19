@@ -909,14 +909,22 @@ class FlowPass(Pass):
     def _walk_break(self, node, predecessors):
         #A break statement counts as an exit to the enclosing loop statement
         predecessors = self.add_successor(predecessors, node)
-        self.scope.breaking_stack.add(predecessors)
+        # In well formed code, there should always be an element in the breaking stack, but because
+        # our parser accepts code where `break` appears outside of a loop, we must check for this
+        # case.
+        if self.scope.breaking_stack:
+            self.scope.breaking_stack.add(predecessors)
         #Provide no predecessors to following statement
         return EMPTY
 
     def _walk_continue(self, node, predecessors):
         #A continue statement counts as an exit to the following orelse
         predecessors = self.add_successor(predecessors, node)
-        self.scope.continuing_stack.add(predecessors)
+        # In well formed code, there should always be an element in the continuing stack, but
+        # because our parser accepts code where `continue` appears outside of a loop, we must check
+        # for this case.
+        if self.scope.continuing_stack:
+            self.scope.continuing_stack.add(predecessors)
         #Provide no predecessors to following statement
         return EMPTY
 

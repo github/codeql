@@ -27,6 +27,14 @@ module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getAlertLocation().getLocation()
+    or
+    result = sink.(Sink).getCommandExecution().getLocation()
+  }
 }
 
 /**

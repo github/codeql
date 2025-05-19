@@ -37,7 +37,7 @@ module TaintTracking {
    * If a different set of flow edges is desired, extend this class and override
    * `isAdditionalTaintStep`.
    */
-  abstract deprecated class Configuration extends DataFlow::Configuration {
+  abstract class Configuration extends DataFlow::Configuration {
     bindingset[this]
     Configuration() { any() }
 
@@ -210,16 +210,16 @@ module TaintTracking {
   abstract private class LegacyAdditionalBarrierGuard extends AdditionalBarrierGuard,
     AdditionalSanitizerGuardNodeDeprecated
   {
-    deprecated override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
 
-    deprecated override predicate appliesTo(Configuration cfg) { any() }
+    override predicate appliesTo(Configuration cfg) { any() }
   }
 
   /**
    * DEPRECATED. This class was part of the old data flow library which is now deprecated.
    * Use `TaintTracking::AdditionalBarrierGuard` instead.
    */
-  deprecated class AdditionalSanitizerGuardNode = AdditionalSanitizerGuardNodeDeprecated;
+  class AdditionalSanitizerGuardNode = AdditionalSanitizerGuardNodeDeprecated;
 
   cached
   abstract private class AdditionalSanitizerGuardNodeDeprecated extends DataFlow::Node {
@@ -229,20 +229,20 @@ module TaintTracking {
      * Holds if this node blocks expression `e`, provided it evaluates to `outcome`.
      */
     cached
-    deprecated predicate blocks(boolean outcome, Expr e) { none() }
+    predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
      * to `outcome`.
      */
     cached
-    abstract deprecated predicate sanitizes(boolean outcome, Expr e);
+    abstract predicate sanitizes(boolean outcome, Expr e);
 
     /**
      * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
      */
     cached
-    deprecated predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       this.sanitizes(outcome, e) and label.isTaint()
       or
       this.sanitizes(outcome, e, label)
@@ -253,13 +253,13 @@ module TaintTracking {
      * to `outcome`.
      */
     cached
-    deprecated predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+    predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
 
     /**
      * Holds if this guard applies to the flow in `cfg`.
      */
     cached
-    abstract deprecated predicate appliesTo(Configuration cfg);
+    abstract predicate appliesTo(Configuration cfg);
   }
 
   /**
@@ -274,7 +274,7 @@ module TaintTracking {
    * implementations of `sanitizes` will _both_ apply to any configuration that includes either of
    * them.
    */
-  abstract deprecated class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
+  abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
     override predicate blocks(boolean outcome, Expr e) { none() }
 
     /**
@@ -299,7 +299,7 @@ module TaintTracking {
   /**
    * A sanitizer guard node that only blocks specific flow labels.
    */
-  abstract deprecated class LabeledSanitizerGuardNode extends SanitizerGuardNode,
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode,
     DataFlow::BarrierGuardNode
   {
     override predicate sanitizes(boolean outcome, Expr e) { none() }
@@ -409,7 +409,7 @@ module TaintTracking {
         not assgn.getWriteNode() instanceof Property and // not a write inside an object literal
         pred = assgn.getRhs() and
         assgn = obj.getAPropertyWrite() and
-        succ = obj
+        succ = assgn.getBase().getPostUpdateNode()
       |
         obj instanceof DataFlow::ObjectLiteralNode
         or
@@ -494,7 +494,8 @@ module TaintTracking {
           succ = c and
           c =
             DataFlow::globalVarRef([
-                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent"
+                "encodeURI", "decodeURI", "encodeURIComponent", "decodeURIComponent", "unescape",
+                "escape"
               ]).getACall() and
           pred = c.getArgument(0)
         )
@@ -656,7 +657,7 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge arising from URL parameter parsing.
    */
-  private class UrlSearchParamsTaintStep extends DataFlow::SharedFlowStep {
+  private class UrlSearchParamsTaintStep extends DataFlow::LegacyFlowStep {
     /**
      * Holds if `succ` is a `URLSearchParams` providing access to the
      * parameters encoded in `pred`.
@@ -902,7 +903,7 @@ module TaintTracking {
     }
   }
 
-  deprecated private class AdHocWhitelistCheckSanitizerAsSanitizerGuardNode extends SanitizerGuardNode instanceof AdHocWhitelistCheckSanitizer
+  private class AdHocWhitelistCheckSanitizerAsSanitizerGuardNode extends SanitizerGuardNode instanceof AdHocWhitelistCheckSanitizer
   {
     override predicate sanitizes(boolean outcome, Expr e) { super.blocksExpr(outcome, e) }
   }

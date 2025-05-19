@@ -6,11 +6,10 @@
  * Provides classes for working with static single assignment (SSA) form.
  */
 module Ssa {
-  private import semmle.code.powershell.Cfg
   private import powershell
+  private import semmle.code.powershell.Cfg
   private import internal.SsaImpl as SsaImpl
-  private import CfgNodes
-  private import ExprNodes
+  private import CfgNodes::ExprNodes
 
   /** A static single assignment (SSA) definition. */
   class Definition extends SsaImpl::Definition {
@@ -23,8 +22,10 @@ module Ssa {
       exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
     }
 
-    /** Gets a control-flow node that reads the value of this SSA definition. */
-    final AstCfgNode  getARead() { result = SsaImpl::getARead(this) }
+    /**
+     * Gets a control-flow node that reads the value of this SSA definition.
+     */
+    final VarReadAccessCfgNode getARead() { result = SsaImpl::getARead(this) }
 
     /**
      * Gets a first control-flow node that reads the value of this SSA definition.
@@ -34,20 +35,11 @@ module Ssa {
     final VarReadAccessCfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     */
-    final VarReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
-
-    /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
      * That is, `read2` can be reached from `read1` without passing through
      * another read.
      */
-    final predicate hasAdjacentReads(
-      VarReadAccessCfgNode read1, VarReadAccessCfgNode read2
-    ) {
+    final predicate hasAdjacentReads(VarReadAccessCfgNode read1, VarReadAccessCfgNode read2) {
       SsaImpl::adjacentReadPair(this, read1, read2)
     }
 
@@ -91,7 +83,7 @@ module Ssa {
     /**
      * Holds if this SSA definition assigns `value` to the underlying variable.
      */
-    predicate assigns(CfgNodes::StmtCfgNode value) {
+    predicate assigns(CfgNodes::ExprCfgNode value) {
       exists(CfgNodes::StmtNodes::AssignStmtCfgNode a, BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         a = bb.getNode(i) and
@@ -104,19 +96,19 @@ module Ssa {
     final override Location getLocation() { result = write.getLocation() }
   }
 
-  class ParameterDefinition extends Definition, SsaImpl::WriteDefinition {
-    private Variable v;
+  /**
+   * An SSA definition that corresponds to the value of `this` upon entry to a method.
+   */
+  class ThisDefinition extends Definition, SsaImpl::WriteDefinition {
+    private ThisParameter v;
 
-    ParameterDefinition() {
-      exists(BasicBlock bb, int i |
-        this.definesAt(v, bb, i) and
-        SsaImpl::parameterWrite(bb, i, v)
-      )
-    }
+    ThisDefinition() { exists(BasicBlock bb, int i | this.definesAt(v, bb, i)) }
 
-    final override string toString() { result = "<parameter> " + v }
+    override ThisParameter getSourceVariable() { result = v }
 
-    final override Location getLocation() { result = v.getLocation() }
+    final override string toString() { result = "this (" + v.getDeclaringScope() + ")" }
+
+    final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
   }
 
   /**
@@ -138,7 +130,7 @@ module Ssa {
     final override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
 
-  /** A phi node. */
+  /**  phi node. */
   class PhiNode extends Definition, SsaImpl::PhiNode {
     /** Gets an input of this phi node. */
     final Definition getAnInput() { this.hasInputFromBlock(result, _) }
@@ -148,7 +140,20 @@ module Ssa {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 
-    override string toString() { result = "phi" }
+    private string getSplitString() {
+      result = this.getBasicBlock().getFirstNode().(CfgNodes::AstCfgNode).getSplitsString()
+    }
+
+    override string toString() {
+      exists(string prefix |
+        prefix = "[" + this.getSplitString() + "] "
+        or
+        not exists(this.getSplitString()) and
+        prefix = ""
+      |
+        result = prefix + "phi (" + this.getSourceVariable() + ")"
+      )
+    }
 
     /**
      * The location of a phi node is the same as the location of the first node

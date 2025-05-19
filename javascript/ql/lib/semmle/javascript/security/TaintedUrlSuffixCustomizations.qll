@@ -19,14 +19,14 @@ module TaintedUrlSuffix {
    *
    * Can also be accessed using `TaintedUrlSuffix::label()`.
    */
-  abstract deprecated class TaintedUrlSuffixLabel extends FlowLabel {
+  abstract class TaintedUrlSuffixLabel extends FlowLabel {
     TaintedUrlSuffixLabel() { this = "tainted-url-suffix" }
   }
 
   /**
    * Gets the flow label representing a URL with a tainted query and fragment part.
    */
-  deprecated FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
+  FlowLabel label() { result instanceof TaintedUrlSuffixLabel }
 
   /** Gets a remote flow source that is a tainted URL query or fragment part from `window.location`. */
   ClientSideRemoteFlowSource source() {
@@ -45,7 +45,7 @@ module TaintedUrlSuffix {
    * This should be used in the `isBarrier` predicate of a configuration that uses the tainted-url-suffix
    * label.
    */
-  deprecated predicate isBarrier(Node node, FlowLabel label) {
+  predicate isBarrier(Node node, FlowLabel label) {
     isStateBarrier(node, FlowState::fromFlowLabel(label))
   }
 
@@ -60,7 +60,7 @@ module TaintedUrlSuffix {
   /**
    * DEPRECATED. Use `isAdditionalFlowStep` instead.
    */
-  deprecated predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
+  predicate step(Node src, Node dst, FlowLabel srclbl, FlowLabel dstlbl) {
     isAdditionalFlowStep(src, FlowState::fromFlowLabel(srclbl), dst,
       FlowState::fromFlowLabel(dstlbl))
   }
@@ -140,6 +140,18 @@ module TaintedUrlSuffix {
         or
         // If the regexp is unknown, assume it will extract the URL suffix
         not exists(re.getRoot())
+      )
+      or
+      // Query-string parsers that strip off a leading '#' or '?'.
+      state1.isTaintedUrlSuffix() and
+      state2.isTaint() and
+      exists(DataFlow::CallNode call |
+        node1 = call.getArgument(0) and
+        node2 = call
+      |
+        call = API::moduleImport("query-string").getMember(["parse", "extract"]).getACall()
+        or
+        call = API::moduleImport("querystringify").getMember("parse").getACall()
       )
     )
   }

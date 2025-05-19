@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[aes]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[null]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[ssl2]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[none]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[ssl3]"]
+    - ["system.security.authentication.exchangealgorithmtype", "system.security.authentication.exchangealgorithmtype!", "Member[none]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[aes128]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[tls13]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[sha384]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[rc2]"]
+    - ["system.security.authentication.exchangealgorithmtype", "system.security.authentication.exchangealgorithmtype!", "Member[rsasign]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[des]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[md5]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[aes256]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[tripledes]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[tls12]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[default]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[sha1]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[tls11]"]
+    - ["system.security.authentication.exchangealgorithmtype", "system.security.authentication.exchangealgorithmtype!", "Member[rsakeyx]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[tls]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[aes192]"]
+    - ["system.security.authentication.cipheralgorithmtype", "system.security.authentication.cipheralgorithmtype!", "Member[rc4]"]
+    - ["system.security.authentication.sslprotocols", "system.security.authentication.sslprotocols!", "Member[none]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[sha512]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[none]"]
+    - ["system.security.authentication.hashalgorithmtype", "system.security.authentication.hashalgorithmtype!", "Member[sha256]"]
+    - ["system.security.authentication.exchangealgorithmtype", "system.security.authentication.exchangealgorithmtype!", "Member[diffiehellman]"]

@@ -179,6 +179,7 @@ predicate overflows(MulExpr me, Type t) {
 
 from MulExpr me, Type t1, Type t2
 where
+  not any(Compilation c).buildModeNone() and
   t1 = me.getType().getUnderlyingType() and
   t2 = me.getConversion().getType().getUnderlyingType() and
   t1.getSize() < t2.getSize() and

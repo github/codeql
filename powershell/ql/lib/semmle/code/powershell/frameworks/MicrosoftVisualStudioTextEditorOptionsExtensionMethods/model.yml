@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.visualstudio.text.editor.optionsextensionmethods.wpfviewoptionextensions!", "Method[appearancecategory].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.wpfviewoptionextensions!", "Method[issimplegraphicsenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[ischangetrackingenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isoverwritemodeenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[islinenumbermarginenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.defaultoptionextensions!", "Method[getreplicatenewlinecharacter].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[isselectionmarginenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.wpfviewoptionextensions!", "Method[ishighlightcurrentlineenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isviewportleftclipped].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[isverticalscrollbarenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isoutliningundoenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isdragdropeditingenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[iszoomcontrolenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.wpfviewoptionextensions!", "Method[ismousewheelzoomenabled].ReturnValue"]
+    - ["system.string", "microsoft.visualstudio.text.editor.optionsextensionmethods.defaultoptionextensions!", "Method[getnewlinecharacter].ReturnValue"]
+    - ["microsoft.visualstudio.text.editor.wordwrapstyles", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[wordwrapstyle].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isautoscrollenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isvisiblewhitespaceenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[isglyphmarginenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[ishorizontalscrollbarenabled].ReturnValue"]
+    - ["system.int32", "microsoft.visualstudio.text.editor.optionsextensionmethods.defaultoptionextensions!", "Method[getindentsize].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.defaultoptionextensions!", "Method[isconverttabstospacesenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[isvirtualspaceenabled].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewhostoptionextensions!", "Method[isoutliningmarginenabled].ReturnValue"]
+    - ["system.int32", "microsoft.visualstudio.text.editor.optionsextensionmethods.defaultoptionextensions!", "Method[gettabsize].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.editor.optionsextensionmethods.textviewoptionextensions!", "Method[doesviewprohibituserinput].ReturnValue"]

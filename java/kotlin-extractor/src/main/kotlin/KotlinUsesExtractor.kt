@@ -12,7 +12,24 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.addAnnotations
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.classifierOrNull
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.types.isNullableAny
+import org.jetbrains.kotlin.ir.types.isPrimitiveType
+import org.jetbrains.kotlin.ir.types.makeNullable
+import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeWithArguments
+import org.jetbrains.kotlin.ir.types.IrDynamicType
+import org.jetbrains.kotlin.ir.types.IrErrorType
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
@@ -679,7 +696,7 @@ open class KotlinUsesExtractor(
     private fun getInvariantNullableArrayType(arrayType: IrSimpleType): IrSimpleType =
         if (arrayType.isPrimitiveArray()) arrayType
         else {
-            val componentType = arrayType.getArrayElementType(pluginContext.irBuiltIns)
+            val componentType = arrayType.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
             val componentTypeBroadened =
                 when (componentType) {
                     is IrSimpleType ->
@@ -690,7 +707,7 @@ open class KotlinUsesExtractor(
             val unchanged =
                 componentType == componentTypeBroadened &&
                     (arrayType.arguments[0] as? IrTypeProjection)?.variance == Variance.INVARIANT &&
-                    componentType.isNullable()
+                    componentType.isNullableCodeQL()
             if (unchanged) arrayType
             else
                 IrSimpleTypeImpl(
@@ -705,7 +722,7 @@ open class KotlinUsesExtractor(
     Kotlin arrays can be broken down as:
 
     isArray(t)
-    |- t.isBoxedArray
+    |- t.isBoxedArrayCodeQL
     |  |- t.isArray()         e.g. Array<Boolean>, Array<Boolean?>
     |  |- t.isNullableArray() e.g. Array<Boolean>?, Array<Boolean?>?
     |- t.isPrimitiveArray()   e.g. BooleanArray
@@ -715,7 +732,7 @@ open class KotlinUsesExtractor(
     Primitive arrays are represented as e.g. boolean[].
     */
 
-    private fun isArray(t: IrType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrType) = t.isBoxedArrayCodeQL || t.isPrimitiveArray()
 
     data class ArrayInfo(
         val elementTypeResults: TypeResults,
@@ -756,7 +773,7 @@ open class KotlinUsesExtractor(
             ) {
                 pluginContext.irBuiltIns.anyType
             } else {
-                t.getArrayElementType(pluginContext.irBuiltIns)
+                t.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
             }
 
         val recInfo = useArrayType(elementType, t.isPrimitiveArray())
@@ -844,7 +861,7 @@ open class KotlinUsesExtractor(
                 if (
                     (context == TypeContext.RETURN ||
                         (context == TypeContext.OTHER && otherIsPrimitive)) &&
-                        !s.isNullable() &&
+                        !s.isNullableCodeQL() &&
                         getKotlinType(s)?.hasEnhancedNullability() != true &&
                         primitiveName != null
                 ) {
@@ -860,7 +877,7 @@ open class KotlinUsesExtractor(
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
             val kotlinResult =
                 if (true) TypeResult(fakeKotlinType(), "TODO", "TODO")
-                else if (s.isNullable()) {
+                else if (s.isNullableCodeQL()) {
                     val kotlinSignature =
                         "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
@@ -902,21 +919,21 @@ open class KotlinUsesExtractor(
                     return extractErrorType()
                 }
             }
-            (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
+            (s.isBoxedArrayCodeQL && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 val arrayInfo = useArrayType(s, false)
                 return arrayInfo.componentTypeResults
             }
             owner is IrClass -> {
                 val args = if (s.codeQlIsRawType()) null else s.arguments
 
-                return useSimpleTypeClass(owner, args, s.isNullable())
+                return useSimpleTypeClass(owner, args, s.isNullableCodeQL())
             }
             owner is IrTypeParameter -> {
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult =
                     if (true) TypeResult(fakeKotlinType(), "TODO", "TODO")
-                    else if (s.isNullable()) {
+                    else if (s.isNullableCodeQL()) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> =
@@ -1200,7 +1217,7 @@ open class KotlinUsesExtractor(
         }
 
     private fun extendsAdditionAllowed(t: IrType) =
-        if (t.isBoxedArray) {
+        if (t.isBoxedArrayCodeQL) {
             if (t is IrSimpleType) {
                 arrayExtendsAdditionAllowed(t)
             } else {
@@ -1493,7 +1510,7 @@ open class KotlinUsesExtractor(
                     }
                 } else {
                     t.classOrNull?.let { tCls ->
-                        if (t.isBoxedArray) {
+                        if (t.isBoxedArrayCodeQL) {
                             (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg
                                 ->
                                 val elementType = elementTypeArg.type
@@ -1506,7 +1523,7 @@ open class KotlinUsesExtractor(
                                         )
                                     return tCls
                                         .typeWithArguments(listOf(newArg))
-                                        .codeQlWithHasQuestionMark(t.isNullable())
+                                        .codeQlWithHasQuestionMark(t.isNullableCodeQL())
                                 }
                             }
                         }
@@ -2086,12 +2103,12 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                if (t.isBoxedArray) {
-                    val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                if (t.isBoxedArrayCodeQL) {
+                    val elementType = t.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
                     return owner
                         .typeWith(erasedElementType)
-                        .codeQlWithHasQuestionMark(t.isNullable())
+                        .codeQlWithHasQuestionMark(t.isNullableCodeQL())
                 }
 
                 return if (t.arguments.isNotEmpty())
@@ -2119,7 +2136,7 @@ open class KotlinUsesExtractor(
             }
         val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParentOf(vp, false)
 
-        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
+        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: parameterIndexExcludingReceivers(vp)
         val idxOffset =
             if (
                 declarationParent is IrFunction &&

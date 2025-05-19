@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.ui.pagestatepersister", "system.web.ui.adapters.pageadapter", "Method[getstatepersister].ReturnValue"]
+    - ["system.web.ui.control", "system.web.ui.adapters.controladapter", "Member[control]"]
+    - ["system.collections.specialized.namevaluecollection", "system.web.ui.adapters.pageadapter", "Method[determinepostbackmodeunvalidated].ReturnValue"]
+    - ["system.collections.icollection", "system.web.ui.adapters.pageadapter", "Method[getradiobuttonsbygroup].ReturnValue"]
+    - ["system.web.httpbrowsercapabilities", "system.web.ui.adapters.controladapter", "Member[browser]"]
+    - ["system.string", "system.web.ui.adapters.pageadapter", "Member[clientstate]"]
+    - ["system.web.ui.page", "system.web.ui.adapters.controladapter", "Member[page]"]
+    - ["system.collections.specialized.namevaluecollection", "system.web.ui.adapters.pageadapter", "Method[determinepostbackmode].ReturnValue"]
+    - ["system.string", "system.web.ui.adapters.pageadapter", "Method[getpostbackformreference].ReturnValue"]
+    - ["system.object", "system.web.ui.adapters.controladapter", "Method[saveadaptercontrolstate].ReturnValue"]
+    - ["system.object", "system.web.ui.adapters.controladapter", "Method[saveadapterviewstate].ReturnValue"]
+    - ["system.collections.specialized.stringcollection", "system.web.ui.adapters.pageadapter", "Member[cachevarybyheaders]"]
+    - ["system.collections.specialized.stringcollection", "system.web.ui.adapters.pageadapter", "Member[cachevarybyparams]"]
+    - ["system.web.ui.adapters.pageadapter", "system.web.ui.adapters.controladapter", "Member[pageadapter]"]
+    - ["system.string", "system.web.ui.adapters.pageadapter", "Method[transformtext].ReturnValue"]

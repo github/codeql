@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.idisposable", "microsoft.management.infrastructure.generic.cimasyncstatus", "Method[subscribe].ReturnValue"]

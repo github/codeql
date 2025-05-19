@@ -11,9 +11,4 @@ file_types:
     extensions:
       - .ps1
       - .psd1
-options:
-  skip_psmodulepath_files:
-    title: Skip PSModulePath files.
-    description: Whether to avoid extracting source files in paths specified by the PSModulePath environment variable.
-    type: string
-    pattern: "^(false|true)$"
+      - .psm1

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.servicemodel.channels.message", "system.servicemodel.routing.irequestreplyrouter", "Method[endprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[system.servicemodel.routing.isimplexsessionrouter.beginprocessmessage].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.isimplexsessionrouter", "Method[beginprocessmessage].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.soapprocessingbehavior", "Member[processmessages]"]
+    - ["system.iasyncresult", "system.servicemodel.routing.irequestreplyrouter", "Method[beginprocessrequest].ReturnValue"]
+    - ["system.servicemodel.channels.message", "system.servicemodel.routing.routingservice", "Method[system.servicemodel.routing.irequestreplyrouter.endprocessrequest].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[soapprocessingenabled]"]
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[ensureordereddispatch]"]
+    - ["system.servicemodel.dispatcher.messagefiltertable<system.collections.generic.ienumerable<system.servicemodel.description.serviceendpoint>>", "system.servicemodel.routing.routingconfiguration", "Member[filtertable]"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[system.servicemodel.routing.iduplexsessionrouter.beginprocessmessage].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[routeonheadersonly]"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[system.servicemodel.routing.isimplexdatagramrouter.beginprocessmessage].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.isimplexdatagramrouter", "Method[beginprocessmessage].ReturnValue"]
+    - ["system.type", "system.servicemodel.routing.routingbehavior!", "Method[getcontractfordescription].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[system.servicemodel.routing.irequestreplyrouter.beginprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.iduplexsessionrouter", "Method[beginprocessmessage].ReturnValue"]

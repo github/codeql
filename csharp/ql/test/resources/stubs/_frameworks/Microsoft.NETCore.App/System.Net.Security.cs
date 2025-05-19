@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Security, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Security, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -33,6 +33,7 @@ namespace System
             public delegate System.Security.Cryptography.X509Certificates.X509Certificate LocalCertificateSelectionCallback(object sender, string targetHost, System.Security.Cryptography.X509Certificates.X509CertificateCollection localCertificates, System.Security.Cryptography.X509Certificates.X509Certificate remoteCertificate, string[] acceptableIssuers);
             public sealed class NegotiateAuthentication : System.IDisposable
             {
+                public void ComputeIntegrityCheck(System.ReadOnlySpan<byte> message, System.Buffers.IBufferWriter<byte> signatureWriter) => throw null;
                 public NegotiateAuthentication(System.Net.Security.NegotiateAuthenticationClientOptions clientOptions) => throw null;
                 public NegotiateAuthentication(System.Net.Security.NegotiateAuthenticationServerOptions serverOptions) => throw null;
                 public void Dispose() => throw null;
@@ -50,6 +51,7 @@ namespace System
                 public string TargetName { get => throw null; }
                 public System.Net.Security.NegotiateAuthenticationStatusCode Unwrap(System.ReadOnlySpan<byte> input, System.Buffers.IBufferWriter<byte> outputWriter, out bool wasEncrypted) => throw null;
                 public System.Net.Security.NegotiateAuthenticationStatusCode UnwrapInPlace(System.Span<byte> input, out int unwrappedOffset, out int unwrappedLength, out bool wasEncrypted) => throw null;
+                public bool VerifyIntegrityCheck(System.ReadOnlySpan<byte> message, System.ReadOnlySpan<byte> signature) => throw null;
                 public System.Net.Security.NegotiateAuthenticationStatusCode Wrap(System.ReadOnlySpan<byte> input, System.Buffers.IBufferWriter<byte> outputWriter, bool requestEncryption, out bool isEncrypted) => throw null;
             }
             public class NegotiateAuthenticationClientOptions

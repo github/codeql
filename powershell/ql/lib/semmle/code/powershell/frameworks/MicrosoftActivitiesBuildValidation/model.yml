@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.activities.build.validation.reportdeferredvalidationerrorstask", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.activities.build.validation.deferredvalidationtask", "Member[deferredvalidationerrorsfilepath]"]
+    - ["system.string", "microsoft.activities.build.validation.reportdeferredvalidationerrorstask", "Member[deferredvalidationerrorsfilepath]"]
+    - ["system.boolean", "microsoft.activities.build.validation.deferredvalidationtask", "Method[execute].ReturnValue"]

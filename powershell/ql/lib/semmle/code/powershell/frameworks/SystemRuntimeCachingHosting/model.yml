@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.runtime.caching.hosting.iapplicationidentifier", "Method[getapplicationid].ReturnValue"]

@@ -88,3 +88,8 @@
 # swift prebuilt resources
 /swift/third_party/resources/*.zip filter=lfs diff=lfs merge=lfs -text
 /swift/third_party/resources/*.tar.zst filter=lfs diff=lfs merge=lfs -text
+
+# This upgrade script must use windows line-endings to be compatible with old
+# databases.
+/powershell/ql/lib/upgrades/ce269c61feda10a8ca0d16519085f7e55741a694/old.dbscheme eol=crlf
+/powershell/downgrades/802d5b9f407fb0dac894df1c0b4584f2215e1512/semmlecode.powershell.dbscheme eol=crlf

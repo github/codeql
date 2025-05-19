@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.addin.contract.collections.iremoteargumentcollectioncontract", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[getkeys].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.iremoteargumentdictionaryenumeratorcontract", "Method[getvalue].ReturnValue"]
+    - ["system.int32", "system.addin.contract.collections.iremoteargumentcollectioncontract", "Method[getcount].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.remoteargumentdictionaryentry", "Member[value]"]
+    - ["system.addin.contract.collections.iremoteargumentenumeratorcontract", "system.addin.contract.collections.iremoteargumentenumerablecontract", "Method[getenumeratorcontract].ReturnValue"]
+    - ["system.int32", "system.addin.contract.collections.iremoteargumentarraylistcontract", "Method[indexof].ReturnValue"]
+    - ["system.addin.contract.collections.iremoteargumentcollectioncontract", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[getvalues].ReturnValue"]
+    - ["system.boolean", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[containskey].ReturnValue"]
+    - ["system.addin.contract.collections.iremoteargumentdictionaryenumeratorcontract", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[getenumeratorcontract].ReturnValue"]
+    - ["system.boolean", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[remove].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.iremoteargumentdictionaryenumeratorcontract", "Method[getkey].ReturnValue"]
+    - ["system.addin.contract.collections.remoteargumentdictionaryentry", "system.addin.contract.collections.iremoteargumentdictionaryenumeratorcontract", "Method[getentry].ReturnValue"]
+    - ["system.boolean", "system.addin.contract.collections.iremoteargumentenumeratorcontract", "Method[movenext].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.remoteargumentdictionaryentry", "Member[key]"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.iremoteargumentarraycontract", "Method[getitem].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.iremoteargumentenumeratorcontract", "Method[getcurrent].ReturnValue"]
+    - ["system.boolean", "system.addin.contract.collections.iremoteargumentarraylistcontract", "Method[contains].ReturnValue"]
+    - ["system.addin.contract.remoteargument", "system.addin.contract.collections.iremoteargumentdictionarycontract", "Method[getitem].ReturnValue"]

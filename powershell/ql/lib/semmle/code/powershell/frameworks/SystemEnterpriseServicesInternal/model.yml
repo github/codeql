@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.enterpriseservices.internal.clientremotingconfig!", "Method[write].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.iclrobjectfactory", "Method[createfromassembly].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.clrobjectfactory", "Method[createfromwsdl].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.icomsoappublisher", "Method[gettypenamefromprogid].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.clrobjectfactory", "Method[createfromvroot].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.iclrobjectfactory", "Method[createfromwsdl].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.clrobjectfactory", "Method[createfromassembly].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.icomsoapmetadata", "Method[generatesigned].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.publish", "Method[gettypenamefromprogid].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.publish!", "Method[getclientphysicalpath].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.icomsoapmetadata", "Method[generate].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.generatemetadata", "Method[generatesigned].ReturnValue"]
+    - ["system.int32", "system.enterpriseservices.internal.generatemetadata!", "Method[searchpath].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.generatemetadata", "Method[generatemetadata].ReturnValue"]
+    - ["system.string", "system.enterpriseservices.internal.generatemetadata", "Method[generate].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.iclrobjectfactory", "Method[createfrommailbox].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.iclrobjectfactory", "Method[createfromvroot].ReturnValue"]
+    - ["system.object", "system.enterpriseservices.internal.clrobjectfactory", "Method[createfrommailbox].ReturnValue"]

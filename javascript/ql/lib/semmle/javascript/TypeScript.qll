@@ -207,7 +207,7 @@ class ExternalModuleReference extends Expr, Import, @external_module_reference {
   /** Gets the expression specifying the module. */
   Expr getExpression() { result = this.getChildExpr(0) }
 
-  override PathExpr getImportedPath() { result = this.getExpression() }
+  override Expr getImportedPathExpr() { result = this.getExpression() }
 
   override Module getEnclosingModule() { result = this.getTopLevel() }
 
@@ -221,7 +221,7 @@ class ExternalModuleReference extends Expr, Import, @external_module_reference {
 }
 
 /** A literal path expression appearing in an external module reference. */
-private class LiteralExternalModulePath extends PathExpr, ConstantString {
+deprecated private class LiteralExternalModulePath extends PathExpr, ConstantString {
   LiteralExternalModulePath() {
     exists(ExternalModuleReference emr | this.getParentExpr*() = emr.getExpression())
   }
@@ -743,7 +743,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
  * For non-relative imports, it is the import path itself.
  */
 private string getImportName(Import imprt) {
-  exists(string path | path = imprt.getImportedPath().getValue() |
+  exists(string path | path = imprt.getImportedPathString() |
     if path.regexpMatch("[./].*")
     then result = imprt.getImportedModule().getFile().getRelativePath()
     else result = path
@@ -772,6 +772,17 @@ class LocalTypeAccess extends @local_type_access, TypeAccess, Identifier, Lexica
    * a local type name as it is declared in `lib.d.ts`.
    */
   LocalTypeName getLocalTypeName() { result.getAnAccess() = this }
+
+  private TypeAliasDeclaration getAlias() {
+    this.getLocalTypeName().getADeclaration() = result.getIdentifier()
+  }
+
+  override TypeExpr getAnUnderlyingType() {
+    result = this.getAlias().getDefinition().getAnUnderlyingType()
+    or
+    not exists(this.getAlias()) and
+    result = this
+  }
 
   override string getAPrimaryQlClass() { result = "LocalTypeAccess" }
 }
@@ -1720,7 +1731,7 @@ class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
       pkg = tt.getExpressionName() and
       // then, check pkg is imported as "import * as pkg from path"
       i.getLocal().getVariable() = pkg.getVariable() and
-      path = i.getImportedPath().getValue() and
+      path = i.getImportedPathString() and
       // finally, "this" needs to be a reference to gv
       this = DataFlow::exprNode(gv.getAnAccess())
     )

@@ -59,10 +59,10 @@ functionReferences
 | reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | extTakesOptionalParam |
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | <init> |
 propertyGetReferences
-| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:23 | getP0 |
-| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | reflection.kt:33:9:33:23 | getP0 |
-| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | reflection.kt:34:9:34:23 | getP1 |
-| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | reflection.kt:34:9:34:23 | getP1 |
+| reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:19 | getP0 |
+| reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | reflection.kt:33:9:33:19 | getP0 |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | get | reflection.kt:34:9:34:19 | getP1 |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | get | reflection.kt:34:9:34:19 | getP1 |
 | reflection.kt:50:13:50:28 | ...::... | reflection.kt:50:13:50:28 | get | reflection.kt:47:5:47:28 | getLastChar |
 | reflection.kt:51:13:51:28 | ...::... | reflection.kt:51:13:51:28 | get | reflection.kt:47:5:47:28 | getLastChar |
 | reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | get | file://<external>/Class1$Generic.class:0:0:0:0 | getP2 |
@@ -73,8 +73,8 @@ propertyFieldReferences
 | reflection.kt:71:17:71:34 | ...::... | reflection.kt:71:17:71:34 | get | file:///modules/java.base/java/lang/Integer.class:0:0:0:0 | MAX_VALUE |
 | reflection.kt:72:17:72:35 | ...::... | reflection.kt:72:17:72:35 | get | file:///modules/java.desktop/java/awt/Rectangle.class:0:0:0:0 | height |
 propertySetReferences
-| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | reflection.kt:34:9:34:23 | setP1 |
-| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | reflection.kt:34:9:34:23 | setP1 |
+| reflection.kt:17:45:17:49 | ...::... | reflection.kt:17:45:17:49 | set | reflection.kt:34:9:34:19 | setP1 |
+| reflection.kt:22:42:22:48 | ...::... | reflection.kt:22:42:22:48 | set | reflection.kt:34:9:34:19 | setP1 |
 | reflection.kt:67:17:67:32 | ...::... | reflection.kt:67:17:67:32 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
 | reflection.kt:68:17:68:34 | ...::... | reflection.kt:68:17:68:34 | set | file://<external>/Class1$Generic.class:0:0:0:0 | setP2 |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | set | reflection.kt:105:18:105:31 | setProp1 |
@@ -333,6 +333,7 @@ compGenerated
 | file://<external>/TextStyle.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Thread$State.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/TimeUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/TypeKind.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/VarHandle$AccessType.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Wrapper.class:0:0:0:0 | getEntries | Default property accessor |
@@ -345,9 +346,9 @@ compGenerated
 | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:24:46:24:64 | new Function1<KCallable<?>,Boolean>(...) { ... } | The class around a local function, a lambda, or a function reference |
-| reflection.kt:33:9:33:23 | getP0 | Default property accessor |
-| reflection.kt:34:9:34:23 | getP1 | Default property accessor |
-| reflection.kt:34:9:34:23 | setP1 | Default property accessor |
+| reflection.kt:33:9:33:19 | getP0 | Default property accessor |
+| reflection.kt:34:9:34:19 | getP1 | Default property accessor |
+| reflection.kt:34:9:34:19 | setP1 | Default property accessor |
 | reflection.kt:50:13:50:28 | new KProperty1<String,Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:60:17:60:32 | new Function2<Generic<Integer>,Integer,String>(...) { ... } | The class around a local function, a lambda, or a function reference |

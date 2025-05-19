@@ -310,6 +310,8 @@ class Expr extends StmtParent, @expr {
     or
     exists(Decltype d | d.getExpr() = this.getParentWithConversions*())
     or
+    exists(TypeofExprType t | t.getExpr() = this.getParentWithConversions*())
+    or
     exists(ConstexprIfStmt constIf |
       constIf.getControllingExpr() = this.getParentWithConversions*()
     )
@@ -1109,11 +1111,6 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   Function getDeallocator() {
     expr_deallocator(underlyingElement(this), unresolveElement(result), _)
   }
-
-  /**
-   * DEPRECATED: use `getDeallocatorCall` instead.
-   */
-  deprecated FunctionCall getAllocatorCall() { result = this.getChild(0) }
 
   /**
    * Gets the call to a non-default `operator delete`/`delete[]` that deallocates storage, if any.

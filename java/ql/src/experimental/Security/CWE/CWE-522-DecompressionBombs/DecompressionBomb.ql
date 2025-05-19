@@ -12,10 +12,16 @@
  */
 
 import java
-import experimental.semmle.code.java.security.DecompressionBombQuery
-import DecompressionBombsFlow::PathGraph
+deprecated import experimental.semmle.code.java.security.DecompressionBombQuery
+deprecated import DecompressionBombsFlow::PathGraph
 
-from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
-where DecompressionBombsFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This file extraction depends on a $@.", source.getNode(),
-  "potentially untrusted source"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, DecompressionBombsFlow::PathNode source,
+  DecompressionBombsFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  DecompressionBombsFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "This file extraction depends on a $@." and
+  sourceNode = source.getNode() and
+  message2 = "potentially untrusted source"
+}

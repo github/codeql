@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.componentmodel.dataannotations.schema.inversepropertyattribute", "Member[property]"]
+    - ["system.componentmodel.dataannotations.schema.databasegeneratedoption", "system.componentmodel.dataannotations.schema.databasegeneratedoption!", "Member[computed]"]
+    - ["system.string", "system.componentmodel.dataannotations.schema.tableattribute", "Member[schema]"]
+    - ["system.string", "system.componentmodel.dataannotations.schema.tableattribute", "Member[name]"]
+    - ["system.componentmodel.dataannotations.schema.databasegeneratedoption", "system.componentmodel.dataannotations.schema.databasegeneratedattribute", "Member[databasegeneratedoption]"]
+    - ["system.string", "system.componentmodel.dataannotations.schema.columnattribute", "Member[typename]"]
+    - ["system.string", "system.componentmodel.dataannotations.schema.columnattribute", "Member[name]"]
+    - ["system.componentmodel.dataannotations.schema.databasegeneratedoption", "system.componentmodel.dataannotations.schema.databasegeneratedoption!", "Member[none]"]
+    - ["system.string", "system.componentmodel.dataannotations.schema.foreignkeyattribute", "Member[name]"]
+    - ["system.int32", "system.componentmodel.dataannotations.schema.columnattribute", "Member[order]"]
+    - ["system.componentmodel.dataannotations.schema.databasegeneratedoption", "system.componentmodel.dataannotations.schema.databasegeneratedoption!", "Member[identity]"]

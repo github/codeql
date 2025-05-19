@@ -6,38 +6,12 @@ extensions:
 
       # gh api /repos/actions/download-artifact/tags --jq 'map({name: .name, sha: .commit.sha})' --paginate | jq -r '.[] | "- \"\(.name)\", \"\(.sha)\""'
 
-      #
       # actions/download-artifact
-      - ["actions/download-artifact", "v4.1.6", "9c19ed7fe5d278cd354c7dfd5d3b88589c7e2395", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.5", "8caf195ad4b1dee92908e23f56eeb0696f1dd42d", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.4", "c850b930e6ba138125429b7e5c93fc707a7f8427", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.3", "87c55149d96e628cc2ef7e6fc2aab372015aec85", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.2", "eaceaf801fd36c7dee90939fad912460b18a1ffe", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.1", "6b208ae046db98c579e8a3aa621ab581ff575935", "4.1.7"]
-      - ["actions/download-artifact", "v4.1.0", "f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110", "4.1.7"]
-      - ["actions/download-artifact", "v4.0.0", "7a1cd3216ca9260cd8022db641d960b1db4d1be4", "4.1.7"]
-      - ["actions/download-artifact", "v3.0.2", "9bc31d5ccc31df68ecc42ccf4149144866c47d8a", "4.1.7"]
-      - ["actions/download-artifact", "v3.0.1", "9782bd6a9848b53b110e712e20e42d89988822b7", "4.1.7"]
-      - ["actions/download-artifact", "v3.0.0", "fb598a63ae348fa914e94cd0ff38f362e927b741", "4.1.7"]
-      - ["actions/download-artifact", "v3", "9bc31d5ccc31df68ecc42ccf4149144866c47d8a", "4.1.7"]
-      - ["actions/download-artifact", "v3-node20", "246d7188e736d3686f6d19628d253ede9697bd55", "4.1.7"]
-      - ["actions/download-artifact", "v2.1.1", "cbed621e49e4c01b044d60f6c80ea4ed6328b281", "4.1.7"]
-      - ["actions/download-artifact", "v2.1.0", "f023be2c48cc18debc3bacd34cb396e0295e2869", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.10", "3be87be14a055c47b01d3bd88f8fe02320a9bb60", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.9", "158ca71f7c614ae705e79f25522ef4658df18253", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.8", "4a7a711286f30c025902c28b541c10e147a9b843", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.7", "f144d3c3916a86f4d6b11ff379d17a49d8f85dbc", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.6", "f8e41fbffeebb48c0273438d220bb2387727471f", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.5", "c3f5d00c8784369c43779f3d2611769594a61f7a", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.4", "b3cedea9bed36890c824f4065163b667eeca272b", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.3", "80d2d4023c185001eacb50e37afd7dd667ba8044", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.2", "381af06b4268a1e0ad7b7c7e5a09f1894977120f", "4.1.7"]
-      - ["actions/download-artifact", "v2.0.1", "1ac47ba4b6af92e65d0438b64ce1ea49ce1cc48d", "4.1.7"]
-      - ["actions/download-artifact", "v2.0", "1de1dea89c32dcb1f37183c96fe85cfe067b682a", "4.1.7"]
-      - ["actions/download-artifact", "v2", "cbed621e49e4c01b044d60f6c80ea4ed6328b281", "4.1.7"]
-      - ["actions/download-artifact", "v1.0.0", "18f0f591fbc635562c815484d73b6e8e3980482e", "4.1.7"]
-      - ["actions/download-artifact", "v1", "18f0f591fbc635562c815484d73b6e8e3980482e", "4.1.7"]
-      - ["actions/download-artifact", "1.0.0", "18f0f591fbc635562c815484d73b6e8e3980482e", "4.1.7"]
+      # https://github.com/advisories/GHSA-cxww-7g56-2vh6 Affected versions: >= 4.0.0, < 4.1.3
+      - ["actions/download-artifact", "v4.1.2", "eaceaf801fd36c7dee90939fad912460b18a1ffe", "4.1.3"]
+      - ["actions/download-artifact", "v4.1.1", "6b208ae046db98c579e8a3aa621ab581ff575935", "4.1.3"]
+      - ["actions/download-artifact", "v4.1.0", "f44cd7b40bfd40b6aa1cc1b9b5b7bf03d3c67110", "4.1.3"]
+      - ["actions/download-artifact", "v4.0.0", "7a1cd3216ca9260cd8022db641d960b1db4d1be4", "4.1.3"]
 
       # tj-actions/changed-files
       # https://github.com/advisories/GHSA-mcph-m25j-8j63
@@ -530,22 +504,13 @@ extensions:
       - ["gradle/gradle-build-action", "v1", "b3afdc78a7849557ab26e243ccf07548086da025", "2.4.2"]
 
       # rlespinasse/github-slug-action
-      # https://github.com/advisories/GHSA-6q4m-7476-932w
+      # https://github.com/advisories/GHSA-6q4m-7476-932w Affected versions: >= 4.0.0, < 4.4.1
       # CVE-2023-27581
-      - ["rlespinasse/github-slug-action", "v4.4.1", "102b1a064a9b145e56556e22b18b19c624538d94", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.4.0", "a362e5fb42057a3a23a62218b050838f1bacca5d", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.3.2", "b011e83cf8cb29e22dda828db30586691ae164e4", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.3.1", "00198f89920d4454e37e4b27af2b7a8eba79c530", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.3.0", "9c3571fd3dba541bfdaebc001482a49a1c1f136a", "4.4.1"]
       - ["rlespinasse/github-slug-action", "v4.2.5", "0141d9b38d1f21c3b3de63229e20b7b0ad7ef0f4", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3.9.0", "2daab132aa3a6e23ea9d409f9946b3bf6468cc77", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3.8.0", "4a00c29bc1c0a737315b4200af6c6991bb4ace18", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3.7.1", "5150a26d43ce06608443c66efea46fc6f3c50d38", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3.7.0", "ebfc49c0e9cd081acb7ba0634d8d6a711b4c73cf", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3", "2daab132aa3a6e23ea9d409f9946b3bf6468cc77", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v3.x", "2daab132aa3a6e23ea9d409f9946b3bf6468cc77", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v2.x", "9d2c65418d6ecbbd3c08e686997b30482e9f4a80", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "v1.1.x", "fbf6d7b9c7af4e8d06135dbc7d774e717d788731", "4.4.1"]
       - ["rlespinasse/github-slug-action", "4.2.5", "0141d9b38d1f21c3b3de63229e20b7b0ad7ef0f4", "4.4.1"]
       - ["rlespinasse/github-slug-action", "4.2.4", "33cd7a701db9c2baf4ad705d930ade51a9f25c14", "4.4.1"]
       - ["rlespinasse/github-slug-action", "4.2.3", "1615fcb48b5315152b3733b7bed1a9f5dfada6e3", "4.4.1"]
@@ -555,25 +520,6 @@ extensions:
       - ["rlespinasse/github-slug-action", "4.1.0", "88f3ee8f6f5d1955de92f1fe2fdb301fd40207c6", "4.4.1"]
       - ["rlespinasse/github-slug-action", "4.0.1", "cd9871b66e11e9562e3f72469772fe100be4c95a", "4.4.1"]
       - ["rlespinasse/github-slug-action", "4.0.0", "bd31a9f564f7930eea1ecfc8d0e6aebc4bc3279f", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.6.1", "1bf76b7bc6ef7dc6ba597ff790f956d9082479d7", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.6.0", "172fe43594a58b5938e248ec757ada60cdb17e18", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.5.1", "016823880d193a56b180527cf7ee52f13c3cfe33", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.5.0", "4060fda2690bcebaabcd86db4fbc8e1c2817c835", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.4.0", "0c099abd978b382cb650281af13913c1905fdd50", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.3.0", "d1880ea5b39f611effb9f3f83f4d35bff34083a6", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.2.0", "c8d8ee50d00177c1e80dd57905fc61f81e437279", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.1.0", "e4699e49fcf890a3172a02c56ba78d867dbb9fd5", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "3.0.0", "6a873bec5ac11c6d2a11756b8763356da63a8939", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "2.2.0", "9d2c65418d6ecbbd3c08e686997b30482e9f4a80", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "2.1.1", "72cfc4cb1f36c102c48541cb59511a6267e89c95", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "2.1.0", "1172ed1802078eb665a55c252fc180138b907c51", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "2.0.0", "ca9a67fa1f1126b377a9d80dc1ea354284c71d21", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.2.0", "fbf6d7b9c7af4e8d06135dbc7d774e717d788731", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.1.1", "242e04c2d28ac5db296e5d8203dfd7dc6bcc17a9", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.1.0", "881085bcae8c3443a89cc9401f3e1c60fb014ed2", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.0.2", "a35a1a486a260cfd99c5b6f8c6034a2929ba9b3f", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.0.1", "e46186066296e23235242d0877e2b4fe54003d54", "4.4.1"]
-      - ["rlespinasse/github-slug-action", "1.0.0", "9671420482a6e4c59c06f2d2d9e0605e941b1287", "4.4.1"]
 
       # Azure/setup-kubectl
       # https://github.com/advisories/GHSA-p756-rfxh-x63h

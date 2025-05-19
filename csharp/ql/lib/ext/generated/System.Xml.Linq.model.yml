@@ -244,6 +244,7 @@ extensions:
       - ["System.Xml.Linq", "XNode", "get_EqualityComparer", "()", "summary", "df-generated"]
       - ["System.Xml.Linq", "XNode", "get_PreviousNode", "()", "summary", "df-generated"]
       - ["System.Xml.Linq", "XNodeDocumentOrderComparer", "Compare", "(System.Xml.Linq.XNode,System.Xml.Linq.XNode)", "summary", "df-generated"]
+      - ["System.Xml.Linq", "XNodeEqualityComparer", "Equals", "(System.Object,System.Object)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XNodeEqualityComparer", "Equals", "(System.Xml.Linq.XNode,System.Xml.Linq.XNode)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XNodeEqualityComparer", "GetHashCode", "(System.Xml.Linq.XNode)", "summary", "df-generated"]
       - ["System.Xml.Linq", "XObject", "HasLineInfo", "()", "summary", "df-generated"]

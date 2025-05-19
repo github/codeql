@@ -28,6 +28,13 @@ module IndirectCommandInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node node |
+      isSinkWithHighlight(sink, node) and
+      result = node.getLocation()
+    )
+  }
 }
 
 /**

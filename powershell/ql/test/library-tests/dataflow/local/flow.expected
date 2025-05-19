@@ -1,56 +1,39 @@
-| test.ps1:1:1:1:4 | a1 | test.ps1:2:6:2:9 | a1 |
-| test.ps1:1:7:1:13 | call to Source | test.ps1:1:1:1:4 | a1 |
-| test.ps1:1:7:1:13 | call to Source | test.ps1:1:1:1:13 | ...=... |
-| test.ps1:2:1:2:9 | call to Sink | test.ps1:2:1:2:9 | pre-return value for call to Sink |
-| test.ps1:2:1:2:9 | call to Sink | test.ps1:2:1:2:9 | pre-return value for call to Sink |
-| test.ps1:2:1:2:9 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:2:1:2:9 | pre-return value for call to Sink | test.ps1:2:1:2:9 | implicit unwrapping of call to Sink |
-| test.ps1:4:1:4:3 | b | test.ps1:5:4:5:6 | b |
-| test.ps1:4:6:4:13 | call to GetBool | test.ps1:4:1:4:3 | b |
-| test.ps1:4:6:4:13 | call to GetBool | test.ps1:4:1:4:13 | ...=... |
-| test.ps1:5:4:5:6 | b | test.ps1:10:14:10:16 | b |
-| test.ps1:6:5:6:8 | a2 | test.ps1:8:6:8:9 | a2 |
-| test.ps1:6:11:6:17 | call to Source | test.ps1:6:5:6:8 | a2 |
-| test.ps1:6:11:6:17 | call to Source | test.ps1:6:5:6:17 | ...=... |
-| test.ps1:8:1:8:9 | call to Sink | test.ps1:8:1:8:9 | pre-return value for call to Sink |
-| test.ps1:8:1:8:9 | call to Sink | test.ps1:8:1:8:9 | pre-return value for call to Sink |
-| test.ps1:8:1:8:9 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:8:1:8:9 | pre-return value for call to Sink | test.ps1:8:1:8:9 | implicit unwrapping of call to Sink |
-| test.ps1:10:1:10:3 | c | test.ps1:11:6:11:8 | c |
-| test.ps1:10:6:10:16 | [...]... | test.ps1:10:1:10:3 | c |
-| test.ps1:10:6:10:16 | [...]... | test.ps1:10:1:10:16 | ...=... |
-| test.ps1:10:6:10:16 | [...]... | test.ps1:10:6:10:16 | [...]... |
-| test.ps1:10:14:10:16 | b | test.ps1:10:6:10:16 | [...]... |
-| test.ps1:11:1:11:8 | call to Sink | test.ps1:11:1:11:8 | pre-return value for call to Sink |
-| test.ps1:11:1:11:8 | call to Sink | test.ps1:11:1:11:8 | pre-return value for call to Sink |
-| test.ps1:11:1:11:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:11:1:11:8 | pre-return value for call to Sink | test.ps1:11:1:11:8 | implicit unwrapping of call to Sink |
-| test.ps1:11:6:11:8 | [post] c | test.ps1:13:7:13:9 | c |
-| test.ps1:11:6:11:8 | c | test.ps1:13:7:13:9 | c |
-| test.ps1:13:1:13:3 | d | test.ps1:14:6:14:8 | d |
-| test.ps1:13:6:13:10 | (...) | test.ps1:13:1:13:3 | d |
-| test.ps1:13:6:13:10 | (...) | test.ps1:13:1:13:10 | ...=... |
-| test.ps1:13:6:13:10 | (...) | test.ps1:13:6:13:10 | (...) |
-| test.ps1:13:7:13:9 | c | test.ps1:13:6:13:10 | (...) |
-| test.ps1:13:7:13:9 | c | test.ps1:13:7:13:9 | c |
-| test.ps1:14:1:14:8 | call to Sink | test.ps1:14:1:14:8 | pre-return value for call to Sink |
-| test.ps1:14:1:14:8 | call to Sink | test.ps1:14:1:14:8 | pre-return value for call to Sink |
-| test.ps1:14:1:14:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:14:1:14:8 | pre-return value for call to Sink | test.ps1:14:1:14:8 | implicit unwrapping of call to Sink |
-| test.ps1:14:6:14:8 | [post] d | test.ps1:16:6:16:8 | d |
-| test.ps1:14:6:14:8 | d | test.ps1:16:6:16:8 | d |
-| test.ps1:16:1:16:3 | e | test.ps1:17:6:17:8 | e |
-| test.ps1:16:6:16:12 | ...+... | test.ps1:16:1:16:3 | e |
-| test.ps1:16:6:16:12 | ...+... | test.ps1:16:1:16:12 | ...=... |
-| test.ps1:16:6:16:12 | ...+... | test.ps1:16:6:16:12 | ...+... |
-| test.ps1:17:1:17:8 | call to Sink | test.ps1:17:1:17:8 | pre-return value for call to Sink |
-| test.ps1:17:1:17:8 | call to Sink | test.ps1:17:1:17:8 | pre-return value for call to Sink |
-| test.ps1:17:1:17:8 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:17:1:17:8 | pre-return value for call to Sink | test.ps1:17:1:17:8 | implicit unwrapping of call to Sink |
-| test.ps1:19:1:19:3 | f | test.ps1:21:25:21:27 | f |
-| test.ps1:19:6:19:12 | call to Source | test.ps1:19:1:19:3 | f |
-| test.ps1:19:6:19:12 | call to Source | test.ps1:19:1:19:12 | ...=... |
-| test.ps1:21:1:21:28 | call to Sink | test.ps1:21:1:21:28 | pre-return value for call to Sink |
-| test.ps1:21:1:21:28 | call to Sink | test.ps1:21:1:21:28 | pre-return value for call to Sink |
-| test.ps1:21:1:21:28 | implicit unwrapping of call to Sink | test.ps1:1:1:21:28 | return value for test.ps1 |
-| test.ps1:21:1:21:28 | pre-return value for call to Sink | test.ps1:21:1:21:28 | implicit unwrapping of call to Sink |
+| test.ps1:1:1:1:3 | a1 | test.ps1:2:6:2:8 | a1 |
+| test.ps1:1:1:24:22 | implicit unwrapping of {...} | test.ps1:1:1:24:22 | return value for {...} |
+| test.ps1:1:1:24:22 | pre-return value for {...} | test.ps1:1:1:24:22 | implicit unwrapping of {...} |
+| test.ps1:1:7:1:12 | Call to source | test.ps1:1:1:1:3 | a1 |
+| test.ps1:2:1:2:8 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:2:1:2:8 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:4:1:4:2 | b | test.ps1:5:4:5:5 | b |
+| test.ps1:4:6:4:12 | Call to getbool | test.ps1:4:1:4:2 | b |
+| test.ps1:5:4:5:5 | b | test.ps1:10:14:10:15 | b |
+| test.ps1:6:5:6:7 | a2 | test.ps1:8:6:8:8 | a2 |
+| test.ps1:6:11:6:16 | Call to source | test.ps1:6:5:6:7 | a2 |
+| test.ps1:8:1:8:8 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:8:1:8:8 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:10:1:10:2 | c | test.ps1:11:6:11:7 | c |
+| test.ps1:10:6:10:15 | [...]... | test.ps1:10:1:10:2 | c |
+| test.ps1:10:14:10:15 | b | test.ps1:10:6:10:15 | [...]... |
+| test.ps1:11:1:11:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:11:1:11:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:11:6:11:7 | [post] c | test.ps1:13:7:13:8 | c |
+| test.ps1:11:6:11:7 | c | test.ps1:13:7:13:8 | c |
+| test.ps1:13:1:13:2 | d | test.ps1:14:6:14:7 | d |
+| test.ps1:13:6:13:9 | (...) | test.ps1:13:1:13:2 | d |
+| test.ps1:13:7:13:8 | c | test.ps1:13:6:13:9 | (...) |
+| test.ps1:14:1:14:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:14:1:14:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:14:6:14:7 | [post] d | test.ps1:16:6:16:7 | d |
+| test.ps1:14:6:14:7 | d | test.ps1:16:6:16:7 | d |
+| test.ps1:16:1:16:2 | e | test.ps1:17:6:17:7 | e |
+| test.ps1:16:6:16:11 | ...+... | test.ps1:16:1:16:2 | e |
+| test.ps1:17:1:17:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:17:1:17:7 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:19:1:19:2 | f | test.ps1:21:25:21:26 | f |
+| test.ps1:19:6:19:11 | Call to source | test.ps1:19:1:19:2 | f |
+| test.ps1:21:1:21:27 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:21:1:21:27 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:23:1:23:6 | input | test.ps1:24:17:24:22 | input |
+| test.ps1:23:10:23:32 | Call to read-host | test.ps1:23:1:23:6 | input |
+| test.ps1:24:1:24:22 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |
+| test.ps1:24:1:24:22 | Call to sink | test.ps1:1:1:24:22 | pre-return value for {...} |

@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Member[fullname]"]
+    - ["system.collections.generic.ienumerable<microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase>", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "Method[enumeratefilesysteminfos].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.fileinfowrapper", "Member[fullname]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.abstractions.fileinfowrapper", "Member[parentdirectory]"]
+    - ["system.collections.generic.ienumerable<microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase>", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Method[enumeratefilesysteminfos].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Member[fullname]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.fileinfobase", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Method[getfile].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Member[parentdirectory]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Method[getdirectory].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Member[parentdirectory]"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfowrapper", "Member[name]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "Method[getdirectory].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.fileinfowrapper", "Member[name]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.fileinfobase", "microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "Method[getfile].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Member[name]"]

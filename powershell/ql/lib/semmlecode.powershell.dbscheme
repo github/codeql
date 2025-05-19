@@ -41,10 +41,6 @@ containerparent(
   unique int child: @container ref
 );
 
-is_in_psmodule_path(
-  int file: @file ref
-);
-
 /* Comments */
 comment_entity(
   unique int id: @comment_entity,

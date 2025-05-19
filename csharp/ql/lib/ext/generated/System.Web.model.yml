@@ -5,10 +5,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Web", "HttpUtility", False, "HtmlDecode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[])", "", "Argument[0].Element", "ReturnValue.Element", "value", "dfc-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[])", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "ReturnValue.Element", "value", "dfc-generated"]
-      - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Web", "HttpUtility", False, "UrlEncodeToBytes", "(System.String,System.Text.Encoding)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
       - ["System.Web", "HttpUtility", False, "UrlPathEncode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
@@ -33,6 +29,8 @@ extensions:
       - ["System.Web", "HttpUtility", "UrlDecodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecodeToBytes", "(System.String)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlDecodeToBytes", "(System.String,System.Text.Encoding)", "summary", "df-generated"]
+      - ["System.Web", "HttpUtility", "UrlEncodeToBytes", "(System.Byte[])", "summary", "df-generated"]
+      - ["System.Web", "HttpUtility", "UrlEncodeToBytes", "(System.Byte[],System.Int32,System.Int32)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlEncodeUnicode", "(System.String)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlEncodeUnicodeToBytes", "(System.String)", "summary", "df-generated"]
       - ["System.Web", "IHtmlString", "ToHtmlString", "()", "summary", "df-generated"]

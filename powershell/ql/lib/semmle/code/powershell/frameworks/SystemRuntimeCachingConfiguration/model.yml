@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.configuration.configurationpropertycollection", "system.runtime.caching.configuration.memorycachesettingscollection", "Member[properties]"]
+    - ["system.int32", "system.runtime.caching.configuration.memorycacheelement", "Member[physicalmemorylimitpercentage]"]
+    - ["system.int32", "system.runtime.caching.configuration.memorycacheelement", "Member[cachememorylimitmegabytes]"]
+    - ["system.configuration.configurationelement", "system.runtime.caching.configuration.memorycachesettingscollection", "Method[createnewelement].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.runtime.caching.configuration.memorycacheelement", "Member[properties]"]
+    - ["system.runtime.caching.configuration.memorycacheelement", "system.runtime.caching.configuration.memorycachesettingscollection", "Member[item]"]
+    - ["system.object", "system.runtime.caching.configuration.memorycachesettingscollection", "Method[getelementkey].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.runtime.caching.configuration.memorycachesection", "Member[properties]"]
+    - ["system.configuration.configurationelementcollectiontype", "system.runtime.caching.configuration.memorycachesettingscollection", "Member[collectiontype]"]
+    - ["system.runtime.caching.configuration.memorycachesettingscollection", "system.runtime.caching.configuration.memorycachesection", "Member[namedcaches]"]
+    - ["system.timespan", "system.runtime.caching.configuration.memorycacheelement", "Member[pollinginterval]"]
+    - ["system.runtime.caching.configuration.memorycachesection", "system.runtime.caching.configuration.cachingsectiongroup", "Member[memorycaches]"]
+    - ["system.string", "system.runtime.caching.configuration.memorycacheelement", "Member[name]"]
+    - ["system.int32", "system.runtime.caching.configuration.memorycachesettingscollection", "Method[indexof].ReturnValue"]

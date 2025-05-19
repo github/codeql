@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.runtime.remoting.services.remotingclientproxy", "Member[timeout]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[_url]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[password]"]
+    - ["system.object", "system.runtime.remoting.services.remotingclientproxy", "Member[cookies]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[allowautoredirect]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[path]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[username]"]
+    - ["system.web.httpserverutility", "system.runtime.remoting.services.remotingservice", "Member[server]"]
+    - ["system.object", "system.runtime.remoting.services.enterpriseserviceshelper!", "Method[wrapiunknownwithcomobject].ReturnValue"]
+    - ["system.web.sessionstate.httpsessionstate", "system.runtime.remoting.services.remotingservice", "Member[session]"]
+    - ["system.security.principal.iprincipal", "system.runtime.remoting.services.remotingservice", "Member[user]"]
+    - ["system.runtime.remoting.services.itrackinghandler[]", "system.runtime.remoting.services.trackingservices!", "Member[registeredhandlers]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[enablecookies]"]
+    - ["system.int32", "system.runtime.remoting.services.remotingclientproxy", "Member[proxyport]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[preauthenticate]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[proxyname]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[url]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[useragent]"]
+    - ["system.web.httpapplicationstate", "system.runtime.remoting.services.remotingservice", "Member[application]"]
+    - ["system.web.httpcontext", "system.runtime.remoting.services.remotingservice", "Member[context]"]
+    - ["system.object", "system.runtime.remoting.services.remotingclientproxy", "Member[_tp]"]
+    - ["system.runtime.remoting.activation.iconstructionreturnmessage", "system.runtime.remoting.services.enterpriseserviceshelper!", "Method[createconstructionreturnmessage].ReturnValue"]
+    - ["system.type", "system.runtime.remoting.services.remotingclientproxy", "Member[_type]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[domain]"]

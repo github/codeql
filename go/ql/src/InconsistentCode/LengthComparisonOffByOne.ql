@@ -8,6 +8,7 @@
  * @tags reliability
  *       correctness
  *       logic
+ *       quality
  *       external/cwe/cwe-193
  * @precision high
  */
@@ -70,7 +71,7 @@ predicate elementRead(
 }
 
 predicate isRegexpMethodCall(DataFlow::MethodCallNode c) {
-  exists(NamedType regexp, Type recvtp |
+  exists(DefinedType regexp, Type recvtp |
     regexp.getName() = "Regexp" and recvtp = c.getReceiver().getType()
   |
     lookThroughPointerType(recvtp) = regexp

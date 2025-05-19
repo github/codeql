@@ -143,26 +143,28 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, ContentSet c, Node node2) {
-  // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-  // which in turn flows into the pointer content of `p`
-  exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
-    node1 = rhs and
-    node2.(PostUpdateNode).getPreUpdateNode() = base and
-    c = any(DataFlow::FieldContent fc | fc.getField() = f)
+predicate storeStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
+    // which in turn flows into the pointer content of `p`
+    exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
+      node1 = rhs and
+      node2.(PostUpdateNode).getPreUpdateNode() = base and
+      c = any(DataFlow::FieldContent fc | fc.getField() = f)
+      or
+      node1 = base and
+      node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+      c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    )
     or
-    node1 = base and
-    node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+    node1 = node2.(AddressOperationNode).getOperand() and
     c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    or
+    containerStoreStep(node1, node2, c)
   )
   or
-  node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
-  or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
-  or
-  containerStoreStep(node1, node2, c)
 }
 
 /**
@@ -170,20 +172,26 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) {
-  node1 = node2.(PointerDereferenceNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
-  or
-  exists(FieldReadNode read |
-    node2 = read and
-    node1 = read.getBase() and
-    c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+predicate readStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    node1 = node2.(PointerDereferenceNode).getOperand() and
+    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+    or
+    exists(FieldReadNode read |
+      node2 = read and
+      node1 = read.getBase() and
+      c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+    )
+    or
+    containerReadStep(node1, node2, c)
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  containerReadStep(node1, node2, c)
+  any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
+  cs.isUniversalContent() and
+  node1 = node2
 }
 
 /**
@@ -293,35 +301,27 @@ class DataFlowCallable extends TDataFlowCallable {
     result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asCallable().getLocation() or
+    result = this.asFileScope().getLocation() or
+    result = this.asSummarizedCallable().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this callable is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asSummarizedCallable()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /** Gets the location of this callable. */
-  Location getLocation() {
-    result = getCallableLocation(this.asCallable()) or
-    result = this.asFileScope().getLocation() or
-    result = getCallableLocation(this.asSummarizedCallable())
-  }
-}
-
-private Location getCallableLocation(Callable c) {
-  exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-    c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-    result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  )
 }
 
 /** A function call relevant for data flow. */

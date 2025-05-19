@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psobjecttypedescriptor", "Method[getpropertyowner]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobjecttypedescriptor", "Method[psobjecttypedescriptor]", "Argument[0]", "Argument[this]", "taint"]
+      

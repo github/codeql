@@ -4,11 +4,15 @@ inputs:
   go-test-version:
     description: Which Go version to use for running the tests
     required: false
-    default: "~1.23.1"
+    default: "~1.24.0"
   run-code-checks:
     description: Whether to run formatting, code and qhelp generation checks
     required: false
     default: false
+  dynamic-join-order-mode:
+    description: Value of the --dynamic-join-order-mode flag to pass to the codeql test command
+    required: false
+    default: "none"
 runs:
   using: composite
   steps:
@@ -74,4 +78,4 @@ runs:
       shell: bash
       run: |
         cd go
-        make test cache="${{ steps.query-cache.outputs.cache-dir }}"
+        make test cache="${{ steps.query-cache.outputs.cache-dir }}" rtjo=${{ inputs.dynamic-join-order-mode }}

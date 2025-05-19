@@ -44,6 +44,16 @@ class PreCallGraphStep extends Unit {
   ) {
     none()
   }
+
+  /**
+   * Holds if `node` can hold an instance of `cls`.
+   */
+  predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) { none() }
+
+  /**
+   * Holds if `node` can hold an reference to the `cls` class itself.
+   */
+  predicate classObjectSource(DataFlow::ClassNode cls, DataFlow::Node node) { none() }
 }
 
 cached
@@ -89,6 +99,22 @@ module PreCallGraphStep {
     DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
   ) {
     any(PreCallGraphStep s).loadStoreStep(pred, succ, loadProp, storeProp)
+  }
+
+  /**
+   * Holds if `node` can hold an instance of `cls`.
+   */
+  cached
+  predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
+    any(PreCallGraphStep s).classInstanceSource(cls, node)
+  }
+
+  /**
+   * Holds if `node` can hold an reference to the `cls` class itself.
+   */
+  cached
+  predicate classObjectSource(DataFlow::ClassNode cls, DataFlow::Node node) {
+    any(PreCallGraphStep s).classObjectSource(cls, node)
   }
 }
 

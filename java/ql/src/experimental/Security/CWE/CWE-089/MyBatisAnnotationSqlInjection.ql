@@ -13,14 +13,13 @@
  */
 
 import java
-import MyBatisCommonLib
-import MyBatisAnnotationSqlInjectionLib
+deprecated import MyBatisAnnotationSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.Sanitizers
-import MyBatisAnnotationSqlInjectionFlow::PathGraph
+deprecated import MyBatisAnnotationSqlInjectionFlow::PathGraph
 
-private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSig {
+deprecated private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisAnnotatedMethodCallArgument }
@@ -37,22 +36,27 @@ private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSi
   }
 }
 
-private module MyBatisAnnotationSqlInjectionFlow =
+deprecated private module MyBatisAnnotationSqlInjectionFlow =
   TaintTracking::Global<MyBatisAnnotationSqlInjectionConfig>;
 
-from
-  MyBatisAnnotationSqlInjectionFlow::PathNode source,
-  MyBatisAnnotationSqlInjectionFlow::PathNode sink, IbatisSqlOperationAnnotation isoa,
-  MethodCall ma, string unsafeExpression
-where
-  MyBatisAnnotationSqlInjectionFlow::flowPath(source, sink) and
-  ma.getAnArgument() = sink.getNode().asExpr() and
-  myBatisSqlOperationAnnotationFromMethod(ma.getMethod(), isoa) and
-  unsafeExpression = getAMybatisAnnotationSqlValue(isoa) and
-  (
-    isMybatisXmlOrAnnotationSqlInjection(sink.getNode(), ma, unsafeExpression) or
-    isMybatisCollectionTypeSqlInjection(sink.getNode(), ma, unsafeExpression)
-  )
-select sink.getNode(), source, sink,
-  "MyBatis annotation SQL injection might include code from $@ to $@.", source.getNode(),
-  "this user input", isoa, "this SQL operation"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, MyBatisAnnotationSqlInjectionFlow::PathNode source,
+  MyBatisAnnotationSqlInjectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2, IbatisSqlOperationAnnotation isoa, string message3
+) {
+  exists(MethodCall ma, string unsafeExpression |
+    MyBatisAnnotationSqlInjectionFlow::flowPath(source, sink) and
+    ma.getAnArgument() = sinkNode.asExpr() and
+    myBatisSqlOperationAnnotationFromMethod(ma.getMethod(), isoa) and
+    unsafeExpression = getAMybatisAnnotationSqlValue(isoa) and
+    (
+      isMybatisXmlOrAnnotationSqlInjection(sinkNode, ma, unsafeExpression) or
+      isMybatisCollectionTypeSqlInjection(sinkNode, ma, unsafeExpression)
+    )
+  ) and
+  sinkNode = sink.getNode() and
+  message1 = "MyBatis annotation SQL injection might include code from $@ to $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input" and
+  message3 = "this SQL operation"
+}

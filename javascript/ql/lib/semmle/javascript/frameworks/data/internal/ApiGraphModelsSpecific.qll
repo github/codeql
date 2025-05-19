@@ -58,7 +58,7 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 predicate isPackageUsed(string package) {
   package = "global"
   or
-  package = any(JS::Import imp).getImportedPath().getValue()
+  package = any(JS::Import imp).getImportedPathString()
   or
   any(JS::TypeName t).hasQualifiedName(package, _)
   or
@@ -162,8 +162,8 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Awaited" and
   result = node.getPromised()
   or
-  token.getName() = "ArrayElement" and
-  result = node.getMember(DataFlow::PseudoProperties::arrayElement())
+  token.getName() = ["ArrayElement", "Element"] and
+  result = node.getArrayElement()
   or
   token.getName() = "Element" and
   result = node.getMember(DataFlow::PseudoProperties::arrayLikeElement())
@@ -171,11 +171,6 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // Note: MapKey not currently supported
   token.getName() = "MapValue" and
   result = node.getMember(DataFlow::PseudoProperties::mapValueAll())
-  or
-  // Currently we need to include the "unknown member" for ArrayElement and Element since
-  // API graphs do not use store/load steps for arrays
-  token.getName() = ["ArrayElement", "Element"] and
-  result = node.getUnknownMember()
   or
   token.getName() = "Parameter" and
   token.getAnArgument() = "this" and
@@ -189,6 +184,20 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   or
   token.getName() = "DecoratedParameter" and
   result = node.getADecoratedParameter()
+  or
+  token.getName() = "GuardedRouteHandler" and
+  result = getAGuardedRouteHandlerApprox(node)
+}
+
+bindingset[node]
+pragma[inline_late]
+private API::Node getAGuardedRouteHandlerApprox(API::Node node) {
+  // For now just get any routing node with the same root (i.e. the same web app), as
+  // there are some known performance issues when checking if it is actually guarded by the given node.
+  exists(JS::Routing::Node root |
+    root = JS::Routing::getNode(node.getAValueReachableFromSource()).getRootNode() and
+    root = JS::Routing::getNode(result.asSink()).getRootNode()
+  )
 }
 
 /**
@@ -263,51 +272,6 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   )
 }
 
-/**
- * Holds if `path` is an input or output spec for a summary with the given `base` node.
- */
-pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
-  exists(string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    inputOrOutput = [input, output]
-  )
-}
-
-/**
- * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
-  relevantInputOutputPath(baseNode, path) and
-  (
-    n = 1 and
-    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
-    or
-    result =
-      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
-  )
-}
-
-/**
- * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
-  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
-}
-
-/**
- * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
- */
-predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
-    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    pred = getNodeFromInputOutputPath(base, input) and
-    succ = getNodeFromInputOutputPath(base, output)
-  )
-}
-
 class InvokeNode = API::InvokeNode;
 
 /** Gets an `InvokeNode` corresponding to an invocation of `node`. */
@@ -322,7 +286,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
     [
       "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
       "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
-      "WithStringArgument"
+      "WithStringArgument", "GuardedRouteHandler"
     ]
 }
 
@@ -334,7 +298,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
       "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter", "GuardedRouteHandler"
     ]
 }
 
@@ -373,7 +337,7 @@ bindingset[pred]
 predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
   exists(string name | succ = pred.getMember(name) and path = "Member[" + name + "]")
   or
-  succ = pred.getUnknownMember() and path = "AnyMember"
+  succ = pred.getUnknownArrayElement() and path = "ArrayElement"
   or
   succ = pred.getInstance() and path = "Instance"
   or

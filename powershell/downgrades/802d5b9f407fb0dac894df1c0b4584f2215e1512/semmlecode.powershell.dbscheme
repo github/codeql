@@ -64,15 +64,15 @@ extractor_messages(
 );
 
 parent(
-  int child: @ast ref,
-  int parent: @ast ref
+  int parent: @ast ref,
+  int child: @ast ref
 );
 
 /* AST Nodes */
 // This is all the kinds of nodes that can inherit from Ast
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.ast?view=powershellsdk-7.3.0
 @ast = @not_implemented | @attribute_base | @catch_clause | @command_element |
-@member | @named_block | @param_block | @parameter | @redirection | @script_block | @statement | @statement_block | @named_attribute_argument;
+@member | @named_block | @param_block | @parameter | @redirection | @script_block | @statement | @statement_block;
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.attributebaseast?view=powershellsdk-7.2.0
 @attribute_base = @attribute | @type_constraint;
 
@@ -409,13 +409,13 @@ if_statement(
 if_statement_clause(
   int id: @if_statement ref,
   int index: int ref,
-  int item1: @pipeline_base ref,
-  int item2: @statement_block ref
+  int item1: @ast ref,
+  int item2: @ast ref
 )
 
 if_statement_else(
   int id: @if_statement ref,
-  int elseItem: @statement_block ref 
+  int elseItem: @ast ref 
 )
 
 if_statement_location(
@@ -467,7 +467,7 @@ statement_block_trap(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.subexpressionast?view=powershellsdk-7.3.0
 sub_expression(
   unique int id: @sub_expression,
-  int subExpression: @statement_block ref
+  int subExpression: @ast ref
 )
 
 sub_expression_location(
@@ -627,7 +627,7 @@ exit_statement(
 
 exit_statement_pipeline(
   int id: @exit_statement ref,
-  int expression: @pipeline_base ref
+  int expression: @ast ref
 )
 
 exit_statement_location(
@@ -814,7 +814,7 @@ continue_statement_location(
 
 statement_label(
   int id: @labelled_statement ref,
-  int label: @expression ref
+  int label: @ast ref
 )
 
 // ReturnStatementAst
@@ -825,7 +825,7 @@ return_statement(
 
 return_statement_pipeline(
   int id: @return_statement ref,
-  int pipeline: @pipeline_base ref
+  int pipeline: @ast ref
 )
 
 return_statement_location(
@@ -837,12 +837,12 @@ return_statement_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.dowhilestatementast?view=powershellsdk-7.3.0
 do_while_statement(
   unique int id: @do_while_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 do_while_statement_condition(
   int id: @do_while_statement ref,
-  int condition: @pipeline_base ref
+  int condition: @ast ref
 )
 
 do_while_statement_location(
@@ -854,12 +854,12 @@ do_while_statement_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.dountilstatementast?view=powershellsdk-7.3.0
 do_until_statement(
   unique int id: @do_until_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 do_until_statement_condition(
   int id: @do_until_statement ref,
-  int condition: @pipeline_base ref
+  int condition: @ast ref
 )
 
 do_until_statement_location(
@@ -871,12 +871,12 @@ do_until_statement_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.whilestatementast?view=powershellsdk-7.3.0
 while_statement(
   unique int id: @while_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 while_statement_condition(
   int id: @while_statement ref,
-  int condition: @pipeline_base ref
+  int condition: @ast ref
 )
 
 while_statement_location(
@@ -888,9 +888,9 @@ while_statement_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.foreachstatementast?view=powershellsdk-7.3.0
 foreach_statement(
   unique int id: @foreach_statement,
-  int variable: @variable_expression ref,
-  int condition: @pipeline_base ref,
-  int body: @statement_block ref,
+  int variable: @ast ref,
+  int condition: @ast ref,
+  int body: @ast ref,
   int flags: int ref
 )
 
@@ -903,7 +903,7 @@ foreach_statement_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.forstatementast?view=powershellsdk-7.3.0
 for_statement(
   unique int id: @for_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 for_statement_location(
@@ -913,17 +913,17 @@ for_statement_location(
 
 for_statement_condition(
   int id: @for_statement ref,
-  int condition: @pipeline_base ref
+  int condition: @ast ref
 )
 
 for_statement_initializer(
   int id: @for_statement ref,
-  int initializer: @pipeline_base ref
+  int initializer: @ast ref
 )
 
 for_statement_iterator(
   int id: @for_statement ref,
-  int iterator: @pipeline_base ref
+  int iterator: @ast ref
 )
 
 // ExpandableStringExpressionAst
@@ -988,14 +988,14 @@ unary_expression_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.catchclauseast?view=powershellsdk-7.3.0
 catch_clause(
   unique int id: @catch_clause,
-  int body: @statement_block ref,
+  int body: @ast ref,
   boolean isCatchAll: boolean ref
 )
 
 catch_clause_catch_type(
   int id: @catch_clause ref,
   int index: int ref,
-  int catch_type: @type_constraint ref
+  int catch_type: @ast ref
 )
 
 catch_clause_location(
@@ -1024,7 +1024,7 @@ throw_statement_pipeline(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.trystatementast?view=powershellsdk-7.3.0
 try_statement(
   unique int id: @try_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 try_statement_catch_clause(
@@ -1099,9 +1099,9 @@ token_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.configurationdefinitionast?view=powershellsdk-7.3.0
 configuration_definition(
   unique int id: @configuration_definition,
-  int body: @script_block_expression ref,
+  int body: @ast ref,
   int configurationType: int ref,
-  int name: @expression ref
+  int name: @ast ref
 )
 
 configuration_definition_location(
@@ -1113,7 +1113,7 @@ configuration_definition_location(
 // https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.language.datastatementast?view=powershellsdk-7.3.0
 data_statement(
   unique int id: @data_statement,
-  int body: @statement_block ref
+  int body: @ast ref
 )
 
 data_statement_variable(

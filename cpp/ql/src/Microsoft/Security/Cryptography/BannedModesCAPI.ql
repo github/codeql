@@ -2,7 +2,7 @@
  * @name Weak cryptography
  * @description Finds explicit uses of block cipher chaining mode algorithms that are not approved. (CAPI)
  * @kind problem
- * @id cpp/weak-crypto/capi/banned-modes
+ * @id cpp/microsoft/public/weak-crypto/capi/banned-modes
  * @problem.severity error
  * @precision high
  * @tags security

@@ -96,11 +96,78 @@ module Stages {
   }
 
   /**
+   * The path resolution stage.
+   */
+  cached
+  module PathResolutionStage {
+    private import codeql.rust.internal.PathResolution
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the path resolution stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(resolvePath(_))
+      or
+      exists(any(ItemNode i).getASuccessorFull(_))
+      or
+      exists(any(ItemNode i).getASuccessorRec(_))
+      or
+      exists(any(ImplOrTraitItemNode i).getASelfPath())
+      or
+      any(TypeParamItemNode i).hasTraitBound()
+    }
+  }
+
+  /**
+   * The type inference stage.
+   */
+  cached
+  module TypeInferenceStage {
+    private import codeql.rust.internal.Type
+    private import codeql.rust.internal.TypeInference
+
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the type inference stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DO NOT USE!
+     *
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      exists(Type t)
+      or
+      exists(inferType(_))
+    }
+  }
+
+  /**
    * The data flow stage.
    */
   cached
   module DataFlowStage {
     private import codeql.rust.dataflow.internal.DataFlowImpl
+    private import codeql.rust.dataflow.internal.Node
+    private import codeql.rust.dataflow.internal.Content
     private import codeql.rust.dataflow.internal.TaintTrackingImpl
 
     /**
@@ -122,6 +189,10 @@ module Stages {
       exists(Node n)
       or
       RustTaintTracking::defaultAdditionalTaintStep(_, _, _)
+      or
+      exists(DataFlowCall call)
+      or
+      exists(Content content)
     }
   }
 }

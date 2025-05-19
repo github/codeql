@@ -22,11 +22,11 @@ def crate_repositories():
     """
     maybe(
         crates_vendor_remote_repository,
-        name = "vendor",
+        name = "vendor_ts",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.bazel"),
         defs_module = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:defs.bzl"),
     )
 
-    direct_deps = [struct(repo = "vendor", is_dev_dep = False)]
+    direct_deps = [struct(repo = "vendor_ts", is_dev_dep = False)]
     direct_deps.extend(_crate_repositories())
     return direct_deps

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psobject!", "Method[aspsobject]", "Argument[0]", "ReturnValue", "taint"]
+      
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psobject", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_baseobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_immediatebaseobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_members]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_methods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_properties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_typenames]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[psobject]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psobject", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      

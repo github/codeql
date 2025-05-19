@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.void*", "system.runtime.interopservices.swift.swifterror", "Member[value]"]
+    - ["system.void*", "system.runtime.interopservices.swift.swiftself", "Member[value]"]
+    - ["system.void*", "system.runtime.interopservices.swift.swiftindirectresult", "Member[value]"]

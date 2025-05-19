@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versionapril2005.endpointdiscoverymetadataapril2005", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.resolvecriteria", "system.servicemodel.discovery.versionapril2005.resolvecriteriaapril2005", "Method[toresolvecriteria].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versionapril2005.resolvecriteriaapril2005!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.endpointdiscoverymetadata", "system.servicemodel.discovery.versionapril2005.endpointdiscoverymetadataapril2005", "Method[toendpointdiscoverymetadata].ReturnValue"]
+    - ["system.servicemodel.discovery.discoverymessagesequence", "system.servicemodel.discovery.versionapril2005.discoverymessagesequenceapril2005", "Method[todiscoverymessagesequence].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versionapril2005.findcriteriaapril2005", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.findcriteria", "system.servicemodel.discovery.versionapril2005.findcriteriaapril2005", "Method[tofindcriteria].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versionapril2005.discoverymessagesequenceapril2005", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.versionapril2005.resolvecriteriaapril2005", "system.servicemodel.discovery.versionapril2005.resolvecriteriaapril2005!", "Method[fromresolvecriteria].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versionapril2005.resolvecriteriaapril2005", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.versionapril2005.discoverymessagesequenceapril2005", "system.servicemodel.discovery.versionapril2005.discoverymessagesequenceapril2005!", "Method[fromdiscoverymessagesequence].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versionapril2005.endpointdiscoverymetadataapril2005!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.versionapril2005.endpointdiscoverymetadataapril2005", "system.servicemodel.discovery.versionapril2005.endpointdiscoverymetadataapril2005!", "Method[fromendpointdiscoverymetadata].ReturnValue"]
+    - ["system.servicemodel.discovery.versionapril2005.findcriteriaapril2005", "system.servicemodel.discovery.versionapril2005.findcriteriaapril2005!", "Method[fromfindcriteria].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versionapril2005.discoverymessagesequenceapril2005!", "Method[getschema].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versionapril2005.findcriteriaapril2005!", "Method[getschema].ReturnValue"]

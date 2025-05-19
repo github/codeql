@@ -236,7 +236,7 @@ module DataFlowStackMake<LocationSig Location, DF::InputSig<Location> Lang> {
         exists(Flow::PathNode source, Flow::PathNode sink |
           flowStack = TFlowStack(source, sink) and
           frame.getPathNode() = DataFlowStack::getASuccessor*(source) and
-          DataFlowStack::getASuccessor(frame.getPathNode()) = sink
+          DataFlowStack::getASuccessor*(frame.getPathNode()) = sink
         )
       }
 

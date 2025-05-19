@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_classname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_classversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_cmdlet]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_moduleversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[get_privatedata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[initialize]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[initialize]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[initialize]", "Argument[2]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[initialize]", "Argument[3]", "Argument[this]", "taint"]
+      - ["microsoft.powershell.cmdletization.cmdletadapter", "Method[initialize]", "Argument[4].Element", "Argument[this]", "taint"]
+      

@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[unknown]"]
+    - ["system.collections.generic.iset<system.string>", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[uniquehostnamesuffixes]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[none]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[redacted]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[requestname]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[methodtype]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[dependencyname]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[requestmetadatakey]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[dependencyname]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[requestroute]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[serverapplicationnameheader]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[strict]"]
+    - ["system.collections.generic.iset<microsoft.extensions.http.diagnostics.requestmetadata>", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[requestmetadata]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[loose]"]
+    - ["microsoft.extensions.http.diagnostics.requestmetadata", "microsoft.extensions.http.diagnostics.ioutgoingrequestcontext", "Member[requestmetadata]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[clientapplicationnameheader]"]

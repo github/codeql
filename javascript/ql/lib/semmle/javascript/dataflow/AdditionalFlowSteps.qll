@@ -152,7 +152,7 @@ class LegacyFlowStep extends Unit {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  deprecated predicate step(
+  predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -207,7 +207,7 @@ module LegacyFlowStep {
    * transforming values with label `predlbl` to have label `succlbl`.
    */
   cached
-  deprecated predicate step(
+  predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -282,7 +282,7 @@ class SharedFlowStep extends Unit {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  deprecated predicate step(
+  predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {
@@ -364,7 +364,7 @@ module SharedFlowStep {
    * Holds if `pred` &rarr; `succ` should be considered a data flow edge
    * transforming values with label `predlbl` to have label `succlbl`.
    */
-  deprecated predicate step(
+  predicate step(
     DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
     DataFlow::FlowLabel succlbl
   ) {

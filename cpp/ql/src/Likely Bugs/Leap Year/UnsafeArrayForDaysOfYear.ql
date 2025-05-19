@@ -4,7 +4,7 @@
  *              An access on a leap year could result in buffer overflow bugs.
  * @kind problem
  * @problem.severity warning
- * @id cpp/leap-year/unsafe-array-for-days-of-the-year
+ * @id cpp/microsoft/public/leap-year/unsafe-array-for-days-of-the-year
  * @precision low
  * @tags leap-year
  *       correctness

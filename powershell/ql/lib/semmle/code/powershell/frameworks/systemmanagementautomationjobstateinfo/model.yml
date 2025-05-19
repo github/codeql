@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.jobstateinfo", "Method[jobstateinfo]", "Argument[1]", "Argument[this]", "taint"]
+      

@@ -14,7 +14,7 @@ local_path_override(
 
 # see https://registry.bazel.build/ for a list of available packages
 
-bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "rules_go", version = "0.50.1")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_nodejs", version = "6.2.0-codeql.1")
@@ -24,20 +24,20 @@ bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "abseil-cpp", version = "20240116.1", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
-bazel_dep(name = "rules_kotlin", version = "2.0.0-codeql.1")
+bazel_dep(name = "rules_kotlin", version = "2.1.3-codeql.1")
 bazel_dep(name = "gazelle", version = "0.40.0")
 bazel_dep(name = "rules_dotnet", version = "0.17.4")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
-bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "rules_rust", version = "0.58.0")
 bazel_dep(name = "zstd", version = "1.5.5.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
-RUST_EDITION = "2021"
+RUST_EDITION = "2024"
 
-RUST_VERSION = "1.82.0"
+RUST_VERSION = "1.85.0"
 
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(
@@ -53,29 +53,17 @@ use_repo(rust, "rust_toolchains")
 
 register_toolchains("@rust_toolchains//:all")
 
-rust_host_tools = use_extension("@rules_rust//rust:extensions.bzl", "rust_host_tools")
-
-# Don't download a second toolchain as host toolchain, make sure this is the same version as above
-# The host toolchain is used for vendoring dependencies.
-rust_host_tools.host_tools(
-    edition = RUST_EDITION,
-    version = RUST_VERSION,
-)
-
 # deps for python extractor
 # keep in sync by running `misc/bazel/3rdparty/update_cargo_deps.sh`
 py_deps = use_extension("//misc/bazel/3rdparty:py_deps_extension.bzl", "p")
 use_repo(
     py_deps,
-    "vendor__anyhow-1.0.44",
-    "vendor__cc-1.0.70",
-    "vendor__clap-2.33.3",
-    "vendor__regex-1.5.5",
-    "vendor__smallvec-1.6.1",
-    "vendor__string-interner-0.12.2",
-    "vendor__thiserror-1.0.29",
-    "vendor__tree-sitter-0.20.4",
-    "vendor__tree-sitter-graph-0.7.0",
+    "vendor_py__anyhow-1.0.95",
+    "vendor_py__cc-1.2.14",
+    "vendor_py__clap-4.5.30",
+    "vendor_py__regex-1.11.1",
+    "vendor_py__tree-sitter-0.20.4",
+    "vendor_py__tree-sitter-graph-0.7.0",
 )
 
 # deps for ruby+rust
@@ -83,58 +71,59 @@ use_repo(
 tree_sitter_extractors_deps = use_extension("//misc/bazel/3rdparty:tree_sitter_extractors_extension.bzl", "r")
 use_repo(
     tree_sitter_extractors_deps,
-    "vendor__anyhow-1.0.95",
-    "vendor__argfile-0.2.1",
-    "vendor__chrono-0.4.39",
-    "vendor__clap-4.5.26",
-    "vendor__dunce-1.0.5",
-    "vendor__either-1.13.0",
-    "vendor__encoding-0.2.33",
-    "vendor__figment-0.10.19",
-    "vendor__flate2-1.0.35",
-    "vendor__glob-0.3.2",
-    "vendor__globset-0.4.15",
-    "vendor__itertools-0.14.0",
-    "vendor__lazy_static-1.5.0",
-    "vendor__log-0.4.22",
-    "vendor__mustache-0.9.0",
-    "vendor__num-traits-0.2.19",
-    "vendor__num_cpus-1.16.0",
-    "vendor__proc-macro2-1.0.93",
-    "vendor__quote-1.0.38",
-    "vendor__ra_ap_base_db-0.0.258",
-    "vendor__ra_ap_cfg-0.0.258",
-    "vendor__ra_ap_hir-0.0.258",
-    "vendor__ra_ap_hir_def-0.0.258",
-    "vendor__ra_ap_hir_expand-0.0.258",
-    "vendor__ra_ap_ide_db-0.0.258",
-    "vendor__ra_ap_intern-0.0.258",
-    "vendor__ra_ap_load-cargo-0.0.258",
-    "vendor__ra_ap_parser-0.0.258",
-    "vendor__ra_ap_paths-0.0.258",
-    "vendor__ra_ap_project_model-0.0.258",
-    "vendor__ra_ap_span-0.0.258",
-    "vendor__ra_ap_stdx-0.0.258",
-    "vendor__ra_ap_syntax-0.0.258",
-    "vendor__ra_ap_vfs-0.0.258",
-    "vendor__rand-0.8.5",
-    "vendor__rayon-1.10.0",
-    "vendor__regex-1.11.1",
-    "vendor__serde-1.0.217",
-    "vendor__serde_json-1.0.135",
-    "vendor__serde_with-3.12.0",
-    "vendor__stderrlog-0.6.0",
-    "vendor__syn-2.0.96",
-    "vendor__toml-0.8.19",
-    "vendor__tracing-0.1.41",
-    "vendor__tracing-subscriber-0.3.19",
-    "vendor__tree-sitter-0.24.6",
-    "vendor__tree-sitter-embedded-template-0.23.2",
-    "vendor__tree-sitter-json-0.24.8",
-    "vendor__tree-sitter-ql-0.23.1",
-    "vendor__tree-sitter-ruby-0.23.1",
-    "vendor__triomphe-0.1.14",
-    "vendor__ungrammar-1.16.1",
+    "vendor_ts__anyhow-1.0.97",
+    "vendor_ts__argfile-0.2.1",
+    "vendor_ts__chalk-ir-0.100.0",
+    "vendor_ts__chrono-0.4.40",
+    "vendor_ts__clap-4.5.35",
+    "vendor_ts__dunce-1.0.5",
+    "vendor_ts__either-1.15.0",
+    "vendor_ts__encoding-0.2.33",
+    "vendor_ts__figment-0.10.19",
+    "vendor_ts__flate2-1.1.0",
+    "vendor_ts__glob-0.3.2",
+    "vendor_ts__globset-0.4.15",
+    "vendor_ts__itertools-0.14.0",
+    "vendor_ts__lazy_static-1.5.0",
+    "vendor_ts__mustache-0.9.0",
+    "vendor_ts__num-traits-0.2.19",
+    "vendor_ts__num_cpus-1.16.0",
+    "vendor_ts__proc-macro2-1.0.94",
+    "vendor_ts__quote-1.0.40",
+    "vendor_ts__ra_ap_base_db-0.0.273",
+    "vendor_ts__ra_ap_cfg-0.0.273",
+    "vendor_ts__ra_ap_hir-0.0.273",
+    "vendor_ts__ra_ap_hir_def-0.0.273",
+    "vendor_ts__ra_ap_hir_expand-0.0.273",
+    "vendor_ts__ra_ap_hir_ty-0.0.273",
+    "vendor_ts__ra_ap_ide_db-0.0.273",
+    "vendor_ts__ra_ap_intern-0.0.273",
+    "vendor_ts__ra_ap_load-cargo-0.0.273",
+    "vendor_ts__ra_ap_parser-0.0.273",
+    "vendor_ts__ra_ap_paths-0.0.273",
+    "vendor_ts__ra_ap_project_model-0.0.273",
+    "vendor_ts__ra_ap_span-0.0.273",
+    "vendor_ts__ra_ap_stdx-0.0.273",
+    "vendor_ts__ra_ap_syntax-0.0.273",
+    "vendor_ts__ra_ap_vfs-0.0.273",
+    "vendor_ts__rand-0.9.0",
+    "vendor_ts__rayon-1.10.0",
+    "vendor_ts__regex-1.11.1",
+    "vendor_ts__serde-1.0.219",
+    "vendor_ts__serde_json-1.0.140",
+    "vendor_ts__serde_with-3.12.0",
+    "vendor_ts__syn-2.0.100",
+    "vendor_ts__toml-0.8.20",
+    "vendor_ts__tracing-0.1.41",
+    "vendor_ts__tracing-flame-0.2.0",
+    "vendor_ts__tracing-subscriber-0.3.19",
+    "vendor_ts__tree-sitter-0.24.6",
+    "vendor_ts__tree-sitter-embedded-template-0.23.2",
+    "vendor_ts__tree-sitter-json-0.24.8",
+    "vendor_ts__tree-sitter-ql-0.23.1",
+    "vendor_ts__tree-sitter-ruby-0.23.1",
+    "vendor_ts__triomphe-0.1.14",
+    "vendor_ts__ungrammar-1.16.1",
 )
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -166,7 +155,7 @@ use_repo(csharp_main_extension, "paket.main")
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "codegen_deps",
-    python_version = "3.11",
+    python_version = "3.12",
     requirements_lock = "//misc/codegen:requirements_lock.txt",
 )
 use_repo(pip, "codegen_deps")
@@ -204,10 +193,6 @@ use_repo(
     kotlin_extractor_deps,
     "codeql_kotlin_defaults",
     "codeql_kotlin_embeddable",
-    "kotlin-compiler-1.5.0",
-    "kotlin-compiler-1.5.10",
-    "kotlin-compiler-1.5.20",
-    "kotlin-compiler-1.5.30",
     "kotlin-compiler-1.6.0",
     "kotlin-compiler-1.6.20",
     "kotlin-compiler-1.7.0",
@@ -218,10 +203,8 @@ use_repo(
     "kotlin-compiler-2.0.0-RC1",
     "kotlin-compiler-2.0.20-Beta2",
     "kotlin-compiler-2.1.0-Beta1",
-    "kotlin-compiler-embeddable-1.5.0",
-    "kotlin-compiler-embeddable-1.5.10",
-    "kotlin-compiler-embeddable-1.5.20",
-    "kotlin-compiler-embeddable-1.5.30",
+    "kotlin-compiler-2.1.20-Beta1",
+    "kotlin-compiler-2.2.0-Beta1",
     "kotlin-compiler-embeddable-1.6.0",
     "kotlin-compiler-embeddable-1.6.20",
     "kotlin-compiler-embeddable-1.7.0",
@@ -232,10 +215,8 @@ use_repo(
     "kotlin-compiler-embeddable-2.0.0-RC1",
     "kotlin-compiler-embeddable-2.0.20-Beta2",
     "kotlin-compiler-embeddable-2.1.0-Beta1",
-    "kotlin-stdlib-1.5.0",
-    "kotlin-stdlib-1.5.10",
-    "kotlin-stdlib-1.5.20",
-    "kotlin-stdlib-1.5.30",
+    "kotlin-compiler-embeddable-2.1.20-Beta1",
+    "kotlin-compiler-embeddable-2.2.0-Beta1",
     "kotlin-stdlib-1.6.0",
     "kotlin-stdlib-1.6.20",
     "kotlin-stdlib-1.7.0",
@@ -246,10 +227,12 @@ use_repo(
     "kotlin-stdlib-2.0.0-RC1",
     "kotlin-stdlib-2.0.20-Beta2",
     "kotlin-stdlib-2.1.0-Beta1",
+    "kotlin-stdlib-2.1.20-Beta1",
+    "kotlin-stdlib-2.2.0-Beta1",
 )
 
 go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")
-go_sdk.download(version = "1.23.1")
+go_sdk.download(version = "1.24.0")
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
