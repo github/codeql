@@ -128,7 +128,7 @@ fn test_pin() {
         let mut ms = MyStruct { val: source(42) };
         let mut pin5 = Pin::new_unchecked(&ms);
         sink(pin5.val); // $ MISSING: hasValueFlow=42
-        sink(Pin::into_inner_unchecked(pin5).val); // $ MISSING: hasValueFlow=40
+        sink(Pin::into_inner_unchecked(pin5).val); // $ MISSING: hasValueFlow=42
     }
 
     {
