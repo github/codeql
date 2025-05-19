@@ -196,11 +196,11 @@ abstract class ItemNode extends Locatable {
     this = result.(ImplOrTraitItemNode).getAnItemInSelfScope()
     or
     name = "crate" and
-    this = result.(CrateItemNode).getARootModuleNode()
+    this = result.(CrateItemNode).getASourceFile()
     or
     // todo: implement properly
     name = "$crate" and
-    result = any(CrateItemNode crate | this = crate.getARootModuleNode()).(Crate).getADependency*() and
+    result = any(CrateItemNode crate | this = crate.getASourceFile()).(Crate).getADependency*() and
     result.(CrateItemNode).isPotentialDollarCrateTarget()
   }
 
@@ -281,12 +281,6 @@ abstract private class ModuleLikeNode extends ItemNode {
       not mid instanceof ModuleLikeNode
     )
   }
-
-  /**
-   * Holds if this is a root module, meaning either a source file or
-   * the entry module of a crate.
-   */
-  predicate isRoot() { this instanceof SourceFileItemNode }
 }
 
 private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
@@ -312,16 +306,13 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
 
 class CrateItemNode extends ItemNode instanceof Crate {
   /**
-   * Gets the module node that defines this crate.
-   *
-   * This is either a source file, when the crate is defined in source code,
-   * or a module, when the crate is defined in a dependency.
+   * Gets the source file that defines this crate.
    */
   pragma[nomagic]
-  ModuleLikeNode getModuleNode() { result = super.getSourceFile() }
+  SourceFileItemNode getSourceFile() { result = super.getSourceFile() }
 
   /**
-   * Gets a source file that belongs to this crate, if any.
+   * Gets a source file that belongs to this crate.
    *
    * This is calculated as those source files that can be reached from the entry
    * file of this crate using zero or more `mod` imports, without going through
@@ -338,11 +329,6 @@ class CrateItemNode extends ItemNode instanceof Crate {
       not result = any(Crate other).getSourceFile()
     )
   }
-
-  /**
-   * Gets a root module node belonging to this crate.
-   */
-  ModuleLikeNode getARootModuleNode() { result = this.getASourceFile() }
 
   pragma[nomagic]
   predicate isPotentialDollarCrateTarget() {
@@ -985,7 +971,7 @@ private predicate modImport0(Module m, string name, Folder lookup) {
     // sibling import
     lookup = parent and
     (
-      m.getFile() = any(CrateItemNode c).getModuleNode().(SourceFileItemNode).getFile()
+      m.getFile() = any(CrateItemNode c).getSourceFile().getFile()
       or
       m.getFile().getBaseName() = "mod.rs"
     )
@@ -1073,7 +1059,7 @@ private predicate fileImportEdge(Module mod, string name, ItemNode item) {
  */
 pragma[nomagic]
 private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
-  i = c.getModuleNode().getASuccessorRec(name) and
+  i = c.getSourceFile().getASuccessorRec(name) and
   not i instanceof Crate
 }
 
@@ -1081,17 +1067,10 @@ private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
  * Holds if `m` depends on crate `dep` named `name`.
  */
 private predicate crateDependencyEdge(ModuleLikeNode m, string name, CrateItemNode dep) {
-  exists(CrateItemNode c | dep = c.(Crate).getDependency(name) |
-    // entry module/entry source file
-    m = c.getModuleNode()
-    or
-    // entry/transitive source file
+  exists(CrateItemNode c |
+    dep = c.(Crate).getDependency(name) and
     m = c.getASourceFile()
   )
-  or
-  // paths inside the crate graph use the name of the crate itself as prefix,
-  // although that is not valid in Rust
-  dep = any(Crate c | name = c.getName() and m = c.getSourceFile())
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -1159,9 +1138,9 @@ class RelevantPath extends Path {
 
 private predicate isModule(ItemNode m) { m instanceof Module }
 
-/** Holds if root module `root` contains the module `m`. */
-private predicate rootHasModule(ItemNode root, ItemNode m) =
-  doublyBoundedFastTC(hasChild/2, isRoot/1, isModule/1)(root, m)
+/** Holds if source file `source` contains the module `m`. */
+private predicate rootHasModule(SourceFileItemNode source, ItemNode m) =
+  doublyBoundedFastTC(hasChild/2, isSourceFile/1, isModule/1)(source, m)
 
 pragma[nomagic]
 private ItemNode getOuterScope(ItemNode i) {
@@ -1214,14 +1193,14 @@ private ItemNode getASuccessorFull(ItemNode pred, string name, Namespace ns) {
   ns = result.getNamespace()
 }
 
-private predicate isRoot(ItemNode root) { root.(ModuleLikeNode).isRoot() }
+private predicate isSourceFile(ItemNode source) { source instanceof SourceFileItemNode }
 
 private predicate hasCratePath(ItemNode i) { any(RelevantPath path).isCratePath(_, i) }
 
 private predicate hasChild(ItemNode parent, ItemNode child) { child.getImmediateParent() = parent }
 
-private predicate rootHasCratePathTc(ItemNode i1, ItemNode i2) =
-  doublyBoundedFastTC(hasChild/2, isRoot/1, hasCratePath/1)(i1, i2)
+private predicate sourceFileHasCratePathTc(ItemNode i1, ItemNode i2) =
+  doublyBoundedFastTC(hasChild/2, isSourceFile/1, hasCratePath/1)(i1, i2)
 
 /**
  * Holds if the unqualified path `p` references a keyword item named `name`, and
@@ -1231,10 +1210,10 @@ pragma[nomagic]
 private predicate keywordLookup(ItemNode encl, string name, Namespace ns, RelevantPath p) {
   // For `($)crate`, jump directly to the root module
   exists(ItemNode i | p.isCratePath(name, i) |
-    encl.(ModuleLikeNode).isRoot() and
+    encl instanceof SourceFile and
     encl = i
     or
-    rootHasCratePathTc(encl, i)
+    sourceFileHasCratePathTc(encl, i)
   )
   or
   name = ["super", "self"] and
@@ -1449,12 +1428,8 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
 private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 pragma[nomagic]
-private predicate builtinEdge(ModuleLikeNode m, string name, ItemNode i) {
-  (
-    m instanceof SourceFile
-    or
-    m = any(CrateItemNode c).getModuleNode()
-  ) and
+private predicate builtinEdge(SourceFile source, string name, ItemNode i) {
+  exists(source) and
   exists(SourceFileItemNode builtins |
     builtins.getFile().getParentContainer() instanceof Builtins::BuiltinsFolder and
     i = builtins.getASuccessorRec(name)
