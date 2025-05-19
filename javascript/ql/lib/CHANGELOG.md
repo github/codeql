@@ -1,3 +1,11 @@
+## 2.6.3
+
+### Minor Analysis Improvements
+
+* Enhanced modeling of the [fastify](https://www.npmjs.com/package/fastify) framework to support the `all` route handler method.
+* Improved modeling of the [`shelljs`](https://www.npmjs.com/package/shelljs) and [`async-shelljs`](https://www.npmjs.com/package/async-shelljs) libraries by adding support for the `which`, `cmd`, `asyncExec` and `env`.
+* Added support for the `fastify` `addHook` method.
+
 ## 2.6.2
 
 No user-facing changes.

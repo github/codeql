@@ -26,7 +26,7 @@ query predicate require(Require r) { any() }
 
 query predicate requireImport(Require r, string path, Module mod) {
   exists(string fullpath, string prefix |
-    fullpath = r.getImportedPath().getValue() and
+    fullpath = r.getImportedPathString() and
     sourceLocationPrefix(prefix) and
     path = fullpath.replaceAll(prefix, "") and
     mod = r.getImportedModule()

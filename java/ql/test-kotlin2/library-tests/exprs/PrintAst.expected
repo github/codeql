@@ -21,7 +21,54 @@ delegatedProperties.kt:
 #   60|             0: [VarAccess] DelegatedPropertiesKt.topLevelInt
 #   60|               -1: [TypeAccess] DelegatedPropertiesKt
 #   60|             1: [VarAccess] <set-?>
-#   87|     5: [ExtensionMethod] setExtDelegated
+#   87|     5: [ExtensionMethod] getExtDelegated
+#   87|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   87|         0: [Parameter] <this>
+#   87|           0: [TypeAccess] MyClass
+#   87|       5: [BlockStmt] { ... }
+#   87|         0: [ReturnStmt] return ...
+#   87|           0: [MethodCall] getValue(...)
+#   87|             -2: [TypeAccess] Integer
+#   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
+#   87|               -1: [TypeAccess] DelegatedPropertiesKt
+#   87|             1: [ExtensionReceiverAccess] this
+#   87|             2: [PropertyRefExpr] ...::...
+#   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   87|                 1: [Constructor] 
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [SuperConstructorInvocationStmt] super(...)
+#   87|                 2: [Method] get
+#-----|                   4: (Parameters)
+#   87|                     0: [Parameter] a0
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [ReturnStmt] return ...
+#   87|                       0: [MethodCall] getExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
+#   87|                         0: [VarAccess] a0
+#   87|                 3: [Method] invoke
+#-----|                   4: (Parameters)
+#   87|                     0: [Parameter] a0
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [ReturnStmt] return ...
+#   87|                       0: [MethodCall] get(...)
+#   87|                         -1: [ThisAccess] this
+#   87|                         0: [VarAccess] a0
+#   87|                 4: [Method] set
+#-----|                   4: (Parameters)
+#   87|                     0: [Parameter] a0
+#   87|                     1: [Parameter] a1
+#   87|                   5: [BlockStmt] { ... }
+#   87|                     0: [ReturnStmt] return ...
+#   87|                       0: [MethodCall] setExtDelegated(...)
+#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
+#   87|                         0: [VarAccess] a0
+#   87|                         1: [VarAccess] a1
+#   87|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   87|                 0: [TypeAccess] MyClass
+#   87|                 1: [TypeAccess] Integer
+#   87|     6: [ExtensionMethod] setExtDelegated
 #   87|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   87|         0: [Parameter] <this>
@@ -71,7 +118,7 @@ delegatedProperties.kt:
 #   87|                 0: [TypeAccess] MyClass
 #   87|                 1: [TypeAccess] Integer
 #   87|             3: [VarAccess] <set-?>
-#   87|     6: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegateMyClass;
+#   87|     7: [FieldDeclaration] KMutableProperty0<Integer> extDelegated$delegateMyClass;
 #   87|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   87|         0: [TypeAccess] Integer
 #   87|       0: [PropertyRefExpr] ...::...
@@ -99,53 +146,6 @@ delegatedProperties.kt:
 #   87|                   0: [VarAccess] a0
 #   87|         -3: [TypeAccess] KMutableProperty0<Integer>
 #   87|           0: [TypeAccess] Integer
-#   87|     7: [ExtensionMethod] getExtDelegated
-#   87|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   87|         0: [Parameter] <this>
-#   87|           0: [TypeAccess] MyClass
-#   87|       5: [BlockStmt] { ... }
-#   87|         0: [ReturnStmt] return ...
-#   87|           0: [MethodCall] getValue(...)
-#   87|             -2: [TypeAccess] Integer
-#   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
-#   87|               -1: [TypeAccess] DelegatedPropertiesKt
-#   87|             1: [ExtensionReceiverAccess] this
-#   87|             2: [PropertyRefExpr] ...::...
-#   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   87|                 1: [Constructor] 
-#   87|                   5: [BlockStmt] { ... }
-#   87|                     0: [SuperConstructorInvocationStmt] super(...)
-#   87|                 2: [Method] get
-#-----|                   4: (Parameters)
-#   87|                     0: [Parameter] a0
-#   87|                   5: [BlockStmt] { ... }
-#   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodCall] getExtDelegated(...)
-#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
-#   87|                         0: [VarAccess] a0
-#   87|                 3: [Method] invoke
-#-----|                   4: (Parameters)
-#   87|                     0: [Parameter] a0
-#   87|                   5: [BlockStmt] { ... }
-#   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodCall] get(...)
-#   87|                         -1: [ThisAccess] this
-#   87|                         0: [VarAccess] a0
-#   87|                 4: [Method] set
-#-----|                   4: (Parameters)
-#   87|                     0: [Parameter] a0
-#   87|                     1: [Parameter] a1
-#   87|                   5: [BlockStmt] { ... }
-#   87|                     0: [ReturnStmt] return ...
-#   87|                       0: [MethodCall] setExtDelegated(...)
-#   87|                         -1: [TypeAccess] DelegatedPropertiesKt
-#   87|                         0: [VarAccess] a0
-#   87|                         1: [VarAccess] a1
-#   87|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   87|                 0: [TypeAccess] MyClass
-#   87|                 1: [TypeAccess] Integer
 #    4|   2: [Class] ClassProp1
 #    4|     1: [Constructor] ClassProp1
 #    4|       5: [BlockStmt] { ... }
@@ -637,7 +637,47 @@ delegatedProperties.kt:
 #   39|                                   -1: [ThisAccess] this
 #   39|                         -3: [TypeAccess] KProperty0<Integer>
 #   39|                           0: [TypeAccess] Integer
-#   42|     3: [Method] setVarResource0
+#   42|     3: [Method] getVarResource0
+#   42|       3: [TypeAccess] int
+#   42|       5: [BlockStmt] { ... }
+#   42|         0: [ReturnStmt] return ...
+#   42|           0: [MethodCall] getValue(...)
+#   42|             -1: [VarAccess] this.varResource0$delegate
+#   42|               -1: [ThisAccess] this
+#   42|             0: [ThisAccess] this
+#   42|             1: [PropertyRefExpr] ...::...
+#   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
+#   42|                 1: [Constructor] 
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [SuperConstructorInvocationStmt] super(...)
+#   42|                 2: [Method] get
+#-----|                   4: (Parameters)
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodCall] getVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                 3: [Method] invoke
+#-----|                   4: (Parameters)
+#   42|                     0: [Parameter] a0
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodCall] get(...)
+#   42|                         -1: [ThisAccess] this
+#   42|                         0: [VarAccess] a0
+#   42|                 4: [Method] set
+#-----|                   4: (Parameters)
+#   42|                     0: [Parameter] a0
+#   42|                     1: [Parameter] a1
+#   42|                   5: [BlockStmt] { ... }
+#   42|                     0: [ReturnStmt] return ...
+#   42|                       0: [MethodCall] setVarResource0(...)
+#   42|                         -1: [VarAccess] a0
+#   42|                         0: [VarAccess] a1
+#   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
+#   42|                 0: [TypeAccess] Owner
+#   42|                 1: [TypeAccess] Integer
+#   42|     4: [Method] setVarResource0
 #   42|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   42|         0: [Parameter] <set-?>
@@ -681,50 +721,10 @@ delegatedProperties.kt:
 #   42|                 0: [TypeAccess] Owner
 #   42|                 1: [TypeAccess] Integer
 #   42|             2: [VarAccess] <set-?>
-#   42|     4: [FieldDeclaration] ResourceDelegate varResource0$delegate;
+#   42|     5: [FieldDeclaration] ResourceDelegate varResource0$delegate;
 #   42|       -1: [TypeAccess] ResourceDelegate
 #   42|       0: [ClassInstanceExpr] new ResourceDelegate(...)
 #   42|         -3: [TypeAccess] ResourceDelegate
-#   42|     5: [Method] getVarResource0
-#   42|       3: [TypeAccess] int
-#   42|       5: [BlockStmt] { ... }
-#   42|         0: [ReturnStmt] return ...
-#   42|           0: [MethodCall] getValue(...)
-#   42|             -1: [VarAccess] this.varResource0$delegate
-#   42|               -1: [ThisAccess] this
-#   42|             0: [ThisAccess] this
-#   42|             1: [PropertyRefExpr] ...::...
-#   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
-#   42|                 1: [Constructor] 
-#   42|                   5: [BlockStmt] { ... }
-#   42|                     0: [SuperConstructorInvocationStmt] super(...)
-#   42|                 2: [Method] get
-#-----|                   4: (Parameters)
-#   42|                     0: [Parameter] a0
-#   42|                   5: [BlockStmt] { ... }
-#   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodCall] getVarResource0(...)
-#   42|                         -1: [VarAccess] a0
-#   42|                 3: [Method] invoke
-#-----|                   4: (Parameters)
-#   42|                     0: [Parameter] a0
-#   42|                   5: [BlockStmt] { ... }
-#   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodCall] get(...)
-#   42|                         -1: [ThisAccess] this
-#   42|                         0: [VarAccess] a0
-#   42|                 4: [Method] set
-#-----|                   4: (Parameters)
-#   42|                     0: [Parameter] a0
-#   42|                     1: [Parameter] a1
-#   42|                   5: [BlockStmt] { ... }
-#   42|                     0: [ReturnStmt] return ...
-#   42|                       0: [MethodCall] setVarResource0(...)
-#   42|                         -1: [VarAccess] a0
-#   42|                         0: [VarAccess] a1
-#   42|               -3: [TypeAccess] KMutableProperty1<Owner,Integer>
-#   42|                 0: [TypeAccess] Owner
-#   42|                 1: [TypeAccess] Integer
 #   45|   5: [Class] ResourceDelegate
 #   45|     1: [Constructor] ResourceDelegate
 #   45|       5: [BlockStmt] { ... }
@@ -882,7 +882,49 @@ delegatedProperties.kt:
 #   65|         0: [ReturnStmt] return ...
 #   65|           0: [VarAccess] this.anotherClassInstance
 #   65|             -1: [ThisAccess] this
-#   66|     7: [Method] setDelegatedToMember1
+#   66|     7: [Method] getDelegatedToMember1
+#   66|       3: [TypeAccess] int
+#   66|       5: [BlockStmt] { ... }
+#   66|         0: [ReturnStmt] return ...
+#   66|           0: [MethodCall] getValue(...)
+#   66|             -2: [TypeAccess] Integer
+#   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   66|             0: [VarAccess] this.delegatedToMember1$delegate
+#   66|               -1: [ThisAccess] this
+#   66|             1: [ThisAccess] this
+#   66|             2: [PropertyRefExpr] ...::...
+#   66|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   66|                 1: [Constructor] 
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [SuperConstructorInvocationStmt] super(...)
+#   66|                 2: [Method] get
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodCall] getDelegatedToMember1(...)
+#   66|                         -1: [VarAccess] a0
+#   66|                 3: [Method] invoke
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodCall] get(...)
+#   66|                         -1: [ThisAccess] this
+#   66|                         0: [VarAccess] a0
+#   66|                 4: [Method] set
+#-----|                   4: (Parameters)
+#   66|                     0: [Parameter] a0
+#   66|                     1: [Parameter] a1
+#   66|                   5: [BlockStmt] { ... }
+#   66|                     0: [ReturnStmt] return ...
+#   66|                       0: [MethodCall] setDelegatedToMember1(...)
+#   66|                         -1: [VarAccess] a0
+#   66|                         0: [VarAccess] a1
+#   66|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   66|                 0: [TypeAccess] MyClass
+#   66|                 1: [TypeAccess] Integer
+#   66|     8: [Method] setDelegatedToMember1
 #   66|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   66|         0: [Parameter] <set-?>
@@ -928,7 +970,7 @@ delegatedProperties.kt:
 #   66|                 0: [TypeAccess] MyClass
 #   66|                 1: [TypeAccess] Integer
 #   66|             3: [VarAccess] <set-?>
-#   66|     8: [FieldDeclaration] KMutableProperty0<Integer> delegatedToMember1$delegate;
+#   66|     9: [FieldDeclaration] KMutableProperty0<Integer> delegatedToMember1$delegate;
 #   66|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   66|         0: [TypeAccess] Integer
 #   66|       0: [PropertyRefExpr] ...::...
@@ -969,49 +1011,50 @@ delegatedProperties.kt:
 #   66|           0: [TypeAccess] Integer
 #   66|         0: [ThisAccess] MyClass.this
 #   66|           0: [TypeAccess] MyClass
-#   66|     9: [Method] getDelegatedToMember1
-#   66|       3: [TypeAccess] int
-#   66|       5: [BlockStmt] { ... }
-#   66|         0: [ReturnStmt] return ...
-#   66|           0: [MethodCall] getValue(...)
-#   66|             -2: [TypeAccess] Integer
-#   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   66|             0: [VarAccess] this.delegatedToMember1$delegate
-#   66|               -1: [ThisAccess] this
-#   66|             1: [ThisAccess] this
-#   66|             2: [PropertyRefExpr] ...::...
-#   66|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   66|                 1: [Constructor] 
-#   66|                   5: [BlockStmt] { ... }
-#   66|                     0: [SuperConstructorInvocationStmt] super(...)
-#   66|                 2: [Method] get
+#   67|     10: [Method] getDelegatedToMember2
+#   67|       3: [TypeAccess] int
+#   67|       5: [BlockStmt] { ... }
+#   67|         0: [ReturnStmt] return ...
+#   67|           0: [MethodCall] getValue(...)
+#   67|             -3: [TypeAccess] Integer
+#   67|             -2: [TypeAccess] MyClass
+#   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   67|             0: [VarAccess] this.delegatedToMember2$delegate
+#   67|               -1: [ThisAccess] this
+#   67|             1: [ThisAccess] this
+#   67|             2: [PropertyRefExpr] ...::...
+#   67|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   67|                 1: [Constructor] 
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [SuperConstructorInvocationStmt] super(...)
+#   67|                 2: [Method] get
 #-----|                   4: (Parameters)
-#   66|                     0: [Parameter] a0
-#   66|                   5: [BlockStmt] { ... }
-#   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodCall] getDelegatedToMember1(...)
-#   66|                         -1: [VarAccess] a0
-#   66|                 3: [Method] invoke
+#   67|                     0: [Parameter] a0
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [ReturnStmt] return ...
+#   67|                       0: [MethodCall] getDelegatedToMember2(...)
+#   67|                         -1: [VarAccess] a0
+#   67|                 3: [Method] invoke
 #-----|                   4: (Parameters)
-#   66|                     0: [Parameter] a0
-#   66|                   5: [BlockStmt] { ... }
-#   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodCall] get(...)
-#   66|                         -1: [ThisAccess] this
-#   66|                         0: [VarAccess] a0
-#   66|                 4: [Method] set
+#   67|                     0: [Parameter] a0
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [ReturnStmt] return ...
+#   67|                       0: [MethodCall] get(...)
+#   67|                         -1: [ThisAccess] this
+#   67|                         0: [VarAccess] a0
+#   67|                 4: [Method] set
 #-----|                   4: (Parameters)
-#   66|                     0: [Parameter] a0
-#   66|                     1: [Parameter] a1
-#   66|                   5: [BlockStmt] { ... }
-#   66|                     0: [ReturnStmt] return ...
-#   66|                       0: [MethodCall] setDelegatedToMember1(...)
-#   66|                         -1: [VarAccess] a0
-#   66|                         0: [VarAccess] a1
-#   66|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   66|                 0: [TypeAccess] MyClass
-#   66|                 1: [TypeAccess] Integer
-#   67|     10: [Method] setDelegatedToMember2
+#   67|                     0: [Parameter] a0
+#   67|                     1: [Parameter] a1
+#   67|                   5: [BlockStmt] { ... }
+#   67|                     0: [ReturnStmt] return ...
+#   67|                       0: [MethodCall] setDelegatedToMember2(...)
+#   67|                         -1: [VarAccess] a0
+#   67|                         0: [VarAccess] a1
+#   67|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   67|                 0: [TypeAccess] MyClass
+#   67|                 1: [TypeAccess] Integer
+#   67|     11: [Method] setDelegatedToMember2
 #   67|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   67|         0: [Parameter] <set-?>
@@ -1058,7 +1101,7 @@ delegatedProperties.kt:
 #   67|                 0: [TypeAccess] MyClass
 #   67|                 1: [TypeAccess] Integer
 #   67|             3: [VarAccess] <set-?>
-#   67|     11: [FieldDeclaration] KMutableProperty1<MyClass,Integer> delegatedToMember2$delegate;
+#   67|     12: [FieldDeclaration] KMutableProperty1<MyClass,Integer> delegatedToMember2$delegate;
 #   67|       -1: [TypeAccess] KMutableProperty1<MyClass,Integer>
 #   67|         0: [TypeAccess] MyClass
 #   67|         1: [TypeAccess] Integer
@@ -1094,50 +1137,49 @@ delegatedProperties.kt:
 #   67|         -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
 #   67|           0: [TypeAccess] MyClass
 #   67|           1: [TypeAccess] Integer
-#   67|     12: [Method] getDelegatedToMember2
-#   67|       3: [TypeAccess] int
-#   67|       5: [BlockStmt] { ... }
-#   67|         0: [ReturnStmt] return ...
-#   67|           0: [MethodCall] getValue(...)
-#   67|             -3: [TypeAccess] Integer
-#   67|             -2: [TypeAccess] MyClass
-#   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   67|             0: [VarAccess] this.delegatedToMember2$delegate
-#   67|               -1: [ThisAccess] this
-#   67|             1: [ThisAccess] this
-#   67|             2: [PropertyRefExpr] ...::...
-#   67|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   67|                 1: [Constructor] 
-#   67|                   5: [BlockStmt] { ... }
-#   67|                     0: [SuperConstructorInvocationStmt] super(...)
-#   67|                 2: [Method] get
+#   69|     13: [Method] getDelegatedToExtMember1
+#   69|       3: [TypeAccess] int
+#   69|       5: [BlockStmt] { ... }
+#   69|         0: [ReturnStmt] return ...
+#   69|           0: [MethodCall] getValue(...)
+#   69|             -2: [TypeAccess] Integer
+#   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
+#   69|               -1: [ThisAccess] this
+#   69|             1: [ThisAccess] this
+#   69|             2: [PropertyRefExpr] ...::...
+#   69|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   69|                 1: [Constructor] 
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [SuperConstructorInvocationStmt] super(...)
+#   69|                 2: [Method] get
 #-----|                   4: (Parameters)
-#   67|                     0: [Parameter] a0
-#   67|                   5: [BlockStmt] { ... }
-#   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodCall] getDelegatedToMember2(...)
-#   67|                         -1: [VarAccess] a0
-#   67|                 3: [Method] invoke
+#   69|                     0: [Parameter] a0
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [MethodCall] getDelegatedToExtMember1(...)
+#   69|                         -1: [VarAccess] a0
+#   69|                 3: [Method] invoke
 #-----|                   4: (Parameters)
-#   67|                     0: [Parameter] a0
-#   67|                   5: [BlockStmt] { ... }
-#   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodCall] get(...)
-#   67|                         -1: [ThisAccess] this
-#   67|                         0: [VarAccess] a0
-#   67|                 4: [Method] set
+#   69|                     0: [Parameter] a0
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [MethodCall] get(...)
+#   69|                         -1: [ThisAccess] this
+#   69|                         0: [VarAccess] a0
+#   69|                 4: [Method] set
 #-----|                   4: (Parameters)
-#   67|                     0: [Parameter] a0
-#   67|                     1: [Parameter] a1
-#   67|                   5: [BlockStmt] { ... }
-#   67|                     0: [ReturnStmt] return ...
-#   67|                       0: [MethodCall] setDelegatedToMember2(...)
-#   67|                         -1: [VarAccess] a0
-#   67|                         0: [VarAccess] a1
-#   67|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   67|                 0: [TypeAccess] MyClass
-#   67|                 1: [TypeAccess] Integer
-#   69|     13: [Method] setDelegatedToExtMember1
+#   69|                     0: [Parameter] a0
+#   69|                     1: [Parameter] a1
+#   69|                   5: [BlockStmt] { ... }
+#   69|                     0: [ReturnStmt] return ...
+#   69|                       0: [MethodCall] setDelegatedToExtMember1(...)
+#   69|                         -1: [VarAccess] a0
+#   69|                         0: [VarAccess] a1
+#   69|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   69|                 0: [TypeAccess] MyClass
+#   69|                 1: [TypeAccess] Integer
+#   69|     14: [Method] setDelegatedToExtMember1
 #   69|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   69|         0: [Parameter] <set-?>
@@ -1183,7 +1225,7 @@ delegatedProperties.kt:
 #   69|                 0: [TypeAccess] MyClass
 #   69|                 1: [TypeAccess] Integer
 #   69|             3: [VarAccess] <set-?>
-#   69|     14: [FieldDeclaration] KMutableProperty0<Integer> delegatedToExtMember1$delegate;
+#   69|     15: [FieldDeclaration] KMutableProperty0<Integer> delegatedToExtMember1$delegate;
 #   69|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   69|         0: [TypeAccess] Integer
 #   69|       0: [PropertyRefExpr] ...::...
@@ -1226,49 +1268,50 @@ delegatedProperties.kt:
 #   69|           0: [TypeAccess] Integer
 #   69|         0: [ThisAccess] MyClass.this
 #   69|           0: [TypeAccess] MyClass
-#   69|     15: [Method] getDelegatedToExtMember1
-#   69|       3: [TypeAccess] int
-#   69|       5: [BlockStmt] { ... }
-#   69|         0: [ReturnStmt] return ...
-#   69|           0: [MethodCall] getValue(...)
-#   69|             -2: [TypeAccess] Integer
-#   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
-#   69|               -1: [ThisAccess] this
-#   69|             1: [ThisAccess] this
-#   69|             2: [PropertyRefExpr] ...::...
-#   69|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   69|                 1: [Constructor] 
-#   69|                   5: [BlockStmt] { ... }
-#   69|                     0: [SuperConstructorInvocationStmt] super(...)
-#   69|                 2: [Method] get
+#   70|     16: [Method] getDelegatedToExtMember2
+#   70|       3: [TypeAccess] int
+#   70|       5: [BlockStmt] { ... }
+#   70|         0: [ReturnStmt] return ...
+#   70|           0: [MethodCall] getValue(...)
+#   70|             -3: [TypeAccess] Integer
+#   70|             -2: [TypeAccess] MyClass
+#   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   70|             0: [VarAccess] this.delegatedToExtMember2$delegate
+#   70|               -1: [ThisAccess] this
+#   70|             1: [ThisAccess] this
+#   70|             2: [PropertyRefExpr] ...::...
+#   70|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   70|                 1: [Constructor] 
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [SuperConstructorInvocationStmt] super(...)
+#   70|                 2: [Method] get
 #-----|                   4: (Parameters)
-#   69|                     0: [Parameter] a0
-#   69|                   5: [BlockStmt] { ... }
-#   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodCall] getDelegatedToExtMember1(...)
-#   69|                         -1: [VarAccess] a0
-#   69|                 3: [Method] invoke
+#   70|                     0: [Parameter] a0
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [ReturnStmt] return ...
+#   70|                       0: [MethodCall] getDelegatedToExtMember2(...)
+#   70|                         -1: [VarAccess] a0
+#   70|                 3: [Method] invoke
 #-----|                   4: (Parameters)
-#   69|                     0: [Parameter] a0
-#   69|                   5: [BlockStmt] { ... }
-#   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodCall] get(...)
-#   69|                         -1: [ThisAccess] this
-#   69|                         0: [VarAccess] a0
-#   69|                 4: [Method] set
+#   70|                     0: [Parameter] a0
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [ReturnStmt] return ...
+#   70|                       0: [MethodCall] get(...)
+#   70|                         -1: [ThisAccess] this
+#   70|                         0: [VarAccess] a0
+#   70|                 4: [Method] set
 #-----|                   4: (Parameters)
-#   69|                     0: [Parameter] a0
-#   69|                     1: [Parameter] a1
-#   69|                   5: [BlockStmt] { ... }
-#   69|                     0: [ReturnStmt] return ...
-#   69|                       0: [MethodCall] setDelegatedToExtMember1(...)
-#   69|                         -1: [VarAccess] a0
-#   69|                         0: [VarAccess] a1
-#   69|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   69|                 0: [TypeAccess] MyClass
-#   69|                 1: [TypeAccess] Integer
-#   70|     16: [Method] setDelegatedToExtMember2
+#   70|                     0: [Parameter] a0
+#   70|                     1: [Parameter] a1
+#   70|                   5: [BlockStmt] { ... }
+#   70|                     0: [ReturnStmt] return ...
+#   70|                       0: [MethodCall] setDelegatedToExtMember2(...)
+#   70|                         -1: [VarAccess] a0
+#   70|                         0: [VarAccess] a1
+#   70|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   70|                 0: [TypeAccess] MyClass
+#   70|                 1: [TypeAccess] Integer
+#   70|     17: [Method] setDelegatedToExtMember2
 #   70|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   70|         0: [Parameter] <set-?>
@@ -1315,7 +1358,7 @@ delegatedProperties.kt:
 #   70|                 0: [TypeAccess] MyClass
 #   70|                 1: [TypeAccess] Integer
 #   70|             3: [VarAccess] <set-?>
-#   70|     17: [FieldDeclaration] KMutableProperty1<MyClass,Integer> delegatedToExtMember2$delegate;
+#   70|     18: [FieldDeclaration] KMutableProperty1<MyClass,Integer> delegatedToExtMember2$delegate;
 #   70|       -1: [TypeAccess] KMutableProperty1<MyClass,Integer>
 #   70|         0: [TypeAccess] MyClass
 #   70|         1: [TypeAccess] Integer
@@ -1353,82 +1396,7 @@ delegatedProperties.kt:
 #   70|         -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
 #   70|           0: [TypeAccess] MyClass
 #   70|           1: [TypeAccess] Integer
-#   70|     18: [Method] getDelegatedToExtMember2
-#   70|       3: [TypeAccess] int
-#   70|       5: [BlockStmt] { ... }
-#   70|         0: [ReturnStmt] return ...
-#   70|           0: [MethodCall] getValue(...)
-#   70|             -3: [TypeAccess] Integer
-#   70|             -2: [TypeAccess] MyClass
-#   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   70|             0: [VarAccess] this.delegatedToExtMember2$delegate
-#   70|               -1: [ThisAccess] this
-#   70|             1: [ThisAccess] this
-#   70|             2: [PropertyRefExpr] ...::...
-#   70|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   70|                 1: [Constructor] 
-#   70|                   5: [BlockStmt] { ... }
-#   70|                     0: [SuperConstructorInvocationStmt] super(...)
-#   70|                 2: [Method] get
-#-----|                   4: (Parameters)
-#   70|                     0: [Parameter] a0
-#   70|                   5: [BlockStmt] { ... }
-#   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodCall] getDelegatedToExtMember2(...)
-#   70|                         -1: [VarAccess] a0
-#   70|                 3: [Method] invoke
-#-----|                   4: (Parameters)
-#   70|                     0: [Parameter] a0
-#   70|                   5: [BlockStmt] { ... }
-#   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodCall] get(...)
-#   70|                         -1: [ThisAccess] this
-#   70|                         0: [VarAccess] a0
-#   70|                 4: [Method] set
-#-----|                   4: (Parameters)
-#   70|                     0: [Parameter] a0
-#   70|                     1: [Parameter] a1
-#   70|                   5: [BlockStmt] { ... }
-#   70|                     0: [ReturnStmt] return ...
-#   70|                       0: [MethodCall] setDelegatedToExtMember2(...)
-#   70|                         -1: [VarAccess] a0
-#   70|                         0: [VarAccess] a1
-#   70|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   70|                 0: [TypeAccess] MyClass
-#   70|                 1: [TypeAccess] Integer
-#   72|     19: [FieldDeclaration] KProperty0<Integer> delegatedToBaseClass1$delegate;
-#   72|       -1: [TypeAccess] KProperty0<Integer>
-#   72|         0: [TypeAccess] Integer
-#   72|       0: [PropertyRefExpr] ...::...
-#   72|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
-#   72|           1: [Constructor] 
-#-----|             4: (Parameters)
-#   72|               0: [Parameter] <dispatchReceiver>
-#   72|             5: [BlockStmt] { ... }
-#   72|               0: [SuperConstructorInvocationStmt] super(...)
-#   72|               1: [ExprStmt] <Expr>;
-#   72|                 0: [AssignExpr] ...=...
-#   72|                   0: [VarAccess] this.<dispatchReceiver>
-#   72|                     -1: [ThisAccess] this
-#   72|                   1: [VarAccess] <dispatchReceiver>
-#   72|           2: [FieldDeclaration] MyClass <dispatchReceiver>;
-#   72|             -1: [TypeAccess] MyClass
-#   72|           3: [Method] get
-#   72|             5: [BlockStmt] { ... }
-#   72|               0: [ReturnStmt] return ...
-#   72|                 0: [MethodCall] getBaseClassInt(...)
-#   72|                   -1: [VarAccess] this.<dispatchReceiver>
-#   72|                     -1: [ThisAccess] this
-#   72|           4: [Method] invoke
-#   72|             5: [BlockStmt] { ... }
-#   72|               0: [ReturnStmt] return ...
-#   72|                 0: [MethodCall] get(...)
-#   72|                   -1: [ThisAccess] this
-#   72|         -3: [TypeAccess] KProperty0<Integer>
-#   72|           0: [TypeAccess] Integer
-#   72|         0: [ThisAccess] MyClass.this
-#   72|           0: [TypeAccess] MyClass
-#   72|     20: [Method] getDelegatedToBaseClass1
+#   72|     19: [Method] getDelegatedToBaseClass1
 #   72|       3: [TypeAccess] int
 #   72|       5: [BlockStmt] { ... }
 #   72|         0: [ReturnStmt] return ...
@@ -1461,34 +1429,39 @@ delegatedProperties.kt:
 #   72|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   72|                 0: [TypeAccess] MyClass
 #   72|                 1: [TypeAccess] Integer
-#   73|     21: [FieldDeclaration] KProperty1<Base,Integer> delegatedToBaseClass2$delegate;
-#   73|       -1: [TypeAccess] KProperty1<Base,Integer>
-#   73|         0: [TypeAccess] Base
-#   73|         1: [TypeAccess] Integer
-#   73|       0: [PropertyRefExpr] ...::...
-#   73|         -4: [AnonymousClass] new KProperty1<Base,Integer>(...) { ... }
-#   73|           1: [Constructor] 
-#   73|             5: [BlockStmt] { ... }
-#   73|               0: [SuperConstructorInvocationStmt] super(...)
-#   73|           2: [Method] get
+#   72|     20: [FieldDeclaration] KProperty0<Integer> delegatedToBaseClass1$delegate;
+#   72|       -1: [TypeAccess] KProperty0<Integer>
+#   72|         0: [TypeAccess] Integer
+#   72|       0: [PropertyRefExpr] ...::...
+#   72|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   72|           1: [Constructor] 
 #-----|             4: (Parameters)
-#   73|               0: [Parameter] a0
-#   73|             5: [BlockStmt] { ... }
-#   73|               0: [ReturnStmt] return ...
-#   73|                 0: [MethodCall] getBaseClassInt(...)
-#   73|                   -1: [VarAccess] a0
-#   73|           3: [Method] invoke
-#-----|             4: (Parameters)
-#   73|               0: [Parameter] a0
-#   73|             5: [BlockStmt] { ... }
-#   73|               0: [ReturnStmt] return ...
-#   73|                 0: [MethodCall] get(...)
-#   73|                   -1: [ThisAccess] this
-#   73|                   0: [VarAccess] a0
-#   73|         -3: [TypeAccess] KProperty1<Base,Integer>
-#   73|           0: [TypeAccess] Base
-#   73|           1: [TypeAccess] Integer
-#   73|     22: [Method] getDelegatedToBaseClass2
+#   72|               0: [Parameter] <dispatchReceiver>
+#   72|             5: [BlockStmt] { ... }
+#   72|               0: [SuperConstructorInvocationStmt] super(...)
+#   72|               1: [ExprStmt] <Expr>;
+#   72|                 0: [AssignExpr] ...=...
+#   72|                   0: [VarAccess] this.<dispatchReceiver>
+#   72|                     -1: [ThisAccess] this
+#   72|                   1: [VarAccess] <dispatchReceiver>
+#   72|           2: [FieldDeclaration] MyClass <dispatchReceiver>;
+#   72|             -1: [TypeAccess] MyClass
+#   72|           3: [Method] get
+#   72|             5: [BlockStmt] { ... }
+#   72|               0: [ReturnStmt] return ...
+#   72|                 0: [MethodCall] getBaseClassInt(...)
+#   72|                   -1: [VarAccess] this.<dispatchReceiver>
+#   72|                     -1: [ThisAccess] this
+#   72|           4: [Method] invoke
+#   72|             5: [BlockStmt] { ... }
+#   72|               0: [ReturnStmt] return ...
+#   72|                 0: [MethodCall] get(...)
+#   72|                   -1: [ThisAccess] this
+#   72|         -3: [TypeAccess] KProperty0<Integer>
+#   72|           0: [TypeAccess] Integer
+#   72|         0: [ThisAccess] MyClass.this
+#   72|           0: [TypeAccess] MyClass
+#   73|     21: [Method] getDelegatedToBaseClass2
 #   73|       3: [TypeAccess] int
 #   73|       5: [BlockStmt] { ... }
 #   73|         0: [ReturnStmt] return ...
@@ -1522,40 +1495,34 @@ delegatedProperties.kt:
 #   73|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   73|                 0: [TypeAccess] MyClass
 #   73|                 1: [TypeAccess] Integer
-#   75|     23: [FieldDeclaration] KProperty0<Integer> delegatedToAnotherClass1$delegate;
-#   75|       -1: [TypeAccess] KProperty0<Integer>
-#   75|         0: [TypeAccess] Integer
-#   75|       0: [PropertyRefExpr] ...::...
-#   75|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
-#   75|           1: [Constructor] 
+#   73|     22: [FieldDeclaration] KProperty1<Base,Integer> delegatedToBaseClass2$delegate;
+#   73|       -1: [TypeAccess] KProperty1<Base,Integer>
+#   73|         0: [TypeAccess] Base
+#   73|         1: [TypeAccess] Integer
+#   73|       0: [PropertyRefExpr] ...::...
+#   73|         -4: [AnonymousClass] new KProperty1<Base,Integer>(...) { ... }
+#   73|           1: [Constructor] 
+#   73|             5: [BlockStmt] { ... }
+#   73|               0: [SuperConstructorInvocationStmt] super(...)
+#   73|           2: [Method] get
 #-----|             4: (Parameters)
-#   75|               0: [Parameter] <dispatchReceiver>
-#   75|             5: [BlockStmt] { ... }
-#   75|               0: [SuperConstructorInvocationStmt] super(...)
-#   75|               1: [ExprStmt] <Expr>;
-#   75|                 0: [AssignExpr] ...=...
-#   75|                   0: [VarAccess] this.<dispatchReceiver>
-#   75|                     -1: [ThisAccess] this
-#   75|                   1: [VarAccess] <dispatchReceiver>
-#   75|           2: [FieldDeclaration] ClassWithDelegate <dispatchReceiver>;
-#   75|             -1: [TypeAccess] ClassWithDelegate
-#   75|           3: [Method] get
-#   75|             5: [BlockStmt] { ... }
-#   75|               0: [ReturnStmt] return ...
-#   75|                 0: [MethodCall] getAnotherClassInt(...)
-#   75|                   -1: [VarAccess] this.<dispatchReceiver>
-#   75|                     -1: [ThisAccess] this
-#   75|           4: [Method] invoke
-#   75|             5: [BlockStmt] { ... }
-#   75|               0: [ReturnStmt] return ...
-#   75|                 0: [MethodCall] get(...)
-#   75|                   -1: [ThisAccess] this
-#   75|         -3: [TypeAccess] KProperty0<Integer>
-#   75|           0: [TypeAccess] Integer
-#   75|         0: [MethodCall] getAnotherClassInstance(...)
-#   75|           -1: [ThisAccess] MyClass.this
-#   75|             0: [TypeAccess] MyClass
-#   75|     24: [Method] getDelegatedToAnotherClass1
+#   73|               0: [Parameter] a0
+#   73|             5: [BlockStmt] { ... }
+#   73|               0: [ReturnStmt] return ...
+#   73|                 0: [MethodCall] getBaseClassInt(...)
+#   73|                   -1: [VarAccess] a0
+#   73|           3: [Method] invoke
+#-----|             4: (Parameters)
+#   73|               0: [Parameter] a0
+#   73|             5: [BlockStmt] { ... }
+#   73|               0: [ReturnStmt] return ...
+#   73|                 0: [MethodCall] get(...)
+#   73|                   -1: [ThisAccess] this
+#   73|                   0: [VarAccess] a0
+#   73|         -3: [TypeAccess] KProperty1<Base,Integer>
+#   73|           0: [TypeAccess] Base
+#   73|           1: [TypeAccess] Integer
+#   75|     23: [Method] getDelegatedToAnotherClass1
 #   75|       3: [TypeAccess] int
 #   75|       5: [BlockStmt] { ... }
 #   75|         0: [ReturnStmt] return ...
@@ -1588,7 +1555,82 @@ delegatedProperties.kt:
 #   75|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   75|                 0: [TypeAccess] MyClass
 #   75|                 1: [TypeAccess] Integer
-#   77|     25: [Method] setDelegatedToTopLevel
+#   75|     24: [FieldDeclaration] KProperty0<Integer> delegatedToAnotherClass1$delegate;
+#   75|       -1: [TypeAccess] KProperty0<Integer>
+#   75|         0: [TypeAccess] Integer
+#   75|       0: [PropertyRefExpr] ...::...
+#   75|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   75|           1: [Constructor] 
+#-----|             4: (Parameters)
+#   75|               0: [Parameter] <dispatchReceiver>
+#   75|             5: [BlockStmt] { ... }
+#   75|               0: [SuperConstructorInvocationStmt] super(...)
+#   75|               1: [ExprStmt] <Expr>;
+#   75|                 0: [AssignExpr] ...=...
+#   75|                   0: [VarAccess] this.<dispatchReceiver>
+#   75|                     -1: [ThisAccess] this
+#   75|                   1: [VarAccess] <dispatchReceiver>
+#   75|           2: [FieldDeclaration] ClassWithDelegate <dispatchReceiver>;
+#   75|             -1: [TypeAccess] ClassWithDelegate
+#   75|           3: [Method] get
+#   75|             5: [BlockStmt] { ... }
+#   75|               0: [ReturnStmt] return ...
+#   75|                 0: [MethodCall] getAnotherClassInt(...)
+#   75|                   -1: [VarAccess] this.<dispatchReceiver>
+#   75|                     -1: [ThisAccess] this
+#   75|           4: [Method] invoke
+#   75|             5: [BlockStmt] { ... }
+#   75|               0: [ReturnStmt] return ...
+#   75|                 0: [MethodCall] get(...)
+#   75|                   -1: [ThisAccess] this
+#   75|         -3: [TypeAccess] KProperty0<Integer>
+#   75|           0: [TypeAccess] Integer
+#   75|         0: [MethodCall] getAnotherClassInstance(...)
+#   75|           -1: [ThisAccess] MyClass.this
+#   75|             0: [TypeAccess] MyClass
+#   77|     25: [Method] getDelegatedToTopLevel
+#   77|       3: [TypeAccess] int
+#   77|       5: [BlockStmt] { ... }
+#   77|         0: [ReturnStmt] return ...
+#   77|           0: [MethodCall] getValue(...)
+#   77|             -2: [TypeAccess] Integer
+#   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
+#   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
+#   77|               -1: [ThisAccess] this
+#   77|             1: [ThisAccess] this
+#   77|             2: [PropertyRefExpr] ...::...
+#   77|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
+#   77|                 1: [Constructor] 
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [SuperConstructorInvocationStmt] super(...)
+#   77|                 2: [Method] get
+#-----|                   4: (Parameters)
+#   77|                     0: [Parameter] a0
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [ReturnStmt] return ...
+#   77|                       0: [MethodCall] getDelegatedToTopLevel(...)
+#   77|                         -1: [VarAccess] a0
+#   77|                 3: [Method] invoke
+#-----|                   4: (Parameters)
+#   77|                     0: [Parameter] a0
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [ReturnStmt] return ...
+#   77|                       0: [MethodCall] get(...)
+#   77|                         -1: [ThisAccess] this
+#   77|                         0: [VarAccess] a0
+#   77|                 4: [Method] set
+#-----|                   4: (Parameters)
+#   77|                     0: [Parameter] a0
+#   77|                     1: [Parameter] a1
+#   77|                   5: [BlockStmt] { ... }
+#   77|                     0: [ReturnStmt] return ...
+#   77|                       0: [MethodCall] setDelegatedToTopLevel(...)
+#   77|                         -1: [VarAccess] a0
+#   77|                         0: [VarAccess] a1
+#   77|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
+#   77|                 0: [TypeAccess] MyClass
+#   77|                 1: [TypeAccess] Integer
+#   77|     26: [Method] setDelegatedToTopLevel
 #   77|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   77|         0: [Parameter] <set-?>
@@ -1634,7 +1676,7 @@ delegatedProperties.kt:
 #   77|                 0: [TypeAccess] MyClass
 #   77|                 1: [TypeAccess] Integer
 #   77|             3: [VarAccess] <set-?>
-#   77|     26: [FieldDeclaration] KMutableProperty0<Integer> delegatedToTopLevel$delegate;
+#   77|     27: [FieldDeclaration] KMutableProperty0<Integer> delegatedToTopLevel$delegate;
 #   77|       -1: [TypeAccess] KMutableProperty0<Integer>
 #   77|         0: [TypeAccess] Integer
 #   77|       0: [PropertyRefExpr] ...::...
@@ -1662,68 +1704,7 @@ delegatedProperties.kt:
 #   77|                   0: [VarAccess] a0
 #   77|         -3: [TypeAccess] KMutableProperty0<Integer>
 #   77|           0: [TypeAccess] Integer
-#   77|     27: [Method] getDelegatedToTopLevel
-#   77|       3: [TypeAccess] int
-#   77|       5: [BlockStmt] { ... }
-#   77|         0: [ReturnStmt] return ...
-#   77|           0: [MethodCall] getValue(...)
-#   77|             -2: [TypeAccess] Integer
-#   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
-#   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
-#   77|               -1: [ThisAccess] this
-#   77|             1: [ThisAccess] this
-#   77|             2: [PropertyRefExpr] ...::...
-#   77|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
-#   77|                 1: [Constructor] 
-#   77|                   5: [BlockStmt] { ... }
-#   77|                     0: [SuperConstructorInvocationStmt] super(...)
-#   77|                 2: [Method] get
-#-----|                   4: (Parameters)
-#   77|                     0: [Parameter] a0
-#   77|                   5: [BlockStmt] { ... }
-#   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodCall] getDelegatedToTopLevel(...)
-#   77|                         -1: [VarAccess] a0
-#   77|                 3: [Method] invoke
-#-----|                   4: (Parameters)
-#   77|                     0: [Parameter] a0
-#   77|                   5: [BlockStmt] { ... }
-#   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodCall] get(...)
-#   77|                         -1: [ThisAccess] this
-#   77|                         0: [VarAccess] a0
-#   77|                 4: [Method] set
-#-----|                   4: (Parameters)
-#   77|                     0: [Parameter] a0
-#   77|                     1: [Parameter] a1
-#   77|                   5: [BlockStmt] { ... }
-#   77|                     0: [ReturnStmt] return ...
-#   77|                       0: [MethodCall] setDelegatedToTopLevel(...)
-#   77|                         -1: [VarAccess] a0
-#   77|                         0: [VarAccess] a1
-#   77|               -3: [TypeAccess] KMutableProperty1<MyClass,Integer>
-#   77|                 0: [TypeAccess] MyClass
-#   77|                 1: [TypeAccess] Integer
-#   79|     28: [FieldDeclaration] KProperty0<Integer> max$delegate;
-#   79|       -1: [TypeAccess] KProperty0<Integer>
-#   79|         0: [TypeAccess] Integer
-#   79|       0: [PropertyRefExpr] ...::...
-#   79|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
-#   79|           1: [Constructor] 
-#   79|             5: [BlockStmt] { ... }
-#   79|               0: [SuperConstructorInvocationStmt] super(...)
-#   79|           2: [Method] get
-#   79|             5: [BlockStmt] { ... }
-#   79|               0: [ReturnStmt] return ...
-#   79|                 0: [VarAccess] MAX_VALUE
-#   79|           3: [Method] invoke
-#   79|             5: [BlockStmt] { ... }
-#   79|               0: [ReturnStmt] return ...
-#   79|                 0: [MethodCall] get(...)
-#   79|                   -1: [ThisAccess] this
-#   79|         -3: [TypeAccess] KProperty0<Integer>
-#   79|           0: [TypeAccess] Integer
-#   79|     29: [Method] getMax
+#   79|     28: [Method] getMax
 #   79|       3: [TypeAccess] int
 #   79|       5: [BlockStmt] { ... }
 #   79|         0: [ReturnStmt] return ...
@@ -1756,6 +1737,25 @@ delegatedProperties.kt:
 #   79|               -3: [TypeAccess] KProperty1<MyClass,Integer>
 #   79|                 0: [TypeAccess] MyClass
 #   79|                 1: [TypeAccess] Integer
+#   79|     29: [FieldDeclaration] KProperty0<Integer> max$delegate;
+#   79|       -1: [TypeAccess] KProperty0<Integer>
+#   79|         0: [TypeAccess] Integer
+#   79|       0: [PropertyRefExpr] ...::...
+#   79|         -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   79|           1: [Constructor] 
+#   79|             5: [BlockStmt] { ... }
+#   79|               0: [SuperConstructorInvocationStmt] super(...)
+#   79|           2: [Method] get
+#   79|             5: [BlockStmt] { ... }
+#   79|               0: [ReturnStmt] return ...
+#   79|                 0: [VarAccess] MAX_VALUE
+#   79|           3: [Method] invoke
+#   79|             5: [BlockStmt] { ... }
+#   79|               0: [ReturnStmt] return ...
+#   79|                 0: [MethodCall] get(...)
+#   79|                   -1: [ThisAccess] this
+#   79|         -3: [TypeAccess] KProperty0<Integer>
+#   79|           0: [TypeAccess] Integer
 #   81|     30: [Method] fn
 #   81|       3: [TypeAccess] Unit
 #   81|       5: [BlockStmt] { ... }
@@ -2848,23 +2848,17 @@ exprs.kt:
 #  271|             0: [VarAccess] updated
 #  271|             1: [IntegerLiteral] 1
 #  272|         3: [ExprStmt] <Expr>;
-#  272|           0: [AssignExpr] ...=...
+#  272|           0: [AssignMulExpr] ...*=...
 #  272|             0: [VarAccess] updated
-#  272|             1: [MulExpr] ... * ...
-#  272|               0: [VarAccess] updated
-#  272|               1: [IntegerLiteral] 1
+#  272|             1: [IntegerLiteral] 1
 #  273|         4: [ExprStmt] <Expr>;
-#  273|           0: [AssignExpr] ...=...
+#  273|           0: [AssignDivExpr] .../=...
 #  273|             0: [VarAccess] updated
-#  273|             1: [DivExpr] ... / ...
-#  273|               0: [VarAccess] updated
-#  273|               1: [IntegerLiteral] 1
+#  273|             1: [IntegerLiteral] 1
 #  274|         5: [ExprStmt] <Expr>;
-#  274|           0: [AssignExpr] ...=...
+#  274|           0: [AssignRemExpr] ...%=...
 #  274|             0: [VarAccess] updated
-#  274|             1: [RemExpr] ... % ...
-#  274|               0: [VarAccess] updated
-#  274|               1: [IntegerLiteral] 1
+#  274|             1: [IntegerLiteral] 1
 #  278|     12: [Method] getEnumValues
 #-----|       2: (Generic Parameters)
 #  278|         0: [TypeVariable] T

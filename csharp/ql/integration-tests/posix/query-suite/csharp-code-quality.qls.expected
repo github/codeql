@@ -1,3 +1,4 @@
+ql/csharp/ql/src/API Abuse/CallToGCCollect.ql
 ql/csharp/ql/src/API Abuse/FormatInvalid.ql
 ql/csharp/ql/src/API Abuse/NoDisposeCallOnLocalIDisposable.ql
 ql/csharp/ql/src/Bad Practices/Control-Flow/ConstantCondition.ql

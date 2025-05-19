@@ -83,45 +83,20 @@ class Traverser(object):
                 self.logger.debug("Ignoring %s (symlink)", fullpath)
                 continue
             if isdir(fullpath):
-                if fullpath in self.exclude_paths or is_hidden(fullpath):
-                    if is_hidden(fullpath):
-                        self.logger.debug("Ignoring %s (hidden)", fullpath)
-                    else:
-                        self.logger.debug("Ignoring %s (excluded)", fullpath)
-                else:
-                    empty = True
-                    for item in self._treewalk(fullpath):
-                        yield item
-                        empty = False
-                    if not empty:
-                        yield fullpath
+                if fullpath in self.exclude_paths:
+                    self.logger.debug("Ignoring %s (excluded)", fullpath)
+                    continue
+
+                empty = True
+                for item in self._treewalk(fullpath):
+                    yield item
+                    empty = False
+                if not empty:
+                    yield fullpath
             elif self.filter(fullpath):
                 yield fullpath
             else:
                 self.logger.debug("Ignoring %s (filter)", fullpath)
-
-
-if os.name== 'nt':
-    import ctypes
-
-    def is_hidden(path):
-        #Magical windows code
-        try:
-            attrs = ctypes.windll.kernel32.GetFileAttributesW(str(path))
-            if attrs == -1:
-                return False
-            if attrs&2:
-                return True
-        except Exception:
-            #Not sure what to log here, probably best to carry on.
-            pass
-        return os.path.basename(path).startswith(".")
-
-else:
-
-    def is_hidden(path):
-        return os.path.basename(path).startswith(".")
-
 
 def exclude_filter_from_options(options):
     if options.exclude_package:

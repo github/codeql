@@ -1,5 +1,5 @@
 {
-  "markdownMessage": "The Kotlin version installed (`999.999.999`) is too recent for this version of CodeQL. Install a version lower than 2.1.30.",
+  "markdownMessage": "The Kotlin version installed (`999.999.999`) is too recent for this version of CodeQL. Install a version lower than 2.2.10.",
   "severity": "error",
   "source": {
     "extractorName": "java",

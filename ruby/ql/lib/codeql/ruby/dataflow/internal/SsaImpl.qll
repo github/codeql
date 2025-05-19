@@ -106,7 +106,6 @@ private predicate writesCapturedVariable(Cfg::BasicBlock bb, LocalVariable v) {
  * at index `i` in exit block `bb`.
  */
 private predicate capturedExitRead(Cfg::AnnotatedExitBasicBlock bb, int i, LocalVariable v) {
-  bb.isNormal() and
   writesCapturedVariable(bb.getAPredecessor*(), v) and
   i = bb.length()
 }

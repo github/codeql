@@ -885,6 +885,36 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
   )
 }
 
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
+
+pragma[nomagic]
+private StructType inferLiteralType(LiteralExpr le) {
+  exists(Builtins::BuiltinType t | result = TStruct(t) |
+    le instanceof CharLiteralExpr and
+    t instanceof Builtins::Char
+    or
+    le instanceof StringLiteralExpr and
+    t instanceof Builtins::Str
+    or
+    le =
+      any(NumberLiteralExpr ne |
+        t.getName() = ne.getSuffix()
+        or
+        not exists(ne.getSuffix()) and
+        (
+          ne instanceof IntegerLiteralExpr and
+          t instanceof Builtins::I32
+          or
+          ne instanceof FloatLiteralExpr and
+          t instanceof Builtins::F64
+        )
+      )
+    or
+    le instanceof BooleanLiteralExpr and
+    t instanceof Builtins::Bool
+  )
+}
+
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
@@ -1026,6 +1056,9 @@ private module Cached {
     result = inferRefExprType(n, path)
     or
     result = inferTryExprType(n, path)
+    or
+    result = inferLiteralType(n) and
+    path.isEmpty()
   }
 }
 

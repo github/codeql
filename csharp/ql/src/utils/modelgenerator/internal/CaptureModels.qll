@@ -124,13 +124,13 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Locatio
 
   string qualifierString() { result = "Argument[this]" }
 
-  string parameterAccess(CS::Parameter p) {
+  string parameterApproximateAccess(CS::Parameter p) {
     if Collections::isCollectionType(p.getType())
     then result = "Argument[" + p.getPosition() + "].Element"
     else result = "Argument[" + p.getPosition() + "]"
   }
 
-  string parameterContentAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
+  string parameterExactAccess(CS::Parameter p) { result = "Argument[" + p.getPosition() + "]" }
 
   private signature string parameterAccessSig(Parameter p);
 
@@ -145,13 +145,13 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Locatio
   }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(CS::Callable c, ParameterPosition pos) {
-    result = ParamReturnNodeAsOutput<parameterAccess/1>::paramReturnNodeAsOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(CS::Callable c, ParameterPosition pos) {
+    result = ParamReturnNodeAsOutput<parameterApproximateAccess/1>::paramReturnNodeAsOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, ParameterPosition pos) {
-    result = ParamReturnNodeAsOutput<parameterContentAccess/1>::paramReturnNodeAsOutput(c, pos)
+  string paramReturnNodeAsExactOutput(Callable c, ParameterPosition pos) {
+    result = ParamReturnNodeAsOutput<parameterExactAccess/1>::paramReturnNodeAsOutput(c, pos)
   }
 
   ParameterPosition getReturnKindParamPosition(ReturnKind kind) {
