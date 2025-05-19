@@ -1,7 +1,7 @@
 class MissedReadonlyOpportunity<T>
 {
-    public int Bad1;
-    public T Bad2;
+    public int Bad1; // $ Alert
+    public T Bad2; // $ Alert
     public readonly int Good1;
     public readonly int Good2 = 0;
     public const int Good3 = 0;
