@@ -74,8 +74,8 @@ class EVP_Cipher_Call extends EVP_Cipher_Operation {
 }
 
 // NOTE: not modeled as cipher operations, these are intermediate calls
-class EVP_Update_Call extends Call {
-  EVP_Update_Call() {
+class EVP_Cipher_Update_Call extends Call {
+  EVP_Cipher_Update_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
       ]
@@ -88,15 +88,15 @@ class EVP_Update_Call extends Call {
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Final_Call extends EVP_Cipher_Operation {
-  EVP_Final_Call() {
+class EVP_Cipher_Final_Call extends EVP_Cipher_Operation {
+  EVP_Cipher_Final_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptFinal_ex", "EVP_DecryptFinal_ex", "EVP_CipherFinal_ex", "EVP_EncryptFinal",
         "EVP_DecryptFinal", "EVP_CipherFinal"
       ]
   }
 
-  EVP_Update_Call getUpdateCalls() {
+  EVP_Cipher_Update_Call getUpdateCalls() {
     CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
 
