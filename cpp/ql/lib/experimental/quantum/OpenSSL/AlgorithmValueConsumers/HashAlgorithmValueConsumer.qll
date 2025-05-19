@@ -1,12 +1,9 @@
-// import EVPHashInitializer
-// import EVPHashOperation
-// import EVPHashAlgorithmSource
 import cpp
-import experimental.quantum.Language
-import semmle.code.cpp.dataflow.new.DataFlow
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
-import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
-import experimental.quantum.OpenSSL.LibraryDetector
+private import experimental.quantum.Language
+private import semmle.code.cpp.dataflow.new.DataFlow
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
+private import experimental.quantum.OpenSSL.LibraryDetector
 
 abstract class HashAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 

@@ -1606,13 +1606,8 @@ module JCAModel {
       else result = Crypto::OtherEllipticCurveType()
     }
 
-    override string getKeySize() {
-      exists(int keySize |
-        Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), keySize,
-          _)
-      |
-        result = keySize.toString()
-      )
+    override int getKeySize() {
+      Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
     }
 
     EllipticCurveAlgorithmValueConsumer getConsumer() { result = consumer }

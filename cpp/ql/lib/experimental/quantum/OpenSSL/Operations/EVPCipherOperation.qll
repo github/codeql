@@ -1,8 +1,8 @@
-import experimental.quantum.Language
-import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
-import EVPCipherInitializer
-import OpenSSLOperationBase
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import EVPCipherInitializer
+private import OpenSSLOperationBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
