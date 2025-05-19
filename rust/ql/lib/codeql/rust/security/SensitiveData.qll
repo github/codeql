@@ -22,75 +22,24 @@ abstract class SensitiveData extends DataFlow::Node {
 }
 
 /**
- * A function that might produce sensitive data.
+ * A function call or enum variant data flow node that might produce sensitive data.
  */
-private class SensitiveDataFunction extends Function {
+private class SensitiveDataCall extends SensitiveData {
   SensitiveDataClassification classification;
 
-  SensitiveDataFunction() {
-    HeuristicNames::nameIndicatesSensitiveData(this.getName().getText(), classification)
-  }
-
-  SensitiveDataClassification getClassification() { result = classification }
-}
-
-/**
- * A function call data flow node that might produce sensitive data.
- */
-private class SensitiveDataFunctionCall extends SensitiveData {
-  SensitiveDataClassification classification;
-
-  SensitiveDataFunctionCall() {
-    classification =
-      this.asExpr()
-          .getAstNode()
-          .(CallExprBase)
-          .getStaticTarget()
-          .(SensitiveDataFunction)
-          .getClassification()
+  SensitiveDataCall() {
+    exists(CallExprBase call, string name |
+      call = this.asExpr().getExpr() and
+      name =
+        [
+          call.getStaticTarget().(Function).getName().getText(),
+          call.(CallExpr).getVariant().getName().getText(),
+        ] and
+      HeuristicNames::nameIndicatesSensitiveData(name, classification)
+    )
   }
 
   override SensitiveDataClassification getClassification() { result = classification }
-}
-
-/**
- * An enum variant that might produce sensitive data.
- */
-private class SensitiveDataVariant extends Variant {
-  SensitiveDataClassification classification;
-
-  SensitiveDataVariant() {
-    HeuristicNames::nameIndicatesSensitiveData(this.getName().getText(), classification)
-  }
-
-  SensitiveDataClassification getClassification() { result = classification }
-}
-
-/**
- * An enum variant call data flow node that might produce sensitive data.
- */
-private class SensitiveDataVariantCall extends SensitiveData {
-  SensitiveDataClassification classification;
-
-  SensitiveDataVariantCall() {
-    classification =
-      this.asExpr().getAstNode().(CallExpr).getVariant().(SensitiveDataVariant).getClassification()
-  }
-
-  override SensitiveDataClassification getClassification() { result = classification }
-}
-
-/**
- * A variable that might contain sensitive data.
- */
-private class SensitiveDataVariable extends Variable {
-  SensitiveDataClassification classification;
-
-  SensitiveDataVariable() {
-    HeuristicNames::nameIndicatesSensitiveData(this.getText(), classification)
-  }
-
-  SensitiveDataClassification getClassification() { result = classification }
 }
 
 /**
@@ -100,13 +49,12 @@ private class SensitiveVariableAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveVariableAccess() {
-    classification =
-      this.asExpr()
+    HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
           .getAstNode()
           .(VariableAccess)
           .getVariable()
-          .(SensitiveDataVariable)
-          .getClassification()
+          .(Variable)
+          .getText(), classification)
   }
 
   override SensitiveDataClassification getClassification() { result = classification }
