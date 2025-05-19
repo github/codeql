@@ -27,6 +27,7 @@ predicate isReadonlyCompatibleDefinition(AssignableDefinition def, Field f) {
 }
 
 predicate canBeReadonly(Field f) {
+  exists(Type t | t = f.getType() | not t instanceof Struct or t.(Struct).isReadonly()) and
   forex(AssignableDefinition def | defTargetsField(def, f) | isReadonlyCompatibleDefinition(def, f))
 }
 
