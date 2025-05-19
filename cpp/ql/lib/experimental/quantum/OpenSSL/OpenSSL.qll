@@ -6,4 +6,5 @@ module OpenSSLModel {
   import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
   import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
   import experimental.quantum.OpenSSL.Operations.OpenSSLOperations
+  import experimental.quantum.OpenSSL.Random
 }
