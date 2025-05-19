@@ -68,11 +68,11 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
 }
 
 class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
   KnownOpenSSLEllipticCurveAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("elliptic_curve")
+    exists(string algType |
+      resolveAlgorithmFromExpr(this, _, algType) and
+      algType.toLowerCase().matches("elliptic_curve")
+    )
   }
 }
 
