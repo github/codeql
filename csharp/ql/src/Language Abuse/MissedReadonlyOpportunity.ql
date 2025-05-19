@@ -8,6 +8,7 @@
  * @id cs/missed-readonly-modifier
  * @tags maintainability
  *       language-features
+ *       quality
  */
 
 import csharp
