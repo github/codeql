@@ -7,11 +7,11 @@ import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
 abstract class EllipticCurveValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 
 //https://docs.openssl.org/3.0/man3/EC_KEY_new/#name
-class EVPEllipticCurveALgorithmConsumer extends EllipticCurveValueConsumer {
+class EVPEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
-  EVPEllipticCurveALgorithmConsumer() {
+  EVPEllipticCurveAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
     isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
