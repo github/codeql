@@ -50,7 +50,7 @@ private class SensitiveVariableAccess extends SensitiveData {
 
   SensitiveVariableAccess() {
     HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
-          .getAstNode()
+          .getExpr()
           .(VariableAccess)
           .getVariable()
           .(Variable)
@@ -69,7 +69,7 @@ private class SensitiveFieldAccess extends SensitiveData {
   SensitiveDataClassification classification;
 
   SensitiveFieldAccess() {
-    exists(FieldExpr fe | fieldExprParentField*(fe) = this.asExpr().getAstNode() |
+    exists(FieldExpr fe | fieldExprParentField*(fe) = this.asExpr().getExpr() |
       HeuristicNames::nameIndicatesSensitiveData(fe.getIdentifier().getText(), classification)
     )
   }
