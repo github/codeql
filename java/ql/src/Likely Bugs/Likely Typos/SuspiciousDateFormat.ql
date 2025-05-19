@@ -6,6 +6,7 @@
  * @precision high
  * @id java/suspicious-date-format
  * @tags correctness
+ *       quality
  */
 
 import java

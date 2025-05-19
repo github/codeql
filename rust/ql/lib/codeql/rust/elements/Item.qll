@@ -5,6 +5,7 @@
 
 private import internal.ItemImpl
 import codeql.rust.elements.Addressable
+import codeql.rust.elements.MacroItems
 import codeql.rust.elements.Stmt
 
 /**

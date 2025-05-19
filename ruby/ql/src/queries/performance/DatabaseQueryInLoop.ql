@@ -6,6 +6,7 @@
  * @precision high
  * @id rb/database-query-in-loop
  * @tags performance
+ *       quality
  */
 
 import ruby

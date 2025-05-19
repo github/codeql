@@ -297,4 +297,10 @@ codeql::PackExpansionType TypeTranslator::translatePackExpansionType(
   return entry;
 }
 
+codeql::IntegerType TypeTranslator::translateIntegerType(const swift::IntegerType& type) {
+  auto entry = createTypeEntry(type);
+  entry.value = type.getDigitsText();
+  return entry;
+}
+
 }  // namespace codeql

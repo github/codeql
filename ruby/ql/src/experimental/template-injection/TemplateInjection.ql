@@ -8,7 +8,7 @@
  * @precision high
  * @id rb/server-side-template-injection
  * @tags security
- *       external/cwe/cwe-94
+ *       external/cwe/cwe-094
  */
 
 import codeql.ruby.DataFlow

@@ -1,3 +1,14 @@
+## 4.0.7
+
+### Minor Analysis Improvements
+
+* Added modeling for the `hdbcli` PyPI package as a database library implementing PEP 249.
+* Added header write model for `send_header` in `http.server`.
+
+## 4.0.6
+
+No user-facing changes.
+
 ## 4.0.5
 
 No user-facing changes.

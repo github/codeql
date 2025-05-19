@@ -2,7 +2,7 @@
  * Provides predicates related to capturing summary models of the Standard or a 3rd party library.
  */
 
-private import cpp
+private import cpp as Cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -10,111 +10,87 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
-private import semmle.code.cpp.dataflow.new.TaintTracking
+private import semmle.code.cpp.dataflow.new.TaintTracking as Tt
+private import semmle.code.cpp.dataflow.new.DataFlow as Df
 private import codeql.mad.modelgenerator.internal.ModelGeneratorImpl
+private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 
-module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFlow> {
+/**
+ * Holds if `f` is a "private" function.
+ *
+ * A "private" function does not contribute any models as it is assumed
+ * to be an implementation detail of some other "public" function for which
+ * we will generate a summary.
+ */
+private predicate isPrivateOrProtected(Cpp::Function f) {
+  f.getNamespace().getParentNamespace*().isAnonymous()
+  or
+  exists(Cpp::MemberFunction mf | mf = f |
+    mf.isPrivate()
+    or
+    mf.isProtected()
+  )
+  or
+  f.isStatic()
+}
+
+private predicate isUninterestingForModels(Callable api) {
+  // Note: This also makes all global/static-local variables
+  // not relevant (which is good!)
+  not api.(Cpp::Function).hasDefinition()
+  or
+  isPrivateOrProtected(api)
+  or
+  api instanceof Cpp::Destructor
+  or
+  api = any(Cpp::LambdaExpression lambda).getLambdaFunction()
+  or
+  api.isFromUninstantiatedTemplate(_)
+  or
+  // No need to generate models for functions modeled by hand in QL
+  api instanceof Taint::TaintFunction
+  or
+  api instanceof DataFlow::DataFlowFunction
+  or
+  // Don't generate models for main functions
+  api.hasGlobalName("main")
+  or
+  // Don't generate models for system-provided functions. If we want to
+  // generate models for these we should use a database containing the
+  // implementations of those system-provided functions in the source root.
+  not exists(api.getLocation().getFile().getRelativePath())
+  or
+  // Exclude functions in test directories (but not the ones in the CodeQL test directory)
+  exists(Cpp::File f |
+    f = api.getFile() and
+    f.getAbsolutePath().matches("%test%") and
+    not f.getAbsolutePath().matches("%test/library-tests/dataflow/modelgenerator/dataflow/%")
+  )
+}
+
+private predicate relevant(Callable api) {
+  api.fromSource() and
+  not isUninterestingForModels(api)
+}
+
+module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Location, CppDataFlow>
+{
+  private module DataFlow = Df::DataFlow;
+
   class Type = DataFlowPrivate::DataFlowType;
 
   // Note: This also includes `this`
   class Parameter = DataFlow::ParameterNode;
 
-  class Callable = Declaration;
+  class Callable = Cpp::Declaration;
 
   class NodeExtended extends DataFlow::Node {
     Callable getAsExprEnclosingCallable() { result = this.asExpr().getEnclosingDeclaration() }
   }
 
-  Parameter asParameter(NodeExtended n) { result = n }
-
   Callable getEnclosingCallable(NodeExtended n) {
     result = n.getEnclosingCallable().asSourceCallable()
-  }
-
-  Callable getAsExprEnclosingCallable(NodeExtended n) {
-    result = n.asExpr().getEnclosingDeclaration()
-  }
-
-  /** Gets `api` if it is relevant. */
-  private Callable liftedImpl(Callable api) { result = api and relevant(api) }
-
-  private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
-    api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
-  }
-
-  private predicate hasManualSourceModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
-  }
-
-  private predicate hasManualSinkModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
-  }
-
-  /**
-   * Holds if `f` is a "private" function.
-   *
-   * A "private" function does not contribute any models as it is assumed
-   * to be an implementation detail of some other "public" function for which
-   * we will generate a summary.
-   */
-  private predicate isPrivateOrProtected(Function f) {
-    f.getNamespace().getParentNamespace*().isAnonymous()
-    or
-    exists(MemberFunction mf | mf = f |
-      mf.isPrivate()
-      or
-      mf.isProtected()
-    )
-    or
-    f.isStatic()
-  }
-
-  private predicate isUninterestingForModels(Callable api) {
-    // Note: This also makes all global/static-local variables
-    // not relevant (which is good!)
-    not api.(Function).hasDefinition()
-    or
-    isPrivateOrProtected(api)
-    or
-    api instanceof Destructor
-    or
-    api = any(LambdaExpression lambda).getLambdaFunction()
-    or
-    api.isFromUninstantiatedTemplate(_)
-  }
-
-  private predicate relevant(Callable api) {
-    api.fromSource() and
-    not isUninterestingForModels(api)
-  }
-
-  class SummaryTargetApi extends Callable {
-    private Callable lift;
-
-    SummaryTargetApi() {
-      lift = liftedImpl(this) and
-      not hasManualSummaryModel(lift)
-    }
-
-    Callable lift() { result = lift }
-
-    predicate isRelevant() {
-      relevant(this) and
-      not hasManualSummaryModel(this)
-    }
-  }
-
-  class SourceOrSinkTargetApi extends Callable {
-    SourceOrSinkTargetApi() { relevant(this) }
-  }
-
-  class SinkTargetApi extends SourceOrSinkTargetApi {
-    SinkTargetApi() { not hasManualSinkModel(this) }
-  }
-
-  class SourceTargetApi extends SourceOrSinkTargetApi {
-    SourceTargetApi() { not hasManualSourceModel(this) }
   }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
@@ -124,7 +100,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     }
   }
 
-  private predicate isFinalMemberFunction(MemberFunction mf) {
+  private predicate isFinalMemberFunction(Cpp::MemberFunction mf) {
     mf.isFinal()
     or
     mf.getDeclaringType().isFinal()
@@ -146,12 +122,12 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
    * - An uninstantiated template, or
    * - A declaration that is not from a template instantiation.
    */
-  private string templateParams(Declaration template) {
+  private string templateParams(Cpp::Declaration template) {
     exists(string params |
       params =
         concat(int i |
           |
-          template.getTemplateArgument(i).(TypeTemplateParameter).getName(), "," order by i
+          template.getTemplateArgument(i).(Cpp::TypeTemplateParameter).getName(), "," order by i
         )
     |
       if params = "" then result = "" else result = "<" + params + ">"
@@ -166,7 +142,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
    * - An uninstantiated template, or
    * - A declaration that is not from a template instantiation.
    */
-  private string params(Function functionTemplate) {
+  private string params(Cpp::Function functionTemplate) {
     exists(string params |
       params =
         concat(int i |
@@ -193,7 +169,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     Callable callable, string namespace, string type, string name, string params
   ) {
     exists(
-      Function functionTemplate, string typeWithoutTemplateArgs, string nameWithoutTemplateArgs
+      Cpp::Function functionTemplate, string typeWithoutTemplateArgs, string nameWithoutTemplateArgs
     |
       functionTemplate = ExternalFlow::getFullyTemplatedFunction(callable) and
       functionTemplate.hasQualifiedName(namespace, typeWithoutTemplateArgs, nameWithoutTemplateArgs) and
@@ -201,7 +177,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
       name = nameWithoutTemplateArgs + templateParams(functionTemplate) and
       params = params(functionTemplate)
     |
-      exists(Class classTemplate |
+      exists(Cpp::Class classTemplate |
         classTemplate = functionTemplate.getDeclaringType() and
         type = typeWithoutTemplateArgs + templateParams(classTemplate)
       )
@@ -235,15 +211,15 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     )
   }
 
-  string parameterAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterApproximateAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
-  string parameterContentAccess(Parameter p) { parameterContentAccessImpl(p, result) }
+  string parameterExactAccess(Parameter p) { parameterContentAccessImpl(p, result) }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, DataFlowPrivate::Position pos) {
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowPrivate::Position pos) {
     exists(Parameter p |
       p.isSourceParameterOf(c, pos) and
-      result = parameterAccess(p)
+      result = parameterExactAccess(p)
     )
     or
     pos.getArgumentIndex() = -1 and
@@ -252,8 +228,8 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
-    result = paramReturnNodeAsOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowPrivate::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   pragma[nomagic]
@@ -263,10 +239,10 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
 
   /** Holds if this instance access is to an enclosing instance of type `t`. */
   pragma[nomagic]
-  private predicate isEnclosingInstanceAccess(DataFlowPrivate::ReturnNode n, Class t) {
+  private predicate isEnclosingInstanceAccess(DataFlowPrivate::ReturnNode n, Cpp::Class t) {
     n.getKind().isIndirectReturn(-1) and
     t = n.getType().stripType() and
-    t != n.getEnclosingCallable().asSourceCallable().(Function).getDeclaringType()
+    t != n.getEnclosingCallable().asSourceCallable().(Cpp::Function).getDeclaringType()
   }
 
   pragma[nomagic]
@@ -275,24 +251,12 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     not isEnclosingInstanceAccess(node, _)
   }
 
-  predicate sinkModelSanitizer(DataFlow::Node node) { none() }
-
-  predicate apiSource(DataFlow::Node source) {
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
-    or
-    source instanceof DataFlow::ParameterNode
-  }
-
-  string getInputArgument(DataFlow::Node source) {
-    exists(DataFlowPrivate::Position pos, int argumentIndex, int indirectionIndex |
-      source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
-      argumentIndex = pos.getArgumentIndex() and
-      indirectionIndex = pos.getIndirectionIndex() and
-      result = "Argument[" + DataFlow::repeatStars(indirectionIndex) + argumentIndex + "]"
+  DataFlowPrivate::ParameterPosition getReturnKindParamPosition(DataFlowPrivate::ReturnKind k) {
+    exists(int argumentIndex, int indirectionIndex |
+      k.isIndirectReturn(argumentIndex) and
+      k.getIndirectionIndex() = indirectionIndex and
+      result = DataFlowPrivate::TIndirectionPosition(argumentIndex, indirectionIndex)
     )
-    or
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
-    result = qualifierString()
   }
 
   string getReturnValueString(DataFlowPrivate::ReturnKind k) {
@@ -306,18 +270,71 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
     )
   }
 
-  predicate irrelevantSourceSinkApi(Callable source, SourceTargetApi api) { none() }
-
-  bindingset[kind]
-  predicate isRelevantSourceKind(string kind) { any() }
-
-  bindingset[kind]
-  predicate isRelevantSinkKind(string kind) { any() }
-
   predicate containerContent(DataFlow::ContentSet cs) { cs instanceof DataFlow::ElementContent }
 
+  string partialModelRow(Callable api, int i) {
+    i = 0 and qualifiedName(api, result, _, _, _) // namespace
+    or
+    i = 1 and qualifiedName(api, _, result, _, _) // type
+    or
+    i = 2 and result = isExtensible(api) // extensible
+    or
+    i = 3 and qualifiedName(api, _, _, result, _) // name
+    or
+    i = 4 and qualifiedName(api, _, _, _, result) // parameters
+    or
+    i = 5 and result = "" and exists(api) // ext
+  }
+
+  string partialNeutralModelRow(Callable api, int i) {
+    i = 0 and qualifiedName(api, result, _, _, _) // namespace
+    or
+    i = 1 and qualifiedName(api, _, result, _, _) // type
+    or
+    i = 2 and qualifiedName(api, _, _, result, _) // name
+    or
+    i = 3 and qualifiedName(api, _, _, _, result) // parameters
+  }
+}
+
+private import ModelGeneratorCommonInput
+private import MakeModelGeneratorFactory<Cpp::Location, CppDataFlow, CppTaintTracking, ModelGeneratorCommonInput>
+
+private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
+  private module DataFlow = Df::DataFlow;
+
+  Parameter asParameter(NodeExtended n) { result = n }
+
+  Callable getAsExprEnclosingCallable(NodeExtended n) {
+    result = n.asExpr().getEnclosingDeclaration()
+  }
+
+  private predicate hasManualSummaryModel(Callable api) {
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+    api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
+  }
+
+  /** Gets `api` if it is relevant. */
+  private Callable liftedImpl(Callable api) { result = api and relevant(api) }
+
+  class SummaryTargetApi extends Callable {
+    private Callable lift;
+
+    SummaryTargetApi() {
+      lift = liftedImpl(this) and
+      not hasManualSummaryModel(lift)
+    }
+
+    Callable lift() { result = lift }
+
+    predicate isRelevant() {
+      relevant(this) and
+      not hasManualSummaryModel(this)
+    }
+  }
+
   predicate isAdditionalContentFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    TaintTracking::defaultAdditionalTaintStep(node1, node2, _) and
+    Tt::TaintTracking::defaultAdditionalTaintStep(node1, node2, _) and
     not exists(DataFlow::Content f |
       DataFlowPrivate::readStep(node1, f, node2) and containerContent(f)
     )
@@ -333,7 +350,7 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
   predicate isCallback(DataFlow::ContentSet c) { none() }
 
   string getSyntheticName(DataFlow::ContentSet c) {
-    exists(Field f |
+    exists(Cpp::Field f |
       not f.isPublic() and
       f = c.(DataFlow::FieldContent).getField() and
       result = f.getName()
@@ -365,40 +382,52 @@ module ModelGeneratorInput implements ModelGeneratorInputSig<Location, CppDataFl
       result = "Element[" + ec.getIndirectionIndex() + "]"
     )
   }
+}
 
-  predicate isUninterestingForDataFlowModels(Callable api) { none() }
-
-  predicate isUninterestingForHeuristicDataFlowModels(Callable api) {
-    isUninterestingForDataFlowModels(api)
+private module SourceModelGeneratorInput implements SourceModelGeneratorInputSig {
+  private predicate hasManualSourceModel(Callable api) {
+    api = any(FlowSummaryImpl::Public::NeutralSourceCallable sc | sc.hasManualModel())
   }
 
-  string partialModelRow(Callable api, int i) {
-    i = 0 and qualifiedName(api, result, _, _, _) // namespace
-    or
-    i = 1 and qualifiedName(api, _, result, _, _) // type
-    or
-    i = 2 and result = isExtensible(api) // extensible
-    or
-    i = 3 and qualifiedName(api, _, _, result, _) // name
-    or
-    i = 4 and qualifiedName(api, _, _, _, result) // parameters
-    or
-    i = 5 and result = "" and exists(api) // ext
-  }
-
-  string partialNeutralModelRow(Callable api, int i) {
-    i = 0 and qualifiedName(api, result, _, _, _) // namespace
-    or
-    i = 1 and qualifiedName(api, _, result, _, _) // type
-    or
-    i = 2 and qualifiedName(api, _, _, result, _) // name
-    or
-    i = 3 and qualifiedName(api, _, _, _, result) // parameters
+  class SourceTargetApi extends Callable {
+    SourceTargetApi() { relevant(this) and not hasManualSourceModel(this) }
   }
 
   predicate sourceNode = ExternalFlow::sourceNode/2;
+}
+
+private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
+  private module DataFlow = Df::DataFlow;
+
+  private predicate hasManualSinkModel(Callable api) {
+    api = any(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.hasManualModel())
+  }
+
+  class SinkTargetApi extends Callable {
+    SinkTargetApi() { relevant(this) and not hasManualSinkModel(this) }
+  }
+
+  predicate apiSource(DataFlow::Node source) {
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
+    or
+    source instanceof DataFlow::ParameterNode
+  }
+
+  string getInputArgument(DataFlow::Node source) {
+    exists(DataFlowPrivate::Position pos, int argumentIndex, int indirectionIndex |
+      source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
+      argumentIndex = pos.getArgumentIndex() and
+      indirectionIndex = pos.getIndirectionIndex() and
+      result = "Argument[" + DataFlow::repeatStars(indirectionIndex) + argumentIndex + "]"
+    )
+    or
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
+    result = qualifierString()
+  }
 
   predicate sinkNode = ExternalFlow::sinkNode/2;
 }
 
-import MakeModelGenerator<Location, CppDataFlow, CppTaintTracking, ModelGeneratorInput>
+import MakeSummaryModelGenerator<SummaryModelGeneratorInput> as SummaryModels
+import MakeSourceModelGenerator<SourceModelGeneratorInput> as SourceModels
+import MakeSinkModelGenerator<SinkModelGeneratorInput> as SinkModels

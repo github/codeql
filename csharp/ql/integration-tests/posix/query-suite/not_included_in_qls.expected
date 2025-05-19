@@ -117,8 +117,6 @@ ql/csharp/ql/src/utils/modelconverter/ExtractSummaries.ql
 ql/csharp/ql/src/utils/modeleditor/ApplicationModeEndpoints.ql
 ql/csharp/ql/src/utils/modeleditor/FrameworkModeEndpoints.ql
 ql/csharp/ql/src/utils/modelgenerator/CaptureContentSummaryModels.ql
-ql/csharp/ql/src/utils/modelgenerator/CaptureMixedNeutralModels.ql
-ql/csharp/ql/src/utils/modelgenerator/CaptureMixedSummaryModels.ql
 ql/csharp/ql/src/utils/modelgenerator/CaptureNeutralModels.ql
 ql/csharp/ql/src/utils/modelgenerator/CaptureSinkModels.ql
 ql/csharp/ql/src/utils/modelgenerator/CaptureSourceModels.ql

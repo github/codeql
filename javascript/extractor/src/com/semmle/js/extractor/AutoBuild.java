@@ -404,7 +404,7 @@ public class AutoBuild {
     patterns.add("**/*.view.json"); // SAP UI5
     patterns.add("**/manifest.json");
     patterns.add("**/package.json");
-    patterns.add("**/tsconfig*.json");
+    patterns.add("**/*tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions

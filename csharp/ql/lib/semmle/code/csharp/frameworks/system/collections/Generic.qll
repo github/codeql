@@ -159,6 +159,15 @@ class SystemCollectionsGenericIDictionaryInterface extends SystemCollectionsGene
   }
 }
 
+/** The ``System.Collections.Generic.IReadOnlyDictionary`2`` interface. */
+class SystemCollectionsGenericIReadOnlyDictionaryInterface extends SystemCollectionsGenericUnboundGenericInterface
+{
+  SystemCollectionsGenericIReadOnlyDictionaryInterface() {
+    this.hasName("IReadOnlyDictionary`2") and
+    this.getNumberOfTypeParameters() = 2
+  }
+}
+
 /** The ``System.Collections.Generic.IReadOnlyCollection`1`` interface. */
 class SystemCollectionsGenericIReadOnlyCollectionTInterface extends SystemCollectionsGenericUnboundGenericInterface
 {
@@ -173,6 +182,14 @@ class SystemCollectionsGenericIReadOnlyListTInterface extends SystemCollectionsG
 {
   SystemCollectionsGenericIReadOnlyListTInterface() {
     this.hasName("IReadOnlyList`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
+/** The ``System.Collections.Generic.HashSet`1`` class. */
+class SystemCollectionsGenericHashSetClass extends SystemCollectionsGenericUnboundGenericClass {
+  SystemCollectionsGenericHashSetClass() {
+    this.hasName("HashSet`1") and
     this.getNumberOfTypeParameters() = 1
   }
 }

@@ -39,7 +39,7 @@ function strToStr() {
 }
 
 function strToArray() {
-  sink(s.chop(source("s1"), 3)); // $ MISSING: hasTaintFlow=s1
+  sink(s.chop(source("s1"), 3)); // $ hasTaintFlow=s1
   sink(s.chars(source("s2"))[0]); // $ hasTaintFlow=s2
   sink(s.words(source("s3"))[0]); // $ hasTaintFlow=s3
   sink(s.lines(source("s7"))[0]); // $ hasTaintFlow=s7
@@ -97,7 +97,7 @@ function multiSource() {
 
 function chaining() {
   sink(s(source("s1"))
-      .slugify().capitalize().decapitalize().clean().cleanDiacritics()    
+      .slugify().capitalize().decapitalize().clean().cleanDiacritics()
       .swapCase().escapeHTML().unescapeHTML().wrap().dedent()
       .reverse().pred().succ().titleize().camelize().classify()
       .underscored().dasherize().humanize().trim().ltrim().rtrim()
@@ -119,8 +119,8 @@ function chaining() {
   .q(source("s17")).ljust(10, source("s18"))
   .rjust(10, source("s19"))); // $ hasTaintFlow=s16 hasTaintFlow=s17 hasTaintFlow=s18 hasTaintFlow=s19
 
-  sink(s(source("s20")).tap(function(value) { 
-    return value + source("s21"); 
+  sink(s(source("s20")).tap(function(value) {
+    return value + source("s21");
   }).value()); // $ hasTaintFlow=s20 hasTaintFlow=s21
 }
 

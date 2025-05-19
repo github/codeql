@@ -3,8 +3,22 @@ import utils.test.InlineExpectationsTest
 import codeql.rust.internal.TypeInference as TypeInference
 import TypeInference
 
-query predicate inferType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::inferType(n, path)
+final private class TypeFinal = Type;
+
+class TypeLoc extends TypeFinal {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(string file |
+      this.getLocation().hasLocationInfo(file, startline, startcolumn, endline, endcolumn) and
+      filepath = file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+    )
+  }
+}
+
+query predicate inferType(AstNode n, TypePath path, TypeLoc t) {
+  t = TypeInference::inferType(n, path) and
+  n.fromSource()
 }
 
 module ResolveTest implements TestSig {

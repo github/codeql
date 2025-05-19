@@ -185,6 +185,7 @@ import codeql.swift.elements.expr.TryExpr
 import codeql.swift.elements.expr.TupleElementExpr
 import codeql.swift.elements.expr.TupleExpr
 import codeql.swift.elements.expr.TypeExpr
+import codeql.swift.elements.expr.TypeValueExpr
 import codeql.swift.elements.expr.UnderlyingToOpaqueExpr
 import codeql.swift.elements.expr.UnevaluatedInstanceExpr
 import codeql.swift.elements.expr.UnreachableExpr
@@ -195,6 +196,7 @@ import codeql.swift.elements.expr.UnresolvedMemberExpr
 import codeql.swift.elements.expr.UnresolvedPatternExpr
 import codeql.swift.elements.expr.UnresolvedSpecializeExpr
 import codeql.swift.elements.expr.UnresolvedTypeConversionExpr
+import codeql.swift.elements.expr.UnsafeCastExpr
 import codeql.swift.elements.expr.VarargExpansionExpr
 import codeql.swift.elements.pattern.AnyPattern
 import codeql.swift.elements.pattern.BindingPattern
@@ -248,6 +250,7 @@ import codeql.swift.elements.type.BoundGenericType
 import codeql.swift.elements.type.BuiltinBridgeObjectType
 import codeql.swift.elements.type.BuiltinDefaultActorStorageType
 import codeql.swift.elements.type.BuiltinExecutorType
+import codeql.swift.elements.type.BuiltinFixedArrayType
 import codeql.swift.elements.type.BuiltinFloatType
 import codeql.swift.elements.type.BuiltinIntegerLiteralType
 import codeql.swift.elements.type.BuiltinIntegerType
@@ -271,6 +274,7 @@ import codeql.swift.elements.type.FunctionType
 import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
+import codeql.swift.elements.type.IntegerType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.LocalArchetypeType
 import codeql.swift.elements.type.MetatypeType

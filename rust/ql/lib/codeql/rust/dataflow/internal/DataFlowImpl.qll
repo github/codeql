@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.internal.PathResolution
+private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -202,6 +203,7 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result = e.(ReturnExprCfgNode).getExpr() or
   result = e.(BreakExprCfgNode).getExpr() or
   result = e.(BlockExprCfgNode).getTailExpr() or
+  result = e.(MacroBlockExprCfgNode).getTailExpr() or
   result = e.(MatchExprCfgNode).getArmExpr(_) or
   result = e.(MacroExprCfgNode).getMacroCall().(MacroCallCfgNode).getExpandedNode() or
   result.(BreakExprCfgNode).getTarget() = e
@@ -319,23 +321,6 @@ predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode 
     f instanceof PathExpr implies f = any(Variable v).getAnAccess()
   ) and
   exists(kind)
-}
-
-/** Holds if `mc` implicitly borrows its receiver. */
-private predicate implicitBorrow(MethodCallExpr mc) {
-  // Determining whether an implicit borrow happens depends on the type of the
-  // receiever as well as the target. As a heuristic we simply check if the
-  // target takes `self` as a borrow and limit the approximation to cases where
-  // the receiver is a simple variable.
-  mc.getReceiver() instanceof VariableAccess and
-  mc.getStaticTarget().getParamList().getSelfParam().isRef()
-}
-
-/** Holds if `mc` implicitly dereferences its receiver. */
-private predicate implicitDeref(MethodCallExpr mc) {
-  // Similarly to `implicitBorrow` this is an approximation.
-  mc.getReceiver() instanceof VariableAccess and
-  not mc.getStaticTarget().getParamList().getSelfParam().isRef()
 }
 
 // Defines a set of aliases needed for the `RustDataFlow` module
@@ -520,15 +505,15 @@ module RustDataFlow implements InputSig<Location> {
 
   pragma[nomagic]
   private predicate implicitDerefToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
+    TypeInference::receiverHasImplicitDeref(node1.asExpr().getExpr()) and
     node1.asExpr() = node2.getReceiver() and
-    implicitDeref(node2.getMethodCall().getMethodCallExpr()) and
     exists(c)
   }
 
   pragma[nomagic]
   private predicate implicitBorrowToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
+    TypeInference::receiverHasImplicitBorrow(node1.asExpr().getExpr()) and
     node1.asExpr() = node2.getReceiver() and
-    implicitBorrow(node2.getMethodCall().getMethodCallExpr()) and
     exists(c)
   }
 
