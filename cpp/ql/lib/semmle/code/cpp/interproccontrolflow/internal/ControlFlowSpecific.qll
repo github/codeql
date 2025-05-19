@@ -3,7 +3,7 @@
  */
 
 private import cpp
-private import semmle.code.cpp.interproccontrolflow.shared.ControlFlow
+private import codeql.globalcontrolflow.ControlFlow
 
 module Private {
   import ControlFlowPrivate

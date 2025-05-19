@@ -1,0 +1,7 @@
+name: codeql/global-controlflow
+version: 0.0.1
+groups: shared
+library: true
+dependencies:
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

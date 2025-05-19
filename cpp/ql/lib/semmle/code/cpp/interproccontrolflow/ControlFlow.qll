@@ -5,7 +5,7 @@ import cpp
  */
 module ControlFlow {
   private import internal.ControlFlowSpecific
-  private import shared.ControlFlow
+  private import codeql.globalcontrolflow.ControlFlow
   import ControlFlowMake<Location, CppControlFlow>
   import Public
 }

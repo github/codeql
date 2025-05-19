@@ -15,6 +15,7 @@ dependencies:
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
+  codeql/global-controlflow: ${workspace}
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
