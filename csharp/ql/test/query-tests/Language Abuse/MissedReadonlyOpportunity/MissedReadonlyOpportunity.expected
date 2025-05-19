@@ -1,3 +1,14 @@
+#select
 | MissedReadonlyOpportunity.cs:3:16:3:19 | Bad1 | Field 'Bad1' can be 'readonly'. |
 | MissedReadonlyOpportunity.cs:4:14:4:17 | Bad2 | Field 'Bad2' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:5:22:5:25 | Bad3 | Field 'Bad3' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:12:20:12:24 | Good7 | Field 'Good7' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:49:19:49:24 | Parent | Field 'Parent' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:50:19:50:22 | Left | Field 'Left' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:70:16:70:16 | X | Field 'X' can be 'readonly'. |
+| MissedReadonlyOpportunity.cs:71:16:71:16 | Y | Field 'Y' can be 'readonly'. |
 | MissedReadonlyOpportunityBad.cs:3:9:3:13 | Field | Field 'Field' can be 'readonly'. |
+testFailures
+| MissedReadonlyOpportunity.cs:12:20:12:24 | Field 'Good7' can be 'readonly'. | Unexpected result: Alert |
+| MissedReadonlyOpportunity.cs:49:19:49:24 | Field 'Parent' can be 'readonly'. | Unexpected result: Alert |
+| MissedReadonlyOpportunity.cs:71:16:71:16 | Field 'Y' can be 'readonly'. | Unexpected result: Alert |
