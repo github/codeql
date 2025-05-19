@@ -2,7 +2,7 @@ import { Get, createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const SneakyQueryParam = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
+    const request = ctx.switchToHttp().getRequest(); // $requestSource
     return request.query.sneakyQueryParam;
   },
 );
@@ -16,11 +16,11 @@ export const SafeParam = createParamDecorator(
 export class Controller {
   @Get()
   sneaky(@SneakyQueryParam() value) {
-    return value; // NOT OK
-  }
+    return value; // $responseSendArgument
+  } // $routeHandler
 
   @Get()
   safe(@SafeParam() value) {
-    return value; // OK
-  }
+    return value; // $responseSendArgument
+  } // $routeHandler
 }

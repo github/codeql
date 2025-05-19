@@ -5,70 +5,70 @@ export class TestController {
   @Get('foo')
   getFoo() {
     return 'foo';
-  }
+  } // $routeHandler
 
   @Post('foo')
   postFoo() {
     return 'foo';
-  }
+  } // $routeHandler
 
   @Get()
   getRoot() {
     return 'foo';
-  }
+  } // $routeHandler
 
   @All('bar')
   bar() {
     return 'bar';
-  }
+  } // $routeHandler
 
   @Get('requestInputs/:x')
   requestInputs(
     @Param('x') x,
     @Query() queryObj,
     @Query('name') name,
-    @Req() req
+    @Req() req // $requestSource
   ) {
-    if (Math.random()) return x; // NOT OK
-    if (Math.random()) return queryObj; // NOT OK
-    if (Math.random()) return name; // NOT OK
-    if (Math.random()) return req.query.abc; // NOT OK
+    if (Math.random()) return x; // $responseSendArgument
+    if (Math.random()) return queryObj; // $responseSendArgument
+    if (Math.random()) return name; // $responseSendArgument
+    if (Math.random()) return req.query.abc; // $responseSendArgument
     return;
-  }
+  } // $routeHandler
 
   @Post('post')
   post(@Body() body) {
-    return body.x; // NOT OK
-  }
+    return body.x; // $responseSendArgument
+  } // $routeHandler
 
   @Get('redir')
   @Redirect('https://example.com')
   redir() {
     return {
-      url: '//other.example.com' // OK
+      url: '//other.example.com' // $redirectSink
     };
-  }
+  } // $routeHandler
 
   @Get('redir')
   @Redirect('https://example.com')
   redir2(@Query('redirect') target) {
     return {
-      url: target // NOT OK
+      url: target // $redirectSink
     };
-  }
+  } // $routeHandler
 
   @Get()
-  explicitSend(@Req() req, @Res() res) {
-    res.send(req.query.x) // NOT OK
-  }
+  explicitSend(@Req() req, @Res() res) { // $requestSource $responseSource
+    res.send(req.query.x) // $responseSource $responseSendArgument
+  } // $routeHandler
 
   @Post()
   upload(@UploadedFile() file) {
-    return file.originalname; // NOT OK
-  }
+    return file.originalname; // $responseSendArgument
+  } // $routeHandler
 
   @Post()
   uploadMany(@UploadedFiles() files) {
-    return files[0].originalname; // NOT OK
-  }
+    return files[0].originalname; // $responseSendArgument
+  } // $routeHandler
 }

@@ -8,15 +8,15 @@ export class Controller {
   ) { }
 
   @Get()
-  route1(@Query('x') validatedObj: Struct, @Query('y') unvalidated: string) {
-    if (Math.random()) return unvalidated; // NOT OK
-    return validatedObj.key; // OK
-  }
+  route1(@Query('x') validatedObj: Struct, @Query('y') unvalidated: string) { 
+    if (Math.random()) return unvalidated; // $responseSendArgument
+    return validatedObj.key; // $responseSendArgument
+  } // $routeHandler
 
   @Get()
   route2(@Query('x') x: string) {
     this.foo.fooMethod(x);
-  }
+  } // $routeHandler
 }
 
 class Struct {
