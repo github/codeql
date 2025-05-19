@@ -108,7 +108,7 @@ Swift
 """""
 
 *   Added AST nodes :code:`ActorIsolationErasureExpr`, :code:`CurrentContextIsolationExpr`,
-    :code:`ExtracFunctionIsolationExpr` and :code:`UnreachableExpr` that correspond to new nodes added by Swift 6.0.
+    :code:`ExtractFunctionIsolationExpr` and :code:`UnreachableExpr` that correspond to new nodes added by Swift 6.0.
 
 New Features
 ~~~~~~~~~~~~

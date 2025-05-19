@@ -165,7 +165,7 @@ Java/Kotlin
 """""""""""
 
 *   Java extraction is now able to download Maven 3.9.x if a Maven Enforcer Plugin configuration indicates it is necessary. Maven 3.8.x is still preferred if the enforcer-plugin configuration (if any) permits it.
-*   Added a path injection sanitizer for calls to :code:`java.lang.String.matches`, :code:`java.lang.String.replace`, and :code:`java.lang.String.replaceAll` that make sure '/', '', '..' are not in the path.
+*   Added a path injection sanitizer for calls to :code:`java.lang.String.matches`, :code:`java.lang.String.replace`, and :code:`java.lang.String.replaceAll` that make sure :code:`/`, :code:`\\`, :code:`..` are not in the path.
 
 JavaScript/TypeScript
 """""""""""""""""""""
