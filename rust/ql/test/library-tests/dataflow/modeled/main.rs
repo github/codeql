@@ -102,11 +102,11 @@ fn test_pin() {
         let mut pin2 = Box::pin(i);
         let mut pin3 = Box::into_pin(Box::new(i));
         let mut pin4 = pin!(i);
-        sink(i); // $  hasValueFlow=40
-        sink(*pin1); // $ MISSING: hasValueFlow=40
-        sink(*Pin::into_inner(pin1)); // $ MISSING: hasValueFlow=40
-        sink(*pin2); // $ MISSING: hasValueFlow=40
-        sink(*pin3); // $ MISSING: hasValueFlow=40
+        sink(i); // $ hasValueFlow=40
+        sink(*pin1); // $ hasValueFlow=40
+        sink(*Pin::into_inner(pin1)); // $ hasValueFlow=40
+        sink(*pin2); // $ hasValueFlow=40
+        sink(*pin3); // $ hasValueFlow=40
         sink(*pin4); // $ MISSING: hasValueFlow=40
     }
 
@@ -116,7 +116,7 @@ fn test_pin() {
         let mut pin2 = Box::pin(ms.clone());
         let mut pin3 = Box::into_pin(Box::new(ms.clone()));
         let mut pin4 = pin!(&ms);
-        sink(ms.val); // $  hasValueFlow=41
+        sink(ms.val); // $ hasValueFlow=41
         sink(pin1.val); // $ MISSING: hasValueFlow=41
         sink(Pin::into_inner(pin1).val); // $ MISSING: hasValueFlow=41
         sink(pin2.val); // $ MISSING: hasValueFlow=41
