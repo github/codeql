@@ -4,7 +4,6 @@ import KnownAlgorithmConstants
 import OpenSSLAlgorithmInstanceBase
 import AlgToAVCFlow
 
-//ellipticCurveNameToKeySizeAndFamilyMapping(name, size, family)
 class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
   Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmConstant
 {
