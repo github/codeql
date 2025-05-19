@@ -109,14 +109,6 @@ Python
 *   Fixed a bug in the extractor where a comment inside a subscript could sometimes cause the AST to be missing nodes.
 *   Using the :code:`break` and :code:`continue` keywords outside of a loop, which is a syntax error but is accepted by our parser, would cause the control-flow construction to fail. This is now no longer the case.
 
-Major Analysis Improvements
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Golang
-""""""
-
-*   Go 1.24 is now supported. This includes the new language feature of generic type aliases.
-
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

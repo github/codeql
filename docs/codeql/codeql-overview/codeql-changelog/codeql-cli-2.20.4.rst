@@ -117,8 +117,8 @@ Java/Kotlin
 *   Deleted the deprecated :code:`isLValue` and :code:`isRValue` predicates from the :code:`VarAccess` class, use :code:`isVarWrite` and :code:`isVarRead` respectively instead.
 *   Deleted the deprecated :code:`getRhs` predicate from the :code:`VarWrite` class, use :code:`getASource` instead.
 *   Deleted the deprecated :code:`LValue` and :code:`RValue` classes, use :code:`VarWrite` and :code:`VarRead` respectively instead.
-*   Deleted a lot of deprecated classes ending in ``*Access``, use the corresponding ``*Call`` classes instead.
-*   Deleted a lot of deprecated predicates ending in ``*Access``, use the corresponding ``*Call`` predicates instead.
+*   Deleted a lot of deprecated classes ending in "*Access", use the corresponding "*Call" classes instead.
+*   Deleted a lot of deprecated predicates ending in "*Access", use the corresponding "*Call" predicates instead.
 *   Deleted the deprecated :code:`EnvInput` and :code:`DatabaseInput` classes from :code:`FlowSources.qll`, use the threat models feature instead.
 *   Deleted some deprecated API predicates from :code:`SensitiveApi.qll`, use the Sink classes from that file instead.
 
@@ -144,7 +144,7 @@ Ruby
 *   Deleted the deprecated :code:`ModelClass` and :code:`ModelInstance` classes from :code:`ActiveResource.qll`, use :code:`ModelClassNode` and :code:`ModelClassNode.getAnInstanceReference()` instead.
 *   Deleted the deprecated :code:`Collection` class from :code:`ActiveResource.qll`, use :code:`CollectionSource` instead.
 *   Deleted the deprecated :code:`ServiceInstantiation` and :code:`ClientInstantiation` classes from :code:`Twirp.qll`.
-*   Deleted a lot of deprecated dataflow modules from ``*Query.qll`` files.
+*   Deleted a lot of deprecated dataflow modules from "*Query.qll" files.
 *   Deleted the old deprecated TypeTracking library.
 
 Swift
