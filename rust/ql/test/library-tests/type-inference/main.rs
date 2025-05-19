@@ -784,6 +784,16 @@ mod method_supertraits {
 
     impl<T> MyTrait3<T> for MyThing2<T> {}
 
+    fn call_trait_m1<T1, T2: MyTrait1<T1>>(x: T2) -> T1 {
+        x.m1() // $ method=MyTrait1::m1
+    }
+
+    fn type_param_trait_to_supertrait<T: MyTrait3<S1>>(x: T) {
+        // Test that `MyTrait3` is a subtrait of `MyTrait1<MyThing<S1>>`
+        let a = x.m1(); // $ method=MyTrait1::m1 type=a:MyThing type=a:A.S1
+        println!("{:?}", a);
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -802,6 +812,12 @@ mod method_supertraits {
 
         println!("{:?}", x.m3()); // $ method=m3 type=x.m3():S1
         println!("{:?}", y.m3()); // $ method=m3 type=y.m3():S2
+
+        let x = MyThing { a: S1 };
+        let s = call_trait_m1(x); // $ type=s:S1
+
+        let x = MyThing2 { a: S2 };
+        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2
     }
 }
 
@@ -1054,6 +1070,12 @@ mod method_call_type_conversion {
         let x6 = &S(S2);
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1
+
+        let x7 = S(&S2);
+        // Non-implicit dereference with nested borrow in order to test that the
+        // implicit dereference handling doesn't affect nested borrows.
+        let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
+        println!("{:?}", x7);
     }
 }
 
