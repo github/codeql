@@ -49,6 +49,9 @@ private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 
 /**
+ * DEPRECATED: This predicate will be replaced by an alternative implementation
+ * in the future, which uses a slightly different format.
+ *
  * Holds if in a call to the function with canonical path `path`, defined in the
  * crate `crate`, the value referred to by `output` is a flow source of the given
  * `kind`.
@@ -64,6 +67,9 @@ extensible predicate sourceModelDeprecated(
 );
 
 /**
+ * DEPRECATED: This predicate will be replaced by an alternative implementation
+ * in the future, which uses a slightly different format.
+ *
  * Holds if in a call to the function with canonical path `path`, defined in the
  * crate `crate`, the value referred to by `input` is a flow sink of the given
  * `kind`.
@@ -80,6 +86,9 @@ extensible predicate sinkModelDeprecated(
 );
 
 /**
+ * DEPRECATED: This predicate will be replaced by an alternative implementation
+ * in the future, which uses a slightly different format.
+ *
  * Holds if in a call to the function with canonical path `path`, defined in the
  * crate `crate`, the value referred to by `input` can flow to the value referred
  * to by `output`.
