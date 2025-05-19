@@ -1,5 +1,5 @@
 import cpp
-import experimental.quantum.OpenSSL.LibraryDetector
+private import experimental.quantum.OpenSSL.LibraryDetector
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)

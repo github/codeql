@@ -1,8 +1,10 @@
 import cpp
-import experimental.quantum.Language
-import KnownAlgorithmConstants
-import OpenSSLAlgorithmInstanceBase
-import AlgToAVCFlow
+private import experimental.quantum.Language
+private import KnownAlgorithmConstants
+private import OpenSSLAlgorithmInstanceBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import AlgToAVCFlow
 
 class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
   Crypto::EllipticCurveInstance instanceof KnownOpenSSLEllipticCurveAlgorithmConstant
@@ -17,7 +19,7 @@ class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorith
     this instanceof Literal and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter

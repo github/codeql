@@ -1,12 +1,13 @@
 import cpp
-import experimental.quantum.Language
-import KnownAlgorithmConstants
-import Crypto::KeyOpAlg as KeyOpAlg
-import OpenSSLAlgorithmInstanceBase
-import PaddingAlgorithmInstance
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-import AlgToAVCFlow
-import BlockAlgorithmInstance
+private import experimental.quantum.Language
+private import KnownAlgorithmConstants
+private import Crypto::KeyOpAlg as KeyOpAlg
+private import OpenSSLAlgorithmInstanceBase
+private import PaddingAlgorithmInstance
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import AlgToAVCFlow
+private import BlockAlgorithmInstance
 
 /**
  * Given a `KnownOpenSSLCipherAlgorithmConstant`, converts this to a cipher family type.

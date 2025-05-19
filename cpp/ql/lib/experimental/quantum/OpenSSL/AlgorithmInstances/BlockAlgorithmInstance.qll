@@ -1,9 +1,10 @@
 import cpp
-import experimental.quantum.Language
-import OpenSSLAlgorithmInstanceBase
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
-import AlgToAVCFlow
+private import experimental.quantum.Language
+private import OpenSSLAlgorithmInstanceBase
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
+private import AlgToAVCFlow
 
 /**
  * Given a `KnownOpenSSLBlockModeAlgorithmConstant`, converts this to a block family type.

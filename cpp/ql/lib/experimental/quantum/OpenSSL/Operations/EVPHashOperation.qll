@@ -2,12 +2,12 @@
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
 
-import experimental.quantum.Language
-import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
-import experimental.quantum.OpenSSL.LibraryDetector
-import OpenSSLOperationBase
-import EVPHashInitializer
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.LibraryDetector
+private import OpenSSLOperationBase
+private import EVPHashInitializer
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 // import EVPHashConsumers
 abstract class EVP_Hash_Operation extends OpenSSLOperation, Crypto::HashOperationInstance {
