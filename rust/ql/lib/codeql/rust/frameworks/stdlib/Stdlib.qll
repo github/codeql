@@ -7,6 +7,7 @@ private import codeql.rust.Concepts
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.
@@ -32,10 +33,8 @@ class OptionEnum extends Enum {
     // todo: replace with canonical path, once calculated in QL
     exists(Crate core, Module m |
       core.getName() = "core" and
-      m = core.getSourceFile().getAnItem() and
-      m.getName().getText() = "option" and
-      this = m.getItemList().getAnItem() and
-      this.getName().getText() = "Option"
+      m = core.getSourceFile().(ItemNode).getASuccessor("option") and
+      this = m.(ItemNode).getASuccessor("Option")
     )
   }
 
@@ -53,10 +52,8 @@ class ResultEnum extends Enum {
     // todo: replace with canonical path, once calculated in QL
     exists(Crate core, Module m |
       core.getName() = "core" and
-      m = core.getSourceFile().getAnItem() and
-      m.getName().getText() = "result" and
-      this = m.getItemList().getAnItem() and
-      this.getName().getText() = "Result"
+      m = core.getSourceFile().(ItemNode).getASuccessor("result") and
+      this = m.(ItemNode).getASuccessor("Result")
     )
   }
 

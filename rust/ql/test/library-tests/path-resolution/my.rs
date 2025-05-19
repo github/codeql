@@ -16,13 +16,13 @@ mod my4 {
 }
 
 pub use my4::my5::f as nested_f; // $ item=I201
-
+#[rustfmt::skip]
 type Result<
     T, // T
 > = ::std::result::Result<
     T, // $ item=T
-    String,
->; // my::Result
+    String,> // $ item=Result
+; // my::Result
 
 fn int_div(
     x: i32, //
@@ -30,7 +30,7 @@ fn int_div(
 ) -> Result<i32> // $ item=my::Result
 {
     if y == 0 {
-        return Err("Div by zero".to_string());
+        return Err("Div by zero".to_string()); // $ item=Err
     }
-    Ok(x / y)
+    Ok(x / y) // $ item=Ok
 }

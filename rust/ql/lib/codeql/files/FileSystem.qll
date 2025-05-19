@@ -40,7 +40,9 @@ module Folder = Impl::Folder;
 class File extends Container, Impl::File {
   /** Holds if this file was extracted from ordinary source code. */
   predicate fromSource() {
-    exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this)
+    exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this) and
+    // instead use special extractor step for dependencies?
+    exists(this.getRelativePath())
   }
 
   /**
