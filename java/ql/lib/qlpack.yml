@@ -1,5 +1,5 @@
 name: codeql/java-all
-version: 7.1.4-dev
+version: 7.2.1-dev
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
@@ -8,6 +8,7 @@ upgrades: upgrades
 dependencies:
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
+  codeql/quantum: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/regex: ${workspace}
   codeql/threat-models: ${workspace}

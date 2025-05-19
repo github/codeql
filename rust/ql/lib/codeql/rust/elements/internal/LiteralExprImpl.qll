@@ -42,4 +42,179 @@ module Impl {
       )
     }
   }
+
+  /**
+   * A [character literal][1]. For example:
+   *
+   * ```rust
+   * 'x';
+   * ```
+   *
+   * [1]: https://doc.rust-lang.org/reference/tokens.html#character-literals
+   */
+  class CharLiteralExpr extends LiteralExpr {
+    CharLiteralExpr() { this.getTextValue().regexpMatch("'.*'") }
+
+    override string getAPrimaryQlClass() { result = "CharLiteralExpr" }
+  }
+
+  /**
+   * A [string literal][1]. For example:
+   *
+   * ```rust
+   * "Hello, world!";
+   * ```
+   *
+   * [1]: https://doc.rust-lang.org/reference/tokens.html#string-literals
+   */
+  class StringLiteralExpr extends LiteralExpr {
+    StringLiteralExpr() { this.getTextValue().regexpMatch("r?#*\".*\"#*") }
+
+    override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
+  }
+
+  /**
+   * A number literal.
+   */
+  abstract class NumberLiteralExpr extends LiteralExpr {
+    /**
+     * Get the suffix of this number literal, if any.
+     *
+     * For example, `42u8` has the suffix `u8`.
+     */
+    abstract string getSuffix();
+  }
+
+  // https://doc.rust-lang.org/reference/tokens.html#integer-literals
+  private module IntegerLiteralRegexs {
+    bindingset[s]
+    string paren(string s) { result = "(?:" + s + ")" }
+
+    string integerLiteral() {
+      result =
+        paren(paren(decLiteral()) + "|" + paren(binLiteral()) + "|" + paren(octLiteral()) + "|" +
+              paren(hexLiteral())) + "(" + suffix() + ")?"
+    }
+
+    private string suffix() { result = "u8|i8|u16|i16|u32|i32|u64|i64|u128|i128|usize|isize" }
+
+    string decLiteral() { result = decDigit() + "(?:" + decDigit() + "|_)*" }
+
+    string binLiteral() {
+      result = "0b(?:" + binDigit() + "|_)*" + binDigit() + "(?:" + binDigit() + "|_)*"
+    }
+
+    string octLiteral() {
+      result = "0o(?:" + octDigit() + "|_)*" + octDigit() + "(?:" + octDigit() + "|_)*"
+    }
+
+    string hexLiteral() {
+      result = "0x(?:" + hexDigit() + "|_)*" + hexDigit() + "(?:" + hexDigit() + "|_)*"
+    }
+
+    string decDigit() { result = "[0-9]" }
+
+    string binDigit() { result = "[01]" }
+
+    string octDigit() { result = "[0-7]" }
+
+    string hexDigit() { result = "[0-9a-fA-F]" }
+  }
+
+  /**
+   * An [integer literal][1]. For example:
+   *
+   * ```rust
+   * 42;
+   * ```
+   *
+   * [1]: https://doc.rust-lang.org/reference/tokens.html#integer-literals
+   */
+  class IntegerLiteralExpr extends NumberLiteralExpr {
+    IntegerLiteralExpr() { this.getTextValue().regexpMatch(IntegerLiteralRegexs::integerLiteral()) }
+
+    override string getSuffix() {
+      exists(string s, string reg |
+        s = this.getTextValue() and
+        reg = IntegerLiteralRegexs::integerLiteral() and
+        result = s.regexpCapture(reg, 1)
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
+  }
+
+  // https://doc.rust-lang.org/reference/tokens.html#floating-point-literals
+  private module FloatLiteralRegexs {
+    private import IntegerLiteralRegexs
+
+    string floatLiteral() {
+      result =
+        paren(decLiteral() + "\\.") + "|" + paren(floatLiteralSuffix1()) + "|" +
+          paren(floatLiteralSuffix2())
+    }
+
+    string floatLiteralSuffix1() {
+      result = decLiteral() + "\\." + decLiteral() + "(" + suffix() + ")?"
+    }
+
+    string floatLiteralSuffix2() {
+      result =
+        decLiteral() + paren("\\." + decLiteral()) + "?" + paren(exponent()) + "(" + suffix() + ")?"
+    }
+
+    string integerSuffixLiteral() {
+      result =
+        paren(paren(decLiteral()) + "|" + paren(binLiteral()) + "|" + paren(octLiteral()) + "|" +
+              paren(hexLiteral())) + "(" + suffix() + ")"
+    }
+
+    private string suffix() { result = "f32|f64" }
+
+    string exponent() {
+      result =
+        "(?:e|E)(?:\\+|-)?(?:" + decDigit() + "|_)*" + decDigit() + "(?:" + decDigit() + "|_)*"
+    }
+  }
+
+  /**
+   * A [floating-point literal][1]. For example:
+   *
+   * ```rust
+   * 42.0;
+   * ```
+   *
+   * [1]: https://doc.rust-lang.org/reference/tokens.html#floating-point-literals
+   */
+  class FloatLiteralExpr extends NumberLiteralExpr {
+    FloatLiteralExpr() {
+      this.getTextValue()
+          .regexpMatch(IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteral()) + "|" +
+              IntegerLiteralRegexs::paren(FloatLiteralRegexs::integerSuffixLiteral())) and
+      // E.g. `0x01_f32` is an integer, not a float
+      not this instanceof IntegerLiteralExpr
+    }
+
+    override string getSuffix() {
+      exists(string s, string reg |
+        reg =
+          IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteralSuffix1()) + "|" +
+            IntegerLiteralRegexs::paren(FloatLiteralRegexs::floatLiteralSuffix2()) + "|" +
+            IntegerLiteralRegexs::paren(FloatLiteralRegexs::integerSuffixLiteral()) and
+        s = this.getTextValue() and
+        result = s.regexpCapture(reg, [1, 2, 3])
+      )
+    }
+
+    override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
+  }
+
+  /**
+   * A Boolean literal. Either `true` or `false`.
+   */
+  class BooleanLiteralExpr extends LiteralExpr {
+    BooleanLiteralExpr() { this.getTextValue() = ["false", "true"] }
+
+    override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
+  }
 }

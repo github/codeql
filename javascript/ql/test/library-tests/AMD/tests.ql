@@ -18,8 +18,8 @@ query predicate amdModuleDefinition(AmdModuleDefinition mod, DataFlow::SourceNod
   mod.getFactoryNode() = factory
 }
 
-query predicate amdModuleDependencies(AmdModuleDefinition mod, PathExpr dependency) {
-  dependency = mod.getADependency()
+query predicate amdModuleDependencies(AmdModuleDefinition mod, Expr dependency) {
+  dependency = mod.getADependencyExpr()
 }
 
 query predicate amdModuleExportedSymbol(AmdModule m, string sym) { sym = m.getAnExportedSymbol() }

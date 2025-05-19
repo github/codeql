@@ -2136,7 +2136,7 @@ open class KotlinUsesExtractor(
             }
         val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParentOf(vp, false)
 
-        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
+        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: parameterIndexExcludingReceivers(vp)
         val idxOffset =
             if (
                 declarationParent is IrFunction &&

@@ -850,10 +850,10 @@ module API {
           )
           or
           lbl = Label::promised() and
-          PromiseFlow::storeStep(rhs, pred, Promises::valueProp())
+          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::valueProp())
           or
           lbl = Label::promisedError() and
-          PromiseFlow::storeStep(rhs, pred, Promises::errorProp())
+          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::errorProp())
           or
           // The return-value of a getter G counts as a definition of property G
           // (Ordinary methods and properties are handled as PropWrite nodes)
@@ -1008,11 +1008,11 @@ module API {
         propDesc = ""
       )
       or
-      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
+      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
       lbl = Label::promised() and
       (propDesc = Promises::valueProp() or propDesc = "")
       or
-      PromiseFlow::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
+      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
       lbl = Label::promisedError() and
       (propDesc = Promises::errorProp() or propDesc = "")
     }
@@ -1236,7 +1236,7 @@ module API {
       exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
         ref = cls.getAReceiverNode()
         or
-        ref = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+        ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
       )
       or
       nd = MkUse(ref)

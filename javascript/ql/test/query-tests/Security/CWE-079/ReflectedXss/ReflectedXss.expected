@@ -78,7 +78,9 @@ edges
 | ReflectedXss.js:22:19:22:26 | req.body | ReflectedXss.js:22:12:22:27 | marked(req.body) | provenance |  |
 | ReflectedXss.js:29:7:32:4 | mytable | ReflectedXss.js:33:12:33:18 | mytable | provenance |  |
 | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | ReflectedXss.js:29:7:32:4 | mytable | provenance |  |
-| ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | provenance |  |
+| ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | provenance |  |
+| ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | provenance |  |
+| ReflectedXss.js:31:14:31:21 | req.body | ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | provenance |  |
 | ReflectedXss.js:41:31:41:38 | req.body | ReflectedXss.js:41:12:41:39 | convert ... q.body) | provenance |  |
 | ReflectedXss.js:63:14:63:21 | req.body | ReflectedXss.js:63:39:63:42 | file | provenance |  |
 | ReflectedXss.js:63:39:63:42 | file | ReflectedXss.js:64:16:64:19 | file | provenance |  |
@@ -253,6 +255,8 @@ nodes
 | ReflectedXss.js:28:12:28:19 | req.body | semmle.label | req.body |
 | ReflectedXss.js:29:7:32:4 | mytable | semmle.label | mytable |
 | ReflectedXss.js:29:17:32:4 | table([ ... ce\\n  ]) | semmle.label | table([ ... ce\\n  ]) |
+| ReflectedXss.js:29:23:32:3 | [\\n    [ ... rce\\n  ] [1, 1] | semmle.label | [\\n    [ ... rce\\n  ] [1, 1] |
+| ReflectedXss.js:31:5:31:22 | ['body', req.body] [1] | semmle.label | ['body', req.body] [1] |
 | ReflectedXss.js:31:14:31:21 | req.body | semmle.label | req.body |
 | ReflectedXss.js:33:12:33:18 | mytable | semmle.label | mytable |
 | ReflectedXss.js:40:12:40:19 | req.body | semmle.label | req.body |
