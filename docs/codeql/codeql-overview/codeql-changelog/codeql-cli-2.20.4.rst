@@ -144,7 +144,7 @@ Ruby
 *   Deleted the deprecated :code:`ModelClass` and :code:`ModelInstance` classes from :code:`ActiveResource.qll`, use :code:`ModelClassNode` and :code:`ModelClassNode.getAnInstanceReference()` instead.
 *   Deleted the deprecated :code:`Collection` class from :code:`ActiveResource.qll`, use :code:`CollectionSource` instead.
 *   Deleted the deprecated :code:`ServiceInstantiation` and :code:`ClientInstantiation` classes from :code:`Twirp.qll`.
-*   Deleted a lot of deprecated dataflow modules from "*Query.qll" files.
+*   Deleted a lot of deprecated dataflow modules from ``*Query.qll`` files.
 *   Deleted the old deprecated TypeTracking library.
 
 Swift
