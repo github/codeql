@@ -1,6 +1,6 @@
 private import codeql.util.Unit
 private import codeql.util.Location
-private import semmle.code.cpp.interproccontrolflow.shared.ControlFlow
+private import codeql.globalcontrolflow.ControlFlow
 
 module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   private import Lang

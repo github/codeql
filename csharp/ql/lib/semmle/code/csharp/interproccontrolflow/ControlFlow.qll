@@ -1,4 +1,4 @@
-import cpp
+import csharp
 
 /**
  * Provides classes for performing global (inter-procedural) control flow analyses.
@@ -6,6 +6,6 @@ import cpp
 module ControlFlow {
   private import internal.ControlFlowSpecific
   private import codeql.globalcontrolflow.ControlFlow
-  import ControlFlowMake<Location, CppControlFlow>
+  import ControlFlowMake<Location, CSharpControlFlow>
   import Public
 }
