@@ -246,9 +246,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    * implies that `(bb1, bb2)` dominates its endpoint `bb2`. I.e., `bb2` can
    * only be reached from the entry block by going via `(bb1, bb2)`.
    *
-   * This is a necessary and sufficient condition for an edge to dominate anything,
-   * and in particular `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)` means
-   * that the edge `(bb1, bb2)` dominates `bb3`.
+   * This is a necessary and sufficient condition for an edge to dominate some
+   * block, and therefore `dominatingEdge(bb1, bb2) and bb2.dominates(bb3)`
+   * means that the edge `(bb1, bb2)` dominates `bb3`.
    */
   pragma[nomagic]
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {

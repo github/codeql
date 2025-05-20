@@ -70,10 +70,8 @@ predicate hasDominanceInformation(BasicBlock bb) {
 }
 
 /**
- * A control-flow node that represents the start of a basic block.
- *
- * A basic block is a series of nodes with no control-flow branching, which can
- * often be treated as a unit in analyses.
+ * A basic block, that is, a maximal straight-line sequence of control flow nodes
+ * without branches or joins.
  */
 class BasicBlock extends BbImpl::BasicBlock {
   /** Gets the immediately enclosing callable whose body contains this node. */
