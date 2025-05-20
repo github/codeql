@@ -7,6 +7,16 @@ public class Test {
     return nsc;
   }
 
+  static class GenericClass<T> {
+    public void method() { }
+  }
+
+  public testDispatch() {
+    GenericClass<String> g1 = new GenericClass<>();
+    g1.method();
+    GenericClass<NoSuchClass> g2 = new GenericClass<>();
+    g2.method();
+  }
 }
 
 // Diagnostic Matches: Unexpected symbol for constructor: new NoSuchClass()
