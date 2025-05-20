@@ -309,7 +309,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * ```
      * the type parameter `T` has the constraint `IComparable<T>`.
      */
-    TypeMention getTypeParameterConstraint(TypeParameter tp);
+    TypeMention getATypeParameterConstraint(TypeParameter tp);
 
     /**
      * Holds if
@@ -511,29 +511,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if all the places where the same type parameter occurs in `tm`
-       * are equal in `app`.
-       *
-       * TODO: As of now this only checks equality at the root of the types
-       * instantiated for type parameters. So, for instance, `Pair<Vec<i64>, Vec<bool>>`
-       * is mistakenly considered an instantiation of `Pair<A, A>`.
-       */
-      pragma[nomagic]
-      private predicate typeParametersHaveEqualInstantiation(
-        App app, TypeAbstraction abs, TypeMention tm
-      ) {
-        // We only need to check equality if the concrete types are satisfied.
-        satisfiesConcreteTypes(app, abs, tm) and
-        (
-          not exists(getNthTypeParameter(abs, _))
-          or
-          exists(int n | n = max(int i | exists(getNthTypeParameter(abs, i))) |
-            typeParametersHaveEqualInstantiationFromIndex(app, abs, tm, n)
-          )
-        )
-      }
-
-      /**
        * Holds if `app` is a possible instantiation of `tm`. That is, by making
        * appropriate substitutions for the free type parameters in `tm` given by
        * `abs`, it is possible to obtain `app`.
@@ -546,8 +523,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * - `Pair<int, string>` is _not_ an instantiation of `Pair<string, string>`
        */
       predicate isInstantiationOf(App app, TypeAbstraction abs, TypeMention tm) {
-        // `typeParametersHaveEqualInstantiation` suffices as it implies `satisfiesConcreteTypes`.
-        typeParametersHaveEqualInstantiation(app, abs, tm)
+        // We only need to check equality if the concrete types are satisfied.
+        satisfiesConcreteTypes(app, abs, tm) and
+        // Check if all the places where the same type parameter occurs in `tm`
+        // are equal in `app`.
+        //
+        // TODO: As of now this only checks equality at the root of the types
+        // instantiated for type parameters. So, for instance, `Pair<Vec<i64>, Vec<bool>>`
+        // is mistakenly considered an instantiation of `Pair<A, A>`.
+        (
+          not exists(getNthTypeParameter(abs, _))
+          or
+          exists(int n | n = max(int i | exists(getNthTypeParameter(abs, i))) |
+            typeParametersHaveEqualInstantiationFromIndex(app, abs, tm, n)
+          )
+        )
       }
     }
 
@@ -599,8 +589,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * The type mention `condition` satisfies `constraint` with the type `t`
-       * at the path `path`.
+       * Holds if the type mention `condition` satisfies `constraint` with the
+       * type `t` at the path `path`.
        */
       predicate conditionSatisfiesConstraintTypeAt(
         TypeAbstraction abs, TypeMention condition, TypeMention constraint, TypePath path, Type t
@@ -1207,7 +1197,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         tp1 != tp2 and
         tp1 = target.getDeclaredType(dpos, path1) and
         exists(TypeMention tm |
-          tm = getTypeParameterConstraint(tp1) and
+          tm = getATypeParameterConstraint(tp1) and
           tm.resolveTypeAt(path2) = tp2 and
           constraint = resolveTypeMentionRoot(tm)
         )
