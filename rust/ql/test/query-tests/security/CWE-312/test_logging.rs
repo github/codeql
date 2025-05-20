@@ -148,31 +148,39 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     warn!("message = {:?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
     warn!("message = {:#?}", s2); // $ MISSING: Alert[rust/cleartext-logging]=s2
 
-    // test log_expect with sensitive data
     let password2 = "123456".to_string(); // Create new password for this test
+
+    // test `log_expect` with sensitive `Option.Some` (which is not output by `log_expect`)
     let sensitive_opt: Option<String> = Some(password2.clone());
+    let _ = sensitive_opt.log_expect("Option is None");
 
-    // log_expect tests with LogErrOption trait
-    let _ = sensitive_opt.log_expect("Option is None"); // $ MISSING: Alert[rust/cleartext-logging]
-
-    // log_expect tests with LogErrResult trait
+    // test `log_expect` with sensitive `Result.Ok` (which is not output by `log_expect`)
     let sensitive_result: Result<String, &str> = Ok(password2.clone());
-    let _ = sensitive_result.log_expect("Result failed"); // $ MISSING: Alert[rust/cleartext-logging]
+    let _ = sensitive_result.log_expect("Result failed");
 
-    // log_unwrap tests with LogErrOption trait
+    // test `log_unwrap` with sensitive `Option.Some` (which is not output by `log_unwrap`)
     let sensitive_opt2: Option<String> = Some(password2.clone());
-    let _ = sensitive_opt2.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
+    let _ = sensitive_opt2.log_unwrap();
 
-    // log_unwrap tests with LogErrResult trait
+    // test `log_unwrap` with sensitive `Result.Ok` (which is not output by `log_unwrap`)
     let sensitive_result2: Result<String, &str> = Ok(password2.clone());
-    let _ = sensitive_result2.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
+    let _ = sensitive_result2.log_unwrap();
 
-    // Negative cases that should fail and log
+    // test `log_expect` on `Option` with sensitive message
     let none_opt: Option<String> = None;
     let _ = none_opt.log_expect(&format!("Failed with password: {}", password2)); // $ MISSING: Alert[rust/cleartext-logging]
 
-    let err_result: Result<String, String> = Err(password2);
-    let _ = err_result.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
+    // test `log_expect` on `Result` with sensitive message
+    let err_result: Result<String, &str> = Err("");
+    let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ MISSING: Alert[rust/cleartext-logging]
+
+    // test `log_expect` with sensitive `Result.Err`
+    let err_result2: Result<String, String> = Err(password2.clone());
+    let _ = err_result2.log_expect(""); // $ MISSING: Alert[rust/cleartext-logging]
+
+    // test `log_unwrap` with sensitive `Result.Err`
+    let err_result3: Result<String, String> = Err(password2);
+    let _ = err_result3.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
 }
 
 fn test_std(password: String, i: i32, opt_i: Option<i32>) {
