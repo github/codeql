@@ -168,19 +168,19 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
 
     // test `log_expect` on `Option` with sensitive message
     let none_opt: Option<String> = None;
-    let _ = none_opt.log_expect(&format!("Failed with password: {}", password2)); // $ MISSING: Alert[rust/cleartext-logging]
+    let _ = none_opt.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
 
     // test `log_expect` on `Result` with sensitive message
     let err_result: Result<String, &str> = Err("");
-    let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ MISSING: Alert[rust/cleartext-logging]
+    let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
 
     // test `log_expect` with sensitive `Result.Err`
     let err_result2: Result<String, String> = Err(password2.clone());
     let _ = err_result2.log_expect(""); // $ MISSING: Alert[rust/cleartext-logging]
 
     // test `log_unwrap` with sensitive `Result.Err`
-    let err_result3: Result<String, String> = Err(password2);
-    let _ = err_result3.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
+    let err_result3: Result<String, String> = Err(password2); // $ Source=err_result3
+    let _ = err_result3.log_unwrap(); // $ Alert[rust/cleartext-logging]=err_result3
 }
 
 fn test_std(password: String, i: i32, opt_i: Option<i32>) {
