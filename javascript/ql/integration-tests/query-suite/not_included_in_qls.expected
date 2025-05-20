@@ -145,4 +145,3 @@ ql/javascript/ql/src/meta/extraction-metrics/FileData.ql
 ql/javascript/ql/src/meta/extraction-metrics/MissingMetrics.ql
 ql/javascript/ql/src/meta/extraction-metrics/PhaseTimings.ql
 ql/javascript/ql/src/meta/types/TypedExprs.ql
-ql/javascript/ql/src/meta/types/TypesWithQualifiedName.ql
