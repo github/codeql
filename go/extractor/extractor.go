@@ -773,22 +773,25 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDu
 	var parentLbl trap.Label
 
 	for i, component := range components {
-		var rawPath, canonicalPath string
+		// displayPath is the same as rawPath except for root directories: if
+		// rawPath is "" then displayPath is "/"; if rawPath is "C:" then
+		// displayPath is "C:/".
+		var rawPath, displayPath string
 		if i == 0 {
 			rawPath = component
 			if component == "" || regexp.MustCompile(`^[A-Za-z]:$`).MatchString(component) {
 				// Handle linux root and Windows drive letters by appending "/"
-				canonicalPath = rawPath + "/"
+				displayPath = rawPath + "/"
 			} else {
-				canonicalPath = rawPath
+				displayPath = rawPath
 			}
 		} else {
 			rawPath = parentPath + "/" + component
-			canonicalPath = rawPath
+			displayPath = rawPath
 		}
 		if i == len(components)-1 {
 			lbl := tw.Labeler.FileLabelFor(file)
-			dbscheme.FilesTable.Emit(tw, lbl, canonicalPath)
+			dbscheme.FilesTable.Emit(tw, lbl, displayPath)
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
@@ -799,8 +802,8 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDu
 			extraction.Lock.Unlock()
 			break
 		}
-		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(canonicalPath) + ";folder")
-		dbscheme.FoldersTable.Emit(tw, lbl, canonicalPath)
+		lbl := tw.Labeler.GlobalID(util.EscapeTrapSpecialChars(displayPath) + ";folder")
+		dbscheme.FoldersTable.Emit(tw, lbl, displayPath)
 		if i > 0 {
 			dbscheme.ContainerParentTable.Emit(tw, parentLbl, lbl)
 		}
