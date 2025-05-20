@@ -30,7 +30,7 @@ class ECKeyGenOperation extends OpenSSLOperation, Crypto::KeyGenerationOperation
   Expr getAlgorithmArg() { result = this.(Call).getArgument(0) }
 
   override Expr getInputArg() {
-    // there is no 'input', in the sense that no data is being manipualted by the operation.
+    // there is no 'input', in the sense that no data is being manipulated by the operation.
     // There is an input of an algorithm, but that is not the intention of the operation input arg.
     none()
   }
