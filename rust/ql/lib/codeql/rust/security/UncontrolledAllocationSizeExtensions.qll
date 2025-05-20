@@ -44,43 +44,15 @@ module UncontrolledAllocationSize {
   }
 
   /**
-   * Gets the operand on the "greater" (or "greater-or-equal") side
-   * of this relational expression, that is, the side that is larger
-   * if the overall expression evaluates to `true`; for example on
-   * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
-   */
-  private Expr getGreaterOperand(BinaryExpr op) {
-    op.getOperatorName() = ["<", "<="] and
-    result = op.getRhs()
-    or
-    op.getOperatorName() = [">", ">="] and
-    result = op.getLhs()
-  }
-
-  /**
-   * Gets the operand on the "lesser" (or "lesser-or-equal") side
-   * of this relational expression, that is, the side that is smaller
-   * if the overall expression evaluates to `true`; for example on
-   * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
-   */
-  private Expr getLesserOperand(BinaryExpr op) {
-    op.getOperatorName() = ["<", "<="] and
-    result = op.getLhs()
-    or
-    op.getOperatorName() = [">", ">="] and
-    result = op.getRhs()
-  }
-
-  /**
    * Holds if comparison `g` having result `branch` indicates an upper bound for the sub-expression
    * `node`. For example when the comparison `x < 10` is true, we have an upper bound for `x`.
    */
   private predicate isUpperBoundCheck(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
     exists(BinaryExpr cmp | g = cmp.getACfgNode() |
-      node = getLesserOperand(cmp).getACfgNode() and
+      node = cmp.(RelationalOperation).getLesserOperand().getACfgNode() and
       branch = true
       or
-      node = getGreaterOperand(cmp).getACfgNode() and
+      node = cmp.(RelationalOperation).getGreaterOperand().getACfgNode() and
       branch = false
       or
       cmp.getOperatorName() = "==" and
