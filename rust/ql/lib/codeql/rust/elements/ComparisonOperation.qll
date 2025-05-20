@@ -1,3 +1,7 @@
+/**
+ * Provides classes for comparison operations.
+ */
+
 private import codeql.rust.elements.Expr
 private import codeql.rust.elements.BinaryExpr
 private import codeql.rust.elements.Operation
