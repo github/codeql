@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::{Const, Fn, HasName, Static};
+use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -654,8 +654,14 @@ impl<'a> Translator<'a> {
                     return true;
                 }
             }
+            if let Some(pat) = syntax.parent().and_then(Param::cast).and_then(|x| x.pat()) {
+                if pat.syntax() == syntax {
+                    tracing::debug!("Skipping parameter");
+                    return true;
+                }
+            }
         }
-        return false;
+        false
     }
 
     pub(crate) fn extract_types_from_path_segment(
