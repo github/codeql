@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: sourceModel
+    data:
+      - ["system.io.file!", "Method[appendtext].ReturnValue", "file-write"]
+      - ["system.io.file!", "Method[create].ReturnValue", "file-write"]
+      - ["system.io.file!", "Method[createtext].ReturnValue", "file-write"]
+      - ["system.io.file!", "Method[open].ReturnValue", "file-write"]
+      - ["system.io.file!", "Method[open].ReturnValue", "file"]
+      - ["system.io.file!", "Method[openread].ReturnValue", "file"]
+      - ["system.io.file!", "Method[opentext].ReturnValue", "file"]
+      - ["system.io.file!", "Method[openwrite].ReturnValue", "file-write"]
+      - ["system.io.file!", "Method[readallbytes].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readallbytesasync].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readalllines].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readalllinesasync].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readalltext].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readalltextasync].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readlines].ReturnValue", "file"]
+      - ["system.io.file!", "Method[readlinesasync].ReturnValue", "file"]
+      - ["system.io.fileinfo", "Method[appendtext].ReturnValue", "file-write"]
+      - ["system.io.fileinfo", "Method[create].ReturnValue", "file-write"]
+      - ["system.io.fileinfo", "Method[createtext].ReturnValue", "file-write"]
+      - ["system.io.fileinfo", "Method[open].ReturnValue", "file-write"]
+      - ["system.io.fileinfo", "Method[open].ReturnValue", "file"]
+      - ["system.io.fileinfo", "Method[openread].ReturnValue", "file"]
+      - ["system.io.fileinfo", "Method[opentext].ReturnValue", "file"]
+      - ["system.io.fileinfo", "Method[openwrite].ReturnValue", "file-write"]
+      - ["system.io.filestream", "Instance", "file"]
+      - ["system.io.filestream", "Instance", "file-write"]
+      - ["system.io.streamwriter", "Instance", "file-write"]
+      - ["system.io.streamwriter", "Instance", "file-write"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: sourceModel
+    data:
+      - ["microsoft.win32.registrykey	", "Method[GetValue].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey	", "Method[GetValueNames].ReturnValue", "windows-registry"]
+      - ["microsoft.win32.registrykey	", "Method[GetSubKeyNames].ReturnValue", "windows-registry"]

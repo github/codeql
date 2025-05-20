@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: sourceModel
+    data:
+      - ["system.console!", "Method[read].ReturnValue", "stdin"]
+      - ["system.console!", "Method[readkey].ReturnValue", "stdin"]
+      - ["system.console!", "Method[readline].ReturnValue", "stdin"]
+      - ["system.environment!", "Method[expandenvironmentvariables].ReturnValue", "environment"]
+      - ["system.environment!", "Method[getcommandlineargs].ReturnValue", "command-line"]
+      - ["system.environment!", "Method[getenvironmentvariable].ReturnValue", "environment"]
+      - ["system.environment!", "Method[getenvironmentvariables].ReturnValue", "environment"]
