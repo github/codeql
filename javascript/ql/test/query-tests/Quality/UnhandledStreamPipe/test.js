@@ -134,4 +134,36 @@ function test() {
     stream.pipe(dest);
     stream.once('error', handleError);
   }
+  { // Long chained pipe with error handler
+    const stream = getStream();
+    stream.pause().on('error', handleError).setEncoding('utf8').resume().pipe(writable); // $SPURIOUS:Alert
+  }
+  { // Long chained pipe without error handler
+    const stream = getStream();
+    stream.pause().setEncoding('utf8').resume().pipe(writable); // $Alert
+  }
+  { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
+    const notStream = getNotAStream();
+    notStream.pipe(writable).subscribe(); // $SPURIOUS:Alert
+  }
+  { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
+    const notStream = getNotAStream();
+    const result = notStream.pipe(writable); // $SPURIOUS:Alert
+    const dealWithResult = (result) => { result.subscribe(); };
+    dealWithResult(result); 
+  }
+  { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
+    const notStream = getNotAStream();
+    const pipeIt = (someVariable) => { return someVariable.pipe(something); }; // $SPURIOUS:Alert
+    let x = pipeIt(notStream);
+    x.subscribe(); 
+  }
+  { // Calling custom pipe method with no arguments
+    const notStream = getNotAStream();
+    notStream.pipe(); // $SPURIOUS:Alert
+  }
+  { // Calling custom pipe method with more then 2 arguments
+    const notStream = getNotAStream();
+    notStream.pipe(arg1, arg2, arg3); // $SPURIOUS:Alert
+  }
 }
