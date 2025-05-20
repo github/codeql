@@ -1,16 +1,21 @@
 | Extraction errors | 0 |
-| Extraction warnings | 1 |
+| Extraction warnings | 2 |
 | Files extracted - total | 5 |
-| Files extracted - with errors | 1 |
-| Files extracted - without errors | 4 |
-| Files extracted - without errors % | 80 |
+| Files extracted - with errors | 2 |
+| Files extracted - without errors | 3 |
+| Files extracted - without errors % | 60 |
 | Inconsistencies - AST | 0 |
 | Inconsistencies - CFG | 0 |
 | Inconsistencies - Path resolution | 0 |
 | Inconsistencies - SSA | 0 |
 | Inconsistencies - data flow | 0 |
+<<<<<<< HEAD
 | Lines of code extracted | 6 |
 | Lines of user code extracted | 6 |
+=======
+| Lines of code extracted | 24 |
+| Lines of user code extracted | 7 |
+>>>>>>> c76d50da3be (Rust: show unexpanded macro)
 | Macro calls - resolved | 2 |
-| Macro calls - total | 2 |
-| Macro calls - unresolved | 0 |
+| Macro calls - total | 3 |
+| Macro calls - unresolved | 1 |
