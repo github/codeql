@@ -91,7 +91,7 @@ final class LessOrEqualOperation extends RelationalOperationImpl, BinaryExpr {
 }
 
 /**
- * The less than or equal comparison operation, `>=`.
+ * The greater than or equal comparison operation, `>=`.
  */
 final class GreaterOrEqualOperation extends RelationalOperationImpl, BinaryExpr {
   GreaterOrEqualOperation() { this.getOperatorName() = ">=" }
