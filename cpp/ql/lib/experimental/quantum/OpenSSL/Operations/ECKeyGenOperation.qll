@@ -51,13 +51,15 @@ class ECKeyGenOperation extends OpenSSLOperation, Crypto::KeyGenerationOperation
   }
 
   override int getKeySizeFixed() {
-    // TODO: should this be done automatically for all elliptic curves?
-    // TODO: we should consider tying these properties to specific algorithm sources
-    // e.g., getFixedKeySize(Source), to avoid cross products
-    result =
-      this.getAnAlgorithmValueConsumer()
-          .getAKnownAlgorithmSource()
-          .(Crypto::EllipticCurveInstance)
-          .getKeySize()
+    none()
+    // TODO: marked as none as the operation itself has no key size, it
+    // comes from the algorithm source, but note we could grab the
+    // algorithm source and get the key size (see below).
+    // We may need to reconsider what is the best approach here.
+    // result =
+    //   this.getAnAlgorithmValueConsumer()
+    //       .getAKnownAlgorithmSource()
+    //       .(Crypto::EllipticCurveInstance)
+    //       .getKeySize()
   }
 }
