@@ -13,6 +13,24 @@ string describe(Expr op) {
   op instanceof LogicalOperation and result = "LogicalOperation"
   or
   op instanceof RefExpr and result = "RefExpr"
+  or
+  op instanceof ComparisonOperation and result = "ComparisonOperation"
+  or
+  op instanceof EqualityOperation and result = "EqualityOperation"
+  or
+  op instanceof EqualOperation and result = "EqualOperation"
+  or
+  op instanceof NotEqualOperation and result = "NotEqualOperation"
+  or
+  op instanceof RelationalOperation and result = "RelationalOperation"
+  or
+  op instanceof LessThanOperation and result = "LessThanOperation"
+  or
+  op instanceof GreaterThanOperation and result = "GreaterThanOperation"
+  or
+  op instanceof LessOrEqualOperation and result = "LessOrEqualOperation"
+  or
+  op instanceof GreaterOrEqualOperation and result = "GreaterOrEqualOperation"
 }
 
 module OperationsTest implements TestSig {
