@@ -18,33 +18,33 @@ export class CustomPropagatingPipe implements PipeTransform {
 export class Controller {
     @Get()
     sanitizingPipe1(@Query('x', CustomSanitizingPipe) sanitized: number): string {
-        return '' + sanitized; // OK
-    }
+        return '' + sanitized; // $responseSendArgument
+    } // $routeHandler
 
     @Get()
     sanitizingPipe2(@Query('x', new CustomSanitizingPipe()) sanitized: number): string {
-        return '' + sanitized; // OK
-    }
+        return '' + sanitized; // $responseSendArgument
+    } // $routeHandler
 
     @Get()
     @UsePipes(CustomSanitizingPipe)
     sanitizingPipe3(@Query('x') sanitized: number): string {
-        return '' + sanitized; // OK
-    }
+        return '' + sanitized; // $responseSendArgument
+    } // $routeHandler
 
     @Get()
     propagatingPipe1(@Query('x', CustomPropagatingPipe) unsanitized: string): string {
-        return '' + unsanitized; // NOT OK
-    }
+        return '' + unsanitized; // $responseSendArgument
+    } // $routeHandler
 
     @Get()
     propagatingPipe2(@Query('x', new CustomPropagatingPipe()) unsanitized: string): string {
-        return '' + unsanitized; // NOT OK
-    }
+        return '' + unsanitized; // $responseSendArgument
+    } // $routeHandler
 
     @Get()
     @UsePipes(CustomPropagatingPipe)
     propagatingPipe3(@Query('x') unsanitized: string): string {
-        return '' + unsanitized; // NOT OK
-    }
+        return '' + unsanitized; // $responseSendArgument
+    } // $routeHandler
 }

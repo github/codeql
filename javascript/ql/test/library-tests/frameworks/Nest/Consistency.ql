@@ -1,3 +1,0 @@
-deprecated import utils.test.ConsistencyChecking
-import semmle.javascript.security.dataflow.ReflectedXssQuery as ReflectedXss
-import semmle.javascript.security.dataflow.ServerSideUrlRedirectQuery as ServerSideUrlRedirect

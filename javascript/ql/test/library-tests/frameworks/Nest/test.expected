@@ -1,39 +1,6 @@
-testFailures
-routeHandler
-| global/validation.ts:11:3:14:3 | route1( ...  OK\\n  } |
-| global/validation.ts:17:3:19:3 | route2( ... x);\\n  } |
-| local/customDecorator.ts:18:3:20:3 | sneaky( ...  OK\\n  } |
-| local/customDecorator.ts:23:3:25:3 | safe(@S ...  OK\\n  } |
-| local/customPipe.ts:20:5:22:5 | sanitiz ... K\\n    } |
-| local/customPipe.ts:25:5:27:5 | sanitiz ... K\\n    } |
-| local/customPipe.ts:31:5:33:5 | sanitiz ... K\\n    } |
-| local/customPipe.ts:36:5:38:5 | propaga ... K\\n    } |
-| local/customPipe.ts:41:5:43:5 | propaga ... K\\n    } |
-| local/customPipe.ts:47:5:49:5 | propaga ... K\\n    } |
-| local/routes.ts:6:3:8:3 | getFoo( ... o';\\n  } |
-| local/routes.ts:11:3:13:3 | postFoo ... o';\\n  } |
-| local/routes.ts:16:3:18:3 | getRoot ... o';\\n  } |
-| local/routes.ts:21:3:23:3 | bar() { ... r';\\n  } |
-| local/routes.ts:26:3:37:3 | request ... rn;\\n  } |
-| local/routes.ts:40:3:42:3 | post(@B ...  OK\\n  } |
-| local/routes.ts:46:3:50:3 | redir() ...  };\\n  } |
-| local/routes.ts:54:3:58:3 | redir2( ...  };\\n  } |
-| local/routes.ts:61:3:63:3 | explici ...  OK\\n  } |
-| local/routes.ts:66:3:68:3 | upload( ...  OK\\n  } |
-| local/routes.ts:71:3:73:3 | uploadM ...  OK\\n  } |
-| local/validation.ts:6:3:8:3 | route1( ...  OK\\n  } |
-| local/validation.ts:11:3:13:3 | route2( ...  OK\\n  } |
-| local/validation.ts:17:3:20:3 | route3( ...  OK\\n  } |
-| local/validation.ts:24:3:27:3 | route4( ...  OK\\n  } |
-| local/validation.ts:33:3:36:3 | route5( ...  OK\\n  } |
-| local/validation.ts:42:3:45:3 | route6( ...  OK\\n  } |
-requestSource
-| local/customDecorator.ts:5:21:5:51 | ctx.swi ... quest() |
-| local/routes.ts:30:12:30:14 | req |
-| local/routes.ts:61:23:61:25 | req |
-responseSource
-| local/routes.ts:61:35:61:37 | res |
-| local/routes.ts:62:5:62:25 | res.sen ... uery.x) |
+redirectSink
+| local/routes.ts:48:12:48:32 | '//othe ... le.com' |
+| local/routes.ts:56:12:56:17 | target |
 requestInputAccess
 | body | local/routes.ts:40:16:40:19 | body |
 | body | local/routes.ts:66:26:66:29 | file |
@@ -60,6 +27,10 @@ requestInputAccess
 | parameter | local/validation.ts:33:56:33:66 | unvalidated |
 | parameter | local/validation.ts:42:22:42:33 | validatedObj |
 | parameter | local/validation.ts:42:56:42:66 | unvalidated |
+requestSource
+| local/customDecorator.ts:5:21:5:51 | ctx.swi ... quest() |
+| local/routes.ts:30:12:30:14 | req |
+| local/routes.ts:61:23:61:25 | req |
 responseSendArgument
 | global/validation.ts:12:31:12:41 | unvalidated |
 | global/validation.ts:13:12:13:27 | validatedObj.key |
@@ -89,6 +60,34 @@ responseSendArgument
 | local/validation.ts:35:12:35:22 | unvalidated |
 | local/validation.ts:43:31:43:46 | validatedObj.key |
 | local/validation.ts:44:12:44:22 | unvalidated |
-redirectSink
-| local/routes.ts:48:12:48:32 | '//othe ... le.com' |
-| local/routes.ts:56:12:56:17 | target |
+responseSource
+| local/routes.ts:61:35:61:37 | res |
+| local/routes.ts:62:5:62:25 | res.sen ... uery.x) |
+routeHandler
+| global/validation.ts:11:3:14:3 | route1( ... ent\\n  } |
+| global/validation.ts:17:3:19:3 | route2( ... x);\\n  } |
+| local/customDecorator.ts:18:3:20:3 | sneaky( ... ent\\n  } |
+| local/customDecorator.ts:23:3:25:3 | safe(@S ... ent\\n  } |
+| local/customPipe.ts:20:5:22:5 | sanitiz ... t\\n    } |
+| local/customPipe.ts:25:5:27:5 | sanitiz ... t\\n    } |
+| local/customPipe.ts:31:5:33:5 | sanitiz ... t\\n    } |
+| local/customPipe.ts:36:5:38:5 | propaga ... t\\n    } |
+| local/customPipe.ts:41:5:43:5 | propaga ... t\\n    } |
+| local/customPipe.ts:47:5:49:5 | propaga ... t\\n    } |
+| local/routes.ts:6:3:8:3 | getFoo( ... o';\\n  } |
+| local/routes.ts:11:3:13:3 | postFoo ... o';\\n  } |
+| local/routes.ts:16:3:18:3 | getRoot ... o';\\n  } |
+| local/routes.ts:21:3:23:3 | bar() { ... r';\\n  } |
+| local/routes.ts:26:3:37:3 | request ... rn;\\n  } |
+| local/routes.ts:40:3:42:3 | post(@B ... ent\\n  } |
+| local/routes.ts:46:3:50:3 | redir() ...  };\\n  } |
+| local/routes.ts:54:3:58:3 | redir2( ...  };\\n  } |
+| local/routes.ts:61:3:63:3 | explici ... ent\\n  } |
+| local/routes.ts:66:3:68:3 | upload( ... ent\\n  } |
+| local/routes.ts:71:3:73:3 | uploadM ... ent\\n  } |
+| local/validation.ts:6:3:8:3 | route1( ... ent\\n  } |
+| local/validation.ts:11:3:13:3 | route2( ... ent\\n  } |
+| local/validation.ts:17:3:20:3 | route3( ... ent\\n  } |
+| local/validation.ts:24:3:27:3 | route4( ... ent\\n  } |
+| local/validation.ts:33:3:36:3 | route5( ... ent\\n  } |
+| local/validation.ts:42:3:45:3 | route6( ... ent\\n  } |
