@@ -1,0 +1,10 @@
+| test.js:4:5:4:28 | stream. ... nation) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:19:5:19:17 | s2.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:45:5:45:30 | stream2 ... ation2) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:60:5:60:30 | stream2 ... ation2) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:66:5:66:21 | stream.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:79:5:79:25 | s2.pipe ... ation2) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:94:5:94:21 | stream.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:109:26:109:37 | s.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:116:5:116:21 | stream.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:125:5:125:26 | getStre ... e(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
