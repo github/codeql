@@ -104,11 +104,8 @@ class KnownOpenSSLCipherConstantAlgorithmInstance extends OpenSSLAlgorithmInstan
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override string getKeySizeFixed() {
-    exists(int keySize |
-      this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = keySize and
-      result = keySize.toString()
-    )
+  override int getKeySizeFixed() {
+    this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = result
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
