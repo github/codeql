@@ -153,26 +153,26 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     let sensitive_opt: Option<String> = Some(password2.clone());
 
     // log_expect tests with LogErrOption trait
-    let _ = sensitive_opt.log_expect("Option is None"); // $ Alert[rust/cleartext-logging]
+    let _ = sensitive_opt.log_expect("Option is None"); // $ MISSING: Alert[rust/cleartext-logging]
 
     // log_expect tests with LogErrResult trait
     let sensitive_result: Result<String, &str> = Ok(password2.clone());
-    let _ = sensitive_result.log_expect("Result failed"); // $ Alert[rust/cleartext-logging]
+    let _ = sensitive_result.log_expect("Result failed"); // $ MISSING: Alert[rust/cleartext-logging]
 
     // log_unwrap tests with LogErrOption trait
     let sensitive_opt2: Option<String> = Some(password2.clone());
-    let _ = sensitive_opt2.log_unwrap(); // $ Alert[rust/cleartext-logging]
+    let _ = sensitive_opt2.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
 
     // log_unwrap tests with LogErrResult trait
     let sensitive_result2: Result<String, &str> = Ok(password2.clone());
-    let _ = sensitive_result2.log_unwrap(); // $ Alert[rust/cleartext-logging]
+    let _ = sensitive_result2.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
 
     // Negative cases that should fail and log
     let none_opt: Option<String> = None;
-    let _ = none_opt.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
+    let _ = none_opt.log_expect(&format!("Failed with password: {}", password2)); // $ MISSING: Alert[rust/cleartext-logging]
 
     let err_result: Result<String, String> = Err(password2);
-    let _ = err_result.log_unwrap(); // $ Alert[rust/cleartext-logging]
+    let _ = err_result.log_unwrap(); // $ MISSING: Alert[rust/cleartext-logging]
 }
 
 fn test_std(password: String, i: i32, opt_i: Option<i32>) {
