@@ -30,3 +30,34 @@ class EVP_Q_Digest_Algorithm_Consumer extends OpenSSLAlgorithmValueConsumer {
     none()
   }
 }
+
+/**
+ * EVP digest algorithm getters
+ * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
+ */
+class EVPDigestAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer {
+  DataFlow::Node valueArgNode;
+  DataFlow::Node resultNode;
+
+  EVPDigestAlgorithmValueConsumer() {
+    resultNode.asExpr() = this and
+    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
+    (
+      this.(Call).getTarget().getName() in [
+          "EVP_get_digestbyname", "EVP_get_digestbynid", "EVP_get_digestbyobj"
+        ] and
+      valueArgNode.asExpr() = this.(Call).getArgument(0)
+      or
+      this.(Call).getTarget().getName() = "EVP_MD_fetch" and
+      valueArgNode.asExpr() = this.(Call).getArgument(1)
+    )
+  }
+
+  override DataFlow::Node getResultNode() { result = resultNode }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+  }
+}
