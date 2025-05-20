@@ -12,7 +12,7 @@ public class LoopyCallGraph {
 
   public void entry() {
     if (random.nextBoolean()) {
-      increase();  // this looks like an unprotected path to a call to dec()
+      increase();  // this could look like an unprotected path to a call to dec()
     } else {
       lock.lock();
       dec();
@@ -22,9 +22,9 @@ public class LoopyCallGraph {
 
   private void increase() {
     lock.lock();
-    count = 10;  //$ SPURIOUS: Alert
+    count = 10;
     lock.unlock();
-    entry();  // this looks like an unprotected path to a call to dec()
+    entry();  // this could look like an unprotected path to a call to dec()
   }
 
   private void dec() {

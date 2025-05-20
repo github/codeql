@@ -321,18 +321,115 @@ class ClassAnnotatedAsThreadSafe extends Class {
     )
   }
 
-  /** Holds if all paths from `m` to `a` are monitored by `monitor`. */
-  predicate monitorsVia(Method m, ExposedFieldAccess a, Monitors::Monitor monitor) {
+  // NOTE:
+  // In order to deal with loops in the call graph, we compute the strongly connected components (SCCs).
+  // We only wish to do this for the methods that can lead to exposed field accesses.
+  // Given a field access `a`, we can consider a "call graph of interest", a sub graph of the call graph
+  // that only contains methods that lead to an access of `a`. We call this "the call graph induced by `a`".
+  // We can then compute the SCCs of this graph, yielding the SCC graph induced by `a`.
+  //
+  /**
+   * Holds if a call to method `m` can cause an access of `a` by `m` calling `callee`.
+   * This is an edge in the call graph induced by `a`.
+   */
+  predicate accessVia(Method m, ExposedFieldAccess a, Method callee) {
+    exists(MethodCall c | this.providesAccess(m, c, a) | callee = c.getCallee())
+  }
+
+  /** Holds if `m` can reach `reached` by a path in the call graph induced by `a`. */
+  predicate accessReach(Method m, ExposedFieldAccess a, Method reached) {
+    m = this.getAMethod() and
+    reached = this.getAMethod() and
+    this.providesAccess(m, _, a) and
+    this.providesAccess(reached, _, a) and
+    (
+      this.accessVia(m, a, reached)
+      or
+      exists(Method mid | this.accessReach(m, a, mid) | this.accessVia(mid, a, reached))
+    )
+  }
+
+  /**
+   * Holds if `rep` is a representative of the SCC containing `m` in the call graph induced by `a`.
+   * This only assigns representatives to methods involved in loops.
+   * To get a representative of any method, use `repScc`.
+   */
+  predicate repInLoopScc(Method rep, ExposedFieldAccess a, Method m) {
+    // `rep` and `m` are in the same SCC
+    this.accessReach(rep, a, m) and
+    this.accessReach(m, a, rep) and
+    // `rep` is the representative of the SCC
+    // that is, the earliest in the source code
+    forall(Method alt_rep |
+      rep != alt_rep and
+      this.accessReach(alt_rep, a, m) and
+      this.accessReach(m, a, alt_rep)
+    |
+      rep.getLocation().getStartLine() < alt_rep.getLocation().getStartLine()
+    )
+  }
+
+  /** Holds if `rep` is a representative of the SCC containing `m` in the call graph induced by `a`. */
+  predicate repScc(Method rep, ExposedFieldAccess a, Method m) {
+    this.repInLoopScc(rep, a, m)
+    or
+    // If `m` is in the call graph induced by `a` and did not get a representative from `repInLoopScc`,
+    // it is represented by itself.
     m = this.getAMethod() and
     this.providesAccess(m, _, a) and
-    (a.getEnclosingCallable() = m implies Monitors::locallyMonitors(a, monitor)) and
-    forall(MethodCall c |
-      c.getEnclosingCallable() = m and
-      this.providesAccess(c.getCallee(), _, a)
+    not this.repInLoopScc(_, a, m) and
+    rep = m
+  }
+
+  /**
+   * Holds if `c` is a call from the SCC represented by `callerRep` to the (different) SCC represented by `calleeRep`.
+   * This is an edge in the SCC graph induced by `a`.
+   */
+  predicate callEdgeScc(Method callerRep, ExposedFieldAccess a, MethodCall c, Method calleeRep) {
+    callerRep != calleeRep and
+    exists(Method caller, Method callee |
+      this.repScc(callerRep, a, caller) and
+      this.repScc(calleeRep, a, callee)
     |
+      this.accessVia(caller, a, callee) and
+      c.getEnclosingCallable() = caller and
+      c.getCallee() = callee
+    )
+  }
+
+  /**
+   * Holds if the SCC represented by `rep` can cause an access to `a` and `e` is the expression that leads to that access.
+   * `e` will either be `a` itself or a method call that leads to `a` via a different SCC.
+   */
+  predicate providesAccessScc(Method rep, Expr e, ExposedFieldAccess a) {
+    rep = this.getAMethod() and
+    exists(Method m | this.repScc(rep, a, m) |
+      a.getEnclosingCallable() = m and
+      e = a
+      or
+      exists(MethodCall c | this.callEdgeScc(rep, a, c, _) | e = c)
+    )
+  }
+
+  /** Holds if all paths from `rep` to `a` are monitored by `monitor`. */
+  predicate monitorsViaScc(Method rep, ExposedFieldAccess a, Monitors::Monitor monitor) {
+    rep = this.getAMethod() and
+    this.providesAccessScc(rep, _, a) and
+    // If we are in an SCC that can access `a`, the access must be monitored locally
+    (this.repScc(rep, a, a.getEnclosingCallable()) implies Monitors::locallyMonitors(a, monitor)) and
+    // Any call towards `a` must either be monitored or guarantee that the access is monitored
+    forall(MethodCall c, Method calleeRep | this.callEdgeScc(rep, a, c, calleeRep) |
       Monitors::locallyMonitors(c, monitor)
       or
-      this.monitorsVia(c.getCallee(), a, monitor)
+      this.monitorsViaScc(calleeRep, a, monitor)
+    )
+  }
+
+  /** Holds if all paths from `m` to `a` are monitored by `monitor`. */
+  predicate monitorsVia(Method m, ExposedFieldAccess a, Monitors::Monitor monitor) {
+    exists(Method rep |
+      this.repScc(rep, a, m) and
+      this.monitorsViaScc(rep, a, monitor)
     )
   }
 }
