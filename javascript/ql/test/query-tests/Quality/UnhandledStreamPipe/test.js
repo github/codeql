@@ -144,17 +144,17 @@ function test() {
   }
   { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
     const notStream = getNotAStream();
-    notStream.pipe(writable).subscribe(); // $SPURIOUS:Alert
+    notStream.pipe(writable).subscribe();
   }
   { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
     const notStream = getNotAStream();
-    const result = notStream.pipe(writable); // $SPURIOUS:Alert
+    const result = notStream.pipe(writable);
     const dealWithResult = (result) => { result.subscribe(); };
     dealWithResult(result); 
   }
   { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
     const notStream = getNotAStream();
-    const pipeIt = (someVariable) => { return someVariable.pipe(something); }; // $SPURIOUS:Alert
+    const pipeIt = (someVariable) => { return someVariable.pipe(something); };
     let x = pipeIt(notStream);
     x.subscribe(); 
   }

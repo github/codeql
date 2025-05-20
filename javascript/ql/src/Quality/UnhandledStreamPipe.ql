@@ -42,6 +42,20 @@ string getChainableStreamMethodName() {
 }
 
 /**
+ * Gets the method names that are not chainable on Node.js streams.
+ */
+string getNonchainableStreamMethodName() {
+  result = ["read", "write", "end", "pipe", "unshift", "push", "isPaused", "wrap", "emit"]
+}
+
+/**
+ * Gets all method names commonly found on Node.js streams.
+ */
+string getStreamMethodName() {
+  result = [getChainableStreamMethodName(), getNonchainableStreamMethodName()]
+}
+
+/**
  * A call to register an event handler on a Node.js stream.
  * This includes methods like `on`, `once`, and `addListener`.
  */
@@ -64,6 +78,34 @@ predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) 
     chainable.getMethodName() = getChainableStreamMethodName() and
     streamNode = chainable.getReceiver() and
     relatedNode = chainable
+  )
+}
+
+/**
+ * Tracks the result of a pipe call as it flows through the program.
+ */
+private DataFlow::SourceNode pipeResultTracker(DataFlow::TypeTracker t, PipeCall pipe) {
+  t.start() and result = pipe
+  or
+  exists(DataFlow::TypeTracker t2 | result = pipeResultTracker(t2, pipe).track(t2, t))
+}
+
+/**
+ * Gets a reference to the result of a pipe call.
+ */
+private DataFlow::SourceNode pipeResultRef(PipeCall pipe) {
+  result = pipeResultTracker(DataFlow::TypeTracker::end(), pipe)
+}
+
+/**
+ * Holds if the pipe call result is used to call a non-stream method.
+ * Since pipe() returns the destination stream, this finds cases where
+ * the destination stream is used with methods not typical of streams.
+ */
+predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
+  exists(DataFlow::MethodCallNode call |
+    call = pipeResultRef(pipeCall).getAMethodCall() and
+    not call.getMethodName() = getStreamMethodName()
   )
 }
 
@@ -101,6 +143,8 @@ predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
 }
 
 from PipeCall pipeCall
-where not hasErrorHandlerRegistered(pipeCall)
+where
+  not hasErrorHandlerRegistered(pipeCall) and
+  not isPipeFollowedByNonStreamMethod(pipeCall)
 select pipeCall,
   "Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped."
