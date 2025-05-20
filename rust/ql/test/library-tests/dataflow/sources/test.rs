@@ -777,17 +777,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("test_env_vars...");
     test_env_vars();
 
-    /*println!("test_env_args...");
-    test_env_args();*/
+    println!("test_env_args...");
+    test_env_args();
 
     println!("test_env_dirs...");
     test_env_dirs();
 
-    /*println!("test_reqwest...");
+    println!("test_reqwest...");
     match futures::executor::block_on(test_reqwest()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
-    }*/
+    }
 
     println!("test_hyper_http...");
     match futures::executor::block_on(test_hyper_http(case)) {
@@ -795,7 +795,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(e) => println!("error: {}", e),
     }
 
-    /*println!("test_io_stdin...");
+    println!("test_io_stdin...");
     match test_io_stdin() {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
@@ -805,7 +805,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     match futures::executor::block_on(test_tokio_stdin()) {
         Ok(_) => println!("complete"),
         Err(e) => println!("error: {}", e),
-    }*/
+    }
 
     println!("test_fs...");
     match test_fs() {
