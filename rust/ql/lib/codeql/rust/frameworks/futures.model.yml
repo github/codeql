@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: summaryModel
+      extensible: summaryModelDeprecated
     data:
       - ["repo:https://github.com/rust-lang/futures-rs:futures-executor", "crate::local_pool::block_on", "Argument[0]", "ReturnValue", "value", "manual"]

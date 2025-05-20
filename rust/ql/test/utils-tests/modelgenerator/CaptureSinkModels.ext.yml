@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/rust-all
-      extensible: sinkModel
+      extensible: sinkModelDeprecated
     data:
       - ["repo::test", "crate::sinks::known_sink", "Argument[0]", "test-sink", "manual"]
