@@ -1,0 +1,3 @@
+multipleMethodCallTargets
+| web_frameworks.rs:194:30:194:74 | ... .get(...) | file://:0:0:0:0 | fn get |
+| web_frameworks.rs:194:30:194:74 | ... .get(...) | file://:0:0:0:0 | fn get |
