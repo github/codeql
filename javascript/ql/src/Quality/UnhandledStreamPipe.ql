@@ -15,7 +15,7 @@ import javascript
  * A call to the `pipe` method on a Node.js stream.
  */
 class PipeCall extends DataFlow::MethodCallNode {
-  PipeCall() { this.getMethodName() = "pipe" }
+  PipeCall() { this.getMethodName() = "pipe" and this.getNumArgument() = [1, 2] }
 
   /** Gets the source stream (receiver of the pipe call). */
   DataFlow::Node getSourceStream() { result = this.getReceiver() }

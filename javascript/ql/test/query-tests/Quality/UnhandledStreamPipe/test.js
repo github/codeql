@@ -160,10 +160,10 @@ function test() {
   }
   { // Calling custom pipe method with no arguments
     const notStream = getNotAStream();
-    notStream.pipe(); // $SPURIOUS:Alert
+    notStream.pipe();
   }
   { // Calling custom pipe method with more then 2 arguments
     const notStream = getNotAStream();
-    notStream.pipe(arg1, arg2, arg3); // $SPURIOUS:Alert
+    notStream.pipe(arg1, arg2, arg3);
   }
 }
