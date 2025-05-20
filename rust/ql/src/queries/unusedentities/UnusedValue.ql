@@ -6,6 +6,7 @@
  * @precision medium
  * @id rust/unused-value
  * @tags maintainability
+ *       quality
  */
 
 import rust

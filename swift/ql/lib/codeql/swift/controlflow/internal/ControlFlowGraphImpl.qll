@@ -1884,6 +1884,10 @@ module Exprs {
     }
   }
 
+  private class TypeValueTree extends AstLeafTree {
+    override TypeValueExpr ast;
+  }
+
   module Conversions {
     class ConversionOrIdentity =
       Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr or

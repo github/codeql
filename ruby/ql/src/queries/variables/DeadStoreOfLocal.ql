@@ -8,7 +8,7 @@
  * @tags maintainability
  *       quality
  *       external/cwe/cwe-563
- * @precision medium
+ * @precision high
  */
 
 import codeql.ruby.AST

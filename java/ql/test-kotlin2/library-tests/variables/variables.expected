@@ -13,8 +13,8 @@ isFinal
 | variables.kt:8:9:8:26 | int local2 | non-final |
 | variables.kt:10:9:10:26 | int local3 | final |
 compileTimeConstant
+| variables.kt:3:5:3:17 | this.prop |
 | variables.kt:3:5:3:21 | prop |
-| variables.kt:3:5:3:21 | this.prop |
 | variables.kt:7:17:7:22 | local1 |
-| variables.kt:15:1:15:21 | VariablesKt.topLevel |
+| variables.kt:15:1:15:17 | VariablesKt.topLevel |
 | variables.kt:15:1:15:21 | VariablesKt.topLevel |

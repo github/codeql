@@ -9,6 +9,7 @@ private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomiz
 private import semmle.javascript.DynamicPropertyAccess
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.ViewComponentInput
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * Provides classes for working with Angular (also known as Angular 2.x) applications.
@@ -240,17 +241,14 @@ module Angular2 {
 
   class TemplateTopLevel = Templating::TemplateTopLevel;
 
-  /** The RHS of a `templateUrl` property, seen as a path expression. */
-  private class TemplateUrlPath extends PathExpr {
-    TemplateUrlPath() {
-      exists(Property prop |
-        prop.getName() = "templateUrl" and
-        this = prop.getInit()
-      )
-    }
-
-    override string getValue() { result = this.(Expr).getStringValue() }
+  private predicate shouldResolveExpr(Expr e) {
+    exists(Property prop |
+      prop.getName() = "templateUrl" and
+      e = prop.getInit()
+    )
   }
+
+  private module Resolver = ResolveExpr<shouldResolveExpr/1>;
 
   /**
    * Holds if the value of `attrib` is interpreted as an Angular expression.
@@ -338,7 +336,7 @@ module Angular2 {
      */
     pragma[noinline]
     File getTemplateFile() {
-      result = decorator.getOptionArgument(0, "templateUrl").asExpr().(PathExpr).resolve()
+      result = Resolver::resolveExpr(decorator.getOptionArgument(0, "templateUrl").asExpr())
     }
 
     /** Gets an element in the HTML template of this component. */
