@@ -18,6 +18,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   private import DataFlowImplCommon::MakeImplCommon<Location, Lang>
   private import DataFlowImplCommonPublic
   private import Aliases
+  private import codeql.util.AlertFiltering
+
+  private module AlertFiltering = AlertFilteringImpl<Location>;
 
   /**
    * An input configuration for data flow using flow state. This signature equals
@@ -180,6 +183,21 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     DiffInformedQueryImpl() { any() }
 
     string toString() { result = "DataFlow::DiffInformedQuery" }
+
+    // TODO: how to wire this up? It overlaps with the data-flow configuration signature!
+    Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
+
+    Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
+
+    pragma[nomagic]
+    predicate hasSourceInDiffRange() {
+      AlertFiltering::filterByLocation(this.getASelectedSourceLocation(_))
+    }
+
+    pragma[nomagic]
+    predicate hasSinkInDiffRange() {
+      AlertFiltering::filterByLocation(this.getASelectedSinkLocation(_))
+    }
   }
 
   /**
