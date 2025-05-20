@@ -299,12 +299,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     v = TValue(TValueConstant(c.asConstantValue()), true)
   }
 
-  private predicate exprHasValue(Expr e, GuardValue v) {
-    constantHasValue(e, v)
-    or
-    e instanceof NonNullExpr and v = TValue(TValueNull(), false)
-  }
-
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
     exists(SuccessorType norm, ExceptionSuccessor exc |
       bb1.getASuccessor(norm) = normalSucc and
@@ -426,30 +420,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     branch = false and result = cond.getElse()
   }
 
-  bindingset[g1, v1]
-  pragma[inline_late]
-  private predicate unboundBaseImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
-    g1.(IdExpr).getEqualChildExpr() = g2 and v1 = v2 and not v1 instanceof TException
-    or
-    exists(ConditionalExpr cond, boolean branch, Expr e, GuardValue ev |
-      cond = g1 and
-      e = getBranchExpr(cond, branch) and
-      exprHasValue(e, ev) and
-      disjointValues(v1, ev)
-    |
-      // g1 === g2 ? e : ...;
-      // g1 === g2 ? ... : e;
-      g2 = cond.getCondition() and
-      v2 = TValue(TValueTrue(), branch.booleanNot())
-      or
-      // g1 === ... ? g2 : e
-      // g1 === ... ? e : g2
-      g2 = getBranchExpr(cond, branch.booleanNot()) and
-      v2 = v1 and
-      not exprHasValue(g2, v2) // disregard trivial guard
-    )
-  }
-
   private predicate baseImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
     g1.(AndExpr).getAnOperand() = g2 and v1 = TValue(TValueTrue(), true) and v2 = v1
     or
@@ -532,15 +502,17 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private import LogicInput
 
     private predicate guardControlsPhiBranch(
-      Guard guard, GuardValue v, SsaPhiNode phi, Expr input, BasicBlock bbInput, BasicBlock bbPhi
+      Guard guard, GuardValue v, SsaPhiNode phi, SsaDefinition inp
     ) {
-      exists(SsaWriteDefinition inp |
-        phi.hasInputFromBlock(inp, bbInput) and
+      exists(BasicBlock bbPhi |
+        phi.hasInputFromBlock(inp, _) and
         phi.getBasicBlock() = bbPhi and
-        inp.getDefinition() = input and
-        guard.directlyValueControls(bbInput, v) and
         guard.getBasicBlock().strictlyDominates(bbPhi) and
-        not guard.directlyValueControls(bbPhi, _)
+        not guard.directlyValueControls(bbPhi, _) and
+        forex(BasicBlock bbInput | phi.hasInputFromBlock(inp, bbInput) |
+          guard.directlyValueControls(bbInput, v) or
+          guard.hasValueBranchEdge(bbInput, bbPhi, v)
+        )
       )
     }
 
@@ -552,13 +524,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * This makes `phi` similar to the conditional `phi = guard==v ? input : ...`.
      */
     private predicate guardDeterminesPhiInput(Guard guard, GuardValue v, SsaPhiNode phi, Expr input) {
-      exists(GuardValue dv, BasicBlock bbInput, BasicBlock bbPhi |
-        guardControlsPhiBranch(guard, v, phi, input, bbInput, bbPhi) and
+      exists(GuardValue dv, SsaWriteDefinition inp |
+        guardControlsPhiBranch(guard, v, phi, inp) and
+        inp.getDefinition() = input and
         dv = v.getDualValue() and
-        forall(BasicBlock other | phi.hasInputFromBlock(_, other) and other != bbInput |
-          guard.directlyValueControls(other, dv)
-          or
-          guard.hasValueBranchEdge(other, bbPhi, dv)
+        forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
+          guardControlsPhiBranch(guard, dv, phi, other)
         )
       )
     }
@@ -702,14 +673,67 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       exists(boolean isNull |
         additionalNullCheck(g1, v1, g2, isNull) and
-        v2 = TValue(TValueNull(), isNull)
+        v2 = TValue(TValueNull(), isNull) and
+        not (g2 instanceof NonNullExpr and isNull = false) // disregard trivial guard
+      )
+    }
+
+    /**
+     * Holds if `g` evaluating to `v` implies that `def` evaluates to `ssaVal`.
+     * The included set of implications is somewhat restricted to avoid a
+     * recursive dependency on `exprHasValue`.
+     */
+    private predicate baseSsaValueCheck(SsaDefinition def, GuardValue ssaVal, Guard g, GuardValue v) {
+      exists(Guard g0, GuardValue v0 |
+        guardReadsSsaVar(g0, def) and v0 = ssaVal
+        or
+        baseSsaValueCheck(def, ssaVal, g0, v0)
+      |
+        impliesStep(g, v, g0, v0)
+      )
+    }
+
+    private predicate exprHasValue(Expr e, GuardValue v) {
+      constantHasValue(e, v)
+      or
+      e instanceof NonNullExpr and v = TValue(TValueNull(), false)
+      or
+      exprHasValue(e.(IdExpr).getEqualChildExpr(), v)
+      or
+      exists(SsaDefinition def, Guard g, GuardValue gv |
+        e = def.getARead() and
+        g.directlyValueControls(e.getBasicBlock(), gv) and
+        baseSsaValueCheck(def, v, g, gv)
+      )
+      or
+      exists(SsaWriteDefinition def |
+        exprHasValue(def.getDefinition(), v) and
+        e = def.getARead()
       )
     }
 
     bindingset[g1, v1]
     pragma[inline_late]
     private predicate unboundImpliesStep(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
-      unboundBaseImpliesStep(g1, v1, g2, v2)
+      g1.(IdExpr).getEqualChildExpr() = g2 and v1 = v2 and not v1 instanceof TException
+      or
+      exists(ConditionalExpr cond, boolean branch, Expr e, GuardValue ev |
+        cond = g1 and
+        e = getBranchExpr(cond, branch) and
+        exprHasValue(e, ev) and
+        disjointValues(v1, ev)
+      |
+        // g1 === g2 ? e : ...;
+        // g1 === g2 ? ... : e;
+        g2 = cond.getCondition() and
+        v2 = TValue(TValueTrue(), branch.booleanNot())
+        or
+        // g1 === ... ? g2 : e
+        // g1 === ... ? e : g2
+        g2 = getBranchExpr(cond, branch.booleanNot()) and
+        v2 = v1 and
+        not exprHasValue(g2, v2) // disregard trivial guard
+      )
     }
 
     bindingset[def1, v1]
@@ -742,7 +766,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Calculates the transitive closure of all the guard implication steps
      * starting from a given set of base cases.
      */
-    private module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+    module ImpliesTC<baseGuardValueSig/2 baseGuardValue> {
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+       * evaluates to `v`.
+       */
       pragma[nomagic]
       predicate guardControls(Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
         baseGuardValue(tgtGuard, tgtVal) and
@@ -770,6 +798,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
       }
 
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+       * evaluates to `v`.
+       */
       pragma[nomagic]
       predicate ssaControls(SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal) {
         exists(Guard g0 |
