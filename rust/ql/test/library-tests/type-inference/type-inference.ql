@@ -11,7 +11,9 @@ class TypeLoc extends TypeFinal {
   ) {
     exists(string file |
       this.getLocation().hasLocationInfo(file, startline, startcolumn, endline, endcolumn) and
-      filepath = file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+      filepath =
+        file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+            .regexpReplaceAll("^/.*/.rustup/toolchains/[^/]+/", "/RUSTUP_HOME/toolchain/")
     )
   }
 }
