@@ -136,7 +136,7 @@ function test() {
   }
   { // Long chained pipe with error handler
     const stream = getStream();
-    stream.pause().on('error', handleError).setEncoding('utf8').resume().pipe(writable); // $SPURIOUS:Alert
+    stream.pause().on('error', handleError).setEncoding('utf8').resume().pipe(writable);
   }
   { // Long chained pipe without error handler
     const stream = getStream();

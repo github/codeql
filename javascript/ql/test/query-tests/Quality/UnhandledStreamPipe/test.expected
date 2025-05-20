@@ -8,7 +8,6 @@
 | test.js:109:26:109:37 | s.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:116:5:116:21 | stream.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:125:5:125:26 | getStre ... e(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
-| test.js:139:5:139:87 | stream. ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:143:5:143:62 | stream. ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:147:5:147:28 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:151:20:151:43 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |

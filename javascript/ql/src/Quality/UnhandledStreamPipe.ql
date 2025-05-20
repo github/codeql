@@ -31,20 +31,28 @@ class PipeCall extends DataFlow::MethodCallNode {
 string getEventHandlerMethodName() { result = ["on", "once", "addListener"] }
 
 /**
+ * Gets the method names that are chainable on Node.js streams.
+ */
+string getChainableStreamMethodName() {
+  result =
+    [
+      "setEncoding", "pause", "resume", "unpipe", "destroy", "cork", "uncork", "setDefaultEncoding",
+      "off", "removeListener", getEventHandlerMethodName()
+    ]
+}
+
+/**
  * A call to register an event handler on a Node.js stream.
  * This includes methods like `on`, `once`, and `addListener`.
  */
 class StreamEventRegistration extends DataFlow::MethodCallNode {
   StreamEventRegistration() { this.getMethodName() = getEventHandlerMethodName() }
-
-  /** Gets the stream (receiver of the event handler). */
-  DataFlow::Node getStream() { result = this.getReceiver() }
 }
 
 /**
  * Models flow relationships between streams and related operations.
  * Connects destination streams to their corresponding pipe call nodes.
- * Connects streams to their event handler registration nodes.
+ * Connects streams to their chainable methods.
  */
 predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) {
   exists(PipeCall pipe |
@@ -52,9 +60,10 @@ predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) 
     relatedNode = pipe
   )
   or
-  exists(StreamEventRegistration handler |
-    streamNode = handler.getStream() and
-    relatedNode = handler
+  exists(DataFlow::MethodCallNode chainable |
+    chainable.getMethodName() = getChainableStreamMethodName() and
+    streamNode = chainable.getReceiver() and
+    relatedNode = chainable
   )
 }
 
