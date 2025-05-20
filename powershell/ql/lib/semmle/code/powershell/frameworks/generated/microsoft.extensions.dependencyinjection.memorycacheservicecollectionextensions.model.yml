@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.memorycacheservicecollectionextensions", "Method[adddistributedmemorycache]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.memorycacheservicecollectionextensions", "Method[addmemorycache]", "Argument[0]", "ReturnValue", "value"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.mime.contentdisposition", "Method[contentdisposition]", "Argument[0]", "Argument[this].SyntheticField[_disposition]", "value"]
+      - ["system.net.mime.contentdisposition", "Method[tostring]", "Argument[this].SyntheticField[_disposition]", "ReturnValue", "value"]

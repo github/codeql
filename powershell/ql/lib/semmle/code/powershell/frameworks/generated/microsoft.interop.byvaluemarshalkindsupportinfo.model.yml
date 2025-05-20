@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.byvaluemarshalkindsupportinfo", "Method[byvaluemarshalkindsupportinfo]", "Argument[1]", "Argument[this].Field[details]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportinfo", "Method[getsupport]", "Argument[this].Field[details]", "Argument[1].Field[Details]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportinfo", "Method[getsupport]", "Argument[this].Field[details]", "Argument[1].Field[NotSupportedDetails]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportinfo", "Method[getsupport]", "Argument[this].Field[details]", "Argument[1].Field[UnnecessaryDataDetails]", "value"]

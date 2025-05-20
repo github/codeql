@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.methodbodyblock", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.methodbodyblock", "Method[get_exceptionregions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.methodbodyblock", "Method[get_localsignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.methodbodyblock", "Method[getilreader]", "Argument[this]", "ReturnValue", "taint"]

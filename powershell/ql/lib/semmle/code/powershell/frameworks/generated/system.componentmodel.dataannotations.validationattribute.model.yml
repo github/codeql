@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[formaterrormessage]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[formaterrormessage]", "Argument[this].Field[ErrorMessageString]", "ReturnValue", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[get_errormessagestring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[getvalidationresult]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[isvalid]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[validate]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.dataannotations.validationattribute", "Method[validationattribute]", "Argument[0]", "Argument[this].SyntheticField[_errorMessageResourceAccessor]", "value"]

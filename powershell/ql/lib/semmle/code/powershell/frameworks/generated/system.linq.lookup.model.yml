@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.lookup", "Method[applyresultselector]", "Argument[0].ReturnValue", "ReturnValue.Element", "value"]
+      - ["system.linq.lookup", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.linq.lookup", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]

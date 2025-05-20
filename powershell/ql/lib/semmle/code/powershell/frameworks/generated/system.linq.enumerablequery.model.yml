@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.enumerablequery", "Method[enumerablequery]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.linq.enumerablequery", "Method[enumerablequery]", "Argument[0]", "Argument[this].SyntheticField[_expression]", "value"]
+      - ["system.linq.enumerablequery", "Method[get_expression]", "Argument[this].SyntheticField[_expression]", "ReturnValue", "value"]
+      - ["system.linq.enumerablequery", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.linq.enumerablequery", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

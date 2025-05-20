@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[resolvedependencies]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[resolvedependencies]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[resolverequireddependency]", "Argument[0]", "ReturnValue.SyntheticField[_site]", "value"]
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[resolverequireddependency]", "Argument[1]", "ReturnValue.SyntheticField[_contract]", "value"]
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[tryresolveoptionaldependency]", "Argument[0]", "Argument[3].SyntheticField[_site]", "value"]
+      - ["system.composition.hosting.core.dependencyaccessor", "Method[tryresolveoptionaldependency]", "Argument[1]", "Argument[3].SyntheticField[_contract]", "value"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.websockets.websocket", "Method[createclientwebsocket]", "Argument[1]", "ReturnValue.SyntheticField[_subprotocol]", "value"]
+      - ["system.net.websockets.websocket", "Method[createfromstream]", "Argument[2]", "ReturnValue.SyntheticField[_subprotocol]", "value"]
+      - ["system.net.websockets.websocket", "Method[get_closestatusdescription]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.websockets.websocket", "Method[get_subprotocol]", "Argument[this]", "ReturnValue", "taint"]

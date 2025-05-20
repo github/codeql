@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.security.negotiateauthentication", "Method[get_package]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.negotiateauthentication", "Method[get_remoteidentity]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.negotiateauthentication", "Method[get_targetname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.negotiateauthentication", "Method[getoutgoingblob]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.negotiateauthentication", "Method[negotiateauthentication]", "Argument[0]", "Argument[this]", "taint"]

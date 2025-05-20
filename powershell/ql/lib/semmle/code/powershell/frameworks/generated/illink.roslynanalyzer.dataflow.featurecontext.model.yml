@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[deepcopy]", "Argument[this].Field[EnabledFeatures]", "ReturnValue.Field[EnabledFeatures]", "value"]
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[featurecontext]", "Argument[0]", "Argument[this].Field[EnabledFeatures]", "value"]
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[intersection]", "Argument[0].Field[EnabledFeatures]", "ReturnValue.Field[EnabledFeatures]", "value"]
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[intersection]", "Argument[this].Field[EnabledFeatures]", "ReturnValue.Field[EnabledFeatures]", "value"]
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[union]", "Argument[0].Field[EnabledFeatures]", "ReturnValue.Field[EnabledFeatures]", "value"]
+      - ["illink.roslynanalyzer.dataflow.featurecontext", "Method[union]", "Argument[this].Field[EnabledFeatures]", "ReturnValue.Field[EnabledFeatures]", "value"]

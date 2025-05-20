@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importmembersmapping]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importmembersmapping]", "Argument[2].Element", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importtypemapping]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importtypemapping]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importtypemapping]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[importtypemapping]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[xmlreflectionimporter]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlreflectionimporter", "Method[xmlreflectionimporter]", "Argument[1]", "Argument[this]", "taint"]

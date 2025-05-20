@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codenamespace", "Method[codenamespace]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.codenamespace", "Method[get_comments]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.codenamespace", "Method[get_imports]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.codenamespace", "Method[get_types]", "Argument[this]", "ReturnValue", "taint"]

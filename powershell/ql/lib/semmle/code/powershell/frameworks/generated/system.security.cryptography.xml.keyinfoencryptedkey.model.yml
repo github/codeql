@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.keyinfoencryptedkey", "Method[getxml]", "Argument[this].SyntheticField[_encryptedKey].SyntheticField[_cachedXml]", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.keyinfoencryptedkey", "Method[keyinfoencryptedkey]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.cryptography.xml.keyinfoencryptedkey", "Method[loadxml]", "Argument[0]", "Argument[this].SyntheticField[_encryptedKey].SyntheticField[_cachedXml]", "value"]

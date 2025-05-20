@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codenamespaceimportcollection", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[_data].Element", "value"]
+      - ["system.codedom.codenamespaceimportcollection", "Method[addrange]", "Argument[0].Element", "Argument[this].SyntheticField[_data].Element", "value"]
+      - ["system.codedom.codenamespaceimportcollection", "Method[get_item]", "Argument[this].SyntheticField[_data].Element", "ReturnValue", "value"]
+      - ["system.codedom.codenamespaceimportcollection", "Method[getenumerator]", "Argument[this].SyntheticField[_data].Element", "ReturnValue.Field[Current]", "value"]
+      - ["system.codedom.codenamespaceimportcollection", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[_data].Element", "value"]

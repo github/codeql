@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[assemblycatalog]", "Argument[0]", "Argument[this].SyntheticField[_assembly]", "value"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[assemblycatalog]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[assemblycatalog]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[get_assembly]", "Argument[this].SyntheticField[_assembly]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[get_displayname]", "Argument[this].Field[Assembly].Field[FullName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[get_displayname]", "Argument[this].SyntheticField[_assembly].Field[FullName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[tostring]", "Argument[this].Field[Assembly].Field[FullName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.hosting.assemblycatalog", "Method[tostring]", "Argument[this].SyntheticField[_assembly].Field[FullName]", "ReturnValue", "taint"]

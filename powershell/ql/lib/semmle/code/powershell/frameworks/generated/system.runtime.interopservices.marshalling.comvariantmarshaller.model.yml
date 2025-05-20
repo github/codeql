@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.marshalling.comvariantmarshaller", "Method[frommanaged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.runtime.interopservices.marshalling.comvariantmarshaller", "Method[fromunmanaged]", "Argument[0]", "Argument[this].SyntheticField[_unmanaged]", "value"]
+      - ["system.runtime.interopservices.marshalling.comvariantmarshaller", "Method[tounmanaged]", "Argument[this].SyntheticField[_unmanaged]", "ReturnValue", "value"]

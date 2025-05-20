@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.httpwebresponse", "Method[get_characterset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httpwebresponse", "Method[get_server]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httpwebresponse", "Method[get_statusdescription]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httpwebresponse", "Method[getresponseheader]", "Argument[this]", "ReturnValue", "taint"]

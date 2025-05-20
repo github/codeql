@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.pipes.namedpipeclientstream", "Method[namedpipeclientstream]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.io.pipes.namedpipeclientstream", "Method[namedpipeclientstream]", "Argument[3]", "Argument[this]", "taint"]

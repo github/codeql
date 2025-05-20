@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.ordereddictionary", "Method[get_comparer]", "Argument[this].SyntheticField[_comparer]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_key]", "Argument[this].Field[Current].Field[Key]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_keys]", "Argument[this].Field[Keys]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_value]", "Argument[this].Field[Current].Field[Value]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[get_values]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.ordereddictionary", "Method[ordereddictionary]", "Argument[1]", "Argument[this].SyntheticField[_comparer]", "value"]
+      - ["system.collections.generic.ordereddictionary", "Method[remove]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.collections.generic.ordereddictionary", "Method[trygetvalue]", "Argument[this]", "Argument[1]", "taint"]

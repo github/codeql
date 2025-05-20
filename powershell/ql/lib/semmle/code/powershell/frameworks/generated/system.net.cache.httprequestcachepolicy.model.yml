@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.cache.httprequestcachepolicy", "Method[get_maxage]", "Argument[this].SyntheticField[_maxAge]", "ReturnValue", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[get_maxstale]", "Argument[this].SyntheticField[_maxStale]", "ReturnValue", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[get_minfresh]", "Argument[this].SyntheticField[_minFresh]", "ReturnValue", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[httprequestcachepolicy]", "Argument[1]", "Argument[this].SyntheticField[_maxAge]", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[httprequestcachepolicy]", "Argument[1]", "Argument[this].SyntheticField[_maxStale]", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[httprequestcachepolicy]", "Argument[1]", "Argument[this].SyntheticField[_minFresh]", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[httprequestcachepolicy]", "Argument[2]", "Argument[this].SyntheticField[_maxStale]", "value"]
+      - ["system.net.cache.httprequestcachepolicy", "Method[httprequestcachepolicy]", "Argument[2]", "Argument[this].SyntheticField[_minFresh]", "value"]

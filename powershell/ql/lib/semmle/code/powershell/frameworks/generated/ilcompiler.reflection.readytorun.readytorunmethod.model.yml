@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[get_fixups]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[get_gcinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[get_pgoinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[get_runtimefunctions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[1]", "Argument[this].Field[ComponentReader]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[2]", "Argument[this].Field[MethodHandle]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[4]", "Argument[this].Field[DeclaringType]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[4]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[6].Element", "Argument[this].Field[InstanceArgs].Element", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[6].Element", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[this].Field[DeclaringType]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[this].Field[Name]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunmethod", "Method[readytorunmethod]", "Argument[this].Field[Signature].Field[ReturnType]", "Argument[this].Field[SignatureString]", "taint"]

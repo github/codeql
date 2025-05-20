@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.appdomain", "Method[applypolicy]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.appdomain", "Method[tostring]", "Argument[this].Field[FriendlyName]", "ReturnValue", "taint"]

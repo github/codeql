@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.syndicationperson", "Method[get_attributeextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[get_elementextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[0].Field[Email]", "Argument[this].Field[Email]", "value"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[0].Field[Name]", "Argument[this].Field[Name]", "value"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[0].Field[Uri]", "Argument[this].Field[Uri]", "value"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[0]", "Argument[this].Field[Email]", "value"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[1]", "Argument[this].Field[Name]", "value"]
+      - ["system.servicemodel.syndication.syndicationperson", "Method[syndicationperson]", "Argument[2]", "Argument[this].Field[Uri]", "value"]

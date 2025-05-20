@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.itypedlist", "Method[getitemproperties]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.itypedlist", "Method[getitemproperties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.itypedlist", "Method[getlistname]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.itypedlist", "Method[getlistname]", "Argument[this]", "ReturnValue", "taint"]

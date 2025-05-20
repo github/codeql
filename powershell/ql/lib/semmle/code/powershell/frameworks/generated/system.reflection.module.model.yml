@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.module", "Method[findtypes]", "Argument[1]", "Argument[0].Parameter[1]", "value"]
+      - ["system.reflection.module", "Method[get_assembly]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_customattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_fullyqualifiedname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_modulehandle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_moduleversionid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[get_scopename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[getfield]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[getmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[getmethodimpl]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[gettype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[resolvefield]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[resolvemember]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[resolvemethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[resolvetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.module", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

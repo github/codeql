@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.eventhandlerlist", "Method[addhandler]", "Argument[1]", "Argument[this].SyntheticField[_head].SyntheticField[_handler]", "value"]
+      - ["system.componentmodel.eventhandlerlist", "Method[addhandlers]", "Argument[0].SyntheticField[_head].SyntheticField[_handler]", "Argument[this].SyntheticField[_head].SyntheticField[_handler]", "value"]
+      - ["system.componentmodel.eventhandlerlist", "Method[get_item]", "Argument[this].SyntheticField[_head].SyntheticField[_handler]", "ReturnValue", "value"]
+      - ["system.componentmodel.eventhandlerlist", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[_head].SyntheticField[_handler]", "value"]

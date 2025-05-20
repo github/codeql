@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.xmluridata", "Method[xmluridata]", "Argument[0]", "Argument[this].Field[UriString]", "value"]
+      - ["system.servicemodel.syndication.xmluridata", "Method[xmluridata]", "Argument[2]", "Argument[this].Field[ElementQualifiedName]", "value"]

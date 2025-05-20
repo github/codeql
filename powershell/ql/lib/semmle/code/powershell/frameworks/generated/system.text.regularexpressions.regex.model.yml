@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.text.regularexpressions.regex", "Method[count]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratematches]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratematches]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratematches]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratematches]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratesplits]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratesplits]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratesplits]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[enumeratesplits]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[escape]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[get_matchtimeout]", "Argument[this].Field[internalMatchTimeout]", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[getenumerator]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[groupnamefromnumber]", "Argument[this].Field[capslist].Element", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[ismatch]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[match]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[match]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[match]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[match]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[match]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[matches]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[matches]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[matches]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[matches]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.regularexpressions.regex", "Method[replace]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[split]", "Argument[0]", "ReturnValue.Element", "value"]
+      - ["system.text.regularexpressions.regex", "Method[tostring]", "Argument[this].Field[pattern]", "ReturnValue", "value"]
+      - ["system.text.regularexpressions.regex", "Method[unescape]", "Argument[0]", "ReturnValue", "value"]

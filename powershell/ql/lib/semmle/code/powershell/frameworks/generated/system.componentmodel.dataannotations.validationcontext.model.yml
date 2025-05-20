@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.dataannotations.validationcontext", "Method[get_items]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.dataannotations.validationcontext", "Method[initializeserviceprovider]", "Argument[0]", "Argument[this].SyntheticField[_serviceProvider]", "value"]
+      - ["system.componentmodel.dataannotations.validationcontext", "Method[validationcontext]", "Argument[0]", "Argument[this].Field[ObjectInstance]", "value"]

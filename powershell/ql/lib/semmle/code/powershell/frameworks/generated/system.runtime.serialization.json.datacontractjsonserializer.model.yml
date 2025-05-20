@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.json.datacontractjsonserializer", "Method[datacontractjsonserializer]", "Argument[1].Field[DateTimeFormat]", "Argument[this].SyntheticField[_dateTimeFormat]", "value"]
+      - ["system.runtime.serialization.json.datacontractjsonserializer", "Method[get_datetimeformat]", "Argument[this].SyntheticField[_dateTimeFormat]", "ReturnValue", "value"]
+      - ["system.runtime.serialization.json.datacontractjsonserializer", "Method[getserializationsurrogateprovider]", "Argument[this].SyntheticField[_serializationSurrogateProvider]", "ReturnValue", "value"]
+      - ["system.runtime.serialization.json.datacontractjsonserializer", "Method[setserializationsurrogateprovider]", "Argument[0]", "Argument[this].SyntheticField[_serializationSurrogateProvider]", "value"]

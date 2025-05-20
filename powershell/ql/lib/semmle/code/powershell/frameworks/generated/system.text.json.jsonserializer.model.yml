@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.text.json.jsonserializer", "Method[serialize]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serialize]", "Argument[0]", "Argument[2]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serialize]", "Argument[1]", "Argument[2]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serializeasync]", "Argument[1]", "Argument[2]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serializetodocument]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serializetoelement]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serializetonode]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.text.json.jsonserializer", "Method[serializetoutf8bytes]", "Argument[0]", "Argument[1]", "taint"]

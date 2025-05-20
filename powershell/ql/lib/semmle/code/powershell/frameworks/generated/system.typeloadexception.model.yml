@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.typeloadexception", "Method[get_typename]", "Argument[this].SyntheticField[_className]", "ReturnValue", "value"]
+      - ["system.typeloadexception", "Method[typeloadexception]", "Argument[0].SyntheticField[_values].Element", "Argument[this].SyntheticField[_className]", "value"]

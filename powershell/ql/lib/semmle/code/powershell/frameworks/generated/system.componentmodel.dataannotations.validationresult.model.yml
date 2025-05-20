@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.dataannotations.validationresult", "Method[tostring]", "Argument[this].Field[ErrorMessage]", "ReturnValue", "value"]
+      - ["system.componentmodel.dataannotations.validationresult", "Method[validationresult]", "Argument[0].Field[ErrorMessage]", "Argument[this].Field[ErrorMessage]", "value"]
+      - ["system.componentmodel.dataannotations.validationresult", "Method[validationresult]", "Argument[0].Field[MemberNames]", "Argument[this].Field[MemberNames]", "value"]
+      - ["system.componentmodel.dataannotations.validationresult", "Method[validationresult]", "Argument[0]", "Argument[this].Field[ErrorMessage]", "value"]
+      - ["system.componentmodel.dataannotations.validationresult", "Method[validationresult]", "Argument[1]", "Argument[this].Field[MemberNames]", "value"]

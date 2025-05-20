@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.webrequest", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.webrequest", "Method[createdefault]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.webrequest", "Method[createhttp]", "Argument[0]", "ReturnValue.SyntheticField[_requestUri]", "taint"]
+      - ["system.net.webrequest", "Method[createhttp]", "Argument[0]", "ReturnValue.SyntheticField[_requestUri]", "value"]
+      - ["system.net.webrequest", "Method[endgetrequeststream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.webrequest", "Method[endgetresponse]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.webrequest", "Method[getrequeststream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.webrequest", "Method[getresponse]", "Argument[this]", "ReturnValue", "taint"]

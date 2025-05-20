@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.encryptedxml", "Method[encryptedxml]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.security.cryptography.xml.encryptedxml", "Method[encryptedxml]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.security.cryptography.xml.encryptedxml", "Method[getdecryptionkey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.xml.encryptedxml", "Method[getidelement]", "Argument[0].Element", "ReturnValue", "taint"]

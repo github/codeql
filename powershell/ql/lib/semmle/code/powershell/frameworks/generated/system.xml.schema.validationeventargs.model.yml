@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.validationeventargs", "Method[get_exception]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.validationeventargs", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]

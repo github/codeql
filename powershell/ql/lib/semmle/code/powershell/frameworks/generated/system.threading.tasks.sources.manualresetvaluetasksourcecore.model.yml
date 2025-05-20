@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.sources.manualresetvaluetasksourcecore", "Method[getresult]", "Argument[this].SyntheticField[_result]", "ReturnValue", "value"]
+      - ["system.threading.tasks.sources.manualresetvaluetasksourcecore", "Method[setexception]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.sources.manualresetvaluetasksourcecore", "Method[setresult]", "Argument[0]", "Argument[this].SyntheticField[_result]", "value"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.caching.memory.icacheentry", "Method[get_expirationtokens]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.caching.memory.icacheentry", "Method[get_postevictioncallbacks]", "Argument[this]", "ReturnValue", "taint"]

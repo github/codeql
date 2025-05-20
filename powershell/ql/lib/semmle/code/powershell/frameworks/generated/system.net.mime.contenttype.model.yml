@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.mime.contenttype", "Method[contenttype]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.mime.contenttype", "Method[get_parameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.mime.contenttype", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

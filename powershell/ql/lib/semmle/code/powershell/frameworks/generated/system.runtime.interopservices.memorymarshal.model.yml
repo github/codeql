@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.memorymarshal", "Method[createfrompinnedarray]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.runtime.interopservices.memorymarshal", "Method[toenumerable]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.interopservices.memorymarshal", "Method[trygetmemorymanager]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.runtime.interopservices.memorymarshal", "Method[trygetstring]", "Argument[0].SyntheticField[_object]", "Argument[1]", "value"]

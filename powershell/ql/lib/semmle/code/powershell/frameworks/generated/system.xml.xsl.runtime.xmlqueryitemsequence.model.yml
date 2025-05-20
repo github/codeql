@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xmlqueryitemsequence", "Method[addclone]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryitemsequence", "Method[createorreuse]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryitemsequence", "Method[xmlqueryitemsequence]", "Argument[0]", "Argument[this]", "taint"]

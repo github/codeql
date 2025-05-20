@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmltypemapping", "Method[get_xsdtypename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmltypemapping", "Method[get_xsdtypenamespace]", "Argument[this]", "ReturnValue", "taint"]

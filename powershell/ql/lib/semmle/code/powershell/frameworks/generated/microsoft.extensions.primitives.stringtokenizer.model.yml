@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.primitives.stringtokenizer", "Method[enumerator]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["microsoft.extensions.primitives.stringtokenizer", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["microsoft.extensions.primitives.stringtokenizer", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.primitives.stringtokenizer", "Method[stringtokenizer]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.primitives.stringtokenizer", "Method[stringtokenizer]", "Argument[1].Element", "Argument[this]", "taint"]

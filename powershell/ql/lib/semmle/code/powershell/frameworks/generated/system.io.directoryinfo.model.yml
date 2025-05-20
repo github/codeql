@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.directoryinfo", "Method[createsubdirectory]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directoryinfo", "Method[createsubdirectory]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.directoryinfo", "Method[createsubdirectory]", "Argument[this].Field[FullPath]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directoryinfo", "Method[createsubdirectory]", "Argument[this].Field[FullPath]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.directoryinfo", "Method[directoryinfo]", "Argument[0]", "Argument[this].Field[FullPath]", "value"]
+      - ["system.io.directoryinfo", "Method[directoryinfo]", "Argument[0]", "Argument[this].Field[OriginalPath]", "value"]
+      - ["system.io.directoryinfo", "Method[enumeratedirectories]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[enumeratedirectories]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[enumeratefiles]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[enumeratefiles]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[enumeratefilesysteminfos]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[enumeratefilesysteminfos]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.directoryinfo", "Method[get_parent]", "Argument[this].Field[FullPath]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directoryinfo", "Method[get_parent]", "Argument[this].Field[FullPath]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.directoryinfo", "Method[get_root]", "Argument[this].Field[FullPath]", "ReturnValue.Field[FullPath]", "taint"]
+      - ["system.io.directoryinfo", "Method[get_root]", "Argument[this].Field[FullPath]", "ReturnValue.Field[OriginalPath]", "taint"]
+      - ["system.io.directoryinfo", "Method[moveto]", "Argument[0]", "Argument[this].Field[FullPath]", "value"]
+      - ["system.io.directoryinfo", "Method[moveto]", "Argument[0]", "Argument[this].Field[OriginalPath]", "value"]

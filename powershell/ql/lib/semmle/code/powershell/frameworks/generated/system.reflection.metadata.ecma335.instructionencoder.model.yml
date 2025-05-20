@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.ecma335.instructionencoder", "Method[instructionencoder]", "Argument[0]", "Argument[this].Field[CodeBuilder]", "value"]
+      - ["system.reflection.metadata.ecma335.instructionencoder", "Method[instructionencoder]", "Argument[1]", "Argument[this].Field[ControlFlowBuilder]", "value"]
+      - ["system.reflection.metadata.ecma335.instructionencoder", "Method[switch]", "Argument[this]", "ReturnValue", "taint"]

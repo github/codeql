@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[describe]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[describekeyed]", "Argument[2]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[get_implementationfactory]", "Argument[this].SyntheticField[_implementationFactory]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[get_implementationinstance]", "Argument[this].SyntheticField[_implementationInstance]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[get_keyedimplementationfactory]", "Argument[this].SyntheticField[_implementationFactory]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[get_keyedimplementationinstance]", "Argument[this].SyntheticField[_implementationInstance]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedscoped]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedscoped]", "Argument[2]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedsingleton]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedsingleton]", "Argument[1]", "ReturnValue.SyntheticField[_implementationInstance]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedsingleton]", "Argument[2]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedsingleton]", "Argument[2]", "ReturnValue.SyntheticField[_implementationInstance]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedtransient]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[keyedtransient]", "Argument[2]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[scoped]", "Argument[0]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[scoped]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[servicedescriptor]", "Argument[1]", "Argument[this].SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[servicedescriptor]", "Argument[2]", "Argument[this].SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[servicedescriptor]", "Argument[2]", "Argument[this].SyntheticField[_implementationInstance]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[singleton]", "Argument[0]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[singleton]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[transient]", "Argument[0]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]
+      - ["microsoft.extensions.dependencyinjection.servicedescriptor", "Method[transient]", "Argument[1]", "ReturnValue.SyntheticField[_implementationFactory]", "value"]

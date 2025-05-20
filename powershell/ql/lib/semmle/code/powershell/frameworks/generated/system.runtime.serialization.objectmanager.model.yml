@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.objectmanager", "Method[getobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.serialization.objectmanager", "Method[objectmanager]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.runtime.serialization.objectmanager", "Method[objectmanager]", "Argument[1]", "Argument[this]", "taint"]

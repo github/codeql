@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.culturenotfoundexception", "Method[culturenotfoundexception]", "Argument[0].SyntheticField[_values].Element", "Argument[this].SyntheticField[_invalidCultureName]", "value"]
+      - ["system.globalization.culturenotfoundexception", "Method[culturenotfoundexception]", "Argument[1]", "Argument[this].SyntheticField[_invalidCultureName]", "value"]
+      - ["system.globalization.culturenotfoundexception", "Method[get_invalidculturename]", "Argument[this].SyntheticField[_invalidCultureName]", "ReturnValue", "value"]

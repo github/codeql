@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.elementinit", "Method[getargument]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.linq.expressions.elementinit", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.linq.expressions.elementinit", "Method[update]", "Argument[0]", "ReturnValue.Field[Arguments]", "value"]
+      - ["system.linq.expressions.elementinit", "Method[update]", "Argument[this].Field[AddMethod]", "ReturnValue.Field[AddMethod]", "value"]
+      - ["system.linq.expressions.elementinit", "Method[update]", "Argument[this]", "ReturnValue", "value"]

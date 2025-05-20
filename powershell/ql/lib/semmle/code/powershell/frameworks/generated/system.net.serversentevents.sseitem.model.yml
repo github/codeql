@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.serversentevents.sseitem", "Method[get_eventtype]", "Argument[this].SyntheticField[_eventType]", "ReturnValue", "value"]
+      - ["system.net.serversentevents.sseitem", "Method[sseitem]", "Argument[0]", "Argument[this].Field[Data]", "value"]
+      - ["system.net.serversentevents.sseitem", "Method[sseitem]", "Argument[1]", "Argument[this].SyntheticField[_eventType]", "value"]

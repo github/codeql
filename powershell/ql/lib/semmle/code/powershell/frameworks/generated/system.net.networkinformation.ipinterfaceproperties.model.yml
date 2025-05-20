@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[get_dhcpserveraddresses]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[get_dnsaddresses]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[get_dnssuffix]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[get_gatewayaddresses]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[get_winsserversaddresses]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[getipv4properties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.ipinterfaceproperties", "Method[getipv6properties]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.stubs.ilstubmethodil", "Method[get_owningmethod]", "Argument[this].SyntheticField[_method]", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[getdebuginfo]", "Argument[this].SyntheticField[_debugInformation]", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[getexceptionregions]", "Argument[this].SyntheticField[_exceptionRegions]", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[getilbytes]", "Argument[this].SyntheticField[_ilBytes]", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[getlocals]", "Argument[this].SyntheticField[_locals]", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[getobject]", "Argument[this].SyntheticField[_tokens].Element", "ReturnValue", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[0]", "Argument[this].SyntheticField[_method]", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[0]", "Argument[this]", "taint"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[1]", "Argument[this].SyntheticField[_ilBytes]", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[2]", "Argument[this].SyntheticField[_locals]", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[3]", "Argument[this].SyntheticField[_tokens]", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[4]", "Argument[this].SyntheticField[_exceptionRegions]", "value"]
+      - ["internal.il.stubs.ilstubmethodil", "Method[ilstubmethodil]", "Argument[5]", "Argument[this].SyntheticField[_debugInformation]", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.memorystream", "Method[getbuffer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.memorystream", "Method[trygetbuffer]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.io.memorystream", "Method[writeto]", "Argument[this]", "Argument[0]", "taint"]

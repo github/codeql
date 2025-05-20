@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.managedtonativestubgenerator", "Method[getnativeidentifier]", "Argument[0].Field[InstanceIdentifier]", "ReturnValue", "taint"]
+      - ["microsoft.interop.managedtonativestubgenerator", "Method[managedtonativestubgenerator]", "Argument[0].Element", "Argument[3]", "taint"]
+      - ["microsoft.interop.managedtonativestubgenerator", "Method[managedtonativestubgenerator]", "Argument[4]", "Argument[this]", "taint"]

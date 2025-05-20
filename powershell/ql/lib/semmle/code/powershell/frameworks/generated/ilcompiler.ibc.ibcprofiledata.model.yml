@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.ibc.ibcprofiledata", "Method[get_config]", "Argument[this].SyntheticField[_config]", "ReturnValue", "value"]
+      - ["ilcompiler.ibc.ibcprofiledata", "Method[ibcprofiledata]", "Argument[0]", "Argument[this].SyntheticField[_config]", "value"]

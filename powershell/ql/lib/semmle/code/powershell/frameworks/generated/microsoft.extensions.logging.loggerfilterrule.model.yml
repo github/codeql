@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.loggerfilterrule", "Method[loggerfilterrule]", "Argument[0]", "Argument[this].Field[ProviderName]", "value"]
+      - ["microsoft.extensions.logging.loggerfilterrule", "Method[loggerfilterrule]", "Argument[1]", "Argument[this].Field[CategoryName]", "value"]
+      - ["microsoft.extensions.logging.loggerfilterrule", "Method[loggerfilterrule]", "Argument[3]", "Argument[this].Field[Filter]", "value"]
+      - ["microsoft.extensions.logging.loggerfilterrule", "Method[tostring]", "Argument[this].Field[CategoryName]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.logging.loggerfilterrule", "Method[tostring]", "Argument[this].Field[ProviderName]", "ReturnValue", "taint"]

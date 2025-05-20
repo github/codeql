@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.arraysegment", "Method[arraysegment]", "Argument[0]", "Argument[this].SyntheticField[_array]", "value"]
+      - ["system.arraysegment", "Method[get_array]", "Argument[this].SyntheticField[_array]", "ReturnValue", "value"]
+      - ["system.arraysegment", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.arraysegment", "Method[get_current]", "Argument[this].SyntheticField[_array].Element", "ReturnValue", "value"]
+      - ["system.arraysegment", "Method[get_item]", "Argument[this].SyntheticField[_array].Element", "ReturnValue", "value"]
+      - ["system.arraysegment", "Method[getenumerator]", "Argument[this].Field[Array]", "ReturnValue.SyntheticField[_array]", "value"]
+      - ["system.arraysegment", "Method[getenumerator]", "Argument[this].SyntheticField[_array]", "ReturnValue.SyntheticField[_array]", "value"]
+      - ["system.arraysegment", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.arraysegment", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[_array].Element", "value"]
+      - ["system.arraysegment", "Method[slice]", "Argument[this].SyntheticField[_array]", "ReturnValue.SyntheticField[_array]", "value"]

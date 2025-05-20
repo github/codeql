@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[fromreadytorunmethod]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[0]", "Argument[this].Field[ComponentReader]", "value"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[1]", "Argument[this].Field[DeclaringType]", "value"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[1]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[2]", "Argument[this].Field[MethodHandle]", "value"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[3].Element", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[this].Field[DeclaringType]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[this].Field[Name]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[pgoinfokey]", "Argument[this].Field[Signature].Field[ReturnType]", "Argument[this].Field[SignatureString]", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfokey", "Method[tostring]", "Argument[this].Field[SignatureString]", "ReturnValue", "value"]

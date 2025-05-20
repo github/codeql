@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.readytorunimportsection", "Method[importsectionentry]", "Argument[5]", "Argument[this].Field[Signature]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunimportsection", "Method[readytorunimportsection]", "Argument[8]", "Argument[this].Field[Entries]", "value"]

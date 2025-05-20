@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationlockcollection", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[_internalArraylist].Element", "value"]
+      - ["system.configuration.configurationlockcollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.configurationlockcollection", "Method[copyto]", "Argument[this].SyntheticField[_internalArraylist].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.configurationlockcollection", "Method[get_attributelist]", "Argument[this]", "ReturnValue", "taint"]

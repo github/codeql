@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.sockets.tcplistener", "Method[acceptsocket]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.tcplistener", "Method[accepttcpclient]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.tcplistener", "Method[get_localendpoint]", "Argument[this].SyntheticField[_serverSocketEP]", "ReturnValue", "value"]
+      - ["system.net.sockets.tcplistener", "Method[get_server]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.tcplistener", "Method[tcplistener]", "Argument[0]", "Argument[this].SyntheticField[_serverSocketEP]", "value"]

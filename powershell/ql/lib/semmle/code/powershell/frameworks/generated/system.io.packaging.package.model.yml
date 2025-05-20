@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.packaging.package", "Method[createpart]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[createpartcore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[createrelationship]", "Argument[0]", "ReturnValue.SyntheticField[_targetUri]", "value"]
+      - ["system.io.packaging.package", "Method[createrelationship]", "Argument[2]", "ReturnValue.SyntheticField[_relationshipType]", "value"]
+      - ["system.io.packaging.package", "Method[createrelationship]", "Argument[3]", "ReturnValue.SyntheticField[_id]", "value"]
+      - ["system.io.packaging.package", "Method[getparts]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[getrelationships]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[getrelationshipsbytype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[getrelationshipsbytype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.package", "Method[open]", "Argument[0]", "ReturnValue", "taint"]

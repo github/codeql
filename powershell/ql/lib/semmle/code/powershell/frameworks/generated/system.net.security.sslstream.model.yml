@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.security.sslstream", "Method[authenticateasclient]", "Argument[0]", "Argument[this].SyntheticField[_sslAuthenticationOptions].SyntheticField[TargetHost]", "value"]
+      - ["system.net.security.sslstream", "Method[authenticateasclient]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.sslstream", "Method[authenticateasclientasync]", "Argument[0]", "Argument[this].SyntheticField[_sslAuthenticationOptions].SyntheticField[TargetHost]", "value"]
+      - ["system.net.security.sslstream", "Method[authenticateasclientasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.sslstream", "Method[authenticateasserver]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.sslstream", "Method[authenticateasserverasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.sslstream", "Method[beginauthenticateasclient]", "Argument[0]", "Argument[this].SyntheticField[_sslAuthenticationOptions].SyntheticField[TargetHost]", "value"]
+      - ["system.net.security.sslstream", "Method[get_localcertificate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.sslstream", "Method[get_negotiatedapplicationprotocol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.sslstream", "Method[get_remotecertificate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.sslstream", "Method[get_targethostname]", "Argument[this].SyntheticField[_sslAuthenticationOptions].SyntheticField[TargetHost]", "ReturnValue", "value"]
+      - ["system.net.security.sslstream", "Method[get_transportcontext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.security.sslstream", "Method[write]", "Argument[0].Element", "Argument[this]", "taint"]

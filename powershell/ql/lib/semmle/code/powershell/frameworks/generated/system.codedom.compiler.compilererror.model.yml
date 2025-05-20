@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.compiler.compilererror", "Method[compilererror]", "Argument[0]", "Argument[this].Field[FileName]", "value"]
+      - ["system.codedom.compiler.compilererror", "Method[compilererror]", "Argument[3]", "Argument[this].Field[ErrorNumber]", "value"]
+      - ["system.codedom.compiler.compilererror", "Method[compilererror]", "Argument[4]", "Argument[this].Field[ErrorText]", "value"]
+      - ["system.codedom.compiler.compilererror", "Method[tostring]", "Argument[this].Field[ErrorNumber]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.compilererror", "Method[tostring]", "Argument[this].Field[ErrorText]", "ReturnValue", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.compositioncontext", "Method[getexport]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.composition.compositioncontext", "Method[trygetexport]", "Argument[this]", "Argument[0]", "value"]
+      - ["system.composition.compositioncontext", "Method[trygetexport]", "Argument[this]", "Argument[1]", "value"]
+      - ["system.composition.compositioncontext", "Method[trygetexport]", "Argument[this]", "Argument[2]", "value"]

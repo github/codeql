@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.filestream", "Method[filestream]", "Argument[this]", "Argument[this].SyntheticField[_strategy].SyntheticField[_fileStream]", "value"]
+      - ["system.io.filestream", "Method[flushasync]", "Argument[this].SyntheticField[_strategy].SyntheticField[_fileStream]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.io.filestream", "Method[get_handle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.filestream", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.filestream", "Method[get_safefilehandle]", "Argument[this]", "ReturnValue", "taint"]

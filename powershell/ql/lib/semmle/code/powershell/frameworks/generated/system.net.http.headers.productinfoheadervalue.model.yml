@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.productinfoheadervalue", "Method[clone]", "Argument[this].SyntheticField[_comment]", "ReturnValue.SyntheticField[_comment]", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[clone]", "Argument[this].SyntheticField[_product]", "ReturnValue.SyntheticField[_product]", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[get_comment]", "Argument[this].SyntheticField[_comment]", "ReturnValue", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[get_product]", "Argument[this].SyntheticField[_product]", "ReturnValue", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[productinfoheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_comment]", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[productinfoheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_product]", "value"]
+      - ["system.net.http.headers.productinfoheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_comment]", "ReturnValue", "value"]

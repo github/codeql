@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.objectmodel.readonlydictionary", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[get_dictionary]", "Argument[this].SyntheticField[m_dictionary]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[get_item]", "Argument[this].SyntheticField[m_dictionary].Element", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[get_keys]", "Argument[this].Field[Keys]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[get_syncroot]", "Argument[this].SyntheticField[m_dictionary].Field[SyncRoot]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[get_values]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlydictionary", "Method[readonlydictionary]", "Argument[0]", "Argument[this].SyntheticField[m_dictionary]", "value"]

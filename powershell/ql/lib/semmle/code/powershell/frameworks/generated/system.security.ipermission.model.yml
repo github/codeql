@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.ipermission", "Method[copy]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.security.ipermission", "Method[intersect]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.security.ipermission", "Method[union]", "Argument[this]", "ReturnValue", "taint"]

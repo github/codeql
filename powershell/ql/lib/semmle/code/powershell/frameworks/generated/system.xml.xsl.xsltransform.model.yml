@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.xsltransform", "Method[set_xmlresolver]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.xsltransform", "Method[transform]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.xsltransform", "Method[transform]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.xsltransform", "Method[transform]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.xsltransform", "Method[transform]", "Argument[this]", "ReturnValue", "taint"]

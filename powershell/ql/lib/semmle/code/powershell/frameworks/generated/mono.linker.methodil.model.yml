@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.methodil", "Method[create]", "Argument[0]", "ReturnValue.Field[Body]", "value"]
+      - ["mono.linker.methodil", "Method[get_exceptionhandlers]", "Argument[this].Field[Body].Field[ExceptionHandlers]", "ReturnValue", "value"]
+      - ["mono.linker.methodil", "Method[get_instructions]", "Argument[this].Field[Body].Field[Instructions]", "ReturnValue", "value"]
+      - ["mono.linker.methodil", "Method[get_method]", "Argument[this].Field[Body].Field[Method]", "ReturnValue", "value"]
+      - ["mono.linker.methodil", "Method[get_variables]", "Argument[this].Field[Body].Field[Variables]", "ReturnValue", "value"]

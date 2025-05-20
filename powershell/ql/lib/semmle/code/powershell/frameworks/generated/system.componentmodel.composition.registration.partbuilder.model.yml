@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[addmetadata]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[export]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[exportinterfaces]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[exportproperties]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[exportproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[importproperties]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[importproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[selectconstructor]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.partbuilder", "Method[setcreationpolicy]", "Argument[this]", "ReturnValue", "value"]

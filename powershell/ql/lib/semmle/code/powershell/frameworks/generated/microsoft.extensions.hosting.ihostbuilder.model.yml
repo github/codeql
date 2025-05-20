@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.hosting.ihostbuilder", "Method[configureappconfiguration]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.ihostbuilder", "Method[configurecontainer]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.ihostbuilder", "Method[configurehostconfiguration]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.ihostbuilder", "Method[configureservices]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.ihostbuilder", "Method[useserviceproviderfactory]", "Argument[this]", "ReturnValue", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.sequencemarshal", "Method[trygetreadonlymemory]", "Argument[0].Field[First]", "Argument[1]", "value"]
+      - ["system.runtime.interopservices.sequencemarshal", "Method[trygetreadonlysequencesegment]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.runtime.interopservices.sequencemarshal", "Method[trygetreadonlysequencesegment]", "Argument[0]", "Argument[3]", "taint"]

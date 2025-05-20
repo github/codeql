@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cngalgorithmgroup", "Method[cngalgorithmgroup]", "Argument[0]", "Argument[this].SyntheticField[_algorithmGroup]", "value"]
+      - ["system.security.cryptography.cngalgorithmgroup", "Method[get_algorithmgroup]", "Argument[this].SyntheticField[_algorithmGroup]", "ReturnValue", "value"]
+      - ["system.security.cryptography.cngalgorithmgroup", "Method[tostring]", "Argument[this].SyntheticField[_algorithmGroup]", "ReturnValue", "value"]

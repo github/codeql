@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.syndicationitemformatter", "Method[get_item]", "Argument[this].SyntheticField[_item]", "ReturnValue", "value"]
+      - ["system.servicemodel.syndication.syndicationitemformatter", "Method[setitem]", "Argument[0]", "Argument[this].SyntheticField[_item]", "value"]
+      - ["system.servicemodel.syndication.syndicationitemformatter", "Method[syndicationitemformatter]", "Argument[0]", "Argument[this].SyntheticField[_item]", "value"]
+      - ["system.servicemodel.syndication.syndicationitemformatter", "Method[tostring]", "Argument[this].Field[Version]", "ReturnValue", "taint"]

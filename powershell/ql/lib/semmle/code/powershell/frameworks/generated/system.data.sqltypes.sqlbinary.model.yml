@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.sqltypes.sqlbinary", "Method[get_value]", "Argument[this].SyntheticField[_value].Element", "ReturnValue.Element", "value"]
+      - ["system.data.sqltypes.sqlbinary", "Method[sqlbinary]", "Argument[0].Element", "Argument[this].SyntheticField[_value].Element", "value"]
+      - ["system.data.sqltypes.sqlbinary", "Method[wrapbytes]", "Argument[0]", "ReturnValue.SyntheticField[_value]", "value"]

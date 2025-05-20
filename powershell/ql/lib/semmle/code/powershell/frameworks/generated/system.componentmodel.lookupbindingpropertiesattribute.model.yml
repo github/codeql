@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.lookupbindingpropertiesattribute", "Method[lookupbindingpropertiesattribute]", "Argument[0]", "Argument[this].Field[DataSource]", "value"]
+      - ["system.componentmodel.lookupbindingpropertiesattribute", "Method[lookupbindingpropertiesattribute]", "Argument[1]", "Argument[this].Field[DisplayMember]", "value"]
+      - ["system.componentmodel.lookupbindingpropertiesattribute", "Method[lookupbindingpropertiesattribute]", "Argument[2]", "Argument[this].Field[ValueMember]", "value"]
+      - ["system.componentmodel.lookupbindingpropertiesattribute", "Method[lookupbindingpropertiesattribute]", "Argument[3]", "Argument[this].Field[LookupMember]", "value"]

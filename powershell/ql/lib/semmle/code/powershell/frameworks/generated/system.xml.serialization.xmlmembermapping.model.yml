@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlmembermapping", "Method[get_elementname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlmembermapping", "Method[get_membername]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlmembermapping", "Method[get_namespace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlmembermapping", "Method[get_xsdelementname]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.typesystemhelpers", "Method[enumallvirtualslots]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[findmethodontypewithmatchingtypicalmethod]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[findmethodontypewithmatchingtypicalmethod]", "Argument[1]", "ReturnValue", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[findvirtualfunctiontargetmethodonobjecttype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getallmethods]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getallvirtualmethods]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getelementsize]", "Argument[0].Field[InstanceFieldSize]", "ReturnValue", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getfullname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getparameterlessconstructor]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[getparametertype]", "Argument[0].Field[ParameterType]", "ReturnValue", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[instantiateasopen]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolveinterfacemethodtarget]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolveinterfacemethodtargetwithvariance]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolveinterfacemethodtodefaultimplementationontype]", "Argument[1]", "Argument[2]", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolveinterfacemethodtovirtualmethodontype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolvevariantinterfacemethodtodefaultimplementationontype]", "Argument[0]", "Argument[2]", "taint"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolvevariantinterfacemethodtodefaultimplementationontype]", "Argument[1]", "Argument[2]", "value"]
+      - ["internal.typesystem.typesystemhelpers", "Method[resolvevariantinterfacemethodtovirtualmethodontype]", "Argument[0]", "ReturnValue", "taint"]

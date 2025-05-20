@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[ensurenodeset]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tonode]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tonode]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tonodeset]", "Argument[0]", "ReturnValue.SyntheticField[_items].Element", "value"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tonodeset]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tostring]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltconvert", "Method[tostring]", "Argument[0]", "ReturnValue", "taint"]

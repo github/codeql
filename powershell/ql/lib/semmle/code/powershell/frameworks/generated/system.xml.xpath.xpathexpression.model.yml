@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xpath.xpathexpression", "Method[clone]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.xml.xpath.xpathexpression", "Method[compile]", "Argument[0]", "ReturnValue.SyntheticField[_expr]", "value"]
+      - ["system.xml.xpath.xpathexpression", "Method[compile]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathexpression", "Method[get_expression]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathexpression", "Method[setcontext]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.xpath.xpathexpression", "Method[setcontext]", "Argument[0]", "Argument[this]", "taint"]

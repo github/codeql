@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.ipaddress", "Method[maptoipv4]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.net.ipaddress", "Method[maptoipv6]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.net.ipaddress", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

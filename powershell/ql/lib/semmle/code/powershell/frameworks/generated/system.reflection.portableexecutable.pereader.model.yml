@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.portableexecutable.pereader", "Method[get_peheaders]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[getentireimage]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[getmetadata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[getsectiondata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[pereader]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[pereader]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[tryopenassociatedportablepdb]", "Argument[0]", "Argument[1].Parameter[0]", "taint"]
+      - ["system.reflection.portableexecutable.pereader", "Method[tryopenassociatedportablepdb]", "Argument[0]", "Argument[3]", "taint"]

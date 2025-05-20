@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[0].ReturnValue", "Argument[1].Parameter[0]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[2]", "Argument[0].Parameter[0]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[2]", "Argument[0].Parameter[1]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[3]", "Argument[0].Parameter[1]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[3]", "Argument[0].Parameter[2]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[4]", "Argument[0].Parameter[2]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[4]", "Argument[0].Parameter[3]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[fromasync]", "Argument[5]", "Argument[0].Parameter[4]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[get_cancellationtoken]", "Argument[this].SyntheticField[m_defaultCancellationToken]", "ReturnValue", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[get_scheduler]", "Argument[this].SyntheticField[m_defaultScheduler]", "ReturnValue", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[startnew]", "Argument[1]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[taskfactory]", "Argument[0]", "Argument[this].SyntheticField[m_defaultCancellationToken]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[taskfactory]", "Argument[0]", "Argument[this].SyntheticField[m_defaultScheduler]", "value"]
+      - ["system.threading.tasks.taskfactory", "Method[taskfactory]", "Argument[3]", "Argument[this].SyntheticField[m_defaultScheduler]", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.dictionarybase", "Method[get_dictionary]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.dictionarybase", "Method[get_syncroot]", "Argument[this].Field[InnerHashtable].Field[SyncRoot]", "ReturnValue", "value"]
+      - ["system.collections.dictionarybase", "Method[onget]", "Argument[1]", "ReturnValue", "value"]

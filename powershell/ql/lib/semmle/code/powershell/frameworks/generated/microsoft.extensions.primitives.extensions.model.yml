@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.primitives.extensions", "Method[append]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.primitives.extensions", "Method[append]", "Argument[1].Field[Buffer]", "Argument[0]", "taint"]
+      - ["microsoft.extensions.primitives.extensions", "Method[append]", "Argument[1].Field[Buffer]", "ReturnValue", "taint"]

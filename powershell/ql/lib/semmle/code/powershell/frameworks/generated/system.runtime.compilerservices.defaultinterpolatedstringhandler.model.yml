@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.defaultinterpolatedstringhandler", "Method[defaultinterpolatedstringhandler]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.runtime.compilerservices.defaultinterpolatedstringhandler", "Method[defaultinterpolatedstringhandler]", "Argument[3]", "Argument[this]", "taint"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.concurrent.blockingcollection", "Method[blockingcollection]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.collections.concurrent.blockingcollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]

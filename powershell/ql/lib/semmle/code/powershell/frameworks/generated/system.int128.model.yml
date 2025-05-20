@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.int128", "Method[abs]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[clamp]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[clamp]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[clamp]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.int128", "Method[copysign]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[createchecked]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[createsaturating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[createtruncating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[max]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[max]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxmagnitude]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxmagnitude]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[maxnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[min]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[min]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minmagnitude]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minmagnitude]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[minnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.int128", "Method[op_leftshift]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[op_rightshift]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[op_unaryplus]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.int128", "Method[op_unsignedrightshift]", "Argument[0]", "ReturnValue", "value"]

@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[1].ReturnValue", "Argument[1].Parameter[0]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[1]", "Argument[2].Parameter[0]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[1]", "Argument[3].Parameter[0]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[2].ReturnValue", "Argument[2].Parameter[0]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[2].ReturnValue", "Argument[3].Parameter[0]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[aggregate]", "Argument[3].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[elementat]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[elementatordefault]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[first]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[firstordefault]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[last]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[lastordefault]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[selectmany]", "Argument[1].ReturnValue.Element", "Argument[2].Parameter[1]", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[selectmany]", "Argument[2].ReturnValue", "ReturnValue.Element", "value"]
+      - ["system.linq.immutablearrayextensions", "Method[sequenceequal]", "Argument[0].Element", "Argument[2]", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[sequenceequal]", "Argument[1].Element", "Argument[2]", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[toarray]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.immutablearrayextensions", "Method[todictionary]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]

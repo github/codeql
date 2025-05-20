@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.common.dbcommand", "Method[executedbdatareader]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbcommand", "Method[get_dbparametercollection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbcommand", "Method[get_parameters]", "Argument[this].Field[DbParameterCollection]", "ReturnValue", "value"]

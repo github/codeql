@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.valuetuple", "Method[create]", "Argument[0]", "ReturnValue.Field[Item1]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[1]", "ReturnValue.Field[Item2]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[2]", "ReturnValue.Field[Item3]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[3]", "ReturnValue.Field[Item4]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[4]", "ReturnValue.Field[Item5]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[5]", "ReturnValue.Field[Item6]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[6]", "ReturnValue.Field[Item7]", "value"]
+      - ["system.valuetuple", "Method[create]", "Argument[7]", "ReturnValue.Field[Rest].Field[Item1]", "value"]
+      - ["system.valuetuple", "Method[get_item]", "Argument[this].Field[Item1]", "ReturnValue", "value"]
+      - ["system.valuetuple", "Method[get_item]", "Argument[this].Field[Item2]", "ReturnValue", "value"]
+      - ["system.valuetuple", "Method[get_item]", "Argument[this].Field[Item3]", "ReturnValue", "value"]
+      - ["system.valuetuple", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[0]", "Argument[this].Field[Item1]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[1]", "Argument[this].Field[Item2]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[2]", "Argument[this].Field[Item3]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[3]", "Argument[this].Field[Item4]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[4]", "Argument[this].Field[Item5]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[5]", "Argument[this].Field[Item6]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[6]", "Argument[this].Field[Item7]", "value"]
+      - ["system.valuetuple", "Method[valuetuple]", "Argument[7]", "Argument[this].Field[Rest]", "value"]

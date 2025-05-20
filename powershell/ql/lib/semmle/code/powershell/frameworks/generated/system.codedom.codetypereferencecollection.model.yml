@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codetypereferencecollection", "Method[add]", "Argument[0]", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[addrange]", "Argument[0].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[addrange]", "Argument[0].Field[List].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[codetypereferencecollection]", "Argument[0].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[codetypereferencecollection]", "Argument[0].Field[List].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[copyto]", "Argument[this].Field[List].Element", "Argument[0].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[get_item]", "Argument[this].Field[List].Element", "ReturnValue", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[insert]", "Argument[1]", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codetypereferencecollection", "Method[set_item]", "Argument[1]", "Argument[this].Field[List].Element", "value"]

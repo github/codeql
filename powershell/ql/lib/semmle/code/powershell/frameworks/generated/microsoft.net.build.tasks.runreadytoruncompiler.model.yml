@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.net.build.tasks.runreadytoruncompiler", "Method[generatecommandlinecommands]", "Argument[this].Field[Crossgen2Tool].Field[ItemSpec]", "ReturnValue", "taint"]
+      - ["microsoft.net.build.tasks.runreadytoruncompiler", "Method[generatefullpathtotool]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.net.build.tasks.runreadytoruncompiler", "Method[generateresponsefilecommands]", "Argument[this].Field[Crossgen2ExtraCommandLineArgs]", "ReturnValue", "taint"]
+      - ["microsoft.net.build.tasks.runreadytoruncompiler", "Method[get_toolname]", "Argument[this].Field[Crossgen2Tool].Field[ItemSpec]", "ReturnValue", "value"]
+      - ["microsoft.net.build.tasks.runreadytoruncompiler", "Method[get_toolname]", "Argument[this].Field[CrossgenTool].Field[ItemSpec]", "ReturnValue", "value"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlserializer", "Method[deserialize]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[deserialize]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[frommappings]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[xmlserializer]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[xmlserializer]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[xmlserializer]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.xml.serialization.xmlserializer", "Method[xmlserializer]", "Argument[4]", "Argument[this]", "taint"]

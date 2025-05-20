@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.linkcontext", "Method[get_actions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.linkcontext", "Method[get_annotations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.linkcontext", "Method[get_compilergeneratedstate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.linkcontext", "Method[get_customattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.linkcontext", "Method[get_pipeline]", "Argument[this].SyntheticField[_pipeline]", "ReturnValue", "value"]
+      - ["mono.linker.linkcontext", "Method[get_resolver]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.linkcontext", "Method[getmethodil]", "Argument[0].Field[Body]", "ReturnValue.Field[Body]", "value"]
+      - ["mono.linker.linkcontext", "Method[getmethodil]", "Argument[0].Field[Method].Field[Body]", "ReturnValue.Field[Body]", "value"]
+      - ["mono.linker.linkcontext", "Method[linkcontext]", "Argument[0]", "Argument[this].SyntheticField[_pipeline]", "value"]
+      - ["mono.linker.linkcontext", "Method[linkcontext]", "Argument[2]", "Argument[this].Field[OutputDirectory]", "value"]
+      - ["mono.linker.linkcontext", "Method[resolve]", "Argument[0]", "ReturnValue", "value"]
+      - ["mono.linker.linkcontext", "Method[tryresolve]", "Argument[0]", "ReturnValue", "value"]

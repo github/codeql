@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.dynamic.dynamicmetaobject", "Method[create]", "Argument[0]", "ReturnValue.SyntheticField[_value]", "value"]
+      - ["system.dynamic.dynamicmetaobject", "Method[dynamicmetaobject]", "Argument[0]", "Argument[this].Field[Expression]", "value"]
+      - ["system.dynamic.dynamicmetaobject", "Method[dynamicmetaobject]", "Argument[1]", "Argument[this].Field[Restrictions]", "value"]
+      - ["system.dynamic.dynamicmetaobject", "Method[dynamicmetaobject]", "Argument[2]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.dynamic.dynamicmetaobject", "Method[get_value]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.driveinfo", "Method[driveinfo]", "Argument[0]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.io.driveinfo", "Method[get_name]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]
+      - ["system.io.driveinfo", "Method[tostring]", "Argument[this].Field[Name]", "ReturnValue", "value"]
+      - ["system.io.driveinfo", "Method[tostring]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]

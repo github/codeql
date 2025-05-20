@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_basetype]", "Argument[this].SyntheticField[MetadataType].Field[BaseType]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_containingtype]", "Argument[this].SyntheticField[MetadataType].Field[ContainingType]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_context]", "Argument[this].SyntheticField[MetadataType].Field[Context]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_metadatabasetype]", "Argument[this].SyntheticField[MetadataType].Field[BaseType]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_metadatabasetype]", "Argument[this].SyntheticField[MetadataType].Field[MetadataBaseType]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_module]", "Argument[this].SyntheticField[MetadataType].Field[Module]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_name]", "Argument[this].SyntheticField[MetadataType].Field[Name]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[get_namespace]", "Argument[this].SyntheticField[MetadataType].Field[Namespace]", "ReturnValue", "value"]
+      - ["internal.typesystem.typewithrepeatedfields", "Method[typewithrepeatedfields]", "Argument[0]", "Argument[this].SyntheticField[MetadataType]", "value"]

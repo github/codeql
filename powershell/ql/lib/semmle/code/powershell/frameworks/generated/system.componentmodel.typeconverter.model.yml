@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.typeconverter", "Method[convertfrom]", "Argument[0].Field[OriginalString]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrom]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrom]", "Argument[2]", "ReturnValue.Element", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrom]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrom]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrominvariantstring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfrominvariantstring]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfromstring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfromstring]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertfromstring]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertto]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertto]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[convertto]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[convertto]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[convertto]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[converttoinvariantstring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[converttoinvariantstring]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[converttoinvariantstring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[converttostring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[converttostring]", "Argument[1].Field[TextInfo].Field[ListSeparator]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[converttostring]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[converttostring]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[converttostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[copyto]", "Argument[this].SyntheticField[_values].Element", "Argument[0].Element", "value"]
+      - ["system.componentmodel.typeconverter", "Method[get_item]", "Argument[this].SyntheticField[_values].Element", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[getenumerator]", "Argument[this].SyntheticField[_values].Element", "ReturnValue.Field[Current]", "value"]
+      - ["system.componentmodel.typeconverter", "Method[getproperties]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[getproperties]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[getstandardvalues]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[getstandardvalues]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typeconverter", "Method[sortproperties]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.typeconverter", "Method[standardvaluescollection]", "Argument[0]", "Argument[this].SyntheticField[_values]", "value"]

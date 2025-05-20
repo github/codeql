@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.customattributenamedargument", "Method[customattributenamedargument]", "Argument[0]", "Argument[this].SyntheticField[_memberInfo]", "value"]
+      - ["system.reflection.customattributenamedargument", "Method[customattributenamedargument]", "Argument[1]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.reflection.customattributenamedargument", "Method[get_memberinfo]", "Argument[this].SyntheticField[_memberInfo]", "ReturnValue", "value"]
+      - ["system.reflection.customattributenamedargument", "Method[get_membername]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.customattributenamedargument", "Method[get_typedvalue]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]
+      - ["system.reflection.customattributenamedargument", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

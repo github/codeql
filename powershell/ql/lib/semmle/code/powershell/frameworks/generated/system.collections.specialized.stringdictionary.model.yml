@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.specialized.stringdictionary", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.collections.specialized.stringdictionary", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.stringdictionary", "Method[get_keys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.stringdictionary", "Method[get_syncroot]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.stringdictionary", "Method[get_values]", "Argument[this]", "ReturnValue", "taint"]

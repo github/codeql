@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.customattributesource", "Method[customattributesource]", "Argument[0]", "Argument[this]", "taint"]
+      - ["mono.linker.customattributesource", "Method[getassemblyfromcustomattributeprovider]", "Argument[0].Field[Assembly]", "ReturnValue", "value"]
+      - ["mono.linker.customattributesource", "Method[getassemblyfromcustomattributeprovider]", "Argument[0].Field[Module].Field[Assembly]", "ReturnValue", "value"]
+      - ["mono.linker.customattributesource", "Method[getassemblyfromcustomattributeprovider]", "Argument[0]", "ReturnValue", "value"]
+      - ["mono.linker.customattributesource", "Method[getcustomattributes]", "Argument[0].Field[CustomAttributes].Element", "ReturnValue.Element", "value"]

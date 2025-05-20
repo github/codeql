@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlnodechangedeventargs", "Method[get_newparent]", "Argument[this].SyntheticField[_newParent]", "ReturnValue", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[get_newvalue]", "Argument[this].SyntheticField[_newValue]", "ReturnValue", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[get_node]", "Argument[this].SyntheticField[_node]", "ReturnValue", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[get_oldparent]", "Argument[this].SyntheticField[_oldParent]", "ReturnValue", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[get_oldvalue]", "Argument[this].SyntheticField[_oldValue]", "ReturnValue", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[xmlnodechangedeventargs]", "Argument[0]", "Argument[this].SyntheticField[_node]", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[xmlnodechangedeventargs]", "Argument[1]", "Argument[this].SyntheticField[_oldParent]", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[xmlnodechangedeventargs]", "Argument[2]", "Argument[this].SyntheticField[_newParent]", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[xmlnodechangedeventargs]", "Argument[3]", "Argument[this].SyntheticField[_oldValue]", "value"]
+      - ["system.xml.xmlnodechangedeventargs", "Method[xmlnodechangedeventargs]", "Argument[4]", "Argument[this].SyntheticField[_newValue]", "value"]

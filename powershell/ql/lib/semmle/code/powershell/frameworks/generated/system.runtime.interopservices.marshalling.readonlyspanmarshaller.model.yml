@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.marshalling.readonlyspanmarshaller", "Method[frommanaged]", "Argument[0]", "Argument[this].SyntheticField[_managedArray]", "value"]
+      - ["system.runtime.interopservices.marshalling.readonlyspanmarshaller", "Method[fromunmanaged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.runtime.interopservices.marshalling.readonlyspanmarshaller", "Method[getmanagedvaluessource]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.marshalling.readonlyspanmarshaller", "Method[getmanagedvaluessource]", "Argument[this].SyntheticField[_managedArray]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.marshalling.readonlyspanmarshaller", "Method[getunmanagedvaluesdestination]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.tracing.eventsource", "Method[add_eventcommandexecuted]", "Argument[this].SyntheticField[m_deferredCommands]", "Argument[0].Parameter[1]", "value"]
+      - ["system.diagnostics.tracing.eventsource", "Method[add_eventcommandexecuted]", "Argument[this]", "Argument[0].Parameter[0]", "value"]
+      - ["system.diagnostics.tracing.eventsource", "Method[eventsource]", "Argument[1]", "Argument[this].SyntheticField[m_traits]", "value"]
+      - ["system.diagnostics.tracing.eventsource", "Method[generatemanifest]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.diagnostics.tracing.eventsource", "Method[get_constructionexception]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.tracing.eventsource", "Method[get_guid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.tracing.eventsource", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.tracing.eventsource", "Method[gettrait]", "Argument[this].SyntheticField[m_traits].Element", "ReturnValue", "value"]
+      - ["system.diagnostics.tracing.eventsource", "Method[sendcommand]", "Argument[2]", "Argument[0].SyntheticField[m_deferredCommands].Field[Arguments]", "value"]
+      - ["system.diagnostics.tracing.eventsource", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.objectmodel.keyedcollection", "Method[get_comparer]", "Argument[this].SyntheticField[comparer]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.keyedcollection", "Method[get_dictionary]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.objectmodel.keyedcollection", "Method[keyedcollection]", "Argument[0]", "Argument[this].SyntheticField[comparer]", "value"]
+      - ["system.collections.objectmodel.keyedcollection", "Method[trygetvalue]", "Argument[this].Field[Items].Element", "Argument[1]", "value"]

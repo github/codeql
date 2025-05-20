@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.pkcs.signerinfocollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.security.cryptography.pkcs.signerinfocollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.pkcs.signerinfocollection", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]

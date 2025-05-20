@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.typesystemcontext", "Method[createvaluefromkey]", "Argument[0]", "ReturnValue.SyntheticField[_signature]", "value"]
+      - ["internal.typesystem.typesystemcontext", "Method[get_canontype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[get_universalcanontype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getallmethods]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getallvirtualmethods]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getarraytype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getbyreftype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getcanontype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getfieldforinstantiatedtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getfunctionpointertype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getinstantiatedmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getinstantiatedtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getmethodforinstantiatedtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getmethodforruntimedeterminedtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getpointertype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getruntimedeterminedtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getsignaturevariable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[getwellknowntype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typesystemcontext", "Method[initializesystemmodule]", "Argument[0]", "Argument[this].Field[SystemModule]", "value"]
+      - ["internal.typesystem.typesystemcontext", "Method[typesystemcontext]", "Argument[0]", "Argument[this].Field[Target]", "value"]

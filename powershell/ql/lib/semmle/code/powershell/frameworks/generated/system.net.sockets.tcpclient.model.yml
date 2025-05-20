@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.sockets.tcpclient", "Method[connect]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.tcpclient", "Method[connectasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.tcpclient", "Method[tcpclient]", "Argument[0]", "Argument[this]", "taint"]

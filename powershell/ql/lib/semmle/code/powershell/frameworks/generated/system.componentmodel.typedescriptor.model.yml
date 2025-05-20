@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.typedescriptor", "Method[addattributes]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptor", "Method[createevent]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptor", "Method[createproperty]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptor", "Method[createproperty]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptor", "Method[getassociation]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.typedescriptor", "Method[getfullcomponentname]", "Argument[0]", "ReturnValue", "taint"]

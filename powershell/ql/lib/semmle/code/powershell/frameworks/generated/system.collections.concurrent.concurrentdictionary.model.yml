@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[0]", "Argument[2].Parameter[0]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[3]", "Argument[1].Parameter[1]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[addorupdate]", "Argument[3]", "Argument[2].Parameter[2]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[get_comparer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getalternatelookup]", "Argument[this]", "ReturnValue.Field[Dictionary]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getoradd]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getoradd]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getoradd]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[getoradd]", "Argument[2]", "Argument[1].Parameter[1]", "value"]
+      - ["system.collections.concurrent.concurrentdictionary", "Method[trygetalternatelookup]", "Argument[this]", "Argument[0].Field[Dictionary]", "value"]

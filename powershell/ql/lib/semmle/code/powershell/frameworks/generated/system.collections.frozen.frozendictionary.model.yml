@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.frozen.frozendictionary", "Method[containskey]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_item]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_keys]", "Argument[this].Field[Keys]", "ReturnValue", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_keys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_values]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[get_values]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.frozen.frozendictionary", "Method[getalternatelookup]", "Argument[this]", "ReturnValue.Field[Dictionary]", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[tofrozendictionary]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[trygetalternatelookup]", "Argument[this]", "Argument[0].Field[Dictionary]", "value"]
+      - ["system.collections.frozen.frozendictionary", "Method[trygetvalue]", "Argument[0]", "Argument[this]", "taint"]

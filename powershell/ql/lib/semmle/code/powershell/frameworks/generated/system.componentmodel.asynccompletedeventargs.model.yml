@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.asynccompletedeventargs", "Method[asynccompletedeventargs]", "Argument[0]", "Argument[this].Field[Error]", "value"]
+      - ["system.componentmodel.asynccompletedeventargs", "Method[asynccompletedeventargs]", "Argument[2]", "Argument[this].Field[UserState]", "value"]

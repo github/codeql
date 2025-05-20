@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[contractoptionattribute]", "Argument[0]", "Argument[this].SyntheticField[_category]", "value"]
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[contractoptionattribute]", "Argument[1]", "Argument[this].SyntheticField[_setting]", "value"]
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[contractoptionattribute]", "Argument[2]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[get_category]", "Argument[this].SyntheticField[_category]", "ReturnValue", "value"]
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[get_setting]", "Argument[this].SyntheticField[_setting]", "ReturnValue", "value"]
+      - ["system.diagnostics.contracts.contractoptionattribute", "Method[get_value]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]

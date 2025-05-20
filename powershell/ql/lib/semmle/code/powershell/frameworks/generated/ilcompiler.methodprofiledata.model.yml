@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.methodprofiledata", "Method[methodprofiledata]", "Argument[0]", "Argument[this].Field[Method]", "value"]
+      - ["ilcompiler.methodprofiledata", "Method[methodprofiledata]", "Argument[3]", "Argument[this].Field[CallWeights]", "value"]
+      - ["ilcompiler.methodprofiledata", "Method[methodprofiledata]", "Argument[5]", "Argument[this].Field[SchemaData]", "value"]

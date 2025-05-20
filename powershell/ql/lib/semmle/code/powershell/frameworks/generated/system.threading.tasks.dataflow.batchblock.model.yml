@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.dataflow.batchblock", "Method[batchblock]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.dataflow.batchblock", "Method[linkto]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.dataflow.batchblock", "Method[linkto]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.dataflow.batchblock", "Method[reservemessage]", "Argument[1]", "Argument[this]", "taint"]

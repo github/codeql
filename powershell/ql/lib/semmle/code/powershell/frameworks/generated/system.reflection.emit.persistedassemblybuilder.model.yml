@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.persistedassemblybuilder", "Method[definedynamicmodulecore]", "Argument[0]", "ReturnValue.SyntheticField[_name]", "value"]
+      - ["system.reflection.emit.persistedassemblybuilder", "Method[generatemetadata]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.reflection.emit.persistedassemblybuilder", "Method[generatemetadata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.persistedassemblybuilder", "Method[persistedassemblybuilder]", "Argument[1]", "Argument[this]", "taint"]

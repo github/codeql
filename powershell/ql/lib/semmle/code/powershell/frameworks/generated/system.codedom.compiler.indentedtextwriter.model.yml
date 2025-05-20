@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.compiler.indentedtextwriter", "Method[flushasync]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[flushasync]", "Argument[this].SyntheticField[_writer]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[get_encoding]", "Argument[this].SyntheticField[_writer].Field[Encoding]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[get_innerwriter]", "Argument[this].SyntheticField[_writer]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[indentedtextwriter]", "Argument[0]", "Argument[this].SyntheticField[_writer]", "value"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[write]", "Argument[0].Element", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[write]", "Argument[0]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[write]", "Argument[1].Element", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[write]", "Argument[1]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[write]", "Argument[2]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writeline]", "Argument[0].Element", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writeline]", "Argument[0]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writeline]", "Argument[1].Element", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writeline]", "Argument[1]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writeline]", "Argument[2]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelineasync]", "Argument[0].Element", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelineasync]", "Argument[0].Element", "Argument[this].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelineasync]", "Argument[0]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelineasync]", "Argument[0]", "Argument[this].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelinenotabs]", "Argument[0]", "Argument[this].SyntheticField[_writer].SyntheticField[_writer]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelinenotabsasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelinenotabsasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.indentedtextwriter", "Method[writelinenotabsasync]", "Argument[this]", "ReturnValue", "taint"]

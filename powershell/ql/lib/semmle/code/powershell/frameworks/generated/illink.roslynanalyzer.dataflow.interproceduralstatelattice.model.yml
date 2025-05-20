@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[get_top]", "Argument[this].Field[HoistedLocalLattice].Field[Top]", "ReturnValue.Field[HoistedLocals]", "value"]
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[get_top]", "Argument[this].Field[MethodLattice].Field[Top]", "ReturnValue.Field[Methods]", "value"]
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[interproceduralstatelattice]", "Argument[0]", "Argument[this].Field[MethodLattice]", "value"]
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[interproceduralstatelattice]", "Argument[1]", "Argument[this].Field[HoistedLocalLattice]", "value"]
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[meet]", "Argument[0].Field[Methods]", "ReturnValue.Field[Methods]", "value"]
+      - ["illink.roslynanalyzer.dataflow.interproceduralstatelattice", "Method[meet]", "Argument[1].Field[Methods]", "ReturnValue.Field[Methods]", "value"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.fieldinfo", "Method[get_fieldhandle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.fieldinfo", "Method[get_fieldtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.fieldinfo", "Method[getmodifiedfieldtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.fieldinfo", "Method[getoptionalcustommodifiers]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.fieldinfo", "Method[getrequiredcustommodifiers]", "Argument[this]", "ReturnValue", "taint"]

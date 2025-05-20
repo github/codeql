@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.security.negotiatestream", "Method[authenticateasserver]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.negotiatestream", "Method[authenticateasserver]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.net.security.negotiatestream", "Method[authenticateasserverasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.security.negotiatestream", "Method[authenticateasserverasync]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.net.security.negotiatestream", "Method[get_remoteidentity]", "Argument[this]", "ReturnValue", "taint"]

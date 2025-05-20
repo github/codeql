@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.arraywithoffset", "Method[arraywithoffset]", "Argument[0]", "Argument[this].SyntheticField[m_array]", "value"]
+      - ["system.runtime.interopservices.arraywithoffset", "Method[getarray]", "Argument[this].SyntheticField[m_array]", "ReturnValue", "value"]

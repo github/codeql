@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[clone]", "Argument[this].Field[Url]", "ReturnValue.Field[Url]", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[clone]", "Argument[this].SyntheticField[_mediaType]", "ReturnValue.SyntheticField[_mediaType]", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[get_type]", "Argument[this].SyntheticField[_mediaType]", "ReturnValue", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[urlsyndicationcontent]", "Argument[0].Field[Url]", "Argument[this].Field[Url]", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[urlsyndicationcontent]", "Argument[0].SyntheticField[_mediaType]", "Argument[this].SyntheticField[_mediaType]", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[urlsyndicationcontent]", "Argument[0]", "Argument[this].Field[Url]", "value"]
+      - ["system.servicemodel.syndication.urlsyndicationcontent", "Method[urlsyndicationcontent]", "Argument[1]", "Argument[this].SyntheticField[_mediaType]", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.processstartinfo", "Method[get_environment]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.processstartinfo", "Method[get_environmentvariables]", "Argument[this].Field[Environment]", "ReturnValue.SyntheticField[_contents]", "value"]
+      - ["system.diagnostics.processstartinfo", "Method[processstartinfo]", "Argument[0]", "Argument[this]", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.configuration.configurationdebugviewcontext", "Method[configurationdebugviewcontext]", "Argument[0]", "Argument[this].Field[Path]", "value"]
+      - ["microsoft.extensions.configuration.configurationdebugviewcontext", "Method[configurationdebugviewcontext]", "Argument[1]", "Argument[this].Field[Key]", "value"]
+      - ["microsoft.extensions.configuration.configurationdebugviewcontext", "Method[configurationdebugviewcontext]", "Argument[2]", "Argument[this].Field[Value]", "value"]
+      - ["microsoft.extensions.configuration.configurationdebugviewcontext", "Method[configurationdebugviewcontext]", "Argument[3]", "Argument[this].Field[ConfigurationProvider]", "value"]

@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.immutable.immutablestack", "Method[create]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[createrange]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[peek]", "Argument[this].SyntheticField[_head]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablestack", "Method[pop]", "Argument[0].Element", "Argument[1]", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[pop]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablestack", "Method[pop]", "Argument[this].SyntheticField[_head]", "Argument[0]", "value"]
+      - ["system.collections.immutable.immutablestack", "Method[pop]", "Argument[this].SyntheticField[_tail]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablestack", "Method[push]", "Argument[0]", "ReturnValue.SyntheticField[_head]", "value"]
+      - ["system.collections.immutable.immutablestack", "Method[push]", "Argument[this]", "ReturnValue.SyntheticField[_tail]", "value"]

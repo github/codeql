@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.securityelement", "Method[addattribute]", "Argument[0]", "Argument[this].SyntheticField[_attributes].Element", "value"]
+      - ["system.security.securityelement", "Method[addattribute]", "Argument[1]", "Argument[this].SyntheticField[_attributes].Element", "value"]
+      - ["system.security.securityelement", "Method[addchild]", "Argument[0]", "Argument[this].SyntheticField[_children].Element", "value"]
+      - ["system.security.securityelement", "Method[attribute]", "Argument[this].SyntheticField[_attributes].Element", "ReturnValue", "value"]
+      - ["system.security.securityelement", "Method[copy]", "Argument[this].SyntheticField[_tag]", "ReturnValue.SyntheticField[_tag]", "value"]
+      - ["system.security.securityelement", "Method[copy]", "Argument[this].SyntheticField[_text]", "ReturnValue.SyntheticField[_text]", "value"]
+      - ["system.security.securityelement", "Method[escape]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.security.securityelement", "Method[searchforchildbytag]", "Argument[this].SyntheticField[_children].Element", "ReturnValue", "value"]
+      - ["system.security.securityelement", "Method[searchfortextoftag]", "Argument[this].SyntheticField[_text]", "ReturnValue", "value"]
+      - ["system.security.securityelement", "Method[securityelement]", "Argument[0]", "Argument[this].SyntheticField[_tag]", "value"]
+      - ["system.security.securityelement", "Method[securityelement]", "Argument[1]", "Argument[this].SyntheticField[_text]", "value"]
+      - ["system.security.securityelement", "Method[tostring]", "Argument[this].SyntheticField[_attributes].Element", "ReturnValue", "taint"]
+      - ["system.security.securityelement", "Method[tostring]", "Argument[this].SyntheticField[_tag]", "ReturnValue", "taint"]
+      - ["system.security.securityelement", "Method[tostring]", "Argument[this].SyntheticField[_text]", "ReturnValue", "taint"]

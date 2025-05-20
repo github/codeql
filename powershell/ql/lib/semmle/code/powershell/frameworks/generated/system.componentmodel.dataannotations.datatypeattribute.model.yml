@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.dataannotations.datatypeattribute", "Method[datatypeattribute]", "Argument[0]", "Argument[this].Field[CustomDataType]", "value"]
+      - ["system.componentmodel.dataannotations.datatypeattribute", "Method[getdatatypename]", "Argument[this].Field[CustomDataType]", "ReturnValue", "value"]

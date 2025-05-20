@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.instantiatedtype", "Method[instantiatetypearray]", "Argument[0].Element", "ReturnValue.Element", "value"]
+      - ["internal.typesystem.instantiatedtype", "Method[instantiatetypearray]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.instantiatedtype", "Method[instantiatetypearray]", "Argument[1].SyntheticField[_genericParameters].Element", "ReturnValue.Element", "value"]
+      - ["internal.typesystem.instantiatedtype", "Method[instantiatetypearray]", "Argument[2].SyntheticField[_genericParameters].Element", "ReturnValue.Element", "value"]

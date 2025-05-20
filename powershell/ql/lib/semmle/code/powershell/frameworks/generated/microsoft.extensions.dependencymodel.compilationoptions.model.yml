@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencymodel.compilationoptions", "Method[compilationoptions]", "Argument[1]", "Argument[this].Field[LanguageVersion]", "value"]
+      - ["microsoft.extensions.dependencymodel.compilationoptions", "Method[compilationoptions]", "Argument[2]", "Argument[this].Field[Platform]", "value"]
+      - ["microsoft.extensions.dependencymodel.compilationoptions", "Method[compilationoptions]", "Argument[6]", "Argument[this].Field[KeyFile]", "value"]
+      - ["microsoft.extensions.dependencymodel.compilationoptions", "Method[compilationoptions]", "Argument[9]", "Argument[this].Field[DebugType]", "value"]

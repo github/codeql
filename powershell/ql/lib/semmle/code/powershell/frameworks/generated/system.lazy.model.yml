@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.lazy", "Method[get_metadata]", "Argument[this].SyntheticField[_metadata]", "ReturnValue", "value"]
+      - ["system.lazy", "Method[get_value]", "Argument[this].Field[Value]", "ReturnValue", "value"]
+      - ["system.lazy", "Method[get_value]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]
+      - ["system.lazy", "Method[lazy]", "Argument[0]", "Argument[this].SyntheticField[_metadata]", "value"]
+      - ["system.lazy", "Method[lazy]", "Argument[0]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.lazy", "Method[lazy]", "Argument[1]", "Argument[this].SyntheticField[_metadata]", "value"]
+      - ["system.lazy", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

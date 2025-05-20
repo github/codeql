@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.serializationinfo", "Method[addvalue]", "Argument[0]", "Argument[this].SyntheticField[_names].Element", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[addvalue]", "Argument[1]", "Argument[this].SyntheticField[_values].Element", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[getenumerator]", "Argument[this].SyntheticField[_names]", "ReturnValue.SyntheticField[_members]", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[getenumerator]", "Argument[this].SyntheticField[_values]", "ReturnValue.SyntheticField[_data]", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[getstring]", "Argument[this].SyntheticField[_values].Element", "ReturnValue", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[getvalue]", "Argument[this].SyntheticField[_values].Element", "ReturnValue", "value"]
+      - ["system.runtime.serialization.serializationinfo", "Method[serializationinfo]", "Argument[1]", "Argument[this]", "taint"]

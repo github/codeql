@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.safehandle", "Method[dangerousgethandle]", "Argument[this].Field[handle]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.safehandle", "Method[safehandle]", "Argument[0]", "Argument[this].Field[handle]", "value"]
+      - ["system.runtime.interopservices.safehandle", "Method[sethandle]", "Argument[0]", "Argument[this].Field[handle]", "value"]

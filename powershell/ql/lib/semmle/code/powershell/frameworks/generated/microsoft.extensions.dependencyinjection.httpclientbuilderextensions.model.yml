@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[addaskeyed]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[adddefaultlogger]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[addhttpmessagehandler]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[addlogger]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[addtypedclient]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[configureadditionalhttpmessagehandlers]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[configurehttpclient]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[configurehttpmessagehandlerbuilder]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[configureprimaryhttpmessagehandler]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[redactloggedheaders]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[removeallloggers]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[removeaskeyed]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[sethandlerlifetime]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.httpclientbuilderextensions", "Method[usesocketshttphandler]", "Argument[0]", "ReturnValue", "value"]

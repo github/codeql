@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.hosting.systemd.servicestate", "Method[servicestate]", "Argument[0]", "Argument[this].SyntheticField[_data]", "taint"]
+      - ["microsoft.extensions.hosting.systemd.servicestate", "Method[tostring]", "Argument[this].SyntheticField[_data].Element", "ReturnValue", "taint"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.text.encodings.web.textencoder", "Method[encode]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.text.encodings.web.textencoder", "Method[encode]", "Argument[1].Element", "Argument[0]", "taint"]
+      - ["system.text.encodings.web.textencoder", "Method[encode]", "Argument[1]", "Argument[0]", "taint"]

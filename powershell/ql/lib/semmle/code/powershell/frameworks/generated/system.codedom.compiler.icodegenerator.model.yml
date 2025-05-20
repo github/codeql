@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.compiler.icodegenerator", "Method[createescapedidentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.icodegenerator", "Method[createvalididentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromcompileunit]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromcompileunit]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromexpression]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromnamespace]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromnamespace]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromstatement]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromtype]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[generatecodefromtype]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.icodegenerator", "Method[gettypeoutput]", "Argument[0]", "ReturnValue", "taint"]

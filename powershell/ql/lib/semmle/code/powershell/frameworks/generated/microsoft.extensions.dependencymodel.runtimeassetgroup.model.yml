@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencymodel.runtimeassetgroup", "Method[get_assetpaths]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencymodel.runtimeassetgroup", "Method[get_runtimefiles]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencymodel.runtimeassetgroup", "Method[runtimeassetgroup]", "Argument[0]", "Argument[this].Field[Runtime]", "value"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.runtimefunction", "Method[get_debuginfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.runtimefunction", "Method[get_ehinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.runtimefunction", "Method[runtimefunction]", "Argument[6]", "Argument[this].Field[Method]", "value"]
+      - ["ilcompiler.reflection.readytorun.runtimefunction", "Method[runtimefunction]", "Argument[7]", "Argument[this].Field[UnwindInfo]", "value"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.editorattribute", "Method[editorattribute]", "Argument[0]", "Argument[this].Field[EditorTypeName]", "value"]
+      - ["system.componentmodel.editorattribute", "Method[editorattribute]", "Argument[1]", "Argument[this].Field[EditorBaseTypeName]", "value"]
+      - ["system.componentmodel.editorattribute", "Method[get_typeid]", "Argument[this].Field[EditorBaseTypeName]", "Argument[this].SyntheticField[_typeId]", "taint"]
+      - ["system.componentmodel.editorattribute", "Method[get_typeid]", "Argument[this].Field[EditorBaseTypeName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.editorattribute", "Method[get_typeid]", "Argument[this].SyntheticField[_typeId]", "ReturnValue", "value"]

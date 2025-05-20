@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.hashalgorithmname", "Method[get_name]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]
+      - ["system.security.cryptography.hashalgorithmname", "Method[hashalgorithmname]", "Argument[0]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.security.cryptography.hashalgorithmname", "Method[tostring]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]

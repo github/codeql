@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.activitysource", "Method[activitysource]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["system.diagnostics.activitysource", "Method[activitysource]", "Argument[1]", "Argument[this].Field[Version]", "value"]
+      - ["system.diagnostics.activitysource", "Method[createactivity]", "Argument[2]", "ReturnValue.SyntheticField[_parentId]", "value"]
+      - ["system.diagnostics.activitysource", "Method[createactivity]", "Argument[this]", "ReturnValue.Field[Source]", "value"]
+      - ["system.diagnostics.activitysource", "Method[startactivity]", "Argument[2]", "ReturnValue.SyntheticField[_parentId]", "value"]
+      - ["system.diagnostics.activitysource", "Method[startactivity]", "Argument[this]", "ReturnValue.Field[Source]", "value"]

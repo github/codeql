@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.queue", "Method[dequeue]", "Argument[this].SyntheticField[_array].Element", "ReturnValue", "value"]
+      - ["system.collections.generic.queue", "Method[enqueue]", "Argument[0]", "Argument[this].SyntheticField[_array].Element", "value"]
+      - ["system.collections.generic.queue", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.generic.queue", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.queue", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.queue", "Method[peek]", "Argument[this].SyntheticField[_array].Element", "ReturnValue", "value"]
+      - ["system.collections.generic.queue", "Method[trydequeue]", "Argument[this].SyntheticField[_array].Element", "Argument[0]", "value"]
+      - ["system.collections.generic.queue", "Method[trypeek]", "Argument[this].SyntheticField[_array].Element", "Argument[0]", "value"]

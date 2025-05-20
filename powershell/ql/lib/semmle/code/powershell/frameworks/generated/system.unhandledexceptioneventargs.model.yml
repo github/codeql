@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.unhandledexceptioneventargs", "Method[get_exceptionobject]", "Argument[this].SyntheticField[_exception]", "ReturnValue", "value"]
+      - ["system.unhandledexceptioneventargs", "Method[unhandledexceptioneventargs]", "Argument[0]", "Argument[this].SyntheticField[_exception]", "value"]

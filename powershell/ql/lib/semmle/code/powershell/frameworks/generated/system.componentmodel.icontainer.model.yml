@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.icontainer", "Method[add]", "Argument[1]", "Argument[0]", "taint"]
+      - ["system.componentmodel.icontainer", "Method[add]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.componentmodel.icontainer", "Method[get_components]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.half", "Method[bitdecrement]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[bitincrement]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[clampnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[clampnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[clampnative]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.half", "Method[converttointeger]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[converttointegernative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[createchecked]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[createsaturating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[createtruncating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[maxnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[minmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[minmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[minnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[minnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[minnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[minnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.half", "Method[op_unaryplus]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.half", "Method[tostring]", "Argument[0]", "ReturnValue", "taint"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.ecma335.exceptionregionencoder", "Method[add]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.ecma335.exceptionregionencoder", "Method[addcatch]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.ecma335.exceptionregionencoder", "Method[addfault]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.ecma335.exceptionregionencoder", "Method[addfilter]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.ecma335.exceptionregionencoder", "Method[addfinally]", "Argument[this]", "ReturnValue", "value"]

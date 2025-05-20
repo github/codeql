@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.enumbuilder", "Method[get_underlyingfield]", "Argument[this].Field[UnderlyingFieldCore]", "ReturnValue", "value"]
+      - ["system.reflection.emit.enumbuilder", "Method[get_underlyingfieldcore]", "Argument[this]", "ReturnValue", "taint"]

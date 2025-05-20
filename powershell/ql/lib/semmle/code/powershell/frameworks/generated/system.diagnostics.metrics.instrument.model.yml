@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.metrics.instrument", "Method[instrument]", "Argument[0]", "Argument[this].Field[Meter]", "value"]
+      - ["system.diagnostics.metrics.instrument", "Method[instrument]", "Argument[1]", "Argument[this].Field[Name]", "value"]
+      - ["system.diagnostics.metrics.instrument", "Method[instrument]", "Argument[2]", "Argument[this].Field[Unit]", "value"]
+      - ["system.diagnostics.metrics.instrument", "Method[instrument]", "Argument[3]", "Argument[this].Field[Description]", "value"]
+      - ["system.diagnostics.metrics.instrument", "Method[instrument]", "Argument[5]", "Argument[this].Field[Advice]", "value"]

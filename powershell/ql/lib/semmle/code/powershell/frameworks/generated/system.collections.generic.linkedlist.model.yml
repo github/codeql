@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.linkedlist", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[head].SyntheticField[item]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addafter]", "Argument[0].SyntheticField[next].SyntheticField[prev]", "Argument[1].SyntheticField[prev]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addafter]", "Argument[0].SyntheticField[next].SyntheticField[prev]", "ReturnValue.SyntheticField[prev]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addafter]", "Argument[0].SyntheticField[next]", "Argument[1].SyntheticField[next]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addafter]", "Argument[0].SyntheticField[next]", "ReturnValue.SyntheticField[next]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addafter]", "Argument[1]", "Argument[0].SyntheticField[next].SyntheticField[prev]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addbefore]", "Argument[1]", "Argument[0].SyntheticField[prev]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addbefore]", "Argument[1]", "Argument[this].SyntheticField[head].SyntheticField[item]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addbefore]", "Argument[1]", "Argument[this].SyntheticField[head]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addfirst]", "Argument[0]", "Argument[this].SyntheticField[head].SyntheticField[item]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addfirst]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.generic.linkedlist", "Method[addfirst]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.collections.generic.linkedlist", "Method[addlast]", "Argument[0]", "Argument[this].SyntheticField[head].SyntheticField[item]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addlast]", "Argument[this].SyntheticField[head].SyntheticField[prev]", "Argument[0].SyntheticField[prev]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[addlast]", "Argument[this].SyntheticField[head]", "Argument[0].SyntheticField[next]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[copyto]", "Argument[this].SyntheticField[head].SyntheticField[item]", "Argument[0].Element", "value"]
+      - ["system.collections.generic.linkedlist", "Method[find]", "Argument[this].SyntheticField[head]", "ReturnValue", "value"]
+      - ["system.collections.generic.linkedlist", "Method[findlast]", "Argument[this].SyntheticField[head].SyntheticField[prev]", "ReturnValue", "value"]
+      - ["system.collections.generic.linkedlist", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.generic.linkedlist", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.linkedlist", "Method[get_first]", "Argument[this].SyntheticField[head]", "ReturnValue", "value"]
+      - ["system.collections.generic.linkedlist", "Method[get_last]", "Argument[this].SyntheticField[head].SyntheticField[prev]", "ReturnValue", "value"]
+      - ["system.collections.generic.linkedlist", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.linkedlist", "Method[linkedlist]", "Argument[0].Element", "Argument[this].SyntheticField[head].SyntheticField[item]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[linkedlist]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.generic.linkedlist", "Method[remove]", "Argument[0].SyntheticField[next]", "Argument[this].SyntheticField[head]", "value"]
+      - ["system.collections.generic.linkedlist", "Method[remove]", "Argument[0].SyntheticField[prev]", "Argument[this].SyntheticField[head].SyntheticField[prev]", "value"]

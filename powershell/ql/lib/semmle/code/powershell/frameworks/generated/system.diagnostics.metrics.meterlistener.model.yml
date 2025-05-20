@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.metrics.meterlistener", "Method[disablemeasurementevents]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.metrics.meterlistener", "Method[enablemeasurementevents]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.metrics.meterlistener", "Method[enablemeasurementevents]", "Argument[1]", "Argument[this]", "taint"]

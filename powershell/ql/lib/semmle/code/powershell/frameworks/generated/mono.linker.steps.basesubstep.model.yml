@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.steps.basesubstep", "Method[get_annotations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.basesubstep", "Method[get_context]", "Argument[this].SyntheticField[_context]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basesubstep", "Method[initialize]", "Argument[0]", "Argument[this].SyntheticField[_context]", "value"]

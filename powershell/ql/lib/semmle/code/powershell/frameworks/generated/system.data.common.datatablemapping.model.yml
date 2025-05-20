@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.common.datatablemapping", "Method[clone]", "Argument[this].SyntheticField[_sourceTableName]", "ReturnValue.SyntheticField[_sourceTableName]", "value"]
+      - ["system.data.common.datatablemapping", "Method[datatablemapping]", "Argument[0]", "Argument[this].SyntheticField[_sourceTableName]", "value"]
+      - ["system.data.common.datatablemapping", "Method[datatablemapping]", "Argument[2].Element", "Argument[this].Field[ColumnMappings].Element", "value"]
+      - ["system.data.common.datatablemapping", "Method[datatablemapping]", "Argument[2].Element", "Argument[this].SyntheticField[_columnMappings].Element", "value"]
+      - ["system.data.common.datatablemapping", "Method[get_columnmappings]", "Argument[this].Field[ColumnMappings]", "ReturnValue", "value"]
+      - ["system.data.common.datatablemapping", "Method[get_columnmappings]", "Argument[this].SyntheticField[_columnMappings]", "ReturnValue", "value"]
+      - ["system.data.common.datatablemapping", "Method[getcolumnmappingbyschemaaction]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.datatablemapping", "Method[getdatacolumn]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.data.common.datatablemapping", "Method[getdatatablebyschemaaction]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.common.datatablemapping", "Method[getdatatablebyschemaaction]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.datatablemapping", "Method[tostring]", "Argument[this].Field[SourceTable]", "ReturnValue", "value"]
+      - ["system.data.common.datatablemapping", "Method[tostring]", "Argument[this].SyntheticField[_sourceTableName]", "ReturnValue", "value"]

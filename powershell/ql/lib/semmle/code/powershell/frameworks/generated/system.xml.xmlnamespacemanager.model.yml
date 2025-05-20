@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlnamespacemanager", "Method[get_defaultnamespace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlnamespacemanager", "Method[get_nametable]", "Argument[this].SyntheticField[_nameTable]", "ReturnValue", "value"]
+      - ["system.xml.xmlnamespacemanager", "Method[xmlnamespacemanager]", "Argument[0]", "Argument[this].SyntheticField[_nameTable]", "value"]

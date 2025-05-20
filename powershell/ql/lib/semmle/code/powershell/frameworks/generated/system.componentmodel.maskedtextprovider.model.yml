@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.maskedtextprovider", "Method[maskedtextprovider]", "Argument[0]", "Argument[this].Field[Mask]", "value"]
+      - ["system.componentmodel.maskedtextprovider", "Method[maskedtextprovider]", "Argument[1]", "Argument[this].Field[Culture]", "value"]
+      - ["system.componentmodel.maskedtextprovider", "Method[todisplaystring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.maskedtextprovider", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

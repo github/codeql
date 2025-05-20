@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.dataview", "Method[addnew]", "Argument[this]", "ReturnValue.SyntheticField[_dataView]", "value"]
+      - ["system.data.dataview", "Method[dataview]", "Argument[0]", "Argument[this].SyntheticField[_table]", "value"]
+      - ["system.data.dataview", "Method[findrows]", "Argument[this].Element", "ReturnValue.Element", "value"]
+      - ["system.data.dataview", "Method[get_dataviewmanager]", "Argument[this].SyntheticField[_dataViewManager]", "ReturnValue", "value"]
+      - ["system.data.dataview", "Method[getlistname]", "Argument[this].SyntheticField[_table].Field[TableName]", "ReturnValue", "value"]
+      - ["system.data.dataview", "Method[indexlistchanged]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.data.dataview", "Method[onlistchanged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.dataview", "Method[totable]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.dataview", "Method[totable]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[replacegenericplaceholderintype]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[trygetlinearcollectionmarshallersfromentrytype]", "Argument[0].Field[OriginalDefinition]", "Argument[4].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[trygetmarshallersfromentrytypeignoringelements]", "Argument[0].Field[OriginalDefinition]", "Argument[3].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[trygetvaluemarshallersfromentrytype]", "Argument[0].Field[OriginalDefinition]", "Argument[3].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolveentrypointtype]", "Argument[0].Field[OriginalDefinition]", "Argument[3].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolveentrypointtype]", "Argument[1]", "Argument[4]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolvemanagedtype]", "Argument[0].Field[OriginalDefinition]", "Argument[3].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolvemanagedtype]", "Argument[1]", "Argument[4]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolvemarshallertype]", "Argument[0].Field[OriginalDefinition]", "Argument[2].Parameter[0]", "value"]
+      - ["microsoft.interop.manualtypemarshallinghelper", "Method[tryresolvemarshallertype]", "Argument[1]", "Argument[3]", "value"]

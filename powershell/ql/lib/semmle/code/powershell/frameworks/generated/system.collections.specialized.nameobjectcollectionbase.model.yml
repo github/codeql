@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[baseadd]", "Argument[1]", "Argument[this].SyntheticField[_nullKeyEntry].SyntheticField[Value]", "value"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[baseget]", "Argument[this].SyntheticField[_nullKeyEntry].SyntheticField[Value]", "ReturnValue", "value"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[baseget]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[basegetallkeys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[basegetallvalues]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[basegetkey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[baseset]", "Argument[1]", "Argument[this].SyntheticField[_nullKeyEntry].SyntheticField[Value]", "value"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[get_keys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[nameobjectcollectionbase]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[nameobjectcollectionbase]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.nameobjectcollectionbase", "Method[nameobjectcollectionbase]", "Argument[2]", "Argument[this]", "taint"]

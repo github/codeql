@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.marshalasdescriptor", "Method[get_cookie]", "Argument[this].SyntheticField[_cookie]", "ReturnValue", "value"]
+      - ["internal.typesystem.marshalasdescriptor", "Method[get_marshallertype]", "Argument[this].SyntheticField[_marshallerType]", "ReturnValue", "value"]
+      - ["internal.typesystem.marshalasdescriptor", "Method[marshalasdescriptor]", "Argument[4]", "Argument[this].SyntheticField[_marshallerType]", "value"]
+      - ["internal.typesystem.marshalasdescriptor", "Method[marshalasdescriptor]", "Argument[5]", "Argument[this].SyntheticField[_cookie]", "value"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.compression.ziparchive", "Method[createentry]", "Argument[0]", "ReturnValue.SyntheticField[_storedEntryName]", "value"]
+      - ["system.io.compression.ziparchive", "Method[createentry]", "Argument[this]", "ReturnValue.SyntheticField[_archive]", "value"]
+      - ["system.io.compression.ziparchive", "Method[get_entries]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.compression.ziparchive", "Method[ziparchive]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.io.compression.ziparchive", "Method[ziparchive]", "Argument[3]", "Argument[this]", "taint"]

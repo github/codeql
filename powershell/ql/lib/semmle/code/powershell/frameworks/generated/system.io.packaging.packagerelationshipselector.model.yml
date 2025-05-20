@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.packaging.packagerelationshipselector", "Method[get_selectioncriteria]", "Argument[this].SyntheticField[_selectionCriteria]", "ReturnValue", "value"]
+      - ["system.io.packaging.packagerelationshipselector", "Method[get_sourceuri]", "Argument[this].SyntheticField[_sourceUri]", "ReturnValue", "value"]
+      - ["system.io.packaging.packagerelationshipselector", "Method[packagerelationshipselector]", "Argument[0]", "Argument[this].SyntheticField[_sourceUri]", "value"]
+      - ["system.io.packaging.packagerelationshipselector", "Method[packagerelationshipselector]", "Argument[2]", "Argument[this].SyntheticField[_selectionCriteria]", "value"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.tracelistener", "Method[tracedata]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[tracedata]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[tracedata]", "Argument[4].Element", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[tracedata]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[traceevent]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[traceevent]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[traceevent]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[traceevent]", "Argument[5].Element", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[tracelistener]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.tracelistener", "Method[write]", "Argument[0]", "Argument[this]", "taint"]

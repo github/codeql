@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.valueequalityimmutabledictionary", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.valueequalityimmutabledictionary", "Method[get_keys]", "Argument[this].Field[Map].Field[Keys]", "ReturnValue", "value"]
+      - ["microsoft.interop.valueequalityimmutabledictionary", "Method[get_values]", "Argument[this].Field[Map].Field[Values]", "ReturnValue", "value"]
+      - ["microsoft.interop.valueequalityimmutabledictionary", "Method[valueequalityimmutabledictionary]", "Argument[0]", "Argument[this].Field[Map]", "value"]

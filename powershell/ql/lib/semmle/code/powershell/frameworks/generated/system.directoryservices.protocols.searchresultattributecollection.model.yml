@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.directoryservices.protocols.searchresultattributecollection", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.directoryservices.protocols.searchresultattributecollection", "Method[get_attributenames]", "Argument[this].Field[Dictionary].Field[Keys]", "ReturnValue", "value"]
+      - ["system.directoryservices.protocols.searchresultattributecollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.directoryservices.protocols.searchresultattributecollection", "Method[get_values]", "Argument[this].Field[Dictionary].Field[Values]", "ReturnValue", "value"]

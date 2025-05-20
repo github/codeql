@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.displaynameattribute", "Method[displaynameattribute]", "Argument[0]", "Argument[this].Field[DisplayNameValue]", "value"]
+      - ["system.componentmodel.displaynameattribute", "Method[get_displayname]", "Argument[this].Field[DisplayNameValue]", "ReturnValue", "value"]

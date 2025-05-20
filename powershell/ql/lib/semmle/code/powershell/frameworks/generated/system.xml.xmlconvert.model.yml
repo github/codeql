@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlconvert", "Method[decodename]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[encodelocalname]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[encodename]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[encodenmtoken]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifyname]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifyncname]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifynmtoken]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifypublicid]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifytoken]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifywhitespace]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlconvert", "Method[verifyxmlchars]", "Argument[0]", "ReturnValue", "value"]

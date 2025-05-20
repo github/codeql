@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.xmlschemavalidator", "Method[addschema]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[getexpectedattributes]", "Argument[this].SyntheticField[_partialValidationType]", "ReturnValue.Element", "value"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[getexpectedparticles]", "Argument[this].SyntheticField[_partialValidationType]", "ReturnValue.Element", "value"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[initialize]", "Argument[0]", "Argument[this].SyntheticField[_partialValidationType]", "value"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[set_xmlresolver]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[skiptoendelement]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateattribute]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateattribute]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateelement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateelement]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateelement]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateendelement]", "Argument[1]", "Argument[0]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateendelement]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateendelement]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateendelement]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[validateendelement]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[xmlschemavalidator]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[xmlschemavalidator]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.schema.xmlschemavalidator", "Method[xmlschemavalidator]", "Argument[2]", "Argument[this]", "taint"]

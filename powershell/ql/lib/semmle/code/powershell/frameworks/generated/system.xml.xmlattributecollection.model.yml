@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlattributecollection", "Method[append]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlattributecollection", "Method[get_itemof]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlattributecollection", "Method[insertafter]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlattributecollection", "Method[insertbefore]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlattributecollection", "Method[prepend]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlattributecollection", "Method[remove]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlattributecollection", "Method[removeat]", "Argument[this]", "ReturnValue", "taint"]

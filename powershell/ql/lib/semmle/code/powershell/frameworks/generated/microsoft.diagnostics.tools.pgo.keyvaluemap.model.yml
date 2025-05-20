@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.diagnostics.tools.pgo.keyvaluemap", "Method[keyvaluemap]", "Argument[1]", "Argument[this].SyntheticField[_values]", "value"]
+      - ["microsoft.diagnostics.tools.pgo.keyvaluemap", "Method[lookuprange]", "Argument[this].SyntheticField[_values].Element", "ReturnValue.Element", "value"]
+      - ["microsoft.diagnostics.tools.pgo.keyvaluemap", "Method[trylookup]", "Argument[this].SyntheticField[_values].Element", "Argument[1]", "value"]

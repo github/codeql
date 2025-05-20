@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datatable", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[datatable]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[datatable]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[get_columns]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[get_constraints]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[get_dataset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[get_defaultview]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[get_rows]", "Argument[this].SyntheticField[_rowCollection]", "ReturnValue", "value"]
+      - ["system.data.datatable", "Method[getchanges]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[geterrors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[getlist]", "Argument[this].Field[DefaultView]", "ReturnValue", "value"]
+      - ["system.data.datatable", "Method[loaddatarow]", "Argument[0]", "Argument[this].Field[Rows].Element", "value"]
+      - ["system.data.datatable", "Method[loaddatarow]", "Argument[0]", "Argument[this].SyntheticField[_rowCollection].Element", "value"]
+      - ["system.data.datatable", "Method[loaddatarow]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[newrowarray]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datatable", "Method[oncolumnchanged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[oncolumnchanging]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[onpropertychanging]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[onrowchanged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[onrowchanging]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[onrowdeleted]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[onrowdeleting]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[ontablecleared]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[ontableclearing]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[ontablenewrow]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datatable", "Method[select]", "Argument[this]", "ReturnValue", "taint"]

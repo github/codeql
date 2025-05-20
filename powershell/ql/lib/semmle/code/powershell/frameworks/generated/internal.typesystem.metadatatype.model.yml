@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.metadatatype", "Method[computevirtualmethodimplsfortype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatatype", "Method[get_explicitlyimplementedinterfaces]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatatype", "Method[get_metadatabasetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatatype", "Method[get_module]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatatype", "Method[get_virtualmethodimplsfortype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatatype", "Method[getnestedtypes]", "Argument[this]", "ReturnValue", "taint"]

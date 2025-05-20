@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.methodbase", "Method[get_methodhandle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.methodbase", "Method[getgenericarguments]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.methodbase", "Method[getmethodbody]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.methodbase", "Method[getparameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.methodbase", "Method[invoke]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.methodbase", "Method[invoke]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.reflection.methodbase", "Method[invoke]", "Argument[3].Element", "Argument[this]", "taint"]
+      - ["system.reflection.methodbase", "Method[invoke]", "Argument[this]", "ReturnValue", "taint"]

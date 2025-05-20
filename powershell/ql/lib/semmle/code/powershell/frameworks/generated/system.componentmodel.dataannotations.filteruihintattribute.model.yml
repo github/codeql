@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.dataannotations.filteruihintattribute", "Method[filteruihintattribute]", "Argument[0]", "Argument[this].SyntheticField[_implementation].SyntheticField[UIHint]", "value"]
+      - ["system.componentmodel.dataannotations.filteruihintattribute", "Method[filteruihintattribute]", "Argument[1]", "Argument[this].SyntheticField[_implementation].SyntheticField[PresentationLayer]", "value"]
+      - ["system.componentmodel.dataannotations.filteruihintattribute", "Method[get_controlparameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.dataannotations.filteruihintattribute", "Method[get_filteruihint]", "Argument[this].SyntheticField[_implementation].SyntheticField[UIHint]", "ReturnValue", "value"]
+      - ["system.componentmodel.dataannotations.filteruihintattribute", "Method[get_presentationlayer]", "Argument[this].SyntheticField[_implementation].SyntheticField[PresentationLayer]", "ReturnValue", "value"]

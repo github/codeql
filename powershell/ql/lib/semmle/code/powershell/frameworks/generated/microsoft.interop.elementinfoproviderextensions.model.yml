@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.elementinfoproviderextensions", "Method[trygetinfoforelementname]", "Argument[3].ReturnValue", "Argument[4].Field[MarshallingAttributeInfo]", "value"]
+      - ["microsoft.interop.elementinfoproviderextensions", "Method[trygetinfoforparamindex]", "Argument[3].ReturnValue", "Argument[4].Field[MarshallingAttributeInfo]", "value"]

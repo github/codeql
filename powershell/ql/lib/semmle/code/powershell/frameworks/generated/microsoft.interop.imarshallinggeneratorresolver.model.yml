@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.imarshallinggeneratorresolver", "Method[create]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.interop.imarshallinggeneratorresolver", "Method[create]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.interop.imarshallinggeneratorresolver", "Method[create]", "Argument[this]", "ReturnValue", "taint"]

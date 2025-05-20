@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.typedefinition", "Method[getcustomattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getdeclarativesecurityattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getevents]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getfields]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getinterfaceimplementations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getmethods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typedefinition", "Method[getproperties]", "Argument[this]", "ReturnValue", "taint"]

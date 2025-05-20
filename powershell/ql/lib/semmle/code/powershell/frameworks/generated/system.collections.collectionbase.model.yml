@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.collectionbase", "Method[get_innerlist]", "Argument[this].SyntheticField[_list]", "ReturnValue", "value"]
+      - ["system.collections.collectionbase", "Method[get_list]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.collectionbase", "Method[oninsert]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.collections.collectionbase", "Method[onset]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.collections.collectionbase", "Method[remove]", "Argument[0]", "Argument[this].Field[InnerList].Element", "value"]
+      - ["system.collections.collectionbase", "Method[remove]", "Argument[0]", "Argument[this].SyntheticField[_list].Element", "value"]

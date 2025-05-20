@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[addexpirationtoken]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[registerpostevictioncallback]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setabsoluteexpiration]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setoptions]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setpriority]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setsize]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setslidingexpiration]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.caching.memory.cacheentryextensions", "Method[setvalue]", "Argument[0]", "ReturnValue", "value"]

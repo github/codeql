@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[otherservice]", "Argument[0]", "Argument[this].Field[Service1]", "value"]
+      - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[otherservice]", "Argument[1]", "Argument[this].Field[Service2]", "value"]
+      - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[service]", "Argument[0]", "Argument[this].SyntheticField[_id]", "value"]
+      - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[simpleparentwithdynamickeyedservice]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[tostring]", "Argument[this].SyntheticField[_id]", "ReturnValue", "value"]

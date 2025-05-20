@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configure]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configure]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[1]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[1]", "Argument[this].Field[Dependency1]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[1]", "Argument[this].Field[Dependency]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[2]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[2]", "Argument[this].Field[Dependency2]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[3]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[3]", "Argument[this].Field[Dependency3]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[4]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[4]", "Argument[this].Field[Dependency4]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[5]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[5]", "Argument[this].Field[Dependency5]", "value"]
+      - ["microsoft.extensions.options.configurenamedoptions", "Method[configurenamedoptions]", "Argument[6]", "Argument[this].Field[Action]", "value"]

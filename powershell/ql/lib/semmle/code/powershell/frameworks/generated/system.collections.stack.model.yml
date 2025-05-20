@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.stack", "Method[push]", "Argument[0]", "Argument[this].SyntheticField[_array].Element", "value"]
+      - ["system.collections.stack", "Method[stack]", "Argument[0].Element", "Argument[this].SyntheticField[_array].Element", "value"]
+      - ["system.collections.stack", "Method[synchronized]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.stack", "Method[toarray]", "Argument[this].SyntheticField[_array].Element", "ReturnValue.Element", "value"]

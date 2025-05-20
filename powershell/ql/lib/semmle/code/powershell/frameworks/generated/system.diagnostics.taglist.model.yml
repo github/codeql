@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.taglist", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[_tags].Element", "value"]
+      - ["system.diagnostics.taglist", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.taglist", "Method[get_item]", "Argument[this].SyntheticField[_overflowTags].Element", "ReturnValue", "value"]
+      - ["system.diagnostics.taglist", "Method[get_item]", "Argument[this].SyntheticField[_tags].Element", "ReturnValue", "value"]
+      - ["system.diagnostics.taglist", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.taglist", "Method[insert]", "Argument[1]", "Argument[this].SyntheticField[_overflowTags].Element", "value"]
+      - ["system.diagnostics.taglist", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[_overflowTags].Element", "value"]
+      - ["system.diagnostics.taglist", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[_tags].Element", "value"]

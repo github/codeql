@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.ecma335.signaturetypeencoder", "Method[array]", "Argument[this]", "Argument[0].Parameter[0]", "value"]
+      - ["system.reflection.metadata.ecma335.signaturetypeencoder", "Method[array]", "Argument[this]", "Argument[0]", "value"]
+      - ["system.reflection.metadata.ecma335.signaturetypeencoder", "Method[pointer]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.ecma335.signaturetypeencoder", "Method[signaturetypeencoder]", "Argument[0]", "Argument[this].Field[Builder]", "value"]
+      - ["system.reflection.metadata.ecma335.signaturetypeencoder", "Method[szarray]", "Argument[this]", "ReturnValue", "value"]

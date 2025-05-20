@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.designerattribute", "Method[designerattribute]", "Argument[0]", "Argument[this].Field[DesignerTypeName]", "value"]
+      - ["system.componentmodel.designerattribute", "Method[designerattribute]", "Argument[1]", "Argument[this].Field[DesignerBaseTypeName]", "value"]
+      - ["system.componentmodel.designerattribute", "Method[get_typeid]", "Argument[this].Field[DesignerBaseTypeName]", "Argument[this].SyntheticField[_typeId]", "taint"]
+      - ["system.componentmodel.designerattribute", "Method[get_typeid]", "Argument[this].Field[DesignerBaseTypeName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.designerattribute", "Method[get_typeid]", "Argument[this].SyntheticField[_typeId]", "ReturnValue", "value"]

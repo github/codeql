@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "Method[extendedprotectionpolicy]", "Argument[1]", "Argument[this].SyntheticField[_customChannelBinding]", "value"]
+      - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "Method[extendedprotectionpolicy]", "Argument[2]", "Argument[this].SyntheticField[_customServiceNames]", "value"]
+      - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "Method[get_customchannelbinding]", "Argument[this].SyntheticField[_customChannelBinding]", "ReturnValue", "value"]
+      - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "Method[get_customservicenames]", "Argument[this].SyntheticField[_customServiceNames]", "ReturnValue", "value"]
+      - ["system.security.authentication.extendedprotection.extendedprotectionpolicy", "Method[tostring]", "Argument[this].SyntheticField[_customServiceNames].Element", "ReturnValue", "taint"]

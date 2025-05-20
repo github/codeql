@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.badimageformatexception", "Method[badimageformatexception]", "Argument[0].SyntheticField[_values].Element", "Argument[this].SyntheticField[_fileName]", "value"]
+      - ["system.badimageformatexception", "Method[badimageformatexception]", "Argument[0].SyntheticField[_values].Element", "Argument[this].SyntheticField[_fusionLog]", "value"]
+      - ["system.badimageformatexception", "Method[badimageformatexception]", "Argument[1]", "Argument[this].SyntheticField[_fileName]", "value"]
+      - ["system.badimageformatexception", "Method[get_filename]", "Argument[this].SyntheticField[_fileName]", "ReturnValue", "value"]
+      - ["system.badimageformatexception", "Method[get_fusionlog]", "Argument[this].SyntheticField[_fusionLog]", "ReturnValue", "value"]

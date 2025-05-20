@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.headerstringvalues", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.net.http.headers.headerstringvalues", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.headerstringvalues", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.headerstringvalues", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

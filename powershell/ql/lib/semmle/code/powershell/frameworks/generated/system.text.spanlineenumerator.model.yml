@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.text.spanlineenumerator", "Method[get_current]", "Argument[this].SyntheticField[_current]", "ReturnValue", "value"]
+      - ["system.text.spanlineenumerator", "Method[getenumerator]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.text.spanlineenumerator", "Method[movenext]", "Argument[this].SyntheticField[_remaining]", "Argument[this].SyntheticField[_current]", "value"]

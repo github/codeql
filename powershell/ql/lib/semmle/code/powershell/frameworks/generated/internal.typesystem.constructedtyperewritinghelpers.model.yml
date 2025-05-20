@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.constructedtyperewritinghelpers", "Method[replacetypesinconstructionofmethod]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.constructedtyperewritinghelpers", "Method[replacetypesinconstructionofmethod]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["internal.typesystem.constructedtyperewritinghelpers", "Method[replacetypesinconstructionoftype]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.constructedtyperewritinghelpers", "Method[replacetypesinconstructionoftype]", "Argument[2].Element", "ReturnValue", "value"]

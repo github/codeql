@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.design.designeroptionservice", "Method[createoptioncollection]", "Argument[0]", "ReturnValue.Field[Parent]", "value"]
+      - ["system.componentmodel.design.designeroptionservice", "Method[createoptioncollection]", "Argument[1]", "ReturnValue.Field[Name]", "value"]
+      - ["system.componentmodel.design.designeroptionservice", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.design.designeroptionservice", "Method[get_properties]", "Argument[this]", "ReturnValue", "taint"]

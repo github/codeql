@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.ibc.mibcconfig", "Method[fromkeyvaluemap]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["ilcompiler.ibc.mibcconfig", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

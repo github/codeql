@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.nullable", "Method[get_value]", "Argument[this].SyntheticField[value]", "ReturnValue", "value"]
+      - ["system.nullable", "Method[getvalueordefault]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.nullable", "Method[getvalueordefault]", "Argument[this].SyntheticField[value]", "ReturnValue", "value"]
+      - ["system.nullable", "Method[nullable]", "Argument[0]", "Argument[this].SyntheticField[value]", "value"]
+      - ["system.nullable", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

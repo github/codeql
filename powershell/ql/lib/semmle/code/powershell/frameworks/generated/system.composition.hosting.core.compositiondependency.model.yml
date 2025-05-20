@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.compositiondependency", "Method[get_contract]", "Argument[this].SyntheticField[_contract]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[get_site]", "Argument[this].SyntheticField[_site]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[get_target]", "Argument[this].SyntheticField[_target]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[missing]", "Argument[0]", "ReturnValue.SyntheticField[_contract]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[missing]", "Argument[1]", "ReturnValue.SyntheticField[_site]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[oversupplied]", "Argument[0]", "ReturnValue.SyntheticField[_contract]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[oversupplied]", "Argument[2]", "ReturnValue.SyntheticField[_site]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[satisfied]", "Argument[0]", "ReturnValue.SyntheticField[_contract]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[satisfied]", "Argument[1]", "ReturnValue.SyntheticField[_target]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[satisfied]", "Argument[3]", "ReturnValue.SyntheticField[_site]", "value"]
+      - ["system.composition.hosting.core.compositiondependency", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

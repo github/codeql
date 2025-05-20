@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.primitives.stringsegment", "Method[get_value]", "Argument[this].Field[Buffer]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.primitives.stringsegment", "Method[stringsegment]", "Argument[0]", "Argument[this].Field[Buffer]", "value"]
+      - ["microsoft.extensions.primitives.stringsegment", "Method[substring]", "Argument[this].Field[Buffer]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.primitives.stringsegment", "Method[tostring]", "Argument[this].Field[Buffer]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.primitives.stringsegment", "Method[tostring]", "Argument[this].Field[Value]", "ReturnValue", "value"]

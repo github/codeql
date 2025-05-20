@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datarelationcollection", "Method[add]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelationcollection", "Method[addcore]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarelationcollection", "Method[addcore]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.data.datarelationcollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelationcollection", "Method[getdataset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelationcollection", "Method[oncollectionchanged]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarelationcollection", "Method[oncollectionchanging]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarelationcollection", "Method[remove]", "Argument[0]", "Argument[this]", "taint"]

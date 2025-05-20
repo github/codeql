@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.diagnosticmethodinfo", "Method[create]", "Argument[0].Field[Method]", "ReturnValue.SyntheticField[_method]", "value"]
+      - ["system.diagnostics.diagnosticmethodinfo", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.diagnostics.diagnosticmethodinfo", "Method[get_name]", "Argument[this].SyntheticField[_method].Field[Name]", "ReturnValue", "value"]

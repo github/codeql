@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.toolboxitemattribute", "Method[get_toolboxitemtypename]", "Argument[this].SyntheticField[_toolboxItemTypeName]", "ReturnValue", "value"]
+      - ["system.componentmodel.toolboxitemattribute", "Method[toolboxitemattribute]", "Argument[0]", "Argument[this].SyntheticField[_toolboxItemTypeName]", "value"]

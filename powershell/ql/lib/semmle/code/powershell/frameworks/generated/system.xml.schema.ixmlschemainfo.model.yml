@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.ixmlschemainfo", "Method[get_membertype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.ixmlschemainfo", "Method[get_schemaattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.ixmlschemainfo", "Method[get_schemaelement]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.ixmlschemainfo", "Method[get_schematype]", "Argument[this]", "ReturnValue", "taint"]

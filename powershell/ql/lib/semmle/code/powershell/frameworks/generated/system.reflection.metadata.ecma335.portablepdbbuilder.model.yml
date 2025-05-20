@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.ecma335.portablepdbbuilder", "Method[portablepdbbuilder]", "Argument[3]", "Argument[this].Field[IdProvider]", "value"]
+      - ["system.reflection.metadata.ecma335.portablepdbbuilder", "Method[serialize]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.metadata.ecma335.portablepdbbuilder", "Method[serialize]", "Argument[this]", "ReturnValue", "taint"]

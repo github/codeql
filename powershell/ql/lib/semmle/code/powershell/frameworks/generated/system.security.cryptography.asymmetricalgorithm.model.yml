@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.asymmetricalgorithm", "Method[get_keyexchangealgorithm]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.asymmetricalgorithm", "Method[get_legalkeysizes]", "Argument[this].Field[LegalKeySizesValue].Element", "ReturnValue.Element", "value"]
+      - ["system.security.cryptography.asymmetricalgorithm", "Method[get_signaturealgorithm]", "Argument[this]", "ReturnValue", "taint"]

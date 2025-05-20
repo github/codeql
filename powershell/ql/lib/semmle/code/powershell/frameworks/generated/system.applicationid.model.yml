@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.applicationid", "Method[applicationid]", "Argument[0].Element", "Argument[this].SyntheticField[_publicKeyToken].Element", "value"]
+      - ["system.applicationid", "Method[copy]", "Argument[this].SyntheticField[_publicKeyToken].Element", "ReturnValue.SyntheticField[_publicKeyToken].Element", "value"]
+      - ["system.applicationid", "Method[get_publickeytoken]", "Argument[this].SyntheticField[_publicKeyToken].Element", "ReturnValue.Element", "value"]

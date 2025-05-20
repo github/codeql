@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.contentdispositionheadervalue", "Method[contentdispositionheadervalue]", "Argument[0].SyntheticField[_dispositionType]", "Argument[this].SyntheticField[_dispositionType]", "value"]
+      - ["system.net.http.headers.contentdispositionheadervalue", "Method[contentdispositionheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_dispositionType]", "value"]
+      - ["system.net.http.headers.contentdispositionheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_dispositionType]", "ReturnValue", "taint"]

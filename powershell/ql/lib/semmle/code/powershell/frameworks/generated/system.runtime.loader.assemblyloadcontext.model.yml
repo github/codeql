@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.loader.assemblyloadcontext", "Method[entercontextualreflection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.loader.assemblyloadcontext", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.loader.assemblyloadcontext", "Method[tostring]", "Argument[this].Field[Name]", "ReturnValue", "taint"]

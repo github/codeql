@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.binaryexpression", "Method[get_conversion]", "Argument[this].SyntheticField[_conversion]", "ReturnValue", "value"]
+      - ["system.linq.expressions.binaryexpression", "Method[get_method]", "Argument[this].SyntheticField[_method]", "ReturnValue", "value"]
+      - ["system.linq.expressions.binaryexpression", "Method[update]", "Argument[1]", "ReturnValue.SyntheticField[_conversion]", "value"]
+      - ["system.linq.expressions.binaryexpression", "Method[update]", "Argument[this].Field[Method]", "ReturnValue.SyntheticField[_method]", "value"]
+      - ["system.linq.expressions.binaryexpression", "Method[update]", "Argument[this].SyntheticField[_method]", "ReturnValue.SyntheticField[_method]", "value"]
+      - ["system.linq.expressions.binaryexpression", "Method[update]", "Argument[this]", "ReturnValue", "value"]

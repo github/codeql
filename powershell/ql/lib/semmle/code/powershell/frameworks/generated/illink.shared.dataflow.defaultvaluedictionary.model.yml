@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["illink.shared.dataflow.defaultvaluedictionary", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.shared.dataflow.defaultvaluedictionary", "Method[defaultvaluedictionary]", "Argument[0].SyntheticField[DefaultValue]", "Argument[this].SyntheticField[DefaultValue]", "value"]
+      - ["illink.shared.dataflow.defaultvaluedictionary", "Method[defaultvaluedictionary]", "Argument[0]", "Argument[this].SyntheticField[DefaultValue]", "value"]
+      - ["illink.shared.dataflow.defaultvaluedictionary", "Method[get]", "Argument[this].SyntheticField[DefaultValue]", "ReturnValue", "value"]
+      - ["illink.shared.dataflow.defaultvaluedictionary", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.deftype", "Method[converttosharedruntimedeterminedform]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.deftype", "Method[get_containingtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_diagnosticname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_diagnosticnamespace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_instancebytealignment]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_instancebytecount]", "Argument[this].Field[InstanceByteCountUnaligned]", "ReturnValue", "value"]
+      - ["internal.typesystem.deftype", "Method[get_instancebytecountunaligned]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_instancefieldalignment]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_instancefieldsize]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.deftype", "Method[get_namespace]", "Argument[this]", "ReturnValue", "taint"]

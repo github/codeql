@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.mail.attachmentbase", "Method[attachmentbase]", "Argument[0]", "Argument[this].SyntheticField[_part].SyntheticField[_stream]", "taint"]
+      - ["system.net.mail.attachmentbase", "Method[attachmentbase]", "Argument[0]", "Argument[this].SyntheticField[_part].SyntheticField[_stream]", "value"]
+      - ["system.net.mail.attachmentbase", "Method[get_contentstream]", "Argument[this].SyntheticField[_part].SyntheticField[_stream]", "ReturnValue", "value"]

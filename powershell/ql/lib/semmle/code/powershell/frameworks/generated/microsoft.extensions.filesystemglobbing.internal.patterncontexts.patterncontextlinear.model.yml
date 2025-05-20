@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[calculatestem]", "Argument[0].Field[Name]", "ReturnValue", "value"]
+      - ["microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[calculatestem]", "Argument[this].Field[Frame].Field[Stem]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[patterncontextlinear]", "Argument[0]", "Argument[this].Field[Pattern]", "value"]
+      - ["microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[test]", "Argument[0].Field[Name]", "ReturnValue.Field[Stem]", "value"]
+      - ["microsoft.extensions.filesystemglobbing.internal.patterncontexts.patterncontextlinear", "Method[test]", "Argument[this].Field[Frame].Field[Stem]", "ReturnValue.Field[Stem]", "taint"]

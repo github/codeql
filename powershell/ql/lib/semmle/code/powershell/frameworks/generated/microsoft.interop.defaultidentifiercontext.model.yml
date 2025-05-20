@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.defaultidentifiercontext", "Method[defaultidentifiercontext]", "Argument[0]", "Argument[this].SyntheticField[_returnIdentifier]", "value"]
+      - ["microsoft.interop.defaultidentifiercontext", "Method[defaultidentifiercontext]", "Argument[1]", "Argument[this].SyntheticField[_nativeReturnIdentifier]", "value"]
+      - ["microsoft.interop.defaultidentifiercontext", "Method[getidentifiers]", "Argument[0].Field[InstanceIdentifier]", "ReturnValue.Field[Item1]", "value"]
+      - ["microsoft.interop.defaultidentifiercontext", "Method[getidentifiers]", "Argument[0].Field[InstanceIdentifier]", "ReturnValue.Field[Item2]", "taint"]
+      - ["microsoft.interop.defaultidentifiercontext", "Method[getidentifiers]", "Argument[this].SyntheticField[_nativeReturnIdentifier]", "ReturnValue.Field[Item2]", "value"]
+      - ["microsoft.interop.defaultidentifiercontext", "Method[getidentifiers]", "Argument[this].SyntheticField[_returnIdentifier]", "ReturnValue.Field[Item1]", "value"]

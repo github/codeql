@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.fielddesc", "Method[get_fieldtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.fielddesc", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.fielddesc", "Method[get_offset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.fielddesc", "Method[get_owningtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.fielddesc", "Method[getembeddedsignaturedata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.fielddesc", "Method[getnonruntimedeterminedfieldfromruntimedeterminedfieldviasubstitution]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.fielddesc", "Method[gettypicalfielddefinition]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.fielddesc", "Method[instantiatesignature]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.fielddesc", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

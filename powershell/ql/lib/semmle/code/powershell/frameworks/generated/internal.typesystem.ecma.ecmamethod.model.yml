@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.ecma.ecmamethod", "Method[get_diagnosticname]", "Argument[this].Field[Name]", "ReturnValue", "value"]
+      - ["internal.typesystem.ecma.ecmamethod", "Method[get_handle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmamethod", "Method[get_metadatareader]", "Argument[this].SyntheticField[_type].Field[MetadataReader]", "ReturnValue", "value"]
+      - ["internal.typesystem.ecma.ecmamethod", "Method[get_module]", "Argument[this].SyntheticField[_type].Field[EcmaModule]", "ReturnValue", "value"]
+      - ["internal.typesystem.ecma.ecmamethod", "Method[get_owningtype]", "Argument[this].SyntheticField[_type]", "ReturnValue", "value"]

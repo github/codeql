@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.principal.genericidentity", "Method[clone]", "Argument[this].SyntheticField[m_name]", "ReturnValue.SyntheticField[m_name]", "value"]
+      - ["system.security.principal.genericidentity", "Method[clone]", "Argument[this].SyntheticField[m_type]", "ReturnValue.SyntheticField[m_type]", "value"]
+      - ["system.security.principal.genericidentity", "Method[genericidentity]", "Argument[0].SyntheticField[m_name]", "Argument[this].SyntheticField[m_name]", "value"]
+      - ["system.security.principal.genericidentity", "Method[genericidentity]", "Argument[0].SyntheticField[m_type]", "Argument[this].SyntheticField[m_type]", "value"]
+      - ["system.security.principal.genericidentity", "Method[genericidentity]", "Argument[0]", "Argument[this].SyntheticField[m_name]", "value"]
+      - ["system.security.principal.genericidentity", "Method[genericidentity]", "Argument[1]", "Argument[this].SyntheticField[m_type]", "value"]
+      - ["system.security.principal.genericidentity", "Method[get_authenticationtype]", "Argument[this].SyntheticField[m_type]", "ReturnValue", "value"]
+      - ["system.security.principal.genericidentity", "Method[get_claims]", "Argument[this].Field[Claims]", "ReturnValue", "value"]
+      - ["system.security.principal.genericidentity", "Method[get_name]", "Argument[this].SyntheticField[m_name]", "ReturnValue", "value"]

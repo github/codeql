@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.bindinglist", "Method[get_sortproperty]", "Argument[this].Field[SortPropertyCore]", "ReturnValue", "value"]
+      - ["system.componentmodel.bindinglist", "Method[onaddingnew]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.bindinglist", "Method[onlistchanged]", "Argument[0]", "Argument[this]", "taint"]

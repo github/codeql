@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.typedescriptionprovider", "Method[getextendedtypedescriptor]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[getextendedtypedescriptor]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[getextendedtypedescriptorfromregisteredtype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[getextendedtypedescriptorfromregisteredtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[getfullcomponentname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[gettypedescriptor]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[gettypedescriptor]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[gettypedescriptor]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.typedescriptionprovider", "Method[typedescriptionprovider]", "Argument[0]", "Argument[this]", "taint"]

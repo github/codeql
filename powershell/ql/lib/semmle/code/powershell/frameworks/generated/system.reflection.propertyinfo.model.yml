@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.propertyinfo", "Method[get_getmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[get_propertytype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[get_setmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getaccessors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getconstantvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getgetmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getindexparameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getmodifiedpropertytype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getsetmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.propertyinfo", "Method[getvalue]", "Argument[this]", "ReturnValue", "taint"]

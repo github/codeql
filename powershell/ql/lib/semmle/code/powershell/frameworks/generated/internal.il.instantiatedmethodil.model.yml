@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.instantiatedmethodil", "Method[getmethodildefinition]", "Argument[this].SyntheticField[_methodIL]", "ReturnValue", "value"]
+      - ["internal.il.instantiatedmethodil", "Method[instantiatedmethodil]", "Argument[1]", "Argument[this].SyntheticField[_methodIL]", "value"]

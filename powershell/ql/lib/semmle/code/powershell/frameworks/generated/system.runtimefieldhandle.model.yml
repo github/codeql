@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtimefieldhandle", "Method[fromintptr]", "Argument[0]", "ReturnValue.SyntheticField[value]", "value"]
+      - ["system.runtimefieldhandle", "Method[get_value]", "Argument[this].SyntheticField[value]", "ReturnValue", "value"]
+      - ["system.runtimefieldhandle", "Method[tointptr]", "Argument[0].Field[Value]", "ReturnValue", "value"]
+      - ["system.runtimefieldhandle", "Method[tointptr]", "Argument[0].SyntheticField[value]", "ReturnValue", "value"]

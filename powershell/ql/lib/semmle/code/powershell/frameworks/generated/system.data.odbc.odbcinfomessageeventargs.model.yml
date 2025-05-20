@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.odbc.odbcinfomessageeventargs", "Method[get_errors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbcinfomessageeventargs", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbcinfomessageeventargs", "Method[tostring]", "Argument[this].Field[Message]", "ReturnValue", "value"]

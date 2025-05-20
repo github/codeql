@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.containingsyntaxcontext", "Method[addcontainingsyntax]", "Argument[this]", "ReturnValue", "value"]
+      - ["microsoft.interop.containingsyntaxcontext", "Method[containingsyntaxcontext]", "Argument[0]", "Argument[this].Field[ContainingSyntax]", "value"]
+      - ["microsoft.interop.containingsyntaxcontext", "Method[containingsyntaxcontext]", "Argument[1]", "Argument[this].Field[ContainingNamespace]", "value"]
+      - ["microsoft.interop.containingsyntaxcontext", "Method[wrapmemberincontainingsyntaxwithunsafemodifier]", "Argument[0]", "ReturnValue", "value"]

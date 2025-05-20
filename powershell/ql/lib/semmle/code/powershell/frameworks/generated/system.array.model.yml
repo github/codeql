@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.array", "Method[asreadonly]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.array", "Method[convertall]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[convertall]", "Argument[1].ReturnValue", "ReturnValue.Element", "value"]
+      - ["system.array", "Method[exists]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[fill]", "Argument[1]", "Argument[0].Element", "value"]
+      - ["system.array", "Method[find]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[find]", "Argument[0].Element", "ReturnValue", "value"]
+      - ["system.array", "Method[findall]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[findindex]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[findindex]", "Argument[0].Element", "Argument[2].Parameter[0]", "value"]
+      - ["system.array", "Method[findindex]", "Argument[0].Element", "Argument[3].Parameter[0]", "value"]
+      - ["system.array", "Method[findlast]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[findlast]", "Argument[0].Element", "ReturnValue", "value"]
+      - ["system.array", "Method[findlastindex]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[findlastindex]", "Argument[0].Element", "Argument[2].Parameter[0]", "value"]
+      - ["system.array", "Method[findlastindex]", "Argument[0].Element", "Argument[3].Parameter[0]", "value"]
+      - ["system.array", "Method[foreach]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["system.array", "Method[trueforall]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]

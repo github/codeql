@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.asnencodeddata", "Method[asnencodeddata]", "Argument[0].Element", "Argument[this].SyntheticField[_rawData].Element", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[asnencodeddata]", "Argument[0].SyntheticField[_rawData].Element", "Argument[this].SyntheticField[_rawData].Element", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[asnencodeddata]", "Argument[0].SyntheticField[_rawData]", "Argument[this].SyntheticField[_rawData]", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[asnencodeddata]", "Argument[0]", "Argument[this].SyntheticField[_rawData]", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[asnencodeddata]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.cryptography.asnencodeddata", "Method[copyfrom]", "Argument[0].SyntheticField[_rawData].Element", "Argument[this].SyntheticField[_rawData].Element", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[copyfrom]", "Argument[0].SyntheticField[_rawData]", "Argument[this].SyntheticField[_rawData]", "value"]
+      - ["system.security.cryptography.asnencodeddata", "Method[format]", "Argument[this].SyntheticField[_rawData].Element", "ReturnValue", "taint"]

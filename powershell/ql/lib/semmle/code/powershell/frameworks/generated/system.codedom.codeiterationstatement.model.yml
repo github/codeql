@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codeiterationstatement", "Method[codeiterationstatement]", "Argument[0]", "Argument[this].Field[InitStatement]", "value"]
+      - ["system.codedom.codeiterationstatement", "Method[codeiterationstatement]", "Argument[1]", "Argument[this].Field[TestExpression]", "value"]
+      - ["system.codedom.codeiterationstatement", "Method[codeiterationstatement]", "Argument[2]", "Argument[this].Field[IncrementStatement]", "value"]

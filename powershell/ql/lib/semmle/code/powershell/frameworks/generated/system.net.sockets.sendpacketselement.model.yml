@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.sockets.sendpacketselement", "Method[sendpacketselement]", "Argument[0]", "Argument[this].Field[Buffer]", "value"]
+      - ["system.net.sockets.sendpacketselement", "Method[sendpacketselement]", "Argument[0]", "Argument[this].Field[FilePath]", "value"]
+      - ["system.net.sockets.sendpacketselement", "Method[sendpacketselement]", "Argument[0]", "Argument[this].Field[FileStream]", "value"]

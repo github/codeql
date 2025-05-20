@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.data.common.datacolumnmapping", "Method[clone]", "Argument[this].SyntheticField[_sourceColumnName]", "ReturnValue.SyntheticField[_sourceColumnName]", "value"]
+      - ["system.data.common.datacolumnmapping", "Method[datacolumnmapping]", "Argument[0]", "Argument[this].SyntheticField[_sourceColumnName]", "value"]
+      - ["system.data.common.datacolumnmapping", "Method[getdatacolumnbyschemaaction]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.common.datacolumnmapping", "Method[getdatacolumnbyschemaaction]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.data.common.datacolumnmapping", "Method[tostring]", "Argument[this].Field[SourceColumn]", "ReturnValue", "value"]
+      - ["system.data.common.datacolumnmapping", "Method[tostring]", "Argument[this].SyntheticField[_sourceColumnName]", "ReturnValue", "value"]

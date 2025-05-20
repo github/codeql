@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.compilationextensions", "Method[getunqualifiedname]", "Argument[0].Field[Name]", "ReturnValue", "value"]
+      - ["illink.roslynanalyzer.compilationextensions", "Method[getunqualifiedname]", "Argument[0].Field[Right]", "ReturnValue", "value"]
+      - ["illink.roslynanalyzer.compilationextensions", "Method[getunqualifiedname]", "Argument[0]", "ReturnValue", "value"]

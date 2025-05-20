@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.claims.claim", "Method[claim]", "Argument[1]", "Argument[this].SyntheticField[_subject]", "value"]
+      - ["system.security.claims.claim", "Method[get_customserializationdata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[get_issuer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[get_originalissuer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[get_subject]", "Argument[this].SyntheticField[_subject]", "ReturnValue", "value"]
+      - ["system.security.claims.claim", "Method[get_type]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[get_value]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[get_valuetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claim", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

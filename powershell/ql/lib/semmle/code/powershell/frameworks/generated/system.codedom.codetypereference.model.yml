@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codetypereference", "Method[codetypereference]", "Argument[0]", "Argument[this].Field[ArrayElementType]", "value"]
+      - ["system.codedom.codetypereference", "Method[codetypereference]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.codetypereference", "Method[get_typearguments]", "Argument[this].Field[ArrayElementType].Field[TypeArguments]", "ReturnValue", "value"]

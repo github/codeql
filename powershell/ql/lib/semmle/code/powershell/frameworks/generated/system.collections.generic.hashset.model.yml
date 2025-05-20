@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.hashset", "Method[get_comparer]", "Argument[this].SyntheticField[_comparer]", "ReturnValue", "value"]
+      - ["system.collections.generic.hashset", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.hashset", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.hashset", "Method[getobjectdata]", "Argument[this].Field[Comparer]", "Argument[0].SyntheticField[_values].Element", "value"]
+      - ["system.collections.generic.hashset", "Method[getobjectdata]", "Argument[this].SyntheticField[_comparer]", "Argument[0].SyntheticField[_values].Element", "value"]
+      - ["system.collections.generic.hashset", "Method[hashset]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.collections.generic.hashset", "Method[hashset]", "Argument[0]", "Argument[this].SyntheticField[_comparer]", "value"]
+      - ["system.collections.generic.hashset", "Method[trygetvalue]", "Argument[this]", "Argument[1]", "taint"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.nativelinearcollectionmarshallinginfo", "Method[nativelinearcollectionmarshallinginfo]", "Argument[2]", "Argument[this].Field[ElementCountInfo]", "value"]
+      - ["microsoft.interop.nativelinearcollectionmarshallinginfo", "Method[nativelinearcollectionmarshallinginfo]", "Argument[3]", "Argument[this].Field[PlaceholderTypeParameter]", "value"]

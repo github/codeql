@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.keyvalueconfigurationelement", "Method[get_key]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.keyvalueconfigurationelement", "Method[keyvalueconfigurationelement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.keyvalueconfigurationelement", "Method[keyvalueconfigurationelement]", "Argument[1]", "Argument[this]", "taint"]

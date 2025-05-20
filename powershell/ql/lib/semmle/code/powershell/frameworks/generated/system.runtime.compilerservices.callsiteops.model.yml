@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.callsiteops", "Method[addrule]", "Argument[1]", "Argument[0]", "taint"]
+      - ["system.runtime.compilerservices.callsiteops", "Method[getcachedrules]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.callsiteops", "Method[getrules]", "Argument[0]", "ReturnValue", "taint"]

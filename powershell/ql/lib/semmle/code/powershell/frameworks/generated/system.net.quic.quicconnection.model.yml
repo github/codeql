@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.quic.quicconnection", "Method[connectasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[get_localendpoint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[get_negotiatedapplicationprotocol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[get_remotecertificate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[get_remoteendpoint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[get_targethostname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.quic.quicconnection", "Method[openoutboundstreamasync]", "Argument[this]", "ReturnValue", "taint"]

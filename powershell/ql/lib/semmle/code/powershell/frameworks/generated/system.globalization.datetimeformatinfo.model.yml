@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.datetimeformatinfo", "Method[getabbreviateddayname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getabbreviatederaname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getabbreviatedmonthname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getalldatetimepatterns]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getdayname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[geteraname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getinstance]", "Argument[0].Field[DateTimeFormat]", "ReturnValue", "value"]
+      - ["system.globalization.datetimeformatinfo", "Method[getinstance]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.datetimeformatinfo", "Method[getmonthname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[getshortestdayname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.datetimeformatinfo", "Method[readonly]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.datetimeformatinfo", "Method[setalldatetimepatterns]", "Argument[0].Element", "Argument[this]", "taint"]

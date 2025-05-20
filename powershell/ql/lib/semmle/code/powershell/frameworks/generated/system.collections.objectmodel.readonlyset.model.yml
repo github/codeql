@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.objectmodel.readonlyset", "Method[get_set]", "Argument[this].SyntheticField[_set]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlyset", "Method[get_syncroot]", "Argument[this].SyntheticField[_set].Field[SyncRoot]", "ReturnValue", "value"]
+      - ["system.collections.objectmodel.readonlyset", "Method[readonlyset]", "Argument[0]", "Argument[this].SyntheticField[_set]", "value"]

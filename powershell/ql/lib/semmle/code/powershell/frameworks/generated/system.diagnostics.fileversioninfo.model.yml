@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.fileversioninfo", "Method[get_comments]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_companyname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_filedescription]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_filename]", "Argument[this].SyntheticField[_fileName]", "ReturnValue", "value"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_fileversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_internalname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_language]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_legalcopyright]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_legaltrademarks]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_originalfilename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_privatebuild]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_productname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_productversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[get_specialbuild]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.fileversioninfo", "Method[getversioninfo]", "Argument[0]", "ReturnValue.SyntheticField[_fileName]", "value"]
+      - ["system.diagnostics.fileversioninfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

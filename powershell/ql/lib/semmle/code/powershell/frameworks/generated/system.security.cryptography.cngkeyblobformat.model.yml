@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cngkeyblobformat", "Method[cngkeyblobformat]", "Argument[0]", "Argument[this].SyntheticField[_format]", "value"]
+      - ["system.security.cryptography.cngkeyblobformat", "Method[get_format]", "Argument[this].SyntheticField[_format]", "ReturnValue", "value"]
+      - ["system.security.cryptography.cngkeyblobformat", "Method[tostring]", "Argument[this].SyntheticField[_format]", "ReturnValue", "value"]

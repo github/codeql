@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.dataflow.trimanalysisassignmentpattern", "Method[merge]", "Argument[1]", "ReturnValue", "taint"]
+      - ["mono.linker.dataflow.trimanalysisassignmentpattern", "Method[merge]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.dataflow.trimanalysisassignmentpattern", "Method[trimanalysisassignmentpattern]", "Argument[0]", "Argument[this].Field[Source]", "value"]
+      - ["mono.linker.dataflow.trimanalysisassignmentpattern", "Method[trimanalysisassignmentpattern]", "Argument[1]", "Argument[this].Field[Target]", "value"]
+      - ["mono.linker.dataflow.trimanalysisassignmentpattern", "Method[trimanalysisassignmentpattern]", "Argument[2]", "Argument[this].Field[Origin]", "value"]

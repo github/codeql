@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.text.json.utf8jsonwriter", "Method[get_options]", "Argument[this].SyntheticField[_options]", "ReturnValue", "value"]
+      - ["system.text.json.utf8jsonwriter", "Method[reset]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.text.json.utf8jsonwriter", "Method[utf8jsonwriter]", "Argument[1]", "Argument[this].SyntheticField[_options]", "value"]

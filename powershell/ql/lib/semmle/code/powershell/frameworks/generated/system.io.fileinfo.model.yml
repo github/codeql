@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.fileinfo", "Method[copyto]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.fileinfo", "Method[copyto]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.fileinfo", "Method[create]", "Argument[this].Field[FullPath]", "ReturnValue", "taint"]
+      - ["system.io.fileinfo", "Method[get_directory]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.fileinfo", "Method[get_directoryname]", "Argument[this].Field[FullPath]", "ReturnValue", "value"]
+      - ["system.io.fileinfo", "Method[moveto]", "Argument[0]", "Argument[this].Field[FullPath]", "value"]
+      - ["system.io.fileinfo", "Method[moveto]", "Argument[0]", "Argument[this].Field[OriginalPath]", "value"]
+      - ["system.io.fileinfo", "Method[open]", "Argument[this].Field[FullPath]", "ReturnValue", "taint"]
+      - ["system.io.fileinfo", "Method[openread]", "Argument[this].Field[FullPath]", "ReturnValue", "taint"]
+      - ["system.io.fileinfo", "Method[opentext]", "Argument[this].Field[FullPath]", "ReturnValue", "taint"]
+      - ["system.io.fileinfo", "Method[openwrite]", "Argument[this].Field[FullPath]", "ReturnValue", "taint"]

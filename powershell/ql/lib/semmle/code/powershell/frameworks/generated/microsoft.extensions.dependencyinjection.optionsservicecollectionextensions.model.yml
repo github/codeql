@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[addoptions]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[configure]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[configureall]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[configureoptions]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[postconfigure]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.optionsservicecollectionextensions", "Method[postconfigureall]", "Argument[0]", "ReturnValue", "value"]

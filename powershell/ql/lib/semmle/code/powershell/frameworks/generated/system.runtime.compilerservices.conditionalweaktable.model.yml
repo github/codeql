@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getoradd]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getoradd]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getoradd]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getoradd]", "Argument[2]", "Argument[1].Parameter[1]", "value"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getvalue]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.runtime.compilerservices.conditionalweaktable", "Method[getvalue]", "Argument[1].ReturnValue", "ReturnValue", "value"]

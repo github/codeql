@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.ildisassembler", "Method[appendname]", "Argument[1].Field[Name]", "Argument[0]", "taint"]
+      - ["internal.il.ildisassembler", "Method[appendnamefornamespacetypewithoutaliases]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.il.ildisassembler", "Method[appendnamewithvalueclassprefix]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.il.ildisassembler", "Method[appendtype]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.il.ildisassembler", "Method[ildisassembler]", "Argument[0]", "Argument[this]", "taint"]
+      - ["internal.il.ildisassembler", "Method[iltypenameformatter]", "Argument[0]", "Argument[this]", "taint"]

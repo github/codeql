@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.loggerextensions", "Method[beginscope]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.logging.loggerextensions", "Method[beginscope]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.logging.loggerextensions", "Method[beginscope]", "Argument[2].Element", "ReturnValue", "taint"]

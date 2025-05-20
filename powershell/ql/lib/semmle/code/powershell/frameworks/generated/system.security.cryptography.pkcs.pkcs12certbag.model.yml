@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.pkcs.pkcs12certbag", "Method[get_encodedcertificate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.pkcs.pkcs12certbag", "Method[getcertificatetype]", "Argument[this].SyntheticField[_certTypeOid]", "ReturnValue", "value"]
+      - ["system.security.cryptography.pkcs.pkcs12certbag", "Method[pkcs12certbag]", "Argument[0]", "Argument[this].SyntheticField[_certTypeOid]", "value"]

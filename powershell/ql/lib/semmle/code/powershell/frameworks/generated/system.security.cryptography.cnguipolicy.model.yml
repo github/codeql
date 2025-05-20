@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cnguipolicy", "Method[cnguipolicy]", "Argument[1]", "Argument[this].Field[FriendlyName]", "value"]
+      - ["system.security.cryptography.cnguipolicy", "Method[cnguipolicy]", "Argument[2]", "Argument[this].Field[Description]", "value"]
+      - ["system.security.cryptography.cnguipolicy", "Method[cnguipolicy]", "Argument[3]", "Argument[this].Field[UseContext]", "value"]
+      - ["system.security.cryptography.cnguipolicy", "Method[cnguipolicy]", "Argument[4]", "Argument[this].Field[CreationTitle]", "value"]

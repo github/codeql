@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.formats.asn1.asnwriter", "Method[encode]", "Argument[0].ReturnValue", "ReturnValue", "value"]
+      - ["system.formats.asn1.asnwriter", "Method[encode]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.formats.asn1.asnwriter", "Method[encode]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.formats.asn1.asnwriter", "Method[pushoctetstring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.formats.asn1.asnwriter", "Method[pushsequence]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.formats.asn1.asnwriter", "Method[pushsetof]", "Argument[this]", "ReturnValue", "taint"]

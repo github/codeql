@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.timezoneinfo", "Method[createadjustmentrule]", "Argument[2]", "ReturnValue.SyntheticField[_daylightDelta]", "value"]
+      - ["system.timezoneinfo", "Method[createadjustmentrule]", "Argument[3]", "ReturnValue.SyntheticField[_daylightTransitionStart]", "value"]
+      - ["system.timezoneinfo", "Method[createadjustmentrule]", "Argument[4]", "ReturnValue.SyntheticField[_daylightTransitionEnd]", "value"]
+      - ["system.timezoneinfo", "Method[createadjustmentrule]", "Argument[5]", "ReturnValue.SyntheticField[_baseUtcOffsetDelta]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[0]", "ReturnValue.SyntheticField[_id]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[1]", "ReturnValue.SyntheticField[_baseUtcOffset]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[2]", "ReturnValue.SyntheticField[_displayName]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[3]", "ReturnValue.SyntheticField[_daylightDisplayName]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[3]", "ReturnValue.SyntheticField[_standardDisplayName]", "value"]
+      - ["system.timezoneinfo", "Method[createcustomtimezone]", "Argument[4]", "ReturnValue.SyntheticField[_daylightDisplayName]", "value"]
+      - ["system.timezoneinfo", "Method[findsystemtimezonebyid]", "Argument[0]", "ReturnValue.SyntheticField[_id]", "value"]
+      - ["system.timezoneinfo", "Method[get_baseutcoffset]", "Argument[this].SyntheticField[_baseUtcOffset]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_baseutcoffsetdelta]", "Argument[this].SyntheticField[_baseUtcOffsetDelta]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_daylightdelta]", "Argument[this].SyntheticField[_daylightDelta]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_daylightname]", "Argument[this].SyntheticField[_daylightDisplayName]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_daylighttransitionend]", "Argument[this].SyntheticField[_daylightTransitionEnd]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_daylighttransitionstart]", "Argument[this].SyntheticField[_daylightTransitionStart]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_displayname]", "Argument[this].SyntheticField[_displayName]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_id]", "Argument[this].SyntheticField[_id]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[get_standardname]", "Argument[this].SyntheticField[_standardDisplayName]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[getutcoffset]", "Argument[this].Field[BaseUtcOffset]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[getutcoffset]", "Argument[this].SyntheticField[_baseUtcOffset]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[tostring]", "Argument[this].Field[DisplayName]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[tostring]", "Argument[this].SyntheticField[_displayName]", "ReturnValue", "value"]
+      - ["system.timezoneinfo", "Method[tryfindsystemtimezonebyid]", "Argument[0]", "Argument[1].SyntheticField[_id]", "value"]

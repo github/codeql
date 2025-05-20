@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.path", "Method[changeextension]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.io.path", "Method[join]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.io.path", "Method[join]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.io.path", "Method[join]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.io.path", "Method[join]", "Argument[3]", "ReturnValue", "value"]
+      - ["system.io.path", "Method[trimendingdirectoryseparator]", "Argument[0]", "ReturnValue", "value"]

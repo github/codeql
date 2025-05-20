@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.primitives.exportdefinition", "Method[exportdefinition]", "Argument[0]", "Argument[this].SyntheticField[_contractName]", "value"]
+      - ["system.componentmodel.composition.primitives.exportdefinition", "Method[exportdefinition]", "Argument[1]", "Argument[this].SyntheticField[_metadata]", "value"]
+      - ["system.componentmodel.composition.primitives.exportdefinition", "Method[get_contractname]", "Argument[this].SyntheticField[_contractName]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.primitives.exportdefinition", "Method[get_metadata]", "Argument[this].SyntheticField[_metadata]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.primitives.exportdefinition", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

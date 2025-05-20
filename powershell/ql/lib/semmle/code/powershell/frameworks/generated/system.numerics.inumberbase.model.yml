@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.inumberbase", "Method[createchecked]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumberbase", "Method[createsaturating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumberbase", "Method[createtruncating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumberbase", "Method[multiplyaddestimate]", "Argument[2]", "ReturnValue", "taint"]

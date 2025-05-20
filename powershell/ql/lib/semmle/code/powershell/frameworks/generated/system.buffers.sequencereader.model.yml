@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.buffers.sequencereader", "Method[get_unreadsequence]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.buffers.sequencereader", "Method[sequencereader]", "Argument[0]", "Argument[this].Field[Sequence]", "value"]
+      - ["system.buffers.sequencereader", "Method[trypeek]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.buffers.sequencereader", "Method[trypeek]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.buffers.sequencereader", "Method[tryread]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.buffers.sequencereader", "Method[tryreadexact]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.buffers.sequencereader", "Method[tryreadto]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.buffers.sequencereader", "Method[tryreadtoany]", "Argument[this]", "Argument[0]", "taint"]

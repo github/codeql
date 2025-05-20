@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.regioninfo", "Method[get_currencyenglishname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_currencynativename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_currencysymbol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_displayname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_englishname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_isocurrencysymbol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_nativename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_threeletterisoregionname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[get_threeletterwindowsregionname]", "Argument[this].Field[ThreeLetterISORegionName]", "ReturnValue", "value"]
+      - ["system.globalization.regioninfo", "Method[get_twoletterisoregionname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.regioninfo", "Method[regioninfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.globalization.regioninfo", "Method[tostring]", "Argument[this].Field[Name]", "ReturnValue", "value"]

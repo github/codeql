@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.x509certificates.x509certificate2", "Method[get_extensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509certificate2", "Method[get_publickey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509certificate2", "Method[get_rawdatamemory]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509certificate2", "Method[tostring]", "Argument[this].Field[Issuer]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509certificate2", "Method[tostring]", "Argument[this].Field[Subject]", "ReturnValue", "taint"]

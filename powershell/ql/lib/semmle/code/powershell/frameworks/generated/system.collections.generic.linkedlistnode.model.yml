@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.linkedlistnode", "Method[get_list]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.linkedlistnode", "Method[get_next]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.linkedlistnode", "Method[get_previous]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.linkedlistnode", "Method[linkedlistnode]", "Argument[0]", "Argument[this]", "taint"]

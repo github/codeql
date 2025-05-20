@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.sockets.socket", "Method[accept]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socket", "Method[acceptasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[bind]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[connect]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[connectasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[connectasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[disconnectasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[get_localendpoint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socket", "Method[get_remoteendpoint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socket", "Method[get_safehandle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socket", "Method[receiveasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivefrom]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivefrom]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivefrom]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivefrom]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivefromasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivemessagefrom]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivemessagefrom]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[receivemessagefromasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendpacketsasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendto]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendto]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendto]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendto]", "Argument[4]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendtoasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendtoasync]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendtoasync]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.net.sockets.socket", "Method[sendtoasync]", "Argument[this]", "Argument[0]", "taint"]

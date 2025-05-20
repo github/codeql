@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.canonbasetype", "Method[canonbasetype]", "Argument[0]", "Argument[this].SyntheticField[_context]", "value"]
+      - ["internal.typesystem.canonbasetype", "Method[get_context]", "Argument[this].SyntheticField[_context]", "ReturnValue", "value"]
+      - ["internal.typesystem.canonbasetype", "Method[get_metadatabasetype]", "Argument[this].Field[BaseType]", "ReturnValue", "value"]
+      - ["internal.typesystem.canonbasetype", "Method[get_module]", "Argument[this].SyntheticField[_context].Field[SystemModule]", "ReturnValue", "value"]

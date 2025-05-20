@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.memberassignment", "Method[get_expression]", "Argument[this].SyntheticField[_expression]", "ReturnValue", "value"]
+      - ["system.linq.expressions.memberassignment", "Method[update]", "Argument[0]", "ReturnValue.SyntheticField[_expression]", "value"]
+      - ["system.linq.expressions.memberassignment", "Method[update]", "Argument[this]", "ReturnValue", "value"]

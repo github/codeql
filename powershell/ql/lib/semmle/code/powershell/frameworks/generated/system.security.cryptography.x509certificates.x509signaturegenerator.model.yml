@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.x509certificates.x509signaturegenerator", "Method[createforecdsa]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509signaturegenerator", "Method[createforrsa]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.x509certificates.x509signaturegenerator", "Method[createforrsa]", "Argument[1]", "ReturnValue", "taint"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.vector", "Method[abs]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.vector", "Method[copysign]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.vector", "Method[op_unaryplus]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.vector", "Method[round]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.vector", "Method[truncate]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.vector", "Method[withelement]", "Argument[0]", "ReturnValue", "value"]

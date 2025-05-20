@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.dotnet.build.tasks.tpnsection", "Method[tostring]", "Argument[this].Field[Content]", "ReturnValue", "taint"]
+      - ["microsoft.dotnet.build.tasks.tpnsection", "Method[tostring]", "Argument[this].Field[Header].Field[Name]", "ReturnValue", "taint"]
+      - ["microsoft.dotnet.build.tasks.tpnsection", "Method[tostring]", "Argument[this].Field[Header].Field[SeparatorLine]", "ReturnValue", "taint"]

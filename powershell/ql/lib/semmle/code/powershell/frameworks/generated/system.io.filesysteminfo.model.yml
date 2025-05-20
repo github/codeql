@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.filesysteminfo", "Method[get_extension]", "Argument[this].Field[FullPath]", "ReturnValue", "value"]
+      - ["system.io.filesysteminfo", "Method[get_fullname]", "Argument[this].Field[FullPath]", "ReturnValue", "value"]
+      - ["system.io.filesysteminfo", "Method[get_linktarget]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.filesysteminfo", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.filesysteminfo", "Method[tostring]", "Argument[this].Field[OriginalPath]", "ReturnValue", "value"]

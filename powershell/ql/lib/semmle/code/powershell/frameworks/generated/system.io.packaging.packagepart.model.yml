@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.packaging.packagepart", "Method[createrelationship]", "Argument[0]", "ReturnValue.SyntheticField[_targetUri]", "value"]
+      - ["system.io.packaging.packagepart", "Method[createrelationship]", "Argument[2]", "ReturnValue.SyntheticField[_relationshipType]", "value"]
+      - ["system.io.packaging.packagepart", "Method[createrelationship]", "Argument[3]", "ReturnValue.SyntheticField[_id]", "value"]
+      - ["system.io.packaging.packagepart", "Method[get_contenttype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[get_package]", "Argument[this].SyntheticField[_container]", "ReturnValue", "value"]
+      - ["system.io.packaging.packagepart", "Method[get_uri]", "Argument[this].SyntheticField[_uri]", "ReturnValue", "value"]
+      - ["system.io.packaging.packagepart", "Method[getrelationships]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[getrelationshipsbytype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[getrelationshipsbytype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[getstream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[getstreamcore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.packaging.packagepart", "Method[packagepart]", "Argument[0]", "Argument[this].SyntheticField[_container]", "value"]
+      - ["system.io.packaging.packagepart", "Method[packagepart]", "Argument[1]", "Argument[this].SyntheticField[_uri]", "value"]

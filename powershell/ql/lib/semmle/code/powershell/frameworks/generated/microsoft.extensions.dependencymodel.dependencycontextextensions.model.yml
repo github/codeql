@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencymodel.dependencycontextextensions", "Method[getdefaultnativeassets]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencymodel.dependencycontextextensions", "Method[getdefaultnativeruntimefileassets]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencymodel.dependencycontextextensions", "Method[getruntimenativeassets]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.dependencymodel.dependencycontextextensions", "Method[getruntimenativeruntimefileassets]", "Argument[0]", "ReturnValue", "taint"]

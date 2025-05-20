@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.textinfo", "Method[get_culturename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.textinfo", "Method[readonly]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.textinfo", "Method[tolower]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.textinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.textinfo", "Method[totitlecase]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.textinfo", "Method[toupper]", "Argument[0]", "ReturnValue", "value"]

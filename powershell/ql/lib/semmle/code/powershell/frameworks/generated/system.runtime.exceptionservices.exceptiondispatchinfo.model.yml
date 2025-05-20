@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[capture]", "Argument[0]", "ReturnValue.SyntheticField[_exception]", "value"]
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[get_sourceexception]", "Argument[this].SyntheticField[_exception]", "ReturnValue", "value"]
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[setcurrentstacktrace]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[setremotestacktrace]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[setremotestacktrace]", "Argument[1]", "Argument[0].SyntheticField[_remoteStackTraceString]", "taint"]
+      - ["system.runtime.exceptionservices.exceptiondispatchinfo", "Method[setremotestacktrace]", "Argument[1]", "ReturnValue.SyntheticField[_remoteStackTraceString]", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.methodilscope", "Method[get_owningmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodilscope", "Method[getmethodilscopedefinition]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.il.methodilscope", "Method[getobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodilscope", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

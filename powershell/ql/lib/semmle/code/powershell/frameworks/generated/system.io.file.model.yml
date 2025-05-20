@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.io.file", "Method[appendallbytesasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[appendalllinesasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[appendalllinesasync]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[appendalltextasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[appendalltextasync]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[createsymboliclink]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.file", "Method[createsymboliclink]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.file", "Method[open]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[openhandle]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[openread]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[opentext]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[openwrite]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[readalltext]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[readlines]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[readlines]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[writeallbytesasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[writealllinesasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[writealllinesasync]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[writealltextasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.io.file", "Method[writealltextasync]", "Argument[3]", "ReturnValue", "taint"]

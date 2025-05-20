@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.codeanalysis.membernotnullwhenattribute", "Method[membernotnullwhenattribute]", "Argument[1]", "Argument[this].Field[Members].Element", "value"]
+      - ["system.diagnostics.codeanalysis.membernotnullwhenattribute", "Method[membernotnullwhenattribute]", "Argument[1]", "Argument[this].Field[Members]", "value"]

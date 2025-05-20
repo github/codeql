@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmltextreader", "Method[get_baseuri]", "Argument[this].SyntheticField[_impl].SyntheticField[_reportedBaseUri]", "ReturnValue", "value"]
+      - ["system.xml.xmltextreader", "Method[get_encoding]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmltextreader", "Method[get_nametable]", "Argument[this].SyntheticField[_impl].SyntheticField[_nameTable]", "ReturnValue", "value"]
+      - ["system.xml.xmltextreader", "Method[getremainder]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmltextreader", "Method[readstring]", "Argument[this].Field[Value]", "ReturnValue", "taint"]
+      - ["system.xml.xmltextreader", "Method[set_xmlresolver]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmltextreader", "Method[xmltextreader]", "Argument[0]", "Argument[this].SyntheticField[_impl].SyntheticField[_nameTable]", "value"]
+      - ["system.xml.xmltextreader", "Method[xmltextreader]", "Argument[0]", "Argument[this].SyntheticField[_impl].SyntheticField[_reportedBaseUri]", "taint"]
+      - ["system.xml.xmltextreader", "Method[xmltextreader]", "Argument[0]", "Argument[this].SyntheticField[_impl].SyntheticField[_reportedBaseUri]", "value"]
+      - ["system.xml.xmltextreader", "Method[xmltextreader]", "Argument[2]", "Argument[this]", "taint"]

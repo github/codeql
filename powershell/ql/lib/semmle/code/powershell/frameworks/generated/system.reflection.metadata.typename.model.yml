@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.typename", "Method[get_declaringtype]", "Argument[this].SyntheticField[_declaringType]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.typename", "Method[get_fullname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typename", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.typename", "Method[getelementtype]", "Argument[this].SyntheticField[_elementOrGenericType]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.typename", "Method[getgenericarguments]", "Argument[this].SyntheticField[_genericArguments]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.typename", "Method[getgenerictypedefinition]", "Argument[this].SyntheticField[_elementOrGenericType]", "ReturnValue", "value"]
+      - ["system.reflection.metadata.typename", "Method[makearraytypename]", "Argument[this].Field[AssemblyName]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makearraytypename]", "Argument[this]", "ReturnValue.SyntheticField[_elementOrGenericType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makebyreftypename]", "Argument[this].Field[AssemblyName]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makebyreftypename]", "Argument[this]", "ReturnValue.SyntheticField[_elementOrGenericType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makegenerictypename]", "Argument[0]", "ReturnValue.SyntheticField[_genericArguments]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makegenerictypename]", "Argument[this].Field[AssemblyName]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makegenerictypename]", "Argument[this].SyntheticField[_declaringType]", "ReturnValue.SyntheticField[_declaringType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makegenerictypename]", "Argument[this]", "ReturnValue.SyntheticField[_elementOrGenericType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makepointertypename]", "Argument[this].Field[AssemblyName]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makepointertypename]", "Argument[this]", "ReturnValue.SyntheticField[_elementOrGenericType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makeszarraytypename]", "Argument[this].Field[AssemblyName]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[makeszarraytypename]", "Argument[this]", "ReturnValue.SyntheticField[_elementOrGenericType]", "value"]
+      - ["system.reflection.metadata.typename", "Method[withassemblyname]", "Argument[0]", "ReturnValue.Field[AssemblyName]", "value"]
+      - ["system.reflection.metadata.typename", "Method[withassemblyname]", "Argument[0]", "ReturnValue.SyntheticField[_declaringType].Field[AssemblyName]", "value"]

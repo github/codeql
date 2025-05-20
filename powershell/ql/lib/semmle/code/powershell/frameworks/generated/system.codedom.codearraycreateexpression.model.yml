@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codearraycreateexpression", "Method[codearraycreateexpression]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.codearraycreateexpression", "Method[codearraycreateexpression]", "Argument[1]", "Argument[this].Field[SizeExpression]", "value"]
+      - ["system.codedom.codearraycreateexpression", "Method[get_initializers]", "Argument[this]", "ReturnValue", "taint"]

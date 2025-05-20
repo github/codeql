@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.exception", "Method[exception]", "Argument[0]", "Argument[this].SyntheticField[_message]", "value"]
+      - ["system.exception", "Method[exception]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.exception", "Method[exception]", "Argument[1]", "Argument[this].SyntheticField[_innerException]", "value"]
+      - ["system.exception", "Method[get_innerexception]", "Argument[this].SyntheticField[_innerException]", "ReturnValue", "value"]
+      - ["system.exception", "Method[get_message]", "Argument[this].SyntheticField[_message]", "ReturnValue", "value"]
+      - ["system.exception", "Method[get_stacktrace]", "Argument[this].SyntheticField[_remoteStackTraceString]", "ReturnValue", "value"]
+      - ["system.exception", "Method[getbaseexception]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.exception", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

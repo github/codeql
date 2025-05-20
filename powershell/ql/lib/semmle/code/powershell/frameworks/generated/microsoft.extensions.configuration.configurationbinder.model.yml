@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.configuration.configurationbinder", "Method[get]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.configuration.configurationbinder", "Method[getvalue]", "Argument[2]", "ReturnValue", "value"]
+      - ["microsoft.extensions.configuration.configurationbinder", "Method[getvalue]", "Argument[3]", "ReturnValue", "value"]

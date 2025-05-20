@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.iexternalscopeprovider", "Method[foreachscope]", "Argument[1]", "Argument[0].Parameter[1]", "value"]
+      - ["microsoft.extensions.logging.iexternalscopeprovider", "Method[push]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.logging.iexternalscopeprovider", "Method[push]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.keyvaluepair", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.collections.generic.keyvaluepair", "Method[create]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.collections.generic.keyvaluepair", "Method[deconstruct]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.collections.generic.keyvaluepair", "Method[deconstruct]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.collections.generic.keyvaluepair", "Method[get_key]", "Argument[this].SyntheticField[key]", "ReturnValue", "value"]
+      - ["system.collections.generic.keyvaluepair", "Method[get_value]", "Argument[this].SyntheticField[value]", "ReturnValue", "value"]
+      - ["system.collections.generic.keyvaluepair", "Method[keyvaluepair]", "Argument[0]", "Argument[this].SyntheticField[key]", "value"]
+      - ["system.collections.generic.keyvaluepair", "Method[keyvaluepair]", "Argument[1]", "Argument[this].SyntheticField[value]", "value"]

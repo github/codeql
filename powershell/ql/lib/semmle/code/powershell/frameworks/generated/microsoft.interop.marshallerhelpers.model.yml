@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.marshallerhelpers", "Method[getcompatiblegenerictypeparametersyntax]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.interop.marshallerhelpers", "Method[getlastindexmarshalledidentifier]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.marshallerhelpers", "Method[getmanagedspanidentifier]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.marshallerhelpers", "Method[getmarshalleridentifier]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.marshallerhelpers", "Method[getnativespanidentifier]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.marshallerhelpers", "Method[getnumelementsidentifier]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.marshallerhelpers", "Method[gettopologicallysortedelements]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["microsoft.interop.marshallerhelpers", "Method[gettopologicallysortedelements]", "Argument[0].Element", "Argument[2].Parameter[0]", "value"]

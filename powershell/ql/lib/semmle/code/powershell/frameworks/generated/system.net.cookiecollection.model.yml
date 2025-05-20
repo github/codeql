@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.net.cookiecollection", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[m_list].Element", "value"]
+      - ["system.net.cookiecollection", "Method[copyto]", "Argument[this].SyntheticField[m_list].Element", "Argument[0].Element", "value"]
+      - ["system.net.cookiecollection", "Method[get_item]", "Argument[this].SyntheticField[m_list].Element", "ReturnValue", "value"]
+      - ["system.net.cookiecollection", "Method[getenumerator]", "Argument[this].SyntheticField[m_list].Element", "ReturnValue.Element", "value"]

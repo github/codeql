@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.assembly", "Method[createqualifiedname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[createqualifiedname]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_codebase]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_customattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_entrypoint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_escapedcodebase]", "Argument[this].Field[CodeBase]", "ReturnValue", "value"]
+      - ["system.reflection.assembly", "Method[get_fullname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_imageruntimeversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_location]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_manifestmodule]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[get_modules]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getfile]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getloadedmodules]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getmanifestresourceinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getmanifestresourcestream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getmodule]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getmodules]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[getsatelliteassembly]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[gettype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[loadmodule]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assembly", "Method[tostring]", "Argument[this].Field[FullName]", "ReturnValue", "value"]

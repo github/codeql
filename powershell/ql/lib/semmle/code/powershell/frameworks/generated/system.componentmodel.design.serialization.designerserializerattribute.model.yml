@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.design.serialization.designerserializerattribute", "Method[designerserializerattribute]", "Argument[0]", "Argument[this].Field[SerializerTypeName]", "value"]
+      - ["system.componentmodel.design.serialization.designerserializerattribute", "Method[designerserializerattribute]", "Argument[1]", "Argument[this].Field[SerializerBaseTypeName]", "value"]
+      - ["system.componentmodel.design.serialization.designerserializerattribute", "Method[get_typeid]", "Argument[this].Field[SerializerBaseTypeName]", "Argument[this].SyntheticField[_typeId]", "taint"]
+      - ["system.componentmodel.design.serialization.designerserializerattribute", "Method[get_typeid]", "Argument[this].Field[SerializerBaseTypeName]", "ReturnValue", "taint"]
+      - ["system.componentmodel.design.serialization.designerserializerattribute", "Method[get_typeid]", "Argument[this].SyntheticField[_typeId]", "ReturnValue", "value"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.fileproviders.physical.physicalfileinfo", "Method[createreadstream]", "Argument[this].Field[PhysicalPath]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.fileproviders.physical.physicalfileinfo", "Method[createreadstream]", "Argument[this].SyntheticField[_info].Field[FullName]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.fileproviders.physical.physicalfileinfo", "Method[get_name]", "Argument[this].SyntheticField[_info].Field[Name]", "ReturnValue", "value"]
+      - ["microsoft.extensions.fileproviders.physical.physicalfileinfo", "Method[get_physicalpath]", "Argument[this].SyntheticField[_info].Field[FullName]", "ReturnValue", "value"]
+      - ["microsoft.extensions.fileproviders.physical.physicalfileinfo", "Method[physicalfileinfo]", "Argument[0]", "Argument[this].SyntheticField[_info]", "value"]

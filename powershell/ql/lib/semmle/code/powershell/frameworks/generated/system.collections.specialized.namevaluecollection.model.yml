@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.specialized.namevaluecollection", "Method[add]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[get]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[get_allkeys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[getkey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[namevaluecollection]", "Argument[0]", "Argument[this].Element", "value"]
+      - ["system.collections.specialized.namevaluecollection", "Method[namevaluecollection]", "Argument[1]", "Argument[this].Element", "value"]
+      - ["system.collections.specialized.namevaluecollection", "Method[set]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.namevaluecollection", "Method[set_item]", "Argument[0]", "Argument[this]", "taint"]

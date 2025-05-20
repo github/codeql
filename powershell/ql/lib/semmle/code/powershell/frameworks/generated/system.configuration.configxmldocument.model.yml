@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configxmldocument", "Method[createattribute]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createcdatasection]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createcomment]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createelement]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createsignificantwhitespace]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createtextnode]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[createwhitespace]", "Argument[this].SyntheticField[_filename]", "ReturnValue.SyntheticField[_filename]", "value"]
+      - ["system.configuration.configxmldocument", "Method[get_filename]", "Argument[this].SyntheticField[_filename]", "ReturnValue", "value"]
+      - ["system.configuration.configxmldocument", "Method[loadsingleelement]", "Argument[0]", "Argument[this].SyntheticField[_filename]", "value"]

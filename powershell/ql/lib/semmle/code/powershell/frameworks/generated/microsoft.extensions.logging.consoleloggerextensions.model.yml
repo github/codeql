@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.consoleloggerextensions", "Method[addconsole]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.consoleloggerextensions", "Method[addconsoleformatter]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.consoleloggerextensions", "Method[addjsonconsole]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.consoleloggerextensions", "Method[addsimpleconsole]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.consoleloggerextensions", "Method[addsystemdconsole]", "Argument[0]", "ReturnValue", "value"]

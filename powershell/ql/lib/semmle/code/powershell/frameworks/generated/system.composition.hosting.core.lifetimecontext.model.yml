@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.lifetimecontext", "Method[findcontextwithin]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.lifetimecontext", "Method[getorcreate]", "Argument[1]", "Argument[2].Parameter[1]", "value"]
+      - ["system.composition.hosting.core.lifetimecontext", "Method[getorcreate]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.lifetimecontext", "Method[getorcreate]", "Argument[this]", "Argument[2].Parameter[0]", "value"]
+      - ["system.composition.hosting.core.lifetimecontext", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

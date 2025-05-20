@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.concurrentexclusiveschedulerpair", "Method[concurrentexclusiveschedulerpair]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.concurrentexclusiveschedulerpair", "Method[get_concurrentscheduler]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.concurrentexclusiveschedulerpair", "Method[get_exclusivescheduler]", "Argument[this]", "ReturnValue", "taint"]
