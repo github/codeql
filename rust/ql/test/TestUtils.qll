@@ -7,8 +7,7 @@ predicate toBeTested(Element e) {
     not e instanceof Locatable
     or
     e.(Locatable).fromSource()
-  ) and
-  not e.(AstNode).isFromMacroExpansion()
+  )
 }
 
 class CrateElement extends Element {
