@@ -39,6 +39,12 @@ string describe(Expr op) {
   op instanceof AssignArithmeticOperation and result = "AssignArithmeticOperation"
   or
   op instanceof PrefixArithmeticOperation and result = "PrefixArithmeticOperation"
+  or
+  op instanceof BitwiseOperation and result = "BitwiseOperation"
+  or
+  op instanceof BinaryBitwiseOperation and result = "BinaryBitwiseOperation"
+  or
+  op instanceof AssignBitwiseOperation and result = "AssignBitwiseOperation"
 }
 
 module OperationsTest implements TestSig {

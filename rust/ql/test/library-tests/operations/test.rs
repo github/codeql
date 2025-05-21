@@ -37,16 +37,16 @@ fn test_operations(
 	!a; // $ Operation Op=! Operands=1 PrefixExpr LogicalOperation
 
 	// bitwise operations
-	x & y; // $ Operation Op=& Operands=2 BinaryExpr
-	x | y; // $ Operation Op=| Operands=2 BinaryExpr
-	x ^ y; // $ Operation Op=^ Operands=2 BinaryExpr
-	x << y; // $ Operation Op=<< Operands=2 BinaryExpr
-	x >> y; // $ Operation Op=>> Operands=2 BinaryExpr
-	x &= y; // $ Operation Op=&= Operands=2 AssignmentOperation BinaryExpr
-	x |= y; // $ Operation Op=|= Operands=2 AssignmentOperation BinaryExpr
-	x ^= y; // $ Operation Op=^= Operands=2 AssignmentOperation BinaryExpr
-	x <<= y; // $ Operation Op=<<= Operands=2 AssignmentOperation BinaryExpr
-	x >>= y; // $ Operation Op=>>= Operands=2 AssignmentOperation BinaryExpr
+	x & y; // $ Operation Op=& Operands=2 BinaryExpr BitwiseOperation BinaryBitwiseOperation
+	x | y; // $ Operation Op=| Operands=2 BinaryExpr BitwiseOperation BinaryBitwiseOperation
+	x ^ y; // $ Operation Op=^ Operands=2 BinaryExpr BitwiseOperation BinaryBitwiseOperation
+	x << y; // $ Operation Op=<< Operands=2 BinaryExpr BitwiseOperation BinaryBitwiseOperation
+	x >> y; // $ Operation Op=>> Operands=2 BinaryExpr BitwiseOperation BinaryBitwiseOperation
+	x &= y; // $ Operation Op=&= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
+	x |= y; // $ Operation Op=|= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
+	x ^= y; // $ Operation Op=^= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
+	x <<= y; // $ Operation Op=<<= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
+	x >>= y; // $ Operation Op=>>= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
 
 	// miscellaneous expressions that might be operations
 	*ptr; // $ Operation Op=* Operands=1 PrefixExpr
