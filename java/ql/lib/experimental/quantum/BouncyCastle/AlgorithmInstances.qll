@@ -1,3 +1,4 @@
 import java
 import experimental.quantum.Language
 import AlgorithmInstances.SignatureAlgorithmInstances
+import AlgorithmInstances.KeyGenerationAlgorithmInstance
