@@ -646,7 +646,6 @@ impl<'a> Translator<'a> {
                 .and_then(|x| x.body())
                 .is_some_and(|body| body.syntax() == syntax)
             {
-                tracing::debug!("Skipping Fn body");
                 return true;
             }
             if syntax
@@ -655,7 +654,6 @@ impl<'a> Translator<'a> {
                 .and_then(|x| x.body())
                 .is_some_and(|body| body.syntax() == syntax)
             {
-                tracing::debug!("Skipping Const body");
                 return true;
             }
             if syntax
@@ -664,7 +662,6 @@ impl<'a> Translator<'a> {
                 .and_then(|x| x.body())
                 .is_some_and(|body| body.syntax() == syntax)
             {
-                tracing::debug!("Skipping Static body");
                 return true;
             }
             if syntax
@@ -673,7 +670,6 @@ impl<'a> Translator<'a> {
                 .and_then(|x| x.pat())
                 .is_some_and(|pat| pat.syntax() == syntax)
             {
-                tracing::debug!("Skipping parameter");
                 return true;
             }
         }
