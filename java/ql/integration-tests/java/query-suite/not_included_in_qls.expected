@@ -158,6 +158,7 @@ ql/java/ql/src/Security/CWE/CWE-312/CleartextStorageClass.ql
 ql/java/ql/src/Security/CWE/CWE-319/HttpsUrls.ql
 ql/java/ql/src/Security/CWE/CWE-319/UseSSL.ql
 ql/java/ql/src/Security/CWE/CWE-319/UseSSLSocketFactories.ql
+ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsApiCall.ql
 ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsComparison.ql
 ql/java/ql/src/Security/CWE/CWE-798/HardcodedCredentialsSourceCall.ql
 ql/java/ql/src/Security/CWE/CWE-798/HardcodedPasswordField.ql
