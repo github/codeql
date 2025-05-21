@@ -1,5 +1,5 @@
 import cpp
-private import experimental.quantum.OpenSSL.LibraryDetector
+import experimental.quantum.OpenSSL.AlgorithmCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
@@ -89,7 +89,6 @@ class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmCo
  *  alias = "dss1" and target = "dsaWithSHA1"
  */
 predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
-  isPossibleOpenSSLFunction(c.getTarget()) and
   exists(string name, string parsedTargetName |
     parsedTargetName =
       c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
@@ -103,7 +102,9 @@ predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
  * if `e` resolves to a known algorithm.
  * If this predicate does not hold, then `e` can be interpreted as being of `UNKNOWN` type.
  */
-predicate resolveAlgorithmFromLiteral(Literal e, string normalized, string algType) {
+predicate resolveAlgorithmFromLiteral(
+  OpenSSLAlgorithmCandidateLiteral e, string normalized, string algType
+) {
   exists(int nid |
     nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithmLiteral(_, nid, normalized, algType)
   )
@@ -125,28 +126,15 @@ string resolveAlgorithmAlias(string name) {
   )
 }
 
-private int getPossibleNidFromLiteral(Literal e) {
+/**
+ * Determines if an int literal (NID) is a candidate for being an algorithm literal.
+ * Checks for common cases where literals are used that would not be indicative of an algorithm.
+ * Returns the int literal value if the literal is a candidate for an algorithm.
+ */
+private int getPossibleNidFromLiteral(OpenSSLAlgorithmCandidateLiteral e) {
   result = e.getValue().toInt() and
   not e instanceof CharLiteral and
-  not e instanceof StringLiteral and
-  // ASSUMPTION, no negative numbers are allowed
-  // RATIONALE: this is a performance improvement to avoid having to trace every number
-  not exists(UnaryMinusExpr u | u.getOperand() = e) and
-  //  OPENSSL has a special macro for getting every line, ignore it
-  not exists(MacroInvocation mi | mi.getExpr() = e and mi.getMacroName() = "OPENSSL_LINE") and
-  // Filter out cases where an int is assigned into a pointer, e.g., char* x = NULL;
-  not exists(Assignment a |
-    a.getRValue() = e and a.getLValue().getType().getUnspecifiedType() instanceof PointerType
-  ) and
-  not exists(Initializer i |
-    i.getExpr() = e and
-    i.getDeclaration().getADeclarationEntry().getUnspecifiedType() instanceof PointerType
-  ) and
-  // Filter out cases where an int is returned into a pointer, e.g., return NULL;
-  not exists(ReturnStmt r |
-    r.getExpr() = e and
-    r.getEnclosingFunction().getType().getUnspecifiedType() instanceof PointerType
-  )
+  not e instanceof StringLiteral
 }
 
 string getAlgorithmAlias(string alias) {
