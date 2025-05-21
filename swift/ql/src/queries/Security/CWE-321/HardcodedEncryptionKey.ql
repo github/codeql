@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
- * @precision high
+ * @precision low
  * @id swift/hardcoded-key
  * @tags security
  *       external/cwe/cwe-321

@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id go/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
