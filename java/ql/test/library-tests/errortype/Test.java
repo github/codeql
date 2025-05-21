@@ -11,7 +11,7 @@ public class Test {
     public void method() { }
   }
 
-  public testDispatch() {
+  public void testDispatch() {
     GenericClass<String> g1 = new GenericClass<>();
     g1.method();
     GenericClass<NoSuchClass> g2 = new GenericClass<>();
