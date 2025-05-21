@@ -144,13 +144,13 @@ private predicate certainVariableUpdate(TrackedVar v, ControlFlowNode n, BasicBl
 pragma[nomagic]
 private predicate hasEntryDef(TrackedVar v, BasicBlock b) {
   exists(LocalScopeVariable l, Callable c |
-    v = TLocalVar(c, l) and c.getBody().getControlFlowNode() = b
+    v = TLocalVar(c, l) and c.getBody().getBasicBlock() = b
   |
     l instanceof Parameter or
     l.getCallable() != c
   )
   or
-  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getControlFlowNode() = b
+  v instanceof SsaSourceField and v.getEnclosingCallable().getBody().getBasicBlock() = b
 }
 
 /** Holds if `n` might update the locally tracked variable `v`. */
@@ -165,15 +165,14 @@ private predicate uncertainVariableUpdate(TrackedVar v, ControlFlowNode n, Basic
 
 private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import java as J
-  private import semmle.code.java.controlflow.Dominance as Dom
 
   class BasicBlock = J::BasicBlock;
 
   class ControlFlowNode = J::ControlFlowNode;
 
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { Dom::bbIDominates(result, bb) }
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
 
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getABBSuccessor() }
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
 
   class SourceVariable = SsaSourceVariable;
 

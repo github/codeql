@@ -6,6 +6,7 @@ extractor: java
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
   codeql/quantum: ${workspace}

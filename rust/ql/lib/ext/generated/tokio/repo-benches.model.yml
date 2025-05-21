@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo::benches", "<crate::ChunkReader as crate::io::async_read::AsyncRead>::poll_read", "Argument[1]", "log-injection", "df-generated"]

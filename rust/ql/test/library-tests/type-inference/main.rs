@@ -1224,6 +1224,21 @@ mod builtins {
     }
 }
 
+mod operators {
+    pub fn f() {
+        let x = true && false; // $ type=x:bool
+        let y = true || false; // $ type=y:bool
+
+        let mut a;
+        if 34 == 33 {
+            let z = (a = 1); // $ type=z:() type=a:i32
+        } else {
+            a = 2; // $ type=a:i32
+        }
+        a; // $ type=a:i32
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1242,4 +1257,5 @@ fn main() {
     borrowed_typed::f();
     try_expressions::f();
     builtins::f();
+    operators::f();
 }
