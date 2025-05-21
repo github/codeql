@@ -1226,16 +1226,16 @@ mod builtins {
 
 mod operators {
     pub fn f() {
-        let x = true && false; // $ MISSING: type=x:bool
-        let y = true || false; // $ MISSING: type=y:bool
+        let x = true && false; // $ type=x:bool
+        let y = true || false; // $ type=y:bool
 
         let mut a;
         if 34 == 33 {
-            let z = (a = 1); // $ MISSING: type=z:() MISSING: type=a:i32
+            let z = (a = 1); // $ type=z:() type=a:i32
         } else {
-            a = 2; // $ MISSING: type=a:i32
+            a = 2; // $ type=a:i32
         }
-        a; // $ MISSING: type=a:i32
+        a; // $ type=a:i32
     }
 }
 

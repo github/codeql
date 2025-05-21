@@ -7,6 +7,7 @@ private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 class Type = T::Type;
 
@@ -190,6 +191,21 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
 }
 
+private Type inferLogicalOperationType(AstNode n, TypePath path) {
+  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+    n = [be, be.getLhs(), be.getRhs()] and
+    path.isEmpty() and
+    result = TStruct(t) and
+    t instanceof Builtins::Bool
+  )
+}
+
+private Type inferAssignmentOperationType(AstNode n, TypePath path) {
+  n instanceof AssignmentOperation and
+  path.isEmpty() and
+  result = TUnit()
+}
+
 /**
  * Holds if the type of `n1` at `path1` is the same as the type of `n2` at
  * `path2` and type information should propagate in both directions through the
@@ -235,6 +251,12 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
   exists(BreakExpr break |
     break.getExpr() = n1 and
     break.getTarget() = n2.(LoopExpr) and
+    path1 = path2
+  )
+  or
+  exists(AssignmentExpr be |
+    n1 = be.getLhs() and
+    n2 = be.getRhs() and
     path1 = path2
   )
 }
@@ -932,8 +954,6 @@ private Type inferTryExprType(TryExpr te, TypePath path) {
   )
 }
 
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
-
 pragma[nomagic]
 private StructType inferLiteralType(LiteralExpr le) {
   exists(Builtins::BuiltinType t | result = TStruct(t) |
@@ -1155,6 +1175,10 @@ private module Cached {
   Type inferType(AstNode n, TypePath path) {
     Stages::TypeInferenceStage::ref() and
     result = inferAnnotatedType(n, path)
+    or
+    result = inferLogicalOperationType(n, path)
+    or
+    result = inferAssignmentOperationType(n, path)
     or
     result = inferTypeEquality(n, path)
     or
