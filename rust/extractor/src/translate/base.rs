@@ -210,6 +210,14 @@ impl<'a> Translator<'a> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        let severity = if self.source_kind == SourceKind::Library {
+            match severity {
+                DiagnosticSeverity::Error => DiagnosticSeverity::Info,
+                _ => DiagnosticSeverity::Debug,
+            }
+        } else {
+            severity
+        };
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
