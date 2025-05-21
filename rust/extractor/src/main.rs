@@ -4,6 +4,7 @@ use crate::translate::{ResolvePaths, SourceKind};
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
+use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -301,10 +302,14 @@ fn main() -> anyhow::Result<()> {
                     }
                 };
             }
-            for (_, file) in vfs.iter() {
+            for (file_id, file) in vfs.iter() {
                 if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref) {
                     if file.extension().is_some_and(|ext| ext == "rs")
                         && processed_files.insert(file.to_owned())
+                        && db
+                            .source_root(db.file_source_root(file_id).source_root_id(db))
+                            .source_root(db)
+                            .is_library
                     {
                         extractor.extract_with_semantics(
                             file,
