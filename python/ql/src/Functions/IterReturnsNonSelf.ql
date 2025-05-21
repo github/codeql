@@ -4,6 +4,7 @@
  * @kind problem
  * @tags reliability
  *       correctness
+ *       quality
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -11,20 +12,46 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
+import semmle.python.ApiGraphs
 
-Function iter_method(ClassValue t) { result = t.lookup("__iter__").(FunctionValue).getScope() }
+/** Holds if `f` is a method of the class `c`. */
+private predicate methodOfClass(Function f, Class c) {
+  exists(FunctionDef d | d.getDefinedFunction() = f and d.getScope() = c)
+}
 
-predicate is_self(Name value, Function f) { value.getVariable() = f.getArg(0).(Name).getVariable() }
+Function iterMethod(Class c) { methodOfClass(result, c) and result.getName() = "__iter__" }
 
-predicate returns_non_self(Function f) {
+Function nextMethod(Class c) { methodOfClass(result, c) and result.getName() = "__next__" }
+
+predicate isSelfVar(Function f, Name var) { var.getVariable() = f.getArg(0).(Name).getVariable() }
+
+predicate isGoodReturn(Function f, Expr e) {
+  isSelfVar(f, e)
+  or
+  exists(DataFlow::CallCfgNode call, DataFlow::AttrRead read, DataFlow::Node selfNode |
+    e = call.asExpr()
+  |
+    call = API::builtin("iter").getACall() and
+    call.getArg(0) = read and
+    read.accesses(selfNode, "__next__") and
+    isSelfVar(f, selfNode.asExpr()) and
+    call.getArg(1).asExpr() instanceof None
+  )
+}
+
+predicate returnsNonSelf(Function f) {
   exists(f.getFallthroughNode())
   or
-  exists(Return r | r.getScope() = f and not is_self(r.getValue(), f))
+  exists(Return r | r.getScope() = f and not isGoodReturn(f, r.getValue()))
   or
   exists(Return r | r.getScope() = f and not exists(r.getValue()))
 }
 
-from ClassValue t, Function iter
-where t.isIterator() and iter = iter_method(t) and returns_non_self(iter)
-select t, "Class " + t.getName() + " is an iterator but its $@ method does not return 'self'.",
-  iter, iter.getName()
+from Class c, Function iter
+where
+  exists(nextMethod(c)) and
+  iter = iterMethod(c) and
+  returnsNonSelf(iter)
+select iter, "Iter method of iterator $@ does not return `" + iter.getArg(0).getName() + "`.", c,
+  c.getName()
