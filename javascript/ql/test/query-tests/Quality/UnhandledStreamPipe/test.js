@@ -166,4 +166,49 @@ function test() {
     const notStream = getNotAStream();
     notStream.pipe(arg1, arg2, arg3);
   }
+  { // Member access on a non-stream after pipe
+    const notStream = getNotAStream();
+    const val = notStream.pipe(writable).someMember; // $SPURIOUS:Alert
+  }
+  { // Member access on a stream after pipe
+    const notStream = getNotAStream();
+    const val = notStream.pipe(writable).readable; // $Alert
+  }
+  { // Method access on a non-stream after pipe
+    const notStream = getNotAStream();
+    const val = notStream.pipe(writable).someMethod();
+  }
+  { // Pipe on fs readStream
+    const fs = require('fs');
+    const stream = fs.createReadStream('file.txt');
+    const copyStream = stream;
+    copyStream.pipe(destination); // $Alert
+  }
+  {
+    const notStream = getNotAStream();
+    const something = notStream.someNotStreamPropertyAccess;
+    const val = notStream.pipe(writable); // $SPURIOUS:Alert
+  }
+  { 
+    const notStream = getNotAStream();
+    const something = notStream.someNotStreamPropertyAccess();
+    const val = notStream.pipe(writable); // $SPURIOUS:Alert
+  }
+  {
+    const notStream = getNotAStream();
+    notStream.pipe({}); // $SPURIOUS:Alert
+  }
+  {
+    const notStream = getNotAStream();
+    notStream.pipe(()=>{}); // $SPURIOUS:Alert
+  }
+  {
+    const plumber = require('gulp-plumber');
+    getStream().pipe(plumber()).pipe(dest).pipe(dest).pipe(dest); // $SPURIOUS:Alert
+  }
+  {
+    const plumber = require('gulp-plumber');
+    const p = plumber();
+    getStream().pipe(p).pipe(dest).pipe(dest).pipe(dest); // $SPURIOUS:Alert
+  }
 }
