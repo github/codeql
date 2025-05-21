@@ -50,7 +50,7 @@ fn test_operations(
 
 	// miscellaneous expressions that might be operations
 	*ptr; // $ Operation Op=* Operands=1 PrefixExpr DerefExpr
-	&x; // $ RefExpr
+	&x; // $ Operation Op=& Operands=1 RefExpr MISSING: PrefixExpr
 	res?;
 
 	return Ok(());
