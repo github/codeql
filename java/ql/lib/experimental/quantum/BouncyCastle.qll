@@ -32,7 +32,7 @@ module Signers {
    * BouncyCastle algorithms are instantiated by calling the constructor of the
    * corresponding class.
    */
-  class NewCall = SignatureAlgorithmInstance;
+  private class NewCall = SignatureAlgorithmInstance;
 
   /**
    * The type is instantiated by a constructor call and initialized by a call to
@@ -40,7 +40,7 @@ module Signers {
    * whether the operation is signing data or verifying a signature, and the
    * second is the key to use.
    */
-  class InitCall extends MethodCall {
+  private class InitCall extends MethodCall {
     InitCall() { this = any(Signer signer).getAnInitCall() }
 
     Expr getForSigningArg() { result = this.getArgument(0) }
@@ -67,7 +67,7 @@ module Signers {
    * `generateSignature()` or `verifySignature()` methods are used to produce or
    * verify the signature, respectively.
    */
-  class UseCall extends MethodCall {
+  private class UseCall extends MethodCall {
     UseCall() { this = any(Signer signer).getAUseCall() }
 
     predicate isIntermediate() { this.getCallee().getName() = "update" }
@@ -80,7 +80,7 @@ module Signers {
   /**
    * Instantiate the flow analysis module for the `Signer` class.
    */
-  module FlowAnalysis = NewToInitToUseFlowAnalysis<NewCall, InitCall, UseCall>;
+  private module FlowAnalysis = NewToInitToUseFlowAnalysis<NewCall, InitCall, UseCall>;
 
   /**
    * A signing operation instance is a call to either `update()`, `generateSignature()`,
@@ -90,7 +90,7 @@ module Signers {
     SignatureOperationInstance() { not this.isIntermediate() }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      result = FlowAnalysis::getInstantiationFromUse(this, _, _)
+      result = FlowAnalysis::getNewFromUse(this, _, _)
     }
 
     override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -111,16 +111,150 @@ module Signers {
 
     override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
       this.getKeyOperationSubtype() = Crypto::TSignMode() and
-      not super.isIntermediate() and
       result.asExpr() = super.getOutput()
     }
 
     InitCall getInitCall() { result = FlowAnalysis::getInitFromUse(this, _, _) }
 
     UseCall getAnUpdateCall() {
-      super.isIntermediate() and result = this
-      or
       result = FlowAnalysis::getAnIntermediateUseFromFinalUse(this, _, _)
+    }
+  }
+}
+
+/**
+ * Models for the key generation algorithms defined by the `org.bouncycastle.crypto.generators` package.
+ */
+module Generators {
+  import Language
+  import BouncyCastle.FlowAnalysis
+  import BouncyCastle.AlgorithmInstances
+
+  /**
+   * A model of the `KeyGenerator` and `KeyPairGenerator` classes in Bouncy Castle.
+   */
+  class KeyGenerator extends RefType {
+    Crypto::KeyArtifactType type;
+
+    KeyGenerator() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.generators" and
+      (
+        this.getName().matches("%KeyGenerator") and type instanceof Crypto::TSymmetricKeyType
+        or
+        this.getName().matches("%KeyPairGenerator") and type instanceof Crypto::TAsymmetricKeyType
+      )
+    }
+
+    MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
+
+    MethodCall getAUseCall() { result = this.getAMethodCall(["generateKey", "generateKeyPair"]) }
+
+    MethodCall getAMethodCall(string name) {
+      result
+          .getCallee()
+          .hasQualifiedName("org.bouncycastle.crypto.generators", this.getName(), name)
+    }
+
+    Crypto::KeyArtifactType getKeyType() { result = type }
+
+    string getRawAlgorithmName() {
+      this.getKeyType() = Crypto::TSymmetricKeyType() and
+      result = this.getName().splitAt("KeyGenerator", 0)
+      or
+      this.getKeyType() = Crypto::TAsymmetricKeyType() and
+      result = this.getName().splitAt("KeyPairGenerator", 0)
+    }
+  }
+
+  /**
+   * This type is used to model data flow from a key pair to the private and
+   * public components of the key pair.
+   */
+  class KeyPair extends RefType {
+    KeyPair() {
+      this.getPackage().getName() = "org.bouncycastle.crypto" and
+      this.getName() = "%KeyPair" // `AsymmetricCipherKeyPair` or `EphemeralKeyPair`
+    }
+
+    MethodCall getPublicKeyCall() { result = this.getAMethodCall("getPublic") }
+
+    MethodCall getPrivateKeyCall() { result = this.getAMethodCall("getPrivate") }
+
+    MethodCall getAMethodCall(string name) {
+      result.getCallee().hasQualifiedName("org.bouncycastle.crypto", this.getName(), name)
+    }
+  }
+
+  /**
+   * BouncyCastle algorithms are instantiated by calling the constructor of the
+   * corresponding class.
+   */
+  private class KeyGeneratorNewCall = KeyGenerationAlgorithmInstance;
+
+  /**
+   * The type is instantiated by a constructor call and initialized by a call to
+   * `init()` which takes a single `KeyGenerationParameters` argument.
+   */
+  private class KeyGeneratorInitCall extends MethodCall {
+    KeyGenerator gen;
+
+    KeyGeneratorInitCall() { this = gen.getAnInitCall() }
+
+    // TODO: We may need to model this using the `parameters` argument passed to
+    // the `init()` method.
+    Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+  }
+
+  /**
+   * The `generateKey()` and `generateKeyPair()` methods are used to generate
+   * the resulting key, depending on the type of the generator.
+   */
+  private class KeyGeneratorUseCall extends MethodCall {
+    KeyGenerator gen;
+
+    KeyGeneratorUseCall() { this = gen.getAUseCall() }
+
+    // Since key generators don't have `update()` methods, this is always false.
+    predicate isIntermediate() { none() }
+
+    Crypto::KeyArtifactType getKeyType() { result = gen.getKeyType() }
+
+    Expr getOutput() { result = this }
+  }
+
+  private module KeyGeneratorFlow =
+    NewToInitToUseFlowAnalysis<KeyGeneratorNewCall, KeyGeneratorInitCall, KeyGeneratorUseCall>;
+
+  /**
+   * A key generation operation instance is a call to `generateKey()` or
+   * `generateKeyPair()` on a key generator defined under
+   * `org.bouncycastle.crypto.generators`.
+   */
+  class KeyGenerationOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGeneratorUseCall
+  {
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      result = KeyGeneratorFlow::getNewFromUse(this, _, _)
+    }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
+      result.asExpr() = super.getOutput()
+    }
+
+    override Crypto::KeyArtifactType getOutputKeyType() { result = super.getKeyType() }
+
+    override string getKeySizeFixed() {
+      result = KeyGeneratorFlow::getNewFromUse(this, _, _).getKeySizeFixed()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
+      result = KeyGeneratorFlow::getInitFromUse(this, _, _).getKeySizeConsumer()
+    }
+  }
+
+  class KeyGenerationParameters extends RefType {
+    KeyGenerationParameters() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.generators" and
+      this.getName().matches("%KeyGenerationParameters")
     }
   }
 }

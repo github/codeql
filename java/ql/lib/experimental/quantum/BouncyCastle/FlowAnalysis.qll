@@ -1,4 +1,5 @@
 import java
+import experimental.quantum.Language
 import semmle.code.java.dataflow.DataFlow
 
 /**
@@ -17,18 +18,18 @@ signature class UseCallSig instanceof MethodCall {
 }
 
 /**
- * An generic analysis module for analyzing the `getInstance()` to `initialize()` 
- * to `doOperation()` pattern in the JCA, and similar patterns in other libraries.
+ * A generic analysis module for analyzing data flow from class instantiation,
+ * to `init()`, to `doOperation()` in BouncyCastle, and similar patterns in
+ * other libraries.
  *
  * For example:
  * ```
- * kpg = KeyPairGenerator.getInstance();
- * kpg.initialize(...);
- * kpg.generate(...);
+ * gen = new KeyGenerator(...);
+ * gen.init(...);
+ * gen.generateKeyPair(...);
  * ```
  */
-module NewToInitToUseFlowAnalysis<NewCallSig GetInstance, InitCallSig Init, UseCallSig Use>
-{
+module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig Use> {
   newtype TFlowState =
     TUninitialized() or
     TInitialized(Init call) or
@@ -43,12 +44,13 @@ module NewToInitToUseFlowAnalysis<NewCallSig GetInstance, InitCallSig Init, UseC
     }
   }
 
+  // The flow state is uninitialized if the `init` call is not yet made.
   class UninitializedFlowState extends InitFlowState, TUninitialized { }
 
   class InitializedFlowState extends InitFlowState, TInitialized {
     Init call;
     DataFlow::Node node1;
-    DataFlow::Node node2;
+    DataFlow::Node node2; // The receiver of the `init` call
 
     InitializedFlowState() {
       this = TInitialized(call) and
@@ -66,7 +68,7 @@ module NewToInitToUseFlowAnalysis<NewCallSig GetInstance, InitCallSig Init, UseC
 
   class IntermediateUseState extends InitFlowState, TIntermediateUse {
     Use call;
-    DataFlow::Node node1;
+    DataFlow::Node node1; // The receiver of the method call
     DataFlow::Node node2;
 
     IntermediateUseState() {
@@ -88,7 +90,7 @@ module NewToInitToUseFlowAnalysis<NewCallSig GetInstance, InitCallSig Init, UseC
 
     predicate isSource(DataFlow::Node src, FlowState state) {
       state instanceof UninitializedFlowState and
-      src.asExpr() instanceof GetInstance
+      src.asExpr() instanceof New
       or
       src = state.(InitializedFlowState).getSndNode()
       or
@@ -119,48 +121,79 @@ module NewToInitToUseFlowAnalysis<NewCallSig GetInstance, InitCallSig Init, UseC
 
     predicate isBarrier(DataFlow::Node node, FlowState state) {
       exists(Init call | node.asExpr() = call.(MethodCall).getQualifier() |
+        // Ensures that the receiver of a call to `init` is tracked as initialized.
         state instanceof UninitializedFlowState
         or
+        // Ensures that call tracked by the state is the last call to `init`.
         state.(InitializedFlowState).getInitCall() != call
       )
     }
   }
 
-  module GetInstanceToInitToUseFlow = DataFlow::GlobalWithState<GetInstanceToInitToUseConfig>;
+  module NewToInitToUseFlow = DataFlow::GlobalWithState<GetInstanceToInitToUseConfig>;
 
-  GetInstance getInstantiationFromUse(
-    Use use, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-  ) {
+  New getNewFromUse(Use use, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result and
     sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
-    GetInstanceToInitToUseFlow::flowPath(src, sink)
+    NewToInitToUseFlow::flowPath(src, sink)
   }
 
-  GetInstance getInstantiationFromInit(
-    Init init, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-  ) {
+  New getNewFromInit(Init init, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result and
     sink.getNode().asExpr() = init.(MethodCall).getQualifier() and
-    GetInstanceToInitToUseFlow::flowPath(src, sink)
+    NewToInitToUseFlow::flowPath(src, sink)
   }
 
-  Init getInitFromUse(
-    Use use, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
-  ) {
+  Init getInitFromUse(Use use, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result.(MethodCall).getQualifier() and
     sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
-    GetInstanceToInitToUseFlow::flowPath(src, sink)
+    NewToInitToUseFlow::flowPath(src, sink)
   }
 
   predicate hasInit(Use use) { exists(getInitFromUse(use, _, _)) }
 
   Use getAnIntermediateUseFromFinalUse(
-    Use final, GetInstanceToInitToUseFlow::PathNode src, GetInstanceToInitToUseFlow::PathNode sink
+    Use final, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink
   ) {
     not final.isIntermediate() and
     result.isIntermediate() and
     src.getNode().asExpr() = result.(MethodCall).getQualifier() and
     sink.getNode().asExpr() = final.(MethodCall).getQualifier() and
-    GetInstanceToInitToUseFlow::flowPath(src, sink)
+    NewToInitToUseFlow::flowPath(src, sink)
   }
+}
+
+/**
+ * Model data flow from a key pair to the public and private components of the
+ * key pair.
+ */
+class KeyAdditionalFlowSteps extends MethodCall {
+  KeyAdditionalFlowSteps() {
+    this.getCallee().getDeclaringType().getPackage().getName() = "org.bouncycastle.crypto" and
+    this.getCallee().getDeclaringType().getName().matches("%KeyPair") and
+    (
+      this.getCallee().getName().matches("getPublic")
+      or
+      this.getCallee().getName().matches("getPrivate")
+    )
+  }
+
+  DataFlow::Node getInputNode() { result.asExpr() = this.getQualifier() }
+
+  DataFlow::Node getOutputNode() { result.asExpr() = this }
+}
+
+predicate additionalFlowSteps(DataFlow::Node node1, DataFlow::Node node2) {
+  exists(KeyAdditionalFlowSteps call |
+    node1 = call.getInputNode() and
+    node2 = call.getOutputNode()
+  )
+}
+
+class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
+  DataFlow::Node output;
+
+  ArtifactAdditionalFlowStep() { additionalFlowSteps(this, output) }
+
+  override DataFlow::Node getOutput() { result = output }
 }
