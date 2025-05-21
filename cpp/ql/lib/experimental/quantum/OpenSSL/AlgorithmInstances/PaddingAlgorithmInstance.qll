@@ -7,8 +7,25 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgori
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
 /**
+ * A class to define padding specific integer values.
+ * from rsa.h in openssl:
+ *     # define RSA_PKCS1_PADDING          1
+ *     # define RSA_NO_PADDING             3
+ *     # define RSA_PKCS1_OAEP_PADDING     4
+ *     # define RSA_X931_PADDING           5
+ *     # define RSA_PKCS1_PSS_PADDING      6
+ *     # define RSA_PKCS1_WITH_TLS_PADDING 7
+ *     # define RSA_PKCS1_NO_IMPLICIT_REJECT_PADDING 8
+ */
+class OpenSSLPaddingLiteral extends Literal {
+  // TODO: we can be more specific about where the literal is in a larger expression
+  // to avoid literals that are clealy not representing an algorithm, e.g., array indices.
+  OpenSSLPaddingLiteral() { this.getValue().toInt() in [0, 1, 3, 4, 5, 6, 7, 8] }
+}
+
+/**
  * Given a `KnownOpenSSLPaddingAlgorithmConstant`, converts this to a padding family type.
- * Does not bind if there is know mapping (no mapping to 'unknown' or 'other').
+ * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToPaddingFamilyType(
   KnownOpenSSLPaddingAlgorithmConstant e, Crypto::TPaddingType type
@@ -60,19 +77,8 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     this instanceof KnownOpenSSLPaddingAlgorithmConstant and
     isPaddingSpecificConsumer = false
     or
-    // Possibility 3:
-    // from rsa.h in openssl:
-    // # define RSA_PKCS1_PADDING          1
-    // # define RSA_NO_PADDING             3
-    // # define RSA_PKCS1_OAEP_PADDING     4
-    // # define RSA_X931_PADDING           5
-    // /* EVP_PKEY_ only */
-    // # define RSA_PKCS1_PSS_PADDING      6
-    // # define RSA_PKCS1_WITH_TLS_PADDING 7
-    // /* internal RSA_ only */
-    // # define RSA_PKCS1_NO_IMPLICIT_REJECT_PADDING 8
-    this instanceof Literal and
-    this.getValue().toInt() in [0, 1, 3, 4, 5, 6, 7, 8] and
+    // Possibility 3: padding-specific literal
+    this instanceof OpenSSLPaddingLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
@@ -88,24 +94,24 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 
+  Crypto::TPaddingType getKnownPaddingType() {
+    this.(Literal).getValue().toInt() in [1, 7, 8] and result = Crypto::PKCS1_v1_5()
+    or
+    this.(Literal).getValue().toInt() = 3 and result = Crypto::NoPadding()
+    or
+    this.(Literal).getValue().toInt() = 4 and result = Crypto::OAEP()
+    or
+    this.(Literal).getValue().toInt() = 5 and result = Crypto::ANSI_X9_23()
+    or
+    this.(Literal).getValue().toInt() = 6 and result = Crypto::PSS()
+  }
+
   override Crypto::TPaddingType getPaddingType() {
     isPaddingSpecificConsumer = true and
     (
-      if this.(Literal).getValue().toInt() in [1, 7, 8]
-      then result = Crypto::PKCS1_v1_5()
-      else
-        if this.(Literal).getValue().toInt() = 3
-        then result = Crypto::NoPadding()
-        else
-          if this.(Literal).getValue().toInt() = 4
-          then result = Crypto::OAEP()
-          else
-            if this.(Literal).getValue().toInt() = 5
-            then result = Crypto::ANSI_X9_23()
-            else
-              if this.(Literal).getValue().toInt() = 6
-              then result = Crypto::PSS()
-              else result = Crypto::OtherPadding()
+      result = this.getKnownPaddingType()
+      or
+      not exists(this.getKnownPaddingType()) and result = Crypto::OtherPadding()
     )
     or
     isPaddingSpecificConsumer = false and

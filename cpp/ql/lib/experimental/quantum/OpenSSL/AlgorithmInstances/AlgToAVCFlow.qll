@@ -3,6 +3,7 @@ private import experimental.quantum.Language
 private import semmle.code.cpp.dataflow.new.DataFlow
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import PaddingAlgorithmInstance
 
 /**
  * Traces 'known algorithms' to AVCs, specifically
@@ -19,6 +20,9 @@ module KnownOpenSSLAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
   predicate isSink(DataFlow::Node sink) {
     exists(OpenSSLAlgorithmValueConsumer c |
       c.getInputNode() = sink and
+      // exclude padding algorithm consumers, since
+      // these consumers take in different constant values
+      // not in the typical "known algorithm" set
       not c instanceof PaddingAlgorithmValueConsumer
     )
   }
@@ -43,9 +47,7 @@ module KnownOpenSSLAlgorithmToAlgorithmValueConsumerFlow =
   DataFlow::Global<KnownOpenSSLAlgorithmToAlgorithmValueConsumerConfig>;
 
 module RSAPaddingAlgorithmToPaddingAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof KnownOpenSSLAlgorithmConstant
-  }
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof OpenSSLPaddingLiteral }
 
   predicate isSink(DataFlow::Node sink) {
     exists(PaddingAlgorithmValueConsumer c | c.getInputNode() = sink)
