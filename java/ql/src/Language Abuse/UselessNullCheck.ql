@@ -18,7 +18,7 @@ import semmle.code.java.controlflow.Guards
 
 from Expr guard, Expr e, Expr reason, string msg
 where
-  guard = basicNullGuard(e, _, true) and
+  guardSuggestsExprMaybeNull(guard, e) and
   e = clearlyNotNullExpr(reason) and
   (
     if reason instanceof Guard
