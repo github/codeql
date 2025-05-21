@@ -168,7 +168,7 @@ function test() {
   }
   { // Member access on a non-stream after pipe
     const notStream = getNotAStream();
-    const val = notStream.pipe(writable).someMember; // $SPURIOUS:Alert
+    const val = notStream.pipe(writable).someMember;
   }
   { // Member access on a stream after pipe
     const notStream = getNotAStream();

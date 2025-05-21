@@ -49,6 +49,21 @@ string getNonchainableStreamMethodName() {
 }
 
 /**
+ * Gets the property names commonly found on Node.js streams.
+ */
+string getStreamPropertyName() {
+  result =
+    [
+      "readable", "writable", "destroyed", "closed", "readableHighWaterMark", "readableLength",
+      "readableObjectMode", "readableEncoding", "readableFlowing", "readableEnded", "flowing",
+      "writableHighWaterMark", "writableLength", "writableObjectMode", "writableFinished",
+      "writableCorked", "writableEnded", "defaultEncoding", "allowHalfOpen", "objectMode",
+      "errored", "pending", "autoDestroy", "encoding", "path", "fd", "bytesRead", "bytesWritten",
+      "_readableState", "_writableState"
+    ]
+}
+
+/**
  * Gets all method names commonly found on Node.js streams.
  */
 string getStreamMethodName() {
@@ -110,6 +125,25 @@ predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
 }
 
 /**
+ * Holds if the pipe call result is used to access a property that is not typical of streams.
+ */
+predicate isPipeFollowedByNonStreamProperty(PipeCall pipeCall) {
+  exists(DataFlow::PropRef propRef |
+    propRef = pipeResultRef(pipeCall).getAPropertyRead() and
+    not propRef.getPropertyName() = getStreamPropertyName()
+  )
+}
+
+/**
+ * Holds if the pipe call result is used in a non-stream-like way,
+ * either by calling non-stream methods or accessing non-stream properties.
+ */
+predicate isPipeFollowedByNonStreamAccess(PipeCall pipeCall) {
+  isPipeFollowedByNonStreamMethod(pipeCall) or
+  isPipeFollowedByNonStreamProperty(pipeCall)
+}
+
+/**
  * Gets a reference to a stream that may be the source of the given pipe call.
  * Uses type back-tracking to trace stream references in the data flow.
  */
@@ -145,6 +179,6 @@ predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
 from PipeCall pipeCall
 where
   not hasErrorHandlerRegistered(pipeCall) and
-  not isPipeFollowedByNonStreamMethod(pipeCall)
+  not isPipeFollowedByNonStreamAccess(pipeCall)
 select pipeCall,
   "Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped."
