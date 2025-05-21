@@ -446,61 +446,6 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
 
   TraitItemNode resolveTraitTy() { result = resolvePathFull(this.getTraitPath()) }
 
-  pragma[nomagic]
-  private TypeRepr getASelfTyArg() {
-    result =
-      this.getSelfPath().getSegment().getGenericArgList().getAGenericArg().(TypeArg).getTypeRepr()
-  }
-
-  /**
-   * Holds if this `impl` block is not fully parametric. That is, the implementing
-   * type is generic and the implementation is not parametrically polymorphic in all
-   * the implementing type's arguments.
-   *
-   * Examples:
-   *
-   * ```rust
-   * impl Foo { ... } // fully parametric
-   *
-   * impl<T> Foo<T> { ... } // fully parametric
-   *
-   * impl Foo<i64> { ... } // not fully parametric
-   *
-   * impl<T> Foo<Foo<T>> { ... } // not fully parametric
-   *
-   * impl<T: Trait> Foo<T> { ... } // not fully parametric
-   *
-   * impl<T> Foo<T> where T: Trait { ... } // not fully parametric
-   * ```
-   */
-  pragma[nomagic]
-  predicate isNotFullyParametric() {
-    exists(TypeRepr arg | arg = this.getASelfTyArg() |
-      not exists(resolveTypeParamPathTypeRepr(arg))
-      or
-      resolveTypeParamPathTypeRepr(arg).hasTraitBound()
-    )
-  }
-
-  /**
-   * Holds if this `impl` block is fully parametric. Examples:
-   *
-   * ```rust
-   * impl Foo { ... } // fully parametric
-   *
-   * impl<T> Foo<T> { ... } // fully parametric
-   *
-   * impl Foo<i64> { ... } // not fully parametric
-   *
-   * impl<T> Foo<Foo<T>> { ... } // not fully parametric
-   *
-   * impl<T: Trait> Foo<T> { ... } // not fully parametric
-   *
-   * impl<T> Foo<T> where T: Trait { ... } // not fully parametric
-   * ```
-   */
-  predicate isFullyParametric() { not this.isNotFullyParametric() }
-
   override AssocItemNode getAnAssocItem() { result = super.getAssocItemList().getAnAssocItem() }
 
   override string getName() { result = "(impl)" }

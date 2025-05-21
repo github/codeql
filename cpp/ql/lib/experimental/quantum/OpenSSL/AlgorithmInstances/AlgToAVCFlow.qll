@@ -1,7 +1,8 @@
 import cpp
-import semmle.code.cpp.dataflow.new.DataFlow
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.Language
+private import semmle.code.cpp.dataflow.new.DataFlow
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
  * Traces 'known algorithms' to AVCs, specifically

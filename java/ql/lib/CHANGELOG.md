@@ -20,7 +20,7 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * Java extraction is now able to download Maven 3.9.x if a Maven Enforcer Plugin configuration indicates it is necessary. Maven 3.8.x is still preferred if the enforcer-plugin configuration (if any) permits it.
-* Added a path injection sanitizer for calls to `java.lang.String.matches`, `java.lang.String.replace`, and `java.lang.String.replaceAll` that make sure '/', '\', '..' are not in the path.
+* Added a path injection sanitizer for calls to `java.lang.String.matches`, `java.lang.String.replace`, and `java.lang.String.replaceAll` that make sure `/`, `\\`, `..` are not in the path.
 
 ### Bug Fixes
 
@@ -55,8 +55,8 @@ No user-facing changes.
 * Deleted the deprecated `isLValue` and `isRValue` predicates from the `VarAccess` class, use `isVarWrite` and `isVarRead` respectively instead.
 * Deleted the deprecated `getRhs` predicate from the `VarWrite` class, use `getASource` instead.
 * Deleted the deprecated `LValue` and `RValue` classes, use `VarWrite` and `VarRead` respectively instead.
-* Deleted a lot of deprecated classes ending in "*Access", use the corresponding "*Call" classes instead.
-* Deleted a lot of deprecated predicates ending in "*Access", use the corresponding "*Call" predicates instead.
+* Deleted a lot of deprecated classes ending in `*Access`, use the corresponding `*Call` classes instead.
+* Deleted a lot of deprecated predicates ending in `*Access`, use the corresponding `*Call` predicates instead.
 * Deleted the deprecated `EnvInput` and `DatabaseInput` classes from `FlowSources.qll`, use the threat models feature instead.
 * Deleted some deprecated API predicates from `SensitiveApi.qll`, use the Sink classes from that file instead.
 

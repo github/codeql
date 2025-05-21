@@ -45,6 +45,28 @@ private module Cached {
     )
   }
 
+  private Expr getRankedElementExpr(ArrayAggregateLiteral aggr, int rnk) {
+    result =
+      rank[rnk + 1](Expr e, int elementIndex, int position |
+        e = aggr.getElementExpr(elementIndex, position)
+      |
+        e order by elementIndex, position
+      )
+  }
+
+  private class LastArrayAggregateStore extends StoreInstruction {
+    ArrayAggregateLiteral aggr;
+
+    LastArrayAggregateStore() {
+      exists(int rnk |
+        this.getSourceValue().getUnconvertedResultExpression() = getRankedElementExpr(aggr, rnk) and
+        not exists(getRankedElementExpr(aggr, rnk + 1))
+      )
+    }
+
+    ArrayAggregateLiteral getArrayAggregateLiteral() { result = aggr }
+  }
+
   private Expr getConvertedResultExpressionImpl0(Instruction instr) {
     // IR construction inserts an additional cast to a `size_t` on the extent
     // of a `new[]` expression. The resulting `ConvertInstruction` doesn't have
@@ -95,6 +117,16 @@ private module Cached {
       tco.producesExprResult() and
       result = asDefinitionImpl0(instr)
     )
+    or
+    // IR construction breaks an array aggregate literal `{1, 2, 3}` into a
+    // sequence of `StoreInstruction`s. So there's no instruction `i` for which
+    // `i.getUnconvertedResultExpression() instanceof ArrayAggregateLiteral`.
+    // So we map the instruction node corresponding to the last `Store`
+    // instruction of the sequence to the result of the array aggregate
+    // literal. This makes sense since this store will immediately flow into
+    // the indirect node representing the array. So this node does represent
+    // the array after it has been fully initialized.
+    result = instr.(LastArrayAggregateStore).getArrayAggregateLiteral()
   }
 
   private Expr getConvertedResultExpressionImpl(Instruction instr) {
