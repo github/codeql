@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[commandusagesection].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.commandline.help.helpbuilder+default!", "Method[getlayout].ReturnValue"]
+    - ["system.string", "system.commandline.help.helpbuilder+default!", "Method[getidentifiersymboldescription].ReturnValue"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.help.helpcontext", "Member[parseresult]"]
+    - ["system.boolean", "system.commandline.help.twocolumnhelprow", "Method[equals].ReturnValue"]
+    - ["system.string", "system.commandline.help.helpbuilder+default!", "Method[getargumentdefaultvalue].ReturnValue"]
+    - ["system.string", "system.commandline.help.twocolumnhelprow", "Member[firstcolumntext]"]
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[commandargumentssection].ReturnValue"]
+    - ["system.string", "system.commandline.help.twocolumnhelprow", "Member[secondcolumntext]"]
+    - ["system.string", "system.commandline.help.helpbuilder+default!", "Method[getargumentusagelabel].ReturnValue"]
+    - ["system.commandline.help.helpbuilder", "system.commandline.help.helpcontext", "Member[helpbuilder]"]
+    - ["system.commandline.localizationresources", "system.commandline.help.helpbuilder", "Member[localizationresources]"]
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[subcommandssection].ReturnValue"]
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[additionalargumentssection].ReturnValue"]
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[optionssection].ReturnValue"]
+    - ["system.int32", "system.commandline.help.helpbuilder", "Member[maxwidth]"]
+    - ["system.commandline.help.helpsectiondelegate", "system.commandline.help.helpbuilder+default!", "Method[synopsissection].ReturnValue"]
+    - ["system.commandline.command", "system.commandline.help.helpcontext", "Member[command]"]
+    - ["system.io.textwriter", "system.commandline.help.helpcontext", "Member[output]"]
+    - ["system.int32", "system.commandline.help.twocolumnhelprow", "Method[gethashcode].ReturnValue"]
+    - ["system.string", "system.commandline.help.helpbuilder+default!", "Method[getargumentdescription].ReturnValue"]
+    - ["system.commandline.help.twocolumnhelprow", "system.commandline.help.helpbuilder", "Method[gettwocolumnrow].ReturnValue"]
+    - ["system.string", "system.commandline.help.helpbuilder+default!", "Method[getidentifiersymbolusagelabel].ReturnValue"]

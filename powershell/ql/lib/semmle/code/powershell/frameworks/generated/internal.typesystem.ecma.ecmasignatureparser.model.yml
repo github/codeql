@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[ecmasignatureparser]", "Argument[0]", "Argument[this]", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[ecmasignatureparser]", "Argument[1]", "Argument[this].SyntheticField[_typeResolver]", "value"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[ecmasignatureparser]", "Argument[1]", "Argument[this]", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[get_resolutionfailure]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parsefieldsignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parselocalssignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parsemethodsignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parsemethodspecsignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parsepropertysignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.ecma.ecmasignatureparser", "Method[parsetype]", "Argument[this]", "ReturnValue", "taint"]

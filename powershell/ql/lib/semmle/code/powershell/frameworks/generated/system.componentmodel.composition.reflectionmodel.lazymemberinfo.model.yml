@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[getaccessors]", "Argument[this].SyntheticField[_accessors]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[lazymemberinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[lazymemberinfo]", "Argument[1]", "Argument[this].SyntheticField[_accessorsCreator]", "value"]
+      - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[lazymemberinfo]", "Argument[1]", "Argument[this].SyntheticField[_accessors]", "value"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.boolmarshallerbase", "Method[asnativetype]", "Argument[this].SyntheticField[_nativeType]", "ReturnValue", "value"]
+      - ["microsoft.interop.boolmarshallerbase", "Method[boolmarshallerbase]", "Argument[0]", "Argument[this].SyntheticField[_nativeType]", "value"]

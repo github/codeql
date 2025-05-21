@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.overlapped", "Method[overlapped]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.threading.overlapped", "Method[overlapped]", "Argument[3]", "Argument[this]", "taint"]

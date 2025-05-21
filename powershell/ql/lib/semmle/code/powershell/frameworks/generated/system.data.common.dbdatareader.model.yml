@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.common.dbdatareader", "Method[getfieldvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbdatareader", "Method[getproviderspecificvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbdatareader", "Method[getproviderspecificvalues]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.data.common.dbdatareader", "Method[gettextreader]", "Argument[this]", "ReturnValue", "taint"]

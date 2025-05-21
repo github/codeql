@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.httpcontent", "Method[copyto]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.http.httpcontent", "Method[copytoasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.http.httpcontent", "Method[createcontentreadstream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[createcontentreadstreamasync]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[readasstream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[readasstreamasync]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[serializetostream]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.http.httpcontent", "Method[serializetostreamasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[serializetostreamasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.net.http.httpcontent", "Method[serializetostreamasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.http.httpcontent", "Method[serializetostreamasync]", "Argument[this]", "ReturnValue", "taint"]

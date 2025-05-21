@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.oid", "Method[fromfriendlyname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.oid", "Method[fromoidvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.oid", "Method[oid]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.cryptography.oid", "Method[oid]", "Argument[1]", "Argument[this]", "taint"]

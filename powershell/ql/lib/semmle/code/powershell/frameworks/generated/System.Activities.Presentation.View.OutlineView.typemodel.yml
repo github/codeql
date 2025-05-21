@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[duplicatedchildnodesvisible]"]
+    - ["system.boolean", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[currentpropertyvisible]"]
+    - ["system.string", "system.activities.presentation.view.outlineview.showpropertyinoutlineviewattribute", "Member[childnodeprefix]"]
+    - ["system.string", "system.activities.presentation.view.outlineview.showinoutlineviewattribute", "Member[promotedproperty]"]

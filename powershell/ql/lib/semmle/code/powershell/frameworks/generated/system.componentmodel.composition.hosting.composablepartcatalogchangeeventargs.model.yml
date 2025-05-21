@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.hosting.composablepartcatalogchangeeventargs", "Method[composablepartcatalogchangeeventargs]", "Argument[0]", "Argument[this].SyntheticField[_addedDefinitions]", "value"]
+      - ["system.componentmodel.composition.hosting.composablepartcatalogchangeeventargs", "Method[composablepartcatalogchangeeventargs]", "Argument[1]", "Argument[this].SyntheticField[_removedDefinitions]", "value"]
+      - ["system.componentmodel.composition.hosting.composablepartcatalogchangeeventargs", "Method[composablepartcatalogchangeeventargs]", "Argument[2]", "Argument[this].Field[AtomicComposition]", "value"]
+      - ["system.componentmodel.composition.hosting.composablepartcatalogchangeeventargs", "Method[get_addeddefinitions]", "Argument[this].SyntheticField[_addedDefinitions]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.composablepartcatalogchangeeventargs", "Method[get_removeddefinitions]", "Argument[this].SyntheticField[_removedDefinitions]", "ReturnValue", "value"]

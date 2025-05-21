@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.compression.gzipstream", "Method[get_basestream]", "Argument[this].SyntheticField[_deflateStream].SyntheticField[_stream]", "ReturnValue", "value"]
+      - ["system.io.compression.gzipstream", "Method[gzipstream]", "Argument[0]", "Argument[this].SyntheticField[_deflateStream].SyntheticField[_stream]", "value"]

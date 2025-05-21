@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[addsubjectkeyid]", "Argument[0]", "Argument[this].SyntheticField[_subjectKeyIds].Element", "value"]
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[addsubjectname]", "Argument[0]", "Argument[this].SyntheticField[_subjectNames].Element", "value"]
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[get_certificates]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[get_issuerserials]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[get_subjectkeyids]", "Argument[this].SyntheticField[_subjectKeyIds]", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.keyinfox509data", "Method[get_subjectnames]", "Argument[this].SyntheticField[_subjectNames]", "ReturnValue", "value"]

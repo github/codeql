@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.boolean", "microsoft.activities.build.expressions.expressionsbuildextension", "Method[execute].ReturnValue"]

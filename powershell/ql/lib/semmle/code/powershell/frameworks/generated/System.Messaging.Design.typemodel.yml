@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.messaging.design.queuepathdialog", "Member[path]"]
+    - ["system.drawing.design.uitypeeditoreditstyle", "system.messaging.design.queuepatheditor", "Method[geteditstyle].ReturnValue"]
+    - ["system.object", "system.messaging.design.queuepatheditor", "Method[editvalue].ReturnValue"]

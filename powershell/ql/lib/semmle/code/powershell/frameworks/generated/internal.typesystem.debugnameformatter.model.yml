@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.debugnameformatter", "Method[appendname]", "Argument[1].Field[DiagnosticName]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendname]", "Argument[1].Field[ElementType].Field[DiagnosticName]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendname]", "Argument[1].Field[ParameterType].Field[DiagnosticName]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendname]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendnameforinstantiatedtype]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendnamefornamespacetype]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendnamefornestedtype]", "Argument[1]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[appendnamefornestedtype]", "Argument[2]", "Argument[0]", "taint"]
+      - ["internal.typesystem.debugnameformatter", "Method[getcontainingtype]", "Argument[0]", "ReturnValue", "taint"]

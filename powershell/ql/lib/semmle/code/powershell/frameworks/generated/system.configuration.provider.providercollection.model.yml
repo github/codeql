@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.provider.providercollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.provider.providercollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]

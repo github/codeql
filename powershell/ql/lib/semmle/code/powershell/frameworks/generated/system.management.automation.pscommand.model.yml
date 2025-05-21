@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pscommand", "Method[addargument]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.pscommand", "Method[addcommand]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand].Field[system.management.automation.runspaces.command.commandtext]", "value"]
+      - ["system.management.automation.pscommand", "Method[addcommand]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.pscommand._currentcommand].Field[system.management.automation.runspaces.command.commandtext]", "value"]
+      - ["system.management.automation.pscommand", "Method[addcommand]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand]", "Argument[this].SyntheticField[system.management.automation.pscommand._commands].Element", "value"]
+      - ["system.management.automation.pscommand", "Method[addcommand]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand]", "ReturnValue.SyntheticField[system.management.automation.pscommand._commands].Element", "value"]
+      - ["system.management.automation.pscommand", "Method[addcommand]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.pscommand", "Method[addparameter]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.pscommand", "Method[addscript]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand].Field[system.management.automation.runspaces.command.commandtext]", "value"]
+      - ["system.management.automation.pscommand", "Method[addscript]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.pscommand._currentcommand].Field[system.management.automation.runspaces.command.commandtext]", "value"]
+      - ["system.management.automation.pscommand", "Method[addscript]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand]", "Argument[this].SyntheticField[system.management.automation.pscommand._commands].Element", "value"]
+      - ["system.management.automation.pscommand", "Method[addscript]", "Argument[this].SyntheticField[system.management.automation.pscommand._currentcommand]", "ReturnValue.SyntheticField[system.management.automation.pscommand._commands].Element", "value"]
+      - ["system.management.automation.pscommand", "Method[addscript]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.pscommand", "Method[addstatement]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.pscommand", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscommand", "Method[get_commands]", "Argument[this].SyntheticField[system.management.automation.pscommand._commands]", "ReturnValue", "value"]

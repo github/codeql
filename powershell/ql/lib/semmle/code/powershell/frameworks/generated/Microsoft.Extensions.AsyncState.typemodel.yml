@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken!", "Method[op_inequality].ReturnValue"]
+    - ["t", "microsoft.extensions.asyncstate.iasynccontext", "Method[get].ReturnValue"]
+    - ["microsoft.extensions.asyncstate.asyncstatetoken", "microsoft.extensions.asyncstate.iasyncstate", "Method[registerasynccontext].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.iasynccontext", "Method[tryget].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.asyncstatetoken", "Method[equals].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.asyncstate.iasyncstate", "Method[tryget].ReturnValue"]
+    - ["system.object", "microsoft.extensions.asyncstate.iasyncstate", "Method[get].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.asyncstate.asyncstatetoken", "Method[gethashcode].ReturnValue"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.symbolstore.isymboldocumentwriter", "Method[setchecksum]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.diagnostics.symbolstore.isymboldocumentwriter", "Method[setchecksum]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.diagnostics.symbolstore.isymboldocumentwriter", "Method[setsource]", "Argument[0].Element", "Argument[this]", "taint"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datareaderextensions", "Method[getfieldvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datareaderextensions", "Method[getguid]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.data.datareaderextensions", "Method[getproviderspecificvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datareaderextensions", "Method[getstring]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datareaderextensions", "Method[gettextreader]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datareaderextensions", "Method[getvalue]", "Argument[0]", "ReturnValue", "taint"]

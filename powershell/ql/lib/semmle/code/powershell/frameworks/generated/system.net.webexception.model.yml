@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.webexception", "Method[get_response]", "Argument[this].SyntheticField[_response]", "ReturnValue", "value"]
+      - ["system.net.webexception", "Method[webexception]", "Argument[3]", "Argument[this].SyntheticField[_response]", "value"]

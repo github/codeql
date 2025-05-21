@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.compiler.codedomprovider", "Method[compileassemblyfromdom]", "Argument[1].Element", "Argument[0]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[compileassemblyfromdom]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[createcompiler]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[createescapedidentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.codedomprovider", "Method[creategenerator]", "Argument[this].SyntheticField[_generator]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.codedomprovider", "Method[creategenerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[createvalididentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromcompileunit]", "Argument[0].Field[LinePragma].Field[FileName]", "Argument[this].SyntheticField[_generator].Field[Output]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromexpression]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromexpression]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefrommember]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefrommember]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromnamespace]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromnamespace]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromstatement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromstatement]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromtype]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[generatecodefromtype]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[gettypeoutput]", "Argument[0].Field[ArrayElementType].Field[BaseType]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.codedomprovider", "Method[gettypeoutput]", "Argument[0].Field[BaseType]", "ReturnValue", "taint"]

@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.filesystemglobbing.filepatternmatch", "Member[stem]"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Method[enumeratefilesysteminfos].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.filesystemglobbing.patternmatchingresult", "Member[files]"]
+    - ["microsoft.extensions.filesystemglobbing.patternmatchingresult", "microsoft.extensions.filesystemglobbing.matcher", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.filepatternmatch", "Member[path]"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Member[fullname]"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Method[getdirectory].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.patternmatchingresult", "microsoft.extensions.filesystemglobbing.matcherextensions!", "Method[match].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.fileinfobase", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Method[getfile].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.filesystemglobbing.filepatternmatch", "Method[gethashcode].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.matcher", "microsoft.extensions.filesystemglobbing.matcher", "Method[addinclude].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.filesystemglobbing.matcherextensions!", "Method[getresultsinfullpath].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Member[name]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.patternmatchingresult", "Member[hasmatches]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.filepatternmatch", "Method[equals].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.matcher", "microsoft.extensions.filesystemglobbing.matcher", "Method[addexclude].ReturnValue"]
+    - ["microsoft.extensions.filesystemglobbing.abstractions.directoryinfobase", "microsoft.extensions.filesystemglobbing.inmemorydirectoryinfo", "Member[parentdirectory]"]

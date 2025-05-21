@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.sessionstatetypeentry", "Method[sessionstatetypeentry]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.sessionstatetypeentry.filename]", "taint"]
+      - ["system.management.automation.runspaces.sessionstatetypeentry", "Method[sessionstatetypeentry]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.sessionstatetypeentry.typedata]", "value"]
+      - ["system.management.automation.runspaces.sessionstatetypeentry", "Method[sessionstatetypeentry]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.sessionstatetypeentry.typetable]", "value"]

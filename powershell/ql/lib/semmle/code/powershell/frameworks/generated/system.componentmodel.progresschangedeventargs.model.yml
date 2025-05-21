@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.progresschangedeventargs", "Method[get_userstate]", "Argument[this].SyntheticField[_userState]", "ReturnValue", "value"]
+      - ["system.componentmodel.progresschangedeventargs", "Method[progresschangedeventargs]", "Argument[1]", "Argument[this].SyntheticField[_userState]", "value"]

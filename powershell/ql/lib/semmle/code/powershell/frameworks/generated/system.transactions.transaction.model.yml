@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.transactions.transaction", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[enlistdurable]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[enlistpromotablesinglephase]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.transactions.transaction", "Method[enlistpromotablesinglephase]", "Argument[1]", "Argument[this].SyntheticField[_internalTransaction].SyntheticField[_promoterType]", "value"]
+      - ["system.transactions.transaction", "Method[enlistvolatile]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[enlistvolatile]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[get_promotertype]", "Argument[this].SyntheticField[_internalTransaction].SyntheticField[_promoterType]", "ReturnValue", "value"]
+      - ["system.transactions.transaction", "Method[get_transactioninformation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[promoteandenlistdurable]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.transactions.transaction", "Method[rollback]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.transactions.transaction", "Method[setdistributedtransactionidentifier]", "Argument[1]", "Argument[this]", "taint"]

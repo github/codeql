@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cngprovider", "Method[cngprovider]", "Argument[0]", "Argument[this].SyntheticField[_provider]", "value"]
+      - ["system.security.cryptography.cngprovider", "Method[get_provider]", "Argument[this].SyntheticField[_provider]", "ReturnValue", "value"]
+      - ["system.security.cryptography.cngprovider", "Method[tostring]", "Argument[this].SyntheticField[_provider]", "ReturnValue", "value"]

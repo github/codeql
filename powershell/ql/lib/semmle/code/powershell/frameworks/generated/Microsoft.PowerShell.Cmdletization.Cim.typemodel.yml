@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.management.infrastructure.cimsession[]", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Member[cimsession]"]
+    - ["system.int32", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Member[throttlelimit]"]
+    - ["microsoft.management.infrastructure.cimsession", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Member[defaultsession]"]
+    - ["microsoft.powershell.cmdletization.querybuilder", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[getquerybuilder].ReturnValue"]
+    - ["system.object", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[getdynamicparameters].ReturnValue"]
+    - ["system.string", "microsoft.powershell.cmdletization.cim.cimcmdletadapter", "Method[generateparentjobname].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.cmdletization.cim.cimjobexception", "Member[errorrecord]"]

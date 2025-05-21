@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.customentrybuilder", "Method[addcustomcontrolexpressionbinding]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[addnewline]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[addpropertyexpressionbinding]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[addscriptblockexpressionbinding]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[addtext]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[endentry]", "Argument[this].SyntheticField[system.management.automation.customentrybuilder._controlbuilder]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[endframe]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customentrybuilder", "Method[startframe]", "Argument[this]", "ReturnValue", "value"]

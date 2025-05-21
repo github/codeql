@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.activitylink", "Method[activitylink]", "Argument[0]", "Argument[this].Field[Context]", "value"]
+      - ["system.diagnostics.activitylink", "Method[enumeratetagobjects]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.activitylink", "Method[get_tags]", "Argument[this]", "ReturnValue", "taint"]

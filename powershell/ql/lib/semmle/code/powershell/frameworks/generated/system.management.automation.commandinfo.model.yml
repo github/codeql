@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.commandinfo", "Method[get_definition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[get_modulename]", "Argument[this].Field[system.management.automation.commandinfo.module].Field[system.management.automation.psmoduleinfo.name]", "ReturnValue", "value"]
+      - ["system.management.automation.commandinfo", "Method[get_outputtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[get_parameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[get_parametersets]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[get_source]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[get_version]", "Argument[this].Field[system.management.automation.commandinfo.module].Field[system.management.automation.psmoduleinfo.version]", "Argument[this].SyntheticField[system.management.automation.commandinfo._version]", "value"]
+      - ["system.management.automation.commandinfo", "Method[get_version]", "Argument[this].Field[system.management.automation.commandinfo.module].Field[system.management.automation.psmoduleinfo.version]", "ReturnValue", "value"]
+      - ["system.management.automation.commandinfo", "Method[get_version]", "Argument[this].SyntheticField[system.management.automation.commandinfo._version]", "ReturnValue", "value"]
+      - ["system.management.automation.commandinfo", "Method[resolveparameter]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinfo", "Method[tostring]", "Argument[this].Field[system.management.automation.commandinfo.name]", "ReturnValue", "value"]

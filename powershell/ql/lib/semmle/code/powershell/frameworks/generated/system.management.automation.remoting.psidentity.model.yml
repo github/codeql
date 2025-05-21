@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[0]", "Argument[this].Field[system.management.automation.remoting.psidentity.authenticationtype]", "value"]
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[2]", "Argument[this].Field[system.management.automation.remoting.psidentity.name]", "value"]
+      - ["system.management.automation.remoting.psidentity", "Method[psidentity]", "Argument[3]", "Argument[this].Field[system.management.automation.remoting.psidentity.certificatedetails]", "value"]

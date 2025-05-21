@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.x509certificates.x509chain", "Method[build]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.cryptography.x509certificates.x509chain", "Method[get_safehandle]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.connectionstringsettingscollection", "Method[add]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.configuration.connectionstringsettingscollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.connectionstringsettingscollection", "Method[getelementkey]", "Argument[0].Field[Name]", "ReturnValue", "value"]
+      - ["system.configuration.connectionstringsettingscollection", "Method[set_item]", "Argument[this]", "Argument[1]", "taint"]

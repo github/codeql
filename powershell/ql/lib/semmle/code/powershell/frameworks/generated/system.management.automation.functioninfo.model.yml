@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.functioninfo", "Method[get_defaultparameterset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.functioninfo", "Method[get_noun]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.functioninfo", "Method[get_scriptblock]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.functioninfo", "Method[get_verb]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.functioninfo", "Method[update]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.functioninfo", "Method[update]", "Argument[3]", "Argument[this]", "taint"]

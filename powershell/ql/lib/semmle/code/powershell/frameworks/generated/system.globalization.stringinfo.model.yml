@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.stringinfo", "Method[getnexttextelement]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.stringinfo", "Method[gettextelementenumerator]", "Argument[0]", "ReturnValue.SyntheticField[_str]", "value"]
+      - ["system.globalization.stringinfo", "Method[stringinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.globalization.stringinfo", "Method[substringbytextelements]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.text.json.nodes.jsonobject", "Method[add]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[add]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[get_keys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[get_values]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[insert]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[insert]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[set_item]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[setat]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.text.json.nodes.jsonobject", "Method[setat]", "Argument[this]", "Argument[2]", "taint"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[includevectorsnotsupportedwithembeddinggeneration]"]
+    - ["system.resources.resourcemanager", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[resourcemanager]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[incompatibleembeddinggeneratorwasconfiguredforinputtype]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[embeddingpropertytypeincompatiblewithembeddinggenerator]"]
+    - ["system.globalization.cultureinfo", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[culture]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[nonembeddingvectorpropertywithoutembeddinggenerator]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[embeddingtypepassedtosearchasync]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[noembeddinggeneratorwasconfiguredforsearch]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[embeddinggeneratorwithinvalidembeddingtype]"]
+    - ["system.string", "microsoft.extensions.vectordata.properties.vectordatastrings!", "Member[incompatibleembeddinggenerator]"]

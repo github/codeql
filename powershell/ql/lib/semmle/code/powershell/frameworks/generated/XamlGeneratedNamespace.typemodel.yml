@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[createinstance].ReturnValue"]
+    - ["system.delegate", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[createdelegate].ReturnValue"]
+    - ["system.object", "xamlgeneratednamespace.generatedinternaltypehelper", "Method[getpropertyvalue].ReturnValue"]

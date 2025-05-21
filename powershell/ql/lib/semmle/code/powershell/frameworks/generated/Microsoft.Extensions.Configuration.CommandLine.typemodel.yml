@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.idictionary", "microsoft.extensions.configuration.commandline.commandlineconfigurationsource", "Member[switchmappings]"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.configuration.commandline.commandlineconfigurationsource", "Member[args]"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.commandline.commandlineconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.configuration.commandline.commandlineconfigurationprovider", "Member[args]"]

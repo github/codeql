@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.odbc.odbccommandbuilder", "Method[quoteidentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.data.odbc.odbccommandbuilder", "Method[quoteidentifier]", "Argument[this].Field[QuotePrefix]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbccommandbuilder", "Method[quoteidentifier]", "Argument[this].Field[QuoteSuffix]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbccommandbuilder", "Method[unquoteidentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.data.odbc.odbccommandbuilder", "Method[unquoteidentifier]", "Argument[this].Field[QuoteSuffix]", "ReturnValue", "taint"]

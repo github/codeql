@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psobject", "Method[aspsobject]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.psobject._immediatebaseobject]", "value"]
+      - ["system.management.automation.psobject", "Method[aspsobject]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.psobject", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_baseobject]", "Argument[this].SyntheticField[system.management.automation.psobject._immediatebaseobject]", "ReturnValue", "value"]
+      - ["system.management.automation.psobject", "Method[get_immediatebaseobject]", "Argument[this].SyntheticField[system.management.automation.psobject._immediatebaseobject]", "ReturnValue", "value"]
+      - ["system.management.automation.psobject", "Method[get_members]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_methods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_properties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[get_typenames]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.psobject", "Method[psobject]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.psobject._immediatebaseobject]", "value"]
+      - ["system.management.automation.psobject", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

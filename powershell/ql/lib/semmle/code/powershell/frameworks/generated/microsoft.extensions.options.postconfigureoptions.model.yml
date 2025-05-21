@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigure]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigure]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[1]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[1]", "Argument[this].Field[Dependency1]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[1]", "Argument[this].Field[Dependency]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[2]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[2]", "Argument[this].Field[Dependency2]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[3]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[3]", "Argument[this].Field[Dependency3]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[4]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[4]", "Argument[this].Field[Dependency4]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[5]", "Argument[this].Field[Action]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[5]", "Argument[this].Field[Dependency5]", "value"]
+      - ["microsoft.extensions.options.postconfigureoptions", "Method[postconfigureoptions]", "Argument[6]", "Argument[this].Field[Action]", "value"]

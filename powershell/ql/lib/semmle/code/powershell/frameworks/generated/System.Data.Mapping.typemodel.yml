@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[storeentitycontainername]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[hashovermappingclosure]"]
+    - ["system.int32", "system.data.mapping.entityviewcontainer", "Member[viewcount]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[hashoverallextentviews]"]
+    - ["system.type", "system.data.mapping.entityviewgenerationattribute", "Member[viewgenerationtype]"]
+    - ["system.string", "system.data.mapping.entityviewcontainer", "Member[edmentitycontainername]"]
+    - ["system.double", "system.data.mapping.storagemappingitemcollection", "Member[mappingversion]"]
+    - ["system.collections.generic.keyvaluepair", "system.data.mapping.entityviewcontainer", "Method[getviewat].ReturnValue"]

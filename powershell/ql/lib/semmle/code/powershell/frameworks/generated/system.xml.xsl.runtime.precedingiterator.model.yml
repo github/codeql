@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.precedingiterator", "Method[create]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.precedingiterator", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]

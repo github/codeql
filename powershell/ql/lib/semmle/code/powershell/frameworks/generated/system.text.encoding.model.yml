@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.text.encoding", "Method[convert]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[createtranscodingstream]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[createtranscodingstream]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[createtranscodingstream]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[encoding]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.text.encoding", "Method[encoding]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.text.encoding", "Method[get_bodyname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[get_encodingname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[get_headername]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[get_webname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[getdecoder]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[getencoder]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[getencoding]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.encoding", "Method[getencoding]", "Argument[2]", "ReturnValue", "taint"]

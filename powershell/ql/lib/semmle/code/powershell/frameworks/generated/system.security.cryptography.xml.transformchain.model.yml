@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.transformchain", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[_transforms].Element", "value"]
+      - ["system.security.cryptography.xml.transformchain", "Method[get_item]", "Argument[this].SyntheticField[_transforms].Element", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.transformchain", "Method[getenumerator]", "Argument[this].SyntheticField[_transforms].Element", "ReturnValue.Field[Current]", "value"]

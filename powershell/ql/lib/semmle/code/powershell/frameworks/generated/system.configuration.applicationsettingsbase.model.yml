@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.applicationsettingsbase", "Method[applicationsettingsbase]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.applicationsettingsbase", "Method[get_propertyvalues]", "Argument[this].Field[PropertyValues]", "ReturnValue", "value"]
+      - ["system.configuration.applicationsettingsbase", "Method[onpropertychanged]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.configuration.applicationsettingsbase", "Method[onsettingchanging]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.configuration.applicationsettingsbase", "Method[onsettingsloaded]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.configuration.applicationsettingsbase", "Method[onsettingssaving]", "Argument[1]", "Argument[this]", "taint"]

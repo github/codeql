@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.string", "Method[concat]", "Argument[0].Field[Current]", "ReturnValue", "value"]
+      - ["system.string", "Method[concat]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.string", "Method[create]", "Argument[1]", "Argument[2].Parameter[1]", "value"]
+      - ["system.string", "Method[enumeraterunes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.string", "Method[format]", "Argument[1].Field[Format]", "ReturnValue", "value"]
+      - ["system.string", "Method[join]", "Argument[1].Field[Current]", "ReturnValue", "value"]
+      - ["system.string", "Method[join]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.string", "Method[parse]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.string", "Method[replace]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.string", "Method[replace]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.string", "Method[replacelineendings]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.string", "Method[split]", "Argument[this]", "ReturnValue.Element", "value"]
+      - ["system.string", "Method[trim]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.string", "Method[trimend]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.string", "Method[trimstart]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.string", "Method[tryparse]", "Argument[0]", "Argument[2]", "value"]

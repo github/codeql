@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.xml.serialization.configuration.xmlserializersection", "Member[checkdeserializeadvances]"]
+    - ["system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode", "system.xml.serialization.configuration.datetimeserializationsection", "Member[mode]"]
+    - ["system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode", "system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode!", "Member[roundtrip]"]
+    - ["system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode", "system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode!", "Member[default]"]
+    - ["system.configuration.configurationpropertycollection", "system.xml.serialization.configuration.schemaimporterextensionelement", "Member[properties]"]
+    - ["system.xml.serialization.configuration.datetimeserializationsection", "system.xml.serialization.configuration.serializationsectiongroup", "Member[datetimeserialization]"]
+    - ["system.boolean", "system.xml.serialization.configuration.xmlserializersection", "Member[uselegacyserializergeneration]"]
+    - ["system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode", "system.xml.serialization.configuration.datetimeserializationsection+datetimeserializationmode!", "Member[local]"]
+    - ["system.xml.serialization.configuration.schemaimporterextensionssection", "system.xml.serialization.configuration.serializationsectiongroup", "Member[schemaimporterextensions]"]
+    - ["system.object", "system.xml.serialization.configuration.schemaimporterextensionelementcollection", "Method[getelementkey].ReturnValue"]
+    - ["system.string", "system.xml.serialization.configuration.xmlserializersection", "Member[tempfileslocation]"]
+    - ["system.configuration.configurationelement", "system.xml.serialization.configuration.schemaimporterextensionelementcollection", "Method[createnewelement].ReturnValue"]
+    - ["system.int32", "system.xml.serialization.configuration.schemaimporterextensionelementcollection", "Method[indexof].ReturnValue"]
+    - ["system.configuration.configurationpropertycollection", "system.xml.serialization.configuration.xmlserializersection", "Member[properties]"]
+    - ["system.type", "system.xml.serialization.configuration.schemaimporterextensionelement", "Member[type]"]
+    - ["system.xml.serialization.configuration.xmlserializersection", "system.xml.serialization.configuration.serializationsectiongroup", "Member[xmlserializer]"]
+    - ["system.configuration.configurationpropertycollection", "system.xml.serialization.configuration.schemaimporterextensionssection", "Member[properties]"]
+    - ["system.boolean", "system.xml.serialization.configuration.rootedpathvalidator", "Method[canvalidate].ReturnValue"]
+    - ["system.xml.serialization.configuration.schemaimporterextensionelementcollection", "system.xml.serialization.configuration.schemaimporterextensionssection", "Member[schemaimporterextensions]"]
+    - ["system.configuration.configurationpropertycollection", "system.xml.serialization.configuration.datetimeserializationsection", "Member[properties]"]
+    - ["system.xml.serialization.configuration.schemaimporterextensionelement", "system.xml.serialization.configuration.schemaimporterextensionelementcollection", "Member[item]"]
+    - ["system.string", "system.xml.serialization.configuration.schemaimporterextensionelement", "Member[name]"]

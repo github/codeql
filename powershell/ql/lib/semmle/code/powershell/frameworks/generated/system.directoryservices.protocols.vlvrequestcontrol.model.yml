@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.directoryservices.protocols.vlvrequestcontrol", "Method[vlvrequestcontrol]", "Argument[2].Element", "Argument[this]", "taint"]
+      - ["system.directoryservices.protocols.vlvrequestcontrol", "Method[vlvrequestcontrol]", "Argument[2]", "Argument[this]", "taint"]

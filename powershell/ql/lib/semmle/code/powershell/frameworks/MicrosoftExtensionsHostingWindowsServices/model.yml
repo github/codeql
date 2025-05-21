@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.boolean", "microsoft.extensions.hosting.windowsservices.windowsservicehelpers!", "Method[iswindowsservice].ReturnValue"]
-    - ["system.threading.tasks.task", "microsoft.extensions.hosting.windowsservices.windowsservicelifetime", "Method[waitforstartasync].ReturnValue"]
-    - ["system.threading.tasks.task", "microsoft.extensions.hosting.windowsservices.windowsservicelifetime", "Method[stopasync].ReturnValue"]

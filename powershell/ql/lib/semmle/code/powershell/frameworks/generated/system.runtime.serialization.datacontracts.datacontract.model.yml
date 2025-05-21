@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.datacontracts.datacontract", "Method[get_basecontract]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.serialization.datacontracts.datacontract", "Method[isdictionarylike]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.runtime.serialization.datacontracts.datacontract", "Method[isdictionarylike]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.runtime.serialization.datacontracts.datacontract", "Method[isdictionarylike]", "Argument[this]", "Argument[2]", "taint"]

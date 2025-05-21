@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.objecteventregistrationbase", "Method[get_newsubscriber]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.objecteventregistrationbase", "Method[getsourceobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.objecteventregistrationbase", "Method[getsourceobjecteventname]", "Argument[this]", "ReturnValue", "taint"]

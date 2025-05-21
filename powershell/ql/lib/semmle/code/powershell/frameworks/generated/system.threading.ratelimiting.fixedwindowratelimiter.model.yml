@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.ratelimiting.fixedwindowratelimiter", "Method[fixedwindowratelimiter]", "Argument[0].Field[Window]", "Argument[this].SyntheticField[_options].Field[Window]", "value"]
+      - ["system.threading.ratelimiting.fixedwindowratelimiter", "Method[get_replenishmentperiod]", "Argument[this].SyntheticField[_options].Field[Window]", "ReturnValue", "value"]

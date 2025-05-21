@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.odbc.odbccommand", "Method[executereader]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbccommand", "Method[get_dbparametercollection]", "Argument[this].Field[Parameters]", "ReturnValue", "value"]
+      - ["system.data.odbc.odbccommand", "Method[get_parameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.odbc.odbccommand", "Method[odbccommand]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.odbc.odbccommand", "Method[odbccommand]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.data.odbc.odbccommand", "Method[odbccommand]", "Argument[2]", "Argument[this]", "taint"]

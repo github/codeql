@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[nocachenostore]"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[minfresh]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachepolicy", "Member[level]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[revalidate]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[cacheornextcacheonly]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[cacheonly]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[bypasscache]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[default]"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[maxageandmaxstale]"]
+    - ["system.string", "system.net.cache.httprequestcachepolicy", "Method[tostring].ReturnValue"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[maxage]"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[maxageandminfresh]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[bypasscache]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[reload]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachepolicy", "Member[level]"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[none]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[refresh]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[nocachenostore]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[revalidate]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[cacheifavailable]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[default]"]
+    - ["system.datetime", "system.net.cache.httprequestcachepolicy", "Member[cachesyncdate]"]
+    - ["system.net.cache.httpcacheagecontrol", "system.net.cache.httpcacheagecontrol!", "Member[maxstale]"]
+    - ["system.timespan", "system.net.cache.httprequestcachepolicy", "Member[minfresh]"]
+    - ["system.timespan", "system.net.cache.httprequestcachepolicy", "Member[maxstale]"]
+    - ["system.timespan", "system.net.cache.httprequestcachepolicy", "Member[maxage]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[cacheifavailable]"]
+    - ["system.net.cache.requestcachelevel", "system.net.cache.requestcachelevel!", "Member[cacheonly]"]
+    - ["system.net.cache.httprequestcachelevel", "system.net.cache.httprequestcachelevel!", "Member[reload]"]
+    - ["system.string", "system.net.cache.requestcachepolicy", "Method[tostring].ReturnValue"]

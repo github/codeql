@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["t", "microsoft.management.infrastructure.generic.cimreadonlykeyedcollection", "Member[item]"]
+    - ["system.collections.generic.ienumerator", "microsoft.management.infrastructure.generic.cimreadonlykeyedcollection", "Method[getenumerator].ReturnValue"]
+    - ["system.idisposable", "microsoft.management.infrastructure.generic.cimasyncmultipleresults", "Method[subscribe].ReturnValue"]
+    - ["system.collections.ienumerator", "microsoft.management.infrastructure.generic.cimreadonlykeyedcollection", "Method[getenumerator].ReturnValue"]
+    - ["system.idisposable", "microsoft.management.infrastructure.generic.cimasyncresult", "Method[subscribe].ReturnValue"]
+    - ["system.idisposable", "microsoft.management.infrastructure.generic.cimasyncstatus", "Method[subscribe].ReturnValue"]
+    - ["system.int32", "microsoft.management.infrastructure.generic.cimreadonlykeyedcollection", "Member[count]"]

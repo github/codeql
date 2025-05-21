@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configureappconfiguration]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configurecontainer]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configuredefaults]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configurehostoptions]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configurelogging]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configuremetrics]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[configureservices]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[useconsolelifetime]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[usecontentroot]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[usedefaultserviceprovider]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.hostinghostbuilderextensions", "Method[useenvironment]", "Argument[0]", "ReturnValue", "value"]

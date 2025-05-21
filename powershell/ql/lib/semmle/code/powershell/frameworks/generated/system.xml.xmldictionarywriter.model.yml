@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmldictionarywriter", "Method[createbinarywriter]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[createbinarywriter]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[createbinarywriter]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[createdictionarywriter]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmldictionarywriter", "Method[writearray]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writearray]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeattributestring]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeattributestring]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeattributestring]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeattributestring]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeelementstring]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeelementstring]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeelementstring]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writeelementstring]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writenode]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writequalifiedname]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writequalifiedname]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writestartattribute]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writestartattribute]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writestartelement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writestartelement]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writestring]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writetextnode]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmldictionarywriter", "Method[writevalue]", "Argument[0]", "Argument[this]", "taint"]

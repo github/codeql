@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.ecdiffiehellmanpublickey", "Method[ecdiffiehellmanpublickey]", "Argument[0].Element", "Argument[this].SyntheticField[_keyBlob].Element", "value"]
+      - ["system.security.cryptography.ecdiffiehellmanpublickey", "Method[tobytearray]", "Argument[this].SyntheticField[_keyBlob].Element", "ReturnValue.Element", "value"]

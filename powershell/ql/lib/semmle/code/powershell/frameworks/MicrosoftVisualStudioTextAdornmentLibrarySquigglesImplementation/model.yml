@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.string", "microsoft.visualstudio.text.adornmentlibrary.squiggles.implementation.ierrortypemetadata", "Member[displayname]"]

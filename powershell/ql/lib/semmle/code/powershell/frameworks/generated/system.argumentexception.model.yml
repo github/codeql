@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.argumentexception", "Method[argumentexception]", "Argument[0].SyntheticField[_values].Element", "Argument[this].SyntheticField[_paramName]", "value"]
+      - ["system.argumentexception", "Method[argumentexception]", "Argument[1]", "Argument[this].SyntheticField[_paramName]", "value"]
+      - ["system.argumentexception", "Method[get_message]", "Argument[this].Field[Message]", "ReturnValue", "value"]
+      - ["system.argumentexception", "Method[get_message]", "Argument[this].SyntheticField[_paramName]", "ReturnValue", "taint"]
+      - ["system.argumentexception", "Method[get_paramname]", "Argument[this].SyntheticField[_paramName]", "ReturnValue", "value"]

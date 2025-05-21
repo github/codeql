@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.comparer", "Method[comparer]", "Argument[0].Field[CompareInfo]", "Argument[this].SyntheticField[_compareInfo]", "value"]
+      - ["system.collections.comparer", "Method[getobjectdata]", "Argument[this].SyntheticField[_compareInfo]", "Argument[0].SyntheticField[_values].Element", "value"]

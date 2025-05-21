@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonsave].ReturnValue"]
+    - ["system.collections.generic.idictionary", "system.activities.persistence.persistenceparticipant", "Method[mapvalues].ReturnValue"]
+    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonload].ReturnValue"]

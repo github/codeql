@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.symmetricalgorithm", "Method[get_legalblocksizes]", "Argument[this].Field[LegalBlockSizesValue].Element", "ReturnValue.Element", "value"]
+      - ["system.security.cryptography.symmetricalgorithm", "Method[get_legalkeysizes]", "Argument[this].Field[LegalKeySizesValue].Element", "ReturnValue.Element", "value"]

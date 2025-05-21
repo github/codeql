@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.rfc2898derivebytes", "Method[rfc2898derivebytes]", "Argument[3]", "Argument[this].Field[HashAlgorithm]", "value"]

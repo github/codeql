@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.fillerroreventargs", "Method[fillerroreventargs]", "Argument[0]", "Argument[this].SyntheticField[_dataTable]", "value"]
+      - ["system.data.fillerroreventargs", "Method[fillerroreventargs]", "Argument[1]", "Argument[this].SyntheticField[_values]", "value"]
+      - ["system.data.fillerroreventargs", "Method[get_datatable]", "Argument[this].SyntheticField[_dataTable]", "ReturnValue", "value"]
+      - ["system.data.fillerroreventargs", "Method[get_values]", "Argument[this].SyntheticField[_values].Element", "ReturnValue.Element", "value"]

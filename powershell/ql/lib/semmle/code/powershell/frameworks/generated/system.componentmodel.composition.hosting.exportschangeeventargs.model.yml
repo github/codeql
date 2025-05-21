@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.hosting.exportschangeeventargs", "Method[exportschangeeventargs]", "Argument[0]", "Argument[this].SyntheticField[_addedExports]", "value"]
+      - ["system.componentmodel.composition.hosting.exportschangeeventargs", "Method[exportschangeeventargs]", "Argument[1]", "Argument[this].SyntheticField[_removedExports]", "value"]
+      - ["system.componentmodel.composition.hosting.exportschangeeventargs", "Method[exportschangeeventargs]", "Argument[2]", "Argument[this].Field[AtomicComposition]", "value"]
+      - ["system.componentmodel.composition.hosting.exportschangeeventargs", "Method[get_addedexports]", "Argument[this].SyntheticField[_addedExports]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.exportschangeeventargs", "Method[get_removedexports]", "Argument[this].SyntheticField[_removedExports]", "ReturnValue", "value"]

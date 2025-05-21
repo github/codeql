@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.blobreader", "Method[get_currentpointer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobreader", "Method[get_startpointer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobreader", "Method[readconstant]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobreader", "Method[readserializedstring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobreader", "Method[readutf16]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobreader", "Method[readutf8]", "Argument[this]", "ReturnValue", "taint"]

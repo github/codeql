@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.buffers.nrange", "Method[getoffsetandlength]", "Argument[0]", "ReturnValue.Field[Item1]", "taint"]
+      - ["system.buffers.nrange", "Method[nrange]", "Argument[0]", "Argument[this].Field[Start]", "value"]
+      - ["system.buffers.nrange", "Method[nrange]", "Argument[1]", "Argument[this].Field[End]", "value"]

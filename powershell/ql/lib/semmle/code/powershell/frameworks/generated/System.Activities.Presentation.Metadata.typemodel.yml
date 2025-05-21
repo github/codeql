@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.ienumerable", "system.activities.presentation.metadata.attributetable", "Member[attributedtypes]"]
+    - ["system.collections.ienumerable", "system.activities.presentation.metadata.attributetable", "Method[getcustomattributes].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.activities.presentation.metadata.attributetablevalidationexception", "Member[validationerrors]"]
+    - ["system.activities.presentation.metadata.attributetable", "system.activities.presentation.metadata.attributetablebuilder", "Method[createtable].ReturnValue"]
+    - ["system.type", "system.activities.presentation.metadata.attributecallbackbuilder", "Member[callbacktype]"]
+    - ["system.boolean", "system.activities.presentation.metadata.attributetable", "Method[containsattributes].ReturnValue"]

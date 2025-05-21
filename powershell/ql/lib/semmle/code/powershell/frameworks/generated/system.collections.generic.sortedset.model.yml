@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.sortedset", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[root].SyntheticField[Item]", "value"]
+      - ["system.collections.generic.sortedset", "Method[copyto]", "Argument[this].SyntheticField[root].SyntheticField[Item]", "Argument[0].Element", "value"]
+      - ["system.collections.generic.sortedset", "Method[get_comparer]", "Argument[this].SyntheticField[comparer]", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedset", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedset", "Method[get_max]", "Argument[this].SyntheticField[root].SyntheticField[Item]", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedset", "Method[get_min]", "Argument[this].SyntheticField[root].SyntheticField[Item]", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedset", "Method[getviewbetween]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedset", "Method[getviewbetween]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedset", "Method[getviewbetween]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedset", "Method[sortedset]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.collections.generic.sortedset", "Method[sortedset]", "Argument[0]", "Argument[this].SyntheticField[comparer]", "value"]
+      - ["system.collections.generic.sortedset", "Method[sortedset]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.generic.sortedset", "Method[symmetricexceptwith]", "Argument[0].Element", "Argument[this].SyntheticField[root].SyntheticField[Item]", "value"]
+      - ["system.collections.generic.sortedset", "Method[trygetvalue]", "Argument[this].SyntheticField[root].SyntheticField[Item]", "Argument[1]", "value"]
+      - ["system.collections.generic.sortedset", "Method[unionwith]", "Argument[0].Element", "Argument[this].SyntheticField[root].SyntheticField[Item]", "value"]

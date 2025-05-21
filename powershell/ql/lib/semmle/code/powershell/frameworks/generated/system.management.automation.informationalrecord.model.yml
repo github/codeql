@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.informationalrecord", "Method[get_invocationinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.informationalrecord", "Method[tostring]", "Argument[this].Field[system.management.automation.informationalrecord.message]", "ReturnValue", "value"]
+      - ["system.management.automation.informationalrecord", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

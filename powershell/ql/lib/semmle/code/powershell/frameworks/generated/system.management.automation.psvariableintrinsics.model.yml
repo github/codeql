@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psvariableintrinsics", "Method[getvalue]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.management.automation.psvariableintrinsics", "Method[set]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.management.automation.psvariableintrinsics", "Method[set]", "Argument[this]", "Argument[1]", "taint"]

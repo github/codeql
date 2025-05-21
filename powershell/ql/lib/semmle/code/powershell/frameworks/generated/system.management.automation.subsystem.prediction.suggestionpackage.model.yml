@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.subsystem.prediction.suggestionpackage", "Method[suggestionpackage]", "Argument[0]", "Argument[this].Field[system.management.automation.subsystem.prediction.suggestionpackage.suggestionentries]", "value"]
+      - ["system.management.automation.subsystem.prediction.suggestionpackage", "Method[suggestionpackage]", "Argument[1]", "Argument[this].Field[system.management.automation.subsystem.prediction.suggestionpackage.suggestionentries]", "value"]

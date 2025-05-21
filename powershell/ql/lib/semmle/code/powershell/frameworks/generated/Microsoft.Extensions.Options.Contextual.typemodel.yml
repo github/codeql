@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.options.contextual.inamedcontextualoptions", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.options.contextual.icontextualoptions", "Method[getasync].ReturnValue"]

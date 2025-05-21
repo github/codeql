@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.language.intellisense.implementation.automationlivesetting", "microsoft.visualstudio.language.intellisense.implementation.automationlivesetting!", "Member[polite]"]
+    - ["microsoft.visualstudio.language.intellisense.implementation.automationlivesetting", "microsoft.visualstudio.language.intellisense.implementation.automationlivesetting!", "Member[assertive]"]
+    - ["microsoft.visualstudio.language.intellisense.implementation.automationlivesetting", "microsoft.visualstudio.language.intellisense.implementation.automationlivesetting!", "Member[off]"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.functiondefinitionast", "Method[copy]", "Argument[this].Field[system.management.automation.language.functiondefinitionast.body].Field[system.management.automation.language.scriptblockast.scriptrequirements]", "ReturnValue.Field[system.management.automation.language.functiondefinitionast.body].Field[system.management.automation.language.scriptblockast.scriptrequirements]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[copy]", "Argument[this].Field[system.management.automation.language.functiondefinitionast.name]", "ReturnValue.Field[system.management.automation.language.functiondefinitionast.name]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[3]", "Argument[5].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.functiondefinitionast.name]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[3]", "Argument[this].Field[system.management.automation.language.functiondefinitionast.name]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[5]", "Argument[5].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.functiondefinitionast.body]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[5]", "Argument[this].Field[system.management.automation.language.functiondefinitionast.body]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[functiondefinitionast]", "Argument[this]", "Argument[5].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[gethelpcontent]", "Argument[this].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.ast.parent]", "Argument[0].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[gethelpcontent]", "Argument[this].Field[system.management.automation.language.ast.parent]", "Argument[0].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.language.functiondefinitionast", "Method[gethelpcontent]", "Argument[this]", "Argument[0].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]

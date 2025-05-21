@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.methoddelegator", "Method[get_context]", "Argument[this].Field[_wrappedMethod].Field[Context]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[get_diagnosticname]", "Argument[this].Field[_wrappedMethod].Field[DiagnosticName]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[get_diagnosticname]", "Argument[this].Field[_wrappedMethod].Field[Name]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[get_instantiation]", "Argument[this].Field[_wrappedMethod].Field[Instantiation]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[get_name]", "Argument[this].Field[_wrappedMethod].Field[Name]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[get_signature]", "Argument[this].Field[_wrappedMethod].Field[Signature]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddelegator", "Method[methoddelegator]", "Argument[0]", "Argument[this].Field[_wrappedMethod]", "value"]

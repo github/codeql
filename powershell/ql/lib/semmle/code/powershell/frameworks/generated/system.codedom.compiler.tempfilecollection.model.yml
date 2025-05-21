@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.compiler.tempfilecollection", "Method[addextension]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[addextension]", "Argument[this].Field[BasePath]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[get_basepath]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[get_tempdir]", "Argument[this].SyntheticField[_tempDir]", "ReturnValue", "value"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.compiler.tempfilecollection", "Method[tempfilecollection]", "Argument[0]", "Argument[this].SyntheticField[_tempDir]", "value"]

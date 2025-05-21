@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.assemblyname", "Method[get_escapedcodebase]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.assemblyname", "Method[getpublickey]", "Argument[this].SyntheticField[_publicKey]", "ReturnValue", "value"]
+      - ["system.reflection.assemblyname", "Method[setpublickey]", "Argument[0]", "Argument[this].SyntheticField[_publicKey]", "value"]
+      - ["system.reflection.assemblyname", "Method[setpublickeytoken]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.reflection.assemblyname", "Method[tostring]", "Argument[this].Field[FullName]", "ReturnValue", "value"]

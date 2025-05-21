@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.immutable.immutableinterlocked", "Method[addorupdate]", "Argument[1]", "Argument[2].Parameter[0]", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[addorupdate]", "Argument[1]", "Argument[3].Parameter[0]", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[addorupdate]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[addorupdate]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[addorupdate]", "Argument[3].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[getoradd]", "Argument[1]", "Argument[2].Parameter[0]", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[getoradd]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[getoradd]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[getoradd]", "Argument[3]", "Argument[2].Parameter[1]", "value"]
+      - ["system.collections.immutable.immutableinterlocked", "Method[update]", "Argument[2]", "Argument[1].Parameter[1]", "value"]

@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.process", "Method[get_machinename]", "Argument[this].SyntheticField[_machineName]", "ReturnValue", "value"]
+      - ["system.diagnostics.process", "Method[get_mainmodule]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_modules]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_processname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_safehandle]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_standarderror]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_standardinput]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_standardoutput]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[get_threads]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[getprocessbyid]", "Argument[1]", "ReturnValue.SyntheticField[_machineName]", "value"]
+      - ["system.diagnostics.process", "Method[getprocesses]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[start]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.diagnostics.process", "Method[start]", "Argument[1]", "ReturnValue", "taint"]

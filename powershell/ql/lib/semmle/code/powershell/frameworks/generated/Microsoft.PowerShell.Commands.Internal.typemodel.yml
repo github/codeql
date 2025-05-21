@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.powershell.commands.internal.remotingerrorresources!", "Member[couldnotresolveroledefinitionprincipal]"]
+    - ["microsoft.win32.registryvaluekind", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[getvaluekind].ReturnValue"]
+    - ["system.security.accesscontrol.registryrights", "microsoft.powershell.commands.internal.transactedregistryaccessrule", "Member[registryrights]"]
+    - ["system.string[]", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[getsubkeynames].ReturnValue"]
+    - ["system.string", "microsoft.powershell.commands.internal.remotingerrorresources!", "Member[winrmrestartwarning]"]
+    - ["system.string[]", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[getvaluenames].ReturnValue"]
+    - ["system.int32", "microsoft.powershell.commands.internal.transactedregistrykey", "Member[valuecount]"]
+    - ["system.type", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Member[accessruletype]"]
+    - ["microsoft.powershell.commands.internal.transactedregistrykey", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[createsubkey].ReturnValue"]
+    - ["system.int32", "microsoft.powershell.commands.internal.transactedregistrykey", "Member[subkeycount]"]
+    - ["microsoft.powershell.commands.internal.transactedregistrysecurity", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[getaccesscontrol].ReturnValue"]
+    - ["system.type", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Member[auditruletype]"]
+    - ["system.type", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Member[accessrighttype]"]
+    - ["system.boolean", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Method[removeauditrule].ReturnValue"]
+    - ["system.security.accesscontrol.auditrule", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Method[auditrulefactory].ReturnValue"]
+    - ["system.string", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[tostring].ReturnValue"]
+    - ["microsoft.powershell.commands.internal.transactedregistrykey", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[opensubkey].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Method[removeaccessrule].ReturnValue"]
+    - ["system.object", "microsoft.powershell.commands.internal.transactedregistrykey", "Method[getvalue].ReturnValue"]
+    - ["system.string", "microsoft.powershell.commands.internal.transactedregistrykey", "Member[name]"]
+    - ["system.security.accesscontrol.registryrights", "microsoft.powershell.commands.internal.transactedregistryauditrule", "Member[registryrights]"]
+    - ["system.security.accesscontrol.accessrule", "microsoft.powershell.commands.internal.transactedregistrysecurity", "Method[accessrulefactory].ReturnValue"]

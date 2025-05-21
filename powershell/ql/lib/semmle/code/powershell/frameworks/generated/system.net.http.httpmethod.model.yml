@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.httpmethod", "Method[get_method]", "Argument[this].SyntheticField[_method]", "ReturnValue", "value"]
+      - ["system.net.http.httpmethod", "Method[httpmethod]", "Argument[0]", "Argument[this].SyntheticField[_method]", "value"]
+      - ["system.net.http.httpmethod", "Method[tostring]", "Argument[this].SyntheticField[_method]", "ReturnValue", "value"]

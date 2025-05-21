@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.streamwriter", "Method[flushasync]", "Argument[this]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.io.streamwriter", "Method[get_basestream]", "Argument[this].SyntheticField[_stream]", "ReturnValue", "value"]
+      - ["system.io.streamwriter", "Method[streamwriter]", "Argument[0]", "Argument[this].SyntheticField[_stream]", "value"]

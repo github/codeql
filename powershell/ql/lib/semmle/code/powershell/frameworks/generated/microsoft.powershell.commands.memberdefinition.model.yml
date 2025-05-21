@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[0]", "Argument[this].Field[microsoft.powershell.commands.memberdefinition.typename]", "value"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[1]", "Argument[this].Field[microsoft.powershell.commands.memberdefinition.name]", "value"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[memberdefinition]", "Argument[3]", "Argument[this].Field[microsoft.powershell.commands.memberdefinition.definition]", "value"]
+      - ["microsoft.powershell.commands.memberdefinition", "Method[tostring]", "Argument[this].Field[microsoft.powershell.commands.memberdefinition.definition]", "ReturnValue", "value"]

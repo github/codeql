@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.unioniterator", "Method[create]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.unioniterator", "Method[get_current]", "Argument[this].SyntheticField[_navCurr]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.unioniterator", "Method[movenext]", "Argument[0]", "Argument[this].SyntheticField[_navCurr]", "value"]

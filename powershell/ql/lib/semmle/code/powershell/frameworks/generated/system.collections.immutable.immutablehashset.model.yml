@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.immutable.immutablehashset", "Method[add]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[add]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[add]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[clear]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[create]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[create]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[create]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[createrange]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[createrange]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[except]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[get_keycomparer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[intersect]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[remove]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[symmetricexcept]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[symmetricexceptwith]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[tobuilder]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.immutable.immutablehashset", "Method[toimmutablehashset]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[trygetvalue]", "Argument[0]", "Argument[1]", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[union]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[union]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.collections.immutable.immutablehashset", "Method[withcomparer]", "Argument[this]", "ReturnValue", "value"]

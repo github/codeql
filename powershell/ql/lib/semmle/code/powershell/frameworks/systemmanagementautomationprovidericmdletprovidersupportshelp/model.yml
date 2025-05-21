@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.provider.icmdletprovidersupportshelp", "Method[gethelpmaml]", "Argument[this]", "ReturnValue", "taint"]
-      

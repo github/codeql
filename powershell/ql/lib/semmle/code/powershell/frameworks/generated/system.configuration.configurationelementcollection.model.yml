@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationelementcollection", "Method[baseadd]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[baseadd]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[baseget]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[basegetallkeys]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[basegetkey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[configurationelementcollection]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.configurationelementcollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.configurationelementcollection", "Method[getelementkey]", "Argument[0]", "ReturnValue", "taint"]

@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.servicemodel.xamlintegration.upnendpointidentityextension", "Member[upnname]"]
+    - ["system.boolean", "system.servicemodel.xamlintegration.xpathmessagecontexttypeconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.xamlintegration.servicexnametypeconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.collections.generic.dictionary", "system.servicemodel.xamlintegration.xpathmessagecontextmarkupextension", "Member[namespaces]"]
+    - ["system.object", "system.servicemodel.xamlintegration.endpointidentityconverter", "Method[convertto].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.xpathmessagecontextmarkupextension", "Method[providevalue].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.servicexnametypeconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.upnendpointidentityextension", "Method[providevalue].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.spnendpointidentityextension", "Method[providevalue].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.xamlintegration.xpathmessagecontexttypeconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.xamlintegration.servicexnametypeconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.xpathmessagecontexttypeconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.xamlintegration.endpointidentityconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.string", "system.servicemodel.xamlintegration.spnendpointidentityextension", "Member[spnname]"]
+    - ["system.object", "system.servicemodel.xamlintegration.xpathmessagecontexttypeconverter", "Method[convertto].ReturnValue"]
+    - ["system.object", "system.servicemodel.xamlintegration.servicexnametypeconverter", "Method[convertto].ReturnValue"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.sortedlist", "Method[getkey]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.sortedlist", "Method[setbyindex]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.collections.sortedlist", "Method[sortedlist]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.sortedlist", "Method[synchronized]", "Argument[0].Element", "ReturnValue", "taint"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pscodemethod", "Method[copy]", "Argument[this].Field[system.management.automation.pscodemethod.codereference]", "ReturnValue.Field[system.management.automation.pscodemethod.codereference]", "value"]
+      - ["system.management.automation.pscodemethod", "Method[get_overloaddefinitions]", "Argument[this].Field[system.management.automation.pscodemethod.codereference].Field[system.reflection.memberinfo.name]", "ReturnValue.Element", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[get_overloaddefinitions]", "Argument[this].Field[system.management.automation.pscodemethod.codereference]", "ReturnValue.Element", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[pscodemethod]", "Argument[1]", "Argument[this].Field[system.management.automation.pscodemethod.codereference]", "value"]
+      - ["system.management.automation.pscodemethod", "Method[tostring]", "Argument[this].Field[system.management.automation.pscodemethod.codereference].Field[system.reflection.memberinfo.name]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[tostring]", "Argument[this].Field[system.management.automation.pscodemethod.codereference]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscodemethod", "Method[tostring]", "Argument[this].Field[system.management.automation.pscodemethod.overloaddefinitions].Element", "ReturnValue", "taint"]

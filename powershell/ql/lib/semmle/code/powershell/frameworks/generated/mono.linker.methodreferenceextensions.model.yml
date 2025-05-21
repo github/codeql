@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.methodreferenceextensions", "Method[getinflatedparametertype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.methodreferenceextensions", "Method[getreturntype]", "Argument[0].Field[ReturnType].Field[ReturnType]", "ReturnValue.Field[ReturnType]", "value"]
+      - ["mono.linker.methodreferenceextensions", "Method[getreturntype]", "Argument[0].Field[ReturnType]", "ReturnValue", "value"]

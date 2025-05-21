@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationerrorsexception", "Method[configurationerrorsexception]", "Argument[2]", "Argument[this].SyntheticField[_firstFilename]", "value"]
+      - ["system.configuration.configurationerrorsexception", "Method[get_errors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationerrorsexception", "Method[get_filename]", "Argument[this].SyntheticField[_firstFilename]", "ReturnValue", "value"]
+      - ["system.configuration.configurationerrorsexception", "Method[get_message]", "Argument[this].Field[BareMessage]", "ReturnValue", "value"]
+      - ["system.configuration.configurationerrorsexception", "Method[get_message]", "Argument[this].Field[Filename]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationerrorsexception", "Method[get_message]", "Argument[this].SyntheticField[_firstFilename]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationerrorsexception", "Method[getfilename]", "Argument[0].Field[Filename]", "ReturnValue", "value"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.binarydata", "Method[binarydata]", "Argument[0]", "Argument[this].SyntheticField[_bytes]", "value"]
+      - ["system.binarydata", "Method[binarydata]", "Argument[1]", "Argument[this].Field[MediaType]", "value"]
+      - ["system.binarydata", "Method[frombytes]", "Argument[1]", "ReturnValue.Field[MediaType]", "value"]
+      - ["system.binarydata", "Method[fromfile]", "Argument[1]", "ReturnValue.Field[MediaType]", "value"]
+      - ["system.binarydata", "Method[fromstreamasync]", "Argument[1]", "ReturnValue.Field[Result].Field[MediaType]", "value"]
+      - ["system.binarydata", "Method[fromstring]", "Argument[1]", "ReturnValue.Field[MediaType]", "value"]
+      - ["system.binarydata", "Method[tomemory]", "Argument[this].SyntheticField[_bytes]", "ReturnValue", "value"]
+      - ["system.binarydata", "Method[tomemory]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.binarydata", "Method[tostream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.binarydata", "Method[withmediatype]", "Argument[0]", "ReturnValue.Field[MediaType]", "value"]

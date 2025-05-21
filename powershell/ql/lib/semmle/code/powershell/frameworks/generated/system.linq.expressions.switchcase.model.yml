@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.switchcase", "Method[update]", "Argument[0]", "ReturnValue.Field[TestValues]", "value"]
+      - ["system.linq.expressions.switchcase", "Method[update]", "Argument[1]", "ReturnValue.Field[Body]", "value"]
+      - ["system.linq.expressions.switchcase", "Method[update]", "Argument[this]", "ReturnValue", "value"]

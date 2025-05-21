@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.signature", "Method[get_path]", "Argument[this].SyntheticField[system.management.automation.signature._path]", "ReturnValue", "value"]
+      - ["system.management.automation.signature", "Method[get_signercertificate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.signature", "Method[get_statusmessage]", "Argument[this].SyntheticField[system.management.automation.signature._statusmessage]", "ReturnValue", "value"]
+      - ["system.management.automation.signature", "Method[get_timestampercertificate]", "Argument[this]", "ReturnValue", "taint"]

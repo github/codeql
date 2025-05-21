@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.csharp.activities.csharpreference", "Member[language]"]
+    - ["tresult", "microsoft.csharp.activities.csharpvalue", "Method[execute].ReturnValue"]
+    - ["system.linq.expressions.expression", "microsoft.csharp.activities.csharpreference", "Method[getexpressiontree].ReturnValue"]
+    - ["system.string", "microsoft.csharp.activities.csharpvalue", "Member[language]"]
+    - ["system.string", "microsoft.csharp.activities.csharpvalue", "Member[expressiontext]"]
+    - ["system.activities.location", "microsoft.csharp.activities.csharpreference", "Method[execute].ReturnValue"]
+    - ["system.boolean", "microsoft.csharp.activities.csharpvalue", "Member[requirescompilation]"]
+    - ["system.linq.expressions.expression", "microsoft.csharp.activities.csharpvalue", "Method[getexpressiontree].ReturnValue"]
+    - ["system.string", "microsoft.csharp.activities.csharpreference", "Member[expressiontext]"]
+    - ["system.boolean", "microsoft.csharp.activities.csharpreference", "Member[requirescompilation]"]

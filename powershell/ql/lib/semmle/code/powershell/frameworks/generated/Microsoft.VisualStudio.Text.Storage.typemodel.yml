@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.storage.idatastorage", "microsoft.visualstudio.text.storage.idatastorageservice", "Method[getdatastorage].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.storage.idatastorage", "Method[trygetitemvalue].ReturnValue"]

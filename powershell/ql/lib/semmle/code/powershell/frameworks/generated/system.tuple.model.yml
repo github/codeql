@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.tuple", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[4]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[5]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[6]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[create]", "Argument[7]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[get_item1]", "Argument[this].SyntheticField[m_Item1]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item2]", "Argument[this].SyntheticField[m_Item2]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item3]", "Argument[this].SyntheticField[m_Item3]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item4]", "Argument[this].SyntheticField[m_Item4]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item5]", "Argument[this].SyntheticField[m_Item5]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item6]", "Argument[this].SyntheticField[m_Item6]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item7]", "Argument[this].SyntheticField[m_Item7]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item]", "Argument[this].Field[Item1]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_item]", "Argument[this].SyntheticField[m_Item1]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[get_rest]", "Argument[this].SyntheticField[m_Rest]", "ReturnValue", "value"]
+      - ["system.tuple", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.tuple", "Method[tuple]", "Argument[0]", "Argument[this].SyntheticField[m_Item1]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[1]", "Argument[this].SyntheticField[m_Item2]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[2]", "Argument[this].SyntheticField[m_Item3]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[3]", "Argument[this].SyntheticField[m_Item4]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[4]", "Argument[this].SyntheticField[m_Item5]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[5]", "Argument[this].SyntheticField[m_Item6]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[6]", "Argument[this].SyntheticField[m_Item7]", "value"]
+      - ["system.tuple", "Method[tuple]", "Argument[7]", "Argument[this].SyntheticField[m_Rest]", "value"]

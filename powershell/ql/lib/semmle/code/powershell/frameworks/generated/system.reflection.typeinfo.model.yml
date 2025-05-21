@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.typeinfo", "Method[astype]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.reflection.typeinfo", "Method[get_generictypeparameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.typeinfo", "Method[get_implementedinterfaces]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.typeinfo", "Method[getdeclaredevent]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.typeinfo", "Method[getdeclaredfield]", "Argument[this]", "ReturnValue", "taint"]

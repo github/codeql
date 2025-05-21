@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.uritypeconverter", "Method[convertfrom]", "Argument[2].Field[OriginalString]", "ReturnValue", "taint"]
+      - ["system.uritypeconverter", "Method[convertto]", "Argument[2].Field[OriginalString]", "ReturnValue", "value"]

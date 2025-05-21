@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.collectionextensions", "Method[asreadonly]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.generic.collectionextensions", "Method[getdefaultassets]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.generic.collectionextensions", "Method[getdefaultruntimefileassets]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.generic.collectionextensions", "Method[getruntimeassets]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.generic.collectionextensions", "Method[getruntimefileassets]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.collections.generic.collectionextensions", "Method[getvalueordefault]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.collections.generic.collectionextensions", "Method[remove]", "Argument[0].Element", "Argument[2]", "taint"]

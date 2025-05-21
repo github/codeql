@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.moduleintrinsics", "Method[getmodulepath]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.moduleintrinsics", "Method[getmodulepath]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.moduleintrinsics", "Method[getmodulepath]", "Argument[2]", "ReturnValue", "taint"]

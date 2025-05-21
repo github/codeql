@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[add]", "Argument[0]", "Argument[this].Field[List].Element", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[addrange]", "Argument[0].Element", "Argument[this].Field[InnerList].Element", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[addrange]", "Argument[0].Field[List].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[copyto]", "Argument[this].Field[List].Element", "Argument[0].Element", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[get_item]", "Argument[this].Field[List].Element", "ReturnValue", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[insert]", "Argument[1]", "Argument[this].Field[List].Element", "value"]
+      - ["system.directoryservices.protocols.directoryattributecollection", "Method[set_item]", "Argument[1]", "Argument[this].Field[List].Element", "value"]

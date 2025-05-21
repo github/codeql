@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.warningheadervalue", "Method[clone]", "Argument[this].SyntheticField[_agent]", "ReturnValue.SyntheticField[_agent]", "value"]
+      - ["system.net.http.headers.warningheadervalue", "Method[clone]", "Argument[this].SyntheticField[_text]", "ReturnValue.SyntheticField[_text]", "value"]
+      - ["system.net.http.headers.warningheadervalue", "Method[get_agent]", "Argument[this].SyntheticField[_agent]", "ReturnValue", "value"]
+      - ["system.net.http.headers.warningheadervalue", "Method[get_text]", "Argument[this].SyntheticField[_text]", "ReturnValue", "value"]
+      - ["system.net.http.headers.warningheadervalue", "Method[warningheadervalue]", "Argument[1]", "Argument[this].SyntheticField[_agent]", "value"]
+      - ["system.net.http.headers.warningheadervalue", "Method[warningheadervalue]", "Argument[2]", "Argument[this].SyntheticField[_text]", "value"]

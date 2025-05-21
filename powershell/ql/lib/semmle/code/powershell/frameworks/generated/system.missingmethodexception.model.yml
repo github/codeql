@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.missingmethodexception", "Method[missingmethodexception]", "Argument[0]", "Argument[this].Field[ClassName]", "value"]
+      - ["system.missingmethodexception", "Method[missingmethodexception]", "Argument[1]", "Argument[this].Field[MemberName]", "value"]

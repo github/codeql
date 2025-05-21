@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.net.http.httpmessagehandler", "microsoft.extensions.http.httpmessagehandlerbuilder", "Method[build].ReturnValue"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.http.httpclientfactoryoptions", "Member[httpclientactions]"]
+    - ["system.iserviceprovider", "microsoft.extensions.http.httpmessagehandlerbuilder", "Member[services]"]
+    - ["tclient", "microsoft.extensions.http.itypedhttpclientfactory", "Method[createclient].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.http.policyhttpmessagehandler", "Method[sendcoreasync].ReturnValue"]
+    - ["system.net.http.httpmessagehandler", "microsoft.extensions.http.httpmessagehandlerbuilder!", "Method[createhandlerpipeline].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.http.policyhttpmessagehandler", "Method[sendasync].ReturnValue"]
+    - ["system.func", "microsoft.extensions.http.httpclientfactoryoptions", "Member[shouldredactheadervalue]"]
+    - ["system.timespan", "microsoft.extensions.http.httpclientfactoryoptions", "Member[handlerlifetime]"]
+    - ["system.boolean", "microsoft.extensions.http.httpclientfactoryoptions", "Member[suppresshandlerscope]"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.http.httpclientfactoryoptions", "Member[httpmessagehandlerbuilderactions]"]
+    - ["system.net.http.httpmessagehandler", "microsoft.extensions.http.httpmessagehandlerbuilder", "Member[primaryhandler]"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.http.httpmessagehandlerbuilder", "Member[additionalhandlers]"]
+    - ["system.action", "microsoft.extensions.http.ihttpmessagehandlerbuilderfilter", "Method[configure].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.httpmessagehandlerbuilder", "Member[name]"]

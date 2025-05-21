@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.httprequestheaders", "Method[get_connection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_pragma]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_trailer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_transferencoding]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_upgrade]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_via]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httprequestheaders", "Method[get_warning]", "Argument[this]", "ReturnValue", "taint"]

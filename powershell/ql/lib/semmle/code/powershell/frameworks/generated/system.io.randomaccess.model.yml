@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.randomaccess", "Method[readasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[readasync]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[readasync]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[writeasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[writeasync]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[writeasync]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.randomaccess", "Method[writeasync]", "Argument[3]", "ReturnValue", "taint"]

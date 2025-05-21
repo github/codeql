@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.reflection.fieldinfo", "system.runtime.interopservices.expando.iexpando", "Method[addfield].ReturnValue"]
-    - ["system.reflection.methodinfo", "system.runtime.interopservices.expando.iexpando", "Method[addmethod].ReturnValue"]
-    - ["system.reflection.propertyinfo", "system.runtime.interopservices.expando.iexpando", "Method[addproperty].ReturnValue"]

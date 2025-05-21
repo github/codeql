@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction", "system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction!", "Member[msgsendsuperstret]"]
+    - ["system.runtime.interopservices.gchandle", "system.runtime.interopservices.objectivec.objectivecmarshal!", "Method[createreferencetrackinghandle].ReturnValue"]
+    - ["system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction", "system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction!", "Member[msgsendfpret]"]
+    - ["system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction", "system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction!", "Member[msgsendsuper]"]
+    - ["system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction", "system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction!", "Member[msgsendstret]"]
+    - ["system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction", "system.runtime.interopservices.objectivec.objectivecmarshal+messagesendfunction!", "Member[msgsend]"]

@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.host.choicedescription", "Method[choicedescription]", "Argument[0]", "Argument[this]", "taint"]
-      - ["system.management.automation.host.choicedescription", "Method[choicedescription]", "Argument[1]", "Argument[this]", "taint"]
-      - ["system.management.automation.host.choicedescription", "Method[get_label]", "Argument[this]", "ReturnValue", "taint"]
-      

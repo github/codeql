@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.tablerowgroupstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.int32", "system.windows.documents.documentstructures.tablecellstructure", "Member[rowspan]"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.figurestructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.tablerowstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.liststructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.storyfragment", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.sectionstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.int32", "system.windows.documents.documentstructures.tablecellstructure", "Member[columnspan]"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.paragraphstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.storyfragment", "Method[getenumerator].ReturnValue"]
+    - ["system.string", "system.windows.documents.documentstructures.storyfragment", "Member[fragmentname]"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.storyfragments", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.liststructure", "Method[getenumerator].ReturnValue"]
+    - ["system.string", "system.windows.documents.documentstructures.storyfragment", "Member[storyname]"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.tablecellstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.storyfragments", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.tablecellstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.listitemstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.paragraphstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.string", "system.windows.documents.documentstructures.storyfragment", "Member[fragmenttype]"]
+    - ["system.string", "system.windows.documents.documentstructures.listitemstructure", "Member[marker]"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.tablerowgroupstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.tablerowstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.tablestructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.figurestructure", "Method[getenumerator].ReturnValue"]
+    - ["system.string", "system.windows.documents.documentstructures.namedelement", "Member[namereference]"]
+    - ["system.collections.ienumerator", "system.windows.documents.documentstructures.listitemstructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.tablestructure", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "system.windows.documents.documentstructures.sectionstructure", "Method[getenumerator].ReturnValue"]

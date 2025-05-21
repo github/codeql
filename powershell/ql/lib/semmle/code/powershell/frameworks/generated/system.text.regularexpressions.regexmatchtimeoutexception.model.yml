@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.text.regularexpressions.regexmatchtimeoutexception", "Method[regexmatchtimeoutexception]", "Argument[0]", "Argument[this].Field[Input]", "value"]
+      - ["system.text.regularexpressions.regexmatchtimeoutexception", "Method[regexmatchtimeoutexception]", "Argument[1]", "Argument[this].Field[Pattern]", "value"]
+      - ["system.text.regularexpressions.regexmatchtimeoutexception", "Method[regexmatchtimeoutexception]", "Argument[2]", "Argument[this].Field[MatchTimeout]", "value"]

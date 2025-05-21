@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.runspacefactory", "Method[createrunspace]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspacefactory", "Method[createrunspace]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspacefactory", "Method[createrunspacepool]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspacefactory", "Method[createrunspacepool]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspacefactory", "Method[createrunspacepool]", "Argument[5].Element", "ReturnValue", "taint"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.web.globalization.resourcefilestringlocalizerprovider!", "Member[resourcefilename]"]
+    - ["system.string", "system.web.globalization.istringlocalizerprovider", "Method[getlocalizedstring].ReturnValue"]
+    - ["system.web.globalization.istringlocalizerprovider", "system.web.globalization.stringlocalizerproviders!", "Member[dataannotationstringlocalizerprovider]"]
+    - ["system.string", "system.web.globalization.resourcefilestringlocalizerprovider", "Method[getlocalizedstring].ReturnValue"]

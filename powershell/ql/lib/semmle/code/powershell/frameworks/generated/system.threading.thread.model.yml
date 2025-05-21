@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.thread", "Method[getdata]", "Argument[0].SyntheticField[Data].Field[Value]", "ReturnValue", "value"]
+      - ["system.threading.thread", "Method[setdata]", "Argument[1]", "Argument[0].SyntheticField[Data].Field[Value]", "value"]

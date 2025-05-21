@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: sinkModel
+    data:
+      - ["system.management.automation.scriptblock!", "Method[create].Argument[0]", "command-injection"]
+      - ["system.management.automation.powershell", "Method[addscript].Argument[0]", "command-injection"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[expandstring].Argument[0]", "command-injection"]
+      - ["System.Management.Automation.Runspaces.Runspace", "Method[CreateNestedPipeline].Argument[0]", "command-injection"]
+      - ["System.Management.Automation.Runspaces.Runspace", "Method[CreatePipeline].Argument[0]", "command-injection"]

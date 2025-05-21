@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationpropertycollection", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[_items].Element", "value"]
+      - ["system.configuration.configurationpropertycollection", "Method[copyto]", "Argument[this].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.configurationpropertycollection", "Method[copyto]", "Argument[this].SyntheticField[_items].Element", "Argument[0].Element", "value"]
+      - ["system.configuration.configurationpropertycollection", "Method[get_item]", "Argument[this].SyntheticField[_items].Element", "ReturnValue", "value"]
+      - ["system.configuration.configurationpropertycollection", "Method[get_syncroot]", "Argument[this].SyntheticField[_items]", "ReturnValue", "value"]

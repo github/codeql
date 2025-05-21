@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.command", "Method[command]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.command.commandtext]", "value"]
+      - ["system.management.automation.runspaces.command", "Method[tostring]", "Argument[this].Field[system.management.automation.runspaces.command.commandtext]", "ReturnValue", "value"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.resolvedgenerator", "Method[resolved]", "Argument[0]", "ReturnValue.Field[Generator]", "value"]
+      - ["microsoft.interop.resolvedgenerator", "Method[resolvedgenerator]", "Argument[0]", "Argument[this].Field[Generator]", "value"]
+      - ["microsoft.interop.resolvedgenerator", "Method[resolvedgenerator]", "Argument[1]", "Argument[this].Field[Diagnostics]", "value"]
+      - ["microsoft.interop.resolvedgenerator", "Method[resolvedwithdiagnostics]", "Argument[0]", "ReturnValue.Field[Generator]", "value"]
+      - ["microsoft.interop.resolvedgenerator", "Method[resolvedwithdiagnostics]", "Argument[1]", "ReturnValue.Field[Diagnostics]", "value"]

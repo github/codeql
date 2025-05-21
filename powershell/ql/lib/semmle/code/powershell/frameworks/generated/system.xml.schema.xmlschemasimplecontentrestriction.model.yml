@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.xmlschemasimplecontentrestriction", "Method[get_attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemasimplecontentrestriction", "Method[get_facets]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.methodil", "Method[getdebuginfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodil", "Method[getexceptionregions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodil", "Method[getilbytes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodil", "Method[getlocals]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.il.methodil", "Method[getmethodildefinition]", "Argument[this]", "ReturnValue", "value"]

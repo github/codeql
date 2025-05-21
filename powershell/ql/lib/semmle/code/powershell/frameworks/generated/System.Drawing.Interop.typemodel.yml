@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.drawing.interop.logfont", "Member[lfheight]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfitalic]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfoutprecision]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfclipprecision]"]
+    - ["system.int32", "system.drawing.interop.logfont", "Member[lfwidth]"]
+    - ["system.int32", "system.drawing.interop.logfont", "Member[lfweight]"]
+    - ["system.int32", "system.drawing.interop.logfont", "Member[lforientation]"]
+    - ["system.span", "system.drawing.interop.logfont", "Member[lffacename]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfquality]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfstrikeout]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfpitchandfamily]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfunderline]"]
+    - ["system.int32", "system.drawing.interop.logfont", "Member[lfescapement]"]
+    - ["system.byte", "system.drawing.interop.logfont", "Member[lfcharset]"]

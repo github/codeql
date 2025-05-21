@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "windows.foundation.rect", "Method[equals].ReturnValue"]
+    - ["system.boolean", "windows.foundation.size!", "Method[op_inequality].ReturnValue"]
+    - ["system.double", "windows.foundation.size", "Member[height]"]
+    - ["system.boolean", "windows.foundation.rect", "Member[isempty]"]
+    - ["system.boolean", "windows.foundation.point!", "Method[op_inequality].ReturnValue"]
+    - ["system.string", "windows.foundation.rect", "Method[tostring].ReturnValue"]
+    - ["system.double", "windows.foundation.rect", "Member[top]"]
+    - ["system.boolean", "windows.foundation.point!", "Method[op_equality].ReturnValue"]
+    - ["system.double", "windows.foundation.point", "Member[y]"]
+    - ["system.string", "windows.foundation.point", "Method[tostring].ReturnValue"]
+    - ["system.double", "windows.foundation.rect", "Member[right]"]
+    - ["system.double", "windows.foundation.point", "Member[x]"]
+    - ["windows.foundation.rect", "windows.foundation.rect!", "Member[empty]"]
+    - ["windows.foundation.size", "windows.foundation.size!", "Member[empty]"]
+    - ["system.string", "windows.foundation.size", "Method[tostring].ReturnValue"]
+    - ["system.double", "windows.foundation.rect", "Member[left]"]
+    - ["system.boolean", "windows.foundation.rect!", "Method[op_inequality].ReturnValue"]
+    - ["system.boolean", "windows.foundation.size!", "Method[op_equality].ReturnValue"]
+    - ["system.int32", "windows.foundation.point", "Method[gethashcode].ReturnValue"]
+    - ["system.double", "windows.foundation.size", "Member[width]"]
+    - ["system.double", "windows.foundation.rect", "Member[width]"]
+    - ["system.boolean", "windows.foundation.rect!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "windows.foundation.size", "Method[equals].ReturnValue"]
+    - ["system.boolean", "windows.foundation.size", "Member[isempty]"]
+    - ["system.int32", "windows.foundation.size", "Method[gethashcode].ReturnValue"]
+    - ["system.int32", "windows.foundation.rect", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "windows.foundation.point", "Method[equals].ReturnValue"]
+    - ["system.double", "windows.foundation.rect", "Member[bottom]"]
+    - ["system.double", "windows.foundation.rect", "Member[height]"]
+    - ["system.double", "windows.foundation.rect", "Member[x]"]
+    - ["system.double", "windows.foundation.rect", "Member[y]"]
+    - ["system.boolean", "windows.foundation.rect", "Method[contains].ReturnValue"]

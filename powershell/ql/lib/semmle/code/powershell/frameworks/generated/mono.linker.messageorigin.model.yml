@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.messageorigin", "Method[messageorigin]", "Argument[0].Field[FileName]", "Argument[this].Field[FileName]", "value"]
+      - ["mono.linker.messageorigin", "Method[messageorigin]", "Argument[0].Field[Provider]", "Argument[this].Field[Provider]", "value"]
+      - ["mono.linker.messageorigin", "Method[messageorigin]", "Argument[0]", "Argument[this].Field[FileName]", "value"]
+      - ["mono.linker.messageorigin", "Method[messageorigin]", "Argument[0]", "Argument[this].Field[Provider]", "value"]
+      - ["mono.linker.messageorigin", "Method[messageorigin]", "Argument[3]", "Argument[this].Field[Provider]", "value"]
+      - ["mono.linker.messageorigin", "Method[tostring]", "Argument[this].Field[FileName]", "ReturnValue", "taint"]
+      - ["mono.linker.messageorigin", "Method[withinstructionoffset]", "Argument[this].Field[FileName]", "ReturnValue.Field[FileName]", "value"]
+      - ["mono.linker.messageorigin", "Method[withinstructionoffset]", "Argument[this].Field[Provider]", "ReturnValue.Field[Provider]", "value"]

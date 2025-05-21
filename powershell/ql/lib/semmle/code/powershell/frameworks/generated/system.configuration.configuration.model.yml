@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configuration", "Method[get_appsettings]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[get_connectionstrings]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[get_filepath]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[get_rootsectiongroup]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[get_sectiongroups]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[get_sections]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[getsection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configuration", "Method[getsectiongroup]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsamplerfilterrule", "Member[eventname]"]
+    - ["system.nullable", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsamplerfilterrule", "Member[loglevel]"]
+    - ["system.nullable", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsamplerfilterrule", "Member[eventid]"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsampleroptions", "Member[rules]"]
+    - ["system.string", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsamplerfilterrule", "Member[categoryname]"]
+    - ["system.double", "microsoft.extensions.diagnostics.sampling.randomprobabilisticsamplerfilterrule", "Member[probability]"]

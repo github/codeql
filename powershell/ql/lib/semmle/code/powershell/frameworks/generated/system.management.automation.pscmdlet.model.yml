@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pscmdlet", "Method[get_events]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[get_host]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[get_myinvocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[get_pagingparameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[get_parametersetname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[get_sessionstate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pscmdlet", "Method[getresolvedproviderpathfrompspath]", "Argument[0]", "ReturnValue.Element", "value"]
+      - ["system.management.automation.pscmdlet", "Method[getunresolvedproviderpathfrompspath]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.pscmdlet", "Method[getvariablevalue]", "Argument[1]", "ReturnValue", "value"]

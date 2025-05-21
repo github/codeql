@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.distributedcontextpropagator", "Method[extractbaggage]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.diagnostics.distributedcontextpropagator", "Method[extracttraceidandstate]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.diagnostics.distributedcontextpropagator", "Method[inject]", "Argument[1]", "Argument[2].Parameter[0]", "value"]

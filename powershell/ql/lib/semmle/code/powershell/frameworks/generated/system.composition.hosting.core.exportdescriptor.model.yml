@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.exportdescriptor", "Method[create]", "Argument[0]", "ReturnValue.SyntheticField[_activator]", "value"]
+      - ["system.composition.hosting.core.exportdescriptor", "Method[create]", "Argument[1]", "ReturnValue.SyntheticField[_metadata]", "value"]
+      - ["system.composition.hosting.core.exportdescriptor", "Method[get_activator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.composition.hosting.core.exportdescriptor", "Method[get_metadata]", "Argument[this]", "ReturnValue", "taint"]

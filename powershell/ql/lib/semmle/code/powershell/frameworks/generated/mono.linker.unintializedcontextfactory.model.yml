@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.unintializedcontextfactory", "Method[createannotationstore]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.unintializedcontextfactory", "Method[createmarkinghelpers]", "Argument[0]", "ReturnValue.Field[_context]", "value"]
+      - ["mono.linker.unintializedcontextfactory", "Method[createresolver]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.unintializedcontextfactory", "Method[createtracer]", "Argument[0]", "ReturnValue.Field[context]", "value"]

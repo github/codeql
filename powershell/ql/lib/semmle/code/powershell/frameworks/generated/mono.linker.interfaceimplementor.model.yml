@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.interfaceimplementor", "Method[create]", "Argument[0].Field[Interfaces].Element", "ReturnValue.Field[InterfaceImplementation]", "value"]
+      - ["mono.linker.interfaceimplementor", "Method[create]", "Argument[0]", "ReturnValue.Field[Implementor]", "value"]
+      - ["mono.linker.interfaceimplementor", "Method[create]", "Argument[1]", "ReturnValue.Field[InterfaceType]", "value"]
+      - ["mono.linker.interfaceimplementor", "Method[interfaceimplementor]", "Argument[0]", "Argument[this].Field[Implementor]", "value"]
+      - ["mono.linker.interfaceimplementor", "Method[interfaceimplementor]", "Argument[1]", "Argument[this].Field[InterfaceImplementation]", "value"]
+      - ["mono.linker.interfaceimplementor", "Method[interfaceimplementor]", "Argument[2]", "Argument[this].Field[InterfaceType]", "value"]

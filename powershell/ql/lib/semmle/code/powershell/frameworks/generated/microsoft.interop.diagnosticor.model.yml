@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.diagnosticor", "Method[adddiagnostic]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.diagnosticor", "Method[from]", "Argument[0]", "ReturnValue.SyntheticField[_value]", "value"]
+      - ["microsoft.interop.diagnosticor", "Method[get_diagnostics]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.diagnosticor", "Method[get_value]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.diagnosticor", "Method[withvalue]", "Argument[0]", "ReturnValue", "taint"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.blobwriter", "Method[blobwriter]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.reflection.metadata.blobwriter", "Method[get_blob]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.blobwriter", "Method[writebytes]", "Argument[0]", "Argument[this]", "taint"]

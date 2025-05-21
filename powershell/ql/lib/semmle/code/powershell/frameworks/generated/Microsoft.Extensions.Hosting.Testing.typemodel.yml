@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.hosting.testing.istartupinitializationbuilder", "microsoft.extensions.hosting.testing.istartupinitializationbuilder", "Method[addinitializer].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[validatescopes]"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[validateonbuild]"]
+    - ["system.iserviceprovider", "microsoft.extensions.hosting.testing.fakehost", "Member[services]"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[shutdowntimeout]"]
+    - ["microsoft.extensions.hosting.testing.istartupinitializationbuilder", "microsoft.extensions.hosting.testing.startupinitializationextensions!", "Method[addstartupinitialization].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.startupinitializationoptions", "Member[timeout]"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[fakeredaction]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.testing.fakehost", "Method[stopasync].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[timetolive]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.testing.istartupinitializer", "Method[initializeasync].ReturnValue"]
+    - ["microsoft.extensions.hosting.ihostbuilder", "microsoft.extensions.hosting.testing.fakehost!", "Method[createbuilder].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[fakelogging]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.hosting.testing.istartupinitializationbuilder", "Member[services]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.testing.fakehost", "Method[startasync].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.hosting.testing.fakehostoptions", "Member[startuptimeout]"]

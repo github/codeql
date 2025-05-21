@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.concurrent.concurrentdictionary", "system.management.automation.performancedata.countersetinstancebase", "Member[_counternametoidmapping]"]
+    - ["system.string", "system.management.automation.performancedata.countersetregistrarbase", "Member[countersetname]"]
+    - ["system.boolean", "system.management.automation.performancedata.psperfcountersmgr", "Method[setcountervalue].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.pscountersetinstance", "Method[getcountervalue].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.psperfcountersmgr", "Method[updatecounterbyvalue].ReturnValue"]
+    - ["system.guid", "system.management.automation.performancedata.countersetregistrarbase", "Member[countersetid]"]
+    - ["system.string", "system.management.automation.performancedata.counterinfo", "Member[name]"]
+    - ["system.management.automation.performancedata.countersetinstancebase", "system.management.automation.performancedata.pscountersetregistrar", "Method[createcountersetinstance].ReturnValue"]
+    - ["system.diagnostics.performancedata.countersetinstancetype", "system.management.automation.performancedata.countersetregistrarbase", "Member[countersetinsttype]"]
+    - ["system.management.automation.performancedata.counterinfo[]", "system.management.automation.performancedata.countersetregistrarbase", "Member[counterinfoarray]"]
+    - ["system.boolean", "system.management.automation.performancedata.countersetinstancebase", "Method[setcountervalue].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.pscountersetinstance", "Method[updatecounterbyvalue].ReturnValue"]
+    - ["system.management.automation.performancedata.countersetinstancebase", "system.management.automation.performancedata.countersetregistrarbase", "Method[createcountersetinstance].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.countersetinstancebase", "Method[updatecounterbyvalue].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.pscountersetinstance", "Method[setcountervalue].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.countersetinstancebase", "Method[retrievetargetcounteridifvalid].ReturnValue"]
+    - ["system.boolean", "system.management.automation.performancedata.psperfcountersmgr", "Method[addcountersetinstance].ReturnValue"]
+    - ["system.guid", "system.management.automation.performancedata.countersetregistrarbase", "Member[providerid]"]
+    - ["system.management.automation.performancedata.countersetinstancebase", "system.management.automation.performancedata.countersetregistrarbase", "Member[countersetinstance]"]
+    - ["system.boolean", "system.management.automation.performancedata.psperfcountersmgr", "Method[iscountersetregistered].ReturnValue"]
+    - ["system.int32", "system.management.automation.performancedata.counterinfo", "Member[id]"]
+    - ["system.management.automation.performancedata.psperfcountersmgr", "system.management.automation.performancedata.psperfcountersmgr!", "Member[instance]"]
+    - ["system.management.automation.performancedata.countersetregistrarbase", "system.management.automation.performancedata.countersetinstancebase", "Member[_countersetregistrarbase]"]
+    - ["system.string", "system.management.automation.performancedata.psperfcountersmgr", "Method[getcountersetinstancename].ReturnValue"]
+    - ["system.management.automation.performancedata.countersetinstancebase", "system.management.automation.performancedata.countersetregistrarbase", "Member[_countersetinstancebase]"]
+    - ["system.diagnostics.performancedata.countertype", "system.management.automation.performancedata.counterinfo", "Member[type]"]
+    - ["system.collections.concurrent.concurrentdictionary", "system.management.automation.performancedata.countersetinstancebase", "Member[_counteridtotypemapping]"]
+    - ["system.boolean", "system.management.automation.performancedata.countersetinstancebase", "Method[getcountervalue].ReturnValue"]

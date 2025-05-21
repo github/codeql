@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[0].Field[Top]", "Argument[this].Field[Top].Field[LocalState]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[0]", "Argument[this].Field[LocalStateLattice]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[1].Field[Top]", "Argument[this].Field[Top].Field[Context]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[1]", "Argument[this].Field[ContextLattice]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[this].Field[ContextLattice].Field[Top]", "Argument[this].Field[Top].Field[Context]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[localstateandcontextlattice]", "Argument[this].Field[LocalStateLattice].Field[Top]", "Argument[this].Field[Top].Field[LocalState]", "value"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[meet]", "Argument[0]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[meet]", "Argument[1]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.localstateandcontextlattice", "Method[meet]", "Argument[this]", "ReturnValue", "taint"]

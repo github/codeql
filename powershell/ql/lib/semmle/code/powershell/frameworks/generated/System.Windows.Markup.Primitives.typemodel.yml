@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.windows.markup.primitives.markupproperty", "Member[value]"]
+    - ["system.string", "system.windows.markup.primitives.markupproperty", "Member[name]"]
+    - ["system.componentmodel.propertydescriptor", "system.windows.markup.primitives.markupproperty", "Member[propertydescriptor]"]
+    - ["system.collections.generic.ienumerable", "system.windows.markup.primitives.markupproperty", "Member[typereferences]"]
+    - ["system.object", "system.windows.markup.primitives.markupobject", "Member[instance]"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[isattached]"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[isconstructorargument]"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[iscontent]"]
+    - ["system.type", "system.windows.markup.primitives.markupproperty", "Member[propertytype]"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[isvalueasstring]"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[iscomposite]"]
+    - ["system.componentmodel.attributecollection", "system.windows.markup.primitives.markupobject", "Member[attributes]"]
+    - ["system.windows.dependencyproperty", "system.windows.markup.primitives.markupproperty", "Member[dependencyproperty]"]
+    - ["system.collections.generic.ienumerable", "system.windows.markup.primitives.markupproperty", "Member[items]"]
+    - ["system.windows.markup.primitives.markupobject", "system.windows.markup.primitives.markupwriter!", "Method[getmarkupobjectfor].ReturnValue"]
+    - ["system.boolean", "system.windows.markup.primitives.markupproperty", "Member[iskey]"]
+    - ["system.collections.generic.ienumerable", "system.windows.markup.primitives.markupobject", "Member[properties]"]
+    - ["system.componentmodel.attributecollection", "system.windows.markup.primitives.markupproperty", "Member[attributes]"]
+    - ["system.type", "system.windows.markup.primitives.markupobject", "Member[objecttype]"]
+    - ["system.string", "system.windows.markup.primitives.markupproperty", "Member[stringvalue]"]

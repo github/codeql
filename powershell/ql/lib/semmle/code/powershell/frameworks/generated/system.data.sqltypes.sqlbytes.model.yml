@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.sqltypes.sqlbytes", "Method[get_buffer]", "Argument[this].SyntheticField[_rgbBuf]", "ReturnValue", "value"]
+      - ["system.data.sqltypes.sqlbytes", "Method[get_value]", "Argument[this].SyntheticField[_stream]", "ReturnValue.Element", "taint"]
+      - ["system.data.sqltypes.sqlbytes", "Method[sqlbytes]", "Argument[0]", "Argument[this].SyntheticField[_rgbBuf]", "value"]
+      - ["system.data.sqltypes.sqlbytes", "Method[sqlbytes]", "Argument[0]", "Argument[this].SyntheticField[_stream]", "value"]
+      - ["system.data.sqltypes.sqlbytes", "Method[write]", "Argument[1].Element", "Argument[this]", "taint"]

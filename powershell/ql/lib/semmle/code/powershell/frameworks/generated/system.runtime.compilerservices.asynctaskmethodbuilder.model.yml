@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.asynctaskmethodbuilder", "Method[awaitoncompleted]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.runtime.compilerservices.asynctaskmethodbuilder", "Method[awaitunsafeoncompleted]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.runtime.compilerservices.asynctaskmethodbuilder", "Method[get_task]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.asynctaskmethodbuilder", "Method[setresult]", "Argument[0]", "Argument[this]", "taint"]

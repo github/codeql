@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xnode", "Method[addafterself]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xnode", "Method[addafterself]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xnode", "Method[addbeforeself]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xnode", "Method[addbeforeself]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xnode", "Method[ancestors]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[createreader]", "Argument[this]", "ReturnValue.SyntheticField[_source]", "value"]
+      - ["system.xml.linq.xnode", "Method[elementsafterself]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[get_nextnode]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[nodesafterself]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[readfrom]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[readfromasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xnode", "Method[replacewith]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xnode", "Method[replacewith]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xnode", "Method[writeto]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xnode", "Method[writetoasync]", "Argument[this]", "Argument[0]", "taint"]

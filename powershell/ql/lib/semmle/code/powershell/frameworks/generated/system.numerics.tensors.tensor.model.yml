@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.tensors.tensor", "Method[asreadonlytensorspan]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[astensorspan]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[create]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[get_flattenedlength]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[getsmallestbroadcastablelengths]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[permutedimensions]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.tensors.tensor", "Method[reshape]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.tensors.tensor", "Method[setslice]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.tensors.tensor", "Method[squeeze]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[squeeze]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[squeezedimension]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[squeezedimension]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[transpose]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.tensors.tensor", "Method[unsqueeze]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensor", "Method[unsqueeze]", "Argument[0]", "ReturnValue", "taint"]

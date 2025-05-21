@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psdynamicmember", "Method[copy]", "Argument[this].Field[system.management.automation.psmemberinfo.name]", "ReturnValue.SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.psdynamicmember", "Method[copy]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue.SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.psdynamicmember", "Method[tostring]", "Argument[this].Field[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]
+      - ["system.management.automation.psdynamicmember", "Method[tostring]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]

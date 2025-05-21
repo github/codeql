@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.drawing.color", "Method[fromname]", "Argument[0]", "ReturnValue.SyntheticField[name]", "value"]
+      - ["system.drawing.color", "Method[get_name]", "Argument[this].SyntheticField[name]", "ReturnValue", "value"]
+      - ["system.drawing.color", "Method[tostring]", "Argument[this].Field[Name]", "ReturnValue", "taint"]
+      - ["system.drawing.color", "Method[tostring]", "Argument[this].SyntheticField[name]", "ReturnValue", "taint"]

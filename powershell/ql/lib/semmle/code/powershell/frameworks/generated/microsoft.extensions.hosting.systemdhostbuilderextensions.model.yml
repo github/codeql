@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.hosting.systemdhostbuilderextensions", "Method[addsystemd]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.hosting.systemdhostbuilderextensions", "Method[usesystemd]", "Argument[0]", "ReturnValue", "value"]

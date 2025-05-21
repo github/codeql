@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.hosting.systemd.servicestate", "Method[tostring].ReturnValue"]
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Member[ready]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[stopasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.isystemdnotifier", "Member[isenabled]"]
+    - ["microsoft.extensions.hosting.systemd.servicestate", "microsoft.extensions.hosting.systemd.servicestate!", "Member[stopping]"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdhelpers!", "Method[issystemdservice].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.systemd.systemdlifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.hosting.systemd.systemdnotifier", "Member[isenabled]"]

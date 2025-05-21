@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.xmlschemacollection", "Method[add]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemacollection", "Method[add]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemacollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemacollection", "Method[get_nametable]", "Argument[this].SyntheticField[_nameTable]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemacollection", "Method[xmlschemacollection]", "Argument[0]", "Argument[this].SyntheticField[_nameTable]", "value"]

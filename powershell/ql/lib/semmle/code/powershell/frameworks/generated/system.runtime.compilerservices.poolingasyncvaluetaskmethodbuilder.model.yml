@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.poolingasyncvaluetaskmethodbuilder", "Method[awaitoncompleted]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.runtime.compilerservices.poolingasyncvaluetaskmethodbuilder", "Method[awaitunsafeoncompleted]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.runtime.compilerservices.poolingasyncvaluetaskmethodbuilder", "Method[get_task]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.poolingasyncvaluetaskmethodbuilder", "Method[setresult]", "Argument[0]", "Argument[this]", "taint"]

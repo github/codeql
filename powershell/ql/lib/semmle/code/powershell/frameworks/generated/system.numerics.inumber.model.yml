@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.inumber", "Method[clamp]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[clamp]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[clamp]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[clampnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[clampnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[clampnative]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[copysign]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[max]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[max]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[maxnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[maxnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[maxnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[maxnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[min]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[min]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[minnative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[minnative]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[minnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.numerics.inumber", "Method[minnumber]", "Argument[1]", "ReturnValue", "value"]

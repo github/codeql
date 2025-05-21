@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.abstractions.logentry", "Method[logentry]", "Argument[1]", "Argument[this].Field[Category]", "value"]
+      - ["microsoft.extensions.logging.abstractions.logentry", "Method[logentry]", "Argument[2]", "Argument[this].Field[EventId]", "value"]
+      - ["microsoft.extensions.logging.abstractions.logentry", "Method[logentry]", "Argument[3]", "Argument[this].Field[State]", "value"]
+      - ["microsoft.extensions.logging.abstractions.logentry", "Method[logentry]", "Argument[4]", "Argument[this].Field[Exception]", "value"]
+      - ["microsoft.extensions.logging.abstractions.logentry", "Method[logentry]", "Argument[5]", "Argument[this].Field[Formatter]", "value"]

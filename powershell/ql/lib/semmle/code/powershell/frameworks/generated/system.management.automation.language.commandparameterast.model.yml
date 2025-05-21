@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[1]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.commandparameterast.parametername]", "value"]
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.commandparameterast.parametername]", "value"]
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.commandparameterast.argument]", "value"]
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.commandparameterast.argument]", "value"]
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[3]", "Argument[this].Field[system.management.automation.language.commandparameterast.errorposition]", "value"]
+      - ["system.management.automation.language.commandparameterast", "Method[commandparameterast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]

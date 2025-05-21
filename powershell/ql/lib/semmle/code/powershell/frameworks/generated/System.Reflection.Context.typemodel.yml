@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.reflection.typeinfo", "system.reflection.context.customreflectioncontext", "Method[maptype].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.reflection.context.customreflectioncontext", "Method[addproperties].ReturnValue"]
+    - ["system.reflection.propertyinfo", "system.reflection.context.customreflectioncontext", "Method[createproperty].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.reflection.context.customreflectioncontext", "Method[getcustomattributes].ReturnValue"]
+    - ["system.reflection.assembly", "system.reflection.context.customreflectioncontext", "Method[mapassembly].ReturnValue"]

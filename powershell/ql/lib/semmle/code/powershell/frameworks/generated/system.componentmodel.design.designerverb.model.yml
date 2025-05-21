@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.design.designerverb", "Method[get_text]", "Argument[this].Field[Properties].Element", "ReturnValue", "value"]
+      - ["system.componentmodel.design.designerverb", "Method[tostring]", "Argument[this].Field[CommandID].Field[Guid]", "ReturnValue", "taint"]
+      - ["system.componentmodel.design.designerverb", "Method[tostring]", "Argument[this].Field[Properties].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.design.designerverb", "Method[tostring]", "Argument[this].Field[Text]", "ReturnValue", "taint"]

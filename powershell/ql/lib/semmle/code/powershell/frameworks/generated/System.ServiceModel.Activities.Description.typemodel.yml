@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionaction!", "Member[terminate]"]
+    - ["system.string", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[connectionstring]"]
+    - ["system.int32", "system.servicemodel.activities.description.bufferedreceiveservicebehavior", "Member[maxpendingmessagesperchannel]"]
+    - ["system.activities.durableinstancing.instancecompletionaction", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[instancecompletionaction]"]
+    - ["system.object", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[getservice].ReturnValue"]
+    - ["system.timespan", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[hostlockrenewalperiod]"]
+    - ["system.string", "system.servicemodel.activities.description.workflowinstancemanagementbehavior!", "Member[controlendpointaddress]"]
+    - ["system.activities.durableinstancing.instanceencodingoption", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[instanceencodingoption]"]
+    - ["system.guid", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[ongetinstanceid].ReturnValue"]
+    - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionaction!", "Member[abandon]"]
+    - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionaction!", "Member[cancel]"]
+    - ["system.timespan", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[runnableinstancesdetectionperiod]"]
+    - ["system.servicemodel.channels.binding", "system.servicemodel.activities.description.workflowinstancemanagementbehavior!", "Member[namedpipecontrolendpointbinding]"]
+    - ["system.int32", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[maxconnectionretries]"]
+    - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionaction!", "Member[abandonandsuspend]"]
+    - ["system.string", "system.servicemodel.activities.description.etwtrackingbehavior", "Member[profilename]"]
+    - ["system.string", "system.servicemodel.activities.description.workflowinstancemanagementbehavior", "Member[windowsgroup]"]
+    - ["system.servicemodel.channels.binding", "system.servicemodel.activities.description.workflowinstancemanagementbehavior!", "Member[httpcontrolendpointbinding]"]
+    - ["t", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[getservice].ReturnValue"]
+    - ["system.activities.durableinstancing.instancelockedexceptionaction", "system.servicemodel.activities.description.sqlworkflowinstancestorebehavior", "Member[instancelockedexceptionaction]"]
+    - ["system.timespan", "system.servicemodel.activities.description.workflowidlebehavior", "Member[timetounload]"]
+    - ["system.timespan", "system.servicemodel.activities.description.workflowidlebehavior", "Member[timetopersist]"]
+    - ["system.servicemodel.activities.description.workflowunhandledexceptionaction", "system.servicemodel.activities.description.workflowunhandledexceptionbehavior", "Member[action]"]
+    - ["system.activities.bookmark", "system.servicemodel.activities.description.workflowruntimeendpoint", "Method[onresolvebookmark].ReturnValue"]

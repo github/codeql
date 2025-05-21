@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.directory", "Method[createdirectory]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directory", "Method[createdirectory]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.directory", "Method[createsymboliclink]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directory", "Method[createsymboliclink]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]
+      - ["system.io.directory", "Method[getdirectoryroot]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.directory", "Method[getparent]", "Argument[0]", "ReturnValue.Field[FullPath]", "value"]
+      - ["system.io.directory", "Method[getparent]", "Argument[0]", "ReturnValue.Field[OriginalPath]", "value"]

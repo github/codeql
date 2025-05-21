@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.data.linq.sqlclient.sqlhelpers!", "Method[getstringendswithpattern].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffminute].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffhour].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffday].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmillisecond].ReturnValue"]
+    - ["system.boolean", "system.data.linq.sqlclient.sqlmethods!", "Method[like].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmicrosecond].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmonth].ReturnValue"]
+    - ["system.string", "system.data.linq.sqlclient.sqlhelpers!", "Method[getstringstartswithpattern].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffsecond].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmicrosecond].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffhour].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffminute].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffyear].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmonth].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffnanosecond].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffsecond].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffyear].ReturnValue"]
+    - ["system.string", "system.data.linq.sqlclient.sqlhelpers!", "Method[translatevblikepattern].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffmillisecond].ReturnValue"]
+    - ["system.int32", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffnanosecond].ReturnValue"]
+    - ["system.nullable", "system.data.linq.sqlclient.sqlmethods!", "Method[datediffday].ReturnValue"]
+    - ["system.string", "system.data.linq.sqlclient.sqlhelpers!", "Method[getstringcontainspattern].ReturnValue"]

@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.applicationenrichertags!", "Member[buildversion]"]
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.processenrichertagnames!", "Member[processid]"]
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.applicationenrichertags!", "Member[deploymentring]"]
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.processenrichertagnames!", "Member[threadid]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.applicationlogenricheroptions", "Member[environmentname]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.applicationlogenricheroptions", "Member[deploymentring]"]
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.applicationenrichertags!", "Member[environmentname]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.applicationlogenricheroptions", "Member[applicationname]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.diagnostics.enrichment.processenrichertagnames!", "Member[dimensionnames]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.processlogenricheroptions", "Member[threadid]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.processlogenricheroptions", "Member[processid]"]
+    - ["system.string", "microsoft.extensions.diagnostics.enrichment.applicationenrichertags!", "Member[applicationname]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.diagnostics.enrichment.applicationenrichertags!", "Member[dimensionnames]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.enrichment.applicationlogenricheroptions", "Member[buildversion]"]

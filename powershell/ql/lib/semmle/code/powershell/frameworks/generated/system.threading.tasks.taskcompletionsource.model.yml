@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.taskcompletionsource", "Method[get_task]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.taskcompletionsource", "Method[setfromtask]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.taskcompletionsource", "Method[setresult]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.taskcompletionsource", "Method[taskcompletionsource]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.taskcompletionsource", "Method[trysetfromtask]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.threading.tasks.taskcompletionsource", "Method[trysetresult]", "Argument[0]", "Argument[this]", "taint"]

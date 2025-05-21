@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.primitives.export", "Method[export]", "Argument[0]", "Argument[this].SyntheticField[_definition]", "value"]
+      - ["system.componentmodel.composition.primitives.export", "Method[export]", "Argument[1]", "Argument[this].SyntheticField[_exportedValueGetter]", "value"]
+      - ["system.componentmodel.composition.primitives.export", "Method[get_definition]", "Argument[this].SyntheticField[_definition]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.primitives.export", "Method[get_metadata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.primitives.export", "Method[get_value]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.primitives.export", "Method[getexportedvaluecore]", "Argument[this]", "ReturnValue", "taint"]

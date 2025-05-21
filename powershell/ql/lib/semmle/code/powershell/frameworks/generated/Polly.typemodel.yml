@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["polly.context", "polly.httprequestmessageextensions!", "Method[getpolicyexecutioncontext].ReturnValue"]
+    - ["microsoft.extensions.http.diagnostics.requestmetadata", "polly.resiliencecontextextensions!", "Method[getrequestmetadata].ReturnValue"]
+    - ["system.net.http.httprequestmessage", "polly.httpresiliencecontextextensions!", "Method[getrequestmessage].ReturnValue"]

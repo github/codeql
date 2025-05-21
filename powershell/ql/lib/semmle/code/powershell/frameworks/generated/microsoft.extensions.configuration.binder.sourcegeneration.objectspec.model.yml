@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.configuration.binder.sourcegeneration.objectspec", "Method[objectspec]", "Argument[2]", "Argument[this].Field[Properties]", "value"]
+      - ["microsoft.extensions.configuration.binder.sourcegeneration.objectspec", "Method[objectspec]", "Argument[3]", "Argument[this].Field[ConstructorParameters]", "value"]
+      - ["microsoft.extensions.configuration.binder.sourcegeneration.objectspec", "Method[objectspec]", "Argument[4]", "Argument[this].Field[InitExceptionMessage]", "value"]

@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.timespan", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[connecttimeout]"]
+    - ["system.timespan", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[pooledconnectionlifetime]"]
+    - ["system.boolean", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[usecookies]"]
+    - ["system.boolean", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[allowautoredirect]"]
+    - ["system.timespan", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[pooledconnectionidletimeout]"]
+    - ["system.string", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Member[name]"]
+    - ["microsoft.extensions.dependencyinjection.ihttpclientbuilder", "microsoft.extensions.httpclient.sockethandling.httpclientsockethandlingextensions!", "Method[addsocketshttphandler].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[keepalivepingtimeout]"]
+    - ["microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Method[configureclientcertificate].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[maxconnectionsperserver]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Member[services]"]
+    - ["system.timespan", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[keepalivepingdelay]"]
+    - ["microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Method[configureoptions].ReturnValue"]
+    - ["microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Method[disableremotecertificatevalidation].ReturnValue"]
+    - ["system.net.decompressionmethods", "microsoft.extensions.httpclient.sockethandling.socketshttphandleroptions", "Member[automaticdecompression]"]
+    - ["microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "microsoft.extensions.httpclient.sockethandling.socketshttphandlerbuilder", "Method[configurehandler].ReturnValue"]

@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getattribute]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getevent]", "Argument[0].Field[Events].Element", "ReturnValue", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getfield]", "Argument[0].Field[Fields].Element", "ReturnValue", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getfullname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getmessageoriginforposition]", "Argument[this].Field[_xmlDocumentLocation]", "ReturnValue.Field[FileName]", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getproperty]", "Argument[0].Field[Properties].Element", "ReturnValue", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[getsignature]", "Argument[0]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[processlinkerxmlbase]", "Argument[0]", "Argument[this].Field[_context]", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[processlinkerxmlbase]", "Argument[2]", "Argument[this].Field[_xmlDocumentLocation]", "value"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[tostring]", "Argument[this].Field[_xmlDocumentLocation]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.processlinkerxmlbase", "Method[tryconvertvalue]", "Argument[0]", "Argument[2]", "value"]

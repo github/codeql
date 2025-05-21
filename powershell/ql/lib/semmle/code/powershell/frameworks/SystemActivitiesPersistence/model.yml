@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.collections.generic.idictionary<system.xml.linq.xname,system.object>", "system.activities.persistence.persistenceparticipant", "Method[mapvalues].ReturnValue"]
-    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonsave].ReturnValue"]
-    - ["system.iasyncresult", "system.activities.persistence.persistenceioparticipant", "Method[beginonload].ReturnValue"]

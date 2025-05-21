@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.schema.xmlschemadatatype", "Method[changetype]", "Argument[0]", "Argument[2]", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[changetype]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[changetype]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[changetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[parsevalue]", "Argument[0]", "Argument[2]", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[parsevalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[parsevalue]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[parsevalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.schema.xmlschemadatatype", "Method[parsevalue]", "Argument[this]", "ReturnValue", "taint"]

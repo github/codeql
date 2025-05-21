@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.configurationdefinitionast.body]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[1]", "Argument[3].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.configurationdefinitionast.body]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.configurationdefinitionast.body]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[3]", "Argument[3].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.configurationdefinitionast.instancename]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[3]", "Argument[this].Field[system.management.automation.language.configurationdefinitionast.instancename]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.configurationdefinitionast", "Method[configurationdefinitionast]", "Argument[this]", "Argument[3].Field[system.management.automation.language.ast.parent]", "value"]

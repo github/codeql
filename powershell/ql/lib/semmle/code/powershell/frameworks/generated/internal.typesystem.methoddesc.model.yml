@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.methoddesc", "Method[get_diagnosticname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[get_implementationtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[get_instantiation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[get_owningtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[get_signature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methoddesc", "Method[getcanonmethodtarget]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[getmethoddefinition]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[getnonruntimedeterminedmethodfromruntimedeterminedmethodviasubstitution]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[getsharedruntimeformmethodtarget]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[gettypicalmethoddefinition]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[instantiatesignature]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methoddesc", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

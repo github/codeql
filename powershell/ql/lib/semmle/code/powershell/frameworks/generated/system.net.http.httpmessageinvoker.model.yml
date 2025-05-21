@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.httpmessageinvoker", "Method[httpmessageinvoker]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.http.httpmessageinvoker", "Method[send]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.net.http.httpmessageinvoker", "Method[sendasync]", "Argument[this]", "Argument[0]", "taint"]

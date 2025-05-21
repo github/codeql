@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlvalidatingreader", "Method[get_encoding]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[get_reader]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[get_schemas]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[get_schematype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[readstring]", "Argument[this].Field[Value]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[readtypedvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[xmlvalidatingreader]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmlvalidatingreader", "Method[xmlvalidatingreader]", "Argument[2]", "Argument[this]", "taint"]

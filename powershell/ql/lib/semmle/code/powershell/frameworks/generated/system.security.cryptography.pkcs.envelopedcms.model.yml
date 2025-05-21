@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.pkcs.envelopedcms", "Method[encode]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.pkcs.envelopedcms", "Method[envelopedcms]", "Argument[0]", "Argument[this].Field[ContentInfo]", "value"]
+      - ["system.security.cryptography.pkcs.envelopedcms", "Method[envelopedcms]", "Argument[1]", "Argument[this].Field[ContentEncryptionAlgorithm]", "value"]
+      - ["system.security.cryptography.pkcs.envelopedcms", "Method[get_recipientinfos]", "Argument[this]", "ReturnValue", "taint"]

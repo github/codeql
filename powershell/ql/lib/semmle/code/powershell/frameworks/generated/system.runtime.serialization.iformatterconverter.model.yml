@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.iformatterconverter", "Method[convert]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.serialization.iformatterconverter", "Method[tostring]", "Argument[0]", "ReturnValue", "taint"]

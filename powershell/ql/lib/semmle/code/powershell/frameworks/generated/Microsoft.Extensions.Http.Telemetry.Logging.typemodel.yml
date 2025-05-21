@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.http.telemetry.logging.outgoingpathloggingmode", "microsoft.extensions.http.telemetry.logging.outgoingpathloggingmode!", "Member[structured]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[responseheaderprefix]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.http.telemetry.logging.httpclientloggingextensions!", "Method[adddefaulthttpclientlogging].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[logrequeststart]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[duration]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[requestheadersdataclasses]"]
+    - ["microsoft.extensions.dependencyinjection.ihttpclientbuilder", "microsoft.extensions.http.telemetry.logging.httpclientloggingextensions!", "Method[addhttpclientlogging].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[method]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.http.telemetry.logging.httpclientloggingextensions!", "Method[addhttpclientlogenricher].ReturnValue"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[tagnames]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[responseheadersdataclasses]"]
+    - ["system.int32", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[bodysizelimit]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[statuscode]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[routeparameterdataclasses]"]
+    - ["system.boolean", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[logbody]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[responsebodycontenttypes]"]
+    - ["microsoft.extensions.http.telemetry.logging.outgoingpathloggingmode", "microsoft.extensions.http.telemetry.logging.outgoingpathloggingmode!", "Member[formatted]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[requestbody]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[requestbodycontenttypes]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[path]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[responsebody]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[host]"]
+    - ["system.timespan", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[bodyreadtimeout]"]
+    - ["microsoft.extensions.http.telemetry.logging.outgoingpathloggingmode", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[requestpathloggingmode]"]
+    - ["microsoft.extensions.http.telemetry.httprouteparameterredactionmode", "microsoft.extensions.http.telemetry.logging.loggingoptions", "Member[requestpathparameterredactionmode]"]
+    - ["system.string", "microsoft.extensions.http.telemetry.logging.httpclientloggingtagnames!", "Member[requestheaderprefix]"]

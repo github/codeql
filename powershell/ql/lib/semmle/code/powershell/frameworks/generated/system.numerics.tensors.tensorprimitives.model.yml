@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.tensors.tensorprimitives", "Method[max]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[maxmagnitude]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[maxmagnitudenumber]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[maxnumber]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[min]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[minmagnitude]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[minmagnitudenumber]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.tensorprimitives", "Method[minnumber]", "Argument[0]", "ReturnValue", "taint"]

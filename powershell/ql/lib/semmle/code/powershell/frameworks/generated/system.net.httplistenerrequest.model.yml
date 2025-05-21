@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.httplistenerrequest", "Method[endgetclientcertificate]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_contenttype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_cookies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_headers]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_httpmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_inputstream]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_protocolversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_rawurl]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_url]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_urlreferrer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_useragent]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[get_userhostname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.httplistenerrequest", "Method[getclientcertificate]", "Argument[this]", "ReturnValue", "taint"]

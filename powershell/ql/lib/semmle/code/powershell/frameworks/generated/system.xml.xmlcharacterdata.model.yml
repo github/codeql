@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlcharacterdata", "Method[appenddata]", "Argument[0]", "Argument[this].SyntheticField[_data]", "taint"]
+      - ["system.xml.xmlcharacterdata", "Method[substring]", "Argument[this].SyntheticField[_data]", "ReturnValue", "taint"]
+      - ["system.xml.xmlcharacterdata", "Method[xmlcharacterdata]", "Argument[0]", "Argument[this].SyntheticField[_data]", "value"]

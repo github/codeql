@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[addpart]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[createpart]", "Argument[0]", "ReturnValue.SyntheticField[_cachedInstance]", "value"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[createpart]", "Argument[0]", "ReturnValue.SyntheticField[_definition]", "value"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[createpart]", "Argument[1]", "ReturnValue.SyntheticField[_cachedInstance]", "value"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[createpartdefinition]", "Argument[1]", "ReturnValue.SyntheticField[_creationInfo].SyntheticField[_origin]", "value"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[createpartdefinition]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[getmetadataview]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.attributedmodelservices", "Method[satisfyimportsonce]", "Argument[1]", "ReturnValue", "taint"]

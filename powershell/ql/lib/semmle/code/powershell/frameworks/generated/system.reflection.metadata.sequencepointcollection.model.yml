@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.sequencepointcollection", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.sequencepointcollection", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]

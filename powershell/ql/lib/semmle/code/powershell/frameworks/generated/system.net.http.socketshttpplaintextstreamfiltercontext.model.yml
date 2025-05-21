@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.socketshttpplaintextstreamfiltercontext", "Method[get_initialrequestmessage]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.socketshttpplaintextstreamfiltercontext", "Method[get_negotiatedhttpversion]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.socketshttpplaintextstreamfiltercontext", "Method[get_plaintextstream]", "Argument[this]", "ReturnValue", "taint"]

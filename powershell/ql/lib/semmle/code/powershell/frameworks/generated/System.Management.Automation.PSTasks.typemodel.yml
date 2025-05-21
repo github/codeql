@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Member[location]"]
+    - ["system.boolean", "system.management.automation.pstasks.pstaskjob", "Member[hasmoredata]"]
+    - ["system.string", "system.management.automation.pstasks.pstaskjob", "Member[statusmessage]"]
+    - ["system.int32", "system.management.automation.pstasks.pstaskjob", "Member[allocatedrunspacecount]"]

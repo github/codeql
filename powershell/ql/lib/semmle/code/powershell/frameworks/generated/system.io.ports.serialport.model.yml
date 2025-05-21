@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.ports.serialport", "Method[get_basestream]", "Argument[this].SyntheticField[_internalSerialStream]", "ReturnValue", "value"]
+      - ["system.io.ports.serialport", "Method[read]", "Argument[this].SyntheticField[_internalSerialStream]", "Argument[0].Element", "taint"]
+      - ["system.io.ports.serialport", "Method[readexisting]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.ports.serialport", "Method[readline]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.ports.serialport", "Method[readto]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.ports.serialport", "Method[serialport]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.io.ports.serialport", "Method[write]", "Argument[0].Element", "Argument[this].SyntheticField[_internalSerialStream]", "taint"]
+      - ["system.io.ports.serialport", "Method[write]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.io.ports.serialport", "Method[write]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.io.ports.serialport", "Method[writeline]", "Argument[0]", "Argument[this]", "taint"]

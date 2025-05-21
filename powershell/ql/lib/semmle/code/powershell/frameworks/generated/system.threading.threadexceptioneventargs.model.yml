@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.threadexceptioneventargs", "Method[get_exception]", "Argument[this].SyntheticField[m_exception]", "ReturnValue", "value"]
+      - ["system.threading.threadexceptioneventargs", "Method[threadexceptioneventargs]", "Argument[0]", "Argument[this].SyntheticField[m_exception]", "value"]

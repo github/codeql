@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[get_item]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[get_keys]", "Argument[this].Element.Field[Key]", "ReturnValue.Element", "value"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[get_values]", "Argument[this].Element.Field[Value]", "ReturnValue.Element", "value"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[trygetvalue]", "Argument[0]", "Argument[1].Element", "taint"]
+      - ["system.net.http.headers.httpheadersnonvalidated", "Method[trygetvalues]", "Argument[0]", "Argument[1].Element", "taint"]

@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.machinesettingssection", "Member[properties]"]
+    - ["system.configuration.configurationpropertycollection", "system.transactions.configuration.defaultsettingssection", "Member[properties]"]
+    - ["system.string", "system.transactions.configuration.defaultsettingssection", "Member[distributedtransactionmanagername]"]
+    - ["system.transactions.configuration.machinesettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[machinesettings]"]
+    - ["system.transactions.configuration.defaultsettingssection", "system.transactions.configuration.transactionssectiongroup", "Member[defaultsettings]"]
+    - ["system.transactions.configuration.transactionssectiongroup", "system.transactions.configuration.transactionssectiongroup!", "Method[getsectiongroup].ReturnValue"]
+    - ["system.timespan", "system.transactions.configuration.defaultsettingssection", "Member[timeout]"]
+    - ["system.timespan", "system.transactions.configuration.machinesettingssection", "Member[maxtimeout]"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[get_defaultdatasource]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[get_defaultnametable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[get_querynametable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[getdatasource]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[getlateboundobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlquerycontext", "Method[getparameter]", "Argument[this]", "ReturnValue", "taint"]

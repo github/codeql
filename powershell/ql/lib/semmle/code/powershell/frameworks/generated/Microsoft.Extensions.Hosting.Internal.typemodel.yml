@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Member[applicationstopping]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.internal.consolelifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Member[applicationname]"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Member[environmentname]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.hosting.internal.consolelifetime", "Method[stopasync].ReturnValue"]
+    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.hosting.internal.hostingenvironment", "Member[contentrootfileprovider]"]
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Member[applicationstopped]"]
+    - ["system.string", "microsoft.extensions.hosting.internal.hostingenvironment", "Member[contentrootpath]"]
+    - ["system.threading.cancellationtoken", "microsoft.extensions.hosting.internal.applicationlifetime", "Member[applicationstarted]"]

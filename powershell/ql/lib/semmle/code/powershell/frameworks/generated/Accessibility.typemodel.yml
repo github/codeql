@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "accessibility.iaccessible", "Method[accnavigate].ReturnValue"]
+    - ["system.object", "accessibility.iaccessible", "Member[accselection]"]
+    - ["accessibility.annoscope", "accessibility.annoscope!", "Member[anno_container]"]
+    - ["system.int32", "accessibility.__midl_iwintypes_0009", "Member[hinproc]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accdescription]"]
+    - ["system.int32", "accessibility.__midl_iwintypes_0009", "Member[hremote]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accparent]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accrole]"]
+    - ["system.string", "accessibility.iaccessible", "Member[acckeyboardshortcut]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accchild]"]
+    - ["accessibility.annoscope", "accessibility.annoscope!", "Member[anno_this]"]
+    - ["system.int32", "accessibility.iaccessible", "Member[acchelptopic]"]
+    - ["accessibility.__midl_iwintypes_0009", "accessibility._remotablehandle", "Member[u]"]
+    - ["system.string", "accessibility.iaccessible", "Member[acchelp]"]
+    - ["system.object", "accessibility.iaccessible", "Method[acchittest].ReturnValue"]
+    - ["system.string", "accessibility.iaccessible", "Member[accvalue]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accname]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accfocus]"]
+    - ["system.object", "accessibility.iaccessible", "Member[accstate]"]
+    - ["system.int32", "accessibility.iaccessible", "Member[accchildcount]"]
+    - ["system.string", "accessibility.iaccessible", "Member[accdefaultaction]"]
+    - ["system.int32", "accessibility._remotablehandle", "Member[fcontext]"]

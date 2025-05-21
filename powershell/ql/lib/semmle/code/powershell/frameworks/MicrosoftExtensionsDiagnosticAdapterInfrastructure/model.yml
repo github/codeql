@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["t", "microsoft.extensions.diagnosticadapter.infrastructure.iproxy", "Method[Upwrap<t>].ReturnValue"]
-    - ["tproxy", "microsoft.extensions.diagnosticadapter.infrastructure.iproxyfactory", "Method[CreateProxy<tproxy>].ReturnValue"]

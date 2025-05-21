@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.steps.markstep", "Method[attributeproviderpair]", "Argument[0]", "Argument[this].Field[Attribute]", "value"]
+      - ["mono.linker.steps.markstep", "Method[attributeproviderpair]", "Argument[1]", "Argument[this].Field[Provider]", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_annotations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.markstep", "Method[get_context]", "Argument[this].SyntheticField[_context]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_embeddedxmlinfo]", "Argument[this].Field[Context].Field[EmbeddedXmlInfo]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_embeddedxmlinfo]", "Argument[this].SyntheticField[_context].Field[EmbeddedXmlInfo]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_markinghelpers]", "Argument[this].Field[Context].Field[MarkingHelpers]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_markinghelpers]", "Argument[this].SyntheticField[_context].Field[MarkingHelpers]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_tracer]", "Argument[this].Field[Context].Field[Tracer]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[get_tracer]", "Argument[this].SyntheticField[_context].Field[Tracer]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[getoriginalmethod]", "Argument[1]", "ReturnValue.Field[Item2]", "value"]
+      - ["mono.linker.steps.markstep", "Method[getoriginaltype]", "Argument[1]", "ReturnValue.Field[Item2]", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethod]", "Argument[0].Field[ElementMethod].Field[ElementMethod]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethod]", "Argument[0].Field[ElementMethod]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethod]", "Argument[0]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethodif]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethodif]", "Argument[0].Element", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[markmethodsif]", "Argument[0].Element", "Argument[1].Parameter[0]", "value"]
+      - ["mono.linker.steps.markstep", "Method[marktype]", "Argument[0].Field[ElementType].Field[ElementType]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[marktype]", "Argument[0].Field[ElementType]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[marktype]", "Argument[0]", "ReturnValue", "value"]
+      - ["mono.linker.steps.markstep", "Method[process]", "Argument[0]", "Argument[this].SyntheticField[_context]", "value"]

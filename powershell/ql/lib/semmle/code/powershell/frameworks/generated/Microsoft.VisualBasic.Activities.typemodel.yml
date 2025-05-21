@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualbasic.activities.visualbasicsettings", "microsoft.visualbasic.activities.visualbasic!", "Method[getsettings].ReturnValue"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[recompilevisualbasicvalue].ReturnValue"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[createprecompiledvisualbasicvalue].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicimportreference", "Member[import]"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicreference", "Method[converttostring].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicreference", "Member[expressiontext]"]
+    - ["system.linq.expressions.expression", "microsoft.visualbasic.activities.visualbasicreference", "Method[getexpressiontree].ReturnValue"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[recompilevisualbasicreference].ReturnValue"]
+    - ["microsoft.visualbasic.activities.visualbasicsettings", "microsoft.visualbasic.activities.visualbasicsettings!", "Member[default]"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicreference", "Member[language]"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicvalue", "Method[converttostring].ReturnValue"]
+    - ["system.int32", "microsoft.visualbasic.activities.visualbasicimportreference", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicreference", "Member[requirescompilation]"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicvalue", "Method[canconverttostring].ReturnValue"]
+    - ["system.linq.expressions.expression", "microsoft.visualbasic.activities.visualbasicvalue", "Method[getexpressiontree].ReturnValue"]
+    - ["tresult", "microsoft.visualbasic.activities.visualbasicvalue", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicvalue", "Member[language]"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicvalue", "Member[requirescompilation]"]
+    - ["system.activities.validation.constraint", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Member[nameshadowingconstraint]"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicimportreference", "Member[assembly]"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicreference", "Method[canconverttostring].ReturnValue"]
+    - ["system.collections.generic.iset", "microsoft.visualbasic.activities.visualbasicsettings", "Member[importreferences]"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasicimportreference", "Method[equals].ReturnValue"]
+    - ["system.activities.location", "microsoft.visualbasic.activities.visualbasicreference", "Method[execute].ReturnValue"]
+    - ["system.boolean", "microsoft.visualbasic.activities.visualbasic!", "Method[shouldserializesettings].ReturnValue"]
+    - ["system.string", "microsoft.visualbasic.activities.visualbasicvalue", "Member[expressiontext]"]
+    - ["system.activities.activity", "microsoft.visualbasic.activities.visualbasicdesignerhelper!", "Method[createprecompiledvisualbasicreference].ReturnValue"]

@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[directorycatalog]", "Argument[0]", "Argument[this].SyntheticField[_fullPath]", "taint"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[directorycatalog]", "Argument[0]", "Argument[this].SyntheticField[_path]", "value"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[directorycatalog]", "Argument[1]", "Argument[this].SyntheticField[_searchPattern]", "value"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[get_displayname]", "Argument[this].SyntheticField[_path]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[get_fullpath]", "Argument[this].SyntheticField[_fullPath]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[get_loadedfiles]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[get_path]", "Argument[this].SyntheticField[_path]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[get_searchpattern]", "Argument[this].SyntheticField[_searchPattern]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.hosting.directorycatalog", "Method[tostring]", "Argument[this].SyntheticField[_path]", "ReturnValue", "taint"]

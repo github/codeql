@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[controlflowgraphproxy]", "Argument[0]", "Argument[this].Field[ControlFlowGraph]", "value"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[createproxybranch]", "Argument[0].Field[Source]", "ReturnValue.Field[Source].Field[Block]", "value"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[firstblock]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[get_blocks]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[get_entry]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[lastblock]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[trygetenclosingfinally]", "Argument[0].Field[Block].Field[EnclosingRegion]", "Argument[1].Field[Region]", "value"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[trygetenclosingtryorcatchorfilter]", "Argument[0].Field[Block].Field[EnclosingRegion]", "Argument[1].Field[Region]", "value"]
+      - ["illink.roslynanalyzer.dataflow.controlflowgraphproxy", "Method[trygetenclosingtryorcatchorfilter]", "Argument[0].Field[Region].Field[EnclosingRegion]", "Argument[1].Field[Region]", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.dataflow.genericargumentdataflow", "Method[genericargumentdataflow]", "Argument[0]", "Argument[this]", "taint"]
+      - ["mono.linker.dataflow.genericargumentdataflow", "Method[genericargumentdataflow]", "Argument[1]", "Argument[this]", "taint"]
+      - ["mono.linker.dataflow.genericargumentdataflow", "Method[genericargumentdataflow]", "Argument[2]", "Argument[this]", "taint"]

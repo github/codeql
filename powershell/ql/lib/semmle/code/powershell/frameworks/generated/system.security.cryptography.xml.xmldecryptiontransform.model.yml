@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.xmldecryptiontransform", "Method[addexcepturi]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.cryptography.xml.xmldecryptiontransform", "Method[getoutput]", "Argument[this].SyntheticField[_containingDocument]", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.xmldecryptiontransform", "Method[loadinput]", "Argument[0]", "Argument[this].SyntheticField[_containingDocument]", "value"]

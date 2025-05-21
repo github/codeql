@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[baseuri]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[mslocalname]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[msnamespaceuri]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[normalizespace]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[outerxml]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[substring]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[substring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[substringafter]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[substringbefore]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[substringbefore]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xsltfunctions", "Method[translate]", "Argument[0]", "ReturnValue", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[cmdletproviderinvocationexception]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.cmdletproviderinvocationexception._providerinvocationexception]", "value"]
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[get_providerinfo]", "Argument[this].SyntheticField[system.management.automation.cmdletproviderinvocationexception._providerinvocationexception].Field[system.management.automation.providerinvocationexception.providerinfo]", "ReturnValue", "value"]
+      - ["system.management.automation.cmdletproviderinvocationexception", "Method[get_providerinvocationexception]", "Argument[this].SyntheticField[system.management.automation.cmdletproviderinvocationexception._providerinvocationexception]", "ReturnValue", "value"]

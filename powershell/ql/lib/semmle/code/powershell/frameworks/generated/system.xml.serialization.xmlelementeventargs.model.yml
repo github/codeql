@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlelementeventargs", "Method[get_element]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlelementeventargs", "Method[get_expectedelements]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlelementeventargs", "Method[get_objectbeingdeserialized]", "Argument[this]", "ReturnValue", "taint"]

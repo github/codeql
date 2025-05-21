@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.dictionary", "system.commandline.dragonfruit.commandhelpmetadata", "Member[parameterdescriptions]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.dragonfruit.commandline!", "Method[configurerootcommandfrommethod].ReturnValue"]
+    - ["system.commandline.option", "system.commandline.dragonfruit.commandline!", "Method[buildoption].ReturnValue"]
+    - ["system.string", "system.commandline.dragonfruit.commandhelpmetadata", "Member[description]"]
+    - ["system.string", "system.commandline.dragonfruit.commandline!", "Method[buildalias].ReturnValue"]
+    - ["system.int32", "system.commandline.dragonfruit.commandline!", "Method[invokemethod].ReturnValue"]
+    - ["system.string", "system.commandline.dragonfruit.commandhelpmetadata", "Member[name]"]
+    - ["system.reflection.methodinfo", "system.commandline.dragonfruit.entrypointdiscoverer!", "Method[findstaticentrymethod].ReturnValue"]
+    - ["system.threading.tasks.task", "system.commandline.dragonfruit.commandline!", "Method[invokemethodasync].ReturnValue"]
+    - ["system.string", "system.commandline.dragonfruit.stringextensions!", "Method[tokebabcase].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.dragonfruit.commandline!", "Method[configurehelpfromxmlcomments].ReturnValue"]
+    - ["system.int32", "system.commandline.dragonfruit.commandline!", "Method[executeassembly].ReturnValue"]
+    - ["system.threading.tasks.task", "system.commandline.dragonfruit.commandline!", "Method[executeassemblyasync].ReturnValue"]
+    - ["system.boolean", "system.commandline.dragonfruit.xmldocreader!", "Method[tryload].ReturnValue"]
+    - ["system.boolean", "system.commandline.dragonfruit.xmldocreader", "Method[trygetmethoddescription].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.commandline.dragonfruit.commandline!", "Method[buildoptions].ReturnValue"]

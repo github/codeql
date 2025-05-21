@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.activities.activity", "system.activities.core.presentation.factories.pickwithtwobranchesfactory", "Method[create].ReturnValue"]
-    - ["system.activities.activity", "system.activities.core.presentation.factories.statemachinewithinitialstatefactory", "Method[create].ReturnValue"]

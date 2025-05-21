@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.addin.pipeline.qualificationdataattribute", "Member[value]"]
+    - ["system.addin.pipeline.contracthandle", "system.addin.pipeline.contractadapter!", "Method[viewtocontractadapter].ReturnValue"]
+    - ["system.boolean", "system.addin.pipeline.contractbase", "Method[remoteequals].ReturnValue"]
+    - ["system.timespan", "system.addin.pipeline.contractbase", "Method[renewal].ReturnValue"]
+    - ["system.addin.contract.ilistcontract", "system.addin.pipeline.collectionadapters!", "Method[toilistcontract].ReturnValue"]
+    - ["system.boolean", "system.addin.pipeline.contracthandle!", "Method[contractownsappdomain].ReturnValue"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contractbase", "Method[querycontract].ReturnValue"]
+    - ["system.int32", "system.addin.pipeline.contractbase", "Method[getremotehashcode].ReturnValue"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contracthandle!", "Method[appdomainowner].ReturnValue"]
+    - ["system.windows.frameworkelement", "system.addin.pipeline.frameworkelementadapters!", "Method[contracttoviewadapter].ReturnValue"]
+    - ["system.int32", "system.addin.pipeline.contractbase", "Method[acquirelifetimetoken].ReturnValue"]
+    - ["system.string", "system.addin.pipeline.contractbase", "Method[remotetostring].ReturnValue"]
+    - ["system.string", "system.addin.pipeline.qualificationdataattribute", "Member[name]"]
+    - ["system.addin.contract.icontract", "system.addin.pipeline.contracthandle", "Member[contract]"]
+    - ["tview", "system.addin.pipeline.contractadapter!", "Method[contracttoviewadapter].ReturnValue"]
+    - ["system.collections.generic.ilist", "system.addin.pipeline.collectionadapters!", "Method[toilist].ReturnValue"]
+    - ["system.type[]", "system.addin.pipeline.addinbaseattribute", "Member[activatableas]"]
+    - ["system.addin.contract.inativehandlecontract", "system.addin.pipeline.frameworkelementadapters!", "Method[viewtocontractadapter].ReturnValue"]

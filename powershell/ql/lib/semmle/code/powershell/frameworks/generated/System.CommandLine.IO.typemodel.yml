@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.istandarderror", "Member[error]"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.istandardout", "Member[out]"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.standardstreamwriter!", "Method[create].ReturnValue"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.testconsole", "Member[out]"]
+    - ["system.boolean", "system.commandline.io.testconsole", "Member[isinputredirected]"]
+    - ["system.boolean", "system.commandline.io.istandarderror", "Member[iserrorredirected]"]
+    - ["system.io.textwriter", "system.commandline.io.standardstreamwriter!", "Method[createtextwriter].ReturnValue"]
+    - ["system.boolean", "system.commandline.io.istandardin", "Member[isinputredirected]"]
+    - ["system.boolean", "system.commandline.io.istandardout", "Member[isoutputredirected]"]
+    - ["system.boolean", "system.commandline.io.systemconsole", "Member[isinputredirected]"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.systemconsole", "Member[out]"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.testconsole", "Member[error]"]
+    - ["system.boolean", "system.commandline.io.testconsole", "Member[iserrorredirected]"]
+    - ["system.boolean", "system.commandline.io.testconsole", "Member[isoutputredirected]"]
+    - ["system.commandline.io.istandardstreamwriter", "system.commandline.io.systemconsole", "Member[error]"]
+    - ["system.boolean", "system.commandline.io.systemconsole", "Member[isoutputredirected]"]
+    - ["system.boolean", "system.commandline.io.systemconsole", "Member[iserrorredirected]"]

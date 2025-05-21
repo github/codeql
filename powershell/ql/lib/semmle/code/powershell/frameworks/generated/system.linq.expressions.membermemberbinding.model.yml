@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.membermemberbinding", "Method[update]", "Argument[0]", "ReturnValue.Field[Bindings]", "value"]
+      - ["system.linq.expressions.membermemberbinding", "Method[update]", "Argument[this]", "ReturnValue", "value"]

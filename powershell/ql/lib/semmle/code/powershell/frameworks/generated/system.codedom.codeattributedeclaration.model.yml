@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codeattributedeclaration", "Method[codeattributedeclaration]", "Argument[0]", "Argument[this].SyntheticField[_attributeType]", "value"]
+      - ["system.codedom.codeattributedeclaration", "Method[codeattributedeclaration]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.codeattributedeclaration", "Method[get_arguments]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.codeattributedeclaration", "Method[get_attributetype]", "Argument[this].SyntheticField[_attributeType]", "ReturnValue", "value"]

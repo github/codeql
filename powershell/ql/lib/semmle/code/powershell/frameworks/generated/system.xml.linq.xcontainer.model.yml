@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xcontainer", "Method[add]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[add]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[add]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[add]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[addfirst]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[addfirst]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[descendantnodes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[descendants]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[element]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[elements]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[get_firstnode]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[get_lastnode]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[nodes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[replacenodes]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[replacenodes]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[replacenodes]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xcontainer", "Method[replacenodes]", "Argument[this]", "Argument[0]", "taint"]

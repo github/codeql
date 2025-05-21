@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xdeclaration", "Method[tostring]", "Argument[this].SyntheticField[_encoding]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdeclaration", "Method[tostring]", "Argument[this].SyntheticField[_standalone]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdeclaration", "Method[tostring]", "Argument[this].SyntheticField[_version]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[0].SyntheticField[_encoding]", "Argument[this].SyntheticField[_encoding]", "value"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[0].SyntheticField[_standalone]", "Argument[this].SyntheticField[_standalone]", "value"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[0].SyntheticField[_version]", "Argument[this].SyntheticField[_version]", "value"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[0]", "Argument[this].SyntheticField[_version]", "value"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[1]", "Argument[this].SyntheticField[_encoding]", "value"]
+      - ["system.xml.linq.xdeclaration", "Method[xdeclaration]", "Argument[2]", "Argument[this].SyntheticField[_standalone]", "value"]

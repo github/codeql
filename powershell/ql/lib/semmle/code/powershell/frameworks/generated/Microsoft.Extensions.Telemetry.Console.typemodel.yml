@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.telemetry.console.latencyconsoleextensions!", "Method[addconsolelatencydataexporter].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includetimestamp]"]
+    - ["system.nullable", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[dimmedbackgroundcolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.larencyconsoleoptions", "Member[outputtags]"]
+    - ["system.consolecolor", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[exceptioncolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[colorsenabled]"]
+    - ["system.consolecolor", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[dimensionscolor]"]
+    - ["system.string", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[timestampformat]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[useutctimestamp]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.larencyconsoleoptions", "Member[outputcheckpoints]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includecategory]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.larencyconsoleoptions", "Member[outputmeasures]"]
+    - ["system.nullable", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[exceptionstacktracebackgroundcolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includescopes]"]
+    - ["system.nullable", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[exceptionbackgroundcolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includetraceid]"]
+    - ["system.nullable", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[dimensionsbackgroundcolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includedimensions]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includespanid]"]
+    - ["microsoft.extensions.logging.iloggingbuilder", "microsoft.extensions.telemetry.console.loggingconsoleextensions!", "Method[addconsoleexporter].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includeexceptionstacktrace]"]
+    - ["system.consolecolor", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[dimmedcolor]"]
+    - ["system.consolecolor", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[exceptionstacktracecolor]"]
+    - ["system.boolean", "microsoft.extensions.telemetry.console.loggingconsoleoptions", "Member[includeloglevel]"]

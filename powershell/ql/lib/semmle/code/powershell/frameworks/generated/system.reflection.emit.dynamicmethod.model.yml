@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.dynamicmethod", "Method[dynamicmethod]", "Argument[0]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.reflection.emit.dynamicmethod", "Method[dynamicmethod]", "Argument[3]", "Argument[this].SyntheticField[_module]", "value"]
+      - ["system.reflection.emit.dynamicmethod", "Method[dynamicmethod]", "Argument[5]", "Argument[this].SyntheticField[_module]", "value"]
+      - ["system.reflection.emit.dynamicmethod", "Method[get_module]", "Argument[this].SyntheticField[_module]", "ReturnValue", "value"]
+      - ["system.reflection.emit.dynamicmethod", "Method[get_name]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]
+      - ["system.reflection.emit.dynamicmethod", "Method[get_returnparameter]", "Argument[this]", "ReturnValue.Field[MemberImpl]", "value"]

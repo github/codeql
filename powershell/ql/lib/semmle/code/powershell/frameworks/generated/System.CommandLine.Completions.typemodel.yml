@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.commandline.completions.textcompletioncontext", "Member[commandlinetext]"]
+    - ["system.commandline.completions.textcompletioncontext", "system.commandline.completions.textcompletioncontext", "Method[atcursorposition].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[detail]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[inserttext]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[kind]"]
+    - ["system.boolean", "system.commandline.completions.completionitem", "Method[equals].ReturnValue"]
+    - ["system.int32", "system.commandline.completions.completionitem", "Method[gethashcode].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[label]"]
+    - ["system.string", "system.commandline.completions.completioncontext!", "Method[getwordtocomplete].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[sorttext]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Member[documentation]"]
+    - ["system.collections.generic.ienumerable", "system.commandline.completions.icompletionsource", "Method[getcompletions].ReturnValue"]
+    - ["system.string", "system.commandline.completions.completioncontext", "Member[wordtocomplete]"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.completions.completioncontext", "Member[parseresult]"]
+    - ["system.string", "system.commandline.completions.completionitem", "Method[tostring].ReturnValue"]
+    - ["system.int32", "system.commandline.completions.textcompletioncontext", "Member[cursorposition]"]

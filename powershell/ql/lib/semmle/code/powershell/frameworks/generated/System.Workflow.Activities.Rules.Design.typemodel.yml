@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.workflow.activities.rules.design.rulesetdialog", "Method[processcmdkey].ReturnValue"]
+    - ["system.codedom.codeexpression", "system.workflow.activities.rules.design.ruleconditiondialog", "Member[expression]"]
+    - ["system.workflow.activities.rules.ruleset", "system.workflow.activities.rules.design.rulesetdialog", "Member[ruleset]"]

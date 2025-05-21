@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.mail.smtpclient", "Method[get_clientcertificates]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.mail.smtpclient", "Method[send]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[send]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[sendasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[sendasync]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[sendmailasync]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[sendmailasync]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.net.mail.smtpclient", "Method[smtpclient]", "Argument[0]", "Argument[this]", "taint"]

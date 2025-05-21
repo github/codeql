@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.options.validateoptions", "Method[validate]", "Argument[1]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validate]", "Argument[this].Field[FailureMessage]", "ReturnValue.Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validate]", "Argument[this].Field[FailureMessage]", "ReturnValue.Field[Failures].Element", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[1]", "Argument[this].Field[Dependency1]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[1]", "Argument[this].Field[Dependency]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[1]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[2]", "Argument[this].Field[Dependency2]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[2]", "Argument[this].Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[2]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[3]", "Argument[this].Field[Dependency3]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[3]", "Argument[this].Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[3]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[4]", "Argument[this].Field[Dependency4]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[4]", "Argument[this].Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[4]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[5]", "Argument[this].Field[Dependency5]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[5]", "Argument[this].Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[5]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[6]", "Argument[this].Field[FailureMessage]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[6]", "Argument[this].Field[Validation]", "value"]
+      - ["microsoft.extensions.options.validateoptions", "Method[validateoptions]", "Argument[7]", "Argument[this].Field[FailureMessage]", "value"]

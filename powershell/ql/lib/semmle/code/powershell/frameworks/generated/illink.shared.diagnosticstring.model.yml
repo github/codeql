@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.shared.diagnosticstring", "Method[getmessage]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["illink.shared.diagnosticstring", "Method[getmessageformat]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.shared.diagnosticstring", "Method[gettitle]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["illink.shared.diagnosticstring", "Method[gettitleformat]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.security.membershipprovider", "system.web.clientservices.clientformsidentity", "Member[provider]"]
+    - ["system.string", "system.web.clientservices.clientformsidentity", "Member[authenticationtype]"]
+    - ["system.string", "system.web.clientservices.clientformsidentity", "Member[name]"]
+    - ["system.boolean", "system.web.clientservices.connectivitystatus!", "Member[isoffline]"]
+    - ["system.boolean", "system.web.clientservices.clientformsidentity", "Member[isauthenticated]"]
+    - ["system.boolean", "system.web.clientservices.clientroleprincipal", "Method[isinrole].ReturnValue"]
+    - ["system.security.principal.iidentity", "system.web.clientservices.clientroleprincipal", "Member[identity]"]
+    - ["system.net.cookiecontainer", "system.web.clientservices.clientformsidentity", "Member[authenticationcookies]"]

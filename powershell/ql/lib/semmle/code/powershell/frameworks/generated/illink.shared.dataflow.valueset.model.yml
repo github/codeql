@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.shared.dataflow.valueset", "Method[deepcopy]", "Argument[this]", "ReturnValue", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[enumerable]", "Argument[0]", "Argument[this].SyntheticField[_values]", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[get_current]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[getenumerator]", "Argument[this].SyntheticField[_values]", "ReturnValue.SyntheticField[_value]", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.shared.dataflow.valueset", "Method[getknownvalues]", "Argument[this].SyntheticField[_values]", "ReturnValue.SyntheticField[_values]", "value"]
+      - ["illink.shared.dataflow.valueset", "Method[valueset]", "Argument[0]", "Argument[this].SyntheticField[_values]", "value"]

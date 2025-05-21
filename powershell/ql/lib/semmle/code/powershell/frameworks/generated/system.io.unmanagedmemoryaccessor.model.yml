@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.unmanagedmemoryaccessor", "Method[initialize]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.io.unmanagedmemoryaccessor", "Method[unmanagedmemoryaccessor]", "Argument[0]", "Argument[this]", "taint"]

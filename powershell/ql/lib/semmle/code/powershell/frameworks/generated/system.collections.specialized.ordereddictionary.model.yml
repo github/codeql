@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.specialized.ordereddictionary", "Method[ordereddictionary]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.ordereddictionary", "Method[ordereddictionary]", "Argument[1]", "Argument[this]", "taint"]

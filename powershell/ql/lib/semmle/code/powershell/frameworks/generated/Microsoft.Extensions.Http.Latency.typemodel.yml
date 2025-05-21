@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.http.latency.httpclientlatencytelemetryoptions", "Member[enabledetailedlatencybreakdown]"]

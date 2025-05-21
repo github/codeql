@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.host.choicedescription", "Method[choicedescription]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.host.choicedescription.label]", "value"]
+      - ["system.management.automation.host.choicedescription", "Method[get_label]", "Argument[this].SyntheticField[system.management.automation.host.choicedescription.label]", "ReturnValue", "value"]

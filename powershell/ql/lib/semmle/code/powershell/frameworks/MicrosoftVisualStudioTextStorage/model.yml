@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.boolean", "microsoft.visualstudio.text.storage.idatastorage", "Method[trygetitemvalue].ReturnValue"]
-    - ["microsoft.visualstudio.text.storage.idatastorage", "microsoft.visualstudio.text.storage.idatastorageService", "Method[getdatastorage].ReturnValue"]

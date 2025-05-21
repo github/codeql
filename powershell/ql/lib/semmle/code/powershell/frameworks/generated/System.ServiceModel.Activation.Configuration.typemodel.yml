@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.configuration.configurationpropertycollection", "system.servicemodel.activation.configuration.nettcpsection", "Member[properties]"]
+    - ["system.int32", "system.servicemodel.activation.configuration.nettcpsection", "Member[maxpendingaccepts]"]
+    - ["system.int32", "system.servicemodel.activation.configuration.netpipesection", "Member[maxpendingconnections]"]
+    - ["system.configuration.configurationpropertycollection", "system.servicemodel.activation.configuration.netpipesection", "Member[properties]"]
+    - ["system.servicemodel.activation.configuration.securityidentifierelementcollection", "system.servicemodel.activation.configuration.nettcpsection", "Member[allowaccounts]"]
+    - ["system.servicemodel.activation.configuration.netpipesection", "system.servicemodel.activation.configuration.servicemodelactivationsectiongroup", "Member[netpipe]"]
+    - ["system.object", "system.servicemodel.activation.configuration.securityidentifierelementcollection", "Method[getelementkey].ReturnValue"]
+    - ["system.int32", "system.servicemodel.activation.configuration.nettcpsection", "Member[listenbacklog]"]
+    - ["system.servicemodel.activation.configuration.diagnosticsection", "system.servicemodel.activation.configuration.servicemodelactivationsectiongroup", "Member[diagnostics]"]
+    - ["system.boolean", "system.servicemodel.activation.configuration.nettcpsection", "Member[teredoenabled]"]
+    - ["system.servicemodel.activation.configuration.securityidentifierelementcollection", "system.servicemodel.activation.configuration.netpipesection", "Member[allowaccounts]"]
+    - ["system.timespan", "system.servicemodel.activation.configuration.nettcpsection", "Member[receivetimeout]"]
+    - ["system.configuration.configurationpropertycollection", "system.servicemodel.activation.configuration.diagnosticsection", "Member[properties]"]
+    - ["system.servicemodel.activation.configuration.servicemodelactivationsectiongroup", "system.servicemodel.activation.configuration.servicemodelactivationsectiongroup!", "Method[getsectiongroup].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.activation.configuration.diagnosticsection", "Member[performancecountersenabled]"]
+    - ["system.timespan", "system.servicemodel.activation.configuration.netpipesection", "Member[receivetimeout]"]
+    - ["system.int32", "system.servicemodel.activation.configuration.nettcpsection", "Member[maxpendingconnections]"]
+    - ["system.configuration.configurationpropertycollection", "system.servicemodel.activation.configuration.securityidentifierelement", "Member[properties]"]
+    - ["system.servicemodel.activation.configuration.nettcpsection", "system.servicemodel.activation.configuration.servicemodelactivationsectiongroup", "Member[nettcp]"]
+    - ["system.int32", "system.servicemodel.activation.configuration.netpipesection", "Member[maxpendingaccepts]"]
+    - ["system.security.principal.securityidentifier", "system.servicemodel.activation.configuration.securityidentifierelement", "Member[securityidentifier]"]

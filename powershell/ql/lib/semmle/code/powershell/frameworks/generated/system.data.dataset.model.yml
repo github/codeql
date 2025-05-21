@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.dataset", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataset", "Method[copy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataset", "Method[dataset]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.dataset", "Method[get_defaultviewmanager]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataset", "Method[get_relations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataset", "Method[get_tables]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataset", "Method[getchanges]", "Argument[this]", "ReturnValue", "taint"]

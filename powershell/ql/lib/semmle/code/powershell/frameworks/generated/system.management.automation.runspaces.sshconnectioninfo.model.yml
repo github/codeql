@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.sshconnectioninfo", "Method[sshconnectioninfo]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.sshconnectioninfo.username]", "value"]
+      - ["system.management.automation.runspaces.sshconnectioninfo", "Method[sshconnectioninfo]", "Argument[1]", "Argument[this].Field[system.management.automation.runspaces.sshconnectioninfo.computername]", "value"]
+      - ["system.management.automation.runspaces.sshconnectioninfo", "Method[sshconnectioninfo]", "Argument[2]", "Argument[this].Field[system.management.automation.runspaces.sshconnectioninfo.keyfilepath]", "value"]
+      - ["system.management.automation.runspaces.sshconnectioninfo", "Method[sshconnectioninfo]", "Argument[4]", "Argument[this].Field[system.management.automation.runspaces.sshconnectioninfo.subsystem]", "value"]
+      - ["system.management.automation.runspaces.sshconnectioninfo", "Method[sshconnectioninfo]", "Argument[6].Element", "Argument[this]", "taint"]

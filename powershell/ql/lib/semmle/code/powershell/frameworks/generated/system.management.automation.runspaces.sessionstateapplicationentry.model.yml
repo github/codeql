@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.sessionstateapplicationentry", "Method[clone]", "Argument[this].Field[system.management.automation.runspaces.initialsessionstateentry.module]", "ReturnValue.Field[system.management.automation.runspaces.initialsessionstateentry.module]", "value"]
+      - ["system.management.automation.runspaces.sessionstateapplicationentry", "Method[clone]", "Argument[this].Field[system.management.automation.runspaces.sessionstateapplicationentry.path]", "ReturnValue.Field[system.management.automation.runspaces.sessionstateapplicationentry.path]", "value"]
+      - ["system.management.automation.runspaces.sessionstateapplicationentry", "Method[sessionstateapplicationentry]", "Argument[0]", "Argument[this].Field[system.management.automation.runspaces.sessionstateapplicationentry.path]", "value"]

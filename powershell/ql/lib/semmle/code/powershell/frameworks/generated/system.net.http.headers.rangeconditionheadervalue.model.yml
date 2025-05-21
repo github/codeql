@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.rangeconditionheadervalue", "Method[clone]", "Argument[this].SyntheticField[_entityTag]", "ReturnValue.SyntheticField[_entityTag]", "value"]
+      - ["system.net.http.headers.rangeconditionheadervalue", "Method[get_entitytag]", "Argument[this].SyntheticField[_entityTag]", "ReturnValue", "value"]
+      - ["system.net.http.headers.rangeconditionheadervalue", "Method[rangeconditionheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_entityTag]", "value"]
+      - ["system.net.http.headers.rangeconditionheadervalue", "Method[rangeconditionheadervalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.net.http.headers.rangeconditionheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_entityTag].Field[Tag]", "ReturnValue", "value"]

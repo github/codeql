@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.parenexpressionast", "Method[copy]", "Argument[this].Field[system.management.automation.language.parenexpressionast.pipeline].Field[system.management.automation.language.assignmentstatementast.errorposition]", "ReturnValue.Field[system.management.automation.language.parenexpressionast.pipeline].Field[system.management.automation.language.assignmentstatementast.errorposition]", "value"]
+      - ["system.management.automation.language.parenexpressionast", "Method[copy]", "Argument[this].Field[system.management.automation.language.parenexpressionast.pipeline].Field[system.management.automation.language.errorstatementast.kind]", "ReturnValue.Field[system.management.automation.language.parenexpressionast.pipeline].Field[system.management.automation.language.errorstatementast.kind]", "value"]
+      - ["system.management.automation.language.parenexpressionast", "Method[parenexpressionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.parenexpressionast.pipeline]", "value"]
+      - ["system.management.automation.language.parenexpressionast", "Method[parenexpressionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.parenexpressionast.pipeline]", "value"]
+      - ["system.management.automation.language.parenexpressionast", "Method[parenexpressionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]

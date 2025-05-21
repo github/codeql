@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.data.services.configuration.dataservicesreplacefunctionfeature", "Member[enable]"]
+    - ["system.data.services.configuration.dataservicesreplacefunctionfeature", "system.data.services.configuration.dataservicesfeaturessection", "Member[replacefunction]"]
+    - ["system.data.services.configuration.dataservicesfeaturessection", "system.data.services.configuration.dataservicessectiongroup", "Member[features]"]

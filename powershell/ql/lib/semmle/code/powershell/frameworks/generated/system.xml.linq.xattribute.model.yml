@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xattribute", "Method[get_name]", "Argument[this].SyntheticField[name]", "ReturnValue", "value"]
+      - ["system.xml.linq.xattribute", "Method[get_nextattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xattribute", "Method[get_previousattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xattribute", "Method[setvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xattribute", "Method[xattribute]", "Argument[0].SyntheticField[name]", "Argument[this].SyntheticField[name]", "value"]
+      - ["system.xml.linq.xattribute", "Method[xattribute]", "Argument[0]", "Argument[this].SyntheticField[name]", "value"]

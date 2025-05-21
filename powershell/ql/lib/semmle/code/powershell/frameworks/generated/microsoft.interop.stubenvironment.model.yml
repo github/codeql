@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.stubenvironment", "Method[get_defaultdllimportsearchpathsattrtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.stubenvironment", "Method[get_lcidconversionattrtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.stubenvironment", "Method[get_suppressgctransitionattrtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.stubenvironment", "Method[get_unmanagedcallconvattrtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.stubenvironment", "Method[get_wasmimportlinkageattrtype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.stubenvironment", "Method[stubenvironment]", "Argument[0]", "Argument[this].Field[Compilation]", "value"]

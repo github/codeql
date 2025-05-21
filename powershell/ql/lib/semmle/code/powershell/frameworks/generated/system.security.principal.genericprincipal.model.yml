@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.principal.genericprincipal", "Method[genericprincipal]", "Argument[0]", "Argument[this].SyntheticField[m_identity]", "value"]
+      - ["system.security.principal.genericprincipal", "Method[get_identity]", "Argument[this].SyntheticField[m_identity]", "ReturnValue", "value"]

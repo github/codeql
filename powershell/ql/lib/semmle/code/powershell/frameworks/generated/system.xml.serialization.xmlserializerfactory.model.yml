@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlserializerfactory", "Method[createserializer]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlserializerfactory", "Method[createserializer]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlserializerfactory", "Method[createserializer]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.xml.serialization.xmlserializerfactory", "Method[createserializer]", "Argument[4]", "ReturnValue", "taint"]

@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[property]"]
+    - ["system.string", "cimcmdlets.activities.setciminstance", "Member[pscommandname]"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[passthru]"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[operationtimeoutsec]"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[querydialect]"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[inputobject]"]
+    - ["system.type", "cimcmdlets.activities.setciminstance", "Member[typeimplementingcmdlet]"]
+    - ["system.string", "cimcmdlets.activities.setciminstance", "Member[psdefiningmodule]"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[query]"]
+    - ["microsoft.powershell.activities.activityimplementationcontext", "cimcmdlets.activities.setciminstance", "Method[getpowershell].ReturnValue"]
+    - ["system.activities.inargument", "cimcmdlets.activities.setciminstance", "Member[namespace]"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.assemblybuilder", "Method[definedynamicassembly]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.assemblybuilder", "Method[definedynamicmodulecore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.assemblybuilder", "Method[getdynamicmodulecore]", "Argument[this]", "ReturnValue", "taint"]

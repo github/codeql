@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.textsignaturedecodercontext", "Method[textsignaturedecodercontext]", "Argument[0]", "Argument[this].Field[AssemblyResolver]", "value"]
+      - ["ilcompiler.reflection.readytorun.textsignaturedecodercontext", "Method[textsignaturedecodercontext]", "Argument[1]", "Argument[this].Field[Options]", "value"]

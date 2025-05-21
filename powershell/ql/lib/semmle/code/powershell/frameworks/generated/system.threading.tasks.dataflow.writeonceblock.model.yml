@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[consumemessage]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[linkto]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[linkto]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[linkto]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[offermessage]", "Argument[1]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[releasereservation]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[tryreceiveall]", "Argument[this].SyntheticField[_value]", "Argument[0].Element", "value"]
+      - ["system.threading.tasks.dataflow.writeonceblock", "Method[writeonceblock]", "Argument[0]", "Argument[this].SyntheticField[_cloningFunction]", "value"]

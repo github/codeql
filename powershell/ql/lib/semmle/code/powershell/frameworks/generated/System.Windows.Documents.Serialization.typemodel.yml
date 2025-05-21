@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[displayname]"]
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[manufacturername]"]
+    - ["system.windows.documents.serialization.writingprogresschangelevel", "system.windows.documents.serialization.writingprogresschangelevel!", "Member[fixedpagewritingprogress]"]
+    - ["system.version", "system.windows.documents.serialization.serializerdescriptor", "Member[assemblyversion]"]
+    - ["system.printing.printticket", "system.windows.documents.serialization.writingprintticketrequiredeventargs", "Member[currentprintticket]"]
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[assemblypath]"]
+    - ["system.version", "system.windows.documents.serialization.serializerdescriptor", "Member[winfxversion]"]
+    - ["system.string", "system.windows.documents.serialization.iserializerfactory", "Member[manufacturername]"]
+    - ["system.uri", "system.windows.documents.serialization.iserializerfactory", "Member[manufacturerwebsite]"]
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[assemblyname]"]
+    - ["system.windows.documents.serialization.serializerwritercollator", "system.windows.documents.serialization.serializerwriter", "Method[createvisualscollator].ReturnValue"]
+    - ["system.int32", "system.windows.documents.serialization.writingprogresschangedeventargs", "Member[number]"]
+    - ["system.windows.documents.serialization.writingprogresschangelevel", "system.windows.documents.serialization.writingprogresschangelevel!", "Member[none]"]
+    - ["system.collections.objectmodel.readonlycollection", "system.windows.documents.serialization.serializerprovider", "Member[installedserializers]"]
+    - ["system.windows.documents.serialization.serializerwriter", "system.windows.documents.serialization.iserializerfactory", "Method[createserializerwriter].ReturnValue"]
+    - ["system.string", "system.windows.documents.serialization.iserializerfactory", "Member[displayname]"]
+    - ["system.string", "system.windows.documents.serialization.iserializerfactory", "Member[defaultfileextension]"]
+    - ["system.windows.documents.serialization.serializerwriter", "system.windows.documents.serialization.serializerprovider", "Method[createserializerwriter].ReturnValue"]
+    - ["system.exception", "system.windows.documents.serialization.writingcancelledeventargs", "Member[error]"]
+    - ["system.int32", "system.windows.documents.serialization.writingprintticketrequiredeventargs", "Member[sequence]"]
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[factoryinterfacename]"]
+    - ["system.windows.documents.serialization.writingprogresschangelevel", "system.windows.documents.serialization.writingprogresschangedeventargs", "Member[writinglevel]"]
+    - ["system.boolean", "system.windows.documents.serialization.serializerdescriptor", "Method[equals].ReturnValue"]
+    - ["system.int32", "system.windows.documents.serialization.serializerdescriptor", "Method[gethashcode].ReturnValue"]
+    - ["system.windows.documents.serialization.writingprogresschangelevel", "system.windows.documents.serialization.writingprogresschangelevel!", "Member[fixeddocumentwritingprogress]"]
+    - ["system.boolean", "system.windows.documents.serialization.serializerdescriptor", "Member[isloadable]"]
+    - ["system.windows.documents.serialization.writingprogresschangelevel", "system.windows.documents.serialization.writingprogresschangelevel!", "Member[fixeddocumentsequencewritingprogress]"]
+    - ["system.string", "system.windows.documents.serialization.serializerdescriptor", "Member[defaultfileextension]"]
+    - ["system.uri", "system.windows.documents.serialization.serializerdescriptor", "Member[manufacturerwebsite]"]
+    - ["system.windows.xps.serialization.printticketlevel", "system.windows.documents.serialization.writingprintticketrequiredeventargs", "Member[currentprintticketlevel]"]
+    - ["system.windows.documents.serialization.serializerdescriptor", "system.windows.documents.serialization.serializerdescriptor!", "Method[createfromfactoryinstance].ReturnValue"]

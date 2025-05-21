@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.networkinformation.networkinterface", "Method[get_description]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.networkinterface", "Method[get_id]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.networkinterface", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.networkinterface", "Method[getipproperties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.networkinformation.networkinterface", "Method[getphysicaladdress]", "Argument[this]", "ReturnValue", "taint"]

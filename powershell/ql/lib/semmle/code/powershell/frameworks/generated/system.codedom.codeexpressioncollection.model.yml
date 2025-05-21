@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codeexpressioncollection", "Method[add]", "Argument[0]", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[addrange]", "Argument[0].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[addrange]", "Argument[0].Field[List].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[codeexpressioncollection]", "Argument[0].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[codeexpressioncollection]", "Argument[0].Field[List].Element", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[copyto]", "Argument[this].Field[List].Element", "Argument[0].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[get_item]", "Argument[this].Field[List].Element", "ReturnValue", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[insert]", "Argument[1]", "Argument[this].Field[List].Element", "value"]
+      - ["system.codedom.codeexpressioncollection", "Method[set_item]", "Argument[1]", "Argument[this].Field[List].Element", "value"]

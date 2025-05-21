@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.typepositioninfo", "Method[createforparameter]", "Argument[0].Field[Name]", "ReturnValue.Field[InstanceIdentifier]", "value"]
+      - ["microsoft.interop.typepositioninfo", "Method[createforparameter]", "Argument[1]", "ReturnValue.Field[MarshallingAttributeInfo]", "value"]
+      - ["microsoft.interop.typepositioninfo", "Method[getlocation]", "Argument[1]", "ReturnValue", "taint"]
+      - ["microsoft.interop.typepositioninfo", "Method[typepositioninfo]", "Argument[0]", "Argument[this].Field[ManagedType]", "value"]
+      - ["microsoft.interop.typepositioninfo", "Method[typepositioninfo]", "Argument[1]", "Argument[this].Field[MarshallingAttributeInfo]", "value"]

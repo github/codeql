@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.authenticationheadervalue", "Method[authenticationheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_scheme]", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[authenticationheadervalue]", "Argument[1]", "Argument[this].SyntheticField[_parameter]", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[clone]", "Argument[this].SyntheticField[_parameter]", "ReturnValue.SyntheticField[_parameter]", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[clone]", "Argument[this].SyntheticField[_scheme]", "ReturnValue.SyntheticField[_scheme]", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[get_parameter]", "Argument[this].SyntheticField[_parameter]", "ReturnValue", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[get_scheme]", "Argument[this].SyntheticField[_scheme]", "ReturnValue", "value"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_parameter]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.authenticationheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_scheme]", "ReturnValue", "value"]

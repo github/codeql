@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationsectiongroup", "Method[get_sectiongroups]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationsectiongroup", "Method[get_sections]", "Argument[this]", "ReturnValue", "taint"]

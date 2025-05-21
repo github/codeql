@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.windows.markup.valueserializerattribute", "Method[get_valueserializertypename]", "Argument[this].SyntheticField[_valueSerializerTypeName]", "ReturnValue", "value"]
+      - ["system.windows.markup.valueserializerattribute", "Method[valueserializerattribute]", "Argument[0]", "Argument[this].SyntheticField[_valueSerializerTypeName]", "value"]

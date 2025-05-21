@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.messagecontainer", "Method[createcustomerrormessage]", "Argument[0]", "ReturnValue.Field[Text]", "value"]
+      - ["mono.linker.messagecontainer", "Method[createcustomerrormessage]", "Argument[2]", "ReturnValue.Field[SubCategory]", "value"]
+      - ["mono.linker.messagecontainer", "Method[createcustomwarningmessage]", "Argument[1]", "ReturnValue.Field[Text]", "value"]
+      - ["mono.linker.messagecontainer", "Method[createcustomwarningmessage]", "Argument[5]", "ReturnValue.Field[SubCategory]", "value"]
+      - ["mono.linker.messagecontainer", "Method[creatediagnosticmessage]", "Argument[0]", "ReturnValue.Field[Text]", "value"]
+      - ["mono.linker.messagecontainer", "Method[createinfomessage]", "Argument[0]", "ReturnValue.Field[Text]", "value"]
+      - ["mono.linker.messagecontainer", "Method[tomsbuildstring]", "Argument[this].Field[SubCategory]", "ReturnValue", "taint"]
+      - ["mono.linker.messagecontainer", "Method[tomsbuildstring]", "Argument[this].Field[Text]", "ReturnValue", "taint"]
+      - ["mono.linker.messagecontainer", "Method[tostring]", "Argument[this].Field[SubCategory]", "ReturnValue", "taint"]
+      - ["mono.linker.messagecontainer", "Method[tostring]", "Argument[this].Field[Text]", "ReturnValue", "taint"]

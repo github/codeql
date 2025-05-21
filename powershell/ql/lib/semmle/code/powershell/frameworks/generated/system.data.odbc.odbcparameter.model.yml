@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.odbc.odbcparameter", "Method[odbcparameter]", "Argument[0]", "Argument[this].SyntheticField[_parameterName]", "value"]
+      - ["system.data.odbc.odbcparameter", "Method[tostring]", "Argument[this].Field[ParameterName]", "ReturnValue", "value"]
+      - ["system.data.odbc.odbcparameter", "Method[tostring]", "Argument[this].SyntheticField[_parameterName]", "ReturnValue", "value"]

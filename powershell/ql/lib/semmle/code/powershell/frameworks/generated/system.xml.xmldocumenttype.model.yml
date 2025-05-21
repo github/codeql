@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmldocumenttype", "Method[get_internalsubset]", "Argument[this].SyntheticField[_internalSubset]", "ReturnValue", "value"]
+      - ["system.xml.xmldocumenttype", "Method[get_publicid]", "Argument[this].SyntheticField[_publicId]", "ReturnValue", "value"]
+      - ["system.xml.xmldocumenttype", "Method[get_systemid]", "Argument[this].SyntheticField[_systemId]", "ReturnValue", "value"]
+      - ["system.xml.xmldocumenttype", "Method[xmldocumenttype]", "Argument[1]", "Argument[this].SyntheticField[_publicId]", "value"]
+      - ["system.xml.xmldocumenttype", "Method[xmldocumenttype]", "Argument[2]", "Argument[this].SyntheticField[_systemId]", "value"]
+      - ["system.xml.xmldocumenttype", "Method[xmldocumenttype]", "Argument[3]", "Argument[this].SyntheticField[_internalSubset]", "value"]

@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.psadaptedproperty", "Method[get_baseobject]", "Argument[this]", "ReturnValue", "taint"]
-      - ["system.management.automation.psadaptedproperty", "Method[get_tag]", "Argument[this]", "ReturnValue", "taint"]
-      

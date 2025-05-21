@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.dictionary", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.collections.generic.dictionary", "Method[dictionary]", "Argument[1]", "Argument[this].SyntheticField[_comparer]", "value"]
+      - ["system.collections.generic.dictionary", "Method[get_comparer]", "Argument[this].SyntheticField[_comparer]", "ReturnValue", "value"]
+      - ["system.collections.generic.dictionary", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.dictionary", "Method[get_keys]", "Argument[this].Field[Keys]", "ReturnValue", "value"]
+      - ["system.collections.generic.dictionary", "Method[get_syncroot]", "Argument[this].SyntheticField[_dictionary].Field[SyncRoot]", "ReturnValue", "value"]
+      - ["system.collections.generic.dictionary", "Method[get_syncroot]", "Argument[this].SyntheticField[_dictionary]", "ReturnValue", "value"]
+      - ["system.collections.generic.dictionary", "Method[get_values]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.collections.generic.dictionary", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.dictionary", "Method[getobjectdata]", "Argument[this].Field[Comparer]", "Argument[0].SyntheticField[_values].Element", "value"]
+      - ["system.collections.generic.dictionary", "Method[getobjectdata]", "Argument[this].SyntheticField[_comparer]", "Argument[0].SyntheticField[_values].Element", "value"]
+      - ["system.collections.generic.dictionary", "Method[keycollection]", "Argument[0]", "Argument[this].SyntheticField[_dictionary]", "value"]
+      - ["system.collections.generic.dictionary", "Method[valuecollection]", "Argument[0]", "Argument[this].SyntheticField[_dictionary]", "value"]

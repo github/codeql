@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.activitycontext", "Method[activitycontext]", "Argument[0]", "Argument[this].Field[TraceId]", "value"]
+      - ["system.diagnostics.activitycontext", "Method[activitycontext]", "Argument[1]", "Argument[this].Field[SpanId]", "value"]
+      - ["system.diagnostics.activitycontext", "Method[activitycontext]", "Argument[3]", "Argument[this].Field[TraceState]", "value"]

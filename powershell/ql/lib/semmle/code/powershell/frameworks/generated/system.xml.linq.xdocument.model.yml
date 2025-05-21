@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xdocument", "Method[get_documenttype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdocument", "Method[get_root]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdocument", "Method[load]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdocument", "Method[parse]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xdocument", "Method[save]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xdocument", "Method[saveasync]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xdocument", "Method[xdocument]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.linq.xdocument", "Method[xdocument]", "Argument[0]", "Argument[this]", "taint"]

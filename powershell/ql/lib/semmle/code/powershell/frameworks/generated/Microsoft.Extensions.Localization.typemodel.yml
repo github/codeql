@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.localization.localizedstring", "microsoft.extensions.localization.stringlocalizer", "Member[item]"]
+    - ["microsoft.extensions.localization.localizedstring", "microsoft.extensions.localization.istringlocalizer", "Member[item]"]
+    - ["microsoft.extensions.localization.rootnamespaceattribute", "microsoft.extensions.localization.resourcemanagerstringlocalizerfactory", "Method[getrootnamespaceattribute].ReturnValue"]
+    - ["system.string", "microsoft.extensions.localization.localizedstring", "Method[tostring].ReturnValue"]
+    - ["system.string", "microsoft.extensions.localization.localizationoptions", "Member[resourcespath]"]
+    - ["system.string", "microsoft.extensions.localization.localizedstring", "Member[searchedlocation]"]
+    - ["microsoft.extensions.localization.resourcemanagerstringlocalizer", "microsoft.extensions.localization.resourcemanagerstringlocalizerfactory", "Method[createresourcemanagerstringlocalizer].ReturnValue"]
+    - ["microsoft.extensions.localization.istringlocalizer", "microsoft.extensions.localization.resourcemanagerstringlocalizerfactory", "Method[create].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.localization.localizedstring", "Member[resourcenotfound]"]
+    - ["system.string", "microsoft.extensions.localization.resourcelocationattribute", "Member[resourcelocation]"]
+    - ["microsoft.extensions.localization.resourcelocationattribute", "microsoft.extensions.localization.resourcemanagerstringlocalizerfactory", "Method[getresourcelocationattribute].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.localization.stringlocalizer", "Method[getallstrings].ReturnValue"]
+    - ["microsoft.extensions.localization.localizedstring", "microsoft.extensions.localization.stringlocalizerextensions!", "Method[getstring].ReturnValue"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.localization.resourcenamescache", "Method[getoradd].ReturnValue"]
+    - ["system.string", "microsoft.extensions.localization.localizedstring!", "Method[op_implicit].ReturnValue"]
+    - ["microsoft.extensions.localization.localizedstring", "microsoft.extensions.localization.resourcemanagerstringlocalizer", "Member[item]"]
+    - ["system.string", "microsoft.extensions.localization.localizedstring", "Member[name]"]
+    - ["system.string", "microsoft.extensions.localization.rootnamespaceattribute", "Member[rootnamespace]"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.localization.stringlocalizerextensions!", "Method[getallstrings].ReturnValue"]
+    - ["system.collections.generic.ilist", "microsoft.extensions.localization.iresourcenamescache", "Method[getoradd].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.localization.istringlocalizer", "Method[getallstrings].ReturnValue"]
+    - ["microsoft.extensions.localization.istringlocalizer", "microsoft.extensions.localization.istringlocalizerfactory", "Method[create].ReturnValue"]
+    - ["system.string", "microsoft.extensions.localization.resourcemanagerstringlocalizerfactory", "Method[getresourceprefix].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.localization.resourcemanagerstringlocalizer", "Method[getallstrings].ReturnValue"]
+    - ["system.string", "microsoft.extensions.localization.localizedstring", "Member[value]"]
+    - ["system.string", "microsoft.extensions.localization.resourcemanagerstringlocalizer", "Method[getstringsafely].ReturnValue"]

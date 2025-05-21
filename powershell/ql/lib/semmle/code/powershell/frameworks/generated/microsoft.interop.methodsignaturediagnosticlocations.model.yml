@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.methodsignaturediagnosticlocations", "Method[creatediagnosticinfo]", "Argument[0]", "ReturnValue.Field[Descriptor]", "value"]
+      - ["microsoft.interop.methodsignaturediagnosticlocations", "Method[creatediagnosticinfo]", "Argument[this].Field[FallbackLocation]", "ReturnValue.Field[Location]", "value"]
+      - ["microsoft.interop.methodsignaturediagnosticlocations", "Method[methodsignaturediagnosticlocations]", "Argument[0]", "Argument[this].Field[MethodIdentifier]", "value"]
+      - ["microsoft.interop.methodsignaturediagnosticlocations", "Method[methodsignaturediagnosticlocations]", "Argument[1]", "Argument[this].Field[ManagedParameterLocations]", "value"]
+      - ["microsoft.interop.methodsignaturediagnosticlocations", "Method[methodsignaturediagnosticlocations]", "Argument[2]", "Argument[this].Field[FallbackLocation]", "value"]

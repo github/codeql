@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.dataflow.trimanalysismethodcallpattern", "Method[merge]", "Argument[1].Field[Instance]", "ReturnValue.Field[Instance]", "value"]
+      - ["mono.linker.dataflow.trimanalysismethodcallpattern", "Method[trimanalysismethodcallpattern]", "Argument[0]", "Argument[this].Field[Operation]", "value"]
+      - ["mono.linker.dataflow.trimanalysismethodcallpattern", "Method[trimanalysismethodcallpattern]", "Argument[1]", "Argument[this].Field[CalledMethod]", "value"]
+      - ["mono.linker.dataflow.trimanalysismethodcallpattern", "Method[trimanalysismethodcallpattern]", "Argument[2]", "Argument[this].Field[Instance]", "value"]
+      - ["mono.linker.dataflow.trimanalysismethodcallpattern", "Method[trimanalysismethodcallpattern]", "Argument[4]", "Argument[this].Field[Origin]", "value"]

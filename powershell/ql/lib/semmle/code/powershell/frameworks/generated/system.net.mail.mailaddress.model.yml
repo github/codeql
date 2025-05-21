@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.mail.mailaddress", "Method[get_address]", "Argument[this].SyntheticField[_host]", "ReturnValue", "taint"]
+      - ["system.net.mail.mailaddress", "Method[get_address]", "Argument[this].SyntheticField[_userName]", "ReturnValue", "taint"]
+      - ["system.net.mail.mailaddress", "Method[get_displayname]", "Argument[this].SyntheticField[_displayName]", "ReturnValue", "value"]
+      - ["system.net.mail.mailaddress", "Method[get_host]", "Argument[this].SyntheticField[_host]", "ReturnValue", "value"]
+      - ["system.net.mail.mailaddress", "Method[get_user]", "Argument[this].SyntheticField[_userName]", "ReturnValue", "value"]
+      - ["system.net.mail.mailaddress", "Method[mailaddress]", "Argument[0]", "Argument[this].SyntheticField[_displayName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[mailaddress]", "Argument[0]", "Argument[this].SyntheticField[_host]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[mailaddress]", "Argument[0]", "Argument[this].SyntheticField[_userName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[mailaddress]", "Argument[1]", "Argument[this].SyntheticField[_displayName]", "value"]
+      - ["system.net.mail.mailaddress", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[1].SyntheticField[_displayName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[1].SyntheticField[_host]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[1].SyntheticField[_userName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[2].SyntheticField[_displayName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[2].SyntheticField[_host]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[2].SyntheticField[_userName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[3].SyntheticField[_displayName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[3].SyntheticField[_host]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[0]", "Argument[3].SyntheticField[_userName]", "taint"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[1]", "Argument[2].SyntheticField[_displayName]", "value"]
+      - ["system.net.mail.mailaddress", "Method[trycreate]", "Argument[1]", "Argument[3].SyntheticField[_displayName]", "value"]

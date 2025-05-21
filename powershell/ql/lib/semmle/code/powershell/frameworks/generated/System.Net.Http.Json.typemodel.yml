@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.task", "system.net.http.json.httpclientjsonextensions!", "Method[patchasjsonasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "system.net.http.json.httpclientjsonextensions!", "Method[getfromjsonasasyncenumerable].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.json.httpclientjsonextensions!", "Method[getfromjsonasync].ReturnValue"]
+    - ["system.net.http.json.jsoncontent", "system.net.http.json.jsoncontent!", "Method[create].ReturnValue"]
+    - ["system.boolean", "system.net.http.json.jsoncontent", "Method[trycomputelength].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.json.httpclientjsonextensions!", "Method[deletefromjsonasync].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.json.httpclientjsonextensions!", "Method[putasjsonasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "system.net.http.json.httpcontentjsonextensions!", "Method[readfromjsonasasyncenumerable].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.json.httpclientjsonextensions!", "Method[postasjsonasync].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.json.httpcontentjsonextensions!", "Method[readfromjsonasync].ReturnValue"]
+    - ["system.type", "system.net.http.json.jsoncontent", "Member[objecttype]"]
+    - ["system.threading.tasks.task", "system.net.http.json.jsoncontent", "Method[serializetostreamasync].ReturnValue"]
+    - ["system.object", "system.net.http.json.jsoncontent", "Member[value]"]

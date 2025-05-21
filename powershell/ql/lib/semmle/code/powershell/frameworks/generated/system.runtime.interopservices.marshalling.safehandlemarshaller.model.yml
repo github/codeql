@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[frommanaged]", "Argument[0].Field[handle]", "Argument[this].SyntheticField[_originalHandleValue]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[frommanaged]", "Argument[0]", "Argument[this].SyntheticField[_handle]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[fromunmanaged]", "Argument[0]", "Argument[this].SyntheticField[_handleToReturn].Field[handle]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[fromunmanaged]", "Argument[0]", "Argument[this].SyntheticField[_newHandle].Field[handle]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[fromunmanaged]", "Argument[this].SyntheticField[_handle]", "Argument[this].SyntheticField[_handleToReturn]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[fromunmanaged]", "Argument[this].SyntheticField[_newHandle]", "Argument[this].SyntheticField[_handleToReturn]", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[tomanaged]", "Argument[this].SyntheticField[_newHandle]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[tomanagedfinally]", "Argument[this].SyntheticField[_handleToReturn]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[tounmanaged]", "Argument[this].SyntheticField[_handle].Field[handle]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.marshalling.safehandlemarshaller", "Method[tounmanaged]", "Argument[this].SyntheticField[_originalHandleValue]", "ReturnValue", "value"]

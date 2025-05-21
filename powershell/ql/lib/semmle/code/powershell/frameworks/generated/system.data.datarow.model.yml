@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datarow", "Method[datarow]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarow", "Method[get_item]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datarow", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarow", "Method[get_table]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarow", "Method[getchildrows]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarow", "Method[getparentrows]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarow", "Method[set_item]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarow", "Method[setnull]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.data.datarow", "Method[setparentrow]", "Argument[1]", "Argument[this]", "taint"]

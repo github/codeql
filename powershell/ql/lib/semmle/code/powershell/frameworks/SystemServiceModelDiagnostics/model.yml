@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Member[off]"]
-    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Member[default]"]
-    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Member[all]"]
-    - ["system.servicemodel.diagnostics.performancecounterscope", "system.servicemodel.diagnostics.performancecounterscope!", "Member[serviceonly]"]

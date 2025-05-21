@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.provider.containercmdletprovider", "Method[convertpath]", "Argument[0]", "Argument[2]", "taint"]
-      - ["system.management.automation.provider.containercmdletprovider", "Method[convertpath]", "Argument[0]", "Argument[3]", "taint"]
-      - ["system.management.automation.provider.containercmdletprovider", "Method[newitem]", "Argument[this]", "Argument[2]", "taint"]
-      

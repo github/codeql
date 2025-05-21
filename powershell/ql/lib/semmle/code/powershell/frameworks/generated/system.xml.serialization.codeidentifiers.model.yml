@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.codeidentifiers", "Method[add]", "Argument[1]", "Argument[this].SyntheticField[_list].Element", "value"]
+      - ["system.xml.serialization.codeidentifiers", "Method[addunique]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.serialization.codeidentifiers", "Method[addunique]", "Argument[1]", "Argument[this].SyntheticField[_list].Element", "value"]
+      - ["system.xml.serialization.codeidentifiers", "Method[makeunique]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.serialization.codeidentifiers", "Method[toarray]", "Argument[this].SyntheticField[_list].Element", "ReturnValue.Element", "value"]

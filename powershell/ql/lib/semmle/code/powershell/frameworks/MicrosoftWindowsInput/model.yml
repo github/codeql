@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.object", "microsoft.windows.input.ipreviewcommandsource", "Member[previewcommandparameter]"]

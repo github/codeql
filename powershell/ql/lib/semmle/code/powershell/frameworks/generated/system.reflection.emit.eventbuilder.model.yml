@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.eventbuilder", "Method[addothermethodcore]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.emit.eventbuilder", "Method[setaddonmethodcore]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.emit.eventbuilder", "Method[setraisemethodcore]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.reflection.emit.eventbuilder", "Method[setremoveonmethodcore]", "Argument[0]", "Argument[this]", "taint"]

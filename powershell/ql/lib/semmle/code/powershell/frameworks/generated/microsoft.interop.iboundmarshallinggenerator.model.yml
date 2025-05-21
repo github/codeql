@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.iboundmarshallinggenerator", "Method[get_codecontext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.iboundmarshallinggenerator", "Method[get_nativetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.interop.iboundmarshallinggenerator", "Method[get_typeinfo]", "Argument[this]", "ReturnValue", "taint"]

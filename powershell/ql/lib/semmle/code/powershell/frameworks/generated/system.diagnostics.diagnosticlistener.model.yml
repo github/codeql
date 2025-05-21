@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.diagnostics.diagnosticlistener", "Method[diagnosticlistener]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["system.diagnostics.diagnosticlistener", "Method[subscribe]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.diagnostics.diagnosticlistener", "Method[subscribe]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.diagnostics.diagnosticlistener", "Method[tostring]", "Argument[this].Field[Name]", "ReturnValue", "value"]

@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmldictionaryreader", "Method[createbinaryreader]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[createbinaryreader]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[createbinaryreader]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[createbinaryreader]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[createbinaryreader]", "Argument[5]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[createdictionaryreader]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmldictionaryreader", "Method[get_quotas]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[getattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[getnonatomizednames]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[getnonatomizednames]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasqualifiedname]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasqualifiedname]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasstring]", "Argument[0].Element.Field[Value]", "ReturnValue", "value"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasstring]", "Argument[0].Element", "ReturnValue", "value"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasstring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readcontentasuniqueid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readelementcontentasuniqueid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xmldictionaryreader", "Method[readstring]", "Argument[this]", "ReturnValue", "taint"]

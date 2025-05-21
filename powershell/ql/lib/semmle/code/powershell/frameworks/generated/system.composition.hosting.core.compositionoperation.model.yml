@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.compositionoperation", "Method[run]", "Argument[0]", "Argument[1].Parameter[0]", "value"]
+      - ["system.composition.hosting.core.compositionoperation", "Method[run]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositionoperation", "Method[run]", "Argument[1].ReturnValue", "ReturnValue", "value"]

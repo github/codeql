@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["ttargetelement", "microsoft.extensions.diagnosticadapter.internal.proxylist", "Member[item]"]
+    - ["system.object", "microsoft.extensions.diagnosticadapter.internal.proxybase", "Member[underlyinginstanceasobject]"]
+    - ["system.collections.generic.ienumerator", "microsoft.extensions.diagnosticadapter.internal.proxylist", "Method[getenumerator].ReturnValue"]
+    - ["t", "microsoft.extensions.diagnosticadapter.internal.proxybase", "Member[instance]"]
+    - ["system.tuple", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "Member[key]"]
+    - ["system.collections.ienumerator", "microsoft.extensions.diagnosticadapter.internal.proxyenumerable", "Method[getenumerator].ReturnValue"]
+    - ["ttargetelement", "microsoft.extensions.diagnosticadapter.internal.proxyenumerable+proxyenumerator", "Member[current]"]
+    - ["system.collections.generic.ienumerator", "microsoft.extensions.diagnosticadapter.internal.proxyenumerable", "Method[getenumerator].ReturnValue"]
+    - ["microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult!", "Method[fromtype].ReturnValue"]
+    - ["t", "microsoft.extensions.diagnosticadapter.internal.proxybase", "Member[underlyinginstance]"]
+    - ["system.string", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "Member[error]"]
+    - ["tproxy", "microsoft.extensions.diagnosticadapter.internal.proxyfactory", "Method[createproxy].ReturnValue"]
+    - ["system.type", "microsoft.extensions.diagnosticadapter.internal.proxybase", "Member[wrappedtype]"]
+    - ["system.object", "microsoft.extensions.diagnosticadapter.internal.proxyenumerable+proxyenumerator", "Member[current]"]
+    - ["system.collections.ienumerator", "microsoft.extensions.diagnosticadapter.internal.proxylist", "Method[getenumerator].ReturnValue"]
+    - ["microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult!", "Method[fromerror].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.diagnosticadapter.internal.proxylist", "Member[count]"]
+    - ["system.type", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "Member[type]"]
+    - ["system.boolean", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "Member[iserror]"]
+    - ["system.reflection.constructorinfo", "microsoft.extensions.diagnosticadapter.internal.proxytypecacheresult", "Member[constructor]"]
+    - ["system.boolean", "microsoft.extensions.diagnosticadapter.internal.proxyenumerable+proxyenumerator", "Method[movenext].ReturnValue"]
+    - ["t", "microsoft.extensions.diagnosticadapter.internal.proxybase", "Method[upwrap].ReturnValue"]

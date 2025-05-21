@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.tagging.ioutliningregiontag", "microsoft.visualstudio.text.outlining.icollapsible", "Member[tag]"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[getallregions].ReturnValue"]
+    - ["microsoft.visualstudio.text.itrackingspan", "microsoft.visualstudio.text.outlining.icollapsible", "Member[extent]"]
+    - ["system.boolean", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Member[enabled]"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[expandall].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.outlining.icollapsible", "Member[iscollapsed]"]
+    - ["microsoft.visualstudio.text.snapshotspan", "microsoft.visualstudio.text.outlining.regionschangedeventargs", "Member[affectedspan]"]
+    - ["system.boolean", "microsoft.visualstudio.text.outlining.icollapsible", "Member[iscollapsible]"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.regionsexpandedeventargs", "Member[expandedregions]"]
+    - ["system.boolean", "microsoft.visualstudio.text.outlining.regionsexpandedeventargs", "Member[removalpending]"]
+    - ["microsoft.visualstudio.text.outlining.icollapsed", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[trycollapse].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.regionscollapsedeventargs", "Member[collapsedregions]"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[getcollapsedregions].ReturnValue"]
+    - ["system.object", "microsoft.visualstudio.text.outlining.icollapsible", "Member[collapsedform]"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[collapseall].ReturnValue"]
+    - ["microsoft.visualstudio.text.outlining.ioutliningmanager", "microsoft.visualstudio.text.outlining.ioutliningmanagerservice", "Method[getoutliningmanager].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.outlining.icollapsed", "Member[collapsedchildren]"]
+    - ["system.object", "microsoft.visualstudio.text.outlining.icollapsible", "Member[collapsedhintform]"]
+    - ["system.boolean", "microsoft.visualstudio.text.outlining.outliningenabledeventargs", "Member[enabled]"]
+    - ["microsoft.visualstudio.text.outlining.icollapsible", "microsoft.visualstudio.text.outlining.ioutliningmanager", "Method[expand].ReturnValue"]

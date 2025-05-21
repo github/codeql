@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.sorteddictionary", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_key]", "Argument[this].Field[Current].Field[Key]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_keys]", "Argument[this].Field[Keys]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_syncroot]", "Argument[this].SyntheticField[_dictionary].Field[SyncRoot]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_value]", "Argument[this].Field[Current].Field[Value]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[get_values]", "Argument[this].Field[Values]", "ReturnValue", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[keycollection]", "Argument[0]", "Argument[this].SyntheticField[_dictionary]", "value"]
+      - ["system.collections.generic.sorteddictionary", "Method[keyvaluepaircomparer]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.collections.generic.sorteddictionary", "Method[valuecollection]", "Argument[0]", "Argument[this].SyntheticField[_dictionary]", "value"]

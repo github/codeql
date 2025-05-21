@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.web.mail.mailmessage", "Member[to]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[body]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailformat!", "Member[html]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[cc]"]
+    - ["system.string", "system.web.mail.smtpmail!", "Member[smtpserver]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[bcc]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailencoding!", "Member[base64]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[subject]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[normal]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailmessage", "Member[bodyformat]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[high]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailpriority!", "Member[low]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailencoding!", "Member[uuencode]"]
+    - ["system.web.mail.mailpriority", "system.web.mail.mailmessage", "Member[priority]"]
+    - ["system.text.encoding", "system.web.mail.mailmessage", "Member[bodyencoding]"]
+    - ["system.collections.idictionary", "system.web.mail.mailmessage", "Member[fields]"]
+    - ["system.web.mail.mailencoding", "system.web.mail.mailattachment", "Member[encoding]"]
+    - ["system.collections.ilist", "system.web.mail.mailmessage", "Member[attachments]"]
+    - ["system.collections.idictionary", "system.web.mail.mailmessage", "Member[headers]"]
+    - ["system.string", "system.web.mail.mailattachment", "Member[filename]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[from]"]
+    - ["system.web.mail.mailformat", "system.web.mail.mailformat!", "Member[text]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[urlcontentlocation]"]
+    - ["system.string", "system.web.mail.mailmessage", "Member[urlcontentbase]"]

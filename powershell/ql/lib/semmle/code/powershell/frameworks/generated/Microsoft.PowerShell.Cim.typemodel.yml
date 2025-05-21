@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getfirstpropertyordefault].ReturnValue"]
+    - ["system.management.automation.psadaptedproperty", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperty].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[isgettable].ReturnValue"]
+    - ["system.string", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertytypename].ReturnValue"]
+    - ["system.collections.objectmodel.collection", "microsoft.powershell.cim.ciminstanceadapter", "Method[gettypenamehierarchy].ReturnValue"]
+    - ["system.collections.objectmodel.collection", "microsoft.powershell.cim.ciminstanceadapter", "Method[getproperties].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.cim.ciminstanceadapter", "Method[issettable].ReturnValue"]
+    - ["system.object", "microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertyvalue].ReturnValue"]

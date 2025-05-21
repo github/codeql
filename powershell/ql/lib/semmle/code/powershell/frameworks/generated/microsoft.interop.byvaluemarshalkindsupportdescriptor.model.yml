@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.byvaluemarshalkindsupportdescriptor", "Method[byvaluemarshalkindsupportdescriptor]", "Argument[0]", "Argument[this].Field[DefaultSupport]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportdescriptor", "Method[byvaluemarshalkindsupportdescriptor]", "Argument[1]", "Argument[this].Field[InSupport]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportdescriptor", "Method[byvaluemarshalkindsupportdescriptor]", "Argument[2]", "Argument[this].Field[OutSupport]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportdescriptor", "Method[byvaluemarshalkindsupportdescriptor]", "Argument[3]", "Argument[this].Field[InOutSupport]", "value"]
+      - ["microsoft.interop.byvaluemarshalkindsupportdescriptor", "Method[getsupport]", "Argument[this]", "Argument[2]", "taint"]

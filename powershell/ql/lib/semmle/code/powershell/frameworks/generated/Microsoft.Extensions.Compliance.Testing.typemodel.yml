@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redactorrequested", "Method[equals].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.redactorrequested", "Member[sequencenumber]"]
+    - ["microsoft.extensions.compliance.testing.redactorrequested", "microsoft.extensions.compliance.testing.fakeredactioncollector", "Member[lastredactorrequested]"]
+    - ["microsoft.extensions.compliance.classification.dataclassificationset", "microsoft.extensions.compliance.testing.redactorrequested", "Member[dataclassifications]"]
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redactorrequested!", "Method[op_inequality].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.redactor", "microsoft.extensions.compliance.testing.fakeredactorprovider", "Method[getredactor].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.fakeredactor", "Method[redact].ReturnValue"]
+    - ["microsoft.extensions.compliance.testing.fakeredactor", "microsoft.extensions.compliance.testing.fakeredactor!", "Method[create].ReturnValue"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.compliance.testing.fakeredactioncollector", "Member[allredactorrequests]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.compliance.testing.fakeredactioncollector", "Member[allredacteddata]"]
+    - ["microsoft.extensions.compliance.classification.dataclassification", "microsoft.extensions.compliance.testing.faketaxonomy!", "Member[privatedata]"]
+    - ["system.string", "microsoft.extensions.compliance.testing.faketaxonomy!", "Member[taxonomyname]"]
+    - ["system.string", "microsoft.extensions.compliance.testing.redacteddata", "Member[original]"]
+    - ["microsoft.extensions.compliance.classification.dataclassification", "microsoft.extensions.compliance.testing.faketaxonomy!", "Member[publicdata]"]
+    - ["microsoft.extensions.compliance.testing.fakeredactioncollector", "microsoft.extensions.compliance.testing.fakeredactorprovider", "Member[collector]"]
+    - ["system.string", "microsoft.extensions.compliance.testing.redacteddata", "Member[redacted]"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.redacteddata", "Method[gethashcode].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.redactorrequested", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redacteddata!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redacteddata", "Method[equals].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redactorrequested!", "Method[op_equality].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.fakeredactor", "Method[getredactedlength].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.testing.fakeredactoroptions", "Member[redactionformat]"]
+    - ["system.int32", "microsoft.extensions.compliance.testing.redacteddata", "Member[sequencenumber]"]
+    - ["microsoft.extensions.compliance.testing.redacteddata", "microsoft.extensions.compliance.testing.fakeredactioncollector", "Member[lastredacteddata]"]
+    - ["system.boolean", "microsoft.extensions.compliance.testing.redacteddata!", "Method[op_inequality].ReturnValue"]
+    - ["microsoft.extensions.compliance.testing.fakeredactioncollector", "microsoft.extensions.compliance.testing.fakeredactor", "Member[eventcollector]"]

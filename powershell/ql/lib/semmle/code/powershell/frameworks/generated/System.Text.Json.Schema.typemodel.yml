@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.text.json.schema.jsonschemaexporteroptions", "Member[treatnullobliviousasnonnullable]"]
+    - ["system.string", "system.text.json.schema.jsonschemaexportercontext", "Member[path]"]
+    - ["system.func", "system.text.json.schema.jsonschemaexporteroptions", "Member[transformschemanode]"]
+    - ["system.text.json.schema.jsonschemaexporteroptions", "system.text.json.schema.jsonschemaexporteroptions!", "Member[default]"]
+    - ["system.text.json.nodes.jsonnode", "system.text.json.schema.jsonschemaexporter!", "Method[getjsonschemaasnode].ReturnValue"]
+    - ["system.text.json.serialization.metadata.jsontypeinfo", "system.text.json.schema.jsonschemaexportercontext", "Member[basetypeinfo]"]
+    - ["system.text.json.serialization.metadata.jsontypeinfo", "system.text.json.schema.jsonschemaexportercontext", "Member[typeinfo]"]
+    - ["system.text.json.serialization.metadata.jsonpropertyinfo", "system.text.json.schema.jsonschemaexportercontext", "Member[propertyinfo]"]

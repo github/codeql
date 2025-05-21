@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[pluralize].ReturnValue"]
+    - ["system.globalization.cultureinfo", "system.data.entity.design.pluralizationservices.pluralizationservice", "Member[culture]"]
+    - ["system.string", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[singularize].ReturnValue"]
+    - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[isplural].ReturnValue"]
+    - ["system.data.entity.design.pluralizationservices.pluralizationservice", "system.data.entity.design.pluralizationservices.pluralizationservice!", "Method[createservice].ReturnValue"]
+    - ["system.boolean", "system.data.entity.design.pluralizationservices.pluralizationservice", "Method[issingular].ReturnValue"]

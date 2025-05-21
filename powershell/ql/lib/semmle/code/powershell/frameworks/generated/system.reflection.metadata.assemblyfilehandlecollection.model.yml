@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.assemblyfilehandlecollection", "Method[get_current]", "Argument[this].Field[Current]", "ReturnValue", "value"]

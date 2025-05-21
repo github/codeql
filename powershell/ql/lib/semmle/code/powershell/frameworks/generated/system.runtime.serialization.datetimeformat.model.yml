@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.datetimeformat", "Method[datetimeformat]", "Argument[0]", "Argument[this].SyntheticField[_formatString]", "value"]
+      - ["system.runtime.serialization.datetimeformat", "Method[datetimeformat]", "Argument[1]", "Argument[this].SyntheticField[_formatProvider]", "value"]
+      - ["system.runtime.serialization.datetimeformat", "Method[get_formatprovider]", "Argument[this].SyntheticField[_formatProvider]", "ReturnValue", "value"]
+      - ["system.runtime.serialization.datetimeformat", "Method[get_formatstring]", "Argument[this].SyntheticField[_formatString]", "ReturnValue", "value"]

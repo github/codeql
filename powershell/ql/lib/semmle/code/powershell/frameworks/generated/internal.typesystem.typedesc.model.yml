@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.typedesc", "Method[converttocanonform]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.typedesc", "Method[converttocanonformimpl]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.typedesc", "Method[get_basetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[get_instantiation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[get_runtimeinterfaces]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[get_typeidentifierdata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[get_underlyingtype]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.typedesc", "Method[getfield]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getfields]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getfinalizer]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getmethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getmethods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getmethodwithequivalentsignature]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[getnonruntimedeterminedtypefromruntimedeterminedsubtypeviasubstitution]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.typedesc", "Method[gettypedefinition]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.typedesc", "Method[getvirtualmethods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.typedesc", "Method[instantiatesignature]", "Argument[this]", "ReturnValue", "value"]

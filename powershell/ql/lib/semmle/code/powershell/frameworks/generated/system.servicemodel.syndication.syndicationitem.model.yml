@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.syndicationitem", "Method[addpermalink]", "Argument[0].Field[AbsoluteUri]", "Argument[this].Field[Id]", "value"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[addpermalink]", "Argument[0]", "Argument[this].Field[Id]", "taint"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[get_attributeextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[get_elementextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[syndicationitem]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[syndicationitem]", "Argument[1]", "Argument[this].Field[Content]", "value"]
+      - ["system.servicemodel.syndication.syndicationitem", "Method[syndicationitem]", "Argument[3]", "Argument[this].Field[Id]", "value"]

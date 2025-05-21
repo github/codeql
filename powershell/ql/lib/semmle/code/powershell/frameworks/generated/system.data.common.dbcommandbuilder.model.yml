@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.common.dbcommandbuilder", "Method[getdeletecommand]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbcommandbuilder", "Method[getinsertcommand]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbcommandbuilder", "Method[getparametername]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.data.common.dbcommandbuilder", "Method[getupdatecommand]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.common.dbcommandbuilder", "Method[initializecommand]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.data.common.dbcommandbuilder", "Method[quoteidentifier]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.data.common.dbcommandbuilder", "Method[rowupdatinghandler]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.data.common.dbcommandbuilder", "Method[unquoteidentifier]", "Argument[0]", "ReturnValue", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.configuration.configurationpath", "Method[combine]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["microsoft.extensions.configuration.configurationpath", "Method[getparentpath]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.configuration.configurationpath", "Method[getsectionkey]", "Argument[0]", "ReturnValue", "value"]

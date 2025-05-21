@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.partmetadataattribute", "Method[partmetadataattribute]", "Argument[0]", "Argument[this].Field[Name]", "value"]
+      - ["system.componentmodel.composition.partmetadataattribute", "Method[partmetadataattribute]", "Argument[1]", "Argument[this].Field[Value]", "value"]

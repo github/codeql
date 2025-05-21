@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.iasyncresult", "Method[get_asyncstate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.iasyncresult", "Method[get_asyncwaithandle]", "Argument[this]", "ReturnValue", "taint"]

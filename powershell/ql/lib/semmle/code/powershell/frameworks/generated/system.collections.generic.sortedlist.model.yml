@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.generic.sortedlist", "Method[add]", "Argument[0].Field[Key]", "Argument[this].SyntheticField[keys].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[add]", "Argument[0].Field[Value]", "Argument[this].SyntheticField[values].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[add]", "Argument[0]", "Argument[this].SyntheticField[keys].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[add]", "Argument[1]", "Argument[this].SyntheticField[values].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[get_comparer]", "Argument[this].SyntheticField[comparer]", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedlist", "Method[get_item]", "Argument[this].SyntheticField[values].Element", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedlist", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedlist", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.generic.sortedlist", "Method[getkeyatindex]", "Argument[this].SyntheticField[keys].Element", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedlist", "Method[getvalueatindex]", "Argument[this].SyntheticField[values].Element", "ReturnValue", "value"]
+      - ["system.collections.generic.sortedlist", "Method[set_item]", "Argument[0]", "Argument[this].SyntheticField[keys].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[set_item]", "Argument[1]", "Argument[this].SyntheticField[values].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[setvalueatindex]", "Argument[1]", "Argument[this].SyntheticField[values].Element", "value"]
+      - ["system.collections.generic.sortedlist", "Method[sortedlist]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.collections.generic.sortedlist", "Method[sortedlist]", "Argument[0]", "Argument[this].SyntheticField[comparer]", "value"]
+      - ["system.collections.generic.sortedlist", "Method[trygetvalue]", "Argument[this].SyntheticField[values].Element", "Argument[1]", "value"]

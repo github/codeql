@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.math", "Method[abs]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.math", "Method[clamp]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.math", "Method[clamp]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.math", "Method[clamp]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.math", "Method[max]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.math", "Method[max]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.math", "Method[min]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.math", "Method[min]", "Argument[1]", "ReturnValue", "value"]

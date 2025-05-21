@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[1]", "Argument[2]", "taint"]
-      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[3]", "Argument[this]", "taint"]
-      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[this]", "Argument[3]", "taint"]
-      

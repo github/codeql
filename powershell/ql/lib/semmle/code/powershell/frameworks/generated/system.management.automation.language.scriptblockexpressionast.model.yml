@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.scriptblockexpressionast", "Method[copy]", "Argument[this].Field[system.management.automation.language.scriptblockexpressionast.scriptblock].Field[system.management.automation.language.scriptblockast.scriptrequirements]", "ReturnValue.Field[system.management.automation.language.scriptblockexpressionast.scriptblock].Field[system.management.automation.language.scriptblockast.scriptrequirements]", "value"]
+      - ["system.management.automation.language.scriptblockexpressionast", "Method[scriptblockexpressionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.scriptblockexpressionast.scriptblock]", "value"]
+      - ["system.management.automation.language.scriptblockexpressionast", "Method[scriptblockexpressionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.scriptblockexpressionast.scriptblock]", "value"]
+      - ["system.management.automation.language.scriptblockexpressionast", "Method[scriptblockexpressionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]

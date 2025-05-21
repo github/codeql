@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.metrics.httpmetricsenrichmentcontext", "Method[get_exception]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.metrics.httpmetricsenrichmentcontext", "Method[get_request]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.http.metrics.httpmetricsenrichmentcontext", "Method[get_response]", "Argument[this]", "ReturnValue", "taint"]

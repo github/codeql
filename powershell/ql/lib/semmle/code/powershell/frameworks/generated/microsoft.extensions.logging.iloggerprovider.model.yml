@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.iloggerprovider", "Method[createlogger]", "Argument[0]", "Argument[this]", "taint"]
+      - ["microsoft.extensions.logging.iloggerprovider", "Method[createlogger]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.logging.iloggerprovider", "Method[createlogger]", "Argument[this]", "ReturnValue", "taint"]

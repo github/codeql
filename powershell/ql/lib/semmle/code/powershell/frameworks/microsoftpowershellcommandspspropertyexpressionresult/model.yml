@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.commands.pspropertyexpressionresult", "Method[pspropertyexpressionresult]", "Argument[0]", "Argument[this]", "taint"]
-      - ["microsoft.powershell.commands.pspropertyexpressionresult", "Method[pspropertyexpressionresult]", "Argument[1]", "Argument[this]", "taint"]
-      - ["microsoft.powershell.commands.pspropertyexpressionresult", "Method[pspropertyexpressionresult]", "Argument[2]", "Argument[this]", "taint"]
-      

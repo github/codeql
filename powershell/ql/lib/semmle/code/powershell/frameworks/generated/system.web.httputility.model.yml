@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.web.httputility", "Method[htmldecode]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.web.httputility", "Method[urlencodetobytes]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.web.httputility", "Method[urlpathencode]", "Argument[0]", "ReturnValue", "value"]

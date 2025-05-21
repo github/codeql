@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.numerics.tensors.readonlytensorspan", "Method[castup]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[get_flattenedlength]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[get_lengths]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[get_strides]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[readonlytensorspan]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.numerics.tensors.readonlytensorspan", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

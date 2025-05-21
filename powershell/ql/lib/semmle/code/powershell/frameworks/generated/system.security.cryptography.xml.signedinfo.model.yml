@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.xml.signedinfo", "Method[addreference]", "Argument[0]", "Argument[this].SyntheticField[_references].Element", "value"]
+      - ["system.security.cryptography.xml.signedinfo", "Method[get_canonicalizationmethodobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.xml.signedinfo", "Method[get_references]", "Argument[this].SyntheticField[_references]", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.signedinfo", "Method[getxml]", "Argument[this].SyntheticField[_cachedXml]", "ReturnValue", "value"]
+      - ["system.security.cryptography.xml.signedinfo", "Method[loadxml]", "Argument[0]", "Argument[this].SyntheticField[_cachedXml]", "value"]

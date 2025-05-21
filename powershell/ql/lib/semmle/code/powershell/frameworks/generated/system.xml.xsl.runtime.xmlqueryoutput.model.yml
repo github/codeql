@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[startcopy]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writeitem]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writestartattributecomputed]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writestartattributelocalname]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writestartelementcomputed]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writestartnamespace]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[writestartprocessinginstruction]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryoutput", "Method[xsltcopyof]", "Argument[0]", "Argument[this]", "taint"]

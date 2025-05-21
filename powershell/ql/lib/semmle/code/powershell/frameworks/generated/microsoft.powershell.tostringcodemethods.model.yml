@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.tostringcodemethods", "Method[xmlnode]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.tostringcodemethods", "Method[xmlnodelist]", "Argument[0].Field[system.management.automation.psobject.baseobject].Element", "ReturnValue", "taint"]
+      - ["microsoft.powershell.tostringcodemethods", "Method[xmlnodelist]", "Argument[0].SyntheticField[system.management.automation.psobject._immediatebaseobject].Element", "ReturnValue", "taint"]

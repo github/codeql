@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[getdscresourceusagestring]", "Argument[0].Field[system.management.automation.language.dynamickeyword.keyword]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[getdscresourceusagestring]", "Argument[0].Field[system.management.automation.language.dynamickeyword.properties].Element", "ReturnValue", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[getresourcemethodslineposition]", "Argument[0].Field[system.management.automation.psmoduleinfo.path]", "Argument[3]", "value"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importcimkeywordsfrommodule]", "Argument[0].Field[system.management.automation.psmoduleinfo.modulebase]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importcimkeywordsfrommodule]", "Argument[0].Field[system.management.automation.psmoduleinfo.name]", "Argument[3].Element.Field[system.collections.generic.keyvaluepair`2.key]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importcimkeywordsfrommodule]", "Argument[1]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importclassresourcesfrommodule]", "Argument[0].Field[system.management.automation.psmoduleinfo.name]", "Argument[2].Element.Field[system.collections.generic.keyvaluepair`2.key]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importscriptkeywordsfrommodule]", "Argument[0].Field[system.management.automation.psmoduleinfo.modulebase]", "Argument[2]", "taint"]
+      - ["microsoft.powershell.desiredstateconfiguration.internal.dscclasscache", "Method[importscriptkeywordsfrommodule]", "Argument[1]", "Argument[2]", "taint"]

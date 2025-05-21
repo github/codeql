@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.byte", "windows.ui.color", "Member[a]"]
+    - ["system.boolean", "windows.ui.color!", "Method[op_equality].ReturnValue"]
+    - ["system.byte", "windows.ui.color", "Member[g]"]
+    - ["windows.ui.color", "windows.ui.color!", "Method[fromargb].ReturnValue"]
+    - ["system.string", "windows.ui.color", "Method[tostring].ReturnValue"]
+    - ["system.byte", "windows.ui.color", "Member[r]"]
+    - ["system.int32", "windows.ui.color", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "windows.ui.color", "Method[equals].ReturnValue"]
+    - ["system.boolean", "windows.ui.color!", "Method[op_inequality].ReturnValue"]
+    - ["system.byte", "windows.ui.color", "Member[b]"]

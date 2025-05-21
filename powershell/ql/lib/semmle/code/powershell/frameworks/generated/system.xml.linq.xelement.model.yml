@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xelement", "Method[ancestorsandself]", "Argument[this]", "ReturnValue.Element", "value"]
+      - ["system.xml.linq.xelement", "Method[attribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[descendantnodesandself]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[descendantsandself]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[get_firstattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[get_lastattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[load]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[parse]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceall]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceall]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceall]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceall]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceattributes]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceattributes]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceattributes]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.xml.linq.xelement", "Method[replaceattributes]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xelement", "Method[setattributevalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[setattributevalue]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[setelementvalue]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[setvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[xelement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[xelement]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.xml.linq.xelement", "Method[xelement]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.linq.xelement", "Method[xelement]", "Argument[this]", "Argument[1]", "taint"]

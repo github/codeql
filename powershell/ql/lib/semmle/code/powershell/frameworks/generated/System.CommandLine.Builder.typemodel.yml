@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["tbuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usehelpbuilder].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[enablelegacydoubledashbehavior].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[useversionoption].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[addmiddleware].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[registerwithdotnetsuggest].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[enabledirectives].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[useexceptionhandler].ReturnValue"]
+    - ["system.commandline.command", "system.commandline.builder.commandlinebuilder", "Member[command]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usetypocorrections].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[uselocalizationresources].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[cancelonprocesstermination].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usesuggestdirective].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[useparseerrorreporting].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usehelp].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usetokenreplacer].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[useenvironmentvariabledirective].ReturnValue"]
+    - ["system.commandline.parsing.parser", "system.commandline.builder.commandlinebuilder", "Method[build].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[usedefaults].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[useparsedirective].ReturnValue"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.builder.commandlinebuilderextensions!", "Method[enableposixbundling].ReturnValue"]

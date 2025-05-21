@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlresolver", "Method[getentity]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xmlresolver", "Method[resolveuri]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xmlresolver", "Method[resolveuri]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xmlresolver", "Method[set_credentials]", "Argument[0]", "Argument[this]", "taint"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.invocationinfo", "Method[create]", "Argument[1]", "ReturnValue.Field[system.management.automation.invocationinfo.displayscriptposition]", "value"]
+      - ["system.management.automation.invocationinfo", "Method[get_positionmessage]", "Argument[this].Field[system.management.automation.invocationinfo.displayscriptposition].Field[system.management.automation.language.iscriptextent.file]", "ReturnValue", "taint"]
+      - ["system.management.automation.invocationinfo", "Method[get_pscommandpath]", "Argument[this].Field[system.management.automation.invocationinfo.displayscriptposition].Field[system.management.automation.language.iscriptextent.file]", "ReturnValue", "value"]
+      - ["system.management.automation.invocationinfo", "Method[get_psscriptroot]", "Argument[this].Field[system.management.automation.invocationinfo.displayscriptposition].Field[system.management.automation.language.iscriptextent.file]", "ReturnValue", "taint"]
+      - ["system.management.automation.invocationinfo", "Method[get_scriptname]", "Argument[this].Field[system.management.automation.invocationinfo.displayscriptposition].Field[system.management.automation.language.iscriptextent.file]", "ReturnValue", "value"]
+      - ["system.management.automation.invocationinfo", "Method[get_statement]", "Argument[this].Field[system.management.automation.invocationinfo.displayscriptposition].Field[system.management.automation.language.iscriptextent.text]", "ReturnValue", "value"]

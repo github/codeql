@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.categoriesdocument", "Method[create]", "Argument[0]", "ReturnValue.Field[Link]", "value"]
+      - ["system.servicemodel.syndication.categoriesdocument", "Method[get_attributeextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.categoriesdocument", "Method[get_elementextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.categoriesdocument", "Method[load]", "Argument[0]", "ReturnValue", "taint"]

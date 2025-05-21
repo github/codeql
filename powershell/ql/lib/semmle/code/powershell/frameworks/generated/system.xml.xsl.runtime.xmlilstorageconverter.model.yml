@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[booleantoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[bytestoatomicvalue]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[bytestoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[datetimetoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[decimaltoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[doubletoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[int32toatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[int64toatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[itemstonavigators]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[navigatorstoitems]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[singletoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[stringtoatomicvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[stringtoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[timespantoatomicvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[timespantoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[xmlqualifiednametoatomicvalue]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlilstorageconverter", "Method[xmlqualifiednametoatomicvalue]", "Argument[2]", "ReturnValue", "taint"]

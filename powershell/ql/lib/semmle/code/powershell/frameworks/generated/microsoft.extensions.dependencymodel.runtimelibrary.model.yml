@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencymodel.runtimelibrary", "Method[runtimelibrary]", "Argument[4]", "Argument[this].Field[RuntimeAssemblyGroups]", "value"]
+      - ["microsoft.extensions.dependencymodel.runtimelibrary", "Method[runtimelibrary]", "Argument[5]", "Argument[this].Field[NativeLibraryGroups]", "value"]

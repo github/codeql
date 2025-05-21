@@ -12,9 +12,9 @@ Run the following commands
 
     ```
     # Clone dotnet/dotnet-api-docs
-    git clone https://github.com/dotnet/dotnet-api-docs
+    git clone https://github.com/dotnet/dotnet-api-docs --depth 1
     # Clone MicrosoftDocs/powershell-docs-sdk-dotnet
-    git clone git@github.com:MicrosoftDocs/powershell-docs-sdk-dotnet.git
+    git clone git@github.com:MicrosoftDocs/powershell-docs-sdk-dotnet.git --depth 1
     # Generate data extensions
     python3 misc/typemodelgen.py dotnet-api-docs/xml/ powershell-docs-sdk-dotnet/dotnet/xml
     ```

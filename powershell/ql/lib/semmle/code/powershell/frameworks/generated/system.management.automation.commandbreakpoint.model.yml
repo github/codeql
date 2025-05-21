@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.commandbreakpoint", "Method[commandbreakpoint]", "Argument[2]", "Argument[this].Field[system.management.automation.commandbreakpoint.command]", "value"]
+      - ["system.management.automation.commandbreakpoint", "Method[tostring]", "Argument[this].Field[system.management.automation.breakpoint.script]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandbreakpoint", "Method[tostring]", "Argument[this].Field[system.management.automation.commandbreakpoint.command]", "ReturnValue", "taint"]

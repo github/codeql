@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xpath.xpathnavigator", "Method[appendchild]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[clone]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.xml.xpath.xpathnavigator", "Method[compile]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[createattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[evaluate]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[evaluate]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_baseuri]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_localname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_namespaceuri]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_nametable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_prefix]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_schemainfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_underlyingobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[get_xmllang]", "Argument[this].Field[Value]", "ReturnValue", "value"]
+      - ["system.xml.xpath.xpathnavigator", "Method[getattribute]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[getnamespace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[insertafter]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[insertbefore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[lookupprefix]", "Argument[this].Field[LocalName]", "ReturnValue", "value"]
+      - ["system.xml.xpath.xpathnavigator", "Method[moveto]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[prependchild]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[readsubtree]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[replacerange]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[replacerange]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[select]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[selectchildren]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[selectdescendants]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[selectdescendants]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[selectsinglenode]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathnavigator", "Method[tostring]", "Argument[this].Field[Value]", "ReturnValue", "value"]
+      - ["system.xml.xpath.xpathnavigator", "Method[writesubtree]", "Argument[this]", "Argument[0]", "taint"]

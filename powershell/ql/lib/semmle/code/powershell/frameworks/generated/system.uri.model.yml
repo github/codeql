@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.uri", "Method[escapedatastring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uri", "Method[escapestring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uri", "Method[escapeuristring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uri", "Method[get_absolutepath]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[get_authority]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[get_host]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[get_idnhost]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[get_scheme]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[get_userinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[getcomponents]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[getleftpart]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[makerelative]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.uri", "Method[makerelativeuri]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uri", "Method[unescapedatastring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uri", "Method[uri]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.uri", "Method[uri]", "Argument[1]", "Argument[this]", "taint"]

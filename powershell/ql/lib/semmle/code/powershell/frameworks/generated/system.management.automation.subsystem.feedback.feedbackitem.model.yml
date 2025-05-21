@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[0]", "Argument[this].Field[system.management.automation.subsystem.feedback.feedbackitem.header]", "value"]
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[1]", "Argument[this].Field[system.management.automation.subsystem.feedback.feedbackitem.recommendedactions]", "value"]
+      - ["system.management.automation.subsystem.feedback.feedbackitem", "Method[feedbackitem]", "Argument[2]", "Argument[this].Field[system.management.automation.subsystem.feedback.feedbackitem.footer]", "value"]

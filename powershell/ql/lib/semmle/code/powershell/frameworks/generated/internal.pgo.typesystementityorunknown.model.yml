@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.pgo.typesystementityorunknown", "Method[get_asfield]", "Argument[this].SyntheticField[_data]", "ReturnValue", "value"]
+      - ["internal.pgo.typesystementityorunknown", "Method[get_asmethod]", "Argument[this].SyntheticField[_data]", "ReturnValue", "value"]
+      - ["internal.pgo.typesystementityorunknown", "Method[get_astype]", "Argument[this].SyntheticField[_data]", "ReturnValue", "value"]
+      - ["internal.pgo.typesystementityorunknown", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.pgo.typesystementityorunknown", "Method[typesystementityorunknown]", "Argument[0]", "Argument[this].SyntheticField[_data]", "value"]

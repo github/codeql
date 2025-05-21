@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.sectioninformation", "Method[get_protectionprovider]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.sectioninformation", "Method[get_sectionname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.sectioninformation", "Method[getparentsection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.sectioninformation", "Method[getrawxml]", "Argument[this].SyntheticField[RawXml]", "ReturnValue", "value"]
+      - ["system.configuration.sectioninformation", "Method[protectsection]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.sectioninformation", "Method[setrawxml]", "Argument[0]", "Argument[this].SyntheticField[RawXml]", "value"]

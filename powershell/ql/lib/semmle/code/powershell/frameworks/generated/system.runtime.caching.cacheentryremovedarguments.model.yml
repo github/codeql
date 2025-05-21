@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.caching.cacheentryremovedarguments", "Method[cacheentryremovedarguments]", "Argument[0]", "Argument[this].SyntheticField[_source]", "value"]
+      - ["system.runtime.caching.cacheentryremovedarguments", "Method[cacheentryremovedarguments]", "Argument[2]", "Argument[this].SyntheticField[_cacheItem]", "value"]
+      - ["system.runtime.caching.cacheentryremovedarguments", "Method[get_cacheitem]", "Argument[this].SyntheticField[_cacheItem]", "ReturnValue", "value"]
+      - ["system.runtime.caching.cacheentryremovedarguments", "Method[get_source]", "Argument[this].SyntheticField[_source]", "ReturnValue", "value"]

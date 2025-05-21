@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[exportdescriptorpromise]", "Argument[0]", "Argument[this].SyntheticField[_contract]", "value"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[exportdescriptorpromise]", "Argument[1]", "Argument[this].SyntheticField[_origin]", "value"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[get_contract]", "Argument[this].SyntheticField[_contract]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[get_dependencies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[get_origin]", "Argument[this].SyntheticField[_origin]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[getdescriptor]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.composition.hosting.core.exportdescriptorpromise", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

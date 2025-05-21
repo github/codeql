@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.idictionary", "microsoft.powershell.cmdletization.cmdletadapter", "Member[privatedata]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameter", "Member[bindings]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Member[parametertypename]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodparameter", "Member[name]"]
+    - ["system.version", "microsoft.powershell.cmdletization.cmdletadapter", "Member[moduleversion]"]
+    - ["system.int32", "microsoft.powershell.cmdletization.sessionbasedcmdletadapter", "Member[throttlelimit]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[reporterrors]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.cmdletization.sessionbasedcmdletadapter", "Member[asjob]"]
+    - ["system.object", "microsoft.powershell.cmdletization.methodparameter", "Member[value]"]
+    - ["system.type", "microsoft.powershell.cmdletization.methodparameter", "Member[parametertype]"]
+    - ["system.string", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[methodname]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[in]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[default]"]
+    - ["microsoft.powershell.cmdletization.behavioronnomatch", "microsoft.powershell.cmdletization.behavioronnomatch!", "Member[silentlycontinue]"]
+    - ["system.collections.objectmodel.keyedcollection", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[parameters]"]
+    - ["microsoft.powershell.cmdletization.methodparameter", "microsoft.powershell.cmdletization.methodinvocationinfo", "Member[returnvalue]"]
+    - ["system.management.automation.pscmdlet", "microsoft.powershell.cmdletization.cmdletadapter", "Member[cmdlet]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[out]"]
+    - ["tsession", "microsoft.powershell.cmdletization.sessionbasedcmdletadapter", "Member[defaultsession]"]
+    - ["microsoft.powershell.cmdletization.methodparameterbindings", "microsoft.powershell.cmdletization.methodparameterbindings!", "Member[error]"]
+    - ["system.boolean", "microsoft.powershell.cmdletization.methodparameter", "Member[isvaluepresent]"]
+    - ["system.string", "microsoft.powershell.cmdletization.cmdletadapter", "Member[classversion]"]
+    - ["microsoft.powershell.cmdletization.querybuilder", "microsoft.powershell.cmdletization.cmdletadapter", "Method[getquerybuilder].ReturnValue"]
+    - ["tsession[]", "microsoft.powershell.cmdletization.sessionbasedcmdletadapter", "Member[session]"]
+    - ["system.string", "microsoft.powershell.cmdletization.cmdletadapter", "Member[classname]"]
+    - ["system.string", "microsoft.powershell.cmdletization.sessionbasedcmdletadapter", "Method[generateparentjobname].ReturnValue"]

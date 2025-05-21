@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.composition.hosting.core.compositioncontract", "Method[changetype]", "Argument[this].SyntheticField[_contractName]", "ReturnValue.SyntheticField[_contractName]", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[changetype]", "Argument[this].SyntheticField[_metadataConstraints]", "ReturnValue.SyntheticField[_metadataConstraints]", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[compositioncontract]", "Argument[1]", "Argument[this].SyntheticField[_contractName]", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[compositioncontract]", "Argument[2]", "Argument[this].SyntheticField[_metadataConstraints]", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[get_contractname]", "Argument[this].SyntheticField[_contractName]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[get_metadataconstraints]", "Argument[this].SyntheticField[_metadataConstraints]", "ReturnValue", "value"]
+      - ["system.composition.hosting.core.compositioncontract", "Method[tryunwrapmetadataconstraint]", "Argument[this].SyntheticField[_contractName]", "Argument[2].SyntheticField[_contractName]", "value"]

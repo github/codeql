@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.resources.resourcemanager", "Method[createfilebasedresourcemanager]", "Argument[0]", "ReturnValue.Field[BaseNameField]", "value"]
+      - ["system.resources.resourcemanager", "Method[get_basename]", "Argument[this].Field[BaseNameField]", "ReturnValue", "value"]
+      - ["system.resources.resourcemanager", "Method[getobject]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.resources.resourcemanager", "Method[getresourcefilename]", "Argument[0].Field[Name]", "ReturnValue", "taint"]
+      - ["system.resources.resourcemanager", "Method[getresourcefilename]", "Argument[this].Field[BaseNameField]", "ReturnValue", "taint"]
+      - ["system.resources.resourcemanager", "Method[getstream]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.resources.resourcemanager", "Method[getstring]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.resources.resourcemanager", "Method[resourcemanager]", "Argument[0]", "Argument[this].Field[BaseNameField]", "value"]
+      - ["system.resources.resourcemanager", "Method[resourcemanager]", "Argument[1]", "Argument[this].Field[MainAssembly]", "value"]

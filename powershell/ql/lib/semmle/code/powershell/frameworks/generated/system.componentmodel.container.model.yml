@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.container", "Method[createsite]", "Argument[this]", "ReturnValue.SyntheticField[Container]", "value"]
+      - ["system.componentmodel.container", "Method[getservice]", "Argument[this]", "ReturnValue", "value"]

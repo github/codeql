@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.commands.getjobcommand", "Method[findjobs]", "Argument[this]", "ReturnValue", "taint"]
-      

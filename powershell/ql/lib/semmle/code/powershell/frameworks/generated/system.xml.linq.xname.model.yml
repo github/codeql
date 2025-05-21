@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xname", "Method[get_localname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xname", "Method[get_namespace]", "Argument[this].SyntheticField[_ns]", "ReturnValue", "value"]
+      - ["system.xml.linq.xname", "Method[get_namespacename]", "Argument[this].SyntheticField[_ns].Field[NamespaceName]", "ReturnValue", "value"]
+      - ["system.xml.linq.xname", "Method[tostring]", "Argument[this].SyntheticField[_ns].Field[NamespaceName]", "ReturnValue", "taint"]

@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.type", "microsoft.extensions.vectordata.connectorsupport.filter.queryparameterexpression", "Member[type]"]
+    - ["system.object", "microsoft.extensions.vectordata.connectorsupport.filter.queryparameterexpression", "Member[value]"]
+    - ["system.linq.expressions.expression", "microsoft.extensions.vectordata.connectorsupport.filter.filtertranslationpreprocessor", "Method[visitmember].ReturnValue"]
+    - ["system.string", "microsoft.extensions.vectordata.connectorsupport.filter.queryparameterexpression", "Member[name]"]
+    - ["system.boolean", "microsoft.extensions.vectordata.connectorsupport.filter.filtertranslationpreprocessor", "Member[transformcapturedvariablestoqueryparameterexpressions]"]
+    - ["system.linq.expressions.expressiontype", "microsoft.extensions.vectordata.connectorsupport.filter.queryparameterexpression", "Member[nodetype]"]
+    - ["system.boolean", "microsoft.extensions.vectordata.connectorsupport.filter.filtertranslationpreprocessor", "Member[inlinecapturedvariables]"]
+    - ["system.linq.expressions.expression", "microsoft.extensions.vectordata.connectorsupport.filter.queryparameterexpression", "Method[visitchildren].ReturnValue"]

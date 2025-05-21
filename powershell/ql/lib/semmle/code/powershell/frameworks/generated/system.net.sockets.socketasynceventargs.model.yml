@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.sockets.socketasynceventargs", "Method[get_connectbynameerror]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socketasynceventargs", "Method[get_connectsocket]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socketasynceventargs", "Method[get_memorybuffer]", "Argument[this].SyntheticField[_buffer]", "ReturnValue", "value"]
+      - ["system.net.sockets.socketasynceventargs", "Method[get_receivemessagefrompacketinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.net.sockets.socketasynceventargs", "Method[setbuffer]", "Argument[0]", "Argument[this].SyntheticField[_buffer]", "value"]

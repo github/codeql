@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_basetype]", "Argument[this].SyntheticField[_rawCanonType].Field[BaseType]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_canonicaltype]", "Argument[this].SyntheticField[_rawCanonType]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_context]", "Argument[this].SyntheticField[_rawCanonType].Field[Context]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_instantiation]", "Argument[this].SyntheticField[_rawCanonType].Field[Instantiation]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_name]", "Argument[this].SyntheticField[_rawCanonType].Field[Name]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[get_runtimedetermineddetailstype]", "Argument[this].SyntheticField[_runtimeDeterminedDetailsType]", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[getnonruntimedeterminedtypefromruntimedeterminedsubtypeviasubstitution]", "Argument[0].SyntheticField[_genericParameters].Element", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[getnonruntimedeterminedtypefromruntimedeterminedsubtypeviasubstitution]", "Argument[1].SyntheticField[_genericParameters].Element", "ReturnValue", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[runtimedeterminedtype]", "Argument[0]", "Argument[this].SyntheticField[_rawCanonType]", "value"]
+      - ["internal.typesystem.runtimedeterminedtype", "Method[runtimedeterminedtype]", "Argument[1]", "Argument[this].SyntheticField[_runtimeDeterminedDetailsType]", "value"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.fieldlayoutintervalcalculator", "Method[fieldlayoutinterval]", "Argument[2]", "Argument[this].Field[Tag]", "value"]
+      - ["internal.typesystem.fieldlayoutintervalcalculator", "Method[get_intervals]", "Argument[this]", "ReturnValue", "taint"]

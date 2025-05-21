@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.hmacsha1", "Method[hmacsha1]", "Argument[0].Element", "Argument[this].Field[KeyValue].Element", "value"]
+      - ["system.security.cryptography.hmacsha1", "Method[hmacsha1]", "Argument[0]", "Argument[this].Field[KeyValue]", "value"]
+      - ["system.security.cryptography.hmacsha1", "Method[hmacsha1]", "Argument[0]", "Argument[this].SyntheticField[_hMacCommon].SyntheticField[ActualKey]", "value"]
+      - ["system.security.cryptography.hmacsha1", "Method[hmacsha1]", "Argument[this].SyntheticField[_hMacCommon].SyntheticField[ActualKey]", "Argument[this].Field[KeyValue]", "value"]

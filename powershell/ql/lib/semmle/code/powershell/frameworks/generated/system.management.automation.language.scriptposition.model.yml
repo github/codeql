@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.scriptposition", "Method[getfullscript]", "Argument[this].SyntheticField[system.management.automation.language.scriptposition._fullscript]", "ReturnValue", "value"]
+      - ["system.management.automation.language.scriptposition", "Method[scriptposition]", "Argument[0]", "Argument[this].Field[system.management.automation.language.scriptposition.file]", "value"]
+      - ["system.management.automation.language.scriptposition", "Method[scriptposition]", "Argument[3]", "Argument[this].Field[system.management.automation.language.scriptposition.line]", "value"]
+      - ["system.management.automation.language.scriptposition", "Method[scriptposition]", "Argument[4]", "Argument[this].SyntheticField[system.management.automation.language.scriptposition._fullscript]", "value"]

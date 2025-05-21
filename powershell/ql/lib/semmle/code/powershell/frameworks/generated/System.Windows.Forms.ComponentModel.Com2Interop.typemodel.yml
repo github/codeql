@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.windows.forms.componentmodel.com2interop.icompropertybrowser", "Member[inpropertyset]"]
+    - ["system.boolean", "system.windows.forms.componentmodel.com2interop.icompropertybrowser", "Method[ensurependingchangescommitted].ReturnValue"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.bytearraycontent", "Method[bytearraycontent]", "Argument[0]", "Argument[this].SyntheticField[_content]", "value"]
+      - ["system.net.http.bytearraycontent", "Method[createcontentreadstream]", "Argument[this].SyntheticField[_content].Element", "ReturnValue", "taint"]

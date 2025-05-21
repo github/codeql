@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.logging.loggingbuilderextensions", "Method[addconfiguration]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.loggingbuilderextensions", "Method[addprovider]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.loggingbuilderextensions", "Method[clearproviders]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.loggingbuilderextensions", "Method[configure]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.logging.loggingbuilderextensions", "Method[setminimumlevel]", "Argument[0]", "ReturnValue", "value"]

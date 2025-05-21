@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[changetypexsltargument]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[changetypexsltresult]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[debuggetglobalnames]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[debuggetglobalvalue]", "Argument[this].SyntheticField[_globalValues].Element", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[debuggetxsltvalue]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[debuggetxsltvalue]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[debugsetglobalvalue]", "Argument[1]", "Argument[this].SyntheticField[_globalValues].Element", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[docorderdistinct]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[endrtfconstruction]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[findindex]", "Argument[this]", "Argument[2]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[get_externalcontext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[get_nametable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[get_output]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[getatomizedname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[getcollation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[getearlyboundobject]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[getglobalvalue]", "Argument[this].SyntheticField[_globalValues].Element", "ReturnValue", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[getnamefilter]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[parsetagname]", "Argument[0]", "ReturnValue.Field[Name]", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[parsetagname]", "Argument[1]", "ReturnValue.Field[Namespace]", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[setglobalvalue]", "Argument[1]", "Argument[this].SyntheticField[_globalValues].Element", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[startrtfconstruction]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[startrtfconstruction]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[startsequenceconstruction]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[textrtfconstruction]", "Argument[0]", "ReturnValue.SyntheticField[_text]", "value"]
+      - ["system.xml.xsl.runtime.xmlqueryruntime", "Method[textrtfconstruction]", "Argument[1]", "ReturnValue.SyntheticField[_baseUri]", "value"]

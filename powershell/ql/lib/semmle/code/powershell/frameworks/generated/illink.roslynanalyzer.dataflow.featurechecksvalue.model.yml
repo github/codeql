@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[and]", "Argument[0]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[and]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[deepcopy]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[featurechecksvalue]", "Argument[0]", "Argument[this]", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[negate]", "Argument[this]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[or]", "Argument[0]", "ReturnValue", "taint"]
+      - ["illink.roslynanalyzer.dataflow.featurechecksvalue", "Method[or]", "Argument[this]", "ReturnValue", "taint"]

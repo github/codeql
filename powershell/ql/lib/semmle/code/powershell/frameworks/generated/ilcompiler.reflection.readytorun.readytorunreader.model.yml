@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_allpgoinfos]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_compileridentifier]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_importsections]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_importsignatures]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_instancemethods]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_manifestreferenceassemblies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_ownercompositeexecutable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_readytorunassemblies]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_readytorunassemblyheaders]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[get_readytorunheader]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[getglobalmetadata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[readytorunreader]", "Argument[1]", "Argument[this].Field[Filename]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[readytorunreader]", "Argument[2]", "Argument[this].Field[CompositeReader]", "value"]
+      - ["ilcompiler.reflection.readytorun.readytorunreader", "Method[readytorunreader]", "Argument[3]", "Argument[this].Field[Filename]", "value"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.nfloat", "Method[converttointeger]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[converttointegernative]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[createchecked]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[createsaturating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[createtruncating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[op_unaryplus]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.interopservices.nfloat", "Method[tostring]", "Argument[0]", "ReturnValue", "taint"]

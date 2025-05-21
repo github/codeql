@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.bannedapiextensions", "Method[getmethodil]", "Argument[0].Field[Body]", "ReturnValue.Field[Body]", "value"]
+      - ["mono.linker.bannedapiextensions", "Method[getmethodil]", "Argument[0].Field[Method].Field[Body]", "ReturnValue.Field[Body]", "value"]
+      - ["mono.linker.bannedapiextensions", "Method[resolve]", "Argument[0]", "ReturnValue", "value"]
+      - ["mono.linker.bannedapiextensions", "Method[tryresolve]", "Argument[0]", "ReturnValue", "value"]

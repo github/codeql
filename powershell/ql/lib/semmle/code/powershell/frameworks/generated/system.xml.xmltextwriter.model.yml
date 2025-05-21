@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmltextwriter", "Method[get_basestream]", "Argument[this].SyntheticField[_textWriter].Field[BaseStream]", "ReturnValue", "value"]
+      - ["system.xml.xmltextwriter", "Method[writedoctype]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writedoctype]", "Argument[1]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writedoctype]", "Argument[2]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writedoctype]", "Argument[3]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writename]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writenmtoken]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writeprocessinginstruction]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writequalifiedname]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writestartattribute]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writestartattribute]", "Argument[1]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writestartelement]", "Argument[0]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[writestartelement]", "Argument[1]", "Argument[this].SyntheticField[_textWriter]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[xmltextwriter]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.xml.xmltextwriter", "Method[xmltextwriter]", "Argument[1]", "Argument[this]", "taint"]

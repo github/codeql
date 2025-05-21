@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.steps.basestep", "Method[get_annotations]", "Argument[this]", "ReturnValue", "taint"]
+      - ["mono.linker.steps.basestep", "Method[get_context]", "Argument[this].SyntheticField[_context]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basestep", "Method[get_markinghelpers]", "Argument[this].Field[Context].Field[MarkingHelpers]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basestep", "Method[get_markinghelpers]", "Argument[this].SyntheticField[_context].Field[MarkingHelpers]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basestep", "Method[get_tracer]", "Argument[this].Field[Context].Field[Tracer]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basestep", "Method[get_tracer]", "Argument[this].SyntheticField[_context].Field[Tracer]", "ReturnValue", "value"]
+      - ["mono.linker.steps.basestep", "Method[process]", "Argument[0]", "Argument[this].SyntheticField[_context]", "value"]
+      - ["mono.linker.steps.basestep", "Method[processassembly]", "Argument[0]", "Argument[this]", "taint"]

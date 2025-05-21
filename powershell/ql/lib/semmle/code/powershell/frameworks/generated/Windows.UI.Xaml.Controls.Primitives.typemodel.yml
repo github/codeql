@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition", "Method[equals].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.controls.primitives.generatorposition!", "Method[op_inequality].ReturnValue"]
+    - ["system.string", "windows.ui.xaml.controls.primitives.generatorposition", "Method[tostring].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Member[offset]"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Member[index]"]
+    - ["system.int32", "windows.ui.xaml.controls.primitives.generatorposition", "Method[gethashcode].ReturnValue"]

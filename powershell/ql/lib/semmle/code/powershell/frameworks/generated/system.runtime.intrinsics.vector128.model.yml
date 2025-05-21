@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.intrinsics.vector128", "Method[abs]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[ceiling]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[copysign]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[floor]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[getlower]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.intrinsics.vector128", "Method[getupper]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.intrinsics.vector128", "Method[op_unaryplus]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[round]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[truncate]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[withelement]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[withlower]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.runtime.intrinsics.vector128", "Method[withupper]", "Argument[0]", "ReturnValue", "value"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["mono.linker.annotationstore", "Method[annotationstore]", "Argument[0]", "Argument[this]", "taint"]
+      - ["mono.linker.annotationstore", "Method[get_tracer]", "Argument[this].Field[context].Field[Tracer]", "ReturnValue", "value"]
+      - ["mono.linker.annotationstore", "Method[getassemblies]", "Argument[this].Field[assembly_actions].Field[Keys]", "ReturnValue", "value"]

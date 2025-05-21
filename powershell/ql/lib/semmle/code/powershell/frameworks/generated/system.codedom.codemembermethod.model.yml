@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codemembermethod", "Method[get_implementationtypes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.codemembermethod", "Method[get_parameters]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.codedom.codemembermethod", "Method[get_statements]", "Argument[this]", "ReturnValue", "taint"]

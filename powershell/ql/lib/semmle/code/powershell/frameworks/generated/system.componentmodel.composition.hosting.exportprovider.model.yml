@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.hosting.exportprovider", "Method[getexports]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.componentmodel.composition.hosting.exportprovider", "Method[getexportscore]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.componentmodel.composition.hosting.exportprovider", "Method[trygetexports]", "Argument[this]", "Argument[0]", "taint"]

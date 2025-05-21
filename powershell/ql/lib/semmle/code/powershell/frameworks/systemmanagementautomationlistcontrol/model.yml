@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.listcontrol", "Method[listcontrol]", "Argument[0].Element", "Argument[this]", "taint"]
-      

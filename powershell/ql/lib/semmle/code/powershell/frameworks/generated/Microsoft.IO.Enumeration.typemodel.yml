@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.io.enumeration.filesystemenumerator", "Method[movenext].ReturnValue"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Method[tospecifiedfullpath].ReturnValue"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystemname!", "Method[matcheswin32expression].ReturnValue"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Member[directory]"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystementry", "Member[ishidden]"]
+    - ["microsoft.io.enumeration.filesystemenumerable+findpredicate", "microsoft.io.enumeration.filesystemenumerable", "Member[shouldincludepredicate]"]
+    - ["system.collections.generic.ienumerator", "microsoft.io.enumeration.filesystemenumerable", "Method[getenumerator].ReturnValue"]
+    - ["system.datetimeoffset", "microsoft.io.enumeration.filesystementry", "Member[lastaccesstimeutc]"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystemenumerator", "Method[continueonerror].ReturnValue"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystemenumerator", "Method[shouldrecurseintoentry].ReturnValue"]
+    - ["microsoft.io.enumeration.filesystemenumerable+findpredicate", "microsoft.io.enumeration.filesystemenumerable", "Member[shouldrecursepredicate]"]
+    - ["microsoft.io.filesysteminfo", "microsoft.io.enumeration.filesystementry", "Method[tofilesysteminfo].ReturnValue"]
+    - ["system.collections.ienumerator", "microsoft.io.enumeration.filesystemenumerable", "Method[getenumerator].ReturnValue"]
+    - ["system.object", "microsoft.io.enumeration.filesystemenumerator", "Member[current]"]
+    - ["system.int64", "microsoft.io.enumeration.filesystementry", "Member[length]"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystemenumerator", "Method[shouldincludeentry].ReturnValue"]
+    - ["system.datetimeoffset", "microsoft.io.enumeration.filesystementry", "Member[creationtimeutc]"]
+    - ["system.datetimeoffset", "microsoft.io.enumeration.filesystementry", "Member[lastwritetimeutc]"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystemname!", "Method[matchessimpleexpression].ReturnValue"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Method[tofullpath].ReturnValue"]
+    - ["system.string", "microsoft.io.enumeration.filesystemname!", "Method[translatewin32expression].ReturnValue"]
+    - ["system.io.fileattributes", "microsoft.io.enumeration.filesystementry", "Member[attributes]"]
+    - ["system.boolean", "microsoft.io.enumeration.filesystementry", "Member[isdirectory]"]
+    - ["tresult", "microsoft.io.enumeration.filesystemenumerator", "Member[current]"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Member[originalrootdirectory]"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Member[rootdirectory]"]
+    - ["tresult", "microsoft.io.enumeration.filesystemenumerator", "Method[transformentry].ReturnValue"]
+    - ["system.string", "microsoft.io.enumeration.filesystementry", "Member[filename]"]

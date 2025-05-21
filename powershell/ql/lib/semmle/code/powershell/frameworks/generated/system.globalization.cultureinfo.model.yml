@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.globalization.cultureinfo", "Method[cultureinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_calendar]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_displayname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_englishname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_ietflanguagetag]", "Argument[this].Field[Name]", "ReturnValue", "value"]
+      - ["system.globalization.cultureinfo", "Method[get_nativename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_parent]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_textinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_threeletterisolanguagename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_threeletterwindowslanguagename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[get_twoletterisolanguagename]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[getconsolefallbackuiculture]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[getcultureinfo]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[getcultureinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[getcultureinfobyietflanguagetag]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.globalization.cultureinfo", "Method[readonly]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.globalization.cultureinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

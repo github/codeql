@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.xml.xmlreader", "microsoft.extensions.configuration.xml.xmldocumentdecryptor", "Method[createdecryptingxmlreader].ReturnValue"]
+    - ["microsoft.extensions.configuration.xml.xmldocumentdecryptor", "microsoft.extensions.configuration.xml.xmldocumentdecryptor!", "Member[instance]"]
+    - ["system.xml.xmlreader", "microsoft.extensions.configuration.xml.xmldocumentdecryptor", "Method[decryptdocumentandcreatexmlreader].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.xml.xmlstreamconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.configuration.xml.xmlstreamconfigurationprovider!", "Method[read].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.xml.xmlconfigurationsource", "Method[build].ReturnValue"]

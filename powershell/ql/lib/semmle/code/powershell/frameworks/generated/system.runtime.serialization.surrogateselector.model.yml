@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.serialization.surrogateselector", "Method[chainselector]", "Argument[0]", "Argument[this].SyntheticField[_nextSelector]", "value"]
+      - ["system.runtime.serialization.surrogateselector", "Method[getnextselector]", "Argument[this].SyntheticField[_nextSelector]", "ReturnValue", "value"]
+      - ["system.runtime.serialization.surrogateselector", "Method[getsurrogate]", "Argument[this].SyntheticField[_nextSelector]", "Argument[2]", "value"]

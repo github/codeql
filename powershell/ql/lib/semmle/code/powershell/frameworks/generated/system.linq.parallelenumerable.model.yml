@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[1].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[1]", "Argument[2].Parameter[0]", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[1]", "Argument[3].Parameter[0]", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[2].ReturnValue", "Argument[3].Parameter[0]", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[2].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[3].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[aggregate]", "Argument[4].ReturnValue", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[asenumerable]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[asordered]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[asparallel]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[asparallel]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[assequential]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[asunordered]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[defaultifempty]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[distinct]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[except]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[intersect]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[repeat]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[sequenceequal]", "Argument[0].Element", "Argument[2]", "taint"]
+      - ["system.linq.parallelenumerable", "Method[sequenceequal]", "Argument[1].Element", "Argument[2]", "taint"]
+      - ["system.linq.parallelenumerable", "Method[skip]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.linq.parallelenumerable", "Method[union]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[withcancellation]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[withdegreeofparallelism]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[withexecutionmode]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.linq.parallelenumerable", "Method[withmergeoptions]", "Argument[0].Element", "ReturnValue", "taint"]

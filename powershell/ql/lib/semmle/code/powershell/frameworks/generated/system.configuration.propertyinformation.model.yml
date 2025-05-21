@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.propertyinformation", "Method[get_converter]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.propertyinformation", "Method[get_defaultvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.propertyinformation", "Method[get_description]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.propertyinformation", "Method[get_validator]", "Argument[this]", "ReturnValue", "taint"]

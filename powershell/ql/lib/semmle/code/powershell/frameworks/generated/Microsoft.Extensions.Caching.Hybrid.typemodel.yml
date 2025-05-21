@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disablecompression]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disabledistributedcache]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disablelocalcache]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disabledistributedcachewrite]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disabledistributedcacheread]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.hybrid.hybridcache", "Method[getorcreateasync].ReturnValue"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[none]"]
+    - ["system.boolean", "microsoft.extensions.caching.hybrid.ihybridcacheserializerfactory", "Method[trycreateserializer].ReturnValue"]
+    - ["system.nullable", "microsoft.extensions.caching.hybrid.hybridcacheentryoptions", "Member[flags]"]
+    - ["system.int32", "microsoft.extensions.caching.hybrid.hybridcacheoptions", "Member[maximumkeylength]"]
+    - ["t", "microsoft.extensions.caching.hybrid.ihybridcacheserializer", "Method[deserialize].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.hybrid.hybridcache", "Method[removebytagasync].ReturnValue"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disablelocalcacheread]"]
+    - ["system.int64", "microsoft.extensions.caching.hybrid.hybridcacheoptions", "Member[maximumpayloadbytes]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryoptions", "microsoft.extensions.caching.hybrid.hybridcacheoptions", "Member[defaultentryoptions]"]
+    - ["system.nullable", "microsoft.extensions.caching.hybrid.hybridcacheentryoptions", "Member[localcacheexpiration]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.hybrid.hybridcache", "Method[setasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.caching.hybrid.hybridcacheoptions", "Member[reporttagmetrics]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.hybrid.hybridcache", "Method[removeasync].ReturnValue"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disableunderlyingdata]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.caching.hybrid.ihybridcachebuilder", "Member[services]"]
+    - ["system.boolean", "microsoft.extensions.caching.hybrid.hybridcacheoptions", "Member[disablecompression]"]
+    - ["system.nullable", "microsoft.extensions.caching.hybrid.hybridcacheentryoptions", "Member[expiration]"]
+    - ["microsoft.extensions.caching.hybrid.hybridcacheentryflags", "microsoft.extensions.caching.hybrid.hybridcacheentryflags!", "Member[disablelocalcachewrite]"]

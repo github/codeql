@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.instantiation", "Method[enumerator]", "Argument[0]", "Argument[this].SyntheticField[_collection]", "value"]
+      - ["internal.typesystem.instantiation", "Method[get_current]", "Argument[this].SyntheticField[_collection].Element", "ReturnValue", "value"]
+      - ["internal.typesystem.instantiation", "Method[get_genericparameters]", "Argument[this].SyntheticField[_genericParameters].Element", "ReturnValue", "value"]
+      - ["internal.typesystem.instantiation", "Method[getenumerator]", "Argument[this].SyntheticField[_genericParameters]", "ReturnValue.SyntheticField[_collection]", "value"]
+      - ["internal.typesystem.instantiation", "Method[instantiation]", "Argument[0]", "Argument[this].SyntheticField[_genericParameters]", "value"]
+      - ["internal.typesystem.instantiation", "Method[tostring]", "Argument[this].SyntheticField[_genericParameters].Element", "ReturnValue", "taint"]

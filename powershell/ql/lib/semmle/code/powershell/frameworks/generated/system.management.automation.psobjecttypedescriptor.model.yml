@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psobjecttypedescriptor", "Method[getpropertyowner]", "Argument[this].Field[system.management.automation.psobjecttypedescriptor.instance]", "ReturnValue", "value"]
+      - ["system.management.automation.psobjecttypedescriptor", "Method[psobjecttypedescriptor]", "Argument[0]", "Argument[this].Field[system.management.automation.psobjecttypedescriptor.instance]", "value"]

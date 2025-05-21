@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[get_attributeextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[get_elementextensions]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[get_skipdays]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[load]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[syndicationfeed]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.servicemodel.syndication.syndicationfeed", "Method[syndicationfeed]", "Argument[3]", "Argument[this].Field[Id]", "value"]

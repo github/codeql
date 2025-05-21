@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.uintptr", "Method[abs]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[add]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[clamp]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[clamp]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[clamp]", "Argument[2]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[copysign]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[createchecked]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[createsaturating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[createtruncating]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[max]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[max]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxmagnitude]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxmagnitude]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[maxnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[min]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[min]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minmagnitude]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minmagnitude]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minmagnitudenumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minmagnitudenumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minnumber]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[minnumber]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.uintptr", "Method[multiplyaddestimate]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[op_addition]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[system.numerics.iadditionoperators<nuint,nuint,nuint>.op_addition]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[system.numerics.iadditionoperators<nuint,nuint,nuint>.op_addition]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[system.numerics.iadditionoperators<nuint,nuint,nuint>.op_checkedaddition]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.uintptr", "Method[system.numerics.iadditionoperators<nuint,nuint,nuint>.op_checkedaddition]", "Argument[1]", "ReturnValue", "taint"]

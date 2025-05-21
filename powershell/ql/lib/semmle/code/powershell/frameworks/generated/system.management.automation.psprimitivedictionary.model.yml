@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psprimitivedictionary", "Method[add]", "Argument[0]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[add]", "Argument[1]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.value]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[clone]", "Argument[this].Element.Field[system.collections.dictionaryentry.key]", "ReturnValue.Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[clone]", "Argument[this].Element.Field[system.collections.dictionaryentry.value]", "ReturnValue.Element.Field[system.collections.generic.keyvaluepair`2.value]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[get_item]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.value]", "ReturnValue", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[psprimitivedictionary]", "Argument[0].Element.Field[system.collections.dictionaryentry.key]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[psprimitivedictionary]", "Argument[0].Element.Field[system.collections.dictionaryentry.value]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.value]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[set_item]", "Argument[0]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.psprimitivedictionary", "Method[set_item]", "Argument[1]", "Argument[this].Element.Field[system.collections.generic.keyvaluepair`2.value]", "value"]

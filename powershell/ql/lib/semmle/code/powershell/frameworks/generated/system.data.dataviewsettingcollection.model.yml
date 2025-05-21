@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.dataviewsettingcollection", "Method[get_item]", "Argument[0]", "ReturnValue.SyntheticField[_table]", "value"]
+      - ["system.data.dataviewsettingcollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.dataviewsettingcollection", "Method[set_item]", "Argument[0]", "Argument[1].SyntheticField[_table]", "value"]
+      - ["system.data.dataviewsettingcollection", "Method[set_item]", "Argument[this]", "Argument[1]", "taint"]

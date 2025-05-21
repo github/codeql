@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.debuggerservice", "Method[getexactlocation].ReturnValue"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.idesignerdebugview", "Member[selectedlocation]"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.debuggerservice", "Member[currentlocation]"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.idesignerdebugview", "Member[currentcontext]"]
+    - ["system.activities.presentation.debug.breakpointtypes", "system.activities.presentation.debug.breakpointtypes!", "Member[bounded]"]
+    - ["system.collections.generic.idictionary", "system.activities.presentation.debug.debuggerservice", "Method[getbreakpointlocations].ReturnValue"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.debuggerservice", "Member[currentcontext]"]
+    - ["system.boolean", "system.activities.presentation.debug.idesignerdebugview", "Member[isdebugging]"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.idesignerdebugview", "Method[getexactlocation].ReturnValue"]
+    - ["system.collections.generic.idictionary", "system.activities.presentation.debug.idesignerdebugview", "Method[getbreakpointlocations].ReturnValue"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.debuggerservice", "Member[selectedlocation]"]
+    - ["system.activities.presentation.debug.breakpointtypes", "system.activities.presentation.debug.breakpointtypes!", "Member[enabled]"]
+    - ["system.boolean", "system.activities.presentation.debug.idesignerdebugview", "Member[hidesourcefilename]"]
+    - ["system.boolean", "system.activities.presentation.debug.debuggerservice", "Member[hidesourcefilename]"]
+    - ["system.boolean", "system.activities.presentation.debug.debuggerservice", "Member[isdebugging]"]
+    - ["system.activities.debugger.sourcelocation", "system.activities.presentation.debug.idesignerdebugview", "Member[currentlocation]"]
+    - ["system.activities.presentation.debug.breakpointtypes", "system.activities.presentation.debug.breakpointtypes!", "Member[none]"]
+    - ["system.activities.presentation.debug.breakpointtypes", "system.activities.presentation.debug.breakpointtypes!", "Member[conditional]"]

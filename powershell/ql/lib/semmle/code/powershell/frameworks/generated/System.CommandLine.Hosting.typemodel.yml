@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.hosting.ihostbuilder", "system.commandline.hosting.hostingextensions!", "Method[useinvocationlifetime].ReturnValue"]
+    - ["system.threading.tasks.task", "system.commandline.hosting.invocationlifetime", "Method[waitforstartasync].ReturnValue"]
+    - ["system.commandline.hosting.invocationlifetimeoptions", "system.commandline.hosting.invocationlifetime", "Member[options]"]
+    - ["system.commandline.invocation.invocationcontext", "system.commandline.hosting.hostingextensions!", "Method[getinvocationcontext].ReturnValue"]
+    - ["microsoft.extensions.hosting.ihost", "system.commandline.hosting.hostingextensions!", "Method[gethost].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationbuilder", "system.commandline.hosting.directiveconfigurationextensions!", "Method[addcommandlinedirectives].ReturnValue"]
+    - ["microsoft.extensions.hosting.iapplicationlifetime", "system.commandline.hosting.invocationlifetime", "Member[applicationlifetime]"]
+    - ["system.commandline.builder.commandlinebuilder", "system.commandline.hosting.hostingextensions!", "Method[usehost].ReturnValue"]
+    - ["microsoft.extensions.hosting.ihostbuilder", "system.commandline.hosting.hostingextensions!", "Method[usecommandhandler].ReturnValue"]
+    - ["system.threading.tasks.task", "system.commandline.hosting.invocationlifetime", "Method[stopasync].ReturnValue"]
+    - ["microsoft.extensions.hosting.ihostingenvironment", "system.commandline.hosting.invocationlifetime", "Member[environment]"]
+    - ["microsoft.extensions.options.optionsbuilder", "system.commandline.hosting.hostingextensions!", "Method[bindcommandline].ReturnValue"]

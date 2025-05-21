@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_basemethod]", "Argument[this].SyntheticField[_declMethod]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_context]", "Argument[this].SyntheticField[_declMethod].Field[Context]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_diagnosticname]", "Argument[this].SyntheticField[_declMethod].Field[DiagnosticName]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_diagnosticname]", "Argument[this].SyntheticField[_declMethod].Field[Name]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_name]", "Argument[this].SyntheticField[_declMethod].Field[Name]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_signature]", "Argument[this].SyntheticField[_signature]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[get_target]", "Argument[this].SyntheticField[_declMethod]", "ReturnValue", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[pinvoketargetnativemethod]", "Argument[0]", "Argument[this].SyntheticField[_declMethod]", "value"]
+      - ["internal.il.stubs.pinvoketargetnativemethod", "Method[pinvoketargetnativemethod]", "Argument[1]", "Argument[this].SyntheticField[_signature]", "value"]

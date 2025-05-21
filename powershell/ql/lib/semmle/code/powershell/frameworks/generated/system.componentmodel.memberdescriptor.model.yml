@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.memberdescriptor", "Method[fillattributes]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.componentmodel.memberdescriptor", "Method[get_attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.memberdescriptor", "Method[get_displayname]", "Argument[this].SyntheticField[_displayName]", "ReturnValue", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[get_name]", "Argument[this].SyntheticField[_name]", "ReturnValue", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[getinvocationtarget]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[getinvokee]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[getsite]", "Argument[0].Field[Site]", "ReturnValue", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[0].Field[DisplayName]", "Argument[this].SyntheticField[_displayName]", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[0].Field[Name]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[0].SyntheticField[_name]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[0]", "Argument[this].SyntheticField[_displayName]", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[0]", "Argument[this].SyntheticField[_name]", "value"]
+      - ["system.componentmodel.memberdescriptor", "Method[memberdescriptor]", "Argument[this].SyntheticField[_name]", "Argument[this].SyntheticField[_displayName]", "value"]

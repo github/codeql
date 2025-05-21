@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "iehost.execute.ieexecuteremote", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasassembly].ReturnValue"]
+    - ["system.io.stream", "iehost.execute.ieexecuteremote", "Member[exception]"]
+    - ["system.int32", "iehost.execute.ieexecuteremote", "Method[executeasdll].ReturnValue"]

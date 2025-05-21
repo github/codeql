@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getconfigrecord]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getconfigrecord]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getsection]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getuniqueconfigpath]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getuniqueconfigrecord]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[getuniqueconfigrecord]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.internal.iinternalconfigroot", "Method[init]", "Argument[0]", "Argument[this]", "taint"]

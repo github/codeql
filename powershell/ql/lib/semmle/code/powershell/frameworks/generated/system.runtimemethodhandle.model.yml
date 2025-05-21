@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtimemethodhandle", "Method[fromintptr]", "Argument[0]", "ReturnValue.SyntheticField[value]", "value"]
+      - ["system.runtimemethodhandle", "Method[get_value]", "Argument[this].SyntheticField[value]", "ReturnValue", "value"]
+      - ["system.runtimemethodhandle", "Method[tointptr]", "Argument[0].Field[Value]", "ReturnValue", "value"]
+      - ["system.runtimemethodhandle", "Method[tointptr]", "Argument[0].SyntheticField[value]", "ReturnValue", "value"]

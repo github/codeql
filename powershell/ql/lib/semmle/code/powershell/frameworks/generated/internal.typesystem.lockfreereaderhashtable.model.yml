@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[addorgetexisting]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[get]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[getenumerator]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[getorcreatevalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[getvalueifexists]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.lockfreereaderhashtable", "Method[trygetvalue]", "Argument[this]", "Argument[1]", "taint"]

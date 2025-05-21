@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.semanticversion", "Method[semanticversion]", "Argument[3]", "Argument[this].Field[system.management.automation.semanticversion.prereleaselabel]", "value"]
+      - ["system.management.automation.semanticversion", "Method[semanticversion]", "Argument[3]", "Argument[this]", "taint"]
+      - ["system.management.automation.semanticversion", "Method[semanticversion]", "Argument[4]", "Argument[this].Field[system.management.automation.semanticversion.buildlabel]", "value"]
+      - ["system.management.automation.semanticversion", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

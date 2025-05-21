@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pspropertyset", "Method[copy]", "Argument[this].Field[system.management.automation.pspropertyset.referencedpropertynames].Element", "ReturnValue.Field[system.management.automation.pspropertyset.referencedpropertynames].Element", "value"]
+      - ["system.management.automation.pspropertyset", "Method[copy]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue.SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.pspropertyset", "Method[pspropertyset]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.pspropertyset", "Method[pspropertyset]", "Argument[1].Element", "Argument[this].Field[system.management.automation.pspropertyset.referencedpropertynames].Element", "value"]
+      - ["system.management.automation.pspropertyset", "Method[tostring]", "Argument[this].Field[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]
+      - ["system.management.automation.pspropertyset", "Method[tostring]", "Argument[this].Field[system.management.automation.pspropertyset.referencedpropertynames].Element", "ReturnValue", "taint"]
+      - ["system.management.automation.pspropertyset", "Method[tostring]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]

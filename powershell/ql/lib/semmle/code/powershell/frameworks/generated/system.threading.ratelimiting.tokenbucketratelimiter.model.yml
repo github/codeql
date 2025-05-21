@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.ratelimiting.tokenbucketratelimiter", "Method[get_replenishmentperiod]", "Argument[this].SyntheticField[_options].Field[ReplenishmentPeriod]", "ReturnValue", "value"]
+      - ["system.threading.ratelimiting.tokenbucketratelimiter", "Method[tokenbucketratelimiter]", "Argument[0].Field[ReplenishmentPeriod]", "Argument[this].SyntheticField[_options].Field[ReplenishmentPeriod]", "value"]

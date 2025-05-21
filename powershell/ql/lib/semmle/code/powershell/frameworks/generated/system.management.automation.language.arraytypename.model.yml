@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.arraytypename", "Method[arraytypename]", "Argument[0]", "Argument[this].Field[system.management.automation.language.arraytypename.extent]", "value"]
+      - ["system.management.automation.language.arraytypename", "Method[arraytypename]", "Argument[1]", "Argument[this].Field[system.management.automation.language.arraytypename.elementtype]", "value"]
+      - ["system.management.automation.language.arraytypename", "Method[get_assemblyname]", "Argument[this].Field[system.management.automation.language.arraytypename.elementtype].Field[system.management.automation.language.itypename.assemblyname]", "ReturnValue", "value"]
+      - ["system.management.automation.language.arraytypename", "Method[get_name]", "Argument[this].Field[system.management.automation.language.arraytypename.elementtype].Field[system.management.automation.language.itypename.name]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.arraytypename", "Method[get_name]", "Argument[this].Field[system.management.automation.language.arraytypename.elementtype].Field[system.management.automation.language.reflectiontypename.fullname]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.arraytypename", "Method[tostring]", "Argument[this].Field[system.management.automation.language.arraytypename.fullname]", "ReturnValue", "value"]

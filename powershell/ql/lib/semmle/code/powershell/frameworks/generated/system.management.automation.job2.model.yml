@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.job2", "Method[get_syncroot]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.job2", "Method[setjobstate]", "Argument[1]", "Argument[this].Field[system.management.automation.job.jobstateinfo].Field[system.management.automation.jobstateinfo.reason]", "value"]

@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.delegate", "Method[combine]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.delegate", "Method[combine]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[combineimpl]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[createdelegate]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.delegate", "Method[createdelegate]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.delegate", "Method[delegate]", "Argument[0]", "Argument[this].SyntheticField[_target]", "value"]
+      - ["system.delegate", "Method[delegate]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.delegate", "Method[dynamicinvoke]", "Argument[this].SyntheticField[_target]", "Argument[0].Element", "value"]
+      - ["system.delegate", "Method[dynamicinvokeimpl]", "Argument[this].SyntheticField[_target]", "Argument[0].Element", "value"]
+      - ["system.delegate", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.delegate", "Method[get_target]", "Argument[this].SyntheticField[_target]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[getenumerator]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[getinvocationlist]", "Argument[this]", "ReturnValue.Element", "value"]
+      - ["system.delegate", "Method[getmethodimpl]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.delegate", "Method[remove]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[removeall]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.delegate", "Method[removeimpl]", "Argument[this]", "ReturnValue", "value"]

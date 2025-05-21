@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.io.stream", "Method[flushasync]", "Argument[this]", "ReturnValue.SyntheticField[m_stateObject]", "value"]
+      - ["system.io.stream", "Method[flushasync]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.stream", "Method[readasync]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.stream", "Method[readasync]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.io.stream", "Method[synchronized]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.io.stream", "Method[writeasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.io.stream", "Method[writeasync]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.io.stream", "Method[writeasync]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[allowdefault]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[allowrecomposition]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[ascontractname]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[ascontracttype]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[asmany]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[requiredcreationpolicy]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.registration.importbuilder", "Method[source]", "Argument[this]", "ReturnValue", "value"]

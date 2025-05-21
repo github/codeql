@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.atom10feedformatter", "Method[readitem]", "Argument[1].Field[BaseUri]", "ReturnValue.Field[BaseUri]", "value"]
+      - ["system.servicemodel.syndication.atom10feedformatter", "Method[writeitem]", "Argument[1]", "Argument[0]", "taint"]
+      - ["system.servicemodel.syndication.atom10feedformatter", "Method[writeitems]", "Argument[1].Element", "Argument[0]", "taint"]

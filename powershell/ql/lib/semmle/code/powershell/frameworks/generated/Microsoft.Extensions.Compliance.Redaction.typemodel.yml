@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "microsoft.extensions.compliance.redaction.erasingredactor", "Method[redact].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.redaction.hmacredactoroptions", "Member[key]"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.erasingredactor", "Method[getredactedlength].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.redactor", "microsoft.extensions.compliance.redaction.iredactorprovider", "Method[getredactor].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.nullredactorprovider", "microsoft.extensions.compliance.redaction.nullredactorprovider!", "Member[instance]"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.hmacredactor", "Method[getredactedlength].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.nullredactor", "microsoft.extensions.compliance.redaction.nullredactor!", "Member[instance]"]
+    - ["microsoft.extensions.compliance.redaction.iredactionbuilder", "microsoft.extensions.compliance.redaction.iredactionbuilder", "Method[setfallbackredactor].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.nullredactor", "Method[redact].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.iredactionbuilder", "microsoft.extensions.compliance.redaction.iredactionbuilder", "Method[setredactor].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.redactor", "microsoft.extensions.compliance.redaction.nullredactorprovider", "Method[getredactor].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.nullredactor", "Method[getredactedlength].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.redactor", "Method[getredactedlength].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.iredactionbuilder", "microsoft.extensions.compliance.redaction.redactionextensions!", "Method[sethmacredactor].ReturnValue"]
+    - ["microsoft.extensions.compliance.redaction.erasingredactor", "microsoft.extensions.compliance.redaction.erasingredactor!", "Member[instance]"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.redactor", "Method[redact].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.redaction.redactor", "Method[redact].ReturnValue"]
+    - ["system.nullable", "microsoft.extensions.compliance.redaction.hmacredactoroptions", "Member[keyid]"]
+    - ["system.string", "microsoft.extensions.compliance.redaction.nullredactor", "Method[redact].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.redaction.hmacredactor", "Method[redact].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.redaction.redactor", "Method[tryredact].ReturnValue"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.compliance.redaction.iredactionbuilder", "Member[services]"]
+    - ["microsoft.extensions.compliance.redaction.iredactionbuilder", "microsoft.extensions.compliance.redaction.fakeredactionbuilderextensions!", "Method[setfakeredactor].ReturnValue"]

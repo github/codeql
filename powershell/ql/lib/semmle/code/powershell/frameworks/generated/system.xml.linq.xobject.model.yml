@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.linq.xobject", "Method[addannotation]", "Argument[0]", "Argument[this].SyntheticField[annotations].Element", "value"]
+      - ["system.xml.linq.xobject", "Method[addannotation]", "Argument[0]", "Argument[this].SyntheticField[annotations]", "value"]
+      - ["system.xml.linq.xobject", "Method[addannotation]", "Argument[this].SyntheticField[annotations]", "Argument[this].SyntheticField[annotations].Element", "value"]
+      - ["system.xml.linq.xobject", "Method[annotation]", "Argument[this].SyntheticField[annotations].Element", "ReturnValue", "value"]
+      - ["system.xml.linq.xobject", "Method[annotation]", "Argument[this].SyntheticField[annotations]", "ReturnValue", "value"]
+      - ["system.xml.linq.xobject", "Method[annotations]", "Argument[this].SyntheticField[annotations].Element", "ReturnValue.Element", "value"]
+      - ["system.xml.linq.xobject", "Method[annotations]", "Argument[this].SyntheticField[annotations]", "ReturnValue.Element", "value"]
+      - ["system.xml.linq.xobject", "Method[get_baseuri]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.linq.xobject", "Method[get_document]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.xml.linq.xobject", "Method[get_parent]", "Argument[this]", "ReturnValue", "taint"]

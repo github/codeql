@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.culong", "Method[culong]", "Argument[0]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.runtime.interopservices.culong", "Method[get_value]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]

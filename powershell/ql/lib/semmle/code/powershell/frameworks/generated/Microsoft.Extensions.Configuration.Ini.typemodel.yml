@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.idictionary", "microsoft.extensions.configuration.ini.inistreamconfigurationprovider!", "Method[read].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.ini.iniconfigurationsource", "Method[build].ReturnValue"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.ini.inistreamconfigurationsource", "Method[build].ReturnValue"]

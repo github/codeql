@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[get_outername]", "Argument[this].SyntheticField[_outerName]", "ReturnValue", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[get_outernamespace]", "Argument[this].SyntheticField[_outerNamespace]", "ReturnValue", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[getobject]", "Argument[this].SyntheticField[_extensionData]", "ReturnValue", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[0].Field[LocalName]", "Argument[this].SyntheticField[_outerName]", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[0].Field[NamespaceURI]", "Argument[this].SyntheticField[_outerNamespace]", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[0]", "Argument[this].SyntheticField[_extensionData]", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[0]", "Argument[this].SyntheticField[_outerName]", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[1]", "Argument[this].SyntheticField[_outerNamespace]", "value"]
+      - ["system.servicemodel.syndication.syndicationelementextension", "Method[syndicationelementextension]", "Argument[2]", "Argument[this].SyntheticField[_extensionData]", "value"]

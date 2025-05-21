@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.type", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[gettype].ReturnValue"]
-    - ["system.reflection.assembly", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[getassembly].ReturnValue"]
-    - ["system.string", "system.runtime.designerservices.windowsruntimedesignercontext", "Member[name]"]

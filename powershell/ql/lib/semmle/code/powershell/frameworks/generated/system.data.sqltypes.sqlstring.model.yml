@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.sqltypes.sqlstring", "Method[add]", "Argument[0].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[add]", "Argument[1].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[concat]", "Argument[0].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[concat]", "Argument[1].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[get_compareinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[get_value]", "Argument[this].SyntheticField[m_value]", "ReturnValue", "value"]
+      - ["system.data.sqltypes.sqlstring", "Method[getnonunicodebytes]", "Argument[this].SyntheticField[m_value]", "ReturnValue", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[getunicodebytes]", "Argument[this].SyntheticField[m_value]", "ReturnValue", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[op_addition]", "Argument[0].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[op_addition]", "Argument[1].SyntheticField[m_value]", "ReturnValue.SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[sqlstring]", "Argument[0]", "Argument[this].SyntheticField[m_value]", "value"]
+      - ["system.data.sqltypes.sqlstring", "Method[sqlstring]", "Argument[2].Element", "Argument[this].SyntheticField[m_value]", "taint"]
+      - ["system.data.sqltypes.sqlstring", "Method[tostring]", "Argument[this].SyntheticField[m_value]", "ReturnValue", "value"]

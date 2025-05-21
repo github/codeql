@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.gotoexpression", "Method[update]", "Argument[0]", "ReturnValue.Field[Target]", "value"]
+      - ["system.linq.expressions.gotoexpression", "Method[update]", "Argument[1]", "ReturnValue.Field[Value].Field[Operand]", "value"]
+      - ["system.linq.expressions.gotoexpression", "Method[update]", "Argument[1]", "ReturnValue.Field[Value]", "value"]
+      - ["system.linq.expressions.gotoexpression", "Method[update]", "Argument[this]", "ReturnValue", "value"]

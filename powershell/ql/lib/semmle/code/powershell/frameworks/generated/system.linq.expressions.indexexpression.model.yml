@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.linq.expressions.indexexpression", "Method[get_arguments]", "Argument[this].SyntheticField[_arguments]", "ReturnValue", "value"]
+      - ["system.linq.expressions.indexexpression", "Method[getargument]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.linq.expressions.indexexpression", "Method[update]", "Argument[0]", "ReturnValue.Field[Object]", "value"]
+      - ["system.linq.expressions.indexexpression", "Method[update]", "Argument[1]", "ReturnValue.SyntheticField[_arguments]", "value"]
+      - ["system.linq.expressions.indexexpression", "Method[update]", "Argument[this].Field[Indexer]", "ReturnValue.Field[Indexer]", "value"]
+      - ["system.linq.expressions.indexexpression", "Method[update]", "Argument[this]", "ReturnValue", "value"]

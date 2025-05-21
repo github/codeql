@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[messagetype]"]
+    - ["system.boolean", "microsoft.activities.build.workflowbuildmessagetask", "Method[execute].ReturnValue"]
+    - ["system.string", "microsoft.activities.build.workflowbuildmessagetask", "Member[resourcename]"]

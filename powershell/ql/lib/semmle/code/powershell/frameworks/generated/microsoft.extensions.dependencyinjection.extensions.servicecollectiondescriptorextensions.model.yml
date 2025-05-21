@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.dependencyinjection.extensions.servicecollectiondescriptorextensions", "Method[add]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.extensions.servicecollectiondescriptorextensions", "Method[removeall]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.extensions.servicecollectiondescriptorextensions", "Method[removeallkeyed]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.dependencyinjection.extensions.servicecollectiondescriptorextensions", "Method[replace]", "Argument[0]", "ReturnValue", "value"]

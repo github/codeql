@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.interopservices.marshalling.virtualmethodtableinfo", "Method[deconstruct]", "Argument[this].Field[ThisPointer]", "Argument[0]", "value"]
+      - ["system.runtime.interopservices.marshalling.virtualmethodtableinfo", "Method[deconstruct]", "Argument[this].Field[VirtualMethodTable]", "Argument[1]", "value"]
+      - ["system.runtime.interopservices.marshalling.virtualmethodtableinfo", "Method[virtualmethodtableinfo]", "Argument[0]", "Argument[this].Field[ThisPointer]", "value"]
+      - ["system.runtime.interopservices.marshalling.virtualmethodtableinfo", "Method[virtualmethodtableinfo]", "Argument[1]", "Argument[this].Field[VirtualMethodTable]", "value"]

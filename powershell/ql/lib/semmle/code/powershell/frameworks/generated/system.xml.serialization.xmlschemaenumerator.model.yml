@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.serialization.xmlschemaenumerator", "Method[get_current]", "Argument[this].SyntheticField[_list].Element", "ReturnValue", "value"]
+      - ["system.xml.serialization.xmlschemaenumerator", "Method[xmlschemaenumerator]", "Argument[0]", "Argument[this].SyntheticField[_list]", "value"]

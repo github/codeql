@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pathintrinsics", "Method[combine]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[combine]", "Argument[1]", "ReturnValue", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[currentproviderlocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[get_currentfilesystemlocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[get_currentlocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[getresolvedproviderpathfromproviderpath]", "Argument[0]", "ReturnValue.Element", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[getresolvedproviderpathfrompspath]", "Argument[0]", "ReturnValue.Element", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[getresolvedpspathfrompspath]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[getresolvedpspathfrompspath]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[getunresolvedproviderpathfrompspath]", "Argument[0]", "Argument[2].Field[system.management.automation.psdriveinfo.displayroot]", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[getunresolvedproviderpathfrompspath]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[ispsabsolute]", "Argument[0]", "Argument[1]", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[locationstack]", "Argument[0]", "ReturnValue.Field[system.management.automation.pathinfostack.name]", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[locationstack]", "Argument[this].SyntheticField[system.management.automation.pathintrinsics._sessionstate].SyntheticField[system.management.automation.sessionstateinternal._defaultstackname]", "ReturnValue.Field[system.management.automation.pathinfostack.name]", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[normalizerelativepath]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[normalizerelativepath]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[parsechildname]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[parseparent]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[poplocation]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pathintrinsics", "Method[setdefaultlocationstack]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.pathintrinsics._sessionstate].SyntheticField[system.management.automation.sessionstateinternal._defaultstackname]", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[setdefaultlocationstack]", "Argument[0]", "ReturnValue.Field[system.management.automation.pathinfostack.name]", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[setdefaultlocationstack]", "Argument[this].SyntheticField[system.management.automation.pathintrinsics._sessionstate].SyntheticField[system.management.automation.sessionstateinternal._defaultstackname]", "ReturnValue.Field[system.management.automation.pathinfostack.name]", "value"]
+      - ["system.management.automation.pathintrinsics", "Method[setlocation]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.pathinfo._drive].Field[system.management.automation.psdriveinfo.displayroot]", "taint"]

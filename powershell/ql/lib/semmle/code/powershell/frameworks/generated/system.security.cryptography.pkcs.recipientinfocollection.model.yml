@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.pkcs.recipientinfocollection", "Method[copyto]", "Argument[this]", "Argument[0].Element", "taint"]
+      - ["system.security.cryptography.pkcs.recipientinfocollection", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.cryptography.pkcs.recipientinfocollection", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Method[get_fullname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Method[get_name]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.filesystemglobbing.abstractions.filesysteminfobase", "Method[get_parentdirectory]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.binder", "Method[bindtofield]", "Argument[1].Element", "ReturnValue", "value"]
+      - ["system.reflection.binder", "Method[bindtomethod]", "Argument[1].Element", "ReturnValue", "value"]
+      - ["system.reflection.binder", "Method[reorderargumentarray]", "Argument[0].Element.Element", "Argument[0].Element", "value"]
+      - ["system.reflection.binder", "Method[selectmethod]", "Argument[1].Element", "ReturnValue", "value"]
+      - ["system.reflection.binder", "Method[selectproperty]", "Argument[1].Element", "ReturnValue", "value"]

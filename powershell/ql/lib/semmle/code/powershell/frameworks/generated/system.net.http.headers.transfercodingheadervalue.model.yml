@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.net.http.headers.transfercodingheadervalue", "Method[get_value]", "Argument[this].SyntheticField[_value]", "ReturnValue", "value"]
+      - ["system.net.http.headers.transfercodingheadervalue", "Method[tostring]", "Argument[this].SyntheticField[_value]", "ReturnValue", "taint"]
+      - ["system.net.http.headers.transfercodingheadervalue", "Method[transfercodingheadervalue]", "Argument[0].SyntheticField[_value]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.net.http.headers.transfercodingheadervalue", "Method[transfercodingheadervalue]", "Argument[0]", "Argument[this].SyntheticField[_value]", "value"]
+      - ["system.net.http.headers.transfercodingheadervalue", "Method[tryparse]", "Argument[0]", "Argument[1].SyntheticField[_value]", "taint"]

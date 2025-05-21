@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[addexplicitdefaultboolmarshalling]", "Argument[2]", "ReturnValue", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[addhresultstructaserrormarshalling]", "Argument[2]", "ReturnValue", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[combineoptions]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[converttosourcegeneratedinteropfix]", "Argument[0]", "Argument[this].Field[ApplyFix]", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[converttosourcegeneratedinteropfix]", "Argument[1]", "Argument[this].Field[SelectedOptions]", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[createallfixesfordiagnosticoptions]", "Argument[1]", "ReturnValue.Element.Field[SelectedOptions]", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[createequivalencekeyfromoptions]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[string]", "Argument[0]", "Argument[this].Field[Value]", "value"]
+      - ["microsoft.interop.analyzers.converttosourcegeneratedinteropfixer", "Method[tostring]", "Argument[this].Field[Value]", "ReturnValue", "taint"]

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.runtime.compilerservices.runtimeops", "Method[createruntimevariables]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[expandopromoteclass]", "Argument[2]", "Argument[0].Element", "taint"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[expandotrygetvalue]", "Argument[0].Element", "Argument[5]", "taint"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[expandotrysetvalue]", "Argument[3]", "ReturnValue", "value"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[mergeruntimevariables]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[mergeruntimevariables]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.runtime.compilerservices.runtimeops", "Method[quote]", "Argument[0]", "ReturnValue", "value"]

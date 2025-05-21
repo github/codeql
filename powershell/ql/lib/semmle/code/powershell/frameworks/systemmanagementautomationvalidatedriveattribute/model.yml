@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.validatedriveattribute", "Method[get_validrootdrives]", "Argument[this]", "ReturnValue", "taint"]
-      - ["system.management.automation.validatedriveattribute", "Method[validatedriveattribute]", "Argument[0].Element", "Argument[this]", "taint"]
-      

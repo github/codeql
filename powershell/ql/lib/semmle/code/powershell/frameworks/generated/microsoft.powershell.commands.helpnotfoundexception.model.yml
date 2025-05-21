@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.helpnotfoundexception", "Method[get_helptopic]", "Argument[this].SyntheticField[microsoft.powershell.commands.helpnotfoundexception._helptopic]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.helpnotfoundexception", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.helpnotfoundexception", "Method[helpnotfoundexception]", "Argument[0]", "Argument[this].SyntheticField[microsoft.powershell.commands.helpnotfoundexception._helptopic]", "value"]

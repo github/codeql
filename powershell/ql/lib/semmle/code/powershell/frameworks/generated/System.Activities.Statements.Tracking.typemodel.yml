@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.activities.statements.tracking.statemachinestatequery", "Member[name]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Member[statemachinename]"]
+    - ["system.string", "system.activities.statements.tracking.statemachinestaterecord", "Member[statename]"]
+    - ["system.activities.tracking.trackingrecord", "system.activities.statements.tracking.statemachinestaterecord", "Method[clone].ReturnValue"]

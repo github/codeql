@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xpath.xpathitem", "Method[get_typedvalue]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[get_value]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[get_xmltype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[valueas]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[valueas]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[valueas]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.xml.xpath.xpathitem", "Method[valueas]", "Argument[this]", "ReturnValue", "value"]

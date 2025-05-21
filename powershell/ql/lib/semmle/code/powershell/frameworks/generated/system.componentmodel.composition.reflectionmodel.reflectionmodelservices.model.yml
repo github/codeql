@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[createexportdefinition]", "Argument[3]", "ReturnValue.SyntheticField[_origin]", "value"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[createimportdefinition]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[createimportdefinition]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[createimportdefinition]", "Argument[3].Element", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[createpartdefinition]", "Argument[5]", "ReturnValue.SyntheticField[_creationInfo].SyntheticField[_origin]", "value"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[getexportfactoryproductimportdefinition]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[getexportingmember]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[getimportingmember]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[getimportingparameter]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[getparttype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.reflectionmodel.reflectionmodelservices", "Method[trymakegenericpartdefinition]", "Argument[0]", "Argument[2]", "taint"]

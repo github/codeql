@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.standardcanonicalizationalgorithm", "Method[convertinstantiationtocanonform]", "Argument[0].SyntheticField[_genericParameters].Element", "ReturnValue.SyntheticField[_genericParameters].Element", "value"]
+      - ["internal.typesystem.standardcanonicalizationalgorithm", "Method[convertinstantiationtocanonform]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.standardcanonicalizationalgorithm", "Method[converttocanon]", "Argument[0]", "ReturnValue", "value"]

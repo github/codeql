@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pseventmanager", "Method[createevent]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[createevent]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[createevent]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[createevent]", "Argument[3]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[createevent]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[0]", "ReturnValue.Field[system.management.automation.pseventargs.sourceidentifier]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[1]", "ReturnValue.Field[system.management.automation.pseventargs.sender]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[2].Element", "ReturnValue.Field[system.management.automation.pseventargs.sourceeventargs].Field[system.management.automation.forwardedeventargs.serializedremoteeventargs]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[2].Element", "ReturnValue.Field[system.management.automation.pseventargs.sourceeventargs]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[2]", "ReturnValue.Field[system.management.automation.pseventargs.sourceargs]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[generateevent]", "Argument[3]", "ReturnValue.Field[system.management.automation.pseventargs.messagedata]", "value"]
+      - ["system.management.automation.pseventmanager", "Method[get_subscribers]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[geteventsubscribers]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pseventmanager", "Method[subscribeevent]", "Argument[this]", "ReturnValue", "taint"]

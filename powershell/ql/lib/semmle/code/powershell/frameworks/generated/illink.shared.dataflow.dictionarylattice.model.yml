@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["illink.shared.dataflow.dictionarylattice", "Method[dictionarylattice]", "Argument[0]", "Argument[this].Field[ValueLattice]", "value"]
+      - ["illink.shared.dataflow.dictionarylattice", "Method[meet]", "Argument[0].Element", "ReturnValue", "taint"]

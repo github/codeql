@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.impliedrepeatedfielddesc", "Method[get_context]", "Argument[this].SyntheticField[_underlyingFieldDesc].Field[Context]", "ReturnValue", "value"]
+      - ["internal.typesystem.impliedrepeatedfielddesc", "Method[get_fieldtype]", "Argument[this].SyntheticField[_underlyingFieldDesc].Field[FieldType]", "ReturnValue", "value"]
+      - ["internal.typesystem.impliedrepeatedfielddesc", "Method[get_name]", "Argument[this].SyntheticField[_underlyingFieldDesc].Field[Name]", "ReturnValue", "taint"]
+      - ["internal.typesystem.impliedrepeatedfielddesc", "Method[impliedrepeatedfielddesc]", "Argument[0]", "Argument[this].Field[OwningType]", "value"]
+      - ["internal.typesystem.impliedrepeatedfielddesc", "Method[impliedrepeatedfielddesc]", "Argument[1]", "Argument[this].SyntheticField[_underlyingFieldDesc]", "value"]

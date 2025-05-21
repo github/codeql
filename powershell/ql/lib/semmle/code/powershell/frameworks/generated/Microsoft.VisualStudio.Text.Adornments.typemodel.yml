@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[positionclosest]"]
+    - ["system.string", "microsoft.visualstudio.text.adornments.predefinederrortypenames!", "Member[othererror]"]
+    - ["microsoft.visualstudio.text.tagging.simpletagger", "microsoft.visualstudio.text.adornments.ierrorproviderfactory", "Method[geterrortagger].ReturnValue"]
+    - ["system.string", "microsoft.visualstudio.text.adornments.predefinederrortypenames!", "Member[syntaxerror]"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[preferleftortopposition]"]
+    - ["microsoft.visualstudio.text.tagging.simpletagger", "microsoft.visualstudio.text.adornments.itextmarkerproviderfactory", "Method[gettextmarkertagger].ReturnValue"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[rightorbottomjustify]"]
+    - ["microsoft.visualstudio.text.adornments.itooltipprovider", "microsoft.visualstudio.text.adornments.itooltipproviderfactory", "Method[gettooltipprovider].ReturnValue"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[none]"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[dismissonmouseleavetext]"]
+    - ["system.string", "microsoft.visualstudio.text.adornments.predefinederrortypenames!", "Member[compilererror]"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[dismissonmouseleavetextorcontent]"]
+    - ["system.string", "microsoft.visualstudio.text.adornments.predefinederrortypenames!", "Member[warning]"]
+    - ["microsoft.visualstudio.text.adornments.popupstyles", "microsoft.visualstudio.text.adornments.popupstyles!", "Member[positionleftorright]"]

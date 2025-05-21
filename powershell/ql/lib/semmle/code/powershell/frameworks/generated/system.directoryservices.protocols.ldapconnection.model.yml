@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.directoryservices.protocols.ldapconnection", "Method[beginsendrequest]", "Argument[4]", "ReturnValue.SyntheticField[_stateObject]", "value"]
+      - ["system.directoryservices.protocols.ldapconnection", "Method[endsendrequest]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.directoryservices.protocols.ldapconnection", "Method[getpartialresults]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.directoryservices.protocols.ldapconnection", "Method[ldapconnection]", "Argument[0]", "Argument[this].SyntheticField[_directoryIdentifier]", "value"]

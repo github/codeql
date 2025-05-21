@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datarelation", "Method[datarelation]", "Argument[0]", "Argument[this].SyntheticField[_relationName]", "value"]
+      - ["system.data.datarelation", "Method[get_childcolumns]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_childkeyconstraint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_childtable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_dataset]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_parentcolumns]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_parentkeyconstraint]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[get_parenttable]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarelation", "Method[tostring]", "Argument[this].Field[RelationName]", "ReturnValue", "value"]
+      - ["system.data.datarelation", "Method[tostring]", "Argument[this].SyntheticField[_relationName]", "ReturnValue", "value"]

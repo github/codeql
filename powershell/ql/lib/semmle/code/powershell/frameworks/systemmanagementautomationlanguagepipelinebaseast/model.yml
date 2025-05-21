@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.language.pipelinebaseast", "Method[getpureexpression]", "Argument[this]", "ReturnValue", "taint"]
-      

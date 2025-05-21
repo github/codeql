@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.xml.xmlprocessinginstruction", "Method[clonenode]", "Argument[this].SyntheticField[_target]", "ReturnValue.SyntheticField[_target]", "value"]
+      - ["system.xml.xmlprocessinginstruction", "Method[get_target]", "Argument[this].SyntheticField[_target]", "ReturnValue", "value"]
+      - ["system.xml.xmlprocessinginstruction", "Method[xmlprocessinginstruction]", "Argument[0]", "Argument[this].SyntheticField[_target]", "value"]

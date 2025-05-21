@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getarraytype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getbyreferencetype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getfunctionpointertype]", "Argument[0].Field[ReturnType]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getgenericinstantiation]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getmodifiedtype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getmodifiedtype]", "Argument[1]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getpinnedtype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getpointertype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.stringtypeproviderbase", "Method[getszarraytype]", "Argument[0]", "ReturnValue", "taint"]

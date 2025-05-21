@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.settingchangingeventargs", "Method[get_newvalue]", "Argument[this].SyntheticField[_newValue]", "ReturnValue", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[get_settingclass]", "Argument[this].SyntheticField[_settingClass]", "ReturnValue", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[get_settingkey]", "Argument[this].SyntheticField[_settingKey]", "ReturnValue", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[get_settingname]", "Argument[this].SyntheticField[_settingName]", "ReturnValue", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[settingchangingeventargs]", "Argument[0]", "Argument[this].SyntheticField[_settingName]", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[settingchangingeventargs]", "Argument[1]", "Argument[this].SyntheticField[_settingClass]", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[settingchangingeventargs]", "Argument[2]", "Argument[this].SyntheticField[_settingKey]", "value"]
+      - ["system.configuration.settingchangingeventargs", "Method[settingchangingeventargs]", "Argument[3]", "Argument[this].SyntheticField[_newValue]", "value"]

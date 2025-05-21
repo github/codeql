@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.propertyinfoextensions", "Method[getaccessors]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfoextensions", "Method[getgetmethod]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.propertyinfoextensions", "Method[getsetmethod]", "Argument[0]", "ReturnValue", "taint"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.metadata.methoddefinition", "Method[getcustomattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.methoddefinition", "Method[getdeclarativesecurityattributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.metadata.methoddefinition", "Method[getparameters]", "Argument[this]", "ReturnValue", "taint"]

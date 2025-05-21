@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.threading.tasks.task", "Method[configureawait]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[delay]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[delay]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[fromcanceled]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[fromresult]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[get_asyncstate]", "Argument[this].SyntheticField[m_stateObject]", "ReturnValue", "value"]
+      - ["system.threading.tasks.task", "Method[get_result]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[getawaiter]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[waitasync]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[waitasync]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[waitasync]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[waitasync]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.threading.tasks.task", "Method[whenany]", "Argument[0].Element", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[whenany]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[whenany]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.threading.tasks.task", "Method[wheneach]", "Argument[0].Element", "ReturnValue.Element", "value"]

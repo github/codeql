@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.formats.json.jsonreportwriter", "Method[writereportasync].ReturnValue"]

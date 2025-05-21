@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.configurationelement", "Method[deserializeelement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.configurationelement", "Method[get_currentconfiguration]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelement", "Method[get_elementproperty]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelement", "Method[get_evaluationcontext]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelement", "Method[get_item]", "Argument[0].Field[DefaultValue]", "ReturnValue", "value"]
+      - ["system.configuration.configurationelement", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelement", "Method[get_properties]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.configuration.configurationelement", "Method[gettransformedassemblystring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.configuration.configurationelement", "Method[gettransformedtypestring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.configuration.configurationelement", "Method[reset]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.configuration.configurationelement", "Method[serializeelement]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.configuration.configurationelement", "Method[serializetoxmlelement]", "Argument[this]", "Argument[0]", "taint"]
+      - ["system.configuration.configurationelement", "Method[set_item]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.configuration.configurationelement", "Method[setpropertyvalue]", "Argument[this]", "Argument[1]", "taint"]
+      - ["system.configuration.configurationelement", "Method[unmerge]", "Argument[0]", "Argument[this]", "taint"]

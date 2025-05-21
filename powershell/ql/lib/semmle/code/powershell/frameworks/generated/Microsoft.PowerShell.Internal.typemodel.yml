@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[cursorsize]"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[windowheight]"]
+    - ["system.text.encoding", "microsoft.powershell.internal.iconsole", "Member[outputencoding]"]
+    - ["system.management.automation.commandcompletion", "microsoft.powershell.internal.ipsconsolereadlinemockablemethods", "Method[completeinput].ReturnValue"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[windowtop]"]
+    - ["system.consolecolor", "microsoft.powershell.internal.iconsole", "Member[foregroundcolor]"]
+    - ["system.consolecolor", "microsoft.powershell.internal.iconsole", "Member[backgroundcolor]"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[cursortop]"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[windowwidth]"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[cursorleft]"]
+    - ["system.boolean", "microsoft.powershell.internal.ipsconsolereadlinemockablemethods", "Method[runspaceisremote].ReturnValue"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[bufferwidth]"]
+    - ["system.boolean", "microsoft.powershell.internal.iconsole", "Member[cursorvisible]"]
+    - ["system.boolean", "microsoft.powershell.internal.iconsole", "Member[keyavailable]"]
+    - ["system.consolekeyinfo", "microsoft.powershell.internal.iconsole", "Method[readkey].ReturnValue"]
+    - ["system.int32", "microsoft.powershell.internal.iconsole", "Member[bufferheight]"]

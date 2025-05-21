@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.double", "system.timers.timer", "Member[interval]"]
+    - ["system.componentmodel.isynchronizeinvoke", "system.timers.timer", "Member[synchronizingobject]"]
+    - ["system.boolean", "system.timers.timer", "Member[autoreset]"]
+    - ["system.datetime", "system.timers.elapsedeventargs", "Member[signaltime]"]
+    - ["system.string", "system.timers.timersdescriptionattribute", "Member[description]"]
+    - ["system.componentmodel.isite", "system.timers.timer", "Member[site]"]
+    - ["system.boolean", "system.timers.timer", "Member[enabled]"]

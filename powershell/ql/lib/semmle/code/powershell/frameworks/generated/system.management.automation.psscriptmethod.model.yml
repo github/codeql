@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psscriptmethod", "Method[copy]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue.SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.psscriptmethod", "Method[copy]", "Argument[this].SyntheticField[system.management.automation.psscriptmethod._script]", "ReturnValue.SyntheticField[system.management.automation.psscriptmethod._script]", "value"]
+      - ["system.management.automation.psscriptmethod", "Method[get_overloaddefinitions]", "Argument[this].Field[system.management.automation.psmemberinfo.name]", "ReturnValue.Element", "taint"]
+      - ["system.management.automation.psscriptmethod", "Method[get_overloaddefinitions]", "Argument[this].Field[system.management.automation.psscriptmethod.typenameofvalue]", "ReturnValue.Element", "taint"]
+      - ["system.management.automation.psscriptmethod", "Method[get_overloaddefinitions]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue.Element", "taint"]
+      - ["system.management.automation.psscriptmethod", "Method[get_script]", "Argument[this].SyntheticField[system.management.automation.psscriptmethod._script]", "ReturnValue", "value"]
+      - ["system.management.automation.psscriptmethod", "Method[psscriptmethod]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "value"]
+      - ["system.management.automation.psscriptmethod", "Method[psscriptmethod]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.psscriptmethod._script]", "value"]
+      - ["system.management.automation.psscriptmethod", "Method[tostring]", "Argument[this].Field[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]
+      - ["system.management.automation.psscriptmethod", "Method[tostring]", "Argument[this].Field[system.management.automation.psscriptmethod.typenameofvalue]", "ReturnValue", "taint"]
+      - ["system.management.automation.psscriptmethod", "Method[tostring]", "Argument[this].SyntheticField[system.management.automation.psmemberinfo.name]", "ReturnValue", "taint"]

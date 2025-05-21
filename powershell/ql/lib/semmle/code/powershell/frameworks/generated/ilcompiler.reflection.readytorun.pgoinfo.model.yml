@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["ilcompiler.reflection.readytorun.pgoinfo", "Method[get_pgodata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["ilcompiler.reflection.readytorun.pgoinfo", "Method[pgoinfo]", "Argument[0]", "Argument[this].Field[Key]", "value"]
+      - ["ilcompiler.reflection.readytorun.pgoinfo", "Method[pgoinfo]", "Argument[3]", "Argument[this].Field[Image]", "value"]
+      - ["ilcompiler.reflection.readytorun.pgoinfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

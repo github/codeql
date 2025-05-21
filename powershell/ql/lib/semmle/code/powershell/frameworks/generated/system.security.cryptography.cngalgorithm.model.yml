@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cngalgorithm", "Method[cngalgorithm]", "Argument[0]", "Argument[this].SyntheticField[_algorithm]", "value"]
+      - ["system.security.cryptography.cngalgorithm", "Method[get_algorithm]", "Argument[this].SyntheticField[_algorithm]", "ReturnValue", "value"]
+      - ["system.security.cryptography.cngalgorithm", "Method[tostring]", "Argument[this].SyntheticField[_algorithm]", "ReturnValue", "value"]

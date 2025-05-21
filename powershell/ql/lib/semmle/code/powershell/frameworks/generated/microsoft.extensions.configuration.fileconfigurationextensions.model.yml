@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.extensions.configuration.fileconfigurationextensions", "Method[getfileloadexceptionhandler]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.configuration.fileconfigurationextensions", "Method[getfileprovider]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.extensions.configuration.fileconfigurationextensions", "Method[setbasepath]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.configuration.fileconfigurationextensions", "Method[setfileloadexceptionhandler]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.extensions.configuration.fileconfigurationextensions", "Method[setfileprovider]", "Argument[0]", "ReturnValue", "value"]

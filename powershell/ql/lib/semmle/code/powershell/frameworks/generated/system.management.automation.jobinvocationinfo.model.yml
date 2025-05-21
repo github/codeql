@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.jobinvocationinfo", "Method[jobinvocationinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.jobinvocationinfo", "Method[jobinvocationinfo]", "Argument[1].Element", "Argument[this].Field[system.management.automation.jobinvocationinfo.parameters].Element", "value"]
+      - ["system.management.automation.jobinvocationinfo", "Method[jobinvocationinfo]", "Argument[1]", "Argument[this].Field[system.management.automation.jobinvocationinfo.parameters].Element", "value"]

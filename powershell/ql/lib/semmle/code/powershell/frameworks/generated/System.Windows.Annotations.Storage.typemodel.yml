@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.windows.annotations.annotation", "system.windows.annotations.storage.storecontentchangedeventargs", "Member[annotation]"]
+    - ["system.collections.generic.ilist", "system.windows.annotations.storage.xmlstreamstore", "Member[ignorednamespaces]"]
+    - ["system.collections.generic.ilist", "system.windows.annotations.storage.xmlstreamstore!", "Member[wellknownnamespaces]"]
+    - ["system.collections.generic.ilist", "system.windows.annotations.storage.annotationstore", "Method[getannotations].ReturnValue"]
+    - ["system.windows.annotations.storage.storecontentaction", "system.windows.annotations.storage.storecontentchangedeventargs", "Member[action]"]
+    - ["system.windows.annotations.storage.storecontentaction", "system.windows.annotations.storage.storecontentaction!", "Member[deleted]"]
+    - ["system.windows.annotations.storage.storecontentaction", "system.windows.annotations.storage.storecontentaction!", "Member[added]"]
+    - ["system.boolean", "system.windows.annotations.storage.annotationstore", "Member[isdisposed]"]
+    - ["system.collections.generic.ilist", "system.windows.annotations.storage.xmlstreamstore", "Method[getannotations].ReturnValue"]
+    - ["system.windows.annotations.annotation", "system.windows.annotations.storage.xmlstreamstore", "Method[getannotation].ReturnValue"]
+    - ["system.windows.annotations.annotation", "system.windows.annotations.storage.annotationstore", "Method[getannotation].ReturnValue"]
+    - ["system.collections.generic.ilist", "system.windows.annotations.storage.xmlstreamstore!", "Method[getwellknowncompatiblenamespaces].ReturnValue"]
+    - ["system.windows.annotations.annotation", "system.windows.annotations.storage.annotationstore", "Method[deleteannotation].ReturnValue"]
+    - ["system.object", "system.windows.annotations.storage.annotationstore", "Member[syncroot]"]
+    - ["system.windows.annotations.annotation", "system.windows.annotations.storage.xmlstreamstore", "Method[deleteannotation].ReturnValue"]
+    - ["system.boolean", "system.windows.annotations.storage.xmlstreamstore", "Member[autoflush]"]
+    - ["system.boolean", "system.windows.annotations.storage.annotationstore", "Member[autoflush]"]

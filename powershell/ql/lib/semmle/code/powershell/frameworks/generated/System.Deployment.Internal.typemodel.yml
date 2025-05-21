@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.deployment.internal.internalactivationcontexthelper!", "Method[getactivationcontextdata].ReturnValue"]
+    - ["system.byte[]", "system.deployment.internal.internalactivationcontexthelper!", "Method[getapplicationmanifestbytes].ReturnValue"]
+    - ["system.object", "system.deployment.internal.internalapplicationidentityhelper!", "Method[getinternalappid].ReturnValue"]
+    - ["system.boolean", "system.deployment.internal.internalactivationcontexthelper!", "Method[isfirstrun].ReturnValue"]
+    - ["system.object", "system.deployment.internal.internalactivationcontexthelper!", "Method[getapplicationcomponentmanifest].ReturnValue"]
+    - ["system.object", "system.deployment.internal.internalactivationcontexthelper!", "Method[getdeploymentcomponentmanifest].ReturnValue"]
+    - ["system.byte[]", "system.deployment.internal.internalactivationcontexthelper!", "Method[getdeploymentmanifestbytes].ReturnValue"]

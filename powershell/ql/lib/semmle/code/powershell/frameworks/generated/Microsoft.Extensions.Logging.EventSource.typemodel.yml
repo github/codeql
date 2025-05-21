@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.diagnostics.tracing.eventkeywords", "microsoft.extensions.logging.eventsource.loggingeventsource+keywords!", "Member[message]"]
+    - ["system.diagnostics.tracing.eventkeywords", "microsoft.extensions.logging.eventsource.loggingeventsource+keywords!", "Member[jsonmessage]"]
+    - ["system.diagnostics.tracing.eventkeywords", "microsoft.extensions.logging.eventsource.loggingeventsource+keywords!", "Member[meta]"]
+    - ["system.diagnostics.tracing.eventkeywords", "microsoft.extensions.logging.eventsource.loggingeventsource+keywords!", "Member[formattedmessage]"]
+    - ["microsoft.extensions.logging.ilogger", "microsoft.extensions.logging.eventsource.eventsourceloggerprovider", "Method[createlogger].ReturnValue"]

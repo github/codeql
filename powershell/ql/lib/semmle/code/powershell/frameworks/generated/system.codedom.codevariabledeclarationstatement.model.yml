@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.codedom.codevariabledeclarationstatement", "Method[codevariabledeclarationstatement]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.codedom.codevariabledeclarationstatement", "Method[codevariabledeclarationstatement]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.codedom.codevariabledeclarationstatement", "Method[codevariabledeclarationstatement]", "Argument[2]", "Argument[this].Field[InitExpression]", "value"]

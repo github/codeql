@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.metadatavirtualmethodalgorithm", "Method[enumallvirtualslots]", "Argument[0]", "ReturnValue", "taint"]
+      - ["internal.typesystem.metadatavirtualmethodalgorithm", "Method[findslotdefiningmethodforvirtualmethod]", "Argument[0]", "ReturnValue", "value"]
+      - ["internal.typesystem.metadatavirtualmethodalgorithm", "Method[resolvevariantinterfacemethodtodefaultimplementationontype]", "Argument[0]", "Argument[2]", "value"]
+      - ["internal.typesystem.metadatavirtualmethodalgorithm", "Method[resolvevariantinterfacemethodtodefaultimplementationontype]", "Argument[1]", "Argument[2]", "taint"]
+      - ["internal.typesystem.metadatavirtualmethodalgorithm", "Method[resolvevariantinterfacemethodtovirtualmethodontype]", "Argument[1]", "ReturnValue", "taint"]

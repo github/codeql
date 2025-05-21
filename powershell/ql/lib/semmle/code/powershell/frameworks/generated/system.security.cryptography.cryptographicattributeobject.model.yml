@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.cryptography.cryptographicattributeobject", "Method[cryptographicattributeobject]", "Argument[0]", "Argument[this].SyntheticField[_oid]", "value"]
+      - ["system.security.cryptography.cryptographicattributeobject", "Method[cryptographicattributeobject]", "Argument[1]", "Argument[this].Field[Values]", "value"]
+      - ["system.security.cryptography.cryptographicattributeobject", "Method[get_oid]", "Argument[this].SyntheticField[_oid]", "ReturnValue", "value"]

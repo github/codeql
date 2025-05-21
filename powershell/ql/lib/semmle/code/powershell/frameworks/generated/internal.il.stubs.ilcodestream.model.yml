@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.il.stubs.ilcodestream", "Method[beginhandler]", "Argument[this]", "Argument[0]", "taint"]
+      - ["internal.il.stubs.ilcodestream", "Method[begintry]", "Argument[this]", "Argument[0]", "taint"]
+      - ["internal.il.stubs.ilcodestream", "Method[emitlabel]", "Argument[this]", "Argument[0]", "taint"]
+      - ["internal.il.stubs.ilcodestream", "Method[endhandler]", "Argument[this]", "Argument[0]", "taint"]
+      - ["internal.il.stubs.ilcodestream", "Method[endtry]", "Argument[this]", "Argument[0]", "taint"]

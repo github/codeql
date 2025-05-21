@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.reflection.emit.modulebuilder", "Method[definedocument]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definedocument]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definedocumentcore]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definedocumentcore]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineenum]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineenum]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineenumcore]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineenumcore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineinitializeddata]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[defineinitializeddatacore]", "Argument[1].Element", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definetype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definetype]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definetypecore]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[definetypecore]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethod]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethod]", "Argument[4].Element", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethod]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethodcore]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethodcore]", "Argument[4].Element", "ReturnValue", "taint"]
+      - ["system.reflection.emit.modulebuilder", "Method[getarraymethodcore]", "Argument[this]", "ReturnValue", "taint"]

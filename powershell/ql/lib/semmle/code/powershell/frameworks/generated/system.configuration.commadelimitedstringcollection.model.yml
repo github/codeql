@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.configuration.commadelimitedstringcollection", "Method[add]", "Argument[0]", "Argument[this].Element", "taint"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[addrange]", "Argument[0].Element", "Argument[this].Element", "taint"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[clone]", "Argument[this].Element", "ReturnValue.Element", "taint"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[get_item]", "Argument[this].Element", "ReturnValue", "value"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[insert]", "Argument[1]", "Argument[this].Element", "taint"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[set_item]", "Argument[1]", "Argument[this].Element", "taint"]
+      - ["system.configuration.commadelimitedstringcollection", "Method[tostring]", "Argument[this].Element", "ReturnValue", "taint"]

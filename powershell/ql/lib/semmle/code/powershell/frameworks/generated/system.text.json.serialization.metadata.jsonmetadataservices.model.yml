@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createarrayinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createconcurrentqueueinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createconcurrentstackinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createdictionaryinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createiasyncenumerableinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createicollectioninfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createidictionaryinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createienumerableinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createilistinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createireadonlydictionaryinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createisetinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createlistinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[creatememoryinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createobjectinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createpropertyinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createqueueinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createreadonlymemoryinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createstackinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[createvalueinfo]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.text.json.serialization.metadata.jsonmetadataservices", "Method[getnullableconverter]", "Argument[0]", "ReturnValue", "taint"]

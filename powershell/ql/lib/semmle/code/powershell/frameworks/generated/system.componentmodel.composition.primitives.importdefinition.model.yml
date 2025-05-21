@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[get_constraint]", "Argument[this].SyntheticField[_constraint]", "ReturnValue", "value"]
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[get_contractname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[get_metadata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[importdefinition]", "Argument[0]", "Argument[this].SyntheticField[_constraint]", "value"]
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[isconstraintsatisfiedby]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.componentmodel.composition.primitives.importdefinition", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.nullable", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs", "Member[colornull]"]
+    - ["microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs+structwithpublicdefaultconstructor", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs", "Member[structwithconstructor]"]
+    - ["xunit.theorydata", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests!", "Member[servicecontainerpicksconstructorwithlongestmatchesdata]"]
+    - ["system.nullable", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs", "Member[color]"]
+    - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+isimpleservice", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+simpleparentwithdynamickeyedservice", "Method[getservice].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests!", "Member[typeswithnonpublicconstructordata]"]
+    - ["system.nullable", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs", "Member[integernull]"]
+    - ["system.boolean", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Member[supportsiserviceprovideriskeyedservice]"]
+    - ["system.iserviceprovider", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests", "Method[createserviceprovider].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests", "Member[expectstructwithpublicdefaultconstructorinvoked]"]
+    - ["system.string", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+service", "Method[tostring].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests", "Member[supportsiserviceproviderisservice]"]
+    - ["system.nullable", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs", "Member[integer]"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests!", "Member[createinstancefuncs]"]
+    - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+iservice", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+otherservice", "Member[service2]"]
+    - ["system.object", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+nonkeyedserviceprovider", "Method[getservice].ReturnValue"]
+    - ["microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+iservice", "microsoft.extensions.dependencyinjection.specification.keyeddependencyinjectionspecificationtests+otherservice", "Member[service1]"]
+    - ["system.iserviceprovider", "microsoft.extensions.dependencyinjection.specification.dependencyinjectionspecificationtests", "Method[createserviceprovider].ReturnValue"]
+    - ["system.string", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctor", "Member[whatever]"]
+    - ["system.boolean", "microsoft.extensions.dependencyinjection.specification.classwithoptionalargsctorwithstructs+structwithpublicdefaultconstructor", "Member[constructorinvoked]"]

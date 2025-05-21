@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["internal.typesystem.methodsignature", "Method[applysubstitution]", "Argument[0].SyntheticField[_genericParameters].Element", "ReturnValue.SyntheticField[_parameters].Element", "value"]
+      - ["internal.typesystem.methodsignature", "Method[applysubstitution]", "Argument[0].SyntheticField[_genericParameters].Element", "ReturnValue.SyntheticField[_returnType]", "value"]
+      - ["internal.typesystem.methodsignature", "Method[applysubstitution]", "Argument[this]", "ReturnValue", "value"]
+      - ["internal.typesystem.methodsignature", "Method[get_context]", "Argument[this].SyntheticField[_returnType].Field[Context]", "ReturnValue", "value"]
+      - ["internal.typesystem.methodsignature", "Method[get_current]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methodsignature", "Method[get_parameter]", "Argument[this].SyntheticField[_parameters].Element", "ReturnValue", "value"]
+      - ["internal.typesystem.methodsignature", "Method[get_returntype]", "Argument[this].SyntheticField[_returnType]", "ReturnValue", "value"]
+      - ["internal.typesystem.methodsignature", "Method[getembeddedsignaturedata]", "Argument[this].SyntheticField[_embeddedSignatureData].Element", "ReturnValue.Element", "value"]
+      - ["internal.typesystem.methodsignature", "Method[getenumerator]", "Argument[this]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methodsignature", "Method[methodsignature]", "Argument[2]", "Argument[this].SyntheticField[_returnType]", "value"]
+      - ["internal.typesystem.methodsignature", "Method[methodsignature]", "Argument[3]", "Argument[this].SyntheticField[_parameters]", "value"]
+      - ["internal.typesystem.methodsignature", "Method[methodsignature]", "Argument[4]", "Argument[this].SyntheticField[_embeddedSignatureData]", "value"]
+      - ["internal.typesystem.methodsignature", "Method[signatureenumerator]", "Argument[0]", "Argument[this]", "taint"]
+      - ["internal.typesystem.methodsignature", "Method[tostring]", "Argument[this].Field[ReturnType].Field[DiagnosticName]", "ReturnValue", "taint"]
+      - ["internal.typesystem.methodsignature", "Method[tostring]", "Argument[this].SyntheticField[_returnType].Field[DiagnosticName]", "ReturnValue", "taint"]

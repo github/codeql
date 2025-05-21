@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.serviceprocess.design.serviceinstallerdialogresult", "system.serviceprocess.design.serviceinstallerdialogresult!", "Member[canceled]"]
+    - ["system.string", "system.serviceprocess.design.serviceinstallerdialog", "Member[username]"]
+    - ["system.serviceprocess.design.serviceinstallerdialogresult", "system.serviceprocess.design.serviceinstallerdialogresult!", "Member[ok]"]
+    - ["system.string", "system.serviceprocess.design.serviceinstallerdialog", "Member[password]"]
+    - ["system.serviceprocess.design.serviceinstallerdialogresult", "system.serviceprocess.design.serviceinstallerdialog", "Member[result]"]
+    - ["system.serviceprocess.design.serviceinstallerdialogresult", "system.serviceprocess.design.serviceinstallerdialogresult!", "Member[usesystem]"]

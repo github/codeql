@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.security.claims.claimsidentity", "Method[claimsidentity]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.security.claims.claimsidentity", "Method[claimsidentity]", "Argument[2]", "Argument[this].SyntheticField[_authenticationType]", "value"]
+      - ["system.security.claims.claimsidentity", "Method[claimsidentity]", "Argument[3]", "Argument[this].SyntheticField[_nameClaimType]", "value"]
+      - ["system.security.claims.claimsidentity", "Method[claimsidentity]", "Argument[4]", "Argument[this].SyntheticField[_roleClaimType]", "value"]
+      - ["system.security.claims.claimsidentity", "Method[findfirst]", "Argument[this].Field[Claims].Element", "ReturnValue", "value"]
+      - ["system.security.claims.claimsidentity", "Method[get_authenticationtype]", "Argument[this].SyntheticField[_authenticationType]", "ReturnValue", "value"]
+      - ["system.security.claims.claimsidentity", "Method[get_claims]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claimsidentity", "Method[get_customserializationdata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.security.claims.claimsidentity", "Method[get_nameclaimtype]", "Argument[this].SyntheticField[_nameClaimType]", "ReturnValue", "value"]
+      - ["system.security.claims.claimsidentity", "Method[get_roleclaimtype]", "Argument[this].SyntheticField[_roleClaimType]", "ReturnValue", "value"]
+      - ["system.security.claims.claimsidentity", "Method[hasclaim]", "Argument[this].Field[Claims].Element", "Argument[0].Parameter[0]", "value"]

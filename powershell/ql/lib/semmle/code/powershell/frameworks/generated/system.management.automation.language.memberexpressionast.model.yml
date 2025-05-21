@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.memberexpressionast.expression]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[1]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.memberexpressionast.expression]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.memberexpressionast.expression]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.memberexpressionast.member]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.memberexpressionast.member]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.memberexpressionast", "Method[memberexpressionast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]

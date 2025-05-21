@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[get_newitems]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[get_olditems]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[notifycollectionchangedeventargs]", "Argument[1].Element", "Argument[this]", "taint"]
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[notifycollectionchangedeventargs]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[notifycollectionchangedeventargs]", "Argument[2].Element", "Argument[this]", "taint"]
+      - ["system.collections.specialized.notifycollectionchangedeventargs", "Method[notifycollectionchangedeventargs]", "Argument[2]", "Argument[this]", "taint"]

@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.semanticversion", "Method[semanticversion]", "Argument[3]", "Argument[this]", "taint"]
-      - ["system.management.automation.semanticversion", "Method[semanticversion]", "Argument[4]", "Argument[this]", "taint"]
-      - ["system.management.automation.semanticversion", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
-      

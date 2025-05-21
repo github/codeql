@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.ienumerable", "microsoft.visualstudio.text.classification.implementation.iclassificationtypedefinitionmetadata", "Member[basedefinition]"]
+    - ["system.string", "microsoft.visualstudio.text.classification.implementation.iclassificationtypedefinitionmetadata", "Member[name]"]

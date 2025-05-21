@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.data.datarowview", "Method[createchildview]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.data.datarowview", "Method[createchildview]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarowview", "Method[get_dataview]", "Argument[this].SyntheticField[_dataView]", "ReturnValue", "value"]
+      - ["system.data.datarowview", "Method[get_error]", "Argument[this].Field[Row].Field[RowError]", "ReturnValue", "value"]
+      - ["system.data.datarowview", "Method[get_item]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.data.datarowview", "Method[get_row]", "Argument[this]", "ReturnValue", "taint"]

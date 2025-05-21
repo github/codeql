@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[1]", "Argument[3].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.labeledstatementast.label]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.forstatementast.initializer]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[2]", "Argument[4].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.forstatementast.initializer]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.forstatementast.initializer]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[4]", "Argument[4].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.forstatementast.iterator]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[4]", "Argument[this].Field[system.management.automation.language.forstatementast.iterator]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.forstatementast", "Method[forstatementast]", "Argument[this]", "Argument[4].Field[system.management.automation.language.ast.parent]", "value"]
