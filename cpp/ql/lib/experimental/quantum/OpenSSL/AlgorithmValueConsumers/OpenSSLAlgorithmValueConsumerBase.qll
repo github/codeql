@@ -1,5 +1,5 @@
-import experimental.quantum.Language
-import semmle.code.cpp.dataflow.new.DataFlow
+private import experimental.quantum.Language
+private import semmle.code.cpp.dataflow.new.DataFlow
 
 abstract class OpenSSLAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer instanceof Call {
   /**

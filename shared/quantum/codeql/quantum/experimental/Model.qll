@@ -972,7 +972,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     abstract TEllipticCurveType getEllipticCurveType();
 
-    abstract string getKeySize();
+    abstract int getKeySize();
 
     /**
      * The 'parsed' curve name, e.g., "P-256" or "secp256r1"
@@ -2613,7 +2613,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [ONLY_KNOWN]
       key = "KeySize" and
-      value = instance.asAlg().getKeySize() and
+      value = instance.asAlg().getKeySize().toString() and
       location = this.getLocation()
       or
       // [KNOWN_OR_UNKNOWN]

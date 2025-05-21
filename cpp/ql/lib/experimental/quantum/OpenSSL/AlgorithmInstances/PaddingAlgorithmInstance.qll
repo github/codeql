@@ -1,9 +1,10 @@
 import cpp
-import experimental.quantum.Language
-import OpenSSLAlgorithmInstanceBase
-import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
-import AlgToAVCFlow
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import experimental.quantum.Language
+private import OpenSSLAlgorithmInstanceBase
+private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
+private import AlgToAVCFlow
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.DirectAlgorithmValueConsumer
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
 /**
  * Given a `KnownOpenSSLPaddingAlgorithmConstant`, converts this to a padding family type.

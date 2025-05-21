@@ -1,8 +1,9 @@
 import cpp
-import experimental.quantum.Language
-import KnownAlgorithmConstants
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
-import AlgToAVCFlow
+private import experimental.quantum.Language
+private import KnownAlgorithmConstants
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
+private import AlgToAVCFlow
 
 predicate knownOpenSSLConstantToHashFamilyType(
   KnownOpenSSLHashAlgorithmConstant e, Crypto::THashType type
