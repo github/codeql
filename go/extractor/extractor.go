@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"runtime"
 	"strconv"
@@ -941,16 +942,7 @@ func emitScopeNodeInfo(tw *trap.Writer, nd ast.Node, lbl trap.Label) {
 
 // extractExpr extracts AST information for the given expression and all its subexpressions
 func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, skipExtractingValue bool) {
-	if expr == nil || expr == (*ast.Ident)(nil) || expr == (*ast.BasicLit)(nil) ||
-		expr == (*ast.Ellipsis)(nil) || expr == (*ast.FuncLit)(nil) ||
-		expr == (*ast.CompositeLit)(nil) || expr == (*ast.SelectorExpr)(nil) ||
-		expr == (*ast.IndexListExpr)(nil) || expr == (*ast.SliceExpr)(nil) ||
-		expr == (*ast.TypeAssertExpr)(nil) || expr == (*ast.CallExpr)(nil) ||
-		expr == (*ast.StarExpr)(nil) || expr == (*ast.KeyValueExpr)(nil) ||
-		expr == (*ast.UnaryExpr)(nil) || expr == (*ast.BinaryExpr)(nil) ||
-		expr == (*ast.ArrayType)(nil) || expr == (*ast.StructType)(nil) ||
-		expr == (*ast.FuncType)(nil) || expr == (*ast.InterfaceType)(nil) ||
-		expr == (*ast.MapType)(nil) || expr == (*ast.ChanType)(nil) {
+	if expr == nil || reflect.ValueOf(expr).IsNil() {
 		return
 	}
 
@@ -1247,15 +1239,7 @@ func extractFields(tw *trap.Writer, fields *ast.FieldList, parent trap.Label, id
 // extractStmt extracts AST information for a given statement and all other statements or expressions
 // nested inside it
 func extractStmt(tw *trap.Writer, stmt ast.Stmt, parent trap.Label, idx int) {
-	if stmt == nil || stmt == (*ast.DeclStmt)(nil) ||
-		stmt == (*ast.LabeledStmt)(nil) || stmt == (*ast.ExprStmt)(nil) ||
-		stmt == (*ast.SendStmt)(nil) || stmt == (*ast.IncDecStmt)(nil) ||
-		stmt == (*ast.AssignStmt)(nil) || stmt == (*ast.GoStmt)(nil) ||
-		stmt == (*ast.DeferStmt)(nil) || stmt == (*ast.BranchStmt)(nil) ||
-		stmt == (*ast.BlockStmt)(nil) || stmt == (*ast.IfStmt)(nil) ||
-		stmt == (*ast.CaseClause)(nil) || stmt == (*ast.SwitchStmt)(nil) ||
-		stmt == (*ast.TypeSwitchStmt)(nil) || stmt == (*ast.CommClause)(nil) ||
-		stmt == (*ast.ForStmt)(nil) || stmt == (*ast.RangeStmt)(nil) {
+	if stmt == nil || reflect.ValueOf(stmt).IsNil() {
 		return
 	}
 
@@ -1391,7 +1375,7 @@ func extractStmts(tw *trap.Writer, stmts []ast.Stmt, parent trap.Label, idx int,
 
 // extractDecl extracts AST information for the given declaration
 func extractDecl(tw *trap.Writer, decl ast.Decl, parent trap.Label, idx int) {
-	if decl == (*ast.FuncDecl)(nil) || decl == (*ast.GenDecl)(nil) {
+	if reflect.ValueOf(decl).IsNil() {
 		return
 	}
 	lbl := tw.Labeler.LocalID(decl)
