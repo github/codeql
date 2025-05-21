@@ -19,17 +19,17 @@ fn test_operations(
 	x >= y; // $ Operation Op=>= Operands=2 BinaryExpr ComparisonOperation RelationalOperation GreaterOrEqualsOperation Greater=x Lesser=y
 
 	// arithmetic operations
-	x + y; // $ Operation Op=+ Operands=2 BinaryExpr
-	x - y; // $ Operation Op=- Operands=2 BinaryExpr
-	x * y; // $ Operation Op=* Operands=2 BinaryExpr
-	x / y; // $ Operation Op=/ Operands=2 BinaryExpr
-	x % y; // $ Operation Op=% Operands=2 BinaryExpr
-	x += y; // $ Operation Op=+= Operands=2 AssignmentOperation BinaryExpr
-	x -= y; // $ Operation Op=-= Operands=2 AssignmentOperation BinaryExpr
-	x *= y; // $ Operation Op=*= Operands=2 AssignmentOperation BinaryExpr
-	x /= y; // $ Operation Op=/= Operands=2 AssignmentOperation BinaryExpr
-	x %= y; // $ Operation Op=%= Operands=2 AssignmentOperation BinaryExpr
-	-x; // $ Operation Op=- Operands=1 PrefixExpr
+	x + y; // $ Operation Op=+ Operands=2 BinaryExpr ArithmeticOperation BinaryArithmeticOperation
+	x - y; // $ Operation Op=- Operands=2 BinaryExpr ArithmeticOperation BinaryArithmeticOperation
+	x * y; // $ Operation Op=* Operands=2 BinaryExpr ArithmeticOperation BinaryArithmeticOperation
+	x / y; // $ Operation Op=/ Operands=2 BinaryExpr ArithmeticOperation BinaryArithmeticOperation
+	x % y; // $ Operation Op=% Operands=2 BinaryExpr ArithmeticOperation BinaryArithmeticOperation
+	x += y; // $ Operation Op=+= Operands=2 AssignmentOperation BinaryExpr ArithmeticOperation AssignArithmeticOperation
+	x -= y; // $ Operation Op=-= Operands=2 AssignmentOperation BinaryExpr ArithmeticOperation AssignArithmeticOperation
+	x *= y; // $ Operation Op=*= Operands=2 AssignmentOperation BinaryExpr ArithmeticOperation AssignArithmeticOperation
+	x /= y; // $ Operation Op=/= Operands=2 AssignmentOperation BinaryExpr ArithmeticOperation AssignArithmeticOperation
+	x %= y; // $ Operation Op=%= Operands=2 AssignmentOperation BinaryExpr ArithmeticOperation AssignArithmeticOperation
+	-x; // $ Operation Op=- Operands=1 PrefixExpr ArithmeticOperation PrefixArithmeticOperation
 
 	// logical operations
 	a && b; // $ Operation Op=&& Operands=2 BinaryExpr LogicalOperation

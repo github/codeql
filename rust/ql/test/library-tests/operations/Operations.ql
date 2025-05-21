@@ -31,6 +31,14 @@ string describe(Expr op) {
   op instanceof LessOrEqualsOperation and result = "LessOrEqualsOperation"
   or
   op instanceof GreaterOrEqualsOperation and result = "GreaterOrEqualsOperation"
+  or
+  op instanceof ArithmeticOperation and result = "ArithmeticOperation"
+  or
+  op instanceof BinaryArithmeticOperation and result = "BinaryArithmeticOperation"
+  or
+  op instanceof AssignArithmeticOperation and result = "AssignArithmeticOperation"
+  or
+  op instanceof PrefixArithmeticOperation and result = "PrefixArithmeticOperation"
 }
 
 module OperationsTest implements TestSig {
