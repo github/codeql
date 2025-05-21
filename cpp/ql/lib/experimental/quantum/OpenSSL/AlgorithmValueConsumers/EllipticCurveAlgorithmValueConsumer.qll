@@ -1,6 +1,5 @@
 import cpp
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.LibraryDetector
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
@@ -14,7 +13,6 @@ class EVPEllipticCurveAlgorithmConsumer extends EllipticCurveValueConsumer {
 
   EVPEllipticCurveAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
       this.(Call).getTarget().getName() in ["EVP_EC_gen", "EC_KEY_new_by_curve_name"] and
       valueArgNode.asExpr() = this.(Call).getArgument(0)

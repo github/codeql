@@ -94,7 +94,10 @@ private class ConstantDataSource extends Crypto::GenericConstantSourceInstance i
     // where typical algorithms are specified, but EC specifically means set up a
     // default curve container, that will later be specified explicitly (or if not a default)
     // curve is used.
-    this.getValue() != "EC"
+    this.getValue() != "EC" and
+    // Exclude all 0's as algorithms. Currently we know of no algorithm defined as 0, and
+    // the typical case is 0 is assigned to represent null.
+    this.getValue().toInt() != 0
   }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }

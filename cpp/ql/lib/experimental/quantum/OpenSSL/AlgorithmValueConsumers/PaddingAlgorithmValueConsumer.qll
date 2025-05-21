@@ -1,6 +1,5 @@
 import cpp
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.LibraryDetector
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstanceBase
 private import OpenSSLAlgorithmValueConsumerBase
@@ -16,11 +15,8 @@ class EVP_PKEY_CTX_set_rsa_padding_AlgorithmValueConsumer extends PaddingAlgorit
 
   EVP_PKEY_CTX_set_rsa_padding_AlgorithmValueConsumer() {
     resultNode.asExpr() = this and
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
-    (
-      this.(Call).getTarget().getName() in ["EVP_PKEY_CTX_set_rsa_padding"] and
-      valueArgNode.asExpr() = this.(Call).getArgument(1)
-    )
+    this.(Call).getTarget().getName() in ["EVP_PKEY_CTX_set_rsa_padding"] and
+    valueArgNode.asExpr() = this.(Call).getArgument(1)
   }
 
   override DataFlow::Node getResultNode() { result = resultNode }

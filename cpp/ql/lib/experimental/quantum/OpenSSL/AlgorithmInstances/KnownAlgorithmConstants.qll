@@ -1,5 +1,4 @@
 import cpp
-private import experimental.quantum.OpenSSL.LibraryDetector
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
@@ -20,7 +19,7 @@ class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant 
 
   KnownOpenSSLCipherAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%encryption")
+    algType.matches("%ENCRYPTION")
   }
 
   int getExplicitKeySize() {
@@ -37,7 +36,7 @@ class KnownOpenSSLPaddingAlgorithmConstant extends KnownOpenSSLAlgorithmConstant
 
   KnownOpenSSLPaddingAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%padding")
+    algType.matches("%PADDING")
   }
 }
 
@@ -46,7 +45,7 @@ class KnownOpenSSLBlockModeAlgorithmConstant extends KnownOpenSSLAlgorithmConsta
 
   KnownOpenSSLBlockModeAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%block_mode")
+    algType.matches("%BLOCK_MODE")
   }
 }
 
@@ -55,7 +54,7 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
 
   KnownOpenSSLHashAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%hash")
+    algType.matches("%HASH")
   }
 
   int getExplicitDigestLength() {
@@ -71,7 +70,7 @@ class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmCo
   KnownOpenSSLEllipticCurveAlgorithmConstant() {
     exists(string algType |
       resolveAlgorithmFromExpr(this, _, algType) and
-      algType.toLowerCase().matches("elliptic_curve")
+      algType.matches("ELLIPTIC_CURVE")
     )
   }
 }
@@ -89,7 +88,6 @@ class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmCo
  *  alias = "dss1" and target = "dsaWithSHA1"
  */
 predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
-  isPossibleOpenSSLFunction(c.getTarget()) and
   exists(string name, string parsedTargetName |
     parsedTargetName =
       c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and

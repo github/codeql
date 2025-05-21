@@ -1,5 +1,4 @@
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.LibraryDetector
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
@@ -18,10 +17,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
 private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
 class ECKeyGenOperation extends OpenSSLOperation, Crypto::KeyGenerationOperationInstance {
-  ECKeyGenOperation() {
-    this.(Call).getTarget().getName() = "EC_KEY_generate_key" and
-    isPossibleOpenSSLFunction(this.(Call).getTarget())
-  }
+  ECKeyGenOperation() { this.(Call).getTarget().getName() = "EC_KEY_generate_key" }
 
   override Expr getOutputArg() {
     result = this.(Call) // return value of call

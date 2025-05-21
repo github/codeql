@@ -1,6 +1,5 @@
 import cpp
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.LibraryDetector
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
@@ -13,7 +12,6 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
 
   EVPPKeyAlgorithmConsumer() {
     resultNode.asExpr() = this.(Call) and // in all cases the result is the return
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
       // NOTE: some of these consumers are themselves key gen operations,
       // in these cases, the operation will be created separately for the same function.

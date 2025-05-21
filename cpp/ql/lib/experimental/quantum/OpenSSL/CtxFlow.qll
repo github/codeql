@@ -20,48 +20,74 @@
 
 import semmle.code.cpp.dataflow.new.DataFlow
 
-class CTXType extends Type {
-  CTXType() {
-    // TODO: should we limit this to an openssl path?
-    this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st")
-  }
+/**
+ * An openSSL CTX type, which is type for which the stripped underlying type
+ * matches the pattern 'evp_%ctx_%st'.
+ * This includes types like:
+ * - EVP_CIPHER_CTX
+ * - EVP_MD_CTX
+ * - EVP_PKEY_CTX
+ */
+private class CTXType extends Type {
+  CTXType() { this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st") }
 }
 
-class CTXPointerExpr extends Expr {
+/**
+ * A pointer to a CTXType
+ */
+private class CTXPointerExpr extends Expr {
   CTXPointerExpr() {
     this.getType() instanceof CTXType and
     this.getType() instanceof PointerType
   }
 }
 
-class CTXPointerArgument extends CTXPointerExpr {
+/**
+ * A call argument of type CTXPointerExpr.
+ */
+private class CTXPointerArgument extends CTXPointerExpr {
   CTXPointerArgument() { exists(Call c | c.getAnArgument() = this) }
 
   Call getCall() { result.getAnArgument() = this }
 }
 
-class CTXClearCall extends Call {
+/**
+ * A call whose target contains 'free' or 'reset' and has an argument of type
+ * CTXPointerArgument.
+ */
+private class CTXClearCall extends Call {
   CTXClearCall() {
     this.getTarget().getName().toLowerCase().matches(["%free%", "%reset%"]) and
     this.getAnArgument() instanceof CTXPointerArgument
   }
 }
 
-class CTXCopyOutArgCall extends Call {
+/**
+ * A call whose target contains 'copy' and has an argument of type
+ * CTXPointerArgument.
+ */
+private class CTXCopyOutArgCall extends Call {
   CTXCopyOutArgCall() {
-    this.getTarget().getName().toLowerCase().matches(["%copy%"]) and
+    this.getTarget().getName().toLowerCase().matches("%copy%") and
     this.getAnArgument() instanceof CTXPointerArgument
   }
 }
 
-class CTXCopyReturnCall extends Call {
+/**
+ * A call whose target contains 'dup' and has an argument of type
+ * CTXPointerArgument.
+ */
+private class CTXCopyReturnCall extends Call {
   CTXCopyReturnCall() {
-    this.getTarget().getName().toLowerCase().matches(["%dup%"]) and
+    this.getTarget().getName().toLowerCase().matches("%dup%") and
     this.getAnArgument() instanceof CTXPointerArgument and
     this instanceof CTXPointerExpr
   }
 }
 
+/**
+ * Flow from any CTXPointerArgument to any other CTXPointerArgument
+ */
 module OpenSSLCTXArgumentFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CTXPointerArgument }
 
@@ -90,6 +116,9 @@ module OpenSSLCTXArgumentFlowConfig implements DataFlow::ConfigSig {
 
 module OpenSSLCTXArgumentFlow = DataFlow::Global<OpenSSLCTXArgumentFlowConfig>;
 
+/**
+ * Holds if there is a context flow from the source to the sink.
+ */
 predicate ctxArgFlowsToCtxArg(CTXPointerArgument source, CTXPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
     OpenSSLCTXArgumentFlow::flow(a, b) and
