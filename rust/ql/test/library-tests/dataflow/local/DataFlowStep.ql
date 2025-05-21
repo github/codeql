@@ -1,5 +1,6 @@
 import codeql.rust.dataflow.DataFlow
 import codeql.rust.dataflow.internal.DataFlowImpl
+import codeql.rust.dataflow.internal.Node
 import utils.test.TranslateModels
 
 query predicate localStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -7,6 +8,27 @@ query predicate localStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   RustDataFlow::simpleLocalFlowStep(nodeFrom, nodeTo, "")
 }
 
-query predicate storeStep = RustDataFlow::storeStep/3;
+class Content extends DataFlow::Content {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    exists(string file |
+      this.getLocation().hasLocationInfo(file, startline, startcolumn, endline, endcolumn) and
+      filepath =
+        file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+            .regexpReplaceAll("^/.*/.rustup/toolchains/[^/]+/", "/RUSTUP_HOME/toolchain/")
+    )
+  }
+}
 
-query predicate readStep = RustDataFlow::readStep/3;
+class Node extends DataFlow::Node {
+  Node() { not this instanceof FlowSummaryNode }
+}
+
+query predicate storeStep(Node node1, Content c, Node node2) {
+  RustDataFlow::storeContentStep(node1, c, node2)
+}
+
+query predicate readStep(Node node1, Content c, Node node2) {
+  RustDataFlow::readContentStep(node1, c, node2)
+}

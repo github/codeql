@@ -10,9 +10,7 @@ private import codeql.rust.elements.Locatable
 private import codeql.Locations
 import PathResolutionConsistency
 
-class SourceLocatable instanceof Locatable {
-  string toString() { result = super.toString() }
-
+class SourceLocatable extends Locatable {
   Location getLocation() {
     if super.getLocation().fromSource()
     then result = super.getLocation()
