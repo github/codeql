@@ -306,10 +306,21 @@ private Method customNullGuard(int index, boolean retval, boolean isnull) {
 }
 
 /**
- * `guard` is a guard expression that suggests that `v` might be null.
- *
- * This is equivalent to `guard = basicNullGuard(sameValue(v, _), _, true)`.
+ * Holds if `guard` is a guard expression that suggests that `e` might be null.
+ */
+predicate guardSuggestsExprMaybeNull(Expr guard, Expr e) {
+  guard.(EqualityTest).hasOperands(e, any(NullLiteral n))
+  or
+  exists(MethodCall call |
+    call = guard and
+    call.getAnArgument() = e and
+    nullCheckMethod(call.getMethod(), _, true)
+  )
+}
+
+/**
+ * Holds if `guard` is a guard expression that suggests that `v` might be null.
  */
 predicate guardSuggestsVarMaybeNull(Expr guard, SsaVariable v) {
-  guard = basicNullGuard(sameValue(v, _), _, true)
+  guardSuggestsExprMaybeNull(guard, sameValue(v, _))
 }
