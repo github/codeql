@@ -640,33 +640,41 @@ impl<'a> Translator<'a> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
         if self.source_kind == SourceKind::Library {
             let syntax = item.syntax();
-            if let Some(body) = syntax.parent().and_then(Fn::cast).and_then(|x| x.body()) {
-                if body.syntax() == syntax {
-                    tracing::debug!("Skipping Fn body");
-                    return true;
-                }
+            if syntax
+                .parent()
+                .and_then(Fn::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                tracing::debug!("Skipping Fn body");
+                return true;
             }
-            if let Some(body) = syntax.parent().and_then(Const::cast).and_then(|x| x.body()) {
-                if body.syntax() == syntax {
-                    tracing::debug!("Skipping Const body");
-                    return true;
-                }
+            if syntax
+                .parent()
+                .and_then(Const::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                tracing::debug!("Skipping Const body");
+                return true;
             }
-            if let Some(body) = syntax
+            if syntax
                 .parent()
                 .and_then(Static::cast)
                 .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
             {
-                if body.syntax() == syntax {
-                    tracing::debug!("Skipping Static body");
-                    return true;
-                }
+                tracing::debug!("Skipping Static body");
+                return true;
             }
-            if let Some(pat) = syntax.parent().and_then(Param::cast).and_then(|x| x.pat()) {
-                if pat.syntax() == syntax {
-                    tracing::debug!("Skipping parameter");
-                    return true;
-                }
+            if syntax
+                .parent()
+                .and_then(Param::cast)
+                .and_then(|x| x.pat())
+                .is_some_and(|pat| pat.syntax() == syntax)
+            {
+                tracing::debug!("Skipping parameter");
+                return true;
             }
         }
         false
