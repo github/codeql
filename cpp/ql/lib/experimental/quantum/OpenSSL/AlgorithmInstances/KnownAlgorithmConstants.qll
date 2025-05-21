@@ -105,9 +105,7 @@ predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
 predicate resolveAlgorithmFromLiteral(
   OpenSSLAlgorithmCandidateLiteral e, string normalized, string algType
 ) {
-  exists(int nid |
-    nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithmLiteral(_, nid, normalized, algType)
-  )
+  knownOpenSSLAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
   or
   exists(string name |
     name = resolveAlgorithmAlias(e.getValue()) and
@@ -124,17 +122,6 @@ string resolveAlgorithmAlias(string name) {
     // or the name is itself a known algorithm
     knownOpenSSLAlgorithmLiteral(lower, _, _, _) and result = lower
   )
-}
-
-/**
- * Determines if an int literal (NID) is a candidate for being an algorithm literal.
- * Checks for common cases where literals are used that would not be indicative of an algorithm.
- * Returns the int literal value if the literal is a candidate for an algorithm.
- */
-private int getPossibleNidFromLiteral(OpenSSLAlgorithmCandidateLiteral e) {
-  result = e.getValue().toInt() and
-  not e instanceof CharLiteral and
-  not e instanceof StringLiteral
 }
 
 string getAlgorithmAlias(string alias) {
