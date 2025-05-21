@@ -184,7 +184,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Gets the length of this path, assuming the length is at least 2. */
     bindingset[this]
     pragma[inline_late]
-    private int length2() {
+    private int lengthAtLeast2() {
       // Same as
       // `result = strictcount(this.indexOf(".")) + 1`
       // but performs better because it doesn't use an aggregate
@@ -200,7 +200,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       else
         if exists(TypeParameter::decode(this))
         then result = 1
-        else result = this.length2()
+        else result = this.lengthAtLeast2()
     }
 
     /** Gets the path obtained by appending `suffix` onto this path. */
@@ -216,7 +216,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           (
             not exists(getTypePathLimit())
             or
-            result.length2() <= getTypePathLimit()
+            result.lengthAtLeast2() <= getTypePathLimit()
           )
         )
     }
@@ -228,22 +228,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * so there is no need to check the length of `result`.
      */
     bindingset[this, result]
-    TypePath appendInverse(TypePath suffix) {
-      if result.isEmpty()
-      then this.isEmpty() and suffix.isEmpty()
-      else
-        if this.isEmpty()
-        then suffix = result
-        else (
-          result = this and suffix.isEmpty()
-          or
-          result = this + "." + suffix
-        )
+    TypePath appendInverse(TypePath suffix) { suffix = result.stripPrefix(this) }
+
+    /** Gets the path obtained by removing `prefix` from this path. */
+    bindingset[this, prefix]
+    TypePath stripPrefix(TypePath prefix) {
+      if prefix.isEmpty()
+      then result = this
+      else (
+        this = prefix and
+        result.isEmpty()
+        or
+        this = prefix + "." + result
+      )
     }
 
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
-    predicate isCons(TypeParameter tp, TypePath suffix) { this = TypePath::consInverse(tp, suffix) }
+    predicate isCons(TypeParameter tp, TypePath suffix) {
+      suffix = this.stripPrefix(TypePath::singleton(tp))
+    }
   }
 
   /** Provides predicates for constructing `TypePath`s. */
@@ -260,15 +264,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      */
     bindingset[suffix]
     TypePath cons(TypeParameter tp, TypePath suffix) { result = singleton(tp).append(suffix) }
-
-    /**
-     * Gets the type path obtained by appending the singleton type path `tp`
-     * onto `suffix`.
-     */
-    bindingset[result]
-    TypePath consInverse(TypeParameter tp, TypePath suffix) {
-      result = singleton(tp).appendInverse(suffix)
-    }
   }
 
   /**
