@@ -3,7 +3,6 @@ private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 
-// TODO: can self referential to itself, which is also an algorithm (Known algorithm)
 /**
  * Cases like EVP_MD5(),
  * there is no input, rather it directly gets an algorithm

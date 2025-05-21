@@ -32,7 +32,7 @@ class EVP_Q_Digest_Algorithm_Consumer extends OpenSSLAlgorithmValueConsumer {
 }
 
 /**
- * EVP digest algorithm getters
+ * The EVP digest algorithm getters
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
  */
 class EVPDigestAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer {
