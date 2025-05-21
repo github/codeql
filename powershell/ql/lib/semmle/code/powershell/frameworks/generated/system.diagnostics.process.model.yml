@@ -1,7 +1,7 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
-      pack: codeql/csharp-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.diagnostics.process", "Method[get_machinename]", "Argument[this].SyntheticField[_machineName]", "ReturnValue", "value"]

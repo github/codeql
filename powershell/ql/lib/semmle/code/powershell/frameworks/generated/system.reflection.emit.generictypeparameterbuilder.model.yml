@@ -1,7 +1,7 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
-      pack: codeql/csharp-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.reflection.emit.generictypeparameterbuilder", "Method[setinterfaceconstraintscore]", "Argument[0].Element", "Argument[this]", "taint"]

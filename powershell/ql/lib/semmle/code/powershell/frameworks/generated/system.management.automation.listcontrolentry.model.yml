@@ -1,7 +1,7 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
-      pack: codeql/csharp-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.listcontrolentry", "Method[get_selectedby]", "Argument[this].Field[system.management.automation.listcontrolentry.entryselectedby].Field[system.management.automation.entryselectedby.typenames]", "ReturnValue", "value"]

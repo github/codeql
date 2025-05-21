@@ -1,7 +1,7 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
-      pack: codeql/csharp-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.codedom.codetypereferenceexpression", "Method[codetypereferenceexpression]", "Argument[0]", "Argument[this]", "taint"]

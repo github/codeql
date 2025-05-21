@@ -1,7 +1,7 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
-      pack: codeql/csharp-all
+      pack: microsoft/powershell-all
       extensible: summaryModel
     data:
       - ["system.management.automation.pseventjob", "Method[get_module]", "Argument[this].SyntheticField[system.management.automation.pseventjob.scriptblock].Field[system.management.automation.scriptblock.module]", "ReturnValue", "value"]
