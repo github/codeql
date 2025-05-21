@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.completionresult._completiontext]", "value"]
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.completionresult._listitemtext]", "value"]
+      - ["system.management.automation.completionresult", "Method[completionresult]", "Argument[3]", "Argument[this].SyntheticField[system.management.automation.completionresult._tooltip]", "value"]
+      - ["system.management.automation.completionresult", "Method[get_completiontext]", "Argument[this].SyntheticField[system.management.automation.completionresult._completiontext]", "ReturnValue", "value"]
+      - ["system.management.automation.completionresult", "Method[get_listitemtext]", "Argument[this].SyntheticField[system.management.automation.completionresult._listitemtext]", "ReturnValue", "value"]
+      - ["system.management.automation.completionresult", "Method[get_tooltip]", "Argument[this].SyntheticField[system.management.automation.completionresult._tooltip]", "ReturnValue", "value"]

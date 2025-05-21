@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.job", "Method[get_childjobs]", "Argument[this].SyntheticField[system.management.automation.job._childjobs]", "ReturnValue", "value"]
+      - ["system.management.automation.job", "Method[get_finished]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.job", "Method[get_location]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.job", "Method[get_statusmessage]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.job", "Method[job]", "Argument[0]", "Argument[this].Field[system.management.automation.job.command]", "value"]
+      - ["system.management.automation.job", "Method[job]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.job", "Method[job]", "Argument[2].SyntheticField[system.management.automation.jobidentifier.instanceid]", "Argument[this].Field[system.management.automation.job.instanceid]", "value"]
+      - ["system.management.automation.job", "Method[job]", "Argument[2]", "Argument[this].Field[system.management.automation.job.instanceid]", "value"]
+      - ["system.management.automation.job", "Method[job]", "Argument[2]", "Argument[this].SyntheticField[system.management.automation.job._childjobs]", "value"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.jsonobject", "Method[convertfromjson]", "Argument[0]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.jsonobject", "Method[converttojson]", "Argument[0]", "ReturnValue", "taint"]

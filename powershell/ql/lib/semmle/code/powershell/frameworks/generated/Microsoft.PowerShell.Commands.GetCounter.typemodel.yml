@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[path]"]
+    - ["system.diagnostics.performancecountertype", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[countertype]"]
+    - ["system.uint32", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[status]"]
+    - ["system.datetime", "microsoft.powershell.commands.getcounter.performancecountersampleset", "Member[timestamp]"]
+    - ["system.datetime", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[timestamp]"]
+    - ["microsoft.powershell.commands.getcounter.performancecountersample[]", "microsoft.powershell.commands.getcounter.performancecountersampleset", "Member[countersamples]"]
+    - ["system.uint64", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[timebase]"]
+    - ["system.double", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[cookedvalue]"]
+    - ["system.datetime", "microsoft.powershell.commands.getcounter.counterfileinfo", "Member[newestrecord]"]
+    - ["system.string", "microsoft.powershell.commands.getcounter.counterset", "Member[countersetname]"]
+    - ["system.uint64", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[secondvalue]"]
+    - ["system.string", "microsoft.powershell.commands.getcounter.counterset", "Member[machinename]"]
+    - ["system.collections.specialized.stringcollection", "microsoft.powershell.commands.getcounter.counterset", "Member[paths]"]
+    - ["system.uint32", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[defaultscale]"]
+    - ["system.uint32", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[multiplecount]"]
+    - ["system.uint64", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[rawvalue]"]
+    - ["system.uint64", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[timestamp100nsec]"]
+    - ["system.string", "microsoft.powershell.commands.getcounter.counterset", "Member[description]"]
+    - ["system.datetime", "microsoft.powershell.commands.getcounter.counterfileinfo", "Member[oldestrecord]"]
+    - ["system.string", "microsoft.powershell.commands.getcounter.performancecountersample", "Member[instancename]"]
+    - ["system.collections.specialized.stringcollection", "microsoft.powershell.commands.getcounter.counterset", "Member[pathswithinstances]"]
+    - ["system.diagnostics.performancecountercategorytype", "microsoft.powershell.commands.getcounter.counterset", "Member[countersettype]"]
+    - ["system.uint32", "microsoft.powershell.commands.getcounter.counterfileinfo", "Member[samplecount]"]

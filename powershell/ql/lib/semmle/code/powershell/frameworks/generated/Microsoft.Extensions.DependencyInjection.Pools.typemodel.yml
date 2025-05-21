@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.dependencyinjection.pools.dependencyinjectionextensions!", "Method[addpool].ReturnValue"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.dependencyinjection.pools.dependencyinjectionextensions!", "Method[configurepools].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.dependencyinjection.pools.pooloptions", "Member[capacity]"]

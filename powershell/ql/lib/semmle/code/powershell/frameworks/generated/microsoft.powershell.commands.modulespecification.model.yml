@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.modulespecification", "Method[modulespecification]", "Argument[0].Element", "Argument[this]", "taint"]
+      - ["microsoft.powershell.commands.modulespecification", "Method[modulespecification]", "Argument[0]", "Argument[this].Field[microsoft.powershell.commands.modulespecification.name]", "value"]
+      - ["microsoft.powershell.commands.modulespecification", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

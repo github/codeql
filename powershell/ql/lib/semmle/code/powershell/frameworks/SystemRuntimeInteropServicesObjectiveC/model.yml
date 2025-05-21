@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.runtime.interopservices.gchandle", "system.runtime.interopservices.objectivec.objectivecmarshal!", "Method[createreferencetrackinghandle].ReturnValue"]

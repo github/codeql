@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.tostringcodemethods!", "Method[xmlnode]", "Argument[0]", "ReturnValue", "taint"]
-      - ["microsoft.powershell.tostringcodemethods!", "Method[xmlnodelist]", "Argument[0]", "ReturnValue", "taint"]
-      

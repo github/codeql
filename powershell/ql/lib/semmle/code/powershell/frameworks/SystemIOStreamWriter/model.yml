@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: sourceModel
-    data:
-      - ["system.io.streamwriter", "Instance", "file-write"]

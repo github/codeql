@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.scriptextent", "Method[get_endscriptposition]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._endposition]", "ReturnValue", "value"]
+      - ["system.management.automation.language.scriptextent", "Method[get_file]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._startposition].Field[system.management.automation.language.scriptposition.file]", "ReturnValue", "value"]
+      - ["system.management.automation.language.scriptextent", "Method[get_startscriptposition]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._startposition]", "ReturnValue", "value"]
+      - ["system.management.automation.language.scriptextent", "Method[get_text]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._startposition].Field[system.management.automation.language.scriptposition.line]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.scriptextent", "Method[scriptextent]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._startposition]", "value"]
+      - ["system.management.automation.language.scriptextent", "Method[scriptextent]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.language.scriptextent._endposition]", "value"]

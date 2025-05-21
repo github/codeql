@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.language.iscriptposition", "Method[get_file]", "Argument[this]", "ReturnValue", "taint"]
-      - ["system.management.automation.language.iscriptposition", "Method[get_line]", "Argument[this]", "ReturnValue", "taint"]
-      - ["system.management.automation.language.iscriptposition", "Method[getfullscript]", "Argument[this]", "ReturnValue", "taint"]
-      

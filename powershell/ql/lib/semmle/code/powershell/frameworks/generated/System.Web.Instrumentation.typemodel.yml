@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.io.textwriter", "system.web.instrumentation.pageexecutioncontext", "Member[textwriter]"]
+    - ["system.boolean", "system.web.instrumentation.pageexecutioncontext", "Member[isliteral]"]
+    - ["system.collections.generic.ilist", "system.web.instrumentation.pageinstrumentationservice", "Member[executionlisteners]"]
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Member[startposition]"]
+    - ["system.boolean", "system.web.instrumentation.pageinstrumentationservice!", "Member[isenabled]"]
+    - ["system.int32", "system.web.instrumentation.pageexecutioncontext", "Member[length]"]
+    - ["system.string", "system.web.instrumentation.pageexecutioncontext", "Member[virtualpath]"]

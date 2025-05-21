@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.windows.forms.layout.arrangedelementcollection", "Member[issynchronized]"]
+    - ["system.collections.ienumerator", "system.windows.forms.layout.arrangedelementcollection", "Method[getenumerator].ReturnValue"]
+    - ["system.int32", "system.windows.forms.layout.arrangedelementcollection", "Method[add].ReturnValue"]
+    - ["system.boolean", "system.windows.forms.layout.layoutengine", "Method[layout].ReturnValue"]
+    - ["system.object", "system.windows.forms.layout.arrangedelementcollection", "Member[syncroot]"]
+    - ["system.boolean", "system.windows.forms.layout.arrangedelementcollection", "Method[equals].ReturnValue"]
+    - ["system.object", "system.windows.forms.layout.arrangedelementcollection", "Member[item]"]
+    - ["system.boolean", "system.windows.forms.layout.tablelayoutsettingstypeconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.int32", "system.windows.forms.layout.arrangedelementcollection", "Member[count]"]
+    - ["system.boolean", "system.windows.forms.layout.arrangedelementcollection", "Method[contains].ReturnValue"]
+    - ["system.boolean", "system.windows.forms.layout.arrangedelementcollection", "Member[isreadonly]"]
+    - ["system.boolean", "system.windows.forms.layout.arrangedelementcollection", "Member[isfixedsize]"]
+    - ["system.int32", "system.windows.forms.layout.arrangedelementcollection", "Method[indexof].ReturnValue"]
+    - ["system.object", "system.windows.forms.layout.tablelayoutsettingstypeconverter", "Method[convertto].ReturnValue"]
+    - ["system.object", "system.windows.forms.layout.tablelayoutsettingstypeconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.boolean", "system.windows.forms.layout.tablelayoutsettingstypeconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.int32", "system.windows.forms.layout.arrangedelementcollection", "Method[gethashcode].ReturnValue"]

@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[converttotype].ReturnValue"]
+    - ["system.string", "system.web.script.serialization.javascripttyperesolver", "Method[resolvetypeid].ReturnValue"]
+    - ["system.int32", "system.web.script.serialization.javascriptserializer", "Member[recursionlimit]"]
+    - ["system.type", "system.web.script.serialization.simpletyperesolver", "Method[resolvetype].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[deserializeobject].ReturnValue"]
+    - ["system.string", "system.web.script.serialization.simpletyperesolver", "Method[resolvetypeid].ReturnValue"]
+    - ["system.boolean", "system.web.script.serialization.scriptignoreattribute", "Member[applytooverrides]"]
+    - ["system.collections.generic.ienumerable", "system.web.script.serialization.javascriptconverter", "Member[supportedtypes]"]
+    - ["system.collections.generic.idictionary", "system.web.script.serialization.javascriptconverter", "Method[serialize].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptserializer", "Method[deserialize].ReturnValue"]
+    - ["t", "system.web.script.serialization.javascriptserializer", "Method[converttotype].ReturnValue"]
+    - ["system.object", "system.web.script.serialization.javascriptconverter", "Method[deserialize].ReturnValue"]
+    - ["system.string", "system.web.script.serialization.javascriptserializer", "Method[serialize].ReturnValue"]
+    - ["system.type", "system.web.script.serialization.javascripttyperesolver", "Method[resolvetype].ReturnValue"]
+    - ["system.int32", "system.web.script.serialization.javascriptserializer", "Member[maxjsonlength]"]
+    - ["t", "system.web.script.serialization.javascriptserializer", "Method[deserialize].ReturnValue"]

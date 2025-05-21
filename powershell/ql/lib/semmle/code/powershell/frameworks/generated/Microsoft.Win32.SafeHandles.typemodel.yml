@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.win32.safehandles.safepipehandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencryptkeyhandle", "Method[releasenativehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safefilehandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safeaccesstokenhandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.saferegistryhandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safeprocesshandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safememorymappedfilehandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safewaithandle", "Method[releasehandle].ReturnValue"]
+    - ["microsoft.win32.safehandles.safeaccesstokenhandle", "microsoft.win32.safehandles.safeaccesstokenhandle!", "Member[invalidhandle]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safex509chainhandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safeprocesshandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencrypthandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safehandleminusoneisinvalid", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safewaithandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.saferegistryhandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencrypthandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safefilehandle", "Member[isasync]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safehandlezeroorminusoneisinvalid", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safex509chainhandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safememorymappedviewhandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencryptproviderhandle", "Method[releasenativehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.criticalhandlezeroorminusoneisinvalid", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safememorymappedfilehandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safepipehandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencryptsecrethandle", "Method[releasenativehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safeaccesstokenhandle", "Member[isinvalid]"]
+    - ["system.boolean", "microsoft.win32.safehandles.safefilehandle", "Method[releasehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.safencrypthandle", "Method[releasenativehandle].ReturnValue"]
+    - ["system.boolean", "microsoft.win32.safehandles.criticalhandleminusoneisinvalid", "Member[isinvalid]"]

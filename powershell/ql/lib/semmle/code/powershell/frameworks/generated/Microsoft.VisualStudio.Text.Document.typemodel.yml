@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[changedsinceopened]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[changedsincesaved]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetypes!", "Member[none]"]
+    - ["microsoft.visualstudio.text.document.changetypes", "microsoft.visualstudio.text.document.changetag", "Member[changetypes]"]

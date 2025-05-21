@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[useragent]"]
+    - ["system.type", "system.runtime.remoting.services.remotingclientproxy", "Member[_type]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[enablecookies]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[domain]"]
+    - ["system.web.httpserverutility", "system.runtime.remoting.services.remotingservice", "Member[server]"]
+    - ["system.security.principal.iprincipal", "system.runtime.remoting.services.remotingservice", "Member[user]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[proxyname]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[url]"]
+    - ["system.runtime.remoting.services.itrackinghandler[]", "system.runtime.remoting.services.trackingservices!", "Member[registeredhandlers]"]
+    - ["system.web.httpcontext", "system.runtime.remoting.services.remotingservice", "Member[context]"]
+    - ["system.web.sessionstate.httpsessionstate", "system.runtime.remoting.services.remotingservice", "Member[session]"]
+    - ["system.object", "system.runtime.remoting.services.enterpriseserviceshelper!", "Method[wrapiunknownwithcomobject].ReturnValue"]
+    - ["system.object", "system.runtime.remoting.services.remotingclientproxy", "Member[_tp]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[_url]"]
+    - ["system.web.httpapplicationstate", "system.runtime.remoting.services.remotingservice", "Member[application]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[username]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[allowautoredirect]"]
+    - ["system.int32", "system.runtime.remoting.services.remotingclientproxy", "Member[proxyport]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[password]"]
+    - ["system.int32", "system.runtime.remoting.services.remotingclientproxy", "Member[timeout]"]
+    - ["system.boolean", "system.runtime.remoting.services.remotingclientproxy", "Member[preauthenticate]"]
+    - ["system.string", "system.runtime.remoting.services.remotingclientproxy", "Member[path]"]
+    - ["system.runtime.remoting.activation.iconstructionreturnmessage", "system.runtime.remoting.services.enterpriseserviceshelper!", "Method[createconstructionreturnmessage].ReturnValue"]
+    - ["system.object", "system.runtime.remoting.services.remotingclientproxy", "Member[cookies]"]

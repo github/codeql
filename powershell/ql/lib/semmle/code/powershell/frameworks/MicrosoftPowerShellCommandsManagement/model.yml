@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.int32", "microsoft.powershell.commands.management.transactedstring", "Member[length]"]
-    - ["system.string", "microsoft.powershell.commands.management.transactedstring", "Method[tostring].ReturnValue"]

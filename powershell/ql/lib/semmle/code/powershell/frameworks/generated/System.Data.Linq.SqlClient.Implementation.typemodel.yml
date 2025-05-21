@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.data.linq.sqlclient.implementation.objectmaterializer", "Method[read].ReturnValue"]
+    - ["system.linq.iorderedenumerable", "system.data.linq.sqlclient.implementation.objectmaterializer!", "Method[createorderedenumerable].ReturnValue"]
+    - ["system.object[]", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[globals]"]
+    - ["system.collections.generic.ienumerable", "system.data.linq.sqlclient.implementation.objectmaterializer", "Method[getnestedlinksource].ReturnValue"]
+    - ["tdatareader", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[datareader]"]
+    - ["system.data.common.dbdatareader", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[bufferreader]"]
+    - ["system.collections.generic.ienumerable", "system.data.linq.sqlclient.implementation.objectmaterializer!", "Method[convert].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.data.linq.sqlclient.implementation.objectmaterializer", "Method[getlinksource].ReturnValue"]
+    - ["system.linq.igrouping", "system.data.linq.sqlclient.implementation.objectmaterializer!", "Method[creategroup].ReturnValue"]
+    - ["system.int32[]", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[ordinals]"]
+    - ["system.boolean", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[candeferload]"]
+    - ["system.object[]", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[arguments]"]
+    - ["system.collections.ienumerable", "system.data.linq.sqlclient.implementation.objectmaterializer", "Method[executesubquery].ReturnValue"]
+    - ["system.object", "system.data.linq.sqlclient.implementation.objectmaterializer", "Method[insertlookup].ReturnValue"]
+    - ["system.exception", "system.data.linq.sqlclient.implementation.objectmaterializer!", "Method[errorassignmenttonull].ReturnValue"]
+    - ["system.object[]", "system.data.linq.sqlclient.implementation.objectmaterializer", "Member[locals]"]

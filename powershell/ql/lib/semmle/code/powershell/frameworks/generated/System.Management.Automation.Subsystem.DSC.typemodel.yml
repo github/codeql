@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.dictionary", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Member[functionstodefine]"]
+    - ["system.string", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[getdscresourceusagestring].ReturnValue"]
+    - ["system.management.automation.subsystem.subsystemkind", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Member[kind]"]
+    - ["system.boolean", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[isdefaultmodulenameformetaconfigresource].ReturnValue"]
+    - ["system.boolean", "system.management.automation.subsystem.dsc.icrossplatformdsc", "Method[issystemresourcename].ReturnValue"]

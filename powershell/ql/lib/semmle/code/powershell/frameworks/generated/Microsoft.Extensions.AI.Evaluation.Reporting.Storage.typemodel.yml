@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[writeresultsasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[readresultsasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresponsecacheprovider", "Method[getcacheasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresponsecacheprovider", "Method[resetasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[getlatestexecutionnamesasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[getlatestexecutionnamesasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresponsecacheprovider", "Method[deleteexpiredcacheentriesasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresponsecacheprovider", "Method[resetasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[writeresultsasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[readresultsasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[deleteresultsasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[getiterationnamesasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresponsecacheprovider", "Method[getcacheasync].ReturnValue"]
+    - ["microsoft.extensions.ai.evaluation.reporting.reportingconfiguration", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedreportingconfiguration!", "Method[create].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresponsecacheprovider", "Method[deleteexpiredcacheentriesasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[getscenarionamesasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.azurestorageresultstore", "Method[getscenarionamesasync].ReturnValue"]
+    - ["system.collections.generic.iasyncenumerable", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[getiterationnamesasync].ReturnValue"]
+    - ["microsoft.extensions.ai.evaluation.reporting.reportingconfiguration", "microsoft.extensions.ai.evaluation.reporting.storage.azurestoragereportingconfiguration!", "Method[create].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.ai.evaluation.reporting.storage.diskbasedresultstore", "Method[deleteresultsasync].ReturnValue"]

@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.powershell", "Method[addargument]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addcommand]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addparameter]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addparameters]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addscript]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[addstatement]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[begininvoke<t>]", "Argument[this].SyntheticField[system.management.automation.powershell.outputbuffer]", "ReturnValue.SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[begininvoke<tinput,toutput>]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.powershell._invokeasyncresult].SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[begininvoke<tinput,toutput>]", "Argument[1]", "ReturnValue.SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[begininvoke]", "Argument[this].SyntheticField[system.management.automation.powershell.outputbuffer]", "ReturnValue.SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[connect]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[connectasync]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.powershell._invokeasyncresult].SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[connectasync]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.powershell.outputbuffer]", "value"]
+      - ["system.management.automation.powershell", "Method[connectasync]", "Argument[this].SyntheticField[system.management.automation.powershell._invokeasyncresult].SyntheticField[system.management.automation.powershellasyncresult.output]", "ReturnValue.SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[connectasync]", "Argument[this].SyntheticField[system.management.automation.powershell.outputbuffer]", "ReturnValue.SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]
+      - ["system.management.automation.powershell", "Method[create]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.powershell", "Method[endinvoke]", "Argument[0].SyntheticField[system.management.automation.powershellasyncresult.output]", "ReturnValue", "value"]
+      - ["system.management.automation.powershell", "Method[invoke<t>]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invoke<t>]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invoke<tinput,toutput>]", "Argument[2]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invoke]", "Argument[1]", "Argument[this]", "taint"]
+      - ["system.management.automation.powershell", "Method[invokeasync<tinput,toutput>]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.powershell._invokeasyncresult].SyntheticField[system.management.automation.powershellasyncresult.output]", "value"]

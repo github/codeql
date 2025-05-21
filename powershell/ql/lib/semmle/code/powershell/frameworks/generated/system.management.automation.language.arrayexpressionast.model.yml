@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.arrayexpressionast", "Method[arrayexpressionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.arrayexpressionast.subexpression]", "value"]
+      - ["system.management.automation.language.arrayexpressionast", "Method[arrayexpressionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.arrayexpressionast.subexpression]", "value"]
+      - ["system.management.automation.language.arrayexpressionast", "Method[arrayexpressionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]

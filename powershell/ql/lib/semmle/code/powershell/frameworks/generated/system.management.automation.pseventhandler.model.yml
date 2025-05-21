@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[0]", "Argument[this].Field[system.management.automation.pseventhandler.eventmanager]", "value"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[1]", "Argument[this].Field[system.management.automation.pseventhandler.sender]", "value"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[2]", "Argument[this].Field[system.management.automation.pseventhandler.sourceidentifier]", "value"]
+      - ["system.management.automation.pseventhandler", "Method[pseventhandler]", "Argument[3]", "Argument[this].Field[system.management.automation.pseventhandler.extradata]", "value"]

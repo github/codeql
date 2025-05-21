@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[ignoreprefix]"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Method[build].ReturnValue"]
+    - ["system.func", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[ignorecondition]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationprovider", "Method[tostring].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[reloadonchange]"]
+    - ["system.string", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[sectiondelimiter]"]
+    - ["system.boolean", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[optional]"]
+    - ["system.int32", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[reloaddelay]"]
+    - ["microsoft.extensions.fileproviders.ifileprovider", "microsoft.extensions.configuration.keyperfile.keyperfileconfigurationsource", "Member[fileprovider]"]

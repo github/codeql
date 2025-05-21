@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.task", "microsoft.extensions.diagnostics.metrics.testing.metriccollector", "Method[waitformeasurementsasync].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.diagnostics.metrics.testing.measurementextensions!", "Method[containstags].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "Method[matchestags].ReturnValue"]
+    - ["system.collections.generic.ireadonlydictionary", "microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "Member[tags]"]
+    - ["t", "microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "Member[value]"]
+    - ["system.diagnostics.metrics.instrument", "microsoft.extensions.diagnostics.metrics.testing.metriccollector", "Member[instrument]"]
+    - ["t", "microsoft.extensions.diagnostics.metrics.testing.measurementextensions!", "Method[evaluateascounter].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "Method[containstags].ReturnValue"]
+    - ["system.datetimeoffset", "microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "Member[timestamp]"]
+    - ["system.collections.generic.ienumerable", "microsoft.extensions.diagnostics.metrics.testing.measurementextensions!", "Method[matchestags].ReturnValue"]
+    - ["microsoft.extensions.diagnostics.metrics.testing.collectedmeasurement", "microsoft.extensions.diagnostics.metrics.testing.metriccollector", "Member[lastmeasurement]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.diagnostics.metrics.testing.metriccollector", "Method[getmeasurementsnapshot].ReturnValue"]

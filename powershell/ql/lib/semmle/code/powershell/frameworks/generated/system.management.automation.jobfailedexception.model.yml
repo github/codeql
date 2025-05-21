@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.jobfailedexception", "Method[get_displayscriptposition]", "Argument[this].SyntheticField[system.management.automation.jobfailedexception._displayscriptposition]", "ReturnValue", "value"]
+      - ["system.management.automation.jobfailedexception", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.jobfailedexception", "Method[get_reason]", "Argument[this].SyntheticField[system.management.automation.jobfailedexception._reason]", "ReturnValue", "value"]
+      - ["system.management.automation.jobfailedexception", "Method[jobfailedexception]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.jobfailedexception._reason]", "value"]
+      - ["system.management.automation.jobfailedexception", "Method[jobfailedexception]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.jobfailedexception._displayscriptposition]", "value"]

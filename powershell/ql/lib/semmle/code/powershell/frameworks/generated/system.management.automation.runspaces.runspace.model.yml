@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.runspace", "Method[createdisconnectedpipeline]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[createdisconnectedpowershell]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[get_connectioninfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[get_debugger]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[get_events]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[get_jobmanager]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[get_runspacestateinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspace", "Method[getapplicationprivatedata]", "Argument[this]", "ReturnValue", "taint"]

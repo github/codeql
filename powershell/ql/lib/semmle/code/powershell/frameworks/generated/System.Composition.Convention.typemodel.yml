@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[addpartmetadata].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[exportinterfaces].ReturnValue"]
+    - ["system.composition.convention.importconventionbuilder", "system.composition.convention.importconventionbuilder", "Method[ascontractname].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.composition.convention.conventionbuilder", "Method[getcustomattributes].ReturnValue"]
+    - ["system.composition.convention.exportconventionbuilder", "system.composition.convention.exportconventionbuilder", "Method[ascontracttype].ReturnValue"]
+    - ["t", "system.composition.convention.parameterimportconventionbuilder", "Method[import].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.conventionbuilder", "Method[fortypesderivedfrom].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[importproperty].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.conventionbuilder", "Method[fortype].ReturnValue"]
+    - ["system.composition.convention.exportconventionbuilder", "system.composition.convention.exportconventionbuilder", "Method[addmetadata].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.conventionbuilder", "Method[fortypesmatching].ReturnValue"]
+    - ["system.composition.convention.exportconventionbuilder", "system.composition.convention.exportconventionbuilder", "Method[ascontractname].ReturnValue"]
+    - ["system.composition.convention.importconventionbuilder", "system.composition.convention.importconventionbuilder", "Method[asmany].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.composition.convention.attributedmodelprovider", "Method[getcustomattributes].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[importproperties].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[notifyimportssatisfied].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[selectconstructor].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[shared].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[export].ReturnValue"]
+    - ["system.composition.convention.importconventionbuilder", "system.composition.convention.importconventionbuilder", "Method[allowdefault].ReturnValue"]
+    - ["system.composition.convention.importconventionbuilder", "system.composition.convention.importconventionbuilder", "Method[addmetadataconstraint].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[exportproperty].ReturnValue"]
+    - ["system.composition.convention.partconventionbuilder", "system.composition.convention.partconventionbuilder", "Method[exportproperties].ReturnValue"]

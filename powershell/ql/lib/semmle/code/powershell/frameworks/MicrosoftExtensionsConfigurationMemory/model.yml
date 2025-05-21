@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.collections.generic.ienumerable<system.collections.generic.keyvaluepair<system.string,system.string>>", "microsoft.extensions.configuration.memory.memoryconfigurationsource", "Member[initialdata]"]
-    - ["system.collections.generic.ienumerator<system.collections.generic.keyvaluepair<system.string,system.string>>", "microsoft.extensions.configuration.memory.memoryconfigurationprovider", "Method[getenumerator].ReturnValue"]
-    - ["system.collections.ienumerator", "microsoft.extensions.configuration.memory.memoryconfigurationprovider", "Method[system.collections.ienumerable.getenumerator].ReturnValue"]
-    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.memory.memoryconfigurationsource", "Method[build].ReturnValue"]

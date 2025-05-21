@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassificationtypeconverter", "Method[canconvertto].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassificationset", "Method[equals].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.classification.dataclassification", "Method[tostring].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassificationset", "microsoft.extensions.compliance.classification.dataclassificationset!", "Method[fromdataclassification].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassificationtypeconverter", "Method[canconvertfrom].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.classification.dataclassification", "Member[value]"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassification!", "Method[op_inequality].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassification!", "Method[op_equality].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassification", "microsoft.extensions.compliance.classification.dataclassification!", "Member[unknown]"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassificationtypeconverter", "Method[isvalid].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.classification.dataclassificationset", "Method[gethashcode].ReturnValue"]
+    - ["system.string", "microsoft.extensions.compliance.classification.dataclassification", "Member[taxonomyname]"]
+    - ["system.string", "microsoft.extensions.compliance.classification.dataclassificationset", "Method[tostring].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassificationset", "microsoft.extensions.compliance.classification.dataclassificationset!", "Method[op_implicit].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassification", "microsoft.extensions.compliance.classification.dataclassification!", "Member[none]"]
+    - ["system.object", "microsoft.extensions.compliance.classification.dataclassificationtypeconverter", "Method[convertfrom].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.compliance.classification.dataclassification", "Method[gethashcode].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassification", "microsoft.extensions.compliance.classification.dataclassificationattribute", "Member[classification]"]
+    - ["system.string", "microsoft.extensions.compliance.classification.dataclassificationattribute", "Member[notes]"]
+    - ["system.boolean", "microsoft.extensions.compliance.classification.dataclassification", "Method[equals].ReturnValue"]
+    - ["microsoft.extensions.compliance.classification.dataclassificationset", "microsoft.extensions.compliance.classification.dataclassificationset", "Method[union].ReturnValue"]

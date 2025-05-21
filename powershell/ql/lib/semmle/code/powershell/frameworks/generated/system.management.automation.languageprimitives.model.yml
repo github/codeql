@@ -1,0 +1,18 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.languageprimitives", "Method[convertpsobjecttotype]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.languageprimitives", "Method[convertto<t>]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.languageprimitives", "Method[convertto]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.languageprimitives", "Method[convertto]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.management.automation.languageprimitives", "Method[getenumerable]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.languageprimitives", "Method[getpsdatacollection]", "Argument[0]", "ReturnValue.Element", "value"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto<t>]", "Argument[0]", "Argument[1]", "value"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto<t>]", "Argument[0]", "Argument[2]", "value"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto<t>]", "Argument[1]", "Argument[2]", "taint"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto]", "Argument[0]", "Argument[2]", "value"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto]", "Argument[0]", "Argument[3]", "value"]
+      - ["system.management.automation.languageprimitives", "Method[tryconvertto]", "Argument[2]", "Argument[3]", "taint"]

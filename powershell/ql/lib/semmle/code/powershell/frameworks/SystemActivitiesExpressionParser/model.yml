@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.collections.generic.ienumerable<system.codedom.compiler.compilererror>", "system.activities.expressionparser.sourceexpressionexception", "Member[errors]"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psvariable", "Method[get_modulename]", "Argument[this].Field[system.management.automation.psvariable.module].Field[system.management.automation.psmoduleinfo.name]", "ReturnValue", "value"]
+      - ["system.management.automation.psvariable", "Method[psvariable]", "Argument[0]", "Argument[this].Field[system.management.automation.psvariable.name]", "value"]

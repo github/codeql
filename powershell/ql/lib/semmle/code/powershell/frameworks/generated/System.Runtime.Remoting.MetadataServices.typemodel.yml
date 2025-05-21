@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.remoting.channels.iserverchannelsink", "system.runtime.remoting.metadataservices.sdlchannelsinkprovider", "Method[createsink].ReturnValue"]
+    - ["system.collections.idictionary", "system.runtime.remoting.metadataservices.sdlchannelsink", "Member[properties]"]
+    - ["system.runtime.remoting.channels.serverprocessing", "system.runtime.remoting.metadataservices.sdlchannelsink", "Method[processmessage].ReturnValue"]
+    - ["system.string", "system.runtime.remoting.metadataservices.servicetype", "Member[url]"]
+    - ["system.runtime.remoting.metadataservices.sdltype", "system.runtime.remoting.metadataservices.sdltype!", "Member[wsdl]"]
+    - ["system.runtime.remoting.channels.iserverchannelsinkprovider", "system.runtime.remoting.metadataservices.sdlchannelsinkprovider", "Member[next]"]
+    - ["system.runtime.remoting.metadataservices.sdltype", "system.runtime.remoting.metadataservices.sdltype!", "Member[sdl]"]
+    - ["system.type", "system.runtime.remoting.metadataservices.servicetype", "Member[objecttype]"]
+    - ["system.runtime.remoting.channels.iserverchannelsink", "system.runtime.remoting.metadataservices.sdlchannelsink", "Member[nextchannelsink]"]
+    - ["system.io.stream", "system.runtime.remoting.metadataservices.sdlchannelsink", "Method[getresponsestream].ReturnValue"]

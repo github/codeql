@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.activities.presentation.annotations.annotation!", "Member[annotationtextpropertyname]"]
+    - ["system.string", "system.activities.presentation.annotations.annotation!", "Method[getannotationtext].ReturnValue"]
+    - ["system.xaml.attachablememberidentifier", "system.activities.presentation.annotations.annotation!", "Member[annotationtextproperty]"]

@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator", "Method[createinstance].ReturnValue"]
+    - ["system.security.policy.evidencebase", "system.runtime.hosting.activationarguments", "Method[clone].ReturnValue"]
+    - ["system.string[]", "system.runtime.hosting.activationarguments", "Member[activationdata]"]
+    - ["system.runtime.remoting.objecthandle", "system.runtime.hosting.applicationactivator!", "Method[createinstancehelper].ReturnValue"]
+    - ["system.applicationidentity", "system.runtime.hosting.activationarguments", "Member[applicationidentity]"]
+    - ["system.activationcontext", "system.runtime.hosting.activationarguments", "Member[activationcontext]"]

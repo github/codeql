@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.warningrecord", "Method[get_fullyqualifiedwarningid]", "Argument[this].SyntheticField[system.management.automation.warningrecord._fullyqualifiedwarningid]", "ReturnValue", "value"]
+      - ["system.management.automation.warningrecord", "Method[warningrecord]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.warningrecord._fullyqualifiedwarningid]", "value"]

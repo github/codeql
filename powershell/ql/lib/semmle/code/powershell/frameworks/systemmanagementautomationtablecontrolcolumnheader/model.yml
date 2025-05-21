@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.tablecontrolcolumnheader", "Method[tablecontrolcolumnheader]", "Argument[0]", "Argument[this]", "taint"]
-      

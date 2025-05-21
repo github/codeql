@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[1]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.labeledstatementast.label]", "value"]
+      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[3]", "Argument[3].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.loopstatementast.body]", "value"]
+      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[3]", "Argument[this].Field[system.management.automation.language.loopstatementast.body]", "value"]
+      - ["system.management.automation.language.loopstatementast", "Method[loopstatementast]", "Argument[this]", "Argument[3].Field[system.management.automation.language.ast.parent]", "value"]

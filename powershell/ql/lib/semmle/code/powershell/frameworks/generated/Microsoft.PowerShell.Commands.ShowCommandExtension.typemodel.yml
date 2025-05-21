@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[name]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isboolean]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[modulename]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametersetinfo", "Member[isdefault]"]
+    - ["microsoft.powershell.commands.showcommandextension.showcommandmoduleinfo", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[module]"]
+    - ["system.collections.generic.icollection", "microsoft.powershell.commands.showcommandextension.showcommandparametersetinfo", "Member[parameters]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[definition]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[fullname]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isscriptblock]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[implementsdictionary]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[hasflagattribute]"]
+    - ["system.collections.generic.ilist", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[validparamsetvalues]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[valuefrompipeline]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[name]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[ismandatory]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isenum]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isarray]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isstring]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[isswitch]"]
+    - ["system.int32", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[position]"]
+    - ["system.boolean", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[hasparameterset]"]
+    - ["system.management.automation.commandtypes", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[commandtype]"]
+    - ["system.collections.generic.icollection", "microsoft.powershell.commands.showcommandextension.showcommandcommandinfo", "Member[parametersets]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandmoduleinfo", "Member[name]"]
+    - ["system.string", "microsoft.powershell.commands.showcommandextension.showcommandparametersetinfo", "Member[name]"]
+    - ["microsoft.powershell.commands.showcommandextension.showcommandparametertype", "microsoft.powershell.commands.showcommandextension.showcommandparameterinfo", "Member[parametertype]"]
+    - ["system.collections.arraylist", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[enumvalues]"]
+    - ["microsoft.powershell.commands.showcommandextension.showcommandparametertype", "microsoft.powershell.commands.showcommandextension.showcommandparametertype", "Member[elementtype]"]

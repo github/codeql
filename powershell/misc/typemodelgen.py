@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 import sys
 import os
+import re
 from collections import defaultdict
 
 
@@ -9,9 +10,17 @@ def fixup(t):
     """Sometimes the docs specify a type that doesn't align with what
     PowerShell reports. This function fixes up those types so that it aligns with PowerShell.
     """
-    if t.startswith("System.ReadOnlySpan<"):
-        return "System.String"
-    return t
+    if t.startswith("system.readonlyspan<"):
+        return "system.string"
+    # A regular expression that matches strings like a.b.c<T, U, W>
+    # and replacee it with a.b.c
+    return re.sub(r"<.*>", "", t)
+
+def skipQualifier(name):
+    """Removes the qualifier from the name."""
+    # A regular expression that matches strings like a.b.c and returns c
+    # and replaces it with c
+    return re.sub(r".*\.", "", name)
 
 
 def isStatic(member):
@@ -88,11 +97,18 @@ def generateTypeModels(arg):
 
             thisType = root.attrib["FullName"]
 
-            if "`" in file_path.stem or "+" in file_path.stem:
-                continue  # Skip generics (and nested types?) for now
+            parentName = file_path.parent.name
+            # Remove `and + in parentName
+            parentName = parentName.replace("`", "").replace("+", "")
 
-            folderName = "generated/" + file_path.parent.name.replace(".", "")
-            filename = folderName + "/typemodel.yml"
+            # Remove ` in file_path.stem
+            # and + in file_path.stem
+            if thisType == "":
+                print("Error: Empty type name")
+                continue
+
+            folderName = "generated/" + parentName
+            filename = folderName + ".typemodel.yml"
             s = set()
             for elem in root.findall(".//Members/Member"):
                 name = elem.attrib["MemberName"]
@@ -136,7 +152,7 @@ def generateTypeModels(arg):
                     continue  # Don't generate type summaries for void methods
 
                 s.add(
-                    f'    - ["{fixup(returnType.lower())}", "{thisType.lower() + staticMarker}", "{startSelectorMarker}[{name.lower()}]{endSelectorMarker}"]\n'
+                    f'    - ["{fixup(returnType.lower())}", "{fixup(thisType.lower()) + staticMarker}", "{startSelectorMarker}[{skipQualifier(fixup(name.lower()))}]{endSelectorMarker}"]\n'
                 )
 
             summaries[filename].update(s)
@@ -153,7 +169,7 @@ def writeModels():
         if len(s) == 0:
             continue
         os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, "x") as file:
+        with open(filename, "w") as file:
             file.write("# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.\n")
             file.write("extensions:\n")
             file.write("  - addsTo:\n")

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.runtime.designerservices.windowsruntimedesignercontext", "Member[name]"]
+    - ["system.type", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[gettype].ReturnValue"]
+    - ["system.reflection.assembly", "system.runtime.designerservices.windowsruntimedesignercontext", "Method[getassembly].ReturnValue"]

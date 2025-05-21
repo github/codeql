@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.pssession", "Method[create]", "Argument[1]", "ReturnValue.SyntheticField[system.management.automation.runspaces.pssession._transportname]", "value"]
+      - ["system.management.automation.runspaces.pssession", "Method[get_applicationprivatedata]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pssession", "Method[get_instanceid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pssession", "Method[get_runspace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.pssession", "Method[get_transport]", "Argument[this].SyntheticField[system.management.automation.runspaces.pssession._transportname]", "ReturnValue", "value"]
+      - ["system.management.automation.runspaces.pssession", "Method[tostring]", "Argument[this].Field[system.management.automation.runspaces.pssession.name]", "ReturnValue", "taint"]

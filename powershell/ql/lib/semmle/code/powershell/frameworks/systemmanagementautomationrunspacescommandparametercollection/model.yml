@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.runspaces.commandparametercollection", "Method[add]", "Argument[0]", "Argument[this]", "taint"]
-      - ["system.management.automation.runspaces.commandparametercollection", "Method[add]", "Argument[1]", "Argument[this]", "taint"]
-      

@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.runspaces.psconsoleloadexception", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
-      

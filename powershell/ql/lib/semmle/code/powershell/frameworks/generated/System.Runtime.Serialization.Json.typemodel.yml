@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.xml.xmldictionaryreader", "system.runtime.serialization.json.jsonreaderwriterfactory!", "Method[createjsonreader].ReturnValue"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[usesimpledictionaryformat]"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[serializereadonlytypes]"]
+    - ["system.runtime.serialization.emittypeinformation", "system.runtime.serialization.json.datacontractjsonserializer", "Member[emittypeinformation]"]
+    - ["system.string", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[rootname]"]
+    - ["system.collections.generic.ienumerable", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[knowntypes]"]
+    - ["system.runtime.serialization.idatacontractsurrogate", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[datacontractsurrogate]"]
+    - ["system.xml.xmldictionarywriter", "system.runtime.serialization.json.jsonreaderwriterfactory!", "Method[createjsonwriter].ReturnValue"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializer", "Member[serializereadonlytypes]"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializer", "Member[ignoreextensiondataobject]"]
+    - ["system.runtime.serialization.idatacontractsurrogate", "system.runtime.serialization.json.datacontractjsonserializer", "Member[datacontractsurrogate]"]
+    - ["system.runtime.serialization.datetimeformat", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[datetimeformat]"]
+    - ["system.int32", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[maxitemsinobjectgraph]"]
+    - ["system.runtime.serialization.iserializationsurrogateprovider", "system.runtime.serialization.json.datacontractjsonserializer", "Method[getserializationsurrogateprovider].ReturnValue"]
+    - ["system.object", "system.runtime.serialization.json.datacontractjsonserializer", "Method[readobject].ReturnValue"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializer", "Member[usesimpledictionaryformat]"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializer", "Method[isstartobject].ReturnValue"]
+    - ["system.runtime.serialization.emittypeinformation", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[emittypeinformation]"]
+    - ["system.boolean", "system.runtime.serialization.json.datacontractjsonserializersettings", "Member[ignoreextensiondataobject]"]
+    - ["system.collections.objectmodel.readonlycollection", "system.runtime.serialization.json.datacontractjsonserializer", "Member[knowntypes]"]
+    - ["system.int32", "system.runtime.serialization.json.datacontractjsonserializer", "Member[maxitemsinobjectgraph]"]
+    - ["system.runtime.serialization.datetimeformat", "system.runtime.serialization.json.datacontractjsonserializer", "Member[datetimeformat]"]

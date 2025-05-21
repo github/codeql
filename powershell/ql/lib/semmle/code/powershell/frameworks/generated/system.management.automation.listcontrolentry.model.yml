@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.listcontrolentry", "Method[get_selectedby]", "Argument[this].Field[system.management.automation.listcontrolentry.entryselectedby].Field[system.management.automation.entryselectedby.typenames]", "ReturnValue", "value"]
+      - ["system.management.automation.listcontrolentry", "Method[listcontrolentry]", "Argument[0].Element", "Argument[this].Field[system.management.automation.listcontrolentry.items].Element", "value"]
+      - ["system.management.automation.listcontrolentry", "Method[listcontrolentry]", "Argument[1].Element", "Argument[this].Field[system.management.automation.listcontrolentry.entryselectedby].Field[system.management.automation.entryselectedby.typenames]", "taint"]

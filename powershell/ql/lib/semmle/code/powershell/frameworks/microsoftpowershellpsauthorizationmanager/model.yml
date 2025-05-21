@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.psauthorizationmanager", "Method[psauthorizationmanager]", "Argument[0]", "Argument[this]", "taint"]
-      

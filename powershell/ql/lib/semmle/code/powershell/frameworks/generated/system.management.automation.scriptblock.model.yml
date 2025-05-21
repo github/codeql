@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.scriptblock", "Method[get_ast]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_attributes]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_id]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_module]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[get_startposition]", "Argument[this].Field[system.management.automation.scriptblock.ast].Field[system.management.automation.language.ast.extent]", "ReturnValue.SyntheticField[system.management.automation.pstoken._extent]", "value"]
+      - ["system.management.automation.scriptblock", "Method[getnewclosure]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.scriptblock", "Method[getpowershell]", "Argument[0].Element.Field[system.collections.generic.keyvaluepair`2.key]", "Argument[1].Element.Field[system.collections.generic.keyvaluepair`2.key]", "value"]
+      - ["system.management.automation.scriptblock", "Method[getpowershell]", "Argument[0].Element.Field[system.collections.generic.keyvaluepair`2.value]", "Argument[1].Element.Field[system.collections.generic.keyvaluepair`2.value]", "value"]
+      - ["system.management.automation.scriptblock", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

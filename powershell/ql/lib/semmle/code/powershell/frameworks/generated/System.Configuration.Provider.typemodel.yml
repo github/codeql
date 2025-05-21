@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.configuration.provider.providercollection", "Member[issynchronized]"]
+    - ["system.collections.ienumerator", "system.configuration.provider.providercollection", "Method[getenumerator].ReturnValue"]
+    - ["system.object", "system.configuration.provider.providercollection", "Member[syncroot]"]
+    - ["system.configuration.provider.providerbase", "system.configuration.provider.providercollection", "Member[item]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Member[description]"]
+    - ["system.string", "system.configuration.provider.providerbase", "Member[name]"]
+    - ["system.int32", "system.configuration.provider.providercollection", "Member[count]"]

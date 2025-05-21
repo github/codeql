@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.componentmodel.composition.registration.exportbuilder", "system.componentmodel.composition.registration.exportbuilder", "Method[ascontractname].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[asmany].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[ascontractname].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[exportproperty].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[selectconstructor].ReturnValue"]
+    - ["system.componentmodel.composition.registration.exportbuilder", "system.componentmodel.composition.registration.exportbuilder", "Method[addmetadata].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.registrationbuilder", "Method[fortypesderivedfrom].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[exportinterfaces].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.componentmodel.composition.registration.registrationbuilder", "Method[getcustomattributes].ReturnValue"]
+    - ["system.componentmodel.composition.registration.exportbuilder", "system.componentmodel.composition.registration.exportbuilder", "Method[ascontracttype].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[allowrecomposition].ReturnValue"]
+    - ["system.componentmodel.composition.registration.exportbuilder", "system.componentmodel.composition.registration.exportbuilder", "Method[inherited].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[ascontracttype].ReturnValue"]
+    - ["t", "system.componentmodel.composition.registration.parameterimportbuilder", "Method[import].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[importproperty].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[setcreationpolicy].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[source].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.registrationbuilder", "Method[fortype].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[importproperties].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.registrationbuilder", "Method[fortypesmatching].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[allowdefault].ReturnValue"]
+    - ["system.componentmodel.composition.registration.importbuilder", "system.componentmodel.composition.registration.importbuilder", "Method[requiredcreationpolicy].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[addmetadata].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[exportproperties].ReturnValue"]
+    - ["system.componentmodel.composition.registration.partbuilder", "system.componentmodel.composition.registration.partbuilder", "Method[export].ReturnValue"]

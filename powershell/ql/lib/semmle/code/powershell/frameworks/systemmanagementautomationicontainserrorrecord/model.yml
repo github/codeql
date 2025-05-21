@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.icontainserrorrecord", "Method[get_errorrecord]", "Argument[this]", "ReturnValue", "taint"]
-      

@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.assignmentstatementast.left]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[1]", "Argument[3].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.assignmentstatementast.left]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.assignmentstatementast.left]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[4]", "Argument[this].Field[system.management.automation.language.assignmentstatementast.errorposition]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[assignmentstatementast]", "Argument[this]", "Argument[3].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.assignmentstatementast", "Method[getassignmenttargets]", "Argument[this].Field[system.management.automation.language.assignmentstatementast.left]", "ReturnValue.Element", "value"]

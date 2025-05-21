@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.listentrybuilder", "Method[additemproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.listentrybuilder", "Method[additemscriptblock]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.listentrybuilder", "Method[endentry]", "Argument[this].SyntheticField[system.management.automation.listentrybuilder._listbuilder]", "ReturnValue", "value"]

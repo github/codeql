@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.task", "system.net.serversentevents.sseformatter!", "Method[writeasync].ReturnValue"]
+    - ["system.string", "system.net.serversentevents.sseparser!", "Member[eventtypedefault]"]
+    - ["system.timespan", "system.net.serversentevents.sseparser", "Member[reconnectioninterval]"]
+    - ["system.string", "system.net.serversentevents.sseitem", "Member[eventid]"]
+    - ["system.string", "system.net.serversentevents.sseparser", "Member[lasteventid]"]
+    - ["system.nullable", "system.net.serversentevents.sseitem", "Member[reconnectioninterval]"]
+    - ["system.collections.generic.iasyncenumerable", "system.net.serversentevents.sseparser", "Method[enumerateasync].ReturnValue"]
+    - ["t", "system.net.serversentevents.sseitem", "Member[data]"]
+    - ["system.string", "system.net.serversentevents.sseitem", "Member[eventtype]"]
+    - ["system.net.serversentevents.sseparser", "system.net.serversentevents.sseparser!", "Method[create].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.net.serversentevents.sseparser", "Method[enumerate].ReturnValue"]

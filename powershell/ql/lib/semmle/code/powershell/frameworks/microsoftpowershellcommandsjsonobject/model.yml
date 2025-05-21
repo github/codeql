@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.commands.jsonobject!", "Method[convertfromjson]", "Argument[0]", "ReturnValue", "taint"]
-      - ["microsoft.powershell.commands.jsonobject!", "Method[converttojson]", "Argument[0]", "ReturnValue", "taint"]
-      

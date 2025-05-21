@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[error]"]
+    - ["system.guid", "system.activities.presentation.validation.validationerrorinfo", "Member[sourcereferenceid]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[warning]"]
+    - ["system.activities.validation.validationsettings", "system.activities.presentation.validation.validationservice", "Member[settings]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[valid]"]
+    - ["system.boolean", "system.activities.presentation.validation.validationerrorinfo", "Member[iswarning]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[propertyname]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[id]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[filename]"]
+    - ["system.activities.presentation.validation.validationstate", "system.activities.presentation.validation.validationstate!", "Member[childinvalid]"]
+    - ["system.string", "system.activities.presentation.validation.validationerrorinfo", "Member[message]"]

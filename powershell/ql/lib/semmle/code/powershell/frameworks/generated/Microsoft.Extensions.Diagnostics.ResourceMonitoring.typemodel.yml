@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "Member[snapshot]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[collectionwindow]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.iresourcemonitorbuilder", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringbuilderextensions!", "Method[configuremonitor].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "Member[totaltimesincestart]"]
+    - ["system.double", "microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "Member[memoryusedpercentage]"]
+    - ["microsoft.extensions.dependencyinjection.iservicecollection", "microsoft.extensions.diagnostics.resourcemonitoring.iresourcemonitorbuilder", "Member[services]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "microsoft.extensions.diagnostics.resourcemonitoring.isnapshotprovider", "Member[resources]"]
+    - ["system.boolean", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[usezerotoonerangeformetrics]"]
+    - ["system.double", "microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "Member[guaranteedcpuunits]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[publishingwindow]"]
+    - ["system.double", "microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "Member[maximumcpuunits]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[cpuconsumptionrefreshinterval]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[sourceipaddresses]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "microsoft.extensions.diagnostics.resourcemonitoring.isnapshotprovider", "Method[getsnapshot].ReturnValue"]
+    - ["system.double", "microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "Member[cpuusedpercentage]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[memoryconsumptionrefreshinterval]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "microsoft.extensions.diagnostics.resourcemonitoring.iresourcemonitor", "Method[getutilization].ReturnValue"]
+    - ["system.uint64", "microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "Member[memoryusedinbytes]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.resourcemonitoringoptions", "Member[samplinginterval]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.diagnostics.resourcemonitoring.iresourceutilizationpublisher", "Method[publishasync].ReturnValue"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "Member[usertimesincestart]"]
+    - ["system.uint64", "microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "Member[guaranteedmemoryinbytes]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "microsoft.extensions.diagnostics.resourcemonitoring.resourceutilization", "Member[systemresources]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "Member[kerneltimesincestart]"]
+    - ["system.uint64", "microsoft.extensions.diagnostics.resourcemonitoring.snapshot", "Member[memoryusageinbytes]"]
+    - ["microsoft.extensions.diagnostics.resourcemonitoring.iresourcemonitorbuilder", "microsoft.extensions.diagnostics.resourcemonitoring.iresourcemonitorbuilder", "Method[addpublisher].ReturnValue"]
+    - ["system.uint64", "microsoft.extensions.diagnostics.resourcemonitoring.systemresources", "Member[maximummemoryinbytes]"]

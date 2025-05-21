@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[timestamp]"]
+    - ["system.windows.rect", "system.windows.input.stylusplugins.stylusplugin", "Member[elementbounds]"]
+    - ["system.windows.threading.dispatcher", "system.windows.input.stylusplugins.dynamicrenderer", "Method[getdispatcher].ReturnValue"]
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[tabletdeviceid]"]
+    - ["system.boolean", "system.windows.input.stylusplugins.stylusplugin", "Member[isactiveforinput]"]
+    - ["system.windows.input.styluspointcollection", "system.windows.input.stylusplugins.rawstylusinput", "Method[getstyluspoints].ReturnValue"]
+    - ["system.windows.media.visual", "system.windows.input.stylusplugins.dynamicrenderer", "Member[rootvisual]"]
+    - ["system.windows.uielement", "system.windows.input.stylusplugins.stylusplugin", "Member[element]"]
+    - ["system.boolean", "system.windows.input.stylusplugins.stylusplugin", "Member[enabled]"]
+    - ["system.int32", "system.windows.input.stylusplugins.rawstylusinput", "Member[stylusdeviceid]"]
+    - ["system.windows.ink.drawingattributes", "system.windows.input.stylusplugins.dynamicrenderer", "Member[drawingattributes]"]

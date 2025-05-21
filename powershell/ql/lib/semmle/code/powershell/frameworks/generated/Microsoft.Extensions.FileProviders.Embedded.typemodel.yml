@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.io.stream", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Method[createreadstream].ReturnValue"]
+    - ["system.string", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[physicalpath]"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[exists]"]
+    - ["system.int64", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[length]"]
+    - ["system.string", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[name]"]
+    - ["system.datetimeoffset", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[lastmodified]"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.embedded.embeddedresourcefileinfo", "Member[isdirectory]"]

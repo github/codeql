@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.web.applicationservices.creatingcookieeventargs", "Member[ispersistent]"]
+    - ["system.type[]", "system.web.applicationservices.knowntypesprovider!", "Method[getknowntypes].ReturnValue"]
+    - ["system.string", "system.web.applicationservices.creatingcookieeventargs", "Member[customcredential]"]
+    - ["system.boolean", "system.web.applicationservices.authenticationservice", "Method[isloggedin].ReturnValue"]
+    - ["system.string", "system.web.applicationservices.profilepropertymetadata", "Member[typename]"]
+    - ["system.string", "system.web.applicationservices.authenticatingeventargs", "Member[password]"]
+    - ["system.boolean", "system.web.applicationservices.profilepropertymetadata", "Member[isreadonly]"]
+    - ["system.string", "system.web.applicationservices.profilepropertymetadata", "Member[propertyname]"]
+    - ["system.collections.objectmodel.collection", "system.web.applicationservices.profileservice", "Method[setpropertiesforcurrentuser].ReturnValue"]
+    - ["system.boolean", "system.web.applicationservices.authenticatingeventargs", "Member[authenticated]"]
+    - ["system.servicemodel.servicehost", "system.web.applicationservices.applicationserviceshostfactory", "Method[createservicehost].ReturnValue"]
+    - ["system.boolean", "system.web.applicationservices.authenticatingeventargs", "Member[authenticationiscomplete]"]
+    - ["system.boolean", "system.web.applicationservices.roleservice", "Method[iscurrentuserinrole].ReturnValue"]
+    - ["system.runtime.serialization.extensiondataobject", "system.web.applicationservices.profilepropertymetadata", "Member[extensiondata]"]
+    - ["system.collections.objectmodel.collection", "system.web.applicationservices.validatingpropertieseventargs", "Member[failedproperties]"]
+    - ["system.boolean", "system.web.applicationservices.profilepropertymetadata", "Member[allowanonymousaccess]"]
+    - ["system.string", "system.web.applicationservices.creatingcookieeventargs", "Member[username]"]
+    - ["system.string", "system.web.applicationservices.authenticatingeventargs", "Member[username]"]
+    - ["system.string", "system.web.applicationservices.authenticatingeventargs", "Member[customcredential]"]
+    - ["system.collections.generic.dictionary", "system.web.applicationservices.profileservice", "Method[getallpropertiesforcurrentuser].ReturnValue"]
+    - ["system.boolean", "system.web.applicationservices.authenticationservice", "Method[login].ReturnValue"]
+    - ["system.boolean", "system.web.applicationservices.creatingcookieeventargs", "Member[cookieisset]"]
+    - ["system.string[]", "system.web.applicationservices.roleservice", "Method[getrolesforcurrentuser].ReturnValue"]
+    - ["system.security.principal.iprincipal", "system.web.applicationservices.selectingprovidereventargs", "Member[user]"]
+    - ["system.collections.generic.dictionary", "system.web.applicationservices.profileservice", "Method[getpropertiesforcurrentuser].ReturnValue"]
+    - ["system.web.applicationservices.profilepropertymetadata[]", "system.web.applicationservices.profileservice", "Method[getpropertiesmetadata].ReturnValue"]
+    - ["system.string", "system.web.applicationservices.selectingprovidereventargs", "Member[providername]"]
+    - ["system.string", "system.web.applicationservices.creatingcookieeventargs", "Member[password]"]
+    - ["system.collections.generic.idictionary", "system.web.applicationservices.validatingpropertieseventargs", "Member[properties]"]
+    - ["system.boolean", "system.web.applicationservices.authenticationservice", "Method[validateuser].ReturnValue"]
+    - ["system.string", "system.web.applicationservices.profilepropertymetadata", "Member[defaultvalue]"]
+    - ["system.int32", "system.web.applicationservices.profilepropertymetadata", "Member[serializeas]"]

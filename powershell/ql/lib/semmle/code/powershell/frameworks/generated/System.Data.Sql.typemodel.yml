@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.data.sql.sqlnotificationrequest", "Member[userdata]"]
+    - ["system.string", "system.data.sql.sqlnotificationrequest", "Member[options]"]
+    - ["system.int32", "system.data.sql.sqlnotificationrequest", "Member[timeout]"]
+    - ["system.data.sql.sqldatasourceenumerator", "system.data.sql.sqldatasourceenumerator!", "Member[instance]"]
+    - ["system.data.datatable", "system.data.sql.sqldatasourceenumerator", "Method[getdatasources].ReturnValue"]

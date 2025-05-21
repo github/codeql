@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Member[token]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingattribute", "Member[steppingoption]"]
+    - ["system.workflow.componentmodel.activity", "system.workflow.runtime.debugengine.iinstancetable", "Method[getactivity].ReturnValue"]
+    - ["system.object", "system.workflow.runtime.debugengine.debugcontroller", "Method[initializelifetimeservice].ReturnValue"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Member[sequential]"]
+    - ["system.workflow.runtime.debugengine.workflowdebuggersteppingoption", "system.workflow.runtime.debugengine.workflowdebuggersteppingoption!", "Member[concurrent]"]
+    - ["system.string", "system.workflow.runtime.debugengine.activityhandlerdescriptor", "Member[name]"]

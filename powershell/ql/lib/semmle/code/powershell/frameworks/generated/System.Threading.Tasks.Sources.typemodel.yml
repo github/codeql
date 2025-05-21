@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.manualresetvaluetasksourcecore", "Method[getstatus].ReturnValue"]
+    - ["system.int16", "system.threading.tasks.sources.manualresetvaluetasksourcecore", "Member[version]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[succeeded]"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[useschedulingcontext]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[pending]"]
+    - ["system.boolean", "system.threading.tasks.sources.manualresetvaluetasksourcecore", "Member[runcontinuationsasynchronously]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.ivaluetasksource", "Method[getstatus].ReturnValue"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[flowexecutioncontext]"]
+    - ["tresult", "system.threading.tasks.sources.ivaluetasksource", "Method[getresult].ReturnValue"]
+    - ["tresult", "system.threading.tasks.sources.manualresetvaluetasksourcecore", "Method[getresult].ReturnValue"]
+    - ["system.threading.tasks.sources.valuetasksourceoncompletedflags", "system.threading.tasks.sources.valuetasksourceoncompletedflags!", "Member[none]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[faulted]"]
+    - ["system.threading.tasks.sources.valuetasksourcestatus", "system.threading.tasks.sources.valuetasksourcestatus!", "Member[canceled]"]

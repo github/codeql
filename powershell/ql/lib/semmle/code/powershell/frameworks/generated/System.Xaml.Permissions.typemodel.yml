@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.generic.ilist", "system.xaml.permissions.xamlloadpermission", "Member[allowedaccess]"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[copy].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[isunrestricted].ReturnValue"]
+    - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[privateaccessto].ReturnValue"]
+    - ["system.security.securityelement", "system.xaml.permissions.xamlloadpermission", "Method[toxml].ReturnValue"]
+    - ["system.reflection.assemblyname", "system.xaml.permissions.xamlaccesslevel", "Member[assemblyaccesstoassemblyname]"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[intersect].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[issubsetof].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[includes].ReturnValue"]
+    - ["system.int32", "system.xaml.permissions.xamlloadpermission", "Method[gethashcode].ReturnValue"]
+    - ["system.xaml.permissions.xamlaccesslevel", "system.xaml.permissions.xamlaccesslevel!", "Method[assemblyaccessto].ReturnValue"]
+    - ["system.boolean", "system.xaml.permissions.xamlloadpermission", "Method[equals].ReturnValue"]
+    - ["system.security.ipermission", "system.xaml.permissions.xamlloadpermission", "Method[union].ReturnValue"]
+    - ["system.string", "system.xaml.permissions.xamlaccesslevel", "Member[privateaccesstotypename]"]

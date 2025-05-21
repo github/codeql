@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[value]"]
+    - ["system.func", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[profilingsession]"]
+    - ["system.byte[]", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[trygetasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[setasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[setasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[configuration]"]
+    - ["system.boolean", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[tryget].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[refreshasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[getasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.stackexchangeredis.rediscache", "Method[removeasync].ReturnValue"]
+    - ["stackexchange.redis.configurationoptions", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[configurationoptions]"]
+    - ["system.func", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[connectionmultiplexerfactory]"]
+    - ["system.string", "microsoft.extensions.caching.stackexchangeredis.rediscacheoptions", "Member[instancename]"]

@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[templatecontent]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[inputobject]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[includeextent]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Member[inputobject]"]
+    - ["system.collections.generic.list", "microsoft.powershell.commands.stringmanipulation.convertstringcommand", "Member[example]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[updatetemplate]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[propertynames]"]
+    - ["system.string", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[delimiter]"]
+    - ["system.string[]", "microsoft.powershell.commands.stringmanipulation.convertfromstringcommand", "Member[templatefile]"]

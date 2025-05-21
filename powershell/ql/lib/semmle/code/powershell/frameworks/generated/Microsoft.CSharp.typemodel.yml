@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.csharp.errorlevel", "microsoft.csharp.errorlevel!", "Member[none]"]
+    - ["system.string", "microsoft.csharp.csharpcodeprovider", "Member[fileextension]"]
+    - ["microsoft.csharp.errorlevel", "microsoft.csharp.errorlevel!", "Member[fatalerror]"]
+    - ["system.string", "microsoft.csharp.compilererror", "Member[errormessage]"]
+    - ["system.int32", "microsoft.csharp.compilererror", "Member[sourcecolumn]"]
+    - ["system.int32", "microsoft.csharp.compilererror", "Member[errornumber]"]
+    - ["system.codedom.compiler.icodegenerator", "microsoft.csharp.csharpcodeprovider", "Method[creategenerator].ReturnValue"]
+    - ["microsoft.csharp.compilererror[]", "microsoft.csharp.compiler!", "Method[compile].ReturnValue"]
+    - ["microsoft.csharp.errorlevel", "microsoft.csharp.errorlevel!", "Member[error]"]
+    - ["system.string", "microsoft.csharp.compilererror", "Method[tostring].ReturnValue"]
+    - ["microsoft.csharp.errorlevel", "microsoft.csharp.compilererror", "Member[errorlevel]"]
+    - ["system.int32", "microsoft.csharp.compilererror", "Member[sourceline]"]
+    - ["system.string", "microsoft.csharp.compilererror", "Member[sourcefile]"]
+    - ["system.componentmodel.typeconverter", "microsoft.csharp.csharpcodeprovider", "Method[getconverter].ReturnValue"]
+    - ["system.codedom.compiler.icodecompiler", "microsoft.csharp.csharpcodeprovider", "Method[createcompiler].ReturnValue"]
+    - ["microsoft.csharp.errorlevel", "microsoft.csharp.errorlevel!", "Member[warning]"]

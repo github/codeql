@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.logging.loglevel", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[loglevel]"]
+    - ["microsoft.extensions.logging.abstractions.nullloggerprovider", "microsoft.extensions.logging.abstractions.nullloggerprovider!", "Member[instance]"]
+    - ["system.nullable", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[activityspanid]"]
+    - ["system.nullable", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[activitytraceid]"]
+    - ["microsoft.extensions.logging.abstractions.nulllogger", "microsoft.extensions.logging.abstractions.nulllogger!", "Member[instance]"]
+    - ["microsoft.extensions.logging.eventid", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[eventid]"]
+    - ["microsoft.extensions.logging.abstractions.nullloggerfactory", "microsoft.extensions.logging.abstractions.nullloggerfactory!", "Member[instance]"]
+    - ["system.boolean", "microsoft.extensions.logging.abstractions.nulllogger", "Method[isenabled].ReturnValue"]
+    - ["system.func", "microsoft.extensions.logging.abstractions.logentry", "Member[formatter]"]
+    - ["microsoft.extensions.logging.ilogger", "microsoft.extensions.logging.abstractions.nullloggerfactory", "Method[createlogger].ReturnValue"]
+    - ["microsoft.extensions.logging.ilogger", "microsoft.extensions.logging.abstractions.nullloggerprovider", "Method[createlogger].ReturnValue"]
+    - ["system.idisposable", "microsoft.extensions.logging.abstractions.nulllogger", "Method[beginscope].ReturnValue"]
+    - ["system.string", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[messagetemplate]"]
+    - ["system.string", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[formattedmessage]"]
+    - ["microsoft.extensions.logging.eventid", "microsoft.extensions.logging.abstractions.logentry", "Member[eventid]"]
+    - ["system.string", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[exception]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[attributes]"]
+    - ["system.datetimeoffset", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[timestamp]"]
+    - ["system.string", "microsoft.extensions.logging.abstractions.logentry", "Member[category]"]
+    - ["system.nullable", "microsoft.extensions.logging.abstractions.bufferedlogrecord", "Member[managedthreadid]"]
+    - ["microsoft.extensions.logging.loglevel", "microsoft.extensions.logging.abstractions.logentry", "Member[loglevel]"]
+    - ["system.exception", "microsoft.extensions.logging.abstractions.logentry", "Member[exception]"]
+    - ["tstate", "microsoft.extensions.logging.abstractions.logentry", "Member[state]"]

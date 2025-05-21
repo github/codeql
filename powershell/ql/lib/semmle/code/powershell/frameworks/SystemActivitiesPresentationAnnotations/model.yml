@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.xaml.attachablememberidentifier", "system.activities.presentation.annotations.annotation!", "Member[annotationtextproperty]"]
-    - ["system.string", "system.activities.presentation.annotations.annotation!", "Member[annotationtextpropertyname]"]
-    - ["system.string", "system.activities.presentation.annotations.annotation!", "Method[getannotationtext].ReturnValue"]

@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.iscriptextent", "Method[get_endscriptposition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_file]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_startscriptposition]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.language.iscriptextent", "Method[get_text]", "Argument[this]", "ReturnValue", "taint"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.provider.containercmdletprovider", "Method[convertpath]", "Argument[0]", "Argument[2]", "value"]
+      - ["system.management.automation.provider.containercmdletprovider", "Method[convertpath]", "Argument[0]", "Argument[3]", "value"]
+      - ["system.management.automation.provider.containercmdletprovider", "Method[newitem]", "Argument[this]", "Argument[2]", "taint"]

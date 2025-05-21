@@ -16,4 +16,6 @@ dependencies:
 dataExtensions:
   - semmle/code/powershell/frameworks/**/model.yml
   - semmle/code/powershell/frameworks/**/*.model.yml
+  - semmle/code/powershell/frameworks/**/typemodel.yml
+  - semmle/code/powershell/frameworks/**/*.typemodel.yml
 warnOnImplicitThis: true

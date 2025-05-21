@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.runtime.assemblytargetedpatchbandattribute", "Member[targetedpatchband]"]
+    - ["system.object", "system.runtime.dependenthandle", "Member[dependent]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gcsettings!", "Member[latencymode]"]
+    - ["system.boolean", "system.runtime.gcsettings!", "Member[isservergc]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[lowlatency]"]
+    - ["system.valuetuple", "system.runtime.dependenthandle", "Member[targetanddependent]"]
+    - ["system.int64", "system.runtime.jitinfo!", "Method[getcompiledmethodcount].ReturnValue"]
+    - ["system.timespan", "system.runtime.jitinfo!", "Method[getcompilationtime].ReturnValue"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gcsettings!", "Member[largeobjectheapcompactionmode]"]
+    - ["system.object", "system.runtime.dependenthandle", "Member[target]"]
+    - ["system.int64", "system.runtime.jitinfo!", "Method[getcompiledilbytes].ReturnValue"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gclargeobjectheapcompactionmode!", "Member[default]"]
+    - ["system.boolean", "system.runtime.dependenthandle", "Member[isallocated]"]
+    - ["system.runtime.gclargeobjectheapcompactionmode", "system.runtime.gclargeobjectheapcompactionmode!", "Member[compactonce]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[sustainedlowlatency]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[batch]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[interactive]"]
+    - ["system.string", "system.runtime.targetedpatchingoptoutattribute", "Member[reason]"]
+    - ["system.runtime.gclatencymode", "system.runtime.gclatencymode!", "Member[nogcregion]"]

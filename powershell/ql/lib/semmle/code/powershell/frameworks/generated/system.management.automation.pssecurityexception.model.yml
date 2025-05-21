@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pssecurityexception", "Method[get_message]", "Argument[this].SyntheticField[system.management.automation.pssecurityexception._message]", "ReturnValue", "value"]
+      - ["system.management.automation.pssecurityexception", "Method[pssecurityexception]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.pssecurityexception._message]", "value"]
+      - ["system.management.automation.pssecurityexception", "Method[pssecurityexception]", "Argument[0]", "Argument[this]", "taint"]

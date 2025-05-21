@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall]", "Argument[this].Field[microsoft.powershell.commands.internal.format.frontendcommandbase.inputobject]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall]", "Argument[this]", "ReturnValue", "value"]

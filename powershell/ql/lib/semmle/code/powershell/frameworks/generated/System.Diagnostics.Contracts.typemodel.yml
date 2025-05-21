@@ -1,0 +1,31 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[precondition]"]
+    - ["t", "system.diagnostics.contracts.contract!", "Method[valueatreturn].ReturnValue"]
+    - ["system.type", "system.diagnostics.contracts.contractclassattribute", "Member[typecontainingcontracts]"]
+    - ["system.boolean", "system.diagnostics.contracts.contractverificationattribute", "Member[value]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[invariant]"]
+    - ["system.string", "system.diagnostics.contracts.contractoptionattribute", "Member[setting]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[postcondition]"]
+    - ["system.boolean", "system.diagnostics.contracts.contract!", "Method[exists].ReturnValue"]
+    - ["system.string", "system.diagnostics.contracts.contractpublicpropertynameattribute", "Member[name]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[postconditiononexception]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[assume]"]
+    - ["system.boolean", "system.diagnostics.contracts.contractfailedeventargs", "Member[unwind]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailurekind!", "Member[assert]"]
+    - ["system.diagnostics.contracts.contractfailurekind", "system.diagnostics.contracts.contractfailedeventargs", "Member[failurekind]"]
+    - ["system.boolean", "system.diagnostics.contracts.contract!", "Method[forall].ReturnValue"]
+    - ["system.string", "system.diagnostics.contracts.contractoptionattribute", "Member[category]"]
+    - ["system.exception", "system.diagnostics.contracts.contractfailedeventargs", "Member[originalexception]"]
+    - ["t", "system.diagnostics.contracts.contract!", "Method[result].ReturnValue"]
+    - ["system.type", "system.diagnostics.contracts.contractclassforattribute", "Member[typecontractsarefor]"]
+    - ["system.string", "system.diagnostics.contracts.contractfailedeventargs", "Member[message]"]
+    - ["system.string", "system.diagnostics.contracts.contractfailedeventargs", "Member[condition]"]
+    - ["system.boolean", "system.diagnostics.contracts.contractoptionattribute", "Member[enabled]"]
+    - ["system.string", "system.diagnostics.contracts.contractoptionattribute", "Member[value]"]
+    - ["system.boolean", "system.diagnostics.contracts.contractfailedeventargs", "Member[handled]"]
+    - ["t", "system.diagnostics.contracts.contract!", "Method[oldvalue].ReturnValue"]

@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.wildcardpattern", "Method[escape]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.wildcardpattern", "Method[get]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.wildcardpattern", "Method[ismatch]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.wildcardpattern", "Method[unescape]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.wildcardpattern", "Method[wildcardpattern]", "Argument[0]", "Argument[this]", "taint"]

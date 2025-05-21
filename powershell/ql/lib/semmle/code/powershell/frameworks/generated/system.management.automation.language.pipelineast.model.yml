@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.pipelineast", "Method[pipelineast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]

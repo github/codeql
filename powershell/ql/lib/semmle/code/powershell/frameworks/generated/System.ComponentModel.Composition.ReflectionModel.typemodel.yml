@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.lazymemberinfo!", "Method[op_equality].ReturnValue"]
+    - ["system.componentmodel.composition.primitives.contractbasedimportdefinition", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[createimportdefinition].ReturnValue"]
+    - ["system.componentmodel.composition.primitives.contractbasedimportdefinition", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getexportfactoryproductimportdefinition].ReturnValue"]
+    - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getexportingmember].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[isexportfactoryimportdefinition].ReturnValue"]
+    - ["system.lazy", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getimportingparameter].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.lazymemberinfo!", "Method[op_inequality].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[equals].ReturnValue"]
+    - ["system.reflection.membertypes", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Member[membertype]"]
+    - ["system.componentmodel.composition.primitives.exportdefinition", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[createexportdefinition].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[isimportingparameter].ReturnValue"]
+    - ["system.componentmodel.composition.primitives.composablepartdefinition", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[createpartdefinition].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[isdisposalrequired].ReturnValue"]
+    - ["system.reflection.memberinfo[]", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[getaccessors].ReturnValue"]
+    - ["system.int32", "system.componentmodel.composition.reflectionmodel.lazymemberinfo", "Method[gethashcode].ReturnValue"]
+    - ["system.boolean", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[trymakegenericpartdefinition].ReturnValue"]
+    - ["system.lazy", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getparttype].ReturnValue"]
+    - ["system.componentmodel.composition.reflectionmodel.lazymemberinfo", "system.componentmodel.composition.reflectionmodel.reflectionmodelservices!", "Method[getimportingmember].ReturnValue"]

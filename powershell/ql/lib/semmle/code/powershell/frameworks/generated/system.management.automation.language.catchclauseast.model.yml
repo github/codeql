@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.catchclauseast", "Method[catchclauseast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.catchclauseast.body]", "value"]
+      - ["system.management.automation.language.catchclauseast", "Method[catchclauseast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.catchclauseast.body]", "value"]
+      - ["system.management.automation.language.catchclauseast", "Method[catchclauseast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]

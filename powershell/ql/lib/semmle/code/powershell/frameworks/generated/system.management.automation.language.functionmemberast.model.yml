@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.functionmemberast", "Method[copy]", "Argument[this].SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast].Field[system.management.automation.language.functiondefinitionast.name]", "ReturnValue.SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast].Field[system.management.automation.language.functiondefinitionast.name]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[2]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.functionmemberast.returntype]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.functionmemberast.returntype]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.functionmemberast.returntype]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[functionmemberast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[get_body]", "Argument[this].SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast].Field[system.management.automation.language.functiondefinitionast.body]", "ReturnValue", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[get_name]", "Argument[this].SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast].Field[system.management.automation.language.functiondefinitionast.name]", "ReturnValue", "value"]
+      - ["system.management.automation.language.functionmemberast", "Method[get_parameters]", "Argument[this].SyntheticField[system.management.automation.language.functionmemberast._functiondefinitionast].Field[system.management.automation.language.functiondefinitionast.parameters]", "ReturnValue", "value"]

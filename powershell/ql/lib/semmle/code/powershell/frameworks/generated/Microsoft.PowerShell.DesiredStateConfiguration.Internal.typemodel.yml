@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[valuenotinrangeerrorrecord].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[invalidvalueforpropertyerrorrecord].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[duplicateresourceidinnodestatementerrorrecord].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getresourcemethodslineposition].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[disabledrefreshmodenotvalidforpartialconfig].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getpullmodeneedconfigurationsource].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importinstances].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[invalidconfigurationnameerrorrecord].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importclasses].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getbadlyformedexclusiveresourceiderrorrecord].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getbadlyformedrequiredresourceiderrorrecord].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getcachedclasses].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getcachedclassesformodule].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importscriptkeywordsfrommodule].ReturnValue"]
+    - ["system.object", "microsoft.powershell.desiredstateconfiguration.internal.dscremoteoperationsclass!", "Method[convertciminstancetoobject].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[debugmodeshouldhaveonevalue].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importclassresourcesfrommodule].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[invalidlocalconfigurationmanagerpropertyerrorrecord].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[readcimschemamof].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getcachedclassbymodulename].ReturnValue"]
+    - ["system.string", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getdscresourceusagestring].ReturnValue"]
+    - ["system.string", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[generatemoffortype].ReturnValue"]
+    - ["system.boolean", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[importcimkeywordsfrommodule].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[unsupportedvalueforpropertyerrorrecord].ReturnValue"]
+    - ["system.collections.objectmodel.collection", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getcachedkeywords].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getfiledefiningclass].ReturnValue"]
+    - ["system.string", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getstringfromsecurestring].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getcachedclassbyfilename].ReturnValue"]
+    - ["system.string[]", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[getloadedfiles].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[psdscrunascredentialmergeerrorforcompositeresources].ReturnValue"]
+    - ["system.management.automation.errorrecord", "microsoft.powershell.desiredstateconfiguration.internal.dscclasscache!", "Method[missingvalueformandatorypropertyerrorrecord].ReturnValue"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.testconnectioncommand+pingstatus", "Method[get_address]", "Argument[this].Field[microsoft.powershell.commands.testconnectioncommand+pingstatus.reply].Field[system.net.networkinformation.pingreply.address]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.testconnectioncommand+pingstatus", "Method[get_displayaddress]", "Argument[this].Field[microsoft.powershell.commands.testconnectioncommand+pingstatus.address]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.testconnectioncommand+pingstatus", "Method[get_displayaddress]", "Argument[this].Field[microsoft.powershell.commands.testconnectioncommand+pingstatus.reply].Field[system.net.networkinformation.pingreply.address]", "ReturnValue", "taint"]

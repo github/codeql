@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.data.metadata.edm.metadataitem", "system.data.services.design.propertygeneratedeventargs", "Member[propertysource]"]
+    - ["system.collections.generic.list", "system.data.services.design.typegeneratedeventargs", "Member[additionalattributes]"]
+    - ["system.collections.generic.ilist", "system.data.services.design.entityclassgenerator", "Method[generatecode].ReturnValue"]
+    - ["system.data.services.design.dataservicecodeversion", "system.data.services.design.entityclassgenerator", "Member[version]"]
+    - ["system.string", "system.data.services.design.edmtoobjectnamespacemap", "Member[item]"]
+    - ["system.boolean", "system.data.services.design.edmtoobjectnamespacemap", "Method[trygetobjectnamespace].ReturnValue"]
+    - ["system.collections.generic.list", "system.data.services.design.propertygeneratedeventargs", "Member[additionalsetstatements]"]
+    - ["system.codedom.codetypereference", "system.data.services.design.propertygeneratedeventargs", "Member[returntype]"]
+    - ["system.boolean", "system.data.services.design.edmtoobjectnamespacemap", "Method[contains].ReturnValue"]
+    - ["system.int32", "system.data.services.design.edmtoobjectnamespacemap", "Member[count]"]
+    - ["system.data.services.design.languageoption", "system.data.services.design.entityclassgenerator", "Member[languageoption]"]
+    - ["system.collections.generic.list", "system.data.services.design.typegeneratedeventargs", "Member[additionalinterfaces]"]
+    - ["system.collections.generic.icollection", "system.data.services.design.edmtoobjectnamespacemap", "Member[edmnamespaces]"]
+    - ["system.collections.generic.list", "system.data.services.design.typegeneratedeventargs", "Member[additionalmembers]"]
+    - ["system.data.services.design.dataservicecodeversion", "system.data.services.design.dataservicecodeversion!", "Member[v2]"]
+    - ["system.boolean", "system.data.services.design.edmtoobjectnamespacemap", "Method[remove].ReturnValue"]
+    - ["system.data.services.design.dataservicecodeversion", "system.data.services.design.dataservicecodeversion!", "Member[v1]"]
+    - ["system.data.services.design.edmtoobjectnamespacemap", "system.data.services.design.entityclassgenerator", "Member[edmtoobjectnamespacemap]"]
+    - ["system.boolean", "system.data.services.design.entityclassgenerator", "Member[usedataservicecollection]"]
+    - ["system.data.services.design.languageoption", "system.data.services.design.languageoption!", "Member[generatevbcode]"]
+    - ["system.codedom.codetypereference", "system.data.services.design.typegeneratedeventargs", "Member[basetype]"]
+    - ["system.data.metadata.edm.globalitem", "system.data.services.design.typegeneratedeventargs", "Member[typesource]"]
+    - ["system.data.services.design.languageoption", "system.data.services.design.languageoption!", "Member[generatecsharpcode]"]
+    - ["system.collections.generic.list", "system.data.services.design.propertygeneratedeventargs", "Member[additionalattributes]"]
+    - ["system.collections.generic.list", "system.data.services.design.propertygeneratedeventargs", "Member[additionalgetstatements]"]
+    - ["system.string", "system.data.services.design.propertygeneratedeventargs", "Member[backingfieldname]"]

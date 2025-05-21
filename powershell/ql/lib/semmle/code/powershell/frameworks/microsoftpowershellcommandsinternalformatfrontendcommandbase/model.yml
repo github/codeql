@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall]", "Argument[this]", "ReturnValue", "taint"]
-      - ["microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall]", "Argument[this]", "ReturnValue", "value"]
-      

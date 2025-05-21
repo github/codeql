@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.commandline.parsing.parser", "system.commandline.invocation.invocationcontext", "Member[parser]"]
+    - ["system.commandline.invocation.iinvocationresult", "system.commandline.invocation.invocationcontext", "Member[invocationresult]"]
+    - ["system.commandline.invocation.middlewareorder", "system.commandline.invocation.middlewareorder!", "Member[default]"]
+    - ["system.commandline.iconsole", "system.commandline.invocation.invocationcontext", "Member[console]"]
+    - ["system.threading.tasks.task", "system.commandline.invocation.icommandhandler", "Method[invokeasync].ReturnValue"]
+    - ["system.int32", "system.commandline.invocation.invocationcontext", "Member[exitcode]"]
+    - ["system.int32", "system.commandline.invocation.icommandhandler", "Method[invoke].ReturnValue"]
+    - ["system.commandline.invocation.middlewareorder", "system.commandline.invocation.middlewareorder!", "Member[exceptionhandler]"]
+    - ["system.commandline.help.helpbuilder", "system.commandline.invocation.invocationcontext", "Member[helpbuilder]"]
+    - ["system.commandline.invocation.middlewareorder", "system.commandline.invocation.middlewareorder!", "Member[configuration]"]
+    - ["system.commandline.invocation.middlewareorder", "system.commandline.invocation.middlewareorder!", "Member[errorreporting]"]
+    - ["system.commandline.localizationresources", "system.commandline.invocation.invocationcontext", "Member[localizationresources]"]
+    - ["system.commandline.binding.bindingcontext", "system.commandline.invocation.invocationcontext", "Member[bindingcontext]"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.invocation.invocationcontext", "Member[parseresult]"]
+    - ["system.threading.cancellationtoken", "system.commandline.invocation.invocationcontext", "Method[getcancellationtoken].ReturnValue"]

@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[blockalign]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[channelcount]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Method[gethashcode].ReturnValue"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[pcm]"]
+    - ["system.speech.audioformat.audiochannel", "system.speech.audioformat.audiochannel!", "Member[mono]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[ulaw]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.encodingformat!", "Member[alaw]"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[bitspersample]"]
+    - ["system.byte[]", "system.speech.audioformat.speechaudioformatinfo", "Method[formatspecificdata].ReturnValue"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[samplespersecond]"]
+    - ["system.speech.audioformat.audiobitspersample", "system.speech.audioformat.audiobitspersample!", "Member[eight]"]
+    - ["system.speech.audioformat.encodingformat", "system.speech.audioformat.speechaudioformatinfo", "Member[encodingformat]"]
+    - ["system.speech.audioformat.audiobitspersample", "system.speech.audioformat.audiobitspersample!", "Member[sixteen]"]
+    - ["system.speech.audioformat.audiochannel", "system.speech.audioformat.audiochannel!", "Member[stereo]"]
+    - ["system.boolean", "system.speech.audioformat.speechaudioformatinfo", "Method[equals].ReturnValue"]
+    - ["system.int32", "system.speech.audioformat.speechaudioformatinfo", "Member[averagebytespersecond]"]

@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft_vsavb.vsaengineclass", "Member[rootnamespace]"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Member[generatedebuginfo]"]
+    - ["system.object", "microsoft_vsavb.vsaengineclass", "Method[getoption].ReturnValue"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Member[iscompiled]"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Method[isvalididentifier].ReturnValue"]
+    - ["system.string", "microsoft_vsavb.vsaengineclass", "Member[name]"]
+    - ["system.security.policy.evidence", "microsoft_vsavb.vsaengineclass", "Member[evidence]"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Member[isdirty]"]
+    - ["microsoft.vsa.ivsaitems", "microsoft_vsavb.vsaengineclass", "Member[items]"]
+    - ["microsoft.vsa.ivsaide", "microsoft_vsavb.vsadtengineclass", "Method[getide].ReturnValue"]
+    - ["system.reflection.assembly", "microsoft_vsavb.vsaengineclass", "Member[assembly]"]
+    - ["system.int32", "microsoft_vsavb.vsaengineclass", "Member[lcid]"]
+    - ["system.string", "microsoft_vsavb.vsaengineclass", "Member[version]"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Member[isrunning]"]
+    - ["system.string", "microsoft_vsavb.vsaengineclass", "Member[language]"]
+    - ["microsoft.vsa.ivsasite", "microsoft_vsavb.vsaengineclass", "Member[site]"]
+    - ["system.boolean", "microsoft_vsavb.vsaengineclass", "Method[compile].ReturnValue"]
+    - ["system.string", "microsoft_vsavb.vsadtengineclass", "Member[targeturl]"]
+    - ["system.string", "microsoft_vsavb.vsaengineclass", "Member[rootmoniker]"]

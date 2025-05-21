@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.data.services.common.dataserviceprotocolversion", "system.data.services.common.dataserviceprotocolversion!", "Member[v2]"]
+    - ["system.collections.objectmodel.readonlycollection", "system.data.services.common.dataservicekeyattribute", "Member[keynames]"]
+    - ["system.data.services.common.syndicationtextcontentkind", "system.data.services.common.syndicationtextcontentkind!", "Member[html]"]
+    - ["system.boolean", "system.data.services.common.entitypropertymappingattribute", "Member[keepincontent]"]
+    - ["system.string", "system.data.services.common.entitypropertymappingattribute", "Member[sourcepath]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[customproperty]"]
+    - ["system.data.services.common.syndicationtextcontentkind", "system.data.services.common.entitypropertymappingattribute", "Member[targettextcontentkind]"]
+    - ["system.data.services.common.syndicationtextcontentkind", "system.data.services.common.syndicationtextcontentkind!", "Member[plaintext]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[authoruri]"]
+    - ["system.data.services.common.dataserviceprotocolversion", "system.data.services.common.dataserviceprotocolversion!", "Member[v1]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[title]"]
+    - ["system.data.services.common.syndicationtextcontentkind", "system.data.services.common.syndicationtextcontentkind!", "Member[xhtml]"]
+    - ["system.string", "system.data.services.common.entitypropertymappingattribute", "Member[targetnamespaceprefix]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[published]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[authoremail]"]
+    - ["system.string", "system.data.services.common.entitypropertymappingattribute", "Member[targetnamespaceuri]"]
+    - ["system.string", "system.data.services.common.entitypropertymappingattribute", "Member[targetpath]"]
+    - ["system.string", "system.data.services.common.entitysetattribute", "Member[entityset]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[rights]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[updated]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[contributoruri]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[authorname]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[contributorname]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[summary]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.entitypropertymappingattribute", "Member[targetsyndicationitem]"]
+    - ["system.data.services.common.syndicationitemproperty", "system.data.services.common.syndicationitemproperty!", "Member[contributoremail]"]

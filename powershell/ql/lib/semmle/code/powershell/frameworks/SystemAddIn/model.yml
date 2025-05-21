@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.string", "system.addin.addinattribute", "Member[publisher]"]
-    - ["system.string", "system.addin.addinattribute", "Member[description]"]
-    - ["system.string", "system.addin.addinattribute", "Member[version]"]
-    - ["system.string", "system.addin.addinattribute", "Member[name]"]

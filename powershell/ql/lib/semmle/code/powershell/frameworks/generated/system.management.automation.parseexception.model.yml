@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.parseexception", "Method[get_errors]", "Argument[this].SyntheticField[system.management.automation.parseexception._errors]", "ReturnValue", "value"]
+      - ["system.management.automation.parseexception", "Method[get_message]", "Argument[this].Field[system.exception.message]", "ReturnValue", "value"]
+      - ["system.management.automation.parseexception", "Method[parseexception]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.parseexception._errors]", "value"]

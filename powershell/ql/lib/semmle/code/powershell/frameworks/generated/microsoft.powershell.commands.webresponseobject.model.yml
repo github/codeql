@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.webresponseobject", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.webresponseobject", "Method[webresponseobject]", "Argument[0].Field[system.net.http.httpresponsemessage.headers].Element", "Argument[this].Field[microsoft.powershell.commands.webresponseobject.rawcontent]", "taint"]
+      - ["microsoft.powershell.commands.webresponseobject", "Method[webresponseobject]", "Argument[0]", "Argument[this].Field[microsoft.powershell.commands.webresponseobject.baseresponse]", "value"]
+      - ["microsoft.powershell.commands.webresponseobject", "Method[webresponseobject]", "Argument[1]", "Argument[this].Field[microsoft.powershell.commands.webresponseobject.rawcontentstream]", "value"]
+      - ["microsoft.powershell.commands.webresponseobject", "Method[webresponseobject]", "Argument[2]", "Argument[this].Field[microsoft.powershell.commands.webresponseobject.perreadtimeout]", "value"]

@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.filelogtracelistener", "Member[location]"]
+    - ["microsoft.visualbasic.logging.diskspaceexhaustedoption", "microsoft.visualbasic.logging.diskspaceexhaustedoption!", "Member[discardmessages]"]
+    - ["system.text.encoding", "microsoft.visualbasic.logging.filelogtracelistener", "Member[encoding]"]
+    - ["system.diagnostics.tracesource", "microsoft.visualbasic.logging.log", "Member[tracesource]"]
+    - ["system.boolean", "microsoft.visualbasic.logging.filelogtracelistener", "Member[autoflush]"]
+    - ["system.int64", "microsoft.visualbasic.logging.filelogtracelistener", "Member[maxfilesize]"]
+    - ["system.string", "microsoft.visualbasic.logging.filelogtracelistener", "Member[delimiter]"]
+    - ["microsoft.visualbasic.logging.diskspaceexhaustedoption", "microsoft.visualbasic.logging.filelogtracelistener", "Member[diskspaceexhaustedbehavior]"]
+    - ["system.int64", "microsoft.visualbasic.logging.filelogtracelistener", "Member[reservediskspace]"]
+    - ["system.boolean", "microsoft.visualbasic.logging.filelogtracelistener", "Member[append]"]
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.logfilelocation!", "Member[custom]"]
+    - ["system.string", "microsoft.visualbasic.logging.filelogtracelistener", "Member[basefilename]"]
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.logfilelocation!", "Member[tempdirectory]"]
+    - ["microsoft.visualbasic.logging.diskspaceexhaustedoption", "microsoft.visualbasic.logging.diskspaceexhaustedoption!", "Member[throwexception]"]
+    - ["microsoft.visualbasic.logging.filelogtracelistener", "microsoft.visualbasic.logging.log", "Member[defaultfilelogwriter]"]
+    - ["system.boolean", "microsoft.visualbasic.logging.filelogtracelistener", "Member[includehostname]"]
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.logfilelocation!", "Member[executabledirectory]"]
+    - ["microsoft.visualbasic.logging.logfilecreationscheduleoption", "microsoft.visualbasic.logging.logfilecreationscheduleoption!", "Member[weekly]"]
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.logfilelocation!", "Member[commonapplicationdirectory]"]
+    - ["microsoft.visualbasic.logging.logfilecreationscheduleoption", "microsoft.visualbasic.logging.filelogtracelistener", "Member[logfilecreationschedule]"]
+    - ["system.string", "microsoft.visualbasic.logging.filelogtracelistener", "Member[customlocation]"]
+    - ["system.string[]", "microsoft.visualbasic.logging.filelogtracelistener", "Method[getsupportedattributes].ReturnValue"]
+    - ["microsoft.visualbasic.logging.logfilecreationscheduleoption", "microsoft.visualbasic.logging.logfilecreationscheduleoption!", "Member[daily]"]
+    - ["microsoft.visualbasic.logging.logfilelocation", "microsoft.visualbasic.logging.logfilelocation!", "Member[localuserapplicationdirectory]"]
+    - ["system.string", "microsoft.visualbasic.logging.filelogtracelistener", "Member[fulllogfilename]"]
+    - ["microsoft.visualbasic.logging.logfilecreationscheduleoption", "microsoft.visualbasic.logging.logfilecreationscheduleoption!", "Member[none]"]

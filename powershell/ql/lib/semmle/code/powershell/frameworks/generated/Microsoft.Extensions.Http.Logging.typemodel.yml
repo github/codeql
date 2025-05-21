@@ -1,0 +1,38 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.http.logging.outgoingpathloggingmode", "microsoft.extensions.http.logging.loggingoptions", "Member[requestpathloggingmode]"]
+    - ["system.boolean", "microsoft.extensions.http.logging.loggingoptions", "Member[logcontentheaders]"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[statuscode]"]
+    - ["system.boolean", "microsoft.extensions.http.logging.loggingoptions", "Member[logrequeststart]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.logging.loggingoptions", "Member[requestpathparameterredactionmode]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.logging.loggingoptions", "Member[routeparameterdataclasses]"]
+    - ["system.collections.generic.ireadonlylist", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[tagnames]"]
+    - ["system.boolean", "microsoft.extensions.http.logging.loggingoptions", "Member[logbody]"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[duration]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.http.logging.ihttpclientasynclogger", "Method[logrequeststartasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[responseheaderprefix]"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[responsebody]"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[host]"]
+    - ["microsoft.extensions.http.logging.outgoingpathloggingmode", "microsoft.extensions.http.logging.outgoingpathloggingmode!", "Member[formatted]"]
+    - ["system.timespan", "microsoft.extensions.http.logging.loggingoptions", "Member[bodyreadtimeout]"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.http.logging.ihttpclientasynclogger", "Method[logrequestfailedasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[requestheaderprefix]"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[requestbody]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.logging.loggingoptions", "Member[responsebodycontenttypes]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.http.logging.loggingscopehttpmessagehandler", "Method[sendasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[path]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.logging.loggingoptions", "Member[requestbodycontenttypes]"]
+    - ["system.int32", "microsoft.extensions.http.logging.loggingoptions", "Member[bodysizelimit]"]
+    - ["system.net.http.httpresponsemessage", "microsoft.extensions.http.logging.logginghttpmessagehandler", "Method[send].ReturnValue"]
+    - ["system.net.http.httpresponsemessage", "microsoft.extensions.http.logging.loggingscopehttpmessagehandler", "Method[send].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.http.logging.ihttpclientasynclogger", "Method[logrequeststopasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.http.logging.httpclientloggingtagnames!", "Member[method]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.logging.loggingoptions", "Member[requestheadersdataclasses]"]
+    - ["system.object", "microsoft.extensions.http.logging.ihttpclientlogger", "Method[logrequeststart].ReturnValue"]
+    - ["microsoft.extensions.http.logging.outgoingpathloggingmode", "microsoft.extensions.http.logging.outgoingpathloggingmode!", "Member[structured]"]
+    - ["system.collections.generic.idictionary", "microsoft.extensions.http.logging.loggingoptions", "Member[responseheadersdataclasses]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.http.logging.logginghttpmessagehandler", "Method[sendasync].ReturnValue"]

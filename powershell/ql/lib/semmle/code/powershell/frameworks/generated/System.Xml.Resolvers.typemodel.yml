@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.uri", "system.xml.resolvers.xmlpreloadedresolver", "Method[resolveuri].ReturnValue"]
+    - ["system.net.icredentials", "system.xml.resolvers.xmlpreloadedresolver", "Member[credentials]"]
+    - ["system.object", "system.xml.resolvers.xmlpreloadedresolver", "Method[getentity].ReturnValue"]
+    - ["system.threading.tasks.task", "system.xml.resolvers.xmlpreloadedresolver", "Method[getentityasync].ReturnValue"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[xhtml10]"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[all]"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[rss091]"]
+    - ["system.boolean", "system.xml.resolvers.xmlpreloadedresolver", "Method[supportstype].ReturnValue"]
+    - ["system.xml.resolvers.xmlknowndtds", "system.xml.resolvers.xmlknowndtds!", "Member[none]"]
+    - ["system.collections.generic.ienumerable", "system.xml.resolvers.xmlpreloadedresolver", "Member[preloadeduris]"]

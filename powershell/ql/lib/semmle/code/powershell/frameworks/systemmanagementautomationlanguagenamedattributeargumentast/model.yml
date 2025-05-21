@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.language.namedattributeargumentast", "Method[namedattributeargumentast]", "Argument[1]", "Argument[this]", "taint"]
-      - ["system.management.automation.language.namedattributeargumentast", "Method[namedattributeargumentast]", "Argument[2]", "Argument[this]", "taint"]
-      - ["system.management.automation.language.namedattributeargumentast", "Method[namedattributeargumentast]", "Argument[this]", "Argument[2]", "taint"]
-      

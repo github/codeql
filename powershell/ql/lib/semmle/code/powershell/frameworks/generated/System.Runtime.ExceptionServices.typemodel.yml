@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.exceptionservices.exceptiondispatchinfo", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[capture].ReturnValue"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo", "Member[sourceexception]"]
+    - ["system.exception", "system.runtime.exceptionservices.firstchanceexceptioneventargs", "Member[exception]"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[setremotestacktrace].ReturnValue"]
+    - ["system.exception", "system.runtime.exceptionservices.exceptiondispatchinfo!", "Method[setcurrentstacktrace].ReturnValue"]

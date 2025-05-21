@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.provider.drivecmdletprovider", "Method[initializedefaultdrives]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.provider.drivecmdletprovider", "Method[newdrive]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.provider.drivecmdletprovider", "Method[removedrive]", "Argument[0]", "ReturnValue", "value"]

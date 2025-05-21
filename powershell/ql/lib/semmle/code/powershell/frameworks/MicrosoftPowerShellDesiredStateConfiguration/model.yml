@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.object", "microsoft.powershell.desiredstateconfiguration.argumenttoconfigurationdatatransformationattribute", "Method[transform].ReturnValue"]

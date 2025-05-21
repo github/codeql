@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.diagnosticadapter.diagnosticnameattribute", "Member[name]"]
+    - ["system.boolean", "microsoft.extensions.diagnosticadapter.diagnosticsourceadapter", "Method[isenabled].ReturnValue"]
+    - ["system.func", "microsoft.extensions.diagnosticadapter.idiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]
+    - ["system.func", "microsoft.extensions.diagnosticadapter.proxydiagnosticsourcemethodadapter", "Method[adapt].ReturnValue"]

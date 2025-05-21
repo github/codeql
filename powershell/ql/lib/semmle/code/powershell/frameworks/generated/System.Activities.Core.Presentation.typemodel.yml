@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[incoming]"]
+    - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convert].ReturnValue"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[default]"]
+    - ["system.windows.point", "system.activities.core.presentation.locationchangedeventargs", "Member[newlocation]"]
+    - ["system.object", "system.activities.core.presentation.generictypeargumentconverter", "Method[convertback].ReturnValue"]
+    - ["system.activities.core.presentation.connectionpointtype", "system.activities.core.presentation.connectionpointtype!", "Member[outgoing]"]
+    - ["system.windows.input.routedcommand", "system.activities.core.presentation.flowchartdesignercommands!", "Member[connectnodescommand]"]

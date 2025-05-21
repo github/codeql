@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.pipelinechainast", "Method[pipelinechainast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.pipelinechainast.lhspipelinechain]", "value"]
+      - ["system.management.automation.language.pipelinechainast", "Method[pipelinechainast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.pipelinechainast.rhspipeline]", "value"]
+      - ["system.management.automation.language.pipelinechainast", "Method[pipelinechainast]", "Argument[this]", "Argument[this].Field[system.management.automation.language.pipelinechainast.lhspipelinechain].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.pipelinechainast", "Method[pipelinechainast]", "Argument[this]", "Argument[this].Field[system.management.automation.language.pipelinechainast.rhspipeline].Field[system.management.automation.language.ast.parent]", "value"]

@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.validatesetattribute", "Method[get_validvalues]", "Argument[this]", "ReturnValue", "taint"]
-      - ["system.management.automation.validatesetattribute", "Method[validatesetattribute]", "Argument[0].Element", "Argument[this]", "taint"]
-      

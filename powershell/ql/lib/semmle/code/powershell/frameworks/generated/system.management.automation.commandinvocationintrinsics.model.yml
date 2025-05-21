@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcmdlet]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcmdlet]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcmdlets]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcmdlets]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcommand]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcommands]", "Argument[0]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[getcommands]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[invokescript]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.commandinvocationintrinsics", "Method[newscriptblock]", "Argument[this]", "ReturnValue", "taint"]

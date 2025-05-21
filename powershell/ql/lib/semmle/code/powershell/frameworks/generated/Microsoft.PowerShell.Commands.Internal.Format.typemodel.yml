@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[showerror]"]
+    - ["system.management.automation.psobject", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[inputobjectcall].ReturnValue"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Member[repeatheader]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[displayerror]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Member[hidetableheaders]"]
+    - ["system.string", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[expand]"]
+    - ["system.object", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[groupby]"]
+    - ["system.management.automation.pscmdlet", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Method[outercmdletcall].ReturnValue"]
+    - ["system.object[]", "microsoft.powershell.commands.internal.format.outerformattableandlistbase", "Member[property]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Member[wrap]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[force]"]
+    - ["system.management.automation.switchparameter", "microsoft.powershell.commands.internal.format.outerformattablebase", "Member[autosize]"]
+    - ["system.string", "microsoft.powershell.commands.internal.format.outerformatshapecommandbase", "Member[view]"]
+    - ["system.management.automation.psobject", "microsoft.powershell.commands.internal.format.frontendcommandbase", "Member[inputobject]"]

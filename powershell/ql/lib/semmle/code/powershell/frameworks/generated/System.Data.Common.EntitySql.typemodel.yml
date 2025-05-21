@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.data.common.commandtrees.dbcommandtree", "system.data.common.entitysql.parseresult", "Member[commandtree]"]
+    - ["system.collections.objectmodel.readonlycollection", "system.data.common.entitysql.parseresult", "Member[functiondefinitions]"]
+    - ["system.data.common.commandtrees.dblambda", "system.data.common.entitysql.functiondefinition", "Member[lambda]"]
+    - ["system.int32", "system.data.common.entitysql.functiondefinition", "Member[startposition]"]
+    - ["system.int32", "system.data.common.entitysql.functiondefinition", "Member[endposition]"]
+    - ["system.string", "system.data.common.entitysql.functiondefinition", "Member[name]"]
+    - ["system.data.common.entitysql.parseresult", "system.data.common.entitysql.entitysqlparser", "Method[parse].ReturnValue"]
+    - ["system.data.common.commandtrees.dblambda", "system.data.common.entitysql.entitysqlparser", "Method[parselambda].ReturnValue"]

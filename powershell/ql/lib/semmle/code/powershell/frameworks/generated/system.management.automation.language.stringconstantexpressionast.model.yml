@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.stringconstantexpressionast", "Method[get_value]", "Argument[this].Field[system.management.automation.language.constantexpressionast.value]", "ReturnValue", "value"]

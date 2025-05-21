@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.remoting.origininfo", "Method[get_pscomputername]", "Argument[this].SyntheticField[system.management.automation.remoting.origininfo._computername]", "ReturnValue", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[get_pscomputername]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.remoting.origininfo", "Method[get_runspaceid]", "Argument[this].SyntheticField[system.management.automation.remoting.origininfo._runspaceid]", "ReturnValue", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[get_runspaceid]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.remoting.origininfo", "Method[origininfo]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.remoting.origininfo._computername]", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[origininfo]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.remoting.origininfo._runspaceid]", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[tostring]", "Argument[this].Field[system.management.automation.remoting.origininfo.pscomputername]", "ReturnValue", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[tostring]", "Argument[this].SyntheticField[system.management.automation.remoting.origininfo._computername]", "ReturnValue", "value"]
+      - ["system.management.automation.remoting.origininfo", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]

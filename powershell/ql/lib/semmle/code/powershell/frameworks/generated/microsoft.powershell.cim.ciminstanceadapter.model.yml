@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.cim.ciminstanceadapter", "Method[getfirstpropertyordefault]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.psproperty.baseobject]", "value"]
+      - ["microsoft.powershell.cim.ciminstanceadapter", "Method[getproperty]", "Argument[0]", "ReturnValue.SyntheticField[system.management.automation.psproperty.baseobject]", "value"]
+      - ["microsoft.powershell.cim.ciminstanceadapter", "Method[getpropertyvalue]", "Argument[0].Field[system.management.automation.psadaptedproperty.tag].Field[microsoft.management.infrastructure.cimproperty.value]", "ReturnValue", "value"]

@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.int32", "microsoft.dotnet.platformabstractions.hashcodecombiner", "Member[combinedhash]"]
-    - ["microsoft.dotnet.platformabstractions.hashcodecombiner", "microsoft.dotnet.platformabstractions.hashcodecombiner!", "Method[start].ReturnValue"]

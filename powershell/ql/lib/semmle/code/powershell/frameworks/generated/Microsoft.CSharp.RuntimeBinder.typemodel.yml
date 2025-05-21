@@ -1,0 +1,35 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[convert].ReturnValue"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[invokemember].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[valuefromcompoundassignment]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[invoke].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[isout]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[setmember].ReturnValue"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[unaryoperation].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[none]"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[none]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[convertarrayindex]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[resultindexed]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[binaryoperation].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[namedargument]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[invokesimplename]"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[isstatictype]"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[usecompiletimetype]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[convertexplicit]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[binaryoperationlogical]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[getindex].ReturnValue"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[isevent].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[resultdiscarded]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[invokeconstructor].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[checkedcontext]"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[constant]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[setindex].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfoflags", "microsoft.csharp.runtimebinder.csharpargumentinfoflags!", "Member[isref]"]
+    - ["microsoft.csharp.runtimebinder.csharpbinderflags", "microsoft.csharp.runtimebinder.csharpbinderflags!", "Member[invokespecialname]"]
+    - ["system.runtime.compilerservices.callsitebinder", "microsoft.csharp.runtimebinder.binder!", "Method[getmember].ReturnValue"]
+    - ["microsoft.csharp.runtimebinder.csharpargumentinfo", "microsoft.csharp.runtimebinder.csharpargumentinfo!", "Method[create].ReturnValue"]

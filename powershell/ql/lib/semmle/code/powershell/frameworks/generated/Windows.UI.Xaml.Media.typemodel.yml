@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "windows.ui.xaml.media.matrix!", "Method[op_equality].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.matrix", "Member[isidentity]"]
+    - ["system.string", "windows.ui.xaml.media.matrix", "Method[tostring].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[offsetx]"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[offsety]"]
+    - ["windows.ui.xaml.media.matrix", "windows.ui.xaml.media.matrix!", "Member[identity]"]
+    - ["windows.foundation.point", "windows.ui.xaml.media.matrix", "Method[transform].ReturnValue"]
+    - ["system.boolean", "windows.ui.xaml.media.matrix", "Method[equals].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[m12]"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[m22]"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[m21]"]
+    - ["system.boolean", "windows.ui.xaml.media.matrix!", "Method[op_inequality].ReturnValue"]
+    - ["system.int32", "windows.ui.xaml.media.matrix", "Method[gethashcode].ReturnValue"]
+    - ["system.double", "windows.ui.xaml.media.matrix", "Member[m11]"]

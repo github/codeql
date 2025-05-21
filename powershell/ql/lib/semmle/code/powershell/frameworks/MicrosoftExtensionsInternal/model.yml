@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.datetimeoffset", "microsoft.extensions.internal.systemclock", "Member[utcnow]"]
-    - ["system.datetimeoffset", "microsoft.extensions.internal.isystemclock", "Member[utcnow]"]

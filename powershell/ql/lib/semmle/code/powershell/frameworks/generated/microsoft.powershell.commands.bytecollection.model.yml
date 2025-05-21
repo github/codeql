@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[0]", "Argument[this].Field[microsoft.powershell.commands.bytecollection.bytes]", "value"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[1]", "Argument[this].Field[microsoft.powershell.commands.bytecollection.bytes]", "value"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[1]", "Argument[this].Field[microsoft.powershell.commands.bytecollection.label]", "value"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[2]", "Argument[this].Field[microsoft.powershell.commands.bytecollection.label]", "value"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[bytecollection]", "Argument[2]", "Argument[this].Field[microsoft.powershell.commands.bytecollection.path]", "value"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[get_ascii]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.bytecollection", "Method[get_hexbytes]", "Argument[this]", "ReturnValue", "taint"]

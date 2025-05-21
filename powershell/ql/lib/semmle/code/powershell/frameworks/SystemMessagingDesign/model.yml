@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.drawing.design.uitypeeditoreditstyle", "system.messaging.design.queuepatheditor", "Method[geteditstyle].ReturnValue"]
-    - ["system.object", "system.messaging.design.queuepatheditor", "Method[editvalue].ReturnValue"]
-    - ["system.string", "system.messaging.design.queuepathdialog", "Member[path]"]

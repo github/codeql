@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.psdriveinfo", "Method[get_name]", "Argument[this].SyntheticField[system.management.automation.psdriveinfo._name]", "ReturnValue", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[get_provider]", "Argument[this].SyntheticField[system.management.automation.psdriveinfo._provider]", "ReturnValue", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.psdriveinfo._name]", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[0]", "Argument[this]", "taint"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.psdriveinfo._provider]", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[3]", "Argument[this].Field[system.management.automation.psdriveinfo.description]", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[4]", "Argument[this].Field[system.management.automation.psdriveinfo.credential]", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[psdriveinfo]", "Argument[5]", "Argument[this].Field[system.management.automation.psdriveinfo.displayroot]", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[tostring]", "Argument[this].Field[system.management.automation.psdriveinfo.name]", "ReturnValue", "value"]
+      - ["system.management.automation.psdriveinfo", "Method[tostring]", "Argument[this].SyntheticField[system.management.automation.psdriveinfo._name]", "ReturnValue", "value"]

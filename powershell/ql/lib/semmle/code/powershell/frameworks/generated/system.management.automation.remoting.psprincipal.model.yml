@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.remoting.psprincipal", "Method[get_identity]", "Argument[this].Field[system.management.automation.remoting.psprincipal.identity]", "ReturnValue", "value"]
+      - ["system.management.automation.remoting.psprincipal", "Method[psprincipal]", "Argument[0]", "Argument[this].Field[system.management.automation.remoting.psprincipal.identity]", "value"]
+      - ["system.management.automation.remoting.psprincipal", "Method[psprincipal]", "Argument[1]", "Argument[this].Field[system.management.automation.remoting.psprincipal.windowsidentity]", "value"]

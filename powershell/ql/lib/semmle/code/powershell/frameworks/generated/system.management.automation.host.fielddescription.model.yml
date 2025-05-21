@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.host.fielddescription", "Method[fielddescription]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.host.fielddescription.name]", "value"]
+      - ["system.management.automation.host.fielddescription", "Method[get_name]", "Argument[this].SyntheticField[system.management.automation.host.fielddescription.name]", "ReturnValue", "value"]
+      - ["system.management.automation.host.fielddescription", "Method[get_parameterassemblyfullname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.host.fielddescription", "Method[get_parametertypefullname]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.host.fielddescription", "Method[get_parametertypename]", "Argument[this]", "ReturnValue", "taint"]

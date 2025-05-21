@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.collections.ienumerator", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[getenumerator].ReturnValue"]
+    - ["system.collections.generic.ienumerator", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Method[getenumerator].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.fileproviders.composite.compositedirectorycontents", "Member[exists]"]

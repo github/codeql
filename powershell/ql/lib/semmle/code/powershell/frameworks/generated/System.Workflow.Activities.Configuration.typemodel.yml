@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[directreports]"]
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[group]"]
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[rootpath]"]
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[member]"]
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[distinguishedname]"]
+    - ["system.string", "system.workflow.activities.configuration.activedirectoryrolefactoryconfiguration", "Member[manager]"]

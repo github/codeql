@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pstypenameattribute", "Method[pstypenameattribute]", "Argument[0]", "Argument[this].Field[system.management.automation.pstypenameattribute.pstypename]", "value"]

@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.data.design.methodsignaturegenerator", "Method[generatemethodsignature].ReturnValue"]
+    - ["system.string", "system.data.design.typeddatasetgenerator!", "Method[getprovidername].ReturnValue"]
+    - ["system.collections.ilist", "system.data.design.typeddatasetgeneratorexception", "Member[errorlist]"]
+    - ["system.data.design.typeddatasetgenerator+generateoption", "system.data.design.typeddatasetgenerator+generateoption!", "Member[none]"]
+    - ["system.string", "system.data.design.typeddatasetgenerator!", "Method[generate].ReturnValue"]
+    - ["system.type", "system.data.design.methodsignaturegenerator", "Member[containerparametertype]"]
+    - ["system.collections.generic.icollection", "system.data.design.typeddatasetgenerator!", "Member[referencedassemblies]"]
+    - ["system.string", "system.data.design.methodsignaturegenerator", "Member[datasetclassname]"]
+    - ["system.boolean", "system.data.design.methodsignaturegenerator", "Member[pagingmethod]"]
+    - ["system.codedom.compiler.codedomprovider", "system.data.design.methodsignaturegenerator", "Member[codeprovider]"]
+    - ["system.data.design.parametergenerationoption", "system.data.design.parametergenerationoption!", "Member[clrtypes]"]
+    - ["system.data.design.parametergenerationoption", "system.data.design.methodsignaturegenerator", "Member[parameteroption]"]
+    - ["system.string", "system.data.design.methodsignaturegenerator", "Member[tableclassname]"]
+    - ["system.data.design.parametergenerationoption", "system.data.design.parametergenerationoption!", "Member[sqltypes]"]
+    - ["system.codedom.codemembermethod", "system.data.design.methodsignaturegenerator", "Method[generatemethod].ReturnValue"]
+    - ["system.boolean", "system.data.design.methodsignaturegenerator", "Member[isgetmethod]"]
+    - ["system.data.design.parametergenerationoption", "system.data.design.parametergenerationoption!", "Member[objects]"]
+    - ["system.data.design.typeddatasetgenerator+generateoption", "system.data.design.typeddatasetgenerator+generateoption!", "Member[hierarchicalupdate]"]
+    - ["system.string", "system.data.design.typeddatasetschemaimporterextension", "Method[importschematype].ReturnValue"]
+    - ["system.data.design.typeddatasetgenerator+generateoption", "system.data.design.typeddatasetgenerator+generateoption!", "Member[linqovertypeddatasets]"]
+    - ["system.codedom.codetypedeclaration", "system.data.design.methodsignaturegenerator", "Method[generateupdatingmethods].ReturnValue"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withdefaultconventions].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withassemblies].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withparts].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withexport].ReturnValue"]
+    - ["system.boolean", "system.composition.hosting.compositionhost", "Method[trygetexport].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withpart].ReturnValue"]
+    - ["system.composition.hosting.compositionhost", "system.composition.hosting.compositionhost!", "Method[createcompositionhost].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withassembly].ReturnValue"]
+    - ["system.composition.hosting.containerconfiguration", "system.composition.hosting.containerconfiguration", "Method[withprovider].ReturnValue"]
+    - ["system.composition.hosting.compositionhost", "system.composition.hosting.containerconfiguration", "Method[createcontainer].ReturnValue"]

@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.pssnapininfo", "Method[get_description]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pssnapininfo", "Method[get_vendor]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.pssnapininfo", "Method[tostring]", "Argument[this].Field[system.management.automation.pssnapininfo.name]", "ReturnValue", "value"]

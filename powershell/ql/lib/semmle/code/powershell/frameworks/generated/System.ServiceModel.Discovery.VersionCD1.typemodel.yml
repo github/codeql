@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versioncd1.endpointdiscoverymetadatacd1", "Method[getschema].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versioncd1.findcriteriacd1", "Method[getschema].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versioncd1.findcriteriacd1!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.discoverymessagesequence", "system.servicemodel.discovery.versioncd1.discoverymessagesequencecd1", "Method[todiscoverymessagesequence].ReturnValue"]
+    - ["system.servicemodel.discovery.versioncd1.resolvecriteriacd1", "system.servicemodel.discovery.versioncd1.resolvecriteriacd1!", "Method[fromresolvecriteria].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versioncd1.discoverymessagesequencecd1!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.versioncd1.findcriteriacd1", "system.servicemodel.discovery.versioncd1.findcriteriacd1!", "Method[fromfindcriteria].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versioncd1.resolvecriteriacd1!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.versioncd1.discoverymessagesequencecd1", "system.servicemodel.discovery.versioncd1.discoverymessagesequencecd1!", "Method[fromdiscoverymessagesequence].ReturnValue"]
+    - ["system.servicemodel.discovery.resolvecriteria", "system.servicemodel.discovery.versioncd1.resolvecriteriacd1", "Method[toresolvecriteria].ReturnValue"]
+    - ["system.servicemodel.discovery.versioncd1.endpointdiscoverymetadatacd1", "system.servicemodel.discovery.versioncd1.endpointdiscoverymetadatacd1!", "Method[fromendpointdiscoverymetadata].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versioncd1.discoverymessagesequencecd1", "Method[getschema].ReturnValue"]
+    - ["system.xml.xmlqualifiedname", "system.servicemodel.discovery.versioncd1.endpointdiscoverymetadatacd1!", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.findcriteria", "system.servicemodel.discovery.versioncd1.findcriteriacd1", "Method[tofindcriteria].ReturnValue"]
+    - ["system.xml.schema.xmlschema", "system.servicemodel.discovery.versioncd1.resolvecriteriacd1", "Method[getschema].ReturnValue"]
+    - ["system.servicemodel.discovery.endpointdiscoverymetadata", "system.servicemodel.discovery.versioncd1.endpointdiscoverymetadatacd1", "Method[toendpointdiscoverymetadata].ReturnValue"]

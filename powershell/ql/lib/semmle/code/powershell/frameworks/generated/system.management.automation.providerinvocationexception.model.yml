@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.providerinvocationexception", "Method[get_message]", "Argument[this].Field[system.exception.message]", "ReturnValue", "value"]
+      - ["system.management.automation.providerinvocationexception", "Method[get_message]", "Argument[this].SyntheticField[system.management.automation.providerinvocationexception._message]", "ReturnValue", "value"]
+      - ["system.management.automation.providerinvocationexception", "Method[get_providerinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.providerinvocationexception", "Method[providerinvocationexception]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.providerinvocationexception._message]", "value"]

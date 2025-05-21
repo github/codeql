@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.literalpathsegment", "Method[match].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "Member[canproducestem]"]
+    - ["microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment!", "Member[matchall]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.currentpathsegment", "Method[match].ReturnValue"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "Member[endswith]"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.internal.pathsegments.literalpathsegment", "Member[value]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.literalpathsegment", "Member[canproducestem]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.recursivewildcardsegment", "Method[match].ReturnValue"]
+    - ["system.collections.generic.list", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "Member[contains]"]
+    - ["system.string", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "Member[beginswith]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.wildcardpathsegment", "Method[match].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.parentpathsegment", "Method[match].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.currentpathsegment", "Member[canproducestem]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.recursivewildcardsegment", "Member[canproducestem]"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.literalpathsegment", "Method[equals].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.filesystemglobbing.internal.pathsegments.parentpathsegment", "Member[canproducestem]"]
+    - ["system.int32", "microsoft.extensions.filesystemglobbing.internal.pathsegments.literalpathsegment", "Method[gethashcode].ReturnValue"]

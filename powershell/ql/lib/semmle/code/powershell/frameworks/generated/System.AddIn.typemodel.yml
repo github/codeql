@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.addin.addinattribute", "Member[description]"]
+    - ["system.string", "system.addin.addinattribute", "Member[version]"]
+    - ["system.string", "system.addin.addinattribute", "Member[name]"]
+    - ["system.string", "system.addin.addinattribute", "Member[publisher]"]

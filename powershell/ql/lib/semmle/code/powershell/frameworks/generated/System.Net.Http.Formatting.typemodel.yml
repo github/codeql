@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.net.http.formatting.systemtextjsonmediatypeformatter", "Method[canreadtype].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.formatting.systemtextjsonmediatypeformatter", "Method[readfromstreamasync].ReturnValue"]
+    - ["system.text.json.jsonserializeroptions", "system.net.http.formatting.systemtextjsonmediatypeformatter", "Member[jsonserializeroptions]"]
+    - ["system.boolean", "system.net.http.formatting.systemtextjsonmediatypeformatter", "Method[canwritetype].ReturnValue"]
+    - ["system.threading.tasks.task", "system.net.http.formatting.systemtextjsonmediatypeformatter", "Method[writetostreamasync].ReturnValue"]

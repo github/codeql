@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.management.automation.subsystem.feedback.feedbackitem", "system.management.automation.subsystem.feedback.feedbackresult", "Member[item]"]
+    - ["system.string", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[commandline]"]
+    - ["system.management.automation.subsystem.feedback.feedbackdisplaylayout", "system.management.automation.subsystem.feedback.feedbackdisplaylayout!", "Member[portrait]"]
+    - ["system.guid", "system.management.automation.subsystem.feedback.feedbackresult", "Member[id]"]
+    - ["system.collections.generic.dictionary", "system.management.automation.subsystem.feedback.ifeedbackprovider", "Member[functionstodefine]"]
+    - ["system.collections.generic.list", "system.management.automation.subsystem.feedback.feedbackitem", "Member[recommendedactions]"]
+    - ["system.string", "system.management.automation.subsystem.feedback.feedbackitem", "Member[footer]"]
+    - ["system.management.automation.subsystem.feedback.feedbackdisplaylayout", "system.management.automation.subsystem.feedback.feedbackdisplaylayout!", "Member[landscape]"]
+    - ["system.management.automation.pathinfo", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[currentlocation]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[trigger]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.feedbacktrigger!", "Member[error]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.feedbacktrigger!", "Member[commandnotfound]"]
+    - ["system.management.automation.subsystem.feedback.feedbackitem", "system.management.automation.subsystem.feedback.feedbackitem", "Member[next]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.feedbacktrigger!", "Member[success]"]
+    - ["system.string", "system.management.automation.subsystem.feedback.feedbackitem", "Member[header]"]
+    - ["system.management.automation.subsystem.feedback.feedbackdisplaylayout", "system.management.automation.subsystem.feedback.feedbackitem", "Member[layout]"]
+    - ["system.management.automation.errorrecord", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[lasterror]"]
+    - ["system.management.automation.language.ast", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[commandlineast]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.ifeedbackprovider", "Member[trigger]"]
+    - ["system.management.automation.subsystem.feedback.feedbackitem", "system.management.automation.subsystem.feedback.ifeedbackprovider", "Method[getfeedback].ReturnValue"]
+    - ["system.collections.generic.ireadonlylist", "system.management.automation.subsystem.feedback.feedbackcontext", "Member[commandlinetokens]"]
+    - ["system.collections.generic.list", "system.management.automation.subsystem.feedback.feedbackhub!", "Method[getfeedback].ReturnValue"]
+    - ["system.string", "system.management.automation.subsystem.feedback.feedbackresult", "Member[name]"]
+    - ["system.management.automation.subsystem.feedback.feedbacktrigger", "system.management.automation.subsystem.feedback.feedbacktrigger!", "Member[all]"]

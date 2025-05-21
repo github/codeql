@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationprovider", "Method[tostring].ReturnValue"]
+    - ["system.string", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationsource", "Member[prefix]"]
+    - ["microsoft.extensions.configuration.iconfigurationprovider", "microsoft.extensions.configuration.environmentvariables.environmentvariablesconfigurationsource", "Method[build].ReturnValue"]

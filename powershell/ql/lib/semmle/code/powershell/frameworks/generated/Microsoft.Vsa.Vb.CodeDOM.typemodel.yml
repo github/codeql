@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.uint32", "microsoft.vsa.vb.codedom.location", "Member[beginningline]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom.location", "Member[beginningcolumn]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom._location", "Member[beginningcolumn]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom._location", "Member[beginningline]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom.location", "Member[endline]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom.location", "Member[endcolumn]"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom._location", "Member[endcolumn]"]
+    - ["system.codedom.codecompileunit", "microsoft.vsa.vb.codedom._codedomprocessor", "Method[codedomfromxml].ReturnValue"]
+    - ["system.uint32", "microsoft.vsa.vb.codedom._location", "Member[endline]"]
+    - ["system.codedom.codecompileunit", "microsoft.vsa.vb.codedom.codedomprocessor", "Method[codedomfromxml].ReturnValue"]

@@ -1,0 +1,37 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "system.windows.diagnostics.bindingfailedeventargs", "Member[message]"]
+    - ["system.diagnostics.traceeventtype", "system.windows.diagnostics.bindingfailedeventargs", "Member[eventtype]"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Method[getframeworkcontentelementowners].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Method[getresourcedictionariesforsource].ReturnValue"]
+    - ["system.windows.diagnostics.resourcedictionaryinfo", "system.windows.diagnostics.resourcedictionaryunloadedeventargs", "Member[resourcedictionaryinfo]"]
+    - ["system.windows.diagnostics.visualtreechangetype", "system.windows.diagnostics.visualtreechangeeventargs", "Member[changetype]"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Member[genericresourcedictionaries]"]
+    - ["system.object", "system.windows.diagnostics.staticresourceresolvedeventargs", "Member[resourcekey]"]
+    - ["system.int32", "system.windows.diagnostics.xamlsourceinfo", "Member[linenumber]"]
+    - ["system.reflection.assembly", "system.windows.diagnostics.resourcedictionaryinfo", "Member[assembly]"]
+    - ["system.int32", "system.windows.diagnostics.bindingfailedeventargs", "Member[code]"]
+    - ["system.windows.resourcedictionary", "system.windows.diagnostics.resourcedictionaryinfo", "Member[resourcedictionary]"]
+    - ["system.object", "system.windows.diagnostics.staticresourceresolvedeventargs", "Member[targetobject]"]
+    - ["system.windows.resourcedictionary", "system.windows.diagnostics.staticresourceresolvedeventargs", "Member[resourcedictionary]"]
+    - ["system.uri", "system.windows.diagnostics.xamlsourceinfo", "Member[sourceuri]"]
+    - ["system.object", "system.windows.diagnostics.staticresourceresolvedeventargs", "Member[targetproperty]"]
+    - ["system.object[]", "system.windows.diagnostics.bindingfailedeventargs", "Member[parameters]"]
+    - ["system.windows.diagnostics.visualtreechangetype", "system.windows.diagnostics.visualtreechangetype!", "Member[add]"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Member[themedresourcedictionaries]"]
+    - ["system.windows.diagnostics.resourcedictionaryinfo", "system.windows.diagnostics.resourcedictionaryloadedeventargs", "Member[resourcedictionaryinfo]"]
+    - ["system.windows.dependencyobject", "system.windows.diagnostics.visualtreechangeeventargs", "Member[child]"]
+    - ["system.windows.data.bindingexpressionbase", "system.windows.diagnostics.bindingfailedeventargs", "Member[binding]"]
+    - ["system.int32", "system.windows.diagnostics.visualtreechangeeventargs", "Member[childindex]"]
+    - ["system.reflection.assembly", "system.windows.diagnostics.resourcedictionaryinfo", "Member[resourcedictionaryassembly]"]
+    - ["system.windows.dependencyobject", "system.windows.diagnostics.visualtreechangeeventargs", "Member[parent]"]
+    - ["system.windows.diagnostics.visualtreechangetype", "system.windows.diagnostics.visualtreechangetype!", "Member[remove]"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Method[getframeworkelementowners].ReturnValue"]
+    - ["system.windows.diagnostics.xamlsourceinfo", "system.windows.diagnostics.visualdiagnostics!", "Method[getxamlsourceinfo].ReturnValue"]
+    - ["system.collections.generic.ienumerable", "system.windows.diagnostics.resourcedictionarydiagnostics!", "Method[getapplicationowners].ReturnValue"]
+    - ["system.uri", "system.windows.diagnostics.resourcedictionaryinfo", "Member[sourceuri]"]
+    - ["system.int32", "system.windows.diagnostics.xamlsourceinfo", "Member[lineposition]"]

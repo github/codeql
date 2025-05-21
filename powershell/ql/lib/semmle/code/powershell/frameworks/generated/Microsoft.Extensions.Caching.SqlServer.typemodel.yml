@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[refreshasync].ReturnValue"]
+    - ["microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[value]"]
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[tablename]"]
+    - ["system.byte[]", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[get].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[trygetasync].ReturnValue"]
+    - ["microsoft.extensions.internal.isystemclock", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[systemclock]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[removeasync].ReturnValue"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[setasync].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[tryget].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[setasync].ReturnValue"]
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[connectionstring]"]
+    - ["system.timespan", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[defaultslidingexpiration]"]
+    - ["system.string", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[schemaname]"]
+    - ["system.nullable", "microsoft.extensions.caching.sqlserver.sqlservercacheoptions", "Member[expireditemsdeletioninterval]"]
+    - ["system.threading.tasks.task", "microsoft.extensions.caching.sqlserver.sqlservercache", "Method[getasync].ReturnValue"]

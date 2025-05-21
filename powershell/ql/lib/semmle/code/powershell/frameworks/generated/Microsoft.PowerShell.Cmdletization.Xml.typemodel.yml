@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.powershell.cmdletization.xml.confirmimpact", "microsoft.powershell.cmdletization.xml.confirmimpact!", "Member[none]"]
+    - ["microsoft.powershell.cmdletization.xml.itemschoicetype", "microsoft.powershell.cmdletization.xml.itemschoicetype!", "Member[minvaluequery]"]
+    - ["microsoft.powershell.cmdletization.xml.itemschoicetype", "microsoft.powershell.cmdletization.xml.itemschoicetype!", "Member[excludequery]"]
+    - ["microsoft.powershell.cmdletization.xml.itemschoicetype", "microsoft.powershell.cmdletization.xml.itemschoicetype!", "Member[maxvaluequery]"]
+    - ["microsoft.powershell.cmdletization.xml.itemschoicetype", "microsoft.powershell.cmdletization.xml.itemschoicetype!", "Member[regularquery]"]
+    - ["microsoft.powershell.cmdletization.xml.confirmimpact", "microsoft.powershell.cmdletization.xml.confirmimpact!", "Member[high]"]
+    - ["microsoft.powershell.cmdletization.xml.confirmimpact", "microsoft.powershell.cmdletization.xml.confirmimpact!", "Member[low]"]
+    - ["microsoft.powershell.cmdletization.xml.confirmimpact", "microsoft.powershell.cmdletization.xml.confirmimpact!", "Member[medium]"]

@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[opcode]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writetransferevent].ReturnValue"]
+    - ["system.string", "system.diagnostics.eventing.eventprovidertracelistener", "Member[delimiter]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovidertracelistener", "Member[isthreadsafe]"]
+    - ["system.diagnostics.eventing.eventprovider+writeeventerrorcode", "system.diagnostics.eventing.eventprovider+writeeventerrorcode!", "Member[noerror]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writemessageevent].ReturnValue"]
+    - ["system.string[]", "system.diagnostics.eventing.eventprovidertracelistener", "Method[getsupportedattributes].ReturnValue"]
+    - ["system.int32", "system.diagnostics.eventing.eventdescriptor", "Member[eventid]"]
+    - ["system.int64", "system.diagnostics.eventing.eventdescriptor", "Member[keywords]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[isenabled].ReturnValue"]
+    - ["system.diagnostics.eventing.eventprovider+writeeventerrorcode", "system.diagnostics.eventing.eventprovider+writeeventerrorcode!", "Member[eventtoobig]"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[version]"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[level]"]
+    - ["system.guid", "system.diagnostics.eventing.eventprovider!", "Method[createactivityid].ReturnValue"]
+    - ["system.diagnostics.eventing.eventprovider+writeeventerrorcode", "system.diagnostics.eventing.eventprovider!", "Method[getlastwriteeventerror].ReturnValue"]
+    - ["system.diagnostics.eventing.eventprovider+writeeventerrorcode", "system.diagnostics.eventing.eventprovider+writeeventerrorcode!", "Member[nofreebuffers]"]
+    - ["system.boolean", "system.diagnostics.eventing.eventprovider", "Method[writeevent].ReturnValue"]
+    - ["system.byte", "system.diagnostics.eventing.eventdescriptor", "Member[channel]"]
+    - ["system.int32", "system.diagnostics.eventing.eventdescriptor", "Member[task]"]

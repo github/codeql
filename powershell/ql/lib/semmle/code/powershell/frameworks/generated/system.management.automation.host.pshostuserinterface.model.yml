@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.host.pshostuserinterface", "Method[get_rawui]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.host.pshostuserinterface", "Method[getoutputstring]", "Argument[0]", "ReturnValue", "value"]
+      - ["system.management.automation.host.pshostuserinterface", "Method[prompt]", "Argument[2].Element", "ReturnValue", "taint"]
+      - ["system.management.automation.host.pshostuserinterface", "Method[promptforcredential]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.management.automation.host.pshostuserinterface", "Method[promptforcredential]", "Argument[3]", "ReturnValue", "taint"]

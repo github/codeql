@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.web.security.membershipprovider", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Member[membershipprovider]"]
+    - ["system.boolean", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Member[canvalidatetoken]"]
+    - ["system.collections.objectmodel.readonlycollection", "system.identitymodel.services.tokens.membershipusernamesecuritytokenhandler", "Method[validatetoken].ReturnValue"]

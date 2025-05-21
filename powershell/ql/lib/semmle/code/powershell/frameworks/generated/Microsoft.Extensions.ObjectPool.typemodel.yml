@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["microsoft.extensions.objectpool.objectpool", "microsoft.extensions.objectpool.leaktrackingobjectpoolprovider", "Method[create].ReturnValue"]
+    - ["microsoft.extensions.objectpool.objectpool", "microsoft.extensions.objectpool.objectpoolprovider", "Method[create].ReturnValue"]
+    - ["system.text.stringbuilder", "microsoft.extensions.objectpool.stringbuilderpooledobjectpolicy", "Method[create].ReturnValue"]
+    - ["microsoft.extensions.objectpool.objectpool", "microsoft.extensions.objectpool.objectpool!", "Method[create].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.objectpool.stringbuilderpooledobjectpolicy", "Method[return].ReturnValue"]
+    - ["t", "microsoft.extensions.objectpool.ipooledobjectpolicy", "Method[create].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.objectpool.stringbuilderpooledobjectpolicy", "Member[maximumretainedcapacity]"]
+    - ["t", "microsoft.extensions.objectpool.leaktrackingobjectpool", "Method[get].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.objectpool.defaultobjectpoolprovider", "Member[maximumretained]"]
+    - ["t", "microsoft.extensions.objectpool.pooledobjectpolicy", "Method[create].ReturnValue"]
+    - ["t", "microsoft.extensions.objectpool.defaultpooledobjectpolicy", "Method[create].ReturnValue"]
+    - ["microsoft.extensions.objectpool.objectpool", "microsoft.extensions.objectpool.objectpoolproviderextensions!", "Method[createstringbuilderpool].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.objectpool.dependencyinjectionpooloptions", "Member[capacity]"]
+    - ["system.boolean", "microsoft.extensions.objectpool.ipooledobjectpolicy", "Method[return].ReturnValue"]
+    - ["microsoft.extensions.objectpool.objectpool", "microsoft.extensions.objectpool.defaultobjectpoolprovider", "Method[create].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.objectpool.defaultpooledobjectpolicy", "Method[return].ReturnValue"]
+    - ["system.int32", "microsoft.extensions.objectpool.stringbuilderpooledobjectpolicy", "Member[initialcapacity]"]
+    - ["t", "microsoft.extensions.objectpool.objectpool", "Method[get].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.objectpool.pooledobjectpolicy", "Method[return].ReturnValue"]
+    - ["t", "microsoft.extensions.objectpool.defaultobjectpool", "Method[get].ReturnValue"]
+    - ["system.boolean", "microsoft.extensions.objectpool.iresettable", "Method[tryreset].ReturnValue"]

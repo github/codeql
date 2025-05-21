@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[antialiasgridfit]"]
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[cleartypegridfit]"]
+    - ["system.drawing.text.genericfontfamilies", "system.drawing.text.genericfontfamilies!", "Member[monospace]"]
+    - ["system.drawing.text.hotkeyprefix", "system.drawing.text.hotkeyprefix!", "Member[none]"]
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[systemdefault]"]
+    - ["system.drawing.fontfamily[]", "system.drawing.text.fontcollection", "Member[families]"]
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[antialias]"]
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[singlebitperpixelgridfit]"]
+    - ["system.drawing.text.hotkeyprefix", "system.drawing.text.hotkeyprefix!", "Member[show]"]
+    - ["system.drawing.text.hotkeyprefix", "system.drawing.text.hotkeyprefix!", "Member[hide]"]
+    - ["system.drawing.text.genericfontfamilies", "system.drawing.text.genericfontfamilies!", "Member[sansserif]"]
+    - ["system.drawing.text.textrenderinghint", "system.drawing.text.textrenderinghint!", "Member[singlebitperpixel]"]
+    - ["system.drawing.text.genericfontfamilies", "system.drawing.text.genericfontfamilies!", "Member[serif]"]

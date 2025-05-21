@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.customcontrolbuilder", "Method[endcontrol]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.customcontrolbuilder", "Method[groupbyproperty]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customcontrolbuilder", "Method[groupbyscriptblock]", "Argument[this]", "ReturnValue", "value"]
+      - ["system.management.automation.customcontrolbuilder", "Method[startentry]", "Argument[this]", "ReturnValue.SyntheticField[system.management.automation.customentrybuilder._controlbuilder]", "value"]

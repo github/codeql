@@ -1,0 +1,28 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "mshtml.ihtmlformelement", "Member[action]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[outerhtml]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[innerhtml]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[tagname]"]
+    - ["system.string", "mshtml.ihtmlinputelement", "Member[name]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[outertext]"]
+    - ["system.string", "mshtml.ihtmlinputelement", "Member[value]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[innertext]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[scripts]"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[links]"]
+    - ["system.collections.ienumerator", "mshtml.ihtmlformelement", "Method[getenumerator].ReturnValue"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[images]"]
+    - ["system.string", "mshtml.ihtmlformelement", "Member[method]"]
+    - ["system.collections.ienumerator", "mshtml.ihtmlelementcollection", "Method[getenumerator].ReturnValue"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[forms]"]
+    - ["system.object", "mshtml.ihtmlelementcollection", "Method[item].ReturnValue"]
+    - ["mshtml.ihtmlelement", "mshtml.ihtmldocument2", "Member[body]"]
+    - ["system.string", "mshtml.ihtmlformelement", "Member[name]"]
+    - ["system.object", "mshtml.ihtmlformelement", "Method[item].ReturnValue"]
+    - ["mshtml.ihtmlelementcollection", "mshtml.ihtmldocument2", "Member[all]"]
+    - ["system.string", "mshtml.ihtmldocument2", "Member[readystate]"]
+    - ["system.string", "mshtml.ihtmlelement", "Member[id]"]

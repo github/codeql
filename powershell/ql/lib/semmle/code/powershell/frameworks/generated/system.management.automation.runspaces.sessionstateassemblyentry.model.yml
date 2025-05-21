@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.sessionstateassemblyentry", "Method[clone]", "Argument[this].Field[system.management.automation.runspaces.initialsessionstateentry.module]", "ReturnValue.Field[system.management.automation.runspaces.initialsessionstateentry.module]", "value"]
+      - ["system.management.automation.runspaces.sessionstateassemblyentry", "Method[clone]", "Argument[this].Field[system.management.automation.runspaces.initialsessionstateentry.pssnapin]", "ReturnValue.Field[system.management.automation.runspaces.initialsessionstateentry.pssnapin]", "value"]
+      - ["system.management.automation.runspaces.sessionstateassemblyentry", "Method[clone]", "Argument[this].Field[system.management.automation.runspaces.sessionstateassemblyentry.filename]", "ReturnValue.Field[system.management.automation.runspaces.sessionstateassemblyentry.filename]", "value"]
+      - ["system.management.automation.runspaces.sessionstateassemblyentry", "Method[sessionstateassemblyentry]", "Argument[1]", "Argument[this].Field[system.management.automation.runspaces.sessionstateassemblyentry.filename]", "value"]

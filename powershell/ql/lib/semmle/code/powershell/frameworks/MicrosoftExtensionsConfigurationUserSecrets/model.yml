@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: typeModel
-    data:
-    - ["system.string", "microsoft.extensions.configuration.usersecrets.usersecretsidattribute", "Member[usersecretsid]"]
-    - ["system.string", "microsoft.extensions.configuration.usersecrets.pathhelper!", "Method[getsecretspathfromsecretsid].ReturnValue"]

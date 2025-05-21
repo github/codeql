@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolveappname]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolvecomputername]", "Argument[0]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.psremotingcmdlet", "Method[resolveshell]", "Argument[0]", "ReturnValue", "value"]

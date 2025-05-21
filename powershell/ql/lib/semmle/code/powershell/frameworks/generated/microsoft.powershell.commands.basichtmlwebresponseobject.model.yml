@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.basichtmlwebresponseobject", "Method[basichtmlwebresponseobject]", "Argument[0].Field[system.net.http.httpresponsemessage.headers].Element", "Argument[this].Field[microsoft.powershell.commands.webresponseobject.rawcontent]", "taint"]
+      - ["microsoft.powershell.commands.basichtmlwebresponseobject", "Method[get_images]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.basichtmlwebresponseobject", "Method[get_inputfields]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.basichtmlwebresponseobject", "Method[get_links]", "Argument[this]", "ReturnValue", "taint"]

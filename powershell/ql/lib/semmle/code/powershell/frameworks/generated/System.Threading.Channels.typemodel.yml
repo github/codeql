@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.threading.channels.channelwriter", "system.threading.channels.channel!", "Method[op_implicit].ReturnValue"]
+    - ["system.boolean", "system.threading.channels.channeloptions", "Member[singlereader]"]
+    - ["system.threading.channels.boundedchannelfullmode", "system.threading.channels.boundedchannelfullmode!", "Member[dropnewest]"]
+    - ["system.threading.tasks.valuetask", "system.threading.channels.channelreader", "Method[waittoreadasync].ReturnValue"]
+    - ["system.threading.channels.channelwriter", "system.threading.channels.channel", "Member[writer]"]
+    - ["system.collections.generic.iasyncenumerable", "system.threading.channels.channelreader", "Method[readallasync].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "system.threading.channels.channelreader", "Method[readasync].ReturnValue"]
+    - ["system.boolean", "system.threading.channels.channelreader", "Member[cancount]"]
+    - ["system.boolean", "system.threading.channels.channelwriter", "Method[trycomplete].ReturnValue"]
+    - ["system.boolean", "system.threading.channels.channeloptions", "Member[singlewriter]"]
+    - ["system.threading.tasks.task", "system.threading.channels.channelreader", "Member[completion]"]
+    - ["system.threading.channels.channel", "system.threading.channels.channel!", "Method[createbounded].ReturnValue"]
+    - ["system.threading.channels.boundedchannelfullmode", "system.threading.channels.boundedchanneloptions", "Member[fullmode]"]
+    - ["system.int32", "system.threading.channels.boundedchanneloptions", "Member[capacity]"]
+    - ["system.threading.channels.boundedchannelfullmode", "system.threading.channels.boundedchannelfullmode!", "Member[dropoldest]"]
+    - ["system.threading.channels.channel", "system.threading.channels.channel!", "Method[createunboundedprioritized].ReturnValue"]
+    - ["system.boolean", "system.threading.channels.channelreader", "Member[canpeek]"]
+    - ["system.int32", "system.threading.channels.channelreader", "Member[count]"]
+    - ["system.threading.channels.channelreader", "system.threading.channels.channel!", "Method[op_implicit].ReturnValue"]
+    - ["system.collections.generic.icomparer", "system.threading.channels.unboundedprioritizedchanneloptions", "Member[comparer]"]
+    - ["system.threading.channels.boundedchannelfullmode", "system.threading.channels.boundedchannelfullmode!", "Member[dropwrite]"]
+    - ["system.boolean", "system.threading.channels.channelreader", "Method[tryread].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "system.threading.channels.channelwriter", "Method[writeasync].ReturnValue"]
+    - ["system.threading.channels.boundedchannelfullmode", "system.threading.channels.boundedchannelfullmode!", "Member[wait]"]
+    - ["system.threading.channels.channelreader", "system.threading.channels.channel", "Member[reader]"]
+    - ["system.boolean", "system.threading.channels.channelreader", "Method[trypeek].ReturnValue"]
+    - ["system.threading.tasks.valuetask", "system.threading.channels.channelwriter", "Method[waittowriteasync].ReturnValue"]
+    - ["system.threading.channels.channel", "system.threading.channels.channel!", "Method[createunbounded].ReturnValue"]
+    - ["system.boolean", "system.threading.channels.channeloptions", "Member[allowsynchronouscontinuations]"]
+    - ["system.boolean", "system.threading.channels.channelwriter", "Method[trywrite].ReturnValue"]

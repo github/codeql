@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[unknown]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[dependencyname]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[requestmetadata]"]
+    - ["microsoft.extensions.http.diagnostics.requestmetadata", "microsoft.extensions.http.diagnostics.ioutgoingrequestcontext", "Member[requestmetadata]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[strict]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[none]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[clientapplicationnameheader]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[dependencyname]"]
+    - ["microsoft.extensions.http.diagnostics.httprouteparameterredactionmode", "microsoft.extensions.http.diagnostics.httprouteparameterredactionmode!", "Member[loose]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[redacted]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[serverapplicationnameheader]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.telemetryconstants!", "Member[requestmetadatakey]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[requestroute]"]
+    - ["system.collections.generic.iset", "microsoft.extensions.http.diagnostics.idownstreamdependencymetadata", "Member[uniquehostnamesuffixes]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[requestname]"]
+    - ["system.string", "microsoft.extensions.http.diagnostics.requestmetadata", "Member[methodtype]"]

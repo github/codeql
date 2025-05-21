@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.externalscriptinfo", "Method[get_definition]", "Argument[this].Field[system.management.automation.externalscriptinfo.path]", "ReturnValue", "value"]
+      - ["system.management.automation.externalscriptinfo", "Method[get_originalencoding]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.externalscriptinfo", "Method[get_path]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.externalscriptinfo", "Method[get_scriptcontents]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.externalscriptinfo", "Method[get_source]", "Argument[this].Field[system.management.automation.externalscriptinfo.definition]", "ReturnValue", "value"]
+      - ["system.management.automation.externalscriptinfo", "Method[get_source]", "Argument[this].Field[system.management.automation.externalscriptinfo.path]", "ReturnValue", "value"]

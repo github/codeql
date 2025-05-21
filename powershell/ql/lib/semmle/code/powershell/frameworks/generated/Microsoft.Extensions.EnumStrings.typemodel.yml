@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.string", "microsoft.extensions.enumstrings.enumstringsattribute", "Member[extensionclassmodifiers]"]
+    - ["system.type", "microsoft.extensions.enumstrings.enumstringsattribute", "Member[enumtype]"]
+    - ["system.string", "microsoft.extensions.enumstrings.enumstringsattribute", "Member[extensionmethodname]"]
+    - ["system.string", "microsoft.extensions.enumstrings.enumstringsattribute", "Member[extensionclassname]"]
+    - ["system.string", "microsoft.extensions.enumstrings.enumstringsattribute", "Member[extensionnamespace]"]

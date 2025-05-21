@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: microsoft/powershell-all
-      extensible: summaryModel
-    data:
-      - ["system.management.automation.containerparentjob", "Method[addchildjob]", "Argument[0]", "Argument[this]", "taint"]
-      - ["system.management.automation.containerparentjob", "Method[containerparentjob]", "Argument[2]", "Argument[this]", "taint"]
-      - ["system.management.automation.containerparentjob", "Method[containerparentjob]", "Argument[3]", "Argument[this]", "taint"]
-      

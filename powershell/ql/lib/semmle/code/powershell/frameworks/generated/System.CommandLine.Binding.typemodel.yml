@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.commandline.binding.binderbase", "Member[hasdefaultvalue]"]
+    - ["system.object", "system.commandline.binding.binderbase", "Method[getdefaultvalue].ReturnValue"]
+    - ["system.string", "system.commandline.binding.binderbase", "Member[valuename]"]
+    - ["system.object", "system.commandline.binding.bindingcontext", "Method[getservice].ReturnValue"]
+    - ["system.object", "system.commandline.binding.boundvalue", "Member[value]"]
+    - ["system.string", "system.commandline.binding.boundvalue", "Method[tostring].ReturnValue"]
+    - ["system.commandline.binding.ivaluedescriptor", "system.commandline.binding.boundvalue", "Member[valuedescriptor]"]
+    - ["system.object", "system.commandline.binding.ivaluedescriptor", "Method[getdefaultvalue].ReturnValue"]
+    - ["system.boolean", "system.commandline.binding.ivaluedescriptor", "Member[hasdefaultvalue]"]
+    - ["system.type", "system.commandline.binding.binderbase", "Member[valuetype]"]
+    - ["system.type", "system.commandline.binding.ivaluedescriptor", "Member[valuetype]"]
+    - ["system.commandline.iconsole", "system.commandline.binding.bindingcontext", "Member[console]"]
+    - ["system.boolean", "system.commandline.binding.ivaluesource", "Method[trygetvalue].ReturnValue"]
+    - ["t", "system.commandline.binding.binderbase", "Method[getboundvalue].ReturnValue"]
+    - ["system.string", "system.commandline.binding.ivaluedescriptor", "Member[valuename]"]
+    - ["system.boolean", "system.commandline.binding.binderbase", "Method[trygetvalue].ReturnValue"]
+    - ["system.commandline.binding.ivaluesource", "system.commandline.binding.boundvalue", "Member[valuesource]"]
+    - ["system.commandline.parsing.parseresult", "system.commandline.binding.bindingcontext", "Member[parseresult]"]

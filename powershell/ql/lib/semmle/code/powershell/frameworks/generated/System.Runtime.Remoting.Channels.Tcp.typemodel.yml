@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.runtime.remoting.channels.tcp.tcpchannel", "Member[issecured]"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpclientchannel", "Member[channelname]"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpchannel", "Method[parse].ReturnValue"]
+    - ["system.int32", "system.runtime.remoting.channels.tcp.tcpclientchannel", "Member[channelpriority]"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Method[parse].ReturnValue"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Method[getchanneluri].ReturnValue"]
+    - ["system.boolean", "system.runtime.remoting.channels.tcp.tcpclientchannel", "Member[issecured]"]
+    - ["system.runtime.remoting.messaging.imessagesink", "system.runtime.remoting.channels.tcp.tcpchannel", "Method[createmessagesink].ReturnValue"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpclientchannel", "Method[parse].ReturnValue"]
+    - ["system.int32", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Member[channelpriority]"]
+    - ["system.string[]", "system.runtime.remoting.channels.tcp.tcpchannel", "Method[geturlsforuri].ReturnValue"]
+    - ["system.object", "system.runtime.remoting.channels.tcp.tcpchannel", "Member[channeldata]"]
+    - ["system.boolean", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Member[issecured]"]
+    - ["system.string[]", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Method[geturlsforuri].ReturnValue"]
+    - ["system.runtime.remoting.messaging.imessagesink", "system.runtime.remoting.channels.tcp.tcpclientchannel", "Method[createmessagesink].ReturnValue"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpchannel", "Member[channelname]"]
+    - ["system.int32", "system.runtime.remoting.channels.tcp.tcpchannel", "Member[channelpriority]"]
+    - ["system.string", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Member[channelname]"]
+    - ["system.object", "system.runtime.remoting.channels.tcp.tcpserverchannel", "Member[channeldata]"]

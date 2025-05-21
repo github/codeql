@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.runspaces.runspaceconnectioninfo", "Method[clone]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspaceconnectioninfo", "Method[createclientsessiontransportmanager]", "Argument[1]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspaceconnectioninfo", "Method[createclientsessiontransportmanager]", "Argument[2]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspaceconnectioninfo", "Method[createclientsessiontransportmanager]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.runspaces.runspaceconnectioninfo", "Method[setsessionoptions]", "Argument[0]", "Argument[this]", "taint"]

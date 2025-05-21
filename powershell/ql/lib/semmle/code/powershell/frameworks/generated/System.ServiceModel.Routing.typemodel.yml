@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[routeonheadersonly]"]
+    - ["system.servicemodel.channels.message", "system.servicemodel.routing.routingservice", "Method[endprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.irequestreplyrouter", "Method[beginprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[beginprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.isimplexdatagramrouter", "Method[beginprocessmessage].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[soapprocessingenabled]"]
+    - ["system.servicemodel.channels.message", "system.servicemodel.routing.irequestreplyrouter", "Method[endprocessrequest].ReturnValue"]
+    - ["system.iasyncresult", "system.servicemodel.routing.iduplexsessionrouter", "Method[beginprocessmessage].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.soapprocessingbehavior", "Member[processmessages]"]
+    - ["system.type", "system.servicemodel.routing.routingbehavior!", "Method[getcontractfordescription].ReturnValue"]
+    - ["system.servicemodel.dispatcher.messagefiltertable", "system.servicemodel.routing.routingconfiguration", "Member[filtertable]"]
+    - ["system.iasyncresult", "system.servicemodel.routing.isimplexsessionrouter", "Method[beginprocessmessage].ReturnValue"]
+    - ["system.boolean", "system.servicemodel.routing.routingconfiguration", "Member[ensureordereddispatch]"]
+    - ["system.iasyncresult", "system.servicemodel.routing.routingservice", "Method[beginprocessmessage].ReturnValue"]

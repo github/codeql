@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[1]", "Argument[1].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.indexexpressionast.target]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[1]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.indexexpressionast.target]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[1]", "Argument[this].Field[system.management.automation.language.indexexpressionast.target]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[2]", "Argument[2].Field[system.management.automation.language.ast.parent].Field[system.management.automation.language.indexexpressionast.index]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[2]", "Argument[this].Field[system.management.automation.language.indexexpressionast.index]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[this]", "Argument[1].Field[system.management.automation.language.ast.parent]", "value"]
+      - ["system.management.automation.language.indexexpressionast", "Method[indexexpressionast]", "Argument[this]", "Argument[2].Field[system.management.automation.language.ast.parent]", "value"]

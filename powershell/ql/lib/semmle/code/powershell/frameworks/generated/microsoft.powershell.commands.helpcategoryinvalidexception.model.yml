@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["microsoft.powershell.commands.helpcategoryinvalidexception", "Method[get_helpcategory]", "Argument[this].SyntheticField[microsoft.powershell.commands.helpcategoryinvalidexception._helpcategory]", "ReturnValue", "value"]
+      - ["microsoft.powershell.commands.helpcategoryinvalidexception", "Method[get_message]", "Argument[this]", "ReturnValue", "taint"]
+      - ["microsoft.powershell.commands.helpcategoryinvalidexception", "Method[helpcategoryinvalidexception]", "Argument[0]", "Argument[this].SyntheticField[microsoft.powershell.commands.helpcategoryinvalidexception._helpcategory]", "value"]

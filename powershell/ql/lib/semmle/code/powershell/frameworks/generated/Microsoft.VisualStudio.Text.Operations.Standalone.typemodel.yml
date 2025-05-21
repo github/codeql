@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.boolean", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy", "Method[canmerge].ReturnValue"]
+    - ["system.boolean", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy", "Method[testcompatiblepolicy].ReturnValue"]
+    - ["microsoft.visualstudio.text.operations.imergetextundotransactionpolicy", "microsoft.visualstudio.text.operations.standalone.nullmergeundotransactionpolicy!", "Member[instance]"]

@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: microsoft/powershell-all
+      extensible: typeModel
+    data:
+    - ["system.int32", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[tcpport]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[startupprobe]"]
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[readiness]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[livenessprobe]"]
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[liveness]"]
+    - ["microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "microsoft.extensions.diagnostics.probes.kubernetesprobesoptions", "Member[readinessprobe]"]
+    - ["system.timespan", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[healthassessmentperiod]"]
+    - ["system.int32", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[maxpendingconnections]"]
+    - ["system.string", "microsoft.extensions.diagnostics.probes.probetags!", "Member[startup]"]
+    - ["system.func", "microsoft.extensions.diagnostics.probes.tcpendpointprobesoptions", "Member[filterchecks]"]

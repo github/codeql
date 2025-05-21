@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[0]", "Argument[this].SyntheticField[system.management.automation.errorrecord._error]", "value"]
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.errorrecord._error]", "value"]
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[1]", "Argument[this].SyntheticField[system.management.automation.errorrecord._errorid]", "value"]
+      - ["system.management.automation.errorrecord", "Method[errorrecord]", "Argument[3]", "Argument[this].SyntheticField[system.management.automation.errorrecord._target]", "value"]
+      - ["system.management.automation.errorrecord", "Method[get_exception]", "Argument[this].SyntheticField[system.management.automation.errorrecord._error]", "ReturnValue", "value"]
+      - ["system.management.automation.errorrecord", "Method[get_fullyqualifiederrorid]", "Argument[this].SyntheticField[system.management.automation.errorrecord._errorid]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_invocationinfo]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_scriptstacktrace]", "Argument[this]", "ReturnValue", "taint"]
+      - ["system.management.automation.errorrecord", "Method[get_targetobject]", "Argument[this].SyntheticField[system.management.automation.errorrecord._target]", "ReturnValue", "value"]
+      - ["system.management.automation.errorrecord", "Method[tostring]", "Argument[this]", "ReturnValue", "taint"]
