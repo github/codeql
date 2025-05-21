@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PathExprResolver
 
 /**
  * A module, which may either be an ECMAScript 2015-style module,
@@ -68,7 +69,7 @@ abstract class Module extends TopLevel {
    * This predicate is not part of the public API, it is only exposed to allow
    * overriding by subclasses.
    */
-  predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
+  deprecated predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     priority = 0 and
     exists(string v | v = path.getValue() |
@@ -89,7 +90,7 @@ abstract class Module extends TopLevel {
    * resolves to a folder containing a main module (such as `index.js`), then
    * that file is the result.
    */
-  File resolve(PathExpr path) {
+  deprecated File resolve(PathExpr path) {
     path.getEnclosingModule() = this and
     (
       // handle the case where the import path is complete
@@ -122,8 +123,14 @@ abstract class Import extends AstNode {
   /** Gets the module in which this import appears. */
   abstract Module getEnclosingModule();
 
+  /** DEPRECATED. Use `getImportedPathExpr` instead. */
+  deprecated PathExpr getImportedPath() { result = this.getImportedPathExpr() }
+
   /** Gets the (unresolved) path that this import refers to. */
-  abstract PathExpr getImportedPath();
+  abstract Expr getImportedPathExpr();
+
+  /** Gets the imported path as a string. */
+  final string getImportedPathString() { result = this.getImportedPathExpr().getStringValue() }
 
   /**
    * Gets an externs module the path of this import resolves to.
@@ -132,45 +139,23 @@ abstract class Import extends AstNode {
    * path is assumed to be a possible target of the import.
    */
   Module resolveExternsImport() {
-    result.isExterns() and result.getName() = this.getImportedPath().getValue()
+    result.isExterns() and result.getName() = this.getImportedPathString()
   }
 
   /**
    * Gets the module the path of this import resolves to.
    */
-  Module resolveImportedPath() {
-    result.getFile() = this.getEnclosingModule().resolve(this.getImportedPath())
-  }
+  Module resolveImportedPath() { result.getFile() = this.getImportedFile() }
 
   /**
-   * Gets a module with a `@providesModule` JSDoc tag that matches
-   * the imported path.
+   * Gets the module the path of this import resolves to.
    */
-  private Module resolveAsProvidedModule() {
-    exists(JSDocTag tag |
-      tag.getTitle() = "providesModule" and
-      tag.getParent().getComment().getTopLevel() = result and
-      tag.getDescription().trim() = this.getImportedPath().getValue()
-    )
-  }
+  File getImportedFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
 
   /**
-   * Gets a module in a `node_modules/@types/` folder that matches the imported module name.
+   * DEPRECATED. Use `getImportedModule()` instead.
    */
-  private Module resolveFromTypeRoot() {
-    result.getFile() =
-      min(TypeRootFolder typeRoot |
-        |
-        typeRoot.getModuleFile(this.getImportedPath().getValue())
-        order by
-          typeRoot.getSearchPriority(this.getFile().getParentContainer())
-      )
-  }
-
-  /**
-   * Gets the imported module, as determined by the TypeScript compiler, if any.
-   */
-  private Module resolveFromTypeScriptSymbol() {
+  deprecated Module resolveFromTypeScriptSymbol() {
     exists(CanonicalName symbol |
       ast_node_symbol(this, symbol) and
       ast_node_symbol(result, symbol)
@@ -190,42 +175,11 @@ abstract class Import extends AstNode {
     Stages::Imports::ref() and
     if exists(this.resolveExternsImport())
     then result = this.resolveExternsImport()
-    else (
-      result = this.resolveAsProvidedModule() or
-      result = this.resolveImportedPath() or
-      result = this.resolveFromTypeRoot() or
-      result = this.resolveFromTypeScriptSymbol() or
-      result = resolveNeighbourPackage(this.getImportedPath().getValue())
-    )
+    else result = this.resolveImportedPath()
   }
 
   /**
    * Gets the data flow node that the default import of this import is available at.
    */
   abstract DataFlow::Node getImportedModuleNode();
-}
-
-/**
- * Gets a module imported from another package in the same repository.
- *
- * No support for importing from folders inside the other package.
- */
-private Module resolveNeighbourPackage(PathString importPath) {
-  exists(PackageJson json | importPath = json.getPackageName() and result = json.getMainModule())
-  or
-  exists(string package |
-    result.getFile().getParentContainer() = getPackageFolder(package) and
-    importPath = package + "/" + [result.getFile().getBaseName(), result.getFile().getStem()]
-  )
-}
-
-/**
- * Gets the folder for a package that has name `package` according to a package.json file in the resulting folder.
- */
-pragma[noinline]
-private Folder getPackageFolder(string package) {
-  exists(PackageJson json |
-    json.getPackageName() = package and
-    result = json.getFile().getParentContainer()
-  )
 }

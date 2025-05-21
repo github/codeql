@@ -1,3 +1,9 @@
+## 4.3.0
+
+### New Features
+
+* Added AST nodes `UnsafeCastExpr`, `TypeValueExpr`, `IntegerType`, and `BuiltinFixedArrayType` that correspond to new nodes added by Swift 6.1.
+
 ## 4.2.0
 
 ### Major Analysis Improvements

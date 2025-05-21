@@ -738,7 +738,7 @@ module ModuleImportNode {
     DefaultRange() {
       exists(Import i |
         this = i.getImportedModuleNode() and
-        i.getImportedPath().getValue() = path
+        i.getImportedPathString() = path
       )
       or
       // AMD require

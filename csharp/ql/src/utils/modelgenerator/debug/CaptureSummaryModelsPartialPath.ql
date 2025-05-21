@@ -5,11 +5,12 @@
  * @precision low
  * @id csharp/utils/modelgenerator/summary-models-partial-path
  * @severity info
- * @tags modelgenerator
+ * @tags debugmodelgenerator
  */
 
 import csharp
 import utils.modelgenerator.internal.CaptureModels
+import SummaryModels
 import PartialFlow::PartialPathGraph
 
 int explorationLimit() { result = 3 }

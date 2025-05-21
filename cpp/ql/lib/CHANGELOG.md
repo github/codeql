@@ -1,3 +1,9 @@
+## 4.3.1
+
+### Bug Fixes
+
+* Fixed an infinite loop in `semmle.code.cpp.rangeanalysis.new.RangeAnalysis` when computing ranges in very large and complex function bodies.
+
 ## 4.3.0
 
 ### New Features

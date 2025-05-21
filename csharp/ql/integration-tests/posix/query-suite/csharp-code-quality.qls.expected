@@ -5,6 +5,7 @@ ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ContainerSizeCmpZero.ql
 ql/csharp/ql/src/Likely Bugs/DangerousNonShortCircuitLogic.ql
+ql/csharp/ql/src/Likely Bugs/EqualityCheckOnFloats.ql
 ql/csharp/ql/src/Likely Bugs/ReferenceEqualsOnValueTypes.ql
 ql/csharp/ql/src/Likely Bugs/SelfAssignment.ql
 ql/csharp/ql/src/Likely Bugs/UncheckedCastInEquals.ql
