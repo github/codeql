@@ -49,7 +49,7 @@ fn test_operations(
 	x >>= y; // $ Operation Op=>>= Operands=2 AssignmentOperation BinaryExpr BitwiseOperation AssignBitwiseOperation
 
 	// miscellaneous expressions that might be operations
-	*ptr; // $ Operation Op=* Operands=1 PrefixExpr
+	*ptr; // $ Operation Op=* Operands=1 PrefixExpr DerefExpr
 	&x; // $ RefExpr
 	res?;
 
