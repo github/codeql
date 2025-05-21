@@ -36,7 +36,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
       // when the operation is again modeled as a key gen operation.
       this.(Call).getTarget().getName() = "EVP_PKEY_Q_keygen" and
       (
-        // Ellipitic curve case
+        // Elliptic curve case
         // If the argInd 3 is a derived type (pointer or array) then assume it is a curve name
         if this.(Call).getArgument(3).getType().getUnderlyingType() instanceof DerivedType
         then valueArgNode.asExpr() = this.(Call).getArgument(3)
