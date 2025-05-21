@@ -1,3 +1,0 @@
-multipleMethodCallTargets
-| test.rs:618:25:618:49 | address.to_socket_addrs() | file://:0:0:0:0 | fn to_socket_addrs |
-| test.rs:618:25:618:49 | address.to_socket_addrs() | file://:0:0:0:0 | fn to_socket_addrs |
