@@ -28,100 +28,99 @@ import semmle.code.cpp.dataflow.new.DataFlow
  * - EVP_MD_CTX
  * - EVP_PKEY_CTX
  */
-private class CTXType extends Type {
-  CTXType() { this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st") }
+private class CtxType extends Type {
+  CtxType() { this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st") }
 }
 
 /**
- * A pointer to a CTXType
+ * A pointer to a CtxType
  */
-private class CTXPointerExpr extends Expr {
-  CTXPointerExpr() {
-    this.getType() instanceof CTXType and
+private class CtxPointerExpr extends Expr {
+  CtxPointerExpr() {
+    this.getType() instanceof CtxType and
     this.getType() instanceof PointerType
   }
 }
 
 /**
- * A call argument of type CTXPointerExpr.
+ * A call argument of type CtxPointerExpr.
  */
-private class CTXPointerArgument extends CTXPointerExpr {
-  CTXPointerArgument() { exists(Call c | c.getAnArgument() = this) }
+private class CtxPointerArgument extends CtxPointerExpr {
+  CtxPointerArgument() { exists(Call c | c.getAnArgument() = this) }
 
   Call getCall() { result.getAnArgument() = this }
 }
 
 /**
  * A call whose target contains 'free' or 'reset' and has an argument of type
- * CTXPointerArgument.
+ * CtxPointerArgument.
  */
-private class CTXClearCall extends Call {
-  CTXClearCall() {
+private class CtxClearCall extends Call {
+  CtxClearCall() {
     this.getTarget().getName().toLowerCase().matches(["%free%", "%reset%"]) and
-    this.getAnArgument() instanceof CTXPointerArgument
+    this.getAnArgument() instanceof CtxPointerArgument
   }
 }
 
 /**
  * A call whose target contains 'copy' and has an argument of type
- * CTXPointerArgument.
+ * CtxPointerArgument.
  */
-private class CTXCopyOutArgCall extends Call {
-  CTXCopyOutArgCall() {
+private class CtxCopyOutArgCall extends Call {
+  CtxCopyOutArgCall() {
     this.getTarget().getName().toLowerCase().matches("%copy%") and
-    this.getAnArgument() instanceof CTXPointerArgument
+    this.getAnArgument() instanceof CtxPointerArgument
   }
 }
 
 /**
  * A call whose target contains 'dup' and has an argument of type
- * CTXPointerArgument.
+ * CtxPointerArgument.
  */
-private class CTXCopyReturnCall extends Call {
-  CTXCopyReturnCall() {
+private class CtxCopyReturnCall extends Call, CtxPointerExpr {
+  CtxCopyReturnCall() {
     this.getTarget().getName().toLowerCase().matches("%dup%") and
-    this.getAnArgument() instanceof CTXPointerArgument and
-    this instanceof CTXPointerExpr
+    this.getAnArgument() instanceof CtxPointerArgument
   }
 }
 
 /**
- * Flow from any CTXPointerArgument to any other CTXPointerArgument
+ * Flow from any CtxPointerArgument to any other CtxPointerArgument
  */
-module OpenSSLCTXArgumentFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CTXPointerArgument }
+module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerArgument }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CTXPointerArgument }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CtxPointerArgument }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(CTXClearCall c | c.getAnArgument() = node.asExpr())
+    exists(CtxClearCall c | c.getAnArgument() = node.asExpr())
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(CTXCopyOutArgCall c |
+    exists(CtxCopyOutArgCall c |
       c.getAnArgument() = node1.asExpr() and
       c.getAnArgument() = node2.asExpr() and
       node1.asExpr() != node2.asExpr() and
-      node2.asExpr().getType() instanceof CTXType
+      node2.asExpr().getType() instanceof CtxType
     )
     or
-    exists(CTXCopyReturnCall c |
+    exists(CtxCopyReturnCall c |
       c.getAnArgument() = node1.asExpr() and
       c = node2.asExpr() and
       node1.asExpr() != node2.asExpr() and
-      node2.asExpr().getType() instanceof CTXType
+      node2.asExpr().getType() instanceof CtxType
     )
   }
 }
 
-module OpenSSLCTXArgumentFlow = DataFlow::Global<OpenSSLCTXArgumentFlowConfig>;
+module OpenSSLCtxArgumentFlow = DataFlow::Global<OpenSSLCtxArgumentFlowConfig>;
 
 /**
  * Holds if there is a context flow from the source to the sink.
  */
-predicate ctxArgFlowsToCtxArg(CTXPointerArgument source, CTXPointerArgument sink) {
+predicate ctxArgFlowsToCtxArg(CtxPointerArgument source, CtxPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
-    OpenSSLCTXArgumentFlow::flow(a, b) and
+    OpenSSLCtxArgumentFlow::flow(a, b) and
     a.asExpr() = source and
     b.asExpr() = sink
   )

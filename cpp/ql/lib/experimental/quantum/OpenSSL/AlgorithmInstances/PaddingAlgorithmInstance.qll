@@ -109,9 +109,9 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
   override Crypto::TPaddingType getPaddingType() {
     isPaddingSpecificConsumer = true and
     (
-      result = getKnownPaddingType()
+      result = this.getKnownPaddingType()
       or
-      not exists(getKnownPaddingType()) and result = Crypto::OtherPadding()
+      not exists(this.getKnownPaddingType()) and result = Crypto::OtherPadding()
     )
     or
     isPaddingSpecificConsumer = false and

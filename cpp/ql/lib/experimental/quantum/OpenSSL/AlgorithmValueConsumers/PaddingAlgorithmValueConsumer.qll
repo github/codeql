@@ -15,7 +15,7 @@ class EVP_PKEY_CTX_set_rsa_padding_AlgorithmValueConsumer extends PaddingAlgorit
 
   EVP_PKEY_CTX_set_rsa_padding_AlgorithmValueConsumer() {
     resultNode.asExpr() = this and
-    this.(Call).getTarget().getName() in ["EVP_PKEY_CTX_set_rsa_padding"] and
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_padding" and
     valueArgNode.asExpr() = this.(Call).getArgument(1)
   }
 
