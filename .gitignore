@@ -72,3 +72,7 @@ node_modules/
 
 # cargo build directory
 /target
+
+# some upgrade/downgrade checks create these files
+**/upgrades/*/*.dbscheme.stats
+**/downgrades/*/*.dbscheme.stats
