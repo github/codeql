@@ -259,8 +259,7 @@ private predicate typeEqualityLeft(AstNode n1, TypePath path1, AstNode n2, TypeP
   typeEquality(n1, path1, n2, path2)
   or
   n2 =
-    any(PrefixExpr pe |
-      pe.getOperatorName() = "*" and
+    any(DerefExpr pe |
       pe.getExpr() = n1 and
       path1.isCons(TRefTypeParameter(), path2)
     )
@@ -271,8 +270,7 @@ private predicate typeEqualityRight(AstNode n1, TypePath path1, AstNode n2, Type
   typeEquality(n1, path1, n2, path2)
   or
   n2 =
-    any(PrefixExpr pe |
-      pe.getOperatorName() = "*" and
+    any(DerefExpr pe |
       pe.getExpr() = n1 and
       path1 = TypePath::cons(TRefTypeParameter(), path2)
     )
