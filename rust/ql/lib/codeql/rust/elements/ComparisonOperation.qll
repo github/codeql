@@ -6,7 +6,7 @@ private import codeql.rust.elements.BinaryExpr
 private import codeql.rust.elements.Operation
 
 /**
- * A comparison operation, such as `==`, `<` or `>=`.
+ * A comparison operation, such as `==`, `<`, or `>=`.
  */
 abstract private class ComparisonOperationImpl extends Operation { }
 
@@ -22,7 +22,7 @@ final class EqualityOperation = EqualityOperationImpl;
 /**
  * The equal comparison operation, `==`.
  */
-final class EqualOperation extends EqualityOperationImpl, BinaryExpr {
+final class EqualOperation extends EqualityOperationImpl {
   EqualOperation() { this.getOperatorName() = "==" }
 }
 
@@ -59,7 +59,7 @@ final class RelationalOperation = RelationalOperationImpl;
 /**
  * The less than comparison operation, `<`.
  */
-final class LessThanOperation extends RelationalOperationImpl, BinaryExpr {
+final class LessThanOperation extends RelationalOperationImpl {
   LessThanOperation() { this.getOperatorName() = "<" }
 
   override Expr getGreaterOperand() { result = this.getRhs() }
@@ -70,7 +70,7 @@ final class LessThanOperation extends RelationalOperationImpl, BinaryExpr {
 /**
  * The greater than comparison operation, `>`.
  */
-final class GreaterThanOperation extends RelationalOperationImpl, BinaryExpr {
+final class GreaterThanOperation extends RelationalOperationImpl {
   GreaterThanOperation() { this.getOperatorName() = ">" }
 
   override Expr getGreaterOperand() { result = this.getLhs() }
@@ -81,7 +81,7 @@ final class GreaterThanOperation extends RelationalOperationImpl, BinaryExpr {
 /**
  * The less than or equal comparison operation, `<=`.
  */
-final class LessOrEqualOperation extends RelationalOperationImpl, BinaryExpr {
+final class LessOrEqualOperation extends RelationalOperationImpl {
   LessOrEqualOperation() { this.getOperatorName() = "<=" }
 
   override Expr getGreaterOperand() { result = this.getRhs() }
@@ -92,7 +92,7 @@ final class LessOrEqualOperation extends RelationalOperationImpl, BinaryExpr {
 /**
  * The greater than or equal comparison operation, `>=`.
  */
-final class GreaterOrEqualOperation extends RelationalOperationImpl, BinaryExpr {
+final class GreaterOrEqualOperation extends RelationalOperationImpl {
   GreaterOrEqualOperation() { this.getOperatorName() = ">=" }
 
   override Expr getGreaterOperand() { result = this.getLhs() }

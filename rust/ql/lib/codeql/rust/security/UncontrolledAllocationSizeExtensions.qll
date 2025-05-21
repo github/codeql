@@ -55,11 +55,11 @@ module UncontrolledAllocationSize {
       node = cmp.(RelationalOperation).getGreaterOperand().getACfgNode() and
       branch = false
       or
-      cmp.getOperatorName() = "==" and
+      cmp instanceof EqualOperation and
       [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
       branch = true
       or
-      cmp.getOperatorName() = "!=" and
+      cmp instanceof NotEqualOperation and
       [cmp.getLhs(), cmp.getRhs()].getACfgNode() = node and
       branch = false
     )
