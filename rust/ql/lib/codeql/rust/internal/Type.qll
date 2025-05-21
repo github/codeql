@@ -9,6 +9,7 @@ private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
+  TUnit() or
   TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
@@ -46,6 +47,21 @@ abstract class Type extends TType {
 
   /** Gets the location of this type. */
   abstract Location getLocation();
+}
+
+/** The unit type `()`. */
+class UnitType extends Type, TUnit {
+  UnitType() { this = TUnit() }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { none() }
+
+  override string toString() { result = "()" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 abstract private class StructOrEnumType extends Type {
