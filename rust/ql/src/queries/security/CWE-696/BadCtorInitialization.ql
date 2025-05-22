@@ -55,7 +55,6 @@ predicate edgesFwd(PathElement pred, PathElement succ) {
     )
   )
   or
-  // callable -> callable attribute macro expansion
   // [forwards reachable] callable -> enclosed call
   edgesFwd(_, pred) and
   pred = succ.(CallExprBase).getEnclosingCallable()
