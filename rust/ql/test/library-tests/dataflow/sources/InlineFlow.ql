@@ -10,7 +10,7 @@ module MyFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
-    any(CallExpr call | call.getFunction().(PathExpr).getResolvedPath() = "crate::test::sink")
+    any(CallExpr call | call.getFunction().(PathExpr).getResolvedPath().matches("%::sink"))
         .getArgList()
         .getAnArg() = sink.asExpr().getExpr()
   }
