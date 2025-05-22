@@ -211,4 +211,8 @@ function test() {
     const p = plumber();
     getStream().pipe(p).pipe(dest).pipe(dest).pipe(dest);
   }
+  {
+    const notStream = getNotAStream();
+    notStream.pipe(getStream(),()=>{}); // $SPURIOUS:Alert
+  }
 }

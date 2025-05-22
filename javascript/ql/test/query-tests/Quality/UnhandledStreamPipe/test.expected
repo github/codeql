@@ -1,3 +1,5 @@
+| rxjsStreams.js:16:7:16:23 | source.pipe(null) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| strapi.js:4:35:4:84 | async.p ... p('y')) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:4:5:4:28 | stream. ... nation) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:19:5:19:17 | s2.pipe(dest) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:45:5:45:30 | stream2 ... ation2) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
@@ -11,3 +13,4 @@
 | test.js:143:5:143:62 | stream. ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:175:17:175:40 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:185:5:185:32 | copyStr ... nation) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
+| test.js:216:5:216:38 | notStre ... ()=>{}) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
