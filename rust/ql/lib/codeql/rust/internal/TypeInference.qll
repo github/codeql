@@ -229,13 +229,6 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
     path1 = path2
   )
   or
-  n2 =
-    any(PrefixExpr pe |
-      pe.getOperatorName() = "*" and
-      pe.getExpr() = n1 and
-      path1 = TypePath::cons(TRefTypeParameter(), path2)
-    )
-  or
   n1 = n2.(ParenExpr).getExpr() and
   path1 = path2
   or
@@ -261,12 +254,36 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
   )
 }
 
+bindingset[path1]
+private predicate typeEqualityLeft(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+  typeEquality(n1, path1, n2, path2)
+  or
+  n2 =
+    any(PrefixExpr pe |
+      pe.getOperatorName() = "*" and
+      pe.getExpr() = n1 and
+      path1.isCons(TRefTypeParameter(), path2)
+    )
+}
+
+bindingset[path2]
+private predicate typeEqualityRight(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+  typeEquality(n1, path1, n2, path2)
+  or
+  n2 =
+    any(PrefixExpr pe |
+      pe.getOperatorName() = "*" and
+      pe.getExpr() = n1 and
+      path1 = TypePath::cons(TRefTypeParameter(), path2)
+    )
+}
+
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
   exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
-    typeEquality(n, path, n2, path2)
+    typeEqualityRight(n, path, n2, path2)
     or
-    typeEquality(n2, path2, n, path)
+    typeEqualityLeft(n2, path2, n, path)
   )
 }
 
@@ -931,7 +948,7 @@ private Type inferRefExprType(Expr e, TypePath path) {
     e = re.getExpr() and
     exists(TypePath exprPath, TypePath refPath, Type exprType |
       result = inferType(re, exprPath) and
-      exprPath = TypePath::cons(TRefTypeParameter(), refPath) and
+      exprPath.isCons(TRefTypeParameter(), refPath) and
       exprType = inferType(e)
     |
       if exprType = TRefType()
@@ -945,8 +962,9 @@ private Type inferRefExprType(Expr e, TypePath path) {
 
 pragma[nomagic]
 private Type inferTryExprType(TryExpr te, TypePath path) {
-  exists(TypeParam tp |
-    result = inferType(te.getExpr(), TypePath::cons(TTypeParamTypeParameter(tp), path))
+  exists(TypeParam tp, TypePath path0 |
+    result = inferType(te.getExpr(), path0) and
+    path0.isCons(TTypeParamTypeParameter(tp), path)
   |
     tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
     or
@@ -1020,7 +1038,7 @@ private module Cached {
     pragma[nomagic]
     Type getTypeAt(TypePath path) {
       exists(TypePath path0 | result = inferType(this, path0) |
-        path0 = TypePath::cons(TRefTypeParameter(), path)
+        path0.isCons(TRefTypeParameter(), path)
         or
         not path0.isCons(TRefTypeParameter(), _) and
         not (path0.isEmpty() and result = TRefType()) and

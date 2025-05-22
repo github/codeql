@@ -28,8 +28,8 @@ extensions:
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>", False, "DeepCopy", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>", False, "GetKnownValues", "()", "", "Argument[this].SyntheticField[ILLink.Shared.DataFlow.ValueSet`1._values]", "ReturnValue.SyntheticField[ILLink.Shared.DataFlow.ValueSet`1+Enumerable._values]", "value", "dfc-generated"]
       - ["ILLink.Shared.DataFlow", "ValueSet<TValue>", False, "ValueSet", "(TValue)", "", "Argument[0]", "Argument[this].SyntheticField[ILLink.Shared.DataFlow.ValueSet`1._values]", "value", "dfc-generated"]
-      - ["ILLink.Shared.DataFlow", "ValueSetLattice<TValue>", False, "Meet", "(ILLink.Shared.DataFlow.ValueSet<TValue>,ILLink.Shared.DataFlow.ValueSet<TValue>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["ILLink.Shared.DataFlow", "ValueSetLattice<TValue>", False, "Meet", "(ILLink.Shared.DataFlow.ValueSet<TValue>,ILLink.Shared.DataFlow.ValueSet<TValue>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Shared.DataFlow", "ValueSetLattice<TValue>", False, "Meet", "(ILLink.Shared.DataFlow.ValueSet<TValue>,ILLink.Shared.DataFlow.ValueSet<TValue>)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
+      - ["ILLink.Shared.DataFlow", "ValueSetLattice<TValue>", False, "Meet", "(ILLink.Shared.DataFlow.ValueSet<TValue>,ILLink.Shared.DataFlow.ValueSet<TValue>)", "", "Argument[1]", "ReturnValue", "value", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

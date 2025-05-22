@@ -20,7 +20,7 @@ class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant 
 
   KnownOpenSSLCipherAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%encryption")
+    algType.matches("%ENCRYPTION")
   }
 
   int getExplicitKeySize() {
@@ -37,7 +37,7 @@ class KnownOpenSSLPaddingAlgorithmConstant extends KnownOpenSSLAlgorithmConstant
 
   KnownOpenSSLPaddingAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%padding")
+    algType.matches("%PADDING")
   }
 }
 
@@ -46,7 +46,7 @@ class KnownOpenSSLBlockModeAlgorithmConstant extends KnownOpenSSLAlgorithmConsta
 
   KnownOpenSSLBlockModeAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%block_mode")
+    algType.matches("%BLOCK_MODE")
   }
 }
 
@@ -55,7 +55,7 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
 
   KnownOpenSSLHashAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%hash")
+    algType.matches("%HASH")
   }
 
   int getExplicitDigestLength() {
@@ -71,7 +71,7 @@ class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmCo
   KnownOpenSSLEllipticCurveAlgorithmConstant() {
     exists(string algType |
       resolveAlgorithmFromExpr(this, _, algType) and
-      algType.toLowerCase().matches("elliptic_curve")
+      algType.matches("ELLIPTIC_CURVE")
     )
   }
 }

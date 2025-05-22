@@ -11,12 +11,12 @@ fn test_operations(
 	x = y; // $ Operation Op== Operands=2 AssignmentOperation BinaryExpr
 
 	// comparison operations
-	x == y; // $ Operation Op=== Operands=2 BinaryExpr
-	x != y; // $ Operation Op=!= Operands=2 BinaryExpr
-	x < y; // $ Operation Op=< Operands=2 BinaryExpr
-	x <= y; // $ Operation Op=<= Operands=2 BinaryExpr
-	x > y; // $ Operation Op=> Operands=2 BinaryExpr
-	x >= y; // $ Operation Op=>= Operands=2 BinaryExpr
+	x == y; // $ Operation Op=== Operands=2 BinaryExpr ComparisonOperation EqualityOperation EqualsOperation
+	x != y; // $ Operation Op=!= Operands=2 BinaryExpr ComparisonOperation EqualityOperation NotEqualsOperation
+	x < y; // $ Operation Op=< Operands=2 BinaryExpr ComparisonOperation RelationalOperation LessThanOperation Greater=y Lesser=x
+	x <= y; // $ Operation Op=<= Operands=2 BinaryExpr ComparisonOperation RelationalOperation LessOrEqualsOperation Greater=y Lesser=x
+	x > y; // $ Operation Op=> Operands=2 BinaryExpr ComparisonOperation RelationalOperation GreaterThanOperation Greater=x Lesser=y
+	x >= y; // $ Operation Op=>= Operands=2 BinaryExpr ComparisonOperation RelationalOperation GreaterOrEqualsOperation Greater=x Lesser=y
 
 	// arithmetic operations
 	x + y; // $ Operation Op=+ Operands=2 BinaryExpr

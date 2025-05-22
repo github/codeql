@@ -5,6 +5,7 @@ import codeql.Locations
 import codeql.files.FileSystem
 import codeql.rust.elements.Operation
 import codeql.rust.elements.AssignmentOperation
+import codeql.rust.elements.ComparisonOperation
 import codeql.rust.elements.LiteralExprExt
 import codeql.rust.elements.LogicalOperation
 import codeql.rust.elements.AsyncBlockExpr

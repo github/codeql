@@ -225,6 +225,45 @@ abstract class ItemNode extends Locatable {
     )
   }
 
+  /** Holds if this item has a canonical path belonging to the crate `c`. */
+  abstract predicate hasCanonicalPath(Crate c);
+
+  /** Holds if this node provides a canonical path prefix for `child` in crate `c`. */
+  pragma[nomagic]
+  predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    child.getImmediateParent() = this and
+    this.hasCanonicalPath(c)
+  }
+
+  /** Holds if this node has a canonical path prefix in crate `c`. */
+  pragma[nomagic]
+  final predicate hasCanonicalPathPrefix(Crate c) {
+    any(ItemNode parent).providesCanonicalPathPrefixFor(c, this)
+  }
+
+  /**
+   * Gets the canonical path of this item, if any.
+   *
+   * See [The Rust Reference][1] for more details.
+   *
+   * [1]: https://doc.rust-lang.org/reference/paths.html#canonical-paths
+   */
+  cached
+  abstract string getCanonicalPath(Crate c);
+
+  /** Gets the canonical path prefix that this node provides for `child`. */
+  pragma[nomagic]
+  string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    this.providesCanonicalPathPrefixFor(c, child) and
+    result = this.getCanonicalPath(c)
+  }
+
+  /** Gets the canonical path prefix of this node, if any. */
+  pragma[nomagic]
+  final string getCanonicalPathPrefix(Crate c) {
+    result = any(ItemNode parent).getCanonicalPathPrefixFor(c, this)
+  }
+
   /** Gets the location of this item. */
   Location getLocation() { result = super.getLocation() }
 }
@@ -269,6 +308,10 @@ private class SourceFileItemNode extends ModuleLikeNode, SourceFile {
   override Visibility getVisibility() { none() }
 
   override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
 }
 
 class CrateItemNode extends ItemNode instanceof Crate {
@@ -331,12 +374,48 @@ class CrateItemNode extends ItemNode instanceof Crate {
   override Visibility getVisibility() { none() }
 
   override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { c = this }
+
+  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    this.hasCanonicalPath(c) and
+    exists(ModuleLikeNode m |
+      child.getImmediateParent() = m and
+      not m = child.(SourceFileItemNode).getSuper()
+    |
+      m = super.getModule() // the special `crate` root module inserted by the extractor
+      or
+      m = super.getSourceFile()
+    )
+  }
+
+  override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
 }
 
 /** An item that can occur in a trait or an `impl` block. */
 abstract private class AssocItemNode extends ItemNode, AssocItem {
   /** Holds if this associated item has an implementation. */
   abstract predicate hasImplementation();
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 private class ConstItemNode extends AssocItemNode instanceof Const {
@@ -366,6 +445,26 @@ private class EnumItemNode extends ItemNode instanceof Enum {
   override Visibility getVisibility() { result = Enum.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 private class VariantItemNode extends ItemNode instanceof Variant {
@@ -380,6 +479,26 @@ private class VariantItemNode extends ItemNode instanceof Variant {
   }
 
   override Visibility getVisibility() { result = super.getEnum().getVisibility() }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 class FunctionItemNode extends AssocItemNode instanceof Function {
@@ -457,6 +576,75 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
 
   override Visibility getVisibility() { result = Impl.super.getVisibility() }
+
+  override predicate hasCanonicalPath(Crate c) { this.resolveSelfTy().hasCanonicalPathPrefix(c) }
+
+  /**
+   * Holds if `(c1, c2)` forms a pair of crates for the type and trait
+   * being implemented, for which a canonical path can be computed.
+   *
+   * This is the case when either the type and the trait belong to the
+   * same crate, or when they belong to different crates where one depends
+   * on the other.
+   */
+  pragma[nomagic]
+  private predicate selfTraitCratePair(Crate c1, Crate c2) {
+    this.hasCanonicalPath(pragma[only_bind_into](c1)) and
+    exists(TraitItemNode trait |
+      trait = this.resolveTraitTy() and
+      trait.hasCanonicalPath(c2) and
+      if this.hasCanonicalPath(c2)
+      then c1 = c2
+      else (
+        c2 = c1.getADependency() or c1 = c2.getADependency()
+      )
+    )
+  }
+
+  pragma[nomagic]
+  private string getTraitCanonicalPath(Crate c) {
+    result = this.resolveTraitTy().getCanonicalPath(c)
+  }
+
+  pragma[nomagic]
+  private string getCanonicalPathTraitPart(Crate c) {
+    exists(Crate c2 |
+      this.selfTraitCratePair(c, c2) and
+      result = this.getTraitCanonicalPath(c2)
+    )
+  }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = "<"
+    or
+    i = 1 and
+    result = this.resolveSelfTy().getCanonicalPath(c)
+    or
+    if exists(this.getTraitPath())
+    then
+      i = 2 and
+      result = " as "
+      or
+      i = 3 and
+      result = this.getCanonicalPathTraitPart(c)
+      or
+      i = 4 and
+      result = ">"
+    else (
+      i = 2 and
+      result = ">"
+    )
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    exists(int m | if exists(this.getTraitPath()) then m = 4 else m = 2 |
+      result = strictconcat(int i | i in [0 .. m] | this.getCanonicalPathPart(c, i) order by i)
+    )
+  }
 }
 
 private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
@@ -469,6 +657,20 @@ private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
   override TypeParam getTypeParam(int i) { none() }
 
   override Visibility getVisibility() { none() }
+
+  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    any(ItemNode parent).providesCanonicalPathPrefixFor(c, this) and
+    child.getImmediateParent() = this
+  }
+
+  override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    result = this.getCanonicalPathPrefix(c) and
+    this.providesCanonicalPathPrefixFor(c, child)
+  }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
 }
 
 private class ModuleItemNode extends ModuleLikeNode instanceof Module {
@@ -479,6 +681,43 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
   override Visibility getVisibility() { result = Module.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    this.hasCanonicalPath(c) and
+    (
+      exists(SourceFile f |
+        fileImport(this, f) and
+        sourceFileEdge(f, _, child)
+      )
+      or
+      this = child.getImmediateParent()
+      or
+      exists(ItemNode mid |
+        this.providesCanonicalPathPrefixFor(c, mid) and
+        mid.(MacroCallItemNode) = child.getImmediateParent()
+      )
+    )
+  }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 private class StructItemNode extends ItemNode instanceof Struct {
@@ -494,6 +733,26 @@ private class StructItemNode extends ItemNode instanceof Struct {
   override Visibility getVisibility() { result = Struct.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
@@ -514,6 +773,43 @@ class TraitItemNode extends ImplOrTraitItemNode instanceof Trait {
   override Visibility getVisibility() { result = Trait.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  override predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    this.hasCanonicalPath(c) and
+    child = this.getAnAssocItem()
+  }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = "<_ as "
+    or
+    i = 1 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 2 and
+    result = "::"
+    or
+    i = 3 and
+    result = this.getName()
+    or
+    i = 4 and
+    result = ">"
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [1 .. 3] | this.getCanonicalPathPart(c, i) order by i)
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPathPrefixFor(Crate c, ItemNode child) {
+    this.providesCanonicalPathPrefixFor(c, child) and
+    result = strictconcat(int i | i in [0 .. 4] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 class TypeAliasItemNode extends AssocItemNode instanceof TypeAlias {
@@ -536,6 +832,26 @@ private class UnionItemNode extends ItemNode instanceof Union {
   override Visibility getVisibility() { result = Union.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { result = super.getGenericParamList().getTypeParam(i) }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
 }
 
 private class UseItemNode extends ItemNode instanceof Use {
@@ -546,6 +862,10 @@ private class UseItemNode extends ItemNode instanceof Use {
   override Visibility getVisibility() { result = Use.super.getVisibility() }
 
   override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
 }
 
 private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
@@ -556,6 +876,10 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
   override Visibility getVisibility() { none() }
 
   override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
 }
 
 class TypeParamItemNode extends ItemNode instanceof TypeParam {
@@ -621,6 +945,10 @@ class TypeParamItemNode extends ItemNode instanceof TypeParam {
   override TypeParam getTypeParam(int i) { none() }
 
   override Location getLocation() { result = TypeParam.super.getName().getLocation() }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
 }
 
 /** Holds if `item` has the name `name` and is a top-level item inside `f`. */
@@ -1151,8 +1479,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test_logging.rs") and
-      startline = 163
+      filepath.matches("%/term.rs") and
+      startline = [71]
     )
   }
 
@@ -1160,7 +1488,7 @@ private module Debug {
     RelevantPath p, string name, Namespace ns, ItemNode encl, string path
   ) {
     p = getRelevantLocatable() and
-    unqualifiedPathLookup(p, name, ns, encl) and
+    unqualifiedPathLookup(encl, name, ns, p) and
     path = p.toStringDebug()
   }
 
@@ -1187,5 +1515,15 @@ private module Debug {
   predicate debugFileImport(Module m, SourceFile f) {
     m = getRelevantLocatable() and
     fileImport(m, f)
+  }
+
+  predicate debugPreludeEdge(SourceFile f, string name, ItemNode i) {
+    preludeEdge(f, name, i) and
+    f = getRelevantLocatable()
+  }
+
+  string debugGetCanonicalPath(ItemNode i, Crate c) {
+    result = i.getCanonicalPath(c) and
+    i = getRelevantLocatable()
   }
 }

@@ -4,7 +4,6 @@
 
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
-private import experimental.quantum.OpenSSL.LibraryDetector
 private import OpenSSLOperationBase
 private import EVPHashInitializer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
@@ -42,10 +41,7 @@ private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsu
 
 //https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
 class EVP_Q_Digest_Operation extends EVP_Hash_Operation {
-  EVP_Q_Digest_Operation() {
-    this.(Call).getTarget().getName() = "EVP_Q_digest" and
-    isPossibleOpenSSLFunction(this.(Call).getTarget())
-  }
+  EVP_Q_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   //override Crypto::AlgorithmConsumer getAlgorithmConsumer() {  }
   override EVP_Hash_Initializer getInitCall() {
@@ -71,10 +67,7 @@ class EVP_Q_Digest_Operation extends EVP_Hash_Operation {
 }
 
 class EVP_Digest_Operation extends EVP_Hash_Operation {
-  EVP_Digest_Operation() {
-    this.(Call).getTarget().getName() = "EVP_Digest" and
-    isPossibleOpenSSLFunction(this.(Call).getTarget())
-  }
+  EVP_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Digest" }
 
   // There is no context argument for this function
   override Expr getContextArg() { none() }
