@@ -196,11 +196,11 @@ function test() {
   }
   {
     const notStream = getNotAStream();
-    notStream.pipe({}); // $SPURIOUS:Alert
+    notStream.pipe({});
   }
   {
     const notStream = getNotAStream();
-    notStream.pipe(()=>{}); // $SPURIOUS:Alert
+    notStream.pipe(()=>{});
   }
   {
     const plumber = require('gulp-plumber');
