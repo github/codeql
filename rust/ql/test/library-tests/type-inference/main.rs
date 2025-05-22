@@ -129,8 +129,8 @@ mod method_non_parametric_impl {
         println!("{:?}", x.a); // $ fieldof=MyThing
         println!("{:?}", y.a); // $ fieldof=MyThing
 
-        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
+        println!("{:?}", x.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -141,15 +141,23 @@ mod method_non_parametric_impl {
 }
 
 mod method_non_parametric_trait_impl {
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct MyThing<A> {
         a: A,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
+    struct MyPair<P1, P2> {
+        p1: P1,
+        p2: P2,
+    }
+
+    #[derive(Debug, Clone, Copy)]
     struct S1;
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct S2;
+    #[derive(Debug, Clone, Copy, Default)]
+    struct S3;
 
     trait MyTrait<A> {
         fn m1(self) -> A;
@@ -160,6 +168,13 @@ mod method_non_parametric_trait_impl {
         {
             self
         }
+    }
+
+    trait MyProduct<A, B> {
+        // MyProduct::fst
+        fn fst(self) -> A;
+        // MyProduct::snd
+        fn snd(self) -> B;
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
@@ -180,18 +195,211 @@ mod method_non_parametric_trait_impl {
         }
     }
 
+    // Implementation where the type parameter `TD` only occurs in the
+    // implemented trait and not the implementing type.
+    impl<TD> MyTrait<TD> for MyThing<S3>
+    where
+        TD: Default,
+    {
+        // MyThing<S3>::m1
+        fn m1(self) -> TD {
+            TD::default()
+        }
+    }
+
+    impl<I> MyTrait<I> for MyPair<I, S1> {
+        // MyTrait<I>::m1
+        fn m1(self) -> I {
+            self.p1 // $ fieldof=MyPair
+        }
+    }
+
+    impl MyTrait<S3> for MyPair<S1, S2> {
+        // MyTrait<S3>::m1
+        fn m1(self) -> S3 {
+            S3
+        }
+    }
+
+    impl<TT> MyTrait<TT> for MyPair<MyThing<TT>, S3> {
+        // MyTrait<TT>::m1
+        fn m1(self) -> TT {
+            let alpha = self.p1; // $ fieldof=MyPair
+            alpha.a // $ fieldof=MyThing
+        }
+    }
+
+    // This implementation only applies if the two type parameters are equal.
+    impl<A> MyProduct<A, A> for MyPair<A, A> {
+        // MyPair<A,A>::fst
+        fn fst(self) -> A {
+            self.p1 // $ fieldof=MyPair
+        }
+
+        // MyPair<A,A>::snd
+        fn snd(self) -> A {
+            self.p2 // $ fieldof=MyPair
+        }
+    }
+
+    // This implementation swaps the type parameters.
+    impl MyProduct<S1, S2> for MyPair<S2, S1> {
+        // MyPair<S2,S1>::fst
+        fn fst(self) -> S1 {
+            self.p2 // $ fieldof=MyPair
+        }
+
+        // MyPair<S2,S1>::snd
+        fn snd(self) -> S2 {
+            self.p1 // $ fieldof=MyPair
+        }
+    }
+
+    fn get_fst<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V1 {
+        p.fst() // $ method=MyProduct::fst
+    }
+
+    fn get_snd<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V2 {
+        p.snd() // $ method=MyProduct::snd
+    }
+
+    fn get_snd_fst<V0, V1, V2, P: MyProduct<V1, V2>>(p: MyPair<V0, P>) -> V1 {
+        p.p2.fst() // $ fieldof=MyPair method=MyProduct::fst
+    }
+
+    trait ConvertTo<T> {
+        // ConvertTo::convert_to
+        fn convert_to(self) -> T;
+    }
+
+    impl<T: MyTrait<S1>> ConvertTo<S1> for T {
+        // T::convert_to
+        fn convert_to(self) -> S1 {
+            self.m1() // $ method=m1
+        }
+    }
+
+    fn convert_to<TS, T: ConvertTo<TS>>(thing: T) -> TS {
+        thing.convert_to() // $ method=ConvertTo::convert_to
+    }
+
+    fn type_bound_type_parameter_impl<TP: MyTrait<S1>>(thing: TP) -> S1 {
+        // The trait bound on `TP` makes the implementation of `ConvertTo` valid
+        thing.convert_to() // $ MISSING: method=T::convert_to
+    }
+
     pub fn f() {
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let thing_s1 = MyThing { a: S1 };
+        let thing_s2 = MyThing { a: S2 };
+        let thing_s3 = MyThing { a: S3 };
 
-        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
+        // Tests for method resolution
 
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        println!("{:?}", thing_s1.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", thing_s2.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
+        let s3: S3 = thing_s3.m1(); // $ method=MyThing<S3>::m1
+        println!("{:?}", s3);
 
-        println!("{:?}", call_trait_m1(x)); // MISSING: type=call_trait_m1(...):S1
-        println!("{:?}", call_trait_m1(y).a); // MISSING: field=MyThing
+        let p1 = MyPair { p1: S1, p2: S1 };
+        println!("{:?}", p1.m1()); // $ method=MyTrait<I>::m1
+
+        let p2 = MyPair { p1: S1, p2: S2 };
+        println!("{:?}", p2.m1()); // $ method=MyTrait<S3>::m1
+
+        let p3 = MyPair {
+            p1: MyThing { a: S1 },
+            p2: S3,
+        };
+        println!("{:?}", p3.m1()); // $ method=MyTrait<TT>::m1
+
+        // These calls go to the first implementation of `MyProduct` for `MyPair`
+        let a = MyPair { p1: S1, p2: S1 };
+        let x = a.fst(); // $ method=MyPair<A,A>::fst
+        println!("{:?}", x);
+        let y = a.snd(); // $ method=MyPair<A,A>::snd
+        println!("{:?}", y);
+
+        // These calls go to the last implementation of `MyProduct` for
+        // `MyPair`. The first implementation does not apply as the type
+        // parameters of the implementation enforce that the two generics must
+        // be equal.
+        let b = MyPair { p1: S2, p2: S1 };
+        let x = b.fst(); // $ method=MyPair<S2,S1>::fst
+        println!("{:?}", x);
+        let y = b.snd(); // $ method=MyPair<S2,S1>::snd
+        println!("{:?}", y);
+
+        // Tests for inference of type parameters based on trait implementations.
+
+        let x = call_trait_m1(thing_s1); // $ type=x:S1
+        println!("{:?}", x);
+        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2
+        println!("{:?}", y.a); // $ fieldof=MyThing
+
+        // First implementation
+        let a = MyPair { p1: S1, p2: S1 };
+        let x = get_fst(a); // $ type=x:S1
+        println!("{:?}", x);
+        let y = get_snd(a); // $ type=y:S1
+        println!("{:?}", y);
+
+        // Second implementation
+        let b = MyPair { p1: S2, p2: S1 };
+        let x = get_fst(b); // $ type=x:S1
+        println!("{:?}", x);
+        let y = get_snd(b); // $ type=y:S2
+        println!("{:?}", y);
+
+        let c = MyPair {
+            p1: S3,
+            p2: MyPair { p1: S2, p2: S1 },
+        };
+        let x = get_snd_fst(c); // $ type=x:S1
+
+        let thing = MyThing { a: S1 };
+        let i = thing.convert_to(); // $ MISSING: type=i:S1 method=T::convert_to
+        let j = convert_to(thing); // $ type=j:S1
+    }
+}
+
+mod impl_overlap {
+    #[derive(Debug, Clone, Copy)]
+    struct S1;
+
+    trait OverlappingTrait {
+        fn common_method(self) -> S1;
+
+        fn common_method_2(self, s1: S1) -> S1;
+    }
+
+    impl OverlappingTrait for S1 {
+        // <S1_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            panic!("not called");
+        }
+
+        // <S1_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            panic!("not called");
+        }
+    }
+
+    impl S1 {
+        // S1::common_method
+        fn common_method(self) -> S1 {
+            self
+        }
+
+        // S1::common_method_2
+        fn common_method_2(self) -> S1 {
+            self
+        }
+    }
+
+    pub fn f() {
+        let x = S1;
+        println!("{:?}", x.common_method()); // $ method=S1::common_method
+        println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
     }
 }
 
@@ -219,13 +427,13 @@ mod type_parameter_bounds {
     fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
         let s1 = x.method(); // $ method=SecondTrait::method
-        println!("{:?}", s1);
+        println!("{:?}", s1); // $ type=s1:I
     }
 
     fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
         let s2 = x.method(); // $ method=SecondTrait::method
-        println!("{:?}", s2);
+        println!("{:?}", s2); // $ type=s2:I
     }
 
     fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
@@ -235,7 +443,7 @@ mod type_parameter_bounds {
 
     fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
         let s = x.method(); // $ method=FirstTrait::method
-        println!("{:?}", s);
+        println!("{:?}", s); // $ type=s:S1
     }
 
     trait Pair<P1, P2> {
@@ -323,8 +531,10 @@ mod function_trait_bounds {
             a: MyThing { a: S2 },
         };
 
-        println!("{:?}", call_trait_thing_m1(x3));
-        println!("{:?}", call_trait_thing_m1(y3));
+        let a = call_trait_thing_m1(x3); // $ type=a:S1
+        println!("{:?}", a);
+        let b = call_trait_thing_m1(y3); // $ type=b:S2
+        println!("{:?}", b);
     }
 }
 
@@ -574,6 +784,16 @@ mod method_supertraits {
 
     impl<T> MyTrait3<T> for MyThing2<T> {}
 
+    fn call_trait_m1<T1, T2: MyTrait1<T1>>(x: T2) -> T1 {
+        x.m1() // $ method=MyTrait1::m1
+    }
+
+    fn type_param_trait_to_supertrait<T: MyTrait3<S1>>(x: T) {
+        // Test that `MyTrait3` is a subtrait of `MyTrait1<MyThing<S1>>`
+        let a = x.m1(); // $ method=MyTrait1::m1 type=a:MyThing type=a:A.S1
+        println!("{:?}", a);
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -584,14 +804,20 @@ mod method_supertraits {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // $ method=m2
-        println!("{:?}", y.m2()); // $ method=m2
+        println!("{:?}", x.m2()); // $ method=m2 type=x.m2():S1
+        println!("{:?}", y.m2()); // $ method=m2 type=y.m2():S2
 
         let x = MyThing2 { a: S1 };
         let y = MyThing2 { a: S2 };
 
-        println!("{:?}", x.m3()); // $ method=m3
-        println!("{:?}", y.m3()); // $ method=m3
+        println!("{:?}", x.m3()); // $ method=m3 type=x.m3():S1
+        println!("{:?}", y.m3()); // $ method=m3 type=y.m3():S2
+
+        let x = MyThing { a: S1 };
+        let s = call_trait_m1(x); // $ type=s:S1
+
+        let x = MyThing2 { a: S2 };
+        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2
     }
 }
 
@@ -767,7 +993,7 @@ mod option_methods {
         println!("{:?}", x4);
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", x5.flatten()); // MISSING: method=flatten
+        println!("{:?}", x5.flatten()); // $ method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
@@ -844,6 +1070,12 @@ mod method_call_type_conversion {
         let x6 = &S(S2);
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1
+
+        let x7 = S(&S2);
+        // Non-implicit dereference with nested borrow in order to test that the
+        // implicit dereference handling doesn't affect nested borrows.
+        let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
+        println!("{:?}", x7);
     }
 }
 
@@ -992,6 +1224,21 @@ mod builtins {
     }
 }
 
+mod operators {
+    pub fn f() {
+        let x = true && false; // $ type=x:bool
+        let y = true || false; // $ type=y:bool
+
+        let mut a;
+        if 34 == 33 {
+            let z = (a = 1); // $ type=z:() type=a:i32
+        } else {
+            a = 2; // $ type=a:i32
+        }
+        a; // $ type=a:i32
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1010,4 +1257,5 @@ fn main() {
     borrowed_typed::f();
     try_expressions::f();
     builtins::f();
+    operators::f();
 }

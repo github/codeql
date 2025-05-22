@@ -189,56 +189,6 @@ class TypeAliasMention extends TypeMention, TypeAlias {
   override Type resolveType() { result = t }
 }
 
-/**
- * Holds if the `i`th type argument of `selfPath`, belonging to `impl`, resolves
- * to type parameter `tp`.
- *
- * Example:
- *
- * ```rust
- * impl<T> Foo<T> for Bar<T> { ... }
- * //      ^^^^^^ selfPath
- * //   ^         tp
- * ```
- */
-pragma[nomagic]
-private predicate isImplSelfTypeParam(
-  ImplItemNode impl, PathMention selfPath, int i, TypeParameter tp
-) {
-  exists(PathMention path |
-    selfPath = impl.getSelfPath() and
-    path = selfPath.getSegment().getGenericArgList().getTypeArg(i).(PathTypeRepr).getPath() and
-    tp = path.resolveType()
-  )
-}
-
-class ImplMention extends TypeMention, ImplItemNode {
-  override TypeReprMention getTypeArgument(int i) { none() }
-
-  override Type resolveType() { result = TImpl(this) }
-
-  override Type resolveTypeAt(TypePath path) {
-    result = TImpl(this) and
-    path.isEmpty()
-    or
-    // For example, in
-    //
-    // ```rust
-    // struct S<T1>(T1);
-    //
-    // impl<T2> S<T2> { ... }
-    // ```
-    //
-    // We get that the type path "0" resolves to `T1` for the `impl` block,
-    // which is considered a base type mention of `S`.
-    exists(PathMention selfPath, TypeParameter tp, int i |
-      isImplSelfTypeParam(this, selfPath, pragma[only_bind_into](i), tp) and
-      result = selfPath.resolveType().getTypeParameter(pragma[only_bind_into](i)) and
-      path = TypePath::singleton(tp)
-    )
-  }
-}
-
 class TraitMention extends TypeMention, TraitItemNode {
   override TypeMention getTypeArgument(int i) {
     result = this.getTypeParam(i)
@@ -247,4 +197,20 @@ class TraitMention extends TypeMention, TraitItemNode {
   }
 
   override Type resolveType() { result = TTrait(this) }
+}
+
+// NOTE: Since the implicit type parameter for the self type parameter never
+// appears in the AST, we (somewhat arbitrarily) choose the name of a trait as a
+// type mention. This works because there is a one-to-one correspondence between
+// a trait and its name.
+class SelfTypeParameterMention extends TypeMention, Name {
+  Trait trait;
+
+  SelfTypeParameterMention() { trait.getName() = this }
+
+  Trait getTrait() { result = trait }
+
+  override Type resolveType() { result = TSelfTypeParameter(trait) }
+
+  override TypeReprMention getTypeArgument(int i) { none() }
 }

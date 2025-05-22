@@ -7,6 +7,7 @@ private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 class Type = T::Type;
 
@@ -18,6 +19,8 @@ private module Input1 implements InputSig1<Location> {
   class Type = T::Type;
 
   class TypeParameter = T::TypeParameter;
+
+  class TypeAbstraction = T::TypeAbstraction;
 
   private newtype TTypeArgumentPosition =
     // method type parameters are matched by position instead of by type
@@ -108,7 +111,52 @@ private module Input2 implements InputSig2 {
 
   class TypeMention = TM::TypeMention;
 
-  TypeMention getABaseTypeMention(Type t) { result = t.getABaseTypeMention() }
+  TypeMention getABaseTypeMention(Type t) { none() }
+
+  TypeMention getATypeParameterConstraint(TypeParameter tp) {
+    result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
+    or
+    result = tp.(SelfTypeParameter).getTrait()
+  }
+
+  /**
+   * Use the constraint mechanism in the shared type inference library to
+   * support traits. In Rust `constraint` is always a trait.
+   *
+   * See the documentation of `conditionSatisfiesConstraint` in the shared type
+   * inference module for more information.
+   */
+  predicate conditionSatisfiesConstraint(
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+  ) {
+    // `impl` blocks implementing traits
+    exists(Impl impl |
+      abs = impl and
+      condition = impl.getSelfTy() and
+      constraint = impl.getTrait()
+    )
+    or
+    // supertraits
+    exists(Trait trait |
+      abs = trait and
+      condition = trait and
+      constraint = trait.getTypeBoundList().getABound().getTypeRepr()
+    )
+    or
+    // trait bounds on type parameters
+    exists(TypeParam param |
+      abs = param.getTypeBoundList().getABound() and
+      condition = param and
+      constraint = abs.(TypeBound).getTypeRepr()
+    )
+    or
+    // the implicit `Self` type parameter satisfies the trait
+    exists(SelfTypeParameterMention self |
+      abs = self and
+      condition = self and
+      constraint = self.getTrait()
+    )
+  }
 }
 
 private module M2 = Make2<Input2>;
@@ -143,6 +191,21 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
 }
 
+private Type inferLogicalOperationType(AstNode n, TypePath path) {
+  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+    n = [be, be.getLhs(), be.getRhs()] and
+    path.isEmpty() and
+    result = TStruct(t) and
+    t instanceof Builtins::Bool
+  )
+}
+
+private Type inferAssignmentOperationType(AstNode n, TypePath path) {
+  n instanceof AssignmentOperation and
+  path.isEmpty() and
+  result = TUnit()
+}
+
 /**
  * Holds if the type of `n1` at `path1` is the same as the type of `n2` at
  * `path2` and type information should propagate in both directions through the
@@ -166,13 +229,6 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
     path1 = path2
   )
   or
-  n2 =
-    any(PrefixExpr pe |
-      pe.getOperatorName() = "*" and
-      pe.getExpr() = n1 and
-      path1 = TypePath::cons(TRefTypeParameter(), path2)
-    )
-  or
   n1 = n2.(ParenExpr).getExpr() and
   path1 = path2
   or
@@ -190,14 +246,44 @@ private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath 
     break.getTarget() = n2.(LoopExpr) and
     path1 = path2
   )
+  or
+  exists(AssignmentExpr be |
+    n1 = be.getLhs() and
+    n2 = be.getRhs() and
+    path1 = path2
+  )
+}
+
+bindingset[path1]
+private predicate typeEqualityLeft(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+  typeEquality(n1, path1, n2, path2)
+  or
+  n2 =
+    any(PrefixExpr pe |
+      pe.getOperatorName() = "*" and
+      pe.getExpr() = n1 and
+      path1.isCons(TRefTypeParameter(), path2)
+    )
+}
+
+bindingset[path2]
+private predicate typeEqualityRight(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+  typeEquality(n1, path1, n2, path2)
+  or
+  n2 =
+    any(PrefixExpr pe |
+      pe.getOperatorName() = "*" and
+      pe.getExpr() = n1 and
+      path1 = TypePath::cons(TRefTypeParameter(), path2)
+    )
 }
 
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
   exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
-    typeEquality(n, path, n2, path2)
+    typeEqualityRight(n, path, n2, path2)
     or
-    typeEquality(n2, path2, n, path)
+    typeEqualityLeft(n2, path2, n, path)
   )
 }
 
@@ -227,7 +313,7 @@ private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type 
 }
 
 pragma[nomagic]
-private Type inferImplSelfType(Impl i, TypePath path) {
+private Type resolveImplSelfType(Impl i, TypePath path) {
   result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
 }
 
@@ -239,7 +325,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
     self = f.getParamList().getSelfParam() and
     result = getRefAdjustImplicitSelfType(self, suffix, t, path)
   |
-    t = inferImplSelfType(i, suffix)
+    t = resolveImplSelfType(i, suffix)
     or
     t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
@@ -862,7 +948,7 @@ private Type inferRefExprType(Expr e, TypePath path) {
     e = re.getExpr() and
     exists(TypePath exprPath, TypePath refPath, Type exprType |
       result = inferType(re, exprPath) and
-      exprPath = TypePath::cons(TRefTypeParameter(), refPath) and
+      exprPath.isCons(TRefTypeParameter(), refPath) and
       exprType = inferType(e)
     |
       if exprType = TRefType()
@@ -876,16 +962,15 @@ private Type inferRefExprType(Expr e, TypePath path) {
 
 pragma[nomagic]
 private Type inferTryExprType(TryExpr te, TypePath path) {
-  exists(TypeParam tp |
-    result = inferType(te.getExpr(), TypePath::cons(TTypeParamTypeParameter(tp), path))
+  exists(TypeParam tp, TypePath path0 |
+    result = inferType(te.getExpr(), path0) and
+    path0.isCons(TTypeParamTypeParameter(tp), path)
   |
     tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
     or
     tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
   )
 }
-
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 pragma[nomagic]
 private StructType inferLiteralType(LiteralExpr le) {
@@ -941,36 +1026,104 @@ private module Cached {
     )
   }
 
-  pragma[inline]
-  private Type getLookupType(AstNode n) {
-    exists(Type t |
-      t = inferType(n) and
-      if t = TRefType()
-      then
-        // for reference types, lookup members in the type being referenced
-        result = inferType(n, TypePath::singleton(TRefTypeParameter()))
-      else result = t
+  private class ReceiverExpr extends Expr {
+    MethodCallExpr mce;
+
+    ReceiverExpr() { mce.getReceiver() = this }
+
+    string getField() { result = mce.getIdentifier().getText() }
+
+    int getNumberOfArgs() { result = mce.getArgList().getNumberOfArgs() }
+
+    pragma[nomagic]
+    Type getTypeAt(TypePath path) {
+      exists(TypePath path0 | result = inferType(this, path0) |
+        path0.isCons(TRefTypeParameter(), path)
+        or
+        not path0.isCons(TRefTypeParameter(), _) and
+        not (path0.isEmpty() and result = TRefType()) and
+        path = path0
+      )
+    }
+  }
+
+  /** Holds if a method for `type` with the name `name` and the arity `arity` exists in `impl`. */
+  pragma[nomagic]
+  private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
+    type = impl.getSelfTy().(TypeReprMention).resolveType() and
+    exists(Function f |
+      f = impl.(ImplItemNode).getASuccessor(name) and
+      f.getParamList().hasSelfParam() and
+      arity = f.getParamList().getNumberOfParams()
     )
   }
 
-  pragma[nomagic]
-  private Type getMethodCallExprLookupType(MethodCallExpr mce, string name) {
-    result = getLookupType(mce.getReceiver()) and
-    name = mce.getIdentifier().getText()
+  private module IsInstantiationOfInput implements IsInstantiationOfInputSig<ReceiverExpr> {
+    pragma[nomagic]
+    predicate potentialInstantiationOf(
+      ReceiverExpr receiver, TypeAbstraction impl, TypeMention constraint
+    ) {
+      methodCandidate(receiver.getTypeAt(TypePath::nil()), receiver.getField(),
+        receiver.getNumberOfArgs(), impl) and
+      constraint = impl.(ImplTypeAbstraction).getSelfTy()
+    }
+
+    predicate relevantTypeMention(TypeMention constraint) {
+      exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
+    }
+  }
+
+  bindingset[item, name]
+  pragma[inline_late]
+  private Function getMethodSuccessor(ItemNode item, string name) {
+    result = item.getASuccessor(name)
+  }
+
+  bindingset[tp, name]
+  pragma[inline_late]
+  private Function getTypeParameterMethod(TypeParameter tp, string name) {
+    result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
+    or
+    result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
   }
 
   /**
-   * Gets a method that the method call `mce` resolves to, if any.
+   * Gets the method from an `impl` block with an implementing type that matches
+   * the type of `receiver` and with a name of the method call in which
+   * `receiver` occurs, if any.
    */
+  private Function getMethodFromImpl(ReceiverExpr receiver) {
+    exists(Impl impl |
+      IsInstantiationOf<ReceiverExpr, IsInstantiationOfInput>::isInstantiationOf(receiver, impl, _) and
+      result = getMethodSuccessor(impl, receiver.getField())
+    )
+  }
+
+  /** Gets a method that the method call `mce` resolves to, if any. */
   cached
   Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
+    exists(ReceiverExpr receiver | mce.getReceiver() = receiver |
+      // The method comes from an `impl` block targeting the type of `receiver`.
+      result = getMethodFromImpl(receiver)
+      or
+      // The type of `receiver` is a type parameter and the method comes from a
+      // trait bound on the type parameter.
+      result = getTypeParameterMethod(receiver.getTypeAt(TypePath::nil()), receiver.getField())
+    )
+  }
+
+  pragma[inline]
+  private Type inferRootTypeDeref(AstNode n) {
+    result = inferType(n) and
+    result != TRefType()
+    or
+    // for reference types, lookup members in the type being referenced
+    result = inferType(n, TypePath::singleton(TRefTypeParameter()))
   }
 
   pragma[nomagic]
   private Type getFieldExprLookupType(FieldExpr fe, string name) {
-    result = getLookupType(fe.getContainer()) and
-    name = fe.getIdentifier().getText()
+    result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
   }
 
   /**
@@ -1040,6 +1193,10 @@ private module Cached {
   Type inferType(AstNode n, TypePath path) {
     Stages::TypeInferenceStage::ref() and
     result = inferAnnotatedType(n, path)
+    or
+    result = inferLogicalOperationType(n, path)
+    or
+    result = inferAssignmentOperationType(n, path)
     or
     result = inferTypeEquality(n, path)
     or

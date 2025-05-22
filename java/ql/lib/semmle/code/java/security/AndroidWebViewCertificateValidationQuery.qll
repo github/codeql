@@ -24,6 +24,6 @@ private class SslProceedCall extends MethodCall {
 /** Holds if `m` trusts all certificates by calling `SslErrorHandler.proceed` unconditionally. */
 predicate trustsAllCerts(OnReceivedSslErrorMethod m) {
   exists(SslProceedCall pr | pr.getQualifier().(VarAccess).getVariable() = m.handlerArg() |
-    pr.getBasicBlock().bbPostDominates(m.getBody().getBasicBlock())
+    pr.getBasicBlock().postDominates(m.getBody().getBasicBlock())
   )
 }

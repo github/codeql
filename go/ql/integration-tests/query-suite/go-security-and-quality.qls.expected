@@ -50,6 +50,5 @@ ql/go/ql/src/Security/CWE-640/EmailInjection.ql
 ql/go/ql/src/Security/CWE-643/XPathInjection.ql
 ql/go/ql/src/Security/CWE-681/IncorrectIntegerConversionQuery.ql
 ql/go/ql/src/Security/CWE-770/UncontrolledAllocationSize.ql
-ql/go/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/go/ql/src/Security/CWE-918/RequestForgery.ql
 ql/go/ql/src/Summary/LinesOfCode.ql

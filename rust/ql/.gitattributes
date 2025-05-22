@@ -194,7 +194,6 @@
 /lib/codeql/rust/elements/YieldExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/AbiImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/AddressableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArgListImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ArrayExprInternal.qll linguist-generated
