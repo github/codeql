@@ -13,6 +13,6 @@ function f(){
   let testScheduler = new TestScheduler();
   testScheduler.run(({x, y, z}) => {
     const source = x('', {o: [a, b, c]});
-    z(source.pipe(null)).toBe(expected,y,); // $SPURIOUS:Alert
+    z(source.pipe(null)).toBe(expected,y,);
   });
 }

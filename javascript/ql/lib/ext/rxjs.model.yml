@@ -5,3 +5,4 @@ extensions:
     data:
       - ["NonNodeStream", "rxjs", "Fuzzy"]
       - ["NonNodeStream", "rxjs/operators", "Fuzzy"]
+      - ["NonNodeStream", "rxjs/testing", "Fuzzy"]

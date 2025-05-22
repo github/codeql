@@ -213,6 +213,6 @@ function test() {
   }
   {
     const notStream = getNotAStream();
-    notStream.pipe(getStream(),()=>{}); // $SPURIOUS:Alert
+    notStream.pipe(getStream(),()=>{});
   }
 }

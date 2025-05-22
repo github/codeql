@@ -18,7 +18,7 @@ class PipeCall extends DataFlow::MethodCallNode {
   PipeCall() {
     this.getMethodName() = "pipe" and
     this.getNumArgument() = [1, 2] and
-    not this.getArgument(0).asExpr() instanceof Function and
+    not this.getArgument([0, 1]).asExpr() instanceof Function and
     not this.getArgument(0).asExpr() instanceof ObjectExpr and
     not this.getArgument(0).getALocalSource() = getNonNodeJsStreamType()
   }
