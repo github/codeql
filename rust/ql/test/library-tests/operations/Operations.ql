@@ -18,9 +18,9 @@ string describe(Expr op) {
   or
   op instanceof EqualityOperation and result = "EqualityOperation"
   or
-  op instanceof EqualOperation and result = "EqualOperation"
+  op instanceof EqualsOperation and result = "EqualsOperation"
   or
-  op instanceof NotEqualOperation and result = "NotEqualOperation"
+  op instanceof NotEqualsOperation and result = "NotEqualsOperation"
   or
   op instanceof RelationalOperation and result = "RelationalOperation"
   or
@@ -28,9 +28,9 @@ string describe(Expr op) {
   or
   op instanceof GreaterThanOperation and result = "GreaterThanOperation"
   or
-  op instanceof LessOrEqualOperation and result = "LessOrEqualOperation"
+  op instanceof LessOrEqualsOperation and result = "LessOrEqualsOperation"
   or
-  op instanceof GreaterOrEqualOperation and result = "GreaterOrEqualOperation"
+  op instanceof GreaterOrEqualsOperation and result = "GreaterOrEqualsOperation"
 }
 
 module OperationsTest implements TestSig {

@@ -22,15 +22,15 @@ final class EqualityOperation = EqualityOperationImpl;
 /**
  * The equal comparison operation, `==`.
  */
-final class EqualOperation extends EqualityOperationImpl {
-  EqualOperation() { this.getOperatorName() = "==" }
+final class EqualsOperation extends EqualityOperationImpl {
+  EqualsOperation() { this.getOperatorName() = "==" }
 }
 
 /**
  * The not equal comparison operation, `!=`.
  */
-final class NotEqualOperation extends EqualityOperationImpl {
-  NotEqualOperation() { this.getOperatorName() = "!=" }
+final class NotEqualsOperation extends EqualityOperationImpl {
+  NotEqualsOperation() { this.getOperatorName() = "!=" }
 }
 
 /**
@@ -81,8 +81,8 @@ final class GreaterThanOperation extends RelationalOperationImpl {
 /**
  * The less than or equal comparison operation, `<=`.
  */
-final class LessOrEqualOperation extends RelationalOperationImpl {
-  LessOrEqualOperation() { this.getOperatorName() = "<=" }
+final class LessOrEqualsOperation extends RelationalOperationImpl {
+  LessOrEqualsOperation() { this.getOperatorName() = "<=" }
 
   override Expr getGreaterOperand() { result = this.getRhs() }
 
@@ -92,8 +92,8 @@ final class LessOrEqualOperation extends RelationalOperationImpl {
 /**
  * The greater than or equal comparison operation, `>=`.
  */
-final class GreaterOrEqualOperation extends RelationalOperationImpl {
-  GreaterOrEqualOperation() { this.getOperatorName() = ">=" }
+final class GreaterOrEqualsOperation extends RelationalOperationImpl {
+  GreaterOrEqualsOperation() { this.getOperatorName() = ">=" }
 
   override Expr getGreaterOperand() { result = this.getLhs() }
 
