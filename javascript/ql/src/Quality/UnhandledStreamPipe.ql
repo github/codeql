@@ -188,6 +188,15 @@ predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
     handler = streamRef(pipeCall).getAMethodCall(getEventHandlerMethodName()) and
     handler.getArgument(0).getStringValue() = "error"
   )
+  or
+  hasPlumber(pipeCall)
+}
+
+/**
+ * Holds if one of the arguments of the pipe call is a `gulp-plumber` monkey patch.
+ */
+predicate hasPlumber(PipeCall pipeCall) {
+  streamRef+(pipeCall) = API::moduleImport("gulp-plumber").getACall()
 }
 
 /**

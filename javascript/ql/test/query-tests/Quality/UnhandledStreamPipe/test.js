@@ -204,11 +204,11 @@ function test() {
   }
   {
     const plumber = require('gulp-plumber');
-    getStream().pipe(plumber()).pipe(dest).pipe(dest).pipe(dest); // $SPURIOUS:Alert
+    getStream().pipe(plumber()).pipe(dest).pipe(dest).pipe(dest);
   }
   {
     const plumber = require('gulp-plumber');
     const p = plumber();
-    getStream().pipe(p).pipe(dest).pipe(dest).pipe(dest); // $SPURIOUS:Alert
+    getStream().pipe(p).pipe(dest).pipe(dest).pipe(dest);
   }
 }
