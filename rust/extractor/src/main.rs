@@ -315,7 +315,7 @@ fn main() -> anyhow::Result<()> {
                             file,
                             &semantics,
                             vfs,
-                            resolve_paths,
+                            ResolvePaths::No,
                             SourceKind::Library,
                         );
                         extractor.archiver.archive(file);
