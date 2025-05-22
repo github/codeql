@@ -1,7 +1,7 @@
 private import cpp as Language
 import semmle.code.cpp.dataflow.new.TaintTracking
 import codeql.quantum.experimental.Model
-private import experimental.quantum.OpenSSL.GericSourceCandidateLiteral
+private import OpenSSL.GenericSourceCandidateLiteral
 
 module CryptoInput implements InputSig<Language::Location> {
   class DataFlowNode = DataFlow::Node;

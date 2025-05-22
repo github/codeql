@@ -27,12 +27,12 @@ private predicate isOpenSSLStringLiteralGenericSourceCandidate(StringLiteral s) 
     exists(f.getOutputArgument(true)) and s = f.(Call).getAnArgument()
   ) and
   // Ignore all format string calls where there is no known out param (resulting string)
-  // i.e., ignore printf, since it will just ouput a string and not produce a new string
+  // i.e., ignore printf, since it will just output a string and not produce a new string
   not exists(FormattingFunctionCall f |
     // Note: using two ways of determining if there is an out param, since I'm not sure
     // which way is canonical
     not exists(f.getOutputArgument(false)) and
-    not f.getTarget().(FormattingFunction).hasTaintFlow(_, _) and
+    not f.getTarget().hasTaintFlow(_, _) and
     f.(Call).getAnArgument() = s
   )
 }

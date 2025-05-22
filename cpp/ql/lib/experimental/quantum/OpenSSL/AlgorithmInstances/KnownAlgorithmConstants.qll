@@ -1,5 +1,5 @@
 import cpp
-import experimental.quantum.OpenSSL.GericSourceCandidateLiteral
+import experimental.quantum.OpenSSL.GenericSourceCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
