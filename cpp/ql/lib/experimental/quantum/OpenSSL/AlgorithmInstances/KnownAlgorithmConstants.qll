@@ -76,6 +76,15 @@ class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmCo
   }
 }
 
+class KnownOpenSSLSignatureAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  string algType;
+
+  KnownOpenSSLSignatureAlgorithmConstant() {
+    resolveAlgorithmFromExpr(this, _, algType) and
+    algType.matches("SIGNATURE")
+  }
+}
+
 /**
  * Resolves a call to a 'direct algorithm getter', e.g., EVP_MD5()
  * This approach to fetching algorithms was used in OpenSSL 1.0.2.
@@ -263,7 +272,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "ELLIPTIC_CURVE"
   or
+  name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "SIGNATURE"
+  or
   name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "SIGNATURE"
   or
   name = "md2" and nid = 3 and normalized = "MD2" and algType = "HASH"
   or
@@ -1684,7 +1697,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "x448" and nid = 1035 and normalized = "X448" and algType = "ELLIPTIC_CURVE"
   or
+  name = "x448" and nid = 1035 and normalized = "X448" and algType = "KEY_EXCHANGE"
+  or
   name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "KEY_EXCHANGE"
   or
   name = "authecdsa" and nid = 1047 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
