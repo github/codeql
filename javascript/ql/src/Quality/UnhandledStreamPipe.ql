@@ -207,10 +207,28 @@ predicate hasNonNodeJsStreamSource(PipeCall pipeCall) {
   pipeResultRef(pipeCall) = getNonNodeJsStreamType()
 }
 
+/**
+ * Holds if the source stream of the given pipe call is used in a non-stream-like way.
+ */
+private predicate hasNonStreamSourceLikeUsage(PipeCall pipeCall) {
+  exists(DataFlow::MethodCallNode call, string name |
+    call.getReceiver().getALocalSource() = streamRef(pipeCall) and
+    name = call.getMethodName() and
+    not name = getStreamMethodName()
+  )
+  or
+  exists(DataFlow::PropRef propRef, string propName |
+    propRef.getBase().getALocalSource() = streamRef(pipeCall) and
+    propName = propRef.getPropertyName() and
+    not propName = [getStreamPropertyName(), getStreamMethodName()]
+  )
+}
+
 from PipeCall pipeCall
 where
   not hasErrorHandlerRegistered(pipeCall) and
   not isPipeFollowedByNonStreamAccess(pipeCall) and
+  not hasNonStreamSourceLikeUsage(pipeCall) and
   not hasNonNodeJsStreamSource(pipeCall)
 select pipeCall,
   "Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped."

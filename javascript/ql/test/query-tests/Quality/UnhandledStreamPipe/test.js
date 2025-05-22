@@ -187,12 +187,12 @@ function test() {
   {
     const notStream = getNotAStream();
     const something = notStream.someNotStreamPropertyAccess;
-    const val = notStream.pipe(writable); // $SPURIOUS:Alert
+    const val = notStream.pipe(writable);
   }
   { 
     const notStream = getNotAStream();
     const something = notStream.someNotStreamPropertyAccess();
-    const val = notStream.pipe(writable); // $SPURIOUS:Alert
+    const val = notStream.pipe(writable);
   }
   {
     const notStream = getNotAStream();

@@ -11,5 +11,3 @@
 | test.js:143:5:143:62 | stream. ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:175:17:175:40 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | test.js:185:5:185:32 | copyStr ... nation) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
-| test.js:190:17:190:40 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
-| test.js:195:17:195:40 | notStre ... itable) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
