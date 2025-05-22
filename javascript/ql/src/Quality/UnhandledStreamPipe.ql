@@ -19,7 +19,8 @@ class PipeCall extends DataFlow::MethodCallNode {
     this.getMethodName() = "pipe" and
     this.getNumArgument() = [1, 2] and
     not this.getArgument(0).asExpr() instanceof Function and
-    not this.getArgument(0).asExpr() instanceof ObjectExpr
+    not this.getArgument(0).asExpr() instanceof ObjectExpr and
+    not this.getArgument(0).getALocalSource() = getNonNodeJsStreamType()
   }
 
   /** Gets the source stream (receiver of the pipe call). */
@@ -27,6 +28,14 @@ class PipeCall extends DataFlow::MethodCallNode {
 
   /** Gets the destination stream (argument of the pipe call). */
   DataFlow::Node getDestinationStream() { result = this.getArgument(0) }
+}
+
+/**
+ * Gets a reference to a value that is known to not be a Node.js stream.
+ * This is used to exclude pipe calls on non-stream objects from analysis.
+ */
+DataFlow::Node getNonNodeJsStreamType() {
+  result = ModelOutput::getATypeNode("NonNodeStream").asSource()
 }
 
 /**
@@ -181,9 +190,18 @@ predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
   )
 }
 
+/**
+ * Holds if the source or destination of the given pipe call is identified as a non-Node.js stream.
+ */
+predicate hasNonNodeJsStreamSource(PipeCall pipeCall) {
+  streamRef(pipeCall) = getNonNodeJsStreamType() or
+  pipeResultRef(pipeCall) = getNonNodeJsStreamType()
+}
+
 from PipeCall pipeCall
 where
   not hasErrorHandlerRegistered(pipeCall) and
-  not isPipeFollowedByNonStreamAccess(pipeCall)
+  not isPipeFollowedByNonStreamAccess(pipeCall) and
+  not hasNonNodeJsStreamSource(pipeCall)
 select pipeCall,
   "Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped."

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["NonNodeStream", "rxjs", "Fuzzy"]
+      - ["NonNodeStream", "rxjs/operators", "Fuzzy"]
