@@ -159,7 +159,8 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
 
 
   /** Gets the "value" @RequestMapping annotation array string value, if present. */
-  string getArrayValue() { result = requestMappingAnnotation.getAStringArrayValue("value") }
+  string getAValue() { result = requestMappingAnnotation.getAStringArrayValue("value") }
+
   /** Gets the "method" @RequestMapping annotation value, if present. */
   string getMethodValue() {
     result = requestMappingAnnotation.getAnEnumConstantArrayValue("method").getName()
