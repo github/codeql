@@ -1,5 +1,5 @@
 import cpp
-import experimental.quantum.OpenSSL.AlgorithmCandidateLiteral
+import experimental.quantum.OpenSSL.GericSourceCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
@@ -103,7 +103,7 @@ predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
  * If this predicate does not hold, then `e` can be interpreted as being of `UNKNOWN` type.
  */
 predicate resolveAlgorithmFromLiteral(
-  OpenSSLAlgorithmCandidateLiteral e, string normalized, string algType
+  OpenSSLGenericSourceCandidateLiteral e, string normalized, string algType
 ) {
   knownOpenSSLAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
   or
@@ -235,11 +235,6 @@ predicate defaultAliases(string target, string alias) {
   alias = "ssl3-md5" and target = "md5"
   or
   alias = "ssl3-sha1" and target = "sha1"
-}
-
-predicate tbd(string normalized, string algType) {
-  knownOpenSSLAlgorithmLiteral(_, _, normalized, algType) and
-  algType = "HASH"
 }
 
 /**

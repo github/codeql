@@ -1,7 +1,7 @@
 private import cpp as Language
 import semmle.code.cpp.dataflow.new.TaintTracking
 import codeql.quantum.experimental.Model
-private import experimental.quantum.OpenSSL.AlgorithmCandidateLiteral
+private import experimental.quantum.OpenSSL.GericSourceCandidateLiteral
 
 module CryptoInput implements InputSig<Language::Location> {
   class DataFlowNode = DataFlow::Node;
@@ -90,7 +90,7 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
 private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() { this instanceof OpenSSLAlgorithmCandidateLiteral }
+  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 

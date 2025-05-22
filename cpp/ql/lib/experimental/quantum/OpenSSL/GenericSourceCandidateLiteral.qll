@@ -3,27 +3,24 @@ private import semmle.code.cpp.models.Models
 private import semmle.code.cpp.models.interfaces.FormattingFunction
 
 /**
- * Holds if a StringLiteral could be an algorithm literal.
+ * Holds if a StringLiteral could conceivably be used in some way for cryptography.
  * Note: this predicate should only consider restrictions with respect to strings only.
- * General restrictions are in the OpenSSLAlgorithmCandidateLiteral class.
+ * General restrictions are in the OpenSSLGenericSourceCandidateLiteral class.
  */
-private predicate isOpenSSLStringLiteralAlgorithmCandidate(StringLiteral s) {
+private predicate isOpenSSLStringLiteralGenericSourceCandidate(StringLiteral s) {
   // 'EC' is a constant that may be used where typical algorithms are specified,
   // but EC specifically means set up a default curve container, that will later be
   //specified explicitly (or if not a default) curve is used.
   s.getValue() != "EC" and
   // Ignore empty strings
   s.getValue() != "" and
-  // ignore strings that represent integers, it is possible this could be used for actual
-  // algorithms but assuming this is not the common case
-  // NOTE: if we were to revert this restriction, we should still consider filtering "0"
-  // to be consistent with filtering integer 0
-  not exists(s.getValue().toInt()) and
   // Filter out strings with "%", to filter out format strings
   not s.getValue().matches("%\\%%") and
-  // Filter out strings in brackets or braces
+  // Filter out strings in brackets or braces (commonly seen strings not relevant for crypto)
   not s.getValue().matches(["[%]", "(%)"]) and
   // Filter out all strings of length 1, since these are not algorithm names
+  // NOTE/ASSUMPTION: If a user legitimately passes a string of length 1 to some configuration
+  // we will assume this is generally unknown. We may need to reassess this in the future.
   s.getValue().length() > 1 and
   // Ignore all strings that are in format string calls outputing to a stream (e.g., stdout)
   not exists(FormattingFunctionCall f |
@@ -43,15 +40,14 @@ private predicate isOpenSSLStringLiteralAlgorithmCandidate(StringLiteral s) {
 /**
  * Holds if an IntLiteral could be an algorithm literal.
  * Note: this predicate should only consider restrictions with respect to integers only.
- * General restrictions are in the OpenSSLAlgorithmCandidateLiteral class.
+ * General restrictions are in the OpenSSLGenericSourceCandidateLiteral class.
  */
-private predicate isOpenSSLIntLiteralAlgorithmCandidate(Literal l) {
+private predicate isOpenSSLIntLiteralGenericSourceCandidate(Literal l) {
   exists(l.getValue().toInt()) and
   // Ignore char literals
   not l instanceof CharLiteral and
   not l instanceof StringLiteral and
   // Ignore integer values of 0, commonly referring to NULL only (no known algorithm 0)
-  // Also ignore integer values greater than 5000
   l.getValue().toInt() != 0 and
   // ASSUMPTION, no negative numbers are allowed
   // RATIONALE: this is a performance improvement to avoid having to trace every number
@@ -63,10 +59,9 @@ private predicate isOpenSSLIntLiteralAlgorithmCandidate(Literal l) {
     r.getExpr() = l and
     r.getEnclosingFunction().getType().getUnspecifiedType() instanceof DerivedType
   ) and
-  // A literal as an array index should never be an algorithm
+  // A literal as an array index should not be relevant for crypo
   not exists(ArrayExpr op | op.getArrayOffset() = l) and
-  // A literal used in a bitwise operation may be an algorithm, but not a candidate
-  // for the purposes of finding applied algorithms
+  // A literal used in a bitwise should not be relevant for crypto
   not exists(BinaryBitwiseOperation op | op.getAnOperand() = l) and
   not exists(AssignBitwiseOperation op | op.getAnOperand() = l) and
   //Filter out cases where an int is assigned or initialized into a pointer, e.g., char* x = NULL;
@@ -81,7 +76,13 @@ private predicate isOpenSSLIntLiteralAlgorithmCandidate(Literal l) {
   // Filter out cases where the literal is used in any kind of arithmetic operation
   not exists(BinaryArithmeticOperation op | op.getAnOperand() = l) and
   not exists(UnaryArithmeticOperation op | op.getOperand() = l) and
-  not exists(AssignArithmeticOperation op | op.getAnOperand() = l)
+  not exists(AssignArithmeticOperation op | op.getAnOperand() = l) and
+  // If a literal has no parent ignore it, this is a workaround for the current inability
+  // to find a literal in an array declaration: int x[100];
+  // NOTE/ASSUMPTION: this value might actually be relevant for finding hard coded sizes
+  // consider size as inferred through the allocation of a buffer.
+  // In these cases, we advise that the source is not generic and must be traced explicitly.
+  exists(l.getParent())
 }
 
 /**
@@ -96,11 +97,11 @@ private predicate isOpenSSLIntLiteralAlgorithmCandidate(Literal l) {
  * "AES" may be a legitimate algorithm literal, but the literal will not be used for an operation directly
  * since it is in a equality comparison, hence this case would also be filtered.
  */
-class OpenSSLAlgorithmCandidateLiteral extends Literal {
-  OpenSSLAlgorithmCandidateLiteral() {
+class OpenSSLGenericSourceCandidateLiteral extends Literal {
+  OpenSSLGenericSourceCandidateLiteral() {
     (
-      isOpenSSLIntLiteralAlgorithmCandidate(this) or
-      isOpenSSLStringLiteralAlgorithmCandidate(this)
+      isOpenSSLIntLiteralGenericSourceCandidate(this) or
+      isOpenSSLStringLiteralGenericSourceCandidate(this)
     ) and
     // ********* General filters beyond what is filtered for strings and ints *********
     // An algorithm literal in a switch case will not be directly applied to an operation.
