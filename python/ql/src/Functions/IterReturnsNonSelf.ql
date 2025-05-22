@@ -20,12 +20,16 @@ private predicate methodOfClass(Function f, Class c) {
   exists(FunctionDef d | d.getDefinedFunction() = f and d.getScope() = c)
 }
 
+/** Gets the __iter__ method of `c`. */
 Function iterMethod(Class c) { methodOfClass(result, c) and result.getName() = "__iter__" }
 
+/** Gets the `__next__` method of `c`. */
 Function nextMethod(Class c) { methodOfClass(result, c) and result.getName() = "__next__" }
 
+/** Holds if `var` is a variable referring to the `self` parameter of `f`. */
 predicate isSelfVar(Function f, Name var) { var.getVariable() = f.getArg(0).(Name).getVariable() }
 
+/** Holds if `e` is an expression that an iter function `f` should return. */
 predicate isGoodReturn(Function f, Expr e) {
   isSelfVar(f, e)
   or
@@ -40,6 +44,7 @@ predicate isGoodReturn(Function f, Expr e) {
   )
 }
 
+/** Holds if the iter method `f` does not return `self` or an equivalent. */
 predicate returnsNonSelf(Function f) {
   exists(f.getFallthroughNode())
   or
@@ -48,10 +53,46 @@ predicate returnsNonSelf(Function f) {
   exists(Return r | r.getScope() = f and not exists(r.getValue()))
 }
 
-from Class c, Function iter
+/** Holds if `iter` and `next` methods are wrappers around some field. */
+predicate iterWrapperMethods(Function iter, Function next) {
+  exists(string field |
+    exists(Return r, DataFlow::Node self, DataFlow::AttrRead read |
+      r.getScope() = iter and
+      r.getValue() = iterCall(read).asExpr() and
+      read.accesses(self, field) and
+      isSelfVar(iter, self.asExpr())
+    ) and
+    exists(Return r, DataFlow::Node self, DataFlow::AttrRead read |
+      r.getScope() = next and
+      r.getValue() = nextCall(read).asExpr() and
+      read.accesses(self, field) and
+      isSelfVar(next, self.asExpr())
+    )
+  )
+}
+
+DataFlow::CallCfgNode iterCall(DataFlow::Node arg) {
+  result.(DataFlow::MethodCallNode).calls(arg, "__iter__")
+  or
+  result = API::builtin("iter").getACall() and
+  arg = result.getArg(0) and
+  not exists(result.getArg(1))
+  or
+  result = arg // assume the wrapping field is already an iterator
+}
+
+DataFlow::CallCfgNode nextCall(DataFlow::Node arg) {
+  result.(DataFlow::MethodCallNode).calls(arg, "__next__")
+  or
+  result = API::builtin("next").getACall() and
+  arg = result.getArg(0)
+}
+
+from Class c, Function iter, Function next
 where
-  exists(nextMethod(c)) and
+  next = nextMethod(c) and
   iter = iterMethod(c) and
-  returnsNonSelf(iter)
+  returnsNonSelf(iter) and
+  not iterWrapperMethods(iter, next)
 select iter, "Iter method of iterator $@ does not return `" + iter.getArg(0).getName() + "`.", c,
   c.getName()
