@@ -354,10 +354,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
     this.hasCanonicalPath(c) and
     exists(ModuleLikeNode m |
       child.getImmediateParent() = m and
-      not m = child.(SourceFileItemNode).getSuper()
-    |
-      m = super.getModule() // the special `crate` root module inserted by the extractor
-      or
+      not m = child.(SourceFileItemNode).getSuper() and
       m = super.getSourceFile()
     )
   }

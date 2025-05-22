@@ -5,6 +5,8 @@
  * @id rust/diagnostics/path-resolution-consistency
  */
 
+private import rust
+private import codeql.rust.internal.PathResolution
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
 private import codeql.rust.elements.Locatable
 private import codeql.Locations
@@ -24,4 +26,8 @@ query predicate multipleMethodCallTargets(SourceLocatable a, SourceLocatable b) 
 
 query predicate multiplePathResolutions(SourceLocatable a, SourceLocatable b) {
   PathResolutionConsistency::multiplePathResolutions(a, b)
+}
+
+query predicate multipleCanonicalPaths(SourceLocatable i, SourceLocatable c, string path) {
+  PathResolutionConsistency::multipleCanonicalPaths(i, c, path)
 }
