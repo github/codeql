@@ -171,7 +171,7 @@ class PackageJson extends JsonObject {
    * different from the other dependency types.
    */
   predicate declaresDependency(string pkg, string version) {
-    this.getADependenciesObject(_).getADependency(pkg, version)
+    this.getADependenciesObject(_).getADependency(pkg) = version
   }
 
   /** Gets the engine dependencies of this package. */
@@ -339,8 +339,8 @@ class PackageDependencies extends JsonObject {
     )
   }
 
-  /** Holds if this package depends on version 'version' of package 'pkg'. */
-  predicate getADependency(string pkg, string version) { version = this.getPropStringValue(pkg) }
+  /** Returns the version of the specified package that this package depends on. */
+  string getADependency(string pkg) { result = this.getPropStringValue(pkg) }
 }
 
 /**

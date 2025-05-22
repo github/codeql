@@ -39,7 +39,7 @@ where
     pkg.getAModule() = r.getTopLevel() and pkgJson = pkg.getPackageJson()
   |
     not pkgJson.declaresDependency(mod, _) and
-    not pkgJson.getPeerDependencies().getADependency(mod, _) and
+    not exists(pkgJson.getPeerDependencies().getADependency(mod)) and
     // exclude packages depending on `fbjs`, which automatically pulls in many otherwise
     // undeclared dependencies
     not pkgJson.declaresDependency("fbjs", _)

@@ -601,7 +601,7 @@ module Templating {
 
   private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {
     exists(PackageDependencies deps |
-      deps.getADependency(result.getAPackageName(), _) and
+      exists(deps.getADependency(result.getAPackageName())) and
       f = deps.getFile().getParentContainer()
     )
   }

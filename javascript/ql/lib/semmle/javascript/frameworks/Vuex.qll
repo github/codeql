@@ -373,7 +373,7 @@ module Vuex {
     }
 
     private predicate packageDependsOn(PackageJson importer, PackageJson dependency) {
-      importer.getADependenciesObject("").getADependency(dependency.getPackageName(), _)
+      exists(importer.getADependenciesObject("").getADependency(dependency.getPackageName()))
     }
 
     /** Gets a package that can be considered an entry point for a Vuex app. */
