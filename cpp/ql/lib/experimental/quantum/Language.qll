@@ -1,6 +1,7 @@
 private import cpp as Language
 import semmle.code.cpp.dataflow.new.TaintTracking
 import codeql.quantum.experimental.Model
+private import OpenSSL.GenericSourceCandidateLiteral
 
 module CryptoInput implements InputSig<Language::Location> {
   class DataFlowNode = DataFlow::Node;
@@ -89,16 +90,7 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
 module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
 
 private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
-  ConstantDataSource() {
-    // TODO: this is an API specific workaround for OpenSSL, as 'EC' is a constant that may be used
-    // where typical algorithms are specified, but EC specifically means set up a
-    // default curve container, that will later be specified explicitly (or if not a default)
-    // curve is used.
-    this.getValue() != "EC" and
-    // Exclude all 0's as algorithms. Currently we know of no algorithm defined as 0, and
-    // the typical case is 0 is assigned to represent null.
-    this.getValue().toInt() != 0
-  }
+  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
 
   override DataFlow::Node getOutputNode() { result.asExpr() = this }
 
