@@ -2,6 +2,15 @@ import cpp
 private import semmle.code.cpp.models.Models
 private import semmle.code.cpp.models.interfaces.FormattingFunction
 
+private class IntLiteral extends Literal {
+  IntLiteral() {
+    //Heuristics for distinguishing int literals from other literals
+    exists(this.getValue().toInt()) and
+    not this instanceof CharLiteral and
+    not this instanceof StringLiteral
+  }
+}
+
 /**
  * Holds if a StringLiteral could conceivably be used in some way for cryptography.
  * Note: this predicate should only consider restrictions with respect to strings only.
@@ -38,15 +47,11 @@ private predicate isOpenSSLStringLiteralGenericSourceCandidate(StringLiteral s) 
 }
 
 /**
- * Holds if an IntLiteral could be an algorithm literal.
+ * Holds if a StringLiteral could conceivably be used in some way for cryptography.
  * Note: this predicate should only consider restrictions with respect to integers only.
  * General restrictions are in the OpenSSLGenericSourceCandidateLiteral class.
  */
-private predicate isOpenSSLIntLiteralGenericSourceCandidate(Literal l) {
-  exists(l.getValue().toInt()) and
-  // Ignore char literals
-  not l instanceof CharLiteral and
-  not l instanceof StringLiteral and
+private predicate isOpenSSLIntLiteralGenericSourceCandidate(IntLiteral l) {
   // Ignore integer values of 0, commonly referring to NULL only (no known algorithm 0)
   l.getValue().toInt() != 0 and
   // ASSUMPTION, no negative numbers are allowed
@@ -86,10 +91,10 @@ private predicate isOpenSSLIntLiteralGenericSourceCandidate(Literal l) {
 }
 
 /**
- * Any literal that may represent an algorithm for use in an operation, even if an invalid or unknown algorithm.
+ * Any literal that may be conceivably be used in some way for cryptography.
  * The set of all literals is restricted by this class to cases where there is higher
- * plausibility that the literal is eventually used as an algorithm.
- * Literals are filtered, for example if they are used in a way no indicative of an algorithm use
+ * plausibility that the literal could be used as a source of configuration.
+ * Literals are filtered, for example, if they are used in a way no indicative of an algorithm use
  * such as in an array index, bitwise operation, or logical operation.
  * Note a case like this:
  *      if(algVal == "AES")
