@@ -16,7 +16,7 @@ This ensures that the object is also an iterable; and behaves as expected when u
 </recommendation>
 <example>
 <p>In the following example, the <code>MyRange</code> class's <code>__iter__</code> method does not return <code>self</code>. 
-This would lead to unexpected results when used with a <code>for</code> loop or <code>in</code> statement.
+This would lead to unexpected results when used with a <code>for</code> loop or <code>in</code> statement.</p>
 <sample src="examples/IterReturnsNonSelf.py" />
 
 </example>
