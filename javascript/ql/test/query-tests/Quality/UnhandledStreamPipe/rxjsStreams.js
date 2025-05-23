@@ -1,7 +1,7 @@
 import * as rx from 'rxjs';
 import * as ops from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-
+import { pluck } from "rxjs/operators/pluck";
 
 const { of, from } = rx;
 const { map, filter } = ops;
@@ -15,4 +15,6 @@ function f(){
     const source = x('', {o: [a, b, c]});
     z(source.pipe(null)).toBe(expected,y,);
   });
+
+  z.option$.pipe(pluck("x")) // $SPURIOUS:Alert
 }
