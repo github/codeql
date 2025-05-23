@@ -1,0 +1,4 @@
+| Ed448SignAndVerify.java:32:32:32:57 | SignOperation | Ed448SignAndVerify.java:30:31:30:40 | Key | Ed448SignAndVerify.java:31:27:31:33 | Message | KeyOperationOutput |
+| Ed448SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed448SignAndVerify.java:38:34:38:42 | Key | Ed448SignAndVerify.java:39:29:39:35 | Message |  |
+| Ed25519SignAndVerify.java:32:32:32:57 | SignOperation | Ed25519SignAndVerify.java:30:31:30:40 | Key | Ed25519SignAndVerify.java:31:27:31:33 | Message | KeyOperationOutput |
+| Ed25519SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed25519SignAndVerify.java:38:34:38:42 | Key | Ed25519SignAndVerify.java:39:29:39:35 | Message |  |
