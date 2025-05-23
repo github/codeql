@@ -27,7 +27,7 @@ def filter_out_annotations(filename):
     Read the file and strip all existing overlay[...] annotations from the contents.
     Return the file modified file content as a list of lines.
     '''
-    overlays = ["local", "local?", "global", "caller"]
+    overlays = ["local?", "caller"]
     annotations = [f"overlay[{t}]" for t in overlays]
     with open(filename, 'r') as file_in:
         lines = [l for l in file_in if not l.strip() in annotations]
