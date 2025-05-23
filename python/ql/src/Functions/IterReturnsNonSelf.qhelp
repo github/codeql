@@ -11,7 +11,7 @@ This ensures that the object is also an iterable; and behaves as expected when u
 
 </overview>
 <recommendation>
-<p>Ensure that the <code>__iter__</code> method returns <code>self</code>, or is otherwise equivalent as an iterator to <code>self<code>.</p>
+<p>Ensure that the <code>__iter__</code> method returns <code>self</code>, or is otherwise equivalent as an iterator to <code>self</code>.</p>
 
 </recommendation>
 <example>
