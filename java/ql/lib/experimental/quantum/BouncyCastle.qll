@@ -24,15 +24,15 @@ module Signers {
     }
 
     MethodCall getAMethodCall(string name) {
-      result.getCallee().hasQualifiedName("org.bouncycastle.crypto.signers", this.getName(), name)
+      result.getCallee().hasQualifiedName(this.getPackage().getName(), this.getName(), name)
     }
   }
 
   /**
    * BouncyCastle algorithms are instantiated by calling the constructor of the
-   * corresponding class.
+   * corresponding class, which also represents the algorithm instance.
    */
-  private class NewCall = SignatureAlgorithmInstance;
+  private class SignerNewCall = SignatureAlgorithmInstance;
 
   /**
    * The type is instantiated by a constructor call and initialized by a call to
@@ -40,8 +40,8 @@ module Signers {
    * whether the operation is signing data or verifying a signature, and the
    * second is the key to use.
    */
-  private class InitCall extends MethodCall {
-    InitCall() { this = any(Signer signer).getAnInitCall() }
+  private class SignerInitCall extends MethodCall {
+    SignerInitCall() { this = any(Signer signer).getAnInitCall() }
 
     Expr getForSigningArg() { result = this.getArgument(0) }
 
@@ -67,8 +67,8 @@ module Signers {
    * `generateSignature()` or `verifySignature()` methods are used to produce or
    * verify the signature, respectively.
    */
-  private class UseCall extends MethodCall {
-    UseCall() { this = any(Signer signer).getAUseCall() }
+  private class SignerUseCall extends MethodCall {
+    SignerUseCall() { this = any(Signer signer).getAUseCall() }
 
     predicate isIntermediate() { this.getCallee().getName() = "update" }
 
@@ -80,13 +80,14 @@ module Signers {
   /**
    * Instantiate the flow analysis module for the `Signer` class.
    */
-  private module FlowAnalysis = NewToInitToUseFlowAnalysis<NewCall, InitCall, UseCall>;
+  private module FlowAnalysis =
+    NewToInitToUseFlowAnalysis<SignerNewCall, SignerInitCall, SignerUseCall>;
 
   /**
    * A signing operation instance is a call to either `update()`, `generateSignature()`,
    * or `verifySignature()` on a `Signer` instance.
    */
-  class SignatureOperationInstance extends Crypto::KeyOperationInstance instanceof UseCall {
+  class SignatureOperationInstance extends Crypto::KeyOperationInstance instanceof SignerUseCall {
     SignatureOperationInstance() { not this.isIntermediate() }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
@@ -114,9 +115,9 @@ module Signers {
       result.asExpr() = super.getOutput()
     }
 
-    InitCall getInitCall() { result = FlowAnalysis::getInitFromUse(this, _, _) }
+    SignerInitCall getInitCall() { result = FlowAnalysis::getInitFromUse(this, _, _) }
 
-    UseCall getAnUpdateCall() {
+    SignerUseCall getAnUpdateCall() {
       result = FlowAnalysis::getAnIntermediateUseFromFinalUse(this, _, _)
     }
   }
@@ -150,20 +151,10 @@ module Generators {
     MethodCall getAUseCall() { result = this.getAMethodCall(["generateKey", "generateKeyPair"]) }
 
     MethodCall getAMethodCall(string name) {
-      result
-          .getCallee()
-          .hasQualifiedName("org.bouncycastle.crypto.generators", this.getName(), name)
+      result.getCallee().hasQualifiedName(this.getPackage().getName(), this.getName(), name)
     }
 
     Crypto::KeyArtifactType getKeyType() { result = type }
-
-    string getRawAlgorithmName() {
-      this.getKeyType() = Crypto::TSymmetricKeyType() and
-      result = this.getName().splitAt("KeyGenerator", 0)
-      or
-      this.getKeyType() = Crypto::TAsymmetricKeyType() and
-      result = this.getName().splitAt("KeyPairGenerator", 0)
-    }
   }
 
   /**
@@ -187,7 +178,7 @@ module Generators {
 
   /**
    * BouncyCastle algorithms are instantiated by calling the constructor of the
-   * corresponding class.
+   * corresponding class, which also represents the algorithm instance.
    */
   private class KeyGeneratorNewCall = KeyGenerationAlgorithmInstance;
 
@@ -250,10 +241,15 @@ module Generators {
       result = KeyGeneratorFlow::getInitFromUse(this, _, _).getKeySizeConsumer()
     }
   }
+}
 
+/**
+ * Models for cryptographic parameters defined by the `org.bouncycastle.crypto.params` package.
+ */
+module Parameters {
   class KeyGenerationParameters extends RefType {
     KeyGenerationParameters() {
-      this.getPackage().getName() = "org.bouncycastle.crypto.generators" and
+      this.getPackage().getName() = "org.bouncycastle.crypto.params" and
       this.getName().matches("%KeyGenerationParameters")
     }
   }
