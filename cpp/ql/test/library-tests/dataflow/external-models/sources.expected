@@ -3,3 +3,13 @@
 | windows.cpp:11:15:11:29 | *call to GetCommandLineA | local |
 | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | local |
 | windows.cpp:28:36:28:38 | GetEnvironmentVariableA output argument | local |
+| windows.cpp:145:35:145:40 | ReadFile output argument | local |
+| windows.cpp:154:23:154:28 | ReadFileEx output argument | local |
+| windows.cpp:168:84:168:89 | NtReadFile output argument | local |
+| windows.cpp:245:23:245:35 | *call to MapViewOfFile | local |
+| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | local |
+| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | local |
+| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | local |
+| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | local |
+| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | local |
+| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | local |

@@ -10,44 +10,68 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:6 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:10 |
-| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:23497 |
-| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:23498 |
-| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:23499 |
+| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:23507 |
+| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:23508 |
+| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:23509 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
-| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:23495  |
-| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:14:10:14:10 | x | provenance | Sink:MaD:23496 |
+| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:23505  |
+| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:14:10:14:10 | x | provenance | Sink:MaD:23506 |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:17:24:17:24 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:21:27:21:27 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:25:35:25:35 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:32:41:32:41 | x | provenance |  |
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual | provenance |  |
-| test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:23496 |
+| test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:23506 |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | provenance |  |
-| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:23497 |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:23507 |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance |  |
-| test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:23496 |
+| test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:23506 |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | provenance |  |
-| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:23498 |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:23508 |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance |  |
-| test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:23496 |
+| test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:23506 |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | provenance |  |
-| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:23499 |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:23509 |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
-| test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:23496 |
+| test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:23506 |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | provenance |  |
 | test.cpp:32:41:32:41 | x | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
-| windows.cpp:6:8:6:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:6:8:6:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:331 |
+| windows.cpp:6:8:6:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:6:8:6:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:341 |
 | windows.cpp:11:15:11:29 | *call to GetCommandLineA | windows.cpp:11:15:11:29 | *call to GetCommandLineA | provenance | Src:MaD:325  |
 | windows.cpp:11:15:11:29 | *call to GetCommandLineA | windows.cpp:13:8:13:11 | * ... | provenance |  |
 | windows.cpp:11:15:11:29 | *call to GetCommandLineA | windows.cpp:16:36:16:38 | *cmd | provenance |  |
 | windows.cpp:16:17:16:34 | **call to CommandLineToArgvA | windows.cpp:16:17:16:34 | **call to CommandLineToArgvA | provenance |  |
 | windows.cpp:16:17:16:34 | **call to CommandLineToArgvA | windows.cpp:19:8:19:15 | * ... | provenance |  |
 | windows.cpp:16:36:16:38 | *cmd | windows.cpp:6:8:6:25 | [summary param] *0 in CommandLineToArgvA | provenance |  |
-| windows.cpp:16:36:16:38 | *cmd | windows.cpp:16:17:16:34 | **call to CommandLineToArgvA | provenance | MaD:331 |
+| windows.cpp:16:36:16:38 | *cmd | windows.cpp:16:17:16:34 | **call to CommandLineToArgvA | provenance | MaD:341 |
 | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | provenance | Src:MaD:327  |
 | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | windows.cpp:25:10:25:13 | * ... | provenance |  |
 | windows.cpp:28:36:28:38 | GetEnvironmentVariableA output argument | windows.cpp:30:10:30:13 | * ... | provenance | Src:MaD:329  |
+| windows.cpp:145:35:145:40 | ReadFile output argument | windows.cpp:147:10:147:16 | * ... | provenance | Src:MaD:331  |
+| windows.cpp:154:23:154:28 | ReadFileEx output argument | windows.cpp:156:10:156:16 | * ... | provenance | Src:MaD:332  |
+| windows.cpp:168:84:168:89 | NtReadFile output argument | windows.cpp:170:10:170:16 | * ... | provenance | Src:MaD:340  |
+| windows.cpp:245:23:245:35 | *call to MapViewOfFile | windows.cpp:245:23:245:35 | *call to MapViewOfFile | provenance | Src:MaD:333  |
+| windows.cpp:245:23:245:35 | *call to MapViewOfFile | windows.cpp:246:20:246:52 | *pMapView | provenance |  |
+| windows.cpp:246:20:246:52 | *pMapView | windows.cpp:248:10:248:16 | * ... | provenance |  |
+| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | provenance | Src:MaD:334  |
+| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | windows.cpp:253:20:253:52 | *pMapView | provenance |  |
+| windows.cpp:253:20:253:52 | *pMapView | windows.cpp:255:10:255:16 | * ... | provenance |  |
+| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | provenance | Src:MaD:335  |
+| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | windows.cpp:262:20:262:52 | *pMapView | provenance |  |
+| windows.cpp:262:20:262:52 | *pMapView | windows.cpp:264:10:264:16 | * ... | provenance |  |
+| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | provenance | Src:MaD:336  |
+| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | windows.cpp:271:20:271:52 | *pMapView | provenance |  |
+| windows.cpp:271:20:271:52 | *pMapView | windows.cpp:273:10:273:16 | * ... | provenance |  |
+| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | provenance | Src:MaD:337  |
+| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | windows.cpp:278:20:278:52 | *pMapView | provenance |  |
+| windows.cpp:278:20:278:52 | *pMapView | windows.cpp:280:10:280:16 | * ... | provenance |  |
+| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | provenance | Src:MaD:338  |
+| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | windows.cpp:285:20:285:52 | *pMapView | provenance |  |
+| windows.cpp:285:20:285:52 | *pMapView | windows.cpp:287:10:287:16 | * ... | provenance |  |
+| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:339  |
+| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | windows.cpp:292:20:292:52 | *pMapView | provenance |  |
+| windows.cpp:292:20:292:52 | *pMapView | windows.cpp:294:10:294:16 | * ... | provenance |  |
 nodes
 | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
 | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |
@@ -103,6 +127,40 @@ nodes
 | windows.cpp:25:10:25:13 | * ... | semmle.label | * ... |
 | windows.cpp:28:36:28:38 | GetEnvironmentVariableA output argument | semmle.label | GetEnvironmentVariableA output argument |
 | windows.cpp:30:10:30:13 | * ... | semmle.label | * ... |
+| windows.cpp:145:35:145:40 | ReadFile output argument | semmle.label | ReadFile output argument |
+| windows.cpp:147:10:147:16 | * ... | semmle.label | * ... |
+| windows.cpp:154:23:154:28 | ReadFileEx output argument | semmle.label | ReadFileEx output argument |
+| windows.cpp:156:10:156:16 | * ... | semmle.label | * ... |
+| windows.cpp:168:84:168:89 | NtReadFile output argument | semmle.label | NtReadFile output argument |
+| windows.cpp:170:10:170:16 | * ... | semmle.label | * ... |
+| windows.cpp:245:23:245:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
+| windows.cpp:245:23:245:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
+| windows.cpp:246:20:246:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:248:10:248:16 | * ... | semmle.label | * ... |
+| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
+| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
+| windows.cpp:253:20:253:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:255:10:255:16 | * ... | semmle.label | * ... |
+| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
+| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
+| windows.cpp:262:20:262:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:264:10:264:16 | * ... | semmle.label | * ... |
+| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
+| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
+| windows.cpp:271:20:271:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:273:10:273:16 | * ... | semmle.label | * ... |
+| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
+| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
+| windows.cpp:278:20:278:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:280:10:280:16 | * ... | semmle.label | * ... |
+| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
+| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
+| windows.cpp:285:20:285:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:287:10:287:16 | * ... | semmle.label | * ... |
+| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
+| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
+| windows.cpp:292:20:292:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:294:10:294:16 | * ... | semmle.label | * ... |
 subpaths
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | asio_streams.cpp:100:44:100:62 | call to buffer |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual |

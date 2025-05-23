@@ -11,6 +11,16 @@ extensions:
       - ["", "", False, "GetEnvironmentStringsW", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "GetEnvironmentVariableA", "", "", "Argument[*1]", "local", "manual"]
       - ["", "", False, "GetEnvironmentVariableW", "", "", "Argument[*1]", "local", "manual"]
+      - ["", "", False, "ReadFile", "", "", "Argument[*1]", "local", "manual"]
+      - ["", "", False, "ReadFileEx", "", "", "Argument[*1]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile2", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile3", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFile3FromApp", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileEx", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileFromApp", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "MapViewOfFileNuma2", "", "", "ReturnValue[*]", "local", "manual"]
+      - ["", "", False, "NtReadFile", "", "", "Argument[*5]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel
