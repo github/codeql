@@ -709,6 +709,10 @@ impl<'a> Translator<'a> {
     }
 
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
+        if self.source_kind == SourceKind::Library {
+            return;
+        }
         (|| {
             let semantics = self.semantics?;
             let ExpandResult {
