@@ -1,12 +1,15 @@
 /**
- * @name Direct call to a run() method
+ * @name Direct call to a 'run()' method
  * @description Directly calling a 'Thread' object's 'run' method does not start a separate thread
- *              but executes the method within the current thread.
+ *              but executes the method within the current thread and may indicate misunderstanding
+ *              on the programmer's part.
  * @kind problem
  * @problem.severity recommendation
  * @precision high
  * @id java/call-to-thread-run
- * @tags reliability
+ * @previous-id java/run-method-called-on-java-lang-thread-directly
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  *       external/cwe/cwe-572
@@ -14,6 +17,10 @@
 
 import java
 
+/**
+ * The `run()` method of the class `java.lang.Thread` or
+ * of its subclasses.
+ */
 class RunMethod extends Method {
   RunMethod() {
     this.hasName("run") and
