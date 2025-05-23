@@ -14,6 +14,7 @@ use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
 use std::collections::HashSet;
+use std::hash::RandomState;
 use std::time::Instant;
 use std::{
     collections::HashMap,
@@ -276,7 +277,8 @@ fn main() -> anyhow::Result<()> {
     } else {
         ResolvePaths::Yes
     };
-    let mut processed_files = HashSet::new();
+    let mut processed_files: HashSet<PathBuf, RandomState> =
+        HashSet::from_iter(files.iter().cloned());
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
@@ -288,7 +290,6 @@ fn main() -> anyhow::Result<()> {
                 .push(ExtractionStep::crate_graph(before_crate_graph));
             let semantics = Semantics::new(db);
             for file in files {
-                processed_files.insert((*file).to_owned());
                 match extractor.load_source(file, &semantics, vfs) {
                     Ok(()) => extractor.extract_with_semantics(
                         file,
