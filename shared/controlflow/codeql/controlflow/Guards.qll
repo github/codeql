@@ -23,9 +23,29 @@
  * }
  * ```
  *
+ * The provided predicates are separated into general "controls" predicates and
+ * "directly controls" predicates. The former use all possible implication
+ * logic as described above, whereas the latter only use control flow dominance
+ * of the corresponding conditional successor edges.
+ *
+ * In some cases, a guard may have a successor edge that can be relevant for
+ * controlling the input to an SSA phi node, but does not dominate the
+ * preceding block. To support this, the `hasBranchEdge` and
+ * `controlsBranchEdge` predicates are provided, where the former only uses the
+ * control flow graph similar to the `directlyControls` predicate, and the
+ * latter uses the full implication logic.
+ *
+ * All of these predicates are also available in the more general form that refers
+ * to `GuardValue`s instead of `boolean`s.
+ *
  * The implementation is nested in two parameterized modules intended to
  * facilitate multiple instantiations of the nested module with different
- * precision levels
+ * precision levels. For example, more implications are available if the result
+ * of Range Analysis is available, but Range Analysis depends on Guards. This
+ * allows an initial instantiation of the `Logic` module without Range Analysis
+ * that can be used as input to Range Analysis, and a second instantiation
+ * using the result of Range Analysis to provide a final and more complete
+ * controls relation.
  */
 
 private import codeql.util.Boolean
@@ -178,6 +198,7 @@ signature module InputSig<LocationSig Location> {
   }
 }
 
+/** Provides guards-related predicates and classes. */
 module Make<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
@@ -513,6 +534,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
+  /**
+   * Provides the `Guard` class with suitable 'controls' predicates augmented
+   * with logical implications based on SSA.
+   */
   module Logic<LogicInputSig LogicInput> {
     private import LogicInput
 
@@ -1016,7 +1041,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
     /**
      * A guard. This may be any expression whose value determines subsequent
-     * control flow.
+     * control flow. It may also be a switch case, which as a guard is considered
+     * to evaluate to either true or false depending on whether the case matches.
      */
     final class Guard extends PreGuard {
       /**
