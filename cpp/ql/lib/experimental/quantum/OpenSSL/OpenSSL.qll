@@ -3,4 +3,5 @@ module OpenSSLModel {
   import AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
   import Operations.OpenSSLOperations
   import Random
+  import GenericSourceCandidateLiteral
 }

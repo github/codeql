@@ -14,10 +14,30 @@ string describe(Expr op) {
   op instanceof LogicalOperation and result = "LogicalOperation"
   or
   op instanceof RefExpr and result = "RefExpr"
+  or
+  op instanceof ComparisonOperation and result = "ComparisonOperation"
+  or
+  op instanceof EqualityOperation and result = "EqualityOperation"
+  or
+  op instanceof EqualsOperation and result = "EqualsOperation"
+  or
+  op instanceof NotEqualsOperation and result = "NotEqualsOperation"
+  or
+  op instanceof RelationalOperation and result = "RelationalOperation"
+  or
+  op instanceof LessThanOperation and result = "LessThanOperation"
+  or
+  op instanceof GreaterThanOperation and result = "GreaterThanOperation"
+  or
+  op instanceof LessOrEqualsOperation and result = "LessOrEqualsOperation"
+  or
+  op instanceof GreaterOrEqualsOperation and result = "GreaterOrEqualsOperation"
 }
 
 module OperationsTest implements TestSig {
-  string getARelevantTag() { result = describe(_) or result = ["Op", "Operands"] }
+  string getARelevantTag() {
+    result = describe(_) or result = ["Op", "Operands", "Greater", "Lesser"]
+  }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr op |
@@ -35,6 +55,14 @@ module OperationsTest implements TestSig {
         op instanceof Operation and
         tag = "Operands" and
         value = count(op.(Operation).getAnOperand()).toString()
+        or
+        op instanceof RelationalOperation and
+        tag = "Greater" and
+        value = op.(RelationalOperation).getGreaterOperand().toString()
+        or
+        op instanceof RelationalOperation and
+        tag = "Lesser" and
+        value = op.(RelationalOperation).getLesserOperand().toString()
       )
     )
   }
