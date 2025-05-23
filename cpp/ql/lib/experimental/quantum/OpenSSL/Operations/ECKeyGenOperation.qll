@@ -16,25 +16,15 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
 
 private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
-class ECKeyGenOperation extends OpenSSLOperation, Crypto::KeyGenerationOperationInstance {
+class ECKeyGenOperation extends Crypto::KeyGenerationOperationInstance {
   ECKeyGenOperation() { this.(Call).getTarget().getName() = "EC_KEY_generate_key" }
 
-  override Expr getOutputArg() {
-    result = this.(Call) // return value of call
-  }
-
   Expr getAlgorithmArg() { result = this.(Call).getArgument(0) }
-
-  override Expr getInputArg() {
-    // there is no 'input', in the sense that no data is being manipulated by the operation.
-    // There is an input of an algorithm, but that is not the intention of the operation input arg.
-    none()
-  }
 
   override Crypto::KeyArtifactType getOutputKeyType() { result = Crypto::TAsymmetricKeyType() }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
-    result = this.getOutputNode()
+    result.asExpr() = this.(Call)
   }
 
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
