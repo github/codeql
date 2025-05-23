@@ -145,7 +145,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
  * Evaluating a switch case to true corresponds to taking that switch case, and
  * evaluating it to false corresponds to taking some other branch.
  */
-class Guard extends ExprParent {
+final class Guard extends ExprParent {
   Guard() {
     this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral
     or
@@ -361,6 +361,18 @@ private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean b
 }
 
 pragma[nomagic]
+private predicate guardControlsBranchEdge_v2(
+  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
+) {
+  guard.hasBranchEdge(bb1, bb2, branch)
+  or
+  exists(Guard g, boolean b |
+    guardControlsBranchEdge_v2(g, bb1, bb2, b) and
+    implies_v2(g, b, guard, branch)
+  )
+}
+
+pragma[nomagic]
 private predicate guardControlsBranchEdge_v3(
   Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
 ) {
@@ -370,6 +382,27 @@ private predicate guardControlsBranchEdge_v3(
     guardControlsBranchEdge_v3(g, bb1, bb2, b) and
     implies_v3(g, b, guard, branch)
   )
+}
+
+/** INTERNAL: Use `Guard` instead. */
+final class Guard_v2 extends Guard {
+  /**
+   * Holds if this guard evaluating to `branch` controls the control-flow
+   * branch edge from `bb1` to `bb2`. That is, following the edge from
+   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+   */
+  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    guardControlsBranchEdge_v2(this, bb1, bb2, branch)
+  }
+
+  /**
+   * Holds if this guard evaluating to `branch` directly or indirectly controls
+   * the block `controlled`. That is, the evaluation of `controlled` is
+   * dominated by this guard evaluating to `branch`.
+   */
+  predicate controls(BasicBlock controlled, boolean branch) {
+    guardControls_v2(this, controlled, branch)
+  }
 }
 
 private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
