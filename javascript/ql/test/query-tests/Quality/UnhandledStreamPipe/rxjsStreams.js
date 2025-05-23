@@ -16,5 +16,5 @@ function f(){
     z(source.pipe(null)).toBe(expected,y,);
   });
 
-  z.option$.pipe(pluck("x")) // $SPURIOUS:Alert
+  z.option$.pipe(pluck("x"))
 }

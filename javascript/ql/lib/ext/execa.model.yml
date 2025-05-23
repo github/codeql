@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/javascript-all
-      extensible: typeModel
-    data:
-      - ["NonNodeStream", "execa", "Fuzzy"]

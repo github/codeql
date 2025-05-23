@@ -35,7 +35,26 @@ class PipeCall extends DataFlow::MethodCallNode {
  * This is used to exclude pipe calls on non-stream objects from analysis.
  */
 DataFlow::Node getNonNodeJsStreamType() {
-  result = ModelOutput::getATypeNode("NonNodeStream").asSource()
+  result = getNonStreamApi().getAValueReachableFromSource()
+}
+
+//highland, arktype execa
+API::Node getNonStreamApi() {
+  exists(string moduleName |
+    moduleName
+        .regexpMatch([
+            "rxjs(|/.*)", "@strapi(|/.*)", "highland(|/.*)", "execa(|/.*)", "arktype(|/.*)"
+          ]) and
+    result = API::moduleImport(moduleName)
+  )
+  or
+  result = getNonStreamApi().getAMember()
+  or
+  result = getNonStreamApi().getAParameter().getAParameter()
+  or
+  result = getNonStreamApi().getReturn()
+  or
+  result = getNonStreamApi().getPromised()
 }
 
 /**
