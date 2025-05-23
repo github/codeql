@@ -273,6 +273,15 @@ class Guard extends ExprParent {
   }
 
   /**
+   * Holds if this guard evaluating to `branch` controls the control-flow
+   * branch edge from `bb1` to `bb2`. That is, following the edge from
+   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+   */
+  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    guardControlsBranchEdge_v3(this, bb1, bb2, branch)
+  }
+
+  /**
    * Holds if this guard evaluating to `branch` directly or indirectly controls
    * the block `controlled`. That is, the evaluation of `controlled` is
    * dominated by this guard evaluating to `branch`.
@@ -347,6 +356,18 @@ private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean b
   or
   exists(Guard g, boolean b |
     guardControls_v3(g, controlled, b) and
+    implies_v3(g, b, guard, branch)
+  )
+}
+
+pragma[nomagic]
+private predicate guardControlsBranchEdge_v3(
+  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
+) {
+  guard.hasBranchEdge(bb1, bb2, branch)
+  or
+  exists(Guard g, boolean b |
+    guardControlsBranchEdge_v3(g, bb1, bb2, b) and
     implies_v3(g, b, guard, branch)
   )
 }

@@ -1570,9 +1570,15 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       string toString();
 
       /**
-       * Holds if the control flow branching from `bb1` is dependent on this guard,
-       * and that the edge from `bb1` to `bb2` corresponds to the evaluation of this
-       * guard to `branch`.
+       * Holds if the evaluation of this guard to `branch` corresponds to the edge
+       * from `bb1` to `bb2`.
+       */
+      predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
+
+      /**
+       * Holds if this guard evaluating to `branch` controls the control-flow
+       * branch edge from `bb1` to `bb2`. That is, following the edge from
+       * `bb1` to `bb2` implies that this guard evaluated to `branch`.
        */
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
     }
@@ -1667,7 +1673,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       (
         // The input node is relevant either if it sits directly on a branch
         // edge for a guard,
-        exists(DfInput::Guard g | g.controlsBranchEdge(input, phi.getBasicBlock(), _))
+        exists(DfInput::Guard g | g.hasBranchEdge(input, phi.getBasicBlock(), _))
         or
         // or if the unique predecessor is not an equivalent substitute in
         // terms of being controlled by the same guards.
