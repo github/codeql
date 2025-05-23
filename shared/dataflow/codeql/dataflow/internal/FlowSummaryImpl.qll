@@ -56,7 +56,7 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
 
   /**
    * Gets the return kind corresponding to specification `"ReturnValue"` when
-   * the supplied argument `arg`.
+   * supplied with the argument `arg`.
    *
    * Note that it is expected that the following equality holds:
    * ```
