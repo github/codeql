@@ -180,7 +180,8 @@ abstract class ItemNode extends Locatable {
     or
     preludeEdge(this, name, result) and not declares(this, _, name)
     or
-    builtinEdge(this, name, result)
+    this instanceof SourceFile and
+    builtin(name, result)
     or
     name = "super" and
     if this instanceof Module or this instanceof SourceFile
@@ -1425,8 +1426,7 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
 private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 pragma[nomagic]
-private predicate builtinEdge(SourceFile source, string name, ItemNode i) {
-  exists(source) and
+private predicate builtin(string name, ItemNode i) {
   exists(SourceFileItemNode builtins |
     builtins.getFile().getParentContainer() instanceof Builtins::BuiltinsFolder and
     i = builtins.getASuccessorRec(name)
