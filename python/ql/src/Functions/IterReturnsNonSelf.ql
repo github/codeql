@@ -12,7 +12,6 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 
 /** Holds if `f` is a method of the class `c`. */
