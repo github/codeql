@@ -1,10 +1,7 @@
 import cpp
+private import OpenSSLOperationBase
 
-abstract class EVP_Hash_Initializer extends Call {
-  Expr getContextArg() { result = this.(Call).getArgument(0) }
-
-  abstract Expr getAlgorithmArg();
-}
+abstract class EVP_Hash_Initializer extends EVPInitialize { }
 
 class EVP_DigestInit_Variant_Calls extends EVP_Hash_Initializer {
   EVP_DigestInit_Variant_Calls() {

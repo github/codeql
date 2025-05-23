@@ -5,6 +5,7 @@
 
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import OpenSSLOperationBase
 
 module EncValToInitEncArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr().getValue().toInt() in [0, 1] }
@@ -34,19 +35,12 @@ Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
 }
 
 // TODO: need to add key consumer
-abstract class EVP_Cipher_Initializer extends Call {
-  Expr getContextArg() { result = this.(Call).getArgument(0) }
+abstract class EVP_Cipher_Initializer extends EVPInitialize {
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 
-  Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
-
-  abstract Expr getKeyArg();
-
-  abstract Expr getIVArg();
-
-  //   abstract Crypto::CipherOperationSubtype getCipherOperationSubtype();
   abstract Expr getOperationSubtypeArg();
 
-  Crypto::KeyOperationSubtype getCipherOperationSubtype() {
+  override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     if this.(Call).getTarget().getName().toLowerCase().matches("%encrypt%")
     then result instanceof Crypto::TEncryptMode
     else
