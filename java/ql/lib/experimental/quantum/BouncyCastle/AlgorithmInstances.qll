@@ -9,11 +9,8 @@ abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCu
     Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, result)
   }
 
-  override string getKeySize() {
-    exists(int keySize |
-      Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), keySize, _) and
-      result = keySize.toString()
-    )
+  override int getKeySize() {
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
   }
 }
 
@@ -34,7 +31,7 @@ abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmI
     signatureNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), _, result)
   }
 
-  override string getKeySizeFixed() {
+  override int getKeySizeFixed() {
     signatureNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
   }
 
@@ -88,7 +85,7 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgori
     generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), _, result)
   }
 
-  override string getKeySizeFixed() {
+  override int getKeySizeFixed() {
     generatorNameToKeySizeAndAlgorithmMapping(this.getRawAlgorithmName(), result, _)
   }
 
@@ -136,25 +133,25 @@ private predicate typeNameToRawAlgorithmName(string typeName, string algorithmNa
 }
 
 private predicate signatureNameToKeySizeAndAlgorithmMapping(
-  string name, string keySize, Crypto::KeyOpAlg::Algorithm algorithm
+  string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
 ) {
   name = "ED25519" and
-  keySize = "256" and
+  keySize = 256 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
   or
   name = "ED448" and
-  keySize = "448" and
+  keySize = 448 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
 }
 
 private predicate generatorNameToKeySizeAndAlgorithmMapping(
-  string name, string keySize, Crypto::KeyOpAlg::Algorithm algorithm
+  string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
 ) {
   name = "ED25519" and
-  keySize = "256" and
+  keySize = 256 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
   or
   name = "ED448" and
-  keySize = "448" and
+  keySize = 448 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
 }

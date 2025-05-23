@@ -233,7 +233,7 @@ module Generators {
 
     override Crypto::KeyArtifactType getOutputKeyType() { result = super.getKeyType() }
 
-    override string getKeySizeFixed() {
+    override int getKeySizeFixed() {
       result = KeyGeneratorFlow::getNewFromUse(this, _, _).getKeySizeFixed()
     }
 
