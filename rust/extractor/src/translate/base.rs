@@ -333,7 +333,7 @@ impl<'a> Translator<'a> {
     ) {
         if self.macro_context_depth > 0 {
             // we are in an attribute macro, don't emit anything: we would be failing to expand any
-            // way as rust-analyser now only expands in the context of an expansion
+            // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
             return;
         }
         if let Some(expanded) = self
