@@ -1,0 +1,4 @@
+| Ed448SignAndVerify.java:21:47:21:80 | Key | CURVE25519 |
+| Ed448SignAndVerify.java:21:47:21:80 | Key | Ed448 |
+| Ed25519SignAndVerify.java:21:47:21:80 | Key | CURVE25519 |
+| Ed25519SignAndVerify.java:21:47:21:80 | Key | Ed25519 |
