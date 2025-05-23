@@ -22,7 +22,11 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
-  ReturnKind getStandardReturnValueKind() { result.(NormalReturnKind).getIndirectionIndex() = 0 }
+  ReturnKind getStandardReturnValueKind() { result = getReturnValueKind("") }
+
+  ReturnKind getReturnValueKind(string arg) {
+    arg = repeatStars(result.(NormalReturnKind).getIndirectionIndex())
+  }
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
