@@ -1579,6 +1579,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * Holds if this guard evaluating to `branch` controls the control-flow
        * branch edge from `bb1` to `bb2`. That is, following the edge from
        * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+       *
+       * This predicate differs from `hasBranchEdge` in that it also covers
+       * indirect guards, such as:
+       * ```
+       * b = guard;
+       * ...
+       * if (b) { ... }
+       * ```
        */
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
     }
