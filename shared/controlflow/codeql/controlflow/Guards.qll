@@ -234,6 +234,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Holds if this value represents `null`. */
     predicate isNullValue() { this = TValue(TValueNull(), true) }
 
+    /** Holds if this value represents `null` or non-`null` as indicated by `isNull`. */
+    predicate isNullness(boolean isNull) { this = TValue(TValueNull(), isNull) }
+
     /** Gets the integer that this value represents, if any. */
     int asIntValue() { this = TValue(TValueInt(result), true) }
 
@@ -320,17 +323,19 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     )
     or
-    exists(Case c |
+    exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
+    or
+    exceptionBranchPoint(bb1, _, bb2) and v = TException(true)
+  }
+
+  private predicate caseBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v, Expr switchExpr) {
+    exists(Case c | switchExpr = c.getSwitchExpr() |
       v = TCaseMatch(c, true) and
       c.matchEdge(bb1, bb2)
       or
       v = TCaseMatch(c, false) and
       c.nonMatchEdge(bb1, bb2)
     )
-    or
-    exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
-    or
-    exceptionBranchPoint(bb1, _, bb2) and v = TException(true)
   }
 
   pragma[nomagic]
@@ -362,12 +367,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
    */
   final class PreGuard extends ExprFinal {
     /**
-     * Holds if this guard is the last node in `bb1` and that its successor is
-     * `bb2` exactly when evaluating to `v`.
+     * Holds if this guard evaluating to `v` corresponds to taking the edge
+     * from `bb1` to `bb2`. For ordinary conditional branching this guard is
+     * the last node in `bb1`, but for switch case matching it is the switch
+     * expression, which may either be in `bb1` or an earlier basic block.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
       bb1.getLastNode() = this.getControlFlowNode() and
       branchEdge(bb1, bb2, v)
+      or
+      caseBranchEdge(bb1, bb2, v, this)
     }
 
     /**
@@ -457,6 +466,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       BasicBlock getBasicBlock();
 
       Expr getARead();
+
+      /** Gets a textual representation of this SSA definition. */
+      string toString();
+
+      /** Gets the location of this SSA definition. */
+      Location getLocation();
     }
 
     class SsaWriteDefinition extends SsaDefinition {
@@ -549,6 +564,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         other.getARead() = guard and
         eqtest.directlyControls(guard.getBasicBlock(), branch)
       )
+      or
+      // An expression `x = ...` can be considered as a read of `x`.
+      guard.(IdExpr).getEqualChildExpr() = def.(SsaWriteDefinition).getDefinition()
     }
 
     private predicate valueStep(Expr e1, Expr e2) {
@@ -649,7 +667,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       )
     }
 
-    private predicate impliesStep(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
+    private predicate impliesStep1(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
       baseImpliesStep(g1, v1, g2, v2)
       or
       exists(SsaDefinition def, Expr e |
@@ -689,7 +707,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         baseSsaValueCheck(def, ssaVal, g0, v0)
       |
-        impliesStep(g, v, g0, v0)
+        impliesStep1(g, v, g0, v0)
       )
     }
 
@@ -709,6 +727,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(SsaWriteDefinition def |
         exprHasValue(def.getDefinition(), v) and
         e = def.getARead()
+      )
+    }
+
+    private predicate impliesStep2(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
+      impliesStep1(g1, v1, g2, v2)
+      or
+      exists(Expr nonnull |
+        exprHasValue(nonnull, v2) and
+        eqtestHasOperands(g1, g2, nonnull, v1.asBooleanValue()) and
+        v2 = TValue(TValueNull(), false)
       )
     }
 
@@ -779,7 +807,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         or
         exists(Guard g0, GuardValue v0 |
           guardControls(g0, v0, tgtGuard, tgtVal) and
-          impliesStep(g0, v0, guard, v)
+          impliesStep2(g0, v0, guard, v)
         )
         or
         exists(Guard g0, GuardValue v0 |
@@ -816,6 +844,27 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       }
     }
 
+    private predicate booleanGuard(Guard guard, GuardValue val) {
+      exists(guard) and exists(val.asBooleanValue())
+    }
+
+    private module BooleanImplies = ImpliesTC<booleanGuard/2>;
+
+    /** INTERNAL: Don't use. */
+    predicate boolImplies(Guard g1, GuardValue v1, Guard g2, GuardValue v2) {
+      BooleanImplies::guardControls(g2, v2, g1, v1) and
+      g2 != g1
+    }
+
+    /**
+     * Holds if `guard` evaluating to `v` implies that `e` is guaranteed to be
+     * null if `isNull` is true, and non-null if `isNull` is false.
+     */
+    predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
+      impliesStep2(guard, v, e, TValue(TValueNull(), isNull)) or
+      additionalImpliesStep(guard, v, e, TValue(TValueNull(), isNull))
+    }
+
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)
     }
@@ -828,6 +877,30 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(Guard g0, GuardValue v0 |
         g0.hasValueBranchEdge(bb1, bb2, v0) and
         BranchImplies::guardControls(guard, v, g0, v0)
+      )
+    }
+
+    /**
+     * Holds if `def` evaluating to `v` controls the control-flow branch
+     * edge from `bb1` to `bb2`. That is, following the edge from `bb1` to
+     * `bb2` implies that `def` evaluated to `v`.
+     */
+    predicate ssaControlsBranchEdge(SsaDefinition def, BasicBlock bb1, BasicBlock bb2, GuardValue v) {
+      exists(Guard g0, GuardValue v0 |
+        g0.hasValueBranchEdge(bb1, bb2, v0) and
+        BranchImplies::ssaControls(def, v, g0, v0)
+      )
+    }
+
+    /**
+     * Holds if `def` evaluating to `v` controls the basic block `bb`.
+     * That is, execution of `bb` implies that `def` evaluated to `v`.
+     */
+    predicate ssaControls(SsaDefinition def, BasicBlock bb, GuardValue v) {
+      exists(BasicBlock guard, BasicBlock succ |
+        ssaControlsBranchEdge(def, guard, succ, v) and
+        dominatingEdge(guard, succ) and
+        succ.dominates(bb)
       )
     }
 
