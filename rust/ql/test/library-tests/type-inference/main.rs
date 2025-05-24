@@ -112,7 +112,7 @@ mod trait_impl {
         let a = x.trait_method(); // $ type=a:bool method=MyThing::trait_method
 
         let y = MyThing { field: false };
-        let b = MyTrait::trait_method(y); // $ type=b:bool MISSING: method=MyThing::trait_method
+        let b = MyTrait::trait_method(y); // $ type=b:bool method=MyThing::trait_method
     }
 }
 
