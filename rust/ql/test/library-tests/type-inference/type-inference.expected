@@ -1468,96 +1468,96 @@ inferType
 | main.rs:1150:15:1150:16 | &x |  | file://:0:0:0:0 | & |
 | main.rs:1150:15:1150:16 | &x | &T | main.rs:1126:5:1126:13 | S |
 | main.rs:1150:16:1150:16 | x |  | main.rs:1126:5:1126:13 | S |
-| main.rs:1164:43:1167:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:1164:43:1167:5 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1164:43:1167:5 | { ... } | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1164:43:1167:5 | { ... } | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1165:13:1165:13 | x |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1165:17:1165:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1165:17:1165:30 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1165:17:1165:30 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1165:17:1165:31 | TryExpr |  | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1165:28:1165:29 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1166:9:1166:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1166:9:1166:22 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1166:9:1166:22 | ...::Ok(...) | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1166:9:1166:22 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1166:20:1166:21 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1170:46:1174:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:1170:46:1174:5 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1170:46:1174:5 | { ... } | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1170:46:1174:5 | { ... } | T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1171:13:1171:13 | x |  | file://:0:0:0:0 | Result |
+| main.rs:1171:13:1171:13 | x |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1171:13:1171:13 | x | T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1171:17:1171:30 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1171:17:1171:30 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1171:17:1171:30 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1171:28:1171:29 | S1 |  | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1172:13:1172:13 | y |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1172:17:1172:17 | x |  | file://:0:0:0:0 | Result |
+| main.rs:1172:17:1172:17 | x |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1172:17:1172:17 | x | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1172:17:1172:18 | TryExpr |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1173:9:1173:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1173:9:1173:22 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1173:9:1173:22 | ...::Ok(...) | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1173:9:1173:22 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1173:20:1173:21 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1177:40:1182:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:1177:40:1182:5 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1177:40:1182:5 | { ... } | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1177:40:1182:5 | { ... } | T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1178:13:1178:13 | x |  | file://:0:0:0:0 | Result |
-| main.rs:1178:13:1178:13 | x | T | file://:0:0:0:0 | Result |
+| main.rs:1178:13:1178:13 | x |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
+| main.rs:1178:13:1178:13 | x | T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1178:13:1178:13 | x | T.T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1178:17:1178:42 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
-| main.rs:1178:17:1178:42 | ...::Ok(...) | T | file://:0:0:0:0 | Result |
+| main.rs:1178:17:1178:42 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
+| main.rs:1178:17:1178:42 | ...::Ok(...) | T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1178:17:1178:42 | ...::Ok(...) | T.T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1178:28:1178:41 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1178:28:1178:41 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1178:28:1178:41 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1178:39:1178:40 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1180:17:1180:17 | x |  | file://:0:0:0:0 | Result |
-| main.rs:1180:17:1180:17 | x | T | file://:0:0:0:0 | Result |
+| main.rs:1180:17:1180:17 | x |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
+| main.rs:1180:17:1180:17 | x | T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1180:17:1180:17 | x | T.T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1180:17:1180:18 | TryExpr |  | file://:0:0:0:0 | Result |
+| main.rs:1180:17:1180:18 | TryExpr |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1180:17:1180:18 | TryExpr | T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1180:17:1180:29 | ... .map(...) |  | file://:0:0:0:0 | Result |
-| main.rs:1181:9:1181:22 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1180:17:1180:29 | ... .map(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
+| main.rs:1181:9:1181:22 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1181:9:1181:22 | ...::Ok(...) | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1181:9:1181:22 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1181:20:1181:21 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1185:30:1185:34 | input |  | file://:0:0:0:0 | Result |
+| main.rs:1185:30:1185:34 | input |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1185:30:1185:34 | input | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1185:30:1185:34 | input | T | main.rs:1185:20:1185:27 | T |
-| main.rs:1185:69:1192:5 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:1185:69:1192:5 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1185:69:1192:5 | { ... } | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1185:69:1192:5 | { ... } | T | main.rs:1185:20:1185:27 | T |
 | main.rs:1186:13:1186:17 | value |  | main.rs:1185:20:1185:27 | T |
-| main.rs:1186:21:1186:25 | input |  | file://:0:0:0:0 | Result |
+| main.rs:1186:21:1186:25 | input |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1186:21:1186:25 | input | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1186:21:1186:25 | input | T | main.rs:1185:20:1185:27 | T |
 | main.rs:1186:21:1186:26 | TryExpr |  | main.rs:1185:20:1185:27 | T |
-| main.rs:1187:22:1187:38 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1187:22:1187:38 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1187:22:1187:38 | ...::Ok(...) | T | main.rs:1185:20:1185:27 | T |
-| main.rs:1187:22:1190:10 | ... .and_then(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1187:22:1190:10 | ... .and_then(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1187:33:1187:37 | value |  | main.rs:1185:20:1185:27 | T |
-| main.rs:1187:53:1190:9 | { ... } |  | file://:0:0:0:0 | Result |
+| main.rs:1187:53:1190:9 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1187:53:1190:9 | { ... } | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1188:22:1188:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
-| main.rs:1189:13:1189:34 | ...::Ok::<...>(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1189:13:1189:34 | ...::Ok::<...>(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1189:13:1189:34 | ...::Ok::<...>(...) | E | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1191:9:1191:23 | ...::Err(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1191:9:1191:23 | ...::Err(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1191:9:1191:23 | ...::Err(...) | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1191:9:1191:23 | ...::Err(...) | T | main.rs:1185:20:1185:27 | T |
 | main.rs:1191:21:1191:22 | S1 |  | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1195:37:1195:52 | try_same_error(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1195:37:1195:52 | try_same_error(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1195:37:1195:52 | try_same_error(...) | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1195:37:1195:52 | try_same_error(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1196:22:1196:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
-| main.rs:1199:37:1199:55 | try_convert_error(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1199:37:1199:55 | try_convert_error(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1199:37:1199:55 | try_convert_error(...) | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1199:37:1199:55 | try_convert_error(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1200:22:1200:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
-| main.rs:1203:37:1203:49 | try_chained(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1203:37:1203:49 | try_chained(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1203:37:1203:49 | try_chained(...) | E | main.rs:1160:5:1161:14 | S2 |
 | main.rs:1203:37:1203:49 | try_chained(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1204:22:1204:27 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
-| main.rs:1207:37:1207:63 | try_complex(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1207:37:1207:63 | try_complex(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1207:37:1207:63 | try_complex(...) | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1207:37:1207:63 | try_complex(...) | T | main.rs:1157:5:1158:14 | S1 |
-| main.rs:1207:49:1207:62 | ...::Ok(...) |  | file://:0:0:0:0 | Result |
+| main.rs:1207:49:1207:62 | ...::Ok(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | Result |
 | main.rs:1207:49:1207:62 | ...::Ok(...) | E | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1207:49:1207:62 | ...::Ok(...) | T | main.rs:1157:5:1158:14 | S1 |
 | main.rs:1207:60:1207:61 | S1 |  | main.rs:1157:5:1158:14 | S1 |

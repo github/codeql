@@ -1232,7 +1232,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 28
+      startline = 948
     )
   }
 

@@ -28,7 +28,7 @@ private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 /**
  * Gets a count of the total number of lines of code in the database.
  */
-int getLinesOfCode() { result = sum(File f | | f.getNumberOfLinesOfCode()) }
+int getLinesOfCode() { result = sum(File f | f.fromSource() | f.getNumberOfLinesOfCode()) }
 
 /**
  * Gets a count of the total number of lines of code from the source code directory in the database.
@@ -91,8 +91,7 @@ int getQuerySinksCount() { result = count(QuerySink s) }
 class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
-    this instanceof NamedCrate or
-    this.(AstNode).getParentNode*() = any(Crate c).getModule()
+    this instanceof NamedCrate
   }
 }
 
@@ -110,9 +109,11 @@ predicate elementStats(string key, int value) {
  * Gets summary statistics about extraction.
  */
 predicate extractionStats(string key, int value) {
-  key = "Extraction errors" and value = count(ExtractionError e)
+  key = "Extraction errors" and
+  value = count(ExtractionError e | not exists(e.getLocation()) or e.getLocation().fromSource())
   or
-  key = "Extraction warnings" and value = count(ExtractionWarning w)
+  key = "Extraction warnings" and
+  value = count(ExtractionWarning w | not exists(w.getLocation()) or w.getLocation().fromSource())
   or
   key = "Files extracted - total" and value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
@@ -134,11 +135,13 @@ predicate extractionStats(string key, int value) {
   or
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
   or
-  key = "Macro calls - total" and value = count(MacroCall mc)
+  key = "Macro calls - total" and value = count(MacroCall mc | mc.fromSource())
   or
-  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasMacroCallExpansion())
+  key = "Macro calls - resolved" and
+  value = count(MacroCall mc | mc.fromSource() and mc.hasMacroCallExpansion())
   or
-  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasMacroCallExpansion())
+  key = "Macro calls - unresolved" and
+  value = count(MacroCall mc | mc.fromSource() and not mc.hasMacroCallExpansion())
 }
 
 /**

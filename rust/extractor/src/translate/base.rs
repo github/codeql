@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -101,6 +101,11 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum SourceKind {
+    Source,
+    Library,
+}
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
@@ -110,6 +115,7 @@ pub struct Translator<'a> {
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
     resolve_paths: bool,
+    source_kind: SourceKind,
     macro_context_depth: usize,
 }
 
@@ -124,6 +130,7 @@ impl<'a> Translator<'a> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -133,6 +140,7 @@ impl<'a> Translator<'a> {
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
             resolve_paths: resolve_paths == ResolvePaths::Yes,
+            source_kind,
             macro_context_depth: 0,
         }
     }
@@ -212,6 +220,14 @@ impl<'a> Translator<'a> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        let severity = if self.source_kind == SourceKind::Library {
+            match severity {
+                DiagnosticSeverity::Error => DiagnosticSeverity::Info,
+                _ => DiagnosticSeverity::Debug,
+            }
+        } else {
+            severity
+        };
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
@@ -626,7 +642,7 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
@@ -634,6 +650,45 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
+        if self.source_kind == SourceKind::Library {
+            let syntax = item.syntax();
+            if syntax
+                .parent()
+                .and_then(Fn::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Const::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Static::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Param::cast)
+                .and_then(|x| x.pat())
+                .is_some_and(|pat| pat.syntax() == syntax)
+            {
+                return true;
+            }
+        }
+        false
     }
 
     pub(crate) fn extract_types_from_path_segment(
@@ -679,6 +734,10 @@ impl<'a> Translator<'a> {
     }
 
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
+        if self.source_kind == SourceKind::Library {
+            return;
+        }
         (|| {
             let semantics = self.semantics?;
             let file = semantics.hir_file_for(node.syntax());

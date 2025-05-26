@@ -36,8 +36,9 @@ impl Translator<'_> {
 
     pub(crate) fn emit_{{snake_case_name}}(&mut self, node: &ast::{{ast_name}}) -> Option<Label<generated::{{name}}>> {
         pre_emit!({{name}}, self, node);
-        {{#has_attrs}}
         if self.should_be_excluded(node) { return None; }
+        {{#has_attrs}}
+        if self.should_be_excluded_attrs(node) { return None; }
         {{/has_attrs}}
         {{#fields}}
         {{#predicate}}
