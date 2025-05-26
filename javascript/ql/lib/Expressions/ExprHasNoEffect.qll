@@ -130,6 +130,39 @@ predicate noSideEffects(Expr e) {
 }
 
 /**
+ * Holds if `e` contains a DOM property access in a context where it would
+ * be evaluated for side effects.
+ */
+predicate containsDomPropertyAccess(Expr e) {
+  isDomProperty(e.(PropAccess).getPropertyName())
+  or
+  exists(LogicalBinaryExpr logical | logical = e |
+    containsDomPropertyAccess(logical.getLeftOperand()) or
+    containsDomPropertyAccess(logical.getRightOperand())
+  )
+  or
+  exists(SeqExpr seq | seq = e | containsDomPropertyAccess(seq.getAnOperand()))
+  or
+  exists(ParExpr paren | paren = e | containsDomPropertyAccess(paren.getExpression()))
+  or
+  exists(ConditionalExpr cond | cond = e | containsDomPropertyAccess(cond.getCondition()))
+}
+
+/**
+ * Holds if `e` is an expression that might appear useless but contains
+ * DOM side effects that make it meaningful.
+ */
+predicate hasHiddenDomSideEffects(Expr e) {
+  (
+    e instanceof LogicalBinaryExpr or
+    e instanceof SeqExpr or
+    e instanceof ParExpr or
+    e instanceof BinaryExpr
+  ) and
+  containsDomPropertyAccess(e)
+}
+
+/**
  * Holds if the expression `e` should be reported as having no effect.
  */
 predicate hasNoEffect(Expr e) {
@@ -145,6 +178,7 @@ predicate hasNoEffect(Expr e) {
   not isDeclaration(e) and
   // exclude DOM properties, which sometimes have magical auto-update properties
   not isDomProperty(e.(PropAccess).getPropertyName()) and
+  not hasHiddenDomSideEffects(e) and
   // exclude xUnit.js annotations
   not e instanceof XUnitAnnotation and
   // exclude common patterns that are most likely intentional
