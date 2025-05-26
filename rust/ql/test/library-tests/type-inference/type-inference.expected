@@ -1,4 +1,6 @@
 testFailures
+| main.rs:1218:26:1218:53 | //... | Missing result: method=abs |
+| main.rs:1218:26:1218:53 | //... | Missing result: type=z:i32 |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
@@ -1568,9 +1570,7 @@ inferType
 | main.rs:1216:17:1216:17 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1217:17:1217:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1217:21:1217:21 | y |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
-| main.rs:1218:13:1218:13 | z |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1218:17:1218:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
-| main.rs:1218:17:1218:23 | x.abs() |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1219:13:1219:13 | c |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
 | main.rs:1219:17:1219:19 | 'c' |  | file:///BUILTINS/types.rs:6:1:7:16 | char |
 | main.rs:1220:13:1220:17 | hello |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
