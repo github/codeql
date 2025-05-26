@@ -106,13 +106,15 @@ signature module InputSig<LocationSig Location> {
 
   predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2);
 
-  class Expr {
-    /** Gets a textual representation of this expression. */
+  class AstNode {
+    /** Gets a textual representation of this AST node. */
     string toString();
 
-    /** Gets the location of this expression. */
+    /** Gets the location of this AST node. */
     Location getLocation();
+  }
 
+  class Expr extends AstNode {
     /** Gets the associated control flow node. */
     ControlFlowNode getControlFlowNode();
 
@@ -137,12 +139,7 @@ signature module InputSig<LocationSig Location> {
 
   class NonNullExpr extends Expr;
 
-  class Case {
-    /** Gets a textual representation of this switch case. */
-    string toString();
-
-    Location getLocation();
-
+  class Case extends AstNode {
     Expr getSwitchExpr();
 
     predicate isDefaultCase();
@@ -210,7 +207,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) or
-    TCaseMatch(Case c, Boolean match) or
     TException(Boolean throws)
 
   private class AbstractSingleValue extends TAbstractSingleValue {
@@ -233,17 +229,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * - null vs. not null
      * - true vs. false
      * - evaluating to a specific value vs. evaluating to any other value
-     * - matching a specific case vs. not matching that case
+     * - throwing an exception vs. not throwing an exception
      */
     GuardValue getDualValue() {
       exists(AbstractSingleValue val, boolean isVal |
         this = TValue(val, isVal) and
         result = TValue(val, isVal.booleanNot())
-      )
-      or
-      exists(Case c, boolean match |
-        this = TCaseMatch(c, match) and
-        result = TCaseMatch(c, match.booleanNot())
       )
       or
       exists(boolean throws |
@@ -278,19 +269,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         this = TValue(val, true) and result = val.toString()
         or
         this = TValue(val, false) and result = "not " + val.toString()
-      )
-      or
-      exists(Case c, boolean match, string s | this = TCaseMatch(c, match) |
-        (
-          exists(ConstantExpr ce | c.asConstantCase() = ce and s = ce.toString())
-          or
-          not exists(c.asConstantCase()) and s = c.toString()
-        ) and
-        (
-          match = true and result = "match " + s
-          or
-          match = false and result = "non-match " + s
-        )
       )
       or
       exists(boolean throws | this = TException(throws) |
@@ -349,14 +327,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     exceptionBranchPoint(bb1, _, bb2) and v = TException(true)
   }
 
-  private predicate caseBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v, Expr switchExpr) {
-    exists(Case c | switchExpr = c.getSwitchExpr() |
-      v = TCaseMatch(c, true) and
-      c.matchEdge(bb1, bb2)
-      or
-      v = TCaseMatch(c, false) and
-      c.nonMatchEdge(bb1, bb2)
-    )
+  private predicate caseBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v, Case c) {
+    v = TValue(TValueTrue(), true) and
+    c.matchEdge(bb1, bb2)
+    or
+    v = TValue(TValueTrue(), false) and
+    c.nonMatchEdge(bb1, bb2)
   }
 
   pragma[nomagic]
@@ -367,26 +343,22 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     eqtest.polarity() = polarity
   }
 
-  private predicate caseGuard(PreGuard g, Case c, Expr switchExpr) {
-    g.hasValueBranchEdge(_, _, TCaseMatch(c, _)) and
-    switchExpr = c.getSwitchExpr()
-  }
-
-  private predicate constcaseEquality(PreGuard g, Expr e1, ConstantExpr e2, GuardValue eqval) {
+  private predicate constcaseEquality(PreGuard g, Expr e1, ConstantExpr e2) {
     exists(Case c |
-      caseGuard(g, c, e1) and
-      c.asConstantCase() = e2 and
-      eqval = TCaseMatch(c, true)
+      g = c and
+      e1 = c.getSwitchExpr() and
+      e2 = c.asConstantCase()
     )
   }
 
-  final private class ExprFinal = Expr;
+  final private class FinalAstNode = AstNode;
 
   /**
    * A guard. This may be any expression whose value determines subsequent
-   * control flow.
+   * control flow. It may also be a switch case, which as a guard is considered
+   * to evaluate to either true or false depending on whether the case matches.
    */
-  final class PreGuard extends ExprFinal {
+  final class PreGuard extends FinalAstNode {
     /**
      * Holds if this guard evaluating to `v` corresponds to taking the edge
      * from `bb1` to `bb2`. For ordinary conditional branching this guard is
@@ -394,7 +366,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * expression, which may either be in `bb1` or an earlier basic block.
      */
     predicate hasValueBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v) {
-      bb1.getLastNode() = this.getControlFlowNode() and
+      bb1.getLastNode() = this.(Expr).getControlFlowNode() and
       branchEdge(bb1, bb2, v)
       or
       caseBranchEdge(bb1, bb2, v, this)
@@ -435,12 +407,23 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * Holds if this guard tests equality between `e1` and `e2` upon evaluating
      * to `eqval`.
      */
-    predicate isEquality(Expr e1, Expr e2, GuardValue eqval) {
-      eqtestHasOperands(this, e1, e2, eqval.asBooleanValue())
+    predicate isEquality(Expr e1, Expr e2, boolean eqval) {
+      eqtestHasOperands(this, e1, e2, eqval)
       or
-      constcaseEquality(this, e1, e2, eqval)
+      constcaseEquality(this, e1, e2) and eqval = true
       or
-      constcaseEquality(this, e2, e1, eqval)
+      constcaseEquality(this, e2, e1) and eqval = true
+    }
+
+    /**
+     * Gets the basic block of this guard. For expressions, this is the basic
+     * block of the expression itself, and for switch cases, this is the basic
+     * block of the expression being compared against the cases.
+     */
+    BasicBlock getBasicBlock() {
+      result = this.(Expr).getBasicBlock()
+      or
+      result = this.(Case).getSwitchExpr().getBasicBlock()
     }
   }
 
@@ -458,7 +441,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     g1.(NotExpr).getOperand() = g2 and v1.asBooleanValue().booleanNot() = v2.asBooleanValue()
     or
     exists(GuardValue eqval, ConstantExpr constant, GuardValue cv |
-      g1.isEquality(g2, constant, eqval) and
+      g1.isEquality(g2, constant, eqval.asBooleanValue()) and
       constantHasValue(constant, cv)
     |
       v1 = eqval and v2 = cv
@@ -471,13 +454,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       v2 = TValue(TValueNull(), false)
     )
     or
-    exists(Case c1, Case c2, Expr switchExpr |
-      caseGuard(g1, c1, switchExpr) and
-      v1 = TCaseMatch(c1, true) and
+    exists(Case c1, Expr switchExpr |
+      g1 = c1 and
       c1.isDefaultCase() and
-      caseGuard(g2, c2, switchExpr) and
-      v2 = TCaseMatch(c2, false) and
-      c1 != c2
+      c1.getSwitchExpr() = switchExpr and
+      v1.asBooleanValue() = true and
+      g2.(Case).getSwitchExpr() = switchExpr and
+      v2.asBooleanValue() = false and
+      g1 != g2
     )
   }
 
@@ -970,7 +954,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     module CustomGuard<CustomGuardInputSig CustomGuardInput> {
       private import CustomGuardInput
 
-      private class ReturnExpr extends ExprFinal {
+      final private class FinalExpr = Expr;
+
+      private class ReturnExpr extends FinalExpr {
         ReturnExpr() { any(BooleanMethod m).getAReturnExpr() = this }
 
         pragma[nomagic]
@@ -993,8 +979,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ) {
         exists(BooleanMethod m, SsaDefinition param |
           m.getAReturnExpr() = ret and
-          m.getParameter(ppos) = param and
-          not val instanceof TCaseMatch
+          m.getParameter(ppos) = param
         |
           exists(Guard g0, GuardValue v0 |
             g0.directlyValueControls(ret.getBasicBlock(), v0) and
