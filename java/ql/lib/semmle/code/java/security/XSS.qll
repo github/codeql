@@ -71,30 +71,25 @@ private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements Dat
       sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
     )
   }
+}
 
-  predicate observeDiffInformedIncrementalMode() {
-    // Since this configuration is for finding sinks to be used in a main
-    // data-flow configuration, this configuration should only restrict the
-    // sinks to be found if there are no main-configuration sources in the
-    // diff range. That's because if there is such a source, we need to
-    // report query results for it even with sinks outside the diff range.
-    exists(DataFlow::DiffInformedQuery q | not q.hasSourceInDiffRange())
-  }
-
-  // The sources are not exposed outside this file module, so we know the
-  // query will not select them.
-  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) {
+private module XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig implements
+  DataFlow::SecondaryConfig
+{
+  DataFlow::Node getPrimaryOfSecondaryNode(
+    DataFlow::IsSourceOrSink sourceOrSink, DataFlow::Node sink
+  ) {
+    sourceOrSink instanceof DataFlow::IsSink and
     // This code mirrors `DefaultXssSink()`.
-    exists(MethodCall ma | result = ma.getAnArgument().getLocation() |
+    exists(MethodCall ma | result.asExpr() = ma.getAnArgument() |
       sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
     )
   }
 }
 
 private module XssVulnerableWriterSourceToWritingMethodFlow =
-  TaintTracking::Global<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
+  TaintTracking::FindSinks<XssVulnerableWriterSourceToWritingMethodFlowConfig,
+    XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig>;
 
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {

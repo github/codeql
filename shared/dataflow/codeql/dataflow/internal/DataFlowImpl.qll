@@ -184,7 +184,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
     string toString() { result = "DataFlow::DiffInformedQuery" }
 
-    // TODO: how to wire this up? It overlaps with the data-flow configuration signature!
     Location getASelectedSourceLocation(Node source) { result = source.getLocation() }
 
     Location getASelectedSinkLocation(Node sink) { result = sink.getLocation() }
@@ -197,6 +196,90 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     pragma[nomagic]
     predicate hasSinkInDiffRange() {
       AlertFiltering::filterByLocation(this.getASelectedSinkLocation(_))
+    }
+  }
+
+  module MakePrimaryDiffInformed<FullStateConfigSig Config> implements FullStateConfigSig {
+    // Workaround for name clash
+    predicate accessPathLimit = Config::accessPathLimit/0;
+
+    import Config
+
+    predicate observeDiffInformedIncrementalMode() {
+      // Add to existing configuration to support composition of config transformers
+      Config::observeDiffInformedIncrementalMode()
+      or
+      exists(DiffInformedQueryImpl q)
+    }
+
+    Location getASelectedSourceLocation(Node source) {
+      result = Config::getASelectedSourceLocation(source)
+      or
+      exists(DiffInformedQueryImpl q | result = q.getASelectedSourceLocation(source))
+    }
+
+    Location getASelectedSinkLocation(Node sink) {
+      result = Config::getASelectedSinkLocation(sink)
+      or
+      exists(DiffInformedQueryImpl q | result = q.getASelectedSinkLocation(sink))
+    }
+  }
+
+  module SecondaryConfigHelpers {
+    newtype IsSourceOrSink =
+      IsSource() or
+      IsSink()
+
+    signature module SecondaryConfig {
+      /**
+       * Gets the source/sink node from the primary configuration that is
+       * informed by a given source/sink node from the secondary configuration.
+       * Whether the secondary node is a source or a sink is determined by
+       * `sourceOrSink`.
+       */
+      bindingset[sourceOrSink, secondaryNode]
+      Node getPrimaryOfSecondaryNode(IsSourceOrSink sourceOrSink, Node secondaryNode);
+    }
+  }
+
+  module MakeSinkFinder<FullStateConfigSig Config, SecondaryConfig SC> implements FullStateConfigSig
+  {
+    // Workaround for name clash
+    predicate accessPathLimit = Config::accessPathLimit/0;
+
+    import Config
+
+    predicate observeDiffInformedIncrementalMode() {
+      // Add to existing configuration to support composition of config transformers
+      Config::observeDiffInformedIncrementalMode()
+      or
+      // Because this configuration is for finding sinks to be used in a main
+      // data-flow configuration, this configuration should only restrict the
+      // sinks to be found if there are no main-configuration sources in the
+      // diff range. That's because if there is such a source, we need to
+      // report query results for it even with sinks outside the diff range.
+      //
+      // The `MakeSinkFinder` and `MakeSourceFinder` modules are separate
+      // because each can only call one of `hasSourceInDiffRange` or
+      // `hasSinkInDiffRange`. Otherwise it would look like a non-monotonic
+      // recursion.
+      exists(DiffInformedQuery q | not q.hasSourceInDiffRange())
+    }
+
+    Location getASelectedSourceLocation(Node source) {
+      result = Config::getASelectedSourceLocation(source)
+      or
+      exists(DiffInformedQueryImpl q, IsSource s |
+        result = q.getASelectedSourceLocation(SC::getPrimaryOfSecondaryNode(s, source))
+      )
+    }
+
+    Location getASelectedSinkLocation(Node sink) {
+      result = Config::getASelectedSinkLocation(sink)
+      or
+      exists(DiffInformedQueryImpl q, IsSink s |
+        result = q.getASelectedSinkLocation(SC::getPrimaryOfSecondaryNode(s, sink))
+      )
     }
   }
 

@@ -143,6 +143,61 @@ module TaintFlowMake<
     import Flow
   }
 
+  /**
+   * Constructs a global taint tracking computation.
+   */
+  module Primary<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::MakePrimaryDiffInformed<AddTaintDefaults<Config0>>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
+  module FindSinks<DataFlow::ConfigSig Config, DataFlow::SecondaryConfig SC> implements
+    DataFlow::GlobalFlowSig
+  {
+    private module Config0 implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::DefaultState<Config>
+      import Config
+
+      predicate isAdditionalFlowStep(
+        DataFlowLang::Node node1, DataFlowLang::Node node2, string model
+      ) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+    }
+
+    private module C implements DataFlowInternal::FullStateConfigSig {
+      import DataFlowInternal::MakeSinkFinder<AddTaintDefaults<Config0>, SC>
+    }
+
+    private module Stage1 = DataFlowInternalStage1::ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = DataFlowInternal::Impl<C, Stage1::Stage1NoState>;
+
+    import Flow
+  }
+
   signature int speculationLimitSig();
 
   private module AddSpeculativeTaintSteps<

@@ -691,6 +691,8 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
 
   class DiffInformedQuery = DiffInformedQueryImpl;
 
+  import SecondaryConfigHelpers
+
   /**
    * Constructs a global data flow computation.
    */
@@ -740,6 +742,33 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
     import Stage1::PartialFlow
 
     private module Flow = Impl<C, Stage1::Stage1WithState>;
+
+    import Flow
+  }
+
+  module Primary<ConfigSig Config> implements GlobalFlowSig {
+    private module Config0 implements FullStateConfigSig {
+      import DefaultState<Config>
+      import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = "Config"
+      }
+    }
+
+    private module C implements FullStateConfigSig {
+      import MakePrimaryDiffInformed<Config0>
+
+      predicate accessPathLimit = Config0::accessPathLimit/0;
+    }
+
+    private module Stage1 = ImplStage1<C>;
+
+    import Stage1::PartialFlow
+
+    private module Flow = Impl<C, Stage1::Stage1NoState>;
 
     import Flow
   }
