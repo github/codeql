@@ -44,10 +44,10 @@ private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
     sinkNode(this, ["html-injection", "js-injection"])
     or
-    exists(MethodCall ma |
-      ma.getMethod() instanceof WritingMethod and
-      XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
-      this.asExpr() = ma.getArgument(_)
+    exists(DataFlow::Node n |
+      XssVulnerableWriterSourceToWritingMethodFlow::flowTo(n) and
+      XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig::getPrimaryOfSecondaryNode(_, n) =
+        this
     )
   }
 }
@@ -80,9 +80,10 @@ private module XssVulnerableWriterSourceToWritingMethodFlowSecondaryConfig imple
     DataFlow::IsSourceOrSink sourceOrSink, DataFlow::Node sink
   ) {
     sourceOrSink instanceof DataFlow::IsSink and
-    // This code mirrors `DefaultXssSink()`.
-    exists(MethodCall ma | result.asExpr() = ma.getAnArgument() |
-      sink.asExpr() = ma.getQualifier() and ma.getMethod() instanceof WritingMethod
+    exists(MethodCall ma |
+      XssVulnerableWriterSourceToWritingMethodFlowConfig::isSink(sink) and
+      sink.asExpr() = ma.getQualifier() and
+      result.asExpr() = ma.getAnArgument()
     )
   }
 }
