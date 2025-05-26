@@ -1231,9 +1231,10 @@ private module Cached {
     f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
   }
 
-  private Function resolveMethodCallTargetFrom(MethodCall mc, boolean fromSource) {
+  /** Gets a method that the method call `mc` resolves to, if any. */
+  cached
+  Function resolveMethodCallTarget(MethodCall mc) {
     result = inferMethodCallTarget(mc) and
-    (if result.fromSource() then fromSource = true else fromSource = false) and
     (
       // prioritize inherent implementation methods first
       isInherentImplFunction(result)
@@ -1253,17 +1254,6 @@ private module Cached {
         )
       )
     )
-  }
-
-  /** Gets a method that the method call `mc` resolves to, if any. */
-  cached
-  Function resolveMethodCallTarget(MethodCall mc) {
-    // Functions in source code also gets extracted as library code, due to
-    // this duplication we prioritize functions from source code.
-    result = resolveMethodCallTargetFrom(mc, true)
-    or
-    not exists(resolveMethodCallTargetFrom(mc, true)) and
-    result = resolveMethodCallTargetFrom(mc, false)
   }
 
   pragma[inline]
