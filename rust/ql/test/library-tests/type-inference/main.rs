@@ -1630,6 +1630,46 @@ mod overloadable_operators {
     }
 }
 
+mod async_ {
+    use std::future::Future;
+
+    struct S1;
+
+    impl S1 {
+        pub fn f(self) {} // S1f
+    }
+
+    async fn f1() -> S1 {
+        S1
+    }
+
+    fn f2() -> impl Future<Output = S1> {
+        async {
+            S1
+        }
+    }
+
+    struct S2;
+
+    impl Future for S2 {
+        type Output = S1;
+
+        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+            std::task::Poll::Ready(S1)
+        }
+    }
+
+    fn f3() -> impl Future<Output = S1> {
+        S2
+    }
+
+    pub async fn f() {
+        f1().await.f(); // $ MISSING: method=S1f
+        f2().await.f(); // $ MISSING: method=S1f
+        f3().await.f(); // $ MISSING: method=S1f
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1649,4 +1689,5 @@ fn main() {
     try_expressions::f();
     builtins::f();
     operators::f();
+    async_::f();
 }
