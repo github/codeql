@@ -308,10 +308,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
                 Cardinality::Many => FieldType::List(ty.clone()),
             },
         };
-        result.push(FieldInfo {
-            name,
-            ty,
-        });
+        result.push(FieldInfo { name, ty });
     }
     for trait_ in &node.traits {
         match trait_.as_str() {
