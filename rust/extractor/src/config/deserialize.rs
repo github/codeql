@@ -47,11 +47,9 @@ impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
     fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
         Ok(value
             .split(['\n', ','])
-            .map(|s| {
-                match s.split_once('=') {
-                    Some((key, value)) => (key.to_owned(), Some(value.to_owned())),
-                    None => (s.to_owned(), None),
-                }
+            .map(|s| match s.split_once('=') {
+                Some((key, value)) => (key.to_owned(), Some(value.to_owned())),
+                None => (s.to_owned(), None),
             })
             .collect())
     }

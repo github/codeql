@@ -292,16 +292,14 @@ impl<'a> Translator<'a> {
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_call_id| {
-                semantics
-                    .db
-                    .parse_macro_expansion_error(macro_call_id)
-            })
+            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
                 let hir_file_id = semantics.hir_file_for(node.syntax());
-                if Some(err.span().anchor.file_id.file_id()) == hir_file_id.file_id().map(|f| f.file_id(semantics.db)) {
+                if Some(err.span().anchor.file_id.file_id())
+                    == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
+                {
                     let location = err.span().range
                         + semantics
                             .db
