@@ -9,7 +9,7 @@
 | Inconsistencies - Path resolution | 0 |
 | Inconsistencies - SSA | 0 |
 | Inconsistencies - data flow | 0 |
-| Lines of code extracted | 46 |
+| Lines of code extracted | 29 |
 | Lines of user code extracted | 29 |
 | Macro calls - resolved | 52 |
 | Macro calls - total | 53 |
