@@ -1618,7 +1618,26 @@ inferType
 | main.rs:1262:13:1262:17 | ... = ... |  | file://:0:0:0:0 | () |
 | main.rs:1262:17:1262:17 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1264:9:1264:9 | a |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
-| main.rs:1270:5:1270:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1271:5:1271:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1271:20:1271:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1271:41:1271:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1274:18:1274:21 | SelfParam |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1277:25:1279:5 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1278:9:1278:10 | S1 |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1281:41:1285:5 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1282:9:1284:9 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1283:13:1283:14 | S1 |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1292:17:1292:46 | SelfParam |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/pin.rs:934:1:1104:1 | Pin |
+| main.rs:1292:17:1292:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
+| main.rs:1292:17:1292:46 | SelfParam | Ptr.&T | main.rs:1287:5:1287:14 | S2 |
+| main.rs:1292:49:1292:51 | _cx |  | file://:0:0:0:0 | & |
+| main.rs:1292:49:1292:51 | _cx | &T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/task/wake.rs:214:1:232:1 | Context |
+| main.rs:1292:116:1294:9 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/task/poll.rs:6:1:28:1 | Poll |
+| main.rs:1292:116:1294:9 | { ... } | T | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1293:13:1293:38 | ...::Ready(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/task/poll.rs:6:1:28:1 | Poll |
+| main.rs:1293:13:1293:38 | ...::Ready(...) | T | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1293:36:1293:37 | S1 |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1297:41:1299:5 | { ... } |  | main.rs:1287:5:1287:14 | S2 |
+| main.rs:1298:9:1298:10 | S2 |  | main.rs:1287:5:1287:14 | S2 |
+| main.rs:1302:9:1302:12 | f1(...) |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1310:5:1310:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1311:5:1311:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1311:20:1311:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1311:41:1311:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
