@@ -11,11 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "dashmap",
+    name = "ra_ap_syntax",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor_ts__ra_ap_parser-0.0.281//:ra_ap_parser": "parser",
+        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -28,18 +32,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "inline",
-        "raw-api",
-    ],
     crate_root = "src/lib.rs",
-    edition = "2018",
+    edition = "2024",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=dashmap",
+        "crate-name=ra_ap_syntax",
         "manual",
         "noclippy",
         "norustfmt",
@@ -83,13 +83,18 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "6.1.0",
+    version = "0.0.281",
     deps = [
-        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
-        "@vendor_ts__crossbeam-utils-0.8.21//:crossbeam_utils",
-        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
-        "@vendor_ts__lock_api-0.4.12//:lock_api",
-        "@vendor_ts__once_cell-1.21.3//:once_cell",
-        "@vendor_ts__parking_lot_core-0.9.10//:parking_lot_core",
+        "@vendor_ts__either-1.15.0//:either",
+        "@vendor_ts__itertools-0.14.0//:itertools",
+        "@vendor_ts__ra_ap_parser-0.0.281//:ra_ap_parser",
+        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
+        "@vendor_ts__rowan-0.15.15//:rowan",
+        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
+        "@vendor_ts__rustc-literal-escaper-0.0.2//:rustc_literal_escaper",
+        "@vendor_ts__smol_str-0.3.2//:smol_str",
+        "@vendor_ts__tracing-0.1.41//:tracing",
+        "@vendor_ts__triomphe-0.1.14//:triomphe",
     ],
 )
+exports_files(["rust.ungram"])
