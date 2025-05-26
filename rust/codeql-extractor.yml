@@ -82,3 +82,11 @@ options:
     title: Skip path resolution
     description: >
       Skip path resolution. This is experimental, while we move path resolution from the extractor to the QL library.
+    type: string
+    pattern: "^(false|true)$"
+  extract_dependencies_as_source:
+    title: Extract dependencies as source code
+    description: >
+      Extract the full source code of dependencies instead of only extracting signatures.
+    type: string
+    pattern: "^(false|true)$"
