@@ -2374,8 +2374,27 @@ inferType
 | main.rs:1629:13:1629:20 | vec2_not |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1629:24:1629:26 | ! ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1629:25:1629:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1635:5:1635:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:5:1636:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:20:1636:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:41:1636:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1639:18:1639:21 | SelfParam |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1642:25:1644:5 | { ... } |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1643:9:1643:10 | S1 |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1646:41:1650:5 | { ... } |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1647:9:1649:9 | { ... } |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1648:13:1648:14 | S1 |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1657:17:1657:46 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
+| main.rs:1657:17:1657:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
+| main.rs:1657:17:1657:46 | SelfParam | Ptr.&T | main.rs:1652:5:1652:14 | S2 |
+| main.rs:1657:49:1657:51 | _cx |  | file://:0:0:0:0 | & |
+| main.rs:1657:49:1657:51 | _cx | &T | {EXTERNAL LOCATION} | Context |
+| main.rs:1657:116:1659:9 | { ... } |  | {EXTERNAL LOCATION} | Poll |
+| main.rs:1657:116:1659:9 | { ... } | T | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1658:13:1658:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
+| main.rs:1658:13:1658:38 | ...::Ready(...) | T | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1658:36:1658:37 | S1 |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1662:41:1664:5 | { ... } |  | main.rs:1652:5:1652:14 | S2 |
+| main.rs:1663:9:1663:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
+| main.rs:1667:9:1667:12 | f1(...) |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1675:5:1675:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1676:5:1676:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1676:20:1676:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1676:41:1676:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
 testFailures
