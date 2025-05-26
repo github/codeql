@@ -1,0 +1,4 @@
+---
+category: breaking
+---
+* Adjusted the Guards interface in the SSA data flow integration to distinguish `hasBranchEdge` from `controlsBranchEdge`. Any breakage can be fixed by implementing one with the other as a reasonable fallback solution.

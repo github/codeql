@@ -2,3 +2,4 @@ qltest_cargo_check: true
 qltest_dependencies:
     - log = { version = "0.4.25", features = ["kv"] }
     - simple_logger = { version = "5.0.0" }
+    - log_err = { version = "1.1.1" }

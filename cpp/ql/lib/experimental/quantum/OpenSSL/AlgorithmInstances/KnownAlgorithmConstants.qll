@@ -1,4 +1,5 @@
 import cpp
+import experimental.quantum.OpenSSL.GenericSourceCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
@@ -32,30 +33,20 @@ class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant 
 }
 
 class KnownOpenSSLPaddingAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
   KnownOpenSSLPaddingAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.matches("%PADDING")
+    exists(string algType |
+      resolveAlgorithmFromExpr(this, _, algType) and
+      algType.matches("%PADDING")
+    )
   }
 }
 
 class KnownOpenSSLBlockModeAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
-  KnownOpenSSLBlockModeAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.matches("%BLOCK_MODE")
-  }
+  KnownOpenSSLBlockModeAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "BLOCK_MODE") }
 }
 
 class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
-  KnownOpenSSLHashAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.matches("%HASH")
-  }
+  KnownOpenSSLHashAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "HASH") }
 
   int getExplicitDigestLength() {
     exists(string name |
@@ -68,11 +59,12 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
 
 class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
   KnownOpenSSLEllipticCurveAlgorithmConstant() {
-    exists(string algType |
-      resolveAlgorithmFromExpr(this, _, algType) and
-      algType.matches("ELLIPTIC_CURVE")
-    )
+    resolveAlgorithmFromExpr(this, _, "ELLIPTIC_CURVE")
   }
+}
+
+class KnownOpenSSLSignatureAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLSignatureAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "SIGNATURE") }
 }
 
 /**
@@ -101,10 +93,10 @@ predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
  * if `e` resolves to a known algorithm.
  * If this predicate does not hold, then `e` can be interpreted as being of `UNKNOWN` type.
  */
-predicate resolveAlgorithmFromLiteral(Literal e, string normalized, string algType) {
-  exists(int nid |
-    nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithmLiteral(_, nid, normalized, algType)
-  )
+predicate resolveAlgorithmFromLiteral(
+  OpenSSLGenericSourceCandidateLiteral e, string normalized, string algType
+) {
+  knownOpenSSLAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
   or
   exists(string name |
     name = resolveAlgorithmAlias(e.getValue()) and
@@ -120,30 +112,6 @@ string resolveAlgorithmAlias(string name) {
     or
     // or the name is itself a known algorithm
     knownOpenSSLAlgorithmLiteral(lower, _, _, _) and result = lower
-  )
-}
-
-private int getPossibleNidFromLiteral(Literal e) {
-  result = e.getValue().toInt() and
-  not e instanceof CharLiteral and
-  not e instanceof StringLiteral and
-  // ASSUMPTION, no negative numbers are allowed
-  // RATIONALE: this is a performance improvement to avoid having to trace every number
-  not exists(UnaryMinusExpr u | u.getOperand() = e) and
-  //  OPENSSL has a special macro for getting every line, ignore it
-  not exists(MacroInvocation mi | mi.getExpr() = e and mi.getMacroName() = "OPENSSL_LINE") and
-  // Filter out cases where an int is assigned into a pointer, e.g., char* x = NULL;
-  not exists(Assignment a |
-    a.getRValue() = e and a.getLValue().getType().getUnspecifiedType() instanceof PointerType
-  ) and
-  not exists(Initializer i |
-    i.getExpr() = e and
-    i.getDeclaration().getADeclarationEntry().getUnspecifiedType() instanceof PointerType
-  ) and
-  // Filter out cases where an int is returned into a pointer, e.g., return NULL;
-  not exists(ReturnStmt r |
-    r.getExpr() = e and
-    r.getEnclosingFunction().getType().getUnspecifiedType() instanceof PointerType
   )
 }
 
@@ -260,11 +228,6 @@ predicate defaultAliases(string target, string alias) {
   alias = "ssl3-sha1" and target = "sha1"
 }
 
-predicate tbd(string normalized, string algType) {
-  knownOpenSSLAlgorithmLiteral(_, _, normalized, algType) and
-  algType = "HASH"
-}
-
 /**
  * Enumeration of all known crypto algorithms for openSSL
  * `name` is all lower case (caller's must ensure they pass in lower case)
@@ -291,7 +254,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "ELLIPTIC_CURVE"
   or
+  name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "SIGNATURE"
+  or
   name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "SIGNATURE"
   or
   name = "md2" and nid = 3 and normalized = "MD2" and algType = "HASH"
   or
@@ -1712,7 +1679,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "x448" and nid = 1035 and normalized = "X448" and algType = "ELLIPTIC_CURVE"
   or
+  name = "x448" and nid = 1035 and normalized = "X448" and algType = "KEY_EXCHANGE"
+  or
   name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "KEY_EXCHANGE"
   or
   name = "authecdsa" and nid = 1047 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
