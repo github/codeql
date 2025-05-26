@@ -15,10 +15,14 @@ newtype TType =
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
+  TImplTraitType(int bounds) {
+    bounds = any(ImplTraitTypeRepr impl).getTypeBoundList().getNumberOfBounds()
+  } or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TRefTypeParameter() or
-  TSelfTypeParameter(Trait t)
+  TSelfTypeParameter(Trait t) or
+  TImplTraitTypeParameter(ImplTraitType t, int i) { i in [0 .. t.getNumberOfBounds() - 1] }
 
 /**
  * A type without type arguments.
@@ -115,6 +119,9 @@ class TraitType extends Type, TTrait {
 
   TraitType() { this = TTrait(trait) }
 
+  /** Gets the underlying trait. */
+  Trait getTrait() { result = trait }
+
   override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
@@ -172,6 +179,33 @@ class RefType extends Type, TRefType {
   }
 
   override string toString() { result = "&" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * An [`impl Trait`][1] type.
+ *
+ * We represent `impl Trait` types as generic types with as many type parameters
+ * as there are bounds.
+ *
+ * [1] https://doc.rust-lang.org/book/ch10-02-traits.html#traits-as-parameters
+ */
+class ImplTraitType extends Type, TImplTraitType {
+  private int bounds;
+
+  ImplTraitType() { this = TImplTraitType(bounds) }
+
+  /** Gets the number of bounds of this `impl Trait` type. */
+  int getNumberOfBounds() { result = bounds }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { result = TImplTraitTypeParameter(this, i) }
+
+  override string toString() { result = "impl Trait ..." }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -279,6 +313,26 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
   override string toString() { result = "Self [" + trait.toString() + "]" }
 
   override Location getLocation() { result = trait.getLocation() }
+}
+
+/**
+ *  An `impl Trait` type parameter.
+ */
+class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
+  private ImplTraitType implTraitType;
+  private int i;
+
+  ImplTraitTypeParameter() { this = TImplTraitTypeParameter(implTraitType, i) }
+
+  /** Gets the `impl Trait` type that this parameter belongs to. */
+  ImplTraitType getImplTraitType() { result = implTraitType }
+
+  /** Gets the index of this type parameter. */
+  int getIndex() { result = i }
+
+  override string toString() { result = "impl Trait<" + i.toString() + ">" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**

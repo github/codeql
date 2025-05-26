@@ -77,6 +77,16 @@ private module Input1 implements InputSig1<Location> {
     apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
   }
 
+  private int getImplTraitTypeParameterId(ImplTraitTypeParameter tp) {
+    tp =
+      rank[result](ImplTraitTypeParameter tp0, int bounds, int i |
+        bounds = tp0.getImplTraitType().getNumberOfBounds() and
+        i = tp0.getIndex()
+      |
+        tp0 order by bounds, i
+      )
+  }
+
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id |
@@ -90,6 +100,9 @@ private module Input1 implements InputSig1<Location> {
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
           node = tp0.(SelfTypeParameter).getTrait()
         )
+        or
+        kind = 2 and
+        id = getImplTraitTypeParameterId(tp0)
       |
         tp0 order by kind, id
       )
@@ -228,7 +241,11 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     or
     n1 = n2.(ParenExpr).getExpr()
     or
-    n1 = n2.(BlockExpr).getStmtList().getTailExpr()
+    n2 =
+      any(BlockExpr be |
+        not be.isAsync() and
+        n1 = be.getStmtList().getTailExpr()
+      )
     or
     n1 = n2.(IfExpr).getABranch()
     or
@@ -1010,6 +1027,29 @@ private StructType inferLiteralType(LiteralExpr le) {
   )
 }
 
+pragma[nomagic]
+private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
+  result.getTypeAlias() = any(FutureTrait ft).getOutputType()
+}
+
+pragma[nomagic]
+private Type inferAwaitExprType(AwaitExpr ae, TypePath path) {
+  exists(TypePath exprPath | result = inferType(ae.getExpr(), exprPath) |
+    exprPath
+        .isCons(TImplTraitTypeParameter(_, _),
+          any(TypePath path0 | path0.isCons(getFutureOutputTypeParameter(), path)))
+    or
+    path = exprPath and
+    not (
+      exprPath = TypePath::singleton(TImplTraitTypeParameter(_, _)) and
+      result.(TraitType).getTrait() instanceof FutureTrait
+    ) and
+    not exprPath
+        .isCons(TImplTraitTypeParameter(_, _),
+          any(TypePath path0 | path0.isCons(getFutureOutputTypeParameter(), _)))
+  )
+}
+
 private module MethodCall {
   /** An expression that calls a method. */
   abstract private class MethodCallImpl extends Expr {
@@ -1120,11 +1160,16 @@ private predicate methodCandidateTrait(Type type, Trait trait, string name, int 
 
 private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
   pragma[nomagic]
+  private predicate isMethodCall(MethodCall mc, Type rootType, string name, int arity) {
+    rootType = mc.getTypeAt(TypePath::nil()) and
+    name = mc.getMethodName() and
+    arity = mc.getArity()
+  }
+
+  pragma[nomagic]
   predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
     exists(Type rootType, string name, int arity |
-      rootType = mc.getTypeAt(TypePath::nil()) and
-      name = mc.getMethodName() and
-      arity = mc.getArity() and
+      isMethodCall(mc, rootType, name, arity) and
       constraint = impl.(ImplTypeAbstraction).getSelfTy()
     |
       methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
@@ -1161,6 +1206,12 @@ private Function getMethodFromImpl(MethodCall mc) {
   )
 }
 
+bindingset[trait, name]
+pragma[inline_late]
+private Function getTraitMethod(TraitType trait, string name) {
+  result = getMethodSuccessor(trait.getTrait(), name)
+}
+
 /**
  * Gets a method that the method call `mc` resolves to based on type inference,
  * if any.
@@ -1172,6 +1223,11 @@ private Function inferMethodCallTarget(MethodCall mc) {
   // The type of the receiver is a type parameter and the method comes from a
   // trait bound on the type parameter.
   result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+  or
+  // The type of the receiver is an `impl Trait` type.
+  result =
+    getTraitMethod(mc.getTypeAt(TypePath::singleton(TImplTraitTypeParameter(_, _))),
+      mc.getMethodName())
 }
 
 cached
@@ -1347,6 +1403,8 @@ private module Cached {
     or
     result = inferLiteralType(n) and
     path.isEmpty()
+    or
+    result = inferAwaitExprType(n, path)
   }
 }
 
@@ -1363,7 +1421,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 948
+      startline = 1334
     )
   }
 
