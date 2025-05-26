@@ -3327,6 +3327,11 @@ module Raw {
     Expr getBody() { const_bodies(this, result) }
 
     /**
+     * Gets the generic parameter list of this const, if it exists.
+     */
+    GenericParamList getGenericParamList() { const_generic_param_lists(this, result) }
+
+    /**
      * Holds if this const is const.
      */
     predicate isConst() { const_is_const(this) }
@@ -3350,6 +3355,11 @@ module Raw {
      * Gets the visibility of this const, if it exists.
      */
     Visibility getVisibility() { const_visibilities(this, result) }
+
+    /**
+     * Gets the where clause of this const, if it exists.
+     */
+    WhereClause getWhereClause() { const_where_clauses(this, result) }
   }
 
   /**
