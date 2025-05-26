@@ -1,4 +1,144 @@
 - description: Security-and-quality queries for JavaScript
 - queries: .
-- apply: security-and-quality-selectors.yml
-  from: codeql/suite-helpers
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision:
+    - high
+    - very-high
+    tags contain:
+    - security
+- include:
+    kind:
+    - problem
+    - path-problem
+    precision: medium
+    problem.severity:
+    - error
+    - warning
+    tags contain:
+    - security
+- include:
+    id:
+      - js/node/assignment-to-exports-variable
+      - js/node/missing-exports-qualifier
+      - js/angular/duplicate-dependency
+      - js/angular/missing-explicit-injection
+      - js/angular/dependency-injection-mismatch
+      - js/angular/incompatible-service
+      - js/angular/expression-in-url-attribute
+      - js/angular/repeated-dependency-injection
+      - js/regex/back-reference-to-negative-lookahead
+      - js/regex/unmatchable-dollar
+      - js/regex/empty-character-class
+      - js/regex/back-reference-before-group
+      - js/regex/unbound-back-reference
+      - js/regex/always-matches
+      - js/regex/unmatchable-caret
+      - js/regex/duplicate-in-character-class
+      - js/vue/arrow-method-on-vue-instance
+      - js/conditional-comment
+      - js/superfluous-trailing-arguments
+      - js/illegal-invocation
+      - js/invalid-prototype-value
+      - js/incomplete-object-initialization
+      - js/useless-type-test
+      - js/template-syntax-in-string-literal
+      - js/with-statement
+      - js/property-assignment-on-primitive
+      - js/deletion-of-non-property
+      - js/setter-return
+      - js/index-out-of-bounds
+      - js/unused-index-variable
+      - js/non-standard-language-feature
+      - js/syntax-error
+      - js/for-in-comprehension
+      - js/strict-mode-call-stack-introspection
+      - js/automatic-semicolon-insertion
+      - js/inconsistent-use-of-new
+      - js/non-linear-pattern
+      - js/yield-outside-generator
+      - js/mixed-static-instance-this-access
+      - js/arguments-redefinition
+      - js/nested-function-reference-in-default-parameter
+      - js/duplicate-parameter-name
+      - js/unreachable-method-overloads
+      - js/duplicate-variable-declaration
+      - js/function-declaration-conflict
+      - js/ineffective-parameter-type
+      - js/assignment-to-constant
+      - js/use-before-declaration
+      - js/suspicious-method-name-declaration
+      - js/overwritten-property
+      - js/useless-assignment-to-local
+      - js/useless-assignment-to-property
+      - js/variable-initialization-conflict
+      - js/variable-use-in-temporal-dead-zone
+      - js/missing-variable-declaration
+      - js/missing-this-qualifier
+      - js/unused-local-variable
+      - js/label-in-switch
+      - js/ignore-array-result
+      - js/inconsistent-loop-direction
+      - js/unreachable-statement
+      - js/trivial-conditional
+      - js/useless-comparison-test
+      - js/misleading-indentation-of-dangling-else
+      - js/use-of-returnless-function
+      - js/useless-assignment-in-return
+      - js/loop-iteration-skipped-due-to-shifting
+      - js/misleading-indentation-after-control-statement
+      - js/unused-loop-variable
+      - js/implicit-operand-conversion
+      - js/whitespace-contradicts-precedence
+      - js/missing-space-in-concatenation
+      - js/unbound-event-handler-receiver
+      - js/shift-out-of-range
+      - js/missing-dot-length-in-comparison
+      - js/redundant-operation
+      - js/comparison-with-nan
+      - js/duplicate-property
+      - js/unclear-operator-precedence
+      - js/unknown-directive
+      - js/string-instead-of-regex
+      - js/unneeded-defensive-code
+      - js/duplicate-switch-case
+      - js/duplicate-condition
+      - js/useless-expression
+      - js/redundant-assignment
+      - js/misspelled-variable-name
+      - js/call-to-non-callable
+      - js/missing-await
+      - js/comparison-between-incompatible-types
+      - js/property-access-on-non-object
+      - js/malformed-html-id
+      - js/eval-like-call
+      - js/duplicate-html-attribute
+      - js/react/unsupported-state-update-in-lifecycle-method
+      - js/react/unused-or-undefined-state-property
+      - js/react/direct-state-mutation
+      - js/react/inconsistent-state-update
+      - js/diagnostics/extraction-errors
+      - js/diagnostics/successfully-extracted-files
+      - js/summary/lines-of-code
+      - js/summary/lines-of-user-code
+- include:
+    kind:
+    - diagnostic
+- include:
+    kind:
+    - metric
+    tags contain:
+    - summary
+- exclude:
+    deprecated: //
+- exclude:
+    query path:
+      - /^experimental\/.*/
+      - Metrics/Summaries/FrameworkCoverage.ql
+      - /Diagnostics/Internal/.*/
+- exclude:
+    tags contain:
+      - modeleditor
+      - modelgenerator
