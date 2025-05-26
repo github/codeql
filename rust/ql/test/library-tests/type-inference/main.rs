@@ -1664,9 +1664,9 @@ mod async_ {
     }
 
     pub async fn f() {
-        f1().await.f(); // $ MISSING: method=S1f
-        f2().await.f(); // $ MISSING: method=S1f
-        f3().await.f(); // $ MISSING: method=S1f
+        f1().await.f(); // $ method=S1f
+        f2().await.f(); // $ method=S1f
+        f3().await.f(); // $ method=S1f
     }
 }
 
@@ -1696,8 +1696,8 @@ mod impl_trait {
 
     pub fn f() {
         let x = f1();
-        x.f1(); // $ MISSING: method=Trait1f1
-        x.f2(); // $ MISSING: method=Trait2f2
+        x.f1(); // $ method=Trait1f1
+        x.f2(); // $ method=Trait2f2
     }
 }
 
