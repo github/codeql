@@ -1,3 +1,11 @@
+| dom.js:2:5:2:30 | a.clien ... ientTop | This expression has no effect. |
+| dom.js:2:5:2:50 | a.clien ...  === !0 | This expression has no effect. |
+| dom.js:2:33:2:50 | a.clientTop === !0 | This expression has no effect. |
+| dom.js:3:5:3:20 | a && a.clientTop | This expression has no effect. |
+| dom.js:4:5:4:28 | a.clien ... ientTop | This expression has no effect. |
+| dom.js:5:18:5:43 | a.clien ... ientTop | This expression has no effect. |
+| dom.js:6:18:6:63 | b && (b ... entTop) | This expression has no effect. |
+| dom.js:6:23:6:63 | (b.clie ... entTop) | This expression has no effect. |
 | try.js:22:9:22:26 | x.ordinaryProperty | This expression has no effect. |
 | tst2.js:2:4:2:4 | 0 | This expression has no effect. |
 | tst.js:3:1:3:2 | 23 | This expression has no effect. |
