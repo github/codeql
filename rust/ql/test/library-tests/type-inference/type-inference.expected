@@ -1621,8 +1621,12 @@ inferType
 | main.rs:1274:18:1274:21 | SelfParam |  | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1277:25:1279:5 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1278:9:1278:10 | S1 |  | main.rs:1271:5:1271:14 | S1 |
-| main.rs:1281:41:1285:5 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
-| main.rs:1282:9:1284:9 | { ... } |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1281:41:1285:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1281:41:1285:5 | { ... } | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1281:41:1285:5 | { ... } | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1282:9:1284:9 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1282:9:1284:9 | { ... } | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1282:9:1284:9 | { ... } | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1283:13:1283:14 | S1 |  | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1292:17:1292:46 | SelfParam |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/pin.rs:934:1:1104:1 | Pin |
 | main.rs:1292:17:1292:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
@@ -1634,9 +1638,26 @@ inferType
 | main.rs:1293:13:1293:38 | ...::Ready(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/task/poll.rs:6:1:28:1 | Poll |
 | main.rs:1293:13:1293:38 | ...::Ready(...) | T | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1293:36:1293:37 | S1 |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1297:41:1299:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1297:41:1299:5 | { ... } |  | main.rs:1287:5:1287:14 | S2 |
+| main.rs:1297:41:1299:5 | { ... } | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1297:41:1299:5 | { ... } | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1298:9:1298:10 | S2 |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1298:9:1298:10 | S2 |  | main.rs:1287:5:1287:14 | S2 |
+| main.rs:1298:9:1298:10 | S2 | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1298:9:1298:10 | S2 | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1302:9:1302:12 | f1(...) |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1302:9:1302:18 | await ... |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1303:9:1303:12 | f2(...) |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1303:9:1303:12 | f2(...) | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1303:9:1303:12 | f2(...) | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1303:9:1303:18 | await ... |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1303:9:1303:18 | await ... |  | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1304:9:1304:12 | f3(...) |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1304:9:1304:12 | f3(...) | impl Trait<0> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1304:9:1304:12 | f3(...) | impl Trait<0>.Output | main.rs:1271:5:1271:14 | S1 |
+| main.rs:1304:9:1304:18 | await ... |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1304:9:1304:18 | await ... |  | main.rs:1271:5:1271:14 | S1 |
 | main.rs:1313:15:1313:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1313:15:1313:19 | SelfParam | &T | main.rs:1312:5:1314:5 | Self [trait Trait1] |
 | main.rs:1317:15:1317:19 | SelfParam |  | file://:0:0:0:0 | & |
@@ -1645,8 +1666,26 @@ inferType
 | main.rs:1321:15:1321:19 | SelfParam | &T | main.rs:1310:5:1310:14 | S1 |
 | main.rs:1325:15:1325:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1325:15:1325:19 | SelfParam | &T | main.rs:1310:5:1310:14 | S1 |
+| main.rs:1328:37:1330:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1328:37:1330:5 | { ... } |  | main.rs:1310:5:1310:14 | S1 |
+| main.rs:1328:37:1330:5 | { ... } | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1328:37:1330:5 | { ... } | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
+| main.rs:1329:9:1329:10 | S1 |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1329:9:1329:10 | S1 |  | main.rs:1310:5:1310:14 | S1 |
+| main.rs:1329:9:1329:10 | S1 | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1329:9:1329:10 | S1 | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
+| main.rs:1333:13:1333:13 | x |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1333:13:1333:13 | x | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1333:13:1333:13 | x | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
+| main.rs:1333:17:1333:20 | f1(...) |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1333:17:1333:20 | f1(...) | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1333:17:1333:20 | f1(...) | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
+| main.rs:1334:9:1334:9 | x |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1334:9:1334:9 | x | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1334:9:1334:9 | x | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
+| main.rs:1335:9:1335:9 | x |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1335:9:1335:9 | x | impl Trait<0> | main.rs:1312:5:1314:5 | trait Trait1 |
+| main.rs:1335:9:1335:9 | x | impl Trait<1> | main.rs:1316:5:1318:5 | trait Trait2 |
 | main.rs:1341:5:1341:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1342:5:1342:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1342:20:1342:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |

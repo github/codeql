@@ -49,3 +49,19 @@ class ResultEnum extends Enum {
   /** Gets the `Err` variant. */
   Variant getErr() { result = this.getVariant("Err") }
 }
+
+/**
+ * The [`Future` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/future/trait.Future.html
+ */
+class FutureTrait extends Trait {
+  FutureTrait() { this.getCanonicalPath() = "core::future::future::Future" }
+
+  /** Gets the `Output` associated type. */
+  pragma[nomagic]
+  TypeAlias getOutputType() {
+    result = this.getAssocItemList().getAnAssocItem() and
+    result.getName().getText() = "Output"
+  }
+}
