@@ -130,6 +130,20 @@ predicate noSideEffects(Expr e) {
 }
 
 /**
+ * Holds if `e` is a compound expression that may contain sub-expressions with side effects.
+ * We should not flag these directly as useless since we want to flag only the innermost
+ * expressions that actually have no effect.
+ */
+predicate isCompoundExpression(Expr e) {
+  e instanceof LogicalBinaryExpr
+  or
+  e instanceof SeqExpr
+  or
+  e instanceof ParExpr and
+  not e.stripParens() instanceof FunctionExpr
+}
+
+/**
  * Holds if the expression `e` should be reported as having no effect.
  */
 predicate hasNoEffect(Expr e) {
@@ -145,6 +159,7 @@ predicate hasNoEffect(Expr e) {
   not isDeclaration(e) and
   // exclude DOM properties, which sometimes have magical auto-update properties
   not isDomProperty(e.(PropAccess).getPropertyName()) and
+  not isCompoundExpression(e) and
   // exclude xUnit.js annotations
   not e instanceof XUnitAnnotation and
   // exclude common patterns that are most likely intentional
