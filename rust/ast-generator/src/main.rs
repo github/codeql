@@ -263,6 +263,7 @@ fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
         "Const" => vec![FieldInfo::body("body", "Expr")],
         "Static" => vec![FieldInfo::body("body", "Expr")],
+        "Param" => vec![FieldInfo::body("pat", "Pat")],
         "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
         "ArrayExpr" => vec![FieldInfo::predicate("is_semicolon")],
         "SelfParam" => vec![FieldInfo::predicate("is_amp")],
@@ -290,14 +291,12 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     result.extend(get_additional_fields(node));
 
     for field in &node.fields {
-        match (node.name.as_str(), field.method_name().as_str()) {
+        let name = field.method_name();
+        match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
             | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
+            | ("Param", "pat") // handled manually to use `body`
             => continue,
-            ("Param", "pat") => {
-                result.push(FieldInfo::body("pat", "Pat"));
-                continue;
-            },
             _ => {}
         }
         let ty = match field {
@@ -310,7 +309,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
             },
         };
         result.push(FieldInfo {
-            name: field.method_name(),
+            name,
             ty,
         });
     }
