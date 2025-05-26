@@ -6,6 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @tags quality
+ *       maintainability
+ *       error-handling
  *       frameworks/nodejs
  */
 
