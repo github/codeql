@@ -1084,7 +1084,7 @@ private predicate methodCandidate(Type type, string name, int arity, Impl impl) 
  */
 pragma[nomagic]
 private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
-  trait = resolvePath(impl.getTrait().(PathTypeRepr).getPath()) and
+  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
   methodCandidate(type, name, arity, impl)
 }
 
