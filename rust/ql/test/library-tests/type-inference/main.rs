@@ -90,6 +90,32 @@ mod method_impl {
     }
 }
 
+mod trait_impl {
+    #[derive(Debug)]
+    struct MyThing {
+        field: bool,
+    }
+
+    trait MyTrait<B> {
+        fn trait_method(self) -> B;
+    }
+
+    impl MyTrait<bool> for MyThing {
+        // MyThing::trait_method
+        fn trait_method(self) -> bool {
+            self.field // $ fieldof=MyThing
+        }
+    }
+
+    pub fn f() {
+        let x = MyThing { field: true };
+        let a = x.trait_method(); // $ type=a:bool method=MyThing::trait_method
+
+        let y = MyThing { field: false };
+        let b = MyTrait::trait_method(y); // $ type=b:bool method=MyThing::trait_method
+    }
+}
+
 mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {

@@ -48,10 +48,13 @@
 | main.rs:188:13:188:20 | a.add(...) | main.rs:169:5:172:5 | fn add |
 | main.rs:189:5:189:17 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:211:28:211:36 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:213:30:213:53 | ...::take_self(...) | main.rs:201:5:203:5 | fn take_self |
 | main.rs:214:5:214:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:217:28:217:37 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:218:30:218:55 | ...::take_second(...) | main.rs:205:5:207:5 | fn take_second |
 | main.rs:219:5:219:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:222:28:222:37 | source(...) | main.rs:1:1:3:1 | fn source |
+| main.rs:223:30:223:53 | ...::take_self(...) | main.rs:201:5:203:5 | fn take_self |
 | main.rs:224:5:224:11 | sink(...) | main.rs:5:1:7:1 | fn sink |
 | main.rs:228:13:228:21 | source(...) | main.rs:1:1:3:1 | fn source |
 | main.rs:229:5:229:11 | sink(...) | main.rs:5:1:7:1 | fn sink |

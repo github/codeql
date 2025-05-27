@@ -678,7 +678,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     Declaration getTarget() {
       result = CallExprImpl::getResolvedFunction(this)
       or
-      result = resolveMethodCallExpr(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
 
@@ -1000,6 +1000,150 @@ private StructType inferLiteralType(LiteralExpr le) {
   )
 }
 
+private module MethodCall {
+  /** An expression that calls a method. */
+  abstract private class MethodCallImpl extends Expr {
+    /** Gets the name of the method targeted. */
+    abstract string getMethodName();
+
+    /** Gets the number of arguments _excluding_ the `self` argument. */
+    abstract int getArity();
+
+    /** Gets the trait targeted by this method call, if any. */
+    Trait getTrait() { none() }
+
+    /** Gets the type of the receiver of the method call at `path`. */
+    abstract Type getTypeAt(TypePath path);
+  }
+
+  final class MethodCall = MethodCallImpl;
+
+  private class MethodCallExprMethodCall extends MethodCallImpl instanceof MethodCallExpr {
+    override string getMethodName() { result = super.getIdentifier().getText() }
+
+    override int getArity() { result = super.getArgList().getNumberOfArgs() }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) {
+      exists(TypePath path0 | result = inferType(super.getReceiver(), path0) |
+        path0.isCons(TRefTypeParameter(), path)
+        or
+        not path0.isCons(TRefTypeParameter(), _) and
+        not (path0.isEmpty() and result = TRefType()) and
+        path = path0
+      )
+    }
+  }
+
+  private class CallExprMethodCall extends MethodCallImpl instanceof CallExpr {
+    TraitItemNode trait;
+    string methodName;
+    Expr receiver;
+
+    CallExprMethodCall() {
+      receiver = this.getArgList().getArg(0) and
+      exists(Path path, Function f |
+        path = this.getFunction().(PathExpr).getPath() and
+        f = resolvePath(path) and
+        f.getParamList().hasSelfParam() and
+        trait = resolvePath(path.getQualifier()) and
+        trait.getAnAssocItem() = f and
+        path.getSegment().getIdentifier().getText() = methodName
+      )
+    }
+
+    override string getMethodName() { result = methodName }
+
+    override int getArity() { result = super.getArgList().getNumberOfArgs() - 1 }
+
+    override Trait getTrait() { result = trait }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) { result = inferType(receiver, path) }
+  }
+}
+
+import MethodCall
+
+/**
+ * Holds if a method for `type` with the name `name` and the arity `arity`
+ * exists in `impl`.
+ */
+private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
+  type = impl.getSelfTy().(TypeMention).resolveType() and
+  exists(Function f |
+    f = impl.(ImplItemNode).getASuccessor(name) and
+    f.getParamList().hasSelfParam() and
+    arity = f.getParamList().getNumberOfParams()
+  )
+}
+
+/**
+ * Holds if a method for `type` for `trait` with the name `name` and the arity
+ * `arity` exists in `impl`.
+ */
+pragma[nomagic]
+private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
+  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  methodCandidate(type, name, arity, impl)
+}
+
+private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+  pragma[nomagic]
+  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+    exists(Type rootType, string name, int arity |
+      rootType = mc.getTypeAt(TypePath::nil()) and
+      name = mc.getMethodName() and
+      arity = mc.getArity() and
+      constraint = impl.(ImplTypeAbstraction).getSelfTy()
+    |
+      methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
+      or
+      not exists(mc.getTrait()) and
+      methodCandidate(rootType, name, arity, impl)
+    )
+  }
+
+  predicate relevantTypeMention(TypeMention constraint) {
+    exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
+  }
+}
+
+bindingset[item, name]
+pragma[inline_late]
+private Function getMethodSuccessor(ItemNode item, string name) {
+  result = item.getASuccessor(name)
+}
+
+bindingset[tp, name]
+pragma[inline_late]
+private Function getTypeParameterMethod(TypeParameter tp, string name) {
+  result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
+  or
+  result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
+}
+
+/** Gets a method from an `impl` block that matches the method call `mc`. */
+private Function getMethodFromImpl(MethodCall mc) {
+  exists(Impl impl |
+    IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
+    result = getMethodSuccessor(impl, mc.getMethodName())
+  )
+}
+
+/**
+ * Gets a method that the method call `mc` resolves to based on type inference,
+ * if any.
+ */
+private Function inferMethodCallTarget(MethodCall mc) {
+  // The method comes from an `impl` block targeting the type of the receiver.
+  result = getMethodFromImpl(mc)
+  or
+  // The type of the receiver is a type parameter and the method comes from a
+  // trait bound on the type parameter.
+  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
+}
+
 cached
 private module Cached {
   private import codeql.rust.internal.CachedStages
@@ -1026,90 +1170,47 @@ private module Cached {
     )
   }
 
-  private class ReceiverExpr extends Expr {
-    MethodCallExpr mce;
-
-    ReceiverExpr() { mce.getReceiver() = this }
-
-    string getField() { result = mce.getIdentifier().getText() }
-
-    int getNumberOfArgs() { result = mce.getArgList().getNumberOfArgs() }
-
-    pragma[nomagic]
-    Type getTypeAt(TypePath path) {
-      exists(TypePath path0 | result = inferType(this, path0) |
-        path0.isCons(TRefTypeParameter(), path)
-        or
-        not path0.isCons(TRefTypeParameter(), _) and
-        not (path0.isEmpty() and result = TRefType()) and
-        path = path0
-      )
-    }
+  private predicate isInherentImplFunction(Function f) {
+    f = any(Impl impl | not impl.hasTrait()).(ImplItemNode).getAnAssocItem()
   }
 
-  /** Holds if a method for `type` with the name `name` and the arity `arity` exists in `impl`. */
-  pragma[nomagic]
-  private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
-    type = impl.getSelfTy().(TypeReprMention).resolveType() and
-    exists(Function f |
-      f = impl.(ImplItemNode).getASuccessor(name) and
-      f.getParamList().hasSelfParam() and
-      arity = f.getParamList().getNumberOfParams()
-    )
+  private predicate isTraitImplFunction(Function f) {
+    f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
   }
 
-  private module IsInstantiationOfInput implements IsInstantiationOfInputSig<ReceiverExpr> {
-    pragma[nomagic]
-    predicate potentialInstantiationOf(
-      ReceiverExpr receiver, TypeAbstraction impl, TypeMention constraint
-    ) {
-      methodCandidate(receiver.getTypeAt(TypePath::nil()), receiver.getField(),
-        receiver.getNumberOfArgs(), impl) and
-      constraint = impl.(ImplTypeAbstraction).getSelfTy()
-    }
-
-    predicate relevantTypeMention(TypeMention constraint) {
-      exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
-    }
-  }
-
-  bindingset[item, name]
-  pragma[inline_late]
-  private Function getMethodSuccessor(ItemNode item, string name) {
-    result = item.getASuccessor(name)
-  }
-
-  bindingset[tp, name]
-  pragma[inline_late]
-  private Function getTypeParameterMethod(TypeParameter tp, string name) {
-    result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
-    or
-    result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
-  }
-
-  /**
-   * Gets the method from an `impl` block with an implementing type that matches
-   * the type of `receiver` and with a name of the method call in which
-   * `receiver` occurs, if any.
-   */
-  private Function getMethodFromImpl(ReceiverExpr receiver) {
-    exists(Impl impl |
-      IsInstantiationOf<ReceiverExpr, IsInstantiationOfInput>::isInstantiationOf(receiver, impl, _) and
-      result = getMethodSuccessor(impl, receiver.getField())
-    )
-  }
-
-  /** Gets a method that the method call `mce` resolves to, if any. */
-  cached
-  Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(ReceiverExpr receiver | mce.getReceiver() = receiver |
-      // The method comes from an `impl` block targeting the type of `receiver`.
-      result = getMethodFromImpl(receiver)
+  private Function resolveMethodCallTargetFrom(MethodCall mc, boolean fromSource) {
+    result = inferMethodCallTarget(mc) and
+    (if result.fromSource() then fromSource = true else fromSource = false) and
+    (
+      // prioritize inherent implementation methods first
+      isInherentImplFunction(result)
       or
-      // The type of `receiver` is a type parameter and the method comes from a
-      // trait bound on the type parameter.
-      result = getTypeParameterMethod(receiver.getTypeAt(TypePath::nil()), receiver.getField())
+      not isInherentImplFunction(inferMethodCallTarget(mc)) and
+      (
+        // then trait implementation methods
+        isTraitImplFunction(result)
+        or
+        not isTraitImplFunction(inferMethodCallTarget(mc)) and
+        (
+          // then trait methods with default implementations
+          result.hasBody()
+          or
+          // and finally trait methods without default implementations
+          not inferMethodCallTarget(mc).hasBody()
+        )
+      )
     )
+  }
+
+  /** Gets a method that the method call `mc` resolves to, if any. */
+  cached
+  Function resolveMethodCallTarget(MethodCall mc) {
+    // Functions in source code also gets extracted as library code, due to
+    // this duplication we prioritize functions from source code.
+    result = resolveMethodCallTargetFrom(mc, true)
+    or
+    not exists(resolveMethodCallTargetFrom(mc, true)) and
+    result = resolveMethodCallTargetFrom(mc, false)
   }
 
   pragma[inline]
@@ -1243,6 +1344,6 @@ private module Debug {
 
   Function debugResolveMethodCallExpr(MethodCallExpr mce) {
     mce = getRelevantLocatable() and
-    result = resolveMethodCallExpr(mce)
+    result = resolveMethodCallTarget(mce)
   }
 }

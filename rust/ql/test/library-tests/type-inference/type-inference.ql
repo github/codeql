@@ -43,7 +43,7 @@ module ResolveTest implements TestSig {
       source.fromSource() and
       not source.isFromMacroExpansion()
     |
-      target = source.(MethodCallExpr).getStaticTarget() and
+      target = resolveMethodCallTarget(source) and
       functionHasValue(target, value) and
       tag = "method"
       or
