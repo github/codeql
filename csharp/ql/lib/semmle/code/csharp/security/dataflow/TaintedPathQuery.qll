@@ -64,10 +64,9 @@ private module TaintedPathConfig implements DataFlow::StateConfigSig {
     source instanceof Source and state = NotNormalized()
   }
 
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink instanceof Sink and
-    exists(state)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) { none() }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, FlowState s1, DataFlow::Node n2, FlowState s2) {
     any(PathNormalizationStep step).isAdditionalFlowStep(n1, n2) and
