@@ -61,14 +61,14 @@ public class TaintedPathHandler : IHttpHandler
         {
             File.ReadAllText(fullPath); // GOOD
         }
-        
+
         // This test ensures that we can flow through `Path.GetFullPath` and still get a result.
         ctx.Response.Write(File.ReadAllText(path)); // BAD
 
         string absolutePath = ctx.Request.MapPath("~MyTempFile");
         string fullPath2 = Path.Combine(absolutePath, path);
         if (fullPath2.StartsWith(absolutePath + Path.DirectorySeparatorChar)) {
-            File.ReadAllText(fullPath2); // GOOD [FALSE POSITIVE]
+            File.ReadAllText(fullPath2); // GOOD
         }
     }
 
