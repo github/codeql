@@ -22,6 +22,7 @@ extensions:
       - ["", "", False, "MapViewOfFileEx", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "MapViewOfFileFromApp", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "MapViewOfFileNuma2", "", "", "ReturnValue[*]", "local", "manual"]
+      # ntifs.h
       - ["", "", False, "NtReadFile", "", "", "Argument[*5]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
