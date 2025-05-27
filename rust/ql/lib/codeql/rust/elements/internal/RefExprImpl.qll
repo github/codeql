@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.RefExpr
+private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
 
 /**
  * INTERNAL: This module contains the customizable definition of `RefExpr` and should not
@@ -21,10 +22,14 @@ module Impl {
    *     let raw_mut: &mut i32 = &raw mut foo;
    * ```
    */
-  class RefExpr extends Generated::RefExpr {
+  class RefExpr extends Generated::RefExpr, OperationImpl::Operation {
     override string toStringImpl() {
       result = "&" + concat(int i | | this.getSpecPart(i), " " order by i)
     }
+
+    override string getOperatorName() { result = "&" }
+
+    override Expr getAnOperand() { result = this.getExpr() }
 
     private string getSpecPart(int index) {
       index = 0 and this.isRaw() and result = "raw"
