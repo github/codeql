@@ -244,7 +244,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     }
 
     /** Holds if this value represents `null`. */
-    predicate isNullValue() { this = TValue(TValueNull(), true) }
+    predicate isNullValue() { this.isNullness(true) }
+
+    /** Holds if this value represents non-`null`. */
+    predicate isNonNullValue() { this.isNullness(false) }
 
     /** Holds if this value represents `null` or non-`null` as indicated by `isNull`. */
     predicate isNullness(boolean isNull) { this = TValue(TValueNull(), isNull) }
@@ -292,13 +295,13 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private predicate constantHasValue(ConstantExpr c, GuardValue v) {
-    c.isNull() and v = TValue(TValueNull(), true)
+    c.isNull() and v.isNullValue()
     or
-    v = TValue(TValueTrue(), c.asBooleanValue())
+    v.asBooleanValue() = c.asBooleanValue()
     or
-    v = TValue(TValueInt(c.asIntegerValue()), true)
+    v.asIntValue() = c.asIntegerValue()
     or
-    v = TValue(TValueConstant(c.asConstantValue()), true)
+    v.asConstantValue() = c.asConstantValue()
   }
 
   private predicate exceptionBranchPoint(BasicBlock bb1, BasicBlock normalSucc, BasicBlock excSucc) {
@@ -328,10 +331,10 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private predicate caseBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v, Case c) {
-    v = TValue(TValueTrue(), true) and
+    v.asBooleanValue() = true and
     c.matchEdge(bb1, bb2)
     or
-    v = TValue(TValueTrue(), false) and
+    v.asBooleanValue() = false and
     c.nonMatchEdge(bb1, bb2)
   }
 
@@ -390,7 +393,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * `bb2` exactly when evaluating to `branch`.
      */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-      this.hasValueBranchEdge(bb1, bb2, TValue(TValueTrue(), branch))
+      this.hasValueBranchEdge(bb1, bb2, any(GuardValue gv | gv.asBooleanValue() = branch))
     }
 
     /**
@@ -400,7 +403,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * That is, `bb` is dominated by the `branch`-successor edge of this guard.
      */
     predicate directlyControls(BasicBlock bb, boolean branch) {
-      this.directlyValueControls(bb, TValue(TValueTrue(), branch))
+      this.directlyValueControls(bb, any(GuardValue gv | gv.asBooleanValue() = branch))
     }
 
     /**
@@ -434,9 +437,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   }
 
   private predicate baseImpliesStep(PreGuard g1, GuardValue v1, PreGuard g2, GuardValue v2) {
-    g1.(AndExpr).getAnOperand() = g2 and v1 = TValue(TValueTrue(), true) and v2 = v1
+    g1.(AndExpr).getAnOperand() = g2 and v1.asBooleanValue() = true and v2 = v1
     or
-    g1.(OrExpr).getAnOperand() = g2 and v1 = TValue(TValueTrue(), false) and v2 = v1
+    g1.(OrExpr).getAnOperand() = g2 and v1.asBooleanValue() = false and v2 = v1
     or
     g1.(NotExpr).getOperand() = g2 and v1.asBooleanValue().booleanNot() = v2.asBooleanValue()
     or
@@ -451,7 +454,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     or
     exists(NonNullExpr nonnull |
       eqtestHasOperands(g1, g2, nonnull, v1.asBooleanValue()) and
-      v2 = TValue(TValueNull(), false)
+      v2.isNonNullValue()
     )
     or
     exists(Case c1, Expr switchExpr |
@@ -700,7 +703,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       exists(boolean isNull |
         additionalNullCheck(g1, v1, g2, isNull) and
-        v2 = TValue(TValueNull(), isNull) and
+        v2.isNullness(isNull) and
         not (g2 instanceof NonNullExpr and isNull = false) // disregard trivial guard
       )
     }
@@ -723,7 +726,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     private predicate exprHasValue(Expr e, GuardValue v) {
       constantHasValue(e, v)
       or
-      e instanceof NonNullExpr and v = TValue(TValueNull(), false)
+      e instanceof NonNullExpr and v.isNonNullValue()
       or
       exprHasValue(e.(IdExpr).getEqualChildExpr(), v)
       or
@@ -745,7 +748,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(Expr nonnull |
         exprHasValue(nonnull, v2) and
         eqtestHasOperands(g1, g2, nonnull, v1.asBooleanValue()) and
-        v2 = TValue(TValueNull(), false)
+        v2.isNonNullValue()
       )
     }
 
@@ -763,7 +766,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         // g1 === g2 ? e : ...;
         // g1 === g2 ? ... : e;
         g2 = cond.getCondition() and
-        v2 = TValue(TValueTrue(), branch.booleanNot())
+        v2.asBooleanValue() = branch.booleanNot()
         or
         // g1 === ... ? g2 : e
         // g1 === ... ? e : g2
@@ -870,8 +873,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      * null if `isNull` is true, and non-null if `isNull` is false.
      */
     predicate nullGuard(Guard guard, GuardValue v, Expr e, boolean isNull) {
-      impliesStep2(guard, v, e, TValue(TValueNull(), isNull)) or
-      additionalImpliesStep(guard, v, e, TValue(TValueNull(), isNull))
+      impliesStep2(guard, v, e, any(GuardValue gv | gv.isNullness(isNull))) or
+      additionalImpliesStep(guard, v, e, any(GuardValue gv | gv.isNullness(isNull)))
     }
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
@@ -1066,7 +1069,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * also considers additional logical reasoning.
        */
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
-        this.valueControlsBranchEdge(bb1, bb2, TValue(TValueTrue(), branch))
+        this.valueControlsBranchEdge(bb1, bb2, any(GuardValue gv | gv.asBooleanValue() = branch))
       }
 
       /**
@@ -1078,7 +1081,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
        * also considers additional logical reasoning.
        */
       predicate controls(BasicBlock bb, boolean branch) {
-        this.valueControls(bb, TValue(TValueTrue(), branch))
+        this.valueControls(bb, any(GuardValue gv | gv.asBooleanValue() = branch))
       }
     }
   }
