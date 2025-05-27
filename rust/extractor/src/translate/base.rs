@@ -11,19 +11,27 @@ use ra_ap_hir::{
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::{ExpandResult, ExpandTo};
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
 };
 
 #[macro_export]
-macro_rules! emit_detached {
+macro_rules! pre_emit {
+    (Item, $self:ident, $node:ident) => {
+        $self.setup_item_expansion($node);
+    };
+    ($($_:tt)*) => {};
+}
+
+#[macro_export]
+macro_rules! post_emit {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
         $self.extract_macro_call_expanded($node, $label);
     };
@@ -93,6 +101,11 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum SourceKind {
+    Source,
+    Library,
+}
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
@@ -101,7 +114,9 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
-    resolve_paths: ResolvePaths,
+    resolve_paths: bool,
+    source_kind: SourceKind,
+    macro_context_depth: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -115,6 +130,7 @@ impl<'a> Translator<'a> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -123,7 +139,9 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths,
+            resolve_paths: resolve_paths == ResolvePaths::Yes,
+            source_kind,
+            macro_context_depth: 0,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -202,6 +220,14 @@ impl<'a> Translator<'a> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        let severity = if self.source_kind == SourceKind::Library {
+            match severity {
+                DiagnosticSeverity::Error => DiagnosticSeverity::Info,
+                _ => DiagnosticSeverity::Debug,
+            }
+        } else {
+            severity
+        };
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
@@ -321,6 +347,11 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
+        if self.macro_context_depth > 0 {
+            // we are in an attribute macro, don't emit anything: we would be failing to expand any
+            // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
+            return;
+        }
         if let Some(expanded) = self
             .semantics
             .as_ref()
@@ -521,7 +552,7 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -544,7 +575,7 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -567,7 +598,7 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -590,7 +621,7 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -611,7 +642,7 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
@@ -619,6 +650,45 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
+        if self.source_kind == SourceKind::Library {
+            let syntax = item.syntax();
+            if syntax
+                .parent()
+                .and_then(Fn::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Const::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Static::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Param::cast)
+                .and_then(|x| x.pat())
+                .is_some_and(|pat| pat.syntax() == syntax)
+            {
+                return true;
+            }
+        }
+        false
     }
 
     pub(crate) fn extract_types_from_path_segment(
@@ -653,9 +723,33 @@ impl<'a> Translator<'a> {
         }
     }
 
+    pub(crate) fn setup_item_expansion(&mut self, node: &ast::Item) {
+        if self.semantics.is_some_and(|s| {
+            let file = s.hir_file_for(node.syntax());
+            let node = InFile::new(file, node);
+            s.is_attr_macro_call(node)
+        }) {
+            self.macro_context_depth += 1;
+        }
+    }
+
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
+        if self.source_kind == SourceKind::Library {
+            return;
+        }
         (|| {
             let semantics = self.semantics?;
+            let file = semantics.hir_file_for(node.syntax());
+            let infile_node = InFile::new(file, node);
+            if !semantics.is_attr_macro_call(infile_node) {
+                return None;
+            }
+            self.macro_context_depth -= 1;
+            if self.macro_context_depth > 0 {
+                // only expand the outermost attribute macro
+                return None;
+            }
             let ExpandResult {
                 value: expanded, ..
             } = semantics.expand_attr_macro(node)?;

@@ -8,7 +8,7 @@ private import AlgToAVCFlow
 
 /**
  * Given a `KnownOpenSSLBlockModeAlgorithmConstant`, converts this to a block family type.
- * Does not bind if there is know mapping (no mapping to 'unknown' or 'other').
+ * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToBlockModeFamilyType(
   KnownOpenSSLBlockModeAlgorithmConstant e, Crypto::TBlockCipherModeOfOperationType type

@@ -1,2 +1,2 @@
-| type_value_exprs.swift:4:13:4:13 | TypeValueExpr | hasType: | yes | getTypeRepr: | type_value_exprs.swift:4:13:4:13 | (no string representation) |
-| type_value_exprs.swift:5:13:5:13 | TypeValueExpr | hasType: | yes | getTypeRepr: | type_value_exprs.swift:5:13:5:13 | (no string representation) |
+| type_value_exprs.swift:4:13:4:13 | TypeValueExpr | hasType: | yes | getTypeRepr: | type_value_exprs.swift:4:13:4:13 | N |
+| type_value_exprs.swift:5:13:5:13 | TypeValueExpr | hasType: | yes | getTypeRepr: | type_value_exprs.swift:5:13:5:13 | N |

@@ -23,24 +23,26 @@ class PackageJson extends JsonObject {
   string getDeclaredPackageName() { result = this.getPropStringValue("name") }
 
   /**
+   * Gets the nearest `package.json` file found in the parent directories, if any.
+   */
+  PackageJson getEnclosingPackage() {
+    result.getFolder() = packageInternalParent*(this.getFolder().getParentContainer())
+  }
+
+  /**
    * Gets the name of this package.
    * If the package is located under the package `pkg1` and its relative path is `foo/bar`, then the resulting package name will be `pkg1/foo/bar`.
    */
   string getPackageName() {
     result = this.getDeclaredPackageName()
     or
-    exists(
-      PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName,
-      string pkgNameDiff
-    |
-      currentDir = this.getJsonFile().getParentContainer() and
-      parentDir = parentPkg.getJsonFile().getParentContainer() and
-      parentPkgName = parentPkg.getPropStringValue("name") and
-      parentDir.getAChildContainer+() = currentDir and
-      pkgNameDiff = currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length()) and
-      not exists(pkgNameDiff.indexOf("/node_modules/")) and
-      result = parentPkgName + pkgNameDiff and
-      not parentPkg.isPrivate()
+    not exists(this.getDeclaredPackageName()) and
+    exists(PackageJson parent |
+      parent = this.getEnclosingPackage() and
+      not parent.isPrivate() and
+      result =
+        parent.getDeclaredPackageName() +
+          this.getFolder().getRelativePath().suffix(parent.getFolder().getRelativePath().length())
     )
   }
 
@@ -405,5 +407,6 @@ class NpmPackage extends @folder {
  */
 private Folder packageInternalParent(Container c) {
   result = c.getParentContainer() and
-  not c.(Folder).getBaseName() = "node_modules"
+  not c.(Folder).getBaseName() = "node_modules" and
+  not c = any(PackageJson pkg).getFolder()
 }

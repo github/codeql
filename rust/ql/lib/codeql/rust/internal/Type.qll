@@ -9,10 +9,10 @@ private import codeql.rust.elements.internal.generated.Synth
 
 cached
 newtype TType =
+  TUnit() or
   TStruct(Struct s) { Stages::TypeInferenceStage::ref() } or
   TEnum(Enum e) or
   TTrait(Trait t) or
-  TImpl(Impl i) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
   TTypeParamTypeParameter(TypeParam t) or
@@ -46,6 +46,21 @@ abstract class Type extends TType {
 
   /** Gets the location of this type. */
   abstract Location getLocation();
+}
+
+/** The unit type `()`. */
+class UnitType extends Type, TUnit {
+  UnitType() { this = TUnit() }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) { none() }
+
+  override string toString() { result = "()" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 abstract private class StructOrEnumType extends Type {
@@ -114,75 +129,6 @@ class TraitType extends Type, TTrait {
   override string toString() { result = trait.toString() }
 
   override Location getLocation() { result = trait.getLocation() }
-}
-
-/**
- * An `impl` block type.
- *
- * Although `impl` blocks are not really types, we treat them as such in order
- * to be able to match type parameters from structs (or enums) with type
- * parameters from `impl` blocks. For example, in
- *
- * ```rust
- * struct S<T1>(T1);
- *
- * impl<T2> S<T2> {
- *   fn id(self) -> S<T2> { self }
- * }
- *
- * let x : S(i64) = S(42);
- * x.id();
- * ```
- *
- * we pretend that the `impl` block is a base type mention of the struct `S`,
- * with type argument `T1`. This means that from knowing that `x` has type
- * `S(i64)`, we can first match `i64` with `T1`, and then by matching `T1` with
- * `T2`, we can match `i64` with `T2`.
- *
- * `impl` blocks can also have base type mentions, namely the trait that they
- * implement (if any). Example:
- *
- * ```rust
- * struct S<T1>(T1);
- *
- * trait Trait<T2> {
- *   fn f(self) -> T2;
- *
- *   fn g(self) -> T2 { self.f() }
- * }
- *
- * impl<T3> Trait<T3> for S<T3> { // `Trait<T3>` is a base type mention of this `impl` block
- *   fn f(self) -> T3 {
- *     match self {
- *       S(x) => x
- *     }
- *   }
- * }
- *
- * let x : S(i64) = S(42);
- * x.g();
- * ```
- *
- * In this case we can match `i64` with `T1`, `T1` with `T3`, and `T3` with `T2`,
- * allowing us match `i64` with `T2`, and hence infer that the return type of `g`
- * is `i64`.
- */
-class ImplType extends Type, TImpl {
-  private Impl impl;
-
-  ImplType() { this = TImpl(impl) }
-
-  override StructField getStructField(string name) { none() }
-
-  override TupleField getTupleField(int i) { none() }
-
-  override TypeParameter getTypeParameter(int i) {
-    result = TTypeParamTypeParameter(impl.getGenericParamList().getTypeParam(i))
-  }
-
-  override string toString() { result = impl.toString() }
-
-  override Location getLocation() { result = impl.getLocation() }
 }
 
 /**

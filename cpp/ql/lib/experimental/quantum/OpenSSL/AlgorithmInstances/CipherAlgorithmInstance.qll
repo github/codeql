@@ -11,7 +11,7 @@ private import BlockAlgorithmInstance
 
 /**
  * Given a `KnownOpenSSLCipherAlgorithmConstant`, converts this to a cipher family type.
- * Does not bind if there is know mapping (no mapping to 'unknown' or 'other').
+ * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToCipherFamilyType(
   KnownOpenSSLCipherAlgorithmConstant e, Crypto::KeyOpAlg::TAlgorithm type
@@ -104,11 +104,8 @@ class KnownOpenSSLCipherConstantAlgorithmInstance extends OpenSSLAlgorithmInstan
 
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
-  override string getKeySizeFixed() {
-    exists(int keySize |
-      this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = keySize and
-      result = keySize.toString()
-    )
+  override int getKeySizeFixed() {
+    this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = result
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {

@@ -7,6 +7,10 @@
 
 import codeql.rust.Diagnostics
 
-query predicate extractionError(ExtractionError ee) { any() }
+query predicate extractionError(ExtractionError ee) {
+  not exists(ee.getLocation()) or ee.getLocation().fromSource()
+}
 
-query predicate extractionWarning(ExtractionWarning ew) { any() }
+query predicate extractionWarning(ExtractionWarning ew) {
+  not exists(ew.getLocation()) or ew.getLocation().fromSource()
+}
