@@ -60,7 +60,6 @@ df = pd.read_sql_query("sql query", connection) # $getSql="sql query"
 df.query("query")  # $getCode="query"
 df.eval("query")  # $getCode="query"
 
-connection = sqlite3.connect("pets.db")
 df = pd.read_sql("sql query", connection) # $getSql="sql query"
 df.query("query")  # $getCode="query"
 df.eval("query")  # $getCode="query"
