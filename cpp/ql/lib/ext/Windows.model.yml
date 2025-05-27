@@ -14,6 +14,7 @@ extensions:
       # fileapi.h
       - ["", "", False, "ReadFile", "", "", "Argument[*1]", "local", "manual"]
       - ["", "", False, "ReadFileEx", "", "", "Argument[*1]", "local", "manual"]
+      # memoryapi.h
       - ["", "", False, "MapViewOfFile", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "MapViewOfFile2", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "MapViewOfFile3", "", "", "ReturnValue[*]", "local", "manual"]
