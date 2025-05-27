@@ -1670,6 +1670,37 @@ mod async_ {
     }
 }
 
+
+mod impl_trait {
+    struct S1;
+
+    trait Trait1 {
+        fn f1(&self) {} // Trait1f1
+    }
+
+    trait Trait2 {
+        fn f2(&self) {} // Trait2f2
+    }
+
+    impl Trait1 for S1 {
+        fn f1(&self) {} // S1f1
+    }
+
+    impl Trait2 for S1 {
+        fn f2(&self) {} // S1f2
+    }
+
+    fn f1() -> impl Trait1 + Trait2 {
+        S1
+    }
+
+    pub fn f() {
+        let x = f1();
+        x.f1(); // $ MISSING: method=Trait1f1
+        x.f2(); // $ MISSING: method=Trait2f2
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1690,4 +1721,5 @@ fn main() {
     builtins::f();
     operators::f();
     async_::f();
+    impl_trait::f();
 }

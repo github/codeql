@@ -2393,8 +2393,18 @@ inferType
 | main.rs:1662:41:1664:5 | { ... } |  | main.rs:1652:5:1652:14 | S2 |
 | main.rs:1663:9:1663:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
 | main.rs:1667:9:1667:12 | f1(...) |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1675:5:1675:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1676:5:1676:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1676:20:1676:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1676:41:1676:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1678:15:1678:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1678:15:1678:19 | SelfParam | &T | main.rs:1677:5:1679:5 | Self [trait Trait1] |
+| main.rs:1682:15:1682:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1682:15:1682:19 | SelfParam | &T | main.rs:1681:5:1683:5 | Self [trait Trait2] |
+| main.rs:1686:15:1686:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1686:15:1686:19 | SelfParam | &T | main.rs:1675:5:1675:14 | S1 |
+| main.rs:1690:15:1690:19 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1690:15:1690:19 | SelfParam | &T | main.rs:1675:5:1675:14 | S1 |
+| main.rs:1693:37:1695:5 | { ... } |  | main.rs:1675:5:1675:14 | S1 |
+| main.rs:1694:9:1694:10 | S1 |  | main.rs:1675:5:1675:14 | S1 |
+| main.rs:1706:5:1706:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1707:5:1707:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1707:20:1707:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1707:41:1707:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
 testFailures
