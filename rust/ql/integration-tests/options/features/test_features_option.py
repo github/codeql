@@ -35,7 +35,7 @@ def test_features(codeql, rust, features):
                                  ("default,bar", "all"),
                              )
                          ])
-def test_features_with_deault(codeql, rust, features):
+def test_features_with_default(codeql, rust, features):
     with open("Cargo.toml", "a") as f:
         print('default = ["foo"]', file=f)
     codeql.database.create(extractor_option=f"cargo_features={features}")
