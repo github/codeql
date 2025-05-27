@@ -31,3 +31,5 @@ extensions:
       # shellapi.h
       - ["", "", False, "CommandLineToArgvA", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
       - ["", "", False, "CommandLineToArgvW", "", "", "Argument[*0]", "ReturnValue[**]", "taint", "manual"]
+      # fileapi.h
+      - ["", "", False, "ReadFileEx", "", "", "Argument[*3].Field[@hEvent]", "Argument[4].Parameter[*2].Field[@hEvent]", "value", "manual"]

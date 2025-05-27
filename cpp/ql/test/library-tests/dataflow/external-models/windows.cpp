@@ -144,7 +144,7 @@ void FileIOCompletionRoutine2(
 ) {
   char* buffer = reinterpret_cast<char*>(lpOverlapped->hEvent);
   sink(buffer);
-  sink(*buffer); // $ MISSING: ir
+  sink(*buffer); // $ ir
 }
 
 void FileIOCompletionRoutine3(
@@ -153,7 +153,7 @@ void FileIOCompletionRoutine3(
   LPOVERLAPPED lpOverlapped
 ) {
   char c = reinterpret_cast<char>(lpOverlapped->hEvent);
-  sink(c); // $ MISSING: ir
+  sink(c); // $ ir
 }
 
 void readFile(HANDLE hFile) {

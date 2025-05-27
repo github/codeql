@@ -3771,3 +3771,7 @@
 | Dubious signature "(wchar_t *)" in summary model. |
 | Dubious signature "(wchar_t, const CStringT &)" in summary model. |
 | Dubious signature "(wchar_t,const CStringT &)" in summary model. |
+| Unrecognized input specification "Field[****hEvent]" in summary model. |
+| Unrecognized input specification "Field[***hEvent]" in summary model. |
+| Unrecognized output specification "Field[****hEvent]" in summary model. |
+| Unrecognized output specification "Field[***hEvent]" in summary model. |
