@@ -277,15 +277,10 @@ fn main() -> anyhow::Result<()> {
     } else {
         ResolvePaths::Yes
     };
-    let library_mode = if cfg.extract_dependencies_as_source {
-        SourceKind::Source
+    let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
+        (SourceKind::Source, resolve_paths)
     } else {
-        SourceKind::Library
-    };
-    let library_resolve_paths = if cfg.extract_dependencies_as_source {
-        resolve_paths
-    } else {
-        ResolvePaths::No
+        (SourceKind::Library, ResolvePaths::No)
     };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
