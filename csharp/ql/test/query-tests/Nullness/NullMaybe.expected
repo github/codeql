@@ -447,7 +447,6 @@ edges
 | E.cs:435:29:435:29 | SSA param(s) | E.cs:437:13:437:21 | [true] ... is ... |
 | E.cs:437:13:437:21 | [true] ... is ... | E.cs:439:13:439:13 | access to parameter s |
 | F.cs:7:16:7:23 | SSA def(o) | F.cs:8:9:8:9 | access to local variable o |
-| F.cs:13:17:13:24 | SSA def(o) | F.cs:14:9:14:9 | access to local variable o |
 | Forwarding.cs:7:16:7:23 | SSA def(s) | Forwarding.cs:9:13:9:30 | [false] !... |
 | Forwarding.cs:9:13:9:30 | [false] !... | Forwarding.cs:14:9:17:9 | if (...) ... |
 | Forwarding.cs:14:9:17:9 | if (...) ... | Forwarding.cs:19:9:22:9 | if (...) ... |
@@ -898,8 +897,6 @@ nodes
 | E.cs:439:13:439:13 | access to parameter s |
 | F.cs:7:16:7:23 | SSA def(o) |
 | F.cs:8:9:8:9 | access to local variable o |
-| F.cs:13:17:13:24 | SSA def(o) |
-| F.cs:14:9:14:9 | access to local variable o |
 | Forwarding.cs:7:16:7:23 | SSA def(s) |
 | Forwarding.cs:9:13:9:30 | [false] !... |
 | Forwarding.cs:14:9:17:9 | if (...) ... |
