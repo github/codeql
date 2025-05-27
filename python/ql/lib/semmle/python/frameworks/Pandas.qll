@@ -158,7 +158,9 @@ private module Pandas {
    * See https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html
    */
   class ReadSqlCall extends SqlExecution::Range, DataFlow::CallCfgNode {
-    ReadSqlCall() { this = API::moduleImport("pandas").getMember(["read_sql", "read_sql_query"]).getACall() }
+    ReadSqlCall() {
+      this = API::moduleImport("pandas").getMember(["read_sql", "read_sql_query"]).getACall()
+    }
 
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
   }
