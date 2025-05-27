@@ -63,7 +63,7 @@ public class TaintedPathHandler : IHttpHandler
         }
         
         // This test ensures that we can flow through `Path.GetFullPath` and still get a result.
-        ctx.Response.Write(File.ReadAllText(path)); // BAD [MISSING]
+        ctx.Response.Write(File.ReadAllText(path)); // BAD
     }
 
     public bool IsReusable
