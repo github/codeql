@@ -1,8 +1,8 @@
-use macros::repeat;
+use proc_macros::repeat;
 
 #[repeat(3)]
 fn foo() {
-    println!("Hello, world!");
+    _ = concat!("Hello ", "world!");
 
     #[repeat(2)]
     fn inner() {}
