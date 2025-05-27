@@ -11,6 +11,7 @@ extensions:
       - ["", "", False, "GetEnvironmentStringsW", "", "", "ReturnValue[*]", "local", "manual"]
       - ["", "", False, "GetEnvironmentVariableA", "", "", "Argument[*1]", "local", "manual"]
       - ["", "", False, "GetEnvironmentVariableW", "", "", "Argument[*1]", "local", "manual"]
+      # fileapi.h
       - ["", "", False, "ReadFile", "", "", "Argument[*1]", "local", "manual"]
       - ["", "", False, "ReadFileEx", "", "", "Argument[*1]", "local", "manual"]
       - ["", "", False, "MapViewOfFile", "", "", "ReturnValue[*]", "local", "manual"]
