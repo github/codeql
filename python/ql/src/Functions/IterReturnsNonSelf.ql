@@ -14,16 +14,11 @@
 import python
 import semmle.python.ApiGraphs
 
-/** Holds if `f` is a method of the class `c`. */
-private predicate methodOfClass(Function f, Class c) {
-  exists(FunctionDef d | d.getDefinedFunction() = f and d.getScope() = c)
-}
-
 /** Gets the __iter__ method of `c`. */
-Function iterMethod(Class c) { methodOfClass(result, c) and result.getName() = "__iter__" }
+Function iterMethod(Class c) { result = c.getAMethod() and result.getName() = "__iter__" }
 
 /** Gets the `__next__` method of `c`. */
-Function nextMethod(Class c) { methodOfClass(result, c) and result.getName() = "__next__" }
+Function nextMethod(Class c) { result = c.getAMethod() and result.getName() = "__next__" }
 
 /** Holds if `var` is a variable referring to the `self` parameter of `f`. */
 predicate isSelfVar(Function f, Name var) { var.getVariable() = f.getArg(0).(Name).getVariable() }
@@ -48,8 +43,6 @@ predicate returnsNonSelf(Function f) {
   exists(f.getFallthroughNode())
   or
   exists(Return r | r.getScope() = f and not isGoodReturn(f, r.getValue()))
-  or
-  exists(Return r | r.getScope() = f and not exists(r.getValue()))
 }
 
 /** Holds if `iter` and `next` methods are wrappers around some field. */
@@ -70,7 +63,8 @@ predicate iterWrapperMethods(Function iter, Function next) {
   )
 }
 
-DataFlow::CallCfgNode iterCall(DataFlow::Node arg) {
+/** Gets a call to `iter(arg)`, `arg.__iter__()`, or `arg` itself (which we assume may already be an iterator). */
+private DataFlow::CallCfgNode iterCall(DataFlow::Node arg) {
   result.(DataFlow::MethodCallNode).calls(arg, "__iter__")
   or
   result = API::builtin("iter").getACall() and
@@ -80,7 +74,8 @@ DataFlow::CallCfgNode iterCall(DataFlow::Node arg) {
   result = arg // assume the wrapping field is already an iterator
 }
 
-DataFlow::CallCfgNode nextCall(DataFlow::Node arg) {
+/** Gets a call to `next(arg)` or `arg.__next__()`. */
+private DataFlow::CallCfgNode nextCall(DataFlow::Node arg) {
   result.(DataFlow::MethodCallNode).calls(arg, "__next__")
   or
   result = API::builtin("next").getACall() and

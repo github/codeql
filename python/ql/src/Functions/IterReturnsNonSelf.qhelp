@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Iterator classes (classes defining a <code>__next__</code> method) should have an <code>__iter__</code> that returns the iterator itself.
+<p>Iterator classes (classes defining a <code>__next__</code> method) should have an <code>__iter__</code> method that returns the iterator itself.
 This ensures that the object is also an iterable; and behaves as expected when used anywhere an iterator or iterable is expected, such as in <code>for</code> loops.
 </p>
 
