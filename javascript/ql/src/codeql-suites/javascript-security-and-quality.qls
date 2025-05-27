@@ -136,9 +136,3 @@
 - exclude:
     query path:
       - /^experimental\/.*/
-      - Metrics/Summaries/FrameworkCoverage.ql
-      - /Diagnostics/Internal/.*/
-- exclude:
-    tags contain:
-      - modeleditor
-      - modelgenerator
