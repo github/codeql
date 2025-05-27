@@ -1314,6 +1314,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         getTypeParameterId(tp1) = getTypeParameterId(tp2) and
         tp1 != tp2
       }
+
+      query predicate illFormedTypeMention(TypeMention tm) {
+        not exists(tm.resolveTypeAt(TypePath::nil())) and exists(tm.getLocation())
+      }
     }
   }
 }

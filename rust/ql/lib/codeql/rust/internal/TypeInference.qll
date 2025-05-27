@@ -312,7 +312,7 @@ private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type 
 
 pragma[nomagic]
 private Type resolveImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
+  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 
 /** Gets the type at `path` of the implicitly typed `self` parameter. */
@@ -375,7 +375,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       // type of a field
-      exists(TypeReprMention tp |
+      exists(TypeMention tp |
         tp = this.getField(dpos.asFieldPos()).getTypeRepr() and
         result = tp.resolveTypeAt(path)
       )
@@ -535,7 +535,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int pos |
-        result = this.getTupleField(pos).getTypeRepr().(TypeReprMention).resolveTypeAt(path) and
+        result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
         dpos = TPositionalDeclarationPosition(pos, false)
       )
     }
@@ -558,7 +558,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int p |
-        result = this.getTupleField(p).getTypeRepr().(TypeReprMention).resolveTypeAt(path) and
+        result = this.getTupleField(p).getTypeRepr().(TypeMention).resolveTypeAt(path) and
         dpos = TPositionalDeclarationPosition(p, false)
       )
     }
@@ -606,7 +606,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     override Type getReturnType(TypePath path) {
-      result = this.getRetType().getTypeRepr().(TypeReprMention).resolveTypeAt(path)
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
     }
   }
 
@@ -644,7 +644,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
   class Access extends CallExprBase {
-    private TypeReprMention getMethodTypeArg(int i) {
+    private TypeMention getMethodTypeArg(int i) {
       result = this.(MethodCallExpr).getGenericArgList().getTypeArg(i)
     }
 
@@ -829,7 +829,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       )
       or
       dpos.isField() and
-      result = this.getTypeRepr().(TypeReprMention).resolveTypeAt(path)
+      result = this.getTypeRepr().(TypeMention).resolveTypeAt(path)
     }
   }
 
