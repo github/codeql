@@ -160,16 +160,20 @@ Class annotatedAsThreadSafe() { result.getAnAnnotation().getType().getName() = "
 
 /** Holds if the type `t` is thread-safe. */
 predicate isThreadSafeType(Type t) {
-  t.getName().matches(["Atomic%", "Concurrent%"])
+  t.getErasure().getName().matches(["Atomic%", "Concurrent%"])
   or
-  t.getName() in [
-      "CopyOnWriteArraySet", "BlockingQueue", "ThreadLocal",
-      // this is a method that returns a thread-safe version of the collection used as parameter
-      "synchronizedMap", "Executor", "ExecutorService", "CopyOnWriteArrayList",
-      "LinkedBlockingDeque", "LinkedBlockingQueue", "CompletableFuture"
-    ]
+  t.getErasure().getName() in ["ThreadLocal"]
+  or
+  // Anything in `java.itul.concurrent` is thread safe.
+  // See https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility
+  t.getTypeDescriptor().matches("Ljava/util/concurrent/%;")
   or
   t = annotatedAsThreadSafe()
+}
+
+/** Holds if the expression `e` is a thread-safe initializer. */
+predicate isThreadSafeInitializer(Expr e) {
+  e.(Call).getCallee().getQualifiedName().matches("java.util.Collections.synchronized%")
 }
 
 /**
@@ -185,6 +189,8 @@ class ExposedFieldAccess extends FieldAccess {
     // field is not thread-safe
     not isThreadSafeType(this.getField().getType()) and
     not isThreadSafeType(this.getField().getInitializer().getType()) and
+    // the initializer guarantees thread safety
+    not isThreadSafeInitializer(this.getField().getInitializer()) and
     // access is not the initializer of the field
     not this.(VarWrite).getASource() = this.getField().getInitializer() and
     // access not in a constructor
