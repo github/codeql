@@ -28,6 +28,12 @@ module Impl {
 
     override string getOperatorName() { result = Generated::BinaryExpr.super.getOperatorName() }
 
-    override Expr getAnOperand() { result = [this.getLhs(), this.getRhs()] }
+    override int getNumberOfOperands() { result = 2 }
+
+    override Expr getOperand(int n) {
+      n = 0 and result = this.getLhs()
+      or
+      n = 1 and result = this.getRhs()
+    }
   }
 }

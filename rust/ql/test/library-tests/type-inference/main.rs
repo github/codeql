@@ -770,7 +770,7 @@ mod method_supertraits {
         where
             Self: Sized,
         {
-            if 3 > 2 { // $ MISSING: method=gt
+            if 3 > 2 { // $ method=gt
                 self.m1() // $ method=MyTrait1::m1
             } else {
                 Self::m1(self)
@@ -784,7 +784,7 @@ mod method_supertraits {
         where
             Self: Sized,
         {
-            if 3 > 2 { // $ MISSING: method=gt
+            if 3 > 2 { // $ method=gt
                 self.m2().a // $ method=m2 $ fieldof=MyThing
             } else {
                 Self::m2(self).a // $ fieldof=MyThing
@@ -1027,7 +1027,7 @@ mod option_methods {
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
 
         #[rustfmt::skip]
-        let from_if = if 3 > 2 { // $ MISSING: method=gt
+        let from_if = if 3 > 2 { // $ method=gt
             MyOption::MyNone()
         } else {
             MyOption::MySome(S)
@@ -1035,7 +1035,7 @@ mod option_methods {
         println!("{:?}", from_if);
 
         #[rustfmt::skip]
-        let from_match = match 3 > 2 { // $ MISSING: method=gt
+        let from_match = match 3 > 2 { // $ method=gt
             true => MyOption::MyNone(),
             false => MyOption::MySome(S),
         };
@@ -1043,7 +1043,7 @@ mod option_methods {
 
         #[rustfmt::skip]
         let from_loop = loop {
-            if 3 > 2 { // $ MISSING: method=gt
+            if 3 > 2 { // $ method=gt
                 break MyOption::MyNone();
             }
             break MyOption::MySome(S);
@@ -1245,7 +1245,7 @@ mod builtins {
     pub fn f() {
         let x: i32 = 1; // $ type=x:i32
         let y = 2; // $ type=y:i32
-        let z = x + y; // $ MISSING: type=z:i32 method=add
+        let z = x + y; // $ type=z:i32 method=add
         let z = x.abs(); // $ method=abs $ type=z:i32
         let c = 'c'; // $ type=c:char
         let hello = "Hello"; // $ type=hello:str
@@ -1262,7 +1262,7 @@ mod operators {
         let y = true || false; // $ type=y:bool
 
         let mut a;
-        let cond = 34 == 33; // $ MISSING: method=eq
+        let cond = 34 == 33; // $ method=eq
         if cond {
             let z = (a = 1); // $ type=z:() type=a:i32
         } else {
@@ -1287,8 +1287,8 @@ mod overloadable_operators {
         // Vec2::add
         fn add(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x + rhs.x, // $ fieldof=Vec2 MISSING: method=add
-                y: self.y + rhs.y, // $ fieldof=Vec2 MISSING: method=add
+                x: self.x + rhs.x, // $ fieldof=Vec2 method=add
+                y: self.y + rhs.y, // $ fieldof=Vec2 method=add
             }
         }
     }
@@ -1296,8 +1296,8 @@ mod overloadable_operators {
         // Vec2::add_assign
         #[rustfmt::skip]
         fn add_assign(&mut self, rhs: Self) {
-            self.x += rhs.x; // $ fieldof=Vec2 MISSING: method=add_assign
-            self.y += rhs.y; // $ fieldof=Vec2 MISSING: method=add_assign
+            self.x += rhs.x; // $ fieldof=Vec2 method=add_assign
+            self.y += rhs.y; // $ fieldof=Vec2 method=add_assign
         }
     }
     impl Sub for Vec2 {
@@ -1305,8 +1305,8 @@ mod overloadable_operators {
         // Vec2::sub
         fn sub(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x - rhs.x, // $ fieldof=Vec2 MISSING: method=sub
-                y: self.y - rhs.y, // $ fieldof=Vec2 MISSING: method=sub
+                x: self.x - rhs.x, // $ fieldof=Vec2 method=sub
+                y: self.y - rhs.y, // $ fieldof=Vec2 method=sub
             }
         }
     }
@@ -1314,8 +1314,8 @@ mod overloadable_operators {
         // Vec2::sub_assign
         #[rustfmt::skip]
         fn sub_assign(&mut self, rhs: Self) {
-            self.x -= rhs.x; // $ fieldof=Vec2 MISSING: method=sub_assign
-            self.y -= rhs.y; // $ fieldof=Vec2 MISSING: method=sub_assign
+            self.x -= rhs.x; // $ fieldof=Vec2 method=sub_assign
+            self.y -= rhs.y; // $ fieldof=Vec2 method=sub_assign
         }
     }
     impl Mul for Vec2 {
@@ -1323,16 +1323,16 @@ mod overloadable_operators {
         // Vec2::mul
         fn mul(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x * rhs.x, // $ fieldof=Vec2 MISSING: method=mul
-                y: self.y * rhs.y, // $ fieldof=Vec2 MISSING: method=mul
+                x: self.x * rhs.x, // $ fieldof=Vec2 method=mul
+                y: self.y * rhs.y, // $ fieldof=Vec2 method=mul
             }
         }
     }
     impl MulAssign for Vec2 {
         // Vec2::mul_assign
         fn mul_assign(&mut self, rhs: Self) {
-            self.x *= rhs.x; // $ fieldof=Vec2 MISSING: method=mul_assign
-            self.y *= rhs.y; // $ fieldof=Vec2 MISSING: method=mul_assign
+            self.x *= rhs.x; // $ fieldof=Vec2 method=mul_assign
+            self.y *= rhs.y; // $ fieldof=Vec2 method=mul_assign
         }
     }
     impl Div for Vec2 {
@@ -1340,16 +1340,16 @@ mod overloadable_operators {
         // Vec2::div
         fn div(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x / rhs.x, // $ fieldof=Vec2 MISSING: method=div
-                y: self.y / rhs.y, // $ fieldof=Vec2 MISSING: method=div
+                x: self.x / rhs.x, // $ fieldof=Vec2 method=div
+                y: self.y / rhs.y, // $ fieldof=Vec2 method=div
             }
         }
     }
     impl DivAssign for Vec2 {
         // Vec2::div_assign
         fn div_assign(&mut self, rhs: Self) {
-            self.x /= rhs.x; // $ fieldof=Vec2 MISSING: method=div_assign
-            self.y /= rhs.y; // $ fieldof=Vec2 MISSING: method=div_assign
+            self.x /= rhs.x; // $ fieldof=Vec2 method=div_assign
+            self.y /= rhs.y; // $ fieldof=Vec2 method=div_assign
         }
     }
     impl Rem for Vec2 {
@@ -1357,16 +1357,16 @@ mod overloadable_operators {
         // Vec2::rem
         fn rem(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x % rhs.x, // $ fieldof=Vec2 MISSING: method=rem
-                y: self.y % rhs.y, // $ fieldof=Vec2 MISSING: method=rem
+                x: self.x % rhs.x, // $ fieldof=Vec2 method=rem
+                y: self.y % rhs.y, // $ fieldof=Vec2 method=rem
             }
         }
     }
     impl RemAssign for Vec2 {
         // Vec2::rem_assign
         fn rem_assign(&mut self, rhs: Self) {
-            self.x %= rhs.x; // $ fieldof=Vec2 MISSING: method=rem_assign
-            self.y %= rhs.y; // $ fieldof=Vec2 MISSING: method=rem_assign
+            self.x %= rhs.x; // $ fieldof=Vec2 method=rem_assign
+            self.y %= rhs.y; // $ fieldof=Vec2 method=rem_assign
         }
     }
     impl BitAnd for Vec2 {
@@ -1374,16 +1374,16 @@ mod overloadable_operators {
         // Vec2::bitand
         fn bitand(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x & rhs.x, // $ fieldof=Vec2 MISSING: method=bitand
-                y: self.y & rhs.y, // $ fieldof=Vec2 MISSING: method=bitand
+                x: self.x & rhs.x, // $ fieldof=Vec2 method=bitand
+                y: self.y & rhs.y, // $ fieldof=Vec2 method=bitand
             }
         }
     }
     impl BitAndAssign for Vec2 {
         // Vec2::bitand_assign
         fn bitand_assign(&mut self, rhs: Self) {
-            self.x &= rhs.x; // $ fieldof=Vec2 MISSING: method=bitand_assign
-            self.y &= rhs.y; // $ fieldof=Vec2 MISSING: method=bitand_assign
+            self.x &= rhs.x; // $ fieldof=Vec2 method=bitand_assign
+            self.y &= rhs.y; // $ fieldof=Vec2 method=bitand_assign
         }
     }
     impl BitOr for Vec2 {
@@ -1391,16 +1391,16 @@ mod overloadable_operators {
         // Vec2::bitor
         fn bitor(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x | rhs.x, // $ fieldof=Vec2 MISSING: method=bitor
-                y: self.y | rhs.y, // $ fieldof=Vec2 MISSING: method=bitor
+                x: self.x | rhs.x, // $ fieldof=Vec2 method=bitor
+                y: self.y | rhs.y, // $ fieldof=Vec2 method=bitor
             }
         }
     }
     impl BitOrAssign for Vec2 {
         // Vec2::bitor_assign
         fn bitor_assign(&mut self, rhs: Self) {
-            self.x |= rhs.x; // $ fieldof=Vec2 MISSING: method=bitor_assign
-            self.y |= rhs.y; // $ fieldof=Vec2 MISSING: method=bitor_assign
+            self.x |= rhs.x; // $ fieldof=Vec2 method=bitor_assign
+            self.y |= rhs.y; // $ fieldof=Vec2 method=bitor_assign
         }
     }
     impl BitXor for Vec2 {
@@ -1408,16 +1408,16 @@ mod overloadable_operators {
         // Vec2::bitxor
         fn bitxor(self, rhs: Self) -> Self {
             Vec2 {
-                x: self.x ^ rhs.x, // $ fieldof=Vec2 MISSING: method=bitxor
-                y: self.y ^ rhs.y, // $ fieldof=Vec2 MISSING: method=bitxor
+                x: self.x ^ rhs.x, // $ fieldof=Vec2 method=bitxor
+                y: self.y ^ rhs.y, // $ fieldof=Vec2 method=bitxor
             }
         }
     }
     impl BitXorAssign for Vec2 {
         // Vec2::bitxor_assign
         fn bitxor_assign(&mut self, rhs: Self) {
-            self.x ^= rhs.x; // $ fieldof=Vec2 MISSING: method=bitxor_assign
-            self.y ^= rhs.y; // $ fieldof=Vec2 MISSING: method=bitxor_assign
+            self.x ^= rhs.x; // $ fieldof=Vec2 method=bitxor_assign
+            self.y ^= rhs.y; // $ fieldof=Vec2 method=bitxor_assign
         }
     }
     impl Shl<u32> for Vec2 {
@@ -1425,16 +1425,16 @@ mod overloadable_operators {
         // Vec2::shl
         fn shl(self, rhs: u32) -> Self {
             Vec2 {
-                x: self.x << rhs, // $ fieldof=Vec2 MISSING: method=shl
-                y: self.y << rhs, // $ fieldof=Vec2 MISSING: method=shl
+                x: self.x << rhs, // $ fieldof=Vec2 method=shl
+                y: self.y << rhs, // $ fieldof=Vec2 method=shl
             }
         }
     }
     impl ShlAssign<u32> for Vec2 {
         // Vec2::shl_assign
         fn shl_assign(&mut self, rhs: u32) {
-            self.x <<= rhs; // $ fieldof=Vec2 MISSING: method=shl_assign
-            self.y <<= rhs; // $ fieldof=Vec2 MISSING: method=shl_assign
+            self.x <<= rhs; // $ fieldof=Vec2 method=shl_assign
+            self.y <<= rhs; // $ fieldof=Vec2 method=shl_assign
         }
     }
     impl Shr<u32> for Vec2 {
@@ -1442,16 +1442,16 @@ mod overloadable_operators {
         // Vec2::shr
         fn shr(self, rhs: u32) -> Self {
             Vec2 {
-                x: self.x >> rhs, // $ fieldof=Vec2 MISSING: method=shr
-                y: self.y >> rhs, // $ fieldof=Vec2 MISSING: method=shr
+                x: self.x >> rhs, // $ fieldof=Vec2 method=shr
+                y: self.y >> rhs, // $ fieldof=Vec2 method=shr
             }
         }
     }
     impl ShrAssign<u32> for Vec2 {
         // Vec2::shr_assign
         fn shr_assign(&mut self, rhs: u32) {
-            self.x >>= rhs; // $ fieldof=Vec2 MISSING: method=shr_assign
-            self.y >>= rhs; // $ fieldof=Vec2 MISSING: method=shr_assign
+            self.x >>= rhs; // $ fieldof=Vec2 method=shr_assign
+            self.y >>= rhs; // $ fieldof=Vec2 method=shr_assign
         }
     }
     impl Neg for Vec2 {
@@ -1459,8 +1459,8 @@ mod overloadable_operators {
         // Vec2::neg
         fn neg(self) -> Self {
             Vec2 {
-                x: -self.x, // $ fieldof=Vec2 MISSING: method=neg
-                y: -self.y, // $ fieldof=Vec2 MISSING: method=neg
+                x: -self.x, // $ fieldof=Vec2 method=neg
+                y: -self.y, // $ fieldof=Vec2 method=neg
             }
         }
     }
@@ -1469,164 +1469,164 @@ mod overloadable_operators {
         // Vec2::not
         fn not(self) -> Self {
             Vec2 {
-                x: !self.x, // $ fieldof=Vec2 MISSING: method=not
-                y: !self.y, // $ fieldof=Vec2 MISSING: method=not
+                x: !self.x, // $ fieldof=Vec2 method=not
+                y: !self.y, // $ fieldof=Vec2 method=not
             }
         }
     }
     impl PartialEq for Vec2 {
         // Vec2::eq
         fn eq(&self, other: &Self) -> bool {
-            self.x == other.x && self.y == other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=eq
+            self.x == other.x && self.y == other.y // $ fieldof=Vec2 method=eq
         }
         // Vec2::ne
         fn ne(&self, other: &Self) -> bool {
-            self.x != other.x || self.y != other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=ne
+            self.x != other.x || self.y != other.y // $ fieldof=Vec2 method=ne
         }
     }
     impl PartialOrd for Vec2 {
         // Vec2::partial_cmp
         fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-            (self.x + self.y).partial_cmp(&(other.x + other.y)) // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=partial_cmp method=add
+            (self.x + self.y).partial_cmp(&(other.x + other.y)) // $ fieldof=Vec2 method=partial_cmp method=add
         }
         // Vec2::lt
         fn lt(&self, other: &Self) -> bool {
-            self.x < other.x && self.y < other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=lt
+            self.x < other.x && self.y < other.y // $ fieldof=Vec2 method=lt
         }
         // Vec2::le
         fn le(&self, other: &Self) -> bool {
-            self.x <= other.x && self.y <= other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=le
+            self.x <= other.x && self.y <= other.y // $ fieldof=Vec2 method=le
         }
         // Vec2::gt
         fn gt(&self, other: &Self) -> bool {
-            self.x > other.x && self.y > other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=gt
+            self.x > other.x && self.y > other.y // $ fieldof=Vec2 method=gt
         }
         // Vec2::ge
         fn ge(&self, other: &Self) -> bool {
-            self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 fieldof=Vec2 MISSING: method=ge
+            self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 method=ge
         }
     }
     pub fn f() {
         // Test for all overloadable operators on `i64`
 
         // Comparison operators
-        let i64_eq = (1i64 == 2i64); // $ MISSING: type=i64_eq:bool method=eq
-        let i64_ne = (3i64 != 4i64); // $ MISSING: type=i64_ne:bool method=ne
-        let i64_lt = (5i64 < 6i64); // $ MISSING: type=i64_lt:bool method=lt
-        let i64_le = (7i64 <= 8i64); // $ MISSING: type=i64_le:bool method=le
-        let i64_gt = (9i64 > 10i64); // $ MISSING: type=i64_gt:bool method=gt
-        let i64_ge = (11i64 >= 12i64); // $ MISSING: type=i64_ge:bool method=ge
+        let i64_eq = (1i64 == 2i64); // $ type=i64_eq:bool method=eq
+        let i64_ne = (3i64 != 4i64); // $ type=i64_ne:bool method=ne
+        let i64_lt = (5i64 < 6i64); // $ type=i64_lt:bool method=lt
+        let i64_le = (7i64 <= 8i64); // $ type=i64_le:bool method=le
+        let i64_gt = (9i64 > 10i64); // $ type=i64_gt:bool method=gt
+        let i64_ge = (11i64 >= 12i64); // $ type=i64_ge:bool method=ge
 
         // Arithmetic operators
-        let i64_add = 13i64 + 14i64; // $ MISSING: type=i64_add:i64 method=add
-        let i64_sub = 15i64 - 16i64; // $ MISSING: type=i64_sub:i64 method=sub
-        let i64_mul = 17i64 * 18i64; // $ MISSING: type=i64_mul:i64 method=mul
-        let i64_div = 19i64 / 20i64; // $ MISSING: type=i64_div:i64 method=div
-        let i64_rem = 21i64 % 22i64; // $ MISSING: type=i64_rem:i64 method=rem
+        let i64_add = 13i64 + 14i64; // $ type=i64_add:i64 method=add
+        let i64_sub = 15i64 - 16i64; // $ type=i64_sub:i64 method=sub
+        let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 method=mul
+        let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 method=div
+        let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 method=rem
 
         // Arithmetic assignment operators
         let mut i64_add_assign = 23i64;
-        i64_add_assign += 24i64; // $ MISSING: method=add_assign
+        i64_add_assign += 24i64; // $ method=add_assign
 
         let mut i64_sub_assign = 25i64;
-        i64_sub_assign -= 26i64; // $ MISSING: method=sub_assign
+        i64_sub_assign -= 26i64; // $ method=sub_assign
 
         let mut i64_mul_assign = 27i64;
-        i64_mul_assign *= 28i64; // $ MISSING: method=mul_assign
+        i64_mul_assign *= 28i64; // $ method=mul_assign
 
         let mut i64_div_assign = 29i64;
-        i64_div_assign /= 30i64; // $ MISSING: method=div_assign
+        i64_div_assign /= 30i64; // $ method=div_assign
 
         let mut i64_rem_assign = 31i64;
-        i64_rem_assign %= 32i64; // $ MISSING: method=rem_assign
+        i64_rem_assign %= 32i64; // $ method=rem_assign
 
         // Bitwise operators
-        let i64_bitand = 33i64 & 34i64; // $ MISSING: type=i64_bitand:i64 method=bitand
-        let i64_bitor = 35i64 | 36i64; // $ MISSING: type=i64_bitor:i64 method=bitor
-        let i64_bitxor = 37i64 ^ 38i64; // $ MISSING: type=i64_bitxor:i64 method=bitxor
-        let i64_shl = 39i64 << 40i64; // $ MISSING: type=i64_shl:i64 method=shl
-        let i64_shr = 41i64 >> 42i64; // $ MISSING: type=i64_shr:i64 method=shr
+        let i64_bitand = 33i64 & 34i64; // $ type=i64_bitand:i64 method=bitand
+        let i64_bitor = 35i64 | 36i64; // $ type=i64_bitor:i64 method=bitor
+        let i64_bitxor = 37i64 ^ 38i64; // $ type=i64_bitxor:i64 method=bitxor
+        let i64_shl = 39i64 << 40i64; // $ type=i64_shl:i64 method=shl
+        let i64_shr = 41i64 >> 42i64; // $ type=i64_shr:i64 method=shr
 
         // Bitwise assignment operators
         let mut i64_bitand_assign = 43i64;
-        i64_bitand_assign &= 44i64; // $ MISSING: method=bitand_assign
+        i64_bitand_assign &= 44i64; // $ method=bitand_assign
 
         let mut i64_bitor_assign = 45i64;
-        i64_bitor_assign |= 46i64; // $ MISSING: method=bitor_assign
+        i64_bitor_assign |= 46i64; // $ method=bitor_assign
 
         let mut i64_bitxor_assign = 47i64;
-        i64_bitxor_assign ^= 48i64; // $ MISSING: method=bitxor_assign
+        i64_bitxor_assign ^= 48i64; // $ method=bitxor_assign
 
         let mut i64_shl_assign = 49i64;
-        i64_shl_assign <<= 50i64; // $ MISSING: method=shl_assign
+        i64_shl_assign <<= 50i64; // $ method=shl_assign
 
         let mut i64_shr_assign = 51i64;
-        i64_shr_assign >>= 52i64; // $ MISSING: method=shr_assign
+        i64_shr_assign >>= 52i64; // $ method=shr_assign
 
-        let i64_neg = -53i64; // $ MISSING: type=i64_neg:i64 method=neg
-        let i64_not = !54i64; // $ MISSING: type=i64_not:i64 method=not
+        let i64_neg = -53i64; // $ type=i64_neg:i64 method=neg
+        let i64_not = !54i64; // $ type=i64_not:i64 method=not
 
         // Test for all overloadable operators on Vec2
         let v1 = Vec2 { x: 1, y: 2 };
         let v2 = Vec2 { x: 3, y: 4 };
 
         // Comparison operators
-        let vec2_eq = v1 == v2; // $ MISSING: type=vec2_eq:bool method=Vec2::eq
-        let vec2_ne = v1 != v2; // $ MISSING: type=vec2_ne:bool method=Vec2::ne
-        let vec2_lt = v1 < v2; // $ MISSING: type=vec2_lt:bool method=Vec2::lt
-        let vec2_le = v1 <= v2; // $ MISSING: type=vec2_le:bool method=Vec2::le
-        let vec2_gt = v1 > v2; // $ MISSING: type=vec2_gt:bool method=Vec2::gt
-        let vec2_ge = v1 >= v2; // $ MISSING: type=vec2_ge:bool method=Vec2::ge
+        let vec2_eq = v1 == v2; // $ type=vec2_eq:bool method=Vec2::eq
+        let vec2_ne = v1 != v2; // $ type=vec2_ne:bool method=Vec2::ne
+        let vec2_lt = v1 < v2; // $ type=vec2_lt:bool method=Vec2::lt
+        let vec2_le = v1 <= v2; // $ type=vec2_le:bool method=Vec2::le
+        let vec2_gt = v1 > v2; // $ type=vec2_gt:bool method=Vec2::gt
+        let vec2_ge = v1 >= v2; // $ type=vec2_ge:bool method=Vec2::ge
 
         // Arithmetic operators
-        let vec2_add = v1 + v2; // $ MISSING: type=vec2_add:Vec2 method=Vec2::add
-        let vec2_sub = v1 - v2; // $ MISSING: type=vec2_sub:Vec2 method=Vec2::sub
-        let vec2_mul = v1 * v2; // $ MISSING: type=vec2_mul:Vec2 method=Vec2::mul
-        let vec2_div = v1 / v2; // $ MISSING: type=vec2_div:Vec2 method=Vec2::div
-        let vec2_rem = v1 % v2; // $ MISSING: type=vec2_rem:Vec2 method=Vec2::rem
+        let vec2_add = v1 + v2; // $ type=vec2_add:Vec2 method=Vec2::add
+        let vec2_sub = v1 - v2; // $ type=vec2_sub:Vec2 method=Vec2::sub
+        let vec2_mul = v1 * v2; // $ type=vec2_mul:Vec2 method=Vec2::mul
+        let vec2_div = v1 / v2; // $ type=vec2_div:Vec2 method=Vec2::div
+        let vec2_rem = v1 % v2; // $ type=vec2_rem:Vec2 method=Vec2::rem
 
         // Arithmetic assignment operators
         let mut vec2_add_assign = v1;
-        vec2_add_assign += v2; // $ MISSING: method=Vec2::add_assign
+        vec2_add_assign += v2; // $ method=Vec2::add_assign
 
         let mut vec2_sub_assign = v1;
-        vec2_sub_assign -= v2; // $ MISSING: method=Vec2::sub_assign
+        vec2_sub_assign -= v2; // $ method=Vec2::sub_assign
 
         let mut vec2_mul_assign = v1;
-        vec2_mul_assign *= v2; // $ MISSING: method=Vec2::mul_assign
+        vec2_mul_assign *= v2; // $ method=Vec2::mul_assign
 
         let mut vec2_div_assign = v1;
-        vec2_div_assign /= v2; // $ MISSING: method=Vec2::div_assign
+        vec2_div_assign /= v2; // $ method=Vec2::div_assign
 
         let mut vec2_rem_assign = v1;
-        vec2_rem_assign %= v2; // $ MISSING: method=Vec2::rem_assign
+        vec2_rem_assign %= v2; // $ method=Vec2::rem_assign
 
         // Bitwise operators
-        let vec2_bitand = v1 & v2; // $ MISSING: type=vec2_bitand:Vec2 method=Vec2::bitand
-        let vec2_bitor = v1 | v2; // $ MISSING: type=vec2_bitor:Vec2 method=Vec2::bitor
-        let vec2_bitxor = v1 ^ v2; // $ MISSING: type=vec2_bitxor:Vec2 method=Vec2::bitxor
-        let vec2_shl = v1 << 1u32; // $ MISSING: type=vec2_shl:Vec2 method=Vec2::shl
-        let vec2_shr = v1 >> 1u32; // $ MISSING: type=vec2_shr:Vec2 method=Vec2::shr
+        let vec2_bitand = v1 & v2; // $ type=vec2_bitand:Vec2 method=Vec2::bitand
+        let vec2_bitor = v1 | v2; // $ type=vec2_bitor:Vec2 method=Vec2::bitor
+        let vec2_bitxor = v1 ^ v2; // $ type=vec2_bitxor:Vec2 method=Vec2::bitxor
+        let vec2_shl = v1 << 1u32; // $ type=vec2_shl:Vec2 method=Vec2::shl
+        let vec2_shr = v1 >> 1u32; // $ type=vec2_shr:Vec2 method=Vec2::shr
 
         // Bitwise assignment operators
         let mut vec2_bitand_assign = v1;
-        vec2_bitand_assign &= v2; // $ MISSING: method=Vec2::bitand_assign
+        vec2_bitand_assign &= v2; // $ method=Vec2::bitand_assign
 
         let mut vec2_bitor_assign = v1;
-        vec2_bitor_assign |= v2; // $ MISSING: method=Vec2::bitor_assign
+        vec2_bitor_assign |= v2; // $ method=Vec2::bitor_assign
 
         let mut vec2_bitxor_assign = v1;
-        vec2_bitxor_assign ^= v2; // $ MISSING: method=Vec2::bitxor_assign
+        vec2_bitxor_assign ^= v2; // $ method=Vec2::bitxor_assign
 
         let mut vec2_shl_assign = v1;
-        vec2_shl_assign <<= 1u32; // $ MISSING: method=Vec2::shl_assign
+        vec2_shl_assign <<= 1u32; // $ method=Vec2::shl_assign
 
         let mut vec2_shr_assign = v1;
-        vec2_shr_assign >>= 1u32; // $ MISSING: method=Vec2::shr_assign
+        vec2_shr_assign >>= 1u32; // $ method=Vec2::shr_assign
 
         // Prefix operators
-        let vec2_neg = -v1; // $ MISSING: type=vec2_neg:Vec2 method=Vec2::neg
-        let vec2_not = !v1; // $ MISSING: type=vec2_not:Vec2 method=Vec2::not
+        let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
+        let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
     }
 }
 

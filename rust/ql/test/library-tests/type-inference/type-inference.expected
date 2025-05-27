@@ -837,6 +837,7 @@ inferType
 | main.rs:772:9:778:9 | { ... } |  | main.rs:767:20:767:22 | Tr2 |
 | main.rs:773:13:777:13 | if ... {...} else {...} |  | main.rs:767:20:767:22 | Tr2 |
 | main.rs:773:16:773:16 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:773:16:773:20 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:773:20:773:20 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:773:22:775:13 | { ... } |  | main.rs:767:20:767:22 | Tr2 |
 | main.rs:774:17:774:20 | self |  | main.rs:767:5:779:5 | Self [trait MyTrait2] |
@@ -848,6 +849,7 @@ inferType
 | main.rs:786:9:792:9 | { ... } |  | main.rs:781:20:781:22 | Tr3 |
 | main.rs:787:13:791:13 | if ... {...} else {...} |  | main.rs:781:20:781:22 | Tr3 |
 | main.rs:787:16:787:16 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:787:16:787:20 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:787:20:787:20 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:787:22:789:13 | { ... } |  | main.rs:781:20:781:22 | Tr3 |
 | main.rs:788:17:788:20 | self |  | main.rs:781:5:793:5 | Self [trait MyTrait3] |
@@ -1191,6 +1193,7 @@ inferType
 | main.rs:1030:23:1034:9 | if ... {...} else {...} |  | main.rs:969:5:973:5 | MyOption |
 | main.rs:1030:23:1034:9 | if ... {...} else {...} | T | main.rs:1004:5:1005:13 | S |
 | main.rs:1030:26:1030:26 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1030:26:1030:30 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1030:30:1030:30 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1030:32:1032:9 | { ... } |  | main.rs:969:5:973:5 | MyOption |
 | main.rs:1030:32:1032:9 | { ... } | T | main.rs:1004:5:1005:13 | S |
@@ -1209,6 +1212,7 @@ inferType
 | main.rs:1038:26:1041:9 | match ... { ... } |  | main.rs:969:5:973:5 | MyOption |
 | main.rs:1038:26:1041:9 | match ... { ... } | T | main.rs:1004:5:1005:13 | S |
 | main.rs:1038:32:1038:32 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1038:32:1038:36 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1038:36:1038:36 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1039:13:1039:16 | true |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1039:21:1039:38 | ...::MyNone(...) |  | main.rs:969:5:973:5 | MyOption |
@@ -1225,6 +1229,7 @@ inferType
 | main.rs:1045:25:1050:9 | loop { ... } |  | main.rs:969:5:973:5 | MyOption |
 | main.rs:1045:25:1050:9 | loop { ... } | T | main.rs:1004:5:1005:13 | S |
 | main.rs:1046:16:1046:16 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1046:16:1046:20 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1046:20:1046:20 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1047:23:1047:40 | ...::MyNone(...) |  | main.rs:969:5:973:5 | MyOption |
 | main.rs:1047:23:1047:40 | ...::MyNone(...) | T | main.rs:1004:5:1005:13 | S |
@@ -1578,7 +1583,9 @@ inferType
 | main.rs:1246:22:1246:22 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1247:13:1247:13 | y |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1247:17:1247:17 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1248:13:1248:13 | z |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1248:17:1248:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1248:17:1248:21 | ... + ... |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1248:21:1248:21 | y |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1249:13:1249:13 | z |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1249:17:1249:17 | x |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
@@ -1602,8 +1609,11 @@ inferType
 | main.rs:1262:17:1262:29 | ... \|\| ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1262:25:1262:29 | false |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1264:13:1264:17 | mut a |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1265:13:1265:16 | cond |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1265:20:1265:21 | 34 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1265:20:1265:27 | ... == ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1265:26:1265:27 | 33 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1266:12:1266:15 | cond |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1267:17:1267:17 | z |  | file://:0:0:0:0 | () |
 | main.rs:1267:21:1267:27 | (...) |  | file://:0:0:0:0 | () |
 | main.rs:1267:22:1267:22 | a |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
@@ -1959,18 +1969,23 @@ inferType
 | main.rs:1489:31:1489:35 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1489:75:1491:9 | { ... } |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:565:1:581:1 | Option |
 | main.rs:1489:75:1491:9 | { ... } | T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/cmp.rs:367:1:397:1 | Ordering |
+| main.rs:1490:13:1490:29 | (...) |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:13:1490:63 | ... .partial_cmp(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:565:1:581:1 | Option |
 | main.rs:1490:13:1490:63 | ... .partial_cmp(...) | T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/cmp.rs:367:1:397:1 | Ordering |
 | main.rs:1490:14:1490:17 | self |  | file://:0:0:0:0 | & |
 | main.rs:1490:14:1490:17 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:14:1490:19 | self.x |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:14:1490:28 | ... + ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:23:1490:26 | self |  | file://:0:0:0:0 | & |
 | main.rs:1490:23:1490:26 | self | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:23:1490:28 | self.y |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:43:1490:62 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1490:43:1490:62 | &... | &T | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:44:1490:62 | (...) |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:45:1490:49 | other |  | file://:0:0:0:0 | & |
 | main.rs:1490:45:1490:49 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:45:1490:51 | other.x |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:45:1490:61 | ... + ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:55:1490:59 | other |  | file://:0:0:0:0 | & |
 | main.rs:1490:55:1490:59 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:55:1490:61 | other.y |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
@@ -2054,27 +2069,55 @@ inferType
 | main.rs:1506:44:1506:48 | other |  | file://:0:0:0:0 | & |
 | main.rs:1506:44:1506:48 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1506:44:1506:50 | other.y |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1513:13:1513:18 | i64_eq |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1513:22:1513:35 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1513:23:1513:26 | 1i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1513:23:1513:34 | ... == ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1513:31:1513:34 | 2i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1514:13:1514:18 | i64_ne |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1514:22:1514:35 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1514:23:1514:26 | 3i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1514:23:1514:34 | ... != ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1514:31:1514:34 | 4i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1515:13:1515:18 | i64_lt |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1515:22:1515:34 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1515:23:1515:26 | 5i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1515:23:1515:33 | ... < ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1515:30:1515:33 | 6i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1516:13:1516:18 | i64_le |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1516:22:1516:35 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1516:23:1516:26 | 7i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1516:23:1516:34 | ... <= ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1516:31:1516:34 | 8i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1517:13:1517:18 | i64_gt |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1517:22:1517:35 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1517:23:1517:26 | 9i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1517:23:1517:34 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1517:30:1517:34 | 10i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1518:13:1518:18 | i64_ge |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1518:22:1518:37 | (...) |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1518:23:1518:27 | 11i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1518:23:1518:36 | ... >= ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1518:32:1518:36 | 12i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1521:13:1521:19 | i64_add |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1521:23:1521:27 | 13i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1521:23:1521:35 | ... + ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1521:31:1521:35 | 14i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1522:13:1522:19 | i64_sub |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1522:23:1522:27 | 15i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1522:23:1522:35 | ... - ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1522:31:1522:35 | 16i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1523:13:1523:19 | i64_mul |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1523:23:1523:27 | 17i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1523:23:1523:35 | ... * ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1523:31:1523:35 | 18i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1524:13:1524:19 | i64_div |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1524:23:1524:27 | 19i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1524:23:1524:35 | ... / ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1524:31:1524:35 | 20i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1525:13:1525:19 | i64_rem |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1525:23:1525:27 | 21i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1525:23:1525:35 | ... % ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1525:31:1525:35 | 22i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1528:13:1528:30 | mut i64_add_assign |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1528:34:1528:38 | 23i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
@@ -2101,15 +2144,25 @@ inferType
 | main.rs:1541:9:1541:22 | i64_rem_assign |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1541:9:1541:31 | ... %= ... |  | file://:0:0:0:0 | () |
 | main.rs:1541:27:1541:31 | 32i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1544:13:1544:22 | i64_bitand |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1544:26:1544:30 | 33i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1544:26:1544:38 | ... & ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1544:34:1544:38 | 34i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1545:13:1545:21 | i64_bitor |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1545:25:1545:29 | 35i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1545:25:1545:37 | ... \| ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1545:33:1545:37 | 36i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1546:13:1546:22 | i64_bitxor |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1546:26:1546:30 | 37i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1546:26:1546:38 | ... ^ ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1546:34:1546:38 | 38i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1547:13:1547:19 | i64_shl |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1547:23:1547:27 | 39i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1547:23:1547:36 | ... << ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1547:32:1547:36 | 40i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1548:13:1548:19 | i64_shr |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1548:23:1548:27 | 41i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1548:23:1548:36 | ... >> ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1548:32:1548:36 | 42i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1551:13:1551:33 | mut i64_bitand_assign |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1551:37:1551:41 | 43i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
@@ -2136,7 +2189,11 @@ inferType
 | main.rs:1564:9:1564:22 | i64_shr_assign |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1564:9:1564:32 | ... >>= ... |  | file://:0:0:0:0 | () |
 | main.rs:1564:28:1564:32 | 52i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1566:13:1566:19 | i64_neg |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1566:23:1566:28 | - ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1566:24:1566:28 | 53i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1567:13:1567:19 | i64_not |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1567:23:1567:28 | ! ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1567:24:1567:28 | 54i64 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1570:13:1570:14 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1570:18:1570:36 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
@@ -2144,84 +2201,164 @@ inferType
 | main.rs:1570:28:1570:28 | 1 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1570:34:1570:34 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1570:34:1570:34 | 2 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1571:13:1571:14 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1571:13:1571:14 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1571:13:1571:14 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1571:18:1571:36 | Vec2 {...} |  | file://:0:0:0:0 | & |
 | main.rs:1571:18:1571:36 | Vec2 {...} |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1571:18:1571:36 | Vec2 {...} | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1571:28:1571:28 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1571:28:1571:28 | 3 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1571:34:1571:34 | 4 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1571:34:1571:34 | 4 |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1574:13:1574:19 | vec2_eq |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1574:23:1574:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1574:23:1574:30 | ... == ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1574:29:1574:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1574:29:1574:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1574:29:1574:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1575:13:1575:19 | vec2_ne |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1575:23:1575:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1575:23:1575:30 | ... != ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1575:29:1575:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1575:29:1575:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1575:29:1575:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1576:13:1576:19 | vec2_lt |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1576:23:1576:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1576:23:1576:29 | ... < ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1576:28:1576:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1576:28:1576:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1576:28:1576:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1577:13:1577:19 | vec2_le |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1577:23:1577:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1577:23:1577:30 | ... <= ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1577:29:1577:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1577:29:1577:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1577:29:1577:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1578:13:1578:19 | vec2_gt |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1578:23:1578:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1578:23:1578:29 | ... > ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1578:28:1578:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1578:28:1578:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1578:28:1578:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1579:13:1579:19 | vec2_ge |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
 | main.rs:1579:23:1579:24 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1579:23:1579:30 | ... >= ... |  | file:///BUILTINS/types.rs:3:1:5:16 | bool |
+| main.rs:1579:29:1579:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1579:29:1579:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1579:29:1579:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1582:13:1582:20 | vec2_add |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1582:24:1582:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1582:24:1582:30 | ... + ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1582:29:1582:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1582:29:1582:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1582:29:1582:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1583:13:1583:20 | vec2_sub |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1583:24:1583:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1583:24:1583:30 | ... - ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1583:29:1583:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1583:29:1583:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1583:29:1583:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1584:13:1584:20 | vec2_mul |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1584:24:1584:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1584:24:1584:30 | ... * ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1584:29:1584:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1584:29:1584:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1584:29:1584:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1585:13:1585:20 | vec2_div |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1585:24:1585:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1585:24:1585:30 | ... / ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1585:29:1585:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1585:29:1585:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1585:29:1585:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1586:13:1586:20 | vec2_rem |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1586:24:1586:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1586:24:1586:30 | ... % ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1586:29:1586:30 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1586:29:1586:30 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1586:29:1586:30 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1589:13:1589:31 | mut vec2_add_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1589:35:1589:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1590:9:1590:23 | vec2_add_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1590:9:1590:29 | ... += ... |  | file://:0:0:0:0 | () |
+| main.rs:1590:28:1590:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1590:28:1590:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1590:28:1590:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1592:13:1592:31 | mut vec2_sub_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1592:35:1592:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1593:9:1593:23 | vec2_sub_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1593:9:1593:29 | ... -= ... |  | file://:0:0:0:0 | () |
+| main.rs:1593:28:1593:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1593:28:1593:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1593:28:1593:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1595:13:1595:31 | mut vec2_mul_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1595:35:1595:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1596:9:1596:23 | vec2_mul_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1596:9:1596:29 | ... *= ... |  | file://:0:0:0:0 | () |
+| main.rs:1596:28:1596:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1596:28:1596:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1596:28:1596:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1598:13:1598:31 | mut vec2_div_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1598:35:1598:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1599:9:1599:23 | vec2_div_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1599:9:1599:29 | ... /= ... |  | file://:0:0:0:0 | () |
+| main.rs:1599:28:1599:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1599:28:1599:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1599:28:1599:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1601:13:1601:31 | mut vec2_rem_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1601:35:1601:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1602:9:1602:23 | vec2_rem_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1602:9:1602:29 | ... %= ... |  | file://:0:0:0:0 | () |
+| main.rs:1602:28:1602:29 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1602:28:1602:29 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1602:28:1602:29 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1605:13:1605:23 | vec2_bitand |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1605:27:1605:28 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1605:27:1605:33 | ... & ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1605:32:1605:33 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1605:32:1605:33 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1605:32:1605:33 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1606:13:1606:22 | vec2_bitor |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1606:26:1606:27 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1606:26:1606:32 | ... \| ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1606:31:1606:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1606:31:1606:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1606:31:1606:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1607:13:1607:23 | vec2_bitxor |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1607:27:1607:28 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1607:27:1607:33 | ... ^ ... |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1607:32:1607:33 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1607:32:1607:33 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1607:32:1607:33 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1608:13:1608:20 | vec2_shl |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1608:24:1608:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1608:24:1608:33 | ... << ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1608:30:1608:33 | 1u32 |  | file:///BUILTINS/types.rs:17:1:17:15 | u32 |
+| main.rs:1609:13:1609:20 | vec2_shr |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1609:24:1609:25 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1609:24:1609:33 | ... >> ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1609:30:1609:33 | 1u32 |  | file:///BUILTINS/types.rs:17:1:17:15 | u32 |
 | main.rs:1612:13:1612:34 | mut vec2_bitand_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1612:38:1612:39 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1613:9:1613:26 | vec2_bitand_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1613:9:1613:32 | ... &= ... |  | file://:0:0:0:0 | () |
+| main.rs:1613:31:1613:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1613:31:1613:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1613:31:1613:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1615:13:1615:33 | mut vec2_bitor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1615:37:1615:38 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1616:9:1616:25 | vec2_bitor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1616:9:1616:31 | ... \|= ... |  | file://:0:0:0:0 | () |
+| main.rs:1616:30:1616:31 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1616:30:1616:31 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1616:30:1616:31 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1618:13:1618:34 | mut vec2_bitxor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1618:38:1618:39 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1619:9:1619:26 | vec2_bitxor_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1619:9:1619:32 | ... ^= ... |  | file://:0:0:0:0 | () |
+| main.rs:1619:31:1619:32 | v2 |  | file://:0:0:0:0 | & |
 | main.rs:1619:31:1619:32 | v2 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1619:31:1619:32 | v2 | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1621:13:1621:31 | mut vec2_shl_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1621:35:1621:36 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1622:9:1622:23 | vec2_shl_assign |  | main.rs:1278:5:1283:5 | Vec2 |
@@ -2232,7 +2369,11 @@ inferType
 | main.rs:1625:9:1625:23 | vec2_shr_assign |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1625:9:1625:32 | ... >>= ... |  | file://:0:0:0:0 | () |
 | main.rs:1625:29:1625:32 | 1u32 |  | file:///BUILTINS/types.rs:17:1:17:15 | u32 |
+| main.rs:1628:13:1628:20 | vec2_neg |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1628:24:1628:26 | - ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1628:25:1628:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1629:13:1629:20 | vec2_not |  | main.rs:1278:5:1283:5 | Vec2 |
+| main.rs:1629:24:1629:26 | ! ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1629:25:1629:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1635:5:1635:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1636:5:1636:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
