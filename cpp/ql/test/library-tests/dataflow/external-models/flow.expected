@@ -48,30 +48,30 @@ edges
 | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | provenance | Src:MaD:327  |
 | windows.cpp:23:17:23:38 | *call to GetEnvironmentStringsA | windows.cpp:25:10:25:13 | * ... | provenance |  |
 | windows.cpp:28:36:28:38 | GetEnvironmentVariableA output argument | windows.cpp:30:10:30:13 | * ... | provenance | Src:MaD:329  |
-| windows.cpp:145:35:145:40 | ReadFile output argument | windows.cpp:147:10:147:16 | * ... | provenance | Src:MaD:331  |
-| windows.cpp:154:23:154:28 | ReadFileEx output argument | windows.cpp:156:10:156:16 | * ... | provenance | Src:MaD:332  |
-| windows.cpp:168:84:168:89 | NtReadFile output argument | windows.cpp:170:10:170:16 | * ... | provenance | Src:MaD:340  |
-| windows.cpp:245:23:245:35 | *call to MapViewOfFile | windows.cpp:245:23:245:35 | *call to MapViewOfFile | provenance | Src:MaD:333  |
-| windows.cpp:245:23:245:35 | *call to MapViewOfFile | windows.cpp:246:20:246:52 | *pMapView | provenance |  |
-| windows.cpp:246:20:246:52 | *pMapView | windows.cpp:248:10:248:16 | * ... | provenance |  |
-| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | provenance | Src:MaD:334  |
-| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | windows.cpp:253:20:253:52 | *pMapView | provenance |  |
-| windows.cpp:253:20:253:52 | *pMapView | windows.cpp:255:10:255:16 | * ... | provenance |  |
-| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | provenance | Src:MaD:335  |
-| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | windows.cpp:262:20:262:52 | *pMapView | provenance |  |
-| windows.cpp:262:20:262:52 | *pMapView | windows.cpp:264:10:264:16 | * ... | provenance |  |
-| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | provenance | Src:MaD:336  |
-| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | windows.cpp:271:20:271:52 | *pMapView | provenance |  |
-| windows.cpp:271:20:271:52 | *pMapView | windows.cpp:273:10:273:16 | * ... | provenance |  |
-| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | provenance | Src:MaD:337  |
-| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | windows.cpp:278:20:278:52 | *pMapView | provenance |  |
-| windows.cpp:278:20:278:52 | *pMapView | windows.cpp:280:10:280:16 | * ... | provenance |  |
-| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | provenance | Src:MaD:338  |
-| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | windows.cpp:285:20:285:52 | *pMapView | provenance |  |
-| windows.cpp:285:20:285:52 | *pMapView | windows.cpp:287:10:287:16 | * ... | provenance |  |
-| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:339  |
-| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | windows.cpp:292:20:292:52 | *pMapView | provenance |  |
-| windows.cpp:292:20:292:52 | *pMapView | windows.cpp:294:10:294:16 | * ... | provenance |  |
+| windows.cpp:164:35:164:40 | ReadFile output argument | windows.cpp:166:10:166:16 | * ... | provenance | Src:MaD:331  |
+| windows.cpp:173:23:173:28 | ReadFileEx output argument | windows.cpp:175:10:175:16 | * ... | provenance | Src:MaD:332  |
+| windows.cpp:205:84:205:89 | NtReadFile output argument | windows.cpp:207:10:207:16 | * ... | provenance | Src:MaD:340  |
+| windows.cpp:282:23:282:35 | *call to MapViewOfFile | windows.cpp:282:23:282:35 | *call to MapViewOfFile | provenance | Src:MaD:333  |
+| windows.cpp:282:23:282:35 | *call to MapViewOfFile | windows.cpp:283:20:283:52 | *pMapView | provenance |  |
+| windows.cpp:283:20:283:52 | *pMapView | windows.cpp:285:10:285:16 | * ... | provenance |  |
+| windows.cpp:289:23:289:36 | *call to MapViewOfFile2 | windows.cpp:289:23:289:36 | *call to MapViewOfFile2 | provenance | Src:MaD:334  |
+| windows.cpp:289:23:289:36 | *call to MapViewOfFile2 | windows.cpp:290:20:290:52 | *pMapView | provenance |  |
+| windows.cpp:290:20:290:52 | *pMapView | windows.cpp:292:10:292:16 | * ... | provenance |  |
+| windows.cpp:298:23:298:36 | *call to MapViewOfFile3 | windows.cpp:298:23:298:36 | *call to MapViewOfFile3 | provenance | Src:MaD:335  |
+| windows.cpp:298:23:298:36 | *call to MapViewOfFile3 | windows.cpp:299:20:299:52 | *pMapView | provenance |  |
+| windows.cpp:299:20:299:52 | *pMapView | windows.cpp:301:10:301:16 | * ... | provenance |  |
+| windows.cpp:307:23:307:43 | *call to MapViewOfFile3FromApp | windows.cpp:307:23:307:43 | *call to MapViewOfFile3FromApp | provenance | Src:MaD:336  |
+| windows.cpp:307:23:307:43 | *call to MapViewOfFile3FromApp | windows.cpp:308:20:308:52 | *pMapView | provenance |  |
+| windows.cpp:308:20:308:52 | *pMapView | windows.cpp:310:10:310:16 | * ... | provenance |  |
+| windows.cpp:314:23:314:37 | *call to MapViewOfFileEx | windows.cpp:314:23:314:37 | *call to MapViewOfFileEx | provenance | Src:MaD:337  |
+| windows.cpp:314:23:314:37 | *call to MapViewOfFileEx | windows.cpp:315:20:315:52 | *pMapView | provenance |  |
+| windows.cpp:315:20:315:52 | *pMapView | windows.cpp:317:10:317:16 | * ... | provenance |  |
+| windows.cpp:321:23:321:42 | *call to MapViewOfFileFromApp | windows.cpp:321:23:321:42 | *call to MapViewOfFileFromApp | provenance | Src:MaD:338  |
+| windows.cpp:321:23:321:42 | *call to MapViewOfFileFromApp | windows.cpp:322:20:322:52 | *pMapView | provenance |  |
+| windows.cpp:322:20:322:52 | *pMapView | windows.cpp:324:10:324:16 | * ... | provenance |  |
+| windows.cpp:328:23:328:40 | *call to MapViewOfFileNuma2 | windows.cpp:328:23:328:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:339  |
+| windows.cpp:328:23:328:40 | *call to MapViewOfFileNuma2 | windows.cpp:329:20:329:52 | *pMapView | provenance |  |
+| windows.cpp:329:20:329:52 | *pMapView | windows.cpp:331:10:331:16 | * ... | provenance |  |
 nodes
 | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
 | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |
@@ -127,40 +127,40 @@ nodes
 | windows.cpp:25:10:25:13 | * ... | semmle.label | * ... |
 | windows.cpp:28:36:28:38 | GetEnvironmentVariableA output argument | semmle.label | GetEnvironmentVariableA output argument |
 | windows.cpp:30:10:30:13 | * ... | semmle.label | * ... |
-| windows.cpp:145:35:145:40 | ReadFile output argument | semmle.label | ReadFile output argument |
-| windows.cpp:147:10:147:16 | * ... | semmle.label | * ... |
-| windows.cpp:154:23:154:28 | ReadFileEx output argument | semmle.label | ReadFileEx output argument |
-| windows.cpp:156:10:156:16 | * ... | semmle.label | * ... |
-| windows.cpp:168:84:168:89 | NtReadFile output argument | semmle.label | NtReadFile output argument |
-| windows.cpp:170:10:170:16 | * ... | semmle.label | * ... |
-| windows.cpp:245:23:245:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
-| windows.cpp:245:23:245:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
-| windows.cpp:246:20:246:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:248:10:248:16 | * ... | semmle.label | * ... |
-| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
-| windows.cpp:252:23:252:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
-| windows.cpp:253:20:253:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:255:10:255:16 | * ... | semmle.label | * ... |
-| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
-| windows.cpp:261:23:261:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
-| windows.cpp:262:20:262:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:264:10:264:16 | * ... | semmle.label | * ... |
-| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
-| windows.cpp:270:23:270:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
-| windows.cpp:271:20:271:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:273:10:273:16 | * ... | semmle.label | * ... |
-| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
-| windows.cpp:277:23:277:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
-| windows.cpp:278:20:278:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:280:10:280:16 | * ... | semmle.label | * ... |
-| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
-| windows.cpp:284:23:284:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
-| windows.cpp:285:20:285:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:287:10:287:16 | * ... | semmle.label | * ... |
-| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
-| windows.cpp:291:23:291:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
-| windows.cpp:292:20:292:52 | *pMapView | semmle.label | *pMapView |
-| windows.cpp:294:10:294:16 | * ... | semmle.label | * ... |
+| windows.cpp:164:35:164:40 | ReadFile output argument | semmle.label | ReadFile output argument |
+| windows.cpp:166:10:166:16 | * ... | semmle.label | * ... |
+| windows.cpp:173:23:173:28 | ReadFileEx output argument | semmle.label | ReadFileEx output argument |
+| windows.cpp:175:10:175:16 | * ... | semmle.label | * ... |
+| windows.cpp:205:84:205:89 | NtReadFile output argument | semmle.label | NtReadFile output argument |
+| windows.cpp:207:10:207:16 | * ... | semmle.label | * ... |
+| windows.cpp:282:23:282:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
+| windows.cpp:282:23:282:35 | *call to MapViewOfFile | semmle.label | *call to MapViewOfFile |
+| windows.cpp:283:20:283:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:285:10:285:16 | * ... | semmle.label | * ... |
+| windows.cpp:289:23:289:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
+| windows.cpp:289:23:289:36 | *call to MapViewOfFile2 | semmle.label | *call to MapViewOfFile2 |
+| windows.cpp:290:20:290:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:292:10:292:16 | * ... | semmle.label | * ... |
+| windows.cpp:298:23:298:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
+| windows.cpp:298:23:298:36 | *call to MapViewOfFile3 | semmle.label | *call to MapViewOfFile3 |
+| windows.cpp:299:20:299:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:301:10:301:16 | * ... | semmle.label | * ... |
+| windows.cpp:307:23:307:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
+| windows.cpp:307:23:307:43 | *call to MapViewOfFile3FromApp | semmle.label | *call to MapViewOfFile3FromApp |
+| windows.cpp:308:20:308:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:310:10:310:16 | * ... | semmle.label | * ... |
+| windows.cpp:314:23:314:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
+| windows.cpp:314:23:314:37 | *call to MapViewOfFileEx | semmle.label | *call to MapViewOfFileEx |
+| windows.cpp:315:20:315:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:317:10:317:16 | * ... | semmle.label | * ... |
+| windows.cpp:321:23:321:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
+| windows.cpp:321:23:321:42 | *call to MapViewOfFileFromApp | semmle.label | *call to MapViewOfFileFromApp |
+| windows.cpp:322:20:322:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:324:10:324:16 | * ... | semmle.label | * ... |
+| windows.cpp:328:23:328:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
+| windows.cpp:328:23:328:40 | *call to MapViewOfFileNuma2 | semmle.label | *call to MapViewOfFileNuma2 |
+| windows.cpp:329:20:329:52 | *pMapView | semmle.label | *pMapView |
+| windows.cpp:331:10:331:16 | * ... | semmle.label | * ... |
 subpaths
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | asio_streams.cpp:100:44:100:62 | call to buffer |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual |

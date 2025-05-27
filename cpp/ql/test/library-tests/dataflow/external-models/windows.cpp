@@ -137,6 +137,25 @@ void FileIOCompletionRoutine(
   sink(*buffer); // $ MISSING: ir
 }
 
+void FileIOCompletionRoutine2(
+  DWORD dwErrorCode,
+  DWORD dwNumberOfBytesTransfered,
+  LPOVERLAPPED lpOverlapped
+) {
+  char* buffer = reinterpret_cast<char*>(lpOverlapped->hEvent);
+  sink(buffer);
+  sink(*buffer); // $ MISSING: ir
+}
+
+void FileIOCompletionRoutine3(
+  DWORD dwErrorCode,
+  DWORD dwNumberOfBytesTransfered,
+  LPOVERLAPPED lpOverlapped
+) {
+  char c = reinterpret_cast<char>(lpOverlapped->hEvent);
+  sink(c); // $ MISSING: ir
+}
+
 void readFile(HANDLE hFile) {
   {
     char buffer[1024];
@@ -158,6 +177,24 @@ void readFile(HANDLE hFile) {
     char* p = reinterpret_cast<char*>(overlapped.hEvent);
     sink(p);
     sink(*p); // $ MISSING: ir
+  }
+  
+  {
+    char buffer[1024];
+    OVERLAPPED overlapped;
+    ReadFile(hFile, buffer, sizeof(buffer), nullptr, nullptr);
+    overlapped.hEvent = reinterpret_cast<HANDLE>(buffer);
+    char buffer2[1024];
+    ReadFileEx(hFile, buffer2, sizeof(buffer2) - 1, &overlapped, FileIOCompletionRoutine2);
+  }
+
+  {
+    char buffer[1024];
+    OVERLAPPED overlapped;
+    ReadFile(hFile, buffer, sizeof(buffer), nullptr, nullptr);
+    overlapped.hEvent = reinterpret_cast<HANDLE>(*buffer);
+    char buffer2[1024];
+    ReadFileEx(hFile, buffer2, sizeof(buffer2) - 1, &overlapped, FileIOCompletionRoutine3);
   }
 
   {
