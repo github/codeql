@@ -1,3 +1,12 @@
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The precision of the query `cs/missed-readonly-modifier` has been improved. Some false positives related to static fields and struct type fields have been removed.
+* The queries `cs/password-in-configuration`, `cs/hardcoded-credentials` and `cs/hardcoded-connection-string-credentials` have been removed from all query suites.
+* The precision of the query `cs/gethashcode-is-not-defined` has been improved (false negative reduction). Calls to more methods (and indexers) that rely on the invariant `e1.Equals(e2)` implies `e1.GetHashCode() == e2.GetHashCode()` are taken into account.
+* The precision of the query `cs/uncontrolled-format-string` has been improved (false negative reduction). Calls to `System.Text.CompositeFormat.Parse` are now considered a format like method call.
+
 ## 1.2.0
 
 ### Query Metadata Changes
