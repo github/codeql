@@ -45,7 +45,8 @@ API::Node getNonStreamApi() {
   exists(string moduleName |
     moduleName
         .regexpMatch([
-            "rxjs(|/.*)", "@strapi(|/.*)", "highland(|/.*)", "execa(|/.*)", "arktype(|/.*)"
+            "rxjs(|/.*)", "@strapi(|/.*)", "highland(|/.*)", "execa(|/.*)", "arktype(|/.*)",
+            "@ngrx(|/.*)", "@datorama(|/.*)", "@angular(|/.*)", "react.*", "@langchain(|/.*)",
           ]) and
     result = API::moduleImport(moduleName)
   )
