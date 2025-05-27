@@ -117,7 +117,7 @@ public class D
         var x = b ? null : "abc";
         x = x == null ? "" : x;
         if (x == null)
-            x.ToString(); // BAD (always)
+            x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         else
             x.ToString(); // GOOD
     }
@@ -194,7 +194,7 @@ public class D
     {
         var o = new Object();
         if (o == null)
-            o.ToString(); // BAD (always)
+            o.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o.ToString(); // GOOD
 
         try
@@ -204,7 +204,7 @@ public class D
         catch (Exception e)
         {
             if (e == null)
-                e.ToString(); // BAD (always)
+                e.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
             e.ToString(); // GOOD
         }
 
@@ -214,12 +214,12 @@ public class D
 
         var o3 = "abc";
         if (o3 == null)
-            o3.ToString(); // BAD (always)
+            o3.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o3.ToString(); // GOOD
 
         var o4 = "" + null;
         if (o4 == null)
-            o4.ToString(); // BAD (always)
+            o4.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o4.ToString(); // GOOD
     }
 
@@ -382,7 +382,7 @@ public class D
         if (ioe != null)
             ioe = e;
         else
-            ioe.ToString(); // BAD (always)
+            ioe.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void LengthGuard2(int[] a, int[] b)

@@ -207,7 +207,7 @@ public class E
     {
         if (s is string)
             return s.Length;
-        return s.GetHashCode(); // BAD (always)
+        return s.GetHashCode(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void Ex15(bool b)
@@ -217,7 +217,7 @@ public class E
             x = null;
         x.ToString(); // BAD (maybe)
         if (b)
-            x.ToString(); // BAD (always)
+            x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void Ex16(bool b)
@@ -226,7 +226,7 @@ public class E
         if (b)
             x = null;
         if (b)
-            x.ToString(); // BAD (always)
+            x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         x.ToString(); // BAD (maybe)
     }
 
@@ -320,15 +320,15 @@ public class E
     {
         if ((s1 ?? s2) is null)
         {
-            s1.ToString(); // BAD (always)
-            s2.ToString(); // BAD (always)
+            s1.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
+            s2.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
     }
 
     static void Ex28()
     {
         var x = (string)null ?? null;
-        x.ToString(); // BAD (always)
+        x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     static void Ex29(string s)
@@ -402,7 +402,7 @@ public class E
     {
         int? i = null;
         i ??= null;
-        return i.Value; // BAD (always)
+        return i.Value; // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     int Ex41()
@@ -436,12 +436,12 @@ public class E
     {
         if (s is null)
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
 
         if (s is not not null)
         {
-            s.ToString(); // BAD (always) (FALSE NEGATIVE)
+            s.ToString(); // $ MISSING: Alert[cs/dereferenced-value-is-always-null]
         }
 
         if (s is not null)
