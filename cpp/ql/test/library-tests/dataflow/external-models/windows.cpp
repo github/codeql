@@ -2,10 +2,21 @@ void sink(char);
 void sink(char*);
 void sink(char**);
 
-char* GetCommandLineA();
-char** CommandLineToArgvA(char*, int*);
-char* GetEnvironmentStringsA();
-int GetEnvironmentVariableA(const char*, char*, int);
+using HANDLE = void*;
+using DWORD = unsigned long;
+using LPCH = char*;
+using LPSTR = char*;
+using LPCSTR = const char*;
+using LPVOID = void*;
+using LPDWORD = unsigned long*;
+using PVOID = void*;
+using ULONG_PTR = unsigned long*;
+using SIZE_T = decltype(sizeof(0));
+
+LPSTR GetCommandLineA();
+LPSTR* CommandLineToArgvA(LPSTR, int*);
+LPCH GetEnvironmentStringsA();
+DWORD GetEnvironmentVariableA(LPCSTR, LPSTR, DWORD);
 
 void getCommandLine() {
   char* cmd = GetCommandLineA();
@@ -30,13 +41,6 @@ void getEnvironment() {
     sink(*buf); // $ ir
 }
 
-using HANDLE = void*;
-using DWORD = unsigned long;
-using LPVOID = void*;
-using LPDWORD = unsigned long*;
-using PVOID = void*;
-using ULONG_PTR = unsigned long*;
-using SIZE_T = decltype(sizeof(0));
 typedef struct _OVERLAPPED {
   ULONG_PTR Internal;
   ULONG_PTR InternalHigh;

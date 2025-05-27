@@ -1,4 +1,4 @@
-  # partial model of windows system calls
+# partial model of windows system calls
 extensions:
   - addsTo:
       pack: codeql/cpp-all
