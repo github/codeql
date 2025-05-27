@@ -11,7 +11,7 @@ use ra_ap_hir::{
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::{ExpandResult, ExpandTo};
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
@@ -23,7 +23,15 @@ use ra_ap_syntax::{
 };
 
 #[macro_export]
-macro_rules! emit_detached {
+macro_rules! pre_emit {
+    (Item, $self:ident, $node:ident) => {
+        $self.setup_item_expansion($node);
+    };
+    ($($_:tt)*) => {};
+}
+
+#[macro_export]
+macro_rules! post_emit {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
         $self.extract_macro_call_expanded($node, $label);
     };
@@ -106,8 +114,9 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
-    resolve_paths: ResolvePaths,
+    resolve_paths: bool,
     source_kind: SourceKind,
+    macro_context_depth: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -130,8 +139,9 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths,
+            resolve_paths: resolve_paths == ResolvePaths::Yes,
             source_kind,
+            macro_context_depth: 0,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -337,6 +347,11 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
+        if self.macro_context_depth > 0 {
+            // we are in an attribute macro, don't emit anything: we would be failing to expand any
+            // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
+            return;
+        }
         if let Some(expanded) = self
             .semantics
             .as_ref()
@@ -537,7 +552,7 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -560,7 +575,7 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -583,7 +598,7 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -606,7 +621,7 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -708,6 +723,16 @@ impl<'a> Translator<'a> {
         }
     }
 
+    pub(crate) fn setup_item_expansion(&mut self, node: &ast::Item) {
+        if self.semantics.is_some_and(|s| {
+            let file = s.hir_file_for(node.syntax());
+            let node = InFile::new(file, node);
+            s.is_attr_macro_call(node)
+        }) {
+            self.macro_context_depth += 1;
+        }
+    }
+
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
         // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
         if self.source_kind == SourceKind::Library {
@@ -715,6 +740,16 @@ impl<'a> Translator<'a> {
         }
         (|| {
             let semantics = self.semantics?;
+            let file = semantics.hir_file_for(node.syntax());
+            let infile_node = InFile::new(file, node);
+            if !semantics.is_attr_macro_call(infile_node) {
+                return None;
+            }
+            self.macro_context_depth -= 1;
+            if self.macro_context_depth > 0 {
+                // only expand the outermost attribute macro
+                return None;
+            }
             let ExpandResult {
                 value: expanded, ..
             } = semantics.expand_attr_macro(node)?;
