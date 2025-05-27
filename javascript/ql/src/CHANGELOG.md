@@ -1,3 +1,9 @@
+## 1.6.1
+
+### Minor Analysis Improvements
+
+* The queries `js/hardcoded-credentials` and `js/password-in-configuration-file` have been removed from all query suites.
+
 ## 1.6.0
 
 ### Query Metadata Changes
