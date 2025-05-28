@@ -1265,6 +1265,77 @@ mod operators {
     }
 }
 
+mod async_ {
+    use std::future::Future;
+
+    struct S1;
+
+    impl S1 {
+        pub fn f(self) {} // S1f
+    }
+
+    async fn f1() -> S1 {
+        S1
+    }
+
+    fn f2() -> impl Future<Output = S1> {
+        async {
+            S1
+        }
+    }
+
+    struct S2;
+
+    impl Future for S2 {
+        type Output = S1;
+
+        fn poll(self: std::pin::Pin<&mut Self>, _cx: &mut std::task::Context<'_>) -> std::task::Poll<Self::Output> {
+            std::task::Poll::Ready(S1)
+        }
+    }
+
+    fn f3() -> impl Future<Output = S1> {
+        S2
+    }
+
+    pub async fn f() {
+        f1().await.f(); // $ method=S1f
+        f2().await.f(); // $ method=S1f
+        f3().await.f(); // $ method=S1f
+    }
+}
+
+
+mod impl_trait {
+    struct S1;
+
+    trait Trait1 {
+        fn f1(&self) {} // Trait1f1
+    }
+
+    trait Trait2 {
+        fn f2(&self) {} // Trait2f2
+    }
+
+    impl Trait1 for S1 {
+        fn f1(&self) {} // S1f1
+    }
+
+    impl Trait2 for S1 {
+        fn f2(&self) {} // S1f2
+    }
+
+    fn f1() -> impl Trait1 + Trait2 {
+        S1
+    }
+
+    pub fn f() {
+        let x = f1();
+        x.f1(); // $ method=Trait1f1
+        x.f2(); // $ method=Trait2f2
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -1284,4 +1355,5 @@ fn main() {
     try_expressions::f();
     builtins::f();
     operators::f();
+    async_::f();
 }
