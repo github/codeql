@@ -2783,6 +2783,8 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "rsa-sha256" and nid = 668 and normalized = "SHA-256" and algType = "HASH"
   or
+  name = "rsa-sha256" and nid = 668 and normalized = "SHA-256" and algType = "SIGNATURE"
+  or
   name = "rsa-sha3-224" and nid = 1116 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
   name = "rsa-sha3-224" and nid = 1116 and normalized = "SHA3-224" and algType = "HASH"
