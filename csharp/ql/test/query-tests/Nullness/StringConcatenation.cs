@@ -11,9 +11,9 @@ class StringsTest
 
     void StringMaybeNull()
     {
-        string s = null;
+        string s = null; // $ Source[cs/dereferenced-value-may-be-null]
         while (s != "")
-            s = s.Trim(); // BAD (maybe)
+            s = s.Trim(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     void StringNotNull()
