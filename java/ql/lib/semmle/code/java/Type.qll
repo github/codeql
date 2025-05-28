@@ -600,6 +600,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /**
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
+  pragma[inline]
   override string getTypeDescriptor() {
     result =
       "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
