@@ -99,7 +99,7 @@ module Impl {
      *
      * This is either 1 for prefix operations, or 2 for binary operations.
      */
-    final int getNumberOfOperands() { result = count(this.getAnOperand()) }
+    final int getNumberOfOperands() { result = strictcount(this.getAnOperand()) }
 
     /** Gets an operand of this operation. */
     Expr getAnOperand() { result = this.getOperand(_) }

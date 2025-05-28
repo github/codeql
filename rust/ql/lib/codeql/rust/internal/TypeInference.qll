@@ -691,6 +691,8 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
   }
 
   private class OperationAccess extends Access instanceof Operation {
+    OperationAccess() { super.isOverloaded(_, _) }
+
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       // The syntax for operators does not allow type arguments.
       none()
