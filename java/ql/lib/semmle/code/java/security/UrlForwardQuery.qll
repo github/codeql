@@ -168,7 +168,7 @@ private class FullyDecodesUrlBarrier extends DataFlow::Node {
     exists(Variable v, Expr e | this.asExpr() = v.getAnAccess() |
       fullyDecodesUrlGuard(e) and
       e = v.getAnAccess() and
-      e.getBasicBlock().bbDominates(this.asExpr().getBasicBlock())
+      e.getBasicBlock().dominates(this.asExpr().getBasicBlock())
     )
   }
 }

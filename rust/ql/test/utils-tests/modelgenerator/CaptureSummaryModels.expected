@@ -1,12 +1,4 @@
 unexpectedModel
 | Unexpected summary found: repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption as crate::convert::From>::from;Argument[0].Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)].Reference;value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::cloned;Argument[self].Field[crate::option::MyOption::MySome(0)].Reference;ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::get_or_insert;Argument[0];Argument[self].Field[crate::option::MyOption::MySome(0)];value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::get_or_insert;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::get_or_insert_default;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::get_or_insert_with;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
-| Unexpected summary found: repo::test;<crate::option::MyOption>::insert;Argument[self].Field[crate::option::MyOption::MySome(0)];ReturnValue.Reference;value;dfc-generated |
 expectedModel
-| Expected summary missing: repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];Argument[0].Parameter[0].Reference;value;dfc-generated |
-| Expected summary missing: repo::test;<crate::option::MyOption>::take_if;Argument[self].Reference;ReturnValue;value;dfc-generated |
+| Expected summary missing: repo::test;<crate::option::MyOption as crate::clone::Clone>::clone;Argument[self].Reference.Field[crate::option::MyOption::MySome(0)];ReturnValue.Field[crate::option::MyOption::MySome(0)];value;dfc-generated |

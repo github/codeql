@@ -169,11 +169,12 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 
 // findMethodWithGivenReceiver finds a method with `object` as its receiver, if one exists
 func findMethodWithGivenReceiver(object types.Object) *types.Func {
-	meth := findMethodOnTypeWithGivenReceiver(object.Type(), object)
+	unaliasedType := types.Unalias(object.Type())
+	meth := findMethodOnTypeWithGivenReceiver(unaliasedType, object)
 	if meth != nil {
 		return meth
 	}
-	if pointerType, ok := object.Type().(*types.Pointer); ok {
+	if pointerType, ok := unaliasedType.(*types.Pointer); ok {
 		meth = findMethodOnTypeWithGivenReceiver(pointerType.Elem(), object)
 	}
 	return meth

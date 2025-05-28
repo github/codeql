@@ -79,6 +79,14 @@ Python
 
 *   The :code:`py/mixed-tuple-returns` query no longer flags instances where the tuple is passed into the function as an argument, as this led to too many false positives.
 
+New Features
+~~~~~~~~~~~~
+
+GitHub Actions
+""""""""""""""
+
+*   CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
+
 Language Libraries
 ------------------
 
@@ -128,6 +136,11 @@ C/C++
 
 *   Calling conventions explicitly specified on function declarations (:code:`__cdecl`, :code:`__stdcall`, :code:`__fastcall`, etc.)  are now represented as specifiers of those declarations.
 *   A new class :code:`CallingConventionSpecifier` extending the :code:`Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+GitHub Actions
+""""""""""""""
+
+*   CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
 
 Shared Libraries
 ----------------

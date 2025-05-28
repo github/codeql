@@ -1,10 +1,16 @@
+## 0.4.9
+
+No user-facing changes.
+
 ## 0.4.8
 
 No user-facing changes.
 
 ## 0.4.7
 
-No user-facing changes.
+### New Features
+
+* CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
 
 ## 0.4.6
 

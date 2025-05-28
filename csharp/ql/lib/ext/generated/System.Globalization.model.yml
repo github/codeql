@@ -17,7 +17,7 @@ extensions:
       - ["System.Globalization", "CultureInfo", False, "GetCultureInfo", "(System.String,System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Globalization", "CultureInfo", False, "GetCultureInfo", "(System.String,System.String)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Globalization", "CultureInfo", False, "GetCultureInfoByIetfLanguageTag", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Globalization", "CultureInfo", False, "ReadOnly", "(System.Globalization.CultureInfo)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Globalization", "CultureInfo", False, "ReadOnly", "(System.Globalization.CultureInfo)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["System.Globalization", "CultureInfo", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Globalization", "CultureInfo", False, "get_IetfLanguageTag", "()", "", "Argument[this].Property[System.Globalization.CultureInfo.Name]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Globalization", "CultureInfo", True, "get_Calendar", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

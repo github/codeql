@@ -1,3 +1,9 @@
+## 4.3.0
+
+### New Features
+
+* Added AST nodes `UnsafeCastExpr`, `TypeValueExpr`, `IntegerType`, and `BuiltinFixedArrayType` that correspond to new nodes added by Swift 6.1.
+
 ## 4.2.0
 
 ### Major Analysis Improvements
@@ -7,7 +13,7 @@
 ### Minor Analysis Improvements
 
 * Added AST nodes `ActorIsolationErasureExpr`, `CurrentContextIsolationExpr`,
-  `ExtracFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
+  `ExtractFunctionIsolationExpr` and `UnreachableExpr` that correspond to new nodes
   added by Swift 6.0.
 
 ## 4.1.4

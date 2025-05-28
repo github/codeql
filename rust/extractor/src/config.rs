@@ -29,6 +29,7 @@ pub enum Compression {
     #[default] // TODO make gzip default
     None,
     Gzip,
+    Zstd,
 }
 
 impl From<Compression> for trap::Compression {
@@ -36,6 +37,7 @@ impl From<Compression> for trap::Compression {
         match val {
             Compression::None => Self::None,
             Compression::Gzip => Self::Gzip,
+            Compression::Zstd => Self::Zstd,
         }
     }
 }
@@ -55,7 +57,7 @@ pub struct Config {
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
-    pub compression: Compression,
+    pub trap_compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
@@ -67,6 +69,7 @@ pub struct Config {
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
     pub skip_path_resolution: bool,
+    pub extract_dependencies_as_source: bool,
 }
 
 impl Config {

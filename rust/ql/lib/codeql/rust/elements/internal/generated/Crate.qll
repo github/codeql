@@ -7,7 +7,6 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.LocatableImpl::Impl as LocatableImpl
-import codeql.rust.elements.Module
 import codeql.rust.elements.internal.NamedCrate
 
 /**
@@ -41,18 +40,6 @@ module Generated {
      * Holds if `getVersion()` exists.
      */
     final predicate hasVersion() { exists(this.getVersion()) }
-
-    /**
-     * Gets the module of this crate, if it exists.
-     */
-    Module getModule() {
-      result = Synth::convertModuleFromRaw(Synth::convertCrateToRaw(this).(Raw::Crate).getModule())
-    }
-
-    /**
-     * Holds if `getModule()` exists.
-     */
-    final predicate hasModule() { exists(this.getModule()) }
 
     /**
      * Gets the `index`th cfg option of this crate (0-based).

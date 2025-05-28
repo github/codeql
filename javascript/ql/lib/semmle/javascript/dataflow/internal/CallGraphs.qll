@@ -254,7 +254,7 @@ module CallGraph {
     not exists(DataFlow::ClassNode cls |
       node = cls.getConstructor().getReceiver()
       or
-      node = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+      node = cls.(DataFlow::ClassNode).getAPrototypeReference()
     )
   }
 

@@ -732,6 +732,8 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
     }
 
     class Guard extends Void {
+      predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) { none() }
+
       predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) { none() }
     }
 

@@ -285,6 +285,9 @@ SwiftMangledName SwiftMangler::visitGenericTypeParamType(const swift::GenericTyp
   if (type->isParameterPack()) {
     ret << "each_";
   }
+  if (type->isValue()) {
+    ret << "val_";
+  }
   if (auto decl = type->getDecl()) {
     ret << fetch(decl);
   } else {

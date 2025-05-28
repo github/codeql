@@ -1,3 +1,7 @@
+## 0.6.1
+
+No user-facing changes.
+
 ## 0.6.0
 
 ### Breaking Changes
@@ -19,6 +23,10 @@
 * Assigned a `security-severity` to the query `actions/excessive-secrets-exposure`.
 
 ## 0.5.4
+
+### New Features
+
+* CodeQL and Copilot Autofix support for GitHub Actions is now Generally Available.
 
 ### Bug Fixes
 

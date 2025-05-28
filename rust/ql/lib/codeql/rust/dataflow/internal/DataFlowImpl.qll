@@ -11,6 +11,7 @@ private import rust
 private import SsaImpl as SsaImpl
 private import codeql.rust.controlflow.internal.Scope as Scope
 private import codeql.rust.internal.PathResolution
+private import codeql.rust.internal.TypeInference as TypeInference
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.controlflow.CfgNodes
 private import codeql.rust.dataflow.Ssa
@@ -202,6 +203,7 @@ private ExprCfgNode getALastEvalNode(ExprCfgNode e) {
   result = e.(ReturnExprCfgNode).getExpr() or
   result = e.(BreakExprCfgNode).getExpr() or
   result = e.(BlockExprCfgNode).getTailExpr() or
+  result = e.(MacroBlockExprCfgNode).getTailExpr() or
   result = e.(MatchExprCfgNode).getArmExpr(_) or
   result = e.(MacroExprCfgNode).getMacroCall().(MacroCallCfgNode).getExpandedNode() or
   result.(BreakExprCfgNode).getTarget() = e
@@ -319,23 +321,6 @@ predicate lambdaCallExpr(CallExprCfgNode call, LambdaCallKind kind, ExprCfgNode 
     f instanceof PathExpr implies f = any(Variable v).getAnAccess()
   ) and
   exists(kind)
-}
-
-/** Holds if `mc` implicitly borrows its receiver. */
-private predicate implicitBorrow(MethodCallExpr mc) {
-  // Determining whether an implicit borrow happens depends on the type of the
-  // receiever as well as the target. As a heuristic we simply check if the
-  // target takes `self` as a borrow and limit the approximation to cases where
-  // the receiver is a simple variable.
-  mc.getReceiver() instanceof VariableAccess and
-  mc.getStaticTarget().getParamList().getSelfParam().isRef()
-}
-
-/** Holds if `mc` implicitly dereferences its receiver. */
-private predicate implicitDeref(MethodCallExpr mc) {
-  // Similarly to `implicitBorrow` this is an approximation.
-  mc.getReceiver() instanceof VariableAccess and
-  not mc.getStaticTarget().getParamList().getSelfParam().isRef()
 }
 
 // Defines a set of aliases needed for the `RustDataFlow` module
@@ -520,15 +505,15 @@ module RustDataFlow implements InputSig<Location> {
 
   pragma[nomagic]
   private predicate implicitDerefToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
+    TypeInference::receiverHasImplicitDeref(node1.asExpr().getExpr()) and
     node1.asExpr() = node2.getReceiver() and
-    implicitDeref(node2.getMethodCall().getMethodCallExpr()) and
     exists(c)
   }
 
   pragma[nomagic]
   private predicate implicitBorrowToReceiver(Node node1, ReceiverNode node2, ReferenceContent c) {
+    TypeInference::receiverHasImplicitBorrow(node1.asExpr().getExpr()) and
     node1.asExpr() = node2.getReceiver() and
-    implicitBorrow(node2.getMethodCall().getMethodCallExpr()) and
     exists(c)
   }
 
@@ -538,97 +523,103 @@ module RustDataFlow implements InputSig<Location> {
     exists(c)
   }
 
+  pragma[nomagic]
+  additional predicate readContentStep(Node node1, Content c, Node node2) {
+    exists(TupleStructPatCfgNode pat, int pos |
+      pat = node1.asPat() and
+      node2.asPat() = pat.getField(pos) and
+      c = TTupleFieldContent(pat.getTupleStructPat().getTupleField(pos))
+    )
+    or
+    exists(TuplePatCfgNode pat, int pos |
+      pos = c.(TuplePositionContent).getPosition() and
+      node1.asPat() = pat and
+      node2.asPat() = pat.getField(pos)
+    )
+    or
+    exists(StructPatCfgNode pat, string field |
+      pat = node1.asPat() and
+      c = TStructFieldContent(pat.getStructPat().getStructField(field)) and
+      node2.asPat() = pat.getFieldPat(field)
+    )
+    or
+    c instanceof ReferenceContent and
+    node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
+    or
+    exists(FieldExprCfgNode access |
+      node1.asExpr() = access.getContainer() and
+      node2.asExpr() = access and
+      access = c.(FieldContent).getAnAccess()
+    )
+    or
+    exists(IndexExprCfgNode arr |
+      c instanceof ElementContent and
+      node1.asExpr() = arr.getBase() and
+      node2.asExpr() = arr
+    )
+    or
+    exists(ForExprCfgNode for |
+      c instanceof ElementContent and
+      node1.asExpr() = for.getIterable() and
+      node2.asPat() = for.getPat()
+    )
+    or
+    exists(SlicePatCfgNode pat |
+      c instanceof ElementContent and
+      node1.asPat() = pat and
+      node2.asPat() = pat.getAPat()
+    )
+    or
+    exists(TryExprCfgNode try |
+      node1.asExpr() = try.getExpr() and
+      node2.asExpr() = try and
+      c.(TupleFieldContent)
+          .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
+    )
+    or
+    exists(PrefixExprCfgNode deref |
+      c instanceof ReferenceContent and
+      deref.getOperatorName() = "*" and
+      node1.asExpr() = deref.getExpr() and
+      node2.asExpr() = deref
+    )
+    or
+    // Read from function return
+    exists(DataFlowCall call |
+      lambdaCall(call, _, node1) and
+      call = node2.(OutNode).getCall(TNormalReturnKind()) and
+      c instanceof FunctionCallReturnContent
+    )
+    or
+    exists(AwaitExprCfgNode await |
+      c instanceof FutureContent and
+      node1.asExpr() = await.getExpr() and
+      node2.asExpr() = await
+    )
+    or
+    referenceExprToExpr(node2.(PostUpdateNode).getPreUpdateNode(),
+      node1.(PostUpdateNode).getPreUpdateNode(), c)
+    or
+    // Step from receiver expression to receiver node, in case of an implicit
+    // dereference.
+    implicitDerefToReceiver(node1, node2, c)
+    or
+    // A read step dual to the store step for implicit borrows.
+    implicitBorrowToReceiver(node2.(PostUpdateNode).getPreUpdateNode(),
+      node1.(PostUpdateNode).getPreUpdateNode(), c)
+    or
+    VariableCapture::readStep(node1, c, node2)
+  }
+
   /**
    * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
    * `node1` references an object with a content `c.getAReadContent()` whose
    * value ends up in `node2`.
    */
   predicate readStep(Node node1, ContentSet cs, Node node2) {
-    exists(Content c | c = cs.(SingletonContentSet).getContent() |
-      exists(TupleStructPatCfgNode pat, int pos |
-        pat = node1.asPat() and
-        node2.asPat() = pat.getField(pos) and
-        c = TTupleFieldContent(pat.getTupleStructPat().getTupleField(pos))
-      )
-      or
-      exists(TuplePatCfgNode pat, int pos |
-        pos = c.(TuplePositionContent).getPosition() and
-        node1.asPat() = pat and
-        node2.asPat() = pat.getField(pos)
-      )
-      or
-      exists(StructPatCfgNode pat, string field |
-        pat = node1.asPat() and
-        c = TStructFieldContent(pat.getStructPat().getStructField(field)) and
-        node2.asPat() = pat.getFieldPat(field)
-      )
-      or
-      c instanceof ReferenceContent and
-      node1.asPat().(RefPatCfgNode).getPat() = node2.asPat()
-      or
-      exists(FieldExprCfgNode access |
-        node1.asExpr() = access.getContainer() and
-        node2.asExpr() = access and
-        access = c.(FieldContent).getAnAccess()
-      )
-      or
-      exists(IndexExprCfgNode arr |
-        c instanceof ElementContent and
-        node1.asExpr() = arr.getBase() and
-        node2.asExpr() = arr
-      )
-      or
-      exists(ForExprCfgNode for |
-        c instanceof ElementContent and
-        node1.asExpr() = for.getIterable() and
-        node2.asPat() = for.getPat()
-      )
-      or
-      exists(SlicePatCfgNode pat |
-        c instanceof ElementContent and
-        node1.asPat() = pat and
-        node2.asPat() = pat.getAPat()
-      )
-      or
-      exists(TryExprCfgNode try |
-        node1.asExpr() = try.getExpr() and
-        node2.asExpr() = try and
-        c.(TupleFieldContent)
-            .isVariantField([any(OptionEnum o).getSome(), any(ResultEnum r).getOk()], 0)
-      )
-      or
-      exists(PrefixExprCfgNode deref |
-        c instanceof ReferenceContent and
-        deref.getOperatorName() = "*" and
-        node1.asExpr() = deref.getExpr() and
-        node2.asExpr() = deref
-      )
-      or
-      // Read from function return
-      exists(DataFlowCall call |
-        lambdaCall(call, _, node1) and
-        call = node2.(OutNode).getCall(TNormalReturnKind()) and
-        c instanceof FunctionCallReturnContent
-      )
-      or
-      exists(AwaitExprCfgNode await |
-        c instanceof FutureContent and
-        node1.asExpr() = await.getExpr() and
-        node2.asExpr() = await
-      )
-      or
-      referenceExprToExpr(node2.(PostUpdateNode).getPreUpdateNode(),
-        node1.(PostUpdateNode).getPreUpdateNode(), c)
-      or
-      // Step from receiver expression to receiver node, in case of an implicit
-      // dereference.
-      implicitDerefToReceiver(node1, node2, c)
-      or
-      // A read step dual to the store step for implicit borrows.
-      implicitBorrowToReceiver(node2.(PostUpdateNode).getPreUpdateNode(),
-        node1.(PostUpdateNode).getPreUpdateNode(), c)
-      or
-      VariableCapture::readStep(node1, c, node2)
+    exists(Content c |
+      c = cs.(SingletonContentSet).getContent() and
+      readContentStep(node1, c, node2)
     )
     or
     FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
@@ -667,7 +658,7 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
-  private predicate storeContentStep(Node node1, Content c, Node node2) {
+  additional predicate storeContentStep(Node node1, Content c, Node node2) {
     exists(CallExprCfgNode call, int pos |
       node1.asExpr() = call.getArgument(pragma[only_bind_into](pos)) and
       node2.asExpr() = call and
