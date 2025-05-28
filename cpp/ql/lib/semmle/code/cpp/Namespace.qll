@@ -174,7 +174,23 @@ class UsingDeclarationEntry extends UsingEntry {
    */
   Declaration getDeclaration() { usings(underlyingElement(this), unresolveElement(result), _, _) }
 
-  override string toString() { result = "using " + this.getDeclaration().getDescription() }
+  /**
+   * Returns the member referenced by this `using` declaration in a templated base class.
+   *
+   * For example:
+   * ```
+   * template <typename T>
+   * class A : public T {
+   *   using T::foo; // `foo` is the member referenced by this using declaration
+   * };
+   * ```
+   */
+  Element getReferencedMember() { usings(underlyingElement(this), unresolveElement(result), _, _) }
+
+  override string toString() {
+    result = "using " + this.getDeclaration().getDescription() or
+    result = "using " + this.getReferencedMember()
+  }
 }
 
 /**
