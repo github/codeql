@@ -572,6 +572,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 
   /** Holds if this type declares or inherits the specified member. */
+  pragma[inline]
   predicate inherits(Member m) {
     exists(Field f | f = m |
       f = this.getAField()
