@@ -317,7 +317,6 @@ fn main() -> anyhow::Result<()> {
                             .source_root(db)
                             .is_library
                     {
-                        tracing::info!("file: {}", file.display());
                         extractor.extract_with_semantics(
                             file,
                             &semantics,
