@@ -783,6 +783,28 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
+   * The output artifact from a signature operation, representing a signature
+   * that is either generated or verified.
+   */
+  abstract class SignatureArtifactInstance extends KeyOperationOutputArtifactInstance { }
+
+  /**
+   * A key operation instance representing the generation or verification of a
+   * signature.
+   */
+  abstract class SignatureOperationInstance extends KeyOperationInstance {
+    /**
+     * Gets the consumer of the signature input for this operation. This is
+     * typically a signature that is being verified against a message.
+     */
+    abstract ConsumerInputDataFlowNode getSignatureArtifactConsumer();
+
+    final SignatureArtifactInstance getSignatureOutputArtifact() {
+      result.getOutputNode() = this.getOutputArtifact()
+    }
+  }
+
+  /**
    * A key-based algorithm instance used in cryptographic operations such as encryption, decryption,
    * signing, verification, and key wrapping.
    */
@@ -1273,6 +1295,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyOperation(KeyOperationInstance e) or
     TKeyOperationAlgorithm(KeyOperationAlgorithmInstanceOrValueConsumer e) or
     TKeyOperationOutput(KeyOperationOutputArtifactInstance e) or
+    TSignature(SignatureOperationInstance e) or
     // Non-Standalone Algorithms (e.g., Mode, Padding)
     // These algorithms are always tied to a key operation algorithm
     TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
@@ -1529,6 +1552,18 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     KeyOperationOutputNode() { this = TKeyOperationOutput(instance) }
 
     final override string getInternalType() { result = "KeyOperationOutput" }
+
+    override LocatableElement asElement() { result = instance }
+
+    override string getSourceNodeRelationship() { none() }
+  }
+
+  class SignatureArtifactNode extends ArtifactNode, TKeyOperationOutput {
+    SignatureArtifactInstance instance;
+
+    SignatureArtifactNode() { this = TKeyOperationOutput(instance) }
+
+    final override string getInternalType() { result = "Signature" }
 
     override LocatableElement asElement() { result = instance }
 
@@ -2107,6 +2142,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   class SignatureOperationNode extends KeyOperationNode {
+    override SignatureOperationInstance instance;
     string nodeName;
 
     SignatureOperationNode() {
@@ -2116,6 +2152,12 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override string getInternalType() { result = nodeName }
+
+    SignatureArtifactNode getSignatureArtifact() {
+      result.asElement() = instance.getOutputArtifactInstance()
+      or
+      result.asElement() = instance.getSignatureArtifactConsumer().getConsumer()
+    }
   }
 
   /**
@@ -2563,6 +2605,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       curveName = "CURVE25519" and keySize = 255 and curveFamily = CURVE25519()
       or
+      curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
+      or
       // TODO: separate these into key agreement logic or sign/verify (ECDSA / ECDH)
       // or
       // curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
@@ -2570,8 +2614,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // curveName = "ED25519" and keySize = 255 and curveFamily = CURVE25519()
       // or
       // curveName = "ED448" and keySize = 448 and curveFamily = CURVE448()
-      // curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
-      // or
       // or
       // curveName = "X448" and keySize = 448 and curveFamily = CURVE448()
       curveName = "SM2" and keySize in [256, 512] and curveFamily = SM2()
