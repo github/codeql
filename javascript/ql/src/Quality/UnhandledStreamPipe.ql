@@ -37,12 +37,15 @@ class PipeCall extends DataFlow::MethodCallNode {
  * Gets a reference to a value that is known to not be a Node.js stream.
  * This is used to exclude pipe calls on non-stream objects from analysis.
  */
-DataFlow::Node getNonNodeJsStreamType() {
+private DataFlow::Node getNonNodeJsStreamType() {
   result = getNonStreamApi().getAValueReachableFromSource()
 }
 
-//highland, arktype execa
-API::Node getNonStreamApi() {
+/**
+ * Gets API nodes from modules that are known to not provide Node.js streams.
+ * This includes reactive programming libraries, frontend frameworks, and other non-stream APIs.
+ */
+private API::Node getNonStreamApi() {
   exists(string moduleName |
     moduleName
         .regexpMatch([
@@ -65,12 +68,12 @@ API::Node getNonStreamApi() {
  * Gets the method names used to register event handlers on Node.js streams.
  * These methods are used to attach handlers for events like `error`.
  */
-string getEventHandlerMethodName() { result = ["on", "once", "addListener"] }
+private string getEventHandlerMethodName() { result = ["on", "once", "addListener"] }
 
 /**
  * Gets the method names that are chainable on Node.js streams.
  */
-string getChainableStreamMethodName() {
+private string getChainableStreamMethodName() {
   result =
     [
       "setEncoding", "pause", "resume", "unpipe", "destroy", "cork", "uncork", "setDefaultEncoding",
@@ -81,14 +84,14 @@ string getChainableStreamMethodName() {
 /**
  * Gets the method names that are not chainable on Node.js streams.
  */
-string getNonchainableStreamMethodName() {
+private string getNonchainableStreamMethodName() {
   result = ["read", "write", "end", "pipe", "unshift", "push", "isPaused", "wrap", "emit"]
 }
 
 /**
  * Gets the property names commonly found on Node.js streams.
  */
-string getStreamPropertyName() {
+private string getStreamPropertyName() {
   result =
     [
       "readable", "writable", "destroyed", "closed", "readableHighWaterMark", "readableLength",
@@ -103,7 +106,7 @@ string getStreamPropertyName() {
 /**
  * Gets all method names commonly found on Node.js streams.
  */
-string getStreamMethodName() {
+private string getStreamMethodName() {
   result = [getChainableStreamMethodName(), getNonchainableStreamMethodName()]
 }
 
@@ -123,7 +126,7 @@ class ErrorHandlerRegistration extends DataFlow::MethodCallNode {
  * Connects destination streams to their corresponding pipe call nodes.
  * Connects streams to their chainable methods.
  */
-predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) {
+private predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) {
   exists(PipeCall pipe |
     streamNode = pipe.getDestinationStream() and
     relatedNode = pipe
@@ -139,22 +142,22 @@ predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) 
 /**
  * Tracks the result of a pipe call as it flows through the program.
  */
-private DataFlow::SourceNode pipeResultTracker(DataFlow::TypeTracker t, PipeCall pipe) {
+private DataFlow::SourceNode destinationStreamRef(DataFlow::TypeTracker t, PipeCall pipe) {
   t.start() and result = pipe.getALocalSource()
   or
   exists(DataFlow::SourceNode prev |
-    prev = pipeResultTracker(t.continue(), pipe) and
+    prev = destinationStreamRef(t.continue(), pipe) and
     streamFlowStep(result.getALocalUse(), prev)
   )
   or
-  exists(DataFlow::TypeTracker t2 | result = pipeResultTracker(t2, pipe).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = destinationStreamRef(t2, pipe).track(t2, t))
 }
 
 /**
  * Gets a reference to the result of a pipe call.
  */
-private DataFlow::SourceNode pipeResultRef(PipeCall pipe) {
-  result = pipeResultTracker(DataFlow::TypeTracker::end(), pipe)
+private DataFlow::SourceNode destinationStreamRef(PipeCall pipe) {
+  result = destinationStreamRef(DataFlow::TypeTracker::end(), pipe)
 }
 
 /**
@@ -162,9 +165,9 @@ private DataFlow::SourceNode pipeResultRef(PipeCall pipe) {
  * Since pipe() returns the destination stream, this finds cases where
  * the destination stream is used with methods not typical of streams.
  */
-predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
+private predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
   exists(DataFlow::MethodCallNode call |
-    call = pipeResultRef(pipeCall).getAMethodCall() and
+    call = destinationStreamRef(pipeCall).getAMethodCall() and
     not call.getMethodName() = getStreamMethodName()
   )
 }
@@ -172,9 +175,9 @@ predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
 /**
  * Holds if the pipe call result is used to access a property that is not typical of streams.
  */
-predicate isPipeFollowedByNonStreamProperty(PipeCall pipeCall) {
+private predicate isPipeFollowedByNonStreamProperty(PipeCall pipeCall) {
   exists(DataFlow::PropRef propRef |
-    propRef = pipeResultRef(pipeCall).getAPropertyRead() and
+    propRef = destinationStreamRef(pipeCall).getAPropertyRead() and
     not propRef.getPropertyName() = [getStreamPropertyName(), getStreamMethodName()]
   )
 }
@@ -183,7 +186,7 @@ predicate isPipeFollowedByNonStreamProperty(PipeCall pipeCall) {
  * Holds if the pipe call result is used in a non-stream-like way,
  * either by calling non-stream methods or accessing non-stream properties.
  */
-predicate isPipeFollowedByNonStreamAccess(PipeCall pipeCall) {
+private predicate isPipeFollowedByNonStreamAccess(PipeCall pipeCall) {
   isPipeFollowedByNonStreamMethod(pipeCall) or
   isPipeFollowedByNonStreamProperty(pipeCall)
 }
@@ -192,51 +195,52 @@ predicate isPipeFollowedByNonStreamAccess(PipeCall pipeCall) {
  * Gets a reference to a stream that may be the source of the given pipe call.
  * Uses type back-tracking to trace stream references in the data flow.
  */
-private DataFlow::SourceNode streamRef(DataFlow::TypeBackTracker t, PipeCall pipeCall) {
+private DataFlow::SourceNode sourceStreamRef(DataFlow::TypeBackTracker t, PipeCall pipeCall) {
   t.start() and
   result = pipeCall.getSourceStream().getALocalSource()
   or
   exists(DataFlow::SourceNode prev |
-    prev = streamRef(t.continue(), pipeCall) and
+    prev = sourceStreamRef(t.continue(), pipeCall) and
     streamFlowStep(result.getALocalUse(), prev)
   )
   or
-  exists(DataFlow::TypeBackTracker t2 | result = streamRef(t2, pipeCall).backtrack(t2, t))
+  exists(DataFlow::TypeBackTracker t2 | result = sourceStreamRef(t2, pipeCall).backtrack(t2, t))
 }
 
 /**
  * Gets a reference to a stream that may be the source of the given pipe call.
  */
-private DataFlow::SourceNode streamRef(PipeCall pipeCall) {
-  result = streamRef(DataFlow::TypeBackTracker::end(), pipeCall)
+private DataFlow::SourceNode sourceStreamRef(PipeCall pipeCall) {
+  result = sourceStreamRef(DataFlow::TypeBackTracker::end(), pipeCall)
 }
 
 /**
  * Holds if the source stream of the given pipe call has an `error` handler registered.
  */
-predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
+private predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
   exists(ErrorHandlerRegistration handler |
-    handler = streamRef(pipeCall).getAMethodCall(getEventHandlerMethodName())
+    handler = sourceStreamRef(pipeCall).getAMethodCall(getEventHandlerMethodName())
   )
   or
   hasPlumber(pipeCall)
 }
 
 /**
- * Holds if one of the arguments of the pipe call is a `gulp-plumber` monkey patch.
+ * Holds if the pipe call uses `gulp-plumber`, which automatically handles stream errors.
+ * Gulp-plumber is a Node.js module that prevents pipe breaking caused by errors from gulp plugins.
  */
-predicate hasPlumber(PipeCall pipeCall) {
+private predicate hasPlumber(PipeCall pipeCall) {
   pipeCall.getDestinationStream().getALocalSource() = API::moduleImport("gulp-plumber").getACall()
   or
-  streamRef+(pipeCall) = API::moduleImport("gulp-plumber").getACall()
+  sourceStreamRef+(pipeCall) = API::moduleImport("gulp-plumber").getACall()
 }
 
 /**
  * Holds if the source or destination of the given pipe call is identified as a non-Node.js stream.
  */
-predicate hasNonNodeJsStreamSource(PipeCall pipeCall) {
-  streamRef(pipeCall) = getNonNodeJsStreamType() or
-  pipeResultRef(pipeCall) = getNonNodeJsStreamType()
+private predicate hasNonNodeJsStreamSource(PipeCall pipeCall) {
+  sourceStreamRef(pipeCall) = getNonNodeJsStreamType() or
+  destinationStreamRef(pipeCall) = getNonNodeJsStreamType()
 }
 
 /**
@@ -244,13 +248,13 @@ predicate hasNonNodeJsStreamSource(PipeCall pipeCall) {
  */
 private predicate hasNonStreamSourceLikeUsage(PipeCall pipeCall) {
   exists(DataFlow::MethodCallNode call, string name |
-    call.getReceiver().getALocalSource() = streamRef(pipeCall) and
+    call.getReceiver().getALocalSource() = sourceStreamRef(pipeCall) and
     name = call.getMethodName() and
     not name = getStreamMethodName()
   )
   or
   exists(DataFlow::PropRef propRef, string propName |
-    propRef.getBase().getALocalSource() = streamRef(pipeCall) and
+    propRef.getBase().getALocalSource() = sourceStreamRef(pipeCall) and
     propName = propRef.getPropertyName() and
     not propName = [getStreamPropertyName(), getStreamMethodName()]
   )
@@ -259,9 +263,9 @@ private predicate hasNonStreamSourceLikeUsage(PipeCall pipeCall) {
 /**
  * Holds if the pipe call destination stream has an error handler registered.
  */
-predicate hasErrorHandlerDownstream(PipeCall pipeCall) {
+private predicate hasErrorHandlerDownstream(PipeCall pipeCall) {
   exists(ErrorHandlerRegistration handler |
-    handler.getReceiver().getALocalSource() = pipeResultRef(pipeCall)
+    handler.getReceiver().getALocalSource() = destinationStreamRef(pipeCall)
   )
 }
 
