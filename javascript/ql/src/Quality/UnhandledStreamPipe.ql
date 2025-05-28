@@ -12,6 +12,7 @@
  */
 
 import javascript
+import semmle.javascript.filters.ClassifyFiles
 
 /**
  * A call to the `pipe` method on a Node.js stream.
@@ -270,6 +271,7 @@ where
   hasErrorHandlerDownstream(pipeCall) and
   not isPipeFollowedByNonStreamAccess(pipeCall) and
   not hasNonStreamSourceLikeUsage(pipeCall) and
-  not hasNonNodeJsStreamSource(pipeCall)
+  not hasNonNodeJsStreamSource(pipeCall) and
+  not isTestFile(pipeCall.getFile())
 select pipeCall,
   "Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped."
