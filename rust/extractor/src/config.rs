@@ -29,6 +29,7 @@ pub enum Compression {
     #[default] // TODO make gzip default
     None,
     Gzip,
+    Zstd,
 }
 
 impl From<Compression> for trap::Compression {
@@ -36,6 +37,7 @@ impl From<Compression> for trap::Compression {
         match val {
             Compression::None => Self::None,
             Compression::Gzip => Self::Gzip,
+            Compression::Zstd => Self::Zstd,
         }
     }
 }

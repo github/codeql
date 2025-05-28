@@ -23,10 +23,10 @@ options:
         title: Controls compression for the TRAP files written by the extractor.
         description: >
           This option is only intended for use in debugging the extractor. Accepted
-          values are 'gzip' (to write gzip-compressed TRAP) and 'none'
-          (currently the default, to write uncompressed TRAP).
+          values are 'gzip' (the default, to write gzip-compressed TRAP) 'zstd' (to
+          write Zstandard-compressed TRAP) and 'none' (to write uncompressed TRAP).
         type: string
-        pattern: "^(none|gzip)$"
+        pattern: "^(none|gzip|zstd)$"
   cargo_target_dir:
     title: Directory to use for cargo output files.
     description: >

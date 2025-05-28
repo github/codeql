@@ -20,6 +20,7 @@ def test_do_not_print_env(codeql, rust, rust_edition, cargo, check_env_not_dumpe
 @pytest.mark.ql_test("steps.ql", expected=".cargo.expected")
 @pytest.mark.parametrize(("rust_edition", "compression", "suffix"), [
     pytest.param(2024, "gzip", ".gz", id="gzip"),
+    pytest.param(2024, "zstd", ".zst", id="zstd"),
 ])
 def test_compression(codeql, rust, rust_edition, compression, suffix, cargo, rust_check_diagnostics, cwd):
     codeql.database.create(cleanup=False, _env={
