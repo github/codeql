@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "cc",
+    name = "zstd",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,7 +29,10 @@ rust_library(
         ],
     ),
     crate_features = [
-        "parallel",
+        "arrays",
+        "default",
+        "legacy",
+        "zdict_builder",
     ],
     crate_root = "src/lib.rs",
     edition = "2018",
@@ -38,7 +41,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=cc",
+        "crate-name=zstd",
         "manual",
         "noclippy",
         "norustfmt",
@@ -82,44 +85,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.2.7",
+    version = "0.13.3",
     deps = [
-        "@vendor_ts__jobserver-0.1.32//:jobserver",
-        "@vendor_ts__shlex-1.3.0//:shlex",
-    ] + select({
-        "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.171//:libc",  # aarch64-apple-darwin
-        ],
-        "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # aarch64-unknown-linux-gnu
-        ],
-        "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # aarch64-unknown-linux-gnu, aarch64-unknown-nixos-gnu
-        ],
-        "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.171//:libc",  # arm-unknown-linux-gnueabi
-        ],
-        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # i686-unknown-linux-gnu
-        ],
-        "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # powerpc-unknown-linux-gnu
-        ],
-        "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # s390x-unknown-linux-gnu
-        ],
-        "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__libc-0.2.171//:libc",  # x86_64-apple-darwin
-        ],
-        "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.171//:libc",  # x86_64-unknown-freebsd
-        ],
-        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # x86_64-unknown-linux-gnu
-        ],
-        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.171//:libc",  # x86_64-unknown-linux-gnu, x86_64-unknown-nixos-gnu
-        ],
-        "//conditions:default": [],
-    }),
+        "@vendor_ts__zstd-safe-7.2.4//:zstd_safe",
+    ],
 )
