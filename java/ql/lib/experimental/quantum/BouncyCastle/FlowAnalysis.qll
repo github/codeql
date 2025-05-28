@@ -1,18 +1,30 @@
 import java
 import experimental.quantum.Language
 import semmle.code.java.dataflow.DataFlow
+import AlgorithmInstances
+import AlgorithmValueConsumers
 
 /**
  * A signature for the `getInstance()` method calls used in JCA, or direct
  * constructor calls used in BouncyCastle.
  */
-signature class NewCallSig instanceof Call;
+signature class NewCallSig instanceof Call {
+  /**
+   * Gets a parameter argument that is used to initialize the object.
+   */
+  Crypto::ConsumerInputDataFlowNode getAParametersConsumer();
+}
 
-signature class InitCallSig instanceof MethodCall;
+signature class InitCallSig instanceof MethodCall {
+  /**
+   * Gets a parameter argument that is used to initialize the object.
+   */
+  Crypto::ConsumerInputDataFlowNode getAParametersConsumer();
+}
 
 signature class UseCallSig instanceof MethodCall {
   /**
-   * Holds if the use is not a final use, such as an `update()` call before `doFinal()`
+   * Holds if the use is not a final use, such as an `update()` call before `doFinal()`.
    */
   predicate isIntermediate();
 }
@@ -22,7 +34,7 @@ signature class UseCallSig instanceof MethodCall {
  * to `init()`, to `doOperation()` in BouncyCastle, and similar patterns in
  * other libraries.
  *
- * For example:
+ * Example:
  * ```
  * gen = new KeyGenerator(...);
  * gen.init(...);
@@ -85,7 +97,7 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
     DataFlow::Node getSndNode() { result = node2 }
   }
 
-  module GetInstanceToInitToUseConfig implements DataFlow::StateConfigSig {
+  module NewToInitToUseConfig implements DataFlow::StateConfigSig {
     class FlowState = InitFlowState;
 
     predicate isSource(DataFlow::Node src, FlowState state) {
@@ -130,7 +142,7 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
     }
   }
 
-  module NewToInitToUseFlow = DataFlow::GlobalWithState<GetInstanceToInitToUseConfig>;
+  module NewToInitToUseFlow = DataFlow::GlobalWithState<NewToInitToUseConfig>;
 
   New getNewFromUse(Use use, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result and
@@ -160,6 +172,58 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
     src.getNode().asExpr() = result.(MethodCall).getQualifier() and
     sink.getNode().asExpr() = final.(MethodCall).getQualifier() and
     NewToInitToUseFlow::flowPath(src, sink)
+  }
+}
+
+/**
+ * A flow analysis module for analyzing data flow from the instantiation of a
+ * parameter object to an `init()` call in BouncyCastle, and similar patterns in
+ * other libraries.
+ *
+ * Example:
+ * ```
+ * params = new ECKeyGenerationParameters(...);
+ * gen = new ECKeyPairGenerator();
+ * gen.init(params);
+ * ```
+ */
+module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
+  module ParametersToInitConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof New }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(Init init | sink = init.getAParametersConsumer())
+    }
+
+    /**
+     * Pass-through for parameters created from other parameters.
+     *
+     * As an example, below we want to track the flow from the `X9ECParameters`
+     * constructor call to the `keyPairGenerator.init()` call to be able to
+     * determine the curve associated with the generator.
+     *
+     * Example:
+     * ```
+     * X9ECParameters ecParams = SECNamedCurves.getByName("secp256r1");
+     * ECDomainParameters domainParams = new ECDomainParameters(ecParams);
+     * ECKeyGenerationParameters keyGenParams = new ECKeyGenerationParameters(domainParams, random);
+     * ECKeyPairGenerator keyPairGenerator = new ECKeyPairGenerator();
+     * keyPairGenerator.init(keyGenParams);
+     * ```
+     */
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      node1 = node2.asExpr().(New).getAParametersConsumer()
+    }
+  }
+
+  module ParametersToInitFlow = DataFlow::Global<ParametersToInitConfig>;
+
+  New getParametersFromInit(
+    Init init, ParametersToInitFlow::PathNode src, ParametersToInitFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = result and
+    sink.getNode() = init.getAParametersConsumer() and
+    ParametersToInitFlow::flowPath(src, sink)
   }
 }
 
@@ -196,4 +260,31 @@ class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
   ArtifactAdditionalFlowStep() { additionalFlowSteps(this, output) }
 
   override DataFlow::Node getOutput() { result = output }
+}
+
+module EllipticCurveStringLiteralToConsumer {
+  /**
+   * Flow from a known elliptic curve name to an elliptic curve algorithm consumer.
+   */
+  module EllipticCurveStringLiteralToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
+    // NOTE: We do not reference EllipticCurveStringLiteralInstance directly
+    // here to avoid non-monotonic recursion.
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof StringLiteral }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(EllipticCurveAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
+    }
+  }
+
+  module EllipticCurveStringLiteralToAlgorithmValueConsumerFlow =
+    DataFlow::Global<EllipticCurveStringLiteralToAlgorithmValueConsumerConfig>;
+
+  EllipticCurveAlgorithmValueConsumer getConsumerFromLiteral(
+    StringLiteral literal, EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::PathNode src,
+    EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = literal and
+    sink.getNode() = result.getInputNode() and
+    EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::flowPath(src, sink)
+  }
 }

@@ -1,10 +1,12 @@
 import java
 import experimental.quantum.Language
 import AlgorithmValueConsumers
+import FlowAnalysis
 
-abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCurveInstance,
-  EllipticCurveAlgorithmValueConsumer
-{
+/**
+ * Elliptic curve algorithms where the curve is implicitly defined by the type.
+ */
+abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCurveInstance {
   override Crypto::TEllipticCurveType getEllipticCurveType() {
     Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, result)
   }
@@ -15,7 +17,23 @@ abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCu
 }
 
 /**
- * Signature algorithms.
+ * A string literal that represents an elliptic curve name.
+ */
+class EllipticCurveStringLiteralInstance extends EllipticCurveAlgorithmInstance instanceof StringLiteral
+{
+  EllipticCurveStringLiteralInstance() {
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getValue(), _, _)
+  }
+
+  override string getRawEllipticCurveName() { result = super.getValue() }
+
+  EllipticCurveAlgorithmValueConsumer getConsumer() {
+    result = EllipticCurveStringLiteralToConsumer::getConsumerFromLiteral(this, _, _)
+  }
+}
+
+/**
+ * Signature algorithms where the algorithm is implicitly defined by the type.
  */
 abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
   SignatureAlgorithmValueConsumer instanceof ClassInstanceExpr
@@ -38,12 +56,31 @@ abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmI
   override string getRawAlgorithmName() {
     typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
   }
+
+  Crypto::ConsumerInputDataFlowNode getAParametersConsumer() { none() }
+}
+
+/**
+ * DSA and DSADigest signers.
+ */
+class DSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
+  DSASignatureAlgorithmInstance() {
+    super.getConstructedType() instanceof Signers::Signer and
+    super.getConstructedType().getName().matches("DSA%")
+  }
+
+  override string getRawAlgorithmName() {
+    typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
+  }
 }
 
 abstract private class EllipticCurveSignatureAlgorithmInstance extends SignatureAlgorithmInstance,
   EllipticCurveAlgorithmInstance
 { }
 
+/**
+ * Ed25519, Ed25519ph, and Ed25519ctx signers.
+ */
 class Ed25519SignatureAlgorithmInstance extends EllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
   Ed25519SignatureAlgorithmInstance() {
@@ -54,6 +91,9 @@ class Ed25519SignatureAlgorithmInstance extends EllipticCurveSignatureAlgorithmI
   override string getRawEllipticCurveName() { result = "CURVE25519" }
 }
 
+/**
+ * Ed448 and Ed448ph signers.
+ */
 class Ed448SignatureAlgorithmInstance extends EllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
   Ed448SignatureAlgorithmInstance() {
@@ -69,7 +109,39 @@ class Ed448SignatureAlgorithmInstance extends EllipticCurveSignatureAlgorithmIns
 }
 
 /**
- * Key generation algorithms.
+ * ECDSA signers.
+ *
+ * ECDSA curve parameters can be set in at least five ways:
+ * - By using the `ECDomainParameters` class, which is passed to the constructor of the signer.
+ * - By using the `ECNamedDomainParameters` class, which is passed to the constructor of the signer.
+ * - By using the `ECNamedCurveTable` class, which is used to obtain the curve parameters.
+ * - By using the `ECNamedCurveSpec` class, which is passed to the constructor of the signer.
+ * - By using the `ECParameterSpec` class, which is passed to the constructor of the signer.
+ *
+ * NOTE: This type does not inherit from `EllipticCurveSignatureAlgorithmInstance` because the curve
+ * is not implicitly defined by the type, but rather by the key parameters passed to `init()`.
+ */
+class ECDSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
+{
+  ECDSASignatureAlgorithmInstance() {
+    super.getConstructedType() instanceof Signers::Signer and
+    super.getConstructedType().getName().matches("ECDSA%")
+  }
+
+  override string getRawAlgorithmName() {
+    typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
+  }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    // We need to specify this explicitly since the key size is not fixed.
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
+  }
+
+  override int getKeySizeFixed() { none() }
+}
+
+/**
+ * Key generation algorithms where the algorithm is implicitly defined by the type.
  */
 abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
   KeyGenerationAlgorithmValueConsumer instanceof ClassInstanceExpr
@@ -92,8 +164,13 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgori
   override string getRawAlgorithmName() {
     typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
   }
+
+  Crypto::ConsumerInputDataFlowNode getAParametersConsumer() { none() }
 }
 
+/**
+ * Key generation algorithms for elliptic curves where the curve is implicitly defined by the type.
+ */
 abstract private class EllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance,
   EllipticCurveAlgorithmInstance
 { }
@@ -119,6 +196,24 @@ class Ed448KeyGenerationAlgorithmInstance extends EllipticCurveKeyGenerationAlgo
 }
 
 /**
+ * Represents a generic `ECKeyPairGenerator` instances.
+ *
+ * NOTE: This type does not inherit from `EllipticCurveKeyGenerationAlgorithmInstance` because the curve
+ * is not implicitly defined by the type, but rather by parameters passed to the constructor.
+ */
+class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
+{
+  GenericEllipticCurveKeyGenerationAlgorithmInstance() {
+    super.getConstructedType() instanceof Generators::KeyGenerator and
+    super.getConstructedType().getName().matches("EC%")
+  }
+
+  override string getRawAlgorithmName() {
+    typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
+  }
+}
+
+/**
  * Private predicates mapping type names to raw names, key sizes and algorithms.
  */
 bindingset[typeName]
@@ -130,6 +225,10 @@ private predicate typeNameToRawAlgorithmName(string typeName, string algorithmNa
   // Ed448 and Ed448ph key generators and signers
   typeName.matches("Ed448%") and
   algorithmName = "ED448"
+  or
+  // ECDSA
+  typeName.matches("ECDSA%") and
+  algorithmName = "ECDSA"
 }
 
 private predicate signatureNameToKeySizeAndAlgorithmMapping(
