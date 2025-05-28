@@ -218,9 +218,7 @@ private DataFlow::SourceNode sourceStreamRef(PipeCall pipeCall) {
  * Holds if the source stream of the given pipe call has an `error` handler registered.
  */
 private predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
-  exists(ErrorHandlerRegistration handler |
-    handler = sourceStreamRef(pipeCall).getAMethodCall(getEventHandlerMethodName())
-  )
+  sourceStreamRef(pipeCall).getAMethodCall(_) instanceof ErrorHandlerRegistration
   or
   hasPlumber(pipeCall)
 }
