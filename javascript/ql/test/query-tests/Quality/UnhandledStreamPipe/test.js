@@ -1,7 +1,7 @@
 function test() {
   {
     const stream = getStream();
-    stream.pipe(destination); // $Alert
+    stream.pipe(destination).on("error", e); // $Alert
   }
   {
     const stream = getStream();
@@ -16,7 +16,7 @@ function test() {
   {
     const stream = getStream();
     const s2 = stream;
-    s2.pipe(dest); // $Alert
+    s2.pipe(dest).on("error", e); // $Alert
   }
   {
     const stream = getStream();
@@ -42,7 +42,7 @@ function test() {
     const stream = getStream();
     stream.on('error', handleError);
     const stream2 = stream.pipe(destination);
-    stream2.pipe(destination2); // $Alert
+    stream2.pipe(destination2).on("error", e); // $Alert
   }
   {
     const stream = getStream();
@@ -57,13 +57,13 @@ function test() {
     const stream = getStream();
     stream.on('error', handleError);
     const stream2 = stream.pipe(destination);
-    stream2.pipe(destination2); // $Alert
+    stream2.pipe(destination2).on("error", e); // $Alert
   }
   { // Error handler on destination instead of source
     const stream = getStream();
     const dest = getDest();
     dest.on('error', handler);
-    stream.pipe(dest); // $Alert
+    stream.pipe(dest).on("error", e); // $Alert
   }
   { // Multiple aliases, error handler on one
     const stream = getStream();
@@ -76,7 +76,7 @@ function test() {
     const stream = getStream();
     const s2 = stream.pipe(destination1);
     stream.on('error', handleError);
-    s2.pipe(destination2); // $Alert
+    s2.pipe(destination2).on("error", e); // $Alert
   }
   { // Handler registered via .once
     const stream = getStream();
@@ -91,7 +91,7 @@ function test() {
   { // Handler registered for unrelated event
     const stream = getStream();
     stream.on('close', handleClose);
-    stream.pipe(dest); // $Alert
+    stream.pipe(dest).on("error", e); // $Alert
   }
   { // Error handler registered after pipe, but before error
     const stream = getStream();
@@ -106,14 +106,17 @@ function test() {
   }
   { // Pipe in a function, error handler not set
     const stream = getStream();
-    function doPipe(s) { s.pipe(dest); } // $Alert
+    function doPipe(s) { 
+      f = s.pipe(dest); // $Alert
+      f.on("error", e); 
+    }
     doPipe(stream);
   }
   { // Dynamic event assignment
     const stream = getStream();
     const event = 'error';
     stream.on(event, handleError);
-    stream.pipe(dest);  // $SPURIOUS:Alert
+    stream.pipe(dest).on("error", e);  // $SPURIOUS:Alert
   }
   { // Handler assigned via variable property
     const stream = getStream();
@@ -122,12 +125,12 @@ function test() {
     stream.pipe(dest);
   }
   { // Pipe with no intermediate variable, no error handler
-    getStream().pipe(dest); // $Alert
+    getStream().pipe(dest).on("error", e); // $Alert
   }
   { // Handler set via .addListener synonym
     const stream = getStream();
     stream.addListener('error', handleError);
-    stream.pipe(dest);
+    stream.pipe(dest).on("error", e);
   }
   { // Handler set via .once after .pipe
     const stream = getStream();
@@ -140,7 +143,11 @@ function test() {
   }
   { // Long chained pipe without error handler
     const stream = getStream();
-    stream.pause().setEncoding('utf8').resume().pipe(writable); // $Alert
+    stream.pause().setEncoding('utf8').resume().pipe(writable).on("error", e); // $Alert
+  }
+  { // Long chained pipe without error handler
+    const stream = getStream();
+    stream.pause().setEncoding('utf8').on("error", e).resume().pipe(writable).on("error", e);
   }
   { // Non-stream with pipe method that returns subscribable object (Streams do not have subscribe method)
     const notStream = getNotAStream();
@@ -172,7 +179,7 @@ function test() {
   }
   { // Member access on a stream after pipe
     const notStream = getNotAStream();
-    const val = notStream.pipe(writable).readable; // $Alert
+    const val = notStream.pipe(writable).on("error", e).readable; // $Alert
   }
   { // Method access on a non-stream after pipe
     const notStream = getNotAStream();
@@ -182,7 +189,7 @@ function test() {
     const fs = require('fs');
     const stream = fs.createReadStream('file.txt');
     const copyStream = stream;
-    copyStream.pipe(destination); // $Alert
+    copyStream.pipe(destination).on("error", e); // $Alert
   }
   {
     const notStream = getNotAStream();
@@ -210,6 +217,16 @@ function test() {
     const plumber = require('gulp-plumber');
     const p = plumber();
     getStream().pipe(p).pipe(dest).pipe(dest).pipe(dest);
+  }
+  {
+    const plumber = require('gulp-plumber');
+    const p = plumber();
+    getStream().pipe(p);
+  }
+  {
+    const plumber = require('gulp-plumber');
+    const p = plumber();
+    getStream().pipe(p).pipe(dest);
   }
   {
     const notStream = getNotAStream();

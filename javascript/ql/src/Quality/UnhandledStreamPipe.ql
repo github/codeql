@@ -110,8 +110,11 @@ string getStreamMethodName() {
  * A call to register an event handler on a Node.js stream.
  * This includes methods like `on`, `once`, and `addListener`.
  */
-class StreamEventRegistration extends DataFlow::MethodCallNode {
-  StreamEventRegistration() { this.getMethodName() = getEventHandlerMethodName() }
+class ErrorHandlerRegistration extends DataFlow::MethodCallNode {
+  ErrorHandlerRegistration() {
+    this.getMethodName() = getEventHandlerMethodName() and
+    this.getArgument(0).getStringValue() = "error"
+  }
 }
 
 /**
@@ -136,7 +139,12 @@ predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) 
  * Tracks the result of a pipe call as it flows through the program.
  */
 private DataFlow::SourceNode pipeResultTracker(DataFlow::TypeTracker t, PipeCall pipe) {
-  t.start() and result = pipe
+  t.start() and result = pipe.getALocalSource()
+  or
+  exists(DataFlow::SourceNode prev |
+    prev = pipeResultTracker(t.continue(), pipe) and
+    streamFlowStep(result.getALocalUse(), prev)
+  )
   or
   exists(DataFlow::TypeTracker t2 | result = pipeResultTracker(t2, pipe).track(t2, t))
 }
@@ -166,7 +174,7 @@ predicate isPipeFollowedByNonStreamMethod(PipeCall pipeCall) {
 predicate isPipeFollowedByNonStreamProperty(PipeCall pipeCall) {
   exists(DataFlow::PropRef propRef |
     propRef = pipeResultRef(pipeCall).getAPropertyRead() and
-    not propRef.getPropertyName() = getStreamPropertyName()
+    not propRef.getPropertyName() = [getStreamPropertyName(), getStreamMethodName()]
   )
 }
 
@@ -206,9 +214,8 @@ private DataFlow::SourceNode streamRef(PipeCall pipeCall) {
  * Holds if the source stream of the given pipe call has an `error` handler registered.
  */
 predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
-  exists(StreamEventRegistration handler |
-    handler = streamRef(pipeCall).getAMethodCall(getEventHandlerMethodName()) and
-    handler.getArgument(0).getStringValue() = "error"
+  exists(ErrorHandlerRegistration handler |
+    handler = streamRef(pipeCall).getAMethodCall(getEventHandlerMethodName())
   )
   or
   hasPlumber(pipeCall)
@@ -218,6 +225,8 @@ predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
  * Holds if one of the arguments of the pipe call is a `gulp-plumber` monkey patch.
  */
 predicate hasPlumber(PipeCall pipeCall) {
+  pipeCall.getDestinationStream().getALocalSource() = API::moduleImport("gulp-plumber").getACall()
+  or
   streamRef+(pipeCall) = API::moduleImport("gulp-plumber").getACall()
 }
 
@@ -246,9 +255,19 @@ private predicate hasNonStreamSourceLikeUsage(PipeCall pipeCall) {
   )
 }
 
+/**
+ * Holds if the pipe call destination stream has an error handler registered.
+ */
+predicate hasErrorHandlerDownstream(PipeCall pipeCall) {
+  exists(ErrorHandlerRegistration handler |
+    handler.getReceiver().getALocalSource() = pipeResultRef(pipeCall)
+  )
+}
+
 from PipeCall pipeCall
 where
   not hasErrorHandlerRegistered(pipeCall) and
+  hasErrorHandlerDownstream(pipeCall) and
   not isPipeFollowedByNonStreamAccess(pipeCall) and
   not hasNonStreamSourceLikeUsage(pipeCall) and
   not hasNonNodeJsStreamSource(pipeCall)
