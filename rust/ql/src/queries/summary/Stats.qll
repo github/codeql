@@ -8,6 +8,7 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
+private import codeql.rust.internal.TypeInferenceConsistency as TypeInferenceConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.dataflow.internal.SsaImpl::Consistency as SsaConsistency
@@ -50,6 +51,13 @@ int getTotalAstInconsistencies() {
 int getTotalPathResolutionInconsistencies() {
   result =
     sum(string type | | PathResolutionConsistency::getPathResolutionInconsistencyCounts(type))
+}
+
+/**
+ * Gets a count of the total number of type inference inconsistencies in the database.
+ */
+int getTotalTypeInferenceInconsistencies() {
+  result = sum(string type | | TypeInferenceConsistency::getTypeInferenceInconsistencyCounts(type))
 }
 
 /**
@@ -157,6 +165,13 @@ predicate inconsistencyStats(string key, int value) {
   key = "Inconsistencies - SSA" and value = getTotalSsaInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
+}
+
+/**
+ * Gets summary statistics about inconsistencies related to type inference.
+ */
+predicate typeInferenceInconsistencyStats(string key, int value) {
+  key = "Inconsistencies - Type inference" and value = getTotalTypeInferenceInconsistencies()
 }
 
 /**
