@@ -352,7 +352,7 @@ resolvePath
 | my.rs:18:9:18:16 | ...::my5 | my.rs:15:5:15:16 | mod my5 |
 | my.rs:18:9:18:19 | ...::f | my/my4/my5/mod.rs:1:1:3:1 | fn f |
 | my.rs:22:5:22:9 | std | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/std/src/lib.rs:0:0:0:0 | Crate(std@0.0.0) |
-| my.rs:22:5:22:17 | ...::result | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/lib.rs:356:1:356:15 | mod result |
+| my.rs:22:5:22:17 | ...::result | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/lib.rs:365:1:365:15 | mod result |
 | my.rs:22:5:24:12 | ...::Result::<...> | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:520:1:538:1 | enum Result |
 | my.rs:23:5:23:5 | T | my.rs:21:5:21:5 | T |
 | my.rs:28:8:28:10 | i32 | file:///BUILTINS/types.rs:12:1:12:15 | struct i32 |

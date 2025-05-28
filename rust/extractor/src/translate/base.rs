@@ -168,7 +168,7 @@ impl<'a> Translator<'a> {
         if let Some(semantics) = self.semantics.as_ref() {
             let file_range = semantics.original_range(node.syntax());
             let file_id = self.file_id?;
-            if file_id.file_id(semantics.db) == file_range.file_id {
+            if file_id == file_range.file_id {
                 Some(file_range.range)
             } else {
                 None
@@ -292,20 +292,18 @@ impl<'a> Translator<'a> {
         if let Some(value) = semantics
             .hir_file_for(expanded)
             .macro_file()
-            .and_then(|macro_file| {
-                semantics
-                    .db
-                    .parse_macro_expansion_error(macro_file.macro_call_id)
-            })
+            .and_then(|macro_call_id| semantics.db.parse_macro_expansion_error(macro_call_id))
         {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
-
-                if err.span().anchor.file_id == semantics.hir_file_for(node.syntax()) {
+                let hir_file_id = semantics.hir_file_for(node.syntax());
+                if Some(err.span().anchor.file_id.file_id())
+                    == hir_file_id.file_id().map(|f| f.file_id(semantics.db))
+                {
                     let location = err.span().range
                         + semantics
                             .db
-                            .ast_id_map(err.span().anchor.file_id.into())
+                            .ast_id_map(hir_file_id)
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
