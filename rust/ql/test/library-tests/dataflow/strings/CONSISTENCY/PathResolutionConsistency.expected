@@ -1,0 +1,7 @@
+multiplePathResolutions
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
+| main.rs:52:11:52:22 | ...::from | file://:0:0:0:0 | fn from |
