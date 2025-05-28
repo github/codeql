@@ -21,7 +21,7 @@ type Result<
     T, // T
 > = ::std::result::Result<
     T, // $ item=T
-    String,> // $ item=Result
+    String,> // $ item=Result $ item=String
 ; // my::Result
 
 fn int_div(
