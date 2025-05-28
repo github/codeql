@@ -1300,6 +1300,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TKeyOperation(KeyOperationInstance e) or
     TKeyOperationAlgorithm(KeyOperationAlgorithmInstanceOrValueConsumer e) or
     TKeyOperationOutput(KeyOperationOutputArtifactInstance e) or
+    TSignature(SignatureOperationInstance e) or
     // Non-Standalone Algorithms (e.g., Mode, Padding)
     // These algorithms are always tied to a key operation algorithm
     TModeOfOperationAlgorithm(ModeOfOperationAlgorithmInstance e) or
@@ -2628,6 +2629,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       curveName = "ES256" and keySize = 256 and curveFamily = ES()
       or
       curveName = "CURVE25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
       or
       curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
       or
