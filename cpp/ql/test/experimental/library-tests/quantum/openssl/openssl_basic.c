@@ -1,6 +1,6 @@
-#include "includes/evp_stubs.h"
-#include "includes/alg_macro_stubs.h"
-#include "includes/rand_stubs.h"
+#include "openssl/evp_stubs.h"
+#include "openssl/alg_macro_stubs.h"
+#include "openssl/rand_stubs.h"
 
 size_t strlen(const char* str);
 
