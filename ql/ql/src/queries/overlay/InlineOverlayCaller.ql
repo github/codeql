@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @id ql/inline-overlay-caller
- * @tags performance
+ * @tags correctness
+ *       performance
  * @precision high
  */
 
