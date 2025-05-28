@@ -272,7 +272,7 @@ impl<'a> Translator<'a> {
     ) {
         for child in children {
             if let NodeOrToken::Token(token) = child {
-                if token.kind() == SyntaxKind::COMMENT {
+                if token.kind() == SyntaxKind::COMMENT && self.source_kind == SourceKind::Source {
                     let label = self.trap.emit(generated::Comment {
                         id: TrapId::Star,
                         parent: parent_label,
@@ -655,6 +655,9 @@ impl<'a> Translator<'a> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
         if self.source_kind == SourceKind::Library {
             let syntax = item.syntax();
+            if syntax.kind() == SyntaxKind::TOKEN_TREE {
+                return true;
+            }
             if syntax
                 .parent()
                 .and_then(Fn::cast)
