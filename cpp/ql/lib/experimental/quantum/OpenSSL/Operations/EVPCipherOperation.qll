@@ -12,6 +12,8 @@ class EVP_Cipher_Update_Call extends EVPUpdate {
   }
 
   override Expr getInputArg() { result = this.(Call).getArgument(3) }
+
+  override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 }
 
 /**
@@ -62,5 +64,14 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
         "EVP_EncryptFinal_ex", "EVP_DecryptFinal_ex", "EVP_CipherFinal_ex", "EVP_EncryptFinal",
         "EVP_DecryptFinal", "EVP_CipherFinal"
       ]
+  }
+
+  /**
+   * Output is both from update calls and from the final call.
+   */
+  override Expr getOutputArg() {
+    result = EVPFinal.super.getOutputArg()
+    or
+    result = EVP_Cipher_Operation.super.getOutputArg()
   }
 }

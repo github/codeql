@@ -69,6 +69,11 @@ abstract class EVPUpdate extends Call {
    * Update calls always have some input data like plaintext or message digest.
    */
   abstract Expr getInputArg();
+
+  /**
+   * Update calls sometimes have some output data like a plaintext.
+   */
+  Expr getOutputArg() { none() }
 }
 
 /**
@@ -105,8 +110,6 @@ abstract class EVPOperation extends OpenSSLOperation {
 
   /**
    * Some output data like ciphertext or signature.
-   * Always produced directly by this operation.
-   * Assumption: output is provided as an argument to the call, never as return value.
    */
   abstract Expr getOutputArg();
 
@@ -125,13 +128,15 @@ abstract class EVPOperation extends OpenSSLOperation {
   }
 
   Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result.asExpr() = this.getOutputArg()
+    result = DataFlow::exprNode(this.getOutputArg())
   }
 
   /**
    * Input consumer is the input argument of the call.
    */
-  Crypto::ConsumerInputDataFlowNode getInputConsumer() { result.asExpr() = this.getInputArg() }
+  Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+    result = DataFlow::exprNode(this.getInputArg())
+  }
 }
 
 /**
@@ -147,8 +152,15 @@ abstract class EVPFinal extends EVPOperation {
 
   /**
    * The input data was provided to all update calls.
+   * If more input data was provided in the final call, override the method.
    */
   override Expr getInputArg() { result = this.getUpdateCalls().getInputArg() }
+
+  /**
+   * The output data was provided to all update calls.
+   * If more output data was provided in the final call, override the method.
+   */
+  override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
 }
 
 /**
