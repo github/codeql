@@ -160,7 +160,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   int argument;
 
   NumberTaintPreservingCallable() {
-    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.lang", "Number") and
+    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.lang", "Number") and
     (
       this instanceof Constructor and
       argument = 0

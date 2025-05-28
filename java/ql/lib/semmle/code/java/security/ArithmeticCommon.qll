@@ -7,7 +7,6 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.RangeAnalysis
 private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dataflow.SignAnalysis
-private import semmle.code.java.controlflow.internal.GuardsLogic
 
 /**
  * Holds if the type of `exp` is narrower than or equal to `numType`,
