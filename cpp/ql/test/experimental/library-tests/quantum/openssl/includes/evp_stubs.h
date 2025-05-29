@@ -28,12 +28,25 @@
 # define         EVP_CTRL_CCM_SET_IV_FIXED       EVP_CTRL_AEAD_SET_IV_FIXED
 # define         EVP_CTRL_CCM_SET_L              0x14
 # define         EVP_CTRL_CCM_SET_MSGLEN         0x15
+# define         EVP_MAX_MD_SIZE                 64
 
 typedef unsigned long size_t;
 
 typedef unsigned char uint8_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
+
+// Forward declarations for opaque structs
+struct rsa_st;
+struct dsa_st;
+struct dh_st;
+struct ec_key_st;
+struct DSA_SIG_st;
+typedef struct rsa_st RSA;
+typedef struct dsa_st DSA;
+typedef struct dh_st DH;
+typedef struct ec_key_st EC_KEY;
+typedef struct DSA_SIG_st DSA_SIG;;
 
 // Type aliases.
 typedef int OSSL_PROVIDER;
@@ -4982,5 +4995,139 @@ const char * EVP_SKEY_get0_provider_name(const EVP_SKEY * skey) {
 EVP_SKEY * EVP_SKEY_to_provider(EVP_SKEY * skey, OSSL_LIB_CTX * libctx, OSSL_PROVIDER * prov, const char * propquery) {
     return NULL;
 }
+
+int ERR_get_error() {
+    return 0;
+}
+
+void ERR_error_string_n(int error, char* buf, int len) {
+    return;
+}
+
+int EVP_SignInit(EVP_MD_CTX *ctx, const EVP_MD *type) {
+    return 0;
+}
+
+int EVP_SignUpdate(EVP_MD_CTX *ctx, const unsigned char *data, size_t len) {
+    return 0;
+}
+
+void* OPENSSL_malloc(size_t size) {
+    return NULL;
+}
+
+void OPENSSL_free(void *ptr) {
+    return;
+}
+
+int EVP_PKEY_CTX_set_rsa_keygen_bits(EVP_PKEY_CTX *ctx, int bits) {
+    return 0;
+}
+
+int EVP_PKEY_CTX_set_rsa_pss_saltlen(EVP_PKEY_CTX *ctx, int saltlen) {
+    return 0;
+}
+
+int RSA_do_verify(const unsigned char *dgst, int dgst_len, DSA_SIG *sig, DSA *dsa) {
+    return 1;
+}
+
+int DSA_do_verify(const unsigned char *dgst, int dgst_len, DSA_SIG *sig, DSA *dsa) {
+    return 1;
+}
+
+int RSA_free(RSA *rsa) {
+    return 1;
+}
+
+int DSA_free(DSA *dsa) {
+    return 1;
+}
+
+int EVP_PKEY_size(const EVP_PKEY * pkey) {
+    return 0;
+}
+
+int EVP_VerifyInit(EVP_MD_CTX * ctx, const EVP_MD * type) {
+    return 0;
+}
+
+int EVP_VerifyUpdate(EVP_MD_CTX * ctx, const void * data, size_t dsize) {
+    return 0;
+}
+
+int printf(const char*, ...) {
+    return NULL;
+}
+
+int strlen(const char *s) {
+    return NULL;
+}
+
+void* memset(void *s, int c, size_t n) {
+    return NULL;
+}
+
+int RSA_size(const RSA * rsa) {
+    return 0;
+}
+
+int RSA_sign(int type, const unsigned char * m, unsigned int m_length, unsigned char * sigret, unsigned int * siglen, RSA * rsa) {
+    return 0;
+}
+
+int RSA_verify(int type, const unsigned char * m, unsigned int m_length, const unsigned char * sigbuf, unsigned int siglen, RSA * rsa) {
+    return 0;
+}
+
+int EVP_PKEY_CTX_set_rsa_padding(EVP_PKEY_CTX * ctx, int padding) {
+    return 0;
+}
+
+int EVP_PKEY_CTX_set_dsa_paramgen_bits(EVP_PKEY_CTX * ctx, int bits) {
+    return 0;
+}
+
+int DSA_size(const DSA * dsa) {
+    return 0;
+}
+
+DSA_SIG * DSA_SIG_new(void) {
+    return NULL;
+}
+
+void DSA_SIG_free(DSA_SIG * sig) ;
+
+DSA_SIG * DSA_do_sign(const unsigned char * dgst, int dgst_len, DSA * dsa) {
+    return NULL;
+}
+
+void DSA_SIG_get0(const DSA_SIG * sig, const BIGNUM ** pr, const BIGNUM ** ps) ;
+
+int DSA_SIG_set0(DSA_SIG * sig, BIGNUM * r, BIGNUM * s) {
+    return 0;
+}
+
+int BN_num_bytes(const BIGNUM * a) {
+    return 0;
+}
+
+int BN_bn2bin(const BIGNUM * a, unsigned char * to) {
+    return 0;
+}
+
+BIGNUM * BN_new(void) {
+    return NULL;
+}
+
+void BN_free(BIGNUM * a) ;
+
+BIGNUM * BN_bin2bn(const unsigned char * s, int len, BIGNUM * ret) {
+    return NULL;
+}
+
+void OpenSSL_add_all_algorithms(void) ;
+
+void ERR_load_crypto_strings(void) ;
 
 #endif /* OSSL_EVP_H */

@@ -7,30 +7,25 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 
 // TODO: verification functions
-
-
 class EVP_Signature_Initializer extends EVPInitialize {
   boolean isAlgorithmSpecifiedByKey;
   boolean isAlgorithmSpecifiedByCtx;
 
   EVP_Signature_Initializer() {
     this.(Call).getTarget().getName() in [
-      "EVP_DigestSignInit", "EVP_DigestSignInit_ex", "EVP_SignInit", "EVP_SignInit_ex",
-      "EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex", "EVP_PKEY_sign_init_ex2",
-      "EVP_PKEY_sign_message_init"
-    ] and
+        "EVP_DigestSignInit", "EVP_DigestSignInit_ex", "EVP_SignInit", "EVP_SignInit_ex",
+        "EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex", "EVP_PKEY_sign_init_ex2",
+        "EVP_PKEY_sign_message_init"
+      ] and
     (
-    if this.(Call).getTarget().getName().matches("EVP_PKEY_%") then
-      isAlgorithmSpecifiedByKey = false
-    else
-      isAlgorithmSpecifiedByKey = true
-    )
-    and
+      if this.(Call).getTarget().getName().matches("EVP_PKEY_%")
+      then isAlgorithmSpecifiedByKey = false
+      else isAlgorithmSpecifiedByKey = true
+    ) and
     (
-    if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex"] then
-      isAlgorithmSpecifiedByCtx = true
-    else
-      isAlgorithmSpecifiedByCtx = false
+      if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex"]
+      then isAlgorithmSpecifiedByCtx = true
+      else isAlgorithmSpecifiedByCtx = false
     )
   }
 
@@ -39,8 +34,8 @@ class EVP_Signature_Initializer extends EVPInitialize {
    * Note that the key may be not provided in the initialization call.
    */
   override Expr getAlgorithmArg() {
-    if isAlgorithmSpecifiedByKey = true or isAlgorithmSpecifiedByCtx = true then
-      none()
+    if isAlgorithmSpecifiedByKey = true or isAlgorithmSpecifiedByCtx = true
+    then none()
     else (
       this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] and
       result = this.(Call).getArgument(1)
@@ -86,10 +81,28 @@ class EVP_Signature_Update_Call extends EVPUpdate {
 }
 
 /**
+ * We model output explicit output arguments as predicate to use it in constructors.
+ * The predicate must cover all EVP_Signature_Operation subclasses.
+ */
+private Expr signatureOperationOutputArg(Call call) {
+  if call.getTarget().getName() = "EVP_SignFinal_ex"
+  then result = call.getArgument(2)
+  else result = call.getArgument(1)
+}
+
+/**
  * Base configuration for all EVP signature operations.
  */
 abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperationInstance {
-  EVP_Signature_Operation() { this.(Call).getTarget().getName().matches("EVP_%") }
+  EVP_Signature_Operation() {
+    this.(Call).getTarget().getName().matches("EVP_%") and
+    // NULL output argument means the call is to get the size of the signature
+    (
+      not exists(signatureOperationOutputArg(this).getValue())
+      or
+      signatureOperationOutputArg(this).getValue() != "0"
+    )
+  }
 
   /**
    * Signing, verification or unknown.
@@ -129,7 +142,7 @@ class EVP_Signature_Call extends EVPOperation, EVP_Signature_Operation {
   /**
    * Output is the signature.
    */
-  override Expr getOutputArg() { result = this.(Call).getArgument(1) }
+  override Expr getOutputArg() { result = signatureOperationOutputArg(this) }
 
   /**
    * Input is the message to sign.
@@ -147,10 +160,5 @@ class EVP_Signature_Final_Call extends EVPFinal, EVP_Signature_Operation {
   /**
    * Output is the signature.
    */
-  override Expr getOutputArg() {
-    if this.(Call).getTarget().getName() = "EVP_SignFinal_ex" then
-      result = this.(Call).getArgument(2)
-    else
-      result = this.(Call).getArgument(1)
-  }
+  override Expr getOutputArg() { result = signatureOperationOutputArg(this) }
 }
