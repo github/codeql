@@ -150,7 +150,6 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgori
 
   override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { none() }
 
-  // TODO: Model flow from the parameter specification to the key generator.
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
