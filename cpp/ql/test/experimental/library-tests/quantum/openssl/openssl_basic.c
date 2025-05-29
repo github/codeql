@@ -1,8 +1,17 @@
-#include "includes/evp_stubs.h"
-#include "includes/alg_macro_stubs.h"
-#include "includes/rand_stubs.h"
-
-size_t strlen(const char* str);
+#ifdef USE_REAL_HEADERS
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
+#include <openssl/sha.h>
+#include <openssl/err.h>
+#include <stdio.h>
+#include <string.h>
+#else
+#include "./includes/evp_stubs.h"
+#include "./includes/alg_macro_stubs.h"
+#include "./includes/rand_stubs.h"
+#include "./includes/std_stubs.h"
+#endif
 
 // Sample OpenSSL code that demonstrates various cryptographic operations
 // that can be detected by the quantum model

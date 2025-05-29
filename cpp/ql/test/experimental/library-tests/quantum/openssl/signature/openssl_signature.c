@@ -1,13 +1,16 @@
-#ifndef USE_REAL_HEADERS
+#ifdef USE_REAL_HEADERS
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
+#include <openssl/sha.h>
+#include <openssl/err.h>
+#include <stdio.h>
+#include <string.h>
+#else
 #include "../includes/evp_stubs.h"
 #include "../includes/alg_macro_stubs.h"
 #include "../includes/rand_stubs.h"
-#else
-#include <openssl/evp.h>
-#include <openssl/err.h>
-#include <openssl/rsa.h>
-#include <openssl/dsa.h>
-#include <openssl/pem.h>
+#include "../includes/std_stubs.h"
 #endif
 
 /* =============================================================================
@@ -76,6 +79,9 @@ int sign_using_evp_sign(const unsigned char *message, size_t message_len,
         EVP_SignUpdate(md_ctx, message, message_len) != 1) {
         goto cleanup;
     }
+
+    // more updates
+    EVP_SignUpdate(md_ctx, message+1, message_len-1);
     
     *signature = allocate_signature_buffer(signature_len, pkey);
     if (!*signature) goto cleanup;
@@ -106,6 +112,7 @@ int verify_using_evp_verify(const unsigned char *message, size_t message_len,
     if (!(md_ctx = EVP_MD_CTX_new()) ||
         EVP_VerifyInit(md_ctx, md) != 1 ||
         EVP_VerifyUpdate(md_ctx, message, message_len) != 1 ||
+        EVP_VerifyUpdate(md_ctx, message+1, message_len-1) != 1 ||
         EVP_VerifyFinal(md_ctx, signature, (unsigned int)signature_len, pkey) != 1) {
         goto cleanup;
     }

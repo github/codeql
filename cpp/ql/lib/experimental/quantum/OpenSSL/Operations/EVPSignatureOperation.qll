@@ -129,11 +129,12 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::SignatureOp
     none()
   }
 
+  /**
+   * Keys provided in the initialization call or in a context are found by this method.
+   * Keys in explicit arguments are found by overriden methods in extending classes.
+   */
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    // TODO: move to EVPOperation similarly to getAlgorithmArg
-    if exists(this.getInitCall().getKeyArg())
-    then result = DataFlow::exprNode(this.getInitCall().getKeyArg())
-    else none()
+    result = DataFlow::exprNode(this.getInitCall().getKeyArg())
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
@@ -174,7 +175,7 @@ class EVP_Signature_Final_Call extends EVPFinal, EVP_Signature_Operation {
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
     if this.(Call).getTarget().getName() in ["EVP_SignFinal", "EVP_SignFinal_ex"]
     then result = DataFlow::exprNode(this.(Call).getArgument(3))
-    else none()
+    else result = EVP_Signature_Operation.super.getKeyConsumer()
   }
 
   /**

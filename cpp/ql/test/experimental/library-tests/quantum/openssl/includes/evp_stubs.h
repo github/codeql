@@ -28,7 +28,6 @@
 # define         EVP_CTRL_CCM_SET_IV_FIXED       EVP_CTRL_AEAD_SET_IV_FIXED
 # define         EVP_CTRL_CCM_SET_L              0x14
 # define         EVP_CTRL_CCM_SET_MSGLEN         0x15
-# define         EVP_MAX_MD_SIZE                 64
 
 typedef unsigned long size_t;
 
@@ -36,7 +35,6 @@ typedef unsigned char uint8_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
 
-// Forward declarations for opaque structs
 struct rsa_st;
 struct dsa_st;
 struct dh_st;
@@ -5056,18 +5054,6 @@ int EVP_VerifyUpdate(EVP_MD_CTX * ctx, const void * data, size_t dsize) {
     return 0;
 }
 
-int printf(const char*, ...) {
-    return NULL;
-}
-
-int strlen(const char *s) {
-    return NULL;
-}
-
-void* memset(void *s, int c, size_t n) {
-    return NULL;
-}
-
 int RSA_size(const RSA * rsa) {
     return 0;
 }
@@ -5126,8 +5112,7 @@ BIGNUM * BN_bin2bn(const unsigned char * s, int len, BIGNUM * ret) {
     return NULL;
 }
 
-void OpenSSL_add_all_algorithms(void) ;
-
-void ERR_load_crypto_strings(void) ;
+void OpenSSL_add_all_algorithms(void);
+void ERR_load_crypto_strings(void);
 
 #endif /* OSSL_EVP_H */

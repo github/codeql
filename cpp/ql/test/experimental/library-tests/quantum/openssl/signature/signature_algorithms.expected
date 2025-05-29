@@ -1,0 +1,4 @@
+| openssl_signature.c:332:37:332:48 | RSA-SHA256 | RSA | openssl_signature.c:332:11:332:29 | call to EVP_SIGNATURE_fetch |
+| openssl_signature.c:368:37:368:48 | RSA-SHA256 | RSA | openssl_signature.c:368:11:368:29 | call to EVP_SIGNATURE_fetch |
+| openssl_signature.c:552:35:552:46 | 6 | RSA | openssl_signature.c:552:15:552:33 | call to EVP_PKEY_CTX_new_id |
+| openssl_signature.c:574:50:574:54 | DSA | DSA | openssl_signature.c:574:17:574:42 | call to EVP_PKEY_CTX_new_from_name |

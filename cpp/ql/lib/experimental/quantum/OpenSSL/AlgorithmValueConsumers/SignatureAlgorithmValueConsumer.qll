@@ -7,18 +7,18 @@ private import experimental.quantum.OpenSSL.LibraryDetector
 
 abstract class SignatureAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 
-class EVPSignatureAlgorithmValueConsumer extends OpenSSLAlgorithmValueConsumer {
+class EVPSignatureAlgorithmValueConsumer extends SignatureAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
   DataFlow::Node resultNode;
 
   EVPSignatureAlgorithmValueConsumer() {
     resultNode.asExpr() = this and
-    isPossibleOpenSSLFunction(this.(Call).getTarget()) and
     (
       // EVP_SIGNATURE
       this.(Call).getTarget().getName() = "EVP_SIGNATURE_fetch" and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
-      // EVP_PKEY_get1_DSA, DSA_SIG_new, EVP_RSA_gen
+      // EVP_PKEY_get1_DSA, EVP_PKEY_get1_RSA
+      // DSA_SIG_new, DSA_SIG_get0, RSA_sign ?
     )
   }
 

@@ -1,6 +1,3 @@
-# define RSA_PKCS1_PSS_PADDING           6
-# define NID_sha256                      672
-
 # define EVP_PKEY_NONE   NID_undef
 # define EVP_PKEY_RSA    NID_rsaEncryption
 # define EVP_PKEY_RSA2   NID_rsa
@@ -3743,5 +3740,6 @@
 #define LN_undef "undefined"
 #define SN_undef "UNDEF"
 
+#define EVP_MAX_MD_SIZE 64
 #define RSA_PKCS1_PSS_PADDING 6
-# define EVP_MAX_MD_SIZE 64
+#define NID_sha256 672

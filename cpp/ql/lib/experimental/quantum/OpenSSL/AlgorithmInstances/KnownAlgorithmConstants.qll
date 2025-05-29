@@ -2829,6 +2829,8 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "rsaencryption" and nid = 6 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
+  name = "rsaencryption" and nid = 6 and normalized = "RSA" and algType = "SIGNATURE"
+  or
   name = "rsaes-oaep" and nid = 919 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
   name = "rsaes-oaep" and nid = 919 and normalized = "OAEP" and algType = "ASYMMETRIC_PADDING"
