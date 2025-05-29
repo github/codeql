@@ -55,7 +55,7 @@ abstract class EVPInitialize extends Call {
 }
 
 /**
- * Calls to update functions of EVP API.
+ * A Call to update functions from the EVP API.
  * These are not operations in the sense of Crypto::OperationInstance,
  * but they are used to update the context for the operation.
  */
@@ -92,7 +92,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
 private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
 
 /**
- * Base class for all operations of the EVP API.
+ * The base class for all operations of the EVP API.
  * Currently final calls and one-shot calls are implemented.
  * Provides some default methods for Crypto::KeyOperationInstance class
  */
