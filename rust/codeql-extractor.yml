@@ -45,9 +45,10 @@ options:
   cargo_features:
     title: Cargo features to turn on
     description: >
-      Comma-separated list of features to turn on. If any value is `*` all features
-      are turned on. By default only default cargo features are enabled. Can be
-      repeated.
+      Comma-separated list of features to turn on. By default all features are enabled.
+      If any features are specified, then only those features are enabled. The `default`
+      feature must be explicitly specified if only default features are desired.
+      Can be repeated.
     type: array
   cargo_cfg_overrides:
     title: Cargo cfg overrides
