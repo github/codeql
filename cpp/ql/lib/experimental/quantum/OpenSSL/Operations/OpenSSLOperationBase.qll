@@ -22,7 +22,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
 }
 
 /**
- * Calls to initialization functions of EVP API.
+ * A Call to initialization functions from the EVP API.
  * These are not operations in the sense of Crypto::OperationInstance,
  * but they are used to initialize the context for the operation.
  */
