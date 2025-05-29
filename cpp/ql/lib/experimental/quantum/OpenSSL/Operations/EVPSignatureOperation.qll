@@ -6,30 +6,51 @@ private import experimental.quantum.Language
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 
-// TODO: verification
-class EVP_Cipher_Initializer extends EVPInitialize {
-  EVP_Cipher_Initializer() {
+// TODO: verification functions
+
+
+class EVP_Signature_Initializer extends EVPInitialize {
+  boolean isAlgorithmSpecifiedByKey;
+  boolean isAlgorithmSpecifiedByCtx;
+
+  EVP_Signature_Initializer() {
     this.(Call).getTarget().getName() in [
-        "EVP_DigestSignInit", "EVP_DigestSignInit_ex", "EVP_SignInit", "EVP_SignInit_ex",
-        "EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex", "EVP_PKEY_sign_init_ex2",
-        "EVP_PKEY_sign_message_init"
-      ]
+      "EVP_DigestSignInit", "EVP_DigestSignInit_ex", "EVP_SignInit", "EVP_SignInit_ex",
+      "EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex", "EVP_PKEY_sign_init_ex2",
+      "EVP_PKEY_sign_message_init"
+    ] and
+    (
+    if this.(Call).getTarget().getName().matches("EVP_PKEY_%") then
+      isAlgorithmSpecifiedByKey = false
+    else
+      isAlgorithmSpecifiedByKey = true
+    )
+    and
+    (
+    if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex"] then
+      isAlgorithmSpecifiedByCtx = true
+    else
+      isAlgorithmSpecifiedByCtx = false
+    )
   }
 
+  /**
+   * Returns the argument that specifies the algorithm or none if the algorithm is implicit (from context or from key).
+   * Note that the key may be not provided in the initialization call.
+   */
   override Expr getAlgorithmArg() {
-    this.(Call).getTarget().getName() = "EVP_DigestSignInit" and
-    result = this.(Call).getArgument(1)
-    or
-    this.(Call).getTarget().getName() = "EVP_DigestSignInit_ex" and
-    result = this.(Call).getArgument(1)
-    or
-    this.(Call).getTarget().getName() = "EVP_PKEY_sign_init_ex2" and
-    result = this.(Call).getArgument(1)
-    or
-    this.(Call).getTarget().getName() = "EVP_PKEY_sign_message_init" and
-    result = this.(Call).getArgument(1)
+    if isAlgorithmSpecifiedByKey = true or isAlgorithmSpecifiedByCtx = true then
+      none()
+    else (
+      this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] and
+      result = this.(Call).getArgument(1)
+    )
   }
 
+  /**
+   * Returns the key argument if there is one.
+   * They key could be provided in the context or in a later call (final or one-shot).
+   */
   override Expr getKeyArg() {
     this.(Call).getTarget().getName() = "EVP_DigestSignInit" and
     result = this.(Call).getArgument(4)
@@ -38,8 +59,9 @@ class EVP_Cipher_Initializer extends EVPInitialize {
     result = this.(Call).getArgument(5)
   }
 
-  override Expr getIVArg() { none() }
-
+  /**
+   * Signing, verification or unknown.
+   */
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     if this.(Call).getTarget().getName().toLowerCase().matches("%sign%")
     then result instanceof Crypto::TSignMode
@@ -57,13 +79,23 @@ class EVP_Signature_Update_Call extends EVPUpdate {
       ]
   }
 
+  /**
+   * Input is the message to sign.
+   */
   override Expr getInputArg() { result = this.(Call).getArgument(1) }
 }
 
+/**
+ * Base configuration for all EVP signature operations.
+ */
 abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperationInstance {
   EVP_Signature_Operation() { this.(Call).getTarget().getName().matches("EVP_%") }
 
+  /**
+   * Signing, verification or unknown.
+   */
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    // TODO: if this KeyOperationSubtype does not match initialization call's KeyOperationSubtype then we found a bug
     if this.(Call).getTarget().getName().toLowerCase().matches("%sign%")
     then result instanceof Crypto::TSignMode
     else
@@ -72,16 +104,14 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperatio
       else result instanceof Crypto::TUnknownKeyOperationMode
   }
 
-  override Expr getOutputArg() { result = this.(Call).getArgument(1) }
-
   override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
-    // this.getInitCall().getIVArg() = result.asExpr()
+    // TODO: some signing operations may have explicit nonce generators
     none()
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    this.getInitCall().getKeyArg() = result.asExpr()
-    // todo: or track to the EVP_PKEY_CTX_new
+    result = DataFlow::exprNode(this.getInitCall().getKeyArg())
+    // TODO: or track to the EVP_PKEY_CTX_new
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
@@ -93,9 +123,17 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperatio
   }
 }
 
-class EVP_Signature_Call extends EVPOneShot, EVP_Signature_Operation {
+class EVP_Signature_Call extends EVPOperation, EVP_Signature_Operation {
   EVP_Signature_Call() { this.(Call).getTarget().getName() in ["EVP_DigestSign", "EVP_PKEY_sign"] }
 
+  /**
+   * Output is the signature.
+   */
+  override Expr getOutputArg() { result = this.(Call).getArgument(1) }
+
+  /**
+   * Input is the message to sign.
+   */
   override Expr getInputArg() { result = this.(Call).getArgument(3) }
 }
 
@@ -104,5 +142,15 @@ class EVP_Signature_Final_Call extends EVPFinal, EVP_Signature_Operation {
     this.(Call).getTarget().getName() in [
         "EVP_DigestSignFinal", "EVP_SignFinal_ex", "EVP_SignFinal", "EVP_PKEY_sign_message_final"
       ]
+  }
+
+  /**
+   * Output is the signature.
+   */
+  override Expr getOutputArg() {
+    if this.(Call).getTarget().getName() = "EVP_SignFinal_ex" then
+      result = this.(Call).getArgument(2)
+    else
+      result = this.(Call).getArgument(1)
   }
 }
