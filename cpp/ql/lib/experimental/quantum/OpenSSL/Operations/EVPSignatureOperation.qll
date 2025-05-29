@@ -93,7 +93,7 @@ private Expr signatureOperationOutputArg(Call call) {
 /**
  * Base configuration for all EVP signature operations.
  */
-abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperationInstance {
+abstract class EVP_Signature_Operation extends EVPOperation, Crypto::SignatureOperationInstance {
   EVP_Signature_Operation() {
     this.(Call).getTarget().getName().matches("EVP_%") and
     // NULL output argument means the call is to get the size of the signature
@@ -128,12 +128,18 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::KeyOperatio
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = this.(EVPOperation).getOutputArtifact()
+    result = EVPOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = this.(EVPOperation).getInputConsumer()
+    result = EVPOperation.super.getInputConsumer()
   }
+
+  /**
+   * TODO: only signing operations for now, change when verificaiton is added
+   */
+  override Crypto::ConsumerInputDataFlowNode getSignatureConsumer() { none() }
+
 }
 
 class EVP_Signature_Call extends EVPOperation, EVP_Signature_Operation {
