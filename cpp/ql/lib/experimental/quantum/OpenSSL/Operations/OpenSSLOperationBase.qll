@@ -93,7 +93,7 @@ private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsu
 
 /**
  * The base class for all operations of the EVP API.
- * Currently final calls and one-shot calls are implemented.
+ * This captures one-shot APIs (with and without an initilizer call) and final calls.
  * Provides some default methods for Crypto::KeyOperationInstance class
  */
 abstract class EVPOperation extends OpenSSLOperation {
@@ -162,8 +162,3 @@ abstract class EVPFinal extends EVPOperation {
    */
   override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
 }
-
-/**
- * One-shot calls of EVP API.
- */
-abstract class EVPOneShot extends EVPOperation { }
