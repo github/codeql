@@ -14,6 +14,13 @@ import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
  */
 module Generated {
   /**
+   * A clobbered ABI in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("", clobber_abi("C"));
+   * //       ^^^^^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmClobberAbi` class directly.
    * Use the subclass `AsmClobberAbi`, where the following predicates are available.
    */

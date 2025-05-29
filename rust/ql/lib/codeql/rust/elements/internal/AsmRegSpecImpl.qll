@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.AsmRegSpec
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A register specification in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
+   * //                        ^^^          ^^^
+   * ```
+   */
   class AsmRegSpec extends Generated::AsmRegSpec { }
 }

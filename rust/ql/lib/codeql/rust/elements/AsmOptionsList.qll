@@ -7,4 +7,13 @@ private import internal.AsmOptionsListImpl
 import codeql.rust.elements.AsmOption
 import codeql.rust.elements.AsmPiece
 
+/**
+ * A list of options in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("", options(nostack, nomem));
+ * //              ^^^^^^^^^^^^^^^^
+ * ```
+ */
 final class AsmOptionsList = Impl::AsmOptionsList;

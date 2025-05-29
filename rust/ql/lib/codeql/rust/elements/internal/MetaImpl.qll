@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.Meta
  */
 module Impl {
   /**
-   * A Meta. For example:
+   * A meta item in an attribute.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[cfg(feature = "foo")]
+   * //    ^^^^^^^^^^^^^^^
    * ```
    */
   class Meta extends Generated::Meta { }

@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A MacroTypeRepr. For example:
+   * A type produced by a macro.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * type T = macro_type!();
+   * //       ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::MacroTypeRepr` class directly.
    * Use the subclass `MacroTypeRepr`, where the following predicates are available.

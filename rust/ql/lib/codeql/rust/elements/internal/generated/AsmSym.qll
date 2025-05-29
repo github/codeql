@@ -15,6 +15,13 @@ import codeql.rust.elements.Path
  */
 module Generated {
   /**
+   * A symbol operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("call {sym}", sym = sym my_function);
+   * //                 ^^^^^^^^^^^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmSym` class directly.
    * Use the subclass `AsmSym`, where the following predicates are available.
    */

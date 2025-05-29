@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.AsmOption
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An option in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("", options(nostack, nomem));
+   * //              ^^^^^^^^^^^^^^^^
+   * ```
+   */
   class AsmOption extends Generated::AsmOption { }
 }

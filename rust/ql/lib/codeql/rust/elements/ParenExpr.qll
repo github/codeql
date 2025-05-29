@@ -8,9 +8,12 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 
 /**
- * A ParenExpr. For example:
+ * A parenthesized expression.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * (x + y)
+ * //^^^^^
  * ```
  */
 final class ParenExpr = Impl::ParenExpr;

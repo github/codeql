@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.LifetimeArg
  */
 module Impl {
   /**
-   * A LifetimeArg. For example:
+   * A lifetime argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo<'a>
+   * //  ^^
    * ```
    */
   class LifetimeArg extends Generated::LifetimeArg { }

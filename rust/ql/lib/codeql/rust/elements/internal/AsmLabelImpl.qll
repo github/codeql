@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.AsmLabel
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A label in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("jmp {label}", label = sym my_label);
+   * //                  ^^^^^^^^^^^^^^^^^^^^^^
+   * ```
+   */
   class AsmLabel extends Generated::AsmLabel { }
 }

@@ -18,9 +18,15 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A MacroDef. For example:
+   * A macro definition using the `macro_rules!` or similar syntax.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * macro_rules! my_macro {
+   *     () => {
+   *         println!("This is a macro!");
+   *     };
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::MacroDef` class directly.
    * Use the subclass `MacroDef`, where the following predicates are available.

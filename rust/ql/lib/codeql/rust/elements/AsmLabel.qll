@@ -7,4 +7,13 @@ private import internal.AsmLabelImpl
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.BlockExpr
 
+/**
+ * A label in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("jmp {label}", label = sym my_label);
+ * //                  ^^^^^^^^^^^^^^^^^^^^^^
+ * ```
+ */
 final class AsmLabel = Impl::AsmLabel;

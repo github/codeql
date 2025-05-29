@@ -22,9 +22,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * <T as Iterator>::Item
+   * //               ^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::AssocTypeArg` class directly.
    * Use the subclass `AssocTypeArg`, where the following predicates are available.

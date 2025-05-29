@@ -8,4 +8,13 @@ import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.AsmPiece
 import codeql.rust.elements.Name
 
+/**
+ * A named operand in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
+ * //      ^^^^^    ^^^^
+ * ```
+ */
 final class AsmOperandNamed = Impl::AsmOperandNamed;

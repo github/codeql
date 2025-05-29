@@ -7,9 +7,12 @@ private import internal.NameRefImpl
 import codeql.rust.elements.UseBoundGenericArg
 
 /**
- * A NameRef. For example:
+ * A reference to a name.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * foo();
+ * //^^^
  * ```
  */
 final class NameRef = Impl::NameRef;

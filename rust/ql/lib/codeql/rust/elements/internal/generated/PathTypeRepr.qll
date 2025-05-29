@@ -15,10 +15,10 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A type referring to a path. For example:
+   * A path referring to a type. For example:
    * ```rust
-   * type X = std::collections::HashMap<i32, i32>;
-   * type Y = X::Item;
+   * let x: (i32);
+   * //      ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::PathTypeRepr` class directly.
    * Use the subclass `PathTypeRepr`, where the following predicates are available.

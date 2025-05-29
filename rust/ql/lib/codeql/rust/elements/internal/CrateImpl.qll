@@ -15,6 +15,13 @@ module Impl {
   private import codeql.rust.elements.internal.NamedCrate
   private import codeql.rust.internal.PathResolution
 
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
+  /**
+   * A Crate. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Crate extends Generated::Crate {
     override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i) order by i)

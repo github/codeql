@@ -10,9 +10,12 @@ import codeql.rust.elements.Path
 import codeql.rust.elements.TokenTree
 
 /**
- * A Meta. For example:
+ * A meta item in an attribute.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * #[cfg(feature = "foo")]
+ * //    ^^^^^^^^^^^^^^^
  * ```
  */
 final class Meta = Impl::Meta;

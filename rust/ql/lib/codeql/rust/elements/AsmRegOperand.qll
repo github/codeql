@@ -9,4 +9,13 @@ import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.AsmOperandExpr
 import codeql.rust.elements.AsmRegSpec
 
+/**
+ * A register operand in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+ * //                            ^         ^
+ * ```
+ */
 final class AsmRegOperand = Impl::AsmRegOperand;

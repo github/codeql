@@ -7,4 +7,13 @@ private import internal.AsmOperandExprImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 
+/**
+ * An operand expression in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+ * //                            ^          ^
+ * ```
+ */
 final class AsmOperandExpr = Impl::AsmOperandExpr;

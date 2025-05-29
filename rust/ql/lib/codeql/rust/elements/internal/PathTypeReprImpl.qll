@@ -13,10 +13,10 @@ private import codeql.rust.elements.internal.generated.PathTypeRepr
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A type referring to a path. For example:
+   * A path referring to a type. For example:
    * ```rust
-   * type X = std::collections::HashMap<i32, i32>;
-   * type Y = X::Item;
+   * let x: (i32);
+   * //      ^^^
    * ```
    */
   class PathTypeRepr extends Generated::PathTypeRepr {

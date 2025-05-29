@@ -17,6 +17,13 @@ import codeql.rust.elements.AsmRegSpec
  */
 module Generated {
   /**
+   * A register operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+   * //                            ^         ^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmRegOperand` class directly.
    * Use the subclass `AsmRegOperand`, where the following predicates are available.
    */

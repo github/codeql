@@ -16,7 +16,7 @@ import codeql.rust.elements.Attr
  */
 module Generated {
   /**
-   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
+   * A list of  `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    * INTERNAL: Do not reference the `Generated::AssocItemList` class directly.
    * Use the subclass `AssocItemList`, where the following predicates are available.
    */

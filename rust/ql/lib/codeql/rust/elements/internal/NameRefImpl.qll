@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.NameRef
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A NameRef. For example:
+   * A reference to a name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * foo();
+   * //^^^
    * ```
    */
   class NameRef extends Generated::NameRef {

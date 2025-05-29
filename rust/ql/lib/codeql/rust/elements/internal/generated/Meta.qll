@@ -17,9 +17,12 @@ import codeql.rust.elements.TokenTree
  */
 module Generated {
   /**
-   * A Meta. For example:
+   * A meta item in an attribute.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[cfg(feature = "foo")]
+   * //    ^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Meta` class directly.
    * Use the subclass `Meta`, where the following predicates are available.

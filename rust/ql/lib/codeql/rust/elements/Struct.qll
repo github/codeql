@@ -16,7 +16,10 @@ import codeql.rust.elements.WhereClause
 /**
  * A Struct. For example:
  * ```rust
- * todo!()
+ * struct Point {
+ * x: i32,
+ *     y: i32,
+ * }
  * ```
  */
 final class Struct = Impl::Struct;

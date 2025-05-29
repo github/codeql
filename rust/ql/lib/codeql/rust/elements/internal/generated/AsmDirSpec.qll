@@ -14,6 +14,13 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
+   * An inline assembly directive specification.
+   *
+   * For example:
+   * ```rust
+   * asm!("nop");
+   * //   ^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmDirSpec` class directly.
    * Use the subclass `AsmDirSpec`, where the following predicates are available.
    */

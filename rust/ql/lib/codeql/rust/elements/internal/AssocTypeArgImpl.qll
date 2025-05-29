@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.AssocTypeArg
  */
 module Impl {
   /**
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * <T as Iterator>::Item
+   * //               ^^^^
    * ```
    */
   class AssocTypeArg extends Generated::AssocTypeArg { }

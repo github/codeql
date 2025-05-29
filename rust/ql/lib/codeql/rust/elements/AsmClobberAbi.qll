@@ -6,4 +6,13 @@
 private import internal.AsmClobberAbiImpl
 import codeql.rust.elements.AsmPiece
 
+/**
+ * A clobbered ABI in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("", clobber_abi("C"));
+ * //       ^^^^^^^^^^^^^^^^
+ * ```
+ */
 final class AsmClobberAbi = Impl::AsmClobberAbi;

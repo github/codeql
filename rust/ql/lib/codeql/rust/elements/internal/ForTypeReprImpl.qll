@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ForTypeRepr
  */
 module Impl {
   /**
-   * A ForTypeRepr. For example:
+   * A higher-ranked trait bound(HRTB) type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * for <'a> fn(&'a str)
+   * // ^^^^^
    * ```
    */
   class ForTypeRepr extends Generated::ForTypeRepr { }

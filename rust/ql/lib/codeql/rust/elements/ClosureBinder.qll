@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.GenericParamList
 
 /**
- * A ClosureBinder. For example:
+ * A closure binder, specifying lifetime or type parameters for a closure.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * for <'a> |x: &'a u32 | x
+ * // ^^^^^^
  * ```
  */
 final class ClosureBinder = Impl::ClosureBinder;

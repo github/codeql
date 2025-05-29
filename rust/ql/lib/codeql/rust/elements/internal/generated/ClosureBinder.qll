@@ -15,9 +15,12 @@ import codeql.rust.elements.GenericParamList
  */
 module Generated {
   /**
-   * A ClosureBinder. For example:
+   * A closure binder, specifying lifetime or type parameters for a closure.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * for <'a> |x: &'a u32 | x
+   * // ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ClosureBinder` class directly.
    * Use the subclass `ClosureBinder`, where the following predicates are available.

@@ -16,9 +16,12 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
-   * A ParenExpr. For example:
+   * A parenthesized expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * (x + y)
+   * //^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ParenExpr` class directly.
    * Use the subclass `ParenExpr`, where the following predicates are available.

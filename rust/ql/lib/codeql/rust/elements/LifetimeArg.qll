@@ -8,9 +8,12 @@ import codeql.rust.elements.GenericArg
 import codeql.rust.elements.Lifetime
 
 /**
- * A LifetimeArg. For example:
+ * A lifetime argument in a generic argument list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * Foo<'a>
+ * //  ^^
  * ```
  */
 final class LifetimeArg = Impl::LifetimeArg;

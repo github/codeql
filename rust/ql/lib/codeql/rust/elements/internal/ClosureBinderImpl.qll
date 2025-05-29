@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ClosureBinder
  */
 module Impl {
   /**
-   * A ClosureBinder. For example:
+   * A closure binder, specifying lifetime or type parameters for a closure.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * for <'a> |x: &'a u32 | x
+   * // ^^^^^^
    * ```
    */
   class ClosureBinder extends Generated::ClosureBinder { }

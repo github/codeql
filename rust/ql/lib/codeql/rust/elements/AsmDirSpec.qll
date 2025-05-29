@@ -6,4 +6,13 @@
 private import internal.AsmDirSpecImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * An inline assembly directive specification.
+ *
+ * For example:
+ * ```rust
+ * asm!("nop");
+ * //   ^^^^^
+ * ```
+ */
 final class AsmDirSpec = Impl::AsmDirSpec;

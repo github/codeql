@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.AsmOperandExpr
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An operand expression in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+   * //                            ^          ^
+   * ```
+   */
   class AsmOperandExpr extends Generated::AsmOperandExpr { }
 }

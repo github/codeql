@@ -16,6 +16,13 @@ import codeql.rust.elements.Name
  */
 module Generated {
   /**
+   * A named operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
+   * //      ^^^^^    ^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmOperandNamed` class directly.
    * Use the subclass `AsmOperandNamed`, where the following predicates are available.
    */

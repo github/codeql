@@ -15,6 +15,13 @@ import codeql.rust.elements.BlockExpr
  */
 module Generated {
   /**
+   * A label in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("jmp {label}", label = sym my_label);
+   * //                  ^^^^^^^^^^^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmLabel` class directly.
    * Use the subclass `AsmLabel`, where the following predicates are available.
    */

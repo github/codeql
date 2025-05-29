@@ -12,5 +12,14 @@ private import codeql.rust.elements.internal.generated.AsmDirSpec
  * be referenced directly.
  */
 module Impl {
+  /**
+   * An inline assembly directive specification.
+   *
+   * For example:
+   * ```rust
+   * asm!("nop");
+   * //   ^^^^^
+   * ```
+   */
   class AsmDirSpec extends Generated::AsmDirSpec { }
 }

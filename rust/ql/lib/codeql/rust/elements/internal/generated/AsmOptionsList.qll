@@ -15,6 +15,13 @@ import codeql.rust.elements.internal.AsmPieceImpl::Impl as AsmPieceImpl
  */
 module Generated {
   /**
+   * A list of options in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * asm!("", options(nostack, nomem));
+   * //              ^^^^^^^^^^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmOptionsList` class directly.
    * Use the subclass `AsmOptionsList`, where the following predicates are available.
    */

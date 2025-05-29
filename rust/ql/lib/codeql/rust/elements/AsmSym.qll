@@ -7,4 +7,13 @@ private import internal.AsmSymImpl
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.Path
 
+/**
+ * A symbol operand in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * asm!("call {sym}", sym = sym my_function);
+ * //                 ^^^^^^^^^^^^^^^^^^^^^^
+ * ```
+ */
 final class AsmSym = Impl::AsmSym;

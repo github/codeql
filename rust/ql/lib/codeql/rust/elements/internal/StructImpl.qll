@@ -16,7 +16,10 @@ module Impl {
   /**
    * A Struct. For example:
    * ```rust
-   * todo!()
+   * struct Point {
+   * x: i32,
+   *     y: i32,
+   * }
    * ```
    */
   class Struct extends Generated::Struct {

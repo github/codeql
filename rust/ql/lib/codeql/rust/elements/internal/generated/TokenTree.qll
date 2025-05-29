@@ -14,9 +14,16 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A TokenTree. For example:
+   * A token tree in a macro definition or invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("{} {}!", "Hello", "world");
+   * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * ```
+   * ```
+   * macro_rules! foo { ($x:expr) => { $x + 1 }; }
+   * //                 ^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TokenTree` class directly.
    * Use the subclass `TokenTree`, where the following predicates are available.

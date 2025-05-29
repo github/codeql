@@ -15,9 +15,12 @@ import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A AssocTypeArg. For example:
+ * An associated type argument in a path.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * <T as Iterator>::Item
+ * //               ^^^^
  * ```
  */
 final class AssocTypeArg = Impl::AssocTypeArg;
