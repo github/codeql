@@ -405,6 +405,7 @@ dependencies = [
  "lazy_static",
  "rayon",
  "regex",
+ "serde_json",
  "tracing",
  "tracing-subscriber",
  "tree-sitter",

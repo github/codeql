@@ -1,7 +1,9 @@
 use clap::Args;
 use lazy_static::lazy_static;
 use rayon::prelude::*;
+use serde_json;
 use std::borrow::Cow;
+use std::collections::HashSet;
 use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
@@ -78,6 +80,8 @@ pub fn run(options: Options) -> std::io::Result<()> {
 
     let file_list = fs::File::open(file_paths::path_from_string(&options.file_list))?;
 
+    let overlay_changed_files: Option<HashSet<PathBuf>> = get_overlay_changed_files();
+
     let language: Language = tree_sitter_ruby::LANGUAGE.into();
     let erb: Language = tree_sitter_embedded_template::LANGUAGE.into();
     // Look up tree-sitter kind ids now, to avoid string comparisons when scanning ERB files.
@@ -94,6 +98,13 @@ pub fn run(options: Options) -> std::io::Result<()> {
         .try_for_each(|line| {
             let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
+            match &overlay_changed_files {
+                Some(changed_files) if !changed_files.contains(&path) => {
+                    // We are extracting an overlay and this file is not in the list of changes files, so we should skip it.
+                    return Result::Ok(());
+                }
+                _ => {},
+            }
             let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "");
             let mut source = std::fs::read(&path)?;
             let mut needs_conversion = false;
@@ -212,6 +223,12 @@ pub fn run(options: Options) -> std::io::Result<()> {
     let mut trap_writer = trap::Writer::new();
     extractor::populate_empty_location(&mut trap_writer);
     let res = write_trap(&trap_dir, path, &trap_writer, trap_compression);
+    if let Ok(output_path) = std::env::var("CODEQL_EXTRACTOR_RUBY_OVERLAY_BASE_METADATA_OUT") {
+        // We're extracting an overlay base. For now, we don't have any metadata we need to store
+        // that would get read when extracting the overlay, but the CLI expects us to write
+        // *something*. An empty file will do.
+        std::fs::write(output_path, b"")?;
+    }
     tracing::info!("Extraction complete");
     res
 }
@@ -302,6 +319,41 @@ fn skip_space(content: &[u8], index: usize) -> usize {
     }
     index
 }
+
+/**
+* If the relevant environment variable has been set by the CLI, indicating that we are extracting
+* an overlay, this function reads the JSON file at the path given by its value, and returns a set
+* of canonicalized paths of source files that have changed and should therefore be extracted.
+*
+* If the environment variable is not set (i.e. we're not extracting an overlay), or if the file
+* cannot be read, this function returns `None`. In that case, all files should be extracted.
+*/
+fn get_overlay_changed_files() -> Option<HashSet<PathBuf>> {
+    let path = std::env::var("CODEQL_EXTRACTOR_RUBY_OVERLAY_CHANGES").ok()?;
+    let file_content = fs::read_to_string(path).ok()?;
+    let json_value: serde_json::Value = serde_json::from_str(&file_content).ok()?;
+
+    // The JSON file is expected to have the following structure:
+    // {
+    //     "changes": [
+    //         "relative/path/to/changed/file1.rb",
+    //         "relative/path/to/changed/file2.rb",
+    //         ...
+    //     ]
+    // }
+    json_value
+        .get("changes")?
+        .as_array()?
+        .iter()
+        .map(|change| {
+            change
+                .as_str()
+                .map(|s| PathBuf::from(s).canonicalize().ok())
+                .flatten()
+        })
+        .collect()
+}
+
 fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
     let mut index = 0;
     // skip UTF-8 BOM marker if there is one
