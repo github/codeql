@@ -7,6 +7,7 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.PKeyAlgorithmValueConsumer
 
+
 // TODO: verification functions
 class EVP_Signature_Initializer extends EVPInitialize {
   boolean isAlgorithmSpecifiedByKey;
@@ -30,17 +31,17 @@ class EVP_Signature_Initializer extends EVPInitialize {
     )
   }
 
-  /**
-   * Returns the argument that specifies the algorithm or none if the algorithm is implicit (from context or from key).
-   * Note that the key may be not provided in the initialization call.
-   */
   override Expr getAlgorithmArg() {
-    if isAlgorithmSpecifiedByKey = true or isAlgorithmSpecifiedByCtx = true
-    then none()
-    else (
-      this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] and
+    if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] then
       result = this.(Call).getArgument(1)
-    )
+    else
+      if isAlgorithmSpecifiedByKey = true then
+        result = getAlgorithmFromKey(this.getKeyArg())
+      else
+        if isAlgorithmSpecifiedByCtx = true then
+          result = getAlgorithmFromCtx(this.getContextArg())
+        else
+          none()
   }
 
   /**
@@ -55,10 +56,7 @@ class EVP_Signature_Initializer extends EVPInitialize {
     result = this.(Call).getArgument(5)
     or
     this.(Call).getTarget().getName().matches("EVP_PKEY_%") and
-    exists(EVPPKeyAlgorithmConsumer source |
-      result = source.getValueArgExpr() and
-      ctxFlowsToCtxArg(source.getResultNode().asExpr(), this.getContextArg())
-    )
+    result = getKeyFromCtx(this.getContextArg())
   }
 
   /**
@@ -103,7 +101,7 @@ private Expr signatureOperationOutputArg(Call call) {
 abstract class EVP_Signature_Operation extends EVPOperation, Crypto::SignatureOperationInstance {
   EVP_Signature_Operation() {
     this.(Call).getTarget().getName().matches("EVP_%") and
-    // NULL output argument means the call is to get the size of the signature
+    // NULL output argument means the call is to get the size of the signature and such call is not an operation
     (
       not exists(signatureOperationOutputArg(this).getValue())
       or

@@ -13,7 +13,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
   abstract Expr getAlgorithmArg();
 
   /**
-   * Algorithm is specified in initialization call or is implicitly established by the key.
+   * Algorithm is specified in initialization call or is implicitly established by the key or context.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
@@ -38,7 +38,8 @@ abstract class EVPInitialize extends Call {
   Crypto::KeyOperationSubtype getKeyOperationSubtype() { none() }
 
   /**
-   * Explicitly specified algorithm or none if implicit (e.g., established by the key).
+   * Explicitly specified algorithm or algorithm established by the key or context
+   * (should track flows to the key and/or context to return the algorithm expression)
    * None if not applicable.
    */
   Expr getAlgorithmArg() { none() }
@@ -128,6 +129,10 @@ abstract class EVPOperation extends OpenSSLOperation {
   }
 
   Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+    result = DataFlow::exprNode(this.getOutputArg())
+  }
+
+  Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
     result = DataFlow::exprNode(this.getOutputArg())
   }
 

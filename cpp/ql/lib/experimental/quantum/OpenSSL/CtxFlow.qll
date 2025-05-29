@@ -47,7 +47,7 @@ private class CtxType extends Type {
 /**
  * A pointer to a CtxType
  */
-private class CtxPointerExpr extends Expr {
+class CtxPointerExpr extends Expr {
   CtxPointerExpr() {
     this.getType() instanceof CtxType and
     this.getType() instanceof PointerType
