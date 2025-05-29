@@ -236,8 +236,6 @@ module Signers {
     SignatureOperationInstance() { not this.isIntermediate() }
 
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      result = this.getParameters().getAnAlgorithmValueConsumer()
-      or
       result = SignerFlow::getNewFromUse(this, _, _)
     }
 
@@ -266,7 +264,7 @@ module Signers {
       result.asExpr() = super.getMessageInput()
     }
 
-    override Crypto::ConsumerInputDataFlowNode getSignatureArtifactConsumer() {
+    override Crypto::ConsumerInputDataFlowNode getSignatureConsumer() {
       result.asExpr() = super.getSignatureInput()
     }
 
@@ -279,16 +277,6 @@ module Signers {
 
     SignerUseCall getAnUpdateCall() {
       result = SignerFlow::getAnIntermediateUseFromFinalUse(this, _, _)
-    }
-
-    Crypto::KeyArtifactOutputInstance getKey() { result.flowsTo(this.getInitCall().getKeyArg()) }
-
-    Generators::KeyGenerationOperationInstance getKeyGenerationOperationInstance() {
-      result.getKeyArtifactOutputInstance() = this.getKey()
-    }
-
-    Params::ParametersInstantiation getParameters() {
-      result = this.getKeyGenerationOperationInstance().getParameters()
     }
   }
 }
