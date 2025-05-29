@@ -26,15 +26,10 @@ gitroot = (
 )
 build_dir = os.path.join(gitroot, "mad-generation-build")
 
-
-def path_to_mad_directory(language: str, name: str) -> str:
-    return os.path.join(gitroot, f"{language}/ql/lib/ext/generated/{name}")
-
-
 # A project to generate models for
 class Project(TypedDict):
     """
-    Type definition for Rust projects to model.
+    Type definition for projects (acquired via a GitHub repo) to model.
 
     Attributes:
         name: The name of the project
@@ -139,13 +134,15 @@ def clone_projects(projects: List[Project]) -> List[tuple[Project, str]]:
     return project_dirs
 
 
-def build_database(project: Project, project_dir: str) -> str | None:
+def build_database(language: str, extractor_options, project: Project, project_dir: str) -> str | None:
     """
     Build a CodeQL database for a project.
 
     Args:
+        language: The language for which to build the database (e.g., "rust").
+        extractor_options: Additional options for the extractor.
         project: A dictionary containing project information with 'name' and 'git_repo' keys.
-        project_dir: The directory containing the project source code.
+        project_dir: Path to the CodeQL database.
 
     Returns:
         The path to the created database directory.
@@ -158,17 +155,17 @@ def build_database(project: Project, project_dir: str) -> str | None:
     # Only build the database if it doesn't already exist
     if not os.path.exists(database_dir):
         print(f"Building CodeQL database for {name}...")
+        extractor_options = [option for x in extractor_options for option in ("-O", x)]
         try:
             subprocess.check_call(
                 [
                     "codeql",
                     "database",
                     "create",
-                    "--language=rust",
+                    f"--language={language}",
                     "--source-root=" + project_dir,
                     "--overwrite",
-                    "-O",
-                    "cargo_features='*'",
+                    *extractor_options,
                     "--",
                     database_dir,
                 ]
@@ -184,32 +181,64 @@ def build_database(project: Project, project_dir: str) -> str | None:
 
     return database_dir
 
-
-def generate_models(project: Project, database_dir: str) -> None:
+def generate_models(args, name: str, database_dir: str) -> None:
     """
     Generate models for a project.
 
     Args:
-        project: A dictionary containing project information with 'name' and 'git_repo' keys.
-        project_dir: The directory containing the project source code.
+        args: Command line arguments passed to this script.
+        name: The name of the project.
+        database_dir: Path to the CodeQL database.
     """
-    name = project["name"]
 
-    generator = mad.Generator("rust")
-    generator.generateSinks = True
-    generator.generateSources = True
-    generator.generateSummaries = True
+    generator = mad.Generator(args.lang)
+    generator.generateSinks = args.with_sinks
+    generator.generateSources = args.with_sources
+    generator.generateSummaries = args.with_summaries
     generator.setenvironment(database=database_dir, folder=name)
     generator.run()
 
+def build_databases_from_projects(language: str, extractor_options, projects: List[Project]) -> List[tuple[str, str | None]]:
+    """
+    Build databases for all projects in parallel.
 
-def main() -> None:
+    Args:
+        language: The language for which to build the databases (e.g., "rust").
+        extractor_options: Additional options for the extractor.
+        projects: List of projects to build databases for.
+
+    Returns:
+        List of (project_name, database_dir) pairs, where database_dir is None if the build failed.
     """
-    Process all projects in three distinct phases:
-    1. Clone projects (in parallel)
-    2. Build databases for projects
-    3. Generate models for successful database builds
+    # Phase 1: Clone projects in parallel
+    print("=== Phase 1: Cloning projects ===")
+    project_dirs = clone_projects(projects)
+
+    # Phase 2: Build databases for all projects
+    print("\n=== Phase 2: Building databases ===")
+    database_results = [
+        (project["name"], build_database(language, extractor_options, project, project_dir))
+        for project, project_dir in project_dirs
+    ]
+    return database_results
+      
+def get_destination_for_project(config, name: str) -> str:
+    return os.path.join(config["destination"], name)
+
+def get_strategy(config) -> str:
+    return config["strategy"].lower()
+
+def main(config, args) -> None:
     """
+    Main function to handle the bulk generation of MaD models.
+    Args:
+        config: Configuration dictionary containing project details and other settings.
+        args: Command line arguments passed to this script.
+    """
+
+    projects = config["targets"]
+    destination = config["destination"]
+    language = args.lang
 
     # Create build directory if it doesn't exist
     if not os.path.exists(build_dir):
@@ -217,7 +246,7 @@ def main() -> None:
 
     # Check if any of the MaD directories contain working directory changes in git
     for project in projects:
-        mad_dir = path_to_mad_directory("rust", project["name"])
+        mad_dir = get_destination_for_project(config, project["name"])
         if os.path.exists(mad_dir):
             git_status_output = subprocess.check_output(
                 ["git", "status", "-s", mad_dir], text=True
@@ -232,22 +261,17 @@ To avoid loss of data, please commit your changes."""
                 )
                 sys.exit(1)
 
-    # Phase 1: Clone projects in parallel
-    print("=== Phase 1: Cloning projects ===")
-    project_dirs = clone_projects(projects)
-
-    # Phase 2: Build databases for all projects
-    print("\n=== Phase 2: Building databases ===")
-    database_results = [
-        (project, build_database(project, project_dir))
-        for project, project_dir in project_dirs
-    ]
+    database_results = []
+    match get_strategy(config):
+        case "repo":
+            extractor_options = config.get("extractor_options", [])
+            database_results = build_databases_from_projects(language, extractor_options, projects)
 
     # Phase 3: Generate models for all projects
     print("\n=== Phase 3: Generating models ===")
 
     failed_builds = [
-        project["name"] for project, db_dir in database_results if db_dir is None
+        project for project, db_dir in database_results if db_dir is None
     ]
     if failed_builds:
         print(
@@ -257,15 +281,14 @@ To avoid loss of data, please commit your changes."""
 
     # Delete the MaD directory for each project
     for project, database_dir in database_results:
-        mad_dir = path_to_mad_directory("rust", project["name"])
+        mad_dir = get_destination_for_project(config, project)
         if os.path.exists(mad_dir):
             print(f"Deleting existing MaD directory at {mad_dir}")
             subprocess.check_call(["rm", "-rf", mad_dir])
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(project, database_dir)
-
+            generate_models(args, project, database_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -1,4 +1,5 @@
 {
+    "strategy": "repo",
     "targets": [
         {
             "name": "libc",
@@ -65,5 +66,9 @@
             "git_repo": "https://github.com/clap-rs/clap",
             "git_tag": "v4.5.38"
         }
+    ],
+    "destination": "rust/ql/lib/ext/generated",
+    "extractor_options": [
+        "cargo_features='*'"
     ]
 }
