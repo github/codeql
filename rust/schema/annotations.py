@@ -1344,30 +1344,6 @@ class _:
     macro_call_expansion: optional[AstNode] | child | rust.detach
 
 
-@annotate(MacroDef)
-class _:
-    """
-    A macro definition.
-
-    For example:
-    ```rust
-    todo!();
-
-
-    ```
-    """
-
-
-@annotate(MacroExpr, cfg=True)
-class _:
-    """
-    A MacroExpr. For example:
-    ```rust
-    todo!()
-    ```
-    """
-
-
 @annotate(MacroItems)
 @rust.doc_test_signature(None)
 class _:
@@ -1385,16 +1361,6 @@ class _:
         #[derive(Debug)]
         struct Bar;
     }
-    ```
-    """
-
-
-@annotate(MacroPat, cfg=True)
-class _:
-    """
-    A MacroPat. For example:
-    ```rust
-    todo!()
     ```
     """
 
@@ -1549,16 +1515,6 @@ class _:
     """
     attrs: drop
     type_repr: drop
-
-
-@annotate(ParamList)
-class _:
-    """
-    A ParamList. For example:
-    ```rust
-    todo!()
-    ```
-    """
 
 
 @annotate(ParenExpr)
@@ -2226,3 +2182,233 @@ class FormatArgument(Locatable):
     """
     parent: Format
     variable: optional[FormatTemplateVariableAccess] | child
+
+
+@annotate(MacroDef)
+class _:
+    """
+    A macro definition using the `macro_rules!` or similar syntax.
+
+    For example:
+    ```rust
+    macro_rules! my_macro {
+        () => {
+            println!("This is a macro!");
+        };
+    }
+    ```
+    """
+
+
+@annotate(MacroExpr, cfg=True)
+class _:
+    """
+    A macro expression, representing the invocation of a macro that produces an expression.
+
+    For example:
+    ```rust
+    let y = vec![1, 2, 3];
+    ```
+    """
+
+
+@annotate(MacroPat, cfg=True)
+class _:
+    """
+    A macro pattern, representing the invocation of a macro that produces a pattern.
+
+    For example:
+    ```rust
+    match x {
+        my_macro!() => "matched",
+        _ => "not matched",
+    }
+    ```
+    """
+
+
+@annotate(ParamList)
+class _:
+    """
+    A list of parameters in a function, method, or closure declaration.
+
+    For example:
+    ```rust
+    fn foo(x: i32, y: i32) {}
+    //      ^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmDirSpec)
+class _:
+    """
+    An inline assembly directive specification.
+
+    For example:
+    ```rust
+    asm!("nop");
+    //   ^^^^^
+    ```
+    """
+
+
+@annotate(AsmOperandExpr)
+class _:
+    """
+    An operand expression in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+    //                            ^          ^
+    ```
+    """
+
+
+@annotate(AsmOption)
+class _:
+    """
+    An option in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("", options(nostack, nomem));
+    //              ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmRegSpec)
+class _:
+    """
+    A register specification in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
+    //                        ^^^          ^^^
+    ```
+    """
+
+
+@annotate(AsmClobberAbi)
+class _:
+    """
+    A clobbered ABI in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("", clobber_abi("C"));
+    //       ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmConst)
+class _:
+    """
+    A constant operand in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("mov eax, {const}", const 42);
+    //                       ^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmLabel)
+class _:
+    """
+    A label in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("jmp {label}", label = sym my_label);
+    //                  ^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmOperandNamed)
+class _:
+    """
+    A named operand in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
+    //      ^^^^^    ^^^^
+    ```
+    """
+
+
+@annotate(AsmOptionsList)
+class _:
+    """
+    A list of options in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("", options(nostack, nomem));
+    //              ^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(AsmRegOperand)
+class _:
+    """
+    A register operand in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+    //                            ^         ^
+    ```
+    """
+
+
+@annotate(AsmSym)
+class _:
+    """
+    A symbol operand in an inline assembly block.
+
+    For example:
+    ```rust
+    asm!("call {sym}", sym = sym my_function);
+    //                 ^^^^^^^^^^^^^^^^^^^^^^
+    ```
+    """
+
+
+@annotate(UseBoundGenericArgs)
+class _:
+    """
+    A use<..> bound to control which generic parameters are captured by an impl Trait return type.
+
+    For example:
+    ```rust
+    pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+    //                                                        ^^^^^^^^
+    ```
+    """
+
+
+@annotate(ParenthesizedArgList)
+class _:
+    """
+    A parenthesized argument list as used in function traits.
+
+    For example:
+    ```rust
+    fn call_with_42<F>(f: F) -> i32
+    where
+        F: Fn(i32, String) -> i32,
+    //        ^^^^^^^^^^^
+    {
+        f(42, "Don't panic".to_string())
+    }
+    ```
+    """
