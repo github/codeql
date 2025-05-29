@@ -643,12 +643,22 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
-  class Access extends CallExprBase {
+  abstract class Access extends Expr {
+    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+    abstract AstNode getNodeAt(AccessPosition apos);
+
+    abstract Type getInferredType(AccessPosition apos, TypePath path);
+
+    abstract Declaration getTarget();
+  }
+
+  private class CallExprBaseAccess extends Access instanceof CallExprBase {
     private TypeMention getMethodTypeArg(int i) {
       result = this.(MethodCallExpr).getGenericArgList().getTypeArg(i)
     }
 
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
         arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
         or
@@ -656,7 +666,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
     }
 
-    AstNode getNodeAt(AccessPosition apos) {
+    override AstNode getNodeAt(AccessPosition apos) {
       exists(int p, boolean isMethodCall |
         argPos(this, result, p, isMethodCall) and
         apos = TPositionalAccessPosition(p, isMethodCall)
@@ -669,13 +679,38 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       apos = TReturnAccessPosition()
     }
 
-    Type getInferredType(AccessPosition apos, TypePath path) {
+    override Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
     }
 
-    Declaration getTarget() {
+    override Declaration getTarget() {
       result = CallExprImpl::getResolvedFunction(this)
       or
+      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+    }
+  }
+
+  private class OperationAccess extends Access instanceof Operation {
+    OperationAccess() { super.isOverloaded(_, _) }
+
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      // The syntax for operators does not allow type arguments.
+      none()
+    }
+
+    override AstNode getNodeAt(AccessPosition apos) {
+      result = super.getOperand(0) and apos = TSelfAccessPosition()
+      or
+      result = super.getOperand(1) and apos = TPositionalAccessPosition(0, true)
+      or
+      result = this and apos = TReturnAccessPosition()
+    }
+
+    override Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    override Declaration getTarget() {
       result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
@@ -1058,6 +1093,26 @@ private module MethodCall {
 
     pragma[nomagic]
     override Type getTypeAt(TypePath path) { result = inferType(receiver, path) }
+  }
+
+  private class OperationMethodCall extends MethodCallImpl instanceof Operation {
+    TraitItemNode trait;
+    string methodName;
+
+    OperationMethodCall() { super.isOverloaded(trait, methodName) }
+
+    override string getMethodName() { result = methodName }
+
+    override int getArity() { result = this.(Operation).getNumberOfOperands() - 1 }
+
+    override Trait getTrait() { result = trait }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) {
+      result = inferType(this.(BinaryExpr).getLhs(), path)
+      or
+      result = inferType(this.(PrefixExpr).getExpr(), path)
+    }
   }
 }
 
