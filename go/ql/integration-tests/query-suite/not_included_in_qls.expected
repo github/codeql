@@ -21,7 +21,6 @@ ql/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql
 ql/go/ql/src/experimental/CWE-525/WebCacheDeception.ql
 ql/go/ql/src/experimental/CWE-74/DsnInjection.ql
 ql/go/ql/src/experimental/CWE-74/DsnInjectionLocal.ql
-ql/go/ql/src/experimental/CWE-79/HTMLTemplateEscapingPassthrough.ql
 ql/go/ql/src/experimental/CWE-807/SensitiveConditionBypass.ql
 ql/go/ql/src/experimental/CWE-840/ConditionalBypass.ql
 ql/go/ql/src/experimental/CWE-918/SSRF.ql
