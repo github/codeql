@@ -52,7 +52,7 @@ abstract class EVP_Cipher_Operation extends EVPOperation, Crypto::KeyOperationIn
   }
 }
 
-class EVP_Cipher_Call extends EVPOneShot, EVP_Cipher_Operation {
+class EVP_Cipher_Call extends EVPOperation, EVP_Cipher_Operation {
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }

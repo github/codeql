@@ -15,7 +15,7 @@ class EVP_Digest_Update_Call extends EVPUpdate {
 }
 
 //https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
-class EVP_Q_Digest_Operation extends EVPOneShot, Crypto::HashOperationInstance {
+class EVP_Q_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
   EVP_Q_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
@@ -31,15 +31,15 @@ class EVP_Q_Digest_Operation extends EVPOneShot, Crypto::HashOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(5) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOneShot.super.getOutputArtifact()
+    result = EVPOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOneShot.super.getInputConsumer()
+    result = EVPOperation.super.getInputConsumer()
   }
 }
 
-class EVP_Digest_Operation extends EVPOneShot, Crypto::HashOperationInstance {
+class EVP_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
   EVP_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Digest" }
 
   // There is no context argument for this function
@@ -58,11 +58,11 @@ class EVP_Digest_Operation extends EVPOneShot, Crypto::HashOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(2) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOneShot.super.getOutputArtifact()
+    result = EVPOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOneShot.super.getInputConsumer()
+    result = EVPOperation.super.getInputConsumer()
   }
 }
 
