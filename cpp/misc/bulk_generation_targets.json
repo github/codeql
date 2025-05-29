@@ -1,0 +1,8 @@
+{
+  "strategy": "dca",
+  "targets": [
+      { "name": "openssl" },
+      { "name": "sqlite" }
+  ],
+  "destination": "cpp/ql/lib/ext/generated"
+}

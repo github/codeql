@@ -1,7 +1,5 @@
 """
 Experimental script for bulk generation of MaD models based on a list of projects.
-
-Currently the script only targets Rust.
 """
 
 import os.path
@@ -221,6 +219,114 @@ def build_databases_from_projects(language: str, extractor_options, projects: Li
         for project, project_dir in project_dirs
     ]
     return database_results
+
+def github(url: str, pat: str, extra_headers: dict[str, str] = {}) -> dict:
+    """
+    Download a JSON file from GitHub using a personal access token (PAT).
+    Args:
+        url: The URL to download the JSON file from.
+        pat: Personal Access Token for GitHub API authentication.
+        extra_headers: Additional headers to include in the request.
+    Returns:
+        The JSON response as a dictionary.
+    """
+    headers = { "Authorization": f"token {pat}" } | extra_headers
+    response = requests.get(url, headers=headers)
+    if response.status_code != 200:
+        print(f"Failed to download JSON: {response.status_code} {response.text}")
+        sys.exit(1)
+    else:
+        return response.json()
+
+def download_artifact(url: str, artifact_name: str, pat: str) -> str:
+    """
+    Download a GitHub Actions artifact from a given URL.
+    Args:
+        url: The URL to download the artifact from.
+        artifact_name: The name of the artifact (used for naming the downloaded file).
+        pat: Personal Access Token for GitHub API authentication.
+    Returns:
+        The path to the downloaded artifact file.
+    """
+    headers = { "Authorization": f"token {pat}", "Accept": "application/vnd.github+json" }
+    response = requests.get(url, stream=True, headers=headers)
+    zipName = artifact_name + ".zip"
+    if response.status_code == 200:
+        target_zip = os.path.join(build_dir, zipName)
+        with open(target_zip, "wb") as file:
+            for chunk in response.iter_content(chunk_size=8192):
+                file.write(chunk)
+        print(f"Download complete: {target_zip}")
+        return target_zip
+    else:
+        print(f"Failed to download file. Status code: {response.status_code}")
+        sys.exit(1)
+
+def remove_extension(filename: str) -> str:
+    while "." in filename:
+        filename, _ = os.path.splitext(filename)
+    return filename
+
+def pretty_name_from_artifact_name(artifact_name: str) -> str:
+    return artifact_name.split("___")[1]
+
+def download_dca_databases(experiment_name: str, pat: str, projects) -> List[tuple[str, str | None]]:
+    """
+    Download databases from a DCA experiment.
+    Args:
+        experiment_name: The name of the DCA experiment to download databases from.
+        pat: Personal Access Token for GitHub API authentication.
+        projects: List of projects to download databases for.
+    Returns:
+        List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
+    """
+    database_results = []
+    print("\n=== Finding projects ===")
+    response = github(f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json", pat)
+    targets = response["targets"]
+    for target, data in targets.items():
+      downloads = data["downloads"]
+      analyzed_database = downloads["analyzed_database"]
+      artifact_name = analyzed_database["artifact_name"]
+      pretty_name = pretty_name_from_artifact_name(artifact_name)
+
+      if not pretty_name in [project["name"] for project in projects]:
+        print(f"Skipping {pretty_name} as it is not in the list of projects")
+        continue
+
+      repository = analyzed_database["repository"]
+      run_id = analyzed_database["run_id"]
+      print(f"=== Finding artifact: {artifact_name} ===")
+      response = github(f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/artifacts", pat, { "Accept": "application/vnd.github+json" })
+      artifacts = response["artifacts"]
+      artifact_map = {artifact["name"]: artifact for artifact in artifacts}
+      print(f"=== Downloading artifact: {artifact_name} ===")
+      archive_download_url = artifact_map[artifact_name]["archive_download_url"]
+      artifact_zip_location = download_artifact(archive_download_url, artifact_name, pat)
+      print(f"=== Extracting artifact: {artifact_name} ===")
+      # The database is in a zip file, which contains a tar.gz file with the DB
+      # First we open the zip file
+      with zipfile.ZipFile(artifact_zip_location, 'r') as zip_ref:
+        artifact_unzipped_location = os.path.join(build_dir, artifact_name)
+        # And then we extract it to build_dir/artifact_name
+        zip_ref.extractall(artifact_unzipped_location)
+        # And then we iterate over the contents of the extracted directory
+        # and extract the tar.gz files inside it
+        for entry in os.listdir(artifact_unzipped_location):
+            artifact_tar_location = os.path.join(artifact_unzipped_location, entry)
+            with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
+                # And we just untar it to the same directory as the zip file
+                tar_ref.extractall(artifact_unzipped_location)
+                database_results.append((pretty_name, os.path.join(artifact_unzipped_location, remove_extension(entry))))
+    print(f"\n=== Extracted {len(database_results)} databases ===")
+
+    def compare(a, b):
+        a_index = next(i for i, project in enumerate(projects) if project["name"] == a[0])
+        b_index = next(i for i, project in enumerate(projects) if project["name"] == b[0])
+        return a_index - b_index
+
+    # Sort the database results based on the order in the projects file
+    return sorted(database_results, key=cmp_to_key(compare))
       
 def get_destination_for_project(config, name: str) -> str:
     return os.path.join(config["destination"], name)
@@ -266,6 +372,16 @@ To avoid loss of data, please commit your changes."""
         case "repo":
             extractor_options = config.get("extractor_options", [])
             database_results = build_databases_from_projects(language, extractor_options, projects)
+        case "dca":
+            experiment_name = args.dca
+            if experiment_name is None:
+                print("ERROR: --dca argument is required for DCA strategy")
+                sys.exit(1)
+            pat = args.pat
+            if pat is None:
+                print("ERROR: --pat argument is required for DCA strategy")
+                sys.exit(1)
+            database_results = download_dca_databases(experiment_name, pat, projects)
 
     # Phase 3: Generate models for all projects
     print("\n=== Phase 3: Generating models ===")
@@ -293,6 +409,8 @@ To avoid loss of data, please commit your changes."""
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, help="Path to the configuration file.", required=True)
+    parser.add_argument("--dca", type=str, help="Name of a DCA run that built all the projects", required=False)
+    parser.add_argument("--pat", type=str, help="PAT token to grab DCA databases (the same as the one you use for DCA)", required=False)
     parser.add_argument("--lang", type=str, help="The language to generate models for", required=True)
     parser.add_argument("--with-sources", action="store_true", help="Generate sources", required=False)
     parser.add_argument("--with-sinks", action="store_true", help="Generate sinks", required=False)
