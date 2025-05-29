@@ -4,7 +4,8 @@
 
 private import experimental.quantum.Language
 private import OpenSSLOperationBase
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.CtxFlow
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.PKeyAlgorithmValueConsumer
 
 // TODO: verification functions
 class EVP_Signature_Initializer extends EVPInitialize {
@@ -44,7 +45,7 @@ class EVP_Signature_Initializer extends EVPInitialize {
 
   /**
    * Returns the key argument if there is one.
-   * They key could be provided in the context or in a later call (final or one-shot).
+   * If the key was provided via the context, we track it to the context.
    */
   override Expr getKeyArg() {
     this.(Call).getTarget().getName() = "EVP_DigestSignInit" and
@@ -52,6 +53,12 @@ class EVP_Signature_Initializer extends EVPInitialize {
     or
     this.(Call).getTarget().getName() = "EVP_DigestSignInit_ex" and
     result = this.(Call).getArgument(5)
+    or
+    this.(Call).getTarget().getName().matches("EVP_PKEY_%") and
+    exists(EVPPKeyAlgorithmConsumer source |
+      result = source.getValueArgExpr() and
+      ctxFlowsToCtxArg(source.getResultNode().asExpr(), this.getContextArg())
+    )
   }
 
   /**
@@ -123,8 +130,10 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::SignatureOp
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    result = DataFlow::exprNode(this.getInitCall().getKeyArg())
-    // TODO: or track to the EVP_PKEY_CTX_new
+    // TODO: move to EVPOperation similarly to getAlgorithmArg
+    if exists(this.getInitCall().getKeyArg())
+    then result = DataFlow::exprNode(this.getInitCall().getKeyArg())
+    else none()
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
@@ -139,7 +148,6 @@ abstract class EVP_Signature_Operation extends EVPOperation, Crypto::SignatureOp
    * TODO: only signing operations for now, change when verificaiton is added
    */
   override Crypto::ConsumerInputDataFlowNode getSignatureConsumer() { none() }
-
 }
 
 class EVP_Signature_Call extends EVPOperation, EVP_Signature_Operation {
@@ -161,6 +169,12 @@ class EVP_Signature_Final_Call extends EVPFinal, EVP_Signature_Operation {
     this.(Call).getTarget().getName() in [
         "EVP_DigestSignFinal", "EVP_SignFinal_ex", "EVP_SignFinal", "EVP_PKEY_sign_message_final"
       ]
+  }
+
+  override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+    if this.(Call).getTarget().getName() in ["EVP_SignFinal", "EVP_SignFinal_ex"]
+    then result = DataFlow::exprNode(this.(Call).getArgument(3))
+    else none()
   }
 
   /**

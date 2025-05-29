@@ -100,7 +100,7 @@ private class CtxCopyReturnCall extends Call, CtxPointerExpr {
  * Flow from any CtxPointerArgument to any other CtxPointerArgument
  */
 module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerArgument }
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerExpr }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CtxPointerArgument }
 
@@ -128,9 +128,22 @@ module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
 module OpenSSLCtxArgumentFlow = DataFlow::Global<OpenSSLCtxArgumentFlowConfig>;
 
 /**
- * Holds if there is a context flow from the source to the sink.
+ * Holds if there is a context flow from the source to the sink,
+ * where the source and sink are arguments to function calls.
  */
 predicate ctxArgFlowsToCtxArg(CtxPointerArgument source, CtxPointerArgument sink) {
+  exists(DataFlow::Node a, DataFlow::Node b |
+    OpenSSLCtxArgumentFlow::flow(a, b) and
+    a.asExpr() = source and
+    b.asExpr() = sink
+  )
+}
+
+/**
+ * Holds if there is a context flow from the source to the sink,
+ * where the source is a variable and the sink is an argument to a function call.
+ */
+predicate ctxFlowsToCtxArg(CtxPointerExpr source, CtxPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
     OpenSSLCtxArgumentFlow::flow(a, b) and
     a.asExpr() = source and

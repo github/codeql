@@ -17,13 +17,14 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
       // in these cases, the operation will be created separately for the same function.
       this.(Call).getTarget().getName() in [
           "EVP_PKEY_CTX_new_id", "EVP_PKEY_new_raw_private_key", "EVP_PKEY_new_raw_public_key",
-          "EVP_PKEY_new_mac_key"
+          "EVP_PKEY_new_mac_key", "EVP_PKEY_CTX_new"
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(0)
       or
       this.(Call).getTarget().getName() in [
           "EVP_PKEY_CTX_new_from_name", "EVP_PKEY_new_raw_private_key_ex",
-          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name"
+          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name",
+          "EVP_PKEY_CTX_new_from_pkey"
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
       or
@@ -42,6 +43,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
           // All other cases
           valueArgNode.asExpr() = this.(Call).getArgument(2)
       )
+      // TODO: data flow for EVP_PKEY_CTX_dup
     )
   }
 
@@ -52,4 +54,8 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   override DataFlow::Node getResultNode() { result = resultNode }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
+
+  // expose the valueArg as an Expr to avoid circular dependency that may arise
+  // when trying to get the valueArg with getInputNode.
+  Expr getValueArgExpr() { result = valueArgNode.asExpr() }
 }
