@@ -9,6 +9,8 @@
  * Classes and interfaces can also be local (`LocalClassOrInterface`, `LocalClass`) or anonymous (`AnonymousClass`).
  * Enumerated types (`EnumType`) and records (`Record`) are special kinds of classes.
  */
+overlay[local?]
+module;
 
 import Member
 import Modifier
@@ -598,6 +600,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /**
    * Gets the JVM descriptor for this type, as used in bytecode.
    */
+  pragma[inline]
   override string getTypeDescriptor() {
     result =
       "L" + this.getPackage().getName().replaceAll(".", "/") + "/" +
@@ -612,6 +615,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
    * to the name of the enclosing type, which might be a nested type as well. For example:
    * `java.lang.Thread$State`.
    */
+  pragma[inline]
   string getQualifiedName() {
     exists(string pkgName | pkgName = this.getPackage().getName() |
       if pkgName = ""
