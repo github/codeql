@@ -268,4 +268,24 @@ To avoid loss of data, please commit your changes."""
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, help="Path to the configuration file.", required=True)
+    parser.add_argument("--lang", type=str, help="The language to generate models for", required=True)
+    parser.add_argument("--with-sources", action="store_true", help="Generate sources", required=False)
+    parser.add_argument("--with-sinks", action="store_true", help="Generate sinks", required=False)
+    parser.add_argument("--with-summaries", action="store_true", help="Generate sinks", required=False)
+    args = parser.parse_args()
+
+    # Load config file
+    config = {}
+    if not os.path.exists(args.config):
+        print(f"ERROR: Config file '{args.config}' does not exist.")
+        sys.exit(1)
+    try:
+        with open(args.config, "r") as f:
+            config = json.load(f)
+    except json.JSONDecodeError as e:
+        print(f"ERROR: Failed to parse JSON file {args.config}: {e}")
+        sys.exit(1)
+
+    main(config, args)
