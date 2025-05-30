@@ -41,7 +41,18 @@ class Project(TypedDict):
     name: str
     git_repo: NotRequired[str]
     git_tag: NotRequired[str]
+    with_sinks: NotRequired[bool]
+    with_sinks: NotRequired[bool]
+    with_summaries: NotRequired[bool]
 
+def shouldGenerateSinks(project: Project) -> bool:
+    return project.get("with_sinks", False)
+
+def shouldGenerateSources(project: Project) -> bool:
+    return project.get("with_sources", False)
+
+def shouldGenerateSummaries(project: Project) -> bool:
+    return project.get("with_summaries", False)
 
 def clone_project(project: Project) -> str:
     """
@@ -185,7 +196,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(args, project: Project, database_dir: str) -> None:
+def generate_models(language: str, config, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -196,10 +207,11 @@ def generate_models(args, project: Project, database_dir: str) -> None:
     """
     name = project["name"]
 
-    generator = mad.Generator(args.lang)
-    generator.generateSinks = args.with_sinks
-    generator.generateSources = args.with_sources
-    generator.generateSummaries = args.with_summaries
+    generator = mad.Generator(language)
+    # Note: The argument parser converts with-sinks to with_sinks, etc.
+    generator.generateSinks = shouldGenerateSinks(project)
+    generator.generateSources = shouldGenerateSources(project)
+    generator.generateSummaries = shouldGenerateSummaries(project)
     generator.setenvironment(database=database_dir, folder=name)
     generator.run()
 
@@ -309,13 +321,14 @@ def download_dca_databases(
         pat,
     )
     targets = response["targets"]
+    project_map = {project["name"]: project for project in projects}
     for data in targets.values():
         downloads = data["downloads"]
         analyzed_database = downloads["analyzed_database"]
         artifact_name = analyzed_database["artifact_name"]
         pretty_name = pretty_name_from_artifact_name(artifact_name)
 
-        if not pretty_name in [project["name"] for project in projects]:
+        if not pretty_name in project_map:
             print(f"Skipping {pretty_name} as it is not in the list of projects")
             continue
 
@@ -350,7 +363,7 @@ def download_dca_databases(
                     tar_ref.extractall(artifact_unzipped_location)
                     database_results.append(
                         (
-                            {"name": pretty_name},
+                            project_map[pretty_name],
                             os.path.join(
                                 artifact_unzipped_location, remove_extension(entry)
                             ),
@@ -451,7 +464,7 @@ To avoid loss of data, please commit your changes."""
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(args, project, database_dir)
+            generate_models(language, config, project, database_dir)
 
 
 if __name__ == "__main__":
@@ -473,15 +486,6 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--lang", type=str, help="The language to generate models for", required=True
-    )
-    parser.add_argument(
-        "--with-sources", action="store_true", help="Generate sources", required=False
-    )
-    parser.add_argument(
-        "--with-sinks", action="store_true", help="Generate sinks", required=False
-    )
-    parser.add_argument(
-        "--with-summaries", action="store_true", help="Generate sinks", required=False
     )
     args = parser.parse_args()
 
