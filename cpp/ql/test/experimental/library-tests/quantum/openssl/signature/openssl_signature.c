@@ -571,7 +571,7 @@ static EVP_PKEY* generate_dsa_key(void) {
     EVP_PKEY *params = NULL, *key = NULL;
     
     /* Generate parameters first */
-    param_ctx = EVP_PKEY_CTX_new_from_name(NULL, "DSA", NULL);
+    param_ctx = EVP_PKEY_CTX_new_from_name(NULL, "dsa", NULL);
     if (!param_ctx) return NULL;
     
     if (EVP_PKEY_paramgen_init(param_ctx) <= 0 ||
@@ -764,7 +764,7 @@ int test_signature_apis_dsa(void) {
     }
     
     /* Test generic APIs */
-    if (!test_signature_apis(key, md, no_parameter_setter, "DSA")) {
+    if (!test_signature_apis(key, md, no_parameter_setter, "dsa")) {
         success = 0;
     }
     
