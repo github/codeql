@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
+use ra_ap_syntax::ast::{Const, Fn, HasName, HasVisibility, Param, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -272,7 +272,7 @@ impl<'a> Translator<'a> {
     ) {
         for child in children {
             if let NodeOrToken::Token(token) = child {
-                if token.kind() == SyntaxKind::COMMENT {
+                if token.kind() == SyntaxKind::COMMENT && self.source_kind == SourceKind::Source {
                     let label = self.trap.emit(generated::Comment {
                         id: TrapId::Star,
                         parent: parent_label,
@@ -655,6 +655,9 @@ impl<'a> Translator<'a> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
         if self.source_kind == SourceKind::Library {
             let syntax = item.syntax();
+            if syntax.kind() == SyntaxKind::TOKEN_TREE {
+                return true;
+            }
             if syntax
                 .parent()
                 .and_then(Fn::cast)
@@ -686,6 +689,59 @@ impl<'a> Translator<'a> {
                 .is_some_and(|pat| pat.syntax() == syntax)
             {
                 return true;
+            }
+
+            if ast::AnyHasVisibility::cast(syntax.clone())
+                .and_then(|x| x.visibility())
+                .is_none()
+            {
+                match syntax.kind() {
+                    SyntaxKind::ENUM
+                    | SyntaxKind::STATIC
+                    | SyntaxKind::STRUCT
+                    | SyntaxKind::TRAIT
+                    | SyntaxKind::TRAIT_ALIAS
+                    | SyntaxKind::UNION => return true,
+                    SyntaxKind::CONST | SyntaxKind::FN | SyntaxKind::TYPE_ALIAS => {
+                        // check for enclosing source file
+                        if syntax.parent().and_then(ast::SourceFile::cast).is_some() {
+                            return true;
+                        }
+                        // check for enclosing module
+                        if syntax
+                            .parent()
+                            .and_then(ast::ItemList::cast)
+                            .and_then(|x| x.syntax().parent())
+                            .and_then(ast::Module::cast)
+                            .is_some()
+                        {
+                            return true;
+                        }
+                        // check for enclosing extern block
+                        if syntax
+                            .parent()
+                            .and_then(ast::ExternItemList::cast)
+                            .is_some()
+                        {
+                            return true;
+                        }
+                        // check for enclosing block expr
+                        if syntax.parent().and_then(ast::BlockExpr::cast).is_some() {
+                            return true;
+                        }
+                        // check for enclosing non-trait impl
+                        if syntax
+                            .parent()
+                            .and_then(ast::AssocItemList::cast)
+                            .and_then(|x| x.syntax().parent())
+                            .and_then(ast::Impl::cast)
+                            .is_some_and(|imp| imp.trait_().is_none())
+                        {
+                            return true;
+                        }
+                    }
+                    _ => {}
+                }
             }
         }
         false
