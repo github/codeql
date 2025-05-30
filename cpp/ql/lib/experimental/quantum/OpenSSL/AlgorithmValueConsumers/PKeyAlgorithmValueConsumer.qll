@@ -62,8 +62,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   Expr getValueArgExpr() { result = valueArgNode.asExpr() }
 }
 
-// TODO: not sure where to put these predicates
-Expr getAlgorithmFromArgument(Expr arg) { none() }
+// TODO: not sure where to put all these predicates below
 
 /**
  * Given context expression (EVP_PKEY_CTX), finds the algorithm.
