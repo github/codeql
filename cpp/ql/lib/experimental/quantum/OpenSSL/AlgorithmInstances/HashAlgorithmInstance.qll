@@ -76,7 +76,11 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     not knownOpenSSLConstantToHashFamilyType(this, _) and result = Crypto::OtherHashType()
   }
 
-  override string getRawHashAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawHashAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override int getFixedDigestLength() {
     this.(KnownOpenSSLHashAlgorithmConstant).getExplicitDigestLength() = result

@@ -32,7 +32,11 @@ class KnownOpenSSLEllipticCurveConstantAlgorithmInstance extends OpenSSLAlgorith
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 
-  override string getRawEllipticCurveName() { result = this.(Literal).getValue().toString() }
+  override string getRawEllipticCurveName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override Crypto::TEllipticCurveType getEllipticCurveType() {
     Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getParsedEllipticCurveName(), _, result)

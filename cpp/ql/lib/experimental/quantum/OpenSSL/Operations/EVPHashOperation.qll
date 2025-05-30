@@ -12,6 +12,8 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 abstract class EVP_Hash_Operation extends OpenSSLOperation, Crypto::HashOperationInstance {
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
+  Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
+
   EVP_Hash_Initializer getInitCall() {
     CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
@@ -23,7 +25,7 @@ abstract class EVP_Hash_Operation extends OpenSSLOperation, Crypto::HashOperatio
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
-      DataFlow::exprNode(this.getInitCall().getAlgorithmArg()))
+      DataFlow::exprNode(this.getAlgorithmArg()))
   }
 }
 
@@ -33,7 +35,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(EVP_Hash_Operation c | c.getInitCall().getAlgorithmArg() = sink.asExpr())
+    exists(EVP_Hash_Operation c | c.getAlgorithmArg() = sink.asExpr())
   }
 }
 
@@ -64,6 +66,8 @@ class EVP_Q_Digest_Operation extends EVP_Hash_Operation {
     // simply return 'this', see modeled hash algorithm consuers for EVP_Q_Digest
     this = result
   }
+
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 }
 
 class EVP_Digest_Operation extends EVP_Hash_Operation {
@@ -72,16 +76,13 @@ class EVP_Digest_Operation extends EVP_Hash_Operation {
   // There is no context argument for this function
   override Expr getContextArg() { none() }
 
-  override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
-      DataFlow::exprNode(this.(Call).getArgument(4)))
-  }
-
   override EVP_Hash_Initializer getInitCall() {
     // This variant of digest does not use an init
     // and even if it were used, the init would be ignored/undefined
     none()
   }
+
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(4) }
 
   override Expr getOutputArg() { result = this.(Call).getArgument(2) }
 
