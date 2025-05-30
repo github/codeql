@@ -45,14 +45,18 @@ class Project(TypedDict):
     with_sinks: NotRequired[bool]
     with_summaries: NotRequired[bool]
 
+
 def shouldGenerateSinks(project: Project) -> bool:
     return project.get("with_sinks", False)
+
 
 def shouldGenerateSources(project: Project) -> bool:
     return project.get("with_sources", False)
 
+
 def shouldGenerateSummaries(project: Project) -> bool:
     return project.get("with_summaries", False)
+
 
 def clone_project(project: Project) -> str:
     """
