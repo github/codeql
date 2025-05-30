@@ -217,12 +217,12 @@ def build_databases_from_projects(
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the build failed.
     """
-    # Phase 1: Clone projects in parallel
-    print("=== Phase 1: Cloning projects ===")
+    # Clone projects in parallel
+    print("=== Cloning projects ===")
     project_dirs = clone_projects(projects)
 
-    # Phase 2: Build databases for all projects
-    print("\n=== Phase 2: Building databases ===")
+    # Build databases for all projects
+    print("\n=== Building databases ===")
     database_results = [
         (
             project["name"],
@@ -429,8 +429,8 @@ To avoid loss of data, please commit your changes."""
                 sys.exit(1)
             database_results = download_dca_databases(experiment_name, pat, projects)
 
-    # Phase 3: Generate models for all projects
-    print("\n=== Phase 3: Generating models ===")
+    # Generate models for all projects
+    print("\n=== Generating models ===")
 
     failed_builds = [project for project, db_dir in database_results if db_dir is None]
     if failed_builds:
