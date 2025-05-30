@@ -136,9 +136,9 @@ var server2 = http.createServer(function(req, res) {
 
 var server2 = http.createServer(function(req, res) {
   const { URL } = require('url'); 
-  const input = req.query.url; // $MISSING:Source[js/request-forgery]
+  const input = req.query.url; // $Source[js/request-forgery]
   const target = new URL(input);
-  axios.get(target.toString()); // $MISSING:Alert[js/request-forgery]
-  axios.get(target); // $MISSING:Alert[js/request-forgery]
-  axios.get(target.href); // $MISSING:Alert[js/request-forgery]
+  axios.get(target.toString()); // $Alert[js/request-forgery]
+  axios.get(target); // $Alert[js/request-forgery]
+  axios.get(target.href); // $Alert[js/request-forgery]
 });
