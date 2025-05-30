@@ -1,5 +1,5 @@
 import pandas as pd
-
+import sqlite3
 
 df = pd.DataFrame({'temp_c': [17.0, 25.0]}, index=['Portland', 'Berkeley'])
 df.sample().query("query")  # $getCode="query"
@@ -55,11 +55,12 @@ df = pd.read_sql_table("filepath", 'postgres:///db_name')
 df.query("query")  # $getCode="query"
 df.eval("query")  # $getCode="query"
 
-df = pd.read_sql_query("filepath", 'postgres:///db_name')
+connection = sqlite3.connect("pets.db")
+df = pd.read_sql_query("sql query", connection) # $getSql="sql query"
 df.query("query")  # $getCode="query"
 df.eval("query")  # $getCode="query"
 
-df = pd.read_sql("filepath", 'postgres:///db_name')
+df = pd.read_sql("sql query", connection) # $getSql="sql query"
 df.query("query")  # $getCode="query"
 df.eval("query")  # $getCode="query"
 
