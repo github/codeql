@@ -218,7 +218,17 @@ private DataFlow::SourceNode sourceStreamRef(PipeCall pipeCall) {
  * Holds if the source stream of the given pipe call has an `error` handler registered.
  */
 private predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
-  sourceStreamRef(pipeCall).getAMethodCall(_) instanceof ErrorHandlerRegistration
+  exists(DataFlow::Node stream |
+    stream = sourceStreamRef(pipeCall).getALocalUse() and
+    (
+      stream.(DataFlow::SourceNode).getAMethodCall(_) instanceof ErrorHandlerRegistration
+      or
+      exists(DataFlow::SourceNode base, string propName |
+        stream = base.getAPropertyRead(propName) and
+        base.getAPropertyRead(propName).getAMethodCall(_) instanceof ErrorHandlerRegistration
+      )
+    )
+  )
   or
   hasPlumber(pipeCall)
 }
@@ -262,8 +272,16 @@ private predicate hasNonStreamSourceLikeUsage(PipeCall pipeCall) {
  * Holds if the pipe call destination stream has an error handler registered.
  */
 private predicate hasErrorHandlerDownstream(PipeCall pipeCall) {
-  exists(ErrorHandlerRegistration handler |
-    handler.getReceiver().getALocalSource() = destinationStreamRef(pipeCall)
+  exists(DataFlow::SourceNode stream |
+    stream = destinationStreamRef(pipeCall) and
+    (
+      exists(ErrorHandlerRegistration handler | handler.getReceiver().getALocalSource() = stream)
+      or
+      exists(DataFlow::SourceNode base, string propName |
+        stream = base.getAPropertyRead(propName) and
+        base.getAPropertyRead(propName).getAMethodCall(_) instanceof ErrorHandlerRegistration
+      )
+    )
   )
 }
 

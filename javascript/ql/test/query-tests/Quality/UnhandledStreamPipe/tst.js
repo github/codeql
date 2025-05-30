@@ -26,7 +26,7 @@ function zip() {
 function zip1() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper();
-    wrapper.outputStream.pipe(zipStream); // $SPURIOUS:Alert
+    wrapper.outputStream.pipe(zipStream);
     wrapper.outputStream.on('error', e);
     zipStream.on('error', e);
 }
@@ -49,7 +49,7 @@ function zip3() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper();
     let source = getStream();
-    source.pipe(wrapper.outputStream); // $MISSING:Alert
+    source.pipe(wrapper.outputStream); // $Alert
     wrapper.outputStream.on('error', e);
 }
 
