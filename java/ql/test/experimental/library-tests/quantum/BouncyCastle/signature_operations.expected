@@ -1,4 +1,6 @@
-| Ed448SignAndVerify.java:32:32:32:57 | SignOperation | Ed448SignAndVerify.java:30:31:30:40 | Key | Ed448SignAndVerify.java:31:27:31:33 | Message | KeyOperationOutput |
-| Ed448SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed448SignAndVerify.java:38:34:38:42 | Key | Ed448SignAndVerify.java:39:29:39:35 | Message |  |
-| Ed25519SignAndVerify.java:32:32:32:57 | SignOperation | Ed25519SignAndVerify.java:30:31:30:40 | Key | Ed25519SignAndVerify.java:31:27:31:33 | Message | KeyOperationOutput |
-| Ed25519SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed25519SignAndVerify.java:38:34:38:42 | Key | Ed25519SignAndVerify.java:39:29:39:35 | Message |  |
+| ECDSAP256SignAndVerify.java:45:48:45:80 | SignOperation | ECDSAP256SignAndVerify.java:41:34:41:50 | KeyOperationAlgorithm | ECDSAP256SignAndVerify.java:42:31:42:40 | Key | ECDSAP256SignAndVerify.java:45:73:45:79 | Message |  | SignatureOutput |
+| ECDSAP256SignAndVerify.java:54:32:54:92 | VerifyOperation | ECDSAP256SignAndVerify.java:52:36:52:52 | KeyOperationAlgorithm | ECDSAP256SignAndVerify.java:53:34:53:42 | Key | ECDSAP256SignAndVerify.java:54:57:54:63 | Message | SignatureInput |  |
+| Ed448SignAndVerify.java:32:32:32:57 | SignOperation | Ed448SignAndVerify.java:29:34:29:70 | KeyOperationAlgorithm | Ed448SignAndVerify.java:30:31:30:40 | Key | Ed448SignAndVerify.java:31:27:31:33 | Message |  | SignatureOutput |
+| Ed448SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed448SignAndVerify.java:37:36:37:72 | KeyOperationAlgorithm | Ed448SignAndVerify.java:38:34:38:42 | Key | Ed448SignAndVerify.java:39:29:39:35 | Message | SignatureInput |  |
+| Ed25519SignAndVerify.java:32:32:32:57 | SignOperation | Ed25519SignAndVerify.java:29:36:29:54 | KeyOperationAlgorithm | Ed25519SignAndVerify.java:30:31:30:40 | Key | Ed25519SignAndVerify.java:31:27:31:33 | Message |  | SignatureOutput |
+| Ed25519SignAndVerify.java:40:32:40:66 | VerifyOperation | Ed25519SignAndVerify.java:37:38:37:56 | KeyOperationAlgorithm | Ed25519SignAndVerify.java:38:34:38:42 | Key | Ed25519SignAndVerify.java:39:29:39:35 | Message | SignatureInput |  |
