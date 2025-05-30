@@ -8,11 +8,13 @@ import FlowAnalysis
  */
 abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCurveInstance {
   override Crypto::TEllipticCurveType getEllipticCurveType() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), _, result)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName().toUpperCase(),
+      _, result)
   }
 
   override int getKeySize() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName().toUpperCase(),
+      result, _)
   }
 }
 
@@ -22,7 +24,7 @@ abstract private class EllipticCurveAlgorithmInstance extends Crypto::EllipticCu
 class EllipticCurveStringLiteralInstance extends EllipticCurveAlgorithmInstance instanceof StringLiteral
 {
   EllipticCurveStringLiteralInstance() {
-    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getValue(), _, _)
+    Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getValue().toUpperCase(), _, _)
   }
 
   override string getRawEllipticCurveName() { result = super.getValue() }
@@ -76,7 +78,9 @@ class DSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceo
 
 abstract private class EllipticCurveSignatureAlgorithmInstance extends SignatureAlgorithmInstance,
   EllipticCurveAlgorithmInstance
-{ }
+{
+  override Crypto::EllipticCurveInstance getEllipticCurve() { result = this }
+}
 
 /**
  * Ed25519, Ed25519ph, and Ed25519ctx signers.
@@ -133,7 +137,6 @@ class ECDSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanc
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
-    // We need to specify this explicitly since the key size is not fixed.
     result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
   }
 
@@ -181,7 +184,7 @@ class Ed25519KeyGenerationAlgorithmInstance extends EllipticCurveKeyGenerationAl
     super.getConstructedType().getName().matches("Ed25519%")
   }
 
-  override string getRawEllipticCurveName() { result = "CURVE25519" }
+  override string getRawEllipticCurveName() { result = "Curve25519" }
 }
 
 class Ed448KeyGenerationAlgorithmInstance extends EllipticCurveKeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
@@ -191,7 +194,7 @@ class Ed448KeyGenerationAlgorithmInstance extends EllipticCurveKeyGenerationAlgo
     super.getConstructedType().getName().matches("Ed448%")
   }
 
-  override string getRawEllipticCurveName() { result = "CURVE25519" }
+  override string getRawEllipticCurveName() { result = "Curve25519" }
 }
 
 /**
@@ -208,7 +211,15 @@ class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAl
   }
 
   override string getRawAlgorithmName() {
-    typeNameToRawAlgorithmName(super.getConstructedType().getName(), result)
+    // The generator constructs an elliptic curve key pair, but the algorithm is
+    // not determined at key generation. As an example, the key could be used
+    // for either ECDSA or ECDH For this reason, we just return "EllipticCurve".
+    result = "EllipticCurve"
+  }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    // The algorithm type is not known. See above.
+    result = Crypto::KeyOpAlg::TUnknownKeyOperationAlgorithmType()
   }
 }
 
