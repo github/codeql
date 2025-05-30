@@ -1,4 +1,1 @@
-| gen_name_ref.rs:5:5:5:8 | todo | todo |
-| gen_name_ref.rs:5:5:5:11 | $crate | $crate |
-| gen_name_ref.rs:5:5:5:11 | panic | panic |
-| gen_name_ref.rs:5:5:5:11 | panicking | panicking |
+| gen_name_ref.rs:7:5:7:7 | foo | foo |
