@@ -281,16 +281,15 @@ def download_artifact(url: str, artifact_name: str, pat: str) -> str:
     headers = {"Authorization": f"token {pat}", "Accept": "application/vnd.github+json"}
     response = requests.get(url, stream=True, headers=headers)
     zipName = artifact_name + ".zip"
-    if response.status_code == 200:
-        target_zip = os.path.join(build_dir, zipName)
-        with open(target_zip, "wb") as file:
-            for chunk in response.iter_content(chunk_size=8192):
-                file.write(chunk)
-        print(f"Download complete: {target_zip}")
-        return target_zip
-    else:
+    if response.status_code != 200:
         print(f"Failed to download file. Status code: {response.status_code}")
         sys.exit(1)
+    target_zip = os.path.join(build_dir, zipName)
+    with open(target_zip, "wb") as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            file.write(chunk)
+    print(f"Download complete: {target_zip}")
+    return target_zip
 
 
 def remove_extension(filename: str) -> str:
