@@ -82,7 +82,12 @@ class KnownOpenSSLSignatureAlgorithmConstant extends KnownOpenSSLAlgorithmConsta
 predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
   exists(string name, string parsedTargetName |
     parsedTargetName =
-      c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
+      c.getTarget()
+          .getName()
+          .replaceAll("EVP_", "")
+          .replaceAll("_gen", "")
+          .toLowerCase()
+          .replaceAll("_", "-") and
     name = resolveAlgorithmAlias(parsedTargetName) and
     knownOpenSSLAlgorithmLiteral(name, _, normalized, algType)
   )

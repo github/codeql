@@ -69,7 +69,8 @@ class KnownOpenSSLSignatureConstantAlgorithmInstance extends OpenSSLAlgorithmIns
   override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
 
   override int getKeySizeFixed() {
-    // this.(KnownOpenSSLSignatureAlgorithmConstant).getExplicitKeySize() = result
+    // TODO: use ellipticCurveNameToKeySizeAndFamilyMapping or KnownOpenSSLEllipticCurveConstantAlgorithmInstance
+    // TODO: maybe add getExplicitKeySize to KnownOpenSSLSignatureAlgorithmConstant and use it here
     none()
   }
 
@@ -83,11 +84,20 @@ class KnownOpenSSLSignatureConstantAlgorithmInstance extends OpenSSLAlgorithmIns
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
-    // TODO: trace to any key size initializer, symmetric and asymmetric
+    // TODO: trace to any key size initializer
+    // probably PKeyAlgorithmValueConsumer and SignatureAlgorithmValueConsumer
     none()
   }
 
+  /**
+   * No mode for signatures.
+   */
   override predicate shouldHaveModeOfOperation() { none() }
 
-  override predicate shouldHavePaddingScheme() { none() }
+  /**
+   * Padding only for RSA.
+   */
+  override predicate shouldHavePaddingScheme() {
+    this.getAlgorithmType() instanceof KeyOpAlg::TAsymmetricCipher
+  }
 }

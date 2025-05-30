@@ -20,7 +20,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Ope
 
   /**
    * Algorithm is either an argument and we track it to AlgorithmValueConsumer
-   * or we have the AlgorithmValueConsumer already and just return it.
+   * or we have the AlgorithmValueConsumer already tracked down and just return it.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
