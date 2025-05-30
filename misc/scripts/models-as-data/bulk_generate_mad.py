@@ -39,7 +39,7 @@ class Project(TypedDict):
     """
 
     name: str
-    git_repo: str
+    git_repo: NotRequired[str]
     git_tag: NotRequired[str]
 
 
@@ -185,7 +185,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(args, name: str, database_dir: str) -> None:
+def generate_models(args, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -194,6 +194,7 @@ def generate_models(args, name: str, database_dir: str) -> None:
         name: The name of the project.
         database_dir: Path to the CodeQL database.
     """
+    name = project["name"]
 
     generator = mad.Generator(args.lang)
     generator.generateSinks = args.with_sinks
@@ -205,7 +206,7 @@ def generate_models(args, name: str, database_dir: str) -> None:
 
 def build_databases_from_projects(
     language: str, extractor_options, projects: List[Project]
-) -> List[tuple[str, str | None]]:
+) -> List[tuple[Project, str | None]]:
     """
     Build databases for all projects in parallel.
 
@@ -225,7 +226,7 @@ def build_databases_from_projects(
     print("\n=== Building databases ===")
     database_results = [
         (
-            project["name"],
+            project,
             build_database(language, extractor_options, project, project_dir),
         )
         for project, project_dir in project_dirs
@@ -290,8 +291,8 @@ def pretty_name_from_artifact_name(artifact_name: str) -> str:
 
 
 def download_dca_databases(
-    experiment_name: str, pat: str, projects
-) -> List[tuple[str, str | None]]:
+    experiment_name: str, pat: str, projects: List[Project]
+) -> List[tuple[Project, str | None]]:
     """
     Download databases from a DCA experiment.
     Args:
@@ -308,7 +309,7 @@ def download_dca_databases(
         pat,
     )
     targets = response["targets"]
-    for target, data in targets.items():
+    for data in targets.values():
         downloads = data["downloads"]
         analyzed_database = downloads["analyzed_database"]
         artifact_name = analyzed_database["artifact_name"]
@@ -349,20 +350,21 @@ def download_dca_databases(
                     tar_ref.extractall(artifact_unzipped_location)
                     database_results.append(
                         (
-                            pretty_name,
+                            {"name": pretty_name},
                             os.path.join(
                                 artifact_unzipped_location, remove_extension(entry)
                             ),
                         )
                     )
+
     print(f"\n=== Extracted {len(database_results)} databases ===")
 
     def compare(a, b):
         a_index = next(
-            i for i, project in enumerate(projects) if project["name"] == a[0]
+            i for i, project in enumerate(projects) if project["name"] == a[0]["name"]
         )
         b_index = next(
-            i for i, project in enumerate(projects) if project["name"] == b[0]
+            i for i, project in enumerate(projects) if project["name"] == b[0]["name"]
         )
         return a_index - b_index
 
@@ -431,7 +433,9 @@ To avoid loss of data, please commit your changes."""
     # Generate models for all projects
     print("\n=== Generating models ===")
 
-    failed_builds = [project for project, db_dir in database_results if db_dir is None]
+    failed_builds = [
+        project["name"] for project, db_dir in database_results if db_dir is None
+    ]
     if failed_builds:
         print(
             f"ERROR: {len(failed_builds)} database builds failed: {', '.join(failed_builds)}"
@@ -440,7 +444,7 @@ To avoid loss of data, please commit your changes."""
 
     # Delete the MaD directory for each project
     for project, database_dir in database_results:
-        mad_dir = get_mad_destination_for_project(config, project)
+        mad_dir = get_mad_destination_for_project(config, project["name"])
         if os.path.exists(mad_dir):
             print(f"Deleting existing MaD directory at {mad_dir}")
             subprocess.check_call(["rm", "-rf", mad_dir])
