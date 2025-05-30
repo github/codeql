@@ -62,7 +62,8 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   Expr getValueArgExpr() { result = valueArgNode.asExpr() }
 }
 
-// TODO: not sure where to put these
+// TODO: not sure where to put these predicates
+Expr getAlgorithmFromArgument(Expr arg) { none() }
 
 /**
  * Given context expression (EVP_PKEY_CTX), finds the algorithm.
@@ -81,7 +82,8 @@ Expr getAlgorithmFromCtx(CtxPointerExpr ctx) {
  */
 Expr getKeyFromCtx(CtxPointerExpr ctx) {
   exists(Call contextCreationCall |
-    ctxFlowsToCtxArg(contextCreationCall, ctx) and (
+    ctxFlowsToCtxArg(contextCreationCall, ctx) and
+    (
       contextCreationCall.getTarget().getName() = "EVP_PKEY_CTX_new" and
       result = contextCreationCall.getArgument(0)
       or
@@ -96,15 +98,11 @@ Expr getKeyFromCtx(CtxPointerExpr ctx) {
  */
 module OpenSSLKeyFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(EVPKeyGenOperation keygen |
-      keygen.getOutputKeyArtifact() = source
-    )
+    exists(EVPKeyGenOperation keygen | keygen.getOutputKeyArtifact() = source)
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(OpenSSLOperation call |
-      call.(Call).getAnArgument() = sink.asExpr()
-    )
+    exists(OpenSSLCall call | call.(Call).getAnArgument() = sink.asExpr())
   }
 }
 

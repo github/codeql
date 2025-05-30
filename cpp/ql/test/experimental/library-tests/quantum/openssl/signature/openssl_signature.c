@@ -322,14 +322,14 @@ cleanup:
  */
 int sign_using_evp_pkey_sign_message(const unsigned char *message, size_t message_len,
                                      unsigned char **signature, size_t *signature_len,
-                                     EVP_PKEY *pkey, const EVP_MD *md) {
+                                     EVP_PKEY *pkey, const EVP_MD *md, const char *alg_name) {
     EVP_PKEY_CTX *pkey_ctx = NULL;
     EVP_SIGNATURE *alg = NULL;
     int ret = 0;
 
     if (!(pkey_ctx = EVP_PKEY_CTX_new(pkey, NULL))) goto cleanup;
     
-    alg = EVP_SIGNATURE_fetch(NULL, "RSA-SHA256", NULL);
+    alg = EVP_SIGNATURE_fetch(NULL, alg_name, NULL);
     
     if (EVP_PKEY_sign_message_init(pkey_ctx, alg, NULL) != 1 ||
         EVP_PKEY_sign_message_update(pkey_ctx, message, message_len) != 1 ||
@@ -358,14 +358,14 @@ cleanup:
  */
 int verify_using_evp_pkey_verify_message(const unsigned char *message, size_t message_len,
                                         const unsigned char *signature, size_t signature_len,
-                                        EVP_PKEY *pkey, const EVP_MD *md) {
+                                        EVP_PKEY *pkey, const EVP_MD *md, const char *alg_name) {
     EVP_PKEY_CTX *pkey_ctx = NULL;
     EVP_SIGNATURE *alg = NULL;
     int ret = 0;
 
     if (!(pkey_ctx = EVP_PKEY_CTX_new(pkey, NULL))) goto cleanup;
     
-    alg = EVP_SIGNATURE_fetch(NULL, "RSA-SHA256", NULL);
+    alg = EVP_SIGNATURE_fetch(NULL, alg_name, NULL);
     
     if (EVP_PKEY_verify_message_init(pkey_ctx, alg, NULL) != 1) goto cleanup;
     
@@ -666,8 +666,8 @@ int test_signature_apis(EVP_PKEY *key, const EVP_MD *md,
     
     /* Test 6: EVP_PKEY_sign_message API */
     printf("6. EVP_PKEY_sign_message API: ");
-    if (sign_using_evp_pkey_sign_message(message, message_len, &sig6, &sig_len6, key, md) &&
-        verify_using_evp_pkey_verify_message(message, message_len, sig6, sig_len6, key, md)) {
+    if (sign_using_evp_pkey_sign_message(message, message_len, &sig6, &sig_len6, key, md, algo_name) &&
+        verify_using_evp_pkey_verify_message(message, message_len, sig6, sig_len6, key, md, algo_name)) {
         printf("PASS\n");
     } else {
         printf("FAIL\n");
@@ -708,7 +708,7 @@ int test_signature_apis_rsa(void) {
     }
     
     /* Test generic APIs */
-    if (!test_signature_apis(key, md, set_rsa_pss_padding, "RSA")) {
+    if (!test_signature_apis(key, md, set_rsa_pss_padding, "RSA-SHA256")) {
         success = 0;
     }
     

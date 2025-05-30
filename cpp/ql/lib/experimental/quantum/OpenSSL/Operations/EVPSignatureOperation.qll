@@ -7,41 +7,32 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.PKeyAlgorithmValueConsumer
 
-
 // TODO: verification functions
 class EVP_Signature_Initializer extends EVPInitialize {
-  boolean isAlgorithmSpecifiedByKey;
-  boolean isAlgorithmSpecifiedByCtx;
-
   EVP_Signature_Initializer() {
     this.(Call).getTarget().getName() in [
         "EVP_DigestSignInit", "EVP_DigestSignInit_ex", "EVP_SignInit", "EVP_SignInit_ex",
         "EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex", "EVP_PKEY_sign_init_ex2",
         "EVP_PKEY_sign_message_init"
-      ] and
-    (
-      if this.(Call).getTarget().getName().matches("EVP_PKEY_%")
-      then isAlgorithmSpecifiedByKey = false
-      else isAlgorithmSpecifiedByKey = true
-    ) and
-    (
-      if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex"]
-      then isAlgorithmSpecifiedByCtx = true
-      else isAlgorithmSpecifiedByCtx = false
-    )
+      ]
   }
 
   override Expr getAlgorithmArg() {
-    if this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] then
-      result = this.(Call).getArgument(1)
-    else
-      if isAlgorithmSpecifiedByKey = true then
-        result = getAlgorithmFromKey(this.getKeyArg())
-      else
-        if isAlgorithmSpecifiedByCtx = true then
-          result = getAlgorithmFromCtx(this.getContextArg())
-        else
-          none()
+    // explicit algorithm as argument
+    this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init_ex2", "EVP_PKEY_sign_message_init"] and
+    result = this.(Call).getArgument(1)
+    or
+    // algorithm (and key) specified in the context
+    this.(Call).getTarget().getName() in ["EVP_PKEY_sign_init", "EVP_PKEY_sign_init_ex"] and
+    result = getAlgorithmFromCtx(this.getContextArg())
+    or
+    // algorithm specified by the key
+    this.(Call).getTarget().getName() in ["EVP_DigestSignInit", "EVP_DigestSignInit_ex"] and
+    result = getAlgorithmFromKey(this.getKeyArg())
+    or
+    // cannot determine algorithm from the initialization call
+    this.(Call).getTarget().getName() in ["EVP_SignInit", "EVP_SignInit_ex"] and
+    none()
   }
 
   /**
@@ -170,10 +161,22 @@ class EVP_Signature_Final_Call extends EVPFinal, EVP_Signature_Operation {
       ]
   }
 
+  override Expr getAlgorithmArg() {
+    // algorithm specified by the key and the key is provided in this operation
+    if this.(Call).getTarget().getName() in ["EVP_SignFinal", "EVP_SignFinal_ex"]
+    then result = getAlgorithmFromKey(this.getKeyConsumer().asExpr())
+    else
+      // or find algorithm in the initialization call
+      result = EVP_Signature_Operation.super.getAlgorithmArg()
+  }
+
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+    // key provided as an argument
     if this.(Call).getTarget().getName() in ["EVP_SignFinal", "EVP_SignFinal_ex"]
     then result = DataFlow::exprNode(this.(Call).getArgument(3))
-    else result = EVP_Signature_Operation.super.getKeyConsumer()
+    else
+      // or find key in the initialization call
+      result = EVP_Signature_Operation.super.getKeyConsumer()
   }
 
   /**

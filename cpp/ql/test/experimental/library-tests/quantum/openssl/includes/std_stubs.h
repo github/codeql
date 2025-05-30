@@ -1,6 +1,8 @@
 #ifndef STD_STUBS_H
 #define STD_STUBS_H
 
+int printf(const char *format, ...);
+
 unsigned long strlen(const char *s) {
     return 0;
 }

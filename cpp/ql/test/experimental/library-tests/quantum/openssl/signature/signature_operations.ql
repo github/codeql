@@ -6,7 +6,7 @@ import experimental.quantum.OpenSSL.Operations.EVPSignatureOperation
 import experimental.quantum.OpenSSL.Operations.OpenSSLOperationBase
 
 from Crypto::SignatureOperationNode n
-select n, n.asElement(), n.getAnInputArtifact(), n.getAnOutputArtifact(), n.getAKey(), 
-  n.asElement().(OpenSSLOperation).getAlgorithmArg()
-  // n.asElement().(Crypto::OperationInstance).getAnAlgorithmValueConsumer(),
-  // n.getAnAlgorithmOrGenericSource()
+select n, n.getAnInputArtifact(), n.getAnOutputArtifact(), n.getAKey(),
+  n.getAnAlgorithmOrGenericSource(), n.getKeyOperationSubtype()
+  // , n.getASignatureArtifact()
+  
