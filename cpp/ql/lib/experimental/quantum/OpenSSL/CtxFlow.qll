@@ -29,7 +29,19 @@ import semmle.code.cpp.dataflow.new.DataFlow
  * - EVP_PKEY_CTX
  */
 private class CtxType extends Type {
-  CtxType() { this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st") }
+  CtxType() {
+    // It is possible for users to use the underlying type of the CTX variables
+    // these have a name matching 'evp_%ctx_%st
+    this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st")
+    or
+    // In principal the above check should be sufficient, but in case of build mode none issues
+    // i.e., if a typedef cannot be resolved,
+    // or issues with properly stubbing test cases, we also explicitly check for the wrapping type defs
+    // i.e., patterns matching 'EVP_%_CTX'
+    exists(Type base | base = this or base = this.(DerivedType).getBaseType() |
+      base.getName().matches("EVP_%_CTX")
+    )
+  }
 }
 
 /**

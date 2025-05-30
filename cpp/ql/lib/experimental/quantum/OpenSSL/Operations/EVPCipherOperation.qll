@@ -10,7 +10,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(EVP_Cipher_Operation c | c.getInitCall().getAlgorithmArg() = sink.asExpr())
+    exists(EVP_Cipher_Operation c | c.getAlgorithmArg() = sink.asExpr())
   }
 }
 
@@ -31,6 +31,8 @@ private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsu
  */
 abstract class EVP_Cipher_Operation extends OpenSSLOperation, Crypto::KeyOperationInstance {
   Expr getContextArg() { result = this.(Call).getArgument(0) }
+
+  Expr getAlgorithmArg() { this.getInitCall().getAlgorithmArg() = result }
 
   override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 
