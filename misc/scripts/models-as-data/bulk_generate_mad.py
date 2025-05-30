@@ -370,7 +370,7 @@ def download_dca_databases(
     return sorted(database_results, key=cmp_to_key(compare))
 
 
-def get_destination_for_project(config, name: str) -> str:
+def get_mad_destination_for_project(config, name: str) -> str:
     return os.path.join(config["destination"], name)
 
 
@@ -395,7 +395,7 @@ def main(config, args) -> None:
 
     # Check if any of the MaD directories contain working directory changes in git
     for project in projects:
-        mad_dir = get_destination_for_project(config, project["name"])
+        mad_dir = get_mad_destination_for_project(config, project["name"])
         if os.path.exists(mad_dir):
             git_status_output = subprocess.check_output(
                 ["git", "status", "-s", mad_dir], text=True
@@ -440,7 +440,7 @@ To avoid loss of data, please commit your changes."""
 
     # Delete the MaD directory for each project
     for project, database_dir in database_results:
-        mad_dir = get_destination_for_project(config, project)
+        mad_dir = get_mad_destination_for_project(config, project)
         if os.path.exists(mad_dir):
             print(f"Deleting existing MaD directory at {mad_dir}")
             subprocess.check_call(["rm", "-rf", mad_dir])
