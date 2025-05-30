@@ -196,7 +196,7 @@ def build_database(
     return database_dir
 
 
-def generate_models(language: str, config, project: Project, database_dir: str) -> None:
+def generate_models(config, project: Project, database_dir: str) -> None:
     """
     Generate models for a project.
 
@@ -206,6 +206,7 @@ def generate_models(language: str, config, project: Project, database_dir: str) 
         database_dir: Path to the CodeQL database.
     """
     name = project["name"]
+    language = config["language"]
 
     generator = mad.Generator(language)
     # Note: The argument parser converts with-sinks to with_sinks, etc.
@@ -402,7 +403,10 @@ def main(config, args) -> None:
     """
 
     projects = config["targets"]
-    language = args.lang
+    if not "language" in config:
+        print("ERROR: 'language' key is missing in the configuration file.")
+        sys.exit(1)
+    language = config["language"]
 
     # Create build directory if it doesn't exist
     if not os.path.exists(build_dir):
@@ -464,7 +468,7 @@ To avoid loss of data, please commit your changes."""
 
     for project, database_dir in database_results:
         if database_dir is not None:
-            generate_models(language, config, project, database_dir)
+            generate_models(config, project, database_dir)
 
 
 if __name__ == "__main__":
@@ -483,9 +487,6 @@ if __name__ == "__main__":
         type=str,
         help="PAT token to grab DCA databases (the same as the one you use for DCA)",
         required=False,
-    )
-    parser.add_argument(
-        "--lang", type=str, help="The language to generate models for", required=True
     )
     args = parser.parse_args()
 

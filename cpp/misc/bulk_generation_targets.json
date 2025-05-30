@@ -1,5 +1,6 @@
 {
   "strategy": "dca",
+  "language": "cpp",
   "targets": [
       { "name": "openssl", "with_summaries": true },
       { "name": "sqlite", "with_summaries": true }
