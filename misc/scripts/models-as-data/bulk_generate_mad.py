@@ -387,7 +387,6 @@ def main(config, args) -> None:
     """
 
     projects = config["targets"]
-    destination = config["destination"]
     language = args.lang
 
     # Create build directory if it doesn't exist
