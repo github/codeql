@@ -233,7 +233,9 @@ def build_databases_from_projects(
     return database_results
 
 
-def github(url: str, pat: str, extra_headers: dict[str, str] = {}) -> dict:
+def get_json_from_github(
+    url: str, pat: str, extra_headers: dict[str, str] = {}
+) -> dict:
     """
     Download a JSON file from GitHub using a personal access token (PAT).
     Args:
@@ -301,7 +303,7 @@ def download_dca_databases(
     """
     database_results = []
     print("\n=== Finding projects ===")
-    response = github(
+    response = get_json_from_github(
         f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
         pat,
     )
@@ -319,7 +321,7 @@ def download_dca_databases(
         repository = analyzed_database["repository"]
         run_id = analyzed_database["run_id"]
         print(f"=== Finding artifact: {artifact_name} ===")
-        response = github(
+        response = get_json_from_github(
             f"https://api.github.com/repos/{repository}/actions/runs/{run_id}/artifacts",
             pat,
             {"Accept": "application/vnd.github+json"},
