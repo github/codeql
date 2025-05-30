@@ -4,8 +4,14 @@ fn test_macro_pat() -> () {
     // A macro pattern, representing the invocation of a macro that produces a pattern.
     // 
     // For example:
+    macro_rules! my_macro {
+        () => {
+            Ok(_)
+        };
+    }
     match x {
         my_macro!() => "matched",
+    //  ^^^^^^^^^^^
         _ => "not matched",
     }
 }

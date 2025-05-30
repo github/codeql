@@ -17,8 +17,9 @@ module Impl {
    *
    * For example:
    * ```rust
-   * asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
-   * //      ^^^^^    ^^^^
+   * use core::arch::asm;
+   * asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+   * //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
    * ```
    */
   class AsmOperandNamed extends Generated::AsmOperandNamed { }

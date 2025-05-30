@@ -4,6 +4,7 @@ fn test_asm_reg_spec() -> () {
     // A register specification in an inline assembly block.
     // 
     // For example:
-    asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
-    //                        ^^^          ^^^
+    use core::arch::asm;
+    asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+    //                        ^^^         ^^^
 }

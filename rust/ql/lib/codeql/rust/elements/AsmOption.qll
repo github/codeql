@@ -11,6 +11,7 @@ import codeql.rust.elements.AstNode
  *
  * For example:
  * ```rust
+ * use core::arch::asm;
  * asm!("", options(nostack, nomem));
  * //              ^^^^^^^^^^^^^^^^
  * ```

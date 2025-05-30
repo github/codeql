@@ -4,6 +4,7 @@ fn test_asm_operand_expr() -> () {
     // An operand expression in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("mov {0}, {1}", out(reg) x, in(reg) y);
     //                            ^          ^
 }

@@ -4,6 +4,7 @@ fn test_asm_clobber_abi() -> () {
     // A clobbered ABI in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("", clobber_abi("C"));
     //       ^^^^^^^^^^^^^^^^
 }

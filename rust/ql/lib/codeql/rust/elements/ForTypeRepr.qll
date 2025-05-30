@@ -12,8 +12,13 @@ import codeql.rust.elements.TypeRepr
  *
  * For example:
  * ```rust
- * for <'a> fn(&'a str)
- * // ^^^^^
+ * fn foo<T>(value: T)
+ * where
+ *     T: for<'a> Fn(&'a str) -> &'a str
+ * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * {
+ *     // ...
+ * }
  * ```
  */
 final class ForTypeRepr = Impl::ForTypeRepr;

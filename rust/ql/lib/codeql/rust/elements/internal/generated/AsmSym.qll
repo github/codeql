@@ -19,6 +19,7 @@ module Generated {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("call {sym}", sym = sym my_function);
    * //                 ^^^^^^^^^^^^^^^^^^^^^^
    * ```

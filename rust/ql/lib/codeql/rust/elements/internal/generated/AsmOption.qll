@@ -18,6 +18,7 @@ module Generated {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("", options(nostack, nomem));
    * //              ^^^^^^^^^^^^^^^^
    * ```

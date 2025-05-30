@@ -14,6 +14,7 @@ import codeql.rust.elements.AsmRegSpec
  *
  * For example:
  * ```rust
+ * use core::arch::asm;
  * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
  * //                            ^         ^
  * ```

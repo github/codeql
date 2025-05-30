@@ -19,8 +19,12 @@ module Generated {
    *
    * For example:
    * ```rust
-   * asm!("jmp {label}", label = sym my_label);
-   * //                  ^^^^^^^^^^^^^^^^^^^^^^
+   * use core::arch::asm;
+   * asm!(
+   *     "jmp {}",
+   *     label { println!("Jumped from asm!"); }
+   * //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * );
    * ```
    * INTERNAL: Do not reference the `Generated::AsmLabel` class directly.
    * Use the subclass `AsmLabel`, where the following predicates are available.

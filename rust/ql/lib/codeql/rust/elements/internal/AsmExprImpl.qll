@@ -16,7 +16,8 @@ module Impl {
    * An inline assembly expression. For example:
    * ```rust
    * unsafe {
-   *     builtin # asm(_);
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
    * }
    * ```
    */

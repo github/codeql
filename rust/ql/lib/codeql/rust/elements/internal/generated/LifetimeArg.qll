@@ -19,8 +19,8 @@ module Generated {
    *
    * For example:
    * ```rust
-   * Foo<'a>
-   * //  ^^
+   * let text: Text<'a>;
+   * //             ^^
    * ```
    * INTERNAL: Do not reference the `Generated::LifetimeArg` class directly.
    * Use the subclass `LifetimeArg`, where the following predicates are available.

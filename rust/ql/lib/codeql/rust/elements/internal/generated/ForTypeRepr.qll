@@ -20,8 +20,13 @@ module Generated {
    *
    * For example:
    * ```rust
-   * for <'a> fn(&'a str)
-   * // ^^^^^
+   * fn foo<T>(value: T)
+   * where
+   *     T: for<'a> Fn(&'a str) -> &'a str
+   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ForTypeRepr` class directly.
    * Use the subclass `ForTypeRepr`, where the following predicates are available.

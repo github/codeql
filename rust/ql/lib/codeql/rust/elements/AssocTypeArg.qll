@@ -19,8 +19,13 @@ import codeql.rust.elements.TypeRepr
  *
  * For example:
  * ```rust
- * <T as Iterator>::Item
- * //               ^^^^
+ * fn process_cloneable<T>(iter: T)
+ * where
+ *     T: Iterator<Item: Clone>
+ * //              ^^^^^^^^^^^
+ * {
+ *     // ...
+ * }
  * ```
  */
 final class AssocTypeArg = Impl::AssocTypeArg;

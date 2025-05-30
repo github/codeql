@@ -4,6 +4,7 @@ fn test_asm_operand_named() -> () {
     // A named operand in an inline assembly block.
     // 
     // For example:
-    asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
-    //      ^^^^^    ^^^^
+    use core::arch::asm;
+    asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+    //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
 }

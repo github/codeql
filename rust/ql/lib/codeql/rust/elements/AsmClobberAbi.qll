@@ -11,6 +11,7 @@ import codeql.rust.elements.AsmPiece
  *
  * For example:
  * ```rust
+ * use core::arch::asm;
  * asm!("", clobber_abi("C"));
  * //       ^^^^^^^^^^^^^^^^
  * ```

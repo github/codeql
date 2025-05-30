@@ -4,6 +4,11 @@ fn test_assoc_type_arg() -> () {
     // An associated type argument in a path.
     // 
     // For example:
-    <T as Iterator>::Item
-    //               ^^^^
+    fn process_cloneable<T>(iter: T)
+    where
+        T: Iterator<Item: Clone>
+    //              ^^^^^^^^^^^
+    {
+        // ...
+    }
 }

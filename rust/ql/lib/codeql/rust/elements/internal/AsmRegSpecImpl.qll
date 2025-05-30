@@ -17,8 +17,9 @@ module Impl {
    *
    * For example:
    * ```rust
-   * asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
-   * //                        ^^^          ^^^
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
    * ```
    */
   class AsmRegSpec extends Generated::AsmRegSpec { }

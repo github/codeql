@@ -18,6 +18,7 @@ module Generated {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("", clobber_abi("C"));
    * //       ^^^^^^^^^^^^^^^^
    * ```

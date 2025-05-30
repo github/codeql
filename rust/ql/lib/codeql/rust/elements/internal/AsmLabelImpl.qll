@@ -17,8 +17,12 @@ module Impl {
    *
    * For example:
    * ```rust
-   * asm!("jmp {label}", label = sym my_label);
-   * //                  ^^^^^^^^^^^^^^^^^^^^^^
+   * use core::arch::asm;
+   * asm!(
+   *     "jmp {}",
+   *     label { println!("Jumped from asm!"); }
+   * //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * );
    * ```
    */
   class AsmLabel extends Generated::AsmLabel { }

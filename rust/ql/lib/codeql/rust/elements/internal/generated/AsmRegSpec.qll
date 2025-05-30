@@ -19,8 +19,9 @@ module Generated {
    *
    * For example:
    * ```rust
-   * asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
-   * //                        ^^^          ^^^
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::AsmRegSpec` class directly.
    * Use the subclass `AsmRegSpec`, where the following predicates are available.

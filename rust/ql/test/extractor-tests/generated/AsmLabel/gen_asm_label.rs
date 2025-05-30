@@ -4,6 +4,10 @@ fn test_asm_label() -> () {
     // A label in an inline assembly block.
     // 
     // For example:
-    asm!("jmp {label}", label = sym my_label);
-    //                  ^^^^^^^^^^^^^^^^^^^^^^
+    use core::arch::asm;
+    asm!(
+        "jmp {}",
+        label { println!("Jumped from asm!"); }
+    //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    );
 }

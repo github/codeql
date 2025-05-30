@@ -12,8 +12,8 @@ import codeql.rust.elements.Lifetime
  *
  * For example:
  * ```rust
- * Foo<'a>
- * //  ^^
+ * let text: Text<'a>;
+ * //             ^^
  * ```
  */
 final class LifetimeArg = Impl::LifetimeArg;

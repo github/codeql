@@ -177,12 +177,13 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An inline assembly directive specification.
+   * An inline assembly direction specifier.
    *
    * For example:
    * ```rust
-   * asm!("nop");
-   * //   ^^^^^
+   * use core::arch::asm;
+   * asm!("mov {input:x}, {input:x}", output = out(reg) x, input = in(reg) y);
+   * //                                        ^^^                 ^^
    * ```
    */
   class AsmDirSpec extends @asm_dir_spec, AstNode {
@@ -200,6 +201,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
    * //                            ^          ^
    * ```
@@ -224,6 +226,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("", options(nostack, nomem));
    * //              ^^^^^^^^^^^^^^^^
    * ```
@@ -248,8 +251,9 @@ module Raw {
    *
    * For example:
    * ```rust
-   * asm!("mov {0}, {1}", out("eax") x, in("ebx") y);
-   * //                        ^^^          ^^^
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out("eax") x, in(EBX) y);
+   * //                        ^^^         ^^^
    * ```
    */
   class AsmRegSpec extends @asm_reg_spec, AstNode {
@@ -333,8 +337,13 @@ module Raw {
    *
    * For example:
    * ```rust
-   * for <'a> |x: &'a u32 | x
-   * // ^^^^^^
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
    * ```
    */
   class ClosureBinder extends @closure_binder, AstNode {
@@ -676,8 +685,13 @@ module Raw {
    *
    * For example:
    * ```rust
-   * #[cfg(feature = "foo")]
-   * //    ^^^^^^^^^^^^^^^
+   * #[unsafe(lint::name = "reason_for_bypass")]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * fn foo() {
+   *     // ...
+   * }
    * ```
    */
   class Meta extends @meta, AstNode {
@@ -1504,6 +1518,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("", clobber_abi("C"));
    * //       ^^^^^^^^^^^^^^^^
    * ```
@@ -1518,6 +1533,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("mov eax, {const}", const 42);
    * //                       ^^^^^^^
    * ```
@@ -1541,7 +1557,8 @@ module Raw {
    * An inline assembly expression. For example:
    * ```rust
    * unsafe {
-   *     builtin # asm(_);
+   *     #[inline(always)]
+   *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
    * }
    * ```
    */
@@ -1570,8 +1587,12 @@ module Raw {
    *
    * For example:
    * ```rust
-   * asm!("jmp {label}", label = sym my_label);
-   * //                  ^^^^^^^^^^^^^^^^^^^^^^
+   * use core::arch::asm;
+   * asm!(
+   *     "jmp {}",
+   *     label { println!("Jumped from asm!"); }
+   * //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * );
    * ```
    */
   class AsmLabel extends @asm_label, AsmOperand {
@@ -1589,8 +1610,9 @@ module Raw {
    *
    * For example:
    * ```rust
-   * asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
-   * //      ^^^^^    ^^^^
+   * use core::arch::asm;
+   * asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+   * //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
    * ```
    */
   class AsmOperandNamed extends @asm_operand_named, AsmPiece {
@@ -1613,6 +1635,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("", options(nostack, nomem));
    * //              ^^^^^^^^^^^^^^^^
    * ```
@@ -1632,6 +1655,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
    * //                            ^         ^
    * ```
@@ -1661,6 +1685,7 @@ module Raw {
    *
    * For example:
    * ```rust
+   * use core::arch::asm;
    * asm!("call {sym}", sym = sym my_function);
    * //                 ^^^^^^^^^^^^^^^^^^^^^^
    * ```
@@ -1680,8 +1705,13 @@ module Raw {
    *
    * For example:
    * ```rust
-   * <T as Iterator>::Item
-   * //               ^^^^
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class AssocTypeArg extends @assoc_type_arg, GenericArg {
@@ -2226,8 +2256,13 @@ module Raw {
    *
    * For example:
    * ```rust
-   * for <'a> fn(&'a str)
-   * // ^^^^^
+   * fn foo<T>(value: T)
+   * where
+   *     T: for<'a> Fn(&'a str) -> &'a str
+   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class ForTypeRepr extends @for_type_repr, TypeRepr {
@@ -2544,8 +2579,8 @@ module Raw {
    *
    * For example:
    * ```rust
-   * Foo<'a>
-   * //  ^^
+   * let text: Text<'a>;
+   * //             ^^
    * ```
    */
   class LifetimeArg extends @lifetime_arg, GenericArg {
@@ -2680,8 +2715,14 @@ module Raw {
    *
    * For example:
    * ```rust
+   * macro_rules! my_macro {
+   *     () => {
+   *         Ok(_)
+   *     };
+   * }
    * match x {
    *     my_macro!() => "matched",
+   * //  ^^^^^^^^^^^
    *     _ => "not matched",
    * }
    * ```
@@ -2701,6 +2742,9 @@ module Raw {
    *
    * For example:
    * ```rust
+   * macro_rules! macro_type {
+   *     () => { i32 };
+   * }
    * type T = macro_type!();
    * //       ^^^^^^^^^^^^^
    * ```
@@ -2927,8 +2971,8 @@ module Raw {
    * INTERNAL: Do not use.
    * A path referring to a type. For example:
    * ```rust
-   * let x: (i32);
-   * //      ^^^
+   * type X = std::collections::HashMap<i32, i32>;
+   * type Y = X::Item;
    * ```
    */
   class PathTypeRepr extends @path_type_repr, TypeRepr {
@@ -3993,14 +4037,12 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A macro definition using the `macro_rules!` or similar syntax.
+   * A Rust 2.0 style declarative macro definition.
    *
    * For example:
    * ```rust
-   * macro_rules! my_macro {
-   *     () => {
-   *         println!("This is a macro!");
-   *     };
+   * pub macro vec_of_two($element:expr) {
+   *     vec![$element, $element]
    * }
    * ```
    */

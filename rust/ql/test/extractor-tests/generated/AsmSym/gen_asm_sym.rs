@@ -4,6 +4,7 @@ fn test_asm_sym() -> () {
     // A symbol operand in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("call {sym}", sym = sym my_function);
     //                 ^^^^^^^^^^^^^^^^^^^^^^
 }

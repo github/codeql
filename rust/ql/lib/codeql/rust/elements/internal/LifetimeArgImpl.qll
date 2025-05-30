@@ -17,8 +17,8 @@ module Impl {
    *
    * For example:
    * ```rust
-   * Foo<'a>
-   * //  ^^
+   * let text: Text<'a>;
+   * //             ^^
    * ```
    */
   class LifetimeArg extends Generated::LifetimeArg { }

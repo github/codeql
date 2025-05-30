@@ -26,8 +26,13 @@ module Generated {
    *
    * For example:
    * ```rust
-   * <T as Iterator>::Item
-   * //               ^^^^
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::AssocTypeArg` class directly.
    * Use the subclass `AssocTypeArg`, where the following predicates are available.

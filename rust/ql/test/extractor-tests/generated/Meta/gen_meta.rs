@@ -4,6 +4,11 @@ fn test_meta() -> () {
     // A meta item in an attribute.
     // 
     // For example:
-    #[cfg(feature = "foo")]
-    //    ^^^^^^^^^^^^^^^
+    #[unsafe(lint::name = "reason_for_bypass")]
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+    //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    fn foo() {
+        // ...
+    }
 }

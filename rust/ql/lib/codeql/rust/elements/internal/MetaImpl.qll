@@ -17,8 +17,13 @@ module Impl {
    *
    * For example:
    * ```rust
-   * #[cfg(feature = "foo")]
-   * //    ^^^^^^^^^^^^^^^
+   * #[unsafe(lint::name = "reason_for_bypass")]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * fn foo() {
+   *     // ...
+   * }
    * ```
    */
   class Meta extends Generated::Meta { }

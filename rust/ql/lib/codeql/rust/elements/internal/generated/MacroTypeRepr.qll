@@ -19,6 +19,9 @@ module Generated {
    *
    * For example:
    * ```rust
+   * macro_rules! macro_type {
+   *     () => { i32 };
+   * }
    * type T = macro_type!();
    * //       ^^^^^^^^^^^^^
    * ```

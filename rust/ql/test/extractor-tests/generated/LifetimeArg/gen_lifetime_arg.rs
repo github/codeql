@@ -4,6 +4,6 @@ fn test_lifetime_arg() -> () {
     // A lifetime argument in a generic argument list.
     // 
     // For example:
-    Foo<'a>
-    //  ^^
+    let text: Text<'a>;
+    //             ^^
 }

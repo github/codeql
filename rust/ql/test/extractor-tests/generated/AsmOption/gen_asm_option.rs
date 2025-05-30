@@ -4,6 +4,7 @@ fn test_asm_option() -> () {
     // An option in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("", options(nostack, nomem));
     //              ^^^^^^^^^^^^^^^^
 }

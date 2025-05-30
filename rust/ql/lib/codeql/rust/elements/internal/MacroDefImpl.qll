@@ -13,14 +13,12 @@ private import codeql.rust.elements.internal.generated.MacroDef
  */
 module Impl {
   /**
-   * A macro definition using the `macro_rules!` or similar syntax.
+   * A Rust 2.0 style declarative macro definition.
    *
    * For example:
    * ```rust
-   * macro_rules! my_macro {
-   *     () => {
-   *         println!("This is a macro!");
-   *     };
+   * pub macro vec_of_two($element:expr) {
+   *     vec![$element, $element]
    * }
    * ```
    */

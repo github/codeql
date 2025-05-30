@@ -4,6 +4,7 @@ fn test_asm_reg_operand() -> () {
     // A register operand in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("mov {0}, {1}", out(reg) x, in(reg) y);
     //                            ^         ^
 }

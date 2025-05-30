@@ -12,8 +12,13 @@ import codeql.rust.elements.GenericParamList
  *
  * For example:
  * ```rust
- * for <'a> |x: &'a u32 | x
- * // ^^^^^^
+ * let print_any = for<T: std::fmt::Debug> |x: T| {
+ * //              ^^^^^^^^^^^^^^^^^^^^^^^
+ *     println!("{:?}", x);
+ * };
+ *
+ * print_any(42);
+ * print_any("hello");
  * ```
  */
 final class ClosureBinder = Impl::ClosureBinder;

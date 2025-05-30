@@ -2,6 +2,6 @@
 
 fn test_path_type_repr() -> () {
     // A path referring to a type. For example:
-    let x: (i32);
-    //      ^^^
+    type X = std::collections::HashMap<i32, i32>;
+    type Y = X::Item;
 }

@@ -17,8 +17,13 @@ module Impl {
    *
    * For example:
    * ```rust
-   * <T as Iterator>::Item
-   * //               ^^^^
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class AssocTypeArg extends Generated::AssocTypeArg { }

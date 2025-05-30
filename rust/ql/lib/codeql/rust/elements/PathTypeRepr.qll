@@ -10,8 +10,8 @@ import codeql.rust.elements.TypeRepr
 /**
  * A path referring to a type. For example:
  * ```rust
- * let x: (i32);
- * //      ^^^
+ * type X = std::collections::HashMap<i32, i32>;
+ * type Y = X::Item;
  * ```
  */
 final class PathTypeRepr = Impl::PathTypeRepr;

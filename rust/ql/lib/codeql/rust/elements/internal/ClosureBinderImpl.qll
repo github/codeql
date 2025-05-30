@@ -17,8 +17,13 @@ module Impl {
    *
    * For example:
    * ```rust
-   * for <'a> |x: &'a u32 | x
-   * // ^^^^^^
+   * let print_any = for<T: std::fmt::Debug> |x: T| {
+   * //              ^^^^^^^^^^^^^^^^^^^^^^^
+   *     println!("{:?}", x);
+   * };
+   *
+   * print_any(42);
+   * print_any("hello");
    * ```
    */
   class ClosureBinder extends Generated::ClosureBinder { }

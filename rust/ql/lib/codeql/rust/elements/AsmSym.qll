@@ -12,6 +12,7 @@ import codeql.rust.elements.Path
  *
  * For example:
  * ```rust
+ * use core::arch::asm;
  * asm!("call {sym}", sym = sym my_function);
  * //                 ^^^^^^^^^^^^^^^^^^^^^^
  * ```

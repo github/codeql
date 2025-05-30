@@ -4,6 +4,11 @@ fn test_for_type_repr() -> () {
     // A higher-ranked trait bound(HRTB) type.
     // 
     // For example:
-    for <'a> fn(&'a str)
-    // ^^^^^
+    fn foo<T>(value: T)
+    where
+        T: for<'a> Fn(&'a str) -> &'a str
+    //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    {
+        // ...
+    }
 }

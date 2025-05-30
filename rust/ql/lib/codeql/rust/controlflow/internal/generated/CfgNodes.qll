@@ -198,7 +198,8 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * An inline assembly expression. For example:
      * ```rust
      * unsafe {
-     *     builtin # asm(_);
+     *     #[inline(always)]
+     *     builtin # asm("cmp {0}, {1}", in(reg) a, in(reg) b);
      * }
      * ```
      */
@@ -1939,8 +1940,14 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      *
      * For example:
      * ```rust
+     * macro_rules! my_macro {
+     *     () => {
+     *         Ok(_)
+     *     };
+     * }
      * match x {
      *     my_macro!() => "matched",
+     * //  ^^^^^^^^^^^
      *     _ => "not matched",
      * }
      * ```

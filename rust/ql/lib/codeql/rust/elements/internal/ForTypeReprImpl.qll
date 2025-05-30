@@ -17,8 +17,13 @@ module Impl {
    *
    * For example:
    * ```rust
-   * for <'a> fn(&'a str)
-   * // ^^^^^
+   * fn foo<T>(value: T)
+   * where
+   *     T: for<'a> Fn(&'a str) -> &'a str
+   * //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class ForTypeRepr extends Generated::ForTypeRepr { }

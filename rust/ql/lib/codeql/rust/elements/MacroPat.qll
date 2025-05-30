@@ -12,8 +12,14 @@ import codeql.rust.elements.Pat
  *
  * For example:
  * ```rust
+ * macro_rules! my_macro {
+ *     () => {
+ *         Ok(_)
+ *     };
+ * }
  * match x {
  *     my_macro!() => "matched",
+ * //  ^^^^^^^^^^^
  *     _ => "not matched",
  * }
  * ```

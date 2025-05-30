@@ -12,8 +12,12 @@ import codeql.rust.elements.BlockExpr
  *
  * For example:
  * ```rust
- * asm!("jmp {label}", label = sym my_label);
- * //                  ^^^^^^^^^^^^^^^^^^^^^^
+ * use core::arch::asm;
+ * asm!(
+ *     "jmp {}",
+ *     label { println!("Jumped from asm!"); }
+ * //  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * );
  * ```
  */
 final class AsmLabel = Impl::AsmLabel;

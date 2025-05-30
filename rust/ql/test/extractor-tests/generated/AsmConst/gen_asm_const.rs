@@ -4,6 +4,7 @@ fn test_asm_const() -> () {
     // A constant operand in an inline assembly block.
     // 
     // For example:
+    use core::arch::asm;
     asm!("mov eax, {const}", const 42);
     //                       ^^^^^^^
 }

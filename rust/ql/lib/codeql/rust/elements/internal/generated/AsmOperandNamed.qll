@@ -20,8 +20,9 @@ module Generated {
    *
    * For example:
    * ```rust
-   * asm!("mov {out}, {in}", out = out(reg) x, in = in(reg) y);
-   * //      ^^^^^    ^^^^
+   * use core::arch::asm;
+   * asm!("mov {0:x}, {input:x}", out(reg) x, input = in(reg) y);
+   * //                           ^^^^^^^^^^^ ^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::AsmOperandNamed` class directly.
    * Use the subclass `AsmOperandNamed`, where the following predicates are available.

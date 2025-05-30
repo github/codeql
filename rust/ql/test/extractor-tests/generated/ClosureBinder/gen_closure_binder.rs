@@ -4,6 +4,11 @@ fn test_closure_binder() -> () {
     // A closure binder, specifying lifetime or type parameters for a closure.
     // 
     // For example:
-    for <'a> |x: &'a u32 | x
-    // ^^^^^^
+    let print_any = for<T: std::fmt::Debug> |x: T| {
+    //              ^^^^^^^^^^^^^^^^^^^^^^^
+        println!("{:?}", x);
+    };
+    
+    print_any(42);
+    print_any("hello");
 }

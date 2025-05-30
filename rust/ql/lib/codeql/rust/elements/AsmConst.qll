@@ -12,6 +12,7 @@ import codeql.rust.elements.Expr
  *
  * For example:
  * ```rust
+ * use core::arch::asm;
  * asm!("mov eax, {const}", const 42);
  * //                       ^^^^^^^
  * ```
