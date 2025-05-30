@@ -46,15 +46,15 @@ class Project(TypedDict):
     with_summaries: NotRequired[bool]
 
 
-def shouldGenerateSinks(project: Project) -> bool:
+def should_generate_sinks(project: Project) -> bool:
     return project.get("with-sinks", False)
 
 
-def shouldGenerateSources(project: Project) -> bool:
+def should_generate_sources(project: Project) -> bool:
     return project.get("with-sources", False)
 
 
-def shouldGenerateSummaries(project: Project) -> bool:
+def should_generate_summaries(project: Project) -> bool:
     return project.get("with-summaries", False)
 
 
@@ -214,9 +214,9 @@ def generate_models(config, project: Project, database_dir: str) -> None:
 
     generator = mad.Generator(language)
     # Note: The argument parser converts with-sinks to with_sinks, etc.
-    generator.generateSinks = shouldGenerateSinks(project)
-    generator.generateSources = shouldGenerateSources(project)
-    generator.generateSummaries = shouldGenerateSummaries(project)
+    generator.generateSinks = should_generate_sinks(project)
+    generator.generateSources = should_generate_sources(project)
+    generator.generateSummaries = should_generate_summaries(project)
     generator.setenvironment(database=database_dir, folder=name)
     generator.run()
 
