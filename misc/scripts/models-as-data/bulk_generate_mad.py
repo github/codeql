@@ -47,15 +47,15 @@ class Project(TypedDict):
 
 
 def should_generate_sinks(project: Project) -> bool:
-    return project.get("with-sinks", False)
+    return project.get("with-sinks", True)
 
 
 def should_generate_sources(project: Project) -> bool:
-    return project.get("with-sources", False)
+    return project.get("with-sources", True)
 
 
 def should_generate_summaries(project: Project) -> bool:
-    return project.get("with-summaries", False)
+    return project.get("with-summaries", True)
 
 
 def clone_project(project: Project) -> str:
