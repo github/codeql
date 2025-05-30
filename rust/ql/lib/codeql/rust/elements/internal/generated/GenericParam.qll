@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A GenericParam. For example:
+   * A generic parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) {}
+   * //     ^  ^
    * ```
    * INTERNAL: Do not reference the `Generated::GenericParam` class directly.
    * Use the subclass `GenericParam`, where the following predicates are available.

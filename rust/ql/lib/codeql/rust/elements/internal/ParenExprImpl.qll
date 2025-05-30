@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ParenExpr
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A ParenExpr. For example:
+   * A parenthesized expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * (x + y)
+   * //^^^^^
    * ```
    */
   class ParenExpr extends Generated::ParenExpr {

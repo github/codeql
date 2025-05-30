@@ -1,0 +1,2 @@
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | gen_asm_reg_operand.rs:8:30:8:32 | AsmRegSpec |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | gen_asm_reg_operand.rs:8:41:8:43 | AsmRegSpec |

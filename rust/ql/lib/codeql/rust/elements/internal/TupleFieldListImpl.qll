@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.TupleFieldList
  */
 module Impl {
   /**
-   * A TupleFieldList. For example:
+   * A list of fields in a tuple struct or tuple enum variant.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S(i32, String);
+   * //      ^^^^^^^^^^^^^
    * ```
    */
   class TupleFieldList extends Generated::TupleFieldList { }

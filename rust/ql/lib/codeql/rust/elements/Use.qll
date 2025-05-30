@@ -10,9 +10,9 @@ import codeql.rust.elements.UseTree
 import codeql.rust.elements.Visibility
 
 /**
- * A Use. For example:
+ * A `use` statement. For example:
  * ```rust
- * todo!()
+ * use std::collections::HashMap;
  * ```
  */
 final class Use = Impl::Use;

@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.ArrayTypeRepr
  */
 module Impl {
   /**
-   * A ArrayTypeRepr. For example:
+   * An array type representation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let arr: [i32; 4];
+   * //       ^^^^^^^^
    * ```
    */
   class ArrayTypeRepr extends Generated::ArrayTypeRepr { }

@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.GenericParam
  */
 module Impl {
   /**
-   * A GenericParam. For example:
+   * A generic parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T, U>(t: T, u: U) {}
+   * //     ^  ^
    * ```
    */
   class GenericParam extends Generated::GenericParam { }

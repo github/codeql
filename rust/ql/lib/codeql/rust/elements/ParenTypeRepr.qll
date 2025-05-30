@@ -7,9 +7,12 @@ private import internal.ParenTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A ParenTypeRepr. For example:
+ * A parenthesized type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let x: (i32);
+ * //     ^^^^^
  * ```
  */
 final class ParenTypeRepr = Impl::ParenTypeRepr;

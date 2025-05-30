@@ -7,9 +7,12 @@ private import internal.GenericParamImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A GenericParam. For example:
+ * A generic parameter in a generic parameter list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T, U>(t: T, u: U) {}
+ * //     ^  ^
  * ```
  */
 final class GenericParam = Impl::GenericParam;

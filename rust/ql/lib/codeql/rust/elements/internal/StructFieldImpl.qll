@@ -15,9 +15,12 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A StructField. For example:
+   * A field in a struct declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S { x: i32 }
+   * //         ^^^^^^^
    * ```
    */
   class StructField extends Generated::StructField {

@@ -16,9 +16,12 @@ import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
  */
 module Generated {
   /**
-   * A TryExpr. For example:
+   * A try expression using the `?` operator.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x = foo()?;
+   * //           ^
    * ```
    * INTERNAL: Do not reference the `Generated::TryExpr` class directly.
    * Use the subclass `TryExpr`, where the following predicates are available.

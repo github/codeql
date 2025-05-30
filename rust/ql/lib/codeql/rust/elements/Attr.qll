@@ -8,9 +8,13 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Meta
 
 /**
- * A Attr. For example:
+ * An attribute applied to an item.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * #[derive(Debug)]
+ * //^^^^^^^^^^^^^
+ * struct S;
  * ```
  */
 final class Attr = Impl::Attr;

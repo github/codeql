@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.MacroExpr
  */
 module Impl {
   /**
-   * A MacroExpr. For example:
+   * A macro expression, representing the invocation of a macro that produces an expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let y = vec![1, 2, 3];
    * ```
    */
   class MacroExpr extends Generated::MacroExpr { }

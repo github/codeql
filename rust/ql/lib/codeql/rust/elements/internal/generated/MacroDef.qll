@@ -18,9 +18,13 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A MacroDef. For example:
+   * A Rust 2.0 style declarative macro definition.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * pub macro vec_of_two($element:expr) {
+   *     vec![$element, $element]
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::MacroDef` class directly.
    * Use the subclass `MacroDef`, where the following predicates are available.

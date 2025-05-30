@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.Visibility
  */
 module Impl {
   /**
-   * A Visibility. For example:
+   * A visibility modifier.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * pub struct S;
+   * //^^^
    * ```
    */
   class Visibility extends Generated::Visibility { }

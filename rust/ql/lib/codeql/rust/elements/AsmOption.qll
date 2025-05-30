@@ -6,4 +6,14 @@
 private import internal.AsmOptionImpl
 import codeql.rust.elements.AstNode
 
+/**
+ * An option in an inline assembly block.
+ *
+ * For example:
+ * ```rust
+ * use core::arch::asm;
+ * asm!("", options(nostack, nomem));
+ * //              ^^^^^^^^^^^^^^^^
+ * ```
+ */
 final class AsmOption = Impl::AsmOption;

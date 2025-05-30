@@ -15,9 +15,12 @@ import codeql.rust.elements.Path
  */
 module Generated {
   /**
-   * A Visibility. For example:
+   * A visibility modifier.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * pub struct S;
+   * //^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Visibility` class directly.
    * Use the subclass `Visibility`, where the following predicates are available.

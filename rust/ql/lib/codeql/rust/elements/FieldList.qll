@@ -7,9 +7,14 @@ private import internal.FieldListImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A field of a variant. For example:
+ * A list of fields in a struct or enum variant.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct S {x: i32, y: i32}
+ * //       ^^^^^^^^^^^^^^^^
+ * enum E {A(i32, i32)}
+ * //     ^^^^^^^^^^^^^
  * ```
  */
 final class FieldList = Impl::FieldList;

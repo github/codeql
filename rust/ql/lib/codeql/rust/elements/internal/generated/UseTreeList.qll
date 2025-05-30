@@ -15,9 +15,12 @@ import codeql.rust.elements.UseTree
  */
 module Generated {
   /**
-   * A UseTreeList. For example:
+   * A list of use trees in a use declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * use std::{fs, io};
+   * //        ^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::UseTreeList` class directly.
    * Use the subclass `UseTreeList`, where the following predicates are available.

@@ -8,9 +8,12 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Pat
 
 /**
- * A RestPat. For example:
+ * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let (a, .., z) = (1, 2, 3);
+ * //      ^^
  * ```
  */
 final class RestPat = Impl::RestPat;

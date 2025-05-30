@@ -17,9 +17,13 @@ import codeql.rust.elements.Pat
  */
 module Generated {
   /**
-   * A ForExpr. For example:
+   * A for loop expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * for x in 0..10 {
+   *     println!("{}", x);
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ForExpr` class directly.
    * Use the subclass `ForExpr`, where the following predicates are available.

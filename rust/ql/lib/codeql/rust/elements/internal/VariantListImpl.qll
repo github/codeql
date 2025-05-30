@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.VariantList
  */
 module Impl {
   /**
-   * A VariantList. For example:
+   * A list of variants in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B, C }
+   * //     ^^^^^^^^^^^
    * ```
    */
   class VariantList extends Generated::VariantList { }

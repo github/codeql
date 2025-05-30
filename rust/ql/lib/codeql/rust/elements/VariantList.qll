@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Variant
 
 /**
- * A VariantList. For example:
+ * A list of variants in an enum declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * enum E { A, B, C }
+ * //     ^^^^^^^^^^^
  * ```
  */
 final class VariantList = Impl::VariantList;

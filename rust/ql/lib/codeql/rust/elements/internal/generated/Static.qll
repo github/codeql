@@ -20,9 +20,11 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Static. For example:
+   * A static item declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * static X: i32 = 42;
    * ```
    * INTERNAL: Do not reference the `Generated::Static` class directly.
    * Use the subclass `Static`, where the following predicates are available.

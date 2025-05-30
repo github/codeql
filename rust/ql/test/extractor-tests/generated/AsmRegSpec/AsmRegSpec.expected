@@ -1,0 +1,2 @@
+| gen_asm_reg_spec.rs:8:30:8:34 | AsmRegSpec | hasIdentifier: | no |
+| gen_asm_reg_spec.rs:8:43:8:45 | AsmRegSpec | hasIdentifier: | yes |

@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.UseBoundGenericArgImpl::Impl as UseBoundGen
  */
 module Generated {
   /**
-   * A NameRef. For example:
+   * A reference to a name.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * foo();
+   * //^^^
    * ```
    * INTERNAL: Do not reference the `Generated::NameRef` class directly.
    * Use the subclass `NameRef`, where the following predicates are available.

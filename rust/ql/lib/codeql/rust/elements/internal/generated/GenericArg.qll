@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A GenericArg. For example:
+   * A generic argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo:: <u32, 3, 'a>
+   * //    ^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::GenericArg` class directly.
    * Use the subclass `GenericArg`, where the following predicates are available.

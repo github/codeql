@@ -1,0 +1,2 @@
+| gen_meta.rs:7:7:7:46 | Meta | hasExpr: | yes | isUnsafe: | yes | hasPath: | yes | hasTokenTree: | no |
+| gen_meta.rs:9:7:9:72 | Meta | hasExpr: | no | isUnsafe: | no | hasPath: | yes | hasTokenTree: | yes |

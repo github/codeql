@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A TupleTypeRepr. For example:
+   * A tuple type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let t: (i32, String);
+   * //     ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TupleTypeRepr` class directly.
    * Use the subclass `TupleTypeRepr`, where the following predicates are available.

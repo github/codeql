@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.AssocItemList
  */
 module Impl {
   /**
-   * A list of  `AssocItem` elements, as appearing for example in a `Trait`.
+   * A list of  `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    */
   class AssocItemList extends Generated::AssocItemList { }
 }

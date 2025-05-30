@@ -13,7 +13,7 @@ private import codeql.rust.elements.internal.generated.UseTree
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A UseTree. For example:
+   * A `use` tree, ie the part after the `use` keyword in a `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
    * use std::collections::*;

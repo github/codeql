@@ -8,9 +8,15 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Expr
 
 /**
- * A MatchGuard. For example:
+ * A guard condition in a match arm.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * match x {
+ *     y if y > 0 => "positive",
+ * //    ^^^^^^^
+ *     _ => "non-positive",
+ * }
  * ```
  */
 final class MatchGuard = Impl::MatchGuard;

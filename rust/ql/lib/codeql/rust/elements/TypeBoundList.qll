@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.TypeBound
 
 /**
- * A TypeBoundList. For example:
+ * A list of type bounds.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo<T: Debug + Clone>(t: T) {}
+ * //        ^^^^^^^^^^^^^
  * ```
  */
 final class TypeBoundList = Impl::TypeBoundList;

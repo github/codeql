@@ -15,9 +15,12 @@ module Impl {
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A TypeParam. For example:
+   * A type parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) {}
+   * //     ^
    * ```
    */
   class TypeParam extends Generated::TypeParam {

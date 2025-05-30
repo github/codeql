@@ -1,0 +1,2 @@
+| gen_asm_reg_operand.rs:8:26:8:35 | AsmRegOperand | hasAsmDirSpec: | yes | hasAsmOperandExpr: | yes | hasAsmRegSpec: | yes |
+| gen_asm_reg_operand.rs:8:38:8:46 | AsmRegOperand | hasAsmDirSpec: | yes | hasAsmOperandExpr: | yes | hasAsmRegSpec: | yes |

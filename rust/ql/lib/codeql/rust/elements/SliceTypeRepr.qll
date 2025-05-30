@@ -7,9 +7,12 @@ private import internal.SliceTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A SliceTypeRepr. For example:
+ * A slice type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let s: &[i32];
+ * //      ^^^^^
  * ```
  */
 final class SliceTypeRepr = Impl::SliceTypeRepr;

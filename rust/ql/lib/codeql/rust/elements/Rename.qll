@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Name
 
 /**
- * A Rename. For example:
+ * A rename in a use declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * use foo as bar;
+ * //      ^^^^^^
  * ```
  */
 final class Rename = Impl::Rename;

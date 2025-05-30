@@ -13,9 +13,14 @@ private import codeql.rust.elements.internal.generated.ExternItemList
  */
 module Impl {
   /**
-   * A ExternItemList. For example:
+   * A list of items inside an extern block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
+   * }
    * ```
    */
   class ExternItemList extends Generated::ExternItemList { }

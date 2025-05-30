@@ -15,6 +15,18 @@ import codeql.rust.elements.TypeArg
  */
 module Generated {
   /**
+   * A parenthesized argument list as used in function traits.
+   *
+   * For example:
+   * ```rust
+   * fn call_with_42<F>(f: F) -> i32
+   * where
+   *     F: Fn(i32, String) -> i32,
+   * //        ^^^^^^^^^^^
+   * {
+   *     f(42, "Don't panic".to_string())
+   * }
+   * ```
    * INTERNAL: Do not reference the `Generated::ParenthesizedArgList` class directly.
    * Use the subclass `ParenthesizedArgList`, where the following predicates are available.
    */

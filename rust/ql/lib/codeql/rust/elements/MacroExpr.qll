@@ -8,9 +8,11 @@ import codeql.rust.elements.Expr
 import codeql.rust.elements.MacroCall
 
 /**
- * A MacroExpr. For example:
+ * A macro expression, representing the invocation of a macro that produces an expression.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let y = vec![1, 2, 3];
  * ```
  */
 final class MacroExpr = Impl::MacroExpr;

@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.Path
 
 /**
- * A Visibility. For example:
+ * A visibility modifier.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * pub struct S;
+ * //^^^
  * ```
  */
 final class Visibility = Impl::Visibility;

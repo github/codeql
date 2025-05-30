@@ -16,9 +16,12 @@ import codeql.rust.elements.SelfParam
  */
 module Generated {
   /**
-   * A ParamList. For example:
+   * A list of parameters in a function, method, or closure declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo(x: i32, y: i32) {}
+   * //      ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ParamList` class directly.
    * Use the subclass `ParamList`, where the following predicates are available.

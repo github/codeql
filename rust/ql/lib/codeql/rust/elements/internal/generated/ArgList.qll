@@ -15,9 +15,12 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * A ArgList. For example:
+   * A list of arguments in a function or method call.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * foo(1, 2, 3);
+   * // ^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ArgList` class directly.
    * Use the subclass `ArgList`, where the following predicates are available.

@@ -23,7 +23,10 @@ module Generated {
   /**
    * A Struct. For example:
    * ```rust
-   * todo!()
+   * struct Point {
+   * x: i32,
+   *     y: i32,
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::Struct` class directly.
    * Use the subclass `Struct`, where the following predicates are available.

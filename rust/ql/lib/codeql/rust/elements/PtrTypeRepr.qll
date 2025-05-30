@@ -7,9 +7,13 @@ private import internal.PtrTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A PtrTypeRepr. For example:
+ * A pointer type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let p: *const i32;
+ * let q: *mut i32;
+ * //     ^^^^^^^^^
  * ```
  */
 final class PtrTypeRepr = Impl::PtrTypeRepr;

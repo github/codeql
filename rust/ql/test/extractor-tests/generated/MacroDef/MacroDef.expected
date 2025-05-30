@@ -1,0 +1,1 @@
+| gen_macro_def.rs:4:5:9:5 | MacroDef | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | hasArgs: | yes | getNumberOfAttrs: | 0 | hasBody: | yes | hasName: | yes | hasVisibility: | yes |

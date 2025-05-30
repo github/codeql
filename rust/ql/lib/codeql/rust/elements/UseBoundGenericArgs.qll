@@ -7,4 +7,13 @@ private import internal.UseBoundGenericArgsImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.UseBoundGenericArg
 
+/**
+ * A use<..> bound to control which generic parameters are captured by an impl Trait return type.
+ *
+ * For example:
+ * ```rust
+ * pub fn hello<'a, T, const N: usize>() -> impl Sized + use<'a, T, N> {}
+ * //                                                        ^^^^^^^^
+ * ```
+ */
 final class UseBoundGenericArgs = Impl::UseBoundGenericArgs;

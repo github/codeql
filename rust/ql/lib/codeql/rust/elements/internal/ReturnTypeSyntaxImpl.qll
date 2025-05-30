@@ -13,9 +13,22 @@ private import codeql.rust.elements.internal.generated.ReturnTypeSyntax
  */
 module Impl {
   /**
-   * A ReturnTypeSyntax. For example:
+   * A return type notation `(..)` to reference or bound the type returned by a trait method
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct ReverseWidgets<F: Factory<widgets(..): DoubleEndedIterator>> {
+   *     factory: F,
+   * }
+   *
+   * impl<F> Factory for ReverseWidgets<F>
+   * where
+   *   F: Factory<widgets(..): DoubleEndedIterator>,
+   * {
+   *   fn widgets(&self) -> impl Iterator<Item = Widget> {
+   *     self.factory.widgets().rev()
+   *   }
+   * }
    * ```
    */
   class ReturnTypeSyntax extends Generated::ReturnTypeSyntax { }

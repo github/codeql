@@ -17,9 +17,12 @@ import codeql.rust.elements.StructExprField
  */
 module Generated {
   /**
-   * A StructExprFieldList. For example:
+   * A list of fields in a struct expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo { a: 1, b: 2 }
+   * //    ^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::StructExprFieldList` class directly.
    * Use the subclass `StructExprFieldList`, where the following predicates are available.

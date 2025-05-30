@@ -8,9 +8,12 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.TupleField
 
 /**
- * A TupleFieldList. For example:
+ * A list of fields in a tuple struct or tuple enum variant.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct S(i32, String);
+ * //      ^^^^^^^^^^^^^
  * ```
  */
 final class TupleFieldList = Impl::TupleFieldList;
