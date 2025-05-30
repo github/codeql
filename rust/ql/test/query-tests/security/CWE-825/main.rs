@@ -165,4 +165,10 @@ fn main() {
 
 	println!("test_rc:");
 	test_rc();
+
+	println!("test_closures:");
+	test_closures();
+
+	println!("test_async:");
+	test_async();
 }

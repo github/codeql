@@ -441,3 +441,93 @@ pub fn test_rc() {
 	// note: simialar things are likely possible with Ref, RefMut, RefCell,
 	//       Vec and others.
 }
+
+// --- closures ---
+
+fn get_closure(p3: *const i64, p4: *const i64) -> impl FnOnce() {
+	let my_local1: i64 = 1;
+	let my_local2: i64 = 2;
+	let p1: *const i64 = &my_local1;
+
+	return move || { // captures `my_local2`, `p1`, `p3`, `p4` by value (due to `move`)
+		let p2: *const i64 = &my_local2;
+
+		unsafe {
+			let v1 = *p1; // $ MISSING: Alert
+			let v2 = *p2; // GOOD
+			let v3 = *p3; // GOOD
+			let v4 = *p4; // $ MISSING: Alert
+			println!("	v1 = {v1} (!)"); // corrupt in practice
+			println!("	v2 = {v2}");
+			println!("	v3 = {v3}");
+			println!("	v4 = {v4} (!)");
+		}
+	};
+} // (`my_local1` goes out of scope, thus `p1` is dangling)
+
+fn with_closure(ptr: *const i64, closure: fn(*const i64, *const i64)) {
+	let my_local5: i64 = 5;
+
+	closure(ptr,
+		&my_local5);
+}
+
+pub fn test_closures() {
+	let closure;
+	let my_local3: i64 = 3;
+	{
+		let my_local4: i64 = 4;
+		closure = get_closure( &my_local3,
+			&my_local4);
+	} // (`my_local4` goes out of scope, so `p4` is dangling)
+
+	use_the_stack();
+
+	closure();
+
+	with_closure(&my_local3, |p1, p2| {
+		unsafe {
+			let v5 = *p1; // GOOD
+			let v6 = *p2; // GOOD
+			println!("	v5 = {v5}");
+			println!("	v6 = {v6}");
+		}
+	});
+}
+
+// --- async ---
+
+fn get_async_closure(p3: *const i64, p4: *const i64) -> impl std::future::Future<Output = ()> {
+	let my_local1: i64 = 1;
+	let my_local2: i64 = 2;
+	let p1: *const i64 = &my_local1;
+
+	return async move { // captures `my_local2`, `p1`, `p3`, `p4` by value (due to `move`)
+		let p2: *const i64 = &my_local2;
+
+		unsafe {
+			let v1 = *p1; // $ MISSING: Alert
+			let v2 = *p2; // GOOD
+			let v3 = *p3; // GOOD
+			let v4 = *p4; // $ MISSING: Alert
+			println!("	v1 = {v1} (!)"); // corrupt in practice
+			println!("	v2 = {v2}");
+			println!("	v3 = {v3}");
+			println!("	v4 = {v4} (!)");
+		}
+	};
+} // (`my_local1` goes out of scope, thus `p1` is dangling)
+
+pub fn test_async() {
+	let async_closure;
+	let my_local3: i64 = 3;
+	{
+		let my_local4: i64 = 4;
+		async_closure = get_async_closure(&my_local3,
+			&my_local4);
+	} // (`my_local4` goes out of scope, so `p4` is dangling)
+
+	use_the_stack();
+
+	futures::executor::block_on(async_closure);
+}
