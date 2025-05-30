@@ -29,8 +29,8 @@ pub fn test_alloc(mode: i32) {
 				println!("	v6 = {v6} (!)"); // corrupt in practice
 
 				// test repeat reads (we don't want lots of very similar results for the same dealloc)
-				let v5b = *m1;
-				let v5c = *m1;
+				let _v5b = *m1;
+				let _v5c = *m1;
 			},
 			100 => {
 				// more reads

@@ -96,7 +96,7 @@ fn use_pointers(p1: *const i64, p2: *mut i64, mode: i32) {
 	use_the_stack();
 
 	unsafe {
-		if (mode == 0) {
+		if mode == 0 {
 			// reads
 			let v1 = *p1; // GOOD
 			let v2 = *p2; // GOOD
@@ -105,7 +105,7 @@ fn use_pointers(p1: *const i64, p2: *mut i64, mode: i32) {
 			println!("	v2 = {v2}");
 			println!("	v3 = {v3}");
 		}
-		if (mode == 200) {
+		if mode == 200 {
 			// writes
 			*p2 = 2; // GOOD
 		}
@@ -142,14 +142,14 @@ pub fn test_static(mode: i32) {
 	use_the_stack();
 
 	unsafe {
-		if (mode == 0) {
+		if mode == 0 {
 			// reads
 			let v1 = *p1; // GOOD
 			let v2 = *p2; // GOOD
 			println!("	v1 = {v1}");
 			println!("	v2 = {v2}");
 		}
-		if (mode == 210) {
+		if mode == 210 {
 			// writes
 			*p2 = 3; // GOOD
 		}
