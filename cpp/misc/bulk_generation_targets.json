@@ -2,8 +2,8 @@
   "strategy": "dca",
   "language": "cpp",
   "targets": [
-      { "name": "openssl", "with_summaries": true },
-      { "name": "sqlite", "with_summaries": true }
+      { "name": "openssl", "with-summaries": true },
+      { "name": "sqlite", "with-summaries": true }
   ],
   "destination": "cpp/ql/lib/ext/generated"
 }
