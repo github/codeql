@@ -50,7 +50,7 @@ predicate iterWrapperMethods(Function iter, Function next) {
   exists(string field |
     exists(Return r, DataFlow::Node self, DataFlow::AttrRead read |
       r.getScope() = iter and
-      r.getValue() = iterCall(read).asExpr() and
+      r.getValue() = [iterCall(read).asExpr(), read.asExpr()] and
       read.accesses(self, field) and
       isSelfVar(iter, self.asExpr())
     ) and
@@ -63,15 +63,13 @@ predicate iterWrapperMethods(Function iter, Function next) {
   )
 }
 
-/** Gets a call to `iter(arg)`, `arg.__iter__()`, or `arg` itself (which we assume may already be an iterator). */
+/** Gets a call to `iter(arg)` or `arg.__iter__()`. */
 private DataFlow::CallCfgNode iterCall(DataFlow::Node arg) {
   result.(DataFlow::MethodCallNode).calls(arg, "__iter__")
   or
   result = API::builtin("iter").getACall() and
   arg = result.getArg(0) and
   not exists(result.getArg(1))
-  or
-  result = arg // assume the wrapping field is already an iterator
 }
 
 /** Gets a call to `next(arg)` or `arg.__next__()`. */

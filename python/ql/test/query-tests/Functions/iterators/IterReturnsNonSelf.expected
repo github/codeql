@@ -1,2 +1,2 @@
 | test.py:5:5:5:23 | Function __iter__ | Iter method of iterator $@ does not return `self`. | test.py:1:1:1:11 | Class Bad1 | Bad1 |
-| test.py:41:5:41:23 | Function __iter__ | Iter method of iterator $@ does not return `self`. | test.py:32:1:32:21 | Class FalsePositive1 | FalsePositive1 |
+| test.py:51:5:51:23 | Function __iter__ | Iter method of iterator $@ does not return `self`. | test.py:42:1:42:21 | Class FalsePositive1 | FalsePositive1 |

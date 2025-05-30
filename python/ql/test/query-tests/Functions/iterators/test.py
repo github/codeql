@@ -21,8 +21,18 @@ class Good2:
 
     def __iter__(self): # GOOD: iter and next are wrappers around a field
         return self._it.__iter__()
-
+    
 class Good3:
+    def __init__(self):
+        self._it = iter([0,0,0])
+
+    def __next__(self):
+        return self._it.__next__()
+
+    def __iter__(self): # GOOD: iter and next are wrappers around a field
+        return self._it
+
+class Good4:
     def __next__(self):
         return 0
 
