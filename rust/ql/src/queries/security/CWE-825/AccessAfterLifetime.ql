@@ -13,7 +13,33 @@
  */
 
 import rust
+import codeql.rust.dataflow.DataFlow
+import codeql.rust.dataflow.TaintTracking
+import codeql.rust.security.AccessAfterLifetimeExtensions
+import AccessAfterLifetimeFlow::PathGraph
 
-from int n
-where none()
-select n
+/**
+ * A data flow configuration for detecting accesses to a pointer after its
+ * lifetime has ended.
+ */
+module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof AccessAfterLifetime::Source }
+
+  predicate isSink(DataFlow::Node node) { node instanceof AccessAfterLifetime::Sink }
+
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof AccessAfterLifetime::Barrier }
+}
+
+module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
+
+from
+  AccessAfterLifetimeFlow::PathNode sourceNode, AccessAfterLifetimeFlow::PathNode sinkNode,
+  Expr targetValue
+where
+  // flow from a pointer or reference to the dereference
+  AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
+  targetValue = sourceNode.getNode().(AccessAfterLifetime::Source).getTargetValue() and
+  // check that the dereference is outside the lifetime of the target
+  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode())
+select sinkNode.getNode(), sourceNode, sinkNode,
+  "Access of a pointer to $@ after it's lifetime has ended.", targetValue, targetValue.toString()
