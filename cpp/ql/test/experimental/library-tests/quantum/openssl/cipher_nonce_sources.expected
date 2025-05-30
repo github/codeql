@@ -1,0 +1,2 @@
+| openssl_basic.c:49:13:49:31 | EncryptOperation | openssl_basic.c:40:54:40:55 | Nonce | openssl_basic.c:189:42:189:59 | Constant |
+| openssl_basic.c:99:11:99:29 | DecryptOperation | openssl_basic.c:86:50:86:51 | Nonce | openssl_basic.c:189:42:189:59 | Constant |

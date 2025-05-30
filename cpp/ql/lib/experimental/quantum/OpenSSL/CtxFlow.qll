@@ -29,13 +29,25 @@ import semmle.code.cpp.dataflow.new.DataFlow
  * - EVP_PKEY_CTX
  */
 private class CtxType extends Type {
-  CtxType() { this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st") }
+  CtxType() {
+    // It is possible for users to use the underlying type of the CTX variables
+    // these have a name matching 'evp_%ctx_%st
+    this.getUnspecifiedType().stripType().getName().matches("evp_%ctx_%st")
+    or
+    // In principal the above check should be sufficient, but in case of build mode none issues
+    // i.e., if a typedef cannot be resolved,
+    // or issues with properly stubbing test cases, we also explicitly check for the wrapping type defs
+    // i.e., patterns matching 'EVP_%_CTX'
+    exists(Type base | base = this or base = this.(DerivedType).getBaseType() |
+      base.getName().matches("EVP_%_CTX")
+    )
+  }
 }
 
 /**
  * A pointer to a CtxType
  */
-private class CtxPointerExpr extends Expr {
+class CtxPointerExpr extends Expr {
   CtxPointerExpr() {
     this.getType() instanceof CtxType and
     this.getType() instanceof PointerType
@@ -88,7 +100,7 @@ private class CtxCopyReturnCall extends Call, CtxPointerExpr {
  * Flow from any CtxPointerArgument to any other CtxPointerArgument
  */
 module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerArgument }
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerExpr }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CtxPointerArgument }
 
@@ -116,9 +128,22 @@ module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
 module OpenSSLCtxArgumentFlow = DataFlow::Global<OpenSSLCtxArgumentFlowConfig>;
 
 /**
- * Holds if there is a context flow from the source to the sink.
+ * Holds if there is a context flow from the source to the sink,
+ * where the source and sink are arguments to function calls.
  */
 predicate ctxArgFlowsToCtxArg(CtxPointerArgument source, CtxPointerArgument sink) {
+  exists(DataFlow::Node a, DataFlow::Node b |
+    OpenSSLCtxArgumentFlow::flow(a, b) and
+    a.asExpr() = source and
+    b.asExpr() = sink
+  )
+}
+
+/**
+ * Holds if there is a context flow from the source to the sink,
+ * where the source is a variable and the sink is an argument to a function call.
+ */
+predicate ctxFlowsToCtxArg(CtxPointerExpr source, CtxPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
     OpenSSLCtxArgumentFlow::flow(a, b) and
     a.asExpr() = source and

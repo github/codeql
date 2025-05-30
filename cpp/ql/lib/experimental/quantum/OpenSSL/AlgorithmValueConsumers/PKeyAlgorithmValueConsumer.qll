@@ -3,6 +3,9 @@ private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.AlgorithmInstances.KnownAlgorithmConstants
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumerBase
 private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmInstances
+private import experimental.quantum.OpenSSL.Operations.EVPKeyGenOperation
+private import experimental.quantum.OpenSSL.Operations.OpenSSLOperationBase
+private import experimental.quantum.OpenSSL.CtxFlow
 
 abstract class PKeyValueConsumer extends OpenSSLAlgorithmValueConsumer { }
 
@@ -23,7 +26,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
       or
       this.(Call).getTarget().getName() in [
           "EVP_PKEY_CTX_new_from_name", "EVP_PKEY_new_raw_private_key_ex",
-          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name"
+          "EVP_PKEY_new_raw_public_key_ex", "EVP_PKEY_CTX_ctrl", "EVP_PKEY_CTX_set_group_name",
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
       or
@@ -42,6 +45,7 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
           // All other cases
           valueArgNode.asExpr() = this.(Call).getArgument(2)
       )
+      // TODO: data flow for EVP_PKEY_CTX_dup
     )
   }
 
@@ -52,4 +56,63 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
   override DataFlow::Node getResultNode() { result = resultNode }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
+
+  // expose the valueArg as an Expr to avoid circular dependency that may arise
+  // when trying to get the valueArg with getInputNode.
+  Expr getValueArgExpr() { result = valueArgNode.asExpr() }
+}
+
+// TODO: not sure where to put all these predicates below
+
+/**
+ * Given context expression (EVP_PKEY_CTX), finds the algorithm.
+ */
+Expr getAlgorithmFromCtx(CtxPointerExpr ctx) {
+  exists(EVPPKeyAlgorithmConsumer source |
+    result = source.getValueArgExpr() and
+    ctxFlowsToCtxArg(source.getResultNode().asExpr(), ctx)
+  )
+  or
+  result = getAlgorithmFromKey(getKeyFromCtx(ctx))
+}
+
+/**
+ * Given context expression (EVP_PKEY_CTX), finds the key used to initialize the context.
+ */
+Expr getKeyFromCtx(CtxPointerExpr ctx) {
+  exists(Call contextCreationCall |
+    ctxFlowsToCtxArg(contextCreationCall, ctx) and
+    (
+      contextCreationCall.getTarget().getName() = "EVP_PKEY_CTX_new" and
+      result = contextCreationCall.getArgument(0)
+      or
+      contextCreationCall.getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
+      result = contextCreationCall.getArgument(1)
+    )
+  )
+}
+
+/**
+ * Flow from key creation to key used in a call
+ */
+module OpenSSLKeyFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(EVPKeyGenOperation keygen | keygen.getOutputKeyArtifact() = source)
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(OpenSSLCall call | call.(Call).getAnArgument() = sink.asExpr())
+  }
+}
+
+module OpenSSLKeyFlow = TaintTracking::Global<OpenSSLKeyFlowConfig>;
+
+/**
+ * Given key expression (EVP_PKEY), finds the algorithm.
+ */
+Expr getAlgorithmFromKey(Expr key) {
+  exists(EVPKeyGenOperation keygen |
+    OpenSSLKeyFlow::flow(keygen.getOutputKeyArtifact(), DataFlow::exprNode(key)) and
+    result = keygen.getAlgorithmArg()
+  )
 }
