@@ -171,4 +171,7 @@ fn main() {
 
 	println!("test_async:");
 	test_async();
+
+	println!("test_lifetime_annotations:");
+	test_lifetime_annotations();
 }

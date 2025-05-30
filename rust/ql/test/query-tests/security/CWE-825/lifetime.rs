@@ -531,3 +531,52 @@ pub fn test_async() {
 
 	futures::executor::block_on(async_closure);
 }
+
+// --- lifetime annotations ---
+
+fn select_str<'a>(cond: bool, a: &'a str, b: &'a str) -> &'a str {
+	if cond { a } else { b }
+}
+
+struct MyRefStr<'a> {
+	ref_str: &'a str,
+}
+
+pub fn test_lifetime_annotations() {
+	let str1: *const str;
+	{
+		let foo = String::from("foo");
+		let bar = String::from("bar");
+		str1 = select_str(true, foo.as_str(), bar.as_str());
+
+		unsafe {
+			let v1 = &*str1; // GOOD
+			println!("	v1 = {v1}");
+		}
+	} // (`foo`, `bar` go out of scope, the return value of `select_str` has the same lifetime, thus `str1` is dangling)
+
+	unsafe {
+		let v2 = &*str1; // $ MISSING: Alert
+		println!("	v2 = {v2} (!)"); // corrupt in practice
+	}
+
+	let my_ref;
+	let str2: *const str;
+	{
+		let baz = String::from("baz");
+		my_ref = MyRefStr { ref_str: baz.as_str() };
+		str2 = &*my_ref.ref_str;
+
+		unsafe {
+			let v3 = &*str2; // GOOD
+			println!("	v3 = {v3}");
+		}
+	} // (`baz` goes out of scope, `ref_str` has the same lifetime, thus `str2` is dangling)
+
+	use_the_stack();
+
+	unsafe {
+		let v4 = &*str2; // $ MISSING: Alert
+		println!("	v4 = {v4} (!)"); // corrupt in practice
+	}
+}
