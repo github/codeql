@@ -318,7 +318,7 @@ def download_dca_databases(
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
     """
-    database_results = []
+    database_results = {}
     print("\n=== Finding projects ===")
     response = get_json_from_github(
         f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
@@ -365,28 +365,13 @@ def download_dca_databases(
                 with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
                     # And we just untar it to the same directory as the zip file
                     tar_ref.extractall(artifact_unzipped_location)
-                    database_results.append(
-                        (
-                            project_map[pretty_name],
-                            os.path.join(
-                                artifact_unzipped_location, remove_extension(entry)
-                            ),
-                        )
+                    database_results[pretty_name] = os.path.join(
+                        artifact_unzipped_location, remove_extension(entry)
                     )
 
     print(f"\n=== Extracted {len(database_results)} databases ===")
 
-    def compare(a, b):
-        a_index = next(
-            i for i, project in enumerate(projects) if project["name"] == a[0]["name"]
-        )
-        b_index = next(
-            i for i, project in enumerate(projects) if project["name"] == b[0]["name"]
-        )
-        return a_index - b_index
-
-    # Sort the database results based on the order in the projects file
-    return sorted(database_results, key=cmp_to_key(compare))
+    return [(project, database_results[project["name"]]) for project in projects]
 
 
 def get_mad_destination_for_project(config, name: str) -> str:
