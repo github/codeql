@@ -441,11 +441,18 @@ To avoid loss of data, please commit your changes."""
             if experiment_name is None:
                 print("ERROR: --dca argument is required for DCA strategy")
                 sys.exit(1)
-            pat = args.pat
-            if pat is None:
+
+            if args.pat is None:
                 print("ERROR: --pat argument is required for DCA strategy")
                 sys.exit(1)
-            database_results = download_dca_databases(experiment_name, pat, projects)
+            if not os.path.exists(args.pat):
+                print(f"ERROR: Personal Access Token file '{pat}' does not exist.")
+                sys.exit(1)
+            with open(args.pat, "r") as f:
+                pat = f.read().strip()
+                database_results = download_dca_databases(
+                    experiment_name, pat, projects
+                )
 
     # Generate models for all projects
     print("\n=== Generating models ===")
@@ -485,7 +492,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--pat",
         type=str,
-        help="PAT token to grab DCA databases (the same as the one you use for DCA)",
+        help="Path to a file containing the PAT token required to grab DCA databases (the same as the one you use for DCA)",
         required=False,
     )
     args = parser.parse_args()
