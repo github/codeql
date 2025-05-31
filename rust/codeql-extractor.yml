@@ -23,10 +23,11 @@ options:
         title: Controls compression for the TRAP files written by the extractor.
         description: >
           This option is only intended for use in debugging the extractor. Accepted
-          values are 'gzip' (to write gzip-compressed TRAP) and 'none'
-          (currently the default, to write uncompressed TRAP).
+          values are 'gzip' (to write gzip-compressed TRAP) 'zstd' (to write
+          Zstandard-compressed TRAP) and 'none' (the default, to write uncompressed
+          TRAP).
         type: string
-        pattern: "^(none|gzip)$"
+        pattern: "^(none|gzip|zstd)$"
   cargo_target_dir:
     title: Directory to use for cargo output files.
     description: >
@@ -44,9 +45,10 @@ options:
   cargo_features:
     title: Cargo features to turn on
     description: >
-      Comma-separated list of features to turn on. If any value is `*` all features
-      are turned on. By default only default cargo features are enabled. Can be
-      repeated.
+      Comma-separated list of features to turn on. By default all features are enabled.
+      If any features are specified, then only those features are enabled. The `default`
+      feature must be explicitly specified if only default features are desired.
+      Can be repeated.
     type: array
   cargo_cfg_overrides:
     title: Cargo cfg overrides

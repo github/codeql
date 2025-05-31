@@ -29,7 +29,7 @@ module Impl {
 
     override string getOperatorName() { result = "&" }
 
-    override Expr getAnOperand() { result = this.getExpr() }
+    override Expr getOperand(int n) { n = 0 and result = this.getExpr() }
 
     private string getSpecPart(int index) {
       index = 0 and this.isRaw() and result = "raw"
