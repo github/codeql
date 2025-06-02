@@ -176,7 +176,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * Has no result if the expression is in a JavaScript file or in a TypeScript
    * file that was extracted without type information.
    */
-  Type getType() { ast_node_type(this, result) }
+  deprecated Type getType() { ast_node_type(this, result) }
 
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
@@ -993,7 +993,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
-  CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
+  deprecated CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
 
   /**
    * Gets the index of the targeted call signature among the overload signatures
@@ -1008,7 +1008,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
-  CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
+  deprecated CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
 
   /**
    * Gets the statically resolved target function, as determined by the TypeScript type system, if any.
@@ -1016,11 +1016,7 @@ class InvokeExpr extends @invokeexpr, Expr {
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
-  Function getResolvedCallee() {
-    TypeResolution::callTarget(this, result)
-    or
-    result = this.getResolvedCalleeName().getImplementation()
-  }
+  Function getResolvedCallee() { TypeResolution::callTarget(this, result) }
 }
 
 /**
