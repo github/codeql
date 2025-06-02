@@ -47,10 +47,7 @@ module AccessAfterLifetime {
     exists(BlockExpr valueScope, BlockExpr accessScope |
       valueScope(source.getTarget(), target, valueScope) and
       accessScope = sink.asExpr().getExpr().getEnclosingBlock() and
-      not maybeOnStack(valueScope, accessScope) and
-      // exclude results where the access is in a closure, since we don't
-      // model where a closure is actually called here.
-      not accessScope.getEnclosingBlock*() = any(ClosureExpr ce).getBody()
+      not maybeOnStack(valueScope, accessScope)
     )
   }
 
@@ -93,5 +90,13 @@ module AccessAfterLifetime {
     RefExprSource() { this.asExpr().getExpr().(RefExpr).getExpr() = targetValue }
 
     override Expr getTarget() { result = targetValue }
+  }
+
+  /**
+   * A barrier for nodes inside closures, as we don't model lifetimes of
+   * variables through closures properly.
+   */
+  private class ClosureBarrier extends Barrier {
+    ClosureBarrier() { this.asExpr().getExpr().getEnclosingCallable() instanceof ClosureExpr }
   }
 }

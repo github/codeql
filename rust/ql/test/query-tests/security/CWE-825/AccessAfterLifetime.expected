@@ -161,31 +161,6 @@ edges
 | lifetime.rs:450:2:450:10 | return p1 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | provenance |  |
 | lifetime.rs:454:6:454:7 | p1 | lifetime.rs:459:13:459:14 | p1 | provenance |  |
 | lifetime.rs:454:11:454:29 | get_ptr_from_ref(...) | lifetime.rs:454:6:454:7 | p1 | provenance |  |
-| lifetime.rs:509:16:509:29 | ...: ... | lifetime.rs:514:2:527:2 | return ... [captured p3] | provenance |  |
-| lifetime.rs:509:32:509:45 | ...: ... | lifetime.rs:514:2:527:2 | return ... [captured p4] | provenance |  |
-| lifetime.rs:512:23:512:32 | &my_local1 | lifetime.rs:514:2:527:2 | return ... [captured p1] | provenance |  |
-| lifetime.rs:514:2:527:2 | return ... [captured p1] | lifetime.rs:542:13:543:14 | get_closure(...) [captured p1] | provenance |  |
-| lifetime.rs:515:7:515:8 | p2 | lifetime.rs:519:14:519:15 | p2 | provenance |  |
-| lifetime.rs:515:24:515:33 | &my_local2 | lifetime.rs:515:7:515:8 | p2 | provenance |  |
-| lifetime.rs:530:17:530:31 | ...: ... | lifetime.rs:533:10:533:12 | ptr | provenance |  |
-| lifetime.rs:533:10:533:12 | ptr | lifetime.rs:550:28:550:29 | ... | provenance |  |
-| lifetime.rs:534:3:534:12 | &my_local5 | lifetime.rs:550:32:550:33 | ... | provenance |  |
-| lifetime.rs:542:3:542:9 | closure [captured p1] | lifetime.rs:548:2:548:8 | closure [captured p1] | provenance |  |
-| lifetime.rs:542:3:542:9 | closure [captured p3] | lifetime.rs:548:2:548:8 | closure [captured p3] | provenance |  |
-| lifetime.rs:542:3:542:9 | closure [captured p4] | lifetime.rs:548:2:548:8 | closure [captured p4] | provenance |  |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p1] | lifetime.rs:542:3:542:9 | closure [captured p1] | provenance |  |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p3] | lifetime.rs:542:3:542:9 | closure [captured p3] | provenance |  |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p4] | lifetime.rs:542:3:542:9 | closure [captured p4] | provenance |  |
-| lifetime.rs:542:26:542:35 | &my_local3 | lifetime.rs:509:16:509:29 | ...: ... | provenance |  |
-| lifetime.rs:542:26:542:35 | &my_local3 | lifetime.rs:542:13:543:14 | get_closure(...) [captured p3] | provenance |  |
-| lifetime.rs:543:4:543:13 | &my_local4 | lifetime.rs:509:32:509:45 | ...: ... | provenance |  |
-| lifetime.rs:543:4:543:13 | &my_local4 | lifetime.rs:542:13:543:14 | get_closure(...) [captured p4] | provenance |  |
-| lifetime.rs:548:2:548:8 | closure [captured p1] | lifetime.rs:518:14:518:15 | p1 | provenance |  |
-| lifetime.rs:548:2:548:8 | closure [captured p3] | lifetime.rs:520:14:520:15 | p3 | provenance |  |
-| lifetime.rs:548:2:548:8 | closure [captured p4] | lifetime.rs:521:14:521:15 | p4 | provenance |  |
-| lifetime.rs:550:15:550:24 | &my_local3 | lifetime.rs:530:17:530:31 | ...: ... | provenance |  |
-| lifetime.rs:550:28:550:29 | ... | lifetime.rs:552:14:552:15 | p1 | provenance |  |
-| lifetime.rs:550:32:550:33 | ... | lifetime.rs:553:14:553:15 | p2 | provenance |  |
 | lifetime.rs:568:7:568:8 | p2 | lifetime.rs:572:14:572:15 | p2 | provenance |  |
 | lifetime.rs:568:24:568:33 | &my_local2 | lifetime.rs:568:7:568:8 | p2 | provenance |  |
 | lifetime.rs:630:3:630:6 | str2 | lifetime.rs:633:15:633:18 | str2 | provenance |  |
@@ -376,37 +351,6 @@ nodes
 | lifetime.rs:454:11:454:29 | get_ptr_from_ref(...) | semmle.label | get_ptr_from_ref(...) |
 | lifetime.rs:459:13:459:14 | p1 | semmle.label | p1 |
 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | semmle.label | get_ptr_from_ref(...) |
-| lifetime.rs:509:16:509:29 | ...: ... | semmle.label | ...: ... |
-| lifetime.rs:509:32:509:45 | ...: ... | semmle.label | ...: ... |
-| lifetime.rs:512:23:512:32 | &my_local1 | semmle.label | &my_local1 |
-| lifetime.rs:514:2:527:2 | return ... [captured p1] | semmle.label | return ... [captured p1] |
-| lifetime.rs:514:2:527:2 | return ... [captured p3] | semmle.label | return ... [captured p3] |
-| lifetime.rs:514:2:527:2 | return ... [captured p4] | semmle.label | return ... [captured p4] |
-| lifetime.rs:515:7:515:8 | p2 | semmle.label | p2 |
-| lifetime.rs:515:24:515:33 | &my_local2 | semmle.label | &my_local2 |
-| lifetime.rs:518:14:518:15 | p1 | semmle.label | p1 |
-| lifetime.rs:519:14:519:15 | p2 | semmle.label | p2 |
-| lifetime.rs:520:14:520:15 | p3 | semmle.label | p3 |
-| lifetime.rs:521:14:521:15 | p4 | semmle.label | p4 |
-| lifetime.rs:530:17:530:31 | ...: ... | semmle.label | ...: ... |
-| lifetime.rs:533:10:533:12 | ptr | semmle.label | ptr |
-| lifetime.rs:534:3:534:12 | &my_local5 | semmle.label | &my_local5 |
-| lifetime.rs:542:3:542:9 | closure [captured p1] | semmle.label | closure [captured p1] |
-| lifetime.rs:542:3:542:9 | closure [captured p3] | semmle.label | closure [captured p3] |
-| lifetime.rs:542:3:542:9 | closure [captured p4] | semmle.label | closure [captured p4] |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p1] | semmle.label | get_closure(...) [captured p1] |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p3] | semmle.label | get_closure(...) [captured p3] |
-| lifetime.rs:542:13:543:14 | get_closure(...) [captured p4] | semmle.label | get_closure(...) [captured p4] |
-| lifetime.rs:542:26:542:35 | &my_local3 | semmle.label | &my_local3 |
-| lifetime.rs:543:4:543:13 | &my_local4 | semmle.label | &my_local4 |
-| lifetime.rs:548:2:548:8 | closure [captured p1] | semmle.label | closure [captured p1] |
-| lifetime.rs:548:2:548:8 | closure [captured p3] | semmle.label | closure [captured p3] |
-| lifetime.rs:548:2:548:8 | closure [captured p4] | semmle.label | closure [captured p4] |
-| lifetime.rs:550:15:550:24 | &my_local3 | semmle.label | &my_local3 |
-| lifetime.rs:550:28:550:29 | ... | semmle.label | ... |
-| lifetime.rs:550:32:550:33 | ... | semmle.label | ... |
-| lifetime.rs:552:14:552:15 | p1 | semmle.label | p1 |
-| lifetime.rs:553:14:553:15 | p2 | semmle.label | p2 |
 | lifetime.rs:568:7:568:8 | p2 | semmle.label | p2 |
 | lifetime.rs:568:24:568:33 | &my_local2 | semmle.label | &my_local2 |
 | lifetime.rs:572:14:572:15 | p2 | semmle.label | p2 |
@@ -440,5 +384,3 @@ nodes
 | lifetime.rs:724:2:724:12 | ptr | semmle.label | ptr |
 | lifetime.rs:725:2:725:12 | ptr | semmle.label | ptr |
 subpaths
-| lifetime.rs:542:26:542:35 | &my_local3 | lifetime.rs:509:16:509:29 | ...: ... | lifetime.rs:514:2:527:2 | return ... [captured p3] | lifetime.rs:542:13:543:14 | get_closure(...) [captured p3] |
-| lifetime.rs:543:4:543:13 | &my_local4 | lifetime.rs:509:32:509:45 | ...: ... | lifetime.rs:514:2:527:2 | return ... [captured p4] | lifetime.rs:542:13:543:14 | get_closure(...) [captured p4] |
