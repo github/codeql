@@ -139,8 +139,7 @@ predicate isCompoundExpression(Expr e) {
   or
   e instanceof SeqExpr
   or
-  e instanceof ParExpr and
-  not e.stripParens() instanceof FunctionExpr
+  e instanceof ParExpr
 }
 
 /**
