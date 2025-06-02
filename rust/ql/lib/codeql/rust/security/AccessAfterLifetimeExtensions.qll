@@ -22,7 +22,7 @@ module AccessAfterLifetime {
     /**
      * Gets the value this pointer or reference points to.
      */
-    abstract Expr getTargetValue();
+    abstract Expr getTarget();
   }
 
   /**
@@ -38,14 +38,14 @@ module AccessAfterLifetime {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * Holds if the pair `(source, sink)` that represents a flow from a
-   * pointer or reference to a dereference of that pointer or reference,
-   * and the dereference is outside the lifetime of the target value.
+   * Holds if the pair `(source, sink)`, that represents a flow from a
+   * pointer or reference to a dereference, has its dereference outside the
+   * lifetime of the target variable `target`.
    */
   bindingset[source, sink]
-  predicate dereferenceAfterLifetime(Source source, Sink sink) {
+  predicate dereferenceAfterLifetime(Source source, Sink sink, Variable target) {
     exists(BlockExpr valueScope, BlockExpr accessScope |
-      valueScope(source.getTargetValue(), valueScope) and
+      valueScope(source.getTarget(), target, valueScope) and
       accessScope = sink.asExpr().getExpr().getEnclosingBlock() and
       not maybeOnStack(valueScope, accessScope) and
       // exclude results where the access is in a closure, since we don't
@@ -55,14 +55,15 @@ module AccessAfterLifetime {
   }
 
   /**
-   * Holds if `value` accesses a variable with scope `scope`.
+   * Holds if `value` accesses a variable `target` with scope `scope`.
    */
-  private predicate valueScope(Expr value, BlockExpr scope) {
+  private predicate valueScope(Expr value, Variable target, BlockExpr scope) {
     // variable access
-    scope = value.(VariableAccess).getVariable().getEnclosingBlock()
+    target = value.(VariableAccess).getVariable() and
+    scope = target.getEnclosingBlock()
     or
     // field access
-    valueScope(value.(FieldExpr).getContainer(), scope)
+    valueScope(value.(FieldExpr).getContainer(), target, scope)
   }
 
   /**
@@ -91,6 +92,6 @@ module AccessAfterLifetime {
 
     RefExprSource() { this.asExpr().getExpr().(RefExpr).getExpr() = targetValue }
 
-    override Expr getTargetValue() { result = targetValue }
+    override Expr getTarget() { result = targetValue }
   }
 }

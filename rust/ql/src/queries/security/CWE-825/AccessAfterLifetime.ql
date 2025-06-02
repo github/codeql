@@ -34,12 +34,11 @@ module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig
 
 from
   AccessAfterLifetimeFlow::PathNode sourceNode, AccessAfterLifetimeFlow::PathNode sinkNode,
-  Expr targetValue
+  Variable target
 where
   // flow from a pointer or reference to the dereference
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
-  targetValue = sourceNode.getNode().(AccessAfterLifetime::Source).getTargetValue() and
   // check that the dereference is outside the lifetime of the target
-  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode())
+  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "Access of a pointer to $@ after it's lifetime has ended.", targetValue, targetValue.toString()
+  "Access of a pointer to $@ after it's lifetime has ended.", target, target.toString()
