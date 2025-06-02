@@ -135,7 +135,7 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
    *
    * Note that this has no result for JSDoc type annotations.
    */
-  Type getType() { none() }
+  deprecated Type getType() { none() }
 
   /**
    * Gets the class referenced by this type annotation, if any.
