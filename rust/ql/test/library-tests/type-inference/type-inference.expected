@@ -2377,12 +2377,12 @@ inferType
 | main.rs:1639:18:1639:21 | SelfParam |  | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1642:25:1644:5 | { ... } |  | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1643:9:1643:10 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1646:41:1650:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1646:41:1650:5 | { ... } | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1646:41:1650:5 | { ... } | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1647:9:1649:9 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1647:9:1649:9 | { ... } | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1647:9:1649:9 | { ... } | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1646:41:1650:5 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1646:41:1650:5 | { ... } |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
+| main.rs:1646:41:1650:5 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1647:9:1649:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1647:9:1649:9 | { ... } |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
+| main.rs:1647:9:1649:9 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1648:13:1648:14 | S1 |  | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1657:17:1657:46 | SelfParam |  | {EXTERNAL LOCATION} | Pin |
 | main.rs:1657:17:1657:46 | SelfParam | Ptr | file://:0:0:0:0 | & |
@@ -2394,29 +2394,27 @@ inferType
 | main.rs:1658:13:1658:38 | ...::Ready(...) |  | {EXTERNAL LOCATION} | Poll |
 | main.rs:1658:13:1658:38 | ...::Ready(...) | T | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1658:36:1658:37 | S1 |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1662:41:1664:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1662:41:1664:5 | { ... } |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1662:41:1664:5 | { ... } | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1662:41:1664:5 | { ... } | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1663:9:1663:10 | S2 |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1662:41:1664:5 | { ... } |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
 | main.rs:1663:9:1663:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1663:9:1663:10 | S2 | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1663:9:1663:10 | S2 | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1667:9:1667:12 | f1(...) |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1663:9:1663:10 | S2 |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
+| main.rs:1667:9:1667:12 | f1(...) |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1667:9:1667:12 | f1(...) | Output | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1667:9:1667:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1668:9:1668:12 | f2(...) |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1668:9:1668:12 | f2(...) | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1668:9:1668:12 | f2(...) | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1668:9:1668:18 | await ... |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1668:9:1668:12 | f2(...) |  | main.rs:1646:16:1646:39 | ImplTraitTypeRepr |
 | main.rs:1668:9:1668:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1669:9:1669:12 | f3(...) |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1669:9:1669:12 | f3(...) | impl Trait<0> | {EXTERNAL LOCATION} | trait Future |
-| main.rs:1669:9:1669:12 | f3(...) | impl Trait<0>.Output | main.rs:1636:5:1636:14 | S1 |
-| main.rs:1669:9:1669:18 | await ... |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1669:9:1669:12 | f3(...) |  | main.rs:1662:16:1662:39 | ImplTraitTypeRepr |
 | main.rs:1669:9:1669:18 | await ... |  | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1670:9:1670:10 | S2 |  | main.rs:1652:5:1652:14 | S2 |
-| main.rs:1670:9:1670:16 | await S2 |  | main.rs:1652:5:1652:14 | S2 |
+| main.rs:1670:9:1670:16 | await S2 |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1671:13:1671:13 | b |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1671:13:1671:13 | b | Output | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1671:17:1673:9 | { ... } |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1671:17:1673:9 | { ... } | Output | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1672:13:1672:14 | S1 |  | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1674:9:1674:9 | b |  | {EXTERNAL LOCATION} | trait Future |
+| main.rs:1674:9:1674:9 | b | Output | main.rs:1636:5:1636:14 | S1 |
+| main.rs:1674:9:1674:15 | await b |  | main.rs:1636:5:1636:14 | S1 |
 | main.rs:1684:15:1684:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1684:15:1684:19 | SelfParam | &T | main.rs:1683:5:1685:5 | Self [trait Trait1] |
 | main.rs:1688:15:1688:19 | SelfParam |  | file://:0:0:0:0 | & |
@@ -2425,77 +2423,48 @@ inferType
 | main.rs:1692:15:1692:19 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
 | main.rs:1696:15:1696:19 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1696:15:1696:19 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1699:37:1701:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1699:37:1701:5 | { ... } |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1699:37:1701:5 | { ... } | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1699:37:1701:5 | { ... } | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
-| main.rs:1700:9:1700:10 | S1 |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1699:37:1701:5 | { ... } |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
 | main.rs:1700:9:1700:10 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1700:9:1700:10 | S1 | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1700:9:1700:10 | S1 | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
+| main.rs:1700:9:1700:10 | S1 |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
 | main.rs:1704:18:1704:22 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1704:18:1704:22 | SelfParam | &T | main.rs:1703:5:1705:5 | Self [trait MyTrait] |
 | main.rs:1708:18:1708:22 | SelfParam |  | file://:0:0:0:0 | & |
 | main.rs:1708:18:1708:22 | SelfParam | &T | main.rs:1680:5:1680:14 | S1 |
 | main.rs:1708:31:1710:9 | { ... } |  | main.rs:1681:5:1681:14 | S2 |
 | main.rs:1709:13:1709:14 | S2 |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1713:45:1715:5 | { ... } |  | file://:0:0:0:0 | impl Trait ... |
 | main.rs:1713:45:1715:5 | { ... } |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1713:45:1715:5 | { ... } | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1713:45:1715:5 | { ... } | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1714:9:1714:10 | S1 |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1713:45:1715:5 | { ... } |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
 | main.rs:1714:9:1714:10 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1714:9:1714:10 | S1 | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1714:9:1714:10 | S1 | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
+| main.rs:1714:9:1714:10 | S1 |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
 | main.rs:1717:41:1717:41 | t |  | main.rs:1717:26:1717:38 | B |
 | main.rs:1717:52:1719:5 | { ... } |  | main.rs:1717:23:1717:23 | A |
 | main.rs:1718:9:1718:9 | t |  | main.rs:1717:26:1717:38 | B |
 | main.rs:1718:9:1718:17 | t.get_a() |  | main.rs:1717:23:1717:23 | A |
-| main.rs:1721:26:1721:26 | t |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1721:26:1721:26 | t | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1721:26:1721:26 | t | impl Trait<0>.A | main.rs:1721:23:1721:23 | A |
+| main.rs:1721:26:1721:26 | t |  | main.rs:1721:29:1721:43 | ImplTraitTypeRepr |
 | main.rs:1721:51:1723:5 | { ... } |  | main.rs:1721:23:1721:23 | A |
-| main.rs:1722:9:1722:9 | t |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1722:9:1722:9 | t | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1722:9:1722:9 | t | impl Trait<0>.A | main.rs:1721:23:1721:23 | A |
+| main.rs:1722:9:1722:9 | t |  | main.rs:1721:29:1721:43 | ImplTraitTypeRepr |
 | main.rs:1722:9:1722:17 | t.get_a() |  | main.rs:1721:23:1721:23 | A |
-| main.rs:1726:13:1726:13 | x |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1726:13:1726:13 | x | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1726:13:1726:13 | x | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
-| main.rs:1726:17:1726:20 | f1(...) |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1726:17:1726:20 | f1(...) | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1726:17:1726:20 | f1(...) | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
-| main.rs:1727:9:1727:9 | x |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1727:9:1727:9 | x | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1727:9:1727:9 | x | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
-| main.rs:1728:9:1728:9 | x |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1728:9:1728:9 | x | impl Trait<0> | main.rs:1683:5:1685:5 | trait Trait1 |
-| main.rs:1728:9:1728:9 | x | impl Trait<1> | main.rs:1687:5:1689:5 | trait Trait2 |
-| main.rs:1729:13:1729:13 | a |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1729:13:1729:13 | a | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1729:13:1729:13 | a | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1729:17:1729:32 | get_a_my_trait(...) |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1729:17:1729:32 | get_a_my_trait(...) | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1729:17:1729:32 | get_a_my_trait(...) | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1730:32:1730:32 | a |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1730:32:1730:32 | a | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1730:32:1730:32 | a | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1731:13:1731:13 | a |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1731:13:1731:13 | a | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1731:13:1731:13 | a | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1731:17:1731:32 | get_a_my_trait(...) |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1731:17:1731:32 | get_a_my_trait(...) | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1731:17:1731:32 | get_a_my_trait(...) | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
+| main.rs:1726:13:1726:13 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
+| main.rs:1726:17:1726:20 | f1(...) |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
+| main.rs:1727:9:1727:9 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
+| main.rs:1728:9:1728:9 | x |  | main.rs:1699:16:1699:35 | ImplTraitTypeRepr |
+| main.rs:1729:13:1729:13 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
+| main.rs:1729:17:1729:32 | get_a_my_trait(...) |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
+| main.rs:1730:13:1730:13 | b |  | main.rs:1681:5:1681:14 | S2 |
+| main.rs:1730:17:1730:33 | uses_my_trait1(...) |  | main.rs:1681:5:1681:14 | S2 |
+| main.rs:1730:32:1730:32 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
+| main.rs:1731:13:1731:13 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
+| main.rs:1731:17:1731:32 | get_a_my_trait(...) |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
 | main.rs:1732:13:1732:13 | c |  | main.rs:1681:5:1681:14 | S2 |
 | main.rs:1732:17:1732:33 | uses_my_trait2(...) |  | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1732:32:1732:32 | a |  | file://:0:0:0:0 | impl Trait ... |
-| main.rs:1732:32:1732:32 | a | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
-| main.rs:1732:32:1732:32 | a | impl Trait<0>.A | main.rs:1681:5:1681:14 | S2 |
-| main.rs:1733:32:1733:33 | S1 |  | file://:0:0:0:0 | impl Trait ... |
+| main.rs:1732:32:1732:32 | a |  | main.rs:1713:28:1713:43 | ImplTraitTypeRepr |
+| main.rs:1733:13:1733:13 | d |  | main.rs:1681:5:1681:14 | S2 |
+| main.rs:1733:17:1733:34 | uses_my_trait2(...) |  | main.rs:1681:5:1681:14 | S2 |
 | main.rs:1733:32:1733:33 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1733:32:1733:33 | S1 | impl Trait<0> | main.rs:1703:5:1705:5 | trait MyTrait |
 | main.rs:1739:5:1739:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1740:5:1740:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1740:20:1740:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1740:41:1740:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1756:5:1756:15 | ...::f(...) |  | {EXTERNAL LOCATION} | trait Future |
 testFailures

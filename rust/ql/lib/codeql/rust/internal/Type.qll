@@ -15,14 +15,11 @@ newtype TType =
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
-  TImplTraitType(int bounds) {
-    bounds = any(ImplTraitTypeRepr impl).getTypeBoundList().getNumberOfBounds()
-  } or
+  TImplTraitType(ImplTraitTypeRepr impl) or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
   TRefTypeParameter() or
-  TSelfTypeParameter(Trait t) or
-  TImplTraitTypeParameter(ImplTraitType t, int i) { i in [0 .. t.getNumberOfBounds() - 1] }
+  TSelfTypeParameter(Trait t)
 
 /**
  * A type without type arguments.
@@ -184,30 +181,50 @@ class RefType extends Type, TRefType {
 }
 
 /**
- * An [`impl Trait`][1] type.
+ * An [impl Trait][1] type.
  *
- * We represent `impl Trait` types as generic types with as many type parameters
- * as there are bounds.
+ * Each syntactic `impl Trait` type gives rise to its own type, even if
+ * two `impl Trait` types have the same bounds.
  *
- * [1] https://doc.rust-lang.org/book/ch10-02-traits.html#traits-as-parameters
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html
  */
 class ImplTraitType extends Type, TImplTraitType {
-  private int bounds;
+  ImplTraitTypeRepr impl;
 
-  ImplTraitType() { this = TImplTraitType(bounds) }
+  ImplTraitType() { this = TImplTraitType(impl) }
 
-  /** Gets the number of bounds of this `impl Trait` type. */
-  int getNumberOfBounds() { result = bounds }
+  /** Gets the underlying AST node. */
+  ImplTraitTypeRepr getImplTraitTypeRepr() { result = impl }
+
+  /** Gets the function that this `impl Trait` belongs to. */
+  abstract Function getFunction();
 
   override StructField getStructField(string name) { none() }
 
   override TupleField getTupleField(int i) { none() }
 
-  override TypeParameter getTypeParameter(int i) { result = TImplTraitTypeParameter(this, i) }
+  override TypeParameter getTypeParameter(int i) { none() }
 
-  override string toString() { result = "impl Trait ..." }
+  override string toString() { result = impl.toString() }
 
-  override Location getLocation() { result instanceof EmptyLocation }
+  override Location getLocation() { result = impl.getLocation() }
+}
+
+/**
+ * An [impl Trait in return position][1] type, for example:
+ *
+ * ```rust
+ * fn foo() -> impl Trait
+ * ```
+ *
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.return
+ */
+class ImplTraitReturnType extends ImplTraitType {
+  private Function function;
+
+  ImplTraitReturnType() { impl = function.getRetType().getTypeRepr() }
+
+  override Function getFunction() { result = function }
 }
 
 /** A type parameter. */
@@ -219,7 +236,7 @@ abstract class TypeParameter extends Type {
   override TypeParameter getTypeParameter(int i) { none() }
 }
 
-private class RawTypeParameter = @type_param or @trait or @type_alias;
+private class RawTypeParameter = @type_param or @trait or @type_alias or @impl_trait_type_repr;
 
 private predicate id(RawTypeParameter x, RawTypeParameter y) { x = y }
 
@@ -316,23 +333,34 @@ class SelfTypeParameter extends TypeParameter, TSelfTypeParameter {
 }
 
 /**
- *  An `impl Trait` type parameter.
+ * An [impl Trait in argument position][1] type, for example:
+ *
+ * ```rust
+ * fn foo(arg: impl Trait)
+ * ```
+ *
+ * Such types are syntactic sugar for type parameters, that is
+ *
+ * ```rust
+ * fn foo<T: Trait>(arg: T)
+ * ```
+ *
+ * so we model them as type parameters.
+ *
+ * [1]: https://doc.rust-lang.org/reference/types/impl-trait.html#r-type.impl-trait.param
  */
-class ImplTraitTypeParameter extends TypeParameter, TImplTraitTypeParameter {
-  private ImplTraitType implTraitType;
-  private int i;
+class ImplTraitTypeTypeParameter extends ImplTraitType, TypeParameter {
+  private Function function;
 
-  ImplTraitTypeParameter() { this = TImplTraitTypeParameter(implTraitType, i) }
+  ImplTraitTypeTypeParameter() { impl = function.getParamList().getAParam().getTypeRepr() }
 
-  /** Gets the `impl Trait` type that this parameter belongs to. */
-  ImplTraitType getImplTraitType() { result = implTraitType }
+  override Function getFunction() { result = function }
 
-  /** Gets the index of this type parameter. */
-  int getIndex() { result = i }
+  override StructField getStructField(string name) { none() }
 
-  override string toString() { result = "impl Trait<" + i.toString() + ">" }
+  override TupleField getTupleField(int i) { none() }
 
-  override Location getLocation() { result instanceof EmptyLocation }
+  override TypeParameter getTypeParameter(int i) { none() }
 }
 
 /**
@@ -368,5 +396,9 @@ final class TypeBoundTypeAbstraction extends TypeAbstraction, TypeBound {
 final class SelfTypeBoundTypeAbstraction extends TypeAbstraction, Name {
   SelfTypeBoundTypeAbstraction() { any(Trait trait).getName() = this }
 
+  override TypeParamTypeParameter getATypeParameter() { none() }
+}
+
+final class ImplTraitTypeReprAbstraction extends TypeAbstraction, ImplTraitTypeRepr {
   override TypeParamTypeParameter getATypeParameter() { none() }
 }

@@ -1667,11 +1667,11 @@ mod async_ {
         f1().await.f(); // $ method=S1f
         f2().await.f(); // $ method=S1f
         f3().await.f(); // $ method=S1f
-        S2.await.f(); // $ MISSING: method=S1f
+        S2.await.f(); // $ method=S1f
         let b = async {
             S1
         };
-        b.await.f(); // $ MISSING: method=S1f
+        b.await.f(); // $ method=S1f
     }
 }
 
@@ -1727,10 +1727,10 @@ mod impl_trait {
         x.f1(); // $ method=Trait1f1
         x.f2(); // $ method=Trait2f2
         let a = get_a_my_trait();
-        let b = uses_my_trait1(a); // $ MISSING: type=b:S2
+        let b = uses_my_trait1(a); // $ type=b:S2
         let a = get_a_my_trait();
         let c = uses_my_trait2(a); // $ type=c:S2
-        let d = uses_my_trait2(S1); // $ MISSING: type=d:S2
+        let d = uses_my_trait2(S1); // $ type=d:S2
     }
 }
 
