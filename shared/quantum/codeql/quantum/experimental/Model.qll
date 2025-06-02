@@ -2173,7 +2173,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - only if we know the type is verify
+      this.getKeyOperationSubtype() = TVerifyMode() and
       key = "Signature" and
       if exists(this.getASignatureArtifact())
       then result = this.getASignatureArtifact()
