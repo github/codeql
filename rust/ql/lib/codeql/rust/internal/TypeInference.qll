@@ -77,16 +77,6 @@ private module Input1 implements InputSig1<Location> {
     apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
   }
 
-  private int getImplTraitTypeParameterId(ImplTraitTypeParameter tp) {
-    tp =
-      rank[result](ImplTraitTypeParameter tp0, int bounds, int i |
-        bounds = tp0.getImplTraitType().getNumberOfBounds() and
-        i = tp0.getIndex()
-      |
-        tp0 order by bounds, i
-      )
-  }
-
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id |
@@ -98,11 +88,9 @@ private module Input1 implements InputSig1<Location> {
         exists(AstNode node | id = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
           node = tp0.(AssociatedTypeTypeParameter).getTypeAlias() or
-          node = tp0.(SelfTypeParameter).getTrait()
+          node = tp0.(SelfTypeParameter).getTrait() or
+          node = tp0.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr()
         )
-        or
-        kind = 2 and
-        id = getImplTraitTypeParameterId(tp0)
       |
         tp0 order by kind, id
       )
@@ -124,12 +112,22 @@ private module Input2 implements InputSig2 {
 
   class TypeMention = TM::TypeMention;
 
-  TypeMention getABaseTypeMention(Type t) { none() }
+  TypeMention getABaseTypeMention(Type t) {
+    result =
+      t.(ImplTraitReturnType).getImplTraitTypeRepr().getTypeBoundList().getABound().getTypeRepr()
+  }
 
   TypeMention getATypeParameterConstraint(TypeParameter tp) {
     result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
     or
     result = tp.(SelfTypeParameter).getTrait()
+    or
+    result =
+      tp.(ImplTraitTypeTypeParameter)
+          .getImplTraitTypeRepr()
+          .getTypeBoundList()
+          .getABound()
+          .getTypeRepr()
   }
 
   /**
@@ -168,6 +166,12 @@ private module Input2 implements InputSig2 {
       abs = self and
       condition = self and
       constraint = self.getTrait()
+    )
+    or
+    exists(ImplTraitTypeRepr impl |
+      abs = impl and
+      condition = impl and
+      constraint = impl.getTypeBoundList().getABound().getTypeRepr()
     )
   }
 }
@@ -241,12 +245,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
     or
     n1 = n2.(ParenExpr).getExpr()
     or
-    n2 =
-      any(BlockExpr be |
-        not be.isAsync() and
-        n1 = be.getStmtList().getTailExpr()
-      )
-    or
     n1 = n2.(IfExpr).getABranch()
     or
     n1 = n2.(MatchExpr).getAnArm().getExpr()
@@ -265,6 +263,19 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   n1 = n2.(DerefExpr).getExpr() and
   prefix1 = TypePath::singleton(TRefTypeParameter()) and
   prefix2.isEmpty()
+  or
+  exists(BlockExpr be |
+    n1 = be and
+    n2 = be.getStmtList().getTailExpr() and
+    if be.isAsync()
+    then
+      prefix1 = TypePath::singleton(getFutureOutputTypeParameter()) and
+      prefix2.isEmpty()
+    else (
+      prefix1.isEmpty() and
+      prefix2.isEmpty()
+    )
+  )
 }
 
 pragma[nomagic]
@@ -580,6 +591,9 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
         ppos.isImplicit() and
         result.(AssociatedTypeTypeParameter).getTrait() = trait
       )
+      or
+      ppos.isImplicit() and
+      this = result.(ImplTraitTypeTypeParameter).getFunction()
     }
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
@@ -599,8 +613,21 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
     }
 
-    override Type getReturnType(TypePath path) {
+    private Type resolveRetType(TypePath path) {
       result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    }
+
+    override Type getReturnType(TypePath path) {
+      if this.isAsync()
+      then
+        path.isEmpty() and
+        result = getFutureTraitType()
+        or
+        exists(TypePath suffix |
+          result = this.resolveRetType(suffix) and
+          path = TypePath::cons(getFutureOutputTypeParameter(), suffix)
+        )
+      else result = this.resolveRetType(path)
     }
   }
 
@@ -1028,25 +1055,109 @@ private StructType inferLiteralType(LiteralExpr le) {
 }
 
 pragma[nomagic]
+private TraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
+
+pragma[nomagic]
 private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
   result.getTypeAlias() = any(FutureTrait ft).getOutputType()
 }
 
+/**
+ * A matching configuration for resolving types of `.await` expressions.
+ */
+private module AwaitExprMatchingInput implements MatchingInputSig {
+  private newtype TDeclarationPosition =
+    TSelfDeclarationPosition() or
+    TOutputPos()
+
+  class DeclarationPosition extends TDeclarationPosition {
+    predicate isSelf() { this = TSelfDeclarationPosition() }
+
+    predicate isOutput() { this = TOutputPos() }
+
+    string toString() {
+      this.isSelf() and
+      result = "self"
+      or
+      this.isOutput() and
+      result = "(output)"
+    }
+  }
+
+  private class BuiltinsAwaitFile extends File {
+    BuiltinsAwaitFile() {
+      this.getBaseName() = "await.rs" and
+      this.getParentContainer() instanceof Builtins::BuiltinsFolder
+    }
+  }
+
+  class Declaration extends Function {
+    Declaration() {
+      this.getFile() instanceof BuiltinsAwaitFile and
+      this.getName().getText() = "await_type_matching"
+    }
+
+    TypeParameter getTypeParameter(TypeParameterPosition ppos) {
+      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
+    }
+
+    Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+      dpos.isSelf() and
+      result = this.getParamList().getParam(0).getTypeRepr().(TypeMention).resolveTypeAt(path)
+      or
+      dpos.isOutput() and
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
+    }
+  }
+
+  class AccessPosition = DeclarationPosition;
+
+  class Access extends AwaitExpr {
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      result = this.getExpr() and
+      apos.isSelf()
+      or
+      result = this and
+      apos.isOutput()
+    }
+
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    Declaration getTarget() { exists(this) and exists(result) }
+  }
+
+  predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+    apos = dpos
+  }
+}
+
 pragma[nomagic]
-private Type inferAwaitExprType(AwaitExpr ae, TypePath path) {
-  exists(TypePath exprPath | result = inferType(ae.getExpr(), exprPath) |
-    exprPath
-        .isCons(TImplTraitTypeParameter(_, _),
-          any(TypePath path0 | path0.isCons(getFutureOutputTypeParameter(), path)))
-    or
-    path = exprPath and
-    not (
-      exprPath = TypePath::singleton(TImplTraitTypeParameter(_, _)) and
-      result.(TraitType).getTrait() instanceof FutureTrait
-    ) and
-    not exprPath
-        .isCons(TImplTraitTypeParameter(_, _),
-          any(TypePath path0 | path0.isCons(getFutureOutputTypeParameter(), _)))
+private TraitType inferAsyncBlockExprRootType(AsyncBlockExpr abe) {
+  // `typeEquality` handles the non-root case
+  exists(abe) and
+  result = getFutureTraitType()
+}
+
+private module AwaitExprMatching = Matching<AwaitExprMatchingInput>;
+
+pragma[nomagic]
+private Type inferAwaitExprType(AstNode n, TypePath path) {
+  exists(AwaitExprMatchingInput::Access a, AwaitExprMatchingInput::AccessPosition apos |
+    n = a.getNodeAt(apos) and
+    result = AwaitExprMatching::inferAccessType(a, apos, path)
+  )
+  or
+  // This case is needed for `async` functions and blocks, where we assign
+  // the type `Future<Output = T>` directly instead of `impl Future<Output = T>`
+  //
+  // TODO: It would be better if we could handle this in the shared library
+  exists(TypePath exprPath |
+    result = inferType(n.(AwaitExpr).getExpr(), exprPath) and
+    exprPath.isCons(getFutureOutputTypeParameter(), path)
   )
 }
 
@@ -1196,6 +1307,8 @@ private Function getTypeParameterMethod(TypeParameter tp, string name) {
   result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
   or
   result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
+  or
+  result = getMethodSuccessor(tp.(ImplTraitTypeTypeParameter).getImplTraitTypeRepr(), name)
 }
 
 /** Gets a method from an `impl` block that matches the method call `mc`. */
@@ -1208,8 +1321,8 @@ private Function getMethodFromImpl(MethodCall mc) {
 
 bindingset[trait, name]
 pragma[inline_late]
-private Function getTraitMethod(TraitType trait, string name) {
-  result = getMethodSuccessor(trait.getTrait(), name)
+private Function getTraitMethod(ImplTraitReturnType trait, string name) {
+  result = getMethodSuccessor(trait.getImplTraitTypeRepr(), name)
 }
 
 /**
@@ -1225,9 +1338,7 @@ private Function inferMethodCallTarget(MethodCall mc) {
   result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
   or
   // The type of the receiver is an `impl Trait` type.
-  result =
-    getTraitMethod(mc.getTypeAt(TypePath::singleton(TImplTraitTypeParameter(_, _))),
-      mc.getMethodName())
+  result = getTraitMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
 }
 
 cached
@@ -1404,6 +1515,9 @@ private module Cached {
     result = inferLiteralType(n) and
     path.isEmpty()
     or
+    result = inferAsyncBlockExprRootType(n) and
+    path.isEmpty()
+    or
     result = inferAwaitExprType(n, path)
   }
 }
@@ -1421,7 +1535,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 1334
+      startline = 1718
     )
   }
 
