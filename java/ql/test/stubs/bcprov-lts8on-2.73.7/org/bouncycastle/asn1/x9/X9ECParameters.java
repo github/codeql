@@ -1,16 +1,18 @@
 package org.bouncycastle.asn1.x9;
 
 import java.math.BigInteger;
+import org.bouncycastle.math.ec.ECCurve;
+import org.bouncycastle.math.ec.ECPoint;
 
 public class X9ECParameters {
     public X9ECParameters() { }
 
-    public Object getCurve() {
-        return new Object();
+    public ECCurve getCurve() {
+        return new ECCurve();
     }
 
-    public Object getG() {
-        return new Object();
+    public ECPoint getG() {
+        return new ECPoint();
     }
 
     public BigInteger getN() {
