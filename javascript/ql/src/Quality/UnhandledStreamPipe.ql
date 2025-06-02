@@ -242,7 +242,7 @@ private predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
 
 /**
  * Holds if the pipe call uses `gulp-plumber`, which automatically handles stream errors.
- * Gulp-plumber is a Node.js module that prevents pipe breaking caused by errors from gulp plugins.
+ * `gulp-plumber` returns a stream that uses monkey-patching to ensure all subsequent streams in the pipeline propagate their errors.
  */
 private predicate hasPlumber(PipeCall pipeCall) {
   pipeCall.getDestinationStream().getALocalSource() = API::moduleImport("gulp-plumber").getACall()
