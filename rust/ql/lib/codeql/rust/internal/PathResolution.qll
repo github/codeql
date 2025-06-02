@@ -5,6 +5,7 @@
 private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.internal.CachedStages
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 private newtype TNamespace =
   TTypeNamespace() or
@@ -178,6 +179,8 @@ abstract class ItemNode extends Locatable {
     or
     // type parameters have access to the associated items of its bounds
     result = this.(TypeParamItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
+    or
+    result = this.(ImplTraitTypeReprItemNode).resolveABound().getASuccessorRec(name).(AssocItemNode)
   }
 
   /**
@@ -645,6 +648,28 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 }
 
+private class ImplTraitTypeReprItemNode extends ItemNode instanceof ImplTraitTypeRepr {
+  pragma[nomagic]
+  Path getABoundPath() {
+    result = super.getTypeBoundList().getABound().getTypeRepr().(PathTypeRepr).getPath()
+  }
+
+  pragma[nomagic]
+  ItemNode resolveABound() { result = resolvePathFull(this.getABoundPath()) }
+
+  override string getName() { result = "(impl trait)" }
+
+  override Namespace getNamespace() { result.isType() }
+
+  override Visibility getVisibility() { none() }
+
+  override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { none() }
+
+  override string getCanonicalPath(Crate c) { none() }
+}
+
 private class MacroCallItemNode extends AssocItemNode instanceof MacroCall {
   override string getName() { result = "(macro call)" }
 
@@ -1093,14 +1118,21 @@ private predicate crateDefEdge(CrateItemNode c, string name, ItemNode i) {
   not i instanceof Crate
 }
 
+private class BuiltinSourceFile extends SourceFileItemNode {
+  BuiltinSourceFile() { this.getFile().getParentContainer() instanceof Builtins::BuiltinsFolder }
+}
+
 /**
  * Holds if `file` depends on crate `dep` named `name`.
  */
+pragma[nomagic]
 private predicate crateDependencyEdge(SourceFileItemNode file, string name, CrateItemNode dep) {
-  exists(CrateItemNode c |
-    dep = c.(Crate).getDependency(name) and
-    file = c.getASourceFile()
-  )
+  exists(CrateItemNode c | dep = c.(Crate).getDependency(name) | file = c.getASourceFile())
+  or
+  // Give builtin files, such as `await.rs`, access to `std`
+  file instanceof BuiltinSourceFile and
+  dep.getName() = name and
+  name = "std"
 }
 
 private predicate useTreeDeclares(UseTree tree, string name) {
@@ -1461,9 +1493,14 @@ private predicate externCrateEdge(ExternCrateItemNode ec, string name, CrateItem
  * [1]: https://doc.rust-lang.org/core/prelude/index.html
  * [2]: https://doc.rust-lang.org/std/prelude/index.html
  */
+pragma[nomagic]
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile() and
+    f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile()
+    or
+    // Give builtin files, such as `await.rs`, access to the prelude
+    f instanceof BuiltinSourceFile
+  |
     stdOrCore.getName() = ["std", "core"] and
     mod = stdOrCore.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and
@@ -1473,12 +1510,10 @@ private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   )
 }
 
-private import codeql.rust.frameworks.stdlib.Bultins as Builtins
-
 pragma[nomagic]
 private predicate builtin(string name, ItemNode i) {
-  exists(SourceFileItemNode builtins |
-    builtins.getFile().getParentContainer() instanceof Builtins::BuiltinsFolder and
+  exists(BuiltinSourceFile builtins |
+    builtins.getFile().getBaseName() = "types.rs" and
     i = builtins.getASuccessorRec(name)
   )
 }

@@ -191,13 +191,9 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
 }
 
 class ImplTraitTypeReprMention extends TypeMention instanceof ImplTraitTypeRepr {
-  override TypeMention getTypeArgument(int i) {
-    result = super.getTypeBoundList().getBound(i).getTypeRepr()
-  }
+  override TypeMention getTypeArgument(int i) { none() }
 
-  override ImplTraitType resolveType() {
-    result.getNumberOfBounds() = super.getTypeBoundList().getNumberOfBounds()
-  }
+  override ImplTraitType resolveType() { result.getImplTraitTypeRepr() = this }
 }
 
 private TypeParameter pathGetTypeParameter(TypeAlias alias, int i) {
