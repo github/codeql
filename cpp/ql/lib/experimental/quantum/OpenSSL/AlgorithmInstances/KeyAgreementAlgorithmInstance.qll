@@ -35,7 +35,7 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     this instanceof Literal and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
-      sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
+      sink = getterCall.getInputNode() and
       // Source is `this`
       src.asExpr() = this and
       // This traces to a getter
