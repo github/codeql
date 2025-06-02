@@ -160,7 +160,7 @@ private predicate guaranteedMatchPosition(Pat pat) {
     parent.(OrPat).getLastPat() = pat
     or
     // for macro patterns we propagate to the expanded pattern
-    parent.(MacroPat).getMacroCall().getExpanded() = pat
+    parent.(MacroPat).getMacroCall().getMacroCallExpansion() = pat
   )
 }
 

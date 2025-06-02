@@ -17,5 +17,7 @@ where
   or
   inconsistencyStats(key, value)
   or
+  typeInferenceInconsistencyStats(key, value)
+  or
   taintStats(key, value)
 select key, value order by key

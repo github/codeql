@@ -1,5 +1,5 @@
 name: codeql/javascript-all
-version: 2.6.3
+version: 2.6.4
 groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript

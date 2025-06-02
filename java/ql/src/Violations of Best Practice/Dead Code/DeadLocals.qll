@@ -37,7 +37,7 @@ predicate overwritten(VariableUpdate upd) {
       bb1.getNode(i) = upd.getControlFlowNode() and
       bb2.getNode(j) = overwrite.getControlFlowNode()
     |
-      bb1.getABBSuccessor+() = bb2
+      bb1.getASuccessor+() = bb2
       or
       bb1 = bb2 and i < j
     )

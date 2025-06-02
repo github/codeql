@@ -1,11 +1,12 @@
 name: codeql/java-all
-version: 7.2.0
+version: 7.3.0
 groups: java
 dbscheme: config/semmlecode.dbscheme
 extractor: java
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/dataflowstack: ${workspace}
   codeql/mad: ${workspace}

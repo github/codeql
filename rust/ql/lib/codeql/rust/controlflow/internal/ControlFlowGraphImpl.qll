@@ -143,7 +143,7 @@ class LetStmtTree extends PreOrderTree, LetStmt {
 }
 
 class MacroCallTree extends StandardPostOrderTree, MacroCall {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
+  override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
 }
 
 class MacroBlockExprTree extends StandardPostOrderTree, MacroBlockExpr {
@@ -685,7 +685,7 @@ module PatternTrees {
   }
 
   class MacroPatTree extends PreOrderPatTree, MacroPat {
-    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getExpanded() }
+    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getMacroCallExpansion() }
   }
 
   class OrPatTree extends PostOrderPatTree instanceof OrPat {

@@ -67,6 +67,7 @@ pub struct Config {
     pub extra_includes: Vec<PathBuf>,
     pub proc_macro_server: Option<PathBuf>,
     pub skip_path_resolution: bool,
+    pub extract_dependencies_as_source: bool,
 }
 
 impl Config {

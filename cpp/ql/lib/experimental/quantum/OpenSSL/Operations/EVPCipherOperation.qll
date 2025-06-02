@@ -1,8 +1,8 @@
-import experimental.quantum.Language
-import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
-import EVPCipherInitializer
-import OpenSSLOperationBase
-import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+private import experimental.quantum.Language
+private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import EVPCipherInitializer
+private import OpenSSLOperationBase
+private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -67,37 +67,42 @@ abstract class EVP_Cipher_Operation extends OpenSSLOperation, Crypto::KeyOperati
   }
 }
 
-// abstract class EVP_Update_Call extends EVP_Cipher_Operation { }
-abstract class EVP_Final_Call extends EVP_Cipher_Operation {
-  override Expr getInputArg() { none() }
-}
-
-// TODO: only model Final (model final as operation and model update but not as an operation)
-// Updates are multiple input consumers (most important)
-// TODO: assuming update doesn't ouput, otherwise it outputs artifacts, but is not an operation
 class EVP_Cipher_Call extends EVP_Cipher_Operation {
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 }
 
-// ******* TODO: model UPDATE but not as the core operation, rather a step towards final
-// see the JCA
-// class EVP_Encrypt_Decrypt_or_Cipher_Update_Call extends EVP_Update_Call {
-//   EVP_Encrypt_Decrypt_or_Cipher_Update_Call() {
-//     this.(Call).getTarget().getName() in [
-//         "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
-//       ]
-//   }
-//   override Expr getInputArg() { result = this.(Call).getArgument(3) }
-// }
-class EVP_Encrypt_Decrypt_or_Cipher_Final_Call extends EVP_Final_Call {
-  EVP_Encrypt_Decrypt_or_Cipher_Final_Call() {
+// NOTE: not modeled as cipher operations, these are intermediate calls
+class EVP_Cipher_Update_Call extends Call {
+  EVP_Cipher_Update_Call() {
+    this.(Call).getTarget().getName() in [
+        "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
+      ]
+  }
+
+  Expr getInputArg() { result = this.(Call).getArgument(3) }
+
+  DataFlow::Node getInputNode() { result.asExpr() = this.getInputArg() }
+
+  Expr getContextArg() { result = this.(Call).getArgument(0) }
+}
+
+class EVP_Cipher_Final_Call extends EVP_Cipher_Operation {
+  EVP_Cipher_Final_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptFinal_ex", "EVP_DecryptFinal_ex", "EVP_CipherFinal_ex", "EVP_EncryptFinal",
         "EVP_DecryptFinal", "EVP_CipherFinal"
       ]
   }
+
+  EVP_Cipher_Update_Call getUpdateCalls() {
+    CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
+  }
+
+  override Expr getInputArg() { result = this.getUpdateCalls().getInputArg() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputConsumer() { result = this.getInputNode() }
 }
 
 class EVP_PKEY_Operation extends EVP_Cipher_Operation {

@@ -11,64 +11,75 @@ use ra_ap_hir::{
 };
 use ra_ap_hir_def::ModuleId;
 use ra_ap_hir_def::type_ref::Mutability;
-use ra_ap_hir_expand::ExpandTo;
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::HasName;
+use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
 };
 
 #[macro_export]
-macro_rules! emit_detached {
+macro_rules! pre_emit {
+    (Item, $self:ident, $node:ident) => {
+        $self.setup_item_expansion($node);
+    };
+    ($($_:tt)*) => {};
+}
+
+#[macro_export]
+macro_rules! post_emit {
     (MacroCall, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_macro_call_expanded(&$node, $label);
+        $self.extract_macro_call_expanded($node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Struct, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Enum, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Union, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Module, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin(&$node, $label.into());
+        $self.extract_canonical_origin($node, $label.into());
     };
     (Variant, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_canonical_origin_of_enum_variant(&$node, $label);
+        $self.extract_canonical_origin_of_enum_variant($node, $label);
+    };
+    (Item, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_item_expansion($node, $label);
     };
     // TODO canonical origin of other items
     (PathExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
+        $self.extract_path_canonical_destination($node, $label.into());
     };
     (StructExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
+        $self.extract_path_canonical_destination($node, $label.into());
     };
     (PathPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
+        $self.extract_path_canonical_destination($node, $label.into());
     };
     (StructPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
+        $self.extract_path_canonical_destination($node, $label.into());
     };
     (TupleStructPat, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_path_canonical_destination(&$node, $label.into());
+        $self.extract_path_canonical_destination($node, $label.into());
     };
     (MethodCallExpr, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_method_canonical_destination(&$node, $label);
+        $self.extract_method_canonical_destination($node, $label);
     };
     (PathSegment, $self:ident, $node:ident, $label:ident) => {
-        $self.extract_types_from_path_segment(&$node, $label.into());
+        $self.extract_types_from_path_segment($node, $label.into());
     };
     ($($_:tt)*) => {};
 }
@@ -90,6 +101,11 @@ pub enum ResolvePaths {
     Yes,
     No,
 }
+#[derive(Copy, Clone, PartialEq, Eq)]
+pub enum SourceKind {
+    Source,
+    Library,
+}
 
 pub struct Translator<'a> {
     pub trap: TrapFile,
@@ -98,7 +114,9 @@ pub struct Translator<'a> {
     line_index: LineIndex,
     file_id: Option<EditionedFileId>,
     pub semantics: Option<&'a Semantics<'a, RootDatabase>>,
-    resolve_paths: ResolvePaths,
+    resolve_paths: bool,
+    source_kind: SourceKind,
+    macro_context_depth: usize,
 }
 
 const UNKNOWN_LOCATION: (LineCol, LineCol) =
@@ -112,6 +130,7 @@ impl<'a> Translator<'a> {
         line_index: LineIndex,
         semantic_info: Option<&FileSemanticInformation<'a>>,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) -> Translator<'a> {
         Translator {
             trap,
@@ -120,7 +139,9 @@ impl<'a> Translator<'a> {
             line_index,
             file_id: semantic_info.map(|i| i.file_id),
             semantics: semantic_info.map(|i| i.semantics),
-            resolve_paths,
+            resolve_paths: resolve_paths == ResolvePaths::Yes,
+            source_kind,
+            macro_context_depth: 0,
         }
     }
     fn location(&self, range: TextRange) -> Option<(LineCol, LineCol)> {
@@ -156,21 +177,23 @@ impl<'a> Translator<'a> {
             Some(node.syntax().text_range())
         }
     }
-    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
-        if let Some((start, end)) = self
-            .text_range_for_node(node)
+
+    fn location_for_node(&mut self, node: &impl ast::AstNode) -> Option<(LineCol, LineCol)> {
+        self.text_range_for_node(node)
             .and_then(|r| self.location(r))
-        {
-            self.trap.emit_location(self.label, label, start, end)
-        } else {
-            self.emit_diagnostic(
+    }
+
+    pub fn emit_location<T: TrapClass>(&mut self, label: Label<T>, node: &impl ast::AstNode) {
+        match self.location_for_node(node) {
+            None => self.emit_diagnostic(
                 DiagnosticSeverity::Debug,
                 "locations".to_owned(),
                 "missing location for AstNode".to_owned(),
                 "missing location for AstNode".to_owned(),
                 UNKNOWN_LOCATION,
-            );
-        }
+            ),
+            Some((start, end)) => self.trap.emit_location(self.label, label, start, end),
+        };
     }
     pub fn emit_location_token(
         &mut self,
@@ -197,6 +220,14 @@ impl<'a> Translator<'a> {
         full_message: String,
         location: (LineCol, LineCol),
     ) {
+        let severity = if self.source_kind == SourceKind::Library {
+            match severity {
+                DiagnosticSeverity::Error => DiagnosticSeverity::Info,
+                _ => DiagnosticSeverity::Debug,
+            }
+        } else {
+            severity
+        };
         let (start, end) = location;
         dispatch_to_tracing!(
             severity,
@@ -252,7 +283,11 @@ impl<'a> Translator<'a> {
             }
         }
     }
-    fn emit_macro_expansion_parse_errors(&mut self, mcall: &ast::MacroCall, expanded: &SyntaxNode) {
+    fn emit_macro_expansion_parse_errors(
+        &mut self,
+        node: &impl ast::AstNode,
+        expanded: &SyntaxNode,
+    ) {
         let semantics = self.semantics.as_ref().unwrap();
         if let Some(value) = semantics
             .hir_file_for(expanded)
@@ -266,7 +301,7 @@ impl<'a> Translator<'a> {
             if let Some(err) = &value.err {
                 let error = err.render_to_string(semantics.db);
 
-                if err.span().anchor.file_id == semantics.hir_file_for(mcall.syntax()) {
+                if err.span().anchor.file_id == semantics.hir_file_for(node.syntax()) {
                     let location = err.span().range
                         + semantics
                             .db
@@ -274,11 +309,11 @@ impl<'a> Translator<'a> {
                             .get_erased(err.span().anchor.ast_id)
                             .text_range()
                             .start();
-                    self.emit_parse_error(mcall, &SyntaxError::new(error.message, location));
+                    self.emit_parse_error(node, &SyntaxError::new(error.message, location));
                 };
             }
             for err in value.value.iter() {
-                self.emit_parse_error(mcall, err);
+                self.emit_parse_error(node, err);
             }
         }
     }
@@ -290,20 +325,20 @@ impl<'a> Translator<'a> {
     ) -> Option<Label<generated::AstNode>> {
         match expand_to {
             ra_ap_hir_expand::ExpandTo::Statements => ast::MacroStmts::cast(expanded)
-                .and_then(|x| self.emit_macro_stmts(x))
+                .and_then(|x| self.emit_macro_stmts(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Items => ast::MacroItems::cast(expanded)
-                .and_then(|x| self.emit_macro_items(x))
+                .and_then(|x| self.emit_macro_items(&x))
                 .map(Into::into),
 
             ra_ap_hir_expand::ExpandTo::Pattern => ast::Pat::cast(expanded)
-                .and_then(|x| self.emit_pat(x))
+                .and_then(|x| self.emit_pat(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Type => ast::Type::cast(expanded)
-                .and_then(|x| self.emit_type(x))
+                .and_then(|x| self.emit_type(&x))
                 .map(Into::into),
             ra_ap_hir_expand::ExpandTo::Expr => ast::Expr::cast(expanded)
-                .and_then(|x| self.emit_expr(x))
+                .and_then(|x| self.emit_expr(&x))
                 .map(Into::into),
         }
     }
@@ -312,6 +347,11 @@ impl<'a> Translator<'a> {
         mcall: &ast::MacroCall,
         label: Label<generated::MacroCall>,
     ) {
+        if self.macro_context_depth > 0 {
+            // we are in an attribute macro, don't emit anything: we would be failing to expand any
+            // way as from version 0.0.274 rust-analyser only expands in the context of an expansion
+            return;
+        }
         if let Some(expanded) = self
             .semantics
             .as_ref()
@@ -321,7 +361,11 @@ impl<'a> Translator<'a> {
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
             if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
-                generated::MacroCall::emit_expanded(label, value, &mut self.trap.writer);
+                generated::MacroCall::emit_macro_call_expansion(
+                    label,
+                    value,
+                    &mut self.trap.writer,
+                );
             } else {
                 let range = self.text_range_for_node(mcall);
                 self.emit_parse_error(mcall, &SyntaxError::new(
@@ -508,7 +552,7 @@ impl<'a> Translator<'a> {
         item: &T,
         label: Label<generated::Addressable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -531,7 +575,7 @@ impl<'a> Translator<'a> {
         item: &ast::Variant,
         label: Label<generated::Variant>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -554,7 +598,7 @@ impl<'a> Translator<'a> {
         item: &impl PathAst,
         label: Label<generated::Resolvable>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -577,7 +621,7 @@ impl<'a> Translator<'a> {
         item: &ast::MethodCallExpr,
         label: Label<generated::MethodCallExpr>,
     ) {
-        if self.resolve_paths == ResolvePaths::No {
+        if !self.resolve_paths {
             return;
         }
         (|| {
@@ -598,7 +642,7 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
@@ -606,6 +650,45 @@ impl<'a> Translator<'a> {
                 })
             })
         })
+    }
+
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
+        if self.source_kind == SourceKind::Library {
+            let syntax = item.syntax();
+            if syntax
+                .parent()
+                .and_then(Fn::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Const::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Static::cast)
+                .and_then(|x| x.body())
+                .is_some_and(|body| body.syntax() == syntax)
+            {
+                return true;
+            }
+            if syntax
+                .parent()
+                .and_then(Param::cast)
+                .and_then(|x| x.pat())
+                .is_some_and(|pat| pat.syntax() == syntax)
+            {
+                return true;
+            }
+        }
+        false
     }
 
     pub(crate) fn extract_types_from_path_segment(
@@ -626,17 +709,66 @@ impl<'a> Translator<'a> {
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::Type::cast)
-                .and_then(|t| self.emit_type(t))
+                .and_then(|t| self.emit_type(&t))
             {
                 generated::PathSegment::emit_type_repr(label, t, &mut self.trap.writer)
             }
             if let Some(t) = type_refs
                 .next()
                 .and_then(ast::PathType::cast)
-                .and_then(|t| self.emit_path_type(t))
+                .and_then(|t| self.emit_path_type(&t))
             {
                 generated::PathSegment::emit_trait_type_repr(label, t, &mut self.trap.writer)
             }
         }
+    }
+
+    pub(crate) fn setup_item_expansion(&mut self, node: &ast::Item) {
+        if self.semantics.is_some_and(|s| {
+            let file = s.hir_file_for(node.syntax());
+            let node = InFile::new(file, node);
+            s.is_attr_macro_call(node)
+        }) {
+            self.macro_context_depth += 1;
+        }
+    }
+
+    pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
+        // TODO: remove this after fixing exponential expansion on libraries like funty-2.0.0
+        if self.source_kind == SourceKind::Library {
+            return;
+        }
+        (|| {
+            let semantics = self.semantics?;
+            let file = semantics.hir_file_for(node.syntax());
+            let infile_node = InFile::new(file, node);
+            if !semantics.is_attr_macro_call(infile_node) {
+                return None;
+            }
+            self.macro_context_depth -= 1;
+            if self.macro_context_depth > 0 {
+                // only expand the outermost attribute macro
+                return None;
+            }
+            let ExpandResult {
+                value: expanded, ..
+            } = semantics.expand_attr_macro(node)?;
+            self.emit_macro_expansion_parse_errors(node, &expanded);
+            let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
+                let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
+                let location = self.location_for_node(node);
+                self.emit_diagnostic(
+                    DiagnosticSeverity::Warning,
+                    "item_expansion".to_owned(),
+                    message.clone(),
+                    message,
+                    location.unwrap_or(UNKNOWN_LOCATION),
+                );
+                None
+            })?;
+            let expanded = self.emit_macro_items(&macro_items)?;
+            generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
+            Some(())
+        })();
     }
 }

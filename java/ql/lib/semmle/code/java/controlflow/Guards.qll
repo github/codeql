@@ -23,7 +23,7 @@ class ConditionBlock extends BasicBlock {
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
-    result = this.getConditionNode().getABranchSuccessor(testIsTrue)
+    result.getFirstNode() = this.getConditionNode().getABranchSuccessor(testIsTrue)
   }
 
   /*
@@ -68,7 +68,7 @@ class ConditionBlock extends BasicBlock {
     exists(BasicBlock succ |
       succ = this.getTestSuccessor(testIsTrue) and
       dominatingEdge(this, succ) and
-      succ.bbDominates(controlled)
+      succ.dominates(controlled)
     )
   }
 }
@@ -145,7 +145,7 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
  * Evaluating a switch case to true corresponds to taking that switch case, and
  * evaluating it to false corresponds to taking some other branch.
  */
-class Guard extends ExprParent {
+final class Guard extends ExprParent {
   Guard() {
     this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral
     or
@@ -273,6 +273,15 @@ class Guard extends ExprParent {
   }
 
   /**
+   * Holds if this guard evaluating to `branch` controls the control-flow
+   * branch edge from `bb1` to `bb2`. That is, following the edge from
+   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+   */
+  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    guardControlsBranchEdge_v3(this, bb1, bb2, branch)
+  }
+
+  /**
    * Holds if this guard evaluating to `branch` directly or indirectly controls
    * the block `controlled`. That is, the evaluation of `controlled` is
    * dominated by this guard evaluating to `branch`.
@@ -287,7 +296,7 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     // Pattern cases are handled as condition blocks
     not sc instanceof PatternCase and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
-    caseblock.bbDominates(bb) and
+    caseblock.dominates(bb) and
     // Check we can't fall through from a previous block:
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
       isNonFallThroughPredecessor(sc, pred)
@@ -300,14 +309,14 @@ private predicate preconditionBranchEdge(
 ) {
   conditionCheckArgument(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
-  bb2 = bb1.getLastNode().getANormalSuccessor()
+  bb2.getFirstNode() = bb1.getLastNode().getANormalSuccessor()
 }
 
 private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
     dominatingEdge(check, succ) and
-    succ.bbDominates(controlled)
+    succ.dominates(controlled)
   )
 }
 
@@ -349,6 +358,51 @@ private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean b
     guardControls_v3(g, controlled, b) and
     implies_v3(g, b, guard, branch)
   )
+}
+
+pragma[nomagic]
+private predicate guardControlsBranchEdge_v2(
+  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
+) {
+  guard.hasBranchEdge(bb1, bb2, branch)
+  or
+  exists(Guard g, boolean b |
+    guardControlsBranchEdge_v2(g, bb1, bb2, b) and
+    implies_v2(g, b, guard, branch)
+  )
+}
+
+pragma[nomagic]
+private predicate guardControlsBranchEdge_v3(
+  Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch
+) {
+  guard.hasBranchEdge(bb1, bb2, branch)
+  or
+  exists(Guard g, boolean b |
+    guardControlsBranchEdge_v3(g, bb1, bb2, b) and
+    implies_v3(g, b, guard, branch)
+  )
+}
+
+/** INTERNAL: Use `Guard` instead. */
+final class Guard_v2 extends Guard {
+  /**
+   * Holds if this guard evaluating to `branch` controls the control-flow
+   * branch edge from `bb1` to `bb2`. That is, following the edge from
+   * `bb1` to `bb2` implies that this guard evaluated to `branch`.
+   */
+  predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch) {
+    guardControlsBranchEdge_v2(this, bb1, bb2, branch)
+  }
+
+  /**
+   * Holds if this guard evaluating to `branch` directly or indirectly controls
+   * the block `controlled`. That is, the evaluation of `controlled` is
+   * dominated by this guard evaluating to `branch`.
+   */
+  predicate controls(BasicBlock controlled, boolean branch) {
+    guardControls_v2(this, controlled, branch)
+  }
 }
 
 private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {

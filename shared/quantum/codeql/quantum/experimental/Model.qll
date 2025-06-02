@@ -841,7 +841,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * This will be automatically inferred and applied at the node level.
      * See `fixedImplicitCipherKeySize`.
      */
-    abstract string getKeySizeFixed();
+    abstract int getKeySizeFixed();
 
     /**
      * Gets a consumer for the key size in bits specified for this algorithm variant.
@@ -972,7 +972,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     abstract TEllipticCurveType getEllipticCurveType();
 
-    abstract string getKeySize();
+    abstract int getKeySize();
 
     /**
      * The 'parsed' curve name, e.g., "P-256" or "secp256r1"
@@ -1044,7 +1044,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract KeyArtifactType getOutputKeyType();
 
     // Defaults or fixed values
-    string getKeySizeFixed() { none() }
+    int getKeySizeFixed() { none() }
 
     // Consumer input nodes
     abstract ConsumerInputDataFlowNode getKeySizeConsumer();
@@ -1900,7 +1900,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [ONLY_KNOWN]
       key = "DefaultKeySize" and
-      value = kdfInstance.getKeySizeFixed() and
+      value = kdfInstance.getKeySizeFixed().toString() and
       location = this.getLocation()
       or
       // [ONLY_KNOWN] - TODO: refactor for known unknowns
@@ -2259,13 +2259,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySizeFixed() {
+    int getKeySizeFixed() {
       result = instance.asAlg().getKeySizeFixed()
       or
-      exists(int size |
-        KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), size) and
-        result = size.toString()
-      )
+      KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), result)
     }
 
     /**
@@ -2333,7 +2330,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [ONLY_KNOWN]
       key = "KeySize" and
       (
-        value = this.getKeySizeFixed() and
+        value = this.getKeySizeFixed().toString() and
         location = this.getLocation()
         or
         node_as_property(this.getKeySize(), value, location)
@@ -2613,7 +2610,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [ONLY_KNOWN]
       key = "KeySize" and
-      value = instance.asAlg().getKeySize() and
+      value = instance.asAlg().getKeySize().toString() and
       location = this.getLocation()
       or
       // [KNOWN_OR_UNKNOWN]

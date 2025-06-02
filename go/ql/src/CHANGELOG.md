@@ -1,3 +1,9 @@
+## 1.2.1
+
+### Minor Analysis Improvements
+
+* The query `go/hardcoded-credentials` has been removed from all query suites.
+
 ## 1.2.0
 
 ### Query Metadata Changes
