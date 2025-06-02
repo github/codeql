@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "anstyle_wincon",
+    name = "hermit_abi",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=anstyle-wincon",
+        "crate-name=hermit-abi",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,22 +79,5 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "3.0.7",
-    deps = [
-        "@vendor_ts__anstyle-1.0.10//:anstyle",
-    ] + select({
-        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__once_cell-1.21.3//:once_cell",  # cfg(windows)
-            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
-        ],
-        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__once_cell-1.21.3//:once_cell",  # cfg(windows)
-            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
-        ],
-        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__once_cell-1.21.3//:once_cell",  # cfg(windows)
-            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
-        ],
-        "//conditions:default": [],
-    }),
+    version = "0.5.1",
 )

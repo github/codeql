@@ -32,6 +32,22 @@ string describe(Expr op) {
   op instanceof LessOrEqualsOperation and result = "LessOrEqualsOperation"
   or
   op instanceof GreaterOrEqualsOperation and result = "GreaterOrEqualsOperation"
+  or
+  op instanceof ArithmeticOperation and result = "ArithmeticOperation"
+  or
+  op instanceof BinaryArithmeticOperation and result = "BinaryArithmeticOperation"
+  or
+  op instanceof AssignArithmeticOperation and result = "AssignArithmeticOperation"
+  or
+  op instanceof PrefixArithmeticOperation and result = "PrefixArithmeticOperation"
+  or
+  op instanceof BitwiseOperation and result = "BitwiseOperation"
+  or
+  op instanceof BinaryBitwiseOperation and result = "BinaryBitwiseOperation"
+  or
+  op instanceof AssignBitwiseOperation and result = "AssignBitwiseOperation"
+  or
+  op instanceof DerefExpr and result = "DerefExpr"
 }
 
 module OperationsTest implements TestSig {

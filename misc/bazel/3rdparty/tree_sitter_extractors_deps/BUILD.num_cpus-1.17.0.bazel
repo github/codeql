@@ -79,7 +79,7 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "1.16.0",
+    version = "1.17.0",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(not(windows))

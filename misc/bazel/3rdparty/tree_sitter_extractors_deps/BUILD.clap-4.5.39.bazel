@@ -92,8 +92,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "4.5.38",
+    version = "4.5.39",
     deps = [
-        "@vendor_ts__clap_builder-4.5.38//:clap_builder",
+        "@vendor_ts__clap_builder-4.5.39//:clap_builder",
     ],
 )

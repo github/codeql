@@ -277,6 +277,11 @@ fn main() -> anyhow::Result<()> {
     } else {
         ResolvePaths::Yes
     };
+    let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
+        (SourceKind::Source, resolve_paths)
+    } else {
+        (SourceKind::Library, ResolvePaths::No)
+    };
     let mut processed_files: HashSet<PathBuf, RandomState> =
         HashSet::from_iter(files.iter().cloned());
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
@@ -316,8 +321,8 @@ fn main() -> anyhow::Result<()> {
                             file,
                             &semantics,
                             vfs,
-                            ResolvePaths::No,
-                            SourceKind::Library,
+                            library_resolve_paths,
+                            library_mode,
                         );
                         extractor.archiver.archive(file);
                     }

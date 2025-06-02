@@ -56,14 +56,14 @@ alias(
 )
 
 alias(
-    name = "chalk-ir-0.102.0",
-    actual = "@vendor_ts__chalk-ir-0.102.0//:chalk_ir",
+    name = "chalk-ir-0.103.0",
+    actual = "@vendor_ts__chalk-ir-0.103.0//:chalk_ir",
     tags = ["manual"],
 )
 
 alias(
     name = "chalk-ir",
-    actual = "@vendor_ts__chalk-ir-0.102.0//:chalk_ir",
+    actual = "@vendor_ts__chalk-ir-0.103.0//:chalk_ir",
     tags = ["manual"],
 )
 
@@ -80,14 +80,14 @@ alias(
 )
 
 alias(
-    name = "clap-4.5.38",
-    actual = "@vendor_ts__clap-4.5.38//:clap",
+    name = "clap-4.5.39",
+    actual = "@vendor_ts__clap-4.5.39//:clap",
     tags = ["manual"],
 )
 
 alias(
     name = "clap",
-    actual = "@vendor_ts__clap-4.5.38//:clap",
+    actual = "@vendor_ts__clap-4.5.39//:clap",
     tags = ["manual"],
 )
 
@@ -224,14 +224,14 @@ alias(
 )
 
 alias(
-    name = "num_cpus-1.16.0",
-    actual = "@vendor_ts__num_cpus-1.16.0//:num_cpus",
+    name = "num_cpus-1.17.0",
+    actual = "@vendor_ts__num_cpus-1.17.0//:num_cpus",
     tags = ["manual"],
 )
 
 alias(
     name = "num_cpus",
-    actual = "@vendor_ts__num_cpus-1.16.0//:num_cpus",
+    actual = "@vendor_ts__num_cpus-1.17.0//:num_cpus",
     tags = ["manual"],
 )
 
@@ -670,5 +670,17 @@ alias(
 alias(
     name = "ungrammar",
     actual = "@vendor_ts__ungrammar-1.16.1//:ungrammar",
+    tags = ["manual"],
+)
+
+alias(
+    name = "zstd-0.13.3",
+    actual = "@vendor_ts__zstd-0.13.3//:zstd",
+    tags = ["manual"],
+)
+
+alias(
+    name = "zstd",
+    actual = "@vendor_ts__zstd-0.13.3//:zstd",
     tags = ["manual"],
 )

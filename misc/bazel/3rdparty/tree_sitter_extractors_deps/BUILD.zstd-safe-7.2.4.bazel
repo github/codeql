@@ -6,12 +6,13 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "hermit_abi",
+    name = "zstd_safe",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -28,14 +29,20 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "arrays",
+        "legacy",
+        "std",
+        "zdict_builder",
+    ],
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2018",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=hermit-abi",
+        "crate-name=zstd-safe",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,5 +86,73 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.3.9",
+    version = "7.2.4",
+    deps = [
+        "@vendor_ts__zstd-safe-7.2.4//:build_script_build",
+        "@vendor_ts__zstd-sys-2.0.15-zstd.1.5.7//:zstd_sys",
+    ],
+)
+
+cargo_build_script(
+    name = "_bs",
+    srcs = glob(
+        include = ["**/*.rs"],
+        allow_empty = True,
+    ),
+    compile_data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            "**/*.rs",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    crate_features = [
+        "arrays",
+        "legacy",
+        "std",
+        "zdict_builder",
+    ],
+    crate_name = "build_script_build",
+    crate_root = "build.rs",
+    data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    edition = "2018",
+    link_deps = [
+        "@vendor_ts__zstd-sys-2.0.15-zstd.1.5.7//:zstd_sys",
+    ],
+    pkg_name = "zstd-safe",
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-bazel",
+        "crate-name=zstd-safe",
+        "manual",
+        "noclippy",
+        "norustfmt",
+    ],
+    version = "7.2.4",
+    visibility = ["//visibility:private"],
+)
+
+alias(
+    name = "build_script_build",
+    actual = ":_bs",
+    tags = ["manual"],
 )

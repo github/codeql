@@ -7,7 +7,7 @@ license = "MIT"
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 anyhow = "1.0.98"
-clap = { version = "4.5.38", features = ["derive"] }
+clap = { version = "4.5.39", features = ["derive"] }
 figment = { version = "0.10.19", features = ["env", "yaml"] }
 num-traits = "0.2.19"
 ra_ap_base_db = "0.0.281"
@@ -40,4 +40,4 @@ toml = "0.8.22"
 tracing = "0.1.41"
 tracing-flame = "0.2.0"
 tracing-subscriber = "0.3.19"
-chalk-ir = "0.102.0"
+chalk-ir = "0.103.0"

@@ -1,0 +1,3 @@
+illFormedTypeMention
+| sqlx.rs:158:13:158:81 | ...::BoxDynError |
+| sqlx.rs:160:17:160:86 | ...::BoxDynError |
