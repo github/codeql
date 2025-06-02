@@ -1,3 +1,4 @@
+ql/python/ql/src/Functions/IterReturnsNonSelf.ql
 ql/python/ql/src/Functions/NonCls.ql
 ql/python/ql/src/Functions/NonSelf.ql
 ql/python/ql/src/Functions/ReturnConsistentTupleSizes.ql
