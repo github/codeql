@@ -141,7 +141,7 @@ private predicate streamFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
  * Tracks the result of a pipe call as it flows through the program.
  */
 private DataFlow::SourceNode destinationStreamRef(DataFlow::TypeTracker t, PipeCall pipe) {
-  t.start() and result = pipe.getALocalSource()
+  t.start() and result = pipe
   or
   exists(DataFlow::SourceNode prev |
     prev = destinationStreamRef(t.continue(), pipe) and
