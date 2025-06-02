@@ -127,13 +127,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IList<string> GetNugetFeeds(string nugetConfig)
         {
-            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
             return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
         }
 
         public IList<string> GetNugetFeedsFromFolder(string folderPath)
         {
-            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            logger.LogInfo($"Getting NuGet feeds in folder '{folderPath}'...");
             return GetResultList(nugetListSourceCommand, folderPath);
         }
 

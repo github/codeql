@@ -87,11 +87,6 @@ module Raw {
     string getVersion() { crate_versions(this, result) }
 
     /**
-     * Gets the module of this crate, if it exists.
-     */
-    Module getModule() { crate_modules(this, result) }
-
-    /**
      * Gets the `index`th cfg option of this crate (0-based).
      */
     string getCfgOption(int index) { crate_cfg_options(this, index, result) }

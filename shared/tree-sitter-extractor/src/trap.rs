@@ -96,9 +96,16 @@ impl Writer {
                 self.write_trap_entries(&mut trap_file)
             }
             Compression::Gzip => {
-                let trap_file = GzEncoder::new(trap_file, flate2::Compression::fast());
+                let trap_file = GzEncoder::new(trap_file, Compression::GZIP_LEVEL);
                 let mut trap_file = BufWriter::new(trap_file);
                 self.write_trap_entries(&mut trap_file)
+            }
+            Compression::Zstd => {
+                let trap_file = zstd::stream::Encoder::new(trap_file, Compression::ZSTD_LEVEL)?;
+                let mut trap_file = BufWriter::new(trap_file);
+                self.write_trap_entries(&mut trap_file)?;
+                trap_file.into_inner()?.finish()?;
+                Ok(())
             }
         }
     }
@@ -107,7 +114,7 @@ impl Writer {
         for trap_entry in &self.trap_output {
             writeln!(file, "{}", trap_entry)?;
         }
-        std::io::Result::Ok(())
+        Ok(())
     }
 }
 
@@ -280,9 +287,13 @@ fn limit_string(string: &str, max_size: usize) -> &str {
 pub enum Compression {
     None,
     Gzip,
+    Zstd,
 }
 
 impl Compression {
+    pub const ZSTD_LEVEL: i32 = 2;
+    pub const GZIP_LEVEL: flate2::Compression = flate2::Compression::fast();
+
     pub fn from_env(var_name: &str) -> Result<Compression, String> {
         match std::env::var(var_name) {
             Ok(method) => match Compression::from_string(&method) {
@@ -298,6 +309,7 @@ impl Compression {
         match s.to_lowercase().as_ref() {
             "none" => Some(Compression::None),
             "gzip" => Some(Compression::Gzip),
+            "zstd" => Some(Compression::Zstd),
             _ => None,
         }
     }
@@ -306,6 +318,7 @@ impl Compression {
         match self {
             Compression::None => "trap",
             Compression::Gzip => "trap.gz",
+            Compression::Zstd => "trap.zst",
         }
     }
 }

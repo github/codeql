@@ -181,44 +181,25 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     /** Holds if this type path is empty. */
     predicate isEmpty() { this = "" }
 
-    /** Gets the length of this path, assuming the length is at least 2. */
-    bindingset[this]
-    pragma[inline_late]
-    private int lengthAtLeast2() {
-      // Same as
-      // `result = strictcount(this.indexOf(".")) + 1`
-      // but performs better because it doesn't use an aggregate
-      result = this.regexpReplaceAll("[0-9]+", "").length() + 1
-    }
-
     /** Gets the length of this path. */
     bindingset[this]
     pragma[inline_late]
     int length() {
-      if this.isEmpty()
-      then result = 0
-      else
-        if exists(TypeParameter::decode(this))
-        then result = 1
-        else result = this.lengthAtLeast2()
+      // Same as
+      // `result = count(this.indexOf("."))`
+      // but performs better because it doesn't use an aggregate
+      result = this.regexpReplaceAll("[0-9]+", "").length()
     }
 
     /** Gets the path obtained by appending `suffix` onto this path. */
     bindingset[this, suffix]
     TypePath append(TypePath suffix) {
-      if this.isEmpty()
-      then result = suffix
-      else
-        if suffix.isEmpty()
-        then result = this
-        else (
-          result = this + "." + suffix and
-          (
-            not exists(getTypePathLimit())
-            or
-            result.lengthAtLeast2() <= getTypePathLimit()
-          )
-        )
+      result = this + suffix and
+      (
+        not exists(getTypePathLimit())
+        or
+        result.length() <= getTypePathLimit()
+      )
     }
 
     /**
@@ -232,16 +213,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
     /** Gets the path obtained by removing `prefix` from this path. */
     bindingset[this, prefix]
-    TypePath stripPrefix(TypePath prefix) {
-      if prefix.isEmpty()
-      then result = this
-      else (
-        this = prefix and
-        result.isEmpty()
-        or
-        this = prefix + "." + result
-      )
-    }
+    TypePath stripPrefix(TypePath prefix) { this = prefix + result }
 
     /** Holds if this path starts with `tp`, followed by `suffix`. */
     bindingset[this]
@@ -256,7 +228,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     TypePath nil() { result.isEmpty() }
 
     /** Gets the singleton type path `tp`. */
-    TypePath singleton(TypeParameter tp) { result = TypeParameter::encode(tp) }
+    TypePath singleton(TypeParameter tp) { result = TypeParameter::encode(tp) + "." }
 
     /**
      * Gets the type path obtained by appending the singleton type path `tp`
@@ -1341,6 +1313,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       query predicate nonInjectiveTypeParameterId(TypeParameter tp1, TypeParameter tp2) {
         getTypeParameterId(tp1) = getTypeParameterId(tp2) and
         tp1 != tp2
+      }
+
+      query predicate illFormedTypeMention(TypeMention tm) {
+        not exists(tm.resolveTypeAt(TypePath::nil())) and exists(tm.getLocation())
       }
     }
   }

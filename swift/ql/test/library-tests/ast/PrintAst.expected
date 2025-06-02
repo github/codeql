@@ -3552,7 +3552,7 @@ cfg.swift:
 #  590|   getGenericTypeParam(0): [GenericTypeParamDecl] N
 #  591|   getMember(0): [PatternBindingDecl] var ... = ...
 #  591|     getInit(0): [TypeValueExpr] TypeValueExpr
-#  591|       getTypeRepr(): (no string representation)
+#  591|       getTypeRepr(): [TypeRepr] N
 #  591|     getPattern(0): [NamedPattern] x
 #  591|   getMember(1): [ConcreteVarDecl] x
 #  591|       Type = Int
@@ -3596,7 +3596,6 @@ cfg.swift:
 #  590|         Type = ValueGenericsStruct<N>
 #  590|     getBody(): [BraceStmt] { ... }
 #  590|       getElement(0): [ReturnStmt] return
-#  591| [UnspecifiedElement] missing type from TypeRepr
 #  594| [NamedFunction] valueGenericsFn(_:)
 #  594|     InterfaceType = <let N : Int> (ValueGenericsStruct<N>) -> ()
 #  594|   getGenericTypeParam(0): [GenericTypeParamDecl] N
@@ -3607,7 +3606,7 @@ cfg.swift:
 #  595|         Type = Int
 #  595|     getElement(0): [PatternBindingDecl] var ... = ...
 #  595|       getInit(0): [TypeValueExpr] TypeValueExpr
-#  595|         getTypeRepr(): (no string representation)
+#  595|         getTypeRepr(): [TypeRepr] N
 #  595|       getPattern(0): [NamedPattern] x
 #  596|     getElement(1): [CallExpr] call to print(_:separator:terminator:)
 #  596|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -3624,7 +3623,6 @@ cfg.swift:
 #  597|     getElement(2): [AssignExpr]  ... = ...
 #  597|       getDest(): [DiscardAssignmentExpr] _
 #  597|       getSource(): [DeclRefExpr] value
-#  595| [UnspecifiedElement] missing type from TypeRepr
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...

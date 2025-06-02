@@ -21,5 +21,7 @@ class ItemNodeLoc extends ItemNodeFinal {
 }
 
 query predicate resolvePath(Path p, ItemNodeLoc i) {
-  toBeTested(p) and not p.isInMacroExpansion() and i = resolvePath(p)
+  toBeTested(p) and
+  not p.isFromMacroExpansion() and
+  i = resolvePath(p)
 }

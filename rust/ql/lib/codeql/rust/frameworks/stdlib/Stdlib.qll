@@ -7,6 +7,7 @@ private import codeql.rust.Concepts
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.internal.PathResolution
 
 /**
  * A call to the `starts_with` method on a `Path`.

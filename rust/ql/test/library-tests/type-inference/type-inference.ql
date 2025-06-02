@@ -11,23 +11,27 @@ class TypeLoc extends TypeFinal {
   ) {
     exists(string file |
       this.getLocation().hasLocationInfo(file, startline, startcolumn, endline, endcolumn) and
-      filepath = file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+      filepath =
+        file.regexpReplaceAll("^/.*/tools/builtins/", "/BUILTINS/")
+            .regexpReplaceAll("^/.*/.rustup/toolchains/[^/]+/", "/RUSTUP_HOME/toolchain/")
     )
   }
 }
 
 query predicate inferType(AstNode n, TypePath path, TypeLoc t) {
   t = TypeInference::inferType(n, path) and
-  n.fromSource()
+  n.fromSource() and
+  not n.isFromMacroExpansion()
 }
 
 module ResolveTest implements TestSig {
   string getARelevantTag() { result = ["method", "fieldof"] }
 
   private predicate functionHasValue(Function f, string value) {
-    f.getAPrecedingComment().getCommentText() = value
+    f.getAPrecedingComment().getCommentText() = value and
+    f.fromSource()
     or
-    not exists(f.getAPrecedingComment()) and
+    not any(f.getAPrecedingComment()).fromSource() and
     // TODO: Default to canonical path once that is available
     value = f.getName().getText()
   }
@@ -35,9 +39,11 @@ module ResolveTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(AstNode source, AstNode target |
       location = source.getLocation() and
-      element = source.toString()
+      element = source.toString() and
+      source.fromSource() and
+      not source.isFromMacroExpansion()
     |
-      target = source.(MethodCallExpr).getStaticTarget() and
+      target = resolveMethodCallTarget(source) and
       functionHasValue(target, value) and
       tag = "method"
       or
