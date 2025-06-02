@@ -48,7 +48,7 @@ module Express {
   private predicate isRouter(DataFlow::Node e) {
     isRouter(e, _)
     or
-    e.asExpr().getType().hasUnderlyingType("express", "Router")
+    e.(DataFlow::SourceNode).hasUnderlyingType("express", "Router")
     or
     // created by `webpack-dev-server`
     WebpackDevServer::webpackDevServerApp().flowsTo(e)
