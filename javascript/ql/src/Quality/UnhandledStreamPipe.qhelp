@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-In Node.js, calling the <code>pipe()</code> method on a stream without proper error handling can lead to silent failures, where errors are dropped and not propagated downstream. This can result in unexpected behavior and make debugging difficult. It is crucial to ensure that error handling is implemented when using stream pipes to maintain the reliability of the application.
+In Node.js, calling the <code>pipe()</code> method on a stream without proper error handling can lead to unexplained failures, where errors are dropped and not propagated downstream. This can result in unwanted behavior and make debugging difficult. To reliably handle all errors, every stream in the pipeline must have an error handler registered.
 </p>
 </overview>
 
