@@ -124,6 +124,7 @@ use_repo(
     "vendor_ts__tree-sitter-ruby-0.23.1",
     "vendor_ts__triomphe-0.1.14",
     "vendor_ts__ungrammar-1.16.1",
+    "vendor_ts__zstd-0.13.3",
 )
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

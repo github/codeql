@@ -1413,7 +1413,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
  */
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
   exists(Crate core, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    f = any(Crate c0 | core = c0.getDependency(_)).getASourceFile() and
+    f = any(Crate c0 | core = c0.getDependency(_) or core = c0).getASourceFile() and
     core.getName() = "core" and
     mod = core.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and
@@ -1438,8 +1438,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/term.rs") and
-      startline = [71]
+      filepath.matches("%/test.rs") and
+      startline = 74
     )
   }
 
