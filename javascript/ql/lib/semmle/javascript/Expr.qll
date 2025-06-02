@@ -1013,8 +1013,6 @@ class InvokeExpr extends @invokeexpr, Expr {
   /**
    * Gets the statically resolved target function, as determined by the TypeScript type system, if any.
    *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   *
    * Note that the resolved function may be overridden in a subclass and thus is not
    * necessarily the actual target of this invocation at runtime.
    */
