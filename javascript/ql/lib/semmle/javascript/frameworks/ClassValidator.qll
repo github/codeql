@@ -3,6 +3,9 @@
  */
 
 import javascript
+private import semmle.javascript.internal.NameResolution
+private import semmle.javascript.internal.TypeResolution
+private import semmle.javascript.internal.UnderlyingTypes
 
 /**
  * Provides predicates for reasoning about sanitization via the `class-validator` library.
@@ -50,7 +53,10 @@ module ClassValidator {
 
   pragma[noinline]
   private ClassDefinition getClassReferencedByPropRead(DataFlow::PropRead read) {
-    read.getBase().asExpr().getType().unfold().(ClassType).getClass() = result
+    exists(NameResolution::Node type |
+      TypeResolution::valueHasType(read.getBase().asExpr(), type) and
+      UnderlyingTypes::nodeHasUnderlyingClassType(type, result.flow())
+    )
   }
 
   /**
