@@ -1,1 +1,1 @@
-semmle-extractor-options: -I ../../../../stubs/crypto
+semmle-extractor-options: -I ../../../stubs
