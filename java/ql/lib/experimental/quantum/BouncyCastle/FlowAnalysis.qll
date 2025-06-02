@@ -1,6 +1,6 @@
 import java
-import experimental.quantum.Language
 import semmle.code.java.dataflow.DataFlow
+import experimental.quantum.Language
 import AlgorithmInstances
 import AlgorithmValueConsumers
 
@@ -12,14 +12,19 @@ signature class NewCallSig instanceof Call {
   /**
    * Gets a parameter argument that is used to initialize the object.
    */
-  Crypto::ConsumerInputDataFlowNode getAParametersConsumer();
+  DataFlow::Node getParametersInput();
+
+  /**
+   * Gets a `ECCurve` argument that is used to initialize the object.
+   */
+  DataFlow::Node getEllipticCurveInput();
 }
 
 signature class InitCallSig instanceof MethodCall {
   /**
    * Gets a parameter argument that is used to initialize the object.
    */
-  Crypto::ConsumerInputDataFlowNode getAParametersConsumer();
+  DataFlow::Node getParametersInput();
 }
 
 signature class UseCallSig instanceof MethodCall {
@@ -176,6 +181,21 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
 }
 
 /**
+ * An `ECCurve` instance constructed by a call to either of the methods
+ * `X9ECParameters.getCurve()` or `ECNamedCurveParameterSpec.getCurve()`.
+ */
+private class CurveInstantiation extends MethodCall {
+  CurveInstantiation() {
+    this.getCallee().getDeclaringType() instanceof Params::Parameters and
+    this.getCallee().getName() = "getCurve"
+  }
+
+  DataFlow::Node getInputNode() { result.asExpr() = this.getQualifier() }
+
+  DataFlow::Node getOutputNode() { result.asExpr() = this }
+}
+
+/**
  * A flow analysis module for analyzing data flow from the instantiation of a
  * parameter object to an `init()` call in BouncyCastle, and similar patterns in
  * other libraries.
@@ -186,14 +206,15 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
  * gen = new ECKeyPairGenerator();
  * gen.init(params);
  * ```
+ *
+ * TODO: Rewrite using stateful data flow to track whether or not the node
+ * represents a parameter object or a curve.
  */
 module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
   module ParametersToInitConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source.asExpr() instanceof New }
 
-    predicate isSink(DataFlow::Node sink) {
-      exists(Init init | sink = init.getAParametersConsumer())
-    }
+    predicate isSink(DataFlow::Node sink) { exists(Init init | sink = init.getParametersInput()) }
 
     /**
      * Pass-through for parameters created from other parameters.
@@ -206,13 +227,37 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
      * ```
      * X9ECParameters ecParams = SECNamedCurves.getByName("secp256r1");
      * ECDomainParameters domainParams = new ECDomainParameters(ecParams);
-     * ECKeyGenerationParameters keyGenParams = new ECKeyGenerationParameters(domainParams, random);
+     * ECKeyGenerationParameters keyGenParams = new ECKeyGenerationParameters(domainParams, ...);
      * ECKeyPairGenerator keyPairGenerator = new ECKeyPairGenerator();
      * keyPairGenerator.init(keyGenParams);
      * ```
+     *
+     * We also want to track flow from parameters to the `init()` call
+     * via a curve instantiation. E.g. via a call to `getCurve()` as follows:
+     *
+     * Example:
+     * ```
+     * X9ECParameters ecParams = SECNamedCurves.getByName("secp256r1");
+     * ECCurve curve = ecParams.getCurve();
+     * ECDomainParameters domainParams = new ECDomainParameters(curve, ...);
+     * ECKeyGenerationParameters keyGenParams = new ECKeyGenerationParameters(domainParams, ...);
+     * ECKeyPairGenerator keyPairGenerator = new ECKeyPairGenerator();
+     * keyPairGenerator.init(keyGenParams);
      */
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      node1 = node2.asExpr().(New).getAParametersConsumer()
+      // Flow from a parameter node to a new parameter node.
+      node1.asExpr().getType() instanceof Params::Parameters and
+      node1 = node2.asExpr().(New).getParametersInput()
+      or
+      // Flow from a curve node to a parameter node.
+      node1.asExpr().getType() instanceof Params::Curve and
+      node1 = node2.asExpr().(New).getEllipticCurveInput()
+      or
+      // Flow from a parameter node instance to a curve node.
+      exists(CurveInstantiation c |
+        node1 = c.getInputNode() and
+        node2 = c.getOutputNode()
+      )
     }
   }
 
@@ -222,7 +267,7 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
     Init init, ParametersToInitFlow::PathNode src, ParametersToInitFlow::PathNode sink
   ) {
     src.getNode().asExpr() = result and
-    sink.getNode() = init.getAParametersConsumer() and
+    sink.getNode() = init.getParametersInput() and
     ParametersToInitFlow::flowPath(src, sink)
   }
 }
@@ -305,6 +350,11 @@ module EllipticCurveStringLiteralToConsumer {
 
     predicate isSink(DataFlow::Node sink) {
       exists(EllipticCurveAlgorithmValueConsumer consumer | sink = consumer.getInputNode())
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      node2.asExpr().(MethodCall).getCallee().getName() = "getCurve" and
+      node2.asExpr().(MethodCall).getQualifier() = node1.asExpr()
     }
   }
 
