@@ -59,7 +59,7 @@ abstract class FileClose extends DataFlow::CfgNode {
     // The exception is after the close call.
     // A full cfg reachability check is not in general feasible for performance, so we approximate it with:
     // - A basic block reachability check (here) that works if the expression and close call are in different basic blocks
-    // - A check (in the `WithStatement` override of `gaurdsExceptions`) for the case where the exception call
+    // - A check (in the `WithStatement` override of `guardsExceptions`) for the case where the exception call
     //   is lexically contained in the body of a `with` statement that closes the file.
     // This may cause FPs in a case such as:
     //   f.close()
