@@ -1,6 +1,6 @@
 declare class Foobar {
   method(foo: number): string;
-  method(foo: number): number; // $ Alert
+  method(foo: number): number; // $ MISSING: Alert
 
   types1<T>(): T[]
   types1(): any[] // $ Alert
@@ -12,7 +12,7 @@ declare class Foobar {
   types3<T extends string>(t: T): number
 
   on(event: string, fn?: (event?: any, ...args: any[]) => void): Function;
-  on(event: string, fn?: (event?: any, ...args: any[]) => void): Function; // $ Alert
+  on(event: string, fn?: (event?: any, ...args: any[]) => void): Function; // $ MISSING: Alert
 
   foo(this: string): string;
   foo(this: number): number;
@@ -24,7 +24,7 @@ declare class Foobar {
 
 declare class Base {
   method(foo: number): string;
-  method(foo: number): number; // $ Alert
+  method(foo: number): number; // $ MISSING: Alert
 
   overRiddenInSub(): string;
   overRiddenInSub(): number;
