@@ -122,20 +122,18 @@ class ErrorHandlerRegistration extends DataFlow::MethodCallNode {
 }
 
 /**
- * Models flow relationships between streams and related operations.
- * Connects destination streams to their corresponding pipe call nodes.
- * Connects streams to their chainable methods.
+ * Holds if the stream in `node1` will propagate to `node2`.
  */
-private predicate streamFlowStep(DataFlow::Node streamNode, DataFlow::Node relatedNode) {
+private predicate streamFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
   exists(PipeCall pipe |
-    streamNode = pipe.getDestinationStream() and
-    relatedNode = pipe
+    node1 = pipe.getDestinationStream() and
+    node2 = pipe
   )
   or
   exists(DataFlow::MethodCallNode chainable |
     chainable.getMethodName() = getChainableStreamMethodName() and
-    streamNode = chainable.getReceiver() and
-    relatedNode = chainable
+    node1 = chainable.getReceiver() and
+    node2 = chainable
   )
 }
 
