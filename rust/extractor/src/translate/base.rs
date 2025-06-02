@@ -689,12 +689,7 @@ impl<'a> Translator<'a> {
             {
                 return true;
             }
-            if syntax
-                .parent()
-                .and_then(ast::MacroCall::cast)
-                .and_then(|x| x.token_tree())
-                .is_some_and(|tt| tt.syntax() == syntax)
-            {
+            if syntax.kind() == SyntaxKind::TOKEN_TREE {
                 return true;
             }
         }
