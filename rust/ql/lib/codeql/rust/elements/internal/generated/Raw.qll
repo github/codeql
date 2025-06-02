@@ -3350,14 +3350,6 @@ module Raw {
      * Gets the visibility of this const, if it exists.
      */
     Visibility getVisibility() { const_visibilities(this, result) }
-
-    /**
-     * Holds if this constant has an implementation.
-     *
-     * This is the same as `hasBody` for source code, but for library code (for which we always skip
-     * the body), this will hold when the body was present in the original code.
-     */
-    predicate hasImplementation() { const_has_implementation(this) }
   }
 
   /**

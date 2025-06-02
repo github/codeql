@@ -5,8 +5,7 @@ import TestUtils
 from
   Const x, string hasExtendedCanonicalPath, string hasCrateOrigin,
   string hasAttributeMacroExpansion, int getNumberOfAttrs, string hasBody, string isConst,
-  string isDefault, string hasName, string hasTypeRepr, string hasVisibility,
-  string hasImplementation
+  string isDefault, string hasName, string hasTypeRepr, string hasVisibility
 where
   toBeTested(x) and
   not x.isUnknown() and
@@ -27,10 +26,8 @@ where
   (if x.isDefault() then isDefault = "yes" else isDefault = "no") and
   (if x.hasName() then hasName = "yes" else hasName = "no") and
   (if x.hasTypeRepr() then hasTypeRepr = "yes" else hasTypeRepr = "no") and
-  (if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no") and
-  if x.hasImplementation() then hasImplementation = "yes" else hasImplementation = "no"
+  if x.hasVisibility() then hasVisibility = "yes" else hasVisibility = "no"
 select x, "hasExtendedCanonicalPath:", hasExtendedCanonicalPath, "hasCrateOrigin:", hasCrateOrigin,
   "hasAttributeMacroExpansion:", hasAttributeMacroExpansion, "getNumberOfAttrs:", getNumberOfAttrs,
   "hasBody:", hasBody, "isConst:", isConst, "isDefault:", isDefault, "hasName:", hasName,
-  "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility, "hasImplementation:",
-  hasImplementation
+  "hasTypeRepr:", hasTypeRepr, "hasVisibility:", hasVisibility

@@ -84,9 +84,6 @@ macro_rules! post_emit {
     (PathSegment, $self:ident, $node:ident, $label:ident) => {
         $self.extract_types_from_path_segment($node, $label.into());
     };
-    (Const, $self:ident, $node:ident, $label:ident) => {
-        $self.emit_const_has_implementation($node, $label);
-    };
     ($($_:tt)*) => {};
 }
 
@@ -773,16 +770,6 @@ impl<'a> Translator<'a> {
     ) {
         if node.body().is_some() {
             generated::Function::emit_has_implementation(label, &mut self.trap.writer);
-        }
-    }
-
-    pub(crate) fn emit_const_has_implementation(
-        &mut self,
-        node: &ast::Const,
-        label: Label<generated::Const>,
-    ) {
-        if node.body().is_some() {
-            generated::Const::emit_has_implementation(label, &mut self.trap.writer);
         }
     }
 }
