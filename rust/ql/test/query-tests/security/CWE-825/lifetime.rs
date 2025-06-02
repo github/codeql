@@ -517,8 +517,8 @@ fn get_closure(p3: *const i64, p4: *const i64) -> impl FnOnce() {
 		unsafe {
 			let v1 = *p1; // $ MISSING: Alert[rust/access-after-lifetime-ended]=local1
 			let v2 = *p2; // GOOD
-			let v3 = *p3; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=local3
-			let v4 = *p4; // $ Alert[rust/access-after-lifetime-ended]=local4
+			let v3 = *p3; // GOOD
+			let v4 = *p4; // $ MISSING: Alert[rust/access-after-lifetime-ended]=local4
 			println!("	v1 = {v1} (!)"); // corrupt in practice
 			println!("	v2 = {v2}");
 			println!("	v3 = {v3}");
@@ -531,7 +531,7 @@ fn with_closure(ptr: *const i64, closure: fn(*const i64, *const i64)) {
 	let my_local5: i64 = 5;
 
 	closure(ptr,
-		&my_local5); // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=local5
+		&my_local5);
 }
 
 pub fn test_closures() {
@@ -539,8 +539,8 @@ pub fn test_closures() {
 	let my_local3: i64 = 3;
 	{
 		let my_local4: i64 = 4;
-		closure = get_closure( &my_local3, // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=local3
-			&my_local4); // $ Source[rust/access-after-lifetime-ended]=local4
+		closure = get_closure( &my_local3,
+			&my_local4); // $ MISSING: Source[rust/access-after-lifetime-ended]=local4
 	} // (`my_local4` goes out of scope, so `p4` is dangling)
 
 	use_the_stack();
@@ -550,7 +550,7 @@ pub fn test_closures() {
 	with_closure(&my_local3, |p1, p2| {
 		unsafe {
 			let v5 = *p1; // GOOD
-			let v6 = *p2; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=local5
+			let v6 = *p2; // $ GOOD
 			println!("	v5 = {v5}");
 			println!("	v6 = {v6}");
 		}

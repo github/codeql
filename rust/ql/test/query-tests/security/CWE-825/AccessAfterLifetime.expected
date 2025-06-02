@@ -17,9 +17,6 @@
 | lifetime.rs:433:7:433:8 | p1 | lifetime.rs:383:31:383:37 | &raw mut my_pair | lifetime.rs:433:7:433:8 | p1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:383:31:383:37 | my_pair | my_pair |
 | lifetime.rs:459:13:459:14 | p1 | lifetime.rs:442:17:442:23 | &my_val | lifetime.rs:459:13:459:14 | p1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:442:18:442:23 | my_val | my_val |
 | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | lifetime.rs:442:17:442:23 | &my_val | lifetime.rs:460:13:460:31 | get_ptr_from_ref(...) | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:442:18:442:23 | my_val | my_val |
-| lifetime.rs:520:14:520:15 | p3 | lifetime.rs:542:26:542:35 | &my_local3 | lifetime.rs:520:14:520:15 | p3 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:542:27:542:35 | my_local3 | my_local3 |
-| lifetime.rs:521:14:521:15 | p4 | lifetime.rs:543:4:543:13 | &my_local4 | lifetime.rs:521:14:521:15 | p4 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:543:5:543:13 | my_local4 | my_local4 |
-| lifetime.rs:553:14:553:15 | p2 | lifetime.rs:534:3:534:12 | &my_local5 | lifetime.rs:553:14:553:15 | p2 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:534:4:534:12 | my_local5 | my_local5 |
 | lifetime.rs:659:15:659:18 | ref1 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:659:15:659:18 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:654:32:654:35 | str1 | str1 |
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:654:32:654:35 | str1 | str1 |
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:655:11:655:25 | &raw const str2 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:655:22:655:25 | str2 | str2 |

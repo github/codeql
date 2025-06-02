@@ -47,7 +47,10 @@ module AccessAfterLifetime {
     exists(BlockExpr valueScope, BlockExpr accessScope |
       valueScope(source.getTargetValue(), valueScope) and
       accessScope = sink.asExpr().getExpr().getEnclosingBlock() and
-      not maybeOnStack(valueScope, accessScope)
+      not maybeOnStack(valueScope, accessScope) and
+      // exclude results where the access is in a closure, since we don't
+      // model where a closure is actually called here.
+      not accessScope.getEnclosingBlock*() = any(ClosureExpr ce).getBody()
     )
   }
 
