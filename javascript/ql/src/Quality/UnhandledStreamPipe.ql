@@ -1,7 +1,7 @@
 /**
  * @id js/nodejs-stream-pipe-without-error-handling
  * @name Node.js stream pipe without error handling
- * @description Calling `pipe()` on a stream without error handling may silently drop errors and prevent proper propagation.
+ * @description Calling `pipe()` on a stream without error handling will drop errors coming from the input stream
  * @kind problem
  * @problem.severity warning
  * @precision high
