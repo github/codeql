@@ -1156,8 +1156,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     DH() or // Diffie-Hellman
     EDH() or // Ephemeral Diffie-Hellman
     ECDH() or // Elliptic Curve Diffie-Hellman
+    // NOTE: for now ESDH is considered simply EDH
+    //ESDH() or // Ephemeral-Static Diffie-Hellman
     // Note: x25519 and x448 are applications of ECDH
-    UnknownKeyAgreementType()
+    OtherKeyAgreementType()
 
   abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
     abstract TKeyAgreementType getKeyAgreementType();
