@@ -70,7 +70,7 @@ class StreamWrapper2 {
 function zip5() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper2();
-    wrapper.outputStream.pipe(zipStream); // $SPURIOUS:Alert
+    wrapper.outputStream.pipe(zipStream);
     zipStream.on('error', e);
 }
 

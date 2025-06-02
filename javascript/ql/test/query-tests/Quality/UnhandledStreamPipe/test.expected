@@ -16,5 +16,4 @@
 | tst.js:44:5:44:40 | wrapper ... Stream) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | tst.js:52:5:52:37 | source. ... Stream) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | tst.js:59:18:59:39 | stream. ... Stream) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
-| tst.js:73:5:73:40 | wrapper ... Stream) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |
 | tst.js:111:5:111:26 | stream. ... Stream) | Stream pipe without error handling on the source stream. Errors won't propagate downstream and may be silently dropped. |

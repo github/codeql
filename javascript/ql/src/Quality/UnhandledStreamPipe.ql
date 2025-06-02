@@ -227,6 +227,13 @@ private predicate hasErrorHandlerRegistered(PipeCall pipeCall) {
         stream = base.getAPropertyRead(propName) and
         base.getAPropertyRead(propName).getAMethodCall(_) instanceof ErrorHandlerRegistration
       )
+      or
+      exists(DataFlow::PropWrite propWrite, DataFlow::SourceNode instance |
+        propWrite.getRhs().getALocalSource() = stream and
+        instance = propWrite.getBase().getALocalSource() and
+        instance.getAPropertyRead(propWrite.getPropertyName()).getAMethodCall(_) instanceof
+          ErrorHandlerRegistration
+      )
     )
   )
   or
