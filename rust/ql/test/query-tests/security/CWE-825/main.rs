@@ -154,8 +154,11 @@ fn main() {
 	println!("test_loop:");
 	test_loop();
 
-	println!("test_enum:");
-	test_enum();
+	println!("test_enums:");
+	test_enums();
+
+	println!("test_recursive_enums:");
+	test_recursive_enums();
 
 	println!("test_ptr_to_struct:");
 	test_ptr_to_struct(mode);
@@ -174,4 +177,7 @@ fn main() {
 
 	println!("test_lifetime_annotations:");
 	test_lifetime_annotations();
+
+	println!("test_implicit_derefs:");
+	test_implicit_derefs();
 }

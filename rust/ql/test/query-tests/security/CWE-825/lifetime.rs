@@ -257,41 +257,103 @@ pub fn test_loop() {
 	}
 }
 
-// --- enum ---
+// --- enums ---
 
 enum MyEnum {
 	Value(i64),
 }
 
-impl Drop for MyEnum {
-	fn drop(&mut self) {
-		println!("	drop MyEnum");
-	}
+enum MyEnum2 {
+	Pointer(*const i64),
 }
 
-pub fn test_enum() {
+pub fn get_pointer_to_enum() -> *const MyEnum {
+	let e1 = MyEnum::Value(1);
+	let result: *const MyEnum = &e1; // $ MISSING: Source[rust/access-after-lifetime-ended]=e1
+
+	result
+} // (e1 goes out of scope, so result is dangling)
+
+pub fn get_pointer_in_enum() -> MyEnum2 {
+	let v2 = 2;
+	let e2 = MyEnum2::Pointer(&v2); // $ MISSING: Source[rust/access-after-lifetime-ended]=v2
+
+	e2
+} // (v2 goes out of scope, so the contained pointer is dangling)
+
+pub fn get_pointer_from_enum() -> *const i64 {
+	let e3 = MyEnum::Value(3);
 	let result: *const i64;
 
-	{
-		let e1 = MyEnum::Value(1);
-
-		result = match e1 {
-			MyEnum::Value(x) => { &x }
-		}; // (x goes out of scope, so result is dangling, I think; seen in real world code)
-
-		use_the_stack();
-
-		unsafe {
-			let v1 = *result; // $ MISSING: Alert
-			println!("	v1 = {v1}");
-		}
-	} // (e1 goes out of scope, so result is definitely dangling now)
+	result = match e3 {
+		MyEnum::Value(x) => { &x } // $ MISSING: Source[rust/access-after-lifetime-ended]=match_x
+	}; // (x goes out of scope, so result is possibly dangling already)
 
 	use_the_stack();
 
 	unsafe {
-		let v2 = *result; // $ MISSING: Alert
-		println!("	v2 = {v2}"); // dropped in practice
+		let v0 = *result; // ?
+		println!("	v0 = {v0} (?)");
+	}
+
+	result
+} // (e3 goes out of scope, so result is definitely dangling now)
+
+pub fn test_enums() {
+	let e1 = get_pointer_to_enum();
+	let e2 = get_pointer_in_enum();
+	let result = get_pointer_from_enum();
+
+	use_the_stack();
+
+	unsafe {
+		if let MyEnum::Value(v1) = *e1 { // $ MISSING: Alert[rust/access-after-lifetime-ended]=e1
+			println!("	v1 = {v1} (!)"); // corrupt in practice
+		}
+		if let MyEnum2::Pointer(p2) = e2 {
+			let v2 = unsafe { *p2 }; // $ MISSING: Alert[rust/access-after-lifetime-ended]=v2
+			println!("	v2 = {v2} (!)"); // corrupt in practice
+		}
+		let v3 = *result; // $ MISSING: Alert[rust/access-after-lifetime-ended]=match_x
+		println!("	v3 = {v3} (!)"); // corrupt in practice
+	}
+}
+
+// --- recursive enum ---
+
+enum RecursiveEnum {
+	Wrapper(Box<RecursiveEnum>),
+	Pointer(*const i64),
+}
+
+pub fn get_recursive_enum() -> Box<RecursiveEnum> {
+	let v1 = 1;
+	let enum1 = RecursiveEnum::Wrapper(Box::new(RecursiveEnum::Pointer(&v1))); // Source[rust/access-after-lifetime-ended]=v1
+	let mut ref1 = &enum1;
+
+	while let RecursiveEnum::Wrapper(inner) = ref1 {
+		println!("	wrapper");
+		ref1 = &inner;
+	}
+	if let RecursiveEnum::Pointer(ptr) = ref1 {
+		let v2: i64 = unsafe { **ptr }; // GOOD
+		println!("	v2 = {v2}");
+	}
+
+	return Box::new(enum1);
+} // (v1 goes out of scope, thus the contained pointer is dangling)
+
+pub fn test_recursive_enums() {
+	let enum1 = *get_recursive_enum();
+	let mut ref1 = &enum1;
+
+	while let RecursiveEnum::Wrapper(inner) = ref1 {
+		println!("	wrapper");
+		ref1 = &inner;
+	}
+	if let RecursiveEnum::Pointer(ptr) = ref1 {
+		let v3: i64 = unsafe { **ptr }; // Alert[rust/access-after-lifetime-ended]=v1
+		println!("	v3 = {v3} (!)"); // corrupt in practice
 	}
 }
 
@@ -578,5 +640,31 @@ pub fn test_lifetime_annotations() {
 	unsafe {
 		let v4 = &*str2; // $ MISSING: Alert
 		println!("	v4 = {v4} (!)"); // corrupt in practice
+	}
+}
+
+// --- implicit dereferences ---
+
+pub fn test_implicit_derefs() {
+	let ref1;
+	{
+		let str2;
+		{
+			let str1 = "bar";
+			str2 = "foo".to_string() + &str1; // $ MISSING: Source[rust/access-after-lifetime-ended]=str1
+			ref1 = &raw const str2; // $ MISSING: Source[rust/access-after-lifetime-ended]=str2
+		} // (str1 goes out of scope, but it's been copied into str2)
+
+		unsafe {
+			let v1 = &*ref1; // GOOD
+			println!("	v1 = {v1}");
+		}
+	} // (str2 goes out of scope, thus ref1 is dangling)
+
+	use_the_stack();
+
+	unsafe {
+		let v2 = &*ref1; // $ MISSING: Alert[rust/access-after-lifetime-ended]=str2
+		println!("	v2 = {v2} (!)"); // corrupt in practice
 	}
 }
