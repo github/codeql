@@ -1,6 +1,6 @@
 # Generate stubs for a single NuGet package
 
-Stubs can be generated from Nuget packages with the `make_stubs_nuget.py` script.
+Stubs can be generated from NuGet packages with the `make_stubs_nuget.py` script.
 
 The following calls generate stubs for `Newtonsoft.Json`:
 
@@ -13,7 +13,7 @@ python3 make_stubs_nuget.py classlib Newtonsoft.Json 13.0.1 /Users/tmp/working-d
 
 The output stubs are found in the `[DIR]/output/stubs` folder and can be copied over to `csharp/ql/test/resources/stubs`.
 
-In some more involved cases the output files need to be edited. For example `ServiceStack` has Nuget dependencies, which
+In some more involved cases the output files need to be edited. For example `ServiceStack` has NuGet dependencies, which
 are included in the `Microsoft.NETCore.App` framework stub. These dependencies generate empty packages, which can be
 removed. The `ProjectReference` entries referencing these removed empty packages also need to be deleted from the
 `.csproj` files.
