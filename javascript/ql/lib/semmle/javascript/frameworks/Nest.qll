@@ -475,7 +475,7 @@ module NestJS {
 
   /** Gets the class being referenced at `node` without relying on the call graph. */
   private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    result.getAstNode() = node.analyze().getAValue().(AbstractClass).getClass()
+    TypeResolution::trackClassValue(result.getAstNode()) = node.asExpr()
   }
 
   private predicate providerClassPair(
@@ -491,7 +491,8 @@ module NestJS {
   private class DependencyInjectionStep extends PreCallGraphStep {
     override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
       exists(DataFlow::ClassNode interfaceClass |
-        node.asExpr().(Parameter).getType().(ClassType).getClass() = interfaceClass.getAstNode() and
+        TypeResolution::valueHasType(node.asExpr(),
+          TypeResolution::trackType(interfaceClass.getAstNode())) and
         providerClassPair(interfaceClass, cls)
       )
     }
