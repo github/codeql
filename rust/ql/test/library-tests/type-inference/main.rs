@@ -1667,12 +1667,18 @@ mod async_ {
         f1().await.f(); // $ method=S1f
         f2().await.f(); // $ method=S1f
         f3().await.f(); // $ method=S1f
+        S2.await.f(); // $ MISSING: method=S1f
+        let b = async {
+            S1
+        };
+        b.await.f(); // $ MISSING: method=S1f
     }
 }
 
 
 mod impl_trait {
     struct S1;
+    struct S2;
 
     trait Trait1 {
         fn f1(&self) {} // Trait1f1
@@ -1694,10 +1700,37 @@ mod impl_trait {
         S1
     }
 
+    trait MyTrait<A> {
+        fn get_a(&self) -> A; // MyTrait::get_a
+    }
+
+    impl MyTrait<S2> for S1 {
+        fn get_a(&self) -> S2 {
+            S2
+        }
+    }
+
+    fn get_a_my_trait() -> impl MyTrait<S2> {
+        S1
+    }
+
+    fn uses_my_trait1<A, B: MyTrait<A>>(t: B) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
+    fn uses_my_trait2<A>(t: impl MyTrait<A>) -> A {
+        t.get_a() // $ method=MyTrait::get_a
+    }
+
     pub fn f() {
         let x = f1();
         x.f1(); // $ method=Trait1f1
         x.f2(); // $ method=Trait2f2
+        let a = get_a_my_trait();
+        let b = uses_my_trait1(a); // $ MISSING: type=b:S2
+        let a = get_a_my_trait();
+        let c = uses_my_trait2(a); // $ type=c:S2
+        let d = uses_my_trait2(S1); // $ MISSING: type=d:S2
     }
 }
 
