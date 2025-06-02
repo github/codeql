@@ -64,6 +64,7 @@ jobs:
         run: |
           git push origin auto/sync-main-pr
         env:
+          GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       - name: Create PR if it doesn't exist
         shell: bash
