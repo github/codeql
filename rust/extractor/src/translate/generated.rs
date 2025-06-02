@@ -1627,7 +1627,11 @@ impl Translator<'_> {
         }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
         let path = node.path().and_then(|x| self.emit_path(&x));
-        let token_tree = node.token_tree().and_then(|x| self.emit_token_tree(&x));
+        let token_tree = if self.should_skip_bodies() {
+            None
+        } else {
+            node.token_tree().and_then(|x| self.emit_token_tree(&x))
+        };
         let label = self.trap.emit(generated::MacroCall {
             id: TrapId::Star,
             attrs,
@@ -1647,9 +1651,17 @@ impl Translator<'_> {
         if self.should_be_excluded(node) {
             return None;
         }
-        let args = node.args().and_then(|x| self.emit_token_tree(&x));
+        let args = if self.should_skip_bodies() {
+            None
+        } else {
+            node.args().and_then(|x| self.emit_token_tree(&x))
+        };
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let body = node.body().and_then(|x| self.emit_token_tree(&x));
+        let body = if self.should_skip_bodies() {
+            None
+        } else {
+            node.body().and_then(|x| self.emit_token_tree(&x))
+        };
         let name = node.name().and_then(|x| self.emit_name(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
         let label = self.trap.emit(generated::MacroDef {

@@ -255,9 +255,10 @@ fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         "WhileExpr" => vec![FieldInfo::optional("condition", "Expr")],
         "MatchGuard" => vec![FieldInfo::optional("condition", "Expr")],
         "MacroDef" => vec![
-            FieldInfo::optional("args", "TokenTree"),
-            FieldInfo::optional("body", "TokenTree"),
+            FieldInfo::body("args", "TokenTree"),
+            FieldInfo::body("body", "TokenTree"),
         ],
+        "MacroCall" => vec![FieldInfo::body("token_tree", "TokenTree")],
         "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
         "ArgList" => vec![FieldInfo::list("args", "Expr")],
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
@@ -295,7 +296,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         match (node.name.as_str(), name.as_str()) {
             ("ArrayExpr", "expr") // The ArrayExpr type also has an 'exprs' field
             | ("PathSegment", "ty" | "path_type")  // these are broken, handling them manually
-            | ("Param", "pat") // handled manually to use `body`
+            | ("Param", "pat") | ("MacroCall", "token_tree") // handled manually to use `body`
             => continue,
             _ => {}
         }
