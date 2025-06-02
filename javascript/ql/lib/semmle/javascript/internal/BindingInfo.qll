@@ -119,6 +119,19 @@ class TypeNameBindingNode extends NameResolution::Node {
   DataFlow::ClassNode getAnUnderlyingClass() {
     UnderlyingTypes::nodeHasUnderlyingClassType(this, result)
   }
+
+  /**
+   * Holds if this type contains `string` or `any`, possibly wrapped in a promise.
+   */
+  predicate hasUnderlyingStringOrAnyType() { TypeResolution::hasUnderlyingStringOrAnyType(this) }
+
+  /**
+   * Holds if this refers to a type that is considered untaintable (if actually enforced at runtime).
+   *
+   * Specifically, the types `number`, `boolean`, `null`, `undefined`, `void`, `never`, as well as literal types (`"foo"`)
+   * and enums and enum members have this property.
+   */
+  predicate isSanitizingPrimitiveType() { TypeResolution::isSanitizingPrimitiveType(this) }
 }
 
 /**
