@@ -823,11 +823,7 @@ impl Translator<'_> {
             return None;
         }
         let attrs = node.attrs().filter_map(|x| self.emit_attr(&x)).collect();
-        let body = if self.should_skip_bodies() {
-            None
-        } else {
-            node.body().and_then(|x| self.emit_expr(&x))
-        };
+        let body = node.body().and_then(|x| self.emit_expr(&x));
         let is_const = node.const_token().is_some();
         let is_default = node.default_token().is_some();
         let name = node.name().and_then(|x| self.emit_name(&x));

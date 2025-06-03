@@ -2816,11 +2816,6 @@ const_visibilities(
   int visibility: @visibility ref
 );
 
-#keyset[id]
-const_has_implementation(
-  int id: @const ref
-);
-
 enums(
   unique int id: @enum
 );

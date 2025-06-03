@@ -951,10 +951,6 @@ class _:
     todo!()
     ```
     """
-    has_implementation: predicate | doc("this constant has an implementation") | desc("""
-      This is the same as `hasBody` for source code, but for library code (for which we always skip
-      the body), this will hold when the body was present in the original code.
-    """) | rust.detach
 
 
 @annotate(ConstArg)

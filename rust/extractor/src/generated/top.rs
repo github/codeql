@@ -9084,12 +9084,6 @@ impl trap::TrapEntry for Const {
     }
 }
 
-impl Const {
-    pub fn emit_has_implementation(id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("const_has_implementation", vec![id.into()]);
-    }
-}
-
 impl trap::TrapClass for Const {
     fn class_name() -> &'static str { "Const" }
 }

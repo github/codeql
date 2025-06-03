@@ -262,7 +262,7 @@ fn get_additional_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
         "FormatArgsExpr" => vec![FieldInfo::list("args", "FormatArgsArg")],
         "ArgList" => vec![FieldInfo::list("args", "Expr")],
         "Fn" => vec![FieldInfo::body("body", "BlockExpr")],
-        "Const" => vec![FieldInfo::body("body", "Expr")],
+        "Const" => vec![FieldInfo::optional("body", "Expr")],
         "Static" => vec![FieldInfo::body("body", "Expr")],
         "Param" => vec![FieldInfo::body("pat", "Pat")],
         "ClosureExpr" => vec![FieldInfo::optional("body", "Expr")],
