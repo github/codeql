@@ -1790,16 +1790,16 @@ mod indexers {
     }
 
     fn analyze_slice(slice: &[S]) {
-        let x = slice[0].foo(); // $ MISSING: method=foo MISSING: type=x:S
+        let x = slice[0].foo(); // $ method=foo type=x:S
     }
 
     pub fn f() {
         let mut vec = MyVec::new(); // $ type=vec:T.S
         vec.push(S); // $ method=push
-        vec[0].foo(); // $ MISSING: method=foo
+        vec[0].foo(); // $ MISSING: method=foo -- type inference does not support the `Index` trait yet
 
         let xs: [S; 1] = [S];
-        let x = xs[0].foo(); // $ MISSING: method=foo MISSING: type=x:S
+        let x = xs[0].foo(); // $ method=foo type=x:S
 
         analyze_slice(&xs);
     }

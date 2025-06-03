@@ -43,6 +43,12 @@ class RefTypeReprMention extends TypeMention instanceof RefTypeRepr {
   override Type resolveType() { result = TRefType() }
 }
 
+class SliceTypeReprMention extends TypeMention instanceof SliceTypeRepr {
+  override TypeMention getTypeArgument(int i) { result = super.getTypeRepr() and i = 0 }
+
+  override Type resolveType() { result = TSliceType() }
+}
+
 class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
   Path path;
   ItemNode resolved;
