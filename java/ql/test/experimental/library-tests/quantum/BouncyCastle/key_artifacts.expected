@@ -1,6 +1,6 @@
-| ECDSAP256SignAndVerify.java:33:47:33:80 | Key | Unknown |
-| ECDSAP256SignAndVerify.java:33:47:33:80 | Key | secp256r1 |
-| Ed448SignAndVerify.java:21:47:21:80 | Key | Curve25519 |
+| ECDSAP256SignAndVerify.java:57:16:57:49 | Key | Unknown |
+| ECDSAP256SignAndVerify.java:80:16:80:49 | Key | Unknown |
+| ECDSAP256SignAndVerify.java:103:16:103:49 | Key | Unknown |
 | Ed448SignAndVerify.java:21:47:21:80 | Key | Ed448 |
-| Ed25519SignAndVerify.java:21:47:21:80 | Key | Curve25519 |
 | Ed25519SignAndVerify.java:21:47:21:80 | Key | Ed25519 |
+| LMSSignature.java:33:47:33:74 | Key | LMS |

@@ -8,6 +8,6 @@ public class ECNamedCurveTable {
     }
 
     public static String[] getNames() {
-        return new String[] { "secp256r1", "secp384r1", "secp521r1" };
+        return new String[] { "secp256r1", "secp256k1", "secp384r1" };
     }
 }
