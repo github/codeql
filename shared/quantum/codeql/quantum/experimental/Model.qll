@@ -442,17 +442,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
-  final private class SignatureArtifactConsumer extends ArtifactConsumerAndInstance {
-    ConsumerInputDataFlowNode inputNode;
-
-    SignatureArtifactConsumer() {
-      exists(SignatureOperationInstance op | inputNode = op.getSignatureConsumer()) and
-      this = Input::dfn_to_element(inputNode)
-    }
-
-    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
-  }
-
   /**
    * An artifact that is produced by an operation, representing a concrete artifact instance rather than a synthetic consumer artifact.
    */
@@ -487,8 +476,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override DataFlowNode getOutputNode() { result = creator.getOutputArtifact() }
-
-    KeyOperationInstance getCreator() { result = creator }
 
     KeyOperationInstance getCreator() { result = creator }
   }
@@ -1579,20 +1566,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     MessageArtifactNode() { this = TMessageInput(instance) }
 
     final override string getInternalType() { result = "Message" }
-
-    override LocatableElement asElement() { result = instance }
-  }
-
-  /**
-   * A signature input. This may represent a signature, or a signature component
-   * such as the scalar values r and s in ECDSA.
-   */
-  final class SignatureArtifactNode extends ArtifactNode, TSignatureInput {
-    SignatureArtifactConsumer instance;
-
-    SignatureArtifactNode() { this = TSignatureInput(instance) }
-
-    final override string getInternalType() { result = "SignatureInput" }
 
     override LocatableElement asElement() { result = instance }
   }
