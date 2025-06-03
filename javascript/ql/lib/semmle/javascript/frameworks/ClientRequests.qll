@@ -317,9 +317,7 @@ module ClientRequest {
       result = this.getOptionArgument(urlPropertyName())
     }
 
-    override DataFlow::Node getHost() {
-      result = instance.getOptionArgument(0, "baseURL")
-    }
+    override DataFlow::Node getHost() { result = instance.getOptionArgument(0, "baseURL") }
 
     override DataFlow::Node getADataNode() {
       method = ["post", "put", "patch"] and
