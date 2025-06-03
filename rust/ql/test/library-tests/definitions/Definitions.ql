@@ -4,4 +4,4 @@ from Definition def, Use use, string kind
 where
   def = definitionOf(use, kind) and
   use.fromSource()
-select def, use, kind
+select use, def, kind
