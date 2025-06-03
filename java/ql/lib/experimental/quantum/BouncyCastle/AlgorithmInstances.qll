@@ -176,12 +176,13 @@ class ECDSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanc
 }
 
 /**
- * LMS signers.
+ * An LMS or HSS stateful hash-based signer.
  */
-class LMSSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
-  LMSSignatureAlgorithmInstance() {
+class StatefulSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
+{
+  StatefulSignatureAlgorithmInstance() {
     super.getConstructedType() instanceof Signers::Signer and
-    super.getConstructedType().getName().matches("LMS%")
+    super.getConstructedType().getName().matches(["LMS%", "HSS%"])
   }
 
   override string getRawAlgorithmName() {
@@ -189,7 +190,11 @@ class LMSSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceo
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    super.getConstructedType().getName().matches("LMS%") and
     result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
+    or
+    super.getConstructedType().getName().matches("HSS%") and
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
   }
 }
 
@@ -307,17 +312,14 @@ class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAl
 }
 
 /**
- * Represents LMS key generation instances. The algorithm is implicitly defined
- * by the type.
- *
- * TODO: Determine how to represent LMS parameters, such as the hash function
- * and the tree height.
+ * Represents LMS or HSS key generation instances. The algorithm is implicitly
+ * defined by the type.
  */
-class LMSKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
+class StatefulSignatureKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
 {
-  LMSKeyGenerationAlgorithmInstance() {
+  StatefulSignatureKeyGenerationAlgorithmInstance() {
     super.getConstructedType() instanceof Generators::KeyGenerator and
-    super.getConstructedType().getName().matches("LMS%")
+    super.getConstructedType().getName().matches(["LMS%", "HSS%"])
   }
 
   override string getRawAlgorithmName() {
@@ -325,7 +327,11 @@ class LMSKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance i
   }
 
   override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    super.getConstructedType().getName().matches("LMS%") and
     result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::LMS())
+    or
+    super.getConstructedType().getName().matches("HSS%") and
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::HSS())
   }
 }
 
@@ -336,11 +342,11 @@ bindingset[typeName]
 private predicate typeNameToRawAlgorithmName(string typeName, string algorithmName) {
   // Ed25519, Ed25519ph, and Ed25519ctx key generators and signers
   typeName.matches("Ed25519%") and
-  algorithmName = "ED25519"
+  algorithmName = "Ed25519"
   or
   // Ed448 and Ed448ph key generators and signers
   typeName.matches("Ed448%") and
-  algorithmName = "ED448"
+  algorithmName = "Ed448"
   or
   // ECDSA
   typeName.matches("ECDSA%") and
@@ -349,16 +355,20 @@ private predicate typeNameToRawAlgorithmName(string typeName, string algorithmNa
   // LMS
   typeName.matches("LMS%") and
   algorithmName = "LMS"
+  or
+  // HSS
+  typeName.matches("HSS%") and
+  algorithmName = "HSS"
 }
 
 private predicate signatureNameToKeySizeAndAlgorithmMapping(
   string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
 ) {
-  name = "ED25519" and
+  name = "Ed25519" and
   keySize = 256 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
   or
-  name = "ED448" and
+  name = "Ed448" and
   keySize = 448 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
 }
@@ -366,11 +376,11 @@ private predicate signatureNameToKeySizeAndAlgorithmMapping(
 private predicate generatorNameToKeySizeAndAlgorithmMapping(
   string name, int keySize, Crypto::KeyOpAlg::Algorithm algorithm
 ) {
-  name = "ED25519" and
+  name = "Ed25519" and
   keySize = 256 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed25519())
   or
-  name = "ED448" and
+  name = "Ed448" and
   keySize = 448 and
   algorithm = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::Ed448())
 }

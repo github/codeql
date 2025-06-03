@@ -162,8 +162,12 @@ module Signers {
     }
   }
 
+  /**
+   * This class represents signers with a one shot API (where the entire message
+   * is passed to either `generateSignature()` or `verifySignature`.).
+   */
   class OneShotSigner extends Signer {
-    OneShotSigner() { this.getName().matches(["ECDSA%", "LMS%"]) }
+    OneShotSigner() { this.getName().matches(["ECDSA%", "LMS%", "HSS%"]) }
 
     override Expr getMessageArg(MethodCall call) {
       // For ECDSA and LMS, the message is passed directly to `generateSignature()`.
