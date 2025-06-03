@@ -620,6 +620,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       Ed25519() or
       Ed448() or
       LMS() or
+      HSS() or
       MLDSA() or
       OtherSignatureAlgorithmType()
 
