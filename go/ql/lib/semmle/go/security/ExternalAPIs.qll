@@ -197,6 +197,8 @@ private module UntrustedDataToUnknownExternalApiConfig implements DataFlow::Conf
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
