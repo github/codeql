@@ -1437,6 +1437,15 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
   class AssetNode = NodeBase;
 
+  /**
+   * This predicate is used to filter out elliptic curve nodes in cases where
+   * the algorithm instance and the curve instance are represented by the same
+   * algorithm value consumer (e.g. in cases where both the algorithm and the
+   * curve are determined by the same instance).
+   *
+   * An alternative way to handle this would be to use separate instances to
+   * represent the elliptic curve and the algorithm.
+   */
   predicate isConsumedEllipticCurveNode(EllipticCurveNode node) {
     exists(AlgorithmNode other |
       other.asElement() instanceof EllipticCurveConsumingAlgorithmInstance and
