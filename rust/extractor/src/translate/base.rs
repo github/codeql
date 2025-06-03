@@ -38,6 +38,7 @@ macro_rules! post_emit {
         $self.extract_macro_call_expanded($node, $label);
     };
     (Function, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_function_has_implementation($node, $label);
         $self.extract_canonical_origin($node, $label.into());
     };
     (Trait, $self:ident, $node:ident, $label:ident) => {
@@ -82,6 +83,9 @@ macro_rules! post_emit {
     };
     (PathSegment, $self:ident, $node:ident, $label:ident) => {
         $self.extract_types_from_path_segment($node, $label.into());
+    };
+    (Const, $self:ident, $node:ident, $label:ident) => {
+        $self.emit_const_has_implementation($node, $label);
     };
     ($($_:tt)*) => {};
 }
@@ -759,6 +763,26 @@ impl<'a> Translator<'a> {
     pub(crate) fn emit_item_expansion(&mut self, node: &ast::Item, label: Label<generated::Item>) {
         if let Some(expanded) = self.emit_attribute_macro_expansion(node) {
             generated::Item::emit_attribute_macro_expansion(label, expanded, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_function_has_implementation(
+        &mut self,
+        node: &ast::Fn,
+        label: Label<generated::Function>,
+    ) {
+        if node.body().is_some() {
+            generated::Function::emit_has_implementation(label, &mut self.trap.writer);
+        }
+    }
+
+    pub(crate) fn emit_const_has_implementation(
+        &mut self,
+        node: &ast::Const,
+        label: Label<generated::Const>,
+    ) {
+        if node.body().is_some() {
+            generated::Const::emit_has_implementation(label, &mut self.trap.writer);
         }
     }
 }

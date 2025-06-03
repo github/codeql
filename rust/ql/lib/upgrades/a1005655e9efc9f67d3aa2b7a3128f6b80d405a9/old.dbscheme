@@ -2816,11 +2816,6 @@ const_visibilities(
   int visibility: @visibility ref
 );
 
-#keyset[id]
-const_has_implementation(
-  int id: @const ref
-);
-
 enums(
   unique int id: @enum
 );
@@ -2988,11 +2983,6 @@ function_visibilities(
 function_where_clauses(
   int id: @function ref,
   int where_clause: @where_clause ref
-);
-
-#keyset[id]
-function_has_implementation(
-  int id: @function ref
 );
 
 impls(

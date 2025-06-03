@@ -9084,6 +9084,12 @@ impl trap::TrapEntry for Const {
     }
 }
 
+impl Const {
+    pub fn emit_has_implementation(id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("const_has_implementation", vec![id.into()]);
+    }
+}
+
 impl trap::TrapClass for Const {
     fn class_name() -> &'static str { "Const" }
 }
@@ -9494,6 +9500,12 @@ impl trap::TrapEntry for Function {
         if let Some(v) = self.where_clause {
             out.add_tuple("function_where_clauses", vec![id.into(), v.into()]);
         }
+    }
+}
+
+impl Function {
+    pub fn emit_has_implementation(id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("function_has_implementation", vec![id.into()]);
     }
 }
 
