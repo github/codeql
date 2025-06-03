@@ -204,6 +204,24 @@ public class AutoBuildTests {
   }
 
   @Test
+  public void skipFilesInTsconfigOutDir() throws IOException {
+    envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
+    // Files under outDir in tsconfig.json should be excluded
+    // Create tsconfig.json with outDir set to "dist"
+    addFile(true, LGTM_SRC, "tsconfig.json");
+    Path config = Paths.get(LGTM_SRC.toString(), "tsconfig.json");
+    Files.write(config,
+        "{\"compilerOptions\":{\"outDir\":\"dist\"}}".getBytes(StandardCharsets.UTF_8));
+    // Add files outside outDir (should be extracted)
+    addFile(true, LGTM_SRC, "src", "app.ts");
+    addFile(true, LGTM_SRC, "main.js");
+    // Add files under dist/outDir (should be skipped)
+    addFile(false, LGTM_SRC, "dist", "generated.js");
+    addFile(false, LGTM_SRC, "dist", "sub", "x.js");
+    runTest();
+  }
+
+  @Test
   public void includeFile() throws IOException {
     envVars.put("LGTM_INDEX_INCLUDE", "tst.js");
     addFile(true, LGTM_SRC, "tst.js");

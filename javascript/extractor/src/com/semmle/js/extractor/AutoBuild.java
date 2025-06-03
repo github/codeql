@@ -39,6 +39,8 @@ import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.semmle.js.dependencies.tsconfig.TsConfigJson;
+import com.semmle.js.dependencies.tsconfig.CompilerOptions;
 import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;
@@ -745,6 +747,26 @@ public class AutoBuild {
         .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+    // exclude files in output directories as configured in tsconfig.json
+    final List<Path> outDirs = new ArrayList<>();
+    for (Path cfg : tsconfigFiles) {
+      try {
+        String txt = new WholeIO().read(cfg);
+        TsConfigJson root = new Gson().fromJson(txt, TsConfigJson.class);
+        if (root != null && root.getCompilerOptions() != null) {
+          if (root.getCompilerOptions().getOutDir() == null) {
+            // no outDir specified, so skip this tsconfig.json
+            continue;
+          }
+          Path odir = cfg.getParent().resolve(root.getCompilerOptions().getOutDir()).toAbsolutePath().normalize();
+          outDirs.add(odir);
+        }
+      } catch (Exception e) {
+        // ignore malformed tsconfig or missing fields
+      }
+    }
+    // exclude files in output directories as configured in tsconfig.json
+    filesToExtract.removeIf(f -> outDirs.stream().anyMatch(od -> f.startsWith(od)));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty()) {
