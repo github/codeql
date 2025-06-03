@@ -1,0 +1,112 @@
+| aliases.go:19:6:19:7 | S3 | struct { x int } |
+| aliases.go:29:6:29:11 | MyType | struct { x MyTypeT } |
+| cyclic.go:3:6:3:6 | s | struct {  * s } |
+| cyclic.go:7:6:7:6 | t | struct {  * u; f int } |
+| cyclic.go:12:6:12:6 | u | struct {  t } |
+| cyclic.go:16:6:16:6 | v | struct {  s } |
+| depth.go:5:6:5:6 | a | struct {  b;  c } |
+| depth.go:10:6:10:6 | b | struct { f int } |
+| depth.go:14:6:14:6 | c | struct {  d } |
+| depth.go:18:6:18:6 | d | struct { f string } |
+| embedded.go:3:6:3:8 | Baz | struct { A string } |
+| embedded.go:7:6:7:8 | Qux | struct {  * Baz } |
+| embedded.go:11:6:11:14 | EmbedsBaz | struct {  Qux; Baz string } |
+| generic.go:3:6:3:19 | GenericStruct1 | struct { valueField T; pointerField * T; arrayField [10]T; sliceField []T; mapField [string]T } |
+| generic.go:11:6:11:27 | CircularGenericStruct1 | struct { pointerField * CircularGenericStruct1 } |
+| generic.go:15:6:15:31 | UsesCircularGenericStruct1 | struct { root CircularGenericStruct1 } |
+| generic.go:19:6:19:19 | GenericStruct2 | struct { structField GenericStruct1; mapField [S]T } |
+| generic.go:24:6:24:20 | GenericStruct2b | struct { structField GenericStruct2 } |
+| generic.go:28:6:28:27 | CircularGenericStruct2 | struct { pointerField * CircularGenericStruct2 } |
+| generic.go:32:6:32:21 | GenericInterface | interface { GetT func() T } |
+| generic.go:36:6:36:17 | GenericArray | [10]T |
+| generic.go:37:6:37:19 | GenericPointer | * T |
+| generic.go:38:6:38:17 | GenericSlice | []T |
+| generic.go:39:6:39:16 | GenericMap1 | [string]V |
+| generic.go:40:6:40:16 | GenericMap2 | [K]V |
+| generic.go:41:6:41:19 | GenericChannel | chan<- T |
+| generic.go:42:6:42:14 | MyMapType | [string]int |
+| generic.go:43:6:43:19 | GenericDefined | MyMapType |
+| generic.go:44:6:44:16 | MyFuncType1 | func(T)  |
+| generic.go:45:6:45:16 | MyFuncType2 | func(T1) T2 |
+| generic.go:47:6:47:16 | MyInterface | interface { clone func() MyInterface; dummy1 func() [10]U; dummy11 func() GenericArray; dummy12 func() GenericPointer; dummy13 func() GenericSlice; dummy14 func() GenericMap1; dummy15 func() GenericMap2; dummy17 func() GenericChannel; dummy18 func() GenericDefined; dummy19 func() MyFuncType1; dummy2 func() * U; dummy20 func() MyFuncType2; dummy3 func() []U; dummy4 func() [U]U; dummy5 func() chan<- U; dummy6 func() MyMapType; dummy7 func() MyFuncType2 } |
+| generic.go:67:6:67:22 | HasBlankTypeParam | struct {  } |
+| generic.go:68:6:68:23 | HasBlankTypeParams | struct {  } |
+| generic.go:84:6:84:21 | GenericSignature | func(T) T |
+| interface.go:3:6:3:7 | i0 | comparable |
+| interface.go:5:6:5:7 | i1 | interface { int } |
+| interface.go:9:6:9:7 | i2 | interface { ~string } |
+| interface.go:13:6:13:7 | i3 | interface { [5]int \| ~string } |
+| interface.go:18:6:18:7 | i4 | interface { i1 \| i2 \| float32 } |
+| interface.go:23:6:23:7 | i5 | interface { []uint8; int \| ~[]uint8 } |
+| interface.go:28:6:28:7 | i6 | interface { ~[]int \| ~string; String func() string } |
+| interface.go:34:6:34:7 | i7 | interface { [5]int \| ~string; ~string; String func() string } |
+| interface.go:41:6:41:7 | i8 | interface { ~[]int \| ~string; String func() string; StringA func() string } |
+| interface.go:47:6:47:7 | i9 | interface { ~[]int \| ~string; String func() string; StringB func() string } |
+| interface.go:52:6:52:8 | i10 | interface { } |
+| interface.go:57:6:57:8 | i11 | interface { [5]uint8 \| string; int } |
+| interface.go:63:6:63:8 | i12 | interface { []uint8 \| string } |
+| interface.go:69:6:69:8 | i13 | interface { []uint8 \| string } |
+| interface.go:75:6:75:8 | i14 | interface { []uint8 \| string; ~[]int \| ~string; String func() string; StringA func() string } |
+| interface.go:81:6:81:8 | i15 | interface { []uint8 \| string; ~[]int \| ~string; String func() string; StringB func() string } |
+| interface.go:87:6:87:8 | i16 | interface { } |
+| interface.go:91:6:91:8 | i17 | interface { StringA func() string } |
+| interface.go:95:6:95:8 | i18 | interface { StringA func() string } |
+| interface.go:101:6:101:8 | i19 | interface { StringB func() string } |
+| interface.go:105:6:105:8 | i20 | interface { StringB func() string } |
+| interface.go:114:6:114:19 | testComparable | struct {  } |
+| interface.go:115:6:115:20 | testComparable0 | struct {  } |
+| interface.go:116:6:116:20 | testComparable1 | struct {  } |
+| interface.go:117:6:117:20 | testComparable2 | struct {  } |
+| interface.go:118:6:118:20 | testComparable3 | struct {  } |
+| interface.go:119:6:119:20 | testComparable4 | struct {  } |
+| interface.go:120:6:120:20 | testComparable5 | struct {  } |
+| interface.go:121:6:121:20 | testComparable6 | struct {  } |
+| interface.go:122:6:122:20 | testComparable7 | struct {  } |
+| interface.go:123:6:123:20 | testComparable8 | struct {  } |
+| interface.go:124:6:124:20 | testComparable9 | struct {  } |
+| interface.go:125:6:125:21 | testComparable10 | struct {  } |
+| interface.go:126:6:126:21 | testComparable11 | struct {  } |
+| interface.go:127:6:127:21 | testComparable12 | struct {  } |
+| interface.go:128:6:128:21 | testComparable13 | struct {  } |
+| interface.go:129:6:129:21 | testComparable14 | struct {  } |
+| interface.go:130:6:130:21 | testComparable15 | struct {  } |
+| interface.go:131:6:131:21 | testComparable16 | struct {  } |
+| interface.go:132:6:132:21 | testComparable17 | struct {  } |
+| interface.go:133:6:133:21 | testComparable18 | struct {  } |
+| interface.go:134:6:134:21 | testComparable19 | struct {  } |
+| interface.go:135:6:135:21 | testComparable20 | struct {  } |
+| interface.go:136:6:136:21 | testComparable21 | struct {  } |
+| interface.go:137:6:137:21 | testComparable22 | struct {  } |
+| interface.go:138:6:138:21 | testComparable23 | struct {  } |
+| main.go:17:6:17:20 | EmbedsNameClash | struct {  NameClash } |
+| pkg1/embedding.go:8:6:8:9 | base | struct {  } |
+| pkg1/embedding.go:19:6:19:13 | embedder | struct {  base } |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | struct {  * base } |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | struct {  embedder } |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | struct {  embedder } |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | struct {  base; f int } |
+| pkg1/interfaces.go:3:6:3:6 | A | interface { m func()  } |
+| pkg1/interfaces.go:7:6:7:6 | B | interface { m func() ; n func()  } |
+| pkg1/interfaces.go:12:6:12:6 | C | interface { n func() ; o func()  } |
+| pkg1/interfaces.go:17:6:17:14 | AEmbedded | interface { m func()  } |
+| pkg1/interfaces.go:21:6:21:7 | AC | interface { m func() ; n func() ; o func()  } |
+| pkg1/interfaces.go:26:6:26:14 | AExtended | interface { m func() ; n func()  } |
+| pkg1/interfaces.go:31:6:31:7 | A2 | interface { m func()  } |
+| pkg1/interfaces.go:35:6:35:24 | MixedExportedAndNot | interface { Exported func() ; notExported func()  } |
+| pkg1/promotedStructs.go:4:6:4:6 | S | struct { SField string } |
+| pkg1/promotedStructs.go:13:6:13:6 | P | struct { PField string } |
+| pkg1/promotedStructs.go:22:6:22:12 | SEmbedS | struct {  S } |
+| pkg1/promotedStructs.go:25:6:25:12 | SEmbedP | struct {  P } |
+| pkg1/tst.go:5:6:5:6 | T | struct { f int;  Foo;  Bar } |
+| pkg1/tst.go:11:6:11:7 | T2 | struct { Foo Foo;  Bar } |
+| pkg1/tst.go:16:6:16:7 | T3 | struct {  * Foo;  * Bar } |
+| pkg1/tst.go:21:6:21:7 | T4 | struct {  * Foo; Bar Bar } |
+| pkg1/tst.go:26:6:26:8 | Foo | struct { val int; flag bool } |
+| pkg1/tst.go:31:6:31:8 | Bar | struct { flag bool } |
+| pkg1/tst.go:61:6:61:14 | NameClash | struct {  NameClash } |
+| pkg2/tst.go:3:6:3:6 | T | struct { g int } |
+| pkg2/tst.go:7:6:7:6 | G | struct { g int } |
+| pkg2/tst.go:11:6:11:24 | MixedExportedAndNot | interface { Exported func() ; notExported func()  } |
+| pkg2/tst.go:16:6:16:14 | NameClash | struct { NCField string } |
+| struct_tags.go:3:6:3:7 | S1 | struct { field1 int `tag1a`; field2 int `tag2a` } |
+| struct_tags.go:8:6:8:7 | S2 | struct { field1 int `tag1b`; field2 int `tag2b` } |
