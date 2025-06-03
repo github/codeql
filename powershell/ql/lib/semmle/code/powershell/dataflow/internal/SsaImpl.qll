@@ -278,12 +278,21 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
      * guard to `branch`.
      */
     predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      hasBranchEdge(bb1, bb2, branch)
+    }
+    /**
+     * Holds if the evaluation of this guard to `branch` corresponds to the edge
+     * from `bb1` to `bb2`.
+     */
+    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
       exists(Cfg::SuccessorTypes::ConditionalSuccessor s |
         this.getBasicBlock() = bb1 and
         bb2 = bb1.getASuccessor(s) and
         s.getValue() = branch
       )
     }
+
+    
   }
 
   /** Holds if the guard `guard` controls block `bb` upon evaluating to `branch`. */
