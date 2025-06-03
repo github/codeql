@@ -42,17 +42,17 @@
 | interface.go:34:6:34:7 | i7 | interface { [5]int \| ~string; ~string; String func() string } |
 | interface.go:41:6:41:7 | i8 | interface { ~[]int \| ~string; String func() string; StringA func() string } |
 | interface.go:47:6:47:7 | i9 | interface { ~[]int \| ~string; String func() string; StringB func() string } |
-| interface.go:52:6:52:8 | i10 | interface { } |
+| interface.go:52:6:52:8 | i10 | interface { comparable } |
 | interface.go:57:6:57:8 | i11 | interface { [5]uint8 \| string; int } |
-| interface.go:63:6:63:8 | i12 | interface { []uint8 \| string } |
-| interface.go:69:6:69:8 | i13 | interface { []uint8 \| string } |
+| interface.go:63:6:63:8 | i12 | interface { comparable; []uint8 \| string } |
+| interface.go:69:6:69:8 | i13 | interface { comparable; []uint8 \| string } |
 | interface.go:75:6:75:8 | i14 | interface { []uint8 \| string; ~[]int \| ~string; String func() string; StringA func() string } |
 | interface.go:81:6:81:8 | i15 | interface { []uint8 \| string; ~[]int \| ~string; String func() string; StringB func() string } |
 | interface.go:87:6:87:8 | i16 | interface { } |
 | interface.go:91:6:91:8 | i17 | interface { StringA func() string } |
-| interface.go:95:6:95:8 | i18 | interface { StringA func() string } |
+| interface.go:95:6:95:8 | i18 | interface { comparable; StringA func() string } |
 | interface.go:101:6:101:8 | i19 | interface { StringB func() string } |
-| interface.go:105:6:105:8 | i20 | interface { StringB func() string } |
+| interface.go:105:6:105:8 | i20 | interface { comparable; StringB func() string } |
 | interface.go:114:6:114:19 | testComparable | struct {  } |
 | interface.go:115:6:115:20 | testComparable0 | struct {  } |
 | interface.go:116:6:116:20 | testComparable1 | struct {  } |
