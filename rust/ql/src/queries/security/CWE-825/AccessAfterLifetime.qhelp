@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>
+Dereferencing a pointer after the lifetime of its target has ended causes undefined behavior. Memory
+may be corrupted causing the program to crash or behave incorrectly, in some cases exposing the program
+to potential attacks.
+</p>
+
+</overview>
+<recommendation>
+
+<p>
+When dereferencing a pointer in <code>unsafe</code> code, take care that the pointer is still valid
+at the time it is dereferenced. Code may need to be rearranged or changed to extend lifetimes. If
+possible, rewrite the code using safe Rust types to avoid this kind of problem altogether.
+</p>
+
+</recommendation>
+<example>
+
+<p>
+In the following example, <code>val</code> is local to <code>get_pointer</code> so its lifetime
+ends when that function returns. However, a pointer to <code>val</code> is returned and dereferenced
+after that lifetime has ended, causing undefined behavior:
+</p>
+
+<sample src="AccessAfterLifetimeBad.rs" />
+
+<p>
+One way to fix this is to change the return type of the function from a pointer to a <code>Box</code>,
+which ensures that the value it points to remains on the heap for the lifetime of the <code>Box</code>
+itself. Notice that there is no longer a need for an <code>unsafe</code> block as the code no longer
+handles pointers directly:
+</p>
+
+<sample src="AccessAfterLifetimeGood.rs" />
+
+</example>
+<references>
+
+<li>Rust Documentation: <a href="https://doc.rust-lang.org/reference/behavior-considered-undefined.html#dangling-pointers">Behavior considered undefined &gt;&gt; Dangling pointers</a>.</li>
+<li>Rust Documentation: <a href="https://doc.rust-lang.org/std/ptr/index.html#safety">Module ptr - Safety</a>.</li>
+<li>Massachusetts Institute of Technology: <a href="https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/second-edition/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer">Unsafe Rust - Dereferencing a Raw Pointer</a>.</li>
+
+</references>
+</qhelp>

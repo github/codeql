@@ -724,3 +724,41 @@ pub fn test_macros() {
 	my_macro!(); // $ SPURIOUS: Source[rust/access-after-lifetime-ended]
 	my_macro!(); // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]
 }
+
+// --- examples from qhelp ---
+
+fn get_pointer() -> *const i64 {
+	let val = 123;
+
+	return &val; // $ Source[rust/access-after-lifetime-ended]=val
+} // lifetime of `val` ends here, the pointer becomes dangling
+
+pub fn test_lifetimes_example_bad() {
+	let ptr = get_pointer();
+	let val;
+
+	use_the_stack();
+
+	unsafe {
+		val = *ptr; // $ Alert[rust/access-after-lifetime-ended]=val
+	}
+
+	println!("	val = {val} (!)"); // corrupt in practice
+}
+
+fn get_box() -> Box<i64> {
+	let val = 123;
+
+	return Box::new(val);
+}
+
+pub fn test_lifetimes_example_good() {
+	let ptr = get_box();
+	let val;
+
+	use_the_stack();
+
+	val = *ptr; // GOOD
+
+	println!("	val = {val}");
+}

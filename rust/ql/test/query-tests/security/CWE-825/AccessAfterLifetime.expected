@@ -23,6 +23,7 @@
 | lifetime.rs:692:13:692:14 | r1 | lifetime.rs:682:4:682:12 | &... | lifetime.rs:692:13:692:14 | r1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:681:8:681:9 | v1 | v1 |
 | lifetime.rs:693:13:693:14 | r2 | lifetime.rs:686:5:686:13 | &... | lifetime.rs:693:13:693:14 | r2 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:685:8:685:9 | v2 | v2 |
 | lifetime.rs:725:2:725:12 | ptr | lifetime.rs:724:2:724:12 | &val | lifetime.rs:725:2:725:12 | ptr | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:724:2:724:12 | val | val |
+| lifetime.rs:743:10:743:12 | ptr | lifetime.rs:733:9:733:12 | &val | lifetime.rs:743:10:743:12 | ptr | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:731:6:731:8 | val | val |
 edges
 | deallocation.rs:148:6:148:7 | p1 | deallocation.rs:151:14:151:15 | p1 | provenance |  |
 | deallocation.rs:148:6:148:7 | p1 | deallocation.rs:158:14:158:15 | p1 | provenance |  |
@@ -187,6 +188,10 @@ edges
 | lifetime.rs:687:5:687:15 | &... | lifetime.rs:686:4:687:16 | TupleExpr [tuple.1] | provenance |  |
 | lifetime.rs:724:2:724:12 | &val | lifetime.rs:724:2:724:12 | ptr | provenance |  |
 | lifetime.rs:724:2:724:12 | ptr | lifetime.rs:725:2:725:12 | ptr | provenance |  |
+| lifetime.rs:733:2:733:12 | return ... | lifetime.rs:737:12:737:24 | get_pointer(...) | provenance |  |
+| lifetime.rs:733:9:733:12 | &val | lifetime.rs:733:2:733:12 | return ... | provenance |  |
+| lifetime.rs:737:6:737:8 | ptr | lifetime.rs:743:10:743:12 | ptr | provenance |  |
+| lifetime.rs:737:12:737:24 | get_pointer(...) | lifetime.rs:737:6:737:8 | ptr | provenance |  |
 models
 | 1 | Summary: lang:core; crate::ptr::from_ref; Argument[0]; ReturnValue; value |
 nodes
@@ -383,4 +388,9 @@ nodes
 | lifetime.rs:724:2:724:12 | &val | semmle.label | &val |
 | lifetime.rs:724:2:724:12 | ptr | semmle.label | ptr |
 | lifetime.rs:725:2:725:12 | ptr | semmle.label | ptr |
+| lifetime.rs:733:2:733:12 | return ... | semmle.label | return ... |
+| lifetime.rs:733:9:733:12 | &val | semmle.label | &val |
+| lifetime.rs:737:6:737:8 | ptr | semmle.label | ptr |
+| lifetime.rs:737:12:737:24 | get_pointer(...) | semmle.label | get_pointer(...) |
+| lifetime.rs:743:10:743:12 | ptr | semmle.label | ptr |
 subpaths

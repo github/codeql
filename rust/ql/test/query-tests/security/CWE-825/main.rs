@@ -186,4 +186,10 @@ fn main() {
 
 	println!("test_macros:");
 	test_macros();
+
+	println!("test_lifetimes_example_bad:");
+	test_lifetimes_example_bad();
+
+	println!("test_lifetimes_example_good:");
+	test_lifetimes_example_good();
 }
