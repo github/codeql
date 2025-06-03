@@ -161,6 +161,12 @@ module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig U
     NewToInitToUseFlow::flowPath(src, sink)
   }
 
+  Init getInitFromNew(New new, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
+    src.getNode().asExpr() = new and
+    sink.getNode().asExpr() = result.(MethodCall).getQualifier() and
+    NewToInitToUseFlow::flowPath(src, sink)
+  }
+
   Init getInitFromUse(Use use, NewToInitToUseFlow::PathNode src, NewToInitToUseFlow::PathNode sink) {
     src.getNode().asExpr() = result.(MethodCall).getQualifier() and
     sink.getNode().asExpr() = use.(MethodCall).getQualifier() and
@@ -211,7 +217,7 @@ private class CurveInstantiation extends MethodCall {
  * represents a parameter object or a curve.
  */
 module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
-  module ParametersToInitConfig implements DataFlow::ConfigSig {
+  private module ParametersToInitConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source.asExpr() instanceof New }
 
     predicate isSink(DataFlow::Node sink) { exists(Init init | sink = init.getParametersInput()) }
@@ -261,7 +267,7 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
     }
   }
 
-  module ParametersToInitFlow = DataFlow::Global<ParametersToInitConfig>;
+  private module ParametersToInitFlow = DataFlow::Global<ParametersToInitConfig>;
 
   New getParametersFromInit(
     Init init, ParametersToInitFlow::PathNode src, ParametersToInitFlow::PathNode sink
