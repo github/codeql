@@ -1021,7 +1021,8 @@ private predicate pathAttrImport(Folder f, Module m, string relativePath) {
 private predicate shouldAppend(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
 
 /** Holds if `m` is a `mod name;` item importing file `f`. */
-private predicate fileImport(Module m, SourceFile f) {
+pragma[nomagic]
+predicate fileImport(Module m, SourceFile f) {
   exists(string name, Folder parent |
     modImport0(m, name, _) and
     fileModule(f, name, parent)
