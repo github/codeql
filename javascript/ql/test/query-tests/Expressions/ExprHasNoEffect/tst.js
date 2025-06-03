@@ -72,7 +72,7 @@ function g() {
 	Object.defineProperty(o, "nonTrivialGetter2", unknownGetterDef());
 	o.nonTrivialGetter2;
 	
-	(o: empty); // $SPURIOUS:Alert
+	(o: empty);
 
 	testSomeCondition() ? o : // $ Alert
 		doSomethingDangerous();
