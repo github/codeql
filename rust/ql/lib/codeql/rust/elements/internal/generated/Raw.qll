@@ -279,7 +279,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A list of  `AssocItem` elements, as appearing in a `Trait` or `Impl`.
+   * A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
    */
   class AssocItemList extends @assoc_item_list, AstNode {
     override string toString() { result = "AssocItemList" }

@@ -922,7 +922,7 @@ class _:
 @qltest.test_with(Trait)
 class _:
     """
-    A list of  `AssocItem` elements, as appearing in a `Trait` or `Impl`.
+    A list of `AssocItem` elements, as appearing in a `Trait` or `Impl`.
     """
 
 
