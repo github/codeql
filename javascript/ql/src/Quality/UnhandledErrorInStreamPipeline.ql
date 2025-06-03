@@ -1,6 +1,6 @@
 /**
- * @id js/nodejs-stream-pipe-without-error-handling
- * @name Node.js stream pipe without error handling
+ * @id js/unhandled-error-in-stream-pipeline
+ * @name Unhandled error in stream pipeline
  * @description Calling `pipe()` on a stream without error handling will drop errors coming from the input stream
  * @kind problem
  * @problem.severity warning

@@ -80,7 +80,6 @@ ql/javascript/ql/src/NodeJS/InvalidExport.ql
 ql/javascript/ql/src/NodeJS/MissingExports.ql
 ql/javascript/ql/src/Performance/PolynomialReDoS.ql
 ql/javascript/ql/src/Performance/ReDoS.ql
-ql/javascript/ql/src/Quality/UnhandledStreamPipe.ql
 ql/javascript/ql/src/React/DirectStateMutation.ql
 ql/javascript/ql/src/React/InconsistentStateUpdate.ql
 ql/javascript/ql/src/React/UnsupportedStateUpdateInLifecycleMethod.ql
