@@ -83,3 +83,13 @@ func TestFieldsSEmbedS1AndSEmbedS1(t test.SEmbedS1AndSEmbedS1) {
 	a := t.SourceField
 	t.SinkField = a // $ S1[t] ql_S1
 }
+
+func TestFieldsRedefinedP1(t test.RedefinedP1) {
+	a := t.SourceField
+	t.SinkField = a // $ P1[f] P1[t] ql_P1
+}
+
+func TestFieldsRedefinedS1(t test.RedefinedS1) {
+	a := t.SourceField
+	t.SinkField = a // $ ql_S1 MISSING: S1[f] S1[t]
+}

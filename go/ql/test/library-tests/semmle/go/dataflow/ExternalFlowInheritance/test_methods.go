@@ -171,3 +171,9 @@ func TestMethodsSEmbedS1AndSEmbedS1(t test.SEmbedS1AndSEmbedS1) {
 	y := t.Step(x)
 	t.Sink(y) // $ I1[t] S1[t] ql_S1
 }
+
+func TestMethodsRedefinedI1(t test.RedefinedI1) {
+	x := t.Source()
+	y := t.Step(x)
+	t.Sink(y) // $ ql_I1 MISSING: I1[f] I1[t] SPURIOUS: ql_P1 ql_S1
+}
