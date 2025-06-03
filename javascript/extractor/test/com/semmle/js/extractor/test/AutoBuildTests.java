@@ -204,6 +204,25 @@ public class AutoBuildTests {
   }
 
   @Test
+  public void skipJsFilesDerivedFromTypeScriptFiles() throws IOException {
+    // JS-derived files (.js, .cjs, .mjs, .jsx, .cjsx, .mjsx) should be skipped when TS indexing
+    envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
+    // Add TypeScript sources
+    addFile(true, LGTM_SRC, "foo.ts");
+    addFile(true, LGTM_SRC, "bar.tsx");
+    // Add derived JS variants (should be skipped)
+    addFile(false, LGTM_SRC, "foo.js");
+    addFile(false, LGTM_SRC, "bar.jsx");
+    addFile(false, LGTM_SRC, "foo.cjs");
+    addFile(false, LGTM_SRC, "foo.mjs");
+    addFile(false, LGTM_SRC, "bar.cjsx");
+    addFile(false, LGTM_SRC, "bar.mjsx");
+    // A normal JS file without TS counterpart should be extracted
+    addFile(true, LGTM_SRC, "normal.js");
+    runTest();
+  }
+
+  @Test
   public void skipFilesInTsconfigOutDir() throws IOException {
     envVars.put("LGTM_INDEX_TYPESCRIPT", "basic");
     // Files under outDir in tsconfig.json should be excluded

@@ -818,9 +818,19 @@ public class AutoBuild {
    */
   private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
     String name = path.getFileName().toString();
-    if (!name.endsWith(".js"))
+    // only skip JS variants when a corresponding TS/TSX file was already extracted
+    if (!(name.endsWith(".js")
+          || name.endsWith(".cjs")
+          || name.endsWith(".mjs")
+          || name.endsWith(".jsx")
+          || name.endsWith(".cjsx")
+          || name.endsWith(".mjsx"))) {
       return false;
-    String stem = name.substring(0, name.length() - ".js".length());
+    }
+    // strip off extension
+    int dot = name.lastIndexOf('.');
+    String stem = dot != -1 ? name.substring(0, dot) : name;
+    // if a TS/TSX file with same base name was extracted, skip this file
     for (String ext : FileType.TYPESCRIPT.getExtensions()) {
       if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
         return true;
