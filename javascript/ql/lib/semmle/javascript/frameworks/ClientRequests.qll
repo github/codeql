@@ -947,7 +947,7 @@ module ClientRequest {
   private class ClientRequestThreatModel extends ThreatModelSource::Range {
     ClientRequestThreatModel() { this = any(ClientRequest r).getAResponseDataNode() }
 
-    override string getThreatModel() { result = "response" }
+    override string getThreatModel() { result = "client-response" }
 
     override string getSourceType() { result = "HTTP response data" }
   }
