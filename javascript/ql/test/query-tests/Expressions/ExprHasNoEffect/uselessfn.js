@@ -1,3 +1,3 @@
-(function f() { // $MISSING: Alert
+(function f() { // $ Alert
   console.log("I'm never called.");
 })

@@ -22,6 +22,9 @@ predicate inVoidContext(Expr e) {
     )
   )
   or
+  // propagate void context through parenthesized expressions
+  inVoidContext(e.getParent().(ParExpr))
+  or
   exists(SeqExpr seq, int i, int n |
     e = seq.getOperand(i) and
     n = seq.getNumOperands()
