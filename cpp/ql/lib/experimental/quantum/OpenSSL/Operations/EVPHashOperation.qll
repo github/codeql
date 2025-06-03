@@ -9,7 +9,7 @@ private import EVPHashInitializer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 class EVP_Digest_Update_Call extends EVPUpdate {
-  EVP_Digest_Update_Call() { this.(Call).getTarget().getName() in ["EVP_DigestUpdate"] }
+  EVP_Digest_Update_Call() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(1) }
 }

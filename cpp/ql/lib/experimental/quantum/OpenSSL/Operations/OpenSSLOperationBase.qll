@@ -3,7 +3,7 @@ private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
- * All OpenSSL operations.
+ * A class for all OpenSSL operations.
  */
 abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Call {
   /**
@@ -28,12 +28,12 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
  */
 abstract class EVPInitialize extends Call {
   /**
-   * The context argument that ties together initialization, updates and/or final calls.
+   * Gets the context argument that ties together initialization, updates and/or final calls.
    */
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
   /**
-   * The type of key operation, none if not applicable.
+   * Gets the type of key operation, none if not applicable.
    */
   Crypto::KeyOperationSubtype getKeyOperationSubtype() { none() }
 
@@ -44,12 +44,12 @@ abstract class EVPInitialize extends Call {
   Expr getAlgorithmArg() { none() }
 
   /**
-   * The key for the operation, none if not applicable.
+   * Gets the key for the operation, none if not applicable.
    */
   Expr getKeyArg() { none() }
 
   /**
-   * The IV/nonce, none if not applicable.
+   * Gets the IV/nonce, none if not applicable.
    */
   Expr getIVArg() { none() }
 }
@@ -61,7 +61,7 @@ abstract class EVPInitialize extends Call {
  */
 abstract class EVPUpdate extends Call {
   /**
-   * The context argument that ties together initialization, updates and/or final calls.
+   * Gets the context argument that ties together initialization, updates and/or final calls.
    */
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
@@ -98,7 +98,7 @@ private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsu
  */
 abstract class EVPOperation extends OpenSSLOperation {
   /**
-   * The context argument that ties together initialization, updates and/or final calls.
+   * Gets the context argument that ties together initialization, updates and/or final calls.
    */
   Expr getContextArg() { result = this.(Call).getArgument(0) }
 
@@ -138,7 +138,7 @@ abstract class EVPOperation extends OpenSSLOperation {
 }
 
 /**
- * Final calls of EVP API.
+ * The final calls of the EVP API.
  */
 abstract class EVPFinal extends EVPOperation {
   /**
@@ -149,13 +149,13 @@ abstract class EVPFinal extends EVPOperation {
   }
 
   /**
-   * The input data was provided to all update calls.
+   * Gets the input data provided to all update calls.
    * If more input data was provided in the final call, override the method.
    */
   override Expr getInputArg() { result = this.getUpdateCalls().getInputArg() }
 
   /**
-   * The output data was provided to all update calls.
+   * Gets the output data provided to all update calls.
    * If more output data was provided in the final call, override the method.
    */
   override Expr getOutputArg() { result = this.getUpdateCalls().getOutputArg() }
