@@ -22,6 +22,8 @@ module FormatStringConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(FormatStringParseCall call).getFormatExpr()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module FormatString = TaintTracking::Global<FormatStringConfig>;
