@@ -729,6 +729,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type = TSignature(Ed448()) and name = "Ed448"
       or
+      type = TSignature(LMS()) and name = "LMS"
+      or
+      type = TSignature(MLDSA()) and name = "MLDSA"
+      or
       type = TSignature(OtherSignatureAlgorithmType()) and name = "UnknownSignature"
       or
       // Key Encapsulation Mechanisms
