@@ -116,9 +116,7 @@ abstract class EVPOperation extends OpenSSLOperation {
   /**
    * Overwrite with an explicitly specified algorithm or leave base implementation to find it in the initialization call.
    */
-  override Expr getAlgorithmArg() {
-    if exists(this.getInitCall()) then result = this.getInitCall().getAlgorithmArg() else none()
-  }
+  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
 
   /**
    * Finds the initialization call, may be none.
