@@ -173,6 +173,7 @@ module Signers {
 
     override Expr getSignatureArg(MethodCall call) {
       // For ECDSA, r and s are passed to `verifySignature()` as separate arguments.
+      // For LMS, the signature is passed as a single argument in position 1.
       call.getCallee().getName() = "verifySignature" and
       result = call.getArgument([1, 2])
     }
@@ -204,20 +205,6 @@ module Signers {
     Expr getParametersArg() { result = this.getArgument(1) }
 
     DataFlow::Node getParametersInput() { result.asExpr() = this.getParametersArg() }
-
-    // TODO: Support dataflow for the operation sub-type.
-    Crypto::KeyOperationSubtype getKeyOperationSubtype() {
-      if this.isOperationSubTypeKnown()
-      then
-        this.getForSigningArg().(BooleanLiteral).getBooleanValue() = true and
-        result = Crypto::TSignMode()
-        or
-        this.getForSigningArg().(BooleanLiteral).getBooleanValue() = false and
-        result = Crypto::TVerifyMode()
-      else result = Crypto::TUnknownKeyOperationMode()
-    }
-
-    predicate isOperationSubTypeKnown() { this.getForSigningArg() instanceof BooleanLiteral }
   }
 
   /**
@@ -390,20 +377,11 @@ module Generators {
     Expr getOutput() { result = this }
   }
 
-  private module KeyGeneratorFlow =
+  module KeyGeneratorFlow =
     NewToInitToUseFlowAnalysis<KeyGeneratorNewCall, KeyGeneratorInitCall, KeyGeneratorUseCall>;
 
-  private module ParametersFlow =
+  module ParametersFlow =
     ParametersToInitFlowAnalysis<Params::ParametersInstantiation, KeyGeneratorInitCall>;
-
-  Params::ParametersInstantiation getParametersFromInit(KeyGeneratorInitCall init) {
-    result = ParametersFlow::getParametersFromInit(init, _, _)
-  }
-
-  // TODO: Remove this.
-  Params::ParametersInstantiation getParametersFromUse(KeyGeneratorInitCall init) {
-    result = ParametersFlow::getParametersFromInit(init, _, _)
-  }
 
   /**
    * A key generation operation instance is a call to `generateKey()` or
@@ -413,7 +391,7 @@ module Generators {
   class KeyGenerationOperationInstance extends Crypto::KeyGenerationOperationInstance instanceof KeyGeneratorUseCall
   {
     override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-      // The algorithm is implicit in the key generator type
+      // The algorithm is implicitly defined by the key generator type
       result = KeyGeneratorFlow::getNewFromUse(this, _, _)
     }
 
