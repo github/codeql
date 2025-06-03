@@ -14,7 +14,7 @@ In Node.js, calling the <code>pipe()</code> method on a stream without proper er
 Instead of using <code>pipe()</code> with manual error handling, prefer using the <code>pipeline</code> function from the Node.js <code>stream</code> module. The <code>pipeline</code> function automatically handles errors and ensures proper cleanup of resources. This approach is more robust and eliminates the risk of forgetting to handle errors.
 </p>
 <p>
-If you must use <code>pipe()</code>, always attach an error handler to the source stream using methods like <code>on('error', handler)</code> to ensure that any errors during the streaming process are properly handled.
+If you must use <code>pipe()</code>, always attach an error handler to the source stream using methods like <code>on('error', handler)</code> to ensure that any errors emitted by the input stream are properly handled. When multiple <code>pipe()</code> calls are chained, an error handler should be attached before each step of the pipeline.
 </p>
 </recommendation>
 
