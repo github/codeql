@@ -91,5 +91,5 @@ func TestFieldsRedefinedP1(t test.RedefinedP1) {
 
 func TestFieldsRedefinedS1(t test.RedefinedS1) {
 	a := t.SourceField
-	t.SinkField = a // $ ql_S1 MISSING: S1[f] S1[t]
+	t.SinkField = a // $ S1[f] S1[t] ql_S1
 }
