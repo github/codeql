@@ -6,6 +6,7 @@
 import javascript
 import IDEContextual
 private import Declarations.Declarations
+private import semmle.javascript.internal.TypeResolution
 
 /**
  * Gets the kind of reference that `r` represents.
@@ -126,7 +127,7 @@ private predicate propertyLookup(Expr prop, AstNode write, string kind) {
 private predicate typeLookup(AstNode ref, AstNode decl, string kind) {
   exists(TypeAccess typeAccess |
     ref = typeAccess.getIdentifier() and
-    decl = typeAccess.getTypeName().getADefinition() and
+    typeAccess = TypeResolution::trackType(decl) and
     kind = "T"
   )
 }
