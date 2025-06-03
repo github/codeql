@@ -15,9 +15,15 @@ private predicate relevant(Function api) {
   // Only include functions that have a resolved path.
   api.hasCrateOrigin() and
   api.hasExtendedCanonicalPath() and
+  // A canonical path can contain `;` as the syntax for array types use `;`. For
+  // instance `<[Foo; 1] as Bar>::baz`. This does not work with the shared model
+  // generator and it is not clear if this will also be the case when we move to
+  // QL created canoonical paths, so for now we just exclude functions with
+  // `;`s.
+  not exists(api.getExtendedCanonicalPath().indexOf(";")) and
   (
     // This excludes closures (these are not exported API endpoints) and
-    // functions without a `pub` visiblity. A function can be `pub` without
+    // functions without a `pub` visibility. A function can be `pub` without
     // ultimately being exported by a crate, so this is an overapproximation.
     api.hasVisibility()
     or
@@ -54,26 +60,26 @@ module ModelGeneratorCommonInput implements
 
   string qualifierString() { result = "Argument[self]" }
 
-  string parameterAccess(R::ParamBase p) {
+  string parameterExactAccess(R::ParamBase p) {
     result =
       "Argument[" + any(DataFlowImpl::ParameterPosition pos | p = pos.getParameterIn(_)).toString() +
         "]"
   }
 
-  string parameterContentAccess(R::ParamBase p) { result = parameterAccess(p) }
+  string parameterApproximateAccess(R::ParamBase p) { result = parameterExactAccess(p) }
 
   class InstanceParameterNode extends DataFlow::ParameterNode {
     InstanceParameterNode() { this.asParameter() instanceof SelfParam }
   }
 
   bindingset[c]
-  string paramReturnNodeAsOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = paramReturnNodeAsContentOutput(c, pos)
+  string paramReturnNodeAsApproximateOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+    result = paramReturnNodeAsExactOutput(c, pos)
   }
 
   bindingset[c]
-  string paramReturnNodeAsContentOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
-    result = parameterContentAccess(c.getParamList().getParam(pos.getPosition()))
+  string paramReturnNodeAsExactOutput(Callable c, DataFlowImpl::ParameterPosition pos) {
+    result = parameterExactAccess(c.getParamList().getParam(pos.getPosition()))
     or
     pos.isSelf() and result = qualifierString()
   }

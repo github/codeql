@@ -6,6 +6,7 @@ dependencies
 importedFile
 | src/lib/tst2.js:1:1:1:13 | require("..") | src/index.js:0:0:0:0 | src/index.js |
 | src/node_modules/nested/tst3.js:1:1:1:29 | require ... odule') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
+| src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/a/index.js:0:0:0:0 | src/node_modules/a/index.js |
 | src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/nested/node_modules/a/index.js:0:0:0:0 | src/node_modules/nested/node_modules/a/index.js |
 | src/node_modules/tst2.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:0:0:0:0 | src/node_modules/third-party-module/fancy.js |
 | src/test-submodule.js:1:1:1:24 | require ... odule") | src/node_modules/parent-module/main.js:0:0:0:0 | src/node_modules/parent-module/main.js |
@@ -16,6 +17,7 @@ importedFile
 importedModule
 | src/lib/tst2.js:1:1:1:13 | require("..") | src/index.js:1:1:4:0 | <toplevel> |
 | src/node_modules/nested/tst3.js:1:1:1:29 | require ... odule') | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
+| src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/nested/tst3.js:2:1:2:12 | require('a') | src/node_modules/nested/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/tst2.js:1:1:1:38 | require ... cy.js') | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
 | src/test-submodule.js:1:1:1:24 | require ... odule") | src/node_modules/parent-module/main.js:1:1:2:0 | <toplevel> |
@@ -29,29 +31,36 @@ modules
 | src | test-package | src/test-submodule.js:1:1:3:0 | <toplevel> |
 | src | test-package | src/tst2.js:1:1:1:13 | <toplevel> |
 | src | test-package | src/tst.js:1:1:2:38 | <toplevel> |
+| src/node_modules/a | a | src/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/b | b | src/node_modules/b/lib/index.js:1:1:2:0 | <toplevel> |
 | src/node_modules/b | b | src/node_modules/b/lib/util.ts:1:1:2:0 | <toplevel> |
 | src/node_modules/c | c | src/node_modules/c/src/index.js:1:1:2:0 | <toplevel> |
 | src/node_modules/d | d | src/node_modules/d/main.js:1:1:2:0 | <toplevel> |
+| src/node_modules/nested | nested | src/node_modules/nested/tst3.js:1:1:2:13 | <toplevel> |
+| src/node_modules/nested/node_modules/a | a | src/node_modules/nested/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/parent-module | parent-module | src/node_modules/parent-module/main.js:1:1:2:0 | <toplevel> |
-| src/node_modules/parent-module | parent-module | src/node_modules/parent-module/sub-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/parent-module/sub-module | parent-module/sub-module | src/node_modules/parent-module/sub-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/third-party-module | third-party-module | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
 npm
 | src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} | third-party-module | 23.4.0 |
 | src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | test-package | 0.1.0 |
 getMainModule
+| src/node_modules/a/package.json:1:1:4:1 | {\\n    " ... x.js"\\n} | a | src/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/b/package.json:1:1:4:1 | {\\n  "na ... "lib"\\n} | b | src/node_modules/b/lib/index.js:1:1:2:0 | <toplevel> |
 | src/node_modules/c/package.json:1:1:4:1 | {\\n  "na ... src/"\\n} | c | src/node_modules/c/src/index.js:1:1:2:0 | <toplevel> |
 | src/node_modules/d/package.json:1:1:4:1 | {\\n  "na ... main"\\n} | d | src/node_modules/d/main.js:1:1:2:0 | <toplevel> |
+| src/node_modules/nested/node_modules/a/package.json:1:1:5:1 | {\\n    " ... ge A"\\n} | a | src/node_modules/nested/node_modules/a/index.js:1:1:1:25 | <toplevel> |
 | src/node_modules/parent-module/package.json:1:1:4:1 | {\\n  "na ... n.js"\\n} | parent-module | src/node_modules/parent-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/parent-module/sub-module/package.json:1:1:3:1 | {\\n  "ma ... n.js"\\n} | parent-module/sub-module | src/node_modules/parent-module/sub-module/main.js:1:1:2:0 | <toplevel> |
 | src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} | third-party-module | src/node_modules/third-party-module/fancy.js:1:1:4:0 | <toplevel> |
 | src/package.json:1:1:20:1 | {\\n  "na ... "\\n  }\\n} | test-package | src/index.js:1:1:4:0 | <toplevel> |
 packageJson
+| src/node_modules/a/package.json:1:1:4:1 | {\\n    " ... x.js"\\n} |
 | src/node_modules/b/package.json:1:1:4:1 | {\\n  "na ... "lib"\\n} |
 | src/node_modules/c/package.json:1:1:4:1 | {\\n  "na ... src/"\\n} |
 | src/node_modules/d/package.json:1:1:4:1 | {\\n  "na ... main"\\n} |
+| src/node_modules/nested/node_modules/a/package.json:1:1:5:1 | {\\n    " ... ge A"\\n} |
+| src/node_modules/nested/package.json:1:1:3:1 | {\\n    " ... sted"\\n} |
 | src/node_modules/parent-module/package.json:1:1:4:1 | {\\n  "na ... n.js"\\n} |
 | src/node_modules/parent-module/sub-module/package.json:1:1:3:1 | {\\n  "ma ... n.js"\\n} |
 | src/node_modules/third-party-module/package.json:1:1:5:1 | {\\n  "na ... y.js"\\n} |

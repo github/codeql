@@ -1463,3 +1463,21 @@ class UnreachableExpr(ImplicitConversionExpr):
     """
     A conversion from the uninhabited type to any other type. It's never evaluated.
     """
+
+
+class UnsafeCastExpr(ImplicitConversionExpr):
+    """
+    A conversion that performs an unsafe bitcast.
+    """
+
+class TypeValueExpr(Expr):
+    type_repr: TypeRepr | child
+
+class IntegerType(Type):
+    value: string
+
+class BuiltinFixedArrayType(BuiltinType):
+    """
+    A builtin type representing N values stored contiguously.
+    """
+    pass

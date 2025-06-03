@@ -4,31 +4,38 @@ import codeql.rust.controlflow.ControlFlowGraph
 import codeql.rust.dataflow.Ssa
 import codeql.rust.dataflow.internal.SsaImpl
 import Impl::TestAdjacentRefs as RefTest
+import TestUtils
 
-query predicate definition(Ssa::Definition def, Variable v) { def.getSourceVariable() = v }
+query predicate definition(Ssa::Definition def, Variable v) {
+  toBeTested(v.getEnclosingCfgScope()) and def.getSourceVariable() = v
+}
 
 query predicate read(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getARead()
+  toBeTested(v.getEnclosingCfgScope()) and def.getSourceVariable() = v and read = def.getARead()
 }
 
 query predicate firstRead(Ssa::Definition def, Variable v, CfgNode read) {
-  def.getSourceVariable() = v and read = def.getAFirstRead()
+  toBeTested(v.getEnclosingCfgScope()) and
+  def.getSourceVariable() = v and
+  read = def.getAFirstRead()
 }
 
 query predicate adjacentReads(Ssa::Definition def, Variable v, CfgNode read1, CfgNode read2) {
+  toBeTested(v.getEnclosingCfgScope()) and
   def.getSourceVariable() = v and
   def.hasAdjacentReads(read1, read2)
 }
 
 query predicate phi(Ssa::PhiDefinition phi, Variable v, Ssa::Definition input) {
-  phi.getSourceVariable() = v and input = phi.getAnInput()
+  toBeTested(v.getEnclosingCfgScope()) and phi.getSourceVariable() = v and input = phi.getAnInput()
 }
 
 query predicate phiReadNode(RefTest::Ref phi, Variable v) {
-  phi.isPhiRead() and phi.getSourceVariable() = v
+  toBeTested(v.getEnclosingCfgScope()) and phi.isPhiRead() and phi.getSourceVariable() = v
 }
 
 query predicate phiReadNodeFirstRead(RefTest::Ref phi, Variable v, CfgNode read) {
+  toBeTested(v.getEnclosingCfgScope()) and
   exists(RefTest::Ref r, BasicBlock bb, int i |
     phi.isPhiRead() and
     RefTest::adjacentRefRead(phi, r) and

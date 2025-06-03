@@ -8,6 +8,7 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
+private import codeql.rust.internal.TypeInferenceConsistency as TypeInferenceConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.dataflow.internal.SsaImpl::Consistency as SsaConsistency
@@ -28,13 +29,13 @@ private import codeql.rust.security.WeakSensitiveDataHashingExtensions
 /**
  * Gets a count of the total number of lines of code in the database.
  */
-int getLinesOfCode() { result = sum(File f | | f.getNumberOfLinesOfCode()) }
+int getLinesOfCode() { result = sum(File f | f.fromSource() | f.getNumberOfLinesOfCode()) }
 
 /**
  * Gets a count of the total number of lines of code from the source code directory in the database.
  */
 int getLinesOfUserCode() {
-  result = sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
+  result = sum(ExtractedFile f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())
 }
 
 /**
@@ -50,6 +51,13 @@ int getTotalAstInconsistencies() {
 int getTotalPathResolutionInconsistencies() {
   result =
     sum(string type | | PathResolutionConsistency::getPathResolutionInconsistencyCounts(type))
+}
+
+/**
+ * Gets a count of the total number of type inference inconsistencies in the database.
+ */
+int getTotalTypeInferenceInconsistencies() {
+  result = sum(string type | | TypeInferenceConsistency::getTypeInferenceInconsistencyCounts(type))
 }
 
 /**
@@ -91,8 +99,7 @@ int getQuerySinksCount() { result = count(QuerySink s) }
 class CrateElement extends Element {
   CrateElement() {
     this instanceof Crate or
-    this instanceof NamedCrate or
-    this.(AstNode).getParentNode*() = any(Crate c).getModule()
+    this instanceof NamedCrate
   }
 }
 
@@ -110,9 +117,11 @@ predicate elementStats(string key, int value) {
  * Gets summary statistics about extraction.
  */
 predicate extractionStats(string key, int value) {
-  key = "Extraction errors" and value = count(ExtractionError e)
+  key = "Extraction errors" and
+  value = count(ExtractionError e | not exists(e.getLocation()) or e.getLocation().fromSource())
   or
-  key = "Extraction warnings" and value = count(ExtractionWarning w)
+  key = "Extraction warnings" and
+  value = count(ExtractionWarning w | not exists(w.getLocation()) or w.getLocation().fromSource())
   or
   key = "Files extracted - total" and value = count(ExtractedFile f | exists(f.getRelativePath()))
   or
@@ -134,11 +143,13 @@ predicate extractionStats(string key, int value) {
   or
   key = "Lines of user code extracted" and value = getLinesOfUserCode()
   or
-  key = "Macro calls - total" and value = count(MacroCall mc)
+  key = "Macro calls - total" and value = count(MacroCall mc | mc.fromSource())
   or
-  key = "Macro calls - resolved" and value = count(MacroCall mc | mc.hasExpanded())
+  key = "Macro calls - resolved" and
+  value = count(MacroCall mc | mc.fromSource() and mc.hasMacroCallExpansion())
   or
-  key = "Macro calls - unresolved" and value = count(MacroCall mc | not mc.hasExpanded())
+  key = "Macro calls - unresolved" and
+  value = count(MacroCall mc | mc.fromSource() and not mc.hasMacroCallExpansion())
 }
 
 /**
@@ -154,6 +165,13 @@ predicate inconsistencyStats(string key, int value) {
   key = "Inconsistencies - SSA" and value = getTotalSsaInconsistencies()
   or
   key = "Inconsistencies - data flow" and value = getTotalDataFlowInconsistencies()
+}
+
+/**
+ * Gets summary statistics about inconsistencies related to type inference.
+ */
+predicate typeInferenceInconsistencyStats(string key, int value) {
+  key = "Inconsistencies - Type inference" and value = getTotalTypeInferenceInconsistencies()
 }
 
 /**

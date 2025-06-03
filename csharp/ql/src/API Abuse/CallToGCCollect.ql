@@ -7,6 +7,7 @@
  * @id cs/call-to-gc
  * @tags efficiency
  *       maintainability
+ *       quality
  */
 
 import csharp

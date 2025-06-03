@@ -38,7 +38,6 @@ ql/csharp/ql/src/Concurrency/SynchSetUnsynchGet.ql
 ql/csharp/ql/src/Concurrency/UnsafeLazyInitialization.ql
 ql/csharp/ql/src/Concurrency/UnsynchronizedStaticAccess.ql
 ql/csharp/ql/src/Configuration/EmptyPasswordInConfigurationFile.ql
-ql/csharp/ql/src/Configuration/PasswordInConfigurationFile.ql
 ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
 ql/csharp/ql/src/Diagnostics/CompilerError.ql
 ql/csharp/ql/src/Diagnostics/CompilerMessage.ql
@@ -146,8 +145,6 @@ ql/csharp/ql/src/Security Features/CWE-639/InsecureDirectObjectReference.ql
 ql/csharp/ql/src/Security Features/CWE-643/XPathInjection.ql
 ql/csharp/ql/src/Security Features/CWE-730/ReDoS.ql
 ql/csharp/ql/src/Security Features/CWE-730/RegexInjection.ql
-ql/csharp/ql/src/Security Features/CWE-798/HardcodedConnectionString.ql
-ql/csharp/ql/src/Security Features/CWE-798/HardcodedCredentials.ql
 ql/csharp/ql/src/Security Features/CWE-807/ConditionalBypass.ql
 ql/csharp/ql/src/Security Features/CookieWithOverlyBroadDomain.ql
 ql/csharp/ql/src/Security Features/CookieWithOverlyBroadPath.ql

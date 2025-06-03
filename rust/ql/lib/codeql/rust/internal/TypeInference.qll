@@ -7,6 +7,7 @@ private import Type as T
 private import TypeMention
 private import codeql.typeinference.internal.TypeInference
 private import codeql.rust.frameworks.stdlib.Stdlib
+private import codeql.rust.frameworks.stdlib.Bultins as Builtins
 
 class Type = T::Type;
 
@@ -18,6 +19,8 @@ private module Input1 implements InputSig1<Location> {
   class Type = T::Type;
 
   class TypeParameter = T::TypeParameter;
+
+  class TypeAbstraction = T::TypeAbstraction;
 
   private newtype TTypeArgumentPosition =
     // method type parameters are matched by position instead of by type
@@ -108,7 +111,52 @@ private module Input2 implements InputSig2 {
 
   class TypeMention = TM::TypeMention;
 
-  TypeMention getABaseTypeMention(Type t) { result = t.getABaseTypeMention() }
+  TypeMention getABaseTypeMention(Type t) { none() }
+
+  TypeMention getATypeParameterConstraint(TypeParameter tp) {
+    result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
+    or
+    result = tp.(SelfTypeParameter).getTrait()
+  }
+
+  /**
+   * Use the constraint mechanism in the shared type inference library to
+   * support traits. In Rust `constraint` is always a trait.
+   *
+   * See the documentation of `conditionSatisfiesConstraint` in the shared type
+   * inference module for more information.
+   */
+  predicate conditionSatisfiesConstraint(
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint
+  ) {
+    // `impl` blocks implementing traits
+    exists(Impl impl |
+      abs = impl and
+      condition = impl.getSelfTy() and
+      constraint = impl.getTrait()
+    )
+    or
+    // supertraits
+    exists(Trait trait |
+      abs = trait and
+      condition = trait and
+      constraint = trait.getTypeBoundList().getABound().getTypeRepr()
+    )
+    or
+    // trait bounds on type parameters
+    exists(TypeParam param |
+      abs = param.getTypeBoundList().getABound() and
+      condition = param and
+      constraint = abs.(TypeBound).getTypeRepr()
+    )
+    or
+    // the implicit `Self` type parameter satisfies the trait
+    exists(SelfTypeParameterMention self |
+      abs = self and
+      condition = self and
+      constraint = self.getTrait()
+    )
+  }
 }
 
 private module M2 = Make2<Input2>;
@@ -143,61 +191,74 @@ private Type inferAnnotatedType(AstNode n, TypePath path) {
   result = getTypeAnnotation(n).resolveTypeAt(path)
 }
 
+private Type inferLogicalOperationType(AstNode n, TypePath path) {
+  exists(Builtins::BuiltinType t, BinaryLogicalOperation be |
+    n = [be, be.getLhs(), be.getRhs()] and
+    path.isEmpty() and
+    result = TStruct(t) and
+    t instanceof Builtins::Bool
+  )
+}
+
+private Type inferAssignmentOperationType(AstNode n, TypePath path) {
+  n instanceof AssignmentOperation and
+  path.isEmpty() and
+  result = TUnit()
+}
+
 /**
- * Holds if the type of `n1` at `path1` is the same as the type of `n2` at
- * `path2` and type information should propagate in both directions through the
- * type equality.
+ * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
+ * of `n2` at `prefix2` and type information should propagate in both directions
+ * through the type equality.
  */
-bindingset[path1]
-bindingset[path2]
-private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
-  exists(Variable v |
-    path1 = path2 and
-    n1 = v.getAnAccess()
-  |
-    n2 = v.getPat()
-    or
-    n2 = v.getParameter().(SelfParam)
-  )
-  or
-  exists(LetStmt let |
-    let.getPat() = n1 and
-    let.getInitializer() = n2 and
-    path1 = path2
-  )
-  or
-  n2 =
-    any(PrefixExpr pe |
-      pe.getOperatorName() = "*" and
-      pe.getExpr() = n1 and
-      path1 = TypePath::cons(TRefTypeParameter(), path2)
+private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  prefix1.isEmpty() and
+  prefix2.isEmpty() and
+  (
+    exists(Variable v | n1 = v.getAnAccess() |
+      n2 = v.getPat()
+      or
+      n2 = v.getParameter().(SelfParam)
     )
-  or
-  n1 = n2.(ParenExpr).getExpr() and
-  path1 = path2
-  or
-  n1 = n2.(BlockExpr).getStmtList().getTailExpr() and
-  path1 = path2
-  or
-  n1 = n2.(IfExpr).getABranch() and
-  path1 = path2
-  or
-  n1 = n2.(MatchExpr).getAnArm().getExpr() and
-  path1 = path2
-  or
-  exists(BreakExpr break |
-    break.getExpr() = n1 and
-    break.getTarget() = n2.(LoopExpr) and
-    path1 = path2
+    or
+    exists(LetStmt let |
+      let.getPat() = n1 and
+      let.getInitializer() = n2
+    )
+    or
+    n1 = n2.(ParenExpr).getExpr()
+    or
+    n1 = n2.(BlockExpr).getStmtList().getTailExpr()
+    or
+    n1 = n2.(IfExpr).getABranch()
+    or
+    n1 = n2.(MatchExpr).getAnArm().getExpr()
+    or
+    exists(BreakExpr break |
+      break.getExpr() = n1 and
+      break.getTarget() = n2.(LoopExpr)
+    )
+    or
+    exists(AssignmentExpr be |
+      n1 = be.getLhs() and
+      n2 = be.getRhs()
+    )
   )
+  or
+  n1 = n2.(DerefExpr).getExpr() and
+  prefix1 = TypePath::singleton(TRefTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
-  exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
-    typeEquality(n, path, n2, path2)
+  exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+    result = inferType(n2, prefix2.appendInverse(suffix)) and
+    path = prefix1.append(suffix)
+  |
+    typeEquality(n, prefix1, n2, prefix2)
     or
-    typeEquality(n2, path2, n, path)
+    typeEquality(n2, prefix2, n, prefix1)
   )
 }
 
@@ -227,8 +288,8 @@ private Type getRefAdjustImplicitSelfType(SelfParam self, TypePath suffix, Type 
 }
 
 pragma[nomagic]
-private Type inferImplSelfType(Impl i, TypePath path) {
-  result = i.getSelfTy().(TypeReprMention).resolveTypeAt(path)
+private Type resolveImplSelfType(Impl i, TypePath path) {
+  result = i.getSelfTy().(TypeMention).resolveTypeAt(path)
 }
 
 /** Gets the type at `path` of the implicitly typed `self` parameter. */
@@ -239,7 +300,7 @@ private Type inferImplicitSelfType(SelfParam self, TypePath path) {
     self = f.getParamList().getSelfParam() and
     result = getRefAdjustImplicitSelfType(self, suffix, t, path)
   |
-    t = inferImplSelfType(i, suffix)
+    t = resolveImplSelfType(i, suffix)
     or
     t = TSelfTypeParameter(i) and suffix.isEmpty()
   )
@@ -291,7 +352,7 @@ private module StructExprMatchingInput implements MatchingInputSig {
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       // type of a field
-      exists(TypeReprMention tp |
+      exists(TypeMention tp |
         tp = this.getField(dpos.asFieldPos()).getTypeRepr() and
         result = tp.resolveTypeAt(path)
       )
@@ -451,7 +512,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int pos |
-        result = this.getTupleField(pos).getTypeRepr().(TypeReprMention).resolveTypeAt(path) and
+        result = this.getTupleField(pos).getTypeRepr().(TypeMention).resolveTypeAt(path) and
         dpos = TPositionalDeclarationPosition(pos, false)
       )
     }
@@ -474,7 +535,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
     override Type getParameterType(DeclarationPosition dpos, TypePath path) {
       exists(int p |
-        result = this.getTupleField(p).getTypeRepr().(TypeReprMention).resolveTypeAt(path) and
+        result = this.getTupleField(p).getTypeRepr().(TypeMention).resolveTypeAt(path) and
         dpos = TPositionalDeclarationPosition(p, false)
       )
     }
@@ -522,7 +583,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
     }
 
     override Type getReturnType(TypePath path) {
-      result = this.getRetType().getTypeRepr().(TypeReprMention).resolveTypeAt(path)
+      result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
     }
   }
 
@@ -559,12 +620,22 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
-  class Access extends CallExprBase {
-    private TypeReprMention getMethodTypeArg(int i) {
+  abstract class Access extends Expr {
+    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+    abstract AstNode getNodeAt(AccessPosition apos);
+
+    abstract Type getInferredType(AccessPosition apos, TypePath path);
+
+    abstract Declaration getTarget();
+  }
+
+  private class CallExprBaseAccess extends Access instanceof CallExprBase {
+    private TypeMention getMethodTypeArg(int i) {
       result = this.(MethodCallExpr).getGenericArgList().getTypeArg(i)
     }
 
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
         arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
         or
@@ -572,7 +643,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
     }
 
-    AstNode getNodeAt(AccessPosition apos) {
+    override AstNode getNodeAt(AccessPosition apos) {
       exists(int p, boolean isMethodCall |
         argPos(this, result, p, isMethodCall) and
         apos = TPositionalAccessPosition(p, isMethodCall)
@@ -585,14 +656,39 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       apos = TReturnAccessPosition()
     }
 
-    Type getInferredType(AccessPosition apos, TypePath path) {
+    override Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
     }
 
-    Declaration getTarget() {
+    override Declaration getTarget() {
       result = CallExprImpl::getResolvedFunction(this)
       or
-      result = resolveMethodCallExpr(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+    }
+  }
+
+  private class OperationAccess extends Access instanceof Operation {
+    OperationAccess() { super.isOverloaded(_, _) }
+
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      // The syntax for operators does not allow type arguments.
+      none()
+    }
+
+    override AstNode getNodeAt(AccessPosition apos) {
+      result = super.getOperand(0) and apos = TSelfAccessPosition()
+      or
+      result = super.getOperand(1) and apos = TPositionalAccessPosition(0, true)
+      or
+      result = this and apos = TReturnAccessPosition()
+    }
+
+    override Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    override Declaration getTarget() {
+      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
 
@@ -745,7 +841,7 @@ private module FieldExprMatchingInput implements MatchingInputSig {
       )
       or
       dpos.isField() and
-      result = this.getTypeRepr().(TypeReprMention).resolveTypeAt(path)
+      result = this.getTypeRepr().(TypeMention).resolveTypeAt(path)
     }
   }
 
@@ -862,7 +958,7 @@ private Type inferRefExprType(Expr e, TypePath path) {
     e = re.getExpr() and
     exists(TypePath exprPath, TypePath refPath, Type exprType |
       result = inferType(re, exprPath) and
-      exprPath = TypePath::cons(TRefTypeParameter(), refPath) and
+      exprPath.isCons(TRefTypeParameter(), refPath) and
       exprType = inferType(e)
     |
       if exprType = TRefType()
@@ -876,13 +972,206 @@ private Type inferRefExprType(Expr e, TypePath path) {
 
 pragma[nomagic]
 private Type inferTryExprType(TryExpr te, TypePath path) {
-  exists(TypeParam tp |
-    result = inferType(te.getExpr(), TypePath::cons(TTypeParamTypeParameter(tp), path))
+  exists(TypeParam tp, TypePath path0 |
+    result = inferType(te.getExpr(), path0) and
+    path0.isCons(TTypeParamTypeParameter(tp), path)
   |
     tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
     or
     tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
   )
+}
+
+pragma[nomagic]
+private StructType inferLiteralType(LiteralExpr le) {
+  exists(Builtins::BuiltinType t | result = TStruct(t) |
+    le instanceof CharLiteralExpr and
+    t instanceof Builtins::Char
+    or
+    le instanceof StringLiteralExpr and
+    t instanceof Builtins::Str
+    or
+    le =
+      any(NumberLiteralExpr ne |
+        t.getName() = ne.getSuffix()
+        or
+        not exists(ne.getSuffix()) and
+        (
+          ne instanceof IntegerLiteralExpr and
+          t instanceof Builtins::I32
+          or
+          ne instanceof FloatLiteralExpr and
+          t instanceof Builtins::F64
+        )
+      )
+    or
+    le instanceof BooleanLiteralExpr and
+    t instanceof Builtins::Bool
+  )
+}
+
+private module MethodCall {
+  /** An expression that calls a method. */
+  abstract private class MethodCallImpl extends Expr {
+    /** Gets the name of the method targeted. */
+    abstract string getMethodName();
+
+    /** Gets the number of arguments _excluding_ the `self` argument. */
+    abstract int getArity();
+
+    /** Gets the trait targeted by this method call, if any. */
+    Trait getTrait() { none() }
+
+    /** Gets the type of the receiver of the method call at `path`. */
+    abstract Type getTypeAt(TypePath path);
+  }
+
+  final class MethodCall = MethodCallImpl;
+
+  private class MethodCallExprMethodCall extends MethodCallImpl instanceof MethodCallExpr {
+    override string getMethodName() { result = super.getIdentifier().getText() }
+
+    override int getArity() { result = super.getArgList().getNumberOfArgs() }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) {
+      exists(TypePath path0 | result = inferType(super.getReceiver(), path0) |
+        path0.isCons(TRefTypeParameter(), path)
+        or
+        not path0.isCons(TRefTypeParameter(), _) and
+        not (path0.isEmpty() and result = TRefType()) and
+        path = path0
+      )
+    }
+  }
+
+  private class CallExprMethodCall extends MethodCallImpl instanceof CallExpr {
+    TraitItemNode trait;
+    string methodName;
+    Expr receiver;
+
+    CallExprMethodCall() {
+      receiver = this.getArgList().getArg(0) and
+      exists(Path path, Function f |
+        path = this.getFunction().(PathExpr).getPath() and
+        f = resolvePath(path) and
+        f.getParamList().hasSelfParam() and
+        trait = resolvePath(path.getQualifier()) and
+        trait.getAnAssocItem() = f and
+        path.getSegment().getIdentifier().getText() = methodName
+      )
+    }
+
+    override string getMethodName() { result = methodName }
+
+    override int getArity() { result = super.getArgList().getNumberOfArgs() - 1 }
+
+    override Trait getTrait() { result = trait }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) { result = inferType(receiver, path) }
+  }
+
+  private class OperationMethodCall extends MethodCallImpl instanceof Operation {
+    TraitItemNode trait;
+    string methodName;
+
+    OperationMethodCall() { super.isOverloaded(trait, methodName) }
+
+    override string getMethodName() { result = methodName }
+
+    override int getArity() { result = this.(Operation).getNumberOfOperands() - 1 }
+
+    override Trait getTrait() { result = trait }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) {
+      result = inferType(this.(BinaryExpr).getLhs(), path)
+      or
+      result = inferType(this.(PrefixExpr).getExpr(), path)
+    }
+  }
+}
+
+import MethodCall
+
+/**
+ * Holds if a method for `type` with the name `name` and the arity `arity`
+ * exists in `impl`.
+ */
+private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
+  type = impl.getSelfTy().(TypeMention).resolveType() and
+  exists(Function f |
+    f = impl.(ImplItemNode).getASuccessor(name) and
+    f.getParamList().hasSelfParam() and
+    arity = f.getParamList().getNumberOfParams()
+  )
+}
+
+/**
+ * Holds if a method for `type` for `trait` with the name `name` and the arity
+ * `arity` exists in `impl`.
+ */
+pragma[nomagic]
+private predicate methodCandidateTrait(Type type, Trait trait, string name, int arity, Impl impl) {
+  trait = resolvePath(impl.(ImplItemNode).getTraitPath()) and
+  methodCandidate(type, name, arity, impl)
+}
+
+private module IsInstantiationOfInput implements IsInstantiationOfInputSig<MethodCall> {
+  pragma[nomagic]
+  predicate potentialInstantiationOf(MethodCall mc, TypeAbstraction impl, TypeMention constraint) {
+    exists(Type rootType, string name, int arity |
+      rootType = mc.getTypeAt(TypePath::nil()) and
+      name = mc.getMethodName() and
+      arity = mc.getArity() and
+      constraint = impl.(ImplTypeAbstraction).getSelfTy()
+    |
+      methodCandidateTrait(rootType, mc.getTrait(), name, arity, impl)
+      or
+      not exists(mc.getTrait()) and
+      methodCandidate(rootType, name, arity, impl)
+    )
+  }
+
+  predicate relevantTypeMention(TypeMention constraint) {
+    exists(Impl impl | methodCandidate(_, _, _, impl) and constraint = impl.getSelfTy())
+  }
+}
+
+bindingset[item, name]
+pragma[inline_late]
+private Function getMethodSuccessor(ItemNode item, string name) {
+  result = item.getASuccessor(name)
+}
+
+bindingset[tp, name]
+pragma[inline_late]
+private Function getTypeParameterMethod(TypeParameter tp, string name) {
+  result = getMethodSuccessor(tp.(TypeParamTypeParameter).getTypeParam(), name)
+  or
+  result = getMethodSuccessor(tp.(SelfTypeParameter).getTrait(), name)
+}
+
+/** Gets a method from an `impl` block that matches the method call `mc`. */
+private Function getMethodFromImpl(MethodCall mc) {
+  exists(Impl impl |
+    IsInstantiationOf<MethodCall, IsInstantiationOfInput>::isInstantiationOf(mc, impl, _) and
+    result = getMethodSuccessor(impl, mc.getMethodName())
+  )
+}
+
+/**
+ * Gets a method that the method call `mc` resolves to based on type inference,
+ * if any.
+ */
+private Function inferMethodCallTarget(MethodCall mc) {
+  // The method comes from an `impl` block targeting the type of the receiver.
+  result = getMethodFromImpl(mc)
+  or
+  // The type of the receiver is a type parameter and the method comes from a
+  // trait bound on the type parameter.
+  result = getTypeParameterMethod(mc.getTypeAt(TypePath::nil()), mc.getMethodName())
 }
 
 cached
@@ -911,36 +1200,61 @@ private module Cached {
     )
   }
 
-  pragma[inline]
-  private Type getLookupType(AstNode n) {
-    exists(Type t |
-      t = inferType(n) and
-      if t = TRefType()
-      then
-        // for reference types, lookup members in the type being referenced
-        result = inferType(n, TypePath::singleton(TRefTypeParameter()))
-      else result = t
+  private predicate isInherentImplFunction(Function f) {
+    f = any(Impl impl | not impl.hasTrait()).(ImplItemNode).getAnAssocItem()
+  }
+
+  private predicate isTraitImplFunction(Function f) {
+    f = any(Impl impl | impl.hasTrait()).(ImplItemNode).getAnAssocItem()
+  }
+
+  private Function resolveMethodCallTargetFrom(MethodCall mc, boolean fromSource) {
+    result = inferMethodCallTarget(mc) and
+    (if result.fromSource() then fromSource = true else fromSource = false) and
+    (
+      // prioritize inherent implementation methods first
+      isInherentImplFunction(result)
+      or
+      not isInherentImplFunction(inferMethodCallTarget(mc)) and
+      (
+        // then trait implementation methods
+        isTraitImplFunction(result)
+        or
+        not isTraitImplFunction(inferMethodCallTarget(mc)) and
+        (
+          // then trait methods with default implementations
+          result.hasBody()
+          or
+          // and finally trait methods without default implementations
+          not inferMethodCallTarget(mc).hasBody()
+        )
+      )
     )
   }
 
-  pragma[nomagic]
-  private Type getMethodCallExprLookupType(MethodCallExpr mce, string name) {
-    result = getLookupType(mce.getReceiver()) and
-    name = mce.getIdentifier().getText()
+  /** Gets a method that the method call `mc` resolves to, if any. */
+  cached
+  Function resolveMethodCallTarget(MethodCall mc) {
+    // Functions in source code also gets extracted as library code, due to
+    // this duplication we prioritize functions from source code.
+    result = resolveMethodCallTargetFrom(mc, true)
+    or
+    not exists(resolveMethodCallTargetFrom(mc, true)) and
+    result = resolveMethodCallTargetFrom(mc, false)
   }
 
-  /**
-   * Gets a method that the method call `mce` resolves to, if any.
-   */
-  cached
-  Function resolveMethodCallExpr(MethodCallExpr mce) {
-    exists(string name | result = getMethodCallExprLookupType(mce, name).getMethod(name))
+  pragma[inline]
+  private Type inferRootTypeDeref(AstNode n) {
+    result = inferType(n) and
+    result != TRefType()
+    or
+    // for reference types, lookup members in the type being referenced
+    result = inferType(n, TypePath::singleton(TRefTypeParameter()))
   }
 
   pragma[nomagic]
   private Type getFieldExprLookupType(FieldExpr fe, string name) {
-    result = getLookupType(fe.getContainer()) and
-    name = fe.getIdentifier().getText()
+    result = inferRootTypeDeref(fe.getContainer()) and name = fe.getIdentifier().getText()
   }
 
   /**
@@ -1011,6 +1325,10 @@ private module Cached {
     Stages::TypeInferenceStage::ref() and
     result = inferAnnotatedType(n, path)
     or
+    result = inferLogicalOperationType(n, path)
+    or
+    result = inferAssignmentOperationType(n, path)
+    or
     result = inferTypeEquality(n, path)
     or
     result = inferImplicitSelfType(n, path)
@@ -1026,6 +1344,9 @@ private module Cached {
     result = inferRefExprType(n, path)
     or
     result = inferTryExprType(n, path)
+    or
+    result = inferLiteralType(n) and
+    path.isEmpty()
   }
 }
 
@@ -1042,7 +1363,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 28
+      startline = 948
     )
   }
 
@@ -1053,6 +1374,6 @@ private module Debug {
 
   Function debugResolveMethodCallExpr(MethodCallExpr mce) {
     mce = getRelevantLocatable() and
-    result = resolveMethodCallExpr(mce)
+    result = resolveMethodCallTarget(mce)
   }
 }

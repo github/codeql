@@ -56,9 +56,9 @@ void test_sources() {
 	sink(v_direct); // $ ir
 
 	sink(remoteMadSourceIndirect());
-	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
+	sink(*remoteMadSourceIndirect()); // $ ir
 	sink(*remoteMadSourceDoubleIndirect());
-	sink(**remoteMadSourceDoubleIndirect()); // $ MISSING: ir
+	sink(**remoteMadSourceDoubleIndirect()); // $ ir
 
 	int a, b, c, d;
 
@@ -124,7 +124,7 @@ void test_sinks() {
 	// test sources + sinks together
 
 	madSinkArg0(localMadSource()); // $ ir
-	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ MISSING: ir
+	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ ir
 	madSinkVar = remoteMadSourceVar; // $ ir
 	*madSinkVarIndirect = remoteMadSourceVar; // $ MISSING: ir
 }

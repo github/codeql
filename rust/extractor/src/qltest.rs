@@ -54,6 +54,7 @@ path = "main.rs"
 fn set_sources(config: &mut Config) -> anyhow::Result<()> {
     let path_iterator = glob("**/*.rs").context("globbing test sources")?;
     config.inputs = path_iterator
+        .filter(|f| f.is_err() || !f.as_ref().unwrap().starts_with("target"))
         .collect::<Result<Vec<_>, _>>()
         .context("fetching test sources")?;
     Ok(())

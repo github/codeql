@@ -8,57 +8,56 @@ import java
  * Predicates for basic-block-level dominance.
  */
 
-/** Entry points for control-flow. */
-private predicate flowEntry(BasicBlock entry) {
-  exists(Stmt entrystmt | entrystmt = entry.getFirstNode().asStmt() |
-    exists(Callable c | entrystmt = c.getBody())
-    or
-    // This disjunct is technically superfluous, but safeguards against extractor problems.
-    entrystmt instanceof BlockStmt and
-    not exists(entry.getEnclosingCallable()) and
-    not entrystmt.getParent() instanceof Stmt
-  )
-}
-
-/** The successor relation for basic blocks. */
-private predicate bbSucc(BasicBlock pre, BasicBlock post) { post = pre.getABBSuccessor() }
-
-/** The immediate dominance relation for basic blocks. */
-cached
-predicate bbIDominates(BasicBlock dom, BasicBlock node) =
-  idominance(flowEntry/1, bbSucc/2)(_, dom, node)
-
-/** Holds if the dominance relation is calculated for `bb`. */
-predicate hasDominanceInformation(BasicBlock bb) {
-  exists(BasicBlock entry | flowEntry(entry) and bbSucc*(entry, bb))
+/**
+ * DEPRECATED: Use `BasicBlock::immediatelyDominates` instead.
+ *
+ * The immediate dominance relation for basic blocks.
+ */
+deprecated predicate bbIDominates(BasicBlock dom, BasicBlock node) {
+  dom.immediatelyDominates(node)
 }
 
 /** Exit points for basic-block control-flow. */
 private predicate bbSink(BasicBlock exit) { exit.getLastNode() instanceof ControlFlow::ExitNode }
 
 /** Reversed `bbSucc`. */
-private predicate bbPred(BasicBlock post, BasicBlock pre) { post = pre.getABBSuccessor() }
+private predicate bbPred(BasicBlock post, BasicBlock pre) { post = pre.getASuccessor() }
 
 /** The immediate post-dominance relation on basic blocks. */
-cached
-predicate bbIPostDominates(BasicBlock dominator, BasicBlock node) =
+deprecated predicate bbIPostDominates(BasicBlock dominator, BasicBlock node) =
   idominance(bbSink/1, bbPred/2)(_, dominator, node)
 
-/** Holds if `dom` strictly dominates `node`. */
-predicate bbStrictlyDominates(BasicBlock dom, BasicBlock node) { bbIDominates+(dom, node) }
-
-/** Holds if `dom` dominates `node`. (This is reflexive.) */
-predicate bbDominates(BasicBlock dom, BasicBlock node) {
-  bbStrictlyDominates(dom, node) or dom = node
+/**
+ * DEPRECATED: Use `BasicBlock::strictlyDominates` instead.
+ *
+ * Holds if `dom` strictly dominates `node`.
+ */
+deprecated predicate bbStrictlyDominates(BasicBlock dom, BasicBlock node) {
+  dom.strictlyDominates(node)
 }
 
-/** Holds if `dom` strictly post-dominates `node`. */
-predicate bbStrictlyPostDominates(BasicBlock dom, BasicBlock node) { bbIPostDominates+(dom, node) }
+/**
+ * DEPRECATED: Use `BasicBlock::dominates` instead.
+ *
+ * Holds if `dom` dominates `node`. (This is reflexive.)
+ */
+deprecated predicate bbDominates(BasicBlock dom, BasicBlock node) { dom.dominates(node) }
 
-/** Holds if `dom` post-dominates `node`. (This is reflexive.) */
-predicate bbPostDominates(BasicBlock dom, BasicBlock node) {
-  bbStrictlyPostDominates(dom, node) or dom = node
+/**
+ * DEPRECATED: Use `BasicBlock::strictlyPostDominates` instead.
+ *
+ * Holds if `dom` strictly post-dominates `node`.
+ */
+deprecated predicate bbStrictlyPostDominates(BasicBlock dom, BasicBlock node) {
+  dom.strictlyPostDominates(node)
 }
+
+/**
+ * DEPRECATED: Use `BasicBlock::postDominates` instead.
+ *
+ * Holds if `dom` post-dominates `node`. (This is reflexive.)
+ */
+deprecated predicate bbPostDominates(BasicBlock dom, BasicBlock node) { dom.postDominates(node) }
 
 /**
  * The dominance frontier relation for basic blocks.
@@ -66,31 +65,16 @@ predicate bbPostDominates(BasicBlock dom, BasicBlock node) {
  * This is equivalent to:
  *
  * ```
- *   bbDominates(x, w.getABBPredecessor()) and not bbStrictlyDominates(x, w)
+ *   x.dominates(w.getAPredecessor()) and not x.strictlyDominates(w)
  * ```
  */
 predicate dominanceFrontier(BasicBlock x, BasicBlock w) {
-  x = w.getABBPredecessor() and not bbIDominates(x, w)
+  x = w.getAPredecessor() and not x.immediatelyDominates(w)
   or
   exists(BasicBlock prev | dominanceFrontier(prev, w) |
-    bbIDominates(x, prev) and
-    not bbIDominates(x, w)
+    x.immediatelyDominates(prev) and
+    not x.immediatelyDominates(w)
   )
-}
-
-/**
- * Holds if `(bb1, bb2)` is an edge that dominates `bb2`, that is, all other
- * predecessors of `bb2` are dominated by `bb2`. This implies that `bb1` is the
- * immediate dominator of `bb2`.
- *
- * This is a necessary and sufficient condition for an edge to dominate anything,
- * and in particular `dominatingEdge(bb1, bb2) and bb2.bbDominates(bb3)` means
- * that the edge `(bb1, bb2)` dominates `bb3`.
- */
-predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
-  bbIDominates(bb1, bb2) and
-  bb1.getABBSuccessor() = bb2 and
-  forall(BasicBlock pred | pred = bb2.getABBPredecessor() and pred != bb1 | bbDominates(bb2, pred))
 }
 
 /*
@@ -102,7 +86,7 @@ predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) {
   exists(BasicBlock bb, int i | dominator = bb.getNode(i) and node = bb.getNode(i + 1))
   or
   exists(BasicBlock dom, BasicBlock bb |
-    bbIDominates(dom, bb) and
+    dom.immediatelyDominates(bb) and
     dominator = dom.getLastNode() and
     node = bb.getFirstNode()
   )
@@ -112,7 +96,7 @@ predicate iDominates(ControlFlowNode dominator, ControlFlowNode node) {
 pragma[inline]
 predicate strictlyDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
-  bbStrictlyDominates(dom.getBasicBlock(), node.getBasicBlock())
+  dom.getBasicBlock().strictlyDominates(node.getBasicBlock())
   or
   exists(BasicBlock b, int i, int j | dom = b.getNode(i) and node = b.getNode(j) and i < j)
 }
@@ -121,7 +105,7 @@ predicate strictlyDominates(ControlFlowNode dom, ControlFlowNode node) {
 pragma[inline]
 predicate dominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
-  bbStrictlyDominates(dom.getBasicBlock(), node.getBasicBlock())
+  dom.getBasicBlock().strictlyDominates(node.getBasicBlock())
   or
   exists(BasicBlock b, int i, int j | dom = b.getNode(i) and node = b.getNode(j) and i <= j)
 }
@@ -130,7 +114,7 @@ predicate dominates(ControlFlowNode dom, ControlFlowNode node) {
 pragma[inline]
 predicate strictlyPostDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
-  bbStrictlyPostDominates(dom.getBasicBlock(), node.getBasicBlock())
+  dom.getBasicBlock().strictlyPostDominates(node.getBasicBlock())
   or
   exists(BasicBlock b, int i, int j | dom = b.getNode(i) and node = b.getNode(j) and i > j)
 }
@@ -139,7 +123,7 @@ predicate strictlyPostDominates(ControlFlowNode dom, ControlFlowNode node) {
 pragma[inline]
 predicate postDominates(ControlFlowNode dom, ControlFlowNode node) {
   // This predicate is gigantic, so it must be inlined.
-  bbStrictlyPostDominates(dom.getBasicBlock(), node.getBasicBlock())
+  dom.getBasicBlock().strictlyPostDominates(node.getBasicBlock())
   or
   exists(BasicBlock b, int i, int j | dom = b.getNode(i) and node = b.getNode(j) and i >= j)
 }
