@@ -2497,9 +2497,17 @@ inferType
 | main.rs:1769:14:1769:17 | self | &T.T | main.rs:1764:10:1764:10 | T |
 | main.rs:1769:14:1769:22 | self.data |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:148:1:400:1 | Vec |
 | main.rs:1769:14:1769:22 | self.data | T | main.rs:1764:10:1764:10 | T |
+| main.rs:1769:14:1769:29 | ...[index] |  | main.rs:1764:10:1764:10 | T |
 | main.rs:1769:24:1769:28 | index |  | file:///BUILTINS/types.rs:20:1:21:17 | usize |
 | main.rs:1773:22:1773:26 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1773:22:1773:26 | slice | &T | file://:0:0:0:0 | [] |
+| main.rs:1773:22:1773:26 | slice | &T.[T] | main.rs:1740:5:1741:13 | S |
+| main.rs:1774:13:1774:13 | x |  | main.rs:1740:5:1741:13 | S |
 | main.rs:1774:17:1774:21 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1774:17:1774:21 | slice | &T | file://:0:0:0:0 | [] |
+| main.rs:1774:17:1774:21 | slice | &T.[T] | main.rs:1740:5:1741:13 | S |
+| main.rs:1774:17:1774:24 | slice[0] |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1774:17:1774:30 | ... .foo() |  | main.rs:1740:5:1741:13 | S |
 | main.rs:1774:23:1774:23 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1778:13:1778:19 | mut vec |  | main.rs:1749:5:1752:5 | MyVec |
 | main.rs:1778:13:1778:19 | mut vec | T | main.rs:1740:5:1741:13 | S |
@@ -2512,14 +2520,32 @@ inferType
 | main.rs:1780:9:1780:11 | vec | T | main.rs:1740:5:1741:13 | S |
 | main.rs:1780:13:1780:13 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1782:13:1782:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1782:13:1782:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1782:13:1782:14 | xs | [T;...] | main.rs:1740:5:1741:13 | S |
+| main.rs:1782:13:1782:14 | xs | [T] | main.rs:1740:5:1741:13 | S |
 | main.rs:1782:21:1782:21 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1782:26:1782:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1782:26:1782:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1782:26:1782:28 | [...] | [T;...] | main.rs:1740:5:1741:13 | S |
+| main.rs:1782:26:1782:28 | [...] | [T] | main.rs:1740:5:1741:13 | S |
 | main.rs:1782:27:1782:27 | S |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1783:13:1783:13 | x |  | main.rs:1740:5:1741:13 | S |
 | main.rs:1783:17:1783:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1783:17:1783:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1783:17:1783:18 | xs | [T;...] | main.rs:1740:5:1741:13 | S |
+| main.rs:1783:17:1783:18 | xs | [T] | main.rs:1740:5:1741:13 | S |
+| main.rs:1783:17:1783:21 | xs[0] |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1783:17:1783:27 | ... .foo() |  | main.rs:1740:5:1741:13 | S |
 | main.rs:1783:20:1783:20 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:1785:23:1785:25 | &xs |  | file://:0:0:0:0 | & |
 | main.rs:1785:23:1785:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1785:23:1785:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1785:23:1785:25 | &xs | &T.[T;...] | main.rs:1740:5:1741:13 | S |
+| main.rs:1785:23:1785:25 | &xs | &T.[T] | main.rs:1740:5:1741:13 | S |
 | main.rs:1785:24:1785:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1785:24:1785:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1785:24:1785:25 | xs | [T;...] | main.rs:1740:5:1741:13 | S |
+| main.rs:1785:24:1785:25 | xs | [T] | main.rs:1740:5:1741:13 | S |
 | main.rs:1791:5:1791:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1792:5:1792:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
 | main.rs:1792:20:1792:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
