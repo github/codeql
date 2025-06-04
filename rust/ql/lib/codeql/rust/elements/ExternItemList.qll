@@ -9,9 +9,14 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.ExternItem
 
 /**
- * A ExternItemList. For example:
+ * A list of items inside an extern block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * extern "C" {
+ *     fn foo();
+ *     static BAR: i32;
+ * }
  * ```
  */
 final class ExternItemList = Impl::ExternItemList;

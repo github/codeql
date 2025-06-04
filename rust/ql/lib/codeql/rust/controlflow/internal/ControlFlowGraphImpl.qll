@@ -143,6 +143,8 @@ class LetStmtTree extends PreOrderTree, LetStmt {
 }
 
 class MacroCallTree extends StandardPostOrderTree, MacroCall {
+  MacroCallTree() { not this.getParentNode() instanceof MacroPat }
+
   override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
 }
 

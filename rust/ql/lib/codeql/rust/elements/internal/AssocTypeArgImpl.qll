@@ -13,9 +13,17 @@ private import codeql.rust.elements.internal.generated.AssocTypeArg
  */
 module Impl {
   /**
-   * A AssocTypeArg. For example:
+   * An associated type argument in a path.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn process_cloneable<T>(iter: T)
+   * where
+   *     T: Iterator<Item: Clone>
+   * //              ^^^^^^^^^^^
+   * {
+   *     // ...
+   * }
    * ```
    */
   class AssocTypeArg extends Generated::AssocTypeArg { }

@@ -17,9 +17,15 @@ import codeql.rust.elements.Stmt
  */
 module Generated {
   /**
-   * A StmtList. For example:
+   * A list of statements in a block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * {
+   *     let x = 1;
+   *     let y = 2;
+   * }
+   * //  ^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::StmtList` class directly.
    * Use the subclass `StmtList`, where the following predicates are available.

@@ -8,9 +8,12 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.StructField
 
 /**
- * A field list of a struct expression. For example:
+ * A list of fields in a struct declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct S { x: i32, y: i32 }
+ * //         ^^^^^^^^^^^^^^^
  * ```
  */
 final class StructFieldList = Impl::StructFieldList;

@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmRegOperand
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A register operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov {0}, {1}", out(reg) x, in(reg) y);
+   * //                            ^         ^
+   * ```
+   */
   class AsmRegOperand extends Generated::AsmRegOperand { }
 }

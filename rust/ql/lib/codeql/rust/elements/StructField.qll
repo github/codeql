@@ -12,9 +12,12 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
- * A StructField. For example:
+ * A field in a struct declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct S { x: i32 }
+ * //         ^^^^^^^
  * ```
  */
 final class StructField = Impl::StructField;

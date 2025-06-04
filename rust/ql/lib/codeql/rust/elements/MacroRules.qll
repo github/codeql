@@ -11,9 +11,13 @@ import codeql.rust.elements.TokenTree
 import codeql.rust.elements.Visibility
 
 /**
- * A MacroRules. For example:
+ * A macro definition using the `macro_rules!` syntax.
  * ```rust
- * todo!()
+ * macro_rules! my_macro {
+ *     () => {
+ *         println!("This is a macro!");
+ *     };
+ * }
  * ```
  */
 final class MacroRules = Impl::MacroRules;
