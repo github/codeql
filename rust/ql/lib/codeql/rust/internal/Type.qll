@@ -15,10 +15,13 @@ newtype TType =
   TTrait(Trait t) or
   TArrayType() or // todo: add size?
   TRefType() or // todo: add mut?
+  TSliceType() or
   TTypeParamTypeParameter(TypeParam t) or
   TAssociatedTypeTypeParameter(TypeAlias t) { any(TraitItemNode trait).getAnAssocItem() = t } or
+  TArrayTypeParameter() or
   TRefTypeParameter() or
-  TSelfTypeParameter(Trait t)
+  TSelfTypeParameter(Trait t) or
+  TSliceTypeParameter()
 
 /**
  * A type without type arguments.
@@ -145,7 +148,8 @@ class ArrayType extends Type, TArrayType {
   override TupleField getTupleField(int i) { none() }
 
   override TypeParameter getTypeParameter(int i) {
-    none() // todo
+    result = TArrayTypeParameter() and
+    i = 0
   }
 
   override string toString() { result = "[]" }
@@ -172,6 +176,29 @@ class RefType extends Type, TRefType {
   }
 
   override string toString() { result = "&" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/**
+ * A slice type.
+ *
+ * Slice types like `[i64]` are modeled as normal generic types
+ * with a single type argument.
+ */
+class SliceType extends Type, TSliceType {
+  SliceType() { this = TSliceType() }
+
+  override StructField getStructField(string name) { none() }
+
+  override TupleField getTupleField(int i) { none() }
+
+  override TypeParameter getTypeParameter(int i) {
+    result = TSliceTypeParameter() and
+    i = 0
+  }
+
+  override string toString() { result = "[]" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
@@ -255,9 +282,23 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override Location getLocation() { result = typeAlias.getLocation() }
 }
 
+/** An implicit array type parameter. */
+class ArrayTypeParameter extends TypeParameter, TArrayTypeParameter {
+  override string toString() { result = "[T;...]" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
 /** An implicit reference type parameter. */
 class RefTypeParameter extends TypeParameter, TRefTypeParameter {
   override string toString() { result = "&T" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/** An implicit slice type parameter. */
+class SliceTypeParameter extends TypeParameter, TSliceTypeParameter {
+  override string toString() { result = "[T]" }
 
   override Location getLocation() { result instanceof EmptyLocation }
 }
