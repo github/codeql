@@ -1769,6 +1769,11 @@ class TypeRootFolder extends Folder {
 
 /// Types
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A static type in the TypeScript type system.
  *
  * Types are generally not associated with a specific location or AST node.
@@ -1972,6 +1977,11 @@ deprecated class Type extends @type {
 }
 
 /**
+ * * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A union type or intersection type, such as `string | number` or `T & U`.
  */
 deprecated class UnionOrIntersectionType extends Type, @union_or_intersection_type {
@@ -1992,6 +2002,11 @@ deprecated class UnionOrIntersectionType extends Type, @union_or_intersection_ty
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A union type, such as `string | number`.
  *
  * Note that the `boolean` type is represented as the union `true | false`,
@@ -2000,11 +2015,21 @@ deprecated class UnionOrIntersectionType extends Type, @union_or_intersection_ty
 deprecated class UnionType extends UnionOrIntersectionType, @union_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * An intersection type, such as `T & {x: number}`.
  */
 deprecated class IntersectionType extends UnionOrIntersectionType, @intersection_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that describes a JavaScript `Array` object.
  *
  * Specifically, the following three kinds of types are considered array types:
@@ -2029,6 +2054,11 @@ deprecated class ArrayType extends Type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * An array type such as `Array<string>`, or equivalently, `string[]`.
  */
 deprecated class PlainArrayType extends ArrayType, TypeReference {
@@ -2038,6 +2068,11 @@ deprecated class PlainArrayType extends ArrayType, TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A read-only array type such as `ReadonlyArray<string>`.
  */
 deprecated class ReadonlyArrayType extends ArrayType, TypeReference {
@@ -2045,6 +2080,11 @@ deprecated class ReadonlyArrayType extends ArrayType, TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A tuple type, such as `[number, string]`.
  */
 deprecated class TupleType extends ArrayType, @tuple_type {
@@ -2101,31 +2141,61 @@ deprecated class TupleType extends ArrayType, @tuple_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The predefined `any` type.
  */
 deprecated class AnyType extends Type, @any_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The predefined `unknown` type.
  */
 deprecated class UnknownType extends Type, @unknown_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The predefined `string` type.
  */
 deprecated class StringType extends Type, @string_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The predefined `number` type.
  */
 deprecated class NumberType extends Type, @number_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The predefined `bigint` type.
  */
 deprecated class BigIntType extends Type, @bigint_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A boolean, number, or string literal type.
  */
 deprecated class LiteralType extends Type, @literal_type {
@@ -2136,6 +2206,11 @@ deprecated class LiteralType extends Type, @literal_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The boolean literal type `true` or `false`.
  */
 deprecated class BooleanLiteralType extends LiteralType, @boolean_literal_type {
@@ -2167,6 +2242,11 @@ deprecated class NumberLiteralType extends LiteralType, @number_literal_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A string literal as a static type.
  */
 deprecated class StringLiteralType extends LiteralType, @string_literal_type {
@@ -2174,6 +2254,11 @@ deprecated class StringLiteralType extends LiteralType, @string_literal_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A bigint literal as a static type.
  */
 deprecated class BigIntLiteralType extends LiteralType {
@@ -2191,6 +2276,11 @@ deprecated class BigIntLiteralType extends LiteralType {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `boolean` type, internally represented as the union type `true | false`.
  */
 deprecated class BooleanType extends UnionType {
@@ -2202,6 +2292,11 @@ deprecated class BooleanType extends UnionType {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `string` type or a string literal type.
  */
 deprecated class StringLikeType extends Type {
@@ -2212,6 +2307,11 @@ deprecated class StringLikeType extends Type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `number` type or a number literal type.
  */
 deprecated class NumberLikeType extends Type {
@@ -2222,6 +2322,11 @@ deprecated class NumberLikeType extends Type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `boolean`, `true,` or `false` type.
  */
 deprecated class BooleanLikeType extends Type {
@@ -2232,36 +2337,71 @@ deprecated class BooleanLikeType extends Type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `void` type.
  */
 deprecated class VoidType extends Type, @void_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `undefined` type.
  */
 deprecated class UndefinedType extends Type, @undefined_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `null` type.
  */
 deprecated class NullType extends Type, @null_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `never` type.
  */
 deprecated class NeverType extends Type, @never_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `symbol` type or a specific `unique symbol` type.
  */
 deprecated class SymbolType extends Type, @symbol_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `symbol` type.
  */
 deprecated class PlainSymbolType extends SymbolType, @plain_symbol_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A `unique symbol` type.
  */
 deprecated class UniqueSymbolType extends SymbolType, @unique_symbol_type {
@@ -2291,11 +2431,21 @@ deprecated class UniqueSymbolType extends SymbolType, @unique_symbol_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The `object` type.
  */
 deprecated class ObjectKeywordType extends Type, @objectkeyword_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a class, interface, enum, or enum member.
  */
 deprecated class TypeReference extends Type, @type_reference {
@@ -2349,6 +2499,11 @@ deprecated class TypeReference extends Type, @type_reference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a class, possibly with type arguments.
  */
 deprecated class ClassType extends TypeReference {
@@ -2363,6 +2518,11 @@ deprecated class ClassType extends TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to an interface, possibly with type arguents.
  */
 deprecated class InterfaceType extends TypeReference {
@@ -2377,6 +2537,11 @@ deprecated class InterfaceType extends TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to an enum.
  */
 deprecated class EnumType extends TypeReference {
@@ -2391,6 +2556,11 @@ deprecated class EnumType extends TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to the value of an enum member.
  */
 deprecated class EnumLiteralType extends TypeReference {
@@ -2405,6 +2575,11 @@ deprecated class EnumLiteralType extends TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a type alias.
  */
 deprecated class TypeAliasReference extends TypeReference {
@@ -2419,11 +2594,21 @@ deprecated class TypeAliasReference extends TypeReference {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * An anonymous interface type, such as `{ x: number }`.
  */
 deprecated class AnonymousInterfaceType extends Type, @object_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a type variable.
  */
 deprecated class TypeVariableType extends Type, @typevariable_type {
@@ -2464,6 +2649,11 @@ deprecated class TypeVariableType extends Type, @typevariable_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a type variable declared on a class, interface or function.
  */
 deprecated class CanonicalTypeVariableType extends TypeVariableType, @canonical_type_variable_type {
@@ -2475,6 +2665,11 @@ deprecated class CanonicalTypeVariableType extends TypeVariableType, @canonical_
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type that refers to a type variable without a canonical name.
  *
  * These arise in generic call signatures such as `<T>(x: T) => T`.
@@ -2493,6 +2688,11 @@ deprecated class LexicalTypeVariableType extends TypeVariableType, @lexical_type
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A `this` type in a specific class or interface.
  *
  * For example, the return type of `span` below is a `this` type
@@ -2513,6 +2713,11 @@ deprecated class ThisType extends Type, @this_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * The type of a named value, `typeof X`, typically denoting the type of
  * a class constructor, namespace object, enum object, or module object.
  */
@@ -2589,6 +2794,11 @@ module SignatureKind {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A function or constructor signature in a TypeScript type.
  */
 deprecated class CallSignatureType extends @signature_type {
@@ -2738,11 +2948,21 @@ deprecated class CallSignatureType extends @signature_type {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A function call signature in a type, that is, a signature without the `new` keyword.
  */
 deprecated class FunctionCallSignatureType extends CallSignatureType, @function_signature_type { }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A constructor call signature in a type, that is, a signature with the `new` keyword.
  */
 deprecated class ConstructorCallSignatureType extends CallSignatureType, @constructor_signature_type
@@ -2775,6 +2995,11 @@ deprecated private class PromiseTypeName extends TypeName {
 }
 
 /**
+ * DEPRECATED. Static types from the TypeScript compiler are not longer available. Use one of the following alternatives instead:
+ * - `Expr.getTypeBinding()`
+ * - `Expr.getNameBinding()`
+ * - `TypeAnnotation.getTypeBinding()`
+ *
  * A type such as `Promise<T>`, describing a promise or promise-like object.
  *
  * This includes types whose name and `then` method signature suggest it is a promise,
