@@ -15,7 +15,12 @@ import json
 import requests
 import zipfile
 import tarfile
-from functools import cmp_to_key
+
+try:
+    import yaml
+except ImportError:
+    print("ERROR: PyYAML is not installed. Please install it with 'pip install pyyaml'.")
+    sys.exit(1)
 
 import generate_mad as mad
 
@@ -492,9 +497,9 @@ if __name__ == "__main__":
         sys.exit(1)
     try:
         with open(args.config, "r") as f:
-            config = json.load(f)
-    except json.JSONDecodeError as e:
-        print(f"ERROR: Failed to parse JSON file {args.config}: {e}")
+            config = yaml.safe_load(f)
+    except yaml.YAMLError as e:
+        print(f"ERROR: Failed to parse YAML file {args.config}: {e}")
         sys.exit(1)
 
     main(config, args)

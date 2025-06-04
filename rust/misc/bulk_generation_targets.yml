@@ -1,0 +1,45 @@
+strategy: repo
+language: rust
+destination: rust/ql/lib/ext/generated
+extractor_options:
+- cargo_features='*'
+targets:
+- git_repo: https://github.com/rust-lang/libc
+  git_tag: 0.2.172
+  name: libc
+- git_repo: https://github.com/rust-lang/log
+  git_tag: 0.4.27
+  name: log
+- git_repo: https://github.com/BurntSushi/memchr
+  git_tag: 2.7.4
+  name: memchr
+- git_repo: https://github.com/matklad/once_cell
+  git_tag: v1.21.3
+  name: once_cell
+- git_repo: https://github.com/rust-random/rand
+  git_tag: 0.9.1
+  name: rand
+- git_repo: https://github.com/servo/rust-smallvec
+  git_tag: v1.15.0
+  name: smallvec
+- git_repo: https://github.com/serde-rs/serde
+  git_tag: v1.0.219
+  name: serde
+- git_repo: https://github.com/tokio-rs/tokio
+  git_tag: tokio-1.45.0
+  name: tokio
+- git_repo: https://github.com/seanmonstar/reqwest
+  git_tag: v0.12.15
+  name: reqwest
+- git_repo: https://github.com/SergioBenitez/Rocket
+  git_tag: v0.5.1
+  name: rocket
+- git_repo: https://github.com/actix/actix-web
+  git_tag: web-v4.11.0
+  name: actix-web
+- git_repo: https://github.com/hyperium/hyper
+  git_tag: v1.6.0
+  name: hyper
+- git_repo: https://github.com/clap-rs/clap
+  git_tag: v4.5.38
+  name: clap
