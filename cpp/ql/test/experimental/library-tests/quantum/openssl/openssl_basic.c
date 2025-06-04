@@ -1,3 +1,4 @@
+
 #ifdef USE_REAL_HEADERS
 #include <openssl/evp.h>
 #include <openssl/rsa.h>
@@ -7,10 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 #else
-#include "./includes/evp_stubs.h"
-#include "./includes/alg_macro_stubs.h"
-#include "./includes/rand_stubs.h"
-#include "./includes/std_stubs.h"
+#include "openssl/evp_stubs.h"
+#include "openssl/alg_macro_stubs.h"
+#include "openssl/rand_stubs.h"
+#include "openssl/std_stubs.h"
 #endif
 
 // Sample OpenSSL code that demonstrates various cryptographic operations
@@ -227,4 +228,8 @@ int test_main() {
     calculate_hmac_sha256(key, 32, plaintext, plaintext_len, hmac);
     
     return 0;
+<<<<<<< HEAD
 } 
+=======
+} 
+>>>>>>> main

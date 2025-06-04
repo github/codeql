@@ -1156,8 +1156,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     DH() or // Diffie-Hellman
     EDH() or // Ephemeral Diffie-Hellman
     ECDH() or // Elliptic Curve Diffie-Hellman
+    // NOTE: for now ESDH is considered simply EDH
+    //ESDH() or // Ephemeral-Static Diffie-Hellman
     // Note: x25519 and x448 are applications of ECDH
-    UnknownKeyAgreementType()
+    OtherKeyAgreementType()
 
   abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
     abstract TKeyAgreementType getKeyAgreementType();
@@ -2178,7 +2180,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override NodeBase getChild(string key) {
       result = super.getChild(key)
       or
-      // [KNOWN_OR_UNKNOWN]
+      // [KNOWN_OR_UNKNOWN] - only if we know the type is verify
+      this.getKeyOperationSubtype() = TVerifyMode() and
       key = "Signature" and
       if exists(this.getASignatureArtifact())
       then result = this.getASignatureArtifact()
