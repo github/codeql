@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.SliceTypeRepr
  */
 module Impl {
   /**
-   * A SliceTypeRepr. For example:
+   * A slice type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let s: &[i32];
+   * //      ^^^^^
    * ```
    */
   class SliceTypeRepr extends Generated::SliceTypeRepr { }

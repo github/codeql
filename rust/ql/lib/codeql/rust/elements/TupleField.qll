@@ -10,9 +10,12 @@ import codeql.rust.elements.TypeRepr
 import codeql.rust.elements.Visibility
 
 /**
- * A TupleField. For example:
+ * A field in a tuple struct or tuple enum variant.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct S(i32, String);
+ * //       ^^^  ^^^^^^
  * ```
  */
 final class TupleField = Impl::TupleField;

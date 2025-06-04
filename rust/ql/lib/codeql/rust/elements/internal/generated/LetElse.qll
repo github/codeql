@@ -15,9 +15,14 @@ import codeql.rust.elements.BlockExpr
  */
 module Generated {
   /**
-   * A LetElse. For example:
+   * An else block in a let-else statement.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let Some(x) = opt else {
+   *     return;
+   * };
+   * //                ^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::LetElse` class directly.
    * Use the subclass `LetElse`, where the following predicates are available.

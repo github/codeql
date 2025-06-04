@@ -12,5 +12,15 @@ private import codeql.rust.elements.internal.generated.AsmClobberAbi
  * be referenced directly.
  */
 module Impl {
+  /**
+   * A clobbered ABI in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("", clobber_abi("C"));
+   * //       ^^^^^^^^^^^^^^^^
+   * ```
+   */
   class AsmClobberAbi extends Generated::AsmClobberAbi { }
 }

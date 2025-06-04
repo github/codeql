@@ -1,0 +1,1 @@
+| gen_extern_block.rs:7:5:9:5 | ExternBlock | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | hasAbi: | yes | getNumberOfAttrs: | 0 | hasExternItemList: | yes | isUnsafe: | no |

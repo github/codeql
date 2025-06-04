@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.UseBoundGenericArgImpl::Impl as UseBoundGen
  */
 module Generated {
   /**
-   * A Lifetime. For example:
+   * A lifetime annotation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<'a>(x: &'a str) {}
+   * //     ^^      ^^
    * ```
    * INTERNAL: Do not reference the `Generated::Lifetime` class directly.
    * Use the subclass `Lifetime`, where the following predicates are available.

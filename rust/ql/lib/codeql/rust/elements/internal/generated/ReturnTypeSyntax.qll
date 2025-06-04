@@ -14,9 +14,22 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A ReturnTypeSyntax. For example:
+   * A return type notation `(..)` to reference or bound the type returned by a trait method
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct ReverseWidgets<F: Factory<widgets(..): DoubleEndedIterator>> {
+   *     factory: F,
+   * }
+   *
+   * impl<F> Factory for ReverseWidgets<F>
+   * where
+   *   F: Factory<widgets(..): DoubleEndedIterator>,
+   * {
+   *   fn widgets(&self) -> impl Iterator<Item = Widget> {
+   *     self.factory.widgets().rev()
+   *   }
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ReturnTypeSyntax` class directly.
    * Use the subclass `ReturnTypeSyntax`, where the following predicates are available.

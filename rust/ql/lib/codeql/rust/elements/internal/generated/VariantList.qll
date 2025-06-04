@@ -15,9 +15,12 @@ import codeql.rust.elements.Variant
  */
 module Generated {
   /**
-   * A VariantList. For example:
+   * A list of variants in an enum declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * enum E { A, B, C }
+   * //     ^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::VariantList` class directly.
    * Use the subclass `VariantList`, where the following predicates are available.

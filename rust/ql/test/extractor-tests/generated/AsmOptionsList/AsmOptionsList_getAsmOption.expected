@@ -1,0 +1,2 @@
+| gen_asm_options_list.rs:8:14:8:36 | AsmOptionsList | 0 | gen_asm_options_list.rs:8:22:8:28 | AsmOption |
+| gen_asm_options_list.rs:8:14:8:36 | AsmOptionsList | 1 | gen_asm_options_list.rs:8:31:8:35 | AsmOption |

@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.RetTypeRepr
  */
 module Impl {
   /**
-   * A RetTypeRepr. For example:
+   * A return type in a function signature.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> i32 {}
+   * //       ^^^^^^
    * ```
    */
   class RetTypeRepr extends Generated::RetTypeRepr { }

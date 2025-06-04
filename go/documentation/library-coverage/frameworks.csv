@@ -3,6 +3,7 @@ Standard library,https://pkg.go.dev/std, archive/* bufio bytes cmp compress/* co
 appleboy/gin-jwt,https://github.com/appleboy/gin-jwt,github.com/appleboy/gin-jwt*
 Afero,https://github.com/spf13/afero,github.com/spf13/afero*
 beego,https://beego.me/,github.com/astaxie/beego* github.com/beego/beego*
+bigquery,https://pkg.go.dev/cloud.google.com/go/bigquery,cloud.google.com/go/bigquery*
 Bun,https://bun.uptrace.dev/,github.com/uptrace/bun*
 CleverGo,https://github.com/clevergo/clevergo,clevergo.tech/clevergo* github.com/clevergo/clevergo*
 Couchbase official client(gocb),https://github.com/couchbase/gocb,github.com/couchbase/gocb* gopkg.in/couchbase/gocb*
@@ -35,7 +36,7 @@ golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*
 goproxy,https://github.com/elazarl/goproxy,github.com/elazarl/goproxy*
 gorilla/mux,https://github.com/gorilla/mux,github.com/gorilla/mux*
 gorilla/websocket,https://github.com/gorilla/websocket,github.com/gorilla/websocket*
-gorqlite,https://github.com/rqlite/gorqlite,github.com/raindog308/gorqlite* github.com/rqlite/gorqlite*
+gorqlite,https://github.com/rqlite/gorqlite,github.com/raindog308/gorqlite* github.com/rqlite/gorqlite* github.com/kanikanema/gorqlite*
 goxpath,https://github.com/ChrisTrenkamp/goxpath/wiki,github.com/ChrisTrenkamp/goxpath*
 htmlquery,https://github.com/antchfx/htmlquery,github.com/antchfx/htmlquery*
 Iris,https://www.iris-go.com/,github.com/kataras/iris*

@@ -1129,9 +1129,7 @@ edges
 | test.rs:455:13:455:25 | 2 | test.rs:455:13:455:25 | [match(false)] 1 \| 2 | no-match |
 | test.rs:455:13:455:25 | 2 | test.rs:455:13:455:25 | [match(true)] 1 \| 2 | match |
 | test.rs:455:13:455:25 | MacroPat | test.rs:455:13:455:25 | 1 | match |
-| test.rs:455:13:455:25 | [match(false)] 1 \| 2 | test.rs:455:13:455:25 | one_or_two!... | no-match |
 | test.rs:455:13:455:25 | [match(false)] 1 \| 2 | test.rs:456:13:456:13 | _ | no-match |
-| test.rs:455:13:455:25 | [match(true)] 1 \| 2 | test.rs:455:13:455:25 | one_or_two!... | match |
 | test.rs:455:13:455:25 | [match(true)] 1 \| 2 | test.rs:455:30:455:30 | 3 | match |
 | test.rs:455:30:455:30 | 3 | test.rs:454:9:457:9 | match a { ... } |  |
 | test.rs:456:13:456:13 | _ | test.rs:456:18:456:18 | 4 | match |

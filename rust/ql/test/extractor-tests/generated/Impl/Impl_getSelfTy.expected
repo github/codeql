@@ -1,0 +1,1 @@
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | gen_impl.rs:7:22:7:27 | MyType |

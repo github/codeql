@@ -14,9 +14,11 @@ import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A Union. For example:
+ * A union declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * union U { f1: u32, f2: f32 }
  * ```
  */
 final class Union = Impl::Union;

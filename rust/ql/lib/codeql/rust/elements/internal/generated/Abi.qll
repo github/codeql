@@ -14,9 +14,12 @@ import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
  */
 module Generated {
   /**
-   * A Abi. For example:
+   * An ABI specification for an extern function or block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" fn foo() {}
+   * //     ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Abi` class directly.
    * Use the subclass `Abi`, where the following predicates are available.

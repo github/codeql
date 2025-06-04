@@ -7,9 +7,12 @@ private import internal.ParenPatImpl
 import codeql.rust.elements.Pat
 
 /**
- * A ParenPat. For example:
+ * A parenthesized pattern.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let (x) = 1;
+ * //  ^^^
  * ```
  */
 final class ParenPat = Impl::ParenPat;

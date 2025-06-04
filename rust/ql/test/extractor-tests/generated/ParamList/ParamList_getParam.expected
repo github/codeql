@@ -1,0 +1,2 @@
+| gen_param_list.rs:7:11:7:26 | ParamList | 0 | gen_param_list.rs:7:12:7:17 | ...: i32 |
+| gen_param_list.rs:7:11:7:26 | ParamList | 1 | gen_param_list.rs:7:20:7:25 | ...: i32 |

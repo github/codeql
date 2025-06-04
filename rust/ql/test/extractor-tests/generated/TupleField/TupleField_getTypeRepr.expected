@@ -1,0 +1,2 @@
+| gen_tuple_field.rs:7:14:7:16 | TupleField | gen_tuple_field.rs:7:14:7:16 | i32 |
+| gen_tuple_field.rs:7:19:7:24 | TupleField | gen_tuple_field.rs:7:19:7:24 | String |

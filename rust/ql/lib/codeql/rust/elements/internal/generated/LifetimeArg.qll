@@ -15,9 +15,12 @@ import codeql.rust.elements.Lifetime
  */
 module Generated {
   /**
-   * A LifetimeArg. For example:
+   * A lifetime argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let text: Text<'a>;
+   * //             ^^
    * ```
    * INTERNAL: Do not reference the `Generated::LifetimeArg` class directly.
    * Use the subclass `LifetimeArg`, where the following predicates are available.

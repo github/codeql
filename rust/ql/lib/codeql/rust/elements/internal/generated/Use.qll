@@ -17,9 +17,9 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A Use. For example:
+   * A `use` statement. For example:
    * ```rust
-   * todo!()
+   * use std::collections::HashMap;
    * ```
    * INTERNAL: Do not reference the `Generated::Use` class directly.
    * Use the subclass `Use`, where the following predicates are available.

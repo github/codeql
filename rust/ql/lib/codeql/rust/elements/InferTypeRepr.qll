@@ -7,9 +7,12 @@ private import internal.InferTypeReprImpl
 import codeql.rust.elements.TypeRepr
 
 /**
- * A InferTypeRepr. For example:
+ * An inferred type (`_`).
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let x: _ = 42;
+ * //     ^
  * ```
  */
 final class InferTypeRepr = Impl::InferTypeRepr;

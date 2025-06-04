@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.RestPat
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A RestPat. For example:
+   * A rest pattern (`..`) in a tuple, slice, or struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let (a, .., z) = (1, 2, 3);
+   * //      ^^
    * ```
    */
   class RestPat extends Generated::RestPat {

@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.ExternBlock
  */
 module Impl {
   /**
-   * A ExternBlock. For example:
+   * An extern block containing foreign function declarations.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   * }
    * ```
    */
   class ExternBlock extends Generated::ExternBlock { }

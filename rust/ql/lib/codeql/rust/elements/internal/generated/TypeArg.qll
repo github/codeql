@@ -15,9 +15,12 @@ import codeql.rust.elements.TypeRepr
  */
 module Generated {
   /**
-   * A TypeArg. For example:
+   * A type argument in a generic argument list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * Foo::<u32>
+   * //    ^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeArg` class directly.
    * Use the subclass `TypeArg`, where the following predicates are available.

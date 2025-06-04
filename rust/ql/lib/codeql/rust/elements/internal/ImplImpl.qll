@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.Impl
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Impl. For example:
+   * An `impl`` block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * impl MyTrait for MyType {
+   *     fn foo(&self) {}
+   * }
    * ```
    */
   class Impl extends Generated::Impl {

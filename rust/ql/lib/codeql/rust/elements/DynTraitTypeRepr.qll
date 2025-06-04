@@ -8,9 +8,12 @@ import codeql.rust.elements.TypeBoundList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A DynTraitTypeRepr. For example:
+ * A dynamic trait object type.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * let x: &dyn Debug;
+ * //      ^^^^^^^^^
  * ```
  */
 final class DynTraitTypeRepr = Impl::DynTraitTypeRepr;

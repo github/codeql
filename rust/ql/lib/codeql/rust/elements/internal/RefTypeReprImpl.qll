@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.RefTypeRepr
  */
 module Impl {
   /**
-   * A RefTypeRepr. For example:
+   * A reference type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let r: &i32;
+   * let m: &mut i32;
+   * //     ^^^^^^^^
    * ```
    */
   class RefTypeRepr extends Generated::RefTypeRepr { }

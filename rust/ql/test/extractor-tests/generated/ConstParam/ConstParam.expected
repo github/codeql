@@ -1,0 +1,1 @@
+| gen_const_param.rs:7:17:7:30 | ConstParam | getNumberOfAttrs: | 0 | hasDefaultVal: | no | isConst: | yes | hasName: | yes | hasTypeRepr: | yes |

@@ -7,9 +7,22 @@ private import internal.ReturnTypeSyntaxImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A ReturnTypeSyntax. For example:
+ * A return type notation `(..)` to reference or bound the type returned by a trait method
+ *
+ * For example:
  * ```rust
- * todo!()
+ * struct ReverseWidgets<F: Factory<widgets(..): DoubleEndedIterator>> {
+ *     factory: F,
+ * }
+ *
+ * impl<F> Factory for ReverseWidgets<F>
+ * where
+ *   F: Factory<widgets(..): DoubleEndedIterator>,
+ * {
+ *   fn widgets(&self) -> impl Iterator<Item = Widget> {
+ *     self.factory.widgets().rev()
+ *   }
+ * }
  * ```
  */
 final class ReturnTypeSyntax = Impl::ReturnTypeSyntax;

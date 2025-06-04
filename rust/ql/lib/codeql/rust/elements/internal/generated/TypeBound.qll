@@ -17,9 +17,12 @@ import codeql.rust.elements.UseBoundGenericArgs
  */
 module Generated {
   /**
-   * A TypeBound. For example:
+   * A type bound in a trait or generic parameter.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T: Debug>(t: T) {}
+   * //        ^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TypeBound` class directly.
    * Use the subclass `TypeBound`, where the following predicates are available.

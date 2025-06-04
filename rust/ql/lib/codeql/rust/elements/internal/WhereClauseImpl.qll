@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.WhereClause
  */
 module Impl {
   /**
-   * A WhereClause. For example:
+   * A where clause in a generic declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) where T: Debug {}
+   * //              ^^^^^^^^^^^^^^
    * ```
    */
   class WhereClause extends Generated::WhereClause { }

@@ -13,9 +13,11 @@ private import codeql.rust.elements.internal.generated.Union
 module Impl {
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
-   * A Union. For example:
+   * A union declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * union U { f1: u32, f2: f32 }
    * ```
    */
   class Union extends Generated::Union {

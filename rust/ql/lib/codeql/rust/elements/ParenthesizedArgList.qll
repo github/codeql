@@ -7,4 +7,18 @@ private import internal.ParenthesizedArgListImpl
 import codeql.rust.elements.AstNode
 import codeql.rust.elements.TypeArg
 
+/**
+ * A parenthesized argument list as used in function traits.
+ *
+ * For example:
+ * ```rust
+ * fn call_with_42<F>(f: F) -> i32
+ * where
+ *     F: Fn(i32, String) -> i32,
+ * //        ^^^^^^^^^^^
+ * {
+ *     f(42, "Don't panic".to_string())
+ * }
+ * ```
+ */
 final class ParenthesizedArgList = Impl::ParenthesizedArgList;

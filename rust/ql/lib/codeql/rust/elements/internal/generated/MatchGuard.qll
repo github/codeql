@@ -15,9 +15,15 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
-   * A MatchGuard. For example:
+   * A guard condition in a match arm.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * match x {
+   *     y if y > 0 => "positive",
+   * //    ^^^^^^^
+   *     _ => "non-positive",
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::MatchGuard` class directly.
    * Use the subclass `MatchGuard`, where the following predicates are available.

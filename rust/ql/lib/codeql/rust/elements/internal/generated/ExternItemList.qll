@@ -16,9 +16,14 @@ import codeql.rust.elements.ExternItem
  */
 module Generated {
   /**
-   * A ExternItemList. For example:
+   * A list of items inside an extern block.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * extern "C" {
+   *     fn foo();
+   *     static BAR: i32;
+   * }
    * ```
    * INTERNAL: Do not reference the `Generated::ExternItemList` class directly.
    * Use the subclass `ExternItemList`, where the following predicates are available.

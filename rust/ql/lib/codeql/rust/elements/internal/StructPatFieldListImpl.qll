@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.StructPatFieldList
  */
 module Impl {
   /**
-   * A StructPatFieldList. For example:
+   * A list of fields in a struct pattern.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let Foo { a, b } = foo;
+   * //        ^^^^^
    * ```
    */
   class StructPatFieldList extends Generated::StructPatFieldList { }

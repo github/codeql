@@ -13,9 +13,12 @@ private import codeql.rust.elements.internal.generated.TryExpr
  */
 module Impl {
   /**
-   * A TryExpr. For example:
+   * A try expression using the `?` operator.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let x = foo()?;
+   * //           ^
    * ```
    */
   class TryExpr extends Generated::TryExpr { }

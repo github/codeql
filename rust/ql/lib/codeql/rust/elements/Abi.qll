@@ -7,9 +7,12 @@ private import internal.AbiImpl
 import codeql.rust.elements.AstNode
 
 /**
- * A Abi. For example:
+ * An ABI specification for an extern function or block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * extern "C" fn foo() {}
+ * //     ^^^
  * ```
  */
 final class Abi = Impl::Abi;

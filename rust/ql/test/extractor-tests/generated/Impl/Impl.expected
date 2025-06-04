@@ -1,0 +1,1 @@
+| gen_impl.rs:4:5:9:5 | impl MyTrait for MyType { ... } | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | hasAssocItemList: | yes | getNumberOfAttrs: | 0 | hasGenericParamList: | no | isConst: | no | isDefault: | no | isUnsafe: | no | hasSelfTy: | yes | hasTrait: | yes | hasVisibility: | no | hasWhereClause: | no |

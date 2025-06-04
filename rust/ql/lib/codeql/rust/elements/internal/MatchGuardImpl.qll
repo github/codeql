@@ -13,9 +13,15 @@ private import codeql.rust.elements.internal.generated.MatchGuard
  */
 module Impl {
   /**
-   * A MatchGuard. For example:
+   * A guard condition in a match arm.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * match x {
+   *     y if y > 0 => "positive",
+   * //    ^^^^^^^
+   *     _ => "non-positive",
+   * }
    * ```
    */
   class MatchGuard extends Generated::MatchGuard { }

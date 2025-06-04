@@ -15,9 +15,11 @@ import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A Const. For example:
+ * A constant item declaration.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * const X: i32 = 42;
  * ```
  */
 final class Const = Impl::Const;

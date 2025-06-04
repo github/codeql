@@ -17,9 +17,12 @@ import codeql.rust.elements.TypeBoundList
  */
 module Generated {
   /**
-   * A LifetimeParam. For example:
+   * A lifetime parameter in a generic parameter list.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<'a>(x: &'a str) {}
+   * //     ^^
    * ```
    * INTERNAL: Do not reference the `Generated::LifetimeParam` class directly.
    * Use the subclass `LifetimeParam`, where the following predicates are available.

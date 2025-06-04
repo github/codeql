@@ -13,9 +13,17 @@ private import codeql.rust.elements.internal.generated.Meta
  */
 module Impl {
   /**
-   * A Meta. For example:
+   * A meta item in an attribute.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[unsafe(lint::name = "reason_for_bypass")]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * #[deprecated(since = "1.2.0", note = "Use bar instead", unsafe=true)]
+   * //^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * fn foo() {
+   *     // ...
+   * }
    * ```
    */
   class Meta extends Generated::Meta { }
