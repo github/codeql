@@ -7,7 +7,7 @@ module Params {
   /**
    * A model of the `Parameters` class in Bouncy Castle.
    */
-  class Parameters extends RefType {
+  class Parameters extends Class {
     Parameters() {
       // Matches `org.bouncycastle.crypto.params`, `org.bouncycastle.asn1.x9`, etc.
       this.getPackage().getName().matches("org.bouncycastle.%") and
@@ -15,7 +15,7 @@ module Params {
     }
   }
 
-  class Curve extends RefType {
+  class Curve extends Class {
     Curve() {
       this.getPackage().getName() = "org.bouncycastle.math.ec" and
       this.getName().matches("ECCurve")
@@ -126,7 +126,7 @@ module Signers {
    * This class represents a BouncyCastle signer with a streaming API. For signers
    * with a one-shot API, see `OneShotSigner` below.
    */
-  class Signer extends RefType {
+  class Signer extends Class {
     Signer() {
       this.getPackage().getName() =
         ["org.bouncycastle.crypto.signers", "org.bouncycastle.pqc.crypto.lms"] and
@@ -167,7 +167,7 @@ module Signers {
    * is passed to either `generateSignature()` or `verifySignature`.).
    */
   class OneShotSigner extends Signer {
-    OneShotSigner() { this.getName().matches(["ECDSA%", "LMS%", "HSS%"]) }
+    OneShotSigner() { this.getName().matches(["DSASigner", "ECDSA%", "LMS%", "HSS%"]) }
 
     override Expr getMessageArg(MethodCall call) {
       // For ECDSA and LMS, the message is passed directly to `generateSignature()`.
@@ -300,7 +300,7 @@ module Generators {
   /**
    * A model of the `KeyGenerator` and `KeyPairGenerator` classes in Bouncy Castle.
    */
-  class KeyGenerator extends RefType {
+  class KeyGenerator extends Class {
     Crypto::KeyArtifactType type;
 
     KeyGenerator() {
@@ -422,4 +422,73 @@ module Generators {
   }
 }
 
-module Modes { }
+module Modes {
+  import FlowAnalysis
+
+  class BlockCipherMode extends Class {
+    BlockCipherMode() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.modes" and
+      this.getName().matches("%BlockCipher")
+    }
+
+    MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
+
+    MethodCall getAUseCall() {
+      result =
+        this.getAMethodCall([
+            "processBlock", "processBlocks", "returnByte", "processBytes", "doFinal"
+          ])
+    }
+
+    MethodCall getAMethodCall(string name) {
+      result.getCallee().hasQualifiedName(this.getPackage().getName(), this.getName(), name)
+    }
+  }
+
+  /**
+   * A block cipher mode instantiation.
+   *
+   * BouncyCastle algorithms are instantiated by calling the constructor of the
+   * corresponding class, which also represents the algorithm instance.
+   */
+  private class BlockCipherModeNewCall extends ClassInstanceExpr {
+    BlockCipherModeNewCall() { this.getConstructedType() instanceof BlockCipherMode }
+
+    DataFlow::Node getParametersInput() { none() }
+
+    DataFlow::Node getEllipticCurveInput() { none() }
+  }
+
+  /**
+   * A call to a block cipher mode `init()` method.
+   *
+   * The type is instantiated by a constructor call and initialized by a call to
+   * `init()` which takes a single `KeyGenerationParameters` argument.
+   */
+  private class BlockCipherModeInitCall extends MethodCall {
+    BlockCipherMode mode;
+
+    BlockCipherModeInitCall() { this = mode.getAnInitCall() }
+
+    Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
+
+    // The `CipherParameters` argument used to configure the cipher.
+    DataFlow::Node getParametersInput() { result.asExpr() = this.getArgument(1) }
+  }
+
+  /**
+   * A `processX()`, `returnByte()` or `doFinal()` method call to encrypt or
+   * decrypt data.
+   */
+  private class BlockCipherModeUseCall extends MethodCall {
+    BlockCipherMode mode;
+
+    BlockCipherModeUseCall() { this = mode.getAUseCall() }
+
+    predicate isIntermediate() { not this.getCallee().getName() = "doFinal" }
+  }
+
+  module BlockCipherModeFlow =
+    NewToInitToUseFlowAnalysis<BlockCipherModeNewCall, BlockCipherModeInitCall,
+      BlockCipherModeUseCall>;
+}

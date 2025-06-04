@@ -1,5 +1,4 @@
 import java
-import experimental.quantum.Language
 import AlgorithmInstances
 
 abstract class HashAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
@@ -9,9 +8,9 @@ abstract class CipherAlgorithmValueConsumer extends Crypto::AlgorithmValueConsum
 abstract class EllipticCurveAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer { }
 
 class EllipticCurveStringLiteralArg extends EllipticCurveAlgorithmValueConsumer instanceof Expr {
-  Params::ParametersInstantiation params;
-
-  EllipticCurveStringLiteralArg() { this = params.getAlgorithmArg() }
+  EllipticCurveStringLiteralArg() {
+    this = any(Params::ParametersInstantiation params).getAlgorithmArg()
+  }
 
   override Crypto::ConsumerInputDataFlowNode getInputNode() { result.asExpr() = this }
 
@@ -21,7 +20,8 @@ class EllipticCurveStringLiteralArg extends EllipticCurveAlgorithmValueConsumer 
 }
 
 /**
- * Signature algorithms are implicitly defined by the constructor.
+ * The AVC for a signature algorithm where the algorithm is implicitly defined
+ * by the constructor.
  */
 abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
@@ -30,7 +30,8 @@ abstract class SignatureAlgorithmValueConsumer extends Crypto::AlgorithmValueCon
 }
 
 /**
- * Key generation algorithms are implicitly defined by the constructor.
+ * The AVC for a key generation algorithm where the algorithm is implicitly
+ * defined by the constructor.
  */
 abstract class KeyGenerationAlgorithmValueConsumer extends Crypto::AlgorithmValueConsumer {
   override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }

@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import experimental.quantum.Language
-import AlgorithmInstances
 import AlgorithmValueConsumers
 
 /**
@@ -223,7 +222,7 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
     predicate isSink(DataFlow::Node sink) { exists(Init init | sink = init.getParametersInput()) }
 
     /**
-     * Pass-through for parameters created from other parameters.
+     * A flow step for parameters created from other parameters.
      *
      * As an example, below we want to track the flow from the `X9ECParameters`
      * constructor call to the `keyPairGenerator.init()` call to be able to
@@ -269,6 +268,9 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
 
   private module ParametersToInitFlow = DataFlow::Global<ParametersToInitConfig>;
 
+  /**
+   * Gets a parameter instantiation from a call to `init()`.
+   */
   New getParametersFromInit(
     Init init, ParametersToInitFlow::PathNode src, ParametersToInitFlow::PathNode sink
   ) {
@@ -279,8 +281,8 @@ module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
 }
 
 /**
- * Model data flow from a key pair to the public and private components of the
- * key pair.
+ * A model for data flow from a key pair to the public and private components of
+ * the key pair.
  */
 class KeyAdditionalFlowSteps extends MethodCall {
   KeyAdditionalFlowSteps() {
@@ -299,30 +301,27 @@ class KeyAdditionalFlowSteps extends MethodCall {
 }
 
 /**
- * Model data flow from an ECDSA signature to the scalars r and s passed to
- * `verifySignature()`. The ECDSA signature is represented as a `BigInteger`
+ * A model for data flow from an ECDSA signature to the scalars r and s passed
+ * to `verifySignature()`. The ECDSA signature is represented as a `BigInteger`
  * array, where the first element is the scalar r and the second element is the
  * scalar s.
  */
-class ECDSASignatureAdditionalFlowSteps extends ArrayAccess {
-  ECDSASignatureAdditionalFlowSteps() {
+class EcdsaSignatureAdditionalFlowSteps extends ArrayAccess {
+  EcdsaSignatureAdditionalFlowSteps() {
     this.getArray().getType().getName() = "BigInteger[]" and
     // It is reasonable to assume that the indices are integer literals
     this.getIndexExpr().(IntegerLiteral).getValue().toInt() = [0, 1]
   }
 
-  /**
-   * The input node is the ECDSA signature represented as a `BigInteger` array.
-   */
   DataFlow::Node getInputNode() {
-    // TODO: This should be the array node `this.getArray()`
+    // The ECDSA signature is represented as a `BigInteger` array.
     result.asExpr() = this.getArray()
   }
 
-  /**
-   * The output node is the `BigInteger` element accessed by this array access.
-   */
-  DataFlow::Node getOutputNode() { result.asExpr() = this }
+  DataFlow::Node getOutputNode() {
+    // r or s is the `BigInteger` element accessed by this array access.
+    result.asExpr() = this
+  }
 }
 
 predicate additionalFlowSteps(DataFlow::Node node1, DataFlow::Node node2) {
@@ -331,12 +330,15 @@ predicate additionalFlowSteps(DataFlow::Node node1, DataFlow::Node node2) {
     node2 = fs.getOutputNode()
   )
   or
-  exists(ECDSASignatureAdditionalFlowSteps fs |
+  exists(EcdsaSignatureAdditionalFlowSteps fs |
     node1 = fs.getInputNode() and
     node2 = fs.getOutputNode()
   )
 }
 
+/**
+ * An additional flow step for a cryptographic artifact.
+ */
 class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
   DataFlow::Node output;
 
@@ -347,7 +349,7 @@ class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
 
 module EllipticCurveStringLiteralToConsumer {
   /**
-   * Flow from a known elliptic curve name to an elliptic curve algorithm consumer.
+   * A flow from a known elliptic curve name to an elliptic curve algorithm consumer.
    */
   module EllipticCurveStringLiteralToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
     // NOTE: We do not reference EllipticCurveStringLiteralInstance directly
