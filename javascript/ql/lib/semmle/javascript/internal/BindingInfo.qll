@@ -132,6 +132,11 @@ class TypeNameBindingNode extends NameResolution::Node {
    * and enums and enum members have this property.
    */
   predicate isSanitizingPrimitiveType() { TypeResolution::isSanitizingPrimitiveType(this) }
+
+  /**
+   * Holds if the given type is a Promise object. Does not hold for unions unless all parts of the union are promises.
+   */
+  predicate isPromiseType() { TypeResolution::isPromiseType(this) }
 }
 
 /**
