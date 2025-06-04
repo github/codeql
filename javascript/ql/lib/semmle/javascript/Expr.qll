@@ -171,6 +171,8 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
 
   /**
+   * DEPRECATED. Use `getTypeBinding()` instead.
+   *
    * Gets the static type of this expression, as determined by the TypeScript type system.
    *
    * Has no result if the expression is in a JavaScript file or in a TypeScript
@@ -988,6 +990,8 @@ class InvokeExpr extends @invokeexpr, Expr {
   }
 
   /**
+   * DEPRECATED. No longer supported.
+   *
    * Gets the call signature of the invoked function, as determined by the TypeScript
    * type system, with overloading resolved and type parameters substituted.
    *
@@ -1004,6 +1008,8 @@ class InvokeExpr extends @invokeexpr, Expr {
   int getResolvedOverloadIndex() { invoke_expr_overload_index(this, result) }
 
   /**
+   * DEPRECATED. No longer directly supported, but `getResolvedCallee()` may be usable as an alternative.
+   *
    * Gets the canonical name of the static call target, as determined by the TypeScript type system.
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
