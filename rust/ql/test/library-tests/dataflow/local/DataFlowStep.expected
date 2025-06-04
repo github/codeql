@@ -866,98 +866,8 @@ localStep
 | main.rs:565:13:565:33 | result_questionmark(...) | main.rs:565:9:565:9 | _ |
 | main.rs:577:36:577:41 | ...::new(...) | main.rs:577:36:577:41 | MacroExpr |
 | main.rs:577:36:577:41 | [post] MacroExpr | main.rs:577:36:577:41 | [post] ...::new(...) |
-storeStep
-| main.rs:97:14:97:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:97:13:97:26 | TupleExpr |
-| main.rs:97:25:97:25 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:97:13:97:26 | TupleExpr |
-| main.rs:103:14:103:14 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:103:13:103:30 | TupleExpr |
-| main.rs:103:17:103:26 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:103:13:103:30 | TupleExpr |
-| main.rs:103:29:103:29 | 2 | file://:0:0:0:0 | tuple.2 | main.rs:103:13:103:30 | TupleExpr |
-| main.rs:111:18:111:18 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:111:17:111:31 | TupleExpr |
-| main.rs:111:21:111:30 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:111:17:111:31 | TupleExpr |
-| main.rs:114:11:114:20 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:114:5:114:5 | [post] a |
-| main.rs:115:11:115:11 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:115:5:115:5 | [post] a |
-| main.rs:121:14:121:14 | 3 | file://:0:0:0:0 | tuple.0 | main.rs:121:13:121:27 | TupleExpr |
-| main.rs:121:17:121:26 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:121:13:121:27 | TupleExpr |
-| main.rs:122:14:122:14 | a | file://:0:0:0:0 | tuple.0 | main.rs:122:13:122:18 | TupleExpr |
-| main.rs:122:17:122:17 | 3 | file://:0:0:0:0 | tuple.1 | main.rs:122:13:122:18 | TupleExpr |
-| main.rs:137:24:137:32 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:137:13:137:40 | Point {...} |
-| main.rs:137:38:137:38 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:137:13:137:40 | Point {...} |
-| main.rs:143:28:143:36 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:143:17:143:44 | Point {...} |
-| main.rs:143:42:143:42 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:143:17:143:44 | Point {...} |
-| main.rs:145:11:145:20 | source(...) | main.rs:133:5:133:10 | Point.y | main.rs:145:5:145:5 | [post] p |
-| main.rs:151:12:151:21 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:150:13:153:5 | Point {...} |
-| main.rs:152:12:152:12 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:150:13:153:5 | Point {...} |
-| main.rs:166:16:169:9 | Point {...} | main.rs:160:5:160:16 | Point3D.plane | main.rs:165:13:171:5 | Point3D {...} |
-| main.rs:167:16:167:16 | 2 | main.rs:132:5:132:10 | Point.x | main.rs:166:16:169:9 | Point {...} |
-| main.rs:168:16:168:25 | source(...) | main.rs:133:5:133:10 | Point.y | main.rs:166:16:169:9 | Point {...} |
-| main.rs:170:12:170:12 | 4 | main.rs:161:5:161:10 | Point3D.z | main.rs:165:13:171:5 | Point3D {...} |
-| main.rs:180:16:180:32 | Point {...} | main.rs:160:5:160:16 | Point3D.plane | main.rs:179:13:182:5 | Point3D {...} |
-| main.rs:180:27:180:27 | 2 | main.rs:132:5:132:10 | Point.x | main.rs:180:16:180:32 | Point {...} |
-| main.rs:180:30:180:30 | y | main.rs:133:5:133:10 | Point.y | main.rs:180:16:180:32 | Point {...} |
-| main.rs:181:12:181:12 | 4 | main.rs:161:5:161:10 | Point3D.z | main.rs:179:13:182:5 | Point3D {...} |
-| main.rs:198:27:198:36 | source(...) | main.rs:195:22:195:24 | MyTupleStruct(0) | main.rs:198:13:198:40 | MyTupleStruct(...) |
-| main.rs:198:39:198:39 | 2 | main.rs:195:27:195:29 | MyTupleStruct(1) | main.rs:198:13:198:40 | MyTupleStruct(...) |
-| main.rs:214:27:214:36 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:214:14:214:37 | ...::Some(...) |
-| main.rs:215:27:215:27 | 2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:215:14:215:28 | ...::Some(...) |
-| main.rs:227:19:227:28 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:227:14:227:29 | Some(...) |
-| main.rs:228:19:228:19 | 2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:228:14:228:20 | Some(...) |
-| main.rs:240:19:240:28 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:240:14:240:29 | Some(...) |
-| main.rs:245:19:245:28 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:245:14:245:29 | Some(...) |
-| main.rs:248:19:248:19 | 0 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:248:14:248:20 | Some(...) |
-| main.rs:253:19:253:28 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:253:14:253:29 | Some(...) |
-| main.rs:261:19:261:28 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:261:14:261:29 | Some(...) |
-| main.rs:262:19:262:19 | 2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:262:14:262:20 | Some(...) |
-| main.rs:266:10:266:10 | 0 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:266:5:266:11 | Some(...) |
-| main.rs:270:36:270:45 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:270:33:270:46 | Ok(...) |
-| main.rs:276:37:276:46 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:537:9:537:55 | Err | main.rs:276:33:276:47 | Err(...) |
-| main.rs:284:35:284:44 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:284:32:284:45 | Ok(...) |
-| main.rs:285:35:285:35 | 2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:285:32:285:36 | Ok(...) |
-| main.rs:286:36:286:45 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:537:9:537:55 | Err | main.rs:286:32:286:46 | Err(...) |
-| main.rs:293:8:293:8 | 0 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:293:5:293:9 | Ok(...) |
-| main.rs:297:35:297:44 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:297:32:297:45 | Ok(...) |
-| main.rs:301:36:301:45 | source(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:537:9:537:55 | Err | main.rs:301:32:301:46 | Err(...) |
-| main.rs:312:29:312:38 | source(...) | main.rs:307:7:307:9 | A | main.rs:312:14:312:39 | ...::A(...) |
-| main.rs:313:29:313:29 | 2 | main.rs:308:7:308:9 | B | main.rs:313:14:313:30 | ...::B(...) |
-| main.rs:330:16:330:25 | source(...) | main.rs:307:7:307:9 | A | main.rs:330:14:330:26 | A(...) |
-| main.rs:331:16:331:16 | 2 | main.rs:308:7:308:9 | B | main.rs:331:14:331:17 | B(...) |
-| main.rs:352:18:352:27 | source(...) | main.rs:346:9:346:20 | C | main.rs:351:14:353:5 | ...::C {...} |
-| main.rs:354:41:354:41 | 2 | main.rs:347:9:347:20 | D | main.rs:354:14:354:43 | ...::D {...} |
-| main.rs:372:18:372:27 | source(...) | main.rs:346:9:346:20 | C | main.rs:371:14:373:5 | C {...} |
-| main.rs:374:27:374:27 | 2 | main.rs:347:9:347:20 | D | main.rs:374:14:374:29 | D {...} |
-| main.rs:392:17:392:17 | 1 | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
-| main.rs:392:20:392:20 | 2 | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
-| main.rs:392:23:392:32 | source(...) | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
-| main.rs:396:17:396:26 | source(...) | file://:0:0:0:0 | element | main.rs:396:16:396:31 | [...; 10] |
-| main.rs:400:17:400:17 | 1 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
-| main.rs:400:20:400:20 | 2 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
-| main.rs:400:23:400:23 | 3 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
-| main.rs:406:17:406:17 | 1 | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
-| main.rs:406:20:406:20 | 2 | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
-| main.rs:406:23:406:32 | source(...) | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
-| main.rs:411:17:411:17 | 1 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
-| main.rs:411:20:411:20 | 2 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
-| main.rs:411:23:411:23 | 3 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
-| main.rs:418:17:418:17 | 1 | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
-| main.rs:418:20:418:20 | 2 | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
-| main.rs:418:23:418:32 | source(...) | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
-| main.rs:429:24:429:24 | 1 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
-| main.rs:429:27:429:27 | 2 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
-| main.rs:429:30:429:30 | 3 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
-| main.rs:432:18:432:27 | source(...) | file://:0:0:0:0 | element | main.rs:432:5:432:11 | [post] mut_arr |
-| main.rs:444:41:444:67 | default_name | main.rs:441:9:441:20 | captured default_name | main.rs:444:41:444:67 | \|...\| ... |
-| main.rs:479:15:479:24 | source(...) | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
-| main.rs:479:27:479:27 | 2 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
-| main.rs:479:30:479:30 | 3 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
-| main.rs:479:33:479:33 | 4 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
-| main.rs:504:23:504:32 | source(...) | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
-| main.rs:504:35:504:35 | 2 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
-| main.rs:504:38:504:38 | 3 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
-| main.rs:504:41:504:41 | 4 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
-| main.rs:519:18:519:18 | c | file://:0:0:0:0 | &ref | main.rs:519:17:519:18 | &c |
-| main.rs:522:15:522:15 | b | file://:0:0:0:0 | &ref | main.rs:522:14:522:15 | &b |
-| main.rs:545:27:545:27 | 0 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:545:22:545:28 | Some(...) |
 readStep
-| main.rs:36:9:36:15 | Some(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:36:14:36:14 | _ |
+| main.rs:36:9:36:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:36:14:36:14 | _ |
 | main.rs:90:11:90:11 | i | file://:0:0:0:0 | &ref | main.rs:90:10:90:11 | * ... |
 | main.rs:98:10:98:10 | a | file://:0:0:0:0 | tuple.0 | main.rs:98:10:98:12 | a.0 |
 | main.rs:99:10:99:10 | a | file://:0:0:0:0 | tuple.1 | main.rs:99:10:99:12 | a.1 |
@@ -997,20 +907,20 @@ readStep
 | main.rs:200:10:200:10 | s | main.rs:195:27:195:29 | MyTupleStruct(1) | main.rs:200:10:200:12 | s.1 |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | main.rs:195:22:195:24 | MyTupleStruct(0) | main.rs:203:23:203:23 | x |
 | main.rs:203:9:203:27 | MyTupleStruct(...) | main.rs:195:27:195:29 | MyTupleStruct(1) | main.rs:203:26:203:26 | y |
-| main.rs:217:9:217:23 | ...::Some(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:217:22:217:22 | n |
-| main.rs:221:9:221:23 | ...::Some(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:221:22:221:22 | n |
-| main.rs:230:9:230:15 | Some(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:230:14:230:14 | n |
-| main.rs:234:9:234:15 | Some(...) | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:234:14:234:14 | n |
-| main.rs:263:14:263:15 | s1 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:263:14:263:16 | TryExpr |
-| main.rs:263:14:263:15 | s1 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:263:14:263:16 | TryExpr |
-| main.rs:265:10:265:11 | s2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:265:10:265:12 | TryExpr |
-| main.rs:265:10:265:11 | s2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:265:10:265:12 | TryExpr |
-| main.rs:287:14:287:15 | s1 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:287:14:287:16 | TryExpr |
-| main.rs:287:14:287:15 | s1 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:287:14:287:16 | TryExpr |
-| main.rs:288:14:288:15 | s2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:288:14:288:16 | TryExpr |
-| main.rs:288:14:288:15 | s2 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:288:14:288:16 | TryExpr |
-| main.rs:291:14:291:15 | s3 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/option.rs:580:10:580:56 | Some | main.rs:291:14:291:16 | TryExpr |
-| main.rs:291:14:291:15 | s3 | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/result.rs:532:8:532:54 | Ok | main.rs:291:14:291:16 | TryExpr |
+| main.rs:217:9:217:23 | ...::Some(...) | {EXTERNAL LOCATION} | Some | main.rs:217:22:217:22 | n |
+| main.rs:221:9:221:23 | ...::Some(...) | {EXTERNAL LOCATION} | Some | main.rs:221:22:221:22 | n |
+| main.rs:230:9:230:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:230:14:230:14 | n |
+| main.rs:234:9:234:15 | Some(...) | {EXTERNAL LOCATION} | Some | main.rs:234:14:234:14 | n |
+| main.rs:263:14:263:15 | s1 | {EXTERNAL LOCATION} | Some | main.rs:263:14:263:16 | TryExpr |
+| main.rs:263:14:263:15 | s1 | {EXTERNAL LOCATION} | Ok | main.rs:263:14:263:16 | TryExpr |
+| main.rs:265:10:265:11 | s2 | {EXTERNAL LOCATION} | Some | main.rs:265:10:265:12 | TryExpr |
+| main.rs:265:10:265:11 | s2 | {EXTERNAL LOCATION} | Ok | main.rs:265:10:265:12 | TryExpr |
+| main.rs:287:14:287:15 | s1 | {EXTERNAL LOCATION} | Some | main.rs:287:14:287:16 | TryExpr |
+| main.rs:287:14:287:15 | s1 | {EXTERNAL LOCATION} | Ok | main.rs:287:14:287:16 | TryExpr |
+| main.rs:288:14:288:15 | s2 | {EXTERNAL LOCATION} | Some | main.rs:288:14:288:16 | TryExpr |
+| main.rs:288:14:288:15 | s2 | {EXTERNAL LOCATION} | Ok | main.rs:288:14:288:16 | TryExpr |
+| main.rs:291:14:291:15 | s3 | {EXTERNAL LOCATION} | Some | main.rs:291:14:291:16 | TryExpr |
+| main.rs:291:14:291:15 | s3 | {EXTERNAL LOCATION} | Ok | main.rs:291:14:291:16 | TryExpr |
 | main.rs:315:9:315:25 | ...::A(...) | main.rs:307:7:307:9 | A | main.rs:315:24:315:24 | n |
 | main.rs:316:9:316:25 | ...::B(...) | main.rs:308:7:308:9 | B | main.rs:316:24:316:24 | n |
 | main.rs:319:9:319:25 | ...::A(...) | main.rs:307:7:307:9 | A | main.rs:319:24:319:24 | n |
@@ -1069,3 +979,93 @@ readStep
 | main.rs:510:9:510:14 | &mut ... | file://:0:0:0:0 | &ref | main.rs:510:14:510:14 | v |
 | main.rs:510:19:510:35 | vs_mut.iter_mut() | file://:0:0:0:0 | element | main.rs:510:9:510:14 | &mut ... |
 | main.rs:524:11:524:15 | c_ref | file://:0:0:0:0 | &ref | main.rs:524:10:524:15 | * ... |
+storeStep
+| main.rs:97:14:97:22 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:97:13:97:26 | TupleExpr |
+| main.rs:97:25:97:25 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:97:13:97:26 | TupleExpr |
+| main.rs:103:14:103:14 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:103:13:103:30 | TupleExpr |
+| main.rs:103:17:103:26 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:103:13:103:30 | TupleExpr |
+| main.rs:103:29:103:29 | 2 | file://:0:0:0:0 | tuple.2 | main.rs:103:13:103:30 | TupleExpr |
+| main.rs:111:18:111:18 | 2 | file://:0:0:0:0 | tuple.0 | main.rs:111:17:111:31 | TupleExpr |
+| main.rs:111:21:111:30 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:111:17:111:31 | TupleExpr |
+| main.rs:114:11:114:20 | source(...) | file://:0:0:0:0 | tuple.0 | main.rs:114:5:114:5 | [post] a |
+| main.rs:115:11:115:11 | 2 | file://:0:0:0:0 | tuple.1 | main.rs:115:5:115:5 | [post] a |
+| main.rs:121:14:121:14 | 3 | file://:0:0:0:0 | tuple.0 | main.rs:121:13:121:27 | TupleExpr |
+| main.rs:121:17:121:26 | source(...) | file://:0:0:0:0 | tuple.1 | main.rs:121:13:121:27 | TupleExpr |
+| main.rs:122:14:122:14 | a | file://:0:0:0:0 | tuple.0 | main.rs:122:13:122:18 | TupleExpr |
+| main.rs:122:17:122:17 | 3 | file://:0:0:0:0 | tuple.1 | main.rs:122:13:122:18 | TupleExpr |
+| main.rs:137:24:137:32 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:137:13:137:40 | Point {...} |
+| main.rs:137:38:137:38 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:137:13:137:40 | Point {...} |
+| main.rs:143:28:143:36 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:143:17:143:44 | Point {...} |
+| main.rs:143:42:143:42 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:143:17:143:44 | Point {...} |
+| main.rs:145:11:145:20 | source(...) | main.rs:133:5:133:10 | Point.y | main.rs:145:5:145:5 | [post] p |
+| main.rs:151:12:151:21 | source(...) | main.rs:132:5:132:10 | Point.x | main.rs:150:13:153:5 | Point {...} |
+| main.rs:152:12:152:12 | 2 | main.rs:133:5:133:10 | Point.y | main.rs:150:13:153:5 | Point {...} |
+| main.rs:166:16:169:9 | Point {...} | main.rs:160:5:160:16 | Point3D.plane | main.rs:165:13:171:5 | Point3D {...} |
+| main.rs:167:16:167:16 | 2 | main.rs:132:5:132:10 | Point.x | main.rs:166:16:169:9 | Point {...} |
+| main.rs:168:16:168:25 | source(...) | main.rs:133:5:133:10 | Point.y | main.rs:166:16:169:9 | Point {...} |
+| main.rs:170:12:170:12 | 4 | main.rs:161:5:161:10 | Point3D.z | main.rs:165:13:171:5 | Point3D {...} |
+| main.rs:180:16:180:32 | Point {...} | main.rs:160:5:160:16 | Point3D.plane | main.rs:179:13:182:5 | Point3D {...} |
+| main.rs:180:27:180:27 | 2 | main.rs:132:5:132:10 | Point.x | main.rs:180:16:180:32 | Point {...} |
+| main.rs:180:30:180:30 | y | main.rs:133:5:133:10 | Point.y | main.rs:180:16:180:32 | Point {...} |
+| main.rs:181:12:181:12 | 4 | main.rs:161:5:161:10 | Point3D.z | main.rs:179:13:182:5 | Point3D {...} |
+| main.rs:198:27:198:36 | source(...) | main.rs:195:22:195:24 | MyTupleStruct(0) | main.rs:198:13:198:40 | MyTupleStruct(...) |
+| main.rs:198:39:198:39 | 2 | main.rs:195:27:195:29 | MyTupleStruct(1) | main.rs:198:13:198:40 | MyTupleStruct(...) |
+| main.rs:214:27:214:36 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:214:14:214:37 | ...::Some(...) |
+| main.rs:215:27:215:27 | 2 | {EXTERNAL LOCATION} | Some | main.rs:215:14:215:28 | ...::Some(...) |
+| main.rs:227:19:227:28 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:227:14:227:29 | Some(...) |
+| main.rs:228:19:228:19 | 2 | {EXTERNAL LOCATION} | Some | main.rs:228:14:228:20 | Some(...) |
+| main.rs:240:19:240:28 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:240:14:240:29 | Some(...) |
+| main.rs:245:19:245:28 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:245:14:245:29 | Some(...) |
+| main.rs:248:19:248:19 | 0 | {EXTERNAL LOCATION} | Some | main.rs:248:14:248:20 | Some(...) |
+| main.rs:253:19:253:28 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:253:14:253:29 | Some(...) |
+| main.rs:261:19:261:28 | source(...) | {EXTERNAL LOCATION} | Some | main.rs:261:14:261:29 | Some(...) |
+| main.rs:262:19:262:19 | 2 | {EXTERNAL LOCATION} | Some | main.rs:262:14:262:20 | Some(...) |
+| main.rs:266:10:266:10 | 0 | {EXTERNAL LOCATION} | Some | main.rs:266:5:266:11 | Some(...) |
+| main.rs:270:36:270:45 | source(...) | {EXTERNAL LOCATION} | Ok | main.rs:270:33:270:46 | Ok(...) |
+| main.rs:276:37:276:46 | source(...) | {EXTERNAL LOCATION} | Err | main.rs:276:33:276:47 | Err(...) |
+| main.rs:284:35:284:44 | source(...) | {EXTERNAL LOCATION} | Ok | main.rs:284:32:284:45 | Ok(...) |
+| main.rs:285:35:285:35 | 2 | {EXTERNAL LOCATION} | Ok | main.rs:285:32:285:36 | Ok(...) |
+| main.rs:286:36:286:45 | source(...) | {EXTERNAL LOCATION} | Err | main.rs:286:32:286:46 | Err(...) |
+| main.rs:293:8:293:8 | 0 | {EXTERNAL LOCATION} | Ok | main.rs:293:5:293:9 | Ok(...) |
+| main.rs:297:35:297:44 | source(...) | {EXTERNAL LOCATION} | Ok | main.rs:297:32:297:45 | Ok(...) |
+| main.rs:301:36:301:45 | source(...) | {EXTERNAL LOCATION} | Err | main.rs:301:32:301:46 | Err(...) |
+| main.rs:312:29:312:38 | source(...) | main.rs:307:7:307:9 | A | main.rs:312:14:312:39 | ...::A(...) |
+| main.rs:313:29:313:29 | 2 | main.rs:308:7:308:9 | B | main.rs:313:14:313:30 | ...::B(...) |
+| main.rs:330:16:330:25 | source(...) | main.rs:307:7:307:9 | A | main.rs:330:14:330:26 | A(...) |
+| main.rs:331:16:331:16 | 2 | main.rs:308:7:308:9 | B | main.rs:331:14:331:17 | B(...) |
+| main.rs:352:18:352:27 | source(...) | main.rs:346:9:346:20 | C | main.rs:351:14:353:5 | ...::C {...} |
+| main.rs:354:41:354:41 | 2 | main.rs:347:9:347:20 | D | main.rs:354:14:354:43 | ...::D {...} |
+| main.rs:372:18:372:27 | source(...) | main.rs:346:9:346:20 | C | main.rs:371:14:373:5 | C {...} |
+| main.rs:374:27:374:27 | 2 | main.rs:347:9:347:20 | D | main.rs:374:14:374:29 | D {...} |
+| main.rs:392:17:392:17 | 1 | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
+| main.rs:392:20:392:20 | 2 | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
+| main.rs:392:23:392:32 | source(...) | file://:0:0:0:0 | element | main.rs:392:16:392:33 | [...] |
+| main.rs:396:17:396:26 | source(...) | file://:0:0:0:0 | element | main.rs:396:16:396:31 | [...; 10] |
+| main.rs:400:17:400:17 | 1 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
+| main.rs:400:20:400:20 | 2 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
+| main.rs:400:23:400:23 | 3 | file://:0:0:0:0 | element | main.rs:400:16:400:24 | [...] |
+| main.rs:406:17:406:17 | 1 | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
+| main.rs:406:20:406:20 | 2 | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
+| main.rs:406:23:406:32 | source(...) | file://:0:0:0:0 | element | main.rs:406:16:406:33 | [...] |
+| main.rs:411:17:411:17 | 1 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
+| main.rs:411:20:411:20 | 2 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
+| main.rs:411:23:411:23 | 3 | file://:0:0:0:0 | element | main.rs:411:16:411:24 | [...] |
+| main.rs:418:17:418:17 | 1 | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
+| main.rs:418:20:418:20 | 2 | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
+| main.rs:418:23:418:32 | source(...) | file://:0:0:0:0 | element | main.rs:418:16:418:33 | [...] |
+| main.rs:429:24:429:24 | 1 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
+| main.rs:429:27:429:27 | 2 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
+| main.rs:429:30:429:30 | 3 | file://:0:0:0:0 | element | main.rs:429:23:429:31 | [...] |
+| main.rs:432:18:432:27 | source(...) | file://:0:0:0:0 | element | main.rs:432:5:432:11 | [post] mut_arr |
+| main.rs:444:41:444:67 | default_name | main.rs:441:9:441:20 | captured default_name | main.rs:444:41:444:67 | \|...\| ... |
+| main.rs:479:15:479:24 | source(...) | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
+| main.rs:479:27:479:27 | 2 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
+| main.rs:479:30:479:30 | 3 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
+| main.rs:479:33:479:33 | 4 | file://:0:0:0:0 | element | main.rs:479:14:479:34 | [...] |
+| main.rs:504:23:504:32 | source(...) | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
+| main.rs:504:35:504:35 | 2 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
+| main.rs:504:38:504:38 | 3 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
+| main.rs:504:41:504:41 | 4 | file://:0:0:0:0 | element | main.rs:504:22:504:42 | [...] |
+| main.rs:519:18:519:18 | c | file://:0:0:0:0 | &ref | main.rs:519:17:519:18 | &c |
+| main.rs:522:15:522:15 | b | file://:0:0:0:0 | &ref | main.rs:522:14:522:15 | &b |
+| main.rs:545:27:545:27 | 0 | {EXTERNAL LOCATION} | Some | main.rs:545:22:545:28 | Some(...) |
