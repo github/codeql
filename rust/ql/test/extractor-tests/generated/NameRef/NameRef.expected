@@ -1,1 +1,1 @@
-| gen_name_ref.rs:7:5:7:7 | foo | hasText: | yes |
+| gen_name_ref.rs:7:7:7:9 | foo | hasText: | yes |
