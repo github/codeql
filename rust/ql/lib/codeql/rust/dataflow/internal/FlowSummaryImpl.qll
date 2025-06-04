@@ -68,29 +68,14 @@ module Input implements InputSig<Location, RustDataFlow> {
       result = "Field" and
       (
         exists(Addressable a, int pos, string prefix |
-          // TODO: calculate in QL
-          arg = prefix + "(" + pos + ")" and
-          (
-            prefix = a.getExtendedCanonicalPath()
-            or
-            a = any(OptionEnum o).getSome() and
-            prefix = "crate::option::Option::Some"
-            or
-            exists(string name |
-              a = any(ResultEnum r).getVariant(name) and
-              prefix = "crate::result::Result::" + name
-            )
-          )
+          arg = prefix + "(" + pos + ")" and prefix = a.getCanonicalPath()
         |
           c.(TupleFieldContent).isStructField(a, pos)
           or
           c.(TupleFieldContent).isVariantField(a, pos)
         )
         or
-        exists(Addressable a, string field |
-          // TODO: calculate in QL
-          arg = a.getExtendedCanonicalPath() + "::" + field
-        |
+        exists(Addressable a, string field | arg = a.getCanonicalPath() + "::" + field |
           c.(StructFieldContent).isStructField(a, field)
           or
           c.(StructFieldContent).isVariantField(a, field)

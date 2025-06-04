@@ -3,13 +3,13 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["lang:std", "<crate::net::tcp::TcpStream>::connect", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
-      - ["lang:std", "<crate::net::tcp::TcpStream>::connect_timeout", "ReturnValue.Field[crate::result::Result::Ok(0)]", "remote", "manual"]
+      - ["lang:std", "<crate::net::tcp::TcpStream>::connect", "ReturnValue.Field[core::result::Result::Ok(0)]", "remote", "manual"]
+      - ["lang:std", "<crate::net::tcp::TcpStream>::connect_timeout", "ReturnValue.Field[core::result::Result::Ok(0)]", "remote", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["lang:std", "<crate::net::tcp::TcpStream>::try_clone", "Argument[self]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:std", "<crate::net::tcp::TcpStream>::try_clone", "Argument[self]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["lang:std", "<crate::net::tcp::TcpStream as crate::io::Read>::read", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["lang:std", "<crate::net::tcp::TcpStream as crate::io::Read>::read_to_string", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
       - ["lang:std", "<crate::net::tcp::TcpStream as crate::io::Read>::read_to_end", "Argument[self]", "Argument[0].Reference", "taint", "manual"]
