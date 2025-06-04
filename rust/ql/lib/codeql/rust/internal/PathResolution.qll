@@ -248,8 +248,8 @@ abstract class ItemNode extends Locatable {
   /** Holds if this node provides a canonical path prefix for `child` in crate `c`. */
   pragma[nomagic]
   predicate providesCanonicalPathPrefixFor(Crate c, ItemNode child) {
-    child.getImmediateParent() = this and
-    this.hasCanonicalPath(c)
+    this.hasCanonicalPath(c) and
+    child.getImmediateParent() = this
   }
 
   /** Holds if this node has a canonical path prefix in crate `c`. */
@@ -374,6 +374,9 @@ class CrateItemNode extends ItemNode instanceof Crate {
       not file = child.(SourceFileItemNode).getSuper() and
       file = super.getSourceFile()
     )
+    or
+    this.getName() = "core" and
+    child instanceof Builtins::BuiltinType
   }
 
   override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }

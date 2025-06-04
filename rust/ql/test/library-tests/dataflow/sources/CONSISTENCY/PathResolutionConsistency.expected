@@ -1,3 +1,8 @@
+multipleMethodCallTargets
+| web_frameworks.rs:88:14:88:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
+| web_frameworks.rs:88:14:88:23 | a.as_str() | file://:0:0:0:0 | fn as_str |
+| web_frameworks.rs:89:14:89:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
+| web_frameworks.rs:89:14:89:25 | a.as_bytes() | file://:0:0:0:0 | fn as_bytes |
 multiplePathResolutions
 | test.rs:112:62:112:73 | ...::from | file://:0:0:0:0 | fn from |
 | test.rs:112:62:112:73 | ...::from | file://:0:0:0:0 | fn from |

@@ -1238,12 +1238,27 @@ private module MethodCall {
 
     pragma[nomagic]
     override Type getTypeAt(TypePath path) {
-      exists(TypePath path0 | result = inferType(super.getReceiver(), path0) |
-        path0.isCons(TRefTypeParameter(), path)
+      exists(TypePath path0, Type t0 |
+        t0 = inferType(super.getReceiver(), path0) and
+        (
+          path0.isCons(TRefTypeParameter(), path)
+          or
+          not path0.isCons(TRefTypeParameter(), _) and
+          not (path0.isEmpty() and result = TRefType()) and
+          path = path0
+        )
+      |
+        result = t0
         or
-        not path0.isCons(TRefTypeParameter(), _) and
-        not (path0.isEmpty() and result = TRefType()) and
-        path = path0
+        // We do not yet model the `Deref` trait, so we hard-code the fact that
+        // `String` dereferences to `str` here. This allows us e.g. to resolve
+        // `x.parse::<usize>()` to the function `<core::str>::parse` when `x` has
+        // type `String`.
+        //
+        // See also https://doc.rust-lang.org/reference/expressions/method-call-expr.html#r-expr.method.autoref-deref
+        path.isEmpty() and
+        t0.(StructType).asItemNode().(Struct).getCanonicalPath() = "alloc::string::String" and
+        result.(StructType).asItemNode().(Struct).getCanonicalPath() = "core::str"
       )
     }
   }
@@ -1590,7 +1605,7 @@ private module Debug {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
       filepath.matches("%/main.rs") and
-      startline = 1718
+      startline = 317
     )
   }
 

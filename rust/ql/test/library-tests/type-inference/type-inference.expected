@@ -1,4 +1,5 @@
 testFailures
+| main.rs:700:26:700:49 | ... .unwrap() | Fixed missing result: method=unwrap |
 | main.rs:1760:13:1760:33 | ... .push(...) | Unexpected result: method=push |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
@@ -832,6 +833,9 @@ inferType
 | main.rs:700:18:700:23 | "{:?}\\n" |  | file:///BUILTINS/types.rs:8:1:8:15 | str |
 | main.rs:700:18:700:49 | MacroExpr |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/fmt/mod.rs:549:1:584:1 | Arguments |
 | main.rs:700:26:700:27 | x3 |  | main.rs:619:5:620:13 | S |
+| main.rs:700:26:700:40 | x3.putTwo(...) |  | main.rs:568:5:571:5 | Wrapper |
+| main.rs:700:26:700:40 | x3.putTwo(...) | A | main.rs:639:36:639:50 | AssociatedParam |
+| main.rs:700:26:700:49 | ... .unwrap() |  | main.rs:639:36:639:50 | AssociatedParam |
 | main.rs:700:36:700:36 | 2 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:700:39:700:39 | 3 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
 | main.rs:702:20:702:20 | S |  | main.rs:619:5:620:13 | S |
@@ -2461,11 +2465,14 @@ inferType
 | main.rs:1490:23:1490:28 | self.y | &T | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:43:1490:62 | &... |  | file://:0:0:0:0 | & |
 | main.rs:1490:43:1490:62 | &... | &T | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:43:1490:62 | &... | &T | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/cmp.rs:699:1:1040:1 | Self [trait Ord] |
 | main.rs:1490:44:1490:62 | (...) |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:44:1490:62 | (...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/cmp.rs:699:1:1040:1 | Self [trait Ord] |
 | main.rs:1490:45:1490:49 | other |  | file://:0:0:0:0 | & |
 | main.rs:1490:45:1490:49 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:45:1490:51 | other.x |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
 | main.rs:1490:45:1490:61 | ... + ... |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
+| main.rs:1490:45:1490:61 | ... + ... |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/cmp.rs:699:1:1040:1 | Self [trait Ord] |
 | main.rs:1490:55:1490:59 | other |  | file://:0:0:0:0 | & |
 | main.rs:1490:55:1490:59 | other | &T | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1490:55:1490:61 | other.y |  | file:///BUILTINS/types.rs:13:1:13:15 | i64 |
