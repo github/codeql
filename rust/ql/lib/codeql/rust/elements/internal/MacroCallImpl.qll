@@ -27,7 +27,6 @@ module Impl {
    * For example:
    * ```rust
    * println!("Hello, world!");
-   * //^^^^^^^
    * ```
    */
   class MacroCall extends Generated::MacroCall {

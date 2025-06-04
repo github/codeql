@@ -5,5 +5,4 @@ fn test_paren_expr() -> () {
     // 
     // For example:
     (x + y)
-    //^^^^^
 }

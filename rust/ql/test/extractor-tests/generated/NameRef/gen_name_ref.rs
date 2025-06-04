@@ -4,6 +4,6 @@ fn test_name_ref() -> () {
     // A reference to a name.
     // 
     // For example:
-    foo();
+      foo();
     //^^^
 }

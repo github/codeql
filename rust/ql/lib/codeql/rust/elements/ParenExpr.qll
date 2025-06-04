@@ -13,7 +13,6 @@ import codeql.rust.elements.Expr
  * For example:
  * ```rust
  * (x + y)
- * //^^^^^
  * ```
  */
 final class ParenExpr = Impl::ParenExpr;

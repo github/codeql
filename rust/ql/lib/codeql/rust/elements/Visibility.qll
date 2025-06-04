@@ -12,7 +12,7 @@ import codeql.rust.elements.Path
  *
  * For example:
  * ```rust
- * pub struct S;
+ *   pub struct S;
  * //^^^
  * ```
  */

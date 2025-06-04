@@ -5,5 +5,5 @@ fn test_use_tree_list() -> () {
     // 
     // For example:
     use std::{fs, io};
-    //        ^^^^^^^
+    //       ^^^^^^^^
 }

@@ -21,7 +21,6 @@ module Generated {
    * For example:
    * ```rust
    * (x + y)
-   * //^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ParenExpr` class directly.
    * Use the subclass `ParenExpr`, where the following predicates are available.

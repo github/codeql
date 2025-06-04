@@ -25,7 +25,6 @@ module Generated {
    * For example:
    * ```rust
    * println!("Hello, world!");
-   * //^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::MacroCall` class directly.
    * Use the subclass `MacroCall`, where the following predicates are available.

@@ -24,7 +24,7 @@ module Generated {
    * A Struct. For example:
    * ```rust
    * struct Point {
-   * x: i32,
+   *     x: i32,
    *     y: i32,
    * }
    * ```

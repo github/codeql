@@ -21,9 +21,9 @@ module Generated {
    * println!("{} {}!", "Hello", "world");
    * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
-   * ```
+   * ```rust
    * macro_rules! foo { ($x:expr) => { $x + 1 }; }
-   * //                 ^^^^^^^^^^^^^^^^^^^^^^^
+   * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::TokenTree` class directly.
    * Use the subclass `TokenTree`, where the following predicates are available.

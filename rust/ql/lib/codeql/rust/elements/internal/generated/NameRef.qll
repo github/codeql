@@ -18,7 +18,7 @@ module Generated {
    *
    * For example:
    * ```rust
-   * foo();
+   *   foo();
    * //^^^
    * ```
    * INTERNAL: Do not reference the `Generated::NameRef` class directly.

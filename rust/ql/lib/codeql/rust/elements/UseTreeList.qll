@@ -13,7 +13,7 @@ import codeql.rust.elements.UseTree
  * For example:
  * ```rust
  * use std::{fs, io};
- * //        ^^^^^^^
+ * //       ^^^^^^^^
  * ```
  */
 final class UseTreeList = Impl::UseTreeList;

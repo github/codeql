@@ -20,7 +20,7 @@ module Generated {
    * For example:
    * ```rust
    * use std::{fs, io};
-   * //        ^^^^^^^
+   * //       ^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::UseTreeList` class directly.
    * Use the subclass `UseTreeList`, where the following predicates are available.

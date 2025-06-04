@@ -18,7 +18,7 @@ module Impl {
    * For example:
    * ```rust
    * use std::{fs, io};
-   * //        ^^^^^^^
+   * //       ^^^^^^^^
    * ```
    */
   class UseTreeList extends Generated::UseTreeList { }

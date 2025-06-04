@@ -17,7 +17,7 @@ module Impl {
    *
    * For example:
    * ```rust
-   * pub struct S;
+   *   pub struct S;
    * //^^^
    * ```
    */

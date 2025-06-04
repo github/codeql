@@ -19,7 +19,7 @@ module Generated {
    *
    * For example:
    * ```rust
-   * pub struct S;
+   *   pub struct S;
    * //^^^
    * ```
    * INTERNAL: Do not reference the `Generated::Visibility` class directly.

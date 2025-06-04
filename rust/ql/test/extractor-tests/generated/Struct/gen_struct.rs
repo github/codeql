@@ -3,7 +3,7 @@
 fn test_struct() -> () {
     // A Struct. For example:
     struct Point {
-    x: i32,
+        x: i32,
         y: i32,
     }
 }

@@ -18,7 +18,6 @@ module Impl {
    * For example:
    * ```rust
    * (x + y)
-   * //^^^^^
    * ```
    */
   class ParenExpr extends Generated::ParenExpr {

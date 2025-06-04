@@ -1184,9 +1184,9 @@ module Raw {
    * println!("{} {}!", "Hello", "world");
    * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
-   * ```
+   * ```rust
    * macro_rules! foo { ($x:expr) => { $x + 1 }; }
-   * //                 ^^^^^^^^^^^^^^^^^^^^^^^
+   * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TokenTree extends @token_tree, AstNode {
@@ -1319,7 +1319,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A `use` tree, ie the part after the `use` keyword in a `use` statement. For example:
+   * A `use` tree, that is, the part after the `use` keyword in a `use` statement. For example:
    * ```rust
    * use std::collections::HashMap;
    * use std::collections::*;
@@ -1358,7 +1358,7 @@ module Raw {
    * For example:
    * ```rust
    * use std::{fs, io};
-   * //        ^^^^^^^
+   * //       ^^^^^^^^
    * ```
    */
   class UseTreeList extends @use_tree_list, AstNode {
@@ -1400,7 +1400,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * pub struct S;
+   *   pub struct S;
    * //^^^
    * ```
    */
@@ -2252,7 +2252,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A higher-ranked trait bound(HRTB) type.
+   * A higher-ranked trait bound.
    *
    * For example:
    * ```rust
@@ -2799,7 +2799,7 @@ module Raw {
    *
    * For example:
    * ```rust
-   * foo();
+   *   foo();
    * //^^^
    * ```
    */
@@ -2895,7 +2895,6 @@ module Raw {
    * For example:
    * ```rust
    * (x + y)
-   * //^^^^^
    * ```
    */
   class ParenExpr extends @paren_expr, Expr {
@@ -4008,7 +4007,6 @@ module Raw {
    * For example:
    * ```rust
    * println!("Hello, world!");
-   * //^^^^^^^
    * ```
    */
   class MacroCall extends @macro_call, AssocItem, ExternItem, Item {
@@ -4264,7 +4262,7 @@ module Raw {
    * A Struct. For example:
    * ```rust
    * struct Point {
-   * x: i32,
+   *     x: i32,
    *     y: i32,
    * }
    * ```

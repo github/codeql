@@ -4,6 +4,6 @@ fn test_visibility() -> () {
     // A visibility modifier.
     // 
     // For example:
-    pub struct S;
+      pub struct S;
     //^^^
 }

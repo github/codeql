@@ -20,9 +20,9 @@ module Impl {
    * println!("{} {}!", "Hello", "world");
    * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
-   * ```
+   * ```rust
    * macro_rules! foo { ($x:expr) => { $x + 1 }; }
-   * //                 ^^^^^^^^^^^^^^^^^^^^^^^
+   * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    */
   class TokenTree extends Generated::TokenTree { }

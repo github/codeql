@@ -14,9 +14,9 @@ import codeql.rust.elements.AstNode
  * println!("{} {}!", "Hello", "world");
  * //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
- * ```
+ * ```rust
  * macro_rules! foo { ($x:expr) => { $x + 1 }; }
- * //                 ^^^^^^^^^^^^^^^^^^^^^^^
+ * //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  * ```
  */
 final class TokenTree = Impl::TokenTree;

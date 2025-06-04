@@ -16,7 +16,7 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A higher-ranked trait bound(HRTB) type.
+   * A higher-ranked trait bound.
    *
    * For example:
    * ```rust

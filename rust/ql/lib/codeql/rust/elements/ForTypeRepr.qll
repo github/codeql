@@ -8,7 +8,7 @@ import codeql.rust.elements.GenericParamList
 import codeql.rust.elements.TypeRepr
 
 /**
- * A higher-ranked trait bound(HRTB) type.
+ * A higher-ranked trait bound.
  *
  * For example:
  * ```rust

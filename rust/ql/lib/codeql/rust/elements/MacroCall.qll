@@ -18,7 +18,6 @@ import codeql.rust.elements.TokenTree
  * For example:
  * ```rust
  * println!("Hello, world!");
- * //^^^^^^^
  * ```
  */
 final class MacroCall = Impl::MacroCall;

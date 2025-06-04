@@ -1833,7 +1833,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
      * For example:
      * ```rust
      * println!("Hello, world!");
-     * //^^^^^^^
      * ```
      */
     final class MacroCallCfgNode extends CfgNodeFinal {

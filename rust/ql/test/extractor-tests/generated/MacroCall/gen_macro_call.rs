@@ -5,5 +5,4 @@ fn test_macro_call() -> () {
     // 
     // For example:
     println!("Hello, world!");
-    //^^^^^^^
 }

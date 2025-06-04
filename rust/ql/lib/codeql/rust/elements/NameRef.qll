@@ -11,7 +11,7 @@ import codeql.rust.elements.UseBoundGenericArg
  *
  * For example:
  * ```rust
- * foo();
+ *   foo();
  * //^^^
  * ```
  */
