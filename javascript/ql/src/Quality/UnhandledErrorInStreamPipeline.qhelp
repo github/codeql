@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+In Node.js, calling the <code>pipe()</code> method on a stream without proper error handling can lead to unexplained failures, where errors are dropped and not propagated downstream. This can result in unwanted behavior and make debugging difficult. To reliably handle all errors, every stream in the pipeline must have an error handler registered.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Instead of using <code>pipe()</code> with manual error handling, prefer using the <code>pipeline</code> function from the Node.js <code>stream</code> module. The <code>pipeline</code> function automatically handles errors and ensures proper cleanup of resources. This approach is more robust and eliminates the risk of forgetting to handle errors.
+</p>
+<p>
+If you must use <code>pipe()</code>, always attach an error handler to the source stream using methods like <code>on('error', handler)</code> to ensure that any errors emitted by the input stream are properly handled. When multiple <code>pipe()</code> calls are chained, an error handler should be attached before each step of the pipeline.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following code snippet demonstrates a problematic usage of the <code>pipe()</code> method without error handling:
+</p>
+
+<sample src="examples/UnhandledStreamPipe.js" />
+
+<p>
+A better approach is to use the <code>pipeline</code> function, which automatically handles errors:
+</p>
+
+<sample src="examples/UnhandledStreamPipeGood.js" />
+
+<p>
+Alternatively, if you need to use <code>pipe()</code>, make sure to add error handling:
+</p>
+
+<sample src="examples/UnhandledStreamPipeManualError.js" />
+</example>
+
+<references>
+<li>Node.js Documentation: <a href="https://nodejs.org/api/stream.html#streampipelinestreams-callback">stream.pipeline()</a>.</li>
+</references>
+</qhelp>
