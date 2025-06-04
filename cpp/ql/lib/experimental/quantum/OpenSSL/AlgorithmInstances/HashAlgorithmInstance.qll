@@ -6,10 +6,10 @@ private import experimental.quantum.OpenSSL.AlgorithmInstances.OpenSSLAlgorithmI
 private import AlgToAVCFlow
 
 predicate knownOpenSSLConstantToHashFamilyType(
-  KnownOpenSSLHashAlgorithmConstant e, Crypto::THashType type
+  KnownOpenSSLHashAlgorithmExpr e, Crypto::THashType type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
     (
       name.matches("BLAKE2B") and type instanceof Crypto::BLAKE2B
       or
@@ -45,7 +45,7 @@ predicate knownOpenSSLConstantToHashFamilyType(
 }
 
 class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::HashAlgorithmInstance instanceof KnownOpenSSLHashAlgorithmConstant
+  Crypto::HashAlgorithmInstance instanceof KnownOpenSSLHashAlgorithmExpr
 {
   OpenSSLAlgorithmValueConsumer getterCall;
 
@@ -54,7 +54,7 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof Literal and
+    this instanceof OpenSSLAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
@@ -65,7 +65,8 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and getterCall = this
+    this instanceof OpenSSLAlgorithmCall and
+    getterCall = this
   }
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
@@ -83,6 +84,6 @@ class KnownOpenSSLHashConstantAlgorithmInstance extends OpenSSLAlgorithmInstance
   }
 
   override int getFixedDigestLength() {
-    this.(KnownOpenSSLHashAlgorithmConstant).getExplicitDigestLength() = result
+    this.(KnownOpenSSLHashAlgorithmExpr).getExplicitDigestLength() = result
   }
 }

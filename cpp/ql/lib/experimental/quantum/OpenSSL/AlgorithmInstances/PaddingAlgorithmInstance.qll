@@ -24,14 +24,14 @@ class OpenSSLPaddingLiteral extends Literal {
 }
 
 /**
- * Given a `KnownOpenSSLPaddingAlgorithmConstant`, converts this to a padding family type.
+ * Given a `KnownOpenSSLPaddingAlgorithmExpr`, converts this to a padding family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToPaddingFamilyType(
-  KnownOpenSSLPaddingAlgorithmConstant e, Crypto::TPaddingType type
+  KnownOpenSSLPaddingAlgorithmExpr e, Crypto::TPaddingType type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
     (
       name.matches("OAEP") and type = Crypto::OAEP()
       or
@@ -59,8 +59,8 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // 3) the source is a padding-specific literal flowing to a padding-specific consumer
     // Possibility 1:
-    this instanceof Literal and
-    this instanceof KnownOpenSSLPaddingAlgorithmConstant and
+    this instanceof OpenSSLAlgorithmLiteral and
+    this instanceof KnownOpenSSLPaddingAlgorithmExpr and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
@@ -72,9 +72,9 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and
+    this instanceof OpenSSLAlgorithmCall and
     getterCall = this and
-    this instanceof KnownOpenSSLPaddingAlgorithmConstant and
+    this instanceof KnownOpenSSLPaddingAlgorithmExpr and
     isPaddingSpecificConsumer = false
     or
     // Possibility 3: padding-specific literal

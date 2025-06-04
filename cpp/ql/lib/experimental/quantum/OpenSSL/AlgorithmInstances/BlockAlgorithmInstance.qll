@@ -7,14 +7,14 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
 private import AlgToAVCFlow
 
 /**
- * Given a `KnownOpenSSLBlockModeAlgorithmConstant`, converts this to a block family type.
+ * Given a `KnownOpenSSLBlockModeAlgorithmExpr`, converts this to a block family type.
  * Does not bind if there is no mapping (no mapping to 'unknown' or 'other').
  */
 predicate knownOpenSSLConstantToBlockModeFamilyType(
-  KnownOpenSSLBlockModeAlgorithmConstant e, Crypto::TBlockCipherModeOfOperationType type
+  KnownOpenSSLBlockModeAlgorithmExpr e, Crypto::TBlockCipherModeOfOperationType type
 ) {
   exists(string name |
-    name = e.getNormalizedName() and
+    name = e.(KnownOpenSSLAlgorithmExpr).getNormalizedName() and
     (
       name.matches("CBC") and type instanceof Crypto::CBC
       or
@@ -40,7 +40,7 @@ predicate knownOpenSSLConstantToBlockModeFamilyType(
 }
 
 class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmInstance,
-  Crypto::ModeOfOperationAlgorithmInstance instanceof KnownOpenSSLBlockModeAlgorithmConstant
+  Crypto::ModeOfOperationAlgorithmInstance instanceof KnownOpenSSLBlockModeAlgorithmExpr
 {
   OpenSSLAlgorithmValueConsumer getterCall;
 
@@ -49,7 +49,7 @@ class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmIns
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm is call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof Literal and
+    this instanceof OpenSSLAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a CipherGetterCall
       sink = getterCall.(OpenSSLAlgorithmValueConsumer).getInputNode() and
@@ -60,7 +60,8 @@ class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmIns
     )
     or
     // Possibility 2:
-    this instanceof DirectAlgorithmValueConsumer and getterCall = this
+    this instanceof OpenSSLAlgorithmCall and
+    getterCall = this
   }
 
   override Crypto::TBlockCipherModeOfOperationType getModeType() {
