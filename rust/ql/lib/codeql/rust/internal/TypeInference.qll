@@ -608,7 +608,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       exists(Param p, int i, boolean inMethod |
         paramPos(this.getParamList(), p, i, inMethod) and
         dpos = TPositionalDeclarationPosition(i, inMethod) and
-        result = inferAnnotatedType(p.getPat(), path)
+        result = p.getTypeRepr().(TypeMention).resolveTypeAt(path)
       )
       or
       exists(SelfParam self |
@@ -1598,8 +1598,8 @@ private module Debug {
     result = inferType(n, path)
   }
 
-  Function debugResolveMethodCallExpr(MethodCallExpr mce) {
-    mce = getRelevantLocatable() and
-    result = resolveMethodCallTarget(mce)
+  Function debugResolveMethodCallExpr(MethodCall mc) {
+    mc = getRelevantLocatable() and
+    result = resolveMethodCallTarget(mc)
   }
 }
