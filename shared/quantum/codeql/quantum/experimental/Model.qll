@@ -1430,6 +1430,9 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   class AssetNode = NodeBase;
 
   /**
+   * Holds if the given elliptic curve is directly consumed by another algorithm
+   * node.
+   *
    * This predicate is used to filter out elliptic curve nodes in cases where
    * the algorithm instance and the curve instance are represented by the same
    * algorithm value consumer (e.g. in cases where both the algorithm and the

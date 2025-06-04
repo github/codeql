@@ -1,6 +1,4 @@
 import java
-import experimental.quantum.Language
-import AlgorithmValueConsumers
 import OperationInstances
 import FlowAnalysis
 
@@ -31,8 +29,8 @@ class EllipticCurveStringLiteralInstance extends Crypto::EllipticCurveInstance i
 }
 
 /**
- * Represents an elliptic curve algorithm where the elliptic curve is implicitly
- * defined by the underlying type.
+ * An elliptic curve algorithm where the elliptic curve is implicitly defined by
+ * the underlying type.
  */
 abstract class KnownEllipticCurveInstance extends Crypto::EllipticCurveInstance,
   Crypto::EllipticCurveConsumingAlgorithmInstance, Crypto::AlgorithmValueConsumer instanceof ClassInstanceExpr
@@ -51,7 +49,7 @@ abstract class KnownEllipticCurveInstance extends Crypto::EllipticCurveInstance,
 }
 
 /**
- * Signature algorithms where the algorithm is implicitly defined by the type.
+ * A signature algorithm where the algorithm is implicitly defined by the type.
  */
 abstract class SignatureAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
   SignatureAlgorithmValueConsumer instanceof ClassInstanceExpr
@@ -100,10 +98,10 @@ abstract class KnownEllipticCurveSignatureAlgorithmInstance extends KnownEllipti
 }
 
 /**
- * DSA and DSADigest signers.
+ * A DSA or DSADigest signer.
  */
-class DSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
-  DSASignatureAlgorithmInstance() {
+class DsaSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr {
+  DsaSignatureAlgorithmInstance() {
     super.getConstructedType() instanceof Signers::Signer and
     super.getConstructedType().getName().matches("DSA%")
   }
@@ -114,7 +112,7 @@ class DSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceo
 }
 
 /**
- * Ed25519, Ed25519ph, and Ed25519ctx signers.
+ * An Ed25519, Ed25519ph, or Ed25519ctx signer.
  */
 class Ed25519SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
@@ -131,7 +129,7 @@ class Ed25519SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgor
 }
 
 /**
- * Ed448 and Ed448ph signers.
+ * An Ed448 or Ed448ph signer.
  */
 class Ed448SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
@@ -148,7 +146,7 @@ class Ed448SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorit
 }
 
 /**
- * ECDSA signers.
+ * An ECDSA signer.
  *
  * ECDSA curve parameters can be set in at least five ways:
  * - By using the `ECDomainParameters` class, which is passed to the constructor of the signer.
@@ -157,9 +155,9 @@ class Ed448SignatureAlgorithmInstance extends KnownEllipticCurveSignatureAlgorit
  * - By using the `ECNamedCurveSpec` class, which is passed to the constructor of the signer.
  * - By using the `ECParameterSpec` class, which is passed to the constructor of the signer.
  */
-class ECDSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
+class EcdsaSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
-  ECDSASignatureAlgorithmInstance() {
+  EcdsaSignatureAlgorithmInstance() {
     super.getConstructedType() instanceof Signers::OneShotSigner and
     super.getConstructedType().getName().matches("ECDSA%")
   }
@@ -176,7 +174,7 @@ class ECDSASignatureAlgorithmInstance extends SignatureAlgorithmInstance instanc
 }
 
 /**
- * An LMS or HSS stateful hash-based signer.
+ * An LMS or HSS stateful, hash-based signer.
  */
 class StatefulSignatureAlgorithmInstance extends SignatureAlgorithmInstance instanceof ClassInstanceExpr
 {
@@ -199,7 +197,7 @@ class StatefulSignatureAlgorithmInstance extends SignatureAlgorithmInstance inst
 }
 
 /**
- * Key generation algorithms where the algorithm is implicitly defined by the
+ * A key generation algorithm where the algorithm is implicitly defined by the
  * type.
  */
 abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgorithmInstance,
@@ -237,9 +235,8 @@ abstract class KeyGenerationAlgorithmInstance extends Crypto::KeyOperationAlgori
 }
 
 /**
- * Represents an elliptic curve key generation algorithm where both the key
- * generation algorithm and elliptic curve are implicitly defined by the
- * underlying type.
+ * An elliptic curve key generation algorithm where both the key generation
+ * algorithm and elliptic curve are implicitly defined by the underlying type.
  */
 abstract class KnownEllipticCurveKeyGenerationAlgorithmInstance extends KnownEllipticCurveInstance,
   KeyGenerationAlgorithmInstance
@@ -270,7 +267,7 @@ class Ed448KeyGenerationAlgorithmInstance extends KnownEllipticCurveKeyGeneratio
 }
 
 /**
- * Represents a generic `ECKeyPairGenerator` instance.
+ * A generic `ECKeyPairGenerator` instance.
  */
 class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance,
   Crypto::EllipticCurveConsumingAlgorithmInstance instanceof ClassInstanceExpr
@@ -312,8 +309,8 @@ class GenericEllipticCurveKeyGenerationAlgorithmInstance extends KeyGenerationAl
 }
 
 /**
- * Represents LMS or HSS key generation instances. The algorithm is implicitly
- * defined by the type.
+ * An LMS or HSS key generation instances. The algorithm is implicitly defined
+ * by the type.
  */
 class StatefulSignatureKeyGenerationAlgorithmInstance extends KeyGenerationAlgorithmInstance instanceof ClassInstanceExpr
 {
