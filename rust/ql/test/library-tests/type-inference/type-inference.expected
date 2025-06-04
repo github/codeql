@@ -6,6 +6,8 @@ inferType
 | main.rs:26:17:26:32 | MyThing {...} |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:26:30:26:30 | S |  | main.rs:2:5:3:13 | S |
 | main.rs:27:18:27:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:27:18:27:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:27:18:27:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:27:26:27:26 | x |  | main.rs:5:5:8:5 | MyThing |
 | main.rs:27:26:27:28 | x.a |  | main.rs:2:5:3:13 | S |
 | main.rs:30:29:30:29 | x |  | main.rs:16:5:19:5 | GenericThing |
@@ -15,6 +17,8 @@ inferType
 | main.rs:31:17:31:17 | x | A | {EXTERNAL LOCATION} | bool |
 | main.rs:31:17:31:19 | x.a |  | {EXTERNAL LOCATION} | bool |
 | main.rs:32:18:32:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:32:18:32:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:32:18:32:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:32:26:32:26 | a |  | {EXTERNAL LOCATION} | bool |
 | main.rs:37:13:37:13 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:37:13:37:13 | x | A | main.rs:2:5:3:13 | S |
@@ -22,6 +26,8 @@ inferType
 | main.rs:37:17:37:42 | GenericThing::<...> {...} | A | main.rs:2:5:3:13 | S |
 | main.rs:37:40:37:40 | S |  | main.rs:2:5:3:13 | S |
 | main.rs:38:18:38:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:38:18:38:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:38:18:38:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:38:26:38:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:38:26:38:26 | x | A | main.rs:2:5:3:13 | S |
 | main.rs:38:26:38:28 | x.a |  | main.rs:2:5:3:13 | S |
@@ -31,6 +37,8 @@ inferType
 | main.rs:41:17:41:37 | GenericThing {...} | A | main.rs:2:5:3:13 | S |
 | main.rs:41:35:41:35 | S |  | main.rs:2:5:3:13 | S |
 | main.rs:42:18:42:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:42:18:42:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:42:18:42:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:42:26:42:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:42:26:42:26 | x | A | main.rs:2:5:3:13 | S |
 | main.rs:42:26:42:28 | x.a |  | main.rs:2:5:3:13 | S |
@@ -39,6 +47,8 @@ inferType
 | main.rs:47:16:47:33 | ...::MyNone(...) |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:47:16:47:33 | ...::MyNone(...) | T | main.rs:2:5:3:13 | S |
 | main.rs:49:18:49:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:49:18:49:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:49:18:49:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:49:26:49:26 | x |  | main.rs:21:5:23:5 | OptionS |
 | main.rs:49:26:49:28 | x.a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:49:26:49:28 | x.a | T | main.rs:2:5:3:13 | S |
@@ -51,6 +61,8 @@ inferType
 | main.rs:53:16:53:33 | ...::MyNone(...) |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:53:16:53:33 | ...::MyNone(...) | T | main.rs:2:5:3:13 | S |
 | main.rs:55:18:55:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:55:18:55:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:55:18:55:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:55:26:55:26 | x |  | main.rs:16:5:19:5 | GenericThing |
 | main.rs:55:26:55:26 | x | A | main.rs:10:5:14:5 | MyOption |
 | main.rs:55:26:55:26 | x | A.T | main.rs:2:5:3:13 | S |
@@ -72,6 +84,8 @@ inferType
 | main.rs:61:30:61:32 | x.a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:61:30:61:32 | x.a | T | main.rs:2:5:3:13 | S |
 | main.rs:62:18:62:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:62:18:62:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:62:18:62:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:62:26:62:26 | a |  | main.rs:10:5:14:5 | MyOption |
 | main.rs:62:26:62:26 | a | T | main.rs:2:5:3:13 | S |
 | main.rs:75:19:75:22 | SelfParam |  | main.rs:72:5:72:21 | Foo |
@@ -82,6 +96,8 @@ inferType
 | main.rs:80:13:80:16 | self |  | main.rs:72:5:72:21 | Foo |
 | main.rs:84:23:89:5 | { ... } |  | main.rs:72:5:72:21 | Foo |
 | main.rs:85:18:85:33 | "main.rs::m1::f\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:85:18:85:33 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:85:18:85:33 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:86:13:86:13 | x |  | main.rs:72:5:72:21 | Foo |
 | main.rs:86:17:86:22 | Foo {...} |  | main.rs:72:5:72:21 | Foo |
 | main.rs:87:13:87:13 | y |  | main.rs:72:5:72:21 | Foo |
@@ -91,6 +107,8 @@ inferType
 | main.rs:91:22:91:22 | y |  | main.rs:72:5:72:21 | Foo |
 | main.rs:91:37:95:5 | { ... } |  | main.rs:72:5:72:21 | Foo |
 | main.rs:92:18:92:33 | "main.rs::m1::g\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:92:18:92:33 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:92:18:92:33 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:93:9:93:9 | x |  | main.rs:72:5:72:21 | Foo |
 | main.rs:93:9:93:14 | x.m1() |  | main.rs:72:5:72:21 | Foo |
 | main.rs:94:9:94:9 | y |  | main.rs:72:5:72:21 | Foo |
@@ -144,18 +162,26 @@ inferType
 | main.rs:157:17:157:33 | MyThing {...} | A | main.rs:132:5:133:14 | S2 |
 | main.rs:157:30:157:31 | S2 |  | main.rs:132:5:133:14 | S2 |
 | main.rs:160:18:160:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:160:18:160:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:160:18:160:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:160:26:160:26 | x |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:160:26:160:26 | x | A | main.rs:130:5:131:14 | S1 |
 | main.rs:160:26:160:28 | x.a |  | main.rs:130:5:131:14 | S1 |
 | main.rs:161:18:161:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:161:18:161:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:161:18:161:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:161:26:161:26 | y |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:161:26:161:26 | y | A | main.rs:132:5:133:14 | S2 |
 | main.rs:161:26:161:28 | y.a |  | main.rs:132:5:133:14 | S2 |
 | main.rs:163:18:163:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:163:18:163:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:163:18:163:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:163:26:163:26 | x |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:163:26:163:26 | x | A | main.rs:130:5:131:14 | S1 |
 | main.rs:163:26:163:31 | x.m1() |  | main.rs:130:5:131:14 | S1 |
 | main.rs:164:18:164:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:164:18:164:33 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:164:18:164:33 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:164:26:164:26 | y |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:164:26:164:26 | y | A | main.rs:132:5:133:14 | S2 |
 | main.rs:164:26:164:31 | y.m1() |  | main.rs:125:5:128:5 | MyThing |
@@ -172,10 +198,14 @@ inferType
 | main.rs:167:17:167:33 | MyThing {...} | A | main.rs:132:5:133:14 | S2 |
 | main.rs:167:30:167:31 | S2 |  | main.rs:132:5:133:14 | S2 |
 | main.rs:169:18:169:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:169:18:169:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:169:18:169:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:169:26:169:26 | x |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:169:26:169:26 | x | A | main.rs:130:5:131:14 | S1 |
 | main.rs:169:26:169:31 | x.m2() |  | main.rs:130:5:131:14 | S1 |
 | main.rs:170:18:170:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:170:18:170:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:170:18:170:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:170:26:170:26 | y |  | main.rs:125:5:128:5 | MyThing |
 | main.rs:170:26:170:26 | y | A | main.rs:132:5:133:14 | S2 |
 | main.rs:170:26:170:31 | y.m2() |  | main.rs:132:5:133:14 | S2 |
@@ -315,10 +345,14 @@ inferType
 | main.rs:325:24:325:40 | MyThing {...} | A | main.rs:190:5:191:14 | S3 |
 | main.rs:325:37:325:38 | S3 |  | main.rs:190:5:191:14 | S3 |
 | main.rs:329:18:329:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:329:18:329:38 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:329:18:329:38 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:329:26:329:33 | thing_s1 |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:329:26:329:33 | thing_s1 | A | main.rs:186:5:187:14 | S1 |
 | main.rs:329:26:329:38 | thing_s1.m1() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:330:18:330:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:330:18:330:40 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:330:18:330:40 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:330:26:330:33 | thing_s2 |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:330:26:330:33 | thing_s2 | A | main.rs:188:5:189:14 | S2 |
 | main.rs:330:26:330:38 | thing_s2.m1() |  | main.rs:175:5:178:5 | MyThing |
@@ -329,6 +363,8 @@ inferType
 | main.rs:331:22:331:29 | thing_s3 | A | main.rs:190:5:191:14 | S3 |
 | main.rs:331:22:331:34 | thing_s3.m1() |  | main.rs:190:5:191:14 | S3 |
 | main.rs:332:18:332:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:332:18:332:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:332:18:332:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:332:26:332:27 | s3 |  | main.rs:190:5:191:14 | S3 |
 | main.rs:334:13:334:14 | p1 |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:334:13:334:14 | p1 | P1 | main.rs:186:5:187:14 | S1 |
@@ -339,6 +375,8 @@ inferType
 | main.rs:334:31:334:32 | S1 |  | main.rs:186:5:187:14 | S1 |
 | main.rs:334:39:334:40 | S1 |  | main.rs:186:5:187:14 | S1 |
 | main.rs:335:18:335:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:335:18:335:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:335:18:335:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:335:26:335:27 | p1 |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:335:26:335:27 | p1 | P1 | main.rs:186:5:187:14 | S1 |
 | main.rs:335:26:335:27 | p1 | P2 | main.rs:186:5:187:14 | S1 |
@@ -352,6 +390,8 @@ inferType
 | main.rs:337:31:337:32 | S1 |  | main.rs:186:5:187:14 | S1 |
 | main.rs:337:39:337:40 | S2 |  | main.rs:188:5:189:14 | S2 |
 | main.rs:338:18:338:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:338:18:338:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:338:18:338:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:338:26:338:27 | p2 |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:338:26:338:27 | p2 | P1 | main.rs:186:5:187:14 | S1 |
 | main.rs:338:26:338:27 | p2 | P2 | main.rs:188:5:189:14 | S2 |
@@ -369,6 +409,8 @@ inferType
 | main.rs:341:30:341:31 | S1 |  | main.rs:186:5:187:14 | S1 |
 | main.rs:342:17:342:18 | S3 |  | main.rs:190:5:191:14 | S3 |
 | main.rs:344:18:344:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:344:18:344:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:344:18:344:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:344:26:344:27 | p3 |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:344:26:344:27 | p3 | P1 | main.rs:175:5:178:5 | MyThing |
 | main.rs:344:26:344:27 | p3 | P1.A | main.rs:186:5:187:14 | S1 |
@@ -388,6 +430,8 @@ inferType
 | main.rs:348:17:348:17 | a | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:348:17:348:23 | a.fst() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:349:18:349:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:349:18:349:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:349:18:349:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:349:26:349:26 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:350:13:350:13 | y |  | main.rs:186:5:187:14 | S1 |
 | main.rs:350:17:350:17 | a |  | main.rs:180:5:184:5 | MyPair |
@@ -395,6 +439,8 @@ inferType
 | main.rs:350:17:350:17 | a | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:350:17:350:23 | a.snd() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:351:18:351:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:351:18:351:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:351:18:351:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:351:26:351:26 | y |  | main.rs:186:5:187:14 | S1 |
 | main.rs:357:13:357:13 | b |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:357:13:357:13 | b | P1 | main.rs:188:5:189:14 | S2 |
@@ -410,6 +456,8 @@ inferType
 | main.rs:358:17:358:17 | b | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:358:17:358:23 | b.fst() |  | main.rs:186:5:187:14 | S1 |
 | main.rs:359:18:359:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:359:18:359:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:359:18:359:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:359:26:359:26 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:360:13:360:13 | y |  | main.rs:188:5:189:14 | S2 |
 | main.rs:360:17:360:17 | b |  | main.rs:180:5:184:5 | MyPair |
@@ -417,12 +465,16 @@ inferType
 | main.rs:360:17:360:17 | b | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:360:17:360:23 | b.snd() |  | main.rs:188:5:189:14 | S2 |
 | main.rs:361:18:361:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:361:18:361:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:361:18:361:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:361:26:361:26 | y |  | main.rs:188:5:189:14 | S2 |
 | main.rs:365:13:365:13 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:365:17:365:39 | call_trait_m1(...) |  | main.rs:186:5:187:14 | S1 |
 | main.rs:365:31:365:38 | thing_s1 |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:365:31:365:38 | thing_s1 | A | main.rs:186:5:187:14 | S1 |
 | main.rs:366:18:366:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:366:18:366:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:366:18:366:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:366:26:366:26 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:367:13:367:13 | y |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:367:13:367:13 | y | A | main.rs:188:5:189:14 | S2 |
@@ -431,6 +483,8 @@ inferType
 | main.rs:367:31:367:38 | thing_s2 |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:367:31:367:38 | thing_s2 | A | main.rs:188:5:189:14 | S2 |
 | main.rs:368:18:368:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:368:18:368:28 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:368:18:368:28 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:368:26:368:26 | y |  | main.rs:175:5:178:5 | MyThing |
 | main.rs:368:26:368:26 | y | A | main.rs:188:5:189:14 | S2 |
 | main.rs:368:26:368:28 | y.a |  | main.rs:188:5:189:14 | S2 |
@@ -448,6 +502,8 @@ inferType
 | main.rs:372:25:372:25 | a | P1 | main.rs:186:5:187:14 | S1 |
 | main.rs:372:25:372:25 | a | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:373:18:373:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:373:18:373:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:373:18:373:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:373:26:373:26 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:374:13:374:13 | y |  | main.rs:186:5:187:14 | S1 |
 | main.rs:374:17:374:26 | get_snd(...) |  | main.rs:186:5:187:14 | S1 |
@@ -455,6 +511,8 @@ inferType
 | main.rs:374:25:374:25 | a | P1 | main.rs:186:5:187:14 | S1 |
 | main.rs:374:25:374:25 | a | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:375:18:375:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:375:18:375:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:375:18:375:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:375:26:375:26 | y |  | main.rs:186:5:187:14 | S1 |
 | main.rs:378:13:378:13 | b |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:378:13:378:13 | b | P1 | main.rs:188:5:189:14 | S2 |
@@ -470,6 +528,8 @@ inferType
 | main.rs:379:25:379:25 | b | P1 | main.rs:188:5:189:14 | S2 |
 | main.rs:379:25:379:25 | b | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:380:18:380:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:380:18:380:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:380:18:380:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:380:26:380:26 | x |  | main.rs:186:5:187:14 | S1 |
 | main.rs:381:13:381:13 | y |  | main.rs:188:5:189:14 | S2 |
 | main.rs:381:17:381:26 | get_snd(...) |  | main.rs:188:5:189:14 | S2 |
@@ -477,6 +537,8 @@ inferType
 | main.rs:381:25:381:25 | b | P1 | main.rs:188:5:189:14 | S2 |
 | main.rs:381:25:381:25 | b | P2 | main.rs:186:5:187:14 | S1 |
 | main.rs:382:18:382:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:382:18:382:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:382:18:382:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:382:26:382:26 | y |  | main.rs:188:5:189:14 | S2 |
 | main.rs:384:13:384:13 | c |  | main.rs:180:5:184:5 | MyPair |
 | main.rs:384:13:384:13 | c | P1 | main.rs:190:5:191:14 | S3 |
@@ -518,10 +580,14 @@ inferType
 | main.rs:408:26:408:29 | SelfParam |  | main.rs:397:5:398:14 | S1 |
 | main.rs:408:38:410:9 | { ... } |  | main.rs:397:5:398:14 | S1 |
 | main.rs:409:20:409:31 | "not called" |  | {EXTERNAL LOCATION} | str |
+| main.rs:409:20:409:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:409:20:409:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:413:28:413:31 | SelfParam |  | main.rs:397:5:398:14 | S1 |
 | main.rs:413:34:413:35 | s1 |  | main.rs:397:5:398:14 | S1 |
 | main.rs:413:48:415:9 | { ... } |  | main.rs:397:5:398:14 | S1 |
 | main.rs:414:20:414:31 | "not called" |  | {EXTERNAL LOCATION} | str |
+| main.rs:414:20:414:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:414:20:414:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:420:26:420:29 | SelfParam |  | main.rs:397:5:398:14 | S1 |
 | main.rs:420:38:422:9 | { ... } |  | main.rs:397:5:398:14 | S1 |
 | main.rs:421:13:421:16 | self |  | main.rs:397:5:398:14 | S1 |
@@ -531,9 +597,13 @@ inferType
 | main.rs:431:13:431:13 | x |  | main.rs:397:5:398:14 | S1 |
 | main.rs:431:17:431:18 | S1 |  | main.rs:397:5:398:14 | S1 |
 | main.rs:432:18:432:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:432:18:432:42 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:432:18:432:42 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:432:26:432:26 | x |  | main.rs:397:5:398:14 | S1 |
 | main.rs:432:26:432:42 | x.common_method() |  | main.rs:397:5:398:14 | S1 |
 | main.rs:433:18:433:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:433:18:433:44 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:433:18:433:44 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:433:26:433:26 | x |  | main.rs:397:5:398:14 | S1 |
 | main.rs:433:26:433:44 | x.common_method_2() |  | main.rs:397:5:398:14 | S1 |
 | main.rs:450:19:450:22 | SelfParam |  | main.rs:448:5:451:5 | Self [trait FirstTrait] |
@@ -543,24 +613,32 @@ inferType
 | main.rs:460:18:460:18 | x |  | main.rs:458:45:458:61 | T |
 | main.rs:460:18:460:27 | x.method() |  | main.rs:458:35:458:42 | I |
 | main.rs:461:18:461:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:461:18:461:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:461:18:461:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:461:26:461:27 | s1 |  | main.rs:458:35:458:42 | I |
 | main.rs:464:65:464:65 | x |  | main.rs:464:46:464:62 | T |
 | main.rs:466:13:466:14 | s2 |  | main.rs:464:36:464:43 | I |
 | main.rs:466:18:466:18 | x |  | main.rs:464:46:464:62 | T |
 | main.rs:466:18:466:27 | x.method() |  | main.rs:464:36:464:43 | I |
 | main.rs:467:18:467:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:467:18:467:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:467:18:467:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:467:26:467:27 | s2 |  | main.rs:464:36:464:43 | I |
 | main.rs:470:49:470:49 | x |  | main.rs:470:30:470:46 | T |
 | main.rs:471:13:471:13 | s |  | main.rs:440:5:441:14 | S1 |
 | main.rs:471:17:471:17 | x |  | main.rs:470:30:470:46 | T |
 | main.rs:471:17:471:26 | x.method() |  | main.rs:440:5:441:14 | S1 |
 | main.rs:472:18:472:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:472:18:472:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:472:18:472:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:472:26:472:26 | s |  | main.rs:440:5:441:14 | S1 |
 | main.rs:475:53:475:53 | x |  | main.rs:475:34:475:50 | T |
 | main.rs:476:13:476:13 | s |  | main.rs:440:5:441:14 | S1 |
 | main.rs:476:17:476:17 | x |  | main.rs:475:34:475:50 | T |
 | main.rs:476:17:476:26 | x.method() |  | main.rs:440:5:441:14 | S1 |
 | main.rs:477:18:477:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:477:18:477:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:477:18:477:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:477:26:477:26 | s |  | main.rs:440:5:441:14 | S1 |
 | main.rs:481:16:481:19 | SelfParam |  | main.rs:480:5:484:5 | Self [trait Pair] |
 | main.rs:483:16:483:19 | SelfParam |  | main.rs:480:5:484:5 | Self [trait Pair] |
@@ -573,6 +651,8 @@ inferType
 | main.rs:489:18:489:18 | y |  | main.rs:486:41:486:55 | T |
 | main.rs:489:18:489:24 | y.snd() |  | main.rs:443:5:444:14 | S2 |
 | main.rs:490:18:490:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:490:18:490:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:490:18:490:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:490:32:490:33 | s1 |  | main.rs:440:5:441:14 | S1 |
 | main.rs:490:36:490:37 | s2 |  | main.rs:443:5:444:14 | S2 |
 | main.rs:493:69:493:69 | x |  | main.rs:493:52:493:66 | T |
@@ -584,6 +664,8 @@ inferType
 | main.rs:496:18:496:18 | y |  | main.rs:493:52:493:66 | T |
 | main.rs:496:18:496:24 | y.snd() |  | main.rs:493:41:493:49 | T2 |
 | main.rs:497:18:497:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:497:18:497:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:497:18:497:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:497:32:497:33 | s1 |  | main.rs:440:5:441:14 | S1 |
 | main.rs:497:36:497:37 | s2 |  | main.rs:493:41:493:49 | T2 |
 | main.rs:500:50:500:50 | x |  | main.rs:500:41:500:47 | T |
@@ -595,6 +677,8 @@ inferType
 | main.rs:503:18:503:18 | y |  | main.rs:500:41:500:47 | T |
 | main.rs:503:18:503:24 | y.snd() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:504:18:504:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:504:18:504:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:504:18:504:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:504:32:504:33 | s1 |  | {EXTERNAL LOCATION} | bool |
 | main.rs:504:36:504:37 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:507:54:507:54 | x |  | main.rs:507:41:507:51 | T |
@@ -606,6 +690,8 @@ inferType
 | main.rs:510:18:510:18 | y |  | main.rs:507:41:507:51 | T |
 | main.rs:510:18:510:24 | y.snd() |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:511:18:511:29 | "{:?}, {:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:511:18:511:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:511:18:511:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:511:32:511:33 | s1 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:511:36:511:37 | s2 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:527:15:527:18 | SelfParam |  | main.rs:526:5:535:5 | Self [trait MyTrait] |
@@ -641,10 +727,14 @@ inferType
 | main.rs:555:17:555:33 | MyThing {...} | T | main.rs:523:5:524:14 | S2 |
 | main.rs:555:30:555:31 | S2 |  | main.rs:523:5:524:14 | S2 |
 | main.rs:557:18:557:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:557:18:557:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:557:18:557:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:557:26:557:26 | x |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:557:26:557:26 | x | T | main.rs:521:5:522:14 | S1 |
 | main.rs:557:26:557:31 | x.m1() |  | main.rs:521:5:522:14 | S1 |
 | main.rs:558:18:558:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:558:18:558:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:558:18:558:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:558:26:558:26 | y |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:558:26:558:26 | y | T | main.rs:523:5:524:14 | S2 |
 | main.rs:558:26:558:31 | y.m1() |  | main.rs:523:5:524:14 | S2 |
@@ -659,10 +749,14 @@ inferType
 | main.rs:561:17:561:33 | MyThing {...} | T | main.rs:523:5:524:14 | S2 |
 | main.rs:561:30:561:31 | S2 |  | main.rs:523:5:524:14 | S2 |
 | main.rs:563:18:563:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:563:18:563:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:563:18:563:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:563:26:563:26 | x |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:563:26:563:26 | x | T | main.rs:521:5:522:14 | S1 |
 | main.rs:563:26:563:31 | x.m2() |  | main.rs:521:5:522:14 | S1 |
 | main.rs:564:18:564:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:564:18:564:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:564:18:564:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:564:26:564:26 | y |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:564:26:564:26 | y | T | main.rs:523:5:524:14 | S2 |
 | main.rs:564:26:564:31 | y.m2() |  | main.rs:523:5:524:14 | S2 |
@@ -677,10 +771,14 @@ inferType
 | main.rs:567:18:567:34 | MyThing {...} | T | main.rs:523:5:524:14 | S2 |
 | main.rs:567:31:567:32 | S2 |  | main.rs:523:5:524:14 | S2 |
 | main.rs:569:18:569:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:569:18:569:42 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:569:18:569:42 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:569:26:569:42 | call_trait_m1(...) |  | main.rs:521:5:522:14 | S1 |
 | main.rs:569:40:569:41 | x2 |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:569:40:569:41 | x2 | T | main.rs:521:5:522:14 | S1 |
 | main.rs:570:18:570:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:570:18:570:42 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:570:18:570:42 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:570:26:570:42 | call_trait_m1(...) |  | main.rs:523:5:524:14 | S2 |
 | main.rs:570:40:570:41 | y2 |  | main.rs:516:5:519:5 | MyThing |
 | main.rs:570:40:570:41 | y2 | T | main.rs:523:5:524:14 | S2 |
@@ -708,6 +806,8 @@ inferType
 | main.rs:579:37:579:38 | x3 | T | main.rs:516:5:519:5 | MyThing |
 | main.rs:579:37:579:38 | x3 | T.T | main.rs:521:5:522:14 | S1 |
 | main.rs:580:18:580:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:580:18:580:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:580:18:580:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:580:26:580:26 | a |  | main.rs:521:5:522:14 | S1 |
 | main.rs:581:13:581:13 | b |  | main.rs:523:5:524:14 | S2 |
 | main.rs:581:17:581:39 | call_trait_thing_m1(...) |  | main.rs:523:5:524:14 | S2 |
@@ -715,6 +815,8 @@ inferType
 | main.rs:581:37:581:38 | y3 | T | main.rs:516:5:519:5 | MyThing |
 | main.rs:581:37:581:38 | y3 | T.T | main.rs:523:5:524:14 | S2 |
 | main.rs:582:18:582:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:582:18:582:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:582:18:582:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:582:26:582:26 | b |  | main.rs:523:5:524:14 | S2 |
 | main.rs:593:19:593:22 | SelfParam |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:593:19:593:22 | SelfParam | A | main.rs:592:10:592:10 | A |
@@ -789,6 +891,8 @@ inferType
 | main.rs:705:13:705:14 | x1 |  | main.rs:638:5:639:13 | S |
 | main.rs:705:18:705:18 | S |  | main.rs:638:5:639:13 | S |
 | main.rs:707:18:707:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:707:18:707:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:707:18:707:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:707:26:707:27 | x1 |  | main.rs:638:5:639:13 | S |
 | main.rs:707:26:707:32 | x1.m1() |  | main.rs:644:5:645:14 | AT |
 | main.rs:709:13:709:14 | x2 |  | main.rs:638:5:639:13 | S |
@@ -797,16 +901,22 @@ inferType
 | main.rs:711:17:711:18 | x2 |  | main.rs:638:5:639:13 | S |
 | main.rs:711:17:711:23 | x2.m2() |  | main.rs:644:5:645:14 | AT |
 | main.rs:712:18:712:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:712:18:712:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:712:18:712:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:712:26:712:26 | y |  | main.rs:644:5:645:14 | AT |
 | main.rs:714:13:714:14 | x3 |  | main.rs:638:5:639:13 | S |
 | main.rs:714:18:714:18 | S |  | main.rs:638:5:639:13 | S |
 | main.rs:716:18:716:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:716:18:716:43 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:716:18:716:43 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:716:26:716:27 | x3 |  | main.rs:638:5:639:13 | S |
 | main.rs:716:26:716:34 | x3.put(...) |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:716:26:716:34 | x3.put(...) | A | {EXTERNAL LOCATION} | i32 |
 | main.rs:716:26:716:43 | ... .unwrap() |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:716:33:716:33 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:719:18:719:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:719:18:719:49 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:719:18:719:49 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:719:26:719:27 | x3 |  | main.rs:638:5:639:13 | S |
 | main.rs:719:26:719:40 | x3.putTwo(...) |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:719:26:719:40 | x3.putTwo(...) | A | main.rs:658:36:658:50 | AssociatedParam |
@@ -815,15 +925,21 @@ inferType
 | main.rs:719:39:719:39 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:721:20:721:20 | S |  | main.rs:638:5:639:13 | S |
 | main.rs:722:18:722:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:722:18:722:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:722:18:722:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:724:13:724:14 | x5 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:724:18:724:19 | S2 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:725:18:725:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:725:18:725:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:725:18:725:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:725:26:725:27 | x5 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:725:26:725:32 | x5.m1() |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:725:26:725:32 | x5.m1() | A | main.rs:641:5:642:14 | S2 |
 | main.rs:726:13:726:14 | x6 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:726:18:726:19 | S2 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:727:18:727:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:727:18:727:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:727:18:727:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:727:26:727:27 | x6 |  | main.rs:641:5:642:14 | S2 |
 | main.rs:727:26:727:32 | x6.m2() |  | main.rs:587:5:590:5 | Wrapper |
 | main.rs:727:26:727:32 | x6.m2() | A | main.rs:641:5:642:14 | S2 |
@@ -857,10 +973,14 @@ inferType
 | main.rs:758:17:758:36 | ...::C2 {...} | A | main.rs:744:5:745:14 | S2 |
 | main.rs:758:33:758:34 | S2 |  | main.rs:744:5:745:14 | S2 |
 | main.rs:760:18:760:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:760:18:760:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:760:18:760:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:760:26:760:26 | x |  | main.rs:736:5:740:5 | MyEnum |
 | main.rs:760:26:760:26 | x | A | main.rs:742:5:743:14 | S1 |
 | main.rs:760:26:760:31 | x.m1() |  | main.rs:742:5:743:14 | S1 |
 | main.rs:761:18:761:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:761:18:761:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:761:18:761:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:761:26:761:26 | y |  | main.rs:736:5:740:5 | MyEnum |
 | main.rs:761:26:761:26 | y | A | main.rs:744:5:745:14 | S2 |
 | main.rs:761:26:761:31 | y.m1() |  | main.rs:744:5:745:14 | S2 |
@@ -919,6 +1039,8 @@ inferType
 | main.rs:840:17:840:22 | x.m1() |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:840:17:840:22 | x.m1() | A | main.rs:776:5:777:14 | S1 |
 | main.rs:841:18:841:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:841:18:841:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:841:18:841:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:841:26:841:26 | a |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:841:26:841:26 | a | A | main.rs:776:5:777:14 | S1 |
 | main.rs:845:13:845:13 | x |  | main.rs:766:5:769:5 | MyThing |
@@ -932,10 +1054,14 @@ inferType
 | main.rs:846:17:846:33 | MyThing {...} | A | main.rs:778:5:779:14 | S2 |
 | main.rs:846:30:846:31 | S2 |  | main.rs:778:5:779:14 | S2 |
 | main.rs:848:18:848:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:848:18:848:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:848:18:848:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:848:26:848:26 | x |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:848:26:848:26 | x | A | main.rs:776:5:777:14 | S1 |
 | main.rs:848:26:848:31 | x.m1() |  | main.rs:776:5:777:14 | S1 |
 | main.rs:849:18:849:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:849:18:849:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:849:18:849:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:849:26:849:26 | y |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:849:26:849:26 | y | A | main.rs:778:5:779:14 | S2 |
 | main.rs:849:26:849:31 | y.m1() |  | main.rs:778:5:779:14 | S2 |
@@ -950,10 +1076,14 @@ inferType
 | main.rs:852:17:852:33 | MyThing {...} | A | main.rs:778:5:779:14 | S2 |
 | main.rs:852:30:852:31 | S2 |  | main.rs:778:5:779:14 | S2 |
 | main.rs:854:18:854:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:854:18:854:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:854:18:854:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:854:26:854:26 | x |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:854:26:854:26 | x | A | main.rs:776:5:777:14 | S1 |
 | main.rs:854:26:854:31 | x.m2() |  | main.rs:776:5:777:14 | S1 |
 | main.rs:855:18:855:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:855:18:855:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:855:18:855:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:855:26:855:26 | y |  | main.rs:766:5:769:5 | MyThing |
 | main.rs:855:26:855:26 | y | A | main.rs:778:5:779:14 | S2 |
 | main.rs:855:26:855:31 | y.m2() |  | main.rs:778:5:779:14 | S2 |
@@ -968,10 +1098,14 @@ inferType
 | main.rs:858:17:858:34 | MyThing2 {...} | A | main.rs:778:5:779:14 | S2 |
 | main.rs:858:31:858:32 | S2 |  | main.rs:778:5:779:14 | S2 |
 | main.rs:860:18:860:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:860:18:860:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:860:18:860:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:860:26:860:26 | x |  | main.rs:771:5:774:5 | MyThing2 |
 | main.rs:860:26:860:26 | x | A | main.rs:776:5:777:14 | S1 |
 | main.rs:860:26:860:31 | x.m3() |  | main.rs:776:5:777:14 | S1 |
 | main.rs:861:18:861:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:861:18:861:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:861:18:861:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:861:26:861:26 | y |  | main.rs:771:5:774:5 | MyThing2 |
 | main.rs:861:26:861:26 | y | A | main.rs:778:5:779:14 | S2 |
 | main.rs:861:26:861:31 | y.m3() |  | main.rs:778:5:779:14 | S2 |
@@ -1011,6 +1145,8 @@ inferType
 | main.rs:903:13:903:13 | x |  | main.rs:875:5:876:14 | S1 |
 | main.rs:903:17:903:18 | S1 |  | main.rs:875:5:876:14 | S1 |
 | main.rs:904:18:904:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:904:18:904:31 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:904:18:904:31 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:904:26:904:31 | id(...) |  | file://:0:0:0:0 | & |
 | main.rs:904:26:904:31 | id(...) | &T | main.rs:875:5:876:14 | S1 |
 | main.rs:904:29:904:30 | &x |  | file://:0:0:0:0 | & |
@@ -1019,6 +1155,8 @@ inferType
 | main.rs:906:13:906:13 | x |  | main.rs:875:5:876:14 | S1 |
 | main.rs:906:17:906:18 | S1 |  | main.rs:875:5:876:14 | S1 |
 | main.rs:907:18:907:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:907:18:907:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:907:18:907:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:907:26:907:37 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:907:26:907:37 | id::<...>(...) | &T | main.rs:875:5:876:14 | S1 |
 | main.rs:907:35:907:36 | &x |  | file://:0:0:0:0 | & |
@@ -1027,6 +1165,8 @@ inferType
 | main.rs:909:13:909:13 | x |  | main.rs:875:5:876:14 | S1 |
 | main.rs:909:17:909:18 | S1 |  | main.rs:875:5:876:14 | S1 |
 | main.rs:910:18:910:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:910:18:910:44 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:910:18:910:44 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:910:26:910:44 | id::<...>(...) |  | file://:0:0:0:0 | & |
 | main.rs:910:26:910:44 | id::<...>(...) | &T | main.rs:875:5:876:14 | S1 |
 | main.rs:910:42:910:43 | &x |  | file://:0:0:0:0 | & |
@@ -1051,10 +1191,14 @@ inferType
 | main.rs:931:19:931:22 | self | Snd | main.rs:929:15:929:17 | Snd |
 | main.rs:932:43:932:82 | MacroExpr |  | main.rs:929:15:929:17 | Snd |
 | main.rs:932:50:932:81 | "PairNone has no second elemen... |  | {EXTERNAL LOCATION} | str |
+| main.rs:932:50:932:81 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:932:50:932:81 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:932:50:932:81 | MacroExpr |  | main.rs:929:15:929:17 | Snd |
 | main.rs:932:50:932:81 | { ... } |  | main.rs:929:15:929:17 | Snd |
 | main.rs:933:43:933:81 | MacroExpr |  | main.rs:929:15:929:17 | Snd |
 | main.rs:933:50:933:80 | "PairFst has no second element... |  | {EXTERNAL LOCATION} | str |
+| main.rs:933:50:933:80 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:933:50:933:80 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:933:50:933:80 | MacroExpr |  | main.rs:929:15:929:17 | Snd |
 | main.rs:933:50:933:80 | { ... } |  | main.rs:929:15:929:17 | Snd |
 | main.rs:934:37:934:39 | snd |  | main.rs:929:15:929:17 | Snd |
@@ -1077,6 +1221,8 @@ inferType
 | main.rs:962:17:962:29 | t.unwrapSnd() | Snd | main.rs:946:5:947:14 | S3 |
 | main.rs:962:17:962:41 | ... .unwrapSnd() |  | main.rs:946:5:947:14 | S3 |
 | main.rs:963:18:963:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:963:18:963:26 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:963:18:963:26 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:963:26:963:26 | x |  | main.rs:946:5:947:14 | S3 |
 | main.rs:968:13:968:14 | p1 |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:968:13:968:14 | p1 | Fst | main.rs:940:5:941:14 | S1 |
@@ -1087,6 +1233,8 @@ inferType
 | main.rs:968:47:968:48 | S1 |  | main.rs:940:5:941:14 | S1 |
 | main.rs:968:51:968:52 | S2 |  | main.rs:943:5:944:14 | S2 |
 | main.rs:969:18:969:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:969:18:969:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:969:18:969:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:969:26:969:27 | p1 |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:969:26:969:27 | p1 | Fst | main.rs:940:5:941:14 | S1 |
 | main.rs:969:26:969:27 | p1 | Snd | main.rs:943:5:944:14 | S2 |
@@ -1097,6 +1245,8 @@ inferType
 | main.rs:972:26:972:47 | ...::PairNone(...) | Fst | main.rs:940:5:941:14 | S1 |
 | main.rs:972:26:972:47 | ...::PairNone(...) | Snd | main.rs:943:5:944:14 | S2 |
 | main.rs:973:18:973:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:973:18:973:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:973:18:973:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:973:26:973:27 | p2 |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:973:26:973:27 | p2 | Fst | main.rs:940:5:941:14 | S1 |
 | main.rs:973:26:973:27 | p2 | Snd | main.rs:943:5:944:14 | S2 |
@@ -1108,6 +1258,8 @@ inferType
 | main.rs:976:34:976:56 | ...::PairSnd(...) | Snd | main.rs:946:5:947:14 | S3 |
 | main.rs:976:54:976:55 | S3 |  | main.rs:946:5:947:14 | S3 |
 | main.rs:977:18:977:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:977:18:977:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:977:18:977:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:977:26:977:27 | p3 |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:977:26:977:27 | p3 | Fst | main.rs:943:5:944:14 | S2 |
 | main.rs:977:26:977:27 | p3 | Snd | main.rs:946:5:947:14 | S3 |
@@ -1118,6 +1270,8 @@ inferType
 | main.rs:980:35:980:56 | ...::PairNone(...) | Fst | main.rs:943:5:944:14 | S2 |
 | main.rs:980:35:980:56 | ...::PairNone(...) | Snd | main.rs:946:5:947:14 | S3 |
 | main.rs:981:18:981:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:981:18:981:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:981:18:981:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:981:26:981:27 | p3 |  | main.rs:921:5:927:5 | PairOption |
 | main.rs:981:26:981:27 | p3 | Fst | main.rs:943:5:944:14 | S2 |
 | main.rs:981:26:981:27 | p3 | Snd | main.rs:946:5:947:14 | S3 |
@@ -1166,6 +1320,8 @@ inferType
 | main.rs:1027:13:1027:14 | x1 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1027:18:1027:37 | ...::new(...) |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1028:18:1028:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1028:18:1028:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1028:18:1028:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1028:26:1028:27 | x1 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1030:13:1030:18 | mut x2 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1030:13:1030:18 | mut x2 | T | main.rs:1023:5:1024:13 | S |
@@ -1175,6 +1331,8 @@ inferType
 | main.rs:1031:9:1031:10 | x2 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1031:16:1031:16 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1032:18:1032:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1032:18:1032:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1032:18:1032:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1032:26:1032:27 | x2 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1032:26:1032:27 | x2 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1034:13:1034:18 | mut x3 |  | main.rs:988:5:992:5 | MyOption |
@@ -1182,6 +1340,8 @@ inferType
 | main.rs:1035:9:1035:10 | x3 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1035:21:1035:21 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1036:18:1036:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1036:18:1036:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1036:18:1036:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1036:26:1036:27 | x3 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1038:13:1038:18 | mut x4 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1038:13:1038:18 | mut x4 | T | main.rs:1023:5:1024:13 | S |
@@ -1194,6 +1354,8 @@ inferType
 | main.rs:1039:28:1039:29 | x4 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1039:32:1039:32 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1040:18:1040:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1040:18:1040:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1040:18:1040:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1040:26:1040:27 | x4 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1040:26:1040:27 | x4 | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1042:13:1042:14 | x5 |  | main.rs:988:5:992:5 | MyOption |
@@ -1205,6 +1367,8 @@ inferType
 | main.rs:1042:35:1042:57 | ...::MyNone(...) |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1042:35:1042:57 | ...::MyNone(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1043:18:1043:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1043:18:1043:37 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1043:18:1043:37 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1043:26:1043:27 | x5 |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1043:26:1043:27 | x5 | T | main.rs:988:5:992:5 | MyOption |
 | main.rs:1043:26:1043:27 | x5 | T.T | main.rs:1023:5:1024:13 | S |
@@ -1219,6 +1383,8 @@ inferType
 | main.rs:1045:35:1045:57 | ...::MyNone(...) |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1045:35:1045:57 | ...::MyNone(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1046:18:1046:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1046:18:1046:61 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1046:18:1046:61 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1046:26:1046:61 | ...::flatten(...) |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1046:26:1046:61 | ...::flatten(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1046:59:1046:60 | x6 |  | main.rs:988:5:992:5 | MyOption |
@@ -1241,6 +1407,8 @@ inferType
 | main.rs:1052:13:1052:31 | ...::MySome(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1052:30:1052:30 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1054:18:1054:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1054:18:1054:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1054:18:1054:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1054:26:1054:32 | from_if |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1054:26:1054:32 | from_if | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1057:13:1057:22 | from_match |  | main.rs:988:5:992:5 | MyOption |
@@ -1258,6 +1426,8 @@ inferType
 | main.rs:1059:22:1059:40 | ...::MySome(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1059:39:1059:39 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1061:18:1061:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1061:18:1061:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1061:18:1061:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1061:26:1061:35 | from_match |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1061:26:1061:35 | from_match | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1064:13:1064:21 | from_loop |  | main.rs:988:5:992:5 | MyOption |
@@ -1273,6 +1443,8 @@ inferType
 | main.rs:1068:19:1068:37 | ...::MySome(...) | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1068:36:1068:36 | S |  | main.rs:1023:5:1024:13 | S |
 | main.rs:1070:18:1070:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1070:18:1070:34 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1070:18:1070:34 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1070:26:1070:34 | from_loop |  | main.rs:988:5:992:5 | MyOption |
 | main.rs:1070:26:1070:34 | from_loop | T | main.rs:1023:5:1024:13 | S |
 | main.rs:1083:15:1083:18 | SelfParam |  | main.rs:1076:5:1077:19 | S |
@@ -1309,6 +1481,8 @@ inferType
 | main.rs:1097:18:1097:22 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1097:20:1097:21 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1098:18:1098:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1098:18:1098:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1098:18:1098:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1098:26:1098:27 | x1 |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1098:26:1098:27 | x1 | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1098:26:1098:32 | x1.m1() |  | main.rs:1079:5:1080:14 | S2 |
@@ -1318,11 +1492,15 @@ inferType
 | main.rs:1100:18:1100:22 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1100:20:1100:21 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1102:18:1102:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1102:18:1102:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1102:18:1102:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1102:26:1102:27 | x2 |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1102:26:1102:27 | x2 | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1102:26:1102:32 | x2.m2() |  | file://:0:0:0:0 | & |
 | main.rs:1102:26:1102:32 | x2.m2() | &T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1103:18:1103:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1103:18:1103:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1103:18:1103:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1103:26:1103:27 | x2 |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1103:26:1103:27 | x2 | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1103:26:1103:32 | x2.m3() |  | file://:0:0:0:0 | & |
@@ -1333,6 +1511,8 @@ inferType
 | main.rs:1105:18:1105:22 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1105:20:1105:21 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1107:18:1107:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1107:18:1107:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1107:18:1107:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1107:26:1107:41 | ...::m2(...) |  | file://:0:0:0:0 | & |
 | main.rs:1107:26:1107:41 | ...::m2(...) | &T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1107:38:1107:40 | &x3 |  | file://:0:0:0:0 | & |
@@ -1341,6 +1521,8 @@ inferType
 | main.rs:1107:39:1107:40 | x3 |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1107:39:1107:40 | x3 | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1108:18:1108:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1108:18:1108:41 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1108:18:1108:41 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1108:26:1108:41 | ...::m3(...) |  | file://:0:0:0:0 | & |
 | main.rs:1108:26:1108:41 | ...::m3(...) | &T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1108:38:1108:40 | &x3 |  | file://:0:0:0:0 | & |
@@ -1358,12 +1540,16 @@ inferType
 | main.rs:1110:19:1110:23 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1110:21:1110:22 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1112:18:1112:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1112:18:1112:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1112:18:1112:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1112:26:1112:27 | x4 |  | file://:0:0:0:0 | & |
 | main.rs:1112:26:1112:27 | x4 | &T | main.rs:1076:5:1077:19 | S |
 | main.rs:1112:26:1112:27 | x4 | &T.T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1112:26:1112:32 | x4.m2() |  | file://:0:0:0:0 | & |
 | main.rs:1112:26:1112:32 | x4.m2() | &T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1113:18:1113:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1113:18:1113:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1113:18:1113:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1113:26:1113:27 | x4 |  | file://:0:0:0:0 | & |
 | main.rs:1113:26:1113:27 | x4 | &T | main.rs:1076:5:1077:19 | S |
 | main.rs:1113:26:1113:27 | x4 | &T.T | main.rs:1079:5:1080:14 | S2 |
@@ -1379,11 +1565,15 @@ inferType
 | main.rs:1115:19:1115:23 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1115:21:1115:22 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1117:18:1117:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1117:18:1117:32 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1117:18:1117:32 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1117:26:1117:27 | x5 |  | file://:0:0:0:0 | & |
 | main.rs:1117:26:1117:27 | x5 | &T | main.rs:1076:5:1077:19 | S |
 | main.rs:1117:26:1117:27 | x5 | &T.T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1117:26:1117:32 | x5.m1() |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1118:18:1118:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1118:18:1118:29 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1118:18:1118:29 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1118:26:1118:27 | x5 |  | file://:0:0:0:0 | & |
 | main.rs:1118:26:1118:27 | x5 | &T | main.rs:1076:5:1077:19 | S |
 | main.rs:1118:26:1118:27 | x5 | &T.T | main.rs:1079:5:1080:14 | S2 |
@@ -1407,6 +1597,8 @@ inferType
 | main.rs:1120:19:1120:23 | S(...) | T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1120:21:1120:22 | S2 |  | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1123:18:1123:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1123:18:1123:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1123:18:1123:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1123:26:1123:30 | (...) |  | file://:0:0:0:0 | & |
 | main.rs:1123:26:1123:30 | (...) |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1123:26:1123:30 | (...) | &T | main.rs:1076:5:1077:19 | S |
@@ -1441,6 +1633,8 @@ inferType
 | main.rs:1128:17:1128:23 | x7.m1() |  | file://:0:0:0:0 | & |
 | main.rs:1128:17:1128:23 | x7.m1() | &T | main.rs:1079:5:1080:14 | S2 |
 | main.rs:1129:18:1129:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1129:18:1129:27 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1129:18:1129:27 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1129:26:1129:27 | x7 |  | main.rs:1076:5:1077:19 | S |
 | main.rs:1129:26:1129:27 | x7 | T | file://:0:0:0:0 | & |
 | main.rs:1129:26:1129:27 | x7 | T.&T | main.rs:1079:5:1080:14 | S2 |
@@ -1615,6 +1809,8 @@ inferType
 | main.rs:1224:22:1224:30 | &mut flag | &T | main.rs:1182:5:1185:5 | MyFlag |
 | main.rs:1224:27:1224:30 | flag |  | main.rs:1182:5:1185:5 | MyFlag |
 | main.rs:1225:18:1225:23 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1225:18:1225:29 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1225:18:1225:29 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1225:26:1225:29 | flag |  | main.rs:1182:5:1185:5 | MyFlag |
 | main.rs:1239:43:1242:5 | { ... } |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1239:43:1242:5 | { ... } | E | main.rs:1232:5:1233:14 | S1 |
@@ -1684,6 +1880,8 @@ inferType
 | main.rs:1262:53:1265:9 | { ... } |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1262:53:1265:9 | { ... } | E | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1263:22:1263:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1263:22:1263:30 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1263:22:1263:30 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1264:13:1264:34 | ...::Ok::<...>(...) |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1264:13:1264:34 | ...::Ok::<...>(...) | E | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1266:9:1266:23 | ...::Err(...) |  | {EXTERNAL LOCATION} | Result |
@@ -1694,14 +1892,20 @@ inferType
 | main.rs:1270:37:1270:52 | try_same_error(...) | E | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1270:37:1270:52 | try_same_error(...) | T | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1271:22:1271:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1271:22:1271:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1271:22:1271:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1274:37:1274:55 | try_convert_error(...) |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1274:37:1274:55 | try_convert_error(...) | E | main.rs:1235:5:1236:14 | S2 |
 | main.rs:1274:37:1274:55 | try_convert_error(...) | T | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1275:22:1275:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1275:22:1275:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1275:22:1275:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1278:37:1278:49 | try_chained(...) |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1278:37:1278:49 | try_chained(...) | E | main.rs:1235:5:1236:14 | S2 |
 | main.rs:1278:37:1278:49 | try_chained(...) | T | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1279:22:1279:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1279:22:1279:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1279:22:1279:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1282:37:1282:63 | try_complex(...) |  | {EXTERNAL LOCATION} | Result |
 | main.rs:1282:37:1282:63 | try_complex(...) | E | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1282:37:1282:63 | try_complex(...) | T | main.rs:1232:5:1233:14 | S1 |
@@ -1710,6 +1914,8 @@ inferType
 | main.rs:1282:49:1282:62 | ...::Ok(...) | T | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1282:60:1282:61 | S1 |  | main.rs:1232:5:1233:14 | S1 |
 | main.rs:1283:22:1283:27 | "{:?}\\n" |  | {EXTERNAL LOCATION} | str |
+| main.rs:1283:22:1283:35 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1283:22:1283:35 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1290:13:1290:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1290:22:1290:22 | 1 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:1291:13:1291:13 | y |  | {EXTERNAL LOCATION} | i32 |
@@ -2631,8 +2837,13 @@ inferType
 | main.rs:1827:24:1827:25 | xs |  | file://:0:0:0:0 | [] |
 | main.rs:1827:24:1827:25 | xs | [T;...] | main.rs:1782:5:1783:13 | S |
 | main.rs:1827:24:1827:25 | xs | [T] | main.rs:1782:5:1783:13 | S |
+| main.rs:1833:13:1833:13 | x |  | {EXTERNAL LOCATION} | String |
+| main.rs:1833:17:1833:46 | MacroExpr |  | {EXTERNAL LOCATION} | String |
 | main.rs:1833:25:1833:35 | "Hello, {}" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1833:25:1833:45 | ...::format(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:1833:25:1833:45 | ...::must_use(...) |  | {EXTERNAL LOCATION} | String |
+| main.rs:1833:25:1833:45 | FormatArgsExpr |  | {EXTERNAL LOCATION} | Arguments |
+| main.rs:1833:25:1833:45 | MacroExpr |  | {EXTERNAL LOCATION} | Arguments |
 | main.rs:1833:25:1833:45 | { ... } |  | {EXTERNAL LOCATION} | String |
 | main.rs:1833:38:1833:45 | "World!" |  | {EXTERNAL LOCATION} | str |
 | main.rs:1839:19:1839:23 | SelfParam |  | file://:0:0:0:0 | & |
