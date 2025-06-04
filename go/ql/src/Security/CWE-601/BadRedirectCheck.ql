@@ -123,6 +123,12 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OpenUrlRedirect::Sink }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-601/BadRedirectCheck.ql:176: Column 1 does not select a source or sink originating from the flow call on line 175
+    none()
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

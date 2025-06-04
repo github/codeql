@@ -30,6 +30,13 @@ module HardcodedCredentials {
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-798/HardcodedCredentials.ql:65: Column 1 does not select a source or sink originating from the flow call on line 62
+      // ql/src/Security/CWE-798/HardcodedCredentials.ql:65: Column 3 does not select a source or sink originating from the flow call on line 62
+      none()
+    }
   }
 
   /** Tracks taint flow for reasoning about hardcoded credentials. */

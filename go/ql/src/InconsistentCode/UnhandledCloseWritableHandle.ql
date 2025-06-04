@@ -129,6 +129,12 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/InconsistentCode/UnhandledCloseWritableHandle.ql:152: Column 5 does not select a source or sink originating from the flow call on line 146
+    none()
+  }
 }
 
 /**

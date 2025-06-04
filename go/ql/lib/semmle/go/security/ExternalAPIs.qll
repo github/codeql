@@ -186,6 +186,13 @@ private module UntrustedDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/semmle/go/security/ExternalAPIs.qll:210: Flow call outside 'select' clause
+    // ql/lib/semmle/go/security/ExternalAPIs.qll:213: Flow call outside 'select' clause
+    none()
+  }
 }
 
 /**
@@ -197,6 +204,8 @@ private module UntrustedDataToUnknownExternalApiConfig implements DataFlow::Conf
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnknownExternalApiDataNode }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

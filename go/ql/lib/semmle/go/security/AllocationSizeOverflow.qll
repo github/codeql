@@ -19,6 +19,12 @@ module AllocationSizeOverflow {
     predicate isSink(DataFlow::Node nd) { nd = Builtin::len().getACall().getArgument(0) }
 
     predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/lib/semmle/go/security/AllocationSizeOverflow.qll:30: Flow call outside 'select' clause
+      none()
+    }
   }
 
   /**
@@ -55,6 +61,12 @@ module AllocationSizeOverflow {
         pred = c.getArgument(0) and
         succ = c
       )
+    }
+
+    predicate observeDiffInformedIncrementalMode() {
+      // TODO(diff-informed): Manually verify if config can be diff-informed.
+      // ql/src/Security/CWE-190/AllocationSizeOverflow.ql:25: Column 5 does not select a source or sink originating from the flow call on line 22
+      none()
     }
   }
 
