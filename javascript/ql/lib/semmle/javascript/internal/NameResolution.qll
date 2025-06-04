@@ -17,6 +17,7 @@ module NameResolution {
    * A node in a graph which we use to perform name and type resolution.
    */
   class Node extends NodeBase {
+    /** Gets a string representation of this node. */
     string toString() {
       result = this.(AstNode).toString()
       or
@@ -25,6 +26,7 @@ module NameResolution {
       result = this.(JSDocTypeExpr).toString()
     }
 
+    /** Gets the location of this node. */
     Location getLocation() {
       result = this.(AstNode).getLocation()
       or
