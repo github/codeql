@@ -5,8 +5,19 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 private import OpenSSLOperationBase
-private import EVPHashInitializer
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+
+abstract class EVP_Hash_Initializer extends EVPInitialize { }
+
+class EVP_DigestInit_Variant_Calls extends EVP_Hash_Initializer {
+  EVP_DigestInit_Variant_Calls() {
+    this.(Call).getTarget().getName() in [
+        "EVP_DigestInit", "EVP_DigestInit_ex", "EVP_DigestInit_ex2"
+      ]
+  }
+
+  override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
+}
 
 class EVP_Digest_Update_Call extends EVPUpdate {
   EVP_Digest_Update_Call() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
