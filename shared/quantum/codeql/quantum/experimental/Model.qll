@@ -597,8 +597,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     newtype TSignatureAlgorithmType =
       DSA() or
       ECDSA() or
-      Ed25519() or
-      Ed448() or
+      EDDSA() or // e.g., ED25519 or ED448
       OtherSignatureAlgorithmType()
 
     newtype TKEMAlgorithmType =
@@ -703,9 +702,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       type = TSignature(ECDSA()) and name = "ECDSA"
       or
-      type = TSignature(Ed25519()) and name = "Ed25519"
-      or
-      type = TSignature(Ed448()) and name = "Ed448"
+      type = TSignature(EDDSA()) and name = "EDSA"
       or
       type = TSignature(OtherSignatureAlgorithmType()) and name = "UnknownSignature"
       or
