@@ -627,11 +627,11 @@ private string mainResultSet() { result = ["#select", "problems"] }
  * to be matched.
  */
 module TestPostProcessing {
-  external predicate queryResults(string relation, int row, int column, string data);
+  external private predicate queryResults(string relation, int row, int column, string data);
 
-  external predicate queryRelations(string relation);
+  external private predicate queryRelations(string relation);
 
-  external predicate queryMetadata(string key, string value);
+  external private predicate queryMetadata(string key, string value);
 
   private string getQueryId() { queryMetadata("id", result) }
 
