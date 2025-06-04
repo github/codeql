@@ -183,6 +183,11 @@ private AstNode redirectOnce(AstNode node) {
     result = cls.getIdentifier()
   )
   or
+  exists(FunctionDeclStmt decl |
+    node = decl and
+    result = decl.getIdentifier()
+  )
+  or
   exists(MethodDeclaration member |
     not member instanceof ConstructorDeclaration and
     node = member.getBody() and

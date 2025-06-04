@@ -1,6 +1,6 @@
 | b.js:3:3:3:3 | x | b.js:2:7:2:7 | x | V |
-| b.js:7:1:7:1 | f | b.js:1:1:5:1 | functio ... ar x;\\n} | M |
-| b.js:8:1:8:1 | g | a.js:2:1:2:15 | function g() {} | M |
+| b.js:7:1:7:1 | f | b.js:1:10:1:10 | f | M |
+| b.js:8:1:8:1 | g | a.js:2:10:2:10 | g | M |
 | client.ts:1:22:1:30 | "./tslib" | tslib.ts:1:1:10:0 | <toplevel> | I |
 | client.ts:7:19:7:19 | C | tslib.ts:1:14:1:14 | C | T |
 | client.ts:8:10:8:10 | C | client.ts:3:7:3:7 | C | T |
@@ -16,12 +16,12 @@
 | client.ts:16:3:16:3 | z | client.ts:13:38:13:38 | z | V |
 | client.ts:16:5:16:5 | m | tslib.ts:7:5:7:5 | m | M |
 | d.js:1:17:1:21 | './c' | c.js:1:1:1:20 | <toplevel> | I |
-| d.js:10:1:10:1 | A | d.js:7:1:9:1 | functio ... = 42;\\n} | V |
+| d.js:10:1:10:1 | A | d.js:7:10:7:10 | A | V |
 | d.js:16:19:16:23 | Super | d.js:12:7:12:11 | Super | V |
 | d.js:16:25:16:24 | args | d.js:16:25:16:24 | args | V |
 | d.js:20:1:20:1 | o | d.js:3:9:5:1 | {\\n  f:  ... () {}\\n} | V |
 | d.js:20:3:20:3 | f | d.js:4:3:4:18 | f: function() {} | M |
-| d.js:22:13:22:13 | A | d.js:7:1:9:1 | functio ... = 42;\\n} | M |
+| d.js:22:13:22:13 | A | d.js:7:10:7:10 | A | M |
 | d.js:23:1:23:1 | a | d.js:22:5:22:5 | a | V |
 | d.js:23:3:23:3 | x | d.js:8:3:8:8 | this.x | M |
 | d.js:24:1:24:1 | a | d.js:22:5:22:5 | a | V |
