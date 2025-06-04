@@ -357,10 +357,10 @@ impl<'a> Translator<'a> {
             .as_ref()
             .and_then(|s| s.expand_macro_call(mcall))
         {
-            self.emit_macro_expansion_parse_errors(mcall, &expanded);
+            self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
-            if let Some(value) = self.emit_expanded_as(expand_to, expanded) {
+            if let Some(value) = self.emit_expanded_as(expand_to, expanded.value) {
                 generated::MacroCall::emit_macro_call_expansion(
                     label,
                     value,
@@ -776,8 +776,8 @@ impl<'a> Translator<'a> {
         let ExpandResult {
             value: expanded, ..
         } = semantics.expand_attr_macro(node)?;
-        self.emit_macro_expansion_parse_errors(node, &expanded);
-        let macro_items = ast::MacroItems::cast(expanded).or_else(|| {
+        self.emit_macro_expansion_parse_errors(node, &expanded.value);
+        let macro_items = ast::MacroItems::cast(expanded.value).or_else(|| {
             let message = "attribute macro expansion cannot be cast to MacroItems".to_owned();
             let location = self.location_for_node(node);
             self.emit_diagnostic(
