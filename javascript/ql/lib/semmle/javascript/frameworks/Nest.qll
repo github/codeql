@@ -475,7 +475,7 @@ module NestJS {
 
   /** Gets the class being referenced at `node` without relying on the call graph. */
   private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    TypeResolution::trackClassValue(result.getAstNode()) = node.asExpr()
+    NameResolution::trackClassValue(result.getAstNode()) = node.asExpr()
   }
 
   private predicate providerClassPair(
