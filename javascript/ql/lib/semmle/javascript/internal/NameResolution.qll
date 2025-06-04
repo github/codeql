@@ -519,4 +519,19 @@ module NameResolution {
     cls.flowsTo(AccessPath::getAnAssignmentTo(name)) and
     not cls.getTopLevel().isExterns() // don't propagate externs classes
   }
+
+  /**
+   * Holds if `node` refers to the given class.
+   */
+  pragma[nomagic]
+  predicate nodeRefersToClass(Node node, DataFlow::ClassNode cls) {
+    exists(string name |
+      classHasGlobalName(cls, name) and
+      nodeRefersToModule(node, "global", name)
+    )
+    or
+    trackClassValue(cls.getAstNode()) = node
+    or
+    trackFunctionValue(cls.getAstNode()) = node
+  }
 }
