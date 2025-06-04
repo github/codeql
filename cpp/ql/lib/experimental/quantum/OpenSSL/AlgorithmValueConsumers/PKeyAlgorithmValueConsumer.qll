@@ -63,7 +63,6 @@ class EVPPKeyAlgorithmConsumer extends PKeyValueConsumer {
 }
 
 // TODO: not sure where to put all these predicates below
-
 /**
  * Given context expression (EVP_PKEY_CTX), finds the algorithm.
  */
