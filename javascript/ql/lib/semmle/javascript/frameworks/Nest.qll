@@ -337,10 +337,7 @@ module NestJS {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
       // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
-      not exists(NameResolution::Node type |
-        TypeResolution::valueHasType(this.asExpr(), type) and
-        not TypeResolution::hasUnderlyingStringOrAnyType(type)
-      )
+      this.asExpr().getTypeBinding().hasUnderlyingStringOrAnyType()
     }
 
     override Http::RouteHandler getRouteHandler() { result = handler }

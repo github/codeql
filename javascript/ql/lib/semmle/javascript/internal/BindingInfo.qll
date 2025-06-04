@@ -119,6 +119,11 @@ class TypeNameBindingNode extends NameResolution::Node {
   DataFlow::ClassNode getAnUnderlyingClass() {
     UnderlyingTypes::nodeHasUnderlyingClassType(this, result)
   }
+
+  /**
+   * Holds if this type contains `string` or `any`, possibly wrapped in a promise.
+   */
+  predicate hasUnderlyingStringOrAnyType() { TypeResolution::hasUnderlyingStringOrAnyType(this) }
 }
 
 /**
