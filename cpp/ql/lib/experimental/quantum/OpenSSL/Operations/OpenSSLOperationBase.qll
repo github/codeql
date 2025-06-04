@@ -122,7 +122,7 @@ abstract class EVPOperation extends OpenSSLOperation {
    * Finds the initialization call, may be none.
    */
   EVPInitialize getInitCall() {
-    CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
+    CTXFlow::ctxArgOrRetFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
 
   Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
@@ -138,14 +138,15 @@ abstract class EVPOperation extends OpenSSLOperation {
 }
 
 /**
- * The final calls of the EVP API.
+ * An EVP final call,
+ * which is typicall usesed in an update/final pattern.
  */
 abstract class EVPFinal extends EVPOperation {
   /**
    * All update calls that were executed before this final call.
    */
   EVPUpdate getUpdateCalls() {
-    CTXFlow::ctxArgFlowsToCtxArg(result.getContextArg(), this.getContextArg())
+    CTXFlow::ctxArgOrRetFlowsToCtxArg(result.getContextArg(), this.getContextArg())
   }
 
   /**

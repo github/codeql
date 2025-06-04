@@ -64,6 +64,15 @@ private class CtxPointerArgument extends CtxPointerExpr {
 }
 
 /**
+ * A call returning a CtxPointerExpr.
+ */
+private class CtxPointerReturn extends CtxPointerExpr {
+  CtxPointerReturn() { exists(Call c | c = this) }
+
+  Call getCall() { result = this.(Call) }
+}
+
+/**
  * A call whose target contains 'free' or 'reset' and has an argument of type
  * CtxPointerArgument.
  */
@@ -97,10 +106,26 @@ private class CtxCopyReturnCall extends Call, CtxPointerExpr {
 }
 
 /**
- * Flow from any CtxPointerArgument to any other CtxPointerArgument
+ * A source Ctx of interest is any argument or return of type CtxPointerExpr.
  */
-module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CtxPointerArgument }
+private class CtxPointerSource extends CtxPointerExpr {
+  CtxPointerSource() {
+    this instanceof CtxPointerReturn or
+    this instanceof CtxPointerArgument
+  }
+
+  DataFlow::Node asNode() {
+    result.asExpr() = this
+    or
+    result.asDefiningArgument() = this
+  }
+}
+
+/**
+ * Flow from any CtxPointerSource to any CtxPointerArgument.
+ */
+module OpenSSLCtxSourceToArgumentFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { exists(CtxPointerSource s | s.asNode() = source) }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CtxPointerArgument }
 
@@ -125,15 +150,15 @@ module OpenSSLCtxArgumentFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OpenSSLCtxArgumentFlow = DataFlow::Global<OpenSSLCtxArgumentFlowConfig>;
+module OpenSSLCtxSourceToArgumentFlow = DataFlow::Global<OpenSSLCtxSourceToArgumentFlowConfig>;
 
 /**
  * Holds if there is a context flow from the source to the sink.
  */
-predicate ctxArgFlowsToCtxArg(CtxPointerArgument source, CtxPointerArgument sink) {
+predicate ctxArgOrRetFlowsToCtxArg(CtxPointerSource source, CtxPointerArgument sink) {
   exists(DataFlow::Node a, DataFlow::Node b |
-    OpenSSLCtxArgumentFlow::flow(a, b) and
-    a.asExpr() = source and
+    OpenSSLCtxSourceToArgumentFlow::flow(a, b) and
+    a = source.asNode() and
     b.asExpr() = sink
   )
 }
