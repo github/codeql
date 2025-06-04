@@ -20,6 +20,7 @@ macro_calls
 | attributes/src/lib.rs:5:9:5:34 | concat!... | attributes/src/lib.rs:5:17:5:34 | "Hello world!" |
 | attributes/src/lib.rs:5:9:5:34 | concat!... | attributes/src/lib.rs:5:17:5:34 | "Hello world!" |
 | attributes/src/lib.rs:5:9:5:34 | concat!... | attributes/src/lib.rs:5:17:5:34 | "Hello world!" |
+| calls/src/lib.rs:10:5:10:13 | def_x!... | calls/src/lib.rs:10:5:10:13 | MacroItems |
 | calls/src/lib.rs:19:9:19:25 | concat!... | calls/src/lib.rs:19:17:19:24 | "xy" |
 | calls/src/lib.rs:21:9:24:5 | my_macro!... | calls/src/lib.rs:22:9:23:13 | MacroExpr |
 | calls/src/lib.rs:22:9:23:13 | ...::format_args!... | calls/src/lib.rs:22:9:23:13 | FormatArgsExpr |
@@ -29,6 +30,5 @@ macro_calls
 unexpanded_macro_calls
 | attributes/src/lib.rs:5:9:5:35 | concat!... |
 | calls/src/included.rs:2:9:2:39 | concat!... |
-| calls/src/lib.rs:10:5:10:13 | def_x!... |
 | calls/src/lib.rs:22:9:22:31 | concat!... |
 | calls/src/lib.rs:29:9:29:32 | include_str!... |

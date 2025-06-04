@@ -7,7 +7,7 @@ macro_rules! def_x {
 }
 
 impl S {
-    def_x!();  // this doesn't expand since 0.0.274
+    def_x!();  // this didn't expand in 0.0.274-0.0.281
 }
 
 macro_rules! my_macro {
