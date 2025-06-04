@@ -3,7 +3,6 @@
  */
 
 private import javascript
-private import semmle.javascript.internal.TypeResolution
 
 /**
  * An input to a view component, such as React props.
@@ -16,7 +15,7 @@ abstract class ViewComponentInput extends DataFlow::Node {
 private class ViewComponentInputAsThreatModelSource extends ThreatModelSource::Range instanceof ViewComponentInput
 {
   ViewComponentInputAsThreatModelSource() {
-    not TypeResolution::valueHasSanitizingPrimitiveType(this.asExpr())
+    not this.asExpr().getTypeBinding().isSanitizingPrimitiveType()
   }
 
   final override string getThreatModel() { result = "view-component-input" }
