@@ -408,6 +408,10 @@ module NameResolution {
    */
   predicate trackModule = ValueFlow::TrackNode<ModuleLike>::track/1;
 
+  predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;
+
+  predicate trackFunctionValue = ValueFlow::TrackNode<Function>::track/1;
+
   /**
    * Holds if `moduleName` appears to start with a package name, as opposed to a relative file import.
    */
