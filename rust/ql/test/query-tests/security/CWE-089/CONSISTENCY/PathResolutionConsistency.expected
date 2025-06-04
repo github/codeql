@@ -3,6 +3,8 @@ multipleMethodCallTargets
 | sqlx.rs:64:26:64:46 | safe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:65:26:65:46 | safe_query_2.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:65:26:65:46 | safe_query_2.as_str() | file://:0:0:0:0 | fn as_str |
+| sqlx.rs:66:26:66:46 | safe_query_3.as_str() | file://:0:0:0:0 | fn as_str |
+| sqlx.rs:66:26:66:46 | safe_query_3.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:67:26:67:48 | unsafe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:69:30:69:52 | unsafe_query_2.as_str() | file://:0:0:0:0 | fn as_str |
@@ -13,6 +15,8 @@ multipleMethodCallTargets
 | sqlx.rs:75:25:75:45 | safe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:76:25:76:45 | safe_query_2.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:76:25:76:45 | safe_query_2.as_str() | file://:0:0:0:0 | fn as_str |
+| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | file://:0:0:0:0 | fn as_str |
+| sqlx.rs:77:25:77:45 | safe_query_3.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:78:25:78:47 | unsafe_query_1.as_str() | file://:0:0:0:0 | fn as_str |
 | sqlx.rs:80:29:80:51 | unsafe_query_2.as_str() | file://:0:0:0:0 | fn as_str |

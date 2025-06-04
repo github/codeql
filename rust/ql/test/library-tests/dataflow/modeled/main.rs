@@ -95,8 +95,8 @@ mod ptr {
     }
 }
 
-use std::pin::Pin;
 use std::pin::pin;
+use std::pin::Pin;
 
 #[derive(Clone)]
 struct MyStruct {
@@ -126,7 +126,7 @@ fn test_pin() {
         let mut pin4 = pin!(&ms);
         sink(ms.val); // $ hasValueFlow=41
         sink(pin1.val); // $ MISSING: hasValueFlow=41
-        sink(Pin::into_inner(pin1).val); // $ MISSING: hasValueFlow=41
+        sink(Pin::into_inner(pin1).val); // $ hasValueFlow=41
         sink(pin2.val); // $ MISSING: hasValueFlow=41
         sink(pin3.val); // $ MISSING: hasValueFlow=41
         sink(pin4.val); // $ MISSING: hasValueFlow=41
@@ -136,7 +136,7 @@ fn test_pin() {
         let mut ms = MyStruct { val: source(42) };
         let mut pin5 = Pin::new_unchecked(&ms);
         sink(pin5.val); // $ MISSING: hasValueFlow=42
-        sink(Pin::into_inner_unchecked(pin5).val); // $ MISSING: hasValueFlow=42
+        sink(Pin::into_inner_unchecked(pin5).val); // $ hasValueFlow=42
     }
 
     {
