@@ -2375,7 +2375,57 @@ inferType
 | main.rs:1629:13:1629:20 | vec2_not |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1629:24:1629:26 | ! ... |  | main.rs:1278:5:1283:5 | Vec2 |
 | main.rs:1629:25:1629:26 | v1 |  | main.rs:1278:5:1283:5 | Vec2 |
-| main.rs:1635:5:1635:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:5:1636:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:20:1636:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1636:41:1636:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1640:16:1640:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1640:16:1640:20 | SelfParam | &T | main.rs:1636:5:1637:13 | S |
+| main.rs:1640:31:1642:9 | { ... } |  | main.rs:1636:5:1637:13 | S |
+| main.rs:1641:13:1641:13 | S |  | main.rs:1636:5:1637:13 | S |
+| main.rs:1651:26:1653:9 | { ... } |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1651:26:1653:9 | { ... } | T | main.rs:1650:10:1650:10 | T |
+| main.rs:1652:13:1652:38 | MyVec {...} |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1652:13:1652:38 | MyVec {...} | T | main.rs:1650:10:1650:10 | T |
+| main.rs:1655:17:1655:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1655:17:1655:25 | SelfParam | &T | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1655:17:1655:25 | SelfParam | &T.T | main.rs:1650:10:1650:10 | T |
+| main.rs:1655:28:1655:32 | value |  | main.rs:1650:10:1650:10 | T |
+| main.rs:1656:13:1656:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1656:13:1656:16 | self | &T | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1656:13:1656:16 | self | &T.T | main.rs:1650:10:1650:10 | T |
+| main.rs:1656:28:1656:32 | value |  | main.rs:1650:10:1650:10 | T |
+| main.rs:1664:18:1664:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1664:18:1664:22 | SelfParam | &T | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1664:18:1664:22 | SelfParam | &T.T | main.rs:1660:10:1660:10 | T |
+| main.rs:1664:25:1664:29 | index |  | file:///BUILTINS/types.rs:20:1:21:17 | usize |
+| main.rs:1664:56:1666:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1664:56:1666:9 | { ... } | &T | main.rs:1660:10:1660:10 | T |
+| main.rs:1665:13:1665:29 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1665:13:1665:29 | &... | &T | main.rs:1660:10:1660:10 | T |
+| main.rs:1665:14:1665:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:1665:14:1665:17 | self | &T | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1665:14:1665:17 | self | &T.T | main.rs:1660:10:1660:10 | T |
+| main.rs:1665:24:1665:28 | index |  | file:///BUILTINS/types.rs:20:1:21:17 | usize |
+| main.rs:1669:22:1669:26 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1670:17:1670:21 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1670:23:1670:23 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1674:13:1674:19 | mut vec |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1674:13:1674:19 | mut vec | T | main.rs:1636:5:1637:13 | S |
+| main.rs:1674:23:1674:34 | ...::new(...) |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1674:23:1674:34 | ...::new(...) | T | main.rs:1636:5:1637:13 | S |
+| main.rs:1675:9:1675:11 | vec |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1675:9:1675:11 | vec | T | main.rs:1636:5:1637:13 | S |
+| main.rs:1675:18:1675:18 | S |  | main.rs:1636:5:1637:13 | S |
+| main.rs:1676:9:1676:11 | vec |  | main.rs:1645:5:1648:5 | MyVec |
+| main.rs:1676:9:1676:11 | vec | T | main.rs:1636:5:1637:13 | S |
+| main.rs:1676:13:1676:13 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1678:13:1678:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1678:21:1678:21 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1678:26:1678:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1678:27:1678:27 | S |  | main.rs:1636:5:1637:13 | S |
+| main.rs:1679:17:1679:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1679:20:1679:20 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1681:23:1681:25 | &xs |  | file://:0:0:0:0 | & |
+| main.rs:1681:23:1681:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1681:24:1681:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1687:5:1687:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1688:5:1688:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1688:20:1688:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1688:41:1688:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
