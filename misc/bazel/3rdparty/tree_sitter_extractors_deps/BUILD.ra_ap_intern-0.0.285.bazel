@@ -11,7 +11,7 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_edition",
+    name = "ra_ap_intern",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -35,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_edition",
+        "crate-name=ra_ap_intern",
         "manual",
         "noclippy",
         "norustfmt",
@@ -79,5 +79,11 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
+    deps = [
+        "@vendor_ts__dashmap-6.1.0//:dashmap",
+        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
+        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
+        "@vendor_ts__triomphe-0.1.14//:triomphe",
+    ],
 )

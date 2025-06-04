@@ -17,8 +17,8 @@ rust_library(
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths": "paths",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
+        "@vendor_ts__ra_ap_paths-0.0.285//:ra_ap_paths": "paths",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx": "stdx",
     },
     compile_data = glob(
         include = ["**"],
@@ -83,14 +83,14 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
         "@vendor_ts__crossbeam-channel-0.5.15//:crossbeam_channel",
         "@vendor_ts__fst-0.4.7//:fst",
         "@vendor_ts__indexmap-2.9.0//:indexmap",
         "@vendor_ts__nohash-hasher-0.2.0//:nohash_hasher",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
+        "@vendor_ts__ra_ap_paths-0.0.285//:ra_ap_paths",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx",
         "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
         "@vendor_ts__tracing-0.1.41//:tracing",
     ],

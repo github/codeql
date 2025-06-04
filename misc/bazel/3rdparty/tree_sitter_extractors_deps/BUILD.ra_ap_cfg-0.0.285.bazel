@@ -17,8 +17,8 @@ rust_library(
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern": "intern",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt": "tt",
+        "@vendor_ts__ra_ap_intern-0.0.285//:ra_ap_intern": "intern",
+        "@vendor_ts__ra_ap_tt-0.0.285//:ra_ap_tt": "tt",
     },
     compile_data = glob(
         include = ["**"],
@@ -86,10 +86,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt",
+        "@vendor_ts__ra_ap_intern-0.0.285//:ra_ap_intern",
+        "@vendor_ts__ra_ap_tt-0.0.285//:ra_ap_tt",
         "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
         "@vendor_ts__tracing-0.1.41//:tracing",
     ],

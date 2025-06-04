@@ -6,13 +6,12 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "parking_lot_core",
+    name = "mio",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -29,6 +28,12 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "log",
+        "os-ext",
+        "os-poll",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_flags = [
@@ -36,7 +41,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=parking_lot_core",
+        "crate-name=mio",
         "manual",
         "noclippy",
         "norustfmt",
@@ -80,11 +85,9 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.9.10",
+    version = "1.0.4",
     deps = [
-        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
-        "@vendor_ts__parking_lot_core-0.9.10//:build_script_build",
-        "@vendor_ts__smallvec-1.15.0//:smallvec",
+        "@vendor_ts__log-0.4.27//:log",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
@@ -99,7 +102,7 @@ rust_library(
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__windows-targets-0.52.6//:windows_targets",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
@@ -129,7 +132,7 @@ rust_library(
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__windows-targets-0.52.6//:windows_targets",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
@@ -143,6 +146,10 @@ rust_library(
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
         ],
+        "@rules_rust//rust/platform:wasm32-wasip1": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(target_os = "wasi")
+            "@vendor_ts__wasi-0.11.0-wasi-snapshot-preview1//:wasi",  # cfg(target_os = "wasi")
+        ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
         ],
@@ -153,7 +160,7 @@ rust_library(
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__windows-targets-0.52.6//:windows_targets",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
             "@vendor_ts__libc-0.2.172//:libc",  # cfg(unix)
@@ -169,59 +176,4 @@ rust_library(
         ],
         "//conditions:default": [],
     }),
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    crate_name = "build_script_build",
-    crate_root = "build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    edition = "2021",
-    pkg_name = "parking_lot_core",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=parking_lot_core",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "0.9.10",
-    visibility = ["//visibility:private"],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
 )

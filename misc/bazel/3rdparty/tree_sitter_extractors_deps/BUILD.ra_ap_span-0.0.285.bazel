@@ -11,18 +11,15 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_mbe",
+    name = "ra_ap_span",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern": "intern",
-        "@vendor_ts__ra_ap_parser-0.0.281//:ra_ap_parser": "parser",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span": "span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
-        "@vendor_ts__ra_ap_syntax-bridge-0.0.281//:ra_ap_syntax_bridge": "syntax_bridge",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt": "tt",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx": "stdx",
+        "@vendor_ts__ra_ap_syntax-0.0.285//:ra_ap_syntax": "syntax",
+        "@vendor_ts__ra_ap_vfs-0.0.285//:ra_ap_vfs": "vfs",
     },
     compile_data = glob(
         include = ["**"],
@@ -36,6 +33,10 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "salsa",
+    ],
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_flags = [
@@ -43,7 +44,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_mbe",
+        "crate-name=ra_ap_span",
         "manual",
         "noclippy",
         "norustfmt",
@@ -87,18 +88,15 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__arrayvec-0.7.6//:arrayvec",
-        "@vendor_ts__cov-mark-2.0.0//:cov_mark",
-        "@vendor_ts__ra-ap-rustc_lexer-0.113.0//:ra_ap_rustc_lexer",
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern",
-        "@vendor_ts__ra_ap_parser-0.0.281//:ra_ap_parser",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
-        "@vendor_ts__ra_ap_syntax-bridge-0.0.281//:ra_ap_syntax_bridge",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt",
+        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
+        "@vendor_ts__la-arena-0.3.1//:la_arena",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx",
+        "@vendor_ts__ra_ap_syntax-0.0.285//:ra_ap_syntax",
+        "@vendor_ts__ra_ap_vfs-0.0.285//:ra_ap_vfs",
         "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
-        "@vendor_ts__smallvec-1.15.0//:smallvec",
+        "@vendor_ts__salsa-0.22.0//:salsa",
+        "@vendor_ts__text-size-1.1.1//:text_size",
     ],
 )

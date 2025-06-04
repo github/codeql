@@ -11,20 +11,11 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_project_model",
+    name = "ra_ap_paths",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor_ts__ra_ap_base_db-0.0.281//:ra_ap_base_db": "base_db",
-        "@vendor_ts__ra_ap_cfg-0.0.281//:ra_ap_cfg": "cfg",
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern": "intern",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths": "paths",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span": "span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
-        "@vendor_ts__ra_ap_toolchain-0.0.281//:ra_ap_toolchain": "toolchain",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -37,17 +28,17 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "serde1",
+    ],
     crate_root = "src/lib.rs",
     edition = "2024",
-    proc_macro_deps = [
-        "@vendor_ts__serde_derive-1.0.219//:serde_derive",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_project_model",
+        "crate-name=ra_ap_paths",
         "manual",
         "noclippy",
         "norustfmt",
@@ -91,24 +82,8 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__anyhow-1.0.98//:anyhow",
-        "@vendor_ts__cargo_metadata-0.19.2//:cargo_metadata",
-        "@vendor_ts__itertools-0.14.0//:itertools",
-        "@vendor_ts__la-arena-0.3.1//:la_arena",
-        "@vendor_ts__ra_ap_base_db-0.0.281//:ra_ap_base_db",
-        "@vendor_ts__ra_ap_cfg-0.0.281//:ra_ap_cfg",
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
-        "@vendor_ts__ra_ap_toolchain-0.0.281//:ra_ap_toolchain",
-        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
-        "@vendor_ts__semver-1.0.26//:semver",
-        "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde_json-1.0.140//:serde_json",
-        "@vendor_ts__tracing-0.1.41//:tracing",
-        "@vendor_ts__triomphe-0.1.14//:triomphe",
+        "@vendor_ts__camino-1.1.9//:camino",
     ],
 )

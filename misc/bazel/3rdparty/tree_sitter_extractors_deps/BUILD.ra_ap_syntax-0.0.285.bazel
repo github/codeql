@@ -11,17 +11,14 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_proc_macro_api",
+    name = "ra_ap_syntax",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern": "intern",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths": "paths",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span": "span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt": "tt",
+        "@vendor_ts__ra_ap_parser-0.0.285//:ra_ap_parser": "parser",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx": "stdx",
     },
     compile_data = glob(
         include = ["**"],
@@ -37,15 +34,12 @@ rust_library(
     ),
     crate_root = "src/lib.rs",
     edition = "2024",
-    proc_macro_deps = [
-        "@vendor_ts__serde_derive-1.0.219//:serde_derive",
-    ],
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_proc_macro_api",
+        "crate-name=ra_ap_syntax",
         "manual",
         "noclippy",
         "norustfmt",
@@ -89,17 +83,18 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__indexmap-2.9.0//:indexmap",
-        "@vendor_ts__ra_ap_intern-0.0.281//:ra_ap_intern",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths",
-        "@vendor_ts__ra_ap_span-0.0.281//:ra_ap_span",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
-        "@vendor_ts__ra_ap_tt-0.0.281//:ra_ap_tt",
+        "@vendor_ts__either-1.15.0//:either",
+        "@vendor_ts__itertools-0.14.0//:itertools",
+        "@vendor_ts__ra_ap_parser-0.0.285//:ra_ap_parser",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx",
+        "@vendor_ts__rowan-0.15.15//:rowan",
         "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
-        "@vendor_ts__serde-1.0.219//:serde",
-        "@vendor_ts__serde_json-1.0.140//:serde_json",
+        "@vendor_ts__rustc-literal-escaper-0.0.2//:rustc_literal_escaper",
+        "@vendor_ts__smol_str-0.3.2//:smol_str",
         "@vendor_ts__tracing-0.1.41//:tracing",
+        "@vendor_ts__triomphe-0.1.14//:triomphe",
     ],
 )
+exports_files(["rust.ungram"])

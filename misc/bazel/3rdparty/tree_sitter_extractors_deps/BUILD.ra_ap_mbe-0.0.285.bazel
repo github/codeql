@@ -6,17 +6,24 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "lock_api",
+    name = "ra_ap_mbe",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
+    aliases = {
+        "@vendor_ts__ra_ap_intern-0.0.285//:ra_ap_intern": "intern",
+        "@vendor_ts__ra_ap_parser-0.0.285//:ra_ap_parser": "parser",
+        "@vendor_ts__ra_ap_span-0.0.285//:ra_ap_span": "span",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx": "stdx",
+        "@vendor_ts__ra_ap_syntax-bridge-0.0.285//:ra_ap_syntax_bridge": "syntax_bridge",
+        "@vendor_ts__ra_ap_tt-0.0.285//:ra_ap_tt": "tt",
+    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -29,18 +36,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "atomic_usize",
-        "default",
-    ],
     crate_root = "src/lib.rs",
-    edition = "2021",
+    edition = "2024",
     rustc_flags = [
         "--cap-lints=allow",
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=lock_api",
+        "crate-name=ra_ap_mbe",
         "manual",
         "noclippy",
         "norustfmt",
@@ -84,71 +87,18 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.4.12",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__lock_api-0.4.12//:build_script_build",
-        "@vendor_ts__scopeguard-1.2.0//:scopeguard",
+        "@vendor_ts__arrayvec-0.7.6//:arrayvec",
+        "@vendor_ts__cov-mark-2.0.0//:cov_mark",
+        "@vendor_ts__ra-ap-rustc_lexer-0.113.0//:ra_ap_rustc_lexer",
+        "@vendor_ts__ra_ap_intern-0.0.285//:ra_ap_intern",
+        "@vendor_ts__ra_ap_parser-0.0.285//:ra_ap_parser",
+        "@vendor_ts__ra_ap_span-0.0.285//:ra_ap_span",
+        "@vendor_ts__ra_ap_stdx-0.0.285//:ra_ap_stdx",
+        "@vendor_ts__ra_ap_syntax-bridge-0.0.285//:ra_ap_syntax_bridge",
+        "@vendor_ts__ra_ap_tt-0.0.285//:ra_ap_tt",
+        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
+        "@vendor_ts__smallvec-1.15.0//:smallvec",
     ],
-)
-
-cargo_build_script(
-    name = "_bs",
-    srcs = glob(
-        include = ["**/*.rs"],
-        allow_empty = True,
-    ),
-    compile_data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            "**/*.rs",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    crate_features = [
-        "atomic_usize",
-        "default",
-    ],
-    crate_name = "build_script_build",
-    crate_root = "build.rs",
-    data = glob(
-        include = ["**"],
-        allow_empty = True,
-        exclude = [
-            "**/* *",
-            ".tmp_git_root/**/*",
-            "BUILD",
-            "BUILD.bazel",
-            "WORKSPACE",
-            "WORKSPACE.bazel",
-        ],
-    ),
-    edition = "2021",
-    pkg_name = "lock_api",
-    rustc_flags = [
-        "--cap-lints=allow",
-    ],
-    tags = [
-        "cargo-bazel",
-        "crate-name=lock_api",
-        "manual",
-        "noclippy",
-        "norustfmt",
-    ],
-    version = "0.4.12",
-    visibility = ["//visibility:private"],
-    deps = [
-        "@vendor_ts__autocfg-1.4.0//:autocfg",
-    ],
-)
-
-alias(
-    name = "build_script_build",
-    actual = ":_bs",
-    tags = ["manual"],
 )

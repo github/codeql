@@ -11,15 +11,13 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_vfs_notify",
+    name = "ra_ap_parser",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
     aliases = {
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths": "paths",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
-        "@vendor_ts__ra_ap_vfs-0.0.281//:ra_ap_vfs": "vfs",
+        "@vendor_ts__ra_ap_edition-0.0.285//:ra_ap_edition": "edition",
     },
     compile_data = glob(
         include = ["**"],
@@ -33,6 +31,10 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "tracing",
+    ],
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_flags = [
@@ -40,7 +42,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_vfs-notify",
+        "crate-name=ra_ap_parser",
         "manual",
         "noclippy",
         "norustfmt",
@@ -84,16 +86,12 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__crossbeam-channel-0.5.15//:crossbeam_channel",
-        "@vendor_ts__notify-8.0.0//:notify",
-        "@vendor_ts__ra_ap_paths-0.0.281//:ra_ap_paths",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
-        "@vendor_ts__ra_ap_vfs-0.0.281//:ra_ap_vfs",
-        "@vendor_ts__rayon-1.10.0//:rayon",
-        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
+        "@vendor_ts__drop_bomb-0.1.5//:drop_bomb",
+        "@vendor_ts__ra-ap-rustc_lexer-0.113.0//:ra_ap_rustc_lexer",
+        "@vendor_ts__ra_ap_edition-0.0.285//:ra_ap_edition",
+        "@vendor_ts__rustc-literal-escaper-0.0.2//:rustc_literal_escaper",
         "@vendor_ts__tracing-0.1.41//:tracing",
-        "@vendor_ts__walkdir-2.5.0//:walkdir",
     ],
 )

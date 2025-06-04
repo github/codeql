@@ -11,16 +11,11 @@ load("@rules_rust//rust:defs.bzl", "rust_library")
 package(default_visibility = ["//visibility:public"])
 
 rust_library(
-    name = "ra_ap_span",
+    name = "ra_ap_profile",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx": "stdx",
-        "@vendor_ts__ra_ap_syntax-0.0.281//:ra_ap_syntax": "syntax",
-        "@vendor_ts__ra_ap_vfs-0.0.281//:ra_ap_vfs": "vfs",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -33,10 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "default",
-        "salsa",
-    ],
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_flags = [
@@ -44,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_span",
+        "crate-name=ra_ap_profile",
         "manual",
         "noclippy",
         "norustfmt",
@@ -88,15 +79,55 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__hashbrown-0.14.5//:hashbrown",
-        "@vendor_ts__la-arena-0.3.1//:la_arena",
-        "@vendor_ts__ra_ap_stdx-0.0.281//:ra_ap_stdx",
-        "@vendor_ts__ra_ap_syntax-0.0.281//:ra_ap_syntax",
-        "@vendor_ts__ra_ap_vfs-0.0.281//:ra_ap_vfs",
-        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
-        "@vendor_ts__salsa-0.22.0//:salsa",
-        "@vendor_ts__text-size-1.1.1//:text_size",
-    ],
+        "@vendor_ts__cfg-if-1.0.0//:cfg_if",
+    ] + select({
+        "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:i686-pc-windows-msvc": [
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+        ],
+        "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
+            "@vendor_ts__windows-sys-0.59.0//:windows_sys",  # cfg(windows)
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
+            "@vendor_ts__libc-0.2.172//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__perf-event-0.4.7//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos")))
+        ],
+        "//conditions:default": [],
+    }),
 )

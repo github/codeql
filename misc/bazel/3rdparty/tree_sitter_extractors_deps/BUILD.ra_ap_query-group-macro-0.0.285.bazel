@@ -6,19 +6,16 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_library(
-    name = "ra_ap_parser",
+rust_proc_macro(
+    name = "ra_ap_query_group_macro",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor_ts__ra_ap_edition-0.0.281//:ra_ap_edition": "edition",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -31,10 +28,6 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
-    crate_features = [
-        "default",
-        "tracing",
-    ],
     crate_root = "src/lib.rs",
     edition = "2024",
     rustc_flags = [
@@ -42,7 +35,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_parser",
+        "crate-name=ra_ap_query-group-macro",
         "manual",
         "noclippy",
         "norustfmt",
@@ -86,12 +79,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.281",
+    version = "0.0.285",
     deps = [
-        "@vendor_ts__drop_bomb-0.1.5//:drop_bomb",
-        "@vendor_ts__ra-ap-rustc_lexer-0.113.0//:ra_ap_rustc_lexer",
-        "@vendor_ts__ra_ap_edition-0.0.281//:ra_ap_edition",
-        "@vendor_ts__rustc-literal-escaper-0.0.2//:rustc_literal_escaper",
-        "@vendor_ts__tracing-0.1.41//:tracing",
+        "@vendor_ts__proc-macro2-1.0.95//:proc_macro2",
+        "@vendor_ts__quote-1.0.40//:quote",
+        "@vendor_ts__syn-2.0.101//:syn",
     ],
 )
