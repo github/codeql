@@ -1,4 +1,5 @@
 testFailures
+| main.rs:1760:13:1760:33 | ... .push(...) | Unexpected result: method=push |
 inferType
 | loop/main.rs:7:12:7:15 | SelfParam |  | loop/main.rs:6:1:8:1 | Self [trait T1] |
 | loop/main.rs:11:12:11:15 | SelfParam |  | loop/main.rs:10:1:14:1 | Self [trait T2] |
@@ -2463,8 +2464,64 @@ inferType
 | main.rs:1733:13:1733:13 | d |  | main.rs:1681:5:1681:14 | S2 |
 | main.rs:1733:17:1733:34 | uses_my_trait2(...) |  | main.rs:1681:5:1681:14 | S2 |
 | main.rs:1733:32:1733:33 | S1 |  | main.rs:1680:5:1680:14 | S1 |
-| main.rs:1739:5:1739:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:5:1740:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:20:1740:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1740:41:1740:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
-| main.rs:1756:5:1756:15 | ...::f(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
+| main.rs:1744:16:1744:20 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1744:16:1744:20 | SelfParam | &T | main.rs:1740:5:1741:13 | S |
+| main.rs:1744:31:1746:9 | { ... } |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1745:13:1745:13 | S |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1755:26:1757:9 | { ... } |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1755:26:1757:9 | { ... } | T | main.rs:1754:10:1754:10 | T |
+| main.rs:1756:13:1756:38 | MyVec {...} |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1756:13:1756:38 | MyVec {...} | T | main.rs:1754:10:1754:10 | T |
+| main.rs:1756:27:1756:36 | ...::new(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:148:1:400:1 | Vec |
+| main.rs:1756:27:1756:36 | ...::new(...) | T | main.rs:1754:10:1754:10 | T |
+| main.rs:1759:17:1759:25 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1759:17:1759:25 | SelfParam | &T | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1759:17:1759:25 | SelfParam | &T.T | main.rs:1754:10:1754:10 | T |
+| main.rs:1759:28:1759:32 | value |  | main.rs:1754:10:1754:10 | T |
+| main.rs:1760:13:1760:16 | self |  | file://:0:0:0:0 | & |
+| main.rs:1760:13:1760:16 | self | &T | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1760:13:1760:16 | self | &T.T | main.rs:1754:10:1754:10 | T |
+| main.rs:1760:13:1760:21 | self.data |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:148:1:400:1 | Vec |
+| main.rs:1760:13:1760:21 | self.data | T | main.rs:1754:10:1754:10 | T |
+| main.rs:1760:28:1760:32 | value |  | main.rs:1754:10:1754:10 | T |
+| main.rs:1768:18:1768:22 | SelfParam |  | file://:0:0:0:0 | & |
+| main.rs:1768:18:1768:22 | SelfParam | &T | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1768:18:1768:22 | SelfParam | &T.T | main.rs:1764:10:1764:10 | T |
+| main.rs:1768:25:1768:29 | index |  | file:///BUILTINS/types.rs:20:1:21:17 | usize |
+| main.rs:1768:56:1770:9 | { ... } |  | file://:0:0:0:0 | & |
+| main.rs:1768:56:1770:9 | { ... } | &T | main.rs:1764:10:1764:10 | T |
+| main.rs:1769:13:1769:29 | &... |  | file://:0:0:0:0 | & |
+| main.rs:1769:13:1769:29 | &... | &T | main.rs:1764:10:1764:10 | T |
+| main.rs:1769:14:1769:17 | self |  | file://:0:0:0:0 | & |
+| main.rs:1769:14:1769:17 | self | &T | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1769:14:1769:17 | self | &T.T | main.rs:1764:10:1764:10 | T |
+| main.rs:1769:14:1769:22 | self.data |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/alloc/src/vec/mod.rs:148:1:400:1 | Vec |
+| main.rs:1769:14:1769:22 | self.data | T | main.rs:1764:10:1764:10 | T |
+| main.rs:1769:24:1769:28 | index |  | file:///BUILTINS/types.rs:20:1:21:17 | usize |
+| main.rs:1773:22:1773:26 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1774:17:1774:21 | slice |  | file://:0:0:0:0 | & |
+| main.rs:1774:23:1774:23 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1778:13:1778:19 | mut vec |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1778:13:1778:19 | mut vec | T | main.rs:1740:5:1741:13 | S |
+| main.rs:1778:23:1778:34 | ...::new(...) |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1778:23:1778:34 | ...::new(...) | T | main.rs:1740:5:1741:13 | S |
+| main.rs:1779:9:1779:11 | vec |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1779:9:1779:11 | vec | T | main.rs:1740:5:1741:13 | S |
+| main.rs:1779:18:1779:18 | S |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1780:9:1780:11 | vec |  | main.rs:1749:5:1752:5 | MyVec |
+| main.rs:1780:9:1780:11 | vec | T | main.rs:1740:5:1741:13 | S |
+| main.rs:1780:13:1780:13 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1782:13:1782:14 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1782:21:1782:21 | 1 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1782:26:1782:28 | [...] |  | file://:0:0:0:0 | [] |
+| main.rs:1782:27:1782:27 | S |  | main.rs:1740:5:1741:13 | S |
+| main.rs:1783:17:1783:18 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1783:20:1783:20 | 0 |  | file:///BUILTINS/types.rs:12:1:12:15 | i32 |
+| main.rs:1785:23:1785:25 | &xs |  | file://:0:0:0:0 | & |
+| main.rs:1785:23:1785:25 | &xs | &T | file://:0:0:0:0 | [] |
+| main.rs:1785:24:1785:25 | xs |  | file://:0:0:0:0 | [] |
+| main.rs:1791:5:1791:20 | ...::f(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1792:5:1792:60 | ...::g(...) |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1792:20:1792:38 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1792:41:1792:59 | ...::Foo {...} |  | main.rs:67:5:67:21 | Foo |
+| main.rs:1808:5:1808:15 | ...::f(...) |  | file:///RUSTUP_HOME/toolchain/lib/rustlib/src/rust/library/core/src/future/future.rs:7:1:105:1 | trait Future |
