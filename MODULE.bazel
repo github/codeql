@@ -239,24 +239,24 @@ go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
 go_deps.from_file(go_mod = "//go/extractor:go.mod")
 use_repo(go_deps, "org_golang_x_mod", "org_golang_x_tools")
 
-lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
+lfs_archive = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_archive")
 
-lfs_files(
+lfs_archive(
     name = "ripunzip-linux",
-    srcs = ["//misc/ripunzip:ripunzip-linux"],
-    executable = True,
+    src = "//misc/ripunzip:ripunzip-Linux.zip",
+    build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
-lfs_files(
+lfs_archive(
     name = "ripunzip-windows",
-    srcs = ["//misc/ripunzip:ripunzip-windows.exe"],
-    executable = True,
+    src = "//misc/ripunzip:ripunzip-Windows.zip",
+    build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
-lfs_files(
+lfs_archive(
     name = "ripunzip-macos",
-    srcs = ["//misc/ripunzip:ripunzip-macos"],
-    executable = True,
+    src = "//misc/ripunzip:ripunzip-macOS.zip",
+    build_file = "//misc/ripunzip:BUILD.ripunzip.bazel",
 )
 
 register_toolchains(

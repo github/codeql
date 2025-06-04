@@ -10,7 +10,7 @@
 
 import codeql.files.FileSystem
 
-select count(File f |
+select count(ExtractedFile f |
     exists(f.getRelativePath()) and
     not f instanceof SuccessfullyExtractedFile
   )

@@ -1021,7 +1021,8 @@ private predicate pathAttrImport(Folder f, Module m, string relativePath) {
 private predicate shouldAppend(Folder f, string relativePath) { pathAttrImport(f, _, relativePath) }
 
 /** Holds if `m` is a `mod name;` item importing file `f`. */
-private predicate fileImport(Module m, SourceFile f) {
+pragma[nomagic]
+predicate fileImport(Module m, SourceFile f) {
   exists(string name, Folder parent |
     modImport0(m, name, _) and
     fileModule(f, name, parent)
@@ -1404,18 +1405,20 @@ private predicate useImportEdge(Use use, string name, ItemNode item) {
 }
 
 /**
- * Holds if `i` is available inside `f` because it is reexported in [the prelude][1].
+ * Holds if `i` is available inside `f` because it is reexported in
+ * [the `core` prelude][1] or [the `std` prelude][2].
  *
  * We don't yet have access to prelude information from the extractor, so for now
  * we include all the preludes for Rust: 2015, 2018, 2021, and 2024.
  *
  * [1]: https://doc.rust-lang.org/core/prelude/index.html
+ * [2]: https://doc.rust-lang.org/std/prelude/index.html
  */
 private predicate preludeEdge(SourceFile f, string name, ItemNode i) {
-  exists(Crate core, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
-    f = any(Crate c0 | core = c0.getDependency(_) or core = c0).getASourceFile() and
-    core.getName() = "core" and
-    mod = core.getSourceFile() and
+  exists(Crate stdOrCore, ModuleLikeNode mod, ModuleItemNode prelude, ModuleItemNode rust |
+    f = any(Crate c0 | stdOrCore = c0.getDependency(_) or stdOrCore = c0).getASourceFile() and
+    stdOrCore.getName() = ["std", "core"] and
+    mod = stdOrCore.getSourceFile() and
     prelude = mod.getASuccessorRec("prelude") and
     rust = prelude.getASuccessorRec(["rust_2015", "rust_2018", "rust_2021", "rust_2024"]) and
     i = rust.getASuccessorRec(name) and

@@ -11,7 +11,7 @@ int getKind(int kind) {
   if kind = 14
   then result = 6 // Represent MSFT #import as #include
   else
-    if kind = 15 or kind = 6
+    if kind = 15 or kind = 16
     then result = 3 // Represent #elifdef and #elifndef as #elif
     else result = kind
 }

@@ -90,7 +90,11 @@ class KnownOpenSSLPaddingConstantAlgorithmInstance extends OpenSSLAlgorithmInsta
     isPaddingSpecificConsumer = true
   }
 
-  override string getRawPaddingAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawPaddingAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 

@@ -71,7 +71,11 @@ class KnownOpenSSLBlockModeConstantAlgorithmInstance extends OpenSSLAlgorithmIns
 
   // NOTE: I'm not going to attempt to parse out the mode specific part, so returning
   // the same as the raw name for now.
-  override string getRawModeAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawModeAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override OpenSSLAlgorithmValueConsumer getAVC() { result = getterCall }
 }

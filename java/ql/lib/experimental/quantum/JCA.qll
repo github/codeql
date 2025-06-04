@@ -1388,7 +1388,7 @@ module JCAModel {
     override Crypto::TKeyAgreementType getKeyAgreementType() {
       if key_agreement_name_to_type_known(_, super.getValue())
       then key_agreement_name_to_type_known(result, super.getValue())
-      else result = Crypto::UnknownKeyAgreementType()
+      else result = Crypto::OtherKeyAgreementType()
     }
 
     KeyAgreementAlgorithmValueConsumer getConsumer() { result = consumer }
