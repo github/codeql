@@ -119,10 +119,4 @@ module UnderlyingTypes {
       // The caller is responsible for handling the class hierarchy.
     )
   }
-
-  pragma[nomagic]
-  private predicate classHasGlobalName(DataFlow::ClassNode cls, string name) {
-    cls.flowsTo(AccessPath::getAnAssignmentTo(name)) and
-    not cls.getTopLevel().isExterns() // don't propagate externs classes
-  }
 }

@@ -485,4 +485,10 @@ module NameResolution {
       qualifiedName = append(prefix, step)
     )
   }
+
+  pragma[nomagic]
+  predicate classHasGlobalName(DataFlow::ClassNode cls, string name) {
+    cls.flowsTo(AccessPath::getAnAssignmentTo(name)) and
+    not cls.getTopLevel().isExterns() // don't propagate externs classes
+  }
 }
