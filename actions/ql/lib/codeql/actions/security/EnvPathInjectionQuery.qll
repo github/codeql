@@ -108,6 +108,12 @@ private module EnvPathInjectionConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/src/Security/CWE-077/EnvPathInjectionCritical.ql:39: Column 7 does not select a source or sink originating from the flow call on line 23
+    none()
+  }
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate the PATH environment variable. */

@@ -70,6 +70,12 @@ private module ActionsMutableRefCheckoutConfig implements DataFlow::ConfigSig {
       exists(run.getScript().getAFileReadCommand())
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/actions/security/UntrustedCheckoutQuery.qll:238: Flow call outside 'select' clause
+    none()
+  }
 }
 
 module ActionsMutableRefCheckoutFlow = TaintTracking::Global<ActionsMutableRefCheckoutConfig>;
@@ -120,6 +126,12 @@ private module ActionsSHACheckoutConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       exists(run.getScript().getAFileReadCommand())
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    // TODO(diff-informed): Manually verify if config can be diff-informed.
+    // ql/lib/codeql/actions/security/UntrustedCheckoutQuery.qll:273: Flow call outside 'select' clause
+    none()
   }
 }
 
