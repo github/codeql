@@ -351,6 +351,10 @@ module TypeResolution {
     or
     node.(TypeExpr).isNever()
     or
+    node.(TypeExpr).isBigInt()
+    or
+    node.(TypeExpr).isSymbol()
+    or
     node instanceof LiteralTypeExpr
     or
     node = any(EnumMember m).getIdentifier() // enum members are constant
