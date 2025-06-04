@@ -4,8 +4,6 @@ private import semmle.javascript.internal.UnderlyingTypes
 private import semmle.javascript.dataflow.internal.sharedlib.SummaryTypeTracker as SummaryTypeTracker
 
 module TypeResolution {
-  predicate trackClassValue = ValueFlow::TrackNode<ClassDefinition>::track/1;
-
   predicate trackType = TypeFlow::TrackNode<TypeDefinition>::track/1;
 
   /**
@@ -23,8 +21,6 @@ module TypeResolution {
       UnderlyingTypes::underlyingTypeStep(mid, result)
     )
   }
-
-  predicate trackFunctionValue = ValueFlow::TrackNode<Function>::track/1;
 
   /**
    * Gets the representative for the type containing the given member.
