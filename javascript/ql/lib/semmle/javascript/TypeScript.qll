@@ -1,5 +1,4 @@
 import javascript
-private import semmle.javascript.internal.UnderlyingTypes
 
 /**
  * A statement that defines a namespace, that is, a namespace declaration or enum declaration.
