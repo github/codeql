@@ -1142,7 +1142,7 @@ class _:
 @annotate(ForTypeRepr)
 class _:
     """
-    A higher-ranked trait bound(HRTB) type.
+    A higher-ranked trait bound.
 
     For example:
     ```rust
@@ -1354,7 +1354,6 @@ class _:
     For example:
     ```rust
     println!("Hello, world!");
-    //^^^^^^^
     ```
     """
     macro_call_expansion: optional[AstNode] | child | rust.detach
@@ -1495,7 +1494,7 @@ class _:
 
     For example:
     ```rust
-    foo();
+      foo();
     //^^^
     ```
     """
@@ -1549,7 +1548,6 @@ class _:
     For example:
     ```rust
     (x + y)
-    //^^^^^
     ```
     """
 
@@ -1830,7 +1828,7 @@ class _:
     A Struct. For example:
     ```rust
     struct Point {
-    x: i32,
+        x: i32,
         y: i32,
     }
     ```
@@ -1848,9 +1846,9 @@ class _:
     println!("{} {}!", "Hello", "world");
     //      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     ```
-    ```
+    ```rust
     macro_rules! foo { ($x:expr) => { $x + 1 }; }
-    //                 ^^^^^^^^^^^^^^^^^^^^^^^
+    //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     ```
     """
 
@@ -2028,7 +2026,7 @@ class _:
 @annotate(UseTree)
 class _:
     """
-    A `use` tree, ie the part after the `use` keyword in a `use` statement. For example:
+    A `use` tree, that is, the part after the `use` keyword in a `use` statement. For example:
     ```rust
     use std::collections::HashMap;
     use std::collections::*;
@@ -2046,7 +2044,7 @@ class _:
     For example:
     ```rust
     use std::{fs, io};
-    //        ^^^^^^^
+    //       ^^^^^^^^
     ```
     """
 
@@ -2084,7 +2082,7 @@ class _:
 
     For example:
     ```rust
-    pub struct S;
+      pub struct S;
     //^^^
     ```
     """
