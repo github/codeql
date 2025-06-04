@@ -1,3 +1,18 @@
+multipleMethodCallTargets
+| main.rs:187:13:187:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:187:13:187:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:188:13:188:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:188:13:188:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:195:13:195:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:195:13:195:43 | ...::System.allocate(...) | file://:0:0:0:0 | fn allocate |
+| main.rs:196:13:196:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:196:13:196:50 | ...::System.allocate_zeroed(...) | file://:0:0:0:0 | fn allocate_zeroed |
+| main.rs:208:21:208:55 | ...::System.grow(...) | file://:0:0:0:0 | fn grow |
+| main.rs:208:21:208:55 | ...::System.grow(...) | file://:0:0:0:0 | fn grow |
+| main.rs:210:21:210:62 | ...::System.grow_zeroed(...) | file://:0:0:0:0 | fn grow_zeroed |
+| main.rs:210:21:210:62 | ...::System.grow_zeroed(...) | file://:0:0:0:0 | fn grow_zeroed |
+| main.rs:213:17:213:53 | ...::System.shrink(...) | file://:0:0:0:0 | fn shrink |
+| main.rs:213:17:213:53 | ...::System.shrink(...) | file://:0:0:0:0 | fn shrink |
 multiplePathResolutions
 | main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |
 | main.rs:218:14:218:17 | libc | file://:0:0:0:0 | Crate(libc@0.2.172) |

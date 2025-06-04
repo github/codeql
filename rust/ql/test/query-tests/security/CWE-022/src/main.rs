@@ -34,7 +34,7 @@ fn tainted_path_handler_folder_good(Query(file_path): Query<String>) -> Result<S
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good1(
-    Query(file_path): Query<String>, // $ Source=remote4
+    Query(file_path): Query<String>, // $ MISSING: Source=remote4
 ) -> Result<String> {
     let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
@@ -42,12 +42,12 @@ fn tainted_path_handler_folder_almost_good1(
     if !file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote4
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote4 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
 }
 
 //#[handler]
 fn tainted_path_handler_folder_almost_good2(
-    Query(file_path): Query<String>, // $ Source=remote5
+    Query(file_path): Query<String>, // $ MISSING: Source=remote5
 ) -> Result<String> {
     let public_path = PathBuf::from("/var/www/public_html");
     let file_path = public_path.join(PathBuf::from(file_path));
@@ -56,7 +56,7 @@ fn tainted_path_handler_folder_almost_good2(
     if file_path.starts_with(public_path) {
         return Err(Error::from_status(StatusCode::BAD_REQUEST));
     }
-    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink Alert[rust/path-injection]=remote5
+    fs::read_to_string(file_path).map_err(InternalServerError) // $ path-injection-sink MISSING: Alert[rust/path-injection]=remote5 -- we cannot resolve the `join` call above, because it needs a `PathBuf -> Path` `Deref`
 }
 
 fn sinks(path1: &Path, path2: &Path) {

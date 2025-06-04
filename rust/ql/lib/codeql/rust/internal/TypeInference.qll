@@ -1166,6 +1166,7 @@ final class MethodCall extends Call {
  * Holds if a method for `type` with the name `name` and the arity `arity`
  * exists in `impl`.
  */
+pragma[nomagic]
 private predicate methodCandidate(Type type, string name, int arity, Impl impl) {
   type = impl.getSelfTy().(TypeMention).resolveType() and
   exists(Function f |
@@ -1453,8 +1454,8 @@ private module Debug {
   private Locatable getRelevantLocatable() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/main.rs") and
-      startline = 1718
+      filepath.matches("%/sqlx.rs") and
+      startline = [56 .. 60]
     )
   }
 

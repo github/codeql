@@ -47,6 +47,7 @@ private import rust
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.elements.internal.CallExprBaseImpl::Impl as CallExprBaseImpl
 
 /**
  * Holds if in a call to the function with canonical path `path`, defined in the
@@ -120,7 +121,12 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
 
   SummarizedCallableFromModel() {
     summaryModel(crate, path, _, _, _, _, _) and
-    this = crate + "::_::" + path
+    exists(CallExprBase call, Resolvable r |
+      call.getStaticTarget() = this and
+      r = CallExprBaseImpl::getCallResolvable(call) and
+      r.getResolvedPath() = path and
+      r.getResolvedCrateOrigin() = crate
+    )
   }
 
   override predicate propagatesFlow(

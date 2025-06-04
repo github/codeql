@@ -1,18 +1,18 @@
-fn sink<T>(_: T) { }
+fn sink<T>(_: T) {}
 
 // --- tests ---
 
-use std::pin::Pin;
-use std::task::{Context, Poll};
-use std::io;
-use futures::io::AsyncRead;
-use futures::io::AsyncReadExt;
+use async_std::net::TcpStream;
+use async_std::sync::Arc;
 use futures::io::AsyncBufRead;
 use futures::io::AsyncBufReadExt;
+use futures::io::AsyncRead;
+use futures::io::AsyncReadExt;
 use futures::StreamExt;
-use futures_rustls::{TlsConnector};
-use async_std::sync::Arc;
-use async_std::net::TcpStream;
+use futures_rustls::TlsConnector;
+use std::io;
+use std::pin::Pin;
+use std::task::{Context, Poll};
 
 async fn test_futures_rustls_futures_io() -> io::Result<()> {
     let url = "www.example.com:443";
@@ -32,10 +32,10 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         let mut pinned = Pin::new(&mut reader);
         sink(&pinned); // $ hasTaintFlow=url
         let mut cx = Context::from_waker(futures::task::noop_waker_ref());
-        let bytes_read = pinned.poll_read(&mut cx, &mut buffer);
+        let bytes_read = pinned.poll_read(&mut cx, &mut buffer); // we cannot correctly resolve this call, since it relies on `Deref`
         if let Poll::Ready(Ok(n)) = bytes_read {
-            sink(&buffer); // $ hasTaintFlow=url
-            sink(&buffer[..n]); // $ hasTaintFlow=url
+            sink(&buffer); // $ MISSING: hasTaintFlow=url
+            sink(&buffer[..n]); // $ MISSING: hasTaintFlow=url
         }
     }
 
@@ -46,8 +46,9 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
-        let bytes_read2 = reader.read(&mut buffer2).await?;
-        sink(&buffer2[..bytes_read2]); // $ hasTaintFlow=url
+        let bytes_read2 = reader.read(&mut buffer2).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+
+        sink(&buffer2[..bytes_read2]); // $ MISSING: hasTaintFlow=url
     }
 
     let mut reader2 = futures::io::BufReader::new(reader);
@@ -79,8 +80,8 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
 
     {
         // using the `AsyncBufReadExt::fill_buf` extension method (higher-level)
-        let buffer = reader2.fill_buf().await?;
-        sink(buffer); // $ hasTaintFlow=url
+        let buffer = reader2.fill_buf().await?; // we cannot resolve the `fill_buf` call, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(buffer); // $ MISSING: hasTaintFlow=url
     }
 
     {
@@ -103,8 +104,8 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
         sink(&buffer1[..bytes_read1]); // $ hasTaintFlow=url
 
         let mut buffer2 = [0u8; 64];
-        let bytes_read2 = reader2.read(&mut buffer2).await?;
-        sink(&buffer2[..bytes_read2]); // $ hasTaintFlow=url
+        let bytes_read2 = reader2.read(&mut buffer2).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(&buffer2[..bytes_read2]); // $ MISSING: hasTaintFlow=url
     }
 
     {
@@ -121,35 +122,35 @@ async fn test_futures_rustls_futures_io() -> io::Result<()> {
 
     {
         // using the `AsyncBufReadExt::fill_buf` extension method (higher-level)
-        let buffer = reader2.fill_buf().await?;
-        sink(buffer); // $ hasTaintFlow=url
+        let buffer = reader2.fill_buf().await?; // we cannot resolve the `fill_buf` call, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(buffer); // $ MISSING: hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::read_until` extension method
         let mut line = Vec::new();
-        let _bytes_read = reader2.read_until(b'\n', &mut line).await?;
-        sink(&line); // $ hasTaintFlow=url
+        let _bytes_read = reader2.read_until(b'\n', &mut line).await?; // we cannot resolve the `read_until` call, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(&line); // $ MISSING: hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::read_line` extension method
         let mut line = String::new();
-        let _bytes_read = reader2.read_line(&mut line).await?;
-        sink(&line); // $ hasTaintFlow=url
+        let _bytes_read = reader2.read_line(&mut line).await?; // we cannot resolve the `read_line` call, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(&line); // $ MISSING: hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::read_to_end` extension method
         let mut buffer = Vec::with_capacity(1024);
-        let _bytes_read = reader2.read_to_end(&mut buffer).await?;
-        sink(&buffer); // $ hasTaintFlow=url
+        let _bytes_read = reader2.read_to_end(&mut buffer).await?; // we cannot resolve the `read` call, which comes from `impl<R: AsyncRead + ?Sized> AsyncReadExt for R {}` in `async_read_ext.rs`
+        sink(&buffer); // $ MISSING: hasTaintFlow=url
     }
 
     {
         // using the `AsyncBufReadExt::lines` extension method
-        let mut lines_stream = reader2.lines();
-        sink(lines_stream.next().await.unwrap()); // $ hasTaintFlow=url
+        let mut lines_stream = reader2.lines(); // we cannot resolve the `lines` call, which comes from `impl<R: AsyncBufRead + ?Sized> AsyncBufReadExt for R {}` in `async_buf_read_ext.rs`
+        sink(lines_stream.next().await.unwrap()); // $ MISSING: hasTaintFlow=url
         while let Some(line) = lines_stream.next().await {
             sink(line.unwrap()); // $ MISSING: hasTaintFlow
         }
