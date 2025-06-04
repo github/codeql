@@ -235,6 +235,8 @@ module TypeResolution {
     or
     value.(TypeAssertion).getTypeAnnotation() = type
     or
+    value.(SatisfiesExpr).getTypeAnnotation() = type
+    or
     exists(VarDecl decl |
       // ValueFlow::step is restricted to variables with at most one assignment. Allow the type annotation
       // of a variable to propagate to its uses, even if the variable has multiple assignments.

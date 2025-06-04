@@ -50,4 +50,5 @@
 | subtype.ts:19:13:19:15 | req | 'express'.Request |
 | typeCast.ts:4:16:4:35 | e as express.Request | 'express'.Request |
 | typeCast.ts:5:16:5:33 | <express.Request>e | 'express'.Request |
+| typeCast.ts:6:16:6:42 | e satis ... Request | 'express'.Request |
 | varAssignment.ts:4:9:4:11 | req | 'express'.Request |
