@@ -2704,8 +2704,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
       or
-      curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
-      or
       // TODO: separate these into key agreement logic or sign/verify (ECDSA / ECDH)
       // or
       // curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
