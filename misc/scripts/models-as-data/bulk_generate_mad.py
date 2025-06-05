@@ -8,23 +8,27 @@ Note: This file must be formatted using the Black Python formatter.
 import os.path
 import subprocess
 import sys
-from typing import NotRequired, TypedDict, List, Callable, Optional
+from typing import Required, TypedDict, List, Callable, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import argparse
-import json
-import requests
 import zipfile
 import tarfile
 import shutil
 
+def missing_module(module_name: str) -> None:
+    print(f"ERROR: {module_name} is not installed. Please install it with 'pip install {module_name}'.")
+    sys.exit(1)
+
 try:
     import yaml
 except ImportError:
-    print(
-        "ERROR: PyYAML is not installed. Please install it with 'pip install pyyaml'."
-    )
-    sys.exit(1)
+    missing_module("pyyaml")
+
+try:
+    import requests
+except ImportError:
+    missing_module("requests")
 
 import generate_mad as mad
 
@@ -37,23 +41,14 @@ build_dir = os.path.join(gitroot, "mad-generation-build")
 
 
 # A project to generate models for
-class Project(TypedDict):
-    """
-    Type definition for projects (acquired via a GitHub repo) to model.
-
-    Attributes:
-        name: The name of the project
-        git_repo: URL to the git repository
-        git_tag: Optional Git tag to check out
-    """
-
-    name: str
-    git_repo: NotRequired[str]
-    git_tag: NotRequired[str]
-    with_sinks: NotRequired[bool]
-    with_sinks: NotRequired[bool]
-    with_summaries: NotRequired[bool]
-
+Project = TypedDict("Project", {
+    "name": Required[str],
+    "git-repo": str,
+    "git-tag": str,
+    "with-sinks": bool,
+    "with-sources": bool,
+    "with-summaries": bool,
+}, total=False)
 
 def should_generate_sinks(project: Project) -> bool:
     return project.get("with-sinks", True)
@@ -72,14 +67,14 @@ def clone_project(project: Project) -> str:
     Shallow clone a project into the build directory.
 
     Args:
-        project: A dictionary containing project information with 'name', 'git_repo', and optional 'git_tag' keys.
+        project: A dictionary containing project information with 'name', 'git-repo', and optional 'git-tag' keys.
 
     Returns:
         The path to the cloned project directory.
     """
     name = project["name"]
-    repo_url = project["git_repo"]
-    git_tag = project.get("git_tag")
+    repo_url = project["git-repo"]
+    git_tag = project.get("git-tag")
 
     # Determine target directory
     target_dir = os.path.join(build_dir, name)
@@ -178,7 +173,7 @@ def build_database(
     Args:
         language: The language for which to build the database (e.g., "rust").
         extractor_options: Additional options for the extractor.
-        project: A dictionary containing project information with 'name' and 'git_repo' keys.
+        project: A dictionary containing project information with 'name' and 'git-repo' keys.
         project_dir: Path to the CodeQL database.
 
     Returns:
