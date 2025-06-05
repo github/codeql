@@ -326,7 +326,10 @@ def pretty_name_from_artifact_name(artifact_name: str) -> str:
 
 
 def download_dca_databases(
-    experiment_name: str, pat: str, projects: List[Project]
+    language: str,
+    experiment_name: str,
+    pat: str,
+    projects: List[Project],
 ) -> List[tuple[Project, str | None]]:
     """
     Download databases from a DCA experiment.
@@ -337,7 +340,6 @@ def download_dca_databases(
     Returns:
         List of (project_name, database_dir) pairs, where database_dir is None if the download failed.
     """
-    database_results = {}
     print("\n=== Finding projects ===")
     response = get_json_from_github(
         f"https://raw.githubusercontent.com/github/codeql-dca-main/data/{experiment_name}/reports/downloads.json",
@@ -363,7 +365,7 @@ def download_dca_databases(
 
         artifact_map[pretty_name] = analyzed_database
 
-    def download(item: tuple[str, dict]) -> str:
+    def download_and_extract(item: tuple[str, dict]) -> str:
         pretty_name, analyzed_database = item
         artifact_name = analyzed_database["artifact_name"]
         repository = analyzed_database["repository"]
@@ -391,16 +393,19 @@ def download_dca_databases(
             # And then we extract it to build_dir/artifact_name
             zip_ref.extractall(artifact_unzipped_location)
             # And then we iterate over the contents of the extracted directory
-            # and extract the tar.gz files inside it
-            for entry in os.listdir(artifact_unzipped_location):
-                artifact_tar_location = os.path.join(artifact_unzipped_location, entry)
-                with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
-                    # And we just untar it to the same directory as the zip file
-                    tar_ref.extractall(artifact_unzipped_location)
-            return os.path.join(artifact_unzipped_location, remove_extension(entry))
+            # and extract the language tar.gz file inside it
+            artifact_tar_location = os.path.join(
+                artifact_unzipped_location, f"{language}.tar.gz"
+            )
+            with tarfile.open(artifact_tar_location, "r:gz") as tar_ref:
+                # And we just untar it to the same directory as the zip file
+                tar_ref.extractall(artifact_unzipped_location)
+        ret = os.path.join(artifact_unzipped_location, language)
+        print(f"Extraction complete: {ret}")
+        return ret
 
     results = run_in_parallel(
-        download,
+        download_and_extract,
         list(artifact_map.items()),
         on_error=lambda item, exc: print(
             f"ERROR: Failed to download database for {item[0]}: {exc}"
@@ -410,7 +415,7 @@ def download_dca_databases(
         ),
     )
 
-    print(f"\n=== Extracted {len(database_results)} databases ===")
+    print(f"\n=== Extracted {len(results)} databases ===")
 
     return [(project_map[n], r) for n, r in zip(artifact_map, results)]
 
@@ -463,7 +468,9 @@ To avoid loss of data, please commit your changes."""
         case "repo":
             extractor_options = config.get("extractor_options", [])
             database_results = build_databases_from_projects(
-                language, extractor_options, projects
+                language,
+                extractor_options,
+                projects,
             )
         case "dca":
             experiment_name = args.dca
@@ -480,7 +487,10 @@ To avoid loss of data, please commit your changes."""
             with open(args.pat, "r") as f:
                 pat = f.read().strip()
                 database_results = download_dca_databases(
-                    experiment_name, pat, projects
+                    language,
+                    experiment_name,
+                    pat,
+                    projects,
                 )
 
     # Generate models for all projects
