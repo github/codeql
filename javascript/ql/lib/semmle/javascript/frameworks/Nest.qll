@@ -133,7 +133,9 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(this.getParameter().getType().unfold())
+      // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
+      // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
+      this.getParameter().getTypeBinding().isSanitizingPrimitiveType()
     }
   }
 
@@ -210,19 +212,6 @@ module NestJS {
   }
 
   /**
-   * Holds if a parameter of type `t` is considered sanitized, provided it has been checked by `ValidationPipe`
-   * (which relies on metadata emitted by the TypeScript compiler).
-   */
-  private predicate isSanitizingType(Type t) {
-    t instanceof NumberType
-    or
-    t instanceof BooleanType
-    //
-    // Note: we could consider types with class-validator decorators to be sanitized here, but instead we consider the root
-    // object to be tainted, but omit taint steps for the individual properties names that have sanitizing decorators. See ClassValidator.qll.
-  }
-
-  /**
    * A user-defined pipe class, for example:
    * ```js
    * class MyPipe implements PipeTransform {
@@ -237,7 +226,7 @@ module NestJS {
     CustomPipeClass() {
       exists(ClassDefinition cls |
         this = cls.flow() and
-        cls.getASuperInterface().hasQualifiedName("@nestjs/common", "PipeTransform")
+        cls.getASuperInterface().hasUnderlyingType("@nestjs/common", "PipeTransform")
       )
     }
 
@@ -327,14 +316,6 @@ module NestJS {
     }
   }
 
-  private predicate isStringType(Type type) {
-    type instanceof StringType
-    or
-    type instanceof AnyType
-    or
-    isStringType(type.(PromiseType).getElementType().unfold())
-  }
-
   /**
    * A return value from a route handler, seen as an argument to `res.send()`.
    *
@@ -353,10 +334,11 @@ module NestJS {
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
       this = handler.getAReturn() and
-      // Only returned strings are sinks
-      not exists(Type type |
-        type = this.asExpr().getType() and
-        not isStringType(type.unfold())
+      // Only returned strings are sinks. If we can find a type for the return value, it must be string-like.
+      (
+        this.asExpr().getTypeBinding().hasUnderlyingStringOrAnyType()
+        or
+        not exists(this.asExpr().getTypeBinding())
       )
     }
 
@@ -492,7 +474,7 @@ module NestJS {
 
   /** Gets the class being referenced at `node` without relying on the call graph. */
   private DataFlow::ClassNode getClassFromNode(DataFlow::Node node) {
-    result.getAstNode() = node.analyze().getAValue().(AbstractClass).getClass()
+    result = node.asExpr().getNameBinding().getClassNode()
   }
 
   private predicate providerClassPair(
@@ -508,7 +490,7 @@ module NestJS {
   private class DependencyInjectionStep extends PreCallGraphStep {
     override predicate classInstanceSource(DataFlow::ClassNode cls, DataFlow::Node node) {
       exists(DataFlow::ClassNode interfaceClass |
-        node.asExpr().(Parameter).getType().(ClassType).getClass() = interfaceClass.getAstNode() and
+        node.asExpr().getTypeBinding().getTypeDefinition() = interfaceClass.getAstNode() and
         providerClassPair(interfaceClass, cls)
       )
     }

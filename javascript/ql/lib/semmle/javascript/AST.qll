@@ -5,6 +5,8 @@
 import javascript
 private import internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.TypeResolution
+private import semmle.javascript.internal.BindingInfo
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -472,5 +474,22 @@ module AST {
 
     /** Gets the data flow node associated with this program element. */
     DataFlow::ValueNode flow() { result = DataFlow::valueNode(this) }
+
+    /**
+     * Gets information about the results of name-resolution for this expression.
+     *
+     * This can be used to map an expression to the class it refers to, or
+     * associate it with a named value coming from an dependency.
+     */
+    ExprNameBindingNode getNameBinding() { result = this }
+
+    /**
+     * Gets information about the type of this expression.
+     *
+     * This can be used to map an expression to the classes it may be an instance of
+     * (according to the type system), or to associate it with a named type coming
+     * from a dependency.
+     */
+    TypeNameBindingNode getTypeBinding() { TypeResolution::valueHasType(this, result) }
   }
 }

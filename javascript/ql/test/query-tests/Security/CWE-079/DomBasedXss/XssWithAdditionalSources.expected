@@ -182,6 +182,8 @@ nodes
 | hana.js:85:35:85:54 | tableRows[0].comment | semmle.label | tableRows[0].comment |
 | hana.js:90:33:90:34 | rs | semmle.label | rs |
 | hana.js:90:33:90:45 | rs[0].comment | semmle.label | rs[0].comment |
+| jquery-declare-any.ts:6:7:6:17 | window.name | semmle.label | window.name |
+| jquery-declare-type.ts:6:7:6:17 | window.name | semmle.label | window.name |
 | jquery.js:2:7:2:40 | tainted | semmle.label | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | semmle.label | documen ... .search |
 | jquery.js:4:5:4:11 | tainted | semmle.label | tainted |

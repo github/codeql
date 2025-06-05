@@ -4,11 +4,22 @@
 
 import javascript
 private import internal.StmtContainers
+private import internal.NameResolution
+private import internal.UnderlyingTypes
+private import internal.BindingInfo
 
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
  */
 class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
+  /**
+   * Gets information about the results of name-resolution for this type.
+   *
+   * This can be used to map a type name to the class/interface it refers to, or
+   * associate it with a named type coming from an dependency.
+   */
+  TypeNameBindingNode getTypeBinding() { result = this }
+
   /** Holds if this is the `any` type. */
   predicate isAny() { none() }
 
@@ -75,14 +86,38 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
   TypeAnnotation getAnUnderlyingType() { result = this }
 
   /**
+   * DEPRECATED. Use `hasUnderlyingType` instead.
+   *
    * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope.
    */
-  predicate hasQualifiedName(string globalName) { none() }
+  deprecated predicate hasQualifiedName(string globalName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, globalName)
+  }
 
   /**
+   * DEPRECATED. Use `hasUnderlyingType` instead.
+   *
    * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
    */
-  predicate hasQualifiedName(string moduleName, string exportedName) { none() }
+  deprecated predicate hasQualifiedName(string moduleName, string exportedName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
+  }
+
+  /**
+   * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope,
+   * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+   */
+  final predicate hasUnderlyingType(string globalName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, globalName)
+  }
+
+  /**
+   * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`,
+   * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+   */
+  final predicate hasUnderlyingType(string moduleName, string exportedName) {
+    UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
+  }
 
   /** Gets the statement in which this type appears. */
   Stmt getEnclosingStmt() { none() }
@@ -100,12 +135,12 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
    *
    * Note that this has no result for JSDoc type annotations.
    */
-  Type getType() { none() }
+  deprecated Type getType() { none() }
 
   /**
    * Gets the class referenced by this type annotation, if any.
    *
    * This unfolds nullability modifiers and generic type applications.
    */
-  DataFlow::ClassNode getClass() { none() }
+  final DataFlow::ClassNode getClass() { UnderlyingTypes::nodeHasUnderlyingClassType(this, result) }
 }

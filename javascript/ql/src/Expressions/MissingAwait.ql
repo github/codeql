@@ -28,7 +28,7 @@ predicate isPromise(DataFlow::SourceNode node, boolean nullable) {
   isAsyncCall(node, nullable)
   or
   not isAsyncCall(node, _) and
-  node.asExpr().getType() instanceof PromiseType and
+  node.asExpr().getTypeBinding().isPromiseType() and
   nullable = true
 }
 
