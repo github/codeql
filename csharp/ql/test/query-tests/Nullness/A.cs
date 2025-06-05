@@ -5,7 +5,7 @@ class A
     public void Lock()
     {
         object synchronizedAlways = null;
-        lock (synchronizedAlways) // BAD (always)
+        lock (synchronizedAlways) // $ Alert[cs/dereferenced-value-is-always-null]
         {
             synchronizedAlways.GetHashCode(); // GOOD
         }
@@ -14,7 +14,7 @@ class A
     public void ArrayAssignTest()
     {
         int[] arrayNull = null;
-        arrayNull[0] = 10; // BAD (always)
+        arrayNull[0] = 10; // $ Alert[cs/dereferenced-value-is-always-null]
 
         int[] arrayOk;
         arrayOk = new int[10];
@@ -28,10 +28,10 @@ class A
         object methodAccess = null;
         object methodCall = null;
 
-        Console.WriteLine(arrayAccess[1]); // BAD (always)
-        Console.WriteLine(fieldAccess.Length); // BAD (always)
-        Func<String> tmp = methodAccess.ToString; // BAD (always)
-        Console.WriteLine(methodCall.ToString()); // BAD (always)
+        Console.WriteLine(arrayAccess[1]); // $ Alert[cs/dereferenced-value-is-always-null]
+        Console.WriteLine(fieldAccess.Length); // $ Alert[cs/dereferenced-value-is-always-null]
+        Func<String> tmp = methodAccess.ToString; // $ Alert[cs/dereferenced-value-is-always-null]
+        Console.WriteLine(methodCall.ToString()); // $ Alert[cs/dereferenced-value-is-always-null]
 
         Console.WriteLine(arrayAccess[1]); // GOOD
         Console.WriteLine(fieldAccess.Length); // GOOD
@@ -47,7 +47,7 @@ class A
 
         object varRef = null;
         TestMethod2(ref varRef);
-        varRef.ToString(); // BAD (always)
+        varRef.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
 
         varRef = null;
         TestMethod3(ref varRef);

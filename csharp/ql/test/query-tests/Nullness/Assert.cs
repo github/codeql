@@ -12,7 +12,7 @@ class AssertTests
 
         s = b ? null : "";
         Assert.IsNull(s);
-        Console.WriteLine(s.Length); // BAD (always)
+        Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = b ? null : "";
         Assert.IsNotNull(s);
@@ -20,7 +20,7 @@ class AssertTests
 
         s = b ? null : "";
         Assert.IsTrue(s == null);
-        Console.WriteLine(s.Length); // BAD (always)
+        Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = b ? null : "";
         Assert.IsTrue(s != null);
@@ -28,7 +28,7 @@ class AssertTests
 
         s = b ? null : "";
         Assert.IsFalse(s != null);
-        Console.WriteLine(s.Length); // BAD (always)
+        Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = b ? null : "";
         Assert.IsFalse(s == null);
@@ -44,10 +44,10 @@ class AssertTests
 
         s = b ? null : "";
         Assert.IsTrue(s == null && b);
-        Console.WriteLine(s.Length); // BAD (always)
+        Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = b ? null : "";
         Assert.IsFalse(s != null || !b);
-        Console.WriteLine(s.Length); // BAD (always)
+        Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 }

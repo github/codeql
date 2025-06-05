@@ -15,7 +15,7 @@ public class C
 
         if (!(o != null))
         {
-            o.GetHashCode(); // BAD (always)
+            o.GetHashCode(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
     }
 
@@ -39,7 +39,7 @@ public class C
     {
         var s = Maybe() ? null : "";
         Debug.Assert(s == null);
-        s.ToString(); // BAD (always)
+        s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = Maybe() ? null : "";
         Debug.Assert(s != null);
@@ -50,22 +50,22 @@ public class C
     {
         var o1 = new object();
         AssertNull(o1);
-        o1.ToString(); // BAD (always) (false negative)
+        o1.ToString(); // $ MISSING: Alert[cs/dereferenced-value-is-always-null]
 
         var o2 = Maybe() ? null : "";
         Assert.IsNull(o2);
-        o2.ToString(); // BAD (always)
+        o2.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void AssertNotNullTest()
     {
-        var o1 = Maybe() ? null : new object();
+        var o1 = Maybe() ? null : new object(); // $ Source[cs/dereferenced-value-may-be-null]
         AssertNonNull(o1);
-        o1.ToString(); // GOOD (false positive)
+        o1.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
 
-        var o2 = Maybe() ? null : new object();
+        var o2 = Maybe() ? null : new object(); // $ Source[cs/dereferenced-value-may-be-null]
         AssertNonNull(o1);
-        o2.ToString(); // BAD (maybe)
+        o2.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
 
         var o3 = Maybe() ? null : new object();
         Assert.IsNotNull(o3);
@@ -91,16 +91,16 @@ public class C
 
     public void Lock()
     {
-        var o = Maybe() ? null : new object();
-        lock (o) // BAD (maybe)
+        var o = Maybe() ? null : new object(); // $ Source[cs/dereferenced-value-may-be-null]
+        lock (o) // $ Alert[cs/dereferenced-value-may-be-null]
             o.ToString(); // GOOD
     }
 
     public void Foreach(IEnumerable<int> list)
     {
         if (Maybe())
-            list = null;
-        foreach (var x in list) // BAD (maybe)
+            list = null; // $ Source[cs/dereferenced-value-may-be-null]
+        foreach (var x in list) // $ Alert[cs/dereferenced-value-may-be-null]
         {
             x.ToString(); // GOOD
             list.ToString(); // GOOD
@@ -159,7 +159,7 @@ public class C
         s = null;
         do
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
             s = null;
         }
         while (s != null);
@@ -167,15 +167,15 @@ public class C
         s = null;
         do
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
         while (s != null);
 
         s = "";
         do
         {
-            s.ToString(); // BAD (maybe)
-            s = null;
+            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
+            s = null; // $ Source[cs/dereferenced-value-may-be-null]
         }
         while (true);
     }
@@ -193,15 +193,15 @@ public class C
         s = null;
         while (b)
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
             s = null;
         }
 
         s = "";
         while (true)
         {
-            s.ToString(); // BAD (maybe)
-            s = null;
+            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
+            s = null; // $ Source[cs/dereferenced-value-may-be-null]
         }
     }
 
@@ -215,12 +215,12 @@ public class C
         }
 
         if (s == null)
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
 
         s = "";
         if (s != null && s.Length % 2 == 0)
-            s = null;
-        s.ToString(); // BAD (maybe)
+            s = null; // $ Source[cs/dereferenced-value-may-be-null]
+        s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void For()
@@ -230,23 +230,23 @@ public class C
         {
             s.ToString(); // GOOD
         }
-        s.ToString(); // BAD (always)
+        s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
 
         for (s = null; s == null; s = null)
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
 
-        for (s = ""; ; s = null)
+        for (s = ""; ; s = null) // $ Source[cs/dereferenced-value-may-be-null]
         {
-            s.ToString(); // BAD (maybe)
+            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
         }
     }
 
     public void ArrayAssignTest()
     {
         int[] a = null;
-        a[0] = 10; // BAD (always)
+        a[0] = 10; // $ Alert[cs/dereferenced-value-is-always-null]
 
         a = new int[10];
         a[0] = 42; // GOOD
@@ -257,8 +257,8 @@ public class C
         int[] ia = null;
         string[] sa = null;
 
-        ia[1] = 0; // BAD (always)
-        var temp = sa.Length; // BAD (always)
+        ia[1] = 0; // $ Alert[cs/dereferenced-value-is-always-null]
+        var temp = sa.Length; // $ Alert[cs/dereferenced-value-is-always-null]
 
         ia[1] = 0; // BAD (always), but not first
         temp = sa.Length; // BAD (always), but not first
