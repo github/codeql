@@ -16,6 +16,7 @@ import json
 import requests
 import zipfile
 import tarfile
+import shutil
 
 try:
     import yaml
@@ -385,6 +386,8 @@ def download_dca_databases(
         # First we open the zip file
         with zipfile.ZipFile(artifact_zip_location, "r") as zip_ref:
             artifact_unzipped_location = os.path.join(build_dir, artifact_name)
+            # clean up any remnants of previous runs
+            shutil.rmtree(artifact_unzipped_location, ignore_errors=True)
             # And then we extract it to build_dir/artifact_name
             zip_ref.extractall(artifact_unzipped_location)
             # And then we iterate over the contents of the extracted directory
