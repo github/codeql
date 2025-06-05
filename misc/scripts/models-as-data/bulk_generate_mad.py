@@ -19,7 +19,9 @@ import tarfile
 try:
     import yaml
 except ImportError:
-    print("ERROR: PyYAML is not installed. Please install it with 'pip install pyyaml'.")
+    print(
+        "ERROR: PyYAML is not installed. Please install it with 'pip install pyyaml'."
+    )
     sys.exit(1)
 
 import generate_mad as mad
@@ -343,7 +345,9 @@ def download_dca_databases(
             continue
 
         if pretty_name in artifact_map:
-            print(f"Skipping previous database {artifact_map[pretty_name]['artifact_name']} for {pretty_name}")
+            print(
+                f"Skipping previous database {artifact_map[pretty_name]['artifact_name']} for {pretty_name}"
+            )
 
         artifact_map[pretty_name] = analyzed_database
 
