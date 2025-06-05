@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Experimental script for bulk generation of MaD models based on a list of projects.
 
