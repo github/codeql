@@ -17,8 +17,7 @@ module Params {
 
   class Curve extends Class {
     Curve() {
-      this.getPackage().getName() = "org.bouncycastle.math.ec" and
-      this.getName().matches("ECCurve")
+      this.hasQualifiedName("org.bouncycastle.math.ec", "ECCurve")
     }
   }
 
