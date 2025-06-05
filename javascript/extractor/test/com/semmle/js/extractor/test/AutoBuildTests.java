@@ -135,6 +135,7 @@ public class AutoBuildTests {
             FileExtractors extractors) {
           for (Path f : files) {
             actual.add(f.toString());
+            extractedFiles.add(f);
           }
         }
 
@@ -175,7 +176,7 @@ public class AutoBuildTests {
 
   @Test
   public void basicTest() throws IOException {
-    addFile(true, LGTM_SRC, "tst.js");
+    addFile(false, LGTM_SRC, "tst.js");
     addFile(true, LGTM_SRC, "tst.ts");
     addFile(true, LGTM_SRC, "tst.html");
     addFile(true, LGTM_SRC, "tst.xsjs");
