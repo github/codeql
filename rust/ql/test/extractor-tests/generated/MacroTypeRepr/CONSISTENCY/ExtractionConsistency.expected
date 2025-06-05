@@ -1,2 +1,0 @@
-extractionWarning
-| gen_macro_type_repr.rs:10:14:10:26 | macro expansion failed: could not resolve macro 'macro_type' |

@@ -34,5 +34,13 @@ macro_rules! my_int {
 }
 
 fn answer() -> my_int!() {  // this doesn't expand since 0.0.274
-    42
+    let a: my_int!() = 42;  // this is fine
+    a as my_int!() // this is fine too
+}
+
+
+type MyInt = my_int!();  // this doesn't expand since 0.0.274
+
+struct MyStruct {
+    field: my_int!(),  // this doesn't expand since 0.0.274
 }
