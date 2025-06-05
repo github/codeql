@@ -20,9 +20,11 @@ import codeql.rust.elements.TokenTree
  */
 module Generated {
   /**
-   * A MacroCall. For example:
+   * A macro invocation.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * println!("Hello, world!");
    * ```
    * INTERNAL: Do not reference the `Generated::MacroCall` class directly.
    * Use the subclass `MacroCall`, where the following predicates are available.
@@ -79,18 +81,18 @@ module Generated {
     final predicate hasTokenTree() { exists(this.getTokenTree()) }
 
     /**
-     * Gets the expanded of this macro call, if it exists.
+     * Gets the macro call expansion of this macro call, if it exists.
      */
-    AstNode getExpanded() {
+    AstNode getMacroCallExpansion() {
       result =
         Synth::convertAstNodeFromRaw(Synth::convertMacroCallToRaw(this)
               .(Raw::MacroCall)
-              .getExpanded())
+              .getMacroCallExpansion())
     }
 
     /**
-     * Holds if `getExpanded()` exists.
+     * Holds if `getMacroCallExpansion()` exists.
      */
-    final predicate hasExpanded() { exists(this.getExpanded()) }
+    final predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
   }
 }

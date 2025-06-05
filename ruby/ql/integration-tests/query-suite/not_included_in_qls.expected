@@ -30,6 +30,7 @@ ql/ruby/ql/src/queries/metrics/FLinesOfCode.ql
 ql/ruby/ql/src/queries/metrics/FLinesOfComments.ql
 ql/ruby/ql/src/queries/modeling/GenerateModel.ql
 ql/ruby/ql/src/queries/security/cwe-732/WeakFilePermissions.ql
+ql/ruby/ql/src/queries/security/cwe-798/HardcodedCredentials.ql
 ql/ruby/ql/src/queries/variables/UnusedParameter.ql
 ql/ruby/ql/src/utils/modeleditor/ApplicationModeEndpoints.ql
 ql/ruby/ql/src/utils/modeleditor/FrameworkModeAccessPaths.ql

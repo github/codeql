@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
+import codeql.rust.elements.MacroItems
 import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
 
 /**
@@ -15,12 +16,31 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
  */
 module Generated {
   /**
-   * A Item. For example:
+   * An item such as a function, struct, enum, etc.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() {}
+   * struct S;
+   * enum E {}
    * ```
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.
    */
-  class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable { }
+  class Item extends Synth::TItem, StmtImpl::Stmt, AddressableImpl::Addressable {
+    /**
+     * Gets the attribute macro expansion of this item, if it exists.
+     */
+    MacroItems getAttributeMacroExpansion() {
+      result =
+        Synth::convertMacroItemsFromRaw(Synth::convertItemToRaw(this)
+              .(Raw::Item)
+              .getAttributeMacroExpansion())
+    }
+
+    /**
+     * Holds if `getAttributeMacroExpansion()` exists.
+     */
+    final predicate hasAttributeMacroExpansion() { exists(this.getAttributeMacroExpansion()) }
+  }
 }

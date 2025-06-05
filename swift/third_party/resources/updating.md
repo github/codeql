@@ -3,9 +3,9 @@ These files can only be updated having access for the internal repository at the
 In order to perform a Swift update:
 
 1. Dispatch the [internal `swift-prebuild` workflow](https://github.com/github/semmle-code/actions/workflows/__swift-prebuild.yml) with the appropriate swift
-   tag.
+   tag, e.g., `swift-6.1.1-RELEASE`.
 2. Dispatch [internal `swift-prepare-resource-dir` workflow](https://github.com/github/semmle-code/actions/workflows/__swift-prepare-resource-dir.yml) with the
-   appropriate swift tag.
+   appropriate swift tag, e.g., `swift-6.1.1-RELEASE`.
 3. Once the jobs finish, staged artifacts are available
    at https://github.com/dsp-testing/codeql-swift-artifacts/releases. Copy and paste the sha256 within the `_override`
    definition in [`load.bzl`](../load.bzl).

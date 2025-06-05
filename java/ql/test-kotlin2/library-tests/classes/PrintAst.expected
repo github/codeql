@@ -882,20 +882,16 @@ localClassField.kt:
 #    2|       0: [WhenExpr] when ...
 #    2|         0: [WhenBranch] ... -> ...
 #    2|           0: [BooleanLiteral] true
-#    2|           1: [ExprStmt] <Expr>;
-#    2|             0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
-#    2|               0: [TypeAccess] Unit
-#    2|               1: [StmtExpr] <Stmt>
-#    2|                 0: [BlockStmt] { ... }
-#    3|                   0: [LocalTypeDeclStmt] class ...
-#    3|                     0: [LocalClass] L
-#    3|                       1: [Constructor] L
-#    3|                         5: [BlockStmt] { ... }
-#    3|                           0: [SuperConstructorInvocationStmt] super(...)
-#    3|                           1: [BlockStmt] { ... }
-#    4|                   1: [ExprStmt] <Expr>;
-#    4|                     0: [ClassInstanceExpr] new L(...)
-#    4|                       -3: [TypeAccess] L
+#    2|           1: [BlockStmt] { ... }
+#    3|             0: [LocalTypeDeclStmt] class ...
+#    3|               0: [LocalClass] L
+#    3|                 1: [Constructor] L
+#    3|                   5: [BlockStmt] { ... }
+#    3|                     0: [SuperConstructorInvocationStmt] super(...)
+#    3|                     1: [BlockStmt] { ... }
+#    4|             1: [ExprStmt] <Expr>;
+#    4|               0: [ClassInstanceExpr] new L(...)
+#    4|                 -3: [TypeAccess] L
 #    5|         1: [WhenBranch] ... -> ...
 #    5|           0: [BooleanLiteral] true
 #    5|           1: [BlockStmt] { ... }
@@ -910,20 +906,16 @@ localClassField.kt:
 #    7|       0: [WhenExpr] when ...
 #    7|         0: [WhenBranch] ... -> ...
 #    7|           0: [BooleanLiteral] true
-#    7|           1: [ExprStmt] <Expr>;
-#    7|             0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
-#    7|               0: [TypeAccess] Unit
-#    7|               1: [StmtExpr] <Stmt>
-#    7|                 0: [BlockStmt] { ... }
-#    8|                   0: [LocalTypeDeclStmt] class ...
-#    8|                     0: [LocalClass] L
-#    8|                       1: [Constructor] L
-#    8|                         5: [BlockStmt] { ... }
-#    8|                           0: [SuperConstructorInvocationStmt] super(...)
-#    8|                           1: [BlockStmt] { ... }
-#    9|                   1: [ExprStmt] <Expr>;
-#    9|                     0: [ClassInstanceExpr] new L(...)
-#    9|                       -3: [TypeAccess] L
+#    7|           1: [BlockStmt] { ... }
+#    8|             0: [LocalTypeDeclStmt] class ...
+#    8|               0: [LocalClass] L
+#    8|                 1: [Constructor] L
+#    8|                   5: [BlockStmt] { ... }
+#    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|                     1: [BlockStmt] { ... }
+#    9|             1: [ExprStmt] <Expr>;
+#    9|               0: [ClassInstanceExpr] new L(...)
+#    9|                 -3: [TypeAccess] L
 #   10|         1: [WhenBranch] ... -> ...
 #   10|           0: [BooleanLiteral] true
 #   10|           1: [BlockStmt] { ... }

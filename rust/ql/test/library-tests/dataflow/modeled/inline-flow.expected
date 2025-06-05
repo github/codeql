@@ -1,49 +1,97 @@
 models
-| 1 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
-| 2 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
-| 3 | Summary: lang:core; <crate::option::Option>::zip; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)].Field[1]; value |
-| 4 | Summary: lang:core; <crate::result::Result as crate::clone::Clone>::clone; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue.Field[crate::result::Result::Ok(0)]; value |
-| 5 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
-| 6 | Summary: lang:core; crate::ptr::read; Argument[0].Reference; ReturnValue; value |
-| 7 | Summary: lang:core; crate::ptr::write; Argument[1]; Argument[0].Reference; value |
+| 1 | Summary: lang:alloc; <crate::boxed::Box>::into_pin; Argument[0]; ReturnValue; value |
+| 2 | Summary: lang:alloc; <crate::boxed::Box>::new; Argument[0]; ReturnValue.Reference; value |
+| 3 | Summary: lang:alloc; <crate::boxed::Box>::pin; Argument[0]; ReturnValue.Reference; value |
+| 4 | Summary: lang:core; <crate::option::Option as crate::clone::Clone>::clone; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)]; value |
+| 5 | Summary: lang:core; <crate::option::Option>::unwrap; Argument[self].Field[crate::option::Option::Some(0)]; ReturnValue; value |
+| 6 | Summary: lang:core; <crate::option::Option>::zip; Argument[0].Field[crate::option::Option::Some(0)]; ReturnValue.Field[crate::option::Option::Some(0)].Field[1]; value |
+| 7 | Summary: lang:core; <crate::pin::Pin>::into_inner; Argument[0]; ReturnValue; value |
+| 8 | Summary: lang:core; <crate::pin::Pin>::new; Argument[0]; ReturnValue; value |
+| 9 | Summary: lang:core; <crate::result::Result>::unwrap; Argument[self].Field[crate::result::Result::Ok(0)]; ReturnValue; value |
+| 10 | Summary: lang:core; <i64 as crate::clone::Clone>::clone; Argument[self].Reference; ReturnValue; value |
+| 11 | Summary: lang:core; crate::ptr::read; Argument[0].Reference; ReturnValue; value |
+| 12 | Summary: lang:core; crate::ptr::write; Argument[1]; Argument[0].Reference; value |
 edges
-| main.rs:12:9:12:9 | a [Some] | main.rs:13:10:13:19 | a.unwrap() | provenance | MaD:2 |
+| main.rs:12:9:12:9 | a [Some] | main.rs:13:10:13:19 | a.unwrap() | provenance | MaD:5 |
 | main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:13 | a [Some] | provenance |  |
-| main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | MaD:1 |
+| main.rs:12:9:12:9 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | MaD:4 |
 | main.rs:12:13:12:28 | Some(...) [Some] | main.rs:12:9:12:9 | a [Some] | provenance |  |
 | main.rs:12:18:12:27 | source(...) | main.rs:12:13:12:28 | Some(...) [Some] | provenance |  |
-| main.rs:14:9:14:9 | b [Some] | main.rs:15:10:15:19 | b.unwrap() | provenance | MaD:2 |
+| main.rs:14:9:14:9 | b [Some] | main.rs:15:10:15:19 | b.unwrap() | provenance | MaD:5 |
 | main.rs:14:13:14:13 | a [Some] | main.rs:14:13:14:21 | a.clone() [Some] | provenance | generated |
 | main.rs:14:13:14:21 | a.clone() [Some] | main.rs:14:9:14:9 | b [Some] | provenance |  |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:5 |
+| main.rs:19:9:19:9 | a [Ok] | main.rs:20:10:20:19 | a.unwrap() | provenance | MaD:9 |
 | main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:13 | a [Ok] | provenance |  |
-| main.rs:19:9:19:9 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | MaD:4 |
 | main.rs:19:31:19:44 | Ok(...) [Ok] | main.rs:19:9:19:9 | a [Ok] | provenance |  |
 | main.rs:19:34:19:43 | source(...) | main.rs:19:31:19:44 | Ok(...) [Ok] | provenance |  |
-| main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:5 |
+| main.rs:21:9:21:9 | b [Ok] | main.rs:22:10:22:19 | b.unwrap() | provenance | MaD:9 |
 | main.rs:21:13:21:13 | a [Ok] | main.rs:21:13:21:21 | a.clone() [Ok] | provenance | generated |
 | main.rs:21:13:21:21 | a.clone() [Ok] | main.rs:21:9:21:9 | b [Ok] | provenance |  |
 | main.rs:26:9:26:9 | a | main.rs:27:10:27:10 | a | provenance |  |
+| main.rs:26:9:26:9 | a | main.rs:28:13:28:13 | a | provenance |  |
 | main.rs:26:13:26:22 | source(...) | main.rs:26:9:26:9 | a | provenance |  |
-| main.rs:41:13:41:13 | w [Wrapper] | main.rs:42:15:42:15 | w [Wrapper] | provenance |  |
-| main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | main.rs:41:13:41:13 | w [Wrapper] | provenance |  |
-| main.rs:41:30:41:39 | source(...) | main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | provenance |  |
-| main.rs:42:15:42:15 | w [Wrapper] | main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | provenance |  |
-| main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | main.rs:43:26:43:26 | n | provenance |  |
-| main.rs:43:26:43:26 | n | main.rs:43:38:43:38 | n | provenance |  |
-| main.rs:58:13:58:13 | b [Some] | main.rs:59:23:59:23 | b [Some] | provenance |  |
-| main.rs:58:17:58:32 | Some(...) [Some] | main.rs:58:13:58:13 | b [Some] | provenance |  |
-| main.rs:58:22:58:31 | source(...) | main.rs:58:17:58:32 | Some(...) [Some] | provenance |  |
-| main.rs:59:13:59:13 | z [Some, tuple.1] | main.rs:60:15:60:15 | z [Some, tuple.1] | provenance |  |
-| main.rs:59:17:59:24 | a.zip(...) [Some, tuple.1] | main.rs:59:13:59:13 | z [Some, tuple.1] | provenance |  |
-| main.rs:59:23:59:23 | b [Some] | main.rs:59:17:59:24 | a.zip(...) [Some, tuple.1] | provenance | MaD:3 |
-| main.rs:60:15:60:15 | z [Some, tuple.1] | main.rs:61:13:61:24 | Some(...) [Some, tuple.1] | provenance |  |
-| main.rs:61:13:61:24 | Some(...) [Some, tuple.1] | main.rs:61:18:61:23 | TuplePat [tuple.1] | provenance |  |
-| main.rs:61:18:61:23 | TuplePat [tuple.1] | main.rs:61:22:61:22 | m | provenance |  |
-| main.rs:61:22:61:22 | m | main.rs:63:22:63:22 | m | provenance |  |
-| main.rs:84:29:84:29 | [post] y [&ref] | main.rs:85:33:85:33 | y [&ref] | provenance |  |
-| main.rs:84:32:84:41 | source(...) | main.rs:84:29:84:29 | [post] y [&ref] | provenance | MaD:7 |
-| main.rs:85:33:85:33 | y [&ref] | main.rs:85:18:85:34 | ...::read(...) | provenance | MaD:6 |
+| main.rs:28:9:28:9 | b | main.rs:29:10:29:10 | b | provenance |  |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | MaD:10 |
+| main.rs:28:13:28:13 | a | main.rs:28:13:28:21 | a.clone() | provenance | generated |
+| main.rs:28:13:28:21 | a.clone() | main.rs:28:9:28:9 | b | provenance |  |
+| main.rs:43:18:43:22 | SelfParam [Wrapper] | main.rs:44:26:44:29 | self [Wrapper] | provenance |  |
+| main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | main.rs:43:33:45:9 | { ... } [Wrapper] | provenance |  |
+| main.rs:44:26:44:29 | self [Wrapper] | main.rs:44:26:44:31 | self.n | provenance |  |
+| main.rs:44:26:44:31 | self.n | main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:49:13:49:13 | w [Wrapper] | main.rs:50:15:50:15 | w [Wrapper] | provenance |  |
+| main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | main.rs:49:13:49:13 | w [Wrapper] | provenance |  |
+| main.rs:49:30:49:39 | source(...) | main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:50:15:50:15 | w [Wrapper] | main.rs:43:18:43:22 | SelfParam [Wrapper] | provenance |  |
+| main.rs:50:15:50:15 | w [Wrapper] | main.rs:51:13:51:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:50:15:50:15 | w [Wrapper] | main.rs:53:17:53:17 | w [Wrapper] | provenance |  |
+| main.rs:50:15:50:15 | w [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] | provenance |  |
+| main.rs:51:13:51:28 | Wrapper {...} [Wrapper] | main.rs:51:26:51:26 | n | provenance |  |
+| main.rs:51:26:51:26 | n | main.rs:51:38:51:38 | n | provenance |  |
+| main.rs:53:13:53:13 | u [Wrapper] | main.rs:54:15:54:15 | u [Wrapper] | provenance |  |
+| main.rs:53:17:53:17 | w [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] | provenance | generated |
+| main.rs:53:17:53:25 | w.clone() [Wrapper] | main.rs:53:13:53:13 | u [Wrapper] | provenance |  |
+| main.rs:54:15:54:15 | u [Wrapper] | main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | provenance |  |
+| main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | main.rs:55:26:55:26 | n | provenance |  |
+| main.rs:55:26:55:26 | n | main.rs:55:38:55:38 | n | provenance |  |
+| main.rs:66:13:66:13 | b [Some] | main.rs:67:23:67:23 | b [Some] | provenance |  |
+| main.rs:66:17:66:32 | Some(...) [Some] | main.rs:66:13:66:13 | b [Some] | provenance |  |
+| main.rs:66:22:66:31 | source(...) | main.rs:66:17:66:32 | Some(...) [Some] | provenance |  |
+| main.rs:67:13:67:13 | z [Some, tuple.1] | main.rs:68:15:68:15 | z [Some, tuple.1] | provenance |  |
+| main.rs:67:17:67:24 | a.zip(...) [Some, tuple.1] | main.rs:67:13:67:13 | z [Some, tuple.1] | provenance |  |
+| main.rs:67:23:67:23 | b [Some] | main.rs:67:17:67:24 | a.zip(...) [Some, tuple.1] | provenance | MaD:6 |
+| main.rs:68:15:68:15 | z [Some, tuple.1] | main.rs:69:13:69:24 | Some(...) [Some, tuple.1] | provenance |  |
+| main.rs:69:13:69:24 | Some(...) [Some, tuple.1] | main.rs:69:18:69:23 | TuplePat [tuple.1] | provenance |  |
+| main.rs:69:18:69:23 | TuplePat [tuple.1] | main.rs:69:22:69:22 | m | provenance |  |
+| main.rs:69:22:69:22 | m | main.rs:71:22:71:22 | m | provenance |  |
+| main.rs:92:29:92:29 | [post] y [&ref] | main.rs:93:33:93:33 | y [&ref] | provenance |  |
+| main.rs:92:32:92:41 | source(...) | main.rs:92:29:92:29 | [post] y [&ref] | provenance | MaD:12 |
+| main.rs:93:33:93:33 | y [&ref] | main.rs:93:18:93:34 | ...::read(...) | provenance | MaD:11 |
+| main.rs:108:13:108:17 | mut i | main.rs:109:34:109:34 | i | provenance |  |
+| main.rs:108:13:108:17 | mut i | main.rs:110:33:110:33 | i | provenance |  |
+| main.rs:108:13:108:17 | mut i | main.rs:111:47:111:47 | i | provenance |  |
+| main.rs:108:13:108:17 | mut i | main.rs:113:14:113:14 | i | provenance |  |
+| main.rs:108:21:108:30 | source(...) | main.rs:108:13:108:17 | mut i | provenance |  |
+| main.rs:109:13:109:20 | mut pin1 [&ref] | main.rs:114:15:114:18 | pin1 [&ref] | provenance |  |
+| main.rs:109:13:109:20 | mut pin1 [&ref] | main.rs:115:31:115:34 | pin1 [&ref] | provenance |  |
+| main.rs:109:24:109:35 | ...::new(...) [&ref] | main.rs:109:13:109:20 | mut pin1 [&ref] | provenance |  |
+| main.rs:109:33:109:34 | &i [&ref] | main.rs:109:24:109:35 | ...::new(...) [&ref] | provenance | MaD:8 |
+| main.rs:109:34:109:34 | i | main.rs:109:33:109:34 | &i [&ref] | provenance |  |
+| main.rs:110:13:110:20 | mut pin2 [&ref] | main.rs:116:15:116:18 | pin2 [&ref] | provenance |  |
+| main.rs:110:24:110:34 | ...::pin(...) [&ref] | main.rs:110:13:110:20 | mut pin2 [&ref] | provenance |  |
+| main.rs:110:33:110:33 | i | main.rs:110:24:110:34 | ...::pin(...) [&ref] | provenance | MaD:3 |
+| main.rs:111:13:111:20 | mut pin3 [&ref] | main.rs:117:15:117:18 | pin3 [&ref] | provenance |  |
+| main.rs:111:24:111:49 | ...::into_pin(...) [&ref] | main.rs:111:13:111:20 | mut pin3 [&ref] | provenance |  |
+| main.rs:111:38:111:48 | ...::new(...) [&ref] | main.rs:111:24:111:49 | ...::into_pin(...) [&ref] | provenance | MaD:1 |
+| main.rs:111:47:111:47 | i | main.rs:111:38:111:48 | ...::new(...) [&ref] | provenance | MaD:2 |
+| main.rs:114:15:114:18 | pin1 [&ref] | main.rs:114:14:114:18 | * ... | provenance |  |
+| main.rs:115:15:115:35 | ...::into_inner(...) [&ref] | main.rs:115:14:115:35 | * ... | provenance |  |
+| main.rs:115:31:115:34 | pin1 [&ref] | main.rs:115:15:115:35 | ...::into_inner(...) [&ref] | provenance | MaD:7 |
+| main.rs:116:15:116:18 | pin2 [&ref] | main.rs:116:14:116:18 | * ... | provenance |  |
+| main.rs:117:15:117:18 | pin3 [&ref] | main.rs:117:14:117:18 | * ... | provenance |  |
+| main.rs:122:13:122:18 | mut ms [MyStruct] | main.rs:127:14:127:15 | ms [MyStruct] | provenance |  |
+| main.rs:122:22:122:49 | MyStruct {...} [MyStruct] | main.rs:122:13:122:18 | mut ms [MyStruct] | provenance |  |
+| main.rs:122:38:122:47 | source(...) | main.rs:122:22:122:49 | MyStruct {...} [MyStruct] | provenance |  |
+| main.rs:127:14:127:15 | ms [MyStruct] | main.rs:127:14:127:19 | ms.val | provenance |  |
 nodes
 | main.rs:12:9:12:9 | a [Some] | semmle.label | a [Some] |
 | main.rs:12:13:12:28 | Some(...) [Some] | semmle.label | Some(...) [Some] |
@@ -64,29 +112,74 @@ nodes
 | main.rs:26:9:26:9 | a | semmle.label | a |
 | main.rs:26:13:26:22 | source(...) | semmle.label | source(...) |
 | main.rs:27:10:27:10 | a | semmle.label | a |
-| main.rs:41:13:41:13 | w [Wrapper] | semmle.label | w [Wrapper] |
-| main.rs:41:17:41:41 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
-| main.rs:41:30:41:39 | source(...) | semmle.label | source(...) |
-| main.rs:42:15:42:15 | w [Wrapper] | semmle.label | w [Wrapper] |
-| main.rs:43:13:43:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
-| main.rs:43:26:43:26 | n | semmle.label | n |
-| main.rs:43:38:43:38 | n | semmle.label | n |
-| main.rs:58:13:58:13 | b [Some] | semmle.label | b [Some] |
-| main.rs:58:17:58:32 | Some(...) [Some] | semmle.label | Some(...) [Some] |
-| main.rs:58:22:58:31 | source(...) | semmle.label | source(...) |
-| main.rs:59:13:59:13 | z [Some, tuple.1] | semmle.label | z [Some, tuple.1] |
-| main.rs:59:17:59:24 | a.zip(...) [Some, tuple.1] | semmle.label | a.zip(...) [Some, tuple.1] |
-| main.rs:59:23:59:23 | b [Some] | semmle.label | b [Some] |
-| main.rs:60:15:60:15 | z [Some, tuple.1] | semmle.label | z [Some, tuple.1] |
-| main.rs:61:13:61:24 | Some(...) [Some, tuple.1] | semmle.label | Some(...) [Some, tuple.1] |
-| main.rs:61:18:61:23 | TuplePat [tuple.1] | semmle.label | TuplePat [tuple.1] |
-| main.rs:61:22:61:22 | m | semmle.label | m |
-| main.rs:63:22:63:22 | m | semmle.label | m |
-| main.rs:84:29:84:29 | [post] y [&ref] | semmle.label | [post] y [&ref] |
-| main.rs:84:32:84:41 | source(...) | semmle.label | source(...) |
-| main.rs:85:18:85:34 | ...::read(...) | semmle.label | ...::read(...) |
-| main.rs:85:33:85:33 | y [&ref] | semmle.label | y [&ref] |
+| main.rs:28:9:28:9 | b | semmle.label | b |
+| main.rs:28:13:28:13 | a | semmle.label | a |
+| main.rs:28:13:28:21 | a.clone() | semmle.label | a.clone() |
+| main.rs:29:10:29:10 | b | semmle.label | b |
+| main.rs:43:18:43:22 | SelfParam [Wrapper] | semmle.label | SelfParam [Wrapper] |
+| main.rs:43:33:45:9 | { ... } [Wrapper] | semmle.label | { ... } [Wrapper] |
+| main.rs:44:13:44:33 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
+| main.rs:44:26:44:29 | self [Wrapper] | semmle.label | self [Wrapper] |
+| main.rs:44:26:44:31 | self.n | semmle.label | self.n |
+| main.rs:49:13:49:13 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:49:17:49:41 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
+| main.rs:49:30:49:39 | source(...) | semmle.label | source(...) |
+| main.rs:50:15:50:15 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:51:13:51:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
+| main.rs:51:26:51:26 | n | semmle.label | n |
+| main.rs:51:38:51:38 | n | semmle.label | n |
+| main.rs:53:13:53:13 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:53:17:53:17 | w [Wrapper] | semmle.label | w [Wrapper] |
+| main.rs:53:17:53:25 | w.clone() [Wrapper] | semmle.label | w.clone() [Wrapper] |
+| main.rs:54:15:54:15 | u [Wrapper] | semmle.label | u [Wrapper] |
+| main.rs:55:13:55:28 | Wrapper {...} [Wrapper] | semmle.label | Wrapper {...} [Wrapper] |
+| main.rs:55:26:55:26 | n | semmle.label | n |
+| main.rs:55:38:55:38 | n | semmle.label | n |
+| main.rs:66:13:66:13 | b [Some] | semmle.label | b [Some] |
+| main.rs:66:17:66:32 | Some(...) [Some] | semmle.label | Some(...) [Some] |
+| main.rs:66:22:66:31 | source(...) | semmle.label | source(...) |
+| main.rs:67:13:67:13 | z [Some, tuple.1] | semmle.label | z [Some, tuple.1] |
+| main.rs:67:17:67:24 | a.zip(...) [Some, tuple.1] | semmle.label | a.zip(...) [Some, tuple.1] |
+| main.rs:67:23:67:23 | b [Some] | semmle.label | b [Some] |
+| main.rs:68:15:68:15 | z [Some, tuple.1] | semmle.label | z [Some, tuple.1] |
+| main.rs:69:13:69:24 | Some(...) [Some, tuple.1] | semmle.label | Some(...) [Some, tuple.1] |
+| main.rs:69:18:69:23 | TuplePat [tuple.1] | semmle.label | TuplePat [tuple.1] |
+| main.rs:69:22:69:22 | m | semmle.label | m |
+| main.rs:71:22:71:22 | m | semmle.label | m |
+| main.rs:92:29:92:29 | [post] y [&ref] | semmle.label | [post] y [&ref] |
+| main.rs:92:32:92:41 | source(...) | semmle.label | source(...) |
+| main.rs:93:18:93:34 | ...::read(...) | semmle.label | ...::read(...) |
+| main.rs:93:33:93:33 | y [&ref] | semmle.label | y [&ref] |
+| main.rs:108:13:108:17 | mut i | semmle.label | mut i |
+| main.rs:108:21:108:30 | source(...) | semmle.label | source(...) |
+| main.rs:109:13:109:20 | mut pin1 [&ref] | semmle.label | mut pin1 [&ref] |
+| main.rs:109:24:109:35 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| main.rs:109:33:109:34 | &i [&ref] | semmle.label | &i [&ref] |
+| main.rs:109:34:109:34 | i | semmle.label | i |
+| main.rs:110:13:110:20 | mut pin2 [&ref] | semmle.label | mut pin2 [&ref] |
+| main.rs:110:24:110:34 | ...::pin(...) [&ref] | semmle.label | ...::pin(...) [&ref] |
+| main.rs:110:33:110:33 | i | semmle.label | i |
+| main.rs:111:13:111:20 | mut pin3 [&ref] | semmle.label | mut pin3 [&ref] |
+| main.rs:111:24:111:49 | ...::into_pin(...) [&ref] | semmle.label | ...::into_pin(...) [&ref] |
+| main.rs:111:38:111:48 | ...::new(...) [&ref] | semmle.label | ...::new(...) [&ref] |
+| main.rs:111:47:111:47 | i | semmle.label | i |
+| main.rs:113:14:113:14 | i | semmle.label | i |
+| main.rs:114:14:114:18 | * ... | semmle.label | * ... |
+| main.rs:114:15:114:18 | pin1 [&ref] | semmle.label | pin1 [&ref] |
+| main.rs:115:14:115:35 | * ... | semmle.label | * ... |
+| main.rs:115:15:115:35 | ...::into_inner(...) [&ref] | semmle.label | ...::into_inner(...) [&ref] |
+| main.rs:115:31:115:34 | pin1 [&ref] | semmle.label | pin1 [&ref] |
+| main.rs:116:14:116:18 | * ... | semmle.label | * ... |
+| main.rs:116:15:116:18 | pin2 [&ref] | semmle.label | pin2 [&ref] |
+| main.rs:117:14:117:18 | * ... | semmle.label | * ... |
+| main.rs:117:15:117:18 | pin3 [&ref] | semmle.label | pin3 [&ref] |
+| main.rs:122:13:122:18 | mut ms [MyStruct] | semmle.label | mut ms [MyStruct] |
+| main.rs:122:22:122:49 | MyStruct {...} [MyStruct] | semmle.label | MyStruct {...} [MyStruct] |
+| main.rs:122:38:122:47 | source(...) | semmle.label | source(...) |
+| main.rs:127:14:127:15 | ms [MyStruct] | semmle.label | ms [MyStruct] |
+| main.rs:127:14:127:19 | ms.val | semmle.label | ms.val |
 subpaths
+| main.rs:50:15:50:15 | w [Wrapper] | main.rs:43:18:43:22 | SelfParam [Wrapper] | main.rs:43:33:45:9 | { ... } [Wrapper] | main.rs:53:17:53:25 | w.clone() [Wrapper] |
 testFailures
 #select
 | main.rs:13:10:13:19 | a.unwrap() | main.rs:12:18:12:27 | source(...) | main.rs:13:10:13:19 | a.unwrap() | $@ | main.rs:12:18:12:27 | source(...) | source(...) |
@@ -94,6 +187,14 @@ testFailures
 | main.rs:20:10:20:19 | a.unwrap() | main.rs:19:34:19:43 | source(...) | main.rs:20:10:20:19 | a.unwrap() | $@ | main.rs:19:34:19:43 | source(...) | source(...) |
 | main.rs:22:10:22:19 | b.unwrap() | main.rs:19:34:19:43 | source(...) | main.rs:22:10:22:19 | b.unwrap() | $@ | main.rs:19:34:19:43 | source(...) | source(...) |
 | main.rs:27:10:27:10 | a | main.rs:26:13:26:22 | source(...) | main.rs:27:10:27:10 | a | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
-| main.rs:43:38:43:38 | n | main.rs:41:30:41:39 | source(...) | main.rs:43:38:43:38 | n | $@ | main.rs:41:30:41:39 | source(...) | source(...) |
-| main.rs:63:22:63:22 | m | main.rs:58:22:58:31 | source(...) | main.rs:63:22:63:22 | m | $@ | main.rs:58:22:58:31 | source(...) | source(...) |
-| main.rs:85:18:85:34 | ...::read(...) | main.rs:84:32:84:41 | source(...) | main.rs:85:18:85:34 | ...::read(...) | $@ | main.rs:84:32:84:41 | source(...) | source(...) |
+| main.rs:29:10:29:10 | b | main.rs:26:13:26:22 | source(...) | main.rs:29:10:29:10 | b | $@ | main.rs:26:13:26:22 | source(...) | source(...) |
+| main.rs:51:38:51:38 | n | main.rs:49:30:49:39 | source(...) | main.rs:51:38:51:38 | n | $@ | main.rs:49:30:49:39 | source(...) | source(...) |
+| main.rs:55:38:55:38 | n | main.rs:49:30:49:39 | source(...) | main.rs:55:38:55:38 | n | $@ | main.rs:49:30:49:39 | source(...) | source(...) |
+| main.rs:71:22:71:22 | m | main.rs:66:22:66:31 | source(...) | main.rs:71:22:71:22 | m | $@ | main.rs:66:22:66:31 | source(...) | source(...) |
+| main.rs:93:18:93:34 | ...::read(...) | main.rs:92:32:92:41 | source(...) | main.rs:93:18:93:34 | ...::read(...) | $@ | main.rs:92:32:92:41 | source(...) | source(...) |
+| main.rs:113:14:113:14 | i | main.rs:108:21:108:30 | source(...) | main.rs:113:14:113:14 | i | $@ | main.rs:108:21:108:30 | source(...) | source(...) |
+| main.rs:114:14:114:18 | * ... | main.rs:108:21:108:30 | source(...) | main.rs:114:14:114:18 | * ... | $@ | main.rs:108:21:108:30 | source(...) | source(...) |
+| main.rs:115:14:115:35 | * ... | main.rs:108:21:108:30 | source(...) | main.rs:115:14:115:35 | * ... | $@ | main.rs:108:21:108:30 | source(...) | source(...) |
+| main.rs:116:14:116:18 | * ... | main.rs:108:21:108:30 | source(...) | main.rs:116:14:116:18 | * ... | $@ | main.rs:108:21:108:30 | source(...) | source(...) |
+| main.rs:117:14:117:18 | * ... | main.rs:108:21:108:30 | source(...) | main.rs:117:14:117:18 | * ... | $@ | main.rs:108:21:108:30 | source(...) | source(...) |
+| main.rs:127:14:127:19 | ms.val | main.rs:122:38:122:47 | source(...) | main.rs:127:14:127:19 | ms.val | $@ | main.rs:122:38:122:47 | source(...) | source(...) |

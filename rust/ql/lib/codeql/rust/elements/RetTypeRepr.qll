@@ -8,9 +8,12 @@ import codeql.rust.elements.AstNode
 import codeql.rust.elements.TypeRepr
 
 /**
- * A RetTypeRepr. For example:
+ * A return type in a function signature.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * fn foo() -> i32 {}
+ * //       ^^^^^^
  * ```
  */
 final class RetTypeRepr = Impl::RetTypeRepr;

@@ -50,8 +50,8 @@ func parseRegistryConfigs(str string) ([]RegistryConfig, error) {
 func getEnvVars() []string {
 	var result []string
 
-	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set {
-		if proxy_port, proxy_port_set := os.LookupEnv(PROXY_PORT); proxy_port_set {
+	if proxy_host, proxy_host_set := os.LookupEnv(PROXY_HOST); proxy_host_set && proxy_host != "" {
+		if proxy_port, proxy_port_set := os.LookupEnv(PROXY_PORT); proxy_port_set && proxy_port != "" {
 			proxy_address = fmt.Sprintf("http://%s:%s", proxy_host, proxy_port)
 			result = append(result, fmt.Sprintf("HTTP_PROXY=%s", proxy_address), fmt.Sprintf("HTTPS_PROXY=%s", proxy_address))
 
@@ -59,7 +59,7 @@ func getEnvVars() []string {
 		}
 	}
 
-	if proxy_cert, proxy_cert_set := os.LookupEnv(PROXY_CA_CERTIFICATE); proxy_cert_set {
+	if proxy_cert, proxy_cert_set := os.LookupEnv(PROXY_CA_CERTIFICATE); proxy_cert_set && proxy_cert != "" {
 		// Write the certificate to a temporary file
 		slog.Info("Found certificate")
 
@@ -82,7 +82,7 @@ func getEnvVars() []string {
 		}
 	}
 
-	if proxy_urls, proxy_urls_set := os.LookupEnv(PROXY_URLS); proxy_urls_set {
+	if proxy_urls, proxy_urls_set := os.LookupEnv(PROXY_URLS); proxy_urls_set && proxy_urls != "" {
 		val, err := parseRegistryConfigs(proxy_urls)
 		if err != nil {
 			slog.Error("Unable to parse proxy configurations", slog.String("error", err.Error()))

@@ -5,6 +5,7 @@
  */
 
 private import codeql.rust.elements.internal.generated.BinaryExpr
+private import codeql.rust.elements.internal.OperationImpl::Impl as OperationImpl
 
 /**
  * INTERNAL: This module contains the customizable definition of `BinaryExpr` and should not
@@ -22,7 +23,15 @@ module Impl {
    * x += y;
    * ```
    */
-  class BinaryExpr extends Generated::BinaryExpr {
+  class BinaryExpr extends Generated::BinaryExpr, OperationImpl::Operation {
     override string toStringImpl() { result = "... " + this.getOperatorName() + " ..." }
+
+    override string getOperatorName() { result = Generated::BinaryExpr.super.getOperatorName() }
+
+    override Expr getOperand(int n) {
+      n = 0 and result = this.getLhs()
+      or
+      n = 1 and result = this.getRhs()
+    }
   }
 }

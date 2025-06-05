@@ -16,7 +16,7 @@ signature module ModelPrintingLangSig {
 }
 
 module ModelPrintingImpl<ModelPrintingLangSig Lang> {
-  signature module ModelPrintingSig {
+  signature module ModelPrintingSummarySig {
     /**
      * The class of APIs relevant for model generation.
      */
@@ -24,6 +24,16 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
       Lang::Callable lift();
     }
 
+    /**
+     * Gets the string representation of the provenance of the models.
+     */
+    string getProvenance();
+  }
+
+  signature module ModelPrintingSourceOrSinkSig {
+    /**
+     * The class of APIs relevant for model generation.
+     */
     class SourceOrSinkApi extends Lang::Callable;
 
     /**
@@ -32,14 +42,14 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     string getProvenance();
   }
 
-  module ModelPrinting<ModelPrintingSig Printing> {
-    /**
-     * Computes the first columns for MaD rows used for summaries, sources and sinks.
-     */
-    private string asPartialModel(Lang::Callable api) {
-      result = strictconcat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
-    }
+  /**
+   * Computes the first columns for MaD rows used for summaries, sources and sinks.
+   */
+  private string asPartialModel(Lang::Callable api) {
+    result = strictconcat(int i | | Lang::partialModelRow(api, i), ";" order by i) + ";"
+  }
 
+  module ModelPrintingSummary<ModelPrintingSummarySig Printing> {
     /**
      * Computes the first columns for neutral MaD rows.
      */
@@ -86,9 +96,11 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
     /**
      * Gets the lifted taint summary model for `api` with `input` and `output`.
      */
-    bindingset[input, output]
-    string asLiftedTaintModel(Printing::SummaryApi api, string input, string output) {
-      result = asModel(api, input, output, false, true)
+    bindingset[input, output, preservesValue]
+    string asLiftedModel(
+      Printing::SummaryApi api, string input, string output, boolean preservesValue
+    ) {
+      result = asModel(api, input, output, preservesValue, true)
     }
 
     /**
@@ -106,7 +118,9 @@ module ModelPrintingImpl<ModelPrintingLangSig Lang> {
       preservesValue = false and
       result = asSummaryModel(api, input, output, "taint", lift)
     }
+  }
 
+  module ModelPrintingSourceOrSink<ModelPrintingSourceOrSinkSig Printing> {
     /**
      * Gets the sink model for `api` with `input` and `kind`.
      */

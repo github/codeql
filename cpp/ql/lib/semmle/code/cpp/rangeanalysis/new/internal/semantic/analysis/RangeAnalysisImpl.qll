@@ -77,8 +77,6 @@ module Sem implements Semantic<SemLocation> {
 
   class Guard = SemGuard;
 
-  predicate implies_v2 = semImplies_v2/4;
-
   class Type = SemType;
 
   class IntegerType = SemIntegerType;

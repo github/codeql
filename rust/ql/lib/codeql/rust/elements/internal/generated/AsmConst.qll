@@ -15,6 +15,14 @@ import codeql.rust.elements.Expr
  */
 module Generated {
   /**
+   * A constant operand in an inline assembly block.
+   *
+   * For example:
+   * ```rust
+   * use core::arch::asm;
+   * asm!("mov eax, {const}", const 42);
+   * //                       ^^^^^^^
+   * ```
    * INTERNAL: Do not reference the `Generated::AsmConst` class directly.
    * Use the subclass `AsmConst`, where the following predicates are available.
    */

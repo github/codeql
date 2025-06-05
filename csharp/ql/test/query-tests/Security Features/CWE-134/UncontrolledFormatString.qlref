@@ -1,2 +1,4 @@
 query: Security Features/CWE-134/UncontrolledFormatString.ql
-postprocess: utils/test/PrettyPrintModels.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

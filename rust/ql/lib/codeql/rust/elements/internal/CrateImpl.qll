@@ -15,6 +15,13 @@ module Impl {
   private import codeql.rust.elements.internal.NamedCrate
   private import codeql.rust.internal.PathResolution
 
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
+  /**
+   * A Crate. For example:
+   * ```rust
+   * todo!()
+   * ```
+   */
   class Crate extends Generated::Crate {
     override string toStringImpl() {
       result = strictconcat(int i | | this.toStringPart(i) order by i)
@@ -60,13 +67,11 @@ module Impl {
     Crate getADependency() { result = this.getDependency(_) }
 
     /** Gets the source file that defines this crate, if any. */
-    SourceFile getSourceFile() { result.getFile() = this.getModule().getFile() }
+    SourceFile getSourceFile() { result.getFile() = this.getLocation().getFile() }
 
     /**
      * Gets a source file that belongs to this crate, if any.
      */
     SourceFile getASourceFile() { result = this.(CrateItemNode).getASourceFile() }
-
-    override Location getLocation() { result = this.getModule().getLocation() }
   }
 }
