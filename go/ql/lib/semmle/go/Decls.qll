@@ -461,6 +461,7 @@ class FieldBase extends @field, ExprParent {
  * Examples:
  *
  * ```go
+ * io.Reader
  * Name string `json:"name"`
  * x, y int
  * ```
@@ -469,8 +470,9 @@ class FieldBase extends @field, ExprParent {
  *
  * ```go
  * struct {
- *   Name string `json:"name"`
- *   x, y int
+ *   io.Reader // embedded field
+ *   Name string `json:"name"` // field with tag
+ *   x, y int // declares two fields with the same type
  * }
  * ```
  */
@@ -482,11 +484,23 @@ class FieldDecl extends FieldBase, Documentable, ExprParent {
   /**
    * Gets the expression representing the name of the `i`th field declared in this declaration
    * (0-based).
+   *
+   * This is not defined for embedded fields.
    */
   Expr getNameExpr(int i) {
     i >= 0 and
     result = this.getChildExpr(i + 1)
   }
+
+  /**
+   * Gets the `i`th field declared in this declaration (0-based).
+   *
+   * This is not defined for embedded fields.
+   */
+  Field getField(int i) { this.getNameExpr(i).(Ident).declares(result) }
+
+  /** Holds if this field declaration declares an embedded type. */
+  predicate isEmbedded() { not exists(this.getNameExpr(_)) }
 
   /** Gets the tag expression of this field declaration, if any. */
   Expr getTag() { result = this.getChildExpr(-1) }
