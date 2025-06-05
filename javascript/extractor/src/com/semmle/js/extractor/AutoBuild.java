@@ -1186,7 +1186,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             }
 
             // extract TypeScript projects from 'tsconfig.json'
-            if (typeScriptMode == TypeScriptMode.FULL
+            if (typeScriptMode != TypeScriptMode.NONE
                 && treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
