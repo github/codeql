@@ -31,8 +31,14 @@ int f1()
     return 0;
 }
 
+void f2() {
+    my_printf("%d\n", b); // GOOD
+}
+
 int main()
 {
-    int b = f1();
+    my_printf("%d\n", b); // BAD
+    b = f1();
+    f2();
     return 0;
 }

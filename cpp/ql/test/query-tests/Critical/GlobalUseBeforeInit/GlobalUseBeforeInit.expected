@@ -1,1 +1,2 @@
 | test.cpp:27:5:27:6 | f1 | The variable $@ is used in this function but may not be initialized when it is called. | test.cpp:14:5:14:5 | b | b |
+| test.cpp:38:5:38:8 | main | The variable $@ is used in this function but may not be initialized when it is called. | test.cpp:14:5:14:5 | b | b |
