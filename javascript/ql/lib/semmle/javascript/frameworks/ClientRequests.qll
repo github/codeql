@@ -289,6 +289,9 @@ module ClientRequest {
     }
   }
 
+  /**
+   * A model of a `axios` instance request.
+   */
   class AxiosInstanceRequest extends ClientRequest::Range, API::CallNode {
     string method;
     API::CallNode instance;
