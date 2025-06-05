@@ -21,7 +21,7 @@ predicate initFunc(GlobalVariable v, Function f) {
   )
 }
 
-/** Holds if `v` has an initializer in function `f` that dominates `node`. **/
+/** Holds if `v` has an initializer in function `f` that dominates `node`. */
 predicate dominatingInitInFunc(GlobalVariable v, Function f, ControlFlowNode node) {
   exists(VariableAccess initAccess |
     v.getAnAccess() = initAccess and
