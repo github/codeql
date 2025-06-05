@@ -42,7 +42,7 @@ class KnownOpenSSLSignatureConstantAlgorithmInstance extends OpenSSLAlgorithmIns
     // 1) The source is a literal and flows to a getter, then we know we have an instance
     // 2) The source is a KnownOpenSSLAlgorithm call, and we know we have an instance immediately from that
     // Possibility 1:
-    this instanceof KnownOpenSSLPaddingAlgorithmExpr and
+    this instanceof OpenSSLAlgorithmLiteral and
     exists(DataFlow::Node src, DataFlow::Node sink |
       // Sink is an argument to a signature getter call
       sink = getterCall.getInputNode() and

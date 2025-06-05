@@ -94,24 +94,6 @@ class EVP_CipherInit_SKEY_Call extends EVP_EX2_Initializer {
   override Expr getOperationSubtypeArg() { result = this.(Call).getArgument(5) }
 }
 
-class EVPCipherInitializerAlgorithmArgument extends Expr {
-  EVPCipherInitializerAlgorithmArgument() {
-    exists(EVP_Cipher_Initializer initCall | this = initCall.getAlgorithmArg())
-  }
-}
-
-class EVPCipherInitializerKeyArgument extends Expr {
-  EVPCipherInitializerKeyArgument() {
-    exists(EVP_Cipher_Initializer initCall | this = initCall.getKeyArg())
-  }
-}
-
-class EVPCipherInitializerIVArgument extends Expr {
-  EVPCipherInitializerIVArgument() {
-    exists(EVP_Cipher_Initializer initCall | this = initCall.getIVArg())
-  }
-}
-
 class EVP_Cipher_Update_Call extends EVPUpdate {
   EVP_Cipher_Update_Call() {
     this.(Call).getTarget().getName() in [
@@ -164,6 +146,8 @@ class EVP_Cipher_Call extends EVPOperation, EVP_Cipher_Operation {
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
+
+  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
 }
 
 class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
@@ -182,4 +166,6 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
     or
     result = EVP_Cipher_Operation.super.getOutputArg()
   }
+
+  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
 }

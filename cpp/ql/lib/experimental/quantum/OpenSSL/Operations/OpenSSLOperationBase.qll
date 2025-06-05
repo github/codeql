@@ -7,8 +7,11 @@ private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgor
  */
 abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Call {
   /**
-   * Expression that specifies the algorithm for the operation.
-   * Will be an argument of the operation in the simplest case.
+   * Gets the argument that specifies the algorithm for the operation.
+   * This argument might not be immediately present at the specified operation.
+   * For example, it might be set in an initialization call.
+   * Modelers of the operation are resonsible for linking the operation to any
+   * initialization calls, and providing that argument as a returned value here.
    */
   abstract Expr getAlgorithmArg();
 
@@ -16,7 +19,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
    * Algorithm is specified in initialization call or is implicitly established by the key.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
-    AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
+    AlgGetterToArgFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
       DataFlow::exprNode(this.getAlgorithmArg()))
   }
 }
@@ -79,17 +82,19 @@ abstract class EVPUpdate extends Call {
 /**
  * Flows from algorithm values to operations, specific to OpenSSL
  */
-private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
+module AlgGetterToArgConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(OpenSSLAlgorithmValueConsumer c | c.getResultNode() = source)
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(EVPOperation c | c.getAlgorithmArg() = sink.asExpr())
-  }
+  /**
+   * Trace to any call accepting the algorithm.
+   * NOTE: users must restrict this set to the operations they are interested in.
+   */
+  predicate isSink(DataFlow::Node sink) { exists(Call c | c.getAnArgument() = sink.asExpr()) }
 }
 
-private module AlgGetterToAlgConsumerFlow = DataFlow::Global<AlgGetterToAlgConsumerConfig>;
+module AlgGetterToArgFlow = DataFlow::Global<AlgGetterToArgConfig>;
 
 /**
  * The base class for all operations of the EVP API.
@@ -112,11 +117,6 @@ abstract class EVPOperation extends OpenSSLOperation {
    * Some output data like ciphertext or signature.
    */
   abstract Expr getOutputArg();
-
-  /**
-   * Overwrite with an explicitly specified algorithm or leave base implementation to find it in the initialization call.
-   */
-  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
 
   /**
    * Finds the initialization call, may be none.

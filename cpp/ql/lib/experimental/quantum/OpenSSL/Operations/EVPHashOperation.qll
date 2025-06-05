@@ -93,4 +93,6 @@ class EVP_Digest_Final_Call extends EVPFinal, Crypto::HashOperationInstance {
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
     result = EVPFinal.super.getInputConsumer()
   }
+
+  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
 }

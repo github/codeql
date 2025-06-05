@@ -1,2 +1,5 @@
 | openssl_basic.c:124:13:124:30 | HashOperation | openssl_basic.c:120:37:120:43 | Message | openssl_basic.c:181:49:181:87 | Constant |
 | openssl_basic.c:144:13:144:22 | HashOperation | openssl_basic.c:144:24:144:30 | Message | openssl_basic.c:181:49:181:87 | Constant |
+| openssl_signature.c:23:9:23:26 | HashOperation | openssl_signature.c:22:34:22:40 | Message | openssl_signature.c:602:37:602:77 | Constant |
+| openssl_signature.c:23:9:23:26 | HashOperation | openssl_signature.c:22:34:22:40 | Message | openssl_signature.c:685:37:685:77 | Constant |
+| openssl_signature.c:23:9:23:26 | HashOperation | openssl_signature.c:22:34:22:40 | Message | openssl_signature.c:741:37:741:77 | Constant |
