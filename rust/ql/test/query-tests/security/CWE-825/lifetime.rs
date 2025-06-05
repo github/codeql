@@ -491,7 +491,7 @@ pub fn test_rc() {
 			println!("	v3 = {v3}");
 			println!("	v4 = {v4}");
 		}
-	} // rc1 go out of scope, the reference count is 0, so p1, p2 are dangling
+	} // rc1 goes out of scope, the reference count is 0, so p1, p2 are dangling
 
 	unsafe {
 		let v5 = *p1; // $ MISSING: Alert
@@ -667,4 +667,59 @@ pub fn test_implicit_derefs() {
 		let v2 = &*ref1; // $ MISSING: Alert[rust/access-after-lifetime-ended]=str2
 		println!("	v2 = {v2} (!)"); // corrupt in practice
 	}
+}
+
+// --- members ---
+
+struct MyType {
+	value: i64,
+}
+
+impl MyType {
+	fn test(&self) {
+		let r1 = unsafe {
+			let v1 = &self;
+			&v1.value
+		};
+		let (r2, r3) = unsafe {
+			let v2 = &self;
+			(&v2.value,
+			 &self.value)
+		};
+
+		use_the_stack();
+
+		let v1 = *r1;
+		let v2 = *r2;
+		let v3 = *r3;
+		println!("	v1 = {v1}");
+		println!("	v2 = {v2}");
+		println!("	v3 = {v3}");
+	}
+}
+
+pub fn test_members() {
+	let mt = MyType { value: 1 };
+	mt.test();
+}
+
+// --- macros ---
+
+macro_rules! my_macro {
+	() => {
+		let ptr: *const i64;
+		{
+			let val: i64 = 1;
+			ptr = &val;
+		}
+
+		unsafe {
+			let v = *ptr;
+			println!("	v = {v}");
+		}
+	};
+}
+
+pub fn test_macros() {
+	my_macro!();
 }

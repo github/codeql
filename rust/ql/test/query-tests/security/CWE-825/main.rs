@@ -180,4 +180,10 @@ fn main() {
 
 	println!("test_implicit_derefs:");
 	test_implicit_derefs();
+
+	println!("test_members:");
+	test_members();
+
+	println!("test_macros:");
+	test_macros();
 }
