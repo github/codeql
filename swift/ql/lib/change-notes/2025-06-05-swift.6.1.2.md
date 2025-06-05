@@ -1,4 +1,3 @@
-
 ---
 category: minorAnalysis
 ---
