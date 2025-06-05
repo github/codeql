@@ -331,6 +331,7 @@ def download_dca_databases(
     )
     targets = response["targets"]
     project_map = {project["name"]: project for project in projects}
+    artifact_map = {}
     for data in targets.values():
         downloads = data["downloads"]
         analyzed_database = downloads["analyzed_database"]
@@ -341,6 +342,13 @@ def download_dca_databases(
             print(f"Skipping {pretty_name} as it is not in the list of projects")
             continue
 
+        if pretty_name in artifact_map:
+            print(f"Skipping previous database {artifact_map[pretty_name]['artifact_name']} for {pretty_name}")
+
+        artifact_map[pretty_name] = analyzed_database
+
+    for pretty_name, analyzed_database in artifact_map.items():
+        artifact_name = analyzed_database["artifact_name"]
         repository = analyzed_database["repository"]
         run_id = analyzed_database["run_id"]
         print(f"=== Finding artifact: {artifact_name} ===")
