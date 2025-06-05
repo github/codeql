@@ -381,9 +381,19 @@ class TypeSpec extends @typespec, Spec, TypeParamDeclParent {
   string getName() { result = this.getNameExpr().getName() }
 
   /**
-   * Gets the expression denoting the underlying type to which the newly declared type is bound.
+   * Gets the declared type of this specifier.
+   *
+   * Note that for alias types this will give the underlying type.
+   */
+  Type getDeclaredType() { result = this.getNameExpr().getType() }
+
+  /**
+   * Gets the expression denoting the underlying type to which the declared type is bound.
    */
   Expr getTypeExpr() { result = this.getChildExpr(1) }
+
+  /** Gets the underlying type to which the declared type is bound. */
+  Type getRhsType() { result = this.getTypeExpr().getType() }
 
   override string toString() { result = "type declaration specifier" }
 
