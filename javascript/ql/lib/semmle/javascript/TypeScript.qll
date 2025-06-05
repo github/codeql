@@ -1,4 +1,5 @@
 import javascript
+private import semmle.javascript.internal.UnderlyingTypes
 
 /**
  * A statement that defines a namespace, that is, a namespace declaration or enum declaration.
@@ -575,10 +576,6 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
-
-  override DataFlow::ClassNode getClass() {
-    result.getAstNode() = this.getType().(ClassType).getClass()
-  }
 }
 
 /**
@@ -698,56 +695,7 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    */
   TypeName getTypeName() { ast_node_symbol(this, result) }
 
-  override predicate hasQualifiedName(string globalName) {
-    this.getTypeName().hasQualifiedName(globalName)
-    or
-    exists(LocalTypeAccess local | local = this |
-      not exists(local.getLocalTypeName()) and // Without a local type name, the type is looked up in the global scope.
-      globalName = local.getName()
-    )
-  }
-
-  override predicate hasQualifiedName(string moduleName, string exportedName) {
-    this.getTypeName().hasQualifiedName(moduleName, exportedName)
-    or
-    exists(ImportDeclaration imprt, ImportSpecifier spec |
-      moduleName = getImportName(imprt) and
-      spec = imprt.getASpecifier()
-    |
-      spec.getImportedName() = exportedName and
-      this = spec.getLocal().(TypeDecl).getLocalTypeName().getAnAccess()
-      or
-      (spec instanceof ImportNamespaceSpecifier or spec instanceof ImportDefaultSpecifier) and
-      this =
-        spec.getLocal().(LocalNamespaceDecl).getLocalNamespaceName().getAMemberAccess(exportedName)
-    )
-    or
-    exists(ImportEqualsDeclaration imprt |
-      moduleName = getImportName(imprt.getImportedEntity()) and
-      this =
-        imprt
-            .getIdentifier()
-            .(LocalNamespaceDecl)
-            .getLocalNamespaceName()
-            .getAMemberAccess(exportedName)
-    )
-  }
-
   override string getAPrimaryQlClass() { result = "TypeAccess" }
-}
-
-/**
- * Gets a suitable name for the library imported by `imprt`.
- *
- * For relative imports, this is the snapshot-relative path to the imported module.
- * For non-relative imports, it is the import path itself.
- */
-private string getImportName(Import imprt) {
-  exists(string path | path = imprt.getImportedPathString() |
-    if path.regexpMatch("[./].*")
-    then result = imprt.getImportedModule().getFile().getRelativePath()
-    else result = path
-  )
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
@@ -821,14 +769,6 @@ class GenericTypeExpr extends @generic_typeexpr, TypeExpr {
 
   /** Gets the number of type arguments. This is always at least one. */
   int getNumTypeArgument() { result = count(this.getATypeArgument()) }
-
-  override predicate hasQualifiedName(string globalName) {
-    this.getTypeAccess().hasQualifiedName(globalName)
-  }
-
-  override predicate hasQualifiedName(string moduleName, string exportedName) {
-    this.getTypeAccess().hasQualifiedName(moduleName, exportedName)
-  }
 
   override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
 }
