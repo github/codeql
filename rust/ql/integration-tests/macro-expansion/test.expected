@@ -32,3 +32,4 @@ unexpanded_macro_calls
 | calls/src/included.rs:2:9:2:39 | concat!... |
 | calls/src/lib.rs:22:9:22:31 | concat!... |
 | calls/src/lib.rs:29:9:29:32 | include_str!... |
+| calls/src/lib.rs:36:16:36:24 | my_int!... |

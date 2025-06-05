@@ -28,3 +28,11 @@ include!("included.rs");
 
 #[doc = include_str!("some.txt")]  // this doesn't expand since 0.0.274
 fn documented() {}
+
+macro_rules! my_int {
+    () => { i32 };
+}
+
+fn answer() -> my_int!() {  // this doesn't expand since 0.0.274
+    42
+}
