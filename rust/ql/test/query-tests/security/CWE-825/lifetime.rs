@@ -721,8 +721,8 @@ macro_rules! my_macro {
 }
 
 pub fn test_macros() {
-	my_macro!(); // $ SPURIOUS: Source[rust/access-after-lifetime-ended]
-	my_macro!(); // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]
+	my_macro!();
+	my_macro!();
 }
 
 // --- examples from qhelp ---

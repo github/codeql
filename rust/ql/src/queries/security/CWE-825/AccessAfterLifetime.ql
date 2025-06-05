@@ -39,6 +39,8 @@ where
   // flow from a pointer or reference to the dereference
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
   // check that the dereference is outside the lifetime of the target
-  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
+  AccessAfterLifetime::dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target) and
+  // exclude sinks in macros, since these results are difficult to interpret
+  not sinkNode.getNode().asExpr().getExpr().isFromMacroExpansion()
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Access of a pointer to $@ after it's lifetime has ended.", target, target.toString()
