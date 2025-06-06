@@ -360,8 +360,7 @@ def download_dca_databases(
 
         artifact_map[pretty_name] = analyzed_database
 
-    def download_and_extract(item: tuple[str, dict]) -> str:
-        pretty_name, analyzed_database = item
+    def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
         repository = analyzed_database["repository"]
         run_id = analyzed_database["run_id"]
@@ -378,7 +377,7 @@ def download_dca_databases(
         artifact_zip_location = download_artifact(
             archive_download_url, artifact_name, pat
         )
-        print(f"=== Extracting artifact: {artifact_name} ===")
+        print(f"=== Decompressing artifact: {artifact_name} ===")
         # The database is in a zip file, which contains a tar.gz file with the DB
         # First we open the zip file
         with zipfile.ZipFile(artifact_zip_location, "r") as zip_ref:
@@ -396,21 +395,21 @@ def download_dca_databases(
                 # And we just untar it to the same directory as the zip file
                 tar_ref.extractall(artifact_unzipped_location)
         ret = os.path.join(artifact_unzipped_location, language)
-        print(f"Extraction complete: {ret}")
+        print(f"Decompression complete: {ret}")
         return ret
 
     results = run_in_parallel(
-        download_and_extract,
-        list(artifact_map.items()),
-        on_error=lambda item, exc: print(
-            f"ERROR: Failed to download database for {item[0]}: {exc}"
+        download_and_decompress,
+        list(artifact_map.values()),
+        on_error=lambda db, exc: print(
+            f"ERROR: Failed to download and decompress {db["artifact_name"]}: {exc}"
         ),
         error_summary=lambda failures: print(
             f"ERROR: Failed to download {len(failures)} databases: {', '.join(item[0] for item in failures)}"
         ),
     )
 
-    print(f"\n=== Extracted {len(results)} databases ===")
+    print(f"\n=== Fetched {len(results)} databases ===")
 
     return [(project_map[n], r) for n, r in zip(artifact_map, results)]
 
