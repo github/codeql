@@ -22,8 +22,9 @@ module Generated {
    * macro_rules! macro_type {
    *     () => { i32 };
    * }
-   * type T = macro_type!();
-   * //       ^^^^^^^^^^^^^
+   *
+   * let x: macro_type!() = 42;
+   * //     ^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::MacroTypeRepr` class directly.
    * Use the subclass `MacroTypeRepr`, where the following predicates are available.

@@ -9046,11 +9046,13 @@ pub struct Const {
     pub id: trap::TrapId<Const>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub body: Option<trap::Label<Expr>>,
+    pub generic_param_list: Option<trap::Label<GenericParamList>>,
     pub is_const: bool,
     pub is_default: bool,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
+    pub where_clause: Option<trap::Label<WhereClause>>,
 }
 
 impl trap::TrapEntry for Const {
@@ -9066,6 +9068,9 @@ impl trap::TrapEntry for Const {
         if let Some(v) = self.body {
             out.add_tuple("const_bodies", vec![id.into(), v.into()]);
         }
+        if let Some(v) = self.generic_param_list {
+            out.add_tuple("const_generic_param_lists", vec![id.into(), v.into()]);
+        }
         if self.is_const {
             out.add_tuple("const_is_const", vec![id.into()]);
         }
@@ -9080,6 +9085,9 @@ impl trap::TrapEntry for Const {
         }
         if let Some(v) = self.visibility {
             out.add_tuple("const_visibilities", vec![id.into(), v.into()]);
+        }
+        if let Some(v) = self.where_clause {
+            out.add_tuple("const_where_clauses", vec![id.into(), v.into()]);
         }
     }
 }
