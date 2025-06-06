@@ -202,13 +202,19 @@ class TypeEntity extends Entity, @typeobject { }
 class TypeParamParentEntity extends Entity, @typeparamparentobject { }
 
 /** A named type which has a declaration. */
-class DeclaredType extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
+class DeclaredTypeEntity extends TypeEntity, DeclaredEntity, TypeParamParentEntity, @decltypeobject {
   /** Gets the declaration specifier declaring this type. */
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
+/** DEPRECATED: Use `DeclaredTypeEntity` instead. */
+deprecated class DeclaredType = DeclaredTypeEntity;
+
 /** A built-in type. */
-class BuiltinType extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+class BuiltinTypeEntity extends TypeEntity, BuiltinEntity, @builtintypeobject { }
+
+/** DEPRECATED: Use `BuiltinTypeEntity` instead. */
+deprecated class BuiltinType = BuiltinTypeEntity;
 
 /** A built-in or declared constant, variable, field, method or function. */
 class ValueEntity extends Entity, @valueobject {
@@ -754,64 +760,64 @@ private predicate builtinFunction(
 module Builtin {
   // built-in types
   /** Gets the built-in type `bool`. */
-  BuiltinType bool() { result.getName() = "bool" }
+  BuiltinTypeEntity bool() { result.getName() = "bool" }
 
   /** Gets the built-in type `byte`. */
-  BuiltinType byte() { result.getName() = "byte" }
+  BuiltinTypeEntity byte() { result.getName() = "byte" }
 
   /** Gets the built-in type `complex64`. */
-  BuiltinType complex64() { result.getName() = "complex64" }
+  BuiltinTypeEntity complex64() { result.getName() = "complex64" }
 
   /** Gets the built-in type `complex128`. */
-  BuiltinType complex128() { result.getName() = "complex128" }
+  BuiltinTypeEntity complex128() { result.getName() = "complex128" }
 
   /** Gets the built-in type `error`. */
-  BuiltinType error() { result.getName() = "error" }
+  BuiltinTypeEntity error() { result.getName() = "error" }
 
   /** Gets the built-in type `float32`. */
-  BuiltinType float32() { result.getName() = "float32" }
+  BuiltinTypeEntity float32() { result.getName() = "float32" }
 
   /** Gets the built-in type `float64`. */
-  BuiltinType float64() { result.getName() = "float64" }
+  BuiltinTypeEntity float64() { result.getName() = "float64" }
 
   /** Gets the built-in type `int`. */
-  BuiltinType int_() { result.getName() = "int" }
+  BuiltinTypeEntity int_() { result.getName() = "int" }
 
   /** Gets the built-in type `int8`. */
-  BuiltinType int8() { result.getName() = "int8" }
+  BuiltinTypeEntity int8() { result.getName() = "int8" }
 
   /** Gets the built-in type `int16`. */
-  BuiltinType int16() { result.getName() = "int16" }
+  BuiltinTypeEntity int16() { result.getName() = "int16" }
 
   /** Gets the built-in type `int32`. */
-  BuiltinType int32() { result.getName() = "int32" }
+  BuiltinTypeEntity int32() { result.getName() = "int32" }
 
   /** Gets the built-in type `int64`. */
-  BuiltinType int64() { result.getName() = "int64" }
+  BuiltinTypeEntity int64() { result.getName() = "int64" }
 
   /** Gets the built-in type `rune`. */
-  BuiltinType rune() { result.getName() = "rune" }
+  BuiltinTypeEntity rune() { result.getName() = "rune" }
 
   /** Gets the built-in type `string`. */
-  BuiltinType string_() { result.getName() = "string" }
+  BuiltinTypeEntity string_() { result.getName() = "string" }
 
   /** Gets the built-in type `uint`. */
-  BuiltinType uint() { result.getName() = "uint" }
+  BuiltinTypeEntity uint() { result.getName() = "uint" }
 
   /** Gets the built-in type `uint8`. */
-  BuiltinType uint8() { result.getName() = "uint8" }
+  BuiltinTypeEntity uint8() { result.getName() = "uint8" }
 
   /** Gets the built-in type `uint16`. */
-  BuiltinType uint16() { result.getName() = "uint16" }
+  BuiltinTypeEntity uint16() { result.getName() = "uint16" }
 
   /** Gets the built-in type `uint32`. */
-  BuiltinType uint32() { result.getName() = "uint32" }
+  BuiltinTypeEntity uint32() { result.getName() = "uint32" }
 
   /** Gets the built-in type `uint64`. */
-  BuiltinType uint64() { result.getName() = "uint64" }
+  BuiltinTypeEntity uint64() { result.getName() = "uint64" }
 
   /** Gets the built-in type `uintptr`. */
-  BuiltinType uintptr() { result.getName() = "uintptr" }
+  BuiltinTypeEntity uintptr() { result.getName() = "uintptr" }
 
   // built-in constants
   /** Gets the built-in constant `true`. */
