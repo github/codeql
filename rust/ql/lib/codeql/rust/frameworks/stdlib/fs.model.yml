@@ -3,13 +3,13 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["lang:std", "crate::fs::read", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
-      - ["lang:std", "crate::fs::read_to_string", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
-      - ["lang:std", "crate::fs::read_link", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "crate::fs::read", "ReturnValue.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "crate::fs::read_to_string", "ReturnValue.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "crate::fs::read_link", "ReturnValue.Field[core::result::Result::Ok(0)]", "file", "manual"]
       - ["lang:std", "<crate::fs::DirEntry>::path", "ReturnValue", "file", "manual"]
       - ["lang:std", "<crate::fs::DirEntry>::file_name", "ReturnValue", "file", "manual"]
-      - ["lang:std", "<crate::fs::File>::open", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
-      - ["lang:std", "<crate::fs::File>::open_buffered", "ReturnValue.Field[crate::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "<crate::fs::File>::open", "ReturnValue.Field[core::result::Result::Ok(0)]", "file", "manual"]
+      - ["lang:std", "<crate::fs::File>::open_buffered", "ReturnValue.Field[core::result::Result::Ok(0)]", "file", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
@@ -48,5 +48,5 @@ extensions:
       - ["lang:std", "<crate::path::PathBuf as crate::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "<crate::path::Path>::join", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["lang:std", "<crate::path::Path>::join", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalStep[normalize-path]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
-      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalBarrier[normalize-path]", "ReturnValue.Field[crate::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalStep[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
+      - ["lang:std", "<crate::path::Path>::canonicalize", "Argument[self].OptionalBarrier[normalize-path]", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]

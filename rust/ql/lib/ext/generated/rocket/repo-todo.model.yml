@@ -4,4 +4,4 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo::todo", "<crate::Context>::raw", "Argument[1]", "ReturnValue.Field[crate::Context::flash]", "value", "dfc-generated"]
+      - ["repo::todo", "<crate::Context>::raw", "Argument[1]", "ReturnValue.Field[todo::Context::flash]", "value", "dfc-generated"]

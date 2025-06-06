@@ -4,7 +4,7 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
-      - ["repo::shared", "<crate::Benchmark>::one_needle", "Argument[self].Field[crate::Benchmark::needles].Element", "ReturnValue.Field[crate::result::Result::Ok(0)].Reference", "value", "dfc-generated"]
+      - ["repo::shared", "<crate::Benchmark>::one_needle", "Argument[self].Field[shared::Benchmark::needles].Element", "ReturnValue.Field[core::result::Result::Ok(0)].Reference", "value", "dfc-generated"]
       - ["repo::shared", "<crate::Benchmark>::one_needle_byte", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo::shared", "<crate::Benchmark>::three_needle_bytes", "Argument[self]", "ReturnValue", "taint", "df-generated"]
       - ["repo::shared", "<crate::Benchmark>::two_needle_bytes", "Argument[self]", "ReturnValue", "taint", "df-generated"]

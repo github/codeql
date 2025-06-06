@@ -5,18 +5,20 @@ extensions:
       extensible: summaryModel
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::context", "Argument[self].Field[0]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::context", "Argument[self].Field[crate::context::manager::ContextManager(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::new", "Argument[0]", "ReturnValue.Field[crate::context::manager::ContextManager(0)]", "value", "dfc-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::finalize", "Argument[self].Field[crate::template::Template::value].Field[crate::result::Result::Ok(0)]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::context", "Argument[self].Field[rocket_dyn_templates::context::manager::ContextManager(0)]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::context::manager::ContextManager>::new", "Argument[0]", "ReturnValue.Field[rocket_dyn_templates::context::manager::ContextManager(0)]", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::fairing::TemplateFairing as crate::fairing::Fairing>::on_ignite", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::fairing::TemplateFairing as crate::fairing::Fairing>::on_ignite", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::fairing::TemplateFairing as crate::fairing::Fairing>::on_liftoff", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::fairing::TemplateFairing as crate::fairing::Fairing>::on_liftoff", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::metadata::Metadata as crate::request::from_request::FromRequest>::from_request", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::custom", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::try_custom", "Argument[0]", "ReturnValue.Field[rocket_dyn_templates::fairing::TemplateFairing::callback].Reference", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::environment::Environment as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::metadata::Metadata>::render", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::registry::Registry as crate::engine::Engine>::init", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::registry::Registry as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template as crate::response::responder::Responder>::respond_to", "Argument[self]", "log-injection", "df-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::finalize", "Argument[0]", "log-injection", "df-generated"]
-      - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::template::Template>::finalize", "Argument[self]", "log-injection", "df-generated"]
       - ["repo:https://github.com/rwf2/Rocket/tree/v0.5/contrib/dyn_templates:rocket_dyn_templates", "<crate::tera::Tera as crate::engine::Engine>::render", "Argument[0]", "log-injection", "df-generated"]

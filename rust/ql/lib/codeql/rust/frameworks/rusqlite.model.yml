@@ -14,7 +14,7 @@ extensions:
       pack: codeql/rust-all
       extensible: sourceModel
     data:
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get", "ReturnValue.Field[crate::result::Result::Ok(0)]", "database", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_unwrap", "ReturnValue", "database", "manual"]
-      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_ref", "ReturnValue.Field[crate::result::Result::Ok(0)]", "database", "manual"]
+      - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_ref", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
       - ["repo:https://github.com/rusqlite/rusqlite:rusqlite", "<crate::row::Row>::get_ref_unwrap", "ReturnValue", "database", "manual"]

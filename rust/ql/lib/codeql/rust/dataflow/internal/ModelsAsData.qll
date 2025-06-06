@@ -30,9 +30,9 @@
  *     - `ReturnValue`: the value returned by a function call.
  *     - `Element`: an element in a collection.
  *     - `Field[t::f]`: field `f` of the variant/struct with canonical path `t`, for example
- *                      `Field[crate::ihex::Record::Data::value]`.
+ *                      `Field[ihex::Record::Data::value]`.
  *     - `Field[t(i)]`: position `i` inside the variant/struct with canonical path `v`, for example
- *                      `Field[crate::option::Option::Some(0)]`.
+ *                      `Field[core::option::Option::Some(0)]`.
  *     - `Field[i]`: the `i`th element of a tuple.
  * 4. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
