@@ -691,6 +691,7 @@ case @builtintype.kind of
 | 59 = @complex_std_float64   // _Complex _Float64
 | 60 = @complex_float64x      // _Complex _Float64x
 | 61 = @complex_std_float128  // _Complex _Float128
+| 62 = @mfp8                  // __mfp8
 ;
 
 builtintypes(
