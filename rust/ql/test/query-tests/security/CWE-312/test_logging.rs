@@ -1,8 +1,7 @@
-
-use log::{debug, error, info, trace, warn, log, Level};
-use std::io::Write as _;
-use std::fmt::Write as _;
+use log::{debug, error, info, log, trace, warn, Level};
 use log_err::{LogErrOption, LogErrResult};
+use std::fmt::Write as _;
+use std::io::Write as _;
 
 // --- tests ---
 
@@ -134,14 +133,20 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     trace!("message = {:#?}", t1); // $ MISSING: Alert[rust/cleartext-logging]=t1
 
     // logging from a struct
-    let s1 = MyStruct1 { harmless: "foo".to_string(), password: "123456".to_string() }; // $ MISSING: Source=s1
+    let s1 = MyStruct1 {
+        harmless: "foo".to_string(),
+        password: "123456".to_string(), // $ MISSING: Source=s1
+    };
     warn!("message = {}", s1.harmless);
     warn!("message = {}", s1.password); // $ Alert[rust/cleartext-logging]
     warn!("message = {}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
     warn!("message = {:?}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
     warn!("message = {:#?}", s1); // $ MISSING: Alert[rust/cleartext-logging]=s1
 
-    let s2 = MyStruct2 { harmless: "foo".to_string(), password: "123456".to_string() }; // $ MISSING: Source=s2
+    let s2 = MyStruct2 {
+        harmless: "foo".to_string(),
+        password: "123456".to_string(), // $ MISSING: Source=s2
+    };
     warn!("message = {}", s2.harmless);
     warn!("message = {}", s2.password); // $ Alert[rust/cleartext-logging]
     warn!("message = {}", s2); // (this implementation does not output the password field)
@@ -175,8 +180,8 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     let _ = err_result.log_expect(&format!("Failed with password: {}", password2)); // $ Alert[rust/cleartext-logging]
 
     // test `log_expect` with sensitive `Result.Err`
-    let err_result2: Result<String, String> = Err(password2.clone());
-    let _ = err_result2.log_expect(""); // $ MISSING: Alert[rust/cleartext-logging]
+    let err_result2: Result<String, String> = Err(password2.clone()); // $ Source=s3
+    let _ = err_result2.log_expect(""); // $ Alert[rust/cleartext-logging]=s3
 
     // test `log_unwrap` with sensitive `Result.Err`
     let err_result3: Result<String, String> = Err(password2); // $ Source=err_result3
@@ -190,24 +195,54 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
     eprintln!("message = {}", password); // $ Alert[rust/cleartext-logging]
 
     match i {
-        1 => { panic!("message = {}", password); } // $ Alert[rust/cleartext-logging]
-        2 => { todo!("message = {}", password); } // $ Alert[rust/cleartext-logging]
-        3 => { unimplemented!("message = {}", password); } // $ Alert[rust/cleartext-logging]
-        4 => { unreachable!("message = {}", password); } // $ Alert[rust/cleartext-logging]
-        5 => { assert!(false, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        6 => { assert_eq!(1, 2, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        7 => { assert_ne!(1, 1, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        8 => { debug_assert!(false, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        9 => { debug_assert_eq!(1, 2, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        10 => { debug_assert_ne!(1, 1, "message = {}", password); } // $ Alert[rust/cleartext-logging]
-        11 => { _ = opt_i.expect(format!("message = {}", password).as_str()); } // $ Alert[rust/cleartext-logging]
+        1 => {
+            panic!("message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        2 => {
+            todo!("message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        3 => {
+            unimplemented!("message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        4 => {
+            unreachable!("message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        5 => {
+            assert!(false, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        6 => {
+            assert_eq!(1, 2, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        7 => {
+            assert_ne!(1, 1, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        8 => {
+            debug_assert!(false, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        9 => {
+            debug_assert_eq!(1, 2, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        10 => {
+            debug_assert_ne!(1, 1, "message = {}", password); // $ Alert[rust/cleartext-logging]
+        }
+        11 => {
+            _ = opt_i.expect(format!("message = {}", password).as_str()); // $ Alert[rust/cleartext-logging]
+        }
         _ => {}
     }
 
-    std::io::stdout().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
-    std::io::stderr().lock().write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
-    std::io::stdout().lock().write_all(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
+    std::io::stdout()
+        .lock()
+        .write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stderr()
+        .lock()
+        .write_fmt(format_args!("message = {}\n", password)); // $ MISSING: Alert[rust/cleartext-logging]
+    std::io::stdout()
+        .lock()
+        .write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
+    std::io::stdout()
+        .lock()
+        .write_all(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 
     let mut out = std::io::stdout().lock();
     out.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
@@ -219,6 +254,10 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
-    test_log("harmless".to_string(), "123456".to_string(), "[encrypted]".to_string());
+    test_log(
+        "harmless".to_string(),
+        "123456".to_string(),
+        "[encrypted]".to_string(),
+    );
     test_std("123456".to_string(), 0, None);
 }
