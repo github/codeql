@@ -332,7 +332,7 @@ predicate sourceModel(string type, string path, string kind, string model) {
 }
 
 /** Holds if a sink model exists for the given parameters. */
-private predicate sinkModel(string type, string path, string kind, string model) {
+predicate sinkModel(string type, string path, string kind, string model) {
   any(DeprecationAdapter a).sinkModel(type, path, kind) and
   model = "SinkModelCsv"
   or
