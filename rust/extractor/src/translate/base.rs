@@ -16,7 +16,7 @@ use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::SyntaxKind;
 use ra_ap_span::TextSize;
-use ra_ap_syntax::ast::{Const, Fn, HasName, Param, Static};
+use ra_ap_syntax::ast::HasName;
 use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
@@ -644,7 +644,7 @@ impl<'a> Translator<'a> {
         })();
     }
 
-    pub(crate) fn should_be_excluded_attrs(&self, item: &impl ast::HasAttrs) -> bool {
+    pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
                 attr.as_simple_call().is_some_and(|(name, tokens)| {
@@ -654,46 +654,8 @@ impl<'a> Translator<'a> {
         })
     }
 
-    pub(crate) fn should_be_excluded(&self, item: &impl ast::AstNode) -> bool {
-        if self.source_kind == SourceKind::Library {
-            let syntax = item.syntax();
-            if syntax
-                .parent()
-                .and_then(Fn::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Const::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Static::cast)
-                .and_then(|x| x.body())
-                .is_some_and(|body| body.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax
-                .parent()
-                .and_then(Param::cast)
-                .and_then(|x| x.pat())
-                .is_some_and(|pat| pat.syntax() == syntax)
-            {
-                return true;
-            }
-            if syntax.kind() == SyntaxKind::TOKEN_TREE {
-                return true;
-            }
-        }
-        false
+    pub(crate) fn should_skip_bodies(&self) -> bool {
+        self.source_kind == SourceKind::Library
     }
 
     pub(crate) fn extract_types_from_path_segment(
