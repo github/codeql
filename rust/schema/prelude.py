@@ -73,6 +73,7 @@ class Callable(AstNode):
     """
     param_list: optional["ParamList"] | child
     attrs: list["Attr"] | child
+    params: list["Param"] | synth
 
 
 class Addressable(AstNode):

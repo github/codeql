@@ -8,6 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Attr
+import codeql.rust.elements.Param
 import codeql.rust.elements.ParamList
 
 /**
@@ -53,5 +54,20 @@ module Generated {
      * Gets the number of attrs of this callable.
      */
     final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
+
+    /**
+     * Gets the `index`th parameter of this callable (0-based).
+     */
+    Param getParam(int index) { none() }
+
+    /**
+     * Gets any of the parameters of this callable.
+     */
+    final Param getAParam() { result = this.getParam(_) }
+
+    /**
+     * Gets the number of parameters of this callable.
+     */
+    final int getNumberOfParams() { result = count(int i | exists(this.getParam(i))) }
   }
 }
