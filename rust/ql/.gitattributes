@@ -733,6 +733,7 @@
 /test/extractor-tests/generated/BreakExpr/BreakExpr_getExpr.ql linguist-generated
 /test/extractor-tests/generated/BreakExpr/BreakExpr_getLifetime.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr.ql linguist-generated
+/test/extractor-tests/generated/CallExpr/CallExpr_getArg.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr_getArgList.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr_getFunction.ql linguist-generated
@@ -746,6 +747,7 @@
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getBody.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getClosureBinder.ql linguist-generated
+/test/extractor-tests/generated/ClosureExpr/ClosureExpr_getParam.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getParamList.ql linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Comment/Comment.ql linguist-generated
@@ -844,6 +846,7 @@
 /test/extractor-tests/generated/Function/Function_getExtendedCanonicalPath.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getGenericParamList.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getName.ql linguist-generated
+/test/extractor-tests/generated/Function/Function_getParam.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getParamList.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getRetType.ql linguist-generated
 /test/extractor-tests/generated/Function/Function_getVisibility.ql linguist-generated
@@ -968,6 +971,7 @@
 /test/extractor-tests/generated/Meta/Meta_getPath.ql linguist-generated
 /test/extractor-tests/generated/Meta/Meta_getTokenTree.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr.ql linguist-generated
+/test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getArg.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getArgList.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getAttr.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr_getGenericArgList.ql linguist-generated
