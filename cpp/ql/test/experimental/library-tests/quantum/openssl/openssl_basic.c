@@ -1,8 +1,18 @@
+
+#ifdef USE_REAL_HEADERS
+#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/dsa.h>
+#include <openssl/sha.h>
+#include <openssl/err.h>
+#include <stdio.h>
+#include <string.h>
+#else
 #include "openssl/evp_stubs.h"
 #include "openssl/alg_macro_stubs.h"
 #include "openssl/rand_stubs.h"
-
-size_t strlen(const char* str);
+#include "openssl/std_stubs.h"
+#endif
 
 // Sample OpenSSL code that demonstrates various cryptographic operations
 // that can be detected by the quantum model
@@ -218,4 +228,8 @@ int test_main() {
     calculate_hmac_sha256(key, 32, plaintext, plaintext_len, hmac);
     
     return 0;
+<<<<<<< HEAD
 } 
+=======
+} 
+>>>>>>> main

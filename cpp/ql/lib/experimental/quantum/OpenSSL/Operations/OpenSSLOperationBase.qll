@@ -3,21 +3,30 @@ private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
+ * All functions from the OpenSSL API.
+ */
+class OpenSSLCall extends Call { }
+
+/**
  * A class for all OpenSSL operations.
  */
-abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Call {
+abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof OpenSSLCall {
   /**
    * Expression that specifies the algorithm for the operation.
-   * Will be an argument of the operation in the simplest case.
+   * Will be an argument of the operation in the simplest case
+   * and EVPPKeyAlgorithmConsumer's valueArgExpr in more complex cases.
    */
   abstract Expr getAlgorithmArg();
 
   /**
-   * Algorithm is specified in initialization call or is implicitly established by the key.
+   * Algorithm is either an argument and we track it to AlgorithmValueConsumer
+   * or we have the AlgorithmValueConsumer already tracked down and just return it.
    */
   override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
     AlgGetterToAlgConsumerFlow::flow(result.(OpenSSLAlgorithmValueConsumer).getResultNode(),
       DataFlow::exprNode(this.getAlgorithmArg()))
+    or
+    result.(EVPPKeyAlgorithmConsumer).getValueArgExpr() = this.getAlgorithmArg()
   }
 }
 
@@ -26,7 +35,7 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
  * These are not operations in the sense of Crypto::OperationInstance,
  * but they are used to initialize the context for the operation.
  */
-abstract class EVPInitialize extends Call {
+abstract class EVPInitialize extends OpenSSLCall {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
@@ -38,7 +47,8 @@ abstract class EVPInitialize extends Call {
   Crypto::KeyOperationSubtype getKeyOperationSubtype() { none() }
 
   /**
-   * Explicitly specified algorithm or none if implicit (e.g., established by the key).
+   * Explicitly specified algorithm or algorithm established by the key or context
+   * (should track flows to the key and/or context to return the algorithm expression)
    * None if not applicable.
    */
   Expr getAlgorithmArg() { none() }
@@ -59,7 +69,7 @@ abstract class EVPInitialize extends Call {
  * These are not operations in the sense of Crypto::OperationInstance,
  * but they are used to update the context for the operation.
  */
-abstract class EVPUpdate extends Call {
+abstract class EVPUpdate extends OpenSSLCall {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
@@ -85,7 +95,7 @@ private module AlgGetterToAlgConsumerConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(EVPOperation c | c.getAlgorithmArg() = sink.asExpr())
+    exists(OpenSSLOperation c | c.getAlgorithmArg() = sink.asExpr())
   }
 }
 
@@ -129,6 +139,10 @@ abstract class EVPOperation extends OpenSSLOperation {
     result = DataFlow::exprNode(this.getOutputArg())
   }
 
+  Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() {
+    result = DataFlow::exprNode(this.getOutputArg())
+  }
+
   /**
    * Input consumer is the input argument of the call.
    */
@@ -138,7 +152,7 @@ abstract class EVPOperation extends OpenSSLOperation {
 }
 
 /**
- * The final calls of the EVP API.
+ * Final calls of EVP API.
  */
 abstract class EVPFinal extends EVPOperation {
   /**

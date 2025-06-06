@@ -1657,14 +1657,19 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       result = this.getAKnownAlgorithm() or
       result =
         instance
-            .(KeyCreationOperationInstance)
+            .(KeyArtifactOutputInstance)
+            .getCreator()
             .getAnAlgorithmValueConsumer()
             .getAGenericSourceNode()
     }
 
     KeyCreationCandidateAlgorithmNode getAKnownAlgorithm() {
       result =
-        instance.(KeyCreationOperationInstance).getAnAlgorithmValueConsumer().getAKnownSourceNode()
+        instance
+            .(KeyArtifactOutputInstance)
+            .getCreator()
+            .getAnAlgorithmValueConsumer()
+            .getAKnownSourceNode()
     }
 
     override NodeBase getChild(string edgeName) {

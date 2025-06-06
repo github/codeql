@@ -86,7 +86,12 @@ class KnownOpenSSLKeyAgreementAlgorithmConstant extends KnownOpenSSLAlgorithmCon
 predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
   exists(string name, string parsedTargetName |
     parsedTargetName =
-      c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
+      c.getTarget()
+          .getName()
+          .replaceAll("EVP_", "")
+          .replaceAll("_gen", "")
+          .toLowerCase()
+          .replaceAll("_", "-") and
     name = resolveAlgorithmAlias(parsedTargetName) and
     knownOpenSSLAlgorithmLiteral(name, _, normalized, algType)
   )
@@ -2866,6 +2871,8 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "rsa-sha256" and nid = 668 and normalized = "SHA-256" and algType = "HASH"
   or
+  name = "rsa-sha256" and nid = 668 and normalized = "SHA-256" and algType = "SIGNATURE"
+  or
   name = "rsa-sha3-224" and nid = 1116 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
   name = "rsa-sha3-224" and nid = 1116 and normalized = "SHA3-224" and algType = "HASH"
@@ -2909,6 +2916,8 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   name = "rsa-sm3" and nid = 1144 and normalized = "SM3" and algType = "HASH"
   or
   name = "rsaencryption" and nid = 6 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
+  or
+  name = "rsaencryption" and nid = 6 and normalized = "RSA" and algType = "SIGNATURE"
   or
   name = "rsaes-oaep" and nid = 919 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
