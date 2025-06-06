@@ -2,7 +2,6 @@ use clap::Args;
 use codeql_extractor::file_paths::PathTransformer;
 use lazy_static::lazy_static;
 use rayon::prelude::*;
-use serde_json;
 use std::borrow::Cow;
 use std::collections::HashSet;
 use std::fs;
