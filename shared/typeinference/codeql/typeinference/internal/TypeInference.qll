@@ -220,6 +220,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     predicate isCons(TypeParameter tp, TypePath suffix) {
       suffix = this.stripPrefix(TypePath::singleton(tp))
     }
+
+    /** Gets the head of this path, if any. */
+    bindingset[this]
+    TypeParameter getHead() { result = this.getTypeParameter(0) }
   }
 
   /** Provides predicates for constructing `TypePath`s. */
@@ -1110,7 +1114,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Declaration decl, DeclarationPosition dpos, Type base, TypePath path, TypeParameter tp
       ) {
         tp = decl.getDeclaredType(dpos, path) and
-        path.isCons(base.getATypeParameter(), _)
+        base.getATypeParameter() = path.getHead()
       }
 
       /**
