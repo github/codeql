@@ -2139,7 +2139,8 @@ code_block(
 lambdas(
     unique int expr: @lambdaexpr ref,
     string default_capture: string ref,
-    boolean has_explicit_return_type: boolean ref
+    boolean has_explicit_return_type: boolean ref,
+    boolean has_explicit_parameter_list: boolean ref
 );
 
 lambda_capture(
