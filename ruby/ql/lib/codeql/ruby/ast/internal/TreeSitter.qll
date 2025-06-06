@@ -5,6 +5,11 @@
 
 import codeql.Locations as L
 
+/** Holds if and only if the database is an overlay. */
+overlay[local]
+pragma[nomagic]
+predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
 module Ruby {
   /** The base class for all AST nodes */
   class AstNode extends @ruby_ast_node {
@@ -46,6 +51,38 @@ module Ruby {
   class ReservedWord extends @ruby_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file path of the given node. */
+  overlay[local]
+  pragma[nomagic]
+  string getRawRubyFile(@ruby_ast_node node) {
+    exists(@location_default loc, @file file |
+      ruby_ast_node_location(node, loc) and
+      locations_default(loc, file, _, _, _, _) and
+      files(file, result)
+    )
+  }
+
+  /** Holds if the given file was extracted as part of the overlay database. */
+  overlay[local]
+  pragma[nomagic]
+  predicate discardRubyFile(string file) {
+    isOverlay() and exists(@ruby_ast_node node | file = getRawRubyFile(node))
+  }
+
+  /** Holds if the given node is in the given file and is part of the overlay base database */
+  overlay[local]
+  pragma[nomagic]
+  predicate discardableRubyAstNode(string file, @ruby_ast_node node) {
+    not isOverlay() and file = getRawRubyFile(node)
+  }
+
+  /** Holds if the given node should be discarded, because it is part of the overlay base and is in a file that was extracted as part of the overlay database. */
+  overlay[discard_entity]
+  pragma[nomagic]
+  predicate discardRubyAstNode(@ruby_ast_node node) {
+    exists(string file | discardableRubyAstNode(file, node) and discardRubyFile(file))
   }
 
   class UnderscoreArg extends @ruby_underscore_arg, AstNode { }
@@ -1968,6 +2005,38 @@ module Erb {
   class ReservedWord extends @erb_reserved_word, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** Gets the file path of the given node. */
+  overlay[local]
+  pragma[nomagic]
+  string getRawErbFile(@erb_ast_node node) {
+    exists(@location_default loc, @file file |
+      erb_ast_node_location(node, loc) and
+      locations_default(loc, file, _, _, _, _) and
+      files(file, result)
+    )
+  }
+
+  /** Holds if the given file was extracted as part of the overlay database. */
+  overlay[local]
+  pragma[nomagic]
+  predicate discardErbFile(string file) {
+    isOverlay() and exists(@erb_ast_node node | file = getRawErbFile(node))
+  }
+
+  /** Holds if the given node is in the given file and is part of the overlay base database */
+  overlay[local]
+  pragma[nomagic]
+  predicate discardableErbAstNode(string file, @erb_ast_node node) {
+    not isOverlay() and file = getRawErbFile(node)
+  }
+
+  /** Holds if the given node should be discarded, because it is part of the overlay base and is in a file that was extracted as part of the overlay database. */
+  overlay[discard_entity]
+  pragma[nomagic]
+  predicate discardErbAstNode(@erb_ast_node node) {
+    exists(string file | discardableErbAstNode(file, node) and discardErbFile(file))
   }
 
   /** A class representing `code` tokens. */

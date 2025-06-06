@@ -17,7 +17,7 @@ pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
     ql_library_path: PathBuf,
-    add_metadata_relation: bool,
+    overlay_support: bool,
 ) -> std::io::Result<()> {
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
         tracing::error!("Failed to create dbscheme file: {}", e);
@@ -35,7 +35,7 @@ pub fn generate(
 
     // Eventually all languages will have the metadata relation (for overlay support), at which
     // point this could be moved to prefix.dbscheme.
-    if add_metadata_relation {
+    if overlay_support {
         writeln!(dbscheme_writer, "/*- Database metadata -*/",)?;
         dbscheme::write(
             &mut dbscheme_writer,
@@ -59,6 +59,15 @@ pub fn generate(
             alias: Some("L"),
         })],
     )?;
+
+    if overlay_support {
+        ql::write(
+            &mut ql_writer,
+            &[ql::TopLevel::Predicate(
+                ql_gen::create_is_overlay_predicate(),
+            )],
+        )?;
+    }
 
     for language in languages {
         let prefix = node_types::to_snake_case(&language.name);
@@ -103,6 +112,43 @@ pub fn generate(
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
             ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
+
+        let get_raw_file_predicate_name = format!("getRaw{}File", &language.name);
+        let discard_file_predicate_name = format!("discard{}File", &language.name);
+        let discardable_ast_node_predicate_name = format!("discardable{}AstNode", &language.name);
+        let discard_ast_node_predicate_name = format!("discard{}AstNode", &language.name);
+        if overlay_support {
+            body.push(ql::TopLevel::Predicate(
+                ql_gen::create_get_raw_file_predicate(
+                    &get_raw_file_predicate_name,
+                    &ast_node_name,
+                    &node_location_table_name,
+                ),
+            ));
+            body.push(ql::TopLevel::Predicate(
+                ql_gen::create_discard_file_predicate(
+                    &discard_file_predicate_name,
+                    &ast_node_name,
+                    &get_raw_file_predicate_name,
+                ),
+            ));
+            body.push(ql::TopLevel::Predicate(
+                ql_gen::create_discardable_ast_node_predicate(
+                    &discardable_ast_node_predicate_name,
+                    &ast_node_name,
+                    &get_raw_file_predicate_name,
+                ),
+            ));
+            body.push(ql::TopLevel::Predicate(
+                ql_gen::create_discard_ast_node_predicate(
+                    &discard_ast_node_predicate_name,
+                    &ast_node_name,
+                    &discardable_ast_node_predicate_name,
+                    &discard_file_predicate_name,
+                ),
+            ));
+        }
+
         body.append(&mut ql_gen::convert_nodes(&nodes));
         ql::write(
             &mut ql_writer,
