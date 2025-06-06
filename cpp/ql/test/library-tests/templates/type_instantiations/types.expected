@@ -25,6 +25,7 @@
 | file://:0:0:0:0 | __float128 |
 | file://:0:0:0:0 | __fp16 |
 | file://:0:0:0:0 | __int128 |
+| file://:0:0:0:0 | __mfp8 |
 | file://:0:0:0:0 | __va_list_tag |
 | file://:0:0:0:0 | __va_list_tag & |
 | file://:0:0:0:0 | __va_list_tag && |
