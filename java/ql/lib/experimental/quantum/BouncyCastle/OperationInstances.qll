@@ -11,7 +11,7 @@ module Params {
     Parameters() {
       // Matches `org.bouncycastle.crypto.params`, `org.bouncycastle.asn1.x9`, etc.
       this.getPackage().getName().matches("org.bouncycastle.%") and
-      this.getName().matches(["%Parameters", "%ParameterSpec"])
+      this.getName().matches(["%Parameter", "%Parameters", "%ParameterSpec", "ParametersWith%"])
     }
   }
 
@@ -26,12 +26,12 @@ module Params {
     KeyParameters() {
       this.getPackage().getName() =
         ["org.bouncycastle.crypto.params", "org.bouncycastle.pqc.crypto.lms"] and
-      this.getName().matches("%KeyParameters")
+      this.getName().matches(["%KeyParameter", "%KeyParameters"])
     }
   }
 
   /**
-   * Any call that returns a BouncyCastle parameters object. This type is used
+   * A call that returns a BouncyCastle parameters object. This type is used
    * to model data flow to resolve algorithm instances like elliptic curves.
    *
    * Examples:
@@ -55,6 +55,12 @@ module Params {
       this.(MethodCall).getType() instanceof Parameters
     }
 
+    // Can be overridden by subclasses which take a key argument.
+    Expr getKeyArg() { none() }
+
+    // Can be overridden by subclasses which take a nonce argument.
+    Expr getNonceArg() { none() }
+
     // Can be overridden by subclasses which take a key size argument.
     Expr getKeySizeArg() { none() }
 
@@ -71,6 +77,10 @@ module Params {
       result.getType() instanceof Curve
     }
 
+    Crypto::ConsumerInputDataFlowNode getKeyConsumer() { result.asExpr() = this.getKeyArg() }
+
+    Crypto::ConsumerInputDataFlowNode getNonceConsumer() { result.asExpr() = this.getNonceArg() }
+
     Crypto::ConsumerInputDataFlowNode getAKeySizeConsumer() {
       result.asExpr() = this.getKeySizeArg()
     }
@@ -85,7 +95,7 @@ module Params {
   }
 
   /**
-   * Models the named elliptic curve passed to `X9ECParameters.getCurve()`.
+   * The named elliptic curve passed to `X9ECParameters.getCurve()`.
    */
   class X9ECParametersInstantiation extends ParametersInstantiation {
     X9ECParametersInstantiation() { this.(Expr).getType().getName() = "X9ECParameters" }
@@ -98,7 +108,7 @@ module Params {
   }
 
   /**
-   * Models the named elliptic curve passed to `ECNamedCurveTable.getParameterSpec()`.
+   * The named elliptic curve passed to `ECNamedCurveTable.getParameterSpec()`.
    */
   class ECNamedCurveParameterSpecInstantiation extends ParametersInstantiation {
     ECNamedCurveParameterSpecInstantiation() {
@@ -110,6 +120,40 @@ module Params {
       this.(MethodCall).getCallee().getName() = "getParameterSpec" and
       result = this.getArgument(0)
     }
+  }
+
+  /**
+   * An `AEADParameters` instantiation.
+   *
+   * This type is used to model data flow from a nonce to a cipher operation.
+   */
+  class AeadParametersInstantiation extends ParametersInstantiation {
+    AeadParametersInstantiation() {
+      this.(ConstructorCall).getConstructedType().getName() = "AEADParameters"
+    }
+
+    override Expr getNonceArg() { result = this.(ConstructorCall).getArgument(2) }
+  }
+
+  class ParametersWithIvInstantiation extends ParametersInstantiation {
+    ParametersWithIvInstantiation() {
+      this.(ConstructorCall).getConstructedType().getName() = "ParametersWithIV"
+    }
+
+    override Expr getNonceArg() { result = this.(ConstructorCall).getArgument(1) }
+  }
+
+  /**
+   * A `KeyParameter` instantiation.
+   *
+   * This type is used to model data flow from a key to a cipher operation.
+   */
+  class KeyParameterInstantiation extends ParametersInstantiation {
+    KeyParameterInstantiation() {
+      this.(ConstructorCall).getConstructedType().getName() = "KeyParameter"
+    }
+
+    override Expr getKeyArg() { result = this.(ConstructorCall).getArgument(0) }
   }
 }
 
@@ -230,11 +274,8 @@ module Signers {
     Expr getSignatureOutput() { result = signer.getSignatureOutput(this) }
   }
 
-  /**
-   * Instantiate the flow analysis module for the `Signer` class.
-   */
-  private module SignerFlow =
-    NewToInitToUseFlowAnalysis<SignerNewCall, SignerInitCall, SignerUseCall>;
+  // Instantiate the flow analysis module for the `Signer` class.
+  private module SignerFlow = NewToInitToUseFlow<SignerNewCall, SignerInitCall, SignerUseCall>;
 
   /**
    * A signing operation instance is a call to either `update()`, `generateSignature()`,
@@ -365,8 +406,7 @@ module Generators {
   }
 
   /**
-   * The `generateKey()` and `generateKeyPair()` methods are used to generate
-   * the resulting key, depending on the type of the generator.
+   * A call to either `generateKey()` and `generateKeyPair()`.
    */
   private class KeyGeneratorUseCall extends MethodCall {
     KeyGenerator gen;
@@ -382,10 +422,10 @@ module Generators {
   }
 
   module KeyGeneratorFlow =
-    NewToInitToUseFlowAnalysis<KeyGeneratorNewCall, KeyGeneratorInitCall, KeyGeneratorUseCall>;
+    NewToInitToUseFlow<KeyGeneratorNewCall, KeyGeneratorInitCall, KeyGeneratorUseCall>;
 
   module ParametersFlow =
-    ParametersToInitFlowAnalysis<Params::ParametersInstantiation, KeyGeneratorInitCall>;
+    ParametersToInitFlow<Params::ParametersInstantiation, KeyGeneratorInitCall>;
 
   /**
    * A key generation operation instance is a call to `generateKey()` or
@@ -425,15 +465,24 @@ module Generators {
 module Modes {
   import FlowAnalysis
 
-  class BlockCipherMode extends Class {
-    BlockCipherMode() {
+  abstract class BlockCipherMode extends Class {
+    abstract MethodCall getAnInitCall();
+
+    abstract MethodCall getAUseCall();
+  }
+
+  /**
+   * An unpadded block cipher mode like CTR or GCM.
+   */
+  class UnpaddedBlockCipherMode extends BlockCipherMode {
+    UnpaddedBlockCipherMode() {
       this.getPackage().getName() = "org.bouncycastle.crypto.modes" and
       this.getName().matches("%BlockCipher")
     }
 
-    MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
+    override MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
 
-    MethodCall getAUseCall() {
+    override MethodCall getAUseCall() {
       result =
         this.getAMethodCall([
             "processBlock", "processBlocks", "returnByte", "processBytes", "doFinal"
@@ -441,18 +490,82 @@ module Modes {
     }
 
     MethodCall getAMethodCall(string name) {
-      result.getCallee().hasQualifiedName(this.getPackage().getName(), this.getName(), name)
+      result.getQualifier().getType() instanceof UnpaddedBlockCipherMode and
+      result.getMethod().getName() = name
+    }
+  }
+
+  /**
+   * A block cipher padding mode, like PKCS7.
+   */
+  class PaddingMode extends Class {
+    PaddingMode() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.paddings" and
+      this.getName().matches("%Padding")
+    }
+  }
+
+  /**
+   * A block cipher mode that uses a padding scheme, like CBC.
+   */
+  class PaddedBlockCipherMode extends BlockCipherMode {
+    PaddedBlockCipherMode() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.paddings" and
+      this.getName() = "PaddedBufferedBlockCipher"
+    }
+
+    override MethodCall getAnInitCall() { result = this.getAMethodCall("init") }
+
+    override MethodCall getAUseCall() {
+      result =
+        this.getAMethodCall([
+            "processBlock", "processBlocks", "returnByte", "processBytes", "doFinal"
+          ])
+    }
+
+    MethodCall getAMethodCall(string name) {
+      result.getQualifier().getType() instanceof PaddedBlockCipherMode and
+      result.getMethod().getName() = name
+    }
+  }
+
+  class BlockCipher extends Class {
+    BlockCipher() {
+      this.getPackage().getName() = "org.bouncycastle.crypto.engines" and
+      this.getName().matches("%Engine")
     }
   }
 
   /**
    * A block cipher mode instantiation.
    *
-   * BouncyCastle algorithms are instantiated by calling the constructor of the
-   * corresponding class, which also represents the algorithm instance.
+   * This class represents both unpadded block cipher mode instantiations (like
+   * `GCMBlockCipher` and `CBCBlockCipher`), as well as padded block cipher mode
+   * instantiations (like `PaddedBufferedBlockCipher`). Both can be used to
+   * encrypt and decrypt data.
    */
   private class BlockCipherModeNewCall extends ClassInstanceExpr {
-    BlockCipherModeNewCall() { this.getConstructedType() instanceof BlockCipherMode }
+    BlockCipherModeNewCall() { this.getType() instanceof BlockCipherMode }
+
+    Crypto::AlgorithmValueConsumer getBlockCipherConsumer() {
+      result = this.getUnpaddedBlockCipherMode().getBlockCipherArg()
+    }
+
+    BlockCipherModeNewCall getUnpaddedBlockCipherMode() {
+      this.getConstructedType() instanceof UnpaddedBlockCipherMode and
+      result = this
+      or
+      this.getConstructedType() instanceof PaddedBlockCipherMode and
+      result = BlockCipherModeToBlockCipherModeFlow::getUnpaddedModeFromPaddedMode(this, _, _)
+    }
+
+    Expr getBlockCipherArg() {
+      exists(Expr arg |
+        arg = this.getAnArgument() and
+        arg.getType() instanceof Modes::BlockCipher and
+        result = arg
+      )
+    }
 
     DataFlow::Node getParametersInput() { none() }
 
@@ -466,9 +579,20 @@ module Modes {
    * `init()` which takes a single `KeyGenerationParameters` argument.
    */
   private class BlockCipherModeInitCall extends MethodCall {
-    BlockCipherMode mode;
+    BlockCipherModeInitCall() { this = any(BlockCipherMode mode).getAnInitCall() }
 
-    BlockCipherModeInitCall() { this = mode.getAnInitCall() }
+    // This is true if the mode is being initialized for encryption.
+    Expr getEncryptingArg() { result = this.getArgument(0) }
+
+    Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+      // The key operation sub-type is determined by the `encrypting` argument to `init()`.
+      if BooleanLiteralToInitFlow::hasBooleanValue(this.getEncryptingArg(), _, _)
+      then
+        if BooleanLiteralToInitFlow::getBooleanValue(this.getEncryptingArg(), _, _) = true
+        then result = Crypto::TEncryptMode()
+        else result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+    }
 
     Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() { none() }
 
@@ -486,9 +610,86 @@ module Modes {
     BlockCipherModeUseCall() { this = mode.getAUseCall() }
 
     predicate isIntermediate() { not this.getCallee().getName() = "doFinal" }
+
+    Expr getInput() { result = this.getArgument(0) }
+
+    Expr getOutput() {
+      this.getCallee().getName() = "processBlock" and
+      result = this.getArgument(2) // The `out` byte array argument.
+      or
+      this.getCallee().getName() = "processBlocks" and
+      result = this.getArgument(3) // The `out` byte array argument.
+      or
+      this.getCallee().getName() = "processBytes" and
+      result = this.getArgument(3) // The `out` byte array argument.
+      or
+      this.getCallee().getName() = "returnByte" and
+      result = this // The return value.
+    }
   }
 
   module BlockCipherModeFlow =
-    NewToInitToUseFlowAnalysis<BlockCipherModeNewCall, BlockCipherModeInitCall,
-      BlockCipherModeUseCall>;
+    NewToInitToUseFlow<BlockCipherModeNewCall, BlockCipherModeInitCall, BlockCipherModeUseCall>;
+
+  module ParametersFlow =
+    ParametersToInitFlow<Params::ParametersInstantiation, BlockCipherModeInitCall>;
+
+  /**
+   * A block cipher mode operation is a call to a finalizing method (like
+   * `doFinal()`) on the block cipher mode instance. The encryption algorithm and
+   * padding mode are determined from the parameters passed to `init()`.
+   */
+  class BlockCipherModeOperationInstance extends Crypto::KeyOperationInstance instanceof BlockCipherModeUseCall
+  {
+    BlockCipherModeOperationInstance() { not this.isIntermediate() }
+
+    override Crypto::AlgorithmValueConsumer getAnAlgorithmValueConsumer() {
+      // The class instantiation (returned by `getNewFromUse()`) represents the
+      // block cipher *mode* algorithm instance. Here, we need to return the
+      // block cipher algorithm instance which is resolved from the algorithm
+      // mode using data flow (in `getBlockCipherAlgorithmConsumer()`).
+      result = this.getNewCall().getBlockCipherConsumer()
+    }
+
+    override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+      // The key operation sub-type is determined by the `encrypting` argument to `init()`.
+      exists(this.getInitCall()) and
+      result = this.getInitCall().getKeyOperationSubtype()
+      or
+      not exists(this.getInitCall()) and
+      result = Crypto::TUnknownKeyOperationMode()
+    }
+
+    BlockCipherModeNewCall getNewCall() { result = BlockCipherModeFlow::getNewFromUse(this, _, _) }
+
+    BlockCipherModeInitCall getInitCall() {
+      result = BlockCipherModeFlow::getInitFromUse(this, _, _)
+    }
+
+    BlockCipherModeUseCall getAUseCall() {
+      result = BlockCipherModeFlow::getAnIntermediateUseFromFinalUse(this, _, _)
+      or
+      result = this
+    }
+
+    Params::ParametersInstantiation getParameters() {
+      result = ParametersFlow::getParametersFromInit(this.getInitCall(), _, _)
+    }
+
+    override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
+      result.asExpr() = this.getAUseCall().getOutput()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
+      result.asExpr() = this.getAUseCall().getInput()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
+      result = this.getParameters().getKeyConsumer()
+    }
+
+    override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
+      result = this.getParameters().getNonceConsumer()
+    }
+  }
 }

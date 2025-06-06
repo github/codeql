@@ -45,7 +45,7 @@ signature class UseCallSig instanceof MethodCall {
  * gen.generateKeyPair(...);
  * ```
  */
-module NewToInitToUseFlowAnalysis<NewCallSig New, InitCallSig Init, UseCallSig Use> {
+module NewToInitToUseFlow<NewCallSig New, InitCallSig Init, UseCallSig Use> {
   newtype TFlowState =
     TUninitialized() or
     TInitialized(Init call) or
@@ -215,7 +215,7 @@ private class CurveInstantiation extends MethodCall {
  * TODO: Rewrite using stateful data flow to track whether or not the node
  * represents a parameter object or a curve.
  */
-module ParametersToInitFlowAnalysis<NewCallSig New, InitCallSig Init> {
+module ParametersToInitFlow<NewCallSig New, InitCallSig Init> {
   private module ParametersToInitConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source.asExpr() instanceof New }
 
@@ -347,11 +347,13 @@ class ArtifactAdditionalFlowStep extends AdditionalFlowInputStep {
   override DataFlow::Node getOutput() { result = output }
 }
 
-module EllipticCurveStringLiteralToConsumer {
+module EllipticCurveStringLiteralToConsumerFlow {
   /**
    * A flow from a known elliptic curve name to an elliptic curve algorithm consumer.
    */
-  module EllipticCurveStringLiteralToAlgorithmValueConsumerConfig implements DataFlow::ConfigSig {
+  private module EllipticCurveStringLiteralToAlgorithmValueConsumerConfig implements
+    DataFlow::ConfigSig
+  {
     // NOTE: We do not reference EllipticCurveStringLiteralInstance directly
     // here to avoid non-monotonic recursion.
     predicate isSource(DataFlow::Node src) { src.asExpr() instanceof StringLiteral }
@@ -366,7 +368,7 @@ module EllipticCurveStringLiteralToConsumer {
     }
   }
 
-  module EllipticCurveStringLiteralToAlgorithmValueConsumerFlow =
+  private module EllipticCurveStringLiteralToAlgorithmValueConsumerFlow =
     DataFlow::Global<EllipticCurveStringLiteralToAlgorithmValueConsumerConfig>;
 
   EllipticCurveAlgorithmValueConsumer getConsumerFromLiteral(
@@ -376,5 +378,210 @@ module EllipticCurveStringLiteralToConsumer {
     src.getNode().asExpr() = literal and
     sink.getNode() = result.getInputNode() and
     EllipticCurveStringLiteralToAlgorithmValueConsumerFlow::flowPath(src, sink)
+  }
+}
+
+/**
+ * A flow analysis module for analyzing data flow from a boolean literal to an
+ * argument to `init()`.
+ *
+ * This is used to determine the boolean value of `forSigning` and `encrypting`
+ * arguments to `init()`, which in turn determine the key operation sub type for
+ * the corresponding key operation instances.
+ */
+module BooleanLiteralToInitFlow {
+  /**
+   * A flow from a boolean literal to a method call argument.
+   */
+  private module BooleanLiteralToInitConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source.asExpr() instanceof BooleanLiteral }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(MethodCall init | sink.asExpr() = init.getAnArgument())
+    }
+  }
+
+  private module BooleanLiteralToInitFlow = DataFlow::Global<BooleanLiteralToInitConfig>;
+
+  boolean getBooleanValue(
+    Expr arg, BooleanLiteralToInitFlow::PathNode src, BooleanLiteralToInitFlow::PathNode sink
+  ) {
+    exists(BooleanLiteral lit |
+      src.getNode().asExpr() = lit and
+      sink.getNode().asExpr() = arg and
+      BooleanLiteralToInitFlow::flowPath(src, sink) and
+      lit.getBooleanValue() = result
+    )
+  }
+
+  predicate hasBooleanValue(
+    Expr arg, BooleanLiteralToInitFlow::PathNode src, BooleanLiteralToInitFlow::PathNode sink
+  ) {
+    exists(getBooleanValue(arg, src, sink))
+  }
+}
+
+/**
+ * A flow analysis module for tracking block cipher modes to block cipher modes
+ * with padding.
+ *
+ * Example:
+ * ```
+ * CBCBlockCipher mode = new CBCBlockCipher(engine);
+ * PaddedBufferedBlockCipher cipher = new PaddedBufferedBlockCipher(mode, ...);
+ * ```
+ */
+module BlockCipherModeToBlockCipherModeFlow {
+  /**
+   * A flow from a block cipher mode to a block cipher mode with padding.
+   */
+  private module BlockCipherModeToBlockCipherModeConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof
+        Modes::UnpaddedBlockCipherMode
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(ClassInstanceExpr new |
+        new.getConstructedType() instanceof Modes::PaddedBlockCipherMode and
+        sink.asExpr() = new.getAnArgument()
+      )
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      // Flow from a block cipher mode passed as an argument to another block cipher mode.
+      node2.asExpr().(ClassInstanceExpr).getConstructedType() instanceof Modes::BlockCipherMode and
+      node1.asExpr() = node2.asExpr().(ClassInstanceExpr).getAnArgument()
+    }
+  }
+
+  private module BlockCipherModeToBlockCipherModeFlow =
+    DataFlow::Global<BlockCipherModeToBlockCipherModeConfig>;
+
+  ClassInstanceExpr getUnpaddedModeFromPaddedMode(
+    ClassInstanceExpr padded, BlockCipherModeToBlockCipherModeFlow::PathNode src,
+    BlockCipherModeToBlockCipherModeFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = result and
+    sink.getNode().asExpr() = padded.getAnArgument() and
+    BlockCipherModeToBlockCipherModeFlow::flowPath(src, sink)
+  }
+
+  ClassInstanceExpr getPaddedModeFromUnpaddedMode(
+    ClassInstanceExpr unpadded, BlockCipherModeToBlockCipherModeFlow::PathNode src,
+    BlockCipherModeToBlockCipherModeFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = unpadded and
+    sink.getNode().asExpr() = result.getAnArgument() and
+    BlockCipherModeToBlockCipherModeFlow::flowPath(src, sink)
+  }
+}
+
+/**
+ * A flow analysis module for analyzing data flow from a block cipher instance
+ * to a corresponding block cipher mode instance.
+ */
+module BlockCipherToBlockCipherModeFlow {
+  /**
+   * A flow from a block cipher instance to a block cipher mode instance.
+   */
+  private module BlockCipherToBlockCipherModeConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof Modes::BlockCipher
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(ClassInstanceExpr new |
+        new.getConstructedType() instanceof Modes::BlockCipherMode and
+        sink.asExpr() = new.getAnArgument()
+      )
+    }
+  }
+
+  private module BlockCipherToBlockCipherModeFlow =
+    DataFlow::Global<BlockCipherToBlockCipherModeConfig>;
+
+  ClassInstanceExpr getBlockCipherModeFromBlockCipher(
+    ClassInstanceExpr cipher, BlockCipherToBlockCipherModeFlow::PathNode src,
+    BlockCipherToBlockCipherModeFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = cipher and
+    sink.getNode().asExpr() = result.getAnArgument() and
+    BlockCipherToBlockCipherModeFlow::flowPath(src, sink)
+  }
+}
+
+/**
+ * A flow analysis module for analyzing data flow from a block cipher instance
+ * to a corresponding padding mode instance.
+ */
+module BlockCipherToPaddingModeFlow {
+  /**
+   * A flow from a block cipher instance to a block cipher mode instance.
+   */
+  private module BlockCipherToBlockCipherModeConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof Modes::BlockCipher
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(ClassInstanceExpr new |
+        new.getConstructedType() instanceof Modes::BlockCipherMode and
+        sink.asExpr() = new.getAnArgument()
+      )
+    }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      // Flow from a block cipher mode passed as an argument to another block cipher mode.
+      node2.asExpr().(ClassInstanceExpr).getConstructedType() instanceof Modes::BlockCipherMode and
+      node1.asExpr() = node2.asExpr().(ClassInstanceExpr).getAnArgument()
+    }
+  }
+
+  private module BlockCipherToBlockCipherModeFlow =
+    DataFlow::Global<BlockCipherToBlockCipherModeConfig>;
+
+  /**
+   * A flow from a padding mode instance to a block cipher mode instance.
+   */
+  private module PaddingModeToBlockCipherModeConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof Modes::PaddingMode
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(ClassInstanceExpr new |
+        new.getConstructedType() instanceof Modes::BlockCipherMode and
+        sink.asExpr() = new.getAnArgument()
+      )
+    }
+  }
+
+  private module PaddingModeToBlockCipherModeFlow =
+    DataFlow::Global<PaddingModeToBlockCipherModeConfig>;
+
+  private ClassInstanceExpr getBlockCipherModeFromBlockCipher(
+    ClassInstanceExpr cipher, BlockCipherToBlockCipherModeFlow::PathNode src,
+    BlockCipherToBlockCipherModeFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = cipher and
+    sink.getNode().asExpr() = result.getAnArgument() and
+    BlockCipherToBlockCipherModeFlow::flowPath(src, sink)
+  }
+
+  private ClassInstanceExpr getBlockCipherModeFromPaddingMode(
+    ClassInstanceExpr padding, PaddingModeToBlockCipherModeFlow::PathNode src,
+    PaddingModeToBlockCipherModeFlow::PathNode sink
+  ) {
+    src.getNode().asExpr() = padding and
+    sink.getNode().asExpr() = result.getAnArgument() and
+    PaddingModeToBlockCipherModeFlow::flowPath(src, sink)
+  }
+
+  ClassInstanceExpr getPaddingModeFromBlockCipher(ClassInstanceExpr cipher) {
+    exists(ClassInstanceExpr mode |
+      mode = getBlockCipherModeFromBlockCipher(cipher, _, _) and
+      mode = getBlockCipherModeFromPaddingMode(result, _, _)
+    )
   }
 }
