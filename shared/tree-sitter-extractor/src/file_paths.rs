@@ -1,8 +1,81 @@
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
-/// Normalizes the path according the common CodeQL specification. Assumes that
-/// `path` has already been canonicalized using `std::fs::canonicalize`.
-pub fn normalize_path(path: &Path) -> String {
+/// This represents the minimum supported path transformation that is needed to support extracting
+/// overlay databases. Specifically, it represents a transformer where one path prefix is replaced
+/// with a different prefix.
+pub struct PathTransformer {
+    pub original: String,
+    pub replacement: String,
+}
+
+/// Normalizes the path according to the common CodeQL specification, and, applies the given path
+/// transformer, if any. Assumes that `path` has already been canonicalized using
+/// `std::fs::canonicalize`.
+pub fn normalize_and_transform_path(path: &Path, transformer: Option<&PathTransformer>) -> String {
+    let path = normalize_path(path);
+    match transformer {
+        Some(transformer) => match path.strip_prefix(&transformer.original) {
+            Some(suffix) => format!("{}{}", transformer.replacement, suffix),
+            None => path,
+        },
+        None => path,
+    }
+}
+
+/**
+ * Attempts to load a path transformer.
+ *
+ * If the `CODEQL_PATH_TRANSFORMER` environment variable is not set, no transformer has been
+ * specified and the function returns `Ok(None)`.
+ *
+ * If the environment variable is set, the function attempts to load the transformer from the file
+ * at the * specified path. If this is successful, it returns `Ok(Some(PathTransformer))`.
+ *
+ * If the file cannot be read, or if it does not match the minimal subset of the path-transformer
+ * syntax supported by this extractor, the function returns an error.
+ */
+pub fn load_path_transformer() -> std::io::Result<Option<PathTransformer>> {
+    let path = match std::env::var("CODEQL_PATH_TRANSFORMER") {
+        Ok(p) => p,
+        Err(_) => return Ok(None),
+    };
+    let file_content = fs::read_to_string(path)?;
+    let lines = file_content
+        .lines()
+        .map(|line| line.trim().to_owned())
+        .filter(|line| !line.is_empty())
+        .collect::<Vec<String>>();
+
+    if lines.len() != 2 {
+        return Err(unsupported_transformer_error());
+    }
+    let replacement = lines[0]
+        .strip_prefix('#')
+        .ok_or(unsupported_transformer_error())?;
+    let original = lines[1]
+        .strip_suffix("//")
+        .ok_or(unsupported_transformer_error())?;
+
+    Ok(Some(PathTransformer {
+        original: original.to_owned(),
+        replacement: replacement.to_owned(),
+    }))
+}
+
+fn unsupported_transformer_error() -> std::io::Error {
+    std::io::Error::new(
+        std::io::ErrorKind::InvalidData,
+        "This extractor only supports path transformers specifying a single path-prefix rewrite, \
+         with the first line starting with a # and the second line ending with //.",
+    )
+}
+
+/// Normalizes the path according to the common CodeQL specification. Assumes that `path` has
+/// already been canonicalized using `std::fs::canonicalize`.
+fn normalize_path(path: &Path) -> String {
     if cfg!(windows) {
         // The way Rust canonicalizes paths doesn't match the CodeQL spec, so we
         // have to do a bit of work removing certain prefixes and replacing
@@ -93,7 +166,18 @@ pub fn path_from_string(path: &str) -> PathBuf {
     result
 }
 
-pub fn path_for(dir: &Path, path: &Path, ext: &str) -> PathBuf {
+pub fn path_for(
+    dir: &Path,
+    path: &Path,
+    ext: &str,
+    transformer: Option<&PathTransformer>,
+) -> PathBuf {
+    let path = if transformer.is_some() {
+        let transformed = normalize_and_transform_path(path, transformer);
+        PathBuf::from(transformed)
+    } else {
+        path.to_path_buf()
+    };
     let mut result = PathBuf::from(dir);
     for component in path.components() {
         match component {
