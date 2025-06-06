@@ -153,7 +153,7 @@ private import Make<Location, RustDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
-    result.asCallBaseExprCfgNode().getCallExprBase() = sc.(LibraryCallable).getACall()
+    result.asCallCfgNode().getCall() = sc.(LibraryCallable).getACall()
   }
 
   RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponent sc) {
