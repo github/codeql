@@ -45,6 +45,8 @@ module XmlInjectionConfig implements DataFlow::ConfigSig {
       mc = node.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
