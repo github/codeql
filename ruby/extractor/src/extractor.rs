@@ -1,4 +1,5 @@
 use clap::Args;
+use codeql_extractor::file_paths::PathTransformer;
 use lazy_static::lazy_static;
 use rayon::prelude::*;
 use serde_json;
@@ -81,6 +82,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
     let file_list = fs::File::open(file_paths::path_from_string(&options.file_list))?;
 
     let overlay_changed_files: Option<HashSet<PathBuf>> = get_overlay_changed_files();
+    let path_transformer = file_paths::load_path_transformer()?;
 
     let language: Language = tree_sitter_ruby::LANGUAGE.into();
     let erb: Language = tree_sitter_embedded_template::LANGUAGE.into();
@@ -105,7 +107,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 }
                 _ => {},
             }
-            let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "");
+            let src_archive_file = file_paths::path_for(&src_archive_dir, &path, "", path_transformer.as_ref());
             let mut source = std::fs::read(&path)?;
             let mut needs_conversion = false;
             let code_ranges;
@@ -118,6 +120,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                     &erb_schema,
                     &mut diagnostics_writer,
                     &mut trap_writer,
+                    path_transformer.as_ref(),
                     &path,
                     &source,
                     &[],
@@ -162,7 +165,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                                                     "character-decoding-error",
                                                     "Character decoding error",
                                                 )
-                                                .file(&file_paths::normalize_path(&path))
+                                                .file(&file_paths::normalize_and_transform_path(&path, path_transformer.as_ref()))
                                                 .message(
                                                     "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
                                                     &[
@@ -182,7 +185,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                             diagnostics_writer.write(
                                 diagnostics_writer
                                     .new_entry("unknown-character-encoding", "Could not process some files due to an unknown character encoding")
-                                    .file(&file_paths::normalize_path(&path))
+                                    .file(&file_paths::normalize_and_transform_path(&path, path_transformer.as_ref()))
                                     .message(
                                         "Unknown character encoding {} in {} {}.",
                                         &[
@@ -205,6 +208,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 &schema,
                 &mut diagnostics_writer,
                 &mut trap_writer,
+                path_transformer.as_ref(),
                 &path,
                 &source,
                 &code_ranges,
@@ -215,14 +219,20 @@ pub fn run(options: Options) -> std::io::Result<()> {
             } else {
                 std::fs::copy(&path, &src_archive_file)?;
             }
-            write_trap(&trap_dir, path, &trap_writer, trap_compression)
+            write_trap(&trap_dir, path, &trap_writer, trap_compression, path_transformer.as_ref())
         })
         .expect("failed to extract files");
 
     let path = PathBuf::from("extras");
     let mut trap_writer = trap::Writer::new();
     extractor::populate_empty_location(&mut trap_writer);
-    let res = write_trap(&trap_dir, path, &trap_writer, trap_compression);
+    let res = write_trap(
+        &trap_dir,
+        path,
+        &trap_writer,
+        trap_compression,
+        path_transformer.as_ref(),
+    );
     if let Ok(output_path) = std::env::var("CODEQL_EXTRACTOR_RUBY_OVERLAY_BASE_METADATA_OUT") {
         // We're extracting an overlay base. For now, we don't have any metadata we need to store
         // that would get read when extracting the overlay, but the CLI expects us to write
@@ -254,8 +264,14 @@ fn write_trap(
     path: PathBuf,
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
+    path_transformer: Option<&PathTransformer>,
 ) -> std::io::Result<()> {
-    let trap_file = file_paths::path_for(trap_dir, &path, trap_compression.extension());
+    let trap_file = file_paths::path_for(
+        trap_dir,
+        &path,
+        trap_compression.extension(),
+        path_transformer,
+    );
     std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
