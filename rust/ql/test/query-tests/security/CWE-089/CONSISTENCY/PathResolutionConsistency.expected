@@ -1,0 +1,23 @@
+multipleCanonicalPaths
+| file://:0:0:0:0 | fn encode | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as der::encode::Encode>::encode |
+| file://:0:0:0:0 | fn encode | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as sqlx_core::encode::Encode>::encode |
+| file://:0:0:0:0 | fn encode_by_ref | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as der::encode::Encode>::encode_by_ref |
+| file://:0:0:0:0 | fn encode_by_ref | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as sqlx_core::encode::Encode>::encode_by_ref |
+| file://:0:0:0:0 | fn produces | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as der::encode::Encode>::produces |
+| file://:0:0:0:0 | fn produces | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as sqlx_core::encode::Encode>::produces |
+| file://:0:0:0:0 | fn size_hint | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as der::encode::Encode>::size_hint |
+| file://:0:0:0:0 | fn size_hint | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as sqlx_core::encode::Encode>::size_hint |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord>::to_ordering |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord>::to_ordering |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord>::to_ordering |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord>::to_ordering |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord>::to_ordering |
+| file://:0:0:0:0 | fn to_ordering | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord>::to_ordering |
+| file://:0:0:0:0 | impl ...::Encode::<...> for Option::<...> { ... } | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as der::encode::Encode> |
+| file://:0:0:0:0 | impl ...::Encode::<...> for Option::<...> { ... } | file://:0:0:0:0 | Crate(core@0.0.0) | <core::option::Option as sqlx_core::encode::Encode> |
+| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as core::cmp::Ord> |
+| file://:0:0:0:0 | impl Ord for Equal { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Equal as typenum::marker_traits::Ord> |
+| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as core::cmp::Ord> |
+| file://:0:0:0:0 | impl Ord for Greater { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Greater as typenum::marker_traits::Ord> |
+| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as core::cmp::Ord> |
+| file://:0:0:0:0 | impl Ord for Less { ... } | file://:0:0:0:0 | Crate(typenum@1.18.0) | <typenum::Less as typenum::marker_traits::Ord> |

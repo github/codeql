@@ -1,3 +1,32 @@
+## 1.6.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-79` has been removed from `js/disabling-electron-websecurity` and the tag `external/cwe/cwe-079` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `js/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `js/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `js/untrusted-data-to-external-api-more-sources` and the tag `external/cwe/cwe-020` has been added.
+
+### Minor Analysis Improvements
+
+* Type information is now propagated more precisely through `Promise.all()` calls,
+  leading to more resolved calls and more sources and sinks being detected.
+
+## 1.5.4
+
+No user-facing changes.
+
+## 1.5.3
+
+### Minor Analysis Improvements
+
+* Data passed to the [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) constructor is now treated as a sink for `js/reflected-xss`.
+* Slightly improved detection of DOM element references, leading to XSS results being detected in more cases.
+
+### Bug Fixes
+
+* Fixed a bug that would prevent extraction of `tsconfig.json` files when it contained an array literal with a trailing comma.
+
 ## 1.5.2
 
 ### Bug Fixes

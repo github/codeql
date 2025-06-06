@@ -1,5 +1,5 @@
 name: codeql/python-queries
-version: 1.4.7-dev
+version: 1.5.1-dev
 groups:
   - python
   - queries

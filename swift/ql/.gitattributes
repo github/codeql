@@ -113,6 +113,7 @@
 /lib/codeql/swift/elements/decl/internal/TopLevelCodeDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/internal/TypeAliasDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/AppliedPropertyWrapperExpr.qll linguist-generated
@@ -145,6 +146,7 @@
 /lib/codeql/swift/elements/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/DerivedToBaseExpr.qll linguist-generated
@@ -166,6 +168,7 @@
 /lib/codeql/swift/elements/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/Expr.qll linguist-generated
+/lib/codeql/swift/elements/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/ForceValueExpr.qll linguist-generated
@@ -229,8 +232,10 @@
 /lib/codeql/swift/elements/expr/TupleElementExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/TupleExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/TypeExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/TypeValueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedMemberChainResultExpr.qll linguist-generated
@@ -238,9 +243,12 @@
 /lib/codeql/swift/elements/expr/UnresolvedPatternExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/UnresolvedTypeConversionExpr.qll linguist-generated
+/lib/codeql/swift/elements/expr/UnsafeCastExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AbiSafeConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ActorIsolationErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyHashableErasureExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/AnyTryExprImpl.qll linguist-generated
@@ -286,6 +294,8 @@
 /lib/codeql/swift/elements/expr/internal/CovariantFunctionConversionExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/CovariantReturnConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/CurrentContextIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DefaultArgumentExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/DerivedToBaseExprConstructor.qll linguist-generated
@@ -313,6 +323,8 @@
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExistentialMetatypeToObjectExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ExplicitClosureExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/ExtractFunctionIsolationExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/FloatLiteralExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceTryExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/ForceValueExprConstructor.qll linguist-generated
@@ -399,10 +411,14 @@
 /lib/codeql/swift/elements/expr/internal/TupleElementExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/TupleExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/TypeExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/TypeValueExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/TypeValueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnderlyingToOpaqueExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnevaluatedInstanceExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnreachableExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDeclRefExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedDotExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedMemberChainResultExprConstructor.qll linguist-generated
@@ -415,6 +431,8 @@
 /lib/codeql/swift/elements/expr/internal/UnresolvedSpecializeExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedTypeConversionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/UnresolvedTypeConversionExprImpl.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeCastExprConstructor.qll linguist-generated
+/lib/codeql/swift/elements/expr/internal/UnsafeCastExprImpl.qll linguist-generated
 /lib/codeql/swift/elements/expr/internal/VarargExpansionExprConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilityInfoConstructor.qll linguist-generated
 /lib/codeql/swift/elements/internal/AvailabilitySpecImpl.qll linguist-generated
@@ -521,6 +539,7 @@
 /lib/codeql/swift/elements/type/BuiltinBridgeObjectType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinDefaultActorStorageType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinExecutorType.qll linguist-generated
+/lib/codeql/swift/elements/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinFloatType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerType.qll linguist-generated
@@ -544,6 +563,7 @@
 /lib/codeql/swift/elements/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/elements/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/elements/type/InOutType.qll linguist-generated
+/lib/codeql/swift/elements/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/elements/type/LValueType.qll linguist-generated
 /lib/codeql/swift/elements/type/LocalArchetypeType.qll linguist-generated
 /lib/codeql/swift/elements/type/MetatypeType.qll linguist-generated
@@ -598,6 +618,8 @@
 /lib/codeql/swift/elements/type/internal/BuiltinDefaultActorStorageTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinExecutorTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinExecutorTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/BuiltinFixedArrayTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/BuiltinFixedArrayTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinIntegerLiteralTypeConstructor.qll linguist-generated
@@ -642,6 +664,8 @@
 /lib/codeql/swift/elements/type/internal/GenericTypeParamTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/InOutTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/IntegerTypeConstructor.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/IntegerTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/LValueTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/LocalArchetypeTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/MetatypeTypeConstructor.qll linguist-generated
@@ -764,6 +788,7 @@
 /lib/codeql/swift/generated/decl/ValueDecl.qll linguist-generated
 /lib/codeql/swift/generated/decl/VarDecl.qll linguist-generated
 /lib/codeql/swift/generated/expr/AbiSafeConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ActorIsolationErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyHashableErasureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AnyTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/AppliedPropertyWrapperExpr.qll linguist-generated
@@ -796,6 +821,7 @@
 /lib/codeql/swift/generated/expr/CopyExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantFunctionConversionExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/CovariantReturnConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/CurrentContextIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DefaultArgumentExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/DerivedToBaseExpr.qll linguist-generated
@@ -818,6 +844,7 @@
 /lib/codeql/swift/generated/expr/ExplicitCastExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ExplicitClosureExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/Expr.qll linguist-generated
+/lib/codeql/swift/generated/expr/ExtractFunctionIsolationExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/FloatLiteralExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceTryExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/ForceValueExpr.qll linguist-generated
@@ -883,8 +910,10 @@
 /lib/codeql/swift/generated/expr/TupleElementExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/TupleExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/TypeExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/TypeValueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnderlyingToOpaqueExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnevaluatedInstanceExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnreachableExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDeclRefExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedDotExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedMemberChainResultExpr.qll linguist-generated
@@ -892,6 +921,7 @@
 /lib/codeql/swift/generated/expr/UnresolvedPatternExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedSpecializeExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/UnresolvedTypeConversionExpr.qll linguist-generated
+/lib/codeql/swift/generated/expr/UnsafeCastExpr.qll linguist-generated
 /lib/codeql/swift/generated/expr/VarargExpansionExpr.qll linguist-generated
 /lib/codeql/swift/generated/pattern/AnyPattern.qll linguist-generated
 /lib/codeql/swift/generated/pattern/BindingPattern.qll linguist-generated
@@ -945,6 +975,7 @@
 /lib/codeql/swift/generated/type/BuiltinBridgeObjectType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinDefaultActorStorageType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinExecutorType.qll linguist-generated
+/lib/codeql/swift/generated/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinFloatType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerType.qll linguist-generated
@@ -968,6 +999,7 @@
 /lib/codeql/swift/generated/type/GenericFunctionType.qll linguist-generated
 /lib/codeql/swift/generated/type/GenericTypeParamType.qll linguist-generated
 /lib/codeql/swift/generated/type/InOutType.qll linguist-generated
+/lib/codeql/swift/generated/type/IntegerType.qll linguist-generated
 /lib/codeql/swift/generated/type/LValueType.qll linguist-generated
 /lib/codeql/swift/generated/type/LocalArchetypeType.qll linguist-generated
 /lib/codeql/swift/generated/type/MetatypeType.qll linguist-generated
@@ -1146,6 +1178,8 @@
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr.ql linguist-generated
 /test/extractor-tests/generated/expr/EnumIsCaseExpr/EnumIsCaseExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/ExplicitClosureExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/ExtractFunctionIsolationExpr/ExtractFunctionIsolationExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/FloatLiteralExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceTryExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/ForceValueExpr/MISSING_SOURCE.txt linguist-generated
@@ -1212,6 +1246,8 @@
 /test/extractor-tests/generated/expr/TupleElementExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/TupleExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/TypeExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/TypeValueExpr/TypeValueExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/TypeValueExpr/TypeValueExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/VarargExpansionExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/pattern/AnyPattern/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/pattern/BindingPattern/MISSING_SOURCE.txt linguist-generated
@@ -1275,6 +1311,7 @@
 /test/extractor-tests/generated/type/GenericFunctionType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/GenericTypeParamType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/InOutType/InOutType.ql linguist-generated
+/test/extractor-tests/generated/type/IntegerType/IntegerType.ql linguist-generated
 /test/extractor-tests/generated/type/LValueType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/MetatypeType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/ModuleType/ModuleType.ql linguist-generated

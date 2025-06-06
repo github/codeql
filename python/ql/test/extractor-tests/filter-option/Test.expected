@@ -3,3 +3,4 @@
 | Module foo.bar |
 | Module foo.include_test |
 | Package foo |
+| Script hidden_foo.py |

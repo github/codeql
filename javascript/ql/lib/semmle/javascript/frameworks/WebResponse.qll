@@ -19,10 +19,13 @@ private class HeadersEntryPoint extends API::EntryPoint {
 }
 
 /**
- * A call to the `Response` constructor.
+ * A call to the `Response` and `NextResponse` constructor.
  */
 private class ResponseCall extends API::InvokeNode {
-  ResponseCall() { this = any(ResponseEntryPoint e).getANode().getAnInstantiation() }
+  ResponseCall() {
+    this = any(ResponseEntryPoint e).getANode().getAnInstantiation() or
+    this = API::moduleImport("next/server").getMember("NextResponse").getAnInstantiation()
+  }
 }
 
 /**

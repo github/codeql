@@ -538,19 +538,6 @@ class Node extends TIRDataFlowNode {
     none() // overridden by subclasses
   }
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
   /** Gets a textual representation of this element. */
   cached
   final string toString() {
@@ -1445,7 +1432,7 @@ private class ExplicitParameterInstructionNode extends AbstractExplicitParameter
   ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-    f.getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
+    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1460,7 +1447,7 @@ class ThisParameterInstructionNode extends AbstractExplicitParameterNode,
   ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-    pos.(DirectPosition).getIndex() = -1 and
+    pos.(DirectPosition).getArgumentIndex() = -1 and
     instr.getEnclosingFunction() = f
   }
 
@@ -1494,7 +1481,7 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
 
   override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
     this.getFunction() = f and
-    f.getParameter(pos.(DirectPosition).getIndex()) = p
+    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = p
   }
 
   override Parameter getParameter() { result = p }

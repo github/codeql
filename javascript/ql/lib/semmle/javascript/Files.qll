@@ -29,6 +29,8 @@ private module Impl = Make<FsInput>;
 
 class Container = Impl::Container;
 
+module Folder = Impl::Folder;
+
 /** A folder. */
 class Folder extends Container, Impl::Folder {
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
@@ -71,6 +73,19 @@ class Folder extends Container, Impl::Folder {
       |
         this.getFileLongExtension(stem, ext) order by p
       )
+  }
+
+  /**
+   * Gets an implementation file and/or a typings file from this folder that has the given `stem`.
+   * This could be a single `.ts` file or a pair of `.js` and `.d.ts` files.
+   */
+  File getJavaScriptFileOrTypings(string stem) {
+    exists(File jsFile | jsFile = this.getJavaScriptFile(stem) |
+      result = jsFile
+      or
+      not jsFile.getFileType().isTypeScript() and
+      result = this.getFile(stem + ".d.ts")
+    )
   }
 
   /** Gets a subfolder contained in this folder. */

@@ -5,6 +5,8 @@
 # and that we actually get are too big, the build fails on CI.
 BAZEL := $(shell bash -c "which bazel")
 
+rtjo ?= none
+
 all: gen extractor
 
 EXTRACTOR_PACK_OUT = extractor-pack
@@ -52,9 +54,9 @@ ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 	codeql dataset measure -o $@ build/stats/database/db-go
 
 test: all build/testdb/check-upgrade-path
-	codeql test run -j0 ql/test --search-path .. --consistency-queries ql/test/consistency --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo)
+	codeql test run -j0 ql/test --search-path .. --check-diff-informed --consistency-queries ql/test/consistency --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo) --check-databases --fail-on-trap-errors --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition
 #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
-	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path .. --consistency-queries ql/test/consistency --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo)
+	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path .. --check-diff-informed --consistency-queries ql/test/consistency --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo)
 	cd extractor; $(BAZEL) test ...
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 

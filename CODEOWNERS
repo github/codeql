@@ -8,6 +8,7 @@
 /javascript/ @github/codeql-javascript
 /python/ @github/codeql-python
 /ruby/ @github/codeql-ruby
+/rust/ @github/codeql-rust
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
@@ -15,7 +16,8 @@
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
 # Experimental CodeQL cryptography
-**/experimental/quantum/ @github/ps-codeql
+**/experimental/**/quantum/ @github/ps-codeql
+/shared/quantum/ @github/ps-codeql
 
 # CodeQL tools and associated docs
 /docs/codeql/codeql-cli/ @github/codeql-cli-reviewers
@@ -41,6 +43,7 @@ MODULE.bazel @github/codeql-ci-reviewers
 /.github/workflows/go-* @github/codeql-go
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
+/.github/workflows/rust.yml @github/codeql-rust
 /.github/workflows/swift.yml @github/codeql-swift
 
 # Misc

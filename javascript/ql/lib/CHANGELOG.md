@@ -1,3 +1,29 @@
+## 2.6.3
+
+### Minor Analysis Improvements
+
+* Enhanced modeling of the [fastify](https://www.npmjs.com/package/fastify) framework to support the `all` route handler method.
+* Improved modeling of the [`shelljs`](https://www.npmjs.com/package/shelljs) and [`async-shelljs`](https://www.npmjs.com/package/async-shelljs) libraries by adding support for the `which`, `cmd`, `asyncExec` and `env`.
+* Added support for the `fastify` `addHook` method.
+
+## 2.6.2
+
+No user-facing changes.
+
+## 2.6.1
+
+### Minor Analysis Improvements
+
+* Data passed to the [NextResponse](https://nextjs.org/docs/app/api-reference/functions/next-response) constructor is now treated as a sink for `js/reflected-xss`.
+* Data received from [NextRequest](https://nextjs.org/docs/app/api-reference/functions/next-request) and [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) is now treated as a remote user input `source`.
+* Added support for the `make-dir` package.
+* Added support for the `open` package.
+* Added taint propagation for `Uint8Array`, `ArrayBuffer`, `SharedArrayBuffer` and `TextDecoder.decode()`.
+* Improved detection of `WebSocket` and `SockJS` usage.
+* Added data received from `WebSocket` clients as a remote flow source.
+* Added support for additional `mkdirp` methods as sinks in path-injection queries.
+* Added support for additional `rimraf` methods as sinks in path-injection queries.
+
 ## 2.6.0
 
 ### New Features

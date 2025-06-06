@@ -107,7 +107,7 @@ class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableA
 class ItemTree extends LeafTree, Item {
   ItemTree() {
     not this instanceof MacroCall and
-    this = [any(StmtList s).getAStatement(), any(MacroStmts s).getAStatement()]
+    this = [any(StmtList s).getAStatement(), any(MacroBlockExpr s).getAStatement()]
   }
 }
 
@@ -143,15 +143,17 @@ class LetStmtTree extends PreOrderTree, LetStmt {
 }
 
 class MacroCallTree extends StandardPostOrderTree, MacroCall {
-  override AstNode getChildNode(int i) { i = 0 and result = this.getExpanded() }
+  MacroCallTree() { not this.getParentNode() instanceof MacroPat }
+
+  override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
 }
 
-class MacroStmtsTree extends StandardPreOrderTree, MacroStmts {
+class MacroBlockExprTree extends StandardPostOrderTree, MacroBlockExpr {
   override AstNode getChildNode(int i) {
     result = this.getStatement(i)
     or
     i = this.getNumberOfStatements() and
-    result = this.getExpr()
+    result = this.getTailExpr()
   }
 }
 
@@ -685,7 +687,7 @@ module PatternTrees {
   }
 
   class MacroPatTree extends PreOrderPatTree, MacroPat {
-    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getExpanded() }
+    override Pat getPat(int i) { i = 0 and result = this.getMacroCall().getMacroCallExpansion() }
   }
 
   class OrPatTree extends PostOrderPatTree instanceof OrPat {

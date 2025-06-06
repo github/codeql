@@ -2,6 +2,9 @@
 | Builtin.Executor | BuiltinExecutorType | getName: | Executor | getCanonicalType: | Builtin.Executor |
 | Builtin.FPIEEE32 | BuiltinFloatType | getName: | FPIEEE32 | getCanonicalType: | Builtin.FPIEEE32 |
 | Builtin.FPIEEE64 | BuiltinFloatType | getName: | FPIEEE64 | getCanonicalType: | Builtin.FPIEEE64 |
+| Builtin.FixedArray<4, Int> | BuiltinFixedArrayType | getName: | FixedArray<4, Int> | getCanonicalType: | Builtin.FixedArray<4, Int> |
+| Builtin.FixedArray<N, T> | BuiltinFixedArrayType | getName: | FixedArray<N, T> | getCanonicalType: | Builtin.FixedArray<N, T> |
+| Builtin.FixedArray<\u03c4_0_0, \u03c4_0_1> | BuiltinFixedArrayType | getName: | FixedArray<\u03c4_0_0, \u03c4_0_1> | getCanonicalType: | Builtin.FixedArray<\u03c4_0_0, \u03c4_0_1> |
 | Builtin.IntLiteral | BuiltinIntegerLiteralType | getName: | IntLiteral | getCanonicalType: | Builtin.IntLiteral |
 | Builtin.Job | BuiltinJobType | getName: | Job | getCanonicalType: | Builtin.Job |
 | Builtin.NativeObject | BuiltinNativeObjectType | getName: | NativeObject | getCanonicalType: | Builtin.NativeObject |

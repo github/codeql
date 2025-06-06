@@ -13,9 +13,16 @@ private import codeql.rust.elements.internal.generated.MatchArmList
  */
 module Impl {
   /**
-   * A MatchArmList. For example:
+   * A list of arms in a match expression.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * match x {
+   *     1 => "one",
+   *     2 => "two",
+   *     _ => "other",
+   * }
+   * //  ^^^^^^^^^^^
    * ```
    */
   class MatchArmList extends Generated::MatchArmList { }

@@ -4,10 +4,10 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision low
  * @id cs/password-in-configuration
  * @tags security
- *       external/cwe/cwe-13
+ *       external/cwe/cwe-013
  *       external/cwe/cwe-256
  *       external/cwe/cwe-313
  */

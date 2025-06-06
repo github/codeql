@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::date", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::generate_to", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::get_filename", "Argument[self]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::manual", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::new", "Argument[0]", "ReturnValue.Field[crate::Man::cmd]", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::section", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::source", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::title", "Argument[self]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["repo:https://github.com/clap-rs/clap:clap_mangen", "<crate::Man>::generate_to", "Argument[self]", "path-injection", "df-generated"]

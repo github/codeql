@@ -54,6 +54,20 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   /** Gets the return kind corresponding to specification `"ReturnValue"`. */
   Lang::ReturnKind getStandardReturnValueKind();
 
+  /**
+   * Gets the return kind corresponding to specification `"ReturnValue"` when
+   * supplied with the argument `arg`.
+   *
+   * Note that it is expected that the following equality holds:
+   * ```
+   * getReturnValueKind("") = getStandardReturnValueKind()
+   * ```
+   */
+  default Lang::ReturnKind getReturnValueKind(string arg) {
+    arg = "" and
+    result = getStandardReturnValueKind()
+  }
+
   /** Gets the textual representation of parameter position `pos` used in MaD. */
   string encodeParameterPosition(Lang::ParameterPosition pos);
 
@@ -528,6 +542,93 @@ module Make<
       SummaryComponent syntheticGlobal(SyntheticGlobal sg) {
         result = TSyntheticGlobalSummaryComponent(sg)
       }
+    }
+
+    private predicate isNonLocalSummaryComponent(SummaryComponent c) {
+      c instanceof TArgumentSummaryComponent or
+      c instanceof TParameterSummaryComponent or
+      c instanceof TReturnSummaryComponent
+    }
+
+    private predicate isLocalSummaryComponent(SummaryComponent c) {
+      not isNonLocalSummaryComponent(c)
+    }
+
+    /**
+     * Holds if `s` is a valid input stack, in the sense that we generate a data flow graph
+     * that faithfully represents this flow, and lambda-tracking can be expected to track
+     * lambdas to the relevant callbacks in practice.
+     */
+    private predicate isSupportedInputStack(SummaryComponentStack s) {
+      // Argument[n].*
+      s.length() = 1 and
+      s.head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].ReturnValue.*
+      s.length() = 2 and
+      s.head() instanceof TReturnSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].Parameter[n].Content.*
+      s.length() = 3 and
+      s.head() instanceof TContentSummaryComponent and
+      s.tail().head() instanceof TParameterSummaryComponent and
+      s.drop(2).head() instanceof TArgumentSummaryComponent
+      or
+      isSupportedInputStack(s.tail()) and
+      isLocalSummaryComponent(s.head())
+    }
+
+    private predicate isSupportedOutputStack1(SummaryComponentStack s) {
+      // ReturnValue.*
+      s.length() = 1 and
+      s.head() instanceof TReturnSummaryComponent
+      or
+      // Argument[n].Content.*
+      s.length() = 2 and
+      s.head() instanceof TContentSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      // Argument[n].Parameter[n].*
+      s.length() = 2 and
+      s.head() instanceof TParameterSummaryComponent and
+      s.tail().head() instanceof TArgumentSummaryComponent
+      or
+      isSupportedOutputStack1(s.tail()) and
+      isLocalSummaryComponent(s.head())
+    }
+
+    /** Like `isSupportedInputStack` but for output stacks. */
+    private predicate isSupportedOutputStack(SummaryComponentStack s) {
+      isSupportedOutputStack1(s)
+      or
+      // `Argument[n]` not followed by anything. Needs to be outside the recursion.
+      s.length() = 1 and
+      s.head() instanceof TArgumentSummaryComponent
+    }
+
+    /**
+     * Holds if `callable` has an unsupported flow `input -> output`.
+     *
+     * `whichOne` indicates if the `input` or `output` contains the unsupported sequence.
+     */
+    predicate unsupportedCallable(
+      SummarizedCallableImpl callable, SummaryComponentStack input, SummaryComponentStack output,
+      string whichOne
+    ) {
+      callable.propagatesFlow(input, output, _, _) and
+      (
+        not isSupportedInputStack(input) and whichOne = "input"
+        or
+        not isSupportedOutputStack(output) and whichOne = "output"
+      )
+    }
+
+    /**
+     * Holds if `callable` has an unsupported flow.
+     */
+    predicate unsupportedCallable(SummarizedCallableImpl callable) {
+      unsupportedCallable(callable, _, _, _)
     }
 
     private predicate summarySpec(string spec) {
@@ -2077,9 +2178,15 @@ module Make<
               )
             )
             or
-            c = "ReturnValue" and
-            node.asNode() =
-              getAnOutNodeExt(mid.asCall(), TValueReturn(getStandardReturnValueKind()))
+            c.getName() = "ReturnValue" and
+            exists(ReturnKind rk |
+              not exists(c.getAnArgument()) and
+              rk = getStandardReturnValueKind()
+              or
+              rk = getReturnValueKind(c.getAnArgument())
+            |
+              node.asNode() = getAnOutNodeExt(mid.asCall(), TValueReturn(rk))
+            )
             or
             SourceSinkInterpretationInput::interpretOutput(c, mid, node)
           )
@@ -2111,12 +2218,16 @@ module Make<
               )
             )
             or
-            exists(ReturnNode ret, ValueReturnKind kind |
-              c = "ReturnValue" and
+            exists(ReturnNode ret, ReturnKind kind |
+              c.getName() = "ReturnValue" and
               ret = node.asNode() and
-              kind.getKind() = ret.getKind() and
-              kind.getKind() = getStandardReturnValueKind() and
+              kind = ret.getKind() and
               mid.asCallable() = getNodeEnclosingCallable(ret)
+            |
+              not exists(c.getAnArgument()) and
+              kind = getStandardReturnValueKind()
+              or
+              kind = getReturnValueKind(c.getAnArgument())
             )
             or
             SourceSinkInterpretationInput::interpretInput(c, mid, node)

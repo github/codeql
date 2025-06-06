@@ -154,7 +154,6 @@ pub struct Crate {
     pub id: trap::TrapId<Crate>,
     pub name: Option<String>,
     pub version: Option<String>,
-    pub module: Option<trap::Label<Module>>,
     pub cfg_options: Vec<String>,
     pub named_dependencies: Vec<trap::Label<NamedCrate>>,
 }
@@ -171,9 +170,6 @@ impl trap::TrapEntry for Crate {
         }
         if let Some(v) = self.version {
             out.add_tuple("crate_versions", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.module {
-            out.add_tuple("crate_modules", vec![id.into(), v.into()]);
         }
         for (i, v) in self.cfg_options.into_iter().enumerate() {
             out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);
@@ -1516,60 +1512,6 @@ impl From<trap::Label<MacroItems>> for trap::Label<Element> {
 }
 
 #[derive(Debug)]
-pub struct MacroStmts {
-    pub id: trap::TrapId<MacroStmts>,
-    pub expr: Option<trap::Label<Expr>>,
-    pub statements: Vec<trap::Label<Stmt>>,
-}
-
-impl trap::TrapEntry for MacroStmts {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("macro_stmts", vec![id.into()]);
-        if let Some(v) = self.expr {
-            out.add_tuple("macro_stmts_exprs", vec![id.into(), v.into()]);
-        }
-        for (i, v) in self.statements.into_iter().enumerate() {
-            out.add_tuple("macro_stmts_statements", vec![id.into(), i.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for MacroStmts {
-    fn class_name() -> &'static str { "MacroStmts" }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<MacroStmts>> for trap::Label<Element> {
-    fn from(value: trap::Label<MacroStmts>) -> Self {
-        // SAFETY: this is safe because in the dbscheme MacroStmts is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
 pub struct MatchArm {
     pub id: trap::TrapId<MatchArm>,
     pub attrs: Vec<trap::Label<Attr>>,
@@ -2612,6 +2554,7 @@ pub struct StructField {
     pub id: trap::TrapId<StructField>,
     pub attrs: Vec<trap::Label<Attr>>,
     pub default: Option<trap::Label<Expr>>,
+    pub is_unsafe: bool,
     pub name: Option<trap::Label<Name>>,
     pub type_repr: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
@@ -2629,6 +2572,9 @@ impl trap::TrapEntry for StructField {
         }
         if let Some(v) = self.default {
             out.add_tuple("struct_field_defaults", vec![id.into(), v.into()]);
+        }
+        if self.is_unsafe {
+            out.add_tuple("struct_field_is_unsafe", vec![id.into()]);
         }
         if let Some(v) = self.name {
             out.add_tuple("struct_field_names", vec![id.into(), v.into()]);
@@ -5814,6 +5760,12 @@ pub struct Item {
     _unused: ()
 }
 
+impl Item {
+    pub fn emit_attribute_macro_expansion(id: trap::Label<Self>, value: trap::Label<MacroItems>, out: &mut trap::Writer) {
+        out.add_tuple("item_attribute_macro_expansions", vec![id.into(), value.into()]);
+    }
+}
+
 impl trap::TrapClass for Item {
     fn class_name() -> &'static str { "Item" }
 }
@@ -6351,6 +6303,69 @@ impl From<trap::Label<LiteralPat>> for trap::Label<Locatable> {
 impl From<trap::Label<LiteralPat>> for trap::Label<Element> {
     fn from(value: trap::Label<LiteralPat>) -> Self {
         // SAFETY: this is safe because in the dbscheme LiteralPat is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct MacroBlockExpr {
+    pub id: trap::TrapId<MacroBlockExpr>,
+    pub tail_expr: Option<trap::Label<Expr>>,
+    pub statements: Vec<trap::Label<Stmt>>,
+}
+
+impl trap::TrapEntry for MacroBlockExpr {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_block_exprs", vec![id.into()]);
+        if let Some(v) = self.tail_expr {
+            out.add_tuple("macro_block_expr_tail_exprs", vec![id.into(), v.into()]);
+        }
+        for (i, v) in self.statements.into_iter().enumerate() {
+            out.add_tuple("macro_block_expr_statements", vec![id.into(), i.into(), v.into()]);
+        }
+    }
+}
+
+impl trap::TrapClass for MacroBlockExpr {
+    fn class_name() -> &'static str { "MacroBlockExpr" }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Expr> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Expr
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<MacroBlockExpr>> for trap::Label<Element> {
+    fn from(value: trap::Label<MacroBlockExpr>) -> Self {
+        // SAFETY: this is safe because in the dbscheme MacroBlockExpr is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -9762,8 +9777,8 @@ impl trap::TrapEntry for MacroCall {
 }
 
 impl MacroCall {
-    pub fn emit_expanded(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
-        out.add_tuple("macro_call_expandeds", vec![id.into(), value.into()]);
+    pub fn emit_macro_call_expansion(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_macro_call_expansions", vec![id.into(), value.into()]);
     }
 }
 

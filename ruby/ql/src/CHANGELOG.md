@@ -1,3 +1,21 @@
+## 1.3.0
+
+### Query Metadata Changes
+
+* The precision of `rb/useless-assignment-to-local` has been adjusted from `medium` to `high`.
+* The tag `external/cwe/cwe-94` has been removed from `rb/server-side-template-injection` and the tag `external/cwe/cwe-094` has been added.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Major Analysis Improvements
+
+* The query `rb/useless-assignment-to-local` now comes with query help and has been tweaked to produce fewer false positives.
+* The query `rb/uninitialized-local-variable` now only produces alerts when the variable is the receiver of a method call and should produce very few false positives. It also now comes with a help file.
+
 ## 1.1.15
 
 No user-facing changes.

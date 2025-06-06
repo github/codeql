@@ -627,11 +627,11 @@ private string mainResultSet() { result = ["#select", "problems"] }
  * to be matched.
  */
 module TestPostProcessing {
-  external predicate queryResults(string relation, int row, int column, string data);
+  external private predicate queryResults(string relation, int row, int column, string data);
 
-  external predicate queryRelations(string relation);
+  external private predicate queryRelations(string relation);
 
-  external predicate queryMetadata(string key, string value);
+  external private predicate queryMetadata(string key, string value);
 
   private string getQueryId() { queryMetadata("id", result) }
 
@@ -774,8 +774,10 @@ module TestPostProcessing {
      */
     private string getSinkTag(int row) {
       getQueryKind() = "path-problem" and
-      exists(string loc | queryResults(mainResultSet(), row, 4, loc) |
-        if queryResults(mainResultSet(), row, 0, loc) then result = "Alert" else result = "Sink"
+      exists(TestLocation sinkLoc, TestLocation selectLoc |
+        mainQueryResult(row, 0, selectLoc) and
+        mainQueryResult(row, 4, sinkLoc) and
+        if sameLineInfo(selectLoc, sinkLoc) then result = "Alert" else result = "Sink"
       )
     }
 

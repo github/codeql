@@ -1267,6 +1267,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCurrentContextIsolationExpr(
+    CurrentContextIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -1402,6 +1417,26 @@ private module Impl {
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfExtractFunctionIsolationExpr(
+    ExtractFunctionIsolationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nFunctionExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nFunctionExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediateFunctionExpr() and
+        partialPredicateCall = "FunctionExpr()"
       )
     )
   }
@@ -1974,6 +2009,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfTypeValueExpr(
+    TypeValueExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nTypeRepr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nTypeRepr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnresolvedDeclRefExpr(
     UnresolvedDeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -2098,6 +2151,23 @@ private module Impl {
 
   private Element getImmediateChildOfAbiSafeConversionExpr(
     AbiSafeConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfActorIsolationErasureExpr(
+    ActorIsolationErasureExpr e, int index, string partialPredicateCall
   ) {
     exists(int b, int bImplicitConversionExpr, int n |
       b = 0 and
@@ -3056,6 +3126,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfUnreachableExpr(
+    UnreachableExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnresolvedMemberChainResultExpr(
     UnresolvedMemberChainResultExpr e, int index, string partialPredicateCall
   ) {
@@ -3096,6 +3183,23 @@ private module Impl {
         or
         result =
           getImmediateChildOfErrorElement(e, index - bImplicitConversionExpr, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfUnsafeCastExpr(
+    UnsafeCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -4191,6 +4295,21 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfIntegerType(
+    IntegerType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfLValueType(LValueType e, int index, string partialPredicateCall) {
     exists(int b, int bType, int n |
       b = 0 and
@@ -4431,6 +4550,22 @@ private module Impl {
 
   private Element getImmediateChildOfBuiltinExecutorType(
     BuiltinExecutorType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBuiltinFixedArrayType(
+    BuiltinFixedArrayType e, int index, string partialPredicateCall
   ) {
     exists(int b, int bBuiltinType, int n |
       b = 0 and
@@ -5224,6 +5359,8 @@ private module Impl {
     or
     result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCurrentContextIsolationExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
@@ -5237,6 +5374,8 @@ private module Impl {
     result = getImmediateChildOfEnumIsCaseExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfErrorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExtractFunctionIsolationExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfForceValueExpr(e, index, partialAccessor)
     or
@@ -5292,6 +5431,8 @@ private module Impl {
     or
     result = getImmediateChildOfTypeExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfTypeValueExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnresolvedDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnresolvedDotExpr(e, index, partialAccessor)
@@ -5305,6 +5446,8 @@ private module Impl {
     result = getImmediateChildOfVarargExpansionExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAbiSafeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfActorIsolationErasureExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfAnyHashableErasureExpr(e, index, partialAccessor)
     or
@@ -5412,9 +5555,13 @@ private module Impl {
     or
     result = getImmediateChildOfUnevaluatedInstanceExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfUnreachableExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnresolvedTypeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnsafeCastExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
     or
@@ -5522,6 +5669,8 @@ private module Impl {
     or
     result = getImmediateChildOfInOutType(e, index, partialAccessor)
     or
+    result = getImmediateChildOfIntegerType(e, index, partialAccessor)
+    or
     result = getImmediateChildOfLValueType(e, index, partialAccessor)
     or
     result = getImmediateChildOfModuleType(e, index, partialAccessor)
@@ -5545,6 +5694,8 @@ private module Impl {
     result = getImmediateChildOfBuiltinDefaultActorStorageType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinExecutorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinFixedArrayType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinFloatType(e, index, partialAccessor)
     or

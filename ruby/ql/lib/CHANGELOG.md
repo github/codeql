@@ -1,3 +1,17 @@
+## 4.1.6
+
+No user-facing changes.
+
+## 4.1.5
+
+No user-facing changes.
+
+## 4.1.4
+
+### Minor Analysis Improvements
+
+* Calls to `super` without explict arguments now have their implicit arguments generated. For example, in `def foo(x, y) { super } end` the call to `super` becomes `super(x, y)`.
+
 ## 4.1.3
 
 No user-facing changes.
@@ -34,7 +48,7 @@ No user-facing changes.
 * Deleted the deprecated `ModelClass` and `ModelInstance` classes from `ActiveResource.qll`, use `ModelClassNode` and `ModelClassNode.getAnInstanceReference()` instead.
 * Deleted the deprecated `Collection` class from `ActiveResource.qll`, use `CollectionSource` instead.
 * Deleted the deprecated `ServiceInstantiation` and `ClientInstantiation` classes from `Twirp.qll`.
-* Deleted a lot of deprecated dataflow modules from "*Query.qll" files.
+* Deleted a lot of deprecated dataflow modules from `*Query.qll` files.
 * Deleted the old deprecated TypeTracking library.
 
 ## 3.0.2

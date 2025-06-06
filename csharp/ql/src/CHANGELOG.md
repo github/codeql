@@ -1,3 +1,38 @@
+## 1.2.0
+
+### Query Metadata Changes
+
+* The tag `external/cwe/cwe-13` has been removed from `cs/password-in-configuration` and the tag `external/cwe/cwe-013` has been added.
+* The tag `external/cwe/cwe-11` has been removed from `cs/web/debug-binary` and the tag `external/cwe/cwe-011` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/large-max-request-length` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-16` has been removed from `cs/web/request-validation-disabled` and the tag `external/cwe/cwe-016` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/serialization-check-bypass` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `cs/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-12` has been removed from `cs/web/missing-global-error-handler` and the tag `external/cwe/cwe-012` has been added.
+
+### Minor Analysis Improvements
+
+* Changed the precision of the `cs/equality-on-floats` query from medium to high.
+
+## 1.1.2
+
+### Minor Analysis Improvements
+
+* Changes to the MaD model generation infrastructure:
+  * Changed the query `cs/utils/modelgenerator/summary-models` to use the implementation from `cs/utils/modelgenerator/mixed-summary-models`.
+  * Removed the now-redundant `cs/utils/modelgenerator/mixed-summary-models` query.
+  * A similar replacement was made for `cs/utils/modelgenerator/neutral-models`. That is, if `GenerateFlowModel.py` is provided with `--with-summaries`, combined/mixed models are now generated instead of heuristic models (and similar for `--with-neutrals`).
+* Improved detection of authorization checks in the `cs/web/missing-function-level-access-control` query. The query now recognizes authorization attributes inherited from base classes and interfaces.
+* The precision of the query `cs/invalid-string-formatting` has been improved. More methods and more overloads of existing format like methods are taken into account by the query.
+
+## 1.1.1
+
+### Minor Analysis Improvements
+
+* Enums and `System.DateTimeOffset` are now treated as *simple* types, which means that they are considered to have a sanitizing effect. This impacts many queries, among others the `cs/log-forging` query.
+* The MaD models for the .NET 9 Runtime have been re-generated after a fix related to `out`/`ref` parameters.
+
 ## 1.1.0
 
 ### New Queries

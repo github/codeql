@@ -19,9 +19,12 @@ import codeql.rust.elements.Visibility
  */
 module Generated {
   /**
-   * A StructField. For example:
+   * A field in a struct declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S { x: i32 }
+   * //         ^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::StructField` class directly.
    * Use the subclass `StructField`, where the following predicates are available.
@@ -63,6 +66,11 @@ module Generated {
      * Holds if `getDefault()` exists.
      */
     final predicate hasDefault() { exists(this.getDefault()) }
+
+    /**
+     * Holds if this struct field is unsafe.
+     */
+    predicate isUnsafe() { Synth::convertStructFieldToRaw(this).(Raw::StructField).isUnsafe() }
 
     /**
      * Gets the name of this struct field, if it exists.

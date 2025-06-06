@@ -191,7 +191,7 @@ abstract class DefImpl extends TDefImpl {
    * Holds if this definition (or use) has index `index` in block `block`,
    * and is a definition (or use) of the variable `sv`
    */
-  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+  final predicate hasIndexInBlock(SourceVariable sv, IRBlock block, int index) {
     this.hasIndexInBlock(block, index) and
     sv = this.getSourceVariable()
   }
@@ -891,12 +891,12 @@ private module SsaInput implements SsaImplCommon::InputSig<Location> {
   predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
     (
-      exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+      exists(DefImpl def | def.hasIndexInBlock(v, bb, i) |
         if def.isCertain() then certain = true else certain = false
       )
       or
       exists(GlobalDefImpl global |
-        global.hasIndexInBlock(bb, i, v) and
+        global.hasIndexInBlock(v, bb, i) and
         certain = true
       )
     )
@@ -934,10 +934,11 @@ module SsaCached {
 }
 
 /** Gets the `DefImpl` corresponding to `def`. */
+pragma[nomagic]
 private DefImpl getDefImpl(SsaImpl::Definition def) {
   exists(SourceVariable sv, IRBlock bb, int i |
     def.definesAt(sv, bb, i) and
-    result.hasIndexInBlock(bb, i, sv)
+    result.hasIndexInBlock(sv, bb, i)
   )
 }
 
@@ -990,12 +991,16 @@ private module DataFlowIntegrationInput implements SsaImpl::DataFlowIntegrationI
   class Guard instanceof IRGuards::IRGuardCondition {
     string toString() { result = super.toString() }
 
-    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+    predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
       exists(EdgeKind kind |
         super.getBlock() = bb1 and
         kind = getConditionalEdge(branch) and
         bb1.getSuccessor(kind) = bb2
       )
+    }
+
+    predicate controlsBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+      this.hasBranchEdge(bb1, bb2, branch)
     }
   }
 

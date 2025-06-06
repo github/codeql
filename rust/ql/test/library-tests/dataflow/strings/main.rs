@@ -61,7 +61,7 @@ fn string_to_string() {
 
 fn as_str() {
     let s = source(67);
-    sink_slice(s.as_str()); // $ hasTaintFlow=67
+    sink_slice(s.as_str()); // $ hasValueFlow=67
 }
 
 fn format_args_built_in() {

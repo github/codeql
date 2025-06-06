@@ -11,5 +11,5 @@
 import javascript
 
 from ImportDeclaration id
-where id.getImportedPath().getValue() = "react"
+where id.getImportedPathString() = "react"
 select id

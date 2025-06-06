@@ -397,8 +397,8 @@ class MacroRules(Item, ):
     token_tree: optional["TokenTree"] | child
     visibility: optional["Visibility"] | child
 
-class MacroStmts(AstNode, ):
-    expr: optional["Expr"] | child
+class MacroBlockExpr(AstNode, ):
+    tail_expr: optional["Expr"] | child
     statements: list["Stmt"] | child
 
 class MacroTypeRepr(TypeRepr, ):
@@ -539,6 +539,7 @@ class StructExprFieldList(AstNode, ):
 class StructField(AstNode, ):
     attrs: list["Attr"] | child
     default: optional["Expr"] | child
+    is_unsafe: predicate
     name: optional["Name"] | child
     type_repr: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child

@@ -4,16 +4,19 @@ import codeql.rust.internal.TypeInference as TypeInference
 import TypeInference
 
 query predicate inferType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::inferType(n, path)
+  t = TypeInference::inferType(n, path) and
+  n.fromSource() and
+  not n.isFromMacroExpansion()
 }
 
 module ResolveTest implements TestSig {
   string getARelevantTag() { result = ["method", "fieldof"] }
 
   private predicate functionHasValue(Function f, string value) {
-    f.getAPrecedingComment().getCommentText() = value
+    f.getAPrecedingComment().getCommentText() = value and
+    f.fromSource()
     or
-    not exists(f.getAPrecedingComment()) and
+    not any(f.getAPrecedingComment()).fromSource() and
     // TODO: Default to canonical path once that is available
     value = f.getName().getText()
   }
@@ -21,9 +24,11 @@ module ResolveTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(AstNode source, AstNode target |
       location = source.getLocation() and
-      element = source.toString()
+      element = source.toString() and
+      source.fromSource() and
+      not source.isFromMacroExpansion()
     |
-      target = resolveMethodCallExpr(source) and
+      target = resolveMethodCallTarget(source) and
       functionHasValue(target, value) and
       tag = "method"
       or

@@ -90,6 +90,32 @@ mod method_impl {
     }
 }
 
+mod trait_impl {
+    #[derive(Debug)]
+    struct MyThing {
+        field: bool,
+    }
+
+    trait MyTrait<B> {
+        fn trait_method(self) -> B;
+    }
+
+    impl MyTrait<bool> for MyThing {
+        // MyThing::trait_method
+        fn trait_method(self) -> bool {
+            self.field // $ fieldof=MyThing
+        }
+    }
+
+    pub fn f() {
+        let x = MyThing { field: true };
+        let a = x.trait_method(); // $ type=a:bool method=MyThing::trait_method
+
+        let y = MyThing { field: false };
+        let b = MyTrait::trait_method(y); // $ type=b:bool method=MyThing::trait_method
+    }
+}
+
 mod method_non_parametric_impl {
     #[derive(Debug)]
     struct MyThing<A> {
@@ -129,8 +155,8 @@ mod method_non_parametric_impl {
         println!("{:?}", x.a); // $ fieldof=MyThing
         println!("{:?}", y.a); // $ fieldof=MyThing
 
-        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
+        println!("{:?}", x.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", y.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
 
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -141,15 +167,23 @@ mod method_non_parametric_impl {
 }
 
 mod method_non_parametric_trait_impl {
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct MyThing<A> {
         a: A,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
+    struct MyPair<P1, P2> {
+        p1: P1,
+        p2: P2,
+    }
+
+    #[derive(Debug, Clone, Copy)]
     struct S1;
-    #[derive(Debug)]
+    #[derive(Debug, Clone, Copy)]
     struct S2;
+    #[derive(Debug, Clone, Copy, Default)]
+    struct S3;
 
     trait MyTrait<A> {
         fn m1(self) -> A;
@@ -160,6 +194,13 @@ mod method_non_parametric_trait_impl {
         {
             self
         }
+    }
+
+    trait MyProduct<A, B> {
+        // MyProduct::fst
+        fn fst(self) -> A;
+        // MyProduct::snd
+        fn snd(self) -> B;
     }
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
@@ -180,18 +221,211 @@ mod method_non_parametric_trait_impl {
         }
     }
 
+    // Implementation where the type parameter `TD` only occurs in the
+    // implemented trait and not the implementing type.
+    impl<TD> MyTrait<TD> for MyThing<S3>
+    where
+        TD: Default,
+    {
+        // MyThing<S3>::m1
+        fn m1(self) -> TD {
+            TD::default()
+        }
+    }
+
+    impl<I> MyTrait<I> for MyPair<I, S1> {
+        // MyTrait<I>::m1
+        fn m1(self) -> I {
+            self.p1 // $ fieldof=MyPair
+        }
+    }
+
+    impl MyTrait<S3> for MyPair<S1, S2> {
+        // MyTrait<S3>::m1
+        fn m1(self) -> S3 {
+            S3
+        }
+    }
+
+    impl<TT> MyTrait<TT> for MyPair<MyThing<TT>, S3> {
+        // MyTrait<TT>::m1
+        fn m1(self) -> TT {
+            let alpha = self.p1; // $ fieldof=MyPair
+            alpha.a // $ fieldof=MyThing
+        }
+    }
+
+    // This implementation only applies if the two type parameters are equal.
+    impl<A> MyProduct<A, A> for MyPair<A, A> {
+        // MyPair<A,A>::fst
+        fn fst(self) -> A {
+            self.p1 // $ fieldof=MyPair
+        }
+
+        // MyPair<A,A>::snd
+        fn snd(self) -> A {
+            self.p2 // $ fieldof=MyPair
+        }
+    }
+
+    // This implementation swaps the type parameters.
+    impl MyProduct<S1, S2> for MyPair<S2, S1> {
+        // MyPair<S2,S1>::fst
+        fn fst(self) -> S1 {
+            self.p2 // $ fieldof=MyPair
+        }
+
+        // MyPair<S2,S1>::snd
+        fn snd(self) -> S2 {
+            self.p1 // $ fieldof=MyPair
+        }
+    }
+
+    fn get_fst<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V1 {
+        p.fst() // $ method=MyProduct::fst
+    }
+
+    fn get_snd<V1, V2, P: MyProduct<V1, V2>>(p: P) -> V2 {
+        p.snd() // $ method=MyProduct::snd
+    }
+
+    fn get_snd_fst<V0, V1, V2, P: MyProduct<V1, V2>>(p: MyPair<V0, P>) -> V1 {
+        p.p2.fst() // $ fieldof=MyPair method=MyProduct::fst
+    }
+
+    trait ConvertTo<T> {
+        // ConvertTo::convert_to
+        fn convert_to(self) -> T;
+    }
+
+    impl<T: MyTrait<S1>> ConvertTo<S1> for T {
+        // T::convert_to
+        fn convert_to(self) -> S1 {
+            self.m1() // $ method=m1
+        }
+    }
+
+    fn convert_to<TS, T: ConvertTo<TS>>(thing: T) -> TS {
+        thing.convert_to() // $ method=ConvertTo::convert_to
+    }
+
+    fn type_bound_type_parameter_impl<TP: MyTrait<S1>>(thing: TP) -> S1 {
+        // The trait bound on `TP` makes the implementation of `ConvertTo` valid
+        thing.convert_to() // $ MISSING: method=T::convert_to
+    }
+
     pub fn f() {
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        let thing_s1 = MyThing { a: S1 };
+        let thing_s2 = MyThing { a: S2 };
+        let thing_s3 = MyThing { a: S3 };
 
-        println!("{:?}", x.m1()); // $ MISSING: method=MyThing<S1>::m1
-        println!("{:?}", y.m1().a); // $ MISSING: method=MyThing<S2>::m1, field=MyThing
+        // Tests for method resolution
 
-        let x = MyThing { a: S1 };
-        let y = MyThing { a: S2 };
+        println!("{:?}", thing_s1.m1()); // $ method=MyThing<S1>::m1
+        println!("{:?}", thing_s2.m1().a); // $ method=MyThing<S2>::m1 fieldof=MyThing
+        let s3: S3 = thing_s3.m1(); // $ method=MyThing<S3>::m1
+        println!("{:?}", s3);
 
-        println!("{:?}", call_trait_m1(x)); // MISSING: type=call_trait_m1(...):S1
-        println!("{:?}", call_trait_m1(y).a); // MISSING: field=MyThing
+        let p1 = MyPair { p1: S1, p2: S1 };
+        println!("{:?}", p1.m1()); // $ method=MyTrait<I>::m1
+
+        let p2 = MyPair { p1: S1, p2: S2 };
+        println!("{:?}", p2.m1()); // $ method=MyTrait<S3>::m1
+
+        let p3 = MyPair {
+            p1: MyThing { a: S1 },
+            p2: S3,
+        };
+        println!("{:?}", p3.m1()); // $ method=MyTrait<TT>::m1
+
+        // These calls go to the first implementation of `MyProduct` for `MyPair`
+        let a = MyPair { p1: S1, p2: S1 };
+        let x = a.fst(); // $ method=MyPair<A,A>::fst
+        println!("{:?}", x);
+        let y = a.snd(); // $ method=MyPair<A,A>::snd
+        println!("{:?}", y);
+
+        // These calls go to the last implementation of `MyProduct` for
+        // `MyPair`. The first implementation does not apply as the type
+        // parameters of the implementation enforce that the two generics must
+        // be equal.
+        let b = MyPair { p1: S2, p2: S1 };
+        let x = b.fst(); // $ method=MyPair<S2,S1>::fst
+        println!("{:?}", x);
+        let y = b.snd(); // $ method=MyPair<S2,S1>::snd
+        println!("{:?}", y);
+
+        // Tests for inference of type parameters based on trait implementations.
+
+        let x = call_trait_m1(thing_s1); // $ type=x:S1
+        println!("{:?}", x);
+        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2
+        println!("{:?}", y.a); // $ fieldof=MyThing
+
+        // First implementation
+        let a = MyPair { p1: S1, p2: S1 };
+        let x = get_fst(a); // $ type=x:S1
+        println!("{:?}", x);
+        let y = get_snd(a); // $ type=y:S1
+        println!("{:?}", y);
+
+        // Second implementation
+        let b = MyPair { p1: S2, p2: S1 };
+        let x = get_fst(b); // $ type=x:S1
+        println!("{:?}", x);
+        let y = get_snd(b); // $ type=y:S2
+        println!("{:?}", y);
+
+        let c = MyPair {
+            p1: S3,
+            p2: MyPair { p1: S2, p2: S1 },
+        };
+        let x = get_snd_fst(c); // $ type=x:S1
+
+        let thing = MyThing { a: S1 };
+        let i = thing.convert_to(); // $ MISSING: type=i:S1 method=T::convert_to
+        let j = convert_to(thing); // $ type=j:S1
+    }
+}
+
+mod impl_overlap {
+    #[derive(Debug, Clone, Copy)]
+    struct S1;
+
+    trait OverlappingTrait {
+        fn common_method(self) -> S1;
+
+        fn common_method_2(self, s1: S1) -> S1;
+    }
+
+    impl OverlappingTrait for S1 {
+        // <S1_as_OverlappingTrait>::common_method
+        fn common_method(self) -> S1 {
+            panic!("not called");
+        }
+
+        // <S1_as_OverlappingTrait>::common_method_2
+        fn common_method_2(self, s1: S1) -> S1 {
+            panic!("not called");
+        }
+    }
+
+    impl S1 {
+        // S1::common_method
+        fn common_method(self) -> S1 {
+            self
+        }
+
+        // S1::common_method_2
+        fn common_method_2(self) -> S1 {
+            self
+        }
+    }
+
+    pub fn f() {
+        let x = S1;
+        println!("{:?}", x.common_method()); // $ method=S1::common_method
+        println!("{:?}", x.common_method_2()); // $ method=S1::common_method_2
     }
 }
 
@@ -219,13 +453,13 @@ mod type_parameter_bounds {
     fn call_first_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
         let s1 = x.method(); // $ method=SecondTrait::method
-        println!("{:?}", s1);
+        println!("{:?}", s1); // $ type=s1:I
     }
 
     fn call_second_trait_per_bound<I: Debug, T: SecondTrait<I>>(x: T) {
         // The type parameter bound determines which method this call is resolved to.
         let s2 = x.method(); // $ method=SecondTrait::method
-        println!("{:?}", s2);
+        println!("{:?}", s2); // $ type=s2:I
     }
 
     fn trait_bound_with_type<T: FirstTrait<S1>>(x: T) {
@@ -235,7 +469,7 @@ mod type_parameter_bounds {
 
     fn trait_per_bound_with_type<T: FirstTrait<S1>>(x: T) {
         let s = x.method(); // $ method=FirstTrait::method
-        println!("{:?}", s);
+        println!("{:?}", s); // $ type=s:S1
     }
 
     trait Pair<P1, P2> {
@@ -323,8 +557,10 @@ mod function_trait_bounds {
             a: MyThing { a: S2 },
         };
 
-        println!("{:?}", call_trait_thing_m1(x3));
-        println!("{:?}", call_trait_thing_m1(y3));
+        let a = call_trait_thing_m1(x3); // $ type=a:S1
+        println!("{:?}", a);
+        let b = call_trait_thing_m1(y3); // $ type=b:S2
+        println!("{:?}", b);
     }
 }
 
@@ -529,11 +765,12 @@ mod method_supertraits {
     }
 
     trait MyTrait2<Tr2>: MyTrait1<Tr2> {
+        #[rustfmt::skip]
         fn m2(self) -> Tr2
         where
             Self: Sized,
         {
-            if 1 + 1 > 2 {
+            if 3 > 2 { // $ method=gt
                 self.m1() // $ method=MyTrait1::m1
             } else {
                 Self::m1(self)
@@ -542,11 +779,12 @@ mod method_supertraits {
     }
 
     trait MyTrait3<Tr3>: MyTrait2<MyThing<Tr3>> {
+        #[rustfmt::skip]
         fn m3(self) -> Tr3
         where
             Self: Sized,
         {
-            if 1 + 1 > 2 {
+            if 3 > 2 { // $ method=gt
                 self.m2().a // $ method=m2 $ fieldof=MyThing
             } else {
                 Self::m2(self).a // $ fieldof=MyThing
@@ -574,6 +812,16 @@ mod method_supertraits {
 
     impl<T> MyTrait3<T> for MyThing2<T> {}
 
+    fn call_trait_m1<T1, T2: MyTrait1<T1>>(x: T2) -> T1 {
+        x.m1() // $ method=MyTrait1::m1
+    }
+
+    fn type_param_trait_to_supertrait<T: MyTrait3<S1>>(x: T) {
+        // Test that `MyTrait3` is a subtrait of `MyTrait1<MyThing<S1>>`
+        let a = x.m1(); // $ method=MyTrait1::m1 type=a:MyThing type=a:A.S1
+        println!("{:?}", a);
+    }
+
     pub fn f() {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
@@ -584,14 +832,20 @@ mod method_supertraits {
         let x = MyThing { a: S1 };
         let y = MyThing { a: S2 };
 
-        println!("{:?}", x.m2()); // $ method=m2
-        println!("{:?}", y.m2()); // $ method=m2
+        println!("{:?}", x.m2()); // $ method=m2 type=x.m2():S1
+        println!("{:?}", y.m2()); // $ method=m2 type=y.m2():S2
 
         let x = MyThing2 { a: S1 };
         let y = MyThing2 { a: S2 };
 
-        println!("{:?}", x.m3()); // $ method=m3
-        println!("{:?}", y.m3()); // $ method=m3
+        println!("{:?}", x.m3()); // $ method=m3 type=x.m3():S1
+        println!("{:?}", y.m3()); // $ method=m3 type=y.m3():S2
+
+        let x = MyThing { a: S1 };
+        let s = call_trait_m1(x); // $ type=s:S1
+
+        let x = MyThing2 { a: S2 };
+        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2
     }
 }
 
@@ -623,7 +877,7 @@ mod function_trait_bounds_2 {
     where
         T1: Into<T2>,
     {
-        x.into()
+        x.into() // $ method=into
     }
 
     pub fn f() {
@@ -767,26 +1021,29 @@ mod option_methods {
         println!("{:?}", x4);
 
         let x5 = MyOption::MySome(MyOption::<S>::MyNone());
-        println!("{:?}", x5.flatten()); // MISSING: method=flatten
+        println!("{:?}", x5.flatten()); // $ method=flatten
 
         let x6 = MyOption::MySome(MyOption::<S>::MyNone());
         println!("{:?}", MyOption::<MyOption<S>>::flatten(x6));
 
-        let from_if = if 1 + 1 > 2 {
+        #[rustfmt::skip]
+        let from_if = if 3 > 2 { // $ method=gt
             MyOption::MyNone()
         } else {
             MyOption::MySome(S)
         };
         println!("{:?}", from_if);
 
-        let from_match = match 1 + 1 > 2 {
+        #[rustfmt::skip]
+        let from_match = match 3 > 2 { // $ method=gt
             true => MyOption::MyNone(),
             false => MyOption::MySome(S),
         };
         println!("{:?}", from_match);
 
+        #[rustfmt::skip]
         let from_loop = loop {
-            if 1 + 1 > 2 {
+            if 3 > 2 { // $ method=gt
                 break MyOption::MyNone();
             }
             break MyOption::MySome(S);
@@ -844,6 +1101,12 @@ mod method_call_type_conversion {
         let x6 = &S(S2);
         // explicit dereference
         println!("{:?}", (*x6).m1()); // $ method=m1
+
+        let x7 = S(&S2);
+        // Non-implicit dereference with nested borrow in order to test that the
+        // implicit dereference handling doesn't affect nested borrows.
+        let t = x7.m1(); // $ method=m1 type=t:& type=t:&T.S2
+        println!("{:?}", x7);
     }
 }
 
@@ -919,6 +1182,454 @@ mod borrowed_typed {
     }
 }
 
+mod try_expressions {
+    use std::fmt::Debug;
+
+    #[derive(Debug)]
+    struct S1;
+
+    #[derive(Debug)]
+    struct S2;
+
+    // Simple function using ? operator with same error types
+    fn try_same_error() -> Result<S1, S1> {
+        let x = Result::Ok(S1)?; // $ type=x:S1
+        Result::Ok(S1)
+    }
+
+    // Function using ? operator with different error types that need conversion
+    fn try_convert_error() -> Result<S1, S2> {
+        let x = Result::Ok(S1);
+        let y = x?; // $ type=y:S1
+        Result::Ok(S1)
+    }
+
+    // Chained ? operations
+    fn try_chained() -> Result<S1, S2> {
+        let x = Result::Ok(Result::Ok(S1));
+        // First ? returns Result<S1, S2>, second ? returns S1
+        let y = x?.map(|s| s)?; // $ method=map
+        Result::Ok(S1)
+    }
+
+    // Function that uses ? with closures and complex error cases
+    fn try_complex<T: Debug>(input: Result<T, S1>) -> Result<T, S1> {
+        let value = input?;
+        let mapped = Result::Ok(value).and_then(|v| {
+            println!("{:?}", v);
+            Result::Ok::<_, S1>(v)
+        })?; // $ method=and_then
+        Result::Err(S1)
+    }
+
+    pub fn f() {
+        if let Result::Ok(result) = try_same_error() {
+            println!("{:?}", result);
+        }
+
+        if let Result::Ok(result) = try_convert_error() {
+            println!("{:?}", result);
+        }
+
+        if let Result::Ok(result) = try_chained() {
+            println!("{:?}", result);
+        }
+
+        if let Result::Ok(result) = try_complex(Result::Ok(S1)) {
+            println!("{:?}", result);
+        }
+    }
+}
+
+mod builtins {
+    pub fn f() {
+        let x: i32 = 1; // $ type=x:i32
+        let y = 2; // $ type=y:i32
+        let z = x + y; // $ type=z:i32 method=add
+        let z = x.abs(); // $ method=abs $ type=z:i32
+        let c = 'c'; // $ type=c:char
+        let hello = "Hello"; // $ type=hello:str
+        let f = 123.0f64; // $ type=f:f64
+        let t = true; // $ type=t:bool
+        let f = false; // $ type=f:bool
+    }
+}
+
+// Tests for non-overloaded operators.
+mod operators {
+    pub fn f() {
+        let x = true && false; // $ type=x:bool
+        let y = true || false; // $ type=y:bool
+
+        let mut a;
+        let cond = 34 == 33; // $ method=eq
+        if cond {
+            let z = (a = 1); // $ type=z:() type=a:i32
+        } else {
+            a = 2; // $ type=a:i32
+        }
+        a; // $ type=a:i32
+    }
+}
+
+// Tests for overloaded operators.
+mod overloadable_operators {
+    use std::ops::*;
+    // A vector type with overloaded operators.
+    #[derive(Debug, Copy, Clone)]
+    struct Vec2 {
+        x: i64,
+        y: i64,
+    }
+    // Implement all overloadable operators for Vec2
+    impl Add for Vec2 {
+        type Output = Self;
+        // Vec2::add
+        fn add(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x + rhs.x, // $ fieldof=Vec2 method=add
+                y: self.y + rhs.y, // $ fieldof=Vec2 method=add
+            }
+        }
+    }
+    impl AddAssign for Vec2 {
+        // Vec2::add_assign
+        #[rustfmt::skip]
+        fn add_assign(&mut self, rhs: Self) {
+            self.x += rhs.x; // $ fieldof=Vec2 method=add_assign
+            self.y += rhs.y; // $ fieldof=Vec2 method=add_assign
+        }
+    }
+    impl Sub for Vec2 {
+        type Output = Self;
+        // Vec2::sub
+        fn sub(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x - rhs.x, // $ fieldof=Vec2 method=sub
+                y: self.y - rhs.y, // $ fieldof=Vec2 method=sub
+            }
+        }
+    }
+    impl SubAssign for Vec2 {
+        // Vec2::sub_assign
+        #[rustfmt::skip]
+        fn sub_assign(&mut self, rhs: Self) {
+            self.x -= rhs.x; // $ fieldof=Vec2 method=sub_assign
+            self.y -= rhs.y; // $ fieldof=Vec2 method=sub_assign
+        }
+    }
+    impl Mul for Vec2 {
+        type Output = Self;
+        // Vec2::mul
+        fn mul(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x * rhs.x, // $ fieldof=Vec2 method=mul
+                y: self.y * rhs.y, // $ fieldof=Vec2 method=mul
+            }
+        }
+    }
+    impl MulAssign for Vec2 {
+        // Vec2::mul_assign
+        fn mul_assign(&mut self, rhs: Self) {
+            self.x *= rhs.x; // $ fieldof=Vec2 method=mul_assign
+            self.y *= rhs.y; // $ fieldof=Vec2 method=mul_assign
+        }
+    }
+    impl Div for Vec2 {
+        type Output = Self;
+        // Vec2::div
+        fn div(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x / rhs.x, // $ fieldof=Vec2 method=div
+                y: self.y / rhs.y, // $ fieldof=Vec2 method=div
+            }
+        }
+    }
+    impl DivAssign for Vec2 {
+        // Vec2::div_assign
+        fn div_assign(&mut self, rhs: Self) {
+            self.x /= rhs.x; // $ fieldof=Vec2 method=div_assign
+            self.y /= rhs.y; // $ fieldof=Vec2 method=div_assign
+        }
+    }
+    impl Rem for Vec2 {
+        type Output = Self;
+        // Vec2::rem
+        fn rem(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x % rhs.x, // $ fieldof=Vec2 method=rem
+                y: self.y % rhs.y, // $ fieldof=Vec2 method=rem
+            }
+        }
+    }
+    impl RemAssign for Vec2 {
+        // Vec2::rem_assign
+        fn rem_assign(&mut self, rhs: Self) {
+            self.x %= rhs.x; // $ fieldof=Vec2 method=rem_assign
+            self.y %= rhs.y; // $ fieldof=Vec2 method=rem_assign
+        }
+    }
+    impl BitAnd for Vec2 {
+        type Output = Self;
+        // Vec2::bitand
+        fn bitand(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x & rhs.x, // $ fieldof=Vec2 method=bitand
+                y: self.y & rhs.y, // $ fieldof=Vec2 method=bitand
+            }
+        }
+    }
+    impl BitAndAssign for Vec2 {
+        // Vec2::bitand_assign
+        fn bitand_assign(&mut self, rhs: Self) {
+            self.x &= rhs.x; // $ fieldof=Vec2 method=bitand_assign
+            self.y &= rhs.y; // $ fieldof=Vec2 method=bitand_assign
+        }
+    }
+    impl BitOr for Vec2 {
+        type Output = Self;
+        // Vec2::bitor
+        fn bitor(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x | rhs.x, // $ fieldof=Vec2 method=bitor
+                y: self.y | rhs.y, // $ fieldof=Vec2 method=bitor
+            }
+        }
+    }
+    impl BitOrAssign for Vec2 {
+        // Vec2::bitor_assign
+        fn bitor_assign(&mut self, rhs: Self) {
+            self.x |= rhs.x; // $ fieldof=Vec2 method=bitor_assign
+            self.y |= rhs.y; // $ fieldof=Vec2 method=bitor_assign
+        }
+    }
+    impl BitXor for Vec2 {
+        type Output = Self;
+        // Vec2::bitxor
+        fn bitxor(self, rhs: Self) -> Self {
+            Vec2 {
+                x: self.x ^ rhs.x, // $ fieldof=Vec2 method=bitxor
+                y: self.y ^ rhs.y, // $ fieldof=Vec2 method=bitxor
+            }
+        }
+    }
+    impl BitXorAssign for Vec2 {
+        // Vec2::bitxor_assign
+        fn bitxor_assign(&mut self, rhs: Self) {
+            self.x ^= rhs.x; // $ fieldof=Vec2 method=bitxor_assign
+            self.y ^= rhs.y; // $ fieldof=Vec2 method=bitxor_assign
+        }
+    }
+    impl Shl<u32> for Vec2 {
+        type Output = Self;
+        // Vec2::shl
+        fn shl(self, rhs: u32) -> Self {
+            Vec2 {
+                x: self.x << rhs, // $ fieldof=Vec2 method=shl
+                y: self.y << rhs, // $ fieldof=Vec2 method=shl
+            }
+        }
+    }
+    impl ShlAssign<u32> for Vec2 {
+        // Vec2::shl_assign
+        fn shl_assign(&mut self, rhs: u32) {
+            self.x <<= rhs; // $ fieldof=Vec2 method=shl_assign
+            self.y <<= rhs; // $ fieldof=Vec2 method=shl_assign
+        }
+    }
+    impl Shr<u32> for Vec2 {
+        type Output = Self;
+        // Vec2::shr
+        fn shr(self, rhs: u32) -> Self {
+            Vec2 {
+                x: self.x >> rhs, // $ fieldof=Vec2 method=shr
+                y: self.y >> rhs, // $ fieldof=Vec2 method=shr
+            }
+        }
+    }
+    impl ShrAssign<u32> for Vec2 {
+        // Vec2::shr_assign
+        fn shr_assign(&mut self, rhs: u32) {
+            self.x >>= rhs; // $ fieldof=Vec2 method=shr_assign
+            self.y >>= rhs; // $ fieldof=Vec2 method=shr_assign
+        }
+    }
+    impl Neg for Vec2 {
+        type Output = Self;
+        // Vec2::neg
+        fn neg(self) -> Self {
+            Vec2 {
+                x: -self.x, // $ fieldof=Vec2 method=neg
+                y: -self.y, // $ fieldof=Vec2 method=neg
+            }
+        }
+    }
+    impl Not for Vec2 {
+        type Output = Self;
+        // Vec2::not
+        fn not(self) -> Self {
+            Vec2 {
+                x: !self.x, // $ fieldof=Vec2 method=not
+                y: !self.y, // $ fieldof=Vec2 method=not
+            }
+        }
+    }
+    impl PartialEq for Vec2 {
+        // Vec2::eq
+        fn eq(&self, other: &Self) -> bool {
+            self.x == other.x && self.y == other.y // $ fieldof=Vec2 method=eq
+        }
+        // Vec2::ne
+        fn ne(&self, other: &Self) -> bool {
+            self.x != other.x || self.y != other.y // $ fieldof=Vec2 method=ne
+        }
+    }
+    impl PartialOrd for Vec2 {
+        // Vec2::partial_cmp
+        fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+            (self.x + self.y).partial_cmp(&(other.x + other.y)) // $ fieldof=Vec2 method=partial_cmp method=add
+        }
+        // Vec2::lt
+        fn lt(&self, other: &Self) -> bool {
+            self.x < other.x && self.y < other.y // $ fieldof=Vec2 method=lt
+        }
+        // Vec2::le
+        fn le(&self, other: &Self) -> bool {
+            self.x <= other.x && self.y <= other.y // $ fieldof=Vec2 method=le
+        }
+        // Vec2::gt
+        fn gt(&self, other: &Self) -> bool {
+            self.x > other.x && self.y > other.y // $ fieldof=Vec2 method=gt
+        }
+        // Vec2::ge
+        fn ge(&self, other: &Self) -> bool {
+            self.x >= other.x && self.y >= other.y // $ fieldof=Vec2 method=ge
+        }
+    }
+    pub fn f() {
+        // Test for all overloadable operators on `i64`
+
+        // Comparison operators
+        let i64_eq = (1i64 == 2i64); // $ type=i64_eq:bool method=eq
+        let i64_ne = (3i64 != 4i64); // $ type=i64_ne:bool method=ne
+        let i64_lt = (5i64 < 6i64); // $ type=i64_lt:bool method=lt
+        let i64_le = (7i64 <= 8i64); // $ type=i64_le:bool method=le
+        let i64_gt = (9i64 > 10i64); // $ type=i64_gt:bool method=gt
+        let i64_ge = (11i64 >= 12i64); // $ type=i64_ge:bool method=ge
+
+        // Arithmetic operators
+        let i64_add = 13i64 + 14i64; // $ type=i64_add:i64 method=add
+        let i64_sub = 15i64 - 16i64; // $ type=i64_sub:i64 method=sub
+        let i64_mul = 17i64 * 18i64; // $ type=i64_mul:i64 method=mul
+        let i64_div = 19i64 / 20i64; // $ type=i64_div:i64 method=div
+        let i64_rem = 21i64 % 22i64; // $ type=i64_rem:i64 method=rem
+
+        // Arithmetic assignment operators
+        let mut i64_add_assign = 23i64;
+        i64_add_assign += 24i64; // $ method=add_assign
+
+        let mut i64_sub_assign = 25i64;
+        i64_sub_assign -= 26i64; // $ method=sub_assign
+
+        let mut i64_mul_assign = 27i64;
+        i64_mul_assign *= 28i64; // $ method=mul_assign
+
+        let mut i64_div_assign = 29i64;
+        i64_div_assign /= 30i64; // $ method=div_assign
+
+        let mut i64_rem_assign = 31i64;
+        i64_rem_assign %= 32i64; // $ method=rem_assign
+
+        // Bitwise operators
+        let i64_bitand = 33i64 & 34i64; // $ type=i64_bitand:i64 method=bitand
+        let i64_bitor = 35i64 | 36i64; // $ type=i64_bitor:i64 method=bitor
+        let i64_bitxor = 37i64 ^ 38i64; // $ type=i64_bitxor:i64 method=bitxor
+        let i64_shl = 39i64 << 40i64; // $ type=i64_shl:i64 method=shl
+        let i64_shr = 41i64 >> 42i64; // $ type=i64_shr:i64 method=shr
+
+        // Bitwise assignment operators
+        let mut i64_bitand_assign = 43i64;
+        i64_bitand_assign &= 44i64; // $ method=bitand_assign
+
+        let mut i64_bitor_assign = 45i64;
+        i64_bitor_assign |= 46i64; // $ method=bitor_assign
+
+        let mut i64_bitxor_assign = 47i64;
+        i64_bitxor_assign ^= 48i64; // $ method=bitxor_assign
+
+        let mut i64_shl_assign = 49i64;
+        i64_shl_assign <<= 50i64; // $ method=shl_assign
+
+        let mut i64_shr_assign = 51i64;
+        i64_shr_assign >>= 52i64; // $ method=shr_assign
+
+        let i64_neg = -53i64; // $ type=i64_neg:i64 method=neg
+        let i64_not = !54i64; // $ type=i64_not:i64 method=not
+
+        // Test for all overloadable operators on Vec2
+        let v1 = Vec2 { x: 1, y: 2 };
+        let v2 = Vec2 { x: 3, y: 4 };
+
+        // Comparison operators
+        let vec2_eq = v1 == v2; // $ type=vec2_eq:bool method=Vec2::eq
+        let vec2_ne = v1 != v2; // $ type=vec2_ne:bool method=Vec2::ne
+        let vec2_lt = v1 < v2; // $ type=vec2_lt:bool method=Vec2::lt
+        let vec2_le = v1 <= v2; // $ type=vec2_le:bool method=Vec2::le
+        let vec2_gt = v1 > v2; // $ type=vec2_gt:bool method=Vec2::gt
+        let vec2_ge = v1 >= v2; // $ type=vec2_ge:bool method=Vec2::ge
+
+        // Arithmetic operators
+        let vec2_add = v1 + v2; // $ type=vec2_add:Vec2 method=Vec2::add
+        let vec2_sub = v1 - v2; // $ type=vec2_sub:Vec2 method=Vec2::sub
+        let vec2_mul = v1 * v2; // $ type=vec2_mul:Vec2 method=Vec2::mul
+        let vec2_div = v1 / v2; // $ type=vec2_div:Vec2 method=Vec2::div
+        let vec2_rem = v1 % v2; // $ type=vec2_rem:Vec2 method=Vec2::rem
+
+        // Arithmetic assignment operators
+        let mut vec2_add_assign = v1;
+        vec2_add_assign += v2; // $ method=Vec2::add_assign
+
+        let mut vec2_sub_assign = v1;
+        vec2_sub_assign -= v2; // $ method=Vec2::sub_assign
+
+        let mut vec2_mul_assign = v1;
+        vec2_mul_assign *= v2; // $ method=Vec2::mul_assign
+
+        let mut vec2_div_assign = v1;
+        vec2_div_assign /= v2; // $ method=Vec2::div_assign
+
+        let mut vec2_rem_assign = v1;
+        vec2_rem_assign %= v2; // $ method=Vec2::rem_assign
+
+        // Bitwise operators
+        let vec2_bitand = v1 & v2; // $ type=vec2_bitand:Vec2 method=Vec2::bitand
+        let vec2_bitor = v1 | v2; // $ type=vec2_bitor:Vec2 method=Vec2::bitor
+        let vec2_bitxor = v1 ^ v2; // $ type=vec2_bitxor:Vec2 method=Vec2::bitxor
+        let vec2_shl = v1 << 1u32; // $ type=vec2_shl:Vec2 method=Vec2::shl
+        let vec2_shr = v1 >> 1u32; // $ type=vec2_shr:Vec2 method=Vec2::shr
+
+        // Bitwise assignment operators
+        let mut vec2_bitand_assign = v1;
+        vec2_bitand_assign &= v2; // $ method=Vec2::bitand_assign
+
+        let mut vec2_bitor_assign = v1;
+        vec2_bitor_assign |= v2; // $ method=Vec2::bitor_assign
+
+        let mut vec2_bitxor_assign = v1;
+        vec2_bitxor_assign ^= v2; // $ method=Vec2::bitxor_assign
+
+        let mut vec2_shl_assign = v1;
+        vec2_shl_assign <<= 1u32; // $ method=Vec2::shl_assign
+
+        let mut vec2_shr_assign = v1;
+        vec2_shr_assign >>= 1u32; // $ method=Vec2::shr_assign
+
+        // Prefix operators
+        let vec2_neg = -v1; // $ type=vec2_neg:Vec2 method=Vec2::neg
+        let vec2_not = !v1; // $ type=vec2_not:Vec2 method=Vec2::not
+    }
+}
+
 fn main() {
     field_access::f();
     method_impl::f();
@@ -935,4 +1646,7 @@ fn main() {
     trait_implicit_self_borrow::f();
     implicit_self_borrow::f();
     borrowed_typed::f();
+    try_expressions::f();
+    builtins::f();
+    operators::f();
 }

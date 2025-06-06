@@ -1,9 +1,10 @@
 use crate::diagnostics::{ExtractionStep, emit_extraction_diagnostics};
 use crate::rust_analyzer::path_to_file_id;
-use crate::translate::ResolvePaths;
+use crate::translate::{ResolvePaths, SourceKind};
 use crate::trap::TrapId;
 use anyhow::Context;
 use archive::Archiver;
+use ra_ap_base_db::SourceDatabase;
 use ra_ap_hir::Semantics;
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
@@ -12,11 +13,14 @@ use ra_ap_paths::{AbsPathBuf, Utf8PathBuf};
 use ra_ap_project_model::{CargoConfig, ProjectManifest};
 use ra_ap_vfs::Vfs;
 use rust_analyzer::{ParseResult, RustAnalyzer};
+use std::collections::HashSet;
+use std::hash::RandomState;
 use std::time::Instant;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
 };
+use std::{env, fs};
 use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -46,9 +50,14 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn extract(&mut self, rust_analyzer: &RustAnalyzer, file: &Path, resolve_paths: ResolvePaths) {
+    fn extract(
+        &mut self,
+        rust_analyzer: &RustAnalyzer,
+        file: &Path,
+        resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
+    ) {
         self.archiver.archive(file);
-
         let before_parse = Instant::now();
         let ParseResult {
             ast,
@@ -56,7 +65,8 @@ impl<'a> Extractor<'a> {
             errors,
             semantics_info,
         } = rust_analyzer.parse(file);
-        self.steps.push(ExtractionStep::parse(before_parse, file));
+        self.steps
+            .push(ExtractionStep::parse(before_parse, source_kind, file));
 
         let before_extract = Instant::now();
         let line_index = LineIndex::new(text.as_ref());
@@ -70,6 +80,7 @@ impl<'a> Extractor<'a> {
             line_index,
             semantics_info.as_ref().ok(),
             resolve_paths,
+            source_kind,
         );
 
         for err in errors {
@@ -77,19 +88,21 @@ impl<'a> Extractor<'a> {
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
         if let Err(reason) = semantics_info {
-            let message = format!("semantic analyzer unavailable ({reason})");
-            let full_message = format!(
-                "{message}: macro expansion, call graph, and type inference will be skipped."
-            );
-            translator.emit_diagnostic(
-                trap::DiagnosticSeverity::Warning,
-                "semantics".to_owned(),
-                message,
-                full_message,
-                no_location,
-            );
+            if !reason.is_empty() {
+                let message = format!("semantic analyzer unavailable ({reason})");
+                let full_message = format!(
+                    "{message}: macro expansion, call graph, and type inference will be skipped."
+                );
+                translator.emit_diagnostic(
+                    trap::DiagnosticSeverity::Warning,
+                    "semantics".to_owned(),
+                    message,
+                    full_message,
+                    no_location,
+                );
+            }
         }
-        translator.emit_source_file(ast);
+        translator.emit_source_file(&ast);
         translator.trap.commit().unwrap_or_else(|err| {
             error!(
                 "Failed to write trap file for: {}: {}",
@@ -98,7 +111,7 @@ impl<'a> Extractor<'a> {
             )
         });
         self.steps
-            .push(ExtractionStep::extract(before_extract, file));
+            .push(ExtractionStep::extract(before_extract, source_kind, file));
     }
 
     pub fn extract_with_semantics(
@@ -107,15 +120,27 @@ impl<'a> Extractor<'a> {
         semantics: &Semantics<'_, RootDatabase>,
         vfs: &Vfs,
         resolve_paths: ResolvePaths,
+        source_kind: SourceKind,
     ) {
-        self.extract(&RustAnalyzer::new(vfs, semantics), file, resolve_paths);
+        self.extract(
+            &RustAnalyzer::new(vfs, semantics),
+            file,
+            resolve_paths,
+            source_kind,
+        );
     }
 
-    pub fn extract_without_semantics(&mut self, file: &Path, reason: &str) {
+    pub fn extract_without_semantics(
+        &mut self,
+        file: &Path,
+        source_kind: SourceKind,
+        reason: &str,
+    ) {
         self.extract(
             &RustAnalyzer::WithoutSemantics { reason },
             file,
             ResolvePaths::No,
+            source_kind,
         );
     }
 
@@ -243,7 +268,7 @@ fn main() -> anyhow::Result<()> {
                 continue 'outer;
             }
         }
-        extractor.extract_without_semantics(file, "no manifest found");
+        extractor.extract_without_semantics(file, SourceKind::Source, "no manifest found");
     }
     let cwd = cwd()?;
     let (cargo_config, load_cargo_config) = cfg.to_cargo_config(&cwd);
@@ -252,6 +277,13 @@ fn main() -> anyhow::Result<()> {
     } else {
         ResolvePaths::Yes
     };
+    let (library_mode, library_resolve_paths) = if cfg.extract_dependencies_as_source {
+        (SourceKind::Source, resolve_paths)
+    } else {
+        (SourceKind::Library, ResolvePaths::No)
+    };
+    let mut processed_files: HashSet<PathBuf, RandomState> =
+        HashSet::from_iter(files.iter().cloned());
     for (manifest, files) in map.values().filter(|(_, files)| !files.is_empty()) {
         if let Some((ref db, ref vfs)) =
             extractor.load_manifest(manifest, &cargo_config, &load_cargo_config)
@@ -264,17 +296,58 @@ fn main() -> anyhow::Result<()> {
             let semantics = Semantics::new(db);
             for file in files {
                 match extractor.load_source(file, &semantics, vfs) {
-                    Ok(()) => {
-                        extractor.extract_with_semantics(file, &semantics, vfs, resolve_paths)
+                    Ok(()) => extractor.extract_with_semantics(
+                        file,
+                        &semantics,
+                        vfs,
+                        resolve_paths,
+                        SourceKind::Source,
+                    ),
+                    Err(reason) => {
+                        extractor.extract_without_semantics(file, SourceKind::Source, &reason)
                     }
-                    Err(reason) => extractor.extract_without_semantics(file, &reason),
                 };
+            }
+            for (file_id, file) in vfs.iter() {
+                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref) {
+                    if file.extension().is_some_and(|ext| ext == "rs")
+                        && processed_files.insert(file.to_owned())
+                        && db
+                            .source_root(db.file_source_root(file_id).source_root_id(db))
+                            .source_root(db)
+                            .is_library
+                    {
+                        extractor.extract_with_semantics(
+                            file,
+                            &semantics,
+                            vfs,
+                            library_resolve_paths,
+                            library_mode,
+                        );
+                        extractor.archiver.archive(file);
+                    }
+                }
             }
         } else {
             for file in files {
-                extractor.extract_without_semantics(file, "unable to load manifest");
+                extractor.extract_without_semantics(
+                    file,
+                    SourceKind::Source,
+                    "unable to load manifest",
+                );
             }
         }
     }
+    let builtins_dir = env::var("CODEQL_EXTRACTOR_RUST_ROOT")
+        .map(|path| Path::new(&path).join("tools").join("builtins"))?;
+    let builtins = fs::read_dir(builtins_dir).context("failed to read builtins directory")?;
+    for entry in builtins {
+        let entry = entry.context("failed to read builtins directory")?;
+        let path = entry.path();
+        if path.extension().is_some_and(|ext| ext == "rs") {
+            extractor.extract_without_semantics(&path, SourceKind::Library, "");
+        }
+    }
+
     extractor.emit_extraction_diagnostics(start, &cfg)
 }

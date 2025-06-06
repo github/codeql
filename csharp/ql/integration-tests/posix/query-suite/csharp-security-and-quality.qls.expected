@@ -1,0 +1,170 @@
+ql/csharp/ql/src/API Abuse/CallToGCCollect.ql
+ql/csharp/ql/src/API Abuse/CallToObsoleteMethod.ql
+ql/csharp/ql/src/API Abuse/ClassDoesNotImplementEquals.ql
+ql/csharp/ql/src/API Abuse/ClassImplementsICloneable.ql
+ql/csharp/ql/src/API Abuse/DisposeNotCalledOnException.ql
+ql/csharp/ql/src/API Abuse/FormatInvalid.ql
+ql/csharp/ql/src/API Abuse/InconsistentEqualsGetHashCode.ql
+ql/csharp/ql/src/API Abuse/IncorrectCompareToSignature.ql
+ql/csharp/ql/src/API Abuse/IncorrectEqualsSignature.ql
+ql/csharp/ql/src/API Abuse/NoDisposeCallOnLocalIDisposable.ql
+ql/csharp/ql/src/API Abuse/NullArgumentToEquals.ql
+ql/csharp/ql/src/ASP/BlockCodeResponseWrite.ql
+ql/csharp/ql/src/Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
+ql/csharp/ql/src/Bad Practices/CallsUnmanagedCode.ql
+ql/csharp/ql/src/Bad Practices/CatchOfNullReferenceException.ql
+ql/csharp/ql/src/Bad Practices/Control-Flow/ConstantCondition.ql
+ql/csharp/ql/src/Bad Practices/Declarations/LocalScopeVariableShadowsMember.ql
+ql/csharp/ql/src/Bad Practices/Declarations/TooManyRefParameters.ql
+ql/csharp/ql/src/Bad Practices/EmptyCatchBlock.ql
+ql/csharp/ql/src/Bad Practices/ErroneousClassCompare.ql
+ql/csharp/ql/src/Bad Practices/Implementation Hiding/AbstractToConcreteCollection.ql
+ql/csharp/ql/src/Bad Practices/Implementation Hiding/ExposeRepresentation.ql
+ql/csharp/ql/src/Bad Practices/Naming Conventions/FieldMasksSuperField.ql
+ql/csharp/ql/src/Bad Practices/Naming Conventions/SameNameAsSuper.ql
+ql/csharp/ql/src/Bad Practices/PathCombine.ql
+ql/csharp/ql/src/Bad Practices/UnmanagedCodeCheck.ql
+ql/csharp/ql/src/Bad Practices/VirtualCallInConstructorOrDestructor.ql
+ql/csharp/ql/src/CSI/CompareIdenticalValues.ql
+ql/csharp/ql/src/CSI/NullAlways.ql
+ql/csharp/ql/src/CSI/NullMaybe.ql
+ql/csharp/ql/src/Complexity/BlockWithTooManyStatements.ql
+ql/csharp/ql/src/Complexity/ComplexCondition.ql
+ql/csharp/ql/src/Concurrency/FutileSyncOnField.ql
+ql/csharp/ql/src/Concurrency/LockOrder.ql
+ql/csharp/ql/src/Concurrency/LockThis.ql
+ql/csharp/ql/src/Concurrency/LockedWait.ql
+ql/csharp/ql/src/Concurrency/SynchSetUnsynchGet.ql
+ql/csharp/ql/src/Concurrency/UnsafeLazyInitialization.ql
+ql/csharp/ql/src/Concurrency/UnsynchronizedStaticAccess.ql
+ql/csharp/ql/src/Configuration/EmptyPasswordInConfigurationFile.ql
+ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
+ql/csharp/ql/src/Diagnostics/CompilerError.ql
+ql/csharp/ql/src/Diagnostics/CompilerMessage.ql
+ql/csharp/ql/src/Diagnostics/DiagnosticExtractionErrors.ql
+ql/csharp/ql/src/Diagnostics/ExtractedFiles.ql
+ql/csharp/ql/src/Diagnostics/ExtractorError.ql
+ql/csharp/ql/src/Diagnostics/ExtractorMessage.ql
+ql/csharp/ql/src/Documentation/XmldocMissingSummary.ql
+ql/csharp/ql/src/Input Validation/UseOfFileUpload.ql
+ql/csharp/ql/src/Input Validation/ValueShadowing.ql
+ql/csharp/ql/src/Input Validation/ValueShadowingServerVariable.ql
+ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
+ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
+ql/csharp/ql/src/Language Abuse/ChainedIs.ql
+ql/csharp/ql/src/Language Abuse/DubiousDowncastOfThis.ql
+ql/csharp/ql/src/Language Abuse/DubiousTypeTestOfThis.ql
+ql/csharp/ql/src/Language Abuse/MissedReadonlyOpportunity.ql
+ql/csharp/ql/src/Language Abuse/MissedTernaryOpportunity.ql
+ql/csharp/ql/src/Language Abuse/MissedUsingOpportunity.ql
+ql/csharp/ql/src/Language Abuse/NestedIf.ql
+ql/csharp/ql/src/Language Abuse/RethrowException.ql
+ql/csharp/ql/src/Language Abuse/SimplifyBoolExpr.ql
+ql/csharp/ql/src/Language Abuse/UnusedPropertyValue.ql
+ql/csharp/ql/src/Language Abuse/UselessCastToSelf.ql
+ql/csharp/ql/src/Language Abuse/UselessNullCoalescingExpression.ql
+ql/csharp/ql/src/Language Abuse/UselessTypeTest.ql
+ql/csharp/ql/src/Language Abuse/UselessUpcast.ql
+ql/csharp/ql/src/Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
+ql/csharp/ql/src/Likely Bugs/Collections/ContainerSizeCmpZero.ql
+ql/csharp/ql/src/Likely Bugs/Collections/ReadOnlyContainer.ql
+ql/csharp/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
+ql/csharp/ql/src/Likely Bugs/ConstantComparison.ql
+ql/csharp/ql/src/Likely Bugs/DangerousNonShortCircuitLogic.ql
+ql/csharp/ql/src/Likely Bugs/Dynamic/BadDynamicCall.ql
+ql/csharp/ql/src/Likely Bugs/EqualityCheckOnFloats.ql
+ql/csharp/ql/src/Likely Bugs/EqualsArray.ql
+ql/csharp/ql/src/Likely Bugs/EqualsUsesAs.ql
+ql/csharp/ql/src/Likely Bugs/EqualsUsesIs.ql
+ql/csharp/ql/src/Likely Bugs/HashedButNoHash.ql
+ql/csharp/ql/src/Likely Bugs/ImpossibleArrayCast.ql
+ql/csharp/ql/src/Likely Bugs/IncomparableEquals.ql
+ql/csharp/ql/src/Likely Bugs/InconsistentCompareTo.ql
+ql/csharp/ql/src/Likely Bugs/LeapYear/UnsafeYearConstruction.ql
+ql/csharp/ql/src/Likely Bugs/MishandlingJapaneseEra.ql
+ql/csharp/ql/src/Likely Bugs/NestedLoopsSameVariable.ql
+ql/csharp/ql/src/Likely Bugs/ObjectComparison.ql
+ql/csharp/ql/src/Likely Bugs/PossibleLossOfPrecision.ql
+ql/csharp/ql/src/Likely Bugs/RecursiveEquals.ql
+ql/csharp/ql/src/Likely Bugs/RecursiveOperatorEquals.ql
+ql/csharp/ql/src/Likely Bugs/ReferenceEqualsOnValueTypes.ql
+ql/csharp/ql/src/Likely Bugs/SelfAssignment.ql
+ql/csharp/ql/src/Likely Bugs/Statements/EmptyBlock.ql
+ql/csharp/ql/src/Likely Bugs/Statements/EmptyLockStatement.ql
+ql/csharp/ql/src/Likely Bugs/Statements/UseBraces.ql
+ql/csharp/ql/src/Likely Bugs/StaticFieldWrittenByInstance.ql
+ql/csharp/ql/src/Likely Bugs/StringBuilderCharInit.ql
+ql/csharp/ql/src/Likely Bugs/ThreadUnsafeICryptoTransform.ql
+ql/csharp/ql/src/Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql
+ql/csharp/ql/src/Likely Bugs/UncheckedCastInEquals.ql
+ql/csharp/ql/src/Linq/BadMultipleIteration.ql
+ql/csharp/ql/src/Linq/MissedAllOpportunity.ql
+ql/csharp/ql/src/Linq/MissedCastOpportunity.ql
+ql/csharp/ql/src/Linq/MissedOfTypeOpportunity.ql
+ql/csharp/ql/src/Linq/MissedSelectOpportunity.ql
+ql/csharp/ql/src/Linq/MissedWhereOpportunity.ql
+ql/csharp/ql/src/Linq/RedundantSelect.ql
+ql/csharp/ql/src/Metrics/Summaries/LinesOfCode.ql
+ql/csharp/ql/src/Performance/StringBuilderInLoop.ql
+ql/csharp/ql/src/Performance/StringConcatenationInLoop.ql
+ql/csharp/ql/src/Performance/UseTryGetValue.ql
+ql/csharp/ql/src/Security Features/CWE-011/ASPNetDebug.ql
+ql/csharp/ql/src/Security Features/CWE-016/ASPNetPagesValidateRequest.ql
+ql/csharp/ql/src/Security Features/CWE-020/RuntimeChecksBypass.ql
+ql/csharp/ql/src/Security Features/CWE-022/TaintedPath.ql
+ql/csharp/ql/src/Security Features/CWE-022/ZipSlip.ql
+ql/csharp/ql/src/Security Features/CWE-078/CommandInjection.ql
+ql/csharp/ql/src/Security Features/CWE-079/XSS.ql
+ql/csharp/ql/src/Security Features/CWE-089/SqlInjection.ql
+ql/csharp/ql/src/Security Features/CWE-090/LDAPInjection.ql
+ql/csharp/ql/src/Security Features/CWE-091/XMLInjection.ql
+ql/csharp/ql/src/Security Features/CWE-094/CodeInjection.ql
+ql/csharp/ql/src/Security Features/CWE-099/ResourceInjection.ql
+ql/csharp/ql/src/Security Features/CWE-112/MissingXMLValidation.ql
+ql/csharp/ql/src/Security Features/CWE-114/AssemblyPathInjection.ql
+ql/csharp/ql/src/Security Features/CWE-117/LogForging.ql
+ql/csharp/ql/src/Security Features/CWE-119/LocalUnvalidatedArithmetic.ql
+ql/csharp/ql/src/Security Features/CWE-134/UncontrolledFormatString.ql
+ql/csharp/ql/src/Security Features/CWE-201/ExposureInTransmittedData.ql
+ql/csharp/ql/src/Security Features/CWE-209/ExceptionInformationExposure.ql
+ql/csharp/ql/src/Security Features/CWE-248/MissingASPNETGlobalErrorHandler.ql
+ql/csharp/ql/src/Security Features/CWE-285/MissingAccessControl.ql
+ql/csharp/ql/src/Security Features/CWE-312/CleartextStorage.ql
+ql/csharp/ql/src/Security Features/CWE-327/InsecureSQLConnection.ql
+ql/csharp/ql/src/Security Features/CWE-352/MissingAntiForgeryTokenValidation.ql
+ql/csharp/ql/src/Security Features/CWE-359/ExposureOfPrivateInformation.ql
+ql/csharp/ql/src/Security Features/CWE-384/AbandonSession.ql
+ql/csharp/ql/src/Security Features/CWE-451/MissingXFrameOptions.ql
+ql/csharp/ql/src/Security Features/CWE-502/DeserializedDelegate.ql
+ql/csharp/ql/src/Security Features/CWE-502/UnsafeDeserializationUntrustedInput.ql
+ql/csharp/ql/src/Security Features/CWE-548/ASPNetDirectoryListing.ql
+ql/csharp/ql/src/Security Features/CWE-601/UrlRedirect.ql
+ql/csharp/ql/src/Security Features/CWE-611/UntrustedDataInsecureXml.ql
+ql/csharp/ql/src/Security Features/CWE-614/RequireSSL.ql
+ql/csharp/ql/src/Security Features/CWE-639/InsecureDirectObjectReference.ql
+ql/csharp/ql/src/Security Features/CWE-643/XPathInjection.ql
+ql/csharp/ql/src/Security Features/CWE-730/ReDoS.ql
+ql/csharp/ql/src/Security Features/CWE-730/RegexInjection.ql
+ql/csharp/ql/src/Security Features/CWE-807/ConditionalBypass.ql
+ql/csharp/ql/src/Security Features/CookieWithOverlyBroadDomain.ql
+ql/csharp/ql/src/Security Features/CookieWithOverlyBroadPath.ql
+ql/csharp/ql/src/Security Features/Encryption using ECB.ql
+ql/csharp/ql/src/Security Features/HeaderCheckingDisabled.ql
+ql/csharp/ql/src/Security Features/InadequateRSAPadding.ql
+ql/csharp/ql/src/Security Features/InsecureRandomness.ql
+ql/csharp/ql/src/Security Features/InsufficientKeySize.ql
+ql/csharp/ql/src/Security Features/PersistentCookie.ql
+ql/csharp/ql/src/Security Features/WeakEncryption.ql
+ql/csharp/ql/src/Telemetry/DatabaseQualityDiagnostics.ql
+ql/csharp/ql/src/Telemetry/ExternalLibraryUsage.ql
+ql/csharp/ql/src/Telemetry/ExtractorInformation.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalApis.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalSinks.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalSources.ql
+ql/csharp/ql/src/Telemetry/SupportedExternalTaint.ql
+ql/csharp/ql/src/Telemetry/UnsupportedExternalAPIs.ql
+ql/csharp/ql/src/Useless code/DefaultToString.ql
+ql/csharp/ql/src/Useless code/FutileConditional.ql
+ql/csharp/ql/src/Useless code/IntGetHashCode.ql
+ql/csharp/ql/src/Useless code/RedundantToStringCall.ql
+ql/csharp/ql/src/Useless code/UnusedLabel.ql

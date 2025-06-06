@@ -4,7 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Collections.Frozen", "FrozenDictionary", False, "ToFrozenDictionary<TKey,TValue>", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenDictionary", False, "ToFrozenDictionary<TKey,TValue>", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>,System.Collections.Generic.IEqualityComparer<TKey>)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+AlternateLookup<TAlternateKey>", False, "ContainsKey", "(TAlternateKey)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+AlternateLookup<TAlternateKey>", False, "TryGetValue", "(TAlternateKey,TValue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>+AlternateLookup<TAlternateKey>", False, "get_Item", "(TAlternateKey)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
@@ -16,7 +16,7 @@ extensions:
       - ["System.Collections.Frozen", "FrozenDictionary<TKey,TValue>", False, "get_Values", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet", False, "Create<T>", "(System.Collections.Generic.IEqualityComparer<T>,System.ReadOnlySpan<T>)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet", False, "Create<T>", "(System.ReadOnlySpan<T>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Collections.Frozen", "FrozenSet", False, "ToFrozenSet<T>", "(System.Collections.Generic.IEnumerable<T>,System.Collections.Generic.IEqualityComparer<T>)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Collections.Frozen", "FrozenSet", False, "ToFrozenSet<T>", "(System.Collections.Generic.IEnumerable<T>,System.Collections.Generic.IEqualityComparer<T>)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>+AlternateLookup<TAlternate>", False, "Contains", "(TAlternate)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>+AlternateLookup<TAlternate>", False, "TryGetValue", "(TAlternate,T)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Collections.Frozen", "FrozenSet<T>+AlternateLookup<TAlternate>", False, "TryGetValue", "(TAlternate,T)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]

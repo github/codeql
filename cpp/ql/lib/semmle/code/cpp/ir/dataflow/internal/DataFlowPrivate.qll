@@ -371,7 +371,7 @@ private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
+    op = call.getArgumentOperand(pos.(DirectPosition).getArgumentIndex())
   }
 }
 
@@ -410,8 +410,16 @@ class ParameterPosition = Position;
 class ArgumentPosition = Position;
 
 abstract class Position extends TPosition {
+  /** Gets a textual representation of this position. */
   abstract string toString();
 
+  /**
+   * Gets the argument index of this position. The qualifier of a call has
+   * argument index `-1`.
+   */
+  abstract int getArgumentIndex();
+
+  /** Gets the indirection index of this position. */
   abstract int getIndirectionIndex();
 }
 
@@ -428,7 +436,7 @@ class DirectPosition extends Position, TDirectPosition {
     result = index.toString()
   }
 
-  int getIndex() { result = index }
+  override int getArgumentIndex() { result = index }
 
   final override int getIndirectionIndex() { result = 0 }
 }
@@ -445,16 +453,29 @@ class IndirectionPosition extends Position, TIndirectionPosition {
     else result = repeatStars(indirectionIndex) + argumentIndex.toString()
   }
 
-  int getArgumentIndex() { result = argumentIndex }
+  override int getArgumentIndex() { result = argumentIndex }
 
   final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
-  TDirectPosition(int argumentIndex) { exists(any(CallInstruction c).getArgument(argumentIndex)) } or
+  TDirectPosition(int argumentIndex) {
+    exists(any(CallInstruction c).getArgument(argumentIndex))
+    or
+    // Handle the rare case where there is a function definition but no call to
+    // the function.
+    exists(any(Cpp::Function f).getParameter(argumentIndex))
+  } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
     Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
+    or
+    // Handle the rare case where there is a function definition but no call to
+    // the function.
+    exists(Cpp::Function f, Cpp::Parameter p |
+      p = f.getParameter(argumentIndex) and
+      indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
+    )
   }
 
 private newtype TReturnKind =
@@ -501,6 +522,15 @@ class ReturnKind extends TReturnKind {
 
   /** Gets a textual representation of this return kind. */
   abstract string toString();
+
+  /** Holds if this `ReturnKind` is generated from a `return` statement. */
+  abstract predicate isNormalReturn();
+
+  /**
+   * Holds if this `ReturnKind` is generated from a write to the parameter with
+   * index `argumentIndex`
+   */
+  abstract predicate isIndirectReturn(int argumentIndex);
 }
 
 /**
@@ -514,6 +544,10 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect return" }
+
+  override predicate isNormalReturn() { any() }
+
+  override predicate isIndirectReturn(int argumentIndex) { none() }
 }
 
 /**
@@ -528,6 +562,10 @@ private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
+
+  override predicate isNormalReturn() { none() }
+
+  override predicate isIndirectReturn(int argumentIndex_) { argumentIndex_ = argumentIndex }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
@@ -1105,6 +1143,10 @@ private newtype TDataFlowCall =
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
+private predicate summarizedCallableIsManual(SummarizedCallable sc) {
+  sc.asSummarizedCallable().applyManualModel()
+}
+
 /**
  * A function call relevant for data flow. This includes calls from source
  * code and calls inside library callables with a flow summary.
@@ -1126,15 +1168,27 @@ class DataFlowCall extends TDataFlowCall {
   Function getStaticCallSourceTarget() { none() }
 
   /**
-   * Gets the target of this call. If a summarized callable exists for the
-   * target this is chosen, and otherwise the callable is the implementation
-   * from the source code.
+   * Gets the target of this call. We use the following strategy for deciding
+   * between the source callable and a summarized callable:
+   * - If there is a manual summary then we always use the manual summary.
+   * - If there is a source callable and we only have generated summaries
+   * we use the source callable.
+   * - If there is no source callable then we use the summary regardless of
+   * whether is it manual or generated.
    */
-  DataFlowCallable getStaticCallTarget() {
+  final DataFlowCallable getStaticCallTarget() {
     exists(Function target | target = this.getStaticCallSourceTarget() |
-      not exists(TSummarizedCallable(target)) and
+      // Don't use the source callable if there is a manual model for the
+      // target
+      not exists(SummarizedCallable sc |
+        sc.asSummarizedCallable() = target and
+        summarizedCallableIsManual(sc)
+      ) and
       result.asSourceCallable() = target
       or
+      // When there is no function body, or when we have a manual model then
+      // we dispatch to the summary.
+      (not target.hasDefinition() or summarizedCallableIsManual(result)) and
       result.asSummarizedCallable() = target
     )
   }
@@ -1529,7 +1583,7 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
         |
           exists(Ssa::UseImpl use | use.hasIndexInBlock(useblock, _, sv))
           or
-          exists(Ssa::DefImpl def | def.hasIndexInBlock(useblock, _, sv))
+          exists(Ssa::DefImpl def | def.hasIndexInBlock(sv, useblock, _))
         )
       )
   )
@@ -1614,8 +1668,6 @@ predicate validParameterAliasStep(Node node1, Node node2) {
   )
 }
 
-private predicate isTopLevel(Cpp::Stmt s) { any(Function f).getBlock().getAStmt() = s }
-
 private Cpp::Stmt getAChainedBranch(Cpp::IfStmt s) {
   result = s.getThen()
   or
@@ -1646,11 +1698,9 @@ private Instruction getAnInstruction(Node n) {
 }
 
 private newtype TDataFlowSecondLevelScope =
-  TTopLevelIfBranch(Cpp::Stmt s) {
-    exists(Cpp::IfStmt ifstmt | s = getAChainedBranch(ifstmt) and isTopLevel(ifstmt))
-  } or
+  TTopLevelIfBranch(Cpp::Stmt s) { s = getAChainedBranch(_) } or
   TTopLevelSwitchCase(Cpp::SwitchCase s) {
-    exists(Cpp::SwitchStmt switchstmt | s = switchstmt.getASwitchCase() and isTopLevel(switchstmt))
+    exists(Cpp::SwitchStmt switchstmt | s = switchstmt.getASwitchCase())
   }
 
 /**
@@ -1780,7 +1830,7 @@ module IteratorFlow {
      */
     private predicate isIteratorWrite(Instruction write, Operand address) {
       exists(Ssa::DefImpl writeDef, IRBlock bb, int i |
-        writeDef.hasIndexInBlock(bb, i, _) and
+        writeDef.hasIndexInBlock(_, bb, i) and
         bb.getInstruction(i) = write and
         address = writeDef.getAddressOperand()
       )
@@ -1853,6 +1903,10 @@ module IteratorFlow {
     predicate allowFlowIntoUncertainDef(IteratorSsa::UncertainWriteDefinition def) { any() }
 
     class Guard extends Void {
+      predicate hasBranchEdge(SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch) {
+        none()
+      }
+
       predicate controlsBranchEdge(
         SsaInput::BasicBlock bb1, SsaInput::BasicBlock bb2, boolean branch
       ) {

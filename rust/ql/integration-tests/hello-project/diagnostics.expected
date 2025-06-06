@@ -9,6 +9,10 @@
         "ms": "__REDACTED__",
         "pretty": "__REDACTED__"
       },
+      "extractLibrary": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
       "findManifests": {
         "ms": "__REDACTED__",
         "pretty": "__REDACTED__"
@@ -22,6 +26,10 @@
         "pretty": "__REDACTED__"
       },
       "parse": {
+        "ms": "__REDACTED__",
+        "pretty": "__REDACTED__"
+      },
+      "parseLibrary": {
         "ms": "__REDACTED__",
         "pretty": "__REDACTED__"
       },

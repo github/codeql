@@ -1,0 +1,2 @@
+| gen_variant.rs:7:17:7:22 | B | gen_variant.rs:7:18:7:22 | TupleFieldList |
+| gen_variant.rs:7:25:7:36 | C | gen_variant.rs:7:27:7:36 | StructFieldList |

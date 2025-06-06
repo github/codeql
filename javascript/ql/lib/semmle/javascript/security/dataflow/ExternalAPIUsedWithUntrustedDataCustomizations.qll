@@ -88,7 +88,7 @@ module ExternalApiUsedWithUntrustedData {
       not path instanceof SafeExternalApiPackage and
       // Exclude paths that can be resolved to a file in the project
       not exists(Import imprt |
-        imprt.getImportedPath().getValue() = path and exists(imprt.getImportedModule())
+        imprt.getImportedPathString() = path and exists(imprt.getImportedModule())
       )
     )
     or
