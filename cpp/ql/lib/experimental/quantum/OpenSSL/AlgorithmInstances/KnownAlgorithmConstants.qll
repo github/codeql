@@ -1,5 +1,5 @@
 import cpp
-import experimental.quantum.OpenSSL.LibraryDetector
+import experimental.quantum.OpenSSL.GenericSourceCandidateLiteral
 
 predicate resolveAlgorithmFromExpr(Expr e, string normalizedName, string algType) {
   resolveAlgorithmFromCall(e, normalizedName, algType)
@@ -20,7 +20,7 @@ class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant 
 
   KnownOpenSSLCipherAlgorithmConstant() {
     resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%encryption")
+    algType.matches("%ENCRYPTION")
   }
 
   int getExplicitKeySize() {
@@ -33,30 +33,20 @@ class KnownOpenSSLCipherAlgorithmConstant extends KnownOpenSSLAlgorithmConstant 
 }
 
 class KnownOpenSSLPaddingAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
   KnownOpenSSLPaddingAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%padding")
+    exists(string algType |
+      resolveAlgorithmFromExpr(this, _, algType) and
+      algType.matches("%PADDING")
+    )
   }
 }
 
 class KnownOpenSSLBlockModeAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
-  KnownOpenSSLBlockModeAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%block_mode")
-  }
+  KnownOpenSSLBlockModeAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "BLOCK_MODE") }
 }
 
 class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
-  string algType;
-
-  KnownOpenSSLHashAlgorithmConstant() {
-    resolveAlgorithmFromExpr(this, _, algType) and
-    algType.toLowerCase().matches("%hash")
-  }
+  KnownOpenSSLHashAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "HASH") }
 
   int getExplicitDigestLength() {
     exists(string name |
@@ -65,6 +55,20 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
       result = name.regexpCapture(".*-(\\d*)$", 1).toInt()
     )
   }
+}
+
+class KnownOpenSSLEllipticCurveAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLEllipticCurveAlgorithmConstant() {
+    resolveAlgorithmFromExpr(this, _, "ELLIPTIC_CURVE")
+  }
+}
+
+class KnownOpenSSLSignatureAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLSignatureAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "SIGNATURE") }
+}
+
+class KnownOpenSSLKeyAgreementAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
+  KnownOpenSSLKeyAgreementAlgorithmConstant() { resolveAlgorithmFromExpr(this, _, "KEY_AGREEMENT") }
 }
 
 /**
@@ -80,7 +84,6 @@ class KnownOpenSSLHashAlgorithmConstant extends KnownOpenSSLAlgorithmConstant {
  *  alias = "dss1" and target = "dsaWithSHA1"
  */
 predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
-  isPossibleOpenSSLFunction(c.getTarget()) and
   exists(string name, string parsedTargetName |
     parsedTargetName =
       c.getTarget().getName().replaceAll("EVP_", "").toLowerCase().replaceAll("_", "-") and
@@ -94,10 +97,10 @@ predicate resolveAlgorithmFromCall(Call c, string normalized, string algType) {
  * if `e` resolves to a known algorithm.
  * If this predicate does not hold, then `e` can be interpreted as being of `UNKNOWN` type.
  */
-predicate resolveAlgorithmFromLiteral(Literal e, string normalized, string algType) {
-  exists(int nid |
-    nid = getPossibleNidFromLiteral(e) and knownOpenSSLAlgorithmLiteral(_, nid, normalized, algType)
-  )
+predicate resolveAlgorithmFromLiteral(
+  OpenSSLGenericSourceCandidateLiteral e, string normalized, string algType
+) {
+  knownOpenSSLAlgorithmLiteral(_, e.getValue().toInt(), normalized, algType)
   or
   exists(string name |
     name = resolveAlgorithmAlias(e.getValue()) and
@@ -113,30 +116,6 @@ string resolveAlgorithmAlias(string name) {
     or
     // or the name is itself a known algorithm
     knownOpenSSLAlgorithmLiteral(lower, _, _, _) and result = lower
-  )
-}
-
-private int getPossibleNidFromLiteral(Literal e) {
-  result = e.getValue().toInt() and
-  not e instanceof CharLiteral and
-  not e instanceof StringLiteral and
-  // ASSUMPTION, no negative numbers are allowed
-  // RATIONALE: this is a performance improvement to avoid having to trace every number
-  not exists(UnaryMinusExpr u | u.getOperand() = e) and
-  //  OPENSSL has a special macro for getting every line, ignore it
-  not exists(MacroInvocation mi | mi.getExpr() = e and mi.getMacroName() = "OPENSSL_LINE") and
-  // Filter out cases where an int is assigned into a pointer, e.g., char* x = NULL;
-  not exists(Assignment a |
-    a.getRValue() = e and a.getLValue().getType().getUnspecifiedType() instanceof PointerType
-  ) and
-  not exists(Initializer i |
-    i.getExpr() = e and
-    i.getDeclaration().getADeclarationEntry().getUnspecifiedType() instanceof PointerType
-  ) and
-  // Filter out cases where an int is returned into a pointer, e.g., return NULL;
-  not exists(ReturnStmt r |
-    r.getExpr() = e and
-    r.getEnclosingFunction().getType().getUnspecifiedType() instanceof PointerType
   )
 }
 
@@ -166,6 +145,14 @@ predicate customAliases(string target, string alias) {
  * The `target` and `alias` are converted to lowercase to be of a standard form.
  */
 predicate defaultAliases(string target, string alias) {
+  // "DH" and "DHX" are not aliases in the traditional sense,
+  // i.e., they are not registered as aliases explicitly,
+  // rather they appear in common usage, and experiments reveal their
+  // NID matches those of the `dhKeyAgreement` and `x9.42 dh` algorithms respectively.
+  alias = "dh" and target = "dhKeyAgreement"
+  or
+  alias = "dhx" and target = "x9.42 dh"
+  or
   alias = "aes128" and target = "aes-128-cbc"
   or
   alias = "aes192" and target = "aes-192-cbc"
@@ -253,11 +240,6 @@ predicate defaultAliases(string target, string alias) {
   alias = "ssl3-sha1" and target = "sha1"
 }
 
-predicate tbd(string normalized, string algType) {
-  knownOpenSSLAlgorithmLiteral(_, _, normalized, algType) and
-  algType = "HASH"
-}
-
 /**
  * Enumeration of all known crypto algorithms for openSSL
  * `name` is all lower case (caller's must ensure they pass in lower case)
@@ -266,6 +248,10 @@ predicate tbd(string normalized, string algType) {
  * `algType` is the type of algorithm (e.g., "SYMMETRIC_ENCRYPTION")
  */
 predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, string algType) {
+  name = "dhKeyAgreement" and nid = 28 and normalized = "DH" and algType = "KEY_AGREEMENT"
+  or
+  name = "x9.42 dh" and nid = 29 and normalized = "DH" and algType = "KEY_AGREEMENT"
+  or
   name = "rsa" and nid = 19 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
   name = "prime192v1" and nid = 409 and normalized = "PRIME192V1" and algType = "ELLIPTIC_CURVE"
@@ -284,7 +270,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "ELLIPTIC_CURVE"
   or
+  name = "ed25519" and nid = 1087 and normalized = "ED25519" and algType = "SIGNATURE"
+  or
   name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "ed448" and nid = 1088 and normalized = "ED448" and algType = "SIGNATURE"
   or
   name = "md2" and nid = 3 and normalized = "MD2" and algType = "HASH"
   or
@@ -894,6 +884,8 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "id-alg-dh-sig-hmac-sha1" and nid = 325 and normalized = "SHA1" and algType = "HASH"
   or
+  name = "id-alg-dh-sig-hmac-sha1" and nid = 325 and normalized = "DH" and algType = "KEY_AGREEMENT"
+  or
   name = "aes-128-ofb" and nid = 420 and normalized = "AES-128" and algType = "SYMMETRIC_ENCRYPTION"
   or
   name = "aes-128-ofb" and nid = 420 and normalized = "OFB" and algType = "BLOCK_MODE"
@@ -1395,9 +1387,9 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "kx-rsa" and nid = 1037 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
-  name = "kx-ecdhe" and nid = 1038 and normalized = "ECDH" and algType = "KEY_EXCHANGE"
+  name = "kx-ecdhe" and nid = 1038 and normalized = "ECDH" and algType = "KEY_AGREEMENT"
   or
-  name = "kx-ecdhe-psk" and nid = 1040 and normalized = "ECDH" and algType = "KEY_EXCHANGE"
+  name = "kx-ecdhe-psk" and nid = 1040 and normalized = "ECDH" and algType = "KEY_AGREEMENT"
   or
   name = "kx-rsa-psk" and nid = 1042 and normalized = "RSA" and algType = "ASYMMETRIC_ENCRYPTION"
   or
@@ -1705,7 +1697,11 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   or
   name = "x448" and nid = 1035 and normalized = "X448" and algType = "ELLIPTIC_CURVE"
   or
+  name = "x448" and nid = 1035 and normalized = "X448" and algType = "KEY_AGREEMENT"
+  or
   name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "ELLIPTIC_CURVE"
+  or
+  name = "x25519" and nid = 1034 and normalized = "X25519" and algType = "KEY_AGREEMENT"
   or
   name = "authecdsa" and nid = 1047 and normalized = "ECDSA" and algType = "SIGNATURE"
   or
@@ -1805,50 +1801,100 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "SHA1" and
   algType = "HASH"
   or
+  name = "dhsinglepass-cofactordh-sha1kdf-scheme" and
+  nid = 941 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "dhsinglepass-cofactordh-sha224kdf-scheme" and
   nid = 942 and
   normalized = "SHA-224" and
   algType = "HASH"
+  or
+  name = "dhsinglepass-cofactordh-sha224kdf-scheme" and
+  nid = 942 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "dhsinglepass-cofactordh-sha256kdf-scheme" and
   nid = 943 and
   normalized = "SHA-256" and
   algType = "HASH"
   or
+  name = "dhsinglepass-cofactordh-sha256kdf-scheme" and
+  nid = 943 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "dhsinglepass-cofactordh-sha384kdf-scheme" and
   nid = 944 and
   normalized = "SHA-384" and
   algType = "HASH"
+  or
+  name = "dhsinglepass-cofactordh-sha384kdf-scheme" and
+  nid = 944 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "dhsinglepass-cofactordh-sha512kdf-scheme" and
   nid = 945 and
   normalized = "SHA-512" and
   algType = "HASH"
   or
+  name = "dhsinglepass-cofactordh-sha512kdf-scheme" and
+  nid = 945 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "dhsinglepass-stddh-sha1kdf-scheme" and
   nid = 936 and
   normalized = "SHA1" and
   algType = "HASH"
+  or
+  name = "dhsinglepass-stddh-sha1kdf-scheme" and
+  nid = 936 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "dhsinglepass-stddh-sha224kdf-scheme" and
   nid = 937 and
   normalized = "SHA-224" and
   algType = "HASH"
   or
+  name = "dhsinglepass-stddh-sha224kdf-scheme" and
+  nid = 937 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "dhsinglepass-stddh-sha256kdf-scheme" and
   nid = 938 and
   normalized = "SHA-256" and
   algType = "HASH"
+  or
+  name = "dhsinglepass-stddh-sha256kdf-scheme" and
+  nid = 938 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "dhsinglepass-stddh-sha384kdf-scheme" and
   nid = 939 and
   normalized = "SHA-384" and
   algType = "HASH"
   or
+  name = "dhsinglepass-stddh-sha384kdf-scheme" and
+  nid = 939 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "dhsinglepass-stddh-sha512kdf-scheme" and
   nid = 940 and
   normalized = "SHA-512" and
   algType = "HASH"
+  or
+  name = "dhsinglepass-stddh-sha512kdf-scheme" and
+  nid = 940 and
+  normalized = "DH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "dsa-old" and nid = 67 and normalized = "DSA" and algType = "SIGNATURE"
   or
@@ -2009,7 +2055,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "GOST" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "gost r 34.10-2001 dh" and
+  name = "gost r 34.10-2001 dh" and // TODO: review this algorithm
   nid = 817 and
   normalized = "GOST" and
   algType = "SYMMETRIC_ENCRYPTION"
@@ -2079,7 +2125,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "GOST" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "gost r 34.10-94 dh" and
+  name = "gost r 34.10-94 dh" and // TODO: review this algorithm
   nid = 818 and
   normalized = "GOST" and
   algType = "SYMMETRIC_ENCRYPTION"
@@ -2294,7 +2340,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "GOSTR34102001" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "id-gostr3410-2001dh" and
+  name = "id-gostr3410-2001dh" and // TODO: review this algorithm
   nid = 817 and
   normalized = "GOSTR34102001" and
   algType = "SYMMETRIC_ENCRYPTION"
@@ -2359,7 +2405,7 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "GOSTR341094" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "id-gostr3410-94dh" and
+  name = "id-gostr3410-94dh" and // TODO: review this algorithm
   nid = 818 and
   normalized = "GOSTR341094" and
   algType = "SYMMETRIC_ENCRYPTION"
@@ -2443,15 +2489,30 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "3DES" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
+  name = "id-smime-alg-esdhwith3des" and
+  nid = 241 and
+  normalized = "ESDH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "id-smime-alg-esdhwithrc2" and
   nid = 242 and
   normalized = "RC2" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
+  name = "id-smime-alg-esdhwithrc2" and
+  nid = 242 and
+  normalized = "ESDH" and
+  algType = "KEY_AGREEMENT"
+  or
   name = "id-smime-alg-rc2wrap" and
   nid = 244 and
   normalized = "RC2" and
   algType = "SYMMETRIC_ENCRYPTION"
+  or
+  name = "id_smime_alg_esdh" and
+  nid = 245 and
+  normalized = "ESDH" and
+  algType = "KEY_AGREEMENT"
   or
   name = "id-tc26-gost-28147-param-z" and
   nid = 1003 and
@@ -2498,9 +2559,9 @@ predicate knownOpenSSLAlgorithmLiteral(string name, int nid, string normalized, 
   normalized = "GOST34102012" and
   algType = "SYMMETRIC_ENCRYPTION"
   or
-  name = "kxecdhe" and nid = 1038 and normalized = "ECDH" and algType = "KEY_EXCHANGE"
+  name = "kxecdhe" and nid = 1038 and normalized = "ECDH" and algType = "KEY_AGREEMENT"
   or
-  name = "kxecdhe-psk" and nid = 1040 and normalized = "ECDH" and algType = "KEY_EXCHANGE"
+  name = "kxecdhe-psk" and nid = 1040 and normalized = "ECDH" and algType = "KEY_AGREEMENT"
   or
   name = "kxgost" and nid = 1045 and normalized = "GOST" and algType = "SYMMETRIC_ENCRYPTION"
   or

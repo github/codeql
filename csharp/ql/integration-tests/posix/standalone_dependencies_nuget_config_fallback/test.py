@@ -5,7 +5,7 @@ import runs_on
 @runs_on.posix
 def test(codeql, csharp):
 
-    # os.environ["CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK"] = "true"        # Nuget feed check is enabled by default
+    # os.environ["CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK"] = "true"        # NuGet feed check is enabled by default
     os.environ["CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_TIMEOUT"] = (
         "1"  # 1ms, the GET request should fail with such short timeout
     )

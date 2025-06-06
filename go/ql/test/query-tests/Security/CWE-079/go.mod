@@ -1,6 +1,6 @@
 module codeql-go-tests/CWE-079
 
-go 1.14
+go 1.24
 
 require (
 	github.com/gobwas/ws v1.0.3

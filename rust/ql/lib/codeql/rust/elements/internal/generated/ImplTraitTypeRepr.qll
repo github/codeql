@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A ImplTraitTypeRepr. For example:
+   * An `impl Trait` type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() -> impl Iterator<Item = i32> { 0..10 }
+   * //          ^^^^^^^^^^^^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::ImplTraitTypeRepr` class directly.
    * Use the subclass `ImplTraitTypeRepr`, where the following predicates are available.

@@ -353,7 +353,7 @@ module JCAModel {
       else result instanceof KeyOpAlg::TUnknownKeyOperationAlgorithmType
     }
 
-    override string getKeySizeFixed() {
+    override int getKeySizeFixed() {
       none() // TODO: implement to handle variants such as AES-128
     }
 
@@ -1104,7 +1104,7 @@ module JCAModel {
       KeyGeneratorFlowAnalysisImpl::getInitFromUse(this, _, _).getKeySizeArg() = result.asExpr()
     }
 
-    override string getKeySizeFixed() { none() }
+    override int getKeySizeFixed() { none() }
   }
 
   class KeyGeneratorCipherAlgorithm extends CipherStringLiteralAlgorithmInstance {
@@ -1310,7 +1310,7 @@ module JCAModel {
       result.asExpr() = this.getKeySpecInstantiation().(PBEKeySpecInstantiation).getKeyLengthArg()
     }
 
-    override string getKeySizeFixed() { none() }
+    override int getKeySizeFixed() { none() }
 
     override string getOutputKeySizeFixed() { none() }
 
@@ -1388,7 +1388,7 @@ module JCAModel {
     override Crypto::TKeyAgreementType getKeyAgreementType() {
       if key_agreement_name_to_type_known(_, super.getValue())
       then key_agreement_name_to_type_known(result, super.getValue())
-      else result = Crypto::UnknownKeyAgreementType()
+      else result = Crypto::OtherKeyAgreementType()
     }
 
     KeyAgreementAlgorithmValueConsumer getConsumer() { result = consumer }
@@ -1606,13 +1606,8 @@ module JCAModel {
       else result = Crypto::OtherEllipticCurveType()
     }
 
-    override string getKeySize() {
-      exists(int keySize |
-        Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), keySize,
-          _)
-      |
-        result = keySize.toString()
-      )
+    override int getKeySize() {
+      Crypto::ellipticCurveNameToKeySizeAndFamilyMapping(this.getRawEllipticCurveName(), result, _)
     }
 
     EllipticCurveAlgorithmValueConsumer getConsumer() { result = consumer }

@@ -7,13 +7,12 @@ module Private {
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
   private import SsaReadPositionCommon
-  private import semmle.code.java.controlflow.internal.GuardsLogic as GL
   private import Sign
   import Impl
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guard;
+  class Guard = G::Guard_v2;
 
   class SsaVariable = Ssa::SsaVariable;
 
@@ -171,30 +170,16 @@ module Private {
   predicate ssaRead = RU::ssaRead/2;
 
   /**
-   * Holds if `guard` directly controls the position `controlled` with the
-   * value `testIsTrue`.
-   */
-  pragma[nomagic]
-  private predicate guardDirectlyControlsSsaRead(
-    Guard guard, SsaReadPosition controlled, boolean testIsTrue
-  ) {
-    guard.directlyControls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
-    or
-    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-      guard.directlyControls(controlledEdge.getOrigBlock(), testIsTrue) or
-      guard.hasBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(), testIsTrue)
-    )
-  }
-
-  /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
   predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    guardDirectlyControlsSsaRead(guard, controlled, testIsTrue)
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
     or
-    exists(Guard guard0, boolean testIsTrue0 |
-      GL::implies_v2(guard0, testIsTrue0, guard, testIsTrue) and
-      guardControlsSsaRead(guard0, controlled, testIsTrue0)
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
     )
   }
 }

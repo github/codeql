@@ -424,6 +424,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
   }
 
+  final private class SignatureArtifactConsumer extends ArtifactConsumerAndInstance {
+    ConsumerInputDataFlowNode inputNode;
+
+    SignatureArtifactConsumer() {
+      exists(SignatureOperationInstance op | inputNode = op.getSignatureConsumer()) and
+      this = Input::dfn_to_element(inputNode)
+    }
+
+    final override ConsumerInputDataFlowNode getInputNode() { result = inputNode }
+  }
+
   /**
    * An artifact that is produced by an operation, representing a concrete artifact instance rather than a synthetic consumer artifact.
    */
@@ -458,6 +469,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override DataFlowNode getOutputNode() { result = creator.getOutputArtifact() }
+
+    KeyOperationInstance getCreator() { result = creator }
   }
 
   /**
@@ -783,6 +796,17 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
+   * A key operation instance representing a signature being generated or verified.
+   */
+  abstract class SignatureOperationInstance extends KeyOperationInstance {
+    /**
+     * Gets the consumer of the signature that is being verified in case of a
+     * verification operation.
+     */
+    abstract ConsumerInputDataFlowNode getSignatureConsumer();
+  }
+
+  /**
    * A key-based algorithm instance used in cryptographic operations such as encryption, decryption,
    * signing, verification, and key wrapping.
    */
@@ -841,7 +865,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
      * This will be automatically inferred and applied at the node level.
      * See `fixedImplicitCipherKeySize`.
      */
-    abstract string getKeySizeFixed();
+    abstract int getKeySizeFixed();
 
     /**
      * Gets a consumer for the key size in bits specified for this algorithm variant.
@@ -972,7 +996,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     abstract TEllipticCurveType getEllipticCurveType();
 
-    abstract string getKeySize();
+    abstract int getKeySize();
 
     /**
      * The 'parsed' curve name, e.g., "P-256" or "secp256r1"
@@ -1044,7 +1068,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract KeyArtifactType getOutputKeyType();
 
     // Defaults or fixed values
-    string getKeySizeFixed() { none() }
+    int getKeySizeFixed() { none() }
 
     // Consumer input nodes
     abstract ConsumerInputDataFlowNode getKeySizeConsumer();
@@ -1132,8 +1156,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     DH() or // Diffie-Hellman
     EDH() or // Ephemeral Diffie-Hellman
     ECDH() or // Elliptic Curve Diffie-Hellman
+    // NOTE: for now ESDH is considered simply EDH
+    //ESDH() or // Ephemeral-Static Diffie-Hellman
     // Note: x25519 and x448 are applications of ECDH
-    UnknownKeyAgreementType()
+    OtherKeyAgreementType()
 
   abstract class KeyAgreementAlgorithmInstance extends AlgorithmInstance {
     abstract TKeyAgreementType getKeyAgreementType();
@@ -1264,6 +1290,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     TNonceInput(NonceArtifactConsumer e) or
     TMessageInput(MessageArtifactConsumer e) or
     TSaltInput(SaltArtifactConsumer e) or
+    TSignatureInput(SignatureArtifactConsumer e) or
     TRandomNumberGeneration(RandomNumberGenerationInstance e) { e.flowsTo(_) } or
     // Key Creation Operation union type (e.g., key generation, key load)
     TKeyCreationOperation(KeyCreationOperationInstance e) or
@@ -1325,14 +1352,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Returns the child of this node with the given edge name.
      *
-     * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
+     * This predicate is overridden by derived classes to construct the graph of cryptographic operations.
      */
     NodeBase getChild(string edgeName) { none() }
 
     /**
      * Defines properties of this node by name and either a value or location or both.
      *
-     * This predicate is overriden by derived classes to construct the graph of cryptographic operations.
+     * This predicate is overridden by derived classes to construct the graph of cryptographic operations.
      */
     predicate properties(string key, string value, Location location) { none() }
 
@@ -1506,6 +1533,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   /**
+   * A signature input. This may represent a signature, or a signature component
+   * such as the scalar values r and s in ECDSA.
+   */
+  final class SignatureArtifactNode extends ArtifactNode, TSignatureInput {
+    SignatureArtifactConsumer instance;
+
+    SignatureArtifactNode() { this = TSignatureInput(instance) }
+
+    final override string getInternalType() { result = "SignatureInput" }
+
+    override LocatableElement asElement() { result = instance }
+  }
+
+  /**
    * A salt input.
    */
   final class SaltArtifactNode extends ArtifactNode, TSaltInput {
@@ -1528,11 +1569,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     KeyOperationOutputNode() { this = TKeyOperationOutput(instance) }
 
-    final override string getInternalType() { result = "KeyOperationOutput" }
+    override string getInternalType() { result = "KeyOperationOutput" }
 
     override LocatableElement asElement() { result = instance }
 
     override string getSourceNodeRelationship() { none() }
+  }
+
+  class SignOperationOutputNode extends KeyOperationOutputNode {
+    SignOperationOutputNode() {
+      this.asElement().(KeyOperationOutputArtifactInstance).getCreator().getKeyOperationSubtype() =
+        TSignMode()
+    }
+
+    override string getInternalType() { result = "SignatureOutput" }
   }
 
   /**
@@ -1900,7 +1950,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [ONLY_KNOWN]
       key = "DefaultKeySize" and
-      value = kdfInstance.getKeySizeFixed() and
+      value = kdfInstance.getKeySizeFixed().toString() and
       location = this.getLocation()
       or
       // [ONLY_KNOWN] - TODO: refactor for known unknowns
@@ -2107,6 +2157,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
   }
 
   class SignatureOperationNode extends KeyOperationNode {
+    override SignatureOperationInstance instance;
     string nodeName;
 
     SignatureOperationNode() {
@@ -2116,6 +2167,21 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     }
 
     override string getInternalType() { result = nodeName }
+
+    SignatureArtifactNode getASignatureArtifact() {
+      result.asElement() = instance.getSignatureConsumer().getConsumer()
+    }
+
+    override NodeBase getChild(string key) {
+      result = super.getChild(key)
+      or
+      // [KNOWN_OR_UNKNOWN] - only if we know the type is verify
+      this.getKeyOperationSubtype() = TVerifyMode() and
+      key = "Signature" and
+      if exists(this.getASignatureArtifact())
+      then result = this.getASignatureArtifact()
+      else result = this
+    }
   }
 
   /**
@@ -2259,13 +2325,10 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     /**
      * Gets the key size variant of this algorithm in bits, e.g., 128 for "AES-128".
      */
-    string getKeySizeFixed() {
+    int getKeySizeFixed() {
       result = instance.asAlg().getKeySizeFixed()
       or
-      exists(int size |
-        KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), size) and
-        result = size.toString()
-      )
+      KeyOpAlg::fixedImplicitCipherKeySize(instance.asAlg().getAlgorithmType(), result)
     }
 
     /**
@@ -2333,7 +2396,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // [ONLY_KNOWN]
       key = "KeySize" and
       (
-        value = this.getKeySizeFixed() and
+        value = this.getKeySizeFixed().toString() and
         location = this.getLocation()
         or
         node_as_property(this.getKeySize(), value, location)
@@ -2566,6 +2629,8 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       curveName = "CURVE25519" and keySize = 255 and curveFamily = CURVE25519()
       or
+      curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
+      or
       // TODO: separate these into key agreement logic or sign/verify (ECDSA / ECDH)
       // or
       // curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
@@ -2573,8 +2638,6 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       // curveName = "ED25519" and keySize = 255 and curveFamily = CURVE25519()
       // or
       // curveName = "ED448" and keySize = 448 and curveFamily = CURVE448()
-      // curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
-      // or
       // or
       // curveName = "X448" and keySize = 448 and curveFamily = CURVE448()
       curveName = "SM2" and keySize in [256, 512] and curveFamily = SM2()
@@ -2613,7 +2676,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [ONLY_KNOWN]
       key = "KeySize" and
-      value = instance.asAlg().getKeySize() and
+      value = instance.asAlg().getKeySize().toString() and
       location = this.getLocation()
       or
       // [KNOWN_OR_UNKNOWN]

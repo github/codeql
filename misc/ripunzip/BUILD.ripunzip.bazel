@@ -1,0 +1,11 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+
+native_binary(
+    name = "ripunzip",
+    src = glob(["ripunzip-*"])[0],
+    out = "ripunzip" + select({
+        "@platforms//os:windows": ".exe",
+        "//conditions:default": "",
+    }),
+    visibility = ["//visibility:public"],
+)

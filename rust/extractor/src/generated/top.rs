@@ -154,7 +154,6 @@ pub struct Crate {
     pub id: trap::TrapId<Crate>,
     pub name: Option<String>,
     pub version: Option<String>,
-    pub module: Option<trap::Label<Module>>,
     pub cfg_options: Vec<String>,
     pub named_dependencies: Vec<trap::Label<NamedCrate>>,
 }
@@ -171,9 +170,6 @@ impl trap::TrapEntry for Crate {
         }
         if let Some(v) = self.version {
             out.add_tuple("crate_versions", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.module {
-            out.add_tuple("crate_modules", vec![id.into(), v.into()]);
         }
         for (i, v) in self.cfg_options.into_iter().enumerate() {
             out.add_tuple("crate_cfg_options", vec![id.into(), i.into(), v.into()]);

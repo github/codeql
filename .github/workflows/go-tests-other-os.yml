@@ -26,9 +26,8 @@ jobs:
         uses: ./go/actions/test
 
   test-win:
-    if: github.repository_owner == 'github'
     name: Test Windows
-    runs-on: windows-latest-xl
+    runs-on: windows-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4

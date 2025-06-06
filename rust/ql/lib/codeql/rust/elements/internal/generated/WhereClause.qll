@@ -15,9 +15,12 @@ import codeql.rust.elements.WherePred
  */
 module Generated {
   /**
-   * A WhereClause. For example:
+   * A where clause in a generic declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo<T>(t: T) where T: Debug {}
+   * //              ^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::WhereClause` class directly.
    * Use the subclass `WhereClause`, where the following predicates are available.

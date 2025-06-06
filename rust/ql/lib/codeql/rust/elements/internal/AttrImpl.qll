@@ -13,9 +13,13 @@ private import codeql.rust.elements.internal.generated.Attr
  */
 module Impl {
   /**
-   * A Attr. For example:
+   * An attribute applied to an item.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * #[derive(Debug)]
+   * //^^^^^^^^^^^^^
+   * struct S;
    * ```
    */
   class Attr extends Generated::Attr { }

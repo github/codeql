@@ -44,8 +44,16 @@ class PathElement = AstNode;
  * reachable from a source.
  */
 predicate edgesFwd(PathElement pred, PathElement succ) {
-  // attribute (source) -> callable
-  pred.(CtorAttr) = succ.(Callable).getAnAttr()
+  // attribute (source) -> function in macro expansion
+  exists(Function f |
+    pred.(CtorAttr) = f.getAnAttr() and
+    (
+      f.getAttributeMacroExpansion().getAnItem() = succ.(Callable)
+      or
+      // if for some reason the ctor/dtor macro expansion failed, fall back to looking into the unexpanded item
+      not f.hasAttributeMacroExpansion() and f = succ.(Callable)
+    )
+  )
   or
   // [forwards reachable] callable -> enclosed call
   edgesFwd(_, pred) and
@@ -73,4 +81,5 @@ query predicate edges(PathElement pred, PathElement succ) {
 from CtorAttr source, StdCall sink
 where edges+(source, sink)
 select sink, source, sink,
-  "Call to " + sink.toString() + " in a function with the " + source.getWhichAttr() + " attribute."
+  "Call to " + sink.toString() + " from the standard library in a function with the " +
+    source.getWhichAttr() + " attribute."

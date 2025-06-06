@@ -1,6 +1,7 @@
 private import cpp as Language
-import semmle.code.cpp.dataflow.new.DataFlow
+import semmle.code.cpp.dataflow.new.TaintTracking
 import codeql.quantum.experimental.Model
+private import OpenSSL.GenericSourceCandidateLiteral
 
 module CryptoInput implements InputSig<Language::Location> {
   class DataFlowNode = DataFlow::Node;
@@ -84,6 +85,21 @@ module GenericDataSourceFlowConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     node1.(AdditionalFlowInputStep).getOutput() = node2
   }
+}
+
+module GenericDataSourceFlow = TaintTracking::Global<GenericDataSourceFlowConfig>;
+
+private class ConstantDataSource extends Crypto::GenericConstantSourceInstance instanceof Literal {
+  ConstantDataSource() { this instanceof OpenSSLGenericSourceCandidateLiteral }
+
+  override DataFlow::Node getOutputNode() { result.asExpr() = this }
+
+  override predicate flowsTo(Crypto::FlowAwareElement other) {
+    // TODO: separate config to avoid blowing up data-flow analysis
+    GenericDataSourceFlow::flow(this.getOutputNode(), other.getInputNode())
+  }
+
+  override string getAdditionalDescription() { result = this.toString() }
 }
 
 module ArtifactUniversalFlowConfig implements DataFlow::ConfigSig {
