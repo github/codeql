@@ -195,7 +195,7 @@ fn test_operator_overloading() {
     let a = MyInt { value: source(5) };
     let b = MyInt { value: 2 };
     let c = a + b;
-    sink(c.value); // $ MISSING: hasValueFlow=5
+    sink(c.value); // $ hasValueFlow=5
 
     let a = MyInt { value: 2 };
     let b = MyInt { value: source(6) };
