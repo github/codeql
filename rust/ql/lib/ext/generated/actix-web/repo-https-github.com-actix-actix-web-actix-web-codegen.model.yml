@@ -7,7 +7,6 @@ extensions:
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::MethodTypeExt as crate::convert::TryFrom>::try_from", "Argument[0].Reference", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[crate::route::MethodTypeExt::Custom(0)]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::Route>::new", "Argument[0].Field[crate::route::RouteArgs::path]", "ReturnValue.Field[crate::route::Args::path]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::Route>::new", "Argument[1]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[crate::route::Route::ast]", "value", "dfc-generated"]
-      - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "<crate::route::Route>::new", "Argument[1]", "ReturnValue.Field[crate::result::Result::Ok(0)].Field[crate::route::Route::name]", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "crate::connect", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "crate::delete", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/actix/actix-web:actix-web-codegen", "crate::get", "Argument[1]", "ReturnValue", "value", "dfc-generated"]

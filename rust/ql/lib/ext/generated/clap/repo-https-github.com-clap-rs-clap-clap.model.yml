@@ -8,10 +8,17 @@ extensions:
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliArgs as crate::derive::Args>::augment_args_for_update", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliSub as crate::derive::Subcommand>::augment_subcommands", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliSub as crate::derive::Subcommand>::augment_subcommands_for_update", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::ColorWhen as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::Mode as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::Mode as crate::str::traits::FromStr>::from_str", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::foreign_crate::LogLevel as crate::fmt::Display>::fmt", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::foreign_crate::LogLevel as crate::str::traits::FromStr>::from_str", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/rust-all
       extensible: sinkModel
     data:
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliArgs as crate::derive::FromArgMatches>::from_arg_matches", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliArgs as crate::derive::FromArgMatches>::from_arg_matches_mut", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliArgs as crate::derive::FromArgMatches>::update_from_arg_matches", "Argument[0]", "log-injection", "df-generated"]
+      - ["repo:https://github.com/clap-rs/clap:clap", "<crate::CliArgs as crate::derive::FromArgMatches>::update_from_arg_matches_mut", "Argument[0]", "log-injection", "df-generated"]
       - ["repo:https://github.com/clap-rs/clap:clap", "<crate::Value>::from_matches", "Argument[0]", "log-injection", "df-generated"]

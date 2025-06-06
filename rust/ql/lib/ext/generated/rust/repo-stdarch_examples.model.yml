@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["repo::stdarch_examples", "<crate::List>::add", "Argument[0]", "Argument[self].Field[crate::List::p_move].Element", "value", "dfc-generated"]
+      - ["repo::stdarch_examples", "<crate::List>::size", "Argument[self].Field[crate::List::p_size]", "ReturnValue", "value", "dfc-generated"]

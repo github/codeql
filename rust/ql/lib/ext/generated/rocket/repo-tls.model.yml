@@ -4,4 +4,6 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data:
+      - ["repo::tls", "<crate::redirector::Redirector as crate::fairing::Fairing>::on_liftoff", "Argument[0]", "ReturnValue.Reference", "value", "dfc-generated"]
+      - ["repo::tls", "<crate::redirector::Redirector as crate::fairing::Fairing>::on_liftoff", "Argument[self]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo::tls", "<crate::redirector::Redirector>::try_launch", "Argument[self].Field[crate::redirector::Redirector::port]", "Argument[0].Field[crate::config::config::Config::port]", "value", "dfc-generated"]

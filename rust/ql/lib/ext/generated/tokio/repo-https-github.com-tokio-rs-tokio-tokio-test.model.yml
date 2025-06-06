@@ -22,3 +22,5 @@ extensions:
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::task::Spawn as crate::ops::deref::Deref>::deref", "Argument[self].Field[crate::task::Spawn::future]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::task::Spawn as crate::ops::deref::DerefMut>::deref_mut", "Argument[self].Field[crate::task::Spawn::future]", "ReturnValue.Reference", "value", "dfc-generated"]
       - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::task::Spawn>::enter", "Argument[0].ReturnValue", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "<crate::task::Spawn>::into_inner", "Argument[self].Field[crate::task::Spawn::future].Reference", "ReturnValue", "value", "dfc-generated"]
+      - ["repo:https://github.com/tokio-rs/tokio:tokio-test", "crate::task::spawn", "Argument[0]", "ReturnValue.Field[crate::task::Spawn::future].Reference", "value", "dfc-generated"]

@@ -50,7 +50,10 @@
 | test.rs:384:58:384:73 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:392:48:392:63 | ...::stdin | Flow source 'StdInSource' of type stdin (DEFAULT). |
 | test.rs:407:31:407:43 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:407:31:407:43 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:412:31:412:38 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:412:31:412:38 | ...::read | Flow source 'FileSource' of type file (DEFAULT). |
+| test.rs:417:22:417:39 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:417:22:417:39 | ...::read_to_string | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:423:22:423:25 | path | Flow source 'FileSource' of type file (DEFAULT). |
 | test.rs:424:27:424:35 | file_name | Flow source 'FileSource' of type file (DEFAULT). |
