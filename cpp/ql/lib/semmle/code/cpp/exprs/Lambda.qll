@@ -49,6 +49,19 @@ class LambdaExpression extends Expr, @lambdaexpr {
   predicate returnTypeIsExplicit() { lambdas(underlyingElement(this), _, true, _) }
 
   /**
+   * Holds if the lambda has an explicitly specified parameter list, even when empty.
+   */
+  predicate hasParameterList() { lambdas(underlyingElement(this), _, _, true) }
+
+  /**
+   * Holds if the lambda has an empty parameter list
+   */
+  predicate emptyParameterListIsExplicit() {
+    this.hasParameterList() and
+    this.getLambdaFunction().getNumberOfParameters() = 0
+  }
+
+  /**
    * Gets the function which will be invoked when the resulting object is called.
    *
    * Various components of the lambda expression can be obtained from components of this
