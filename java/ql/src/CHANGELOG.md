@@ -1,3 +1,9 @@
+## 1.5.1
+
+### Minor Analysis Improvements
+
+* The query `java/hardcoded-credential-api-call` has been removed from all query suites.
+
 ## 1.5.0
 
 ### Query Metadata Changes
