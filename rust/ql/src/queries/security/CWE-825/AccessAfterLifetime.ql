@@ -43,4 +43,4 @@ where
   // exclude sinks in macros, since these results are difficult to interpret
   not sinkNode.getNode().asExpr().getExpr().isFromMacroExpansion()
 select sinkNode.getNode(), sourceNode, sinkNode,
-  "Access of a pointer to $@ after it's lifetime has ended.", target, target.toString()
+  "Access of a pointer to $@ after its lifetime has ended.", target, target.toString()
