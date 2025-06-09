@@ -4,8 +4,8 @@
  *              causes undefined behavior and may result in memory corruption.
  * @kind path-problem
  * @problem.severity error
- * @security-severity TODO
- * @precision high
+ * @security-severity 9.8
+ * @precision medium
  * @id rust/access-after-lifetime-ended
  * @tags reliability
  *       security
