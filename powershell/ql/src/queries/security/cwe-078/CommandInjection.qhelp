@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>Code that passes user input directly to
-<code>Invoke-Expression</code>, <code>&</code>, or some other library
+<code>Invoke-Expression</code>, <code>&amp;</code>, or some other library
 routine that executes a command, allows the user to execute malicious
 code.</p>
 
