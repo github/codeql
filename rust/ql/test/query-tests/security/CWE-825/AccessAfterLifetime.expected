@@ -20,8 +20,6 @@
 | lifetime.rs:659:15:659:18 | ref1 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:659:15:659:18 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:653:8:653:11 | str1 | str1 |
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:654:31:654:35 | &str1 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:653:8:653:11 | str1 | str1 |
 | lifetime.rs:667:14:667:17 | ref1 | lifetime.rs:655:11:655:25 | &raw const str2 | lifetime.rs:667:14:667:17 | ref1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:651:7:651:10 | str2 | str2 |
-| lifetime.rs:692:13:692:14 | r1 | lifetime.rs:682:4:682:12 | &... | lifetime.rs:692:13:692:14 | r1 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:681:8:681:9 | v1 | v1 |
-| lifetime.rs:693:13:693:14 | r2 | lifetime.rs:686:5:686:13 | &... | lifetime.rs:693:13:693:14 | r2 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:685:8:685:9 | v2 | v2 |
 | lifetime.rs:743:10:743:12 | ptr | lifetime.rs:733:9:733:12 | &val | lifetime.rs:743:10:743:12 | ptr | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:731:6:731:8 | val | val |
 edges
 | deallocation.rs:148:6:148:7 | p1 | deallocation.rs:151:14:151:15 | p1 | provenance |  |

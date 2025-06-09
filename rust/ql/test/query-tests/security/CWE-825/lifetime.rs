@@ -679,18 +679,18 @@ impl MyType {
 	fn test(&self) {
 		let r1 = unsafe {
 			let v1 = &self;
-			&v1.value // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=v1
+			&v1.value
 		};
 		let (r2, r3) = unsafe {
 			let v2 = &self;
-			(&v2.value, // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=v2
+			(&v2.value,
 			 &self.value)
 		};
 
 		use_the_stack();
 
-		let v1 = *r1; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=v1
-		let v2 = *r2; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=v2
+		let v1 = *r1;
+		let v2 = *r2;
 		let v3 = *r3;
 		println!("	v1 = {v1}");
 		println!("	v2 = {v2}");

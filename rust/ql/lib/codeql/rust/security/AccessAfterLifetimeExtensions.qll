@@ -6,6 +6,8 @@
 import rust
 private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.security.AccessInvalidPointerExtensions
+private import codeql.rust.internal.Type
+private import codeql.rust.internal.TypeInference as TypeInference
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to a
@@ -55,9 +57,10 @@ module AccessAfterLifetime {
    * Holds if `value` accesses a variable `target` with scope `scope`.
    */
   private predicate valueScope(Expr value, Variable target, BlockExpr scope) {
-    // variable access
+    // variable access (to a non-reference)
     target = value.(VariableAccess).getVariable() and
-    scope = target.getEnclosingBlock()
+    scope = target.getEnclosingBlock() and
+    not TypeInference::inferType(value) instanceof RefType
     or
     // field access
     valueScope(value.(FieldExpr).getContainer(), target, scope)
