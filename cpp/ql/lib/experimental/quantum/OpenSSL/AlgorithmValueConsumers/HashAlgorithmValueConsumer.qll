@@ -28,8 +28,36 @@ class EVP_Q_Digest_Algorithm_Consumer extends HashAlgorithmValueConsumer {
 }
 
 /**
+ *  Instances from https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
+ * where the digest is directly consumed by name.
+ * In these cases, the operation is not yet performed, but there is
+ * these functions are treated as 'initializers' and track the algorithm through
+ * `EvpInitializer` mechanics, i.e., the resultNode is considered 'none'
+ */
+class EvpPkeySetCtxALgorithmConsumer extends HashAlgorithmValueConsumer {
+  DataFlow::Node valueArgNode;
+
+  EvpPkeySetCtxALgorithmConsumer() {
+    this.(Call).getTarget().getName() in [
+        "EVP_PKEY_CTX_set_rsa_mgf1_md_name", "EVP_PKEY_CTX_set_rsa_oaep_md_name",
+        "EVP_PKEY_CTX_set_dsa_paramgen_md_props"
+      ] and
+    valueArgNode.asExpr() = this.(Call).getArgument(1)
+  }
+
+  override DataFlow::Node getResultNode() { none() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { result = valueArgNode }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() {
+    exists(OpenSSLAlgorithmInstance i | i.getAVC() = this and result = i)
+  }
+}
+
+/**
  * The EVP digest algorithm getters
  * https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
+ * https://docs.openssl.org/3.0/man3/EVP_DigestSignInit/#name
  */
 class EVPDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
   DataFlow::Node valueArgNode;
@@ -43,8 +71,11 @@ class EVPDigestAlgorithmValueConsumer extends HashAlgorithmValueConsumer {
         ] and
       valueArgNode.asExpr() = this.(Call).getArgument(0)
       or
-      this.(Call).getTarget().getName() = "EVP_MD_fetch" and
+      this.(Call).getTarget().getName() in ["EVP_MD_fetch"] and
       valueArgNode.asExpr() = this.(Call).getArgument(1)
+      or
+      this.(Call).getTarget().getName() = "EVP_DigestSignInit_ex" and
+      valueArgNode.asExpr() = this.(Call).getArgument(2)
     )
   }
 

@@ -1,6 +1,10 @@
 private import experimental.quantum.Language
 private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
+// Importing these intializers here to ensure the are part of any model that is
+// using OpenSSLOperationBase. This futher ensures that initializers are tied to opeartions
+// even if only importing the operation by itself.
+import EVPPKeyCtxInitializer
 
 /**
  * A class for all OpenSSL operations.
@@ -44,6 +48,12 @@ abstract class EvpKeySizeInitializer extends EvpInitializer {
   abstract Expr getKeySizeArg();
 }
 
+/**
+ * Unlike many initializers, this returns the key operation subtype immediately, not the arg.
+ * This is a design choice in the overall model, in that the model will not do any tracking
+ * for the subtype argument in any automated fashion. Users are currently expected to find the
+ * subtype argument manually and associate a type directly.
+ */
 abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
   abstract Crypto::KeyOperationSubtype getKeyOperationSubtype();
 }
@@ -64,6 +74,22 @@ abstract class EvpKeyInitializer extends EvpInitializer {
 
 abstract class EvpIVInitializer extends EvpInitializer {
   abstract Expr getIVArg();
+}
+
+abstract class EvpPaddingInitializer extends EvpInitializer {
+  /**
+   * Gets the padding mode argument.
+   *  e.g., `EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_PADDING)` argument 1 (0-based)
+   */
+  abstract Expr getPaddingArg();
+}
+
+abstract class EvpSaltLengthInitializer extends EvpInitializer {
+  /**
+   * Gets the salt length argument.
+   * e.g., `EVP_PKEY_CTX_set_scrypt_salt_len(ctx, 16)` argument 1 (0-based)
+   */
+  abstract Expr getSaltLengthArg();
 }
 
 /**

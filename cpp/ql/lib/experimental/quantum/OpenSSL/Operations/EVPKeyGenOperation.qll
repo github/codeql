@@ -50,32 +50,6 @@ class EVPNewKeyCtx extends EvpKeyInitializer {
   //TODO: do we specify the algorithm from the key as well?
 }
 
-/**
- * A call to `EVP_PKEY_CTX_set_rsa_keygen_bits`.
- * This sets the key size for RSA key generation.
- */
-class EVPSetRSAKeyKeyBits extends EvpKeySizeInitializer {
-  EVPSetRSAKeyKeyBits() { this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_keygen_bits" }
-
-  override Expr getKeySizeArg() { result = this.(Call).getArgument(1) }
-
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
-}
-
-/**
- * A call to `EVP_PKEY_CTX_set_dsa_paramgen_bits`.
- * This sets the key size for DSA key generation.
- */
-class EVPSetDSAKeyParamGenBits extends EvpKeySizeInitializer {
-  EVPSetDSAKeyParamGenBits() {
-    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_dsa_paramgen_bits"
-  }
-
-  override Expr getKeySizeArg() { result = this.(Call).getArgument(1) }
-
-  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
-}
-
 class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstance {
   DataFlow::Node keyResultNode;
 
