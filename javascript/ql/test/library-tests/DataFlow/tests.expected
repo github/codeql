@@ -1523,6 +1523,7 @@ sources
 | tst2.ts:13:39:13:38 | super(...args) |
 | tst2.ts:13:39:13:38 | this |
 | tst2.ts:15:11:15:13 | A.x |
+| tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |
