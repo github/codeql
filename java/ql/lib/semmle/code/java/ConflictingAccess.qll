@@ -37,7 +37,7 @@ module Monitors {
     abstract Location getLocation();
 
     /** Gets a textual representation of this element. */
-    string toString() { result = "Monitor" }
+    abstract string toString();
   }
 
   /**
@@ -46,16 +46,12 @@ module Monitors {
    * E.g `synchronized (m) { ... }` or `m.lock();`
    */
   class VariableMonitor extends Monitor, TVariableMonitor {
-    Variable v;
+    override Location getLocation() { result = this.getVariable().getLocation() }
 
-    VariableMonitor() { this = TVariableMonitor(v) }
-
-    override Location getLocation() { result = v.getLocation() }
-
-    override string toString() { result = "VariableMonitor(" + v.toString() + ")" }
+    override string toString() { result = "VariableMonitor(" + this.getVariable().toString() + ")" }
 
     /** Gets the variable being used as a monitor. */
-    Variable getVariable() { result = v }
+    Variable getVariable() { this = TVariableMonitor(result) }
   }
 
   /**
@@ -63,16 +59,12 @@ module Monitors {
    * Either via `synchronized (this) { ... }` or by marking a non-static method as `synchronized`.
    */
   class InstanceMonitor extends Monitor, TInstanceMonitor {
-    RefType thisType;
+    override Location getLocation() { result = this.getThisType().getLocation() }
 
-    InstanceMonitor() { this = TInstanceMonitor(thisType) }
-
-    override Location getLocation() { result = thisType.getLocation() }
-
-    override string toString() { result = "InstanceMonitor(" + thisType.toString() + ")" }
+    override string toString() { result = "InstanceMonitor(" + this.getThisType().toString() + ")" }
 
     /** Gets the instance reference being used as a monitor. */
-    RefType getThisType() { result = thisType }
+    RefType getThisType() { this = TInstanceMonitor(result) }
   }
 
   /**
@@ -80,16 +72,12 @@ module Monitors {
    * This is achieved by marking a static method as `synchronized`.
    */
   class ClassMonitor extends Monitor, TClassMonitor {
-    RefType classType;
+    override Location getLocation() { result = this.getClassType().getLocation() }
 
-    ClassMonitor() { this = TClassMonitor(classType) }
-
-    override Location getLocation() { result = classType.getLocation() }
-
-    override string toString() { result = "ClassMonitor(" + classType.toString() + ")" }
+    override string toString() { result = "ClassMonitor(" + this.getClassType().toString() + ")" }
 
     /** Gets the class being used as a monitor. */
-    RefType getClassType() { result = classType }
+    RefType getClassType() { this = TClassMonitor(result) }
   }
 
   /** Holds if the expression `e` is synchronized on the monitor `m`. */
@@ -115,6 +103,15 @@ module Monitors {
     )
   }
 
+  ControlFlowNode getNodeToBeDominated(Expr e) {
+    // If `e` is the LHS of an assignment, use the control flow node for the assignment
+    exists(Assignment asgn | asgn.getDest() = e | result = asgn.getControlFlowNode())
+    or
+    // if `e` is not the LHS of an assignment, use the default control flow node
+    not exists(Assignment asgn | asgn.getDest() = e) and
+    result = e.getControlFlowNode()
+  }
+
   /** Holds if `e` is synchronized on the `Lock` `lock` by a locking call. */
   predicate locallyLockedOn(Expr e, Field lock) {
     isLockType(lock.getType()) and
@@ -126,8 +123,8 @@ module Monitors {
       unlockCall.getMethod().getName() = "unlock"
     |
       dominates(lockCall.getControlFlowNode(), unlockCall.getControlFlowNode()) and
-      dominates(lockCall.getControlFlowNode(), e.getControlFlowNode()) and
-      postDominates(unlockCall.getControlFlowNode(), e.getControlFlowNode())
+      dominates(lockCall.getControlFlowNode(), getNodeToBeDominated(e)) and
+      postDominates(unlockCall.getControlFlowNode(), getNodeToBeDominated(e))
     )
   }
 }
@@ -147,10 +144,9 @@ module Modification {
 
   /** Holds if the call `c` modifies a shared resource. */
   predicate isModifyingCall(Call c) {
-    exists(SummarizedCallable sc, string output, string prefix | sc.getACall() = c |
+    exists(SummarizedCallable sc, string output | sc.getACall() = c |
       sc.propagatesFlow(_, output, _, _) and
-      prefix = "Argument[this]" and
-      output.prefix(prefix.length()) = prefix
+      output.matches("Argument[this]%")
     )
   }
 }
@@ -199,17 +195,6 @@ class ExposedFieldAccess extends FieldAccess {
     not this.getQualifier+().(VarAccess).getVariable() instanceof LocalVariableDecl and
     // not the variable mention in a synchronized statement
     not this = any(SynchronizedStmt sync).getExpr()
-  }
-
-  // LHS of assignments are excluded from the control flow graph,
-  // so we use the control flow node for the assignment itself instead.
-  override ControlFlowNode getControlFlowNode() {
-    // this is the LHS of an assignment, use the control flow node for the assignment
-    exists(Assignment asgn | asgn.getDest() = this | result = asgn.getControlFlowNode())
-    or
-    // this is not the LHS of an assignment, use the default control flow node
-    not exists(Assignment asgn | asgn.getDest() = this) and
-    result = super.getControlFlowNode()
   }
 }
 
