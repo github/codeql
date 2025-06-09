@@ -151,9 +151,6 @@ module Modification {
   }
 }
 
-/** Holds if the class is annotated as `@ThreadSafe`. */
-Class annotatedAsThreadSafe() { result.getAnAnnotation().getType().getName() = "ThreadSafe" }
-
 /** Holds if the type `t` is thread-safe. */
 predicate isThreadSafeType(Type t) {
   t.getErasure().getName().matches(["Atomic%", "Concurrent%"])
@@ -164,7 +161,7 @@ predicate isThreadSafeType(Type t) {
   // See https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html#MemoryVisibility
   t.getTypeDescriptor().matches("Ljava/util/concurrent/%;")
   or
-  t = annotatedAsThreadSafe()
+  t instanceof ClassAnnotatedAsThreadSafe
 }
 
 /** Holds if the expression `e` is a thread-safe initializer. */
@@ -178,7 +175,7 @@ predicate isThreadSafeInitializer(Expr e) {
  */
 class ExposedFieldAccess extends FieldAccess {
   ExposedFieldAccess() {
-    this.getField() = annotatedAsThreadSafe().getAField() and
+    this.getField() = any(ClassAnnotatedAsThreadSafe c).getAField() and
     not this.getField().isVolatile() and
     // field is not a lock
     not isLockType(this.getField().getType()) and
@@ -212,7 +209,7 @@ predicate orderedLocations(Location a, Location b) {
  * Provides predicates to check for concurrency issues.
  */
 class ClassAnnotatedAsThreadSafe extends Class {
-  ClassAnnotatedAsThreadSafe() { this = annotatedAsThreadSafe() }
+  ClassAnnotatedAsThreadSafe() { this.getAnAnnotation().getType().getName() = "ThreadSafe" }
 
   /** Holds if `a` and `b` are conflicting accesses to the same field and not monitored by the same monitor. */
   predicate unsynchronised(ExposedFieldAccess a, ExposedFieldAccess b) {
