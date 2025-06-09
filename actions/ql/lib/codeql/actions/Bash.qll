@@ -137,9 +137,12 @@ class BashShellScript extends ShellScript {
     quotedStr.regexpMatch("[\"'].*[$\n\r'\"" + Bash::separator() + "].*[\"']")
   }
 
-  private predicate rankedQuotedStringReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.quotedStringReplacement(old2, _) | old2) and
-    this.quotedStringReplacement(old, new)
+  private predicate rankedQuotedStringReplacements(int i, string quotedString, string quotedStringId) {
+    // rank quoted strings by their nearly-unique IDs
+    quotedStringId = rank[i](string s, string id | this.quotedStringReplacement(s, id) | id) and
+    // since we cannot output (string, ID) tuples from the rank operation,
+    // we need to work out the specific string associated with the resulting ID
+    this.quotedStringReplacement(quotedString, quotedStringId)
   }
 
   private predicate doReplaceQuotedStrings(int line, int round, string old, string new) {
