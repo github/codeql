@@ -1,3 +1,9 @@
+## 2.6.4
+
+### Minor Analysis Improvements
+
+* Improved analysis for `ES6 classes` mixed with `function prototypes`, leading to more accurate call graph resolution.
+
 ## 2.6.3
 
 ### Minor Analysis Improvements
