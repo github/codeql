@@ -184,6 +184,9 @@ fn main() {
 	println!("test_members:");
 	test_members();
 
+	println!("test_enum_members:");
+	test_enum_members();
+
 	println!("test_macros:");
 	test_macros();
 

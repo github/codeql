@@ -703,6 +703,38 @@ pub fn test_members() {
 	mt.test();
 }
 
+// --- enum members ---
+
+struct MyValue2 {
+	value: i64
+}
+
+enum MyEnum3 {
+	Value(MyValue2),
+}
+
+impl MyEnum3 {
+	pub fn test_match(&self) -> &i64 {
+		let r1 = match self {
+			MyEnum3::Value(v2) => &v2.value, // $ SPURIOUS: Source[rust/access-after-lifetime-ended]=v2_value
+		};
+
+		r1
+	}
+}
+
+pub fn test_enum_members() {
+	let v1 = MyValue2 { value: 1 };
+	let e1 = MyEnum3::Value(v1);
+
+	let r1 = e1.test_match();
+
+	use_the_stack();
+
+	let v3 = *r1; // $ SPURIOUS: Alert[rust/access-after-lifetime-ended]=v2_value
+	println!("	v3 = {v3}");
+}
+
 // --- macros ---
 
 macro_rules! my_macro {
