@@ -16,9 +16,13 @@ import codeql.rust.elements.internal.StmtImpl::Impl as StmtImpl
  */
 module Generated {
   /**
-   * A Item. For example:
+   * An item such as a function, struct, enum, etc.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * fn foo() {}
+   * struct S;
+   * enum E {}
    * ```
    * INTERNAL: Do not reference the `Generated::Item` class directly.
    * Use the subclass `Item`, where the following predicates are available.

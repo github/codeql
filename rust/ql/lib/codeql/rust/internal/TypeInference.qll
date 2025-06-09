@@ -207,81 +207,58 @@ private Type inferAssignmentOperationType(AstNode n, TypePath path) {
 }
 
 /**
- * Holds if the type of `n1` at `path1` is the same as the type of `n2` at
- * `path2` and type information should propagate in both directions through the
- * type equality.
+ * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
+ * of `n2` at `prefix2` and type information should propagate in both directions
+ * through the type equality.
  */
-bindingset[path1]
-bindingset[path2]
-private predicate typeEquality(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
-  exists(Variable v |
-    path1 = path2 and
-    n1 = v.getAnAccess()
-  |
-    n2 = v.getPat()
+private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  prefix1.isEmpty() and
+  prefix2.isEmpty() and
+  (
+    exists(Variable v | n1 = v.getAnAccess() |
+      n2 = v.getPat()
+      or
+      n2 = v.getParameter().(SelfParam)
+    )
     or
-    n2 = v.getParameter().(SelfParam)
-  )
-  or
-  exists(LetStmt let |
-    let.getPat() = n1 and
-    let.getInitializer() = n2 and
-    path1 = path2
-  )
-  or
-  n1 = n2.(ParenExpr).getExpr() and
-  path1 = path2
-  or
-  n1 = n2.(BlockExpr).getStmtList().getTailExpr() and
-  path1 = path2
-  or
-  n1 = n2.(IfExpr).getABranch() and
-  path1 = path2
-  or
-  n1 = n2.(MatchExpr).getAnArm().getExpr() and
-  path1 = path2
-  or
-  exists(BreakExpr break |
-    break.getExpr() = n1 and
-    break.getTarget() = n2.(LoopExpr) and
-    path1 = path2
-  )
-  or
-  exists(AssignmentExpr be |
-    n1 = be.getLhs() and
-    n2 = be.getRhs() and
-    path1 = path2
-  )
-}
-
-bindingset[path1]
-private predicate typeEqualityLeft(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
-  typeEquality(n1, path1, n2, path2)
-  or
-  n2 =
-    any(DerefExpr pe |
-      pe.getExpr() = n1 and
-      path1.isCons(TRefTypeParameter(), path2)
+    exists(LetStmt let |
+      let.getPat() = n1 and
+      let.getInitializer() = n2
     )
-}
-
-bindingset[path2]
-private predicate typeEqualityRight(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
-  typeEquality(n1, path1, n2, path2)
-  or
-  n2 =
-    any(DerefExpr pe |
-      pe.getExpr() = n1 and
-      path1 = TypePath::cons(TRefTypeParameter(), path2)
+    or
+    n1 = n2.(ParenExpr).getExpr()
+    or
+    n1 = n2.(BlockExpr).getStmtList().getTailExpr()
+    or
+    n1 = n2.(IfExpr).getABranch()
+    or
+    n1 = n2.(MatchExpr).getAnArm().getExpr()
+    or
+    exists(BreakExpr break |
+      break.getExpr() = n1 and
+      break.getTarget() = n2.(LoopExpr)
     )
+    or
+    exists(AssignmentExpr be |
+      n1 = be.getLhs() and
+      n2 = be.getRhs()
+    )
+  )
+  or
+  n1 = n2.(DerefExpr).getExpr() and
+  prefix1 = TypePath::singleton(TRefTypeParameter()) and
+  prefix2.isEmpty()
 }
 
 pragma[nomagic]
 private Type inferTypeEquality(AstNode n, TypePath path) {
-  exists(AstNode n2, TypePath path2 | result = inferType(n2, path2) |
-    typeEqualityRight(n, path, n2, path2)
+  exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+    result = inferType(n2, prefix2.appendInverse(suffix)) and
+    path = prefix1.append(suffix)
+  |
+    typeEquality(n, prefix1, n2, prefix2)
     or
-    typeEqualityLeft(n2, path2, n, path)
+    typeEquality(n2, prefix2, n, prefix1)
   )
 }
 
@@ -643,12 +620,22 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
 
   private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
-  class Access extends CallExprBase {
+  abstract class Access extends Expr {
+    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+    abstract AstNode getNodeAt(AccessPosition apos);
+
+    abstract Type getInferredType(AccessPosition apos, TypePath path);
+
+    abstract Declaration getTarget();
+  }
+
+  private class CallExprBaseAccess extends Access instanceof CallExprBase {
     private TypeMention getMethodTypeArg(int i) {
       result = this.(MethodCallExpr).getGenericArgList().getTypeArg(i)
     }
 
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       exists(TypeMention arg | result = arg.resolveTypeAt(path) |
         arg = getExplicitTypeArgMention(CallExprImpl::getFunctionPath(this), apos.asTypeParam())
         or
@@ -656,7 +643,7 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       )
     }
 
-    AstNode getNodeAt(AccessPosition apos) {
+    override AstNode getNodeAt(AccessPosition apos) {
       exists(int p, boolean isMethodCall |
         argPos(this, result, p, isMethodCall) and
         apos = TPositionalAccessPosition(p, isMethodCall)
@@ -669,13 +656,38 @@ private module CallExprBaseMatchingInput implements MatchingInputSig {
       apos = TReturnAccessPosition()
     }
 
-    Type getInferredType(AccessPosition apos, TypePath path) {
+    override Type getInferredType(AccessPosition apos, TypePath path) {
       result = inferType(this.getNodeAt(apos), path)
     }
 
-    Declaration getTarget() {
+    override Declaration getTarget() {
       result = CallExprImpl::getResolvedFunction(this)
       or
+      result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
+    }
+  }
+
+  private class OperationAccess extends Access instanceof Operation {
+    OperationAccess() { super.isOverloaded(_, _) }
+
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+      // The syntax for operators does not allow type arguments.
+      none()
+    }
+
+    override AstNode getNodeAt(AccessPosition apos) {
+      result = super.getOperand(0) and apos = TSelfAccessPosition()
+      or
+      result = super.getOperand(1) and apos = TPositionalAccessPosition(0, true)
+      or
+      result = this and apos = TReturnAccessPosition()
+    }
+
+    override Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+    }
+
+    override Declaration getTarget() {
       result = inferMethodCallTarget(this) // mutual recursion; resolving method calls requires resolving types and vice versa
     }
   }
@@ -1058,6 +1070,26 @@ private module MethodCall {
 
     pragma[nomagic]
     override Type getTypeAt(TypePath path) { result = inferType(receiver, path) }
+  }
+
+  private class OperationMethodCall extends MethodCallImpl instanceof Operation {
+    TraitItemNode trait;
+    string methodName;
+
+    OperationMethodCall() { super.isOverloaded(trait, methodName) }
+
+    override string getMethodName() { result = methodName }
+
+    override int getArity() { result = this.(Operation).getNumberOfOperands() - 1 }
+
+    override Trait getTrait() { result = trait }
+
+    pragma[nomagic]
+    override Type getTypeAt(TypePath path) {
+      result = inferType(this.(BinaryExpr).getLhs(), path)
+      or
+      result = inferType(this.(PrefixExpr).getExpr(), path)
+    }
   }
 }
 

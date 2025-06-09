@@ -15,9 +15,12 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A SliceTypeRepr. For example:
+   * A slice type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let s: &[i32];
+   * //      ^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::SliceTypeRepr` class directly.
    * Use the subclass `SliceTypeRepr`, where the following predicates are available.

@@ -8,9 +8,12 @@ import codeql.rust.elements.GenericArg
 import codeql.rust.elements.TypeRepr
 
 /**
- * A TypeArg. For example:
+ * A type argument in a generic argument list.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * Foo::<u32>
+ * //    ^^^
  * ```
  */
 final class TypeArg = Impl::TypeArg;

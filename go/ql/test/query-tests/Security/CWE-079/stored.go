@@ -15,7 +15,7 @@ var q string
 func storedserve1() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		rows, _ := db.Query(q, 32)
+		rows, _ := db.Query(q, 32) // $ Source[go/stored-xss]
 
 		for rows.Next() {
 			var (
@@ -27,7 +27,7 @@ func storedserve1() {
 			}
 
 			// BAD: the stored XSS query assumes all query results are untrusted
-			io.WriteString(w, name)
+			io.WriteString(w, name) // $ Alert[go/stored-xss]
 		}
 	})
 }
@@ -56,9 +56,9 @@ func storedserve2() {
 
 func storedserve3() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		filepath.WalkDir(".", func(path string, _ fs.DirEntry, err error) error {
+		filepath.WalkDir(".", func(path string, _ fs.DirEntry, err error) error { // $ Source[go/stored-xss]
 			// BAD: filenames are considered to be untrusted
-			io.WriteString(w, path)
+			io.WriteString(w, path) // $ Alert[go/stored-xss]
 			return nil
 		})
 	})

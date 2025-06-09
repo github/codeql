@@ -15,9 +15,12 @@ import codeql.rust.elements.StructField
  */
 module Generated {
   /**
-   * A field list of a struct expression. For example:
+   * A list of fields in a struct declaration.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * struct S { x: i32, y: i32 }
+   * //         ^^^^^^^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::StructFieldList` class directly.
    * Use the subclass `StructFieldList`, where the following predicates are available.

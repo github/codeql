@@ -29,6 +29,7 @@ pub enum Compression {
     #[default] // TODO make gzip default
     None,
     Gzip,
+    Zstd,
 }
 
 impl From<Compression> for trap::Compression {
@@ -36,6 +37,7 @@ impl From<Compression> for trap::Compression {
         match val {
             Compression::None => Self::None,
             Compression::Gzip => Self::Gzip,
+            Compression::Zstd => Self::Zstd,
         }
     }
 }
@@ -55,7 +57,7 @@ pub struct Config {
     pub cargo_all_targets: bool,
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
-    pub compression: Compression,
+    pub trap_compression: Compression,
     pub inputs: Vec<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
@@ -127,6 +129,23 @@ impl Config {
         }
     }
 
+    fn cargo_features(&self) -> CargoFeatures {
+        // '*' is to be considered deprecated but still kept in for backward compatibility
+        if self.cargo_features.is_empty() || self.cargo_features.iter().any(|f| f == "*") {
+            CargoFeatures::All
+        } else {
+            CargoFeatures::Selected {
+                features: self
+                    .cargo_features
+                    .iter()
+                    .filter(|f| *f != "default")
+                    .cloned()
+                    .collect(),
+                no_default_features: !self.cargo_features.iter().any(|f| f == "default"),
+            }
+        }
+    }
+
     pub fn to_cargo_config(&self, dir: &AbsPath) -> (CargoConfig, LoadCargoConfig) {
         let sysroot = self.sysroot(dir);
         (
@@ -157,16 +176,7 @@ impl Config {
                         .unwrap_or_else(|| self.scratch_dir.join("target")),
                 )
                 .ok(),
-                features: if self.cargo_features.is_empty() {
-                    Default::default()
-                } else if self.cargo_features.contains(&"*".to_string()) {
-                    CargoFeatures::All
-                } else {
-                    CargoFeatures::Selected {
-                        features: self.cargo_features.clone(),
-                        no_default_features: false,
-                    }
-                },
+                features: self.cargo_features(),
                 target: self.cargo_target.clone(),
                 cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
                 wrap_rustc_in_build_scripts: false,

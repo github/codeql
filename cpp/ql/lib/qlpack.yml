@@ -17,7 +17,7 @@ dependencies:
   codeql/xml: ${workspace}
 dataExtensions:
   - ext/*.model.yml
-  - ext/generated/*.model.yml
+  - ext/generated/**/*.model.yml
   - ext/deallocation/*.model.yml
   - ext/allocation/*.model.yml
 warnOnImplicitThis: true

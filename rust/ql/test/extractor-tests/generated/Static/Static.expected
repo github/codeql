@@ -1,0 +1,1 @@
+| gen_static.rs:4:5:7:23 | Static | hasExtendedCanonicalPath: | no | hasCrateOrigin: | no | hasAttributeMacroExpansion: | no | getNumberOfAttrs: | 0 | hasBody: | yes | isMut: | no | isStatic: | yes | isUnsafe: | no | hasName: | yes | hasTypeRepr: | yes | hasVisibility: | no |

@@ -102,7 +102,11 @@ class KnownOpenSSLCipherConstantAlgorithmInstance extends OpenSSLAlgorithmInstan
     // TODO or trace through getter ctx to set padding
   }
 
-  override string getRawAlgorithmName() { result = this.(Literal).getValue().toString() }
+  override string getRawAlgorithmName() {
+    result = this.(Literal).getValue().toString()
+    or
+    result = this.(Call).getTarget().getName()
+  }
 
   override int getKeySizeFixed() {
     this.(KnownOpenSSLCipherAlgorithmConstant).getExplicitKeySize() = result

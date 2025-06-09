@@ -23814,11 +23814,11 @@ ir.cpp:
 # 2692|                   Conversion = [IntegralConversion] integral conversion
 # 2692|                   Type = [LongType] unsigned long
 # 2692|                   ValueCategory = prvalue
-#-----|           getExpr().getFullyConverted(): [CStyleCast] (int)...
-#-----|               Conversion = [IntegralConversion] integral conversion
-#-----|               Type = [IntType] int
-#-----|               Value = [CStyleCast] 1
-#-----|               ValueCategory = prvalue
+# 2692|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2692|               Conversion = [IntegralConversion] integral conversion
+# 2692|               Type = [IntType] int
+# 2692|               Value = [CStyleCast] 1
+# 2692|               ValueCategory = prvalue
 # 2693|     getStmt(1): [ReturnStmt] return ...
 # 2693|       getExpr(): [VariableAccess] y
 # 2693|           Type = [IntType] int

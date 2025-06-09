@@ -9,9 +9,14 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Item
 
 /**
- * A ItemList. For example:
+ * A list of items in a module or block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * mod m {
+ *     fn foo() {}
+ *     struct S;
+ * }
  * ```
  */
 final class ItemList = Impl::ItemList;
