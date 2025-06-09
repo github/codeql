@@ -13,9 +13,13 @@ import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * A Impl. For example:
+ * An `impl`` block.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * impl MyTrait for MyType {
+ *     fn foo(&self) {}
+ * }
  * ```
  */
 final class Impl = Impl::Impl;

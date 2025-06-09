@@ -9,9 +9,12 @@ import codeql.rust.elements.Attr
 import codeql.rust.elements.Item
 
 /**
- * A SourceFile. For example:
+ * A source file.
+ *
+ * For example:
  * ```rust
- * todo!()
+ * // main.rs
+ * fn main() {}
  * ```
  */
 final class SourceFile = Impl::SourceFile;

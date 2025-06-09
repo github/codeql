@@ -15,9 +15,13 @@ import codeql.rust.elements.internal.TypeReprImpl::Impl as TypeReprImpl
  */
 module Generated {
   /**
-   * A PtrTypeRepr. For example:
+   * A pointer type.
+   *
+   * For example:
    * ```rust
-   * todo!()
+   * let p: *const i32;
+   * let q: *mut i32;
+   * //     ^^^^^^^^^
    * ```
    * INTERNAL: Do not reference the `Generated::PtrTypeRepr` class directly.
    * Use the subclass `PtrTypeRepr`, where the following predicates are available.

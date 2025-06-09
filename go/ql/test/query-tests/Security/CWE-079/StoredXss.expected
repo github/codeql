@@ -1,9 +1,7 @@
 #select
-| StoredXss.go:13:21:13:36 | ...+... | StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... | Stored cross-site scripting vulnerability due to $@. | StoredXss.go:13:21:13:31 | call to Name | stored value |
 | stored.go:30:22:30:25 | name | stored.go:18:3:18:28 | ... := ...[0] | stored.go:30:22:30:25 | name | Stored cross-site scripting vulnerability due to $@. | stored.go:18:3:18:28 | ... := ...[0] | stored value |
 | stored.go:61:22:61:25 | path | stored.go:59:30:59:33 | definition of path | stored.go:61:22:61:25 | path | Stored cross-site scripting vulnerability due to $@. | stored.go:59:30:59:33 | definition of path | stored value |
 edges
-| StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... | provenance |  |
 | stored.go:18:3:18:28 | ... := ...[0] | stored.go:25:14:25:17 | rows | provenance | Src:MaD:1  |
 | stored.go:25:14:25:17 | rows | stored.go:25:29:25:33 | &... | provenance | FunctionModel |
 | stored.go:25:29:25:33 | &... | stored.go:30:22:30:25 | name | provenance |  |
@@ -11,8 +9,6 @@ edges
 models
 | 1 | Source: database/sql; DB; true; Query; ; ; ReturnValue[0]; database; manual |
 nodes
-| StoredXss.go:13:21:13:31 | call to Name | semmle.label | call to Name |
-| StoredXss.go:13:21:13:36 | ...+... | semmle.label | ...+... |
 | stored.go:18:3:18:28 | ... := ...[0] | semmle.label | ... := ...[0] |
 | stored.go:25:14:25:17 | rows | semmle.label | rows |
 | stored.go:25:29:25:33 | &... | semmle.label | &... |
@@ -20,3 +16,5 @@ nodes
 | stored.go:59:30:59:33 | definition of path | semmle.label | definition of path |
 | stored.go:61:22:61:25 | path | semmle.label | path |
 subpaths
+testFailures
+| StoredXss.go:13:39:13:63 | comment | Missing result: Alert[go/stored-xss] |
