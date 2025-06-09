@@ -1,3 +1,7 @@
+## 7.3.1
+
+No user-facing changes.
+
 ## 7.3.0
 
 ### Deprecated APIs
