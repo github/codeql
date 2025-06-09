@@ -3,11 +3,11 @@
  */
 
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
-abstract class EVP_Hash_Initializer extends EVPInitialize { }
+abstract class EVP_Hash_Initializer extends EvpAlgorithmInitializer { }
 
 class EVP_DigestInit_Variant_Calls extends EVP_Hash_Initializer {
   EVP_DigestInit_Variant_Calls() {
@@ -17,16 +17,20 @@ class EVP_DigestInit_Variant_Calls extends EVP_Hash_Initializer {
   }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Digest_Update_Call extends EVPUpdate {
+class EVP_Digest_Update_Call extends EvpUpdate {
   EVP_Digest_Update_Call() { this.(Call).getTarget().getName() = "EVP_DigestUpdate" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
 
 //https://docs.openssl.org/3.0/man3/EVP_DigestInit/#synopsis
-class EVP_Q_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
+class EVP_Q_Digest_Operation extends EvpOperation, Crypto::HashOperationInstance {
   EVP_Q_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Q_digest" }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
@@ -42,19 +46,21 @@ class EVP_Q_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance
   override Expr getOutputArg() { result = this.(Call).getArgument(5) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOperation.super.getOutputArtifact()
+    result = EvpOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOperation.super.getInputConsumer()
+    result = EvpOperation.super.getInputConsumer()
   }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
 
-class EVP_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
+class EVP_Digest_Operation extends EvpOperation, Crypto::HashOperationInstance {
   EVP_Digest_Operation() { this.(Call).getTarget().getName() = "EVP_Digest" }
 
   // There is no context argument for this function
-  override Expr getContextArg() { none() }
+  override CtxPointerSource getContextArg() { none() }
 
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(4) }
 
@@ -69,11 +75,11 @@ class EVP_Digest_Operation extends EVPOperation, Crypto::HashOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(2) }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOperation.super.getOutputArtifact()
+    result = EvpOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOperation.super.getInputConsumer()
+    result = EvpOperation.super.getInputConsumer()
   }
 }
 
@@ -83,6 +89,8 @@ class EVP_Digest_Final_Call extends EVPFinal, Crypto::HashOperationInstance {
         "EVP_DigestFinal", "EVP_DigestFinal_ex", "EVP_DigestFinalXOF"
       ]
   }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 
   override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 
@@ -94,5 +102,7 @@ class EVP_Digest_Final_Call extends EVPFinal, Crypto::HashOperationInstance {
     result = EVPFinal.super.getInputConsumer()
   }
 
-  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
+  override Expr getAlgorithmArg() {
+    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
+  }
 }

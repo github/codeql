@@ -1,5 +1,5 @@
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.CtxFlow
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
 /**
@@ -25,48 +25,59 @@ abstract class OpenSSLOperation extends Crypto::OperationInstance instanceof Cal
 }
 
 /**
- * A Call to initialization functions from the EVP API.
+ * A Call to an initialization function for an operation.
  * These are not operations in the sense of Crypto::OperationInstance,
  * but they are used to initialize the context for the operation.
+ * There may be multiple initialization calls for the same operation.
+ * Intended for use with EvPOperation.
  */
-abstract class EVPInitialize extends Call {
+abstract class EvpInitializer extends Call {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
+   * The context argument is the context coming into the initializer and is the output as well.
+   * This is assumed to be the same argument.
    */
-  Expr getContextArg() { result = this.(Call).getArgument(0) }
+  abstract CtxPointerSource getContextArg();
+}
 
-  /**
-   * Gets the type of key operation, none if not applicable.
-   */
-  Crypto::KeyOperationSubtype getKeyOperationSubtype() { none() }
+abstract class EvpKeySizeInitializer extends EvpInitializer {
+  abstract Expr getKeySizeArg();
+}
 
-  /**
-   * Explicitly specified algorithm or none if implicit (e.g., established by the key).
-   * None if not applicable.
-   */
-  Expr getAlgorithmArg() { none() }
+abstract class EvpKeyOperationSubtypeInitializer extends EvpInitializer {
+  abstract Crypto::KeyOperationSubtype getKeyOperationSubtype();
+}
 
-  /**
-   * Gets the key for the operation, none if not applicable.
-   */
-  Expr getKeyArg() { none() }
+abstract class EvpAlgorithmInitializer extends EvpInitializer {
+  abstract Expr getAlgorithmArg();
+}
 
-  /**
-   * Gets the IV/nonce, none if not applicable.
-   */
-  Expr getIVArg() { none() }
+abstract class EvpKeyInitializer extends EvpInitializer {
+  //, EvpAlgorithmInitializer {
+  abstract Expr getKeyArg();
+  // /**
+  //  * Any key arg can potentially be traced to find the algorithm used to generate the key.
+  //  */
+  // override Expr getAlgorithmArg(){
+  // }
+}
+
+abstract class EvpIVInitializer extends EvpInitializer {
+  abstract Expr getIVArg();
 }
 
 /**
- * A Call to update functions from the EVP API.
+ * A Call to an "update" function.
  * These are not operations in the sense of Crypto::OperationInstance,
- * but they are used to update the context for the operation.
+ * but produce intermediate results for the operation that are later finalized
+ * (see EvpFinal).
+ * Intended for use with EvPOperation.
  */
-abstract class EVPUpdate extends Call {
+abstract class EvpUpdate extends Call {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
-  Expr getContextArg() { result = this.(Call).getArgument(0) }
+  abstract CtxPointerSource getContextArg();
 
   /**
    * Update calls always have some input data like plaintext or message digest.
@@ -99,13 +110,13 @@ module AlgGetterToArgFlow = DataFlow::Global<AlgGetterToArgConfig>;
 /**
  * The base class for all operations of the EVP API.
  * This captures one-shot APIs (with and without an initilizer call) and final calls.
- * Provides some default methods for Crypto::KeyOperationInstance class
+ * Provides some default methods for Crypto::KeyOperationInstance class.
  */
-abstract class EVPOperation extends OpenSSLOperation {
+abstract class EvpOperation extends OpenSSLOperation {
   /**
    * Gets the context argument that ties together initialization, updates and/or final calls.
    */
-  Expr getContextArg() { result = this.(Call).getArgument(0) }
+  abstract CtxPointerSource getContextArg();
 
   /**
    * Some input data like plaintext or message digest.
@@ -121,9 +132,7 @@ abstract class EVPOperation extends OpenSSLOperation {
   /**
    * Finds the initialization call, may be none.
    */
-  EVPInitialize getInitCall() {
-    CTXFlow::ctxArgOrRetFlowsToCtxArg(result.getContextArg(), this.getContextArg())
-  }
+  EvpInitializer getInitCall() { ctxSrcToSrcFlow(result.getContextArg(), this.getContextArg()) }
 
   Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
     result = DataFlow::exprNode(this.getOutputArg())
@@ -139,15 +148,16 @@ abstract class EVPOperation extends OpenSSLOperation {
 
 /**
  * An EVP final call,
- * which is typicall usesed in an update/final pattern.
+ * which is typicall used in an update/final pattern.
+ * Final operations are typically identified by "final" in the name,
+ * e.g., "EVP_DigestFinal", "EVP_EncryptFinal", etc.
+ * however, this is not a strict rule.
  */
-abstract class EVPFinal extends EVPOperation {
+abstract class EVPFinal extends EvpOperation {
   /**
    * All update calls that were executed before this final call.
    */
-  EVPUpdate getUpdateCalls() {
-    CTXFlow::ctxArgOrRetFlowsToCtxArg(result.getContextArg(), this.getContextArg())
-  }
+  EvpUpdate getUpdateCalls() { ctxSrcToSrcFlow(result.getContextArg(), this.getContextArg()) }
 
   /**
    * Gets the input data provided to all update calls.

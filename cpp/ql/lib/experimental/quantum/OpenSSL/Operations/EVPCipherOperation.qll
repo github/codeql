@@ -1,5 +1,5 @@
 private import experimental.quantum.Language
-private import experimental.quantum.OpenSSL.CtxFlow as CTXFlow
+private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 
@@ -31,7 +31,11 @@ Crypto::KeyOperationSubtype intToCipherOperationSubtype(int i) {
 }
 
 // TODO: need to add key consumer
-abstract class EVP_Cipher_Initializer extends EVPInitialize {
+abstract class EVP_Cipher_Initializer extends EvpKeyOperationSubtypeInitializer,
+  EvpAlgorithmInitializer, EvpKeyInitializer, EvpIVInitializer
+{
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+
   override Expr getAlgorithmArg() { result = this.(Call).getArgument(1) }
 
   abstract Expr getOperationSubtypeArg();
@@ -94,12 +98,14 @@ class EVP_CipherInit_SKEY_Call extends EVP_EX2_Initializer {
   override Expr getOperationSubtypeArg() { result = this.(Call).getArgument(5) }
 }
 
-class EVP_Cipher_Update_Call extends EVPUpdate {
+class EVP_Cipher_Update_Call extends EvpUpdate {
   EVP_Cipher_Update_Call() {
     this.(Call).getTarget().getName() in [
         "EVP_EncryptUpdate", "EVP_DecryptUpdate", "EVP_CipherUpdate"
       ]
   }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 
   override Expr getInputArg() { result = this.(Call).getArgument(3) }
 
@@ -110,7 +116,7 @@ class EVP_Cipher_Update_Call extends EVPUpdate {
  * see: https://docs.openssl.org/master/man3/EVP_EncryptInit/#synopsis
  * Base configuration for all EVP cipher operations.
  */
-abstract class EVP_Cipher_Operation extends EVPOperation, Crypto::KeyOperationInstance {
+abstract class EVP_Cipher_Operation extends EvpOperation, Crypto::KeyOperationInstance {
   override Expr getOutputArg() { result = this.(Call).getArgument(1) }
 
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
@@ -120,34 +126,38 @@ abstract class EVP_Cipher_Operation extends EVPOperation, Crypto::KeyOperationIn
     result instanceof Crypto::TDecryptMode and
     this.(Call).getTarget().getName().toLowerCase().matches("%decrypt%")
     or
-    result = this.getInitCall().getKeyOperationSubtype() and
+    result = this.getInitCall().(EvpKeyOperationSubtypeInitializer).getKeyOperationSubtype() and
     this.(Call).getTarget().getName().toLowerCase().matches("%cipher%")
   }
 
   override Crypto::ConsumerInputDataFlowNode getNonceConsumer() {
-    this.getInitCall().getIVArg() = result.asExpr()
+    this.getInitCall().(EvpIVInitializer).getIVArg() = result.asExpr()
   }
 
   override Crypto::ConsumerInputDataFlowNode getKeyConsumer() {
-    this.getInitCall().getKeyArg() = result.asExpr()
+    this.getInitCall().(EvpKeyInitializer).getKeyArg() = result.asExpr()
     // todo: or track to the EVP_PKEY_CTX_new
   }
 
   override Crypto::ArtifactOutputDataFlowNode getOutputArtifact() {
-    result = EVPOperation.super.getOutputArtifact()
+    result = EvpOperation.super.getOutputArtifact()
   }
 
   override Crypto::ConsumerInputDataFlowNode getInputConsumer() {
-    result = EVPOperation.super.getInputConsumer()
+    result = EvpOperation.super.getInputConsumer()
   }
 }
 
-class EVP_Cipher_Call extends EVPOperation, EVP_Cipher_Operation {
+class EVP_Cipher_Call extends EvpOperation, EVP_Cipher_Operation {
   EVP_Cipher_Call() { this.(Call).getTarget().getName() = "EVP_Cipher" }
 
   override Expr getInputArg() { result = this.(Call).getArgument(2) }
 
-  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
+  override Expr getAlgorithmArg() {
+    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
+  }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
 
 class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
@@ -167,5 +177,9 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
     result = EVP_Cipher_Operation.super.getOutputArg()
   }
 
-  override Expr getAlgorithmArg() { result = this.getInitCall().getAlgorithmArg() }
+  override Expr getAlgorithmArg() {
+    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
+  }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }

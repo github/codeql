@@ -4,7 +4,7 @@ private import OpenSSLOperationBase
 private import experimental.quantum.OpenSSL.AlgorithmValueConsumers.OpenSSLAlgorithmValueConsumers
 private import semmle.code.cpp.dataflow.new.DataFlow
 
-class EVPKeyGenInitialize extends EVPInitialize {
+class EVPKeyGenInitialize extends EvpAlgorithmInitializer {
   EVPKeyGenInitialize() {
     this.(Call).getTarget().getName() in [
         "EVP_PKEY_keygen_init",
@@ -12,54 +12,88 @@ class EVPKeyGenInitialize extends EVPInitialize {
       ]
   }
 
-  override Expr getAlgorithmArg() {
-    // The context argument encodes the algorithm
-    result = this.getContextArg()
-  }
+  /**
+   * The algorithm is encoded through the context argument.
+   */
+  override Expr getAlgorithmArg() { result = this.getContextArg() }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
 
-// /**
-//  * All calls that can be tracked via ctx.
-//  * For example calls used to set parameters like a key size.
-//  */
-// class EVPKeyGenUpdate extends Call {
-//   EVPKeyGenUpdate() {
-//     this.(Call).getTarget().getName() in [
-//         "EVP_PKEY_CTX_set_rsa_keygen_bits",
-//         // TODO: "EVP_PKEY_CTX_set_params"
-//       ]
-//   }
-//   /**
-//    * No input in our meaning.
-//    */
-//   override Expr getInputArg() { none() }
-//   /**
-//    * No output in our meaning.
-//    */
-//   override Expr getOutputArg() { none() }
-//   Expr getKeySizeArg() {
-//     this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_keygen_bits" and
-//     result = this.(Call).getArgument(1)
-//   }
-// }
-class EVPKeyGenOperation extends EVPOperation, Crypto::KeyGenerationOperationInstance {
+/**
+ * A call to `EVP_PKEY_CTX_new` or `EVP_PKEY_CTX_new_from_pkey`.
+ * These calls initialize the context from a prior key.
+ * The key may be generated previously, or merely had it's
+ * parameters set (e.g., `EVP_PKEY_paramgen`).
+ * NOTE: for the case of `EVP_PKEY_paramgen`, these calls
+ * are encoded as context passthroughs, and any operation
+ * will get all associated initializers for teh paramgen
+ * at the final keygen operation automatically.
+ */
+class EVPNewKeyCtx extends EvpKeyInitializer {
+  Expr keyArg;
+
+  EVPNewKeyCtx() {
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new" and
+    keyArg = this.(Call).getArgument(0)
+    or
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
+    keyArg = this.(Call).getArgument(1)
+  }
+
+  /**
+   * Context is returned
+   */
+  override CtxPointerSource getContextArg() { result = this }
+
+  override Expr getKeyArg() { result = keyArg }
+  //TODO: do we specify the algorithm from the key as well?
+}
+
+/**
+ * A call to `EVP_PKEY_CTX_set_rsa_keygen_bits`.
+ * This sets the key size for RSA key generation.
+ */
+class EVPSetRSAKeyKeyBits extends EvpKeySizeInitializer {
+  EVPSetRSAKeyKeyBits() { this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_rsa_keygen_bits" }
+
+  override Expr getKeySizeArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+}
+
+/**
+ * A call to `EVP_PKEY_CTX_set_dsa_paramgen_bits`.
+ * This sets the key size for DSA key generation.
+ */
+class EVPSetDSAKeyParamGenBits extends EvpKeySizeInitializer {
+  EVPSetDSAKeyParamGenBits() {
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_set_dsa_paramgen_bits"
+  }
+
+  override Expr getKeySizeArg() { result = this.(Call).getArgument(1) }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+}
+
+class EVPKeyGenOperation extends EVPFinal, Crypto::KeyGenerationOperationInstance {
   DataFlow::Node keyResultNode;
 
   EVPKeyGenOperation() {
     this.(Call).getTarget().getName() in ["EVP_RSA_gen", "EVP_PKEY_Q_keygen"] and
     keyResultNode.asExpr() = this
     or
-    this.(Call).getTarget().getName() in [
-        "EVP_PKEY_generate", "EVP_PKEY_keygen", "EVP_PKEY_paramgen"
-      ] and
+    this.(Call).getTarget().getName() in ["EVP_PKEY_generate", "EVP_PKEY_keygen"] and
     keyResultNode.asDefiningArgument() = this.(Call).getArgument(1)
   }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 
   override Expr getAlgorithmArg() {
     this.(Call).getTarget().getName() = "EVP_PKEY_Q_keygen" and
     result = this.(Call).getArgument(0)
     or
-    result = this.getInitCall().getAlgorithmArg()
+    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
   }
 
   override Crypto::KeyArtifactType getOutputKeyType() { result = Crypto::TAsymmetricKeyType() }
@@ -71,16 +105,16 @@ class EVPKeyGenOperation extends EVPOperation, Crypto::KeyGenerationOperationIns
   override Crypto::ArtifactOutputDataFlowNode getOutputKeyArtifact() { result = keyResultNode }
 
   override Crypto::ConsumerInputDataFlowNode getKeySizeConsumer() {
-    none()
-    // if this.(Call).getTarget().getName() = "EVP_PKEY_Q_keygen"
-    // then result = DataFlow::exprNode(this.(Call).getArgument(3)) // TODO: may be wrong for EC keys
-    // else
-    //   if this.(Call).getTarget().getName() = "EVP_RSA_gen"
-    //   then result = DataFlow::exprNode(this.(Call).getArgument(0))
-    //   else result = DataFlow::exprNode(this.getUpdateCalls().(EVPKeyGenUpdate).getKeySizeArg())
-  }
-
-  override int getKeySizeFixed() {
-    none() // TODO
+    this.(Call).getTarget().getName() = "EVP_PKEY_Q_keygen" and
+    result = DataFlow::exprNode(this.(Call).getArgument(3)) and
+    // Arg 3 (0 based) is only a key size if the 'type' parameter is RSA, however,
+    // as a crude approximation, assume that if the type of the argument is not a derived type
+    // the argument must specify a key size (this is to avoid tracing if "rsa" is in the type parameter)
+    not this.(Call).getArgument(3).getType().getUnderlyingType() instanceof DerivedType
+    or
+    this.(Call).getTarget().getName() = "EVP_RSA_gen" and
+    result = DataFlow::exprNode(this.(Call).getArgument(0))
+    or
+    result = DataFlow::exprNode(this.getInitCall().(EvpKeySizeInitializer).getKeySizeArg())
   }
 }
