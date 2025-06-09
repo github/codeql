@@ -60,9 +60,12 @@ class BashShellScript extends ShellScript {
     )
   }
 
-  private predicate rankedCmdSubstitutionReplacements(int i, string old, string new) {
-    old = rank[i](string old2 | this.cmdSubstitutionReplacement(old2, _, _) | old2) and
-    this.cmdSubstitutionReplacement(old, new, _)
+  private predicate rankedCmdSubstitutionReplacements(int i, string command, string commandId) {
+    // rank commands by their unique IDs
+    commandId = rank[i](string c, string id | this.cmdSubstitutionReplacement(c, id, _) | id) and
+    // since we cannot output (command, ID) tuples from the rank operation,
+    // we need to work out the specific command associated with the resulting ID
+    this.cmdSubstitutionReplacement(command, commandId, _)
   }
 
   private predicate doReplaceCmdSubstitutions(int line, int round, string old, string new) {
