@@ -8,29 +8,55 @@ class BashShellScript extends ShellScript {
     )
   }
 
-  private string lineProducer(int i) {
-    result = this.getRawScript().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", i)
+  /**
+   * Gets the line at 0-based index `lineIndex` within this shell script,
+   * assuming newlines as separators.
+   */
+  private string lineProducer(int lineIndex) {
+    result = this.getRawScript().regexpReplaceAll("\\\\\\s*\n", "").splitAt("\n", lineIndex)
   }
 
-  private predicate cmdSubstitutionReplacement(string cmdSubs, string id, int k) {
-    exists(string line | line = this.lineProducer(k) |
-      exists(int i, int j |
-        cmdSubs =
-          // $() cmd substitution
-          line.regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", i, j)
-              .regexpReplaceAll("^\\$\\(", "")
-              .regexpReplaceAll("\\)$", "") and
-        id = "cmdsubs:" + k + ":" + i + ":" + j
-      )
-      or
-      exists(int i, int j |
-        // `...` cmd substitution
-        cmdSubs =
-          line.regexpFind("\\`[^\\`]+\\`", i, j)
-              .regexpReplaceAll("^\\`", "")
-              .regexpReplaceAll("\\`$", "") and
-        id = "cmd:" + k + ":" + i + ":" + j
-      )
+  private predicate cmdSubstitutionReplacement(string command, string id, int lineIndex) {
+    this.commandInSubstitution(lineIndex, command, id)
+    or
+    this.commandInBackticks(lineIndex, command, id)
+  }
+
+  /**
+   * Holds if there is a command substitution `$(command)` in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this command.
+   */
+  private predicate commandInSubstitution(int lineIndex, string command, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      command =
+        // Look for the command inside a $(...) command substitution
+        this.lineProducer(lineIndex)
+            .regexpFind("\\$\\((?:[^()]+|\\((?:[^()]+|\\([^()]*\\))*\\))*\\)", occurrenceIndex,
+              occurrenceOffset)
+            // trim starting $( - TODO do this in first regex
+            .regexpReplaceAll("^\\$\\(", "")
+            // trim ending ) - TODO do this in first regex
+            .regexpReplaceAll("\\)$", "") and
+      id = "cmdsubs:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset
+    )
+  }
+
+  /**
+   * Holds if `command` is a command in backticks `` `...` `` in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this command.
+   */
+  private predicate commandInBackticks(int lineIndex, string command, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      command =
+        this.lineProducer(lineIndex)
+            .regexpFind("\\`[^\\`]+\\`", occurrenceIndex, occurrenceOffset)
+            // trim leading backtick - TODO do this in first regex
+            .regexpReplaceAll("^\\`", "")
+            // trim trailing backtick - TODO do this in first regex
+            .regexpReplaceAll("\\`$", "") and
+      id = "cmd:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset
     )
   }
 
