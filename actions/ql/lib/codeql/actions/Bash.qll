@@ -93,23 +93,45 @@ class BashShellScript extends ShellScript {
     this.cmdSubstitutionReplacement(result, _, i)
   }
 
+  /**
+   * Holds if `quotedStr` is a string in double quotes in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this quoted string.
+   */
+  private predicate doubleQuotedString(int lineIndex, string quotedStr, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      // double quoted string
+      quotedStr =
+        this.cmdSubstitutedLineProducer(lineIndex)
+            .regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", occurrenceIndex, occurrenceOffset) and
+      id =
+        "qstr:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset + ":" +
+          quotedStr.length() + ":" + quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+    )
+  }
+
+  /**
+   * Holds if `quotedStr` is a string in single quotes in
+   * the line at `lineIndex` in the shell script,
+   * and `id` is a unique identifier for this quoted string.
+   */
+  private predicate singleQuotedString(int lineIndex, string quotedStr, string id) {
+    exists(int occurrenceIndex, int occurrenceOffset |
+      // single quoted string
+      quotedStr =
+        this.cmdSubstitutedLineProducer(lineIndex)
+            .regexpFind("'((?:\\\\.|[^'\\\\])*)'", occurrenceIndex, occurrenceOffset) and
+      id =
+        "qstr:" + lineIndex + ":" + occurrenceIndex + ":" + occurrenceOffset + ":" +
+          quotedStr.length() + ":" + quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
+    )
+  }
+
   private predicate quotedStringReplacement(string quotedStr, string id) {
-    exists(string line, int k | line = this.cmdSubstitutedLineProducer(k) |
-      exists(int i, int j |
-        // double quoted string
-        quotedStr = line.regexpFind("\"((?:[^\"\\\\]|\\\\.)*)\"", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
+    exists(int lineIndex |
+      this.doubleQuotedString(lineIndex, quotedStr, id)
       or
-      exists(int i, int j |
-        // single quoted string
-        quotedStr = line.regexpFind("'((?:\\\\.|[^'\\\\])*)'", i, j) and
-        id =
-          "qstr:" + k + ":" + i + ":" + j + ":" + quotedStr.length() + ":" +
-            quotedStr.regexpReplaceAll("[^a-zA-Z0-9]", "")
-      )
+      this.singleQuotedString(lineIndex, quotedStr, id)
     ) and
     // Only do this for strings that might otherwise disrupt subsequent parsing
     quotedStr.regexpMatch("[\"'].*[$\n\r'\"" + Bash::separator() + "].*[\"']")
