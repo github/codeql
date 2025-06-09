@@ -40,7 +40,7 @@ fn get_local_dangling_raw_mut() -> *mut i64 {
 } // (return value immediately becomes dangling)
 
 fn get_param_dangling(param5: i64) -> *const i64 {
-	return &param5; // $ MISSING: Source[rust/access-after-lifetime-ended]=param5
+	return &param5; // $ Source[rust/access-after-lifetime-ended]=param5
 } // (return value immediately becomes dangling)
 
 fn get_local_field_dangling() -> *const i64 {
@@ -70,7 +70,7 @@ pub fn test_local_dangling() {
 		let v2 = *p2; // $ Alert[rust/access-after-lifetime-ended]=local2
 		let v3 = *p3; // $ Alert[rust/access-after-lifetime-ended]=local3
 		let v4 = *p4; // $ Alert[rust/access-after-lifetime-ended]=local4
-		let v5 = *p5; // $ MISSING: Alert[rust/access-after-lifetime-ended]=param5
+		let v5 = *p5; // $ Alert[rust/access-after-lifetime-ended]=param5
 		let v6 = *p6; // $ Alert[rust/access-after-lifetime-ended]=localfield
 		let v7 = *p7; // $ Alert[rust/access-after-lifetime-ended]=local7
 		*p2 = 8; // $ Alert[rust/access-after-lifetime-ended]=local2

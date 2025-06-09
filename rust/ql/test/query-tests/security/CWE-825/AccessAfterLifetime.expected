@@ -3,6 +3,7 @@
 | lifetime.rs:70:13:70:14 | p2 | lifetime.rs:27:9:27:22 | &mut my_local2 | lifetime.rs:70:13:70:14 | p2 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:25:10:25:18 | my_local2 | my_local2 |
 | lifetime.rs:71:13:71:14 | p3 | lifetime.rs:33:9:33:28 | &raw const my_local3 | lifetime.rs:71:13:71:14 | p3 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:31:6:31:14 | my_local3 | my_local3 |
 | lifetime.rs:72:13:72:14 | p4 | lifetime.rs:39:9:39:26 | &raw mut my_local4 | lifetime.rs:72:13:72:14 | p4 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:37:10:37:18 | my_local4 | my_local4 |
+| lifetime.rs:73:13:73:14 | p5 | lifetime.rs:43:9:43:15 | &param5 | lifetime.rs:73:13:73:14 | p5 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:42:23:42:28 | param5 | param5 |
 | lifetime.rs:74:13:74:14 | p6 | lifetime.rs:50:9:50:18 | &... | lifetime.rs:74:13:74:14 | p6 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:47:6:47:8 | val | val |
 | lifetime.rs:75:13:75:14 | p7 | lifetime.rs:63:8:63:27 | &raw const my_local7 | lifetime.rs:75:13:75:14 | p7 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:62:7:62:15 | my_local7 | my_local7 |
 | lifetime.rs:76:4:76:5 | p2 | lifetime.rs:27:9:27:22 | &mut my_local2 | lifetime.rs:76:4:76:5 | p2 | Access of a pointer to $@ after it's lifetime has ended. | lifetime.rs:25:10:25:18 | my_local2 | my_local2 |

@@ -54,12 +54,26 @@ module AccessAfterLifetime {
   }
 
   /**
+   * Holds if `var` has scope `scope`.
+   */
+  private predicate variableScope(Variable var, BlockExpr scope) {
+    // local variable
+    scope = var.getEnclosingBlock()
+    or
+    // parameter
+    exists(Callable c |
+      var.getParameter().getEnclosingCallable() = c and
+      scope.getParentNode() = c
+    )
+  }
+
+  /**
    * Holds if `value` accesses a variable `target` with scope `scope`.
    */
   private predicate valueScope(Expr value, Variable target, BlockExpr scope) {
     // variable access (to a non-reference)
     target = value.(VariableAccess).getVariable() and
-    scope = target.getEnclosingBlock() and
+    variableScope(target, scope) and
     not TypeInference::inferType(value) instanceof RefType
     or
     // field access
