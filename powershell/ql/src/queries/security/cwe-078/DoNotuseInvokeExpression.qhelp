@@ -11,7 +11,7 @@
 
 <p>Avoid using <code>Invoke-Expression</code> in your powershell code.</p>
 
-<p>If you’re running some command and the command path has spaces in it, then you need the command invocation operator <code>&</code></p>
+<p>If you’re running some command and the command path has spaces in it, then you need the command invocation operator <code>&amp;</code></p>
 </recommendation>
 
 <references>
