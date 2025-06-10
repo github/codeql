@@ -25,18 +25,43 @@ predicate initSelfCall(Function init, DataFlow::MethodCallNode call) {
   )
 }
 
-predicate initSelfCallOverridden(Function init, DataFlow::MethodCallNode call, Function override) {
-  initSelfCall(init, call) and
-  exists(Class superclass, Class subclass |
+predicate initSelfCallOverridden(
+  Function init, DataFlow::MethodCallNode call, Function target, Function override
+) {
+  init.isInitMethod() and
+  call.getScope() = init and
+  exists(Class superclass, Class subclass, DataFlow::Node self, DataFlow::ParameterNode selfArg |
     superclass = init.getScope() and
     subclass = override.getScope() and
     subclass = getADirectSubclass+(superclass) and
-    call.calls(_, override.getName())
+    selfArg.getParameter() = init.getArg(0) and
+    DataFlow::localFlow(selfArg, self) and
+    call.calls(self, override.getName()) and
+    target = superclass.getAMethod() and
+    target.getName() = override.getName() and
+    not lastUse(self)
   )
 }
 
-from Function init, DataFlow::MethodCallNode call, Function override
-where initSelfCallOverridden(init, call, override)
-select call,
-  "This call to " + override.getName() + " in initialization method is overridden by " +
-    override.getScope().getName() + ".$@.", override, override.getName()
+predicate lastUse(DataFlow::Node node) {
+  not exists(DataFlow::Node next | DataFlow::localFlow(node, next) and node != next)
+}
+
+predicate readsFromSelf(Function method) {
+  exists(DataFlow::ParameterNode self, DataFlow::Node sink |
+    self.getParameter() = method.getArg(0) and
+    DataFlow::localFlow(self, sink)
+  |
+    sink instanceof DataFlow::ArgumentNode
+    or
+    sink = any(DataFlow::AttrRead a).getObject()
+  )
+}
+
+from Function init, DataFlow::MethodCallNode call, Function target, Function override
+where
+  initSelfCallOverridden(init, call, target, override) and
+  readsFromSelf(override) and
+  not isClassmethod(override)
+select call, "This call to $@ in an initialization method is overridden by $@.", target,
+  target.getQualifiedName(), override, override.getQualifiedName()
