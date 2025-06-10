@@ -11,6 +11,7 @@ ql/csharp/ql/src/Likely Bugs/EqualityCheckOnFloats.ql
 ql/csharp/ql/src/Likely Bugs/ReferenceEqualsOnValueTypes.ql
 ql/csharp/ql/src/Likely Bugs/SelfAssignment.ql
 ql/csharp/ql/src/Likely Bugs/UncheckedCastInEquals.ql
+ql/csharp/ql/src/Performance/StringConcatenationInLoop.ql
 ql/csharp/ql/src/Performance/UseTryGetValue.ql
 ql/csharp/ql/src/Useless code/DefaultToString.ql
 ql/csharp/ql/src/Useless code/IntGetHashCode.ql
