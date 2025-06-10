@@ -16,9 +16,13 @@ import zipfile
 import tarfile
 import shutil
 
+
 def missing_module(module_name: str) -> None:
-    print(f"ERROR: {module_name} is not installed. Please install it with 'pip install {module_name}'.")
+    print(
+        f"ERROR: {module_name} is not installed. Please install it with 'pip install {module_name}'."
+    )
     sys.exit(1)
+
 
 try:
     import yaml
@@ -41,14 +45,19 @@ build_dir = os.path.join(gitroot, "mad-generation-build")
 
 
 # A project to generate models for
-Project = TypedDict("Project", {
-    "name": Required[str],
-    "git-repo": str,
-    "git-tag": str,
-    "with-sinks": bool,
-    "with-sources": bool,
-    "with-summaries": bool,
-}, total=False)
+Project = TypedDict(
+    "Project",
+    {
+        "name": Required[str],
+        "git-repo": str,
+        "git-tag": str,
+        "with-sinks": bool,
+        "with-sources": bool,
+        "with-summaries": bool,
+    },
+    total=False,
+)
+
 
 def should_generate_sinks(project: Project) -> bool:
     return project.get("with-sinks", True)
@@ -107,7 +116,9 @@ def clone_project(project: Project) -> str:
     return target_dir
 
 
-def run_in_parallel[T, U](
+def run_in_parallel[
+    T, U
+](
     func: Callable[[T], U],
     items: List[T],
     *,
