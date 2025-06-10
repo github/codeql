@@ -392,7 +392,7 @@ module NameResolution {
   private string normalizeModuleName(string name) {
     result =
       name.regexpReplaceAll("^node:", "")
-          .regexpReplaceAll("\\.[jt]sx?$", "")
+          .regexpReplaceAll("\\.[cm]?[jt]sx?$", "")
           .regexpReplaceAll("/(index)?$", "")
   }
 
