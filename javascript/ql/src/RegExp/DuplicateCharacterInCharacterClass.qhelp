@@ -24,14 +24,14 @@ Common mistakes include:
 Examine each duplicate character to determine the intended behavior:
 </p>
 <ul>
-<li><strong>If you see <code>|</code> inside square brackets (e.g., <code>[a|b|c]</code>)</strong>: This is usually a mistake. The author likely intended alternation. Replace the character class with a group: <code>(a|b|c)</code></li>
+<li>If you see <code>|</code> inside square brackets (e.g., <code>[a|b|c]</code>): This is usually a mistake. The author likely intended alternation. Replace the character class with a group: <code>(a|b|c)</code></li>
 <li>If trying to match alternative strings, use parentheses <code>()</code> for grouping instead of square brackets</li>
 <li>If the duplicate was truly accidental, remove the redundant characters</li>
 <li>If trying to use special regex operators inside square brackets, note that most operators (like <code>|</code>) are treated as literal characters</li>
 </ul>
 
 <p>
-<strong>Important:</strong> Simply removing <code>|</code> characters from character classes is rarely the correct fix. Instead, analyze the pattern to understand what the author intended to match.
+Note that simply removing <code>|</code> characters from character classes is rarely the correct fix. Instead, analyze the pattern to understand what the author intended to match.
 </p>
 
 </recommendation>
@@ -53,7 +53,7 @@ To fix this problem, the regular expression should be rewritten to <code>/(passw
 <strong>Example 2: CSS unit matching</strong>
 </p>
 <p>
-The pattern <code>r?e[m|x]</code> appears to be trying to match "rem" or "rex", but actually matches "re" followed by any of the characters <code>{m, |, x}</code>. The correct pattern should be <code>r?e(m|x)</code> or <code>(rem|rex)</code>.
+The pattern <code>r?e[m|x]</code> appears to be trying to match "rem" or "rex", but actually matches "re" followed by any of the characters <code>{m, |, x}</code>. The correct pattern should be <code>r?e(m|x)</code> or <code>r?e[mx]</code>.
 </p>
 
 <p>
