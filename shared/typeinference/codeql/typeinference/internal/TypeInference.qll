@@ -1289,14 +1289,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         exists(DeclarationPosition dpos | accessDeclarationPositionMatch(apos, dpos) |
           // A suffix of `path` leads to a type parameter in the target
           exists(Declaration target, TypePath prefix, TypeParameter tp, TypePath suffix |
-            tp = target.getDeclaredType(pragma[only_bind_into](dpos), prefix) and
+            tp = target.getDeclaredType(dpos, prefix) and
             path = prefix.append(suffix) and
             typeMatch(a, target, suffix, result, tp)
           )
           or
           // `path` corresponds directly to a concrete type in the declaration
           exists(Declaration target |
-            result = target.getDeclaredType(pragma[only_bind_into](dpos), path) and
+            result = target.getDeclaredType(dpos, path) and
             target = a.getTarget() and
             not result instanceof TypeParameter
           )
