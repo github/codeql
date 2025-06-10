@@ -423,27 +423,23 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           )
       }
 
-      /**
-       * Holds if `app` is a possible instantiation of `tm` at `path`. That is
-       * the type at `path` in `tm` is either a type parameter or equal to the
-       * type at the same path in `app`.
-       */
-      bindingset[app, abs, tm, path]
-      private predicate satisfiesConcreteTypeAt(
-        App app, TypeAbstraction abs, TypeMention tm, TypePath path
+      pragma[nomagic]
+      private Type resolveNthTypeAt(
+        App app, TypeAbstraction abs, TypeMention tm, int i, TypePath path
       ) {
-        exists(Type t |
-          tm.resolveTypeAt(path) = t and
-          if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
-        )
+        potentialInstantiationOf(app, abs, tm) and
+        path = getNthPath(tm, i) and
+        result = tm.resolveTypeAt(path)
       }
 
       pragma[nomagic]
       private predicate satisfiesConcreteTypesFromIndex(
         App app, TypeAbstraction abs, TypeMention tm, int i
       ) {
-        potentialInstantiationOf(app, abs, tm) and
-        satisfiesConcreteTypeAt(app, abs, tm, getNthPath(tm, i)) and
+        exists(Type t, TypePath path |
+          t = resolveNthTypeAt(app, abs, tm, i, path) and
+          if t = abs.getATypeParameter() then any() else app.getTypeAt(path) = t
+        ) and
         // Recurse unless we are at the first path
         if i = 0 then any() else satisfiesConcreteTypesFromIndex(app, abs, tm, i - 1)
       }
