@@ -179,7 +179,7 @@ predicate hasNoEffect(Expr e) {
     e.getLastToken().getNextToken().getValue() = ":"
   ) and
   // exclude expressions that are part of a conditional expression
-  not exists(ConditionalExpr cond | e.getParent() = cond |
+  not exists(ConditionalExpr cond | e = cond.getABranch() |
     e instanceof NullLiteral or
     e.(GlobalVarAccess).getName() = "undefined" or
     e.(NumberLiteral).getIntValue() = 0 or
