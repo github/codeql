@@ -353,7 +353,7 @@ def download_dca_databases(
     )
     targets = response["targets"]
     project_map = {project["name"]: project for project in projects}
-    artifact_map = {}
+    analyzed_databases = {}
     for data in targets.values():
         downloads = data["downloads"]
         analyzed_database = downloads["analyzed_database"]
@@ -364,12 +364,12 @@ def download_dca_databases(
             print(f"Skipping {pretty_name} as it is not in the list of projects")
             continue
 
-        if pretty_name in artifact_map:
+        if pretty_name in analyzed_databases:
             print(
-                f"Skipping previous database {artifact_map[pretty_name]['artifact_name']} for {pretty_name}"
+                f"Skipping previous database {analyzed_databases[pretty_name]['artifact_name']} for {pretty_name}"
             )
 
-        artifact_map[pretty_name] = analyzed_database
+        analyzed_databases[pretty_name] = analyzed_database
 
     def download_and_decompress(analyzed_database: dict) -> str:
         artifact_name = analyzed_database["artifact_name"]
@@ -397,8 +397,7 @@ def download_dca_databases(
             shutil.rmtree(artifact_unzipped_location, ignore_errors=True)
             # And then we extract it to build_dir/artifact_name
             zip_ref.extractall(artifact_unzipped_location)
-            # And then we iterate over the contents of the extracted directory
-            # and extract the language tar.gz file inside it
+            # And then we extract the language tar.gz file inside it
             artifact_tar_location = os.path.join(
                 artifact_unzipped_location, f"{language}.tar.gz"
             )
@@ -411,7 +410,7 @@ def download_dca_databases(
 
     results = run_in_parallel(
         download_and_decompress,
-        list(artifact_map.values()),
+        list(analyzed_databases.values()),
         on_error=lambda db, exc: print(
             f"ERROR: Failed to download and decompress {db["artifact_name"]}: {exc}"
         ),
@@ -422,7 +421,7 @@ def download_dca_databases(
 
     print(f"\n=== Fetched {len(results)} databases ===")
 
-    return [(project_map[n], r) for n, r in zip(artifact_map, results)]
+    return [(project_map[n], r) for n, r in zip(analyzed_databases, results)]
 
 
 def get_mad_destination_for_project(config, name: str) -> str:
