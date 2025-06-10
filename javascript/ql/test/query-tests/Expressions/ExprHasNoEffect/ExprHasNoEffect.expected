@@ -12,4 +12,6 @@
 | tst.js:50:3:50:36 | new Err ... age(e)) | This expression has no effect. |
 | tst.js:61:2:61:20 | o.trivialNonGetter1 | This expression has no effect. |
 | tst.js:77:24:77:24 | o | This expression has no effect. |
+| tst.js:83:43:83:46 | null | This expression has no effect. |
+| tst.js:84:42:84:45 | null | This expression has no effect. |
 | uselessfn.js:1:2:1:26 | functio ... d.");\\n} | This expression has no effect. |
