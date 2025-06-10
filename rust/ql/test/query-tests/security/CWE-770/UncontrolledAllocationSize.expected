@@ -524,6 +524,3 @@ nodes
 | main.rs:323:27:323:27 | v | semmle.label | v |
 | main.rs:324:25:324:25 | v | semmle.label | v |
 subpaths
-testFailures
-| main.rs:202:32:202:38 | realloc | Unexpected result: Alert=arg1 |
-| main.rs:202:52:202:96 | //... | Missing result: Alert[rust/uncontrolled-allocation-size] |
