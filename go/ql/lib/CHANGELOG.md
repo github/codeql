@@ -1,3 +1,13 @@
+## 4.2.7
+
+### Minor Analysis Improvements
+
+* The first argument of `Client.Query` in `cloud.google.com/go/bigquery` is now recognized as a SQL injection sink.
+
+## 4.2.6
+
+No user-facing changes.
+
 ## 4.2.5
 
 No user-facing changes.

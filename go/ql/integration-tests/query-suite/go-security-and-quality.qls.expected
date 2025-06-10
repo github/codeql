@@ -30,6 +30,7 @@ ql/go/ql/src/Security/CWE-022/TaintedPath.ql
 ql/go/ql/src/Security/CWE-022/UnsafeUnzipSymlink.ql
 ql/go/ql/src/Security/CWE-022/ZipSlip.ql
 ql/go/ql/src/Security/CWE-078/CommandInjection.ql
+ql/go/ql/src/Security/CWE-079/HtmlTemplateEscapingBypassXss.ql
 ql/go/ql/src/Security/CWE-079/ReflectedXss.ql
 ql/go/ql/src/Security/CWE-089/SqlInjection.ql
 ql/go/ql/src/Security/CWE-089/StringBreak.ql
