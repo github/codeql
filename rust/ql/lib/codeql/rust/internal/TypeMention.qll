@@ -56,6 +56,29 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
 
   ItemNode getResolved() { result = resolved }
 
+  pragma[nomagic]
+  private TypeAlias getResolvedTraitAlias(string name) {
+    exists(TraitItemNode trait |
+      trait = resolvePath(path) and
+      result = trait.getAnAssocItem() and
+      name = result.getName().getText()
+    )
+  }
+
+  pragma[nomagic]
+  private TypeRepr getAssocTypeArg(string name) {
+    result = path.getSegment().getGenericArgList().getAssocTypeArg(name)
+  }
+
+  /** Gets the type argument for the associated type `alias`, if any. */
+  pragma[nomagic]
+  private TypeRepr getAnAssocTypeArgument(TypeAlias alias) {
+    exists(string name |
+      alias = this.getResolvedTraitAlias(name) and
+      result = this.getAssocTypeArg(name)
+    )
+  }
+
   override TypeMention getTypeArgument(int i) {
     result = path.getSegment().getGenericArgList().getTypeArg(i)
     or
@@ -95,6 +118,11 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
       alias = impl.getASuccessor(param.getTypeAlias().getName().getText()) and
       result = alias.getTypeRepr() and
       param.getIndex() = i
+    )
+    or
+    exists(TypeAlias alias |
+      result = this.getAnAssocTypeArgument(alias) and
+      traitAliasIndex(_, i, alias)
     )
   }
 
@@ -149,44 +177,6 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
     or
     not exists(resolved.(TypeAlias).getTypeRepr()) and
     result = super.resolveTypeAt(typePath)
-  }
-
-  pragma[nomagic]
-  private TypeAlias getResolvedTraitAlias(string name) {
-    exists(TraitItemNode trait |
-      trait = resolvePath(path) and
-      result = trait.getAnAssocItem() and
-      name = result.getName().getText()
-    )
-  }
-
-  pragma[nomagic]
-  private TypeRepr getAssocTypeArg(string name) {
-    exists(AssocTypeArg arg |
-      arg = path.getSegment().getGenericArgList().getAGenericArg() and
-      result = arg.getTypeRepr() and
-      name = arg.getIdentifier().getText()
-    )
-  }
-
-  /** Gets the type argument for the associated type `alias`, if any. */
-  pragma[nomagic]
-  private TypeRepr getAnAssocTypeArgument(TypeAlias alias) {
-    exists(string name |
-      alias = this.getResolvedTraitAlias(name) and
-      result = this.getAssocTypeArg(name)
-    )
-  }
-
-  override TypeMention getMentionAt(TypePath tp) {
-    result = super.getMentionAt(tp)
-    or
-    exists(TypeAlias alias, AssociatedTypeTypeParameter attp, TypeMention arg, TypePath suffix |
-      arg = this.getAnAssocTypeArgument(alias) and
-      result = arg.getMentionAt(suffix) and
-      tp = TypePath::cons(attp, suffix) and
-      attp.getTypeAlias() = alias
-    )
   }
 }
 

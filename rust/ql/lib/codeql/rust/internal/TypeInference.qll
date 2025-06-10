@@ -112,10 +112,7 @@ private module Input2 implements InputSig2 {
 
   class TypeMention = TM::TypeMention;
 
-  TypeMention getABaseTypeMention(Type t) {
-    result =
-      t.(ImplTraitReturnType).getImplTraitTypeRepr().getTypeBoundList().getABound().getTypeRepr()
-  }
+  TypeMention getABaseTypeMention(Type t) { none() }
 
   TypeMention getATypeParameterConstraint(TypeParameter tp) {
     result = tp.(TypeParamTypeParameter).getTypeParam().getTypeBoundList().getABound().getTypeRepr()
