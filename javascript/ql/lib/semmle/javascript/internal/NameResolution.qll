@@ -46,6 +46,9 @@ module NameResolution {
       this instanceof Module
       or
       this instanceof NamespaceDefinition // `module {}` or `enum {}` statement
+      or
+      // A module wrapped in a promise. We model this as a module exporting the actual module in a property called `$$promise-content`.
+      this instanceof DynamicImportExpr
     }
   }
 
@@ -232,6 +235,19 @@ module NameResolution {
       name = expr.getName() and
       node2 = expr
     )
+    or
+    exists(AwaitExpr await |
+      node1 = await.getOperand() and
+      name = "$$promise-content" and
+      node2 = await
+    )
+    or
+    exists(MethodCallExpr call |
+      call.getMethodName() = "then" and
+      node1 = call.getReceiver() and
+      name = "$$promise-content" and
+      node2 = call.getArgument(0).(Function).getParameter(0)
+    )
   }
 
   private signature module TypeResolutionInputSig {
@@ -334,6 +350,12 @@ module NameResolution {
       )
       or
       storeToVariable(result, name, mod.(Closure::ClosureModule).getExportsVariable())
+      or
+      exists(DynamicImportExpr imprt |
+        mod = imprt and
+        name = "$$promise-content" and
+        result = imprt.getImportedPathExpr()
+      )
     }
 
     /**
