@@ -18,7 +18,7 @@
 #-----| core -> Crate(core@0.0.0)
 #-----| compiler_builtins -> Crate(compiler_builtins@0.1.140)
 
-#-----| Crate(cfg_if@1.0.0)
+#-----| Crate(cfg_if@1.0.1)
 #-----| proc_macro -> Crate(proc_macro@0.0.0)
 #-----| alloc -> Crate(alloc@0.0.0)
 #-----| core -> Crate(core@0.0.0)
@@ -89,7 +89,7 @@ main.rs:
 #-----| core -> Crate(core@0.0.0)
 #-----| std -> Crate(std@0.0.0)
 #-----| test -> Crate(test@0.0.0)
-#-----| cfg_if -> Crate(cfg_if@1.0.0)
+#-----| cfg_if -> Crate(cfg_if@1.0.1)
 #-----| digest -> Crate(digest@0.10.7)
 
 #-----| Crate(md5@0.7.0)
