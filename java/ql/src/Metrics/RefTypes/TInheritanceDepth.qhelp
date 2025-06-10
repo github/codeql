@@ -29,14 +29,13 @@ that something is amiss, but further investigation will be needed to clarify
 the cause of the problem. Here are two possibilities:
 </p>
 
-<ul>
-
-<li>
-A class and its superclass represent fundamentally the same abstraction.
+<p>
+1. A class and its superclass represent fundamentally the same abstraction.
 In this case, they should generally be merged together (see the 'Collapse
 Hierarchy' refactoring on pp.279-80 of [Fowler]). For example, suppose
 that in the following class hierarchy both A and C represent fundamentally
 the same thing, then they should be merged together as shown:
+</p>
 
 <table>
 <tbody><tr>
@@ -48,11 +47,9 @@ the same thing, then they should be merged together as shown:
 <td>After</td>
 </tr>
 </tbody></table>
-</li>
 
-<li>
 <p>
-The class hierarchy is trying to represent variation in more than one
+2. The class hierarchy is trying to represent variation in more than one
 dimension using single inheritance. This can lead to an unnecessarily
 deep class hierarchy with lots of code duplication. For example, consider
 the following:
@@ -81,9 +78,6 @@ amount of code duplication that will be necessary.
 For readers who are interested in this sort of approach, a good reference is
 [West].
 </p>
-</li>
-
-</ul>
 
 
 
