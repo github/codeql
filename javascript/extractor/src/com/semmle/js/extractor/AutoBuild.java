@@ -39,8 +39,8 @@ import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.semmle.js.dependencies.tsconfig.TsConfigJson;
-import com.semmle.js.dependencies.tsconfig.CompilerOptions;
+import com.semmle.js.extractor.tsconfig.TsConfigJson;
+import com.semmle.js.extractor.tsconfig.CompilerOptions;
 import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;

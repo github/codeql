@@ -1,4 +1,4 @@
-package com.semmle.js.dependencies.tsconfig;
+package com.semmle.js.extractor.tsconfig;
 
 public class TsConfigJson {
   private CompilerOptions compilerOptions;
