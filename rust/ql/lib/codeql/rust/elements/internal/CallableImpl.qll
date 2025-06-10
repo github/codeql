@@ -11,6 +11,7 @@ private import codeql.rust.elements.internal.generated.Callable
  * be referenced directly.
  */
 module Impl {
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A callable. Either a `Function` or a `ClosureExpr`.
    */

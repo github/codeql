@@ -242,7 +242,6 @@
 /lib/codeql/rust/elements/internal/BoxPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/CallableImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureBinderConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureBinderImpl.qll linguist-generated
