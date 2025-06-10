@@ -608,6 +608,9 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   }
 
   pragma[nomagic]
+  private string getSelfCanonicalPath(Crate c) { result = this.resolveSelfTy().getCanonicalPath(c) }
+
+  pragma[nomagic]
   private string getCanonicalPathTraitPart(Crate c) {
     exists(Crate c2 |
       this.selfTraitCratePair(c, c2) and
@@ -621,7 +624,7 @@ class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
     result = "<"
     or
     i = 1 and
-    result = this.resolveSelfTy().getCanonicalPath(c)
+    result = this.getSelfCanonicalPath(c)
     or
     if exists(this.getTraitPath())
     then
