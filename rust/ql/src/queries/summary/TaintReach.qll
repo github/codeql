@@ -26,7 +26,17 @@ private module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
  * We don't include flow summary nodes, as their number is unstable (varies when models
  * are added).
  */
-int getTaintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::flowTo(n) and not n instanceof FlowSummaryNode) }
+int getTaintedNodesCount() {
+  result = count(DataFlow::Node n | TaintReachFlow::flowTo(n) and not n instanceof FlowSummaryNode)
+}
+
+/**
+ * Gets the total number of data flow nodes.
+ *
+ * We don't include flow summary nodes, as their number is unstable (varies when models
+ * are added).
+ */
+int getTotalNodesCount() { result = count(DataFlow::Node n | not n instanceof FlowSummaryNode) }
 
 /**
  * Gets the proportion of data flow nodes that taint reaches (from any source),
@@ -35,4 +45,4 @@ int getTaintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::f
  * We don't include flow summary nodes, as their number is unstable (varies when models
  * are added).
  */
-float getTaintReach() { result = (getTaintedNodesCount() * 1000000.0) / count(DataFlow::Node n |  not n instanceof FlowSummaryNode) }
+float getTaintReach() { result = (getTaintedNodesCount() * 1000000.0) / getTotalNodesCount() }
