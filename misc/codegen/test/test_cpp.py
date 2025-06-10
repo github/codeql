@@ -17,34 +17,49 @@ def test_field_name():
     assert f.field_name == "foo"
 
 
-@pytest.mark.parametrize("type,expected", [
-    ("std::string", "trapQuoted(value)"),
-    ("bool", '(value ? "true" : "false")'),
-    ("something_else", "value"),
-])
+@pytest.mark.parametrize(
+    "type,expected",
+    [
+        ("std::string", "trapQuoted(value)"),
+        ("bool", '(value ? "true" : "false")'),
+        ("something_else", "value"),
+    ],
+)
 def test_field_get_streamer(type, expected):
     f = cpp.Field("name", type)
     assert f.get_streamer()("value") == expected
 
 
-@pytest.mark.parametrize("is_optional,is_repeated,is_predicate,expected", [
-    (False, False, False, True),
-    (True, False, False, False),
-    (False, True, False, False),
-    (True, True, False, False),
-    (False, False, True, False),
-])
+@pytest.mark.parametrize(
+    "is_optional,is_repeated,is_predicate,expected",
+    [
+        (False, False, False, True),
+        (True, False, False, False),
+        (False, True, False, False),
+        (True, True, False, False),
+        (False, False, True, False),
+    ],
+)
 def test_field_is_single(is_optional, is_repeated, is_predicate, expected):
-    f = cpp.Field("name", "type", is_optional=is_optional, is_repeated=is_repeated, is_predicate=is_predicate)
+    f = cpp.Field(
+        "name",
+        "type",
+        is_optional=is_optional,
+        is_repeated=is_repeated,
+        is_predicate=is_predicate,
+    )
     assert f.is_single is expected
 
 
-@pytest.mark.parametrize("is_optional,is_repeated,expected", [
-    (False, False, "bar"),
-    (True, False, "std::optional<bar>"),
-    (False, True, "std::vector<bar>"),
-    (True, True, "std::vector<std::optional<bar>>"),
-])
+@pytest.mark.parametrize(
+    "is_optional,is_repeated,expected",
+    [
+        (False, False, "bar"),
+        (True, False, "std::optional<bar>"),
+        (False, True, "std::vector<bar>"),
+        (True, True, "std::vector<std::optional<bar>>"),
+    ],
+)
 def test_field_modal_types(is_optional, is_repeated, expected):
     f = cpp.Field("name", "bar", is_optional=is_optional, is_repeated=is_repeated)
     assert f.type == expected
@@ -69,11 +84,9 @@ def test_tag_has_first_base_marked():
     assert t.bases == expected
 
 
-@pytest.mark.parametrize("bases,expected", [
-    ([], False),
-    (["a"], True),
-    (["a", "b"], True)
-])
+@pytest.mark.parametrize(
+    "bases,expected", [([], False), (["a"], True), (["a", "b"], True)]
+)
 def test_tag_has_bases(bases, expected):
     t = cpp.Tag("name", bases, "id")
     assert t.has_bases is expected
@@ -91,11 +104,9 @@ def test_class_has_first_base_marked():
     assert c.bases == expected
 
 
-@pytest.mark.parametrize("bases,expected", [
-    ([], False),
-    (["a"], True),
-    (["a", "b"], True)
-])
+@pytest.mark.parametrize(
+    "bases,expected", [([], False), (["a"], True), (["a", "b"], True)]
+)
 def test_class_has_bases(bases, expected):
     t = cpp.Class("name", [cpp.Class(b) for b in bases])
     assert t.has_bases is expected
@@ -113,5 +124,5 @@ def test_class_single_fields():
     assert c.single_fields == fields[::2]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(pytest.main([__file__] + sys.argv[1:]))
