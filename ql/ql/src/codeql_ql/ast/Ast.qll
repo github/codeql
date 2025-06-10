@@ -2613,21 +2613,21 @@ class NoOpt extends Annotation {
 class OverlayCaller extends Annotation {
   OverlayCaller() { this.getName() = "overlay" and this.getArgs(0) instanceof CallerArg }
 
-  override string toString() { result = "caller" }
+  override string toString() { result = "overlay[caller]" }
 }
 
 /** An `overlay[local]` annotation. */
 class OverlayLocal extends Annotation {
   OverlayLocal() { this.getName() = "overlay" and this.getArgs(0) instanceof LocalArg }
 
-  override string toString() { result = "local" }
+  override string toString() { result = "overlay[local]" }
 }
 
 /** An `overlay[local?]` annotation. */
 class OverlayLocalQ extends Annotation {
   OverlayLocalQ() { this.getName() = "overlay" and this.getArgs(0) instanceof LocalQArg }
 
-  override string toString() { result = "local?" }
+  override string toString() { result = "overlay[local?]" }
 }
 
 /** A `language[monotonicAggregates]` annotation. */
