@@ -112,7 +112,7 @@ This query finds the argument passed in each call to ``File::create``:
 
     from CallExpr call
     where call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create"
-    select call.getArg(0)
+    select call.getArgList().getArg(0)
 
 Unfortunately this will only give the expression in the argument, not the values which could be passed to it.
 So we use local data flow to find all expressions that flow into the argument:
@@ -125,7 +125,7 @@ So we use local data flow to find all expressions that flow into the argument:
     from CallExpr call, DataFlow::ExprNode source, DataFlow::ExprNode sink
     where
       call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create" and
-      sink.asExpr().getExpr() = call.getArg(0) and
+      sink.asExpr().getExpr() = call.getArgList().getArg(0) and
       DataFlow::localFlow(source, sink)
     select source, sink
 
@@ -136,30 +136,12 @@ We can vary the source, for example, making the source the parameter of a functi
     import rust
     import codeql.rust.dataflow.DataFlow
 
-    from CallExpr call, Method method, ParamDecl sourceParam, Expr sinkExpr
+    from CallExpr call, DataFlow::ParameterNode source, DataFlow::ExprNode sink
     where
-      call.getStaticTarget() = method and
-      method.hasQualifiedName("String", "init(format:_:)") and
-      sinkExpr = call.getArgument(0).getExpr() and
-      DataFlow::localFlow(DataFlow::parameterNode(sourceParam), DataFlow::exprNode(sinkExpr))
-    select sourceParam, sinkExpr
-
-The following example finds calls to ``String.init(format:_:)`` where the format string is not a hard-coded string literal:
-
-.. code-block:: ql
-
-    import rust
-    import codeql.rust.dataflow.DataFlow
-
-    from CallExpr call, Method method, DataFlow::Node sinkNode
-    where
-      call.getStaticTarget() = method and
-      method.hasQualifiedName("String", "init(format:_:)") and
-      sinkNode.asExpr() = call.getArgument(0).getExpr() and
-      not exists(StringLiteralExpr sourceLiteral |
-        DataFlow::localFlow(DataFlow::exprNode(sourceLiteral), sinkNode)
-      )
-    select call, "Format argument to " + method.getName() + " isn't hard-coded."
+      call.getStaticTarget().(Function).getCanonicalPath() = "<std::fs::File>::create" and
+      sink.asExpr().getExpr() = call.getArgList().getArg(0) and
+      DataFlow::localFlow(source, sink)
+    select source, sink
 
 Global data flow
 ----------------
@@ -242,53 +224,29 @@ The following global taint-tracking query finds places where a string literal is
 
 .. code-block:: ql
 
-   import rust
-   import codeql.rust.dataflow.DataFlow
-   import codeql.rust.dataflow.TaintTracking
+    import rust
+    import codeql.rust.dataflow.DataFlow
+    import codeql.rust.dataflow.TaintTracking
 
-   module ConstantPasswordConfig implements DataFlow::ConfigSig {
-     predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
+    module ConstantPasswordConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node node) { node.asExpr().getExpr() instanceof StringLiteralExpr }
 
-     predicate isSink(DataFlow::Node node) {
-       // any argument called `password`
-       exists(CallExpr call | call.getArgumentWithLabel("password").getExpr() = node.asExpr())
-     }
+    predicate isSink(DataFlow::Node node) {
+        // any argument going to a parameter called `password`
+        exists(Function f, CallExpr call, int index |
+        call.getArgList().getArg(index) = node.asExpr().getExpr() and
+        call.getStaticTarget() = f and
+        f.getParamList().getParam(index).getPat().(IdentPat).getName().getText() = "password"
+        )
+    }
+    }
 
-   module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
+    module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
 
-   from DataFlow::Node sourceNode, DataFlow::Node sinkNode
-   where ConstantPasswordFlow::flow(sourceNode, sinkNode)
-   select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
+    from DataFlow::Node sourceNode, DataFlow::Node sinkNode
+    where ConstantPasswordFlow::flow(sourceNode, sinkNode)
+    select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
 
-
-The following global taint-tracking query finds places where a value from a remote or local user input is used as an argument to the SQLite ``Connection.execute(_:)`` function.
-  - Since this is a taint-tracking query, the ``TaintTracking::Global`` module is used.
-  - The ``isSource`` predicate defines sources as a ``FlowSource`` (remote or local user input).
-  - The ``isSink`` predicate defines sinks as the first argument in any call to ``Connection.execute(_:)``.
-
-.. code-block:: ql
-
-   import rust
-   import codeql.rust.dataflow.DataFlow
-   import codeql.rust.dataflow.TaintTracking
-   import codeql.rust.dataflow.FlowSources
-
-   module SqlInjectionConfig implements DataFlow::ConfigSig {
-     predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
-
-     predicate isSink(DataFlow::Node node) {
-       exists(CallExpr call |
-         call.getStaticTarget().(Method).hasQualifiedName("Connection", "execute(_:)") and
-         call.getArgument(0).getExpr() = node.asExpr()
-       )
-     }
-   }
-
-   module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
-
-   from DataFlow::Node sourceNode, DataFlow::Node sinkNode
-   where SqlInjectionFlow::flow(sourceNode, sinkNode)
-   select sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
 
 Further reading
 ---------------
