@@ -1,10 +1,41 @@
 /**
- * Initializers from https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
+ * Initializers for EVP PKey
+ * including https://docs.openssl.org/3.0/man3/EVP_PKEY_CTX_ctrl/
  */
 
 import cpp
 private import experimental.quantum.OpenSSL.CtxFlow
 private import OpenSSLOperationBase
+
+/**
+ * A call to `EVP_PKEY_CTX_new` or `EVP_PKEY_CTX_new_from_pkey`.
+ * These calls initialize the context from a prior key.
+ * The key may be generated previously, or merely had it's
+ * parameters set (e.g., `EVP_PKEY_paramgen`).
+ * NOTE: for the case of `EVP_PKEY_paramgen`, these calls
+ * are encoded as context passthroughs, and any operation
+ * will get all associated initializers for teh paramgen
+ * at the final keygen operation automatically.
+ */
+class EVPNewKeyCtx extends EvpKeyInitializer {
+  Expr keyArg;
+
+  EVPNewKeyCtx() {
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new" and
+    keyArg = this.(Call).getArgument(0)
+    or
+    this.(Call).getTarget().getName() = "EVP_PKEY_CTX_new_from_pkey" and
+    keyArg = this.(Call).getArgument(1)
+  }
+
+  /**
+   * Context is returned
+   */
+  override CtxPointerSource getContextArg() { result = this }
+
+  override Expr getKeyArg() { result = keyArg }
+  //TODO: do we specify the algorithm from the key as well?
+}
 
 class EvpCtxSetAlgorithmInitializer extends EvpAlgorithmInitializer {
   EvpCtxSetAlgorithmInitializer() {

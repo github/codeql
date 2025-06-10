@@ -147,9 +147,7 @@ class KnownOpenSSLKeyAgreementAlgorithmExpr extends Expr instanceof KnownOpenSSL
 }
 
 predicate knownOpenSSLAlgorithmOperationCall(Call c, string normalized, string algType) {
-  c.getTarget().getName() in [
-      "EVP_RSA_gen", "RSA_generate_key_ex", "RSA_generate_key", "EVP_PKEY_CTX_set_rsa_keygen_bits"
-    ] and
+  c.getTarget().getName() in ["EVP_RSA_gen", "RSA_generate_key_ex", "RSA_generate_key", "RSA_new"] and
   normalized = "RSA" and
   algType = "ASYMMETRIC_ENCRYPTION"
 }

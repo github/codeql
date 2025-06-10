@@ -183,3 +183,21 @@ class EVP_Cipher_Final_Call extends EVPFinal, EVP_Cipher_Operation {
 
   override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
 }
+
+/**
+ * https://docs.openssl.org/3.2/man3/EVP_PKEY_decrypt/
+ * https://docs.openssl.org/3.2/man3/EVP_PKEY_encrypt
+ */
+class Evp_PKey_Cipher_Operation extends EVP_Cipher_Operation {
+  Evp_PKey_Cipher_Operation() {
+    this.(Call).getTarget().getName() in ["EVP_PKEY_encrypt", "EVP_PKEY_decrypt"]
+  }
+
+  override Expr getInputArg() { result = this.(Call).getArgument(3) }
+
+  override CtxPointerSource getContextArg() { result = this.(Call).getArgument(0) }
+
+  override Expr getAlgorithmArg() {
+    result = this.getInitCall().(EvpAlgorithmInitializer).getAlgorithmArg()
+  }
+}

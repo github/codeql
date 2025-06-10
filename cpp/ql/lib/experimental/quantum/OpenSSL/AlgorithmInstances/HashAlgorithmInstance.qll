@@ -29,7 +29,7 @@ predicate knownOpenSSLConstantToHashFamilyType(
       or
       name.matches(["SHA", "SHA1"]) and type instanceof Crypto::SHA1
       or
-      name.matches("SHA+%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
+      name.matches("SHA_%") and not name.matches(["SHA1", "SHA3-"]) and type instanceof Crypto::SHA2
       or
       name.matches("SHA3-%") and type instanceof Crypto::SHA3
       or

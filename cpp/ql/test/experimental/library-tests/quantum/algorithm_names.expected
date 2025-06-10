@@ -1,0 +1,17 @@
+| openssl_basic.c:23:37:23:51 | KeyOperationAlgorithm | AES |
+| openssl_basic.c:23:37:23:51 | ModeOfOperation | GCM |
+| openssl_basic.c:69:33:69:47 | KeyOperationAlgorithm | AES |
+| openssl_basic.c:69:33:69:47 | ModeOfOperation | GCM |
+| openssl_basic.c:116:38:116:47 | HashAlgorithm | SHA2 |
+| openssl_basic.c:144:67:144:73 | HashAlgorithm | MD5 |
+| openssl_basic.c:160:39:160:48 | HashAlgorithm | SHA2 |
+| openssl_pkey.c:21:10:21:28 | KeyOperationAlgorithm | RSA |
+| openssl_pkey.c:50:31:50:42 | KeyOperationAlgorithm | RSA |
+| openssl_signature.c:521:46:521:66 | PaddingAlgorithm | PSS |
+| openssl_signature.c:543:35:543:46 | KeyOperationAlgorithm | RSA |
+| openssl_signature.c:565:50:565:54 | KeyOperationAlgorithm | DSA |
+| openssl_signature.c:684:24:684:33 | HashAlgorithm | SHA2 |
+| openssl_signature.c:702:60:702:71 | HashAlgorithm | SHA2 |
+| openssl_signature.c:702:60:702:71 | KeyOperationAlgorithm | RSA |
+| openssl_signature.c:740:24:740:33 | HashAlgorithm | SHA2 |
+| openssl_signature.c:758:60:758:64 | KeyOperationAlgorithm | DSA |
