@@ -8,10 +8,16 @@ module TypeResolution {
 
   predicate trackType = TypeFlow::TrackNode<TypeDefinition>::track/1;
 
-  Node trackFunctionType(Function fun) {
+  /**
+   * Gets a node that has `fun` as an underlying type.
+   *
+   * We track through underlying types as an approximate way to handle calls to a type
+   * that is a union/intersection involving functions.
+   */
+  Node trackUnderlyingFunctionType(Function fun) {
     result = fun
     or
-    exists(Node mid | mid = trackFunctionType(fun) |
+    exists(Node mid | mid = trackUnderlyingFunctionType(fun) |
       TypeFlow::step(mid, result)
       or
       UnderlyingTypes::underlyingTypeStep(mid, result)
@@ -138,7 +144,7 @@ module TypeResolution {
     or
     valueHasType(call.getCallee(), trackFunctionValue(target))
     or
-    valueHasType(call.getCallee(), trackFunctionType(target)) and
+    valueHasType(call.getCallee(), trackUnderlyingFunctionType(target)) and
     (
       call instanceof NewExpr and
       target = any(ConstructorTypeExpr t).getFunction()
@@ -165,7 +171,7 @@ module TypeResolution {
     or
     not exists(func.getReturnTypeAnnotation()) and
     exists(Function functionType |
-      contextualType(func, trackFunctionType(functionType)) and
+      contextualType(func, trackUnderlyingFunctionType(functionType)) and
       returnType = functionType.getReturnTypeAnnotation()
     )
   }
@@ -270,7 +276,7 @@ module TypeResolution {
     or
     // Contextual typing for parameters
     exists(Function lambda, Function functionType, int i |
-      contextualType(lambda, trackFunctionType(functionType))
+      contextualType(lambda, trackUnderlyingFunctionType(functionType))
       or
       exists(InterfaceDefinition interface |
         contextualType(lambda, trackType(interface)) and
