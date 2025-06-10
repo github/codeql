@@ -178,6 +178,13 @@ predicate hasNoEffect(Expr e) {
     e.getParent() = parent and
     e.getLastToken().getNextToken().getValue() = ":"
   ) and
+  // exclude expressions that are part of a conditional expression
+  not exists(ConditionalExpr cond | e.getParent() = cond |
+    e instanceof NullLiteral or
+    e instanceof GlobalVarAccess or
+    e.(NumberLiteral).getIntValue() = 0 or
+    e.(UnaryExpr).getOperator() = "void"
+  ) and
   // exclude the first statement of a try block
   not e = any(TryStmt stmt).getBody().getStmt(0).(ExprStmt).getExpr() and
   // exclude expressions that are alone in a file, and file doesn't contain a function.
