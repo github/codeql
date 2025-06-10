@@ -130,6 +130,7 @@ class PathTypeReprMention extends TypeMention instanceof PathTypeRepr {
    * Holds if this path resolved to a type alias with a rhs. that has the
    * resulting type at `typePath`.
    */
+  pragma[nomagic]
   Type aliasResolveTypeAt(TypePath typePath) {
     exists(TypeAlias alias, TypeMention rhs | alias = resolved and rhs = alias.getTypeRepr() |
       result = rhs.resolveTypeAt(typePath) and
