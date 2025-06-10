@@ -61,74 +61,74 @@
 arm.cpp:
 #    6| [TopLevelFunction] uint8x8_t vadd_u8(uint8x8_t, uint8x8_t)
 #    6|   <params>: 
-#    6|     getParameter(0): [Parameter] __a
+#    6|     getParameter(0): [Parameter] a
 #    6|         Type = [CTypedefType] uint8x8_t
-#    6|     getParameter(1): [Parameter] __b
+#    6|     getParameter(1): [Parameter] b
 #    6|         Type = [CTypedefType] uint8x8_t
-#    7|   getEntryPoint(): [BlockStmt] { ... }
-#    8|     getStmt(0): [ReturnStmt] return ...
-#    8|       getExpr(): [AddExpr] ... + ...
-#    8|           Type = [GNUVectorType] __attribute((neon_vector_type(8))) unsigned char
-#    8|           ValueCategory = prvalue
-#    8|         getLeftOperand(): [VariableAccess] __a
-#    8|             Type = [CTypedefType] uint8x8_t
-#    8|             ValueCategory = prvalue(load)
-#    8|         getRightOperand(): [VariableAccess] __b
-#    8|             Type = [CTypedefType] uint8x8_t
-#    8|             ValueCategory = prvalue(load)
-#   13| [TopLevelFunction] uint16x8_t __builtin_aarch64_uaddlv8qi_uuu(uint8x8_t, uint8x8_t)
-#   13|   <params>: 
-#   13|     getParameter(0): [Parameter] (unnamed parameter 0)
-#   13|         Type = [CTypedefType] uint8x8_t
-#   13|     getParameter(1): [Parameter] (unnamed parameter 1)
-#   13|         Type = [CTypedefType] uint8x8_t
-#   15| [TopLevelFunction] uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
-#   15|   <params>: 
-#   15|     getParameter(0): [Parameter] __a
-#   15|         Type = [CTypedefType] uint8x8_t
-#   15|     getParameter(1): [Parameter] __b
-#   15|         Type = [CTypedefType] uint8x8_t
-#   16|   getEntryPoint(): [BlockStmt] { ... }
-#   17|     getStmt(0): [ReturnStmt] return ...
-#   17|       getExpr(): [FunctionCall] call to __builtin_aarch64_uaddlv8qi_uuu
-#   17|           Type = [CTypedefType] uint16x8_t
-#   17|           ValueCategory = prvalue
-#   17|         getArgument(0): [VariableAccess] __a
-#   17|             Type = [CTypedefType] uint8x8_t
-#   17|             ValueCategory = prvalue(load)
-#   17|         getArgument(1): [VariableAccess] __b
-#   17|             Type = [CTypedefType] uint8x8_t
-#   17|             ValueCategory = prvalue(load)
-#   20| [TopLevelFunction] uint16x8_t arm_add(uint8x8_t, uint8x8_t)
-#   20|   <params>: 
-#   20|     getParameter(0): [Parameter] a
-#   20|         Type = [CTypedefType] uint8x8_t
-#   20|     getParameter(1): [Parameter] b
-#   20|         Type = [CTypedefType] uint8x8_t
-#   20|   getEntryPoint(): [BlockStmt] { ... }
-#   21|     getStmt(0): [DeclStmt] declaration
-#   21|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
-#   21|           Type = [CTypedefType] uint8x8_t
-#   21|         getVariable().getInitializer(): [Initializer] initializer for c
-#   21|           getExpr(): [FunctionCall] call to vadd_u8
-#   21|               Type = [CTypedefType] uint8x8_t
-#   21|               ValueCategory = prvalue
-#   21|             getArgument(0): [VariableAccess] a
-#   21|                 Type = [CTypedefType] uint8x8_t
-#   21|                 ValueCategory = prvalue(load)
-#   21|             getArgument(1): [VariableAccess] b
-#   21|                 Type = [CTypedefType] uint8x8_t
-#   21|                 ValueCategory = prvalue(load)
-#   22|     getStmt(1): [ReturnStmt] return ...
-#   22|       getExpr(): [FunctionCall] call to vaddl_u8
-#   22|           Type = [CTypedefType] uint16x8_t
-#   22|           ValueCategory = prvalue
-#   22|         getArgument(0): [VariableAccess] a
-#   22|             Type = [CTypedefType] uint8x8_t
-#   22|             ValueCategory = prvalue(load)
-#   22|         getArgument(1): [VariableAccess] c
-#   22|             Type = [CTypedefType] uint8x8_t
-#   22|             ValueCategory = prvalue(load)
+#    6|   getEntryPoint(): [BlockStmt] { ... }
+#    7|     getStmt(0): [ReturnStmt] return ...
+#    7|       getExpr(): [AddExpr] ... + ...
+#    7|           Type = [GNUVectorType] __attribute((neon_vector_type(8))) unsigned char
+#    7|           ValueCategory = prvalue
+#    7|         getLeftOperand(): [VariableAccess] a
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#    7|         getRightOperand(): [VariableAccess] b
+#    7|             Type = [CTypedefType] uint8x8_t
+#    7|             ValueCategory = prvalue(load)
+#   12| [TopLevelFunction] uint16x8_t __builtin_aarch64_uaddlv8qi_uuu(uint8x8_t, uint8x8_t)
+#   12|   <params>: 
+#   12|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   12|         Type = [CTypedefType] uint8x8_t
+#   12|     getParameter(1): [Parameter] (unnamed parameter 1)
+#   12|         Type = [CTypedefType] uint8x8_t
+#   14| [TopLevelFunction] uint16x8_t vaddl_u8(uint8x8_t, uint8x8_t)
+#   14|   <params>: 
+#   14|     getParameter(0): [Parameter] a
+#   14|         Type = [CTypedefType] uint8x8_t
+#   14|     getParameter(1): [Parameter] b
+#   14|         Type = [CTypedefType] uint8x8_t
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [ReturnStmt] return ...
+#   15|       getExpr(): [FunctionCall] call to __builtin_aarch64_uaddlv8qi_uuu
+#   15|           Type = [CTypedefType] uint16x8_t
+#   15|           ValueCategory = prvalue
+#   15|         getArgument(0): [VariableAccess] a
+#   15|             Type = [CTypedefType] uint8x8_t
+#   15|             ValueCategory = prvalue(load)
+#   15|         getArgument(1): [VariableAccess] b
+#   15|             Type = [CTypedefType] uint8x8_t
+#   15|             ValueCategory = prvalue(load)
+#   18| [TopLevelFunction] uint16x8_t arm_add(uint8x8_t, uint8x8_t)
+#   18|   <params>: 
+#   18|     getParameter(0): [Parameter] a
+#   18|         Type = [CTypedefType] uint8x8_t
+#   18|     getParameter(1): [Parameter] b
+#   18|         Type = [CTypedefType] uint8x8_t
+#   18|   getEntryPoint(): [BlockStmt] { ... }
+#   19|     getStmt(0): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   19|           Type = [CTypedefType] uint8x8_t
+#   19|         getVariable().getInitializer(): [Initializer] initializer for c
+#   19|           getExpr(): [FunctionCall] call to vadd_u8
+#   19|               Type = [CTypedefType] uint8x8_t
+#   19|               ValueCategory = prvalue
+#   19|             getArgument(0): [VariableAccess] a
+#   19|                 Type = [CTypedefType] uint8x8_t
+#   19|                 ValueCategory = prvalue(load)
+#   19|             getArgument(1): [VariableAccess] b
+#   19|                 Type = [CTypedefType] uint8x8_t
+#   19|                 ValueCategory = prvalue(load)
+#   20|     getStmt(1): [ReturnStmt] return ...
+#   20|       getExpr(): [FunctionCall] call to vaddl_u8
+#   20|           Type = [CTypedefType] uint16x8_t
+#   20|           ValueCategory = prvalue
+#   20|         getArgument(0): [VariableAccess] a
+#   20|             Type = [CTypedefType] uint8x8_t
+#   20|             ValueCategory = prvalue(load)
+#   20|         getArgument(1): [VariableAccess] c
+#   20|             Type = [CTypedefType] uint8x8_t
+#   20|             ValueCategory = prvalue(load)
 bad_asts.cpp:
 #    5| [CopyAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S const&)
 #    5|   <params>: 
