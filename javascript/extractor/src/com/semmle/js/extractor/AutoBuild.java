@@ -747,7 +747,7 @@ public class AutoBuild {
         .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
-    // exclude files in output directories as configured in tsconfig.json
+    // gather all output directories specified in tsconfig.json files
     final List<Path> outDirs = new ArrayList<>();
     for (Path cfg : tsconfigFiles) {
       try {
