@@ -12,7 +12,7 @@
 /[\u{12340}-\u{12345}]/u;
 new RegExp("[\u{12340}-\u{12345}]", "u");
 const regex = /\b(?:https?:\/\/|mailto:|www\.)(?:[\S--[\p{P}<>]]|\/|[\S--[\[\]]]+[\S--[\p{P}<>]])+|\b[\S--[@\p{Ps}\p{Pe}<>]]+@([\S--[\p{P}<>]]+(?:\.[\S--[\p{P}<>]]+)+)/gmv;
-/[a|b|c]/; // $ Alert -- Reapted | character in character class, which has no special meaning in this context
+/[a|b|c]/; // $ Alert -- Repeated | character in character class, which has no special meaning in this context
 /[:alnum:]/; // $ Alert -- JavaScript does not support POSIX character classes like `[:alnum:]` in regular expressions, thus characters in the class are treated as literals
 /[(^style|^staticStyle)]/; // $ Alert
 /[.x.]/i; // $ Alert -- Repeated . character in character class
