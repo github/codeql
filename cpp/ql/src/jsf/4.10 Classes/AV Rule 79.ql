@@ -98,8 +98,8 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
       e.(FunctionCall).getTarget() = f or
       e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
-    access = f.getParameter(arg).getAnAccess() and
-    e.(FunctionCall).getArgument(arg) = released and
+    access = f.getParameter(pragma[only_bind_into](arg)).getAnAccess() and
+    e.(FunctionCall).getArgument(pragma[only_bind_into](arg)) = released and
     exprReleases(_,
       pragma[only_bind_into](exprOrDereference(globalValueNumber(access).getAnExpr())), kind)
   )
