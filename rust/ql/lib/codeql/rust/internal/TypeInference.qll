@@ -1100,7 +1100,7 @@ private module AwaitExprMatchingInput implements MatchingInputSig {
 
     Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
       dpos.isSelf() and
-      result = this.getParamList().getParam(0).getTypeRepr().(TypeMention).resolveTypeAt(path)
+      result = this.getParam(0).getTypeRepr().(TypeMention).resolveTypeAt(path)
       or
       dpos.isOutput() and
       result = this.getRetType().getTypeRepr().(TypeMention).resolveTypeAt(path)
@@ -1199,7 +1199,7 @@ private module MethodCall {
     Expr receiver;
 
     CallExprMethodCall() {
-      receiver = this.getArgList().getArg(0) and
+      receiver = this.getArg(0) and
       exists(Path path, Function f |
         path = this.getFunction().(PathExpr).getPath() and
         f = resolvePath(path) and
