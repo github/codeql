@@ -15,6 +15,7 @@
 | contextualTypes.ts:27:16:27:18 | req | 'express'.Request |
 | contextualTypes.ts:34:20:34:22 | req | 'express'.Request |
 | contextualTypes.ts:41:16:41:18 | req | 'express'.Request |
+| dynamicImportUse.ts:3:5:3:18 | e.getRequest() | 'express'.Request |
 | expressBulkExport.use.ts:3:13:3:15 | req | 'express'.Request |
 | expressBulkExport.use.ts:6:13:6:15 | res | 'express'.Response |
 | expressExportAssign.use.ts:3:13:3:15 | req | 'express'.Request |
