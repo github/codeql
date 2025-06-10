@@ -24,7 +24,7 @@ def has_overlay_annotations(lines):
     '''
     overlays = ["local", "local?", "global", "caller"]
     annotations = [f"overlay[{t}]" for t in overlays]
-    return any(any(ann in line for ann in annotations) for line in lines)
+    return any(ann in line for ann in annotations for line in lines)
 
 
 def insert_toplevel_maybe_local_annotation(filename, lines):
