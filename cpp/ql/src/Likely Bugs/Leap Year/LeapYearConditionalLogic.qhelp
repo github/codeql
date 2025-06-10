@@ -15,7 +15,7 @@
 </recommendation>
 <example>
 <p>Note in the following examples, that year, month, and day might instead be .wYear, .wMonth, and .wDay fields of a SYSTEMTIME structure, or might be .tm_year, .tm_mon, and .tm_mday fields of a struct tm.</p>
-<sample src="LeapYearConditionalLogicBad.c" />
+<sample src="examples/LeapYearConditionalLogicBad.c" />
 </example>
 
 <references>
