@@ -13,7 +13,7 @@ Common mistakes include:
 </p>
 <ul>
 <li>Using square brackets <code>[]</code> instead of parentheses <code>()</code> for grouping alternatives</li>
-<li>Misunderstanding that special regex characters like <code>|</code>, <code>*</code>, <code>+</code>, <code>()</code>, <code>-</code> etc. work the same inside character classes as outside</li>
+<li>Misunderstanding that special regex characters like <code>|</code>, <code>*</code>, <code>+</code>, <code>()</code>, and <code>-</code> work differently when appearing inside a character class</li>
 <li>Accidentally duplicating characters or escape sequences that represent the same character</li>
 </ul>
 
